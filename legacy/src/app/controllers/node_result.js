@@ -11,7 +11,6 @@ function NodeResultController(
   $rootScope,
   $stateParams,
   $location,
-  MachinesManager,
   ControllersManager,
   NodeResultsManagerFactory,
   ManagerHelperService,
@@ -27,6 +26,9 @@ function NodeResultController(
   $scope.node = null;
   $scope.output = "combined";
   $scope.result = null;
+  $scope.nodesManager = ControllersManager;
+  $scope.type_name = "controller";
+  $rootScope.page = "controllers";
 
   $scope.get_result_data = function (output) {
     $scope.output = output;
@@ -66,15 +68,6 @@ function NodeResultController(
     }
   });
 
-  if ($location.path().indexOf("/controller") !== -1) {
-    $scope.nodesManager = ControllersManager;
-    $scope.type_name = "controller";
-    $rootScope.page = "controllers";
-  } else {
-    $scope.nodesManager = MachinesManager;
-    $scope.type_name = "machine";
-    $rootScope.page = "machines";
-  }
   // Load nodes manager.
   ManagerHelperService.loadManager($scope, $scope.nodesManager).then(
     function () {

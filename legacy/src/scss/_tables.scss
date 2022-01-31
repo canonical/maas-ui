@@ -2,13 +2,9 @@
 @import "tables/breakpoint-widths";
 @import "tables/patterns_double-row";
 @import "tables/patterns_table-controllers";
-@import "tables/patterns_table-dns";
 @import "tables/patterns_table-expanding";
 @import "tables/patters_table-fabrics";
 @import "tables/patterns_table-ipranges";
-@import "tables/patterns_table-network-summary";
-@import "tables/patterns_table-ssh-keys";
-@import "tables/patterns_table-sortable";
 @import "tables/patterns_table-static-routes";
 @import "tables/patterns_table-storage";
 @import "tables/patterns_table-subnets";
@@ -18,13 +14,9 @@
 @include maas-b-tables;
 @include maas-double-row;
 @include maas-table-controllers;
-@include maas-table-dns;
 @include maas-table-expanding;
 @include maas-table-fabrics;
 @include maas-table-ipranges;
-@include maas-table-network-summary;
-@include maas-table-sortable;
-@include maas-table-ssh-keys;
 @include maas-table-static-routes;
 @include maas-table-storage;
 @include maas-table-subnets;

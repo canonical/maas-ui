@@ -15,7 +15,7 @@ import type {
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
-import type { Model, ModelRef } from "app/store/types/model";
+import type { Model, ModelRef, TimestampedModel } from "app/store/types/model";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 
 export enum NodeType {
@@ -305,8 +305,7 @@ export type EventType = Model & {
   name: string;
 };
 
-export type NodeEvent = Model & {
-  created: string;
+export type NodeEvent = Omit<TimestampedModel, "updated"> & {
   description: string;
   type: EventType;
 };

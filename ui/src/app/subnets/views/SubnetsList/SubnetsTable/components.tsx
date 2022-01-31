@@ -6,6 +6,7 @@ import {
   TableCell as TableCellComponent,
   TableHeader as TableHeaderComponent,
 } from "@canonical/react-components";
+import { Link } from "react-router-dom";
 
 import type { SubnetsTableColumn } from "./types";
 
@@ -37,7 +38,7 @@ export const TableCell = ({
         cellData.isVisuallyHidden ? "subnets-table__visually-hidden" : ""
       }
     >
-      {cellData.href ? <a href={cellData.href}>{children}</a> : children}
+      {cellData.href ? <Link to={cellData.href}>{children}</Link> : children}
     </span>
   </TableCellComponent>
 );

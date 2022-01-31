@@ -4,7 +4,11 @@ import type { APIError } from "app/base/types";
 import type { Domain } from "app/store/domain/types";
 import type { Architecture } from "app/store/general/types";
 import type { Pod } from "app/store/pod/types";
-import type { Model } from "app/store/types/model";
+import type {
+  Model,
+  TimestampedModel,
+  TimestampFields,
+} from "app/store/types/model";
 import type { NetworkInterface, Node, NodeType } from "app/store/types/node";
 import type { EventError, GenericState } from "app/store/types/state";
 import type { User } from "app/store/user/types";
@@ -57,14 +61,12 @@ export type SubnetIPNodeSummary = {
   via?: NetworkInterface["name"];
 };
 
-export type SubnetIP = {
+export type SubnetIP = TimestampFields & {
   alloc_type: IPAddressType;
   bmcs?: SubnetBMC[];
-  created: string;
   dns_records?: SubnetDNSRecord[];
   ip: string;
   node_summary?: SubnetIPNodeSummary;
-  updated: string;
   user?: User["username"];
 };
 
@@ -83,12 +85,11 @@ export type SubnetScanResult = {
   scan_started_on: SubnetBMCNode[];
 };
 
-export type BaseSubnet = Model & {
+export type BaseSubnet = TimestampedModel & {
   active_discovery: boolean;
   allow_dns: boolean;
   allow_proxy: boolean;
   cidr: string;
-  created: string;
   description: string;
   disabled_boot_architectures: Architecture[];
   dns_servers: string;
@@ -98,7 +99,6 @@ export type BaseSubnet = Model & {
   rdns_mode: number;
   space: number | null;
   statistics: SubnetStatistics;
-  updated: string;
   version: number;
   vlan: VLAN["id"];
 };

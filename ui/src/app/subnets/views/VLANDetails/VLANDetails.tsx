@@ -26,6 +26,7 @@ const VLANDetails = (): JSX.Element => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
+
   const vlansLoading = useSelector(vlanSelectors.loading);
   const isValidID = isId(id);
   useWindowTitle(`${vlan?.name || "VLAN"} details`);
@@ -55,7 +56,7 @@ const VLANDetails = (): JSX.Element => {
   }
 
   return (
-    <Section header={<VLANDetailsHeader vlan={vlan} />}>
+    <Section header={<VLANDetailsHeader id={id} />}>
       <VLANSummary />
       <DHCPStatus />
       <ReservedRanges />

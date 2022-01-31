@@ -46,16 +46,6 @@ function UsersManager(Manager, RegionConnection, ErrorService) {
     return authUser.is_superuser;
   };
 
-  // Return true if the authenticated user has uploaded at
-  // least one SSH key.
-  UsersManager.prototype.getSSHKeyCount = function () {
-    let authuser = this._authUser;
-    if (!angular.isObject(authuser)) {
-      return 0;
-    }
-    return authuser.sshkeys_count;
-  };
-
   // Load the authenticated user.
   UsersManager.prototype._loadAuthUser = function () {
     var self = this;
@@ -102,36 +92,6 @@ function UsersManager(Manager, RegionConnection, ErrorService) {
     // Load the auth user when all the items are reloaded as well.
     await this._loadAuthUser();
     return Manager.prototype.reloadItems.call(this);
-  };
-
-  // Create a new authorisation token for the current user.
-  UsersManager.prototype.createAuthorisationToken = function () {
-    return RegionConnection.callMethod(
-      "user.create_authorisation_token",
-      {}
-    ).catch(function (error) {
-      ErrorService.raiseError(error);
-    });
-  };
-
-  // Delete the authorisation token for the current user.
-  UsersManager.prototype.deleteAuthorisationToken = function (key) {
-    return RegionConnection.callMethod("user.delete_authorisation_token", {
-      key: key,
-    }).catch(function (error) {
-      ErrorService.raiseError(error);
-    });
-  };
-
-  // Return True if the authenticated user has provided
-  // global permission.
-  UsersManager.prototype.hasGlobalPermission = function (perm) {
-    var self = this;
-    var user = self.getAuthUser();
-    if (user && user.global_permissions) {
-      return user.global_permissions.indexOf(perm) !== -1;
-    }
-    return false;
   };
 
   return new UsersManager();

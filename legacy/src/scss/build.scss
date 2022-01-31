@@ -1,4 +1,4 @@
-@use 'sass:math';
+@use "sass:math";
 
 // Import MAAS-specific Vanilla configuration
 @import "settings";
@@ -24,7 +24,6 @@
 @import "base_forms";
 @import "base_links";
 @import "lists";
-@import "patterns_action-button";
 @import "patterns_button";
 @import "patterns_cta";
 @import "patterns_code";
@@ -43,7 +42,6 @@
 @import "patterns_search-box";
 @import "tables";
 @import "patterns_space-between";
-@import "patterns_filter";
 @import "patterns_slider";
 @import "patterns_status-bar";
 
@@ -52,7 +50,6 @@
 
 @include maas-b-forms;
 @include maas-b-links;
-@include maas-action-button;
 @include maas-icons;
 @include maas-navigation;
 @include maas-page-header;
@@ -68,6 +65,5 @@
 @include maas-p-notifications;
 @include maas-p-search-box;
 @include maas-p-sticky-footer;
-@include maas-p-filter;
 @include maas-status-bar;
 @include patterns_space-between;

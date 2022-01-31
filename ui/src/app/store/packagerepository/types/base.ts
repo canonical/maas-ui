@@ -1,11 +1,10 @@
 import type { APIError } from "app/base/types";
-import type { Model } from "app/store/types/model";
+import type { TimestampedModel } from "app/store/types/model";
 import type { GenericState } from "app/store/types/state";
 
-export type PackageRepository = Model & {
+export type PackageRepository = TimestampedModel & {
   arches: string[];
   components: string[];
-  created: string;
   default: boolean;
   disable_sources: boolean;
   disabled_components: string[];
@@ -14,7 +13,6 @@ export type PackageRepository = Model & {
   enabled: boolean;
   key: string;
   name: string;
-  updated: string;
   url: string;
 };
 

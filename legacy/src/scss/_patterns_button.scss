@@ -35,32 +35,6 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
     }
   }
 
-  .p-button--link {
-    @extend %vf-button-base;
-    background-color: inherit;
-    border: 0;
-    color: $color-link;
-    line-height: 1.25rem;
-    margin-bottom: 0;
-    padding: 0;
-    pointer-events: all;
-    text-align: left;
-
-    &:hover {
-      background-color: inherit;
-      text-decoration: underline;
-    }
-
-    &:visited {
-      color: $color-link;
-    }
-
-    // Override inherited button style from Vanilla
-    &:active {
-      background-color: inherit !important;
-    }
-  }
-
   [class*="p-button"] [class^="p-icon"],
   button [class^="p-icon"] {
     margin-right: 0;

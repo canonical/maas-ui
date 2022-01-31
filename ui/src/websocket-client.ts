@@ -72,8 +72,6 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     dispatchMultiple?: boolean;
     // A key to be used to identify a file in the file context.
     fileContextKey?: string;
-    // Whether the response contains JSON that needs to be parsed.
-    jsonResponse?: boolean;
     // The endpoint method e.g. "list".
     method: string;
     // The endpoint model e.g. "machine".
