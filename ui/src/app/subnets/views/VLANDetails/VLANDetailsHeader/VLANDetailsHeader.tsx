@@ -1,5 +1,9 @@
+import { useState } from "react";
+
 import { Button } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+
+import VLANDeleteForm from "./VLANDeleteForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import authSelectors from "app/store/auth/selectors";
@@ -14,6 +18,10 @@ import { isVLANDetails } from "app/store/vlan/utils";
 type Props = {
   id?: VLAN[VLANMeta.PK] | null;
 };
+
+enum HeaderForms {
+  Delete,
+}
 
 const generateTitle = (
   vlan?: VLAN | null,
@@ -42,21 +50,38 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
     fabricSelectors.getById(state, fabricId)
   );
   const isAdmin = useSelector(authSelectors.isAdmin);
+  const [formOpen, setFormOpen] = useState<HeaderForms | null>(null);
   const isFabricDefault = fabric && vlan && fabric.default_vlan_id === vlan.id;
   const buttons = [];
   if (isAdmin && !isFabricDefault) {
     buttons.push(
-      <Button data-testid="delete-vlan" key="delete-vlan">
+      <Button
+        data-testid="delete-vlan"
+        key="delete-vlan"
+        onClick={() => setFormOpen(HeaderForms.Delete)}
+      >
         Delete VLAN
       </Button>
     );
   }
+  const closeForm = () => {
+    setFormOpen(null);
+  };
 
   return (
     <SectionHeader
       buttons={buttons}
       subtitleLoading={!isVLANDetails(vlan)}
       title={generateTitle(vlan, fabric)}
+      headerContent={
+        formOpen === null ? null : (
+          <>
+            {formOpen === HeaderForms.Delete && (
+              <VLANDeleteForm closeForm={closeForm} id={id} />
+            )}
+          </>
+        )
+      }
     />
   );
 };
