@@ -1,5 +1,3 @@
-import { useRef } from "react";
-
 import {
   Col,
   Icon,
@@ -8,13 +6,13 @@ import {
   Strip,
   Tooltip,
 } from "@canonical/react-components";
-import { nanoid } from "nanoid";
 import { useSelector } from "react-redux";
 
 import ControllerLink from "app/base/components/ControllerLink";
 import Definition from "app/base/components/Definition";
 import FabricLink from "app/base/components/FabricLink";
 import SpaceLink from "app/base/components/SpaceLink";
+import { useId } from "app/base/hooks/base";
 import controllerSelectors from "app/store/controller/selectors";
 import type { RootState } from "app/store/root/types";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -39,7 +37,7 @@ const getRackIDs = (vlan: VLAN | null) => {
 };
 
 const VLANSummary = ({ id }: Props): JSX.Element | null => {
-  const sectionID = useRef(nanoid());
+  const sectionID = useId();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
@@ -52,8 +50,8 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
     return null;
   }
   return (
-    <Strip aria-labelledby={sectionID.current} element="section" shallow>
-      <h2 className="p-heading--4" id={sectionID.current}>
+    <Strip aria-labelledby={sectionID} element="section" shallow>
+      <h2 className="p-heading--4" id={sectionID}>
         VLAN summary
       </h2>
       <Row>
