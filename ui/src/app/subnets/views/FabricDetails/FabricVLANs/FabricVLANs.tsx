@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import SpaceLink from "app/base/components/SpaceLink";
 import SubnetLink from "app/base/components/SubnetLink";
 import VLANLink from "app/base/components/VLANLink";
+import { useId } from "app/base/hooks/base";
 import type { Fabric } from "app/store/fabric/types";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
@@ -100,9 +101,13 @@ const FabricVLANs = ({ fabric }: { fabric: Fabric }): JSX.Element => {
     fabric
   );
 
+  const id = useId();
+
   return (
-    <Strip shallow>
-      <h2 className="p-heading--4">VLANs on this fabric</h2>
+    <Strip shallow aria-labelledby={id}>
+      <h2 id={id} className="p-heading--4">
+        VLANs on this fabric
+      </h2>
       <MainTable
         headers={[
           {
