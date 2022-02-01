@@ -39,13 +39,13 @@ it("displays available actions", () => {
   const subnet = subnetDetailsFactory({ id: 1, name: "subnet-1" });
   render(<SubnetDetailsHeader subnet={subnet} />);
 
-  Object.values(subnetActionLabels).map((name) => {
+  Object.values(subnetActionLabels).forEach((name) => {
     expect(screen.queryByRole("button", { name })).not.toBeInTheDocument();
   });
 
   userEvent.click(screen.getByRole("button", { name: "Take action" }));
 
-  Object.values(subnetActionLabels).map((name) => {
+  Object.values(subnetActionLabels).forEach((name) => {
     expect(screen.getByRole("button", { name })).toBeInTheDocument();
   });
 });
