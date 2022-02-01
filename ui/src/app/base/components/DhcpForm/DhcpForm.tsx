@@ -67,7 +67,7 @@ export const DhcpForm = ({
   );
 
   useAddMessage(
-    saved,
+    saved && !errors,
     dhcpsnippetActions.cleanup,
     `${savingDhcp} ${editing ? "updated" : "added"} successfully.`,
     () => setSaving(null)
@@ -139,8 +139,8 @@ export const DhcpForm = ({
           dispatch(dhcpsnippetActions.create(params));
         }
         setSaving(params.name);
-        onSave && onSave();
       }}
+      onSuccess={() => onSave && onSave()}
       saving={saving}
       saved={saved}
       submitLabel="Save snippet"
