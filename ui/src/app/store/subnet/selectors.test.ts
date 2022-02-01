@@ -94,7 +94,7 @@ describe("subnet selectors", () => {
     expect(subnet.getByPod(state, pod)).toStrictEqual([subnets[0], subnets[1]]);
   });
 
-  it("can get subnets that are available to a given pod", () => {
+  it("can get subnets for a VLAN", () => {
     const subnets = [
       subnetFactory({ vlan: 1 }),
       subnetFactory({ vlan: 2 }),

@@ -45,10 +45,10 @@ const active = createSelector(
 );
 
 /**
- * Get subnets for a given VLAN.
+ * Get subnets for given ids.
  * @param {RootState} state - The redux state.
- * @param {Pod} VLANId - The id of the VLAN.
- * @returns {Subnet[]} Subnets for a VLAN.
+ * @param {Pod} ids - A list of subnet ids
+ * @returns {Subnet[]} The subnets for the given ids.
  */
 const getByIds = createSelector(
   [

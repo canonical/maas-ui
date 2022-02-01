@@ -25,7 +25,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("dispatches actions to fetch necessary data and set subnet as active on mount", () => {
+it("dispatches an action to fetch the subnets on mount", () => {
   const state = rootStateFactory();
   const store = mockStore(state);
   render(
@@ -49,7 +49,7 @@ it("dispatches actions to fetch necessary data and set subnet as active on mount
   });
 });
 
-it("displays a message if the subnet does not exist", () => {
+it("selects the correct subnets to display in the table", () => {
   const subnets = [subnetFactory(), subnetFactory(), subnetFactory()];
   const state = rootStateFactory({
     subnet: subnetStateFactory({
