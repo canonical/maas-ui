@@ -26,7 +26,7 @@ const defaultSelectors = generateBaseSelectors<
 const getByNode = createSelector(
   [
     defaultSelectors.all,
-    (_state: RootState, node: DHCPSnippet["node"] | null) => node,
+    (_state: RootState, node: DHCPSnippet["node"] | null | undefined) => node,
   ],
   (snippets: DHCPSnippet[], node) => {
     if (!node) {
@@ -36,9 +36,30 @@ const getByNode = createSelector(
   }
 );
 
+/**
+ * Finds snippets for a subnet.
+ * @param state - The redux state.
+ * @param systemId - A subnet's id.
+ * @returns Snippets for a subnet.
+ */
+const getBySubnets = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, subnets: DHCPSnippet["subnet"][] | null | undefined) =>
+      subnets,
+  ],
+  (snippets: DHCPSnippet[], subnets) => {
+    if (!subnets) {
+      return [];
+    }
+    return snippets.filter((snippet) => subnets.includes(snippet.subnet));
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   getByNode,
+  getBySubnets,
 };
 
 export default selectors;

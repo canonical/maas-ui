@@ -54,7 +54,7 @@ const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
           <AddInterface close={() => setExpanded(null)} systemId={id} />
         )}
         dhcpTable={() => (
-          <DHCPTable node={machine} nodeType={MachineMeta.MODEL} />
+          <DHCPTable node={machine} modelName={MachineMeta.MODEL} />
         )}
         expandedForm={(expanded, setExpanded) => {
           if (expanded?.content === ExpandedState.EDIT) {

@@ -15,6 +15,8 @@ import { actions as controllerActions } from "app/store/controller";
 import { actions as fabricActions } from "app/store/fabric";
 import type { RootState } from "app/store/root/types";
 import { actions as spaceActions } from "app/store/space";
+import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { VLANMeta } from "app/store/vlan/types";
@@ -30,6 +32,10 @@ const VLANDetails = (): JSX.Element => {
     vlanSelectors.getById(state, id)
   );
   const vlansLoading = useSelector(vlanSelectors.loading);
+  const subnets = useSelector((state: RootState) =>
+    subnetSelectors.getByVLAN(state, id)
+  );
+
   useWindowTitle(`${vlan?.name || "VLAN"} details`);
   const fabricId = vlan?.fabric;
   const spaceId = vlan?.space;
@@ -39,6 +45,7 @@ const VLANDetails = (): JSX.Element => {
       dispatch(vlanActions.get(id));
       dispatch(vlanActions.setActive(id));
       dispatch(controllerActions.fetch());
+      dispatch(subnetActions.fetch());
     }
 
     const unsetActiveVLANAndCleanup = () => {
@@ -81,7 +88,10 @@ const VLANDetails = (): JSX.Element => {
       <DHCPStatus />
       <ReservedRanges />
       <VLANSubnets />
-      <DHCPSnippets />
+      <DHCPSnippets
+        subnetIds={subnets.map(({ id }) => id)}
+        modelName={VLANMeta.MODEL}
+      />
     </Section>
   );
 };

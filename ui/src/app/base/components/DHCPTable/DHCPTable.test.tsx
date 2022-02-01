@@ -15,6 +15,7 @@ import {
   machineEvent as machineEventFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
+  subnet as subnetFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -58,7 +59,7 @@ describe("DHCPTable", () => {
         >
           <DHCPTable
             node={state.machine.items[0]}
-            nodeType={MachineMeta.MODEL}
+            modelName={MachineMeta.MODEL}
           />
         </MemoryRouter>
       </Provider>
@@ -83,12 +84,43 @@ describe("DHCPTable", () => {
         >
           <DHCPTable
             node={state.machine.items[0]}
-            nodeType={MachineMeta.MODEL}
+            modelName={MachineMeta.MODEL}
           />
         </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("TableRow").length).toBe(3);
+  });
+
+  it("shows snippets for subnets", () => {
+    const subnets = [
+      subnetFactory({ name: "subnet-name1" }),
+      subnetFactory({ name: "subnet-name2" }),
+    ];
+    state.dhcpsnippet.items = [
+      dhcpSnippetFactory({ subnet: subnets[0].id }),
+      dhcpSnippetFactory(),
+      dhcpSnippetFactory({ subnet: subnets[1].id }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <DHCPTable subnets={subnets} modelName={MachineMeta.MODEL} />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      wrapper.find("TableCell[data-testid='snippet-applies-to']").length
+    ).toBe(2);
+    expect(
+      wrapper.find("TableCell[data-testid='snippet-applies-to']").at(0).text()
+    ).toBe("subnet-name1");
+    expect(
+      wrapper.find("TableCell[data-testid='snippet-applies-to']").at(1).text()
+    ).toBe("subnet-name2");
   });
 
   it("can show a form to edit a snippet", () => {
@@ -108,7 +140,7 @@ describe("DHCPTable", () => {
         >
           <DHCPTable
             node={state.machine.items[0]}
-            nodeType={MachineMeta.MODEL}
+            modelName={MachineMeta.MODEL}
           />
         </MemoryRouter>
       </Provider>
