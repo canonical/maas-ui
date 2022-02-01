@@ -1,12 +1,13 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import VLANDeleteForm from "./VLANDeleteForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import authSelectors from "app/store/auth/selectors";
+import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
@@ -42,6 +43,7 @@ const generateTitle = (
 };
 
 const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
@@ -51,6 +53,11 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
   );
   const isAdmin = useSelector(authSelectors.isAdmin);
   const [formOpen, setFormOpen] = useState<HeaderForms | null>(null);
+
+  useEffect(() => {
+    dispatch(fabricActions.fetch());
+  }, [dispatch]);
+
   const buttons = [];
   if (isAdmin) {
     buttons.push(

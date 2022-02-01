@@ -14,7 +14,7 @@ import {
 
 const mockStore = configureStore();
 
-it("renders a spinner if vlans are loading", () => {
+it("handles when VLANs are loading", () => {
   const state = rootStateFactory({
     vlan: vlanStateFactory({ items: [], loading: true }),
   });
@@ -46,7 +46,7 @@ it("handles when a VLAN does not exist", () => {
   expect(container).toBeEmptyDOMElement();
 });
 
-it("renders a link if vlans have loaded and it exists", () => {
+it("renders a link if VLANs have loaded and it exists", () => {
   const vlan = vlanFactory();
   const state = rootStateFactory({
     vlan: vlanStateFactory({ items: [vlan], loading: false }),

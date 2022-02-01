@@ -35,7 +35,10 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
         ) : (
           controllers.map((controller) =>
             controller ? (
-              <ControllerLink key={controller.id} {...controller} />
+              <ControllerLink
+                key={controller.id}
+                systemId={controller.system_id}
+              />
             ) : null
           )
         )}

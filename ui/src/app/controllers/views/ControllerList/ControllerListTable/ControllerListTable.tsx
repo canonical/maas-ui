@@ -56,7 +56,9 @@ const generateRows = (
                 <RowCheckbox
                   data-testid="controller-checkbox"
                   handleRowCheckbox={handleRowCheckbox}
-                  inputLabel={<ControllerLink {...controller} />}
+                  inputLabel={
+                    <ControllerLink systemId={controller.system_id} />
+                  }
                   item={controller.system_id}
                   items={selectedIDs}
                 />

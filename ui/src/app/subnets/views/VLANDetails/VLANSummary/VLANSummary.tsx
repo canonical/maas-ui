@@ -31,6 +31,7 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
   if (!id || !vlan) {
     return null;
   }
+
   return (
     <TitledSection
       title="VLAN summary"

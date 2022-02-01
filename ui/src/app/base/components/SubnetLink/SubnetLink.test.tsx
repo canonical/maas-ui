@@ -14,7 +14,7 @@ import {
 
 const mockStore = configureStore();
 
-it("renders a spinner if subnets are loading", () => {
+it("handles when subnets are loading", () => {
   const state = rootStateFactory({
     subnet: subnetStateFactory({ items: [], loading: true }),
   });
