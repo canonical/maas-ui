@@ -45,6 +45,22 @@ const active = createSelector(
 );
 
 /**
+ * Get subnets for a given VLAN.
+ * @param {RootState} state - The redux state.
+ * @param {Pod} VLANId - The id of the VLAN.
+ * @returns {Subnet[]} Subnets for a VLAN.
+ */
+const getByIds = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, ids: Subnet[SubnetMeta.PK][]) => ids,
+  ],
+  (subnets, ids) => {
+    return subnets.filter(({ id }) => ids.includes(id));
+  }
+);
+
+/**
  * Get subnets for a given cidr.
  * @param state - The redux state.
  * @param cidr - The cidr to filter by.
@@ -78,6 +94,25 @@ const getByPod = createSelector(
     return subnets.filter((subnet) =>
       pod.attached_vlans?.includes(subnet.vlan)
     );
+  }
+);
+
+/**
+ * Get subnets for a given VLAN.
+ * @param {RootState} state - The redux state.
+ * @param {Pod} VLANId - The id of the VLAN.
+ * @returns {Subnet[]} Subnets for a VLAN.
+ */
+const getByVLAN = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, VLANId: Subnet["vlan"] | null) => VLANId,
+  ],
+  (subnets, VLANId) => {
+    if (!isId(VLANId)) {
+      return [];
+    }
+    return subnets.filter(({ vlan }) => vlan === VLANId);
   }
 );
 
@@ -201,7 +236,9 @@ const selectors = {
   eventErrors,
   eventErrorsForSubnets,
   getByCIDR,
+  getByIds,
   getByPod,
+  getByVLAN,
   getPxeEnabledByPod,
   getStatusForSubnet,
   scanning,

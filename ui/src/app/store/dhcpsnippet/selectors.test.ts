@@ -122,4 +122,21 @@ describe("dhcpsnippet selectors", () => {
       items[2],
     ]);
   });
+
+  it("can get dhcp snippets for subnets", () => {
+    const items = [
+      dhcpSnippetFactory({ id: 707, subnet: 1 }),
+      dhcpSnippetFactory({ id: 808, subnet: 2 }),
+      dhcpSnippetFactory({ id: 909, subnet: 3 }),
+    ];
+    const state = rootStateFactory({
+      dhcpsnippet: dhcpSnippetStateFactory({
+        items,
+      }),
+    });
+    expect(dhcpsnippet.getBySubnets(state, [1, 3])).toStrictEqual([
+      items[0],
+      items[2],
+    ]);
+  });
 });

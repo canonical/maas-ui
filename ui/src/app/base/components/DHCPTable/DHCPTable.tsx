@@ -12,21 +12,47 @@ import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
 import type { RootState } from "app/store/root/types";
+import type { Subnet } from "app/store/subnet/types";
 import type { Node } from "app/store/types/node";
+import { isId } from "app/utils";
+
+type BaseProps = {
+  headerId?: string;
+  modelName: string;
+  node?: Node;
+  subnets?: Subnet[];
+};
+
+type NodeProps = BaseProps & {
+  node: Node;
+};
+
+type SubnetProps = BaseProps & {
+  subnets: Subnet[];
+};
+
+export type Props = NodeProps | SubnetProps;
 
 const generateRows = (
   dhcpsnippets: DHCPSnippet[],
   expanded: DHCPSnippet["id"] | null,
-  node: Node,
-  setExpanded: (id: DHCPSnippet["id"] | null) => void
+  setExpanded: (id: DHCPSnippet["id"] | null) => void,
+  node?: Node,
+  subnets?: Subnet[]
 ) =>
   dhcpsnippets.map((dhcpsnippet: DHCPSnippet) => {
     const isExpanded = expanded === dhcpsnippet.id;
     const enabled = dhcpsnippet.enabled ? "Yes" : "No";
-    const type =
-      (dhcpsnippet.node && "Node") ||
-      (dhcpsnippet.subnet && "Subnet") ||
-      "Global";
+    let typeLabel = "Global";
+    let appliesTo: string | null = null;
+    if (isId(dhcpsnippet.node) && node) {
+      typeLabel = "Node";
+      appliesTo = node.fqdn;
+    } else if (isId(dhcpsnippet.subnet) && subnets?.length) {
+      typeLabel = "Subnet";
+      appliesTo =
+        subnets.find(({ id }) => id === dhcpsnippet.subnet)?.name || "";
+    }
     return {
       className: isExpanded ? "p-table__row is-active" : null,
       columns: [
@@ -35,10 +61,11 @@ const generateRows = (
           role: "rowheader",
         },
         {
-          content: type,
+          content: typeLabel,
         },
         {
-          content: node.fqdn,
+          content: appliesTo,
+          "data-testid": "snippet-applies-to",
         },
         { content: enabled },
         { content: dhcpsnippet.description },
@@ -69,23 +96,28 @@ const generateRows = (
         name: dhcpsnippet.name,
         description: dhcpsnippet.description,
         enabled,
-        target: node.fqdn,
-        type,
+        target: appliesTo,
+        type: typeLabel,
       },
     };
   });
 
-type Props = {
-  node: Node;
-  nodeType: string;
-};
-
-const DHCPTable = ({ node, nodeType }: Props): JSX.Element | null => {
+const DHCPTable = ({
+  headerId,
+  node,
+  subnets,
+  modelName,
+}: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<DHCPSnippet["id"] | null>(null);
   const dhcpsnippetLoading = useSelector(dhcpsnippetSelectors.loading);
   const dhcpsnippets = useSelector((state: RootState) =>
-    dhcpsnippetSelectors.getByNode(state, node.system_id)
+    node
+      ? dhcpsnippetSelectors.getByNode(state, node?.system_id)
+      : dhcpsnippetSelectors.getBySubnets(
+          state,
+          subnets?.map(({ id }) => id)
+        )
   );
 
   useEffect(() => {
@@ -94,8 +126,10 @@ const DHCPTable = ({ node, nodeType }: Props): JSX.Element | null => {
 
   return (
     <>
-      <h2 className="p-heading--four">DHCP snippets</h2>
-      {node ? (
+      <h2 className="p-heading--four" id={headerId}>
+        DHCP snippets
+      </h2>
+      {node || subnets?.length ? (
         <>
           <MainTable
             className="dhcp-snippets-table p-table-expanding--light"
@@ -105,7 +139,7 @@ const DHCPTable = ({ node, nodeType }: Props): JSX.Element | null => {
               dhcpsnippetLoading ? (
                 <Spinner text="Loading..." />
               ) : (
-                `No DHCP snippets applied to this ${nodeType}.`
+                `No DHCP snippets applied to this ${modelName}.`
               )
             }
             expanding
@@ -135,7 +169,13 @@ const DHCPTable = ({ node, nodeType }: Props): JSX.Element | null => {
                 className: "u-align--right",
               },
             ]}
-            rows={generateRows(dhcpsnippets, expanded, node, setExpanded)}
+            rows={generateRows(
+              dhcpsnippets,
+              expanded,
+              setExpanded,
+              node,
+              subnets
+            )}
             sortable
           />
           <List
