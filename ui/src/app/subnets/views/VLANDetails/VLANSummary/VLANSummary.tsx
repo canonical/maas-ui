@@ -10,19 +10,15 @@ import {
 } from "@canonical/react-components";
 import { nanoid } from "nanoid";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
 
 import ControllerLink from "app/base/components/ControllerLink";
 import Definition from "app/base/components/Definition";
+import FabricLink from "app/base/components/FabricLink";
+import SpaceLink from "app/base/components/SpaceLink";
 import controllerSelectors from "app/store/controller/selectors";
-import fabricSelectors from "app/store/fabric/selectors";
-import { getFabricDisplay } from "app/store/fabric/utils";
 import type { RootState } from "app/store/root/types";
-import spaceSelectors from "app/store/space/selectors";
-import { getSpaceDisplay } from "app/store/space/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import subnetsURLs from "app/subnets/urls";
 import { breakLines } from "app/utils";
 
 type Props = {
@@ -51,21 +47,10 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
     controllerSelectors.getByIDs(state, getRackIDs(vlan))
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const fabric = useSelector((state: RootState) =>
-    fabricSelectors.getById(state, vlan?.fabric)
-  );
-  const fabricsLoading = useSelector(fabricSelectors.loading);
-  const space = useSelector((state: RootState) =>
-    spaceSelectors.getById(state, vlan?.space)
-  );
-  const spacesLoading = useSelector(spaceSelectors.loading);
 
   if (!vlan) {
     return null;
   }
-
-  const fabricDisplay = getFabricDisplay(fabric);
-  const spaceDisplay = getSpaceDisplay(space);
   return (
     <Strip aria-labelledby={sectionID.current} element="section" shallow>
       <h2 className="p-heading--4" id={sectionID.current}>
@@ -80,32 +65,10 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
         </Col>
         <Col size={6}>
           <Definition label="Space">
-            {spacesLoading ? (
-              <Spinner />
-            ) : space ? (
-              <Link
-                data-testid="space-link"
-                to={subnetsURLs.space.index({ id: space.id })}
-              >
-                {spaceDisplay}
-              </Link>
-            ) : (
-              spaceDisplay
-            )}
+            <SpaceLink id={vlan.space} />
           </Definition>
           <Definition label="Fabric">
-            {fabricsLoading ? (
-              <Spinner />
-            ) : fabric ? (
-              <Link
-                data-testid="fabric-link"
-                to={subnetsURLs.fabric.index({ id: fabric.id })}
-              >
-                {fabricDisplay}
-              </Link>
-            ) : (
-              fabricDisplay
-            )}
+            <FabricLink id={vlan.fabric} />
           </Definition>
           <Definition
             label={
