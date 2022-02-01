@@ -230,9 +230,6 @@
 @include OverviewCard;
 @include SourceMachineSelect;
 
-// subnets
-@import "~app/subnets/views/SubnetsList";
-
 // preferences
 @import "~app/preferences/views/APIKeys/APIKeyList";
 @import "~app/preferences/views/SSLKeys/AddSSLKey";
@@ -258,6 +255,11 @@
 @include ScriptsList;
 @include ScriptsUpload;
 @include UsersList;
+
+// subnets
+@import "~app/subnets/views/SubnetsList";
+@import "~app/subnets/views/VLANDetails/VLANSubnets";
+@include VLANSubnets;
 
 #maas-ui {
   background-color: $color-light;
