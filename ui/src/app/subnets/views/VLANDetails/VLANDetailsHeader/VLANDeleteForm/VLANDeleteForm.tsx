@@ -10,6 +10,7 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 import subnetURLs from "app/subnets/urls";
+import { isId } from "app/utils";
 
 type Props = {
   closeForm: () => void;
@@ -26,7 +27,7 @@ const VLANDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
   const saving = useSelector(vlanSelectors.saving);
   const cleanup = useCallback(() => vlanActions.cleanup(), []);
 
-  if (!id || !vlan) {
+  if (!isId(id) || !vlan) {
     return null;
   }
 
