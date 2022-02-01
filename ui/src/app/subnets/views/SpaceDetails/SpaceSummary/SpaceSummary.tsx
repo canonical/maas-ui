@@ -1,14 +1,14 @@
 import { Strip } from "@canonical/react-components";
-import { nanoid } from "nanoid";
 
 import Definition from "app/base/components/Definition";
+import { useId } from "app/base/hooks/base";
 import type { Space } from "app/store/space/types";
 
 const SpaceSummary = ({
   name,
   description,
 }: Pick<Space, "name" | "description">): JSX.Element => {
-  const id = nanoid();
+  const id = useId();
   return (
     <Strip shallow element="section" aria-labelledby={id}>
       <h2 id={id} className="p-heading--4">

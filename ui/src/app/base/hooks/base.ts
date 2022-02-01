@@ -162,7 +162,4 @@ export const useScrollOnRender = <T extends HTMLElement>(): ((
  * Get a random ID string
  * @returns non-secure random ID string
  */
-export const useId = (): string => {
-  const [id] = useState(() => nanoid());
-  return id;
-};
+export const useId = (): string => useRef(nanoid()).current;
