@@ -112,12 +112,14 @@ describe("DHCPTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("TableRow").length).toBe(2);
     expect(
-      wrapper.find("[data-testid='snippet-applies-to']").at(0).text()
+      wrapper.find("TableCell[data-testid='snippet-applies-to']").length
+    ).toBe(2);
+    expect(
+      wrapper.find("TableCell[data-testid='snippet-applies-to']").at(0).text()
     ).toBe("subnet-name1");
     expect(
-      wrapper.find("[data-testid='snippet-applies-to']").at(1).text()
+      wrapper.find("TableCell[data-testid='snippet-applies-to']").at(1).text()
     ).toBe("subnet-name2");
   });
 
