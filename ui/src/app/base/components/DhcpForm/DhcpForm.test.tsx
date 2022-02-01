@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import { DhcpForm } from "./DhcpForm";
 
+import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import type { RootState } from "app/store/root/types";
 import {
   dhcpSnippet as dhcpSnippetFactory,
@@ -40,6 +41,10 @@ describe("DhcpForm", () => {
         loaded: true,
       }),
     });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it("can render", () => {
@@ -142,6 +147,47 @@ describe("DhcpForm", () => {
         method: "create",
       },
     });
+  });
+
+  it("can call the onSave on success", () => {
+    state.dhcpsnippet.saved = false;
+    const onSave = jest.fn();
+    const store = mockStore(state);
+    const Proxy = ({ analyticsCategory }: { analyticsCategory: string }) => (
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <DhcpForm analyticsCategory={analyticsCategory} onSave={onSave} />
+        </MemoryRouter>
+      </Provider>
+    );
+    const wrapper = mount(<Proxy analyticsCategory="settings" />);
+    act(() =>
+      submitFormikForm(wrapper, {
+        name: "new-lease",
+      })
+    );
+    jest.spyOn(dhcpsnippetSelectors, "saved").mockReturnValue(true);
+    wrapper.setProps({ analyticsCategory: "newvalue" });
+    expect(onSave).toHaveBeenCalled();
+  });
+
+  it("does not call onSave if there is an error", () => {
+    state.dhcpsnippet.errors = "Uh oh!";
+    const onSave = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/"]}>
+          <DhcpForm analyticsCategory="settings" onSave={onSave} />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      submitFormikForm(wrapper, {
+        name: "new-lease",
+      })
+    );
+    expect(onSave).not.toHaveBeenCalled();
   });
 
   it("adds a message when a snippet is added", () => {
