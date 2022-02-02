@@ -12,7 +12,7 @@ import { default as subnetSelectors } from "app/store/subnet/selectors";
 import { getCanBeDeleted, getIsDHCPEnabled } from "app/store/subnet/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import { default as vlanSelectors } from "app/store/vlan/selectors";
-import urls from "app/subnets/urls";
+import subnetURLs from "app/subnets/urls";
 import type { SubnetActionProps } from "app/subnets/views/SubnetDetails/types";
 
 export const DeleteSubnet = ({
@@ -58,7 +58,7 @@ export const DeleteSubnet = ({
       ) : (
         <Row>
           <Col size={8}>
-            <p>Are you sure you want to delete subnet {subnet?.name}?</p>
+            <p>Are you sure you want to delete this subnet?</p>
             {dhcpEnabled ? null : (
               <p>
                 Beware IP addresses on devices on this subnet might not be
@@ -76,11 +76,10 @@ export const DeleteSubnet = ({
               onSubmit={() => {
                 dispatch(subnetActions.delete(id));
               }}
-              savedRedirect={urls.index}
+              savedRedirect={subnetURLs.index}
               saved={saved}
               saving={saving}
-              submitLabel="Yes, delete subnet"
-              cancelLabel="No, cancel"
+              submitLabel="Delete"
               submitAppearance="negative"
             />
           </Col>
