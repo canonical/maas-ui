@@ -4,6 +4,8 @@ import { List, MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import TitledSection from "../TitledSection";
+
 import EditDHCP from "./EditDHCP";
 
 import TableActions from "app/base/components/TableActions";
@@ -17,7 +19,7 @@ import type { Node } from "app/store/types/node";
 import { isId } from "app/utils";
 
 type BaseProps = {
-  headerId?: string;
+  className?: string;
   modelName: string;
   node?: Node;
   subnets?: Subnet[];
@@ -103,7 +105,7 @@ const generateRows = (
   });
 
 const DHCPTable = ({
-  headerId,
+  className,
   node,
   subnets,
   modelName,
@@ -125,10 +127,7 @@ const DHCPTable = ({
   }, [dispatch]);
 
   return (
-    <>
-      <h2 className="p-heading--four" id={headerId}>
-        DHCP snippets
-      </h2>
+    <TitledSection className={className} title="DHCP snippets">
       {node || subnets?.length ? (
         <>
           <MainTable
@@ -196,7 +195,7 @@ const DHCPTable = ({
           />
         </>
       ) : null}
-    </>
+    </TitledSection>
   );
 };
 

@@ -1,9 +1,5 @@
-import { Strip } from "@canonical/react-components";
+import TitledSection from "app/base/components/TitledSection";
 
-const StaticRoutes = (): JSX.Element => (
-  <Strip shallow>
-    <h2 className="p-heading--4">Static routes</h2>
-  </Strip>
-);
+const StaticRoutes = (): JSX.Element => <TitledSection title="Static routes" />;
 
 export default StaticRoutes;
