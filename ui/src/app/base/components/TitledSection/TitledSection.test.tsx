@@ -7,9 +7,19 @@ it("displays the provided title and content", () => {
   const content = "G'day";
   render(<TitledSection title={title}>{content}</TitledSection>);
   expect(screen.getByText(content)).toBeInTheDocument();
-  expect(
-    within(screen.getByRole("heading")).getByText(title)
-  ).toBeInTheDocument();
+  expect(screen.getByRole("heading", { name: title })).toBeInTheDocument();
+});
+
+it("displays a section correctly labelled with the provided title", () => {
+  const title = "echidna says";
+  const content = "G'day";
+  render(
+    <TitledSection title={title}>
+      <p>{content}</p>
+    </TitledSection>
+  );
+  const section = screen.getByRole("region", { name: title });
+  expect(within(section).getByText(content)).toBeInTheDocument();
 });
 
 it("sets the labelledby ids", () => {
@@ -37,4 +47,34 @@ it("can display buttons", () => {
     </TitledSection>
   );
   expect(screen.getAllByRole("button").length).toBe(2);
+});
+
+it("displays a custom heading", () => {
+  render(
+    <TitledSection
+      title="echidna says"
+      headingElement="h4"
+      headingVisuallyHidden={true}
+    >
+      G'day
+    </TitledSection>
+  );
+  const sectionId = screen.getByRole("heading").id;
+  expect(sectionId).toBeTruthy();
+  expect(screen.getByTestId("titled-section")).toHaveAttribute(
+    "aria-labelledby",
+    sectionId
+  );
+});
+
+it("adds a custom heading className", () => {
+  render(
+    <TitledSection title="echidna says" headingClassName="u-no-margin--bottom">
+      G'day
+    </TitledSection>
+  );
+  expect(screen.getByRole("heading")).toHaveAttribute(
+    "class",
+    "u-no-margin--bottom"
+  );
 });
