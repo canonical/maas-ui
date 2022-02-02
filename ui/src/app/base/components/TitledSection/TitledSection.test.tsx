@@ -21,3 +21,20 @@ it("sets the labelledby ids", () => {
     sectionId
   );
 });
+
+it("can display buttons", () => {
+  render(
+    <TitledSection
+      buttons={
+        <>
+          <button>Button</button>
+          <button>Button</button>
+        </>
+      }
+      title="echidna says"
+    >
+      G'day
+    </TitledSection>
+  );
+  expect(screen.getAllByRole("button").length).toBe(2);
+});
