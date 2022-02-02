@@ -1,9 +1,7 @@
-import { Strip } from "@canonical/react-components";
+import TitledSection from "app/base/components/TitledSection";
 
 const SubnetUsedIPs = (): JSX.Element => (
-  <Strip shallow>
-    <h2 className="p-heading--4">Used IP addresses</h2>
-  </Strip>
+  <TitledSection title="Used IP addresses" />
 );
 
 export default SubnetUsedIPs;

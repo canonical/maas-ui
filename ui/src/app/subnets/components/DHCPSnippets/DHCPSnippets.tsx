@@ -1,7 +1,5 @@
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
-import { Strip } from "@canonical/react-components";
-import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 import DHCPTable from "app/base/components/DHCPTable";
@@ -17,7 +15,6 @@ type Props = {
 
 const DHCPSnippets = ({ modelName, subnetIds }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const sectionID = useRef(nanoid());
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByIds(state, subnetIds)
   );
@@ -26,15 +23,7 @@ const DHCPSnippets = ({ modelName, subnetIds }: Props): JSX.Element => {
     dispatch(subnetActions.fetch());
   }, [dispatch]);
 
-  return (
-    <Strip aria-labelledby={sectionID.current} element="section" shallow>
-      <DHCPTable
-        headerId={sectionID.current}
-        subnets={subnets}
-        modelName={modelName}
-      />
-    </Strip>
-  );
+  return <DHCPTable subnets={subnets} modelName={modelName} />;
 };
 
 export default DHCPSnippets;
