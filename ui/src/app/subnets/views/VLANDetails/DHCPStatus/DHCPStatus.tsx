@@ -1,9 +1,5 @@
-import { Strip } from "@canonical/react-components";
+import TitledSection from "app/base/components/TitledSection";
 
-const DHCPStatus = (): JSX.Element => (
-  <Strip shallow>
-    <h2 className="p-heading--4">DHCP</h2>
-  </Strip>
-);
+const DHCPStatus = (): JSX.Element => <TitledSection title="DHCP" />;
 
 export default DHCPStatus;

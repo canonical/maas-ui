@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { NotificationSeverity } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
-import { nanoid } from "nanoid";
+import { nanoid } from "nanoid/non-secure";
 import { useDispatch, useSelector } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
@@ -159,6 +159,7 @@ export const useScrollOnRender = <T extends HTMLElement>(): ((
 };
 
 /**
- * Get a unique ID for a DOM element
+ * Get a random ID string
+ * @returns non-secure random ID string
  */
 export const useId = (): string => useRef(nanoid()).current;

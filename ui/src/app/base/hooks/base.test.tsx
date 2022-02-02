@@ -1,7 +1,7 @@
 import { renderHook } from "@testing-library/react-hooks";
 import TestRenderer from "react-test-renderer";
 
-import { useCycled, useProcessing, useScrollOnRender } from "./base";
+import { useCycled, useId, useProcessing, useScrollOnRender } from "./base";
 
 const { act } = TestRenderer;
 
@@ -216,6 +216,16 @@ describe("hooks", () => {
       expect(onComplete).not.toHaveBeenCalled();
       expect(onError).toHaveBeenCalled();
       expect(result.current).toBe(false);
+    });
+  });
+
+  describe("getId", () => {
+    it("generates the id on first render", () => {
+      const { result, rerender } = renderHook(() => useId());
+      expect(result.current).toBeTruthy();
+      const previousResult = result;
+      rerender();
+      expect(result.current).toEqual(previousResult.current);
     });
   });
 });

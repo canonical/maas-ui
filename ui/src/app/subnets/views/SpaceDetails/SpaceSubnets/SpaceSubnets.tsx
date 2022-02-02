@@ -1,9 +1,7 @@
-import { Strip } from "@canonical/react-components";
+import TitledSection from "app/base/components/TitledSection";
 
 const SpaceSubnets = (): JSX.Element => (
-  <Strip shallow>
-    <h2 className="p-heading--4">Subnets on this space</h2>
-  </Strip>
+  <TitledSection title="Subnets on this space" />
 );
 
 export default SpaceSubnets;

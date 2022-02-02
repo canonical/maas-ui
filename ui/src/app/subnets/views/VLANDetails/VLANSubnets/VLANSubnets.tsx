@@ -1,10 +1,8 @@
-import { useRef } from "react";
-
-import { Icon, MainTable, Spinner, Strip } from "@canonical/react-components";
-import { nanoid } from "nanoid";
+import { Icon, MainTable, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import SubnetLink from "app/base/components/SubnetLink";
+import TitledSection from "app/base/components/TitledSection";
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
@@ -14,17 +12,13 @@ type Props = {
 };
 
 const VLANSubnets = ({ id }: Props): JSX.Element | null => {
-  const sectionID = useRef(nanoid());
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByVLAN(state, id)
   );
   const subnetsLoading = useSelector(subnetSelectors.loading);
 
   return (
-    <Strip aria-labelledby={sectionID.current} element="section" shallow>
-      <h2 className="p-heading--4" id={sectionID.current}>
-        Subnets on this VLAN
-      </h2>
+    <TitledSection title="Subnets on this VLAN">
       <MainTable
         className="vlan-subnets"
         defaultSort="cidr"
@@ -125,7 +119,7 @@ const VLANSubnets = ({ id }: Props): JSX.Element | null => {
         })}
         sortable
       />
-    </Strip>
+    </TitledSection>
   );
 };
 

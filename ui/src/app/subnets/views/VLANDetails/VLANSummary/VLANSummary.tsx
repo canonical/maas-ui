@@ -1,20 +1,11 @@
-import { useRef } from "react";
-
-import {
-  Col,
-  Icon,
-  Row,
-  Spinner,
-  Strip,
-  Tooltip,
-} from "@canonical/react-components";
-import { nanoid } from "nanoid";
+import { Col, Icon, Row, Spinner, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ControllerLink from "app/base/components/ControllerLink";
 import Definition from "app/base/components/Definition";
 import FabricLink from "app/base/components/FabricLink";
 import SpaceLink from "app/base/components/SpaceLink";
+import TitledSection from "app/base/components/TitledSection";
 import controllerSelectors from "app/store/controller/selectors";
 import type { RootState } from "app/store/root/types";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -39,7 +30,6 @@ const getRackIDs = (vlan: VLAN | null) => {
 };
 
 const VLANSummary = ({ id }: Props): JSX.Element | null => {
-  const sectionID = useRef(nanoid());
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
@@ -52,10 +42,7 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
     return null;
   }
   return (
-    <Strip aria-labelledby={sectionID.current} element="section" shallow>
-      <h2 className="p-heading--4" id={sectionID.current}>
-        VLAN summary
-      </h2>
+    <TitledSection title="VLAN summary">
       <Row>
         <Col size={6}>
           <Definition label="VID" description={`${vlan.vid}`} />
@@ -97,7 +84,7 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
           </Definition>
         </Col>
       </Row>
-    </Strip>
+    </TitledSection>
   );
 };
 
