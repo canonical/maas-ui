@@ -6,6 +6,8 @@ import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";
 
+import { actions as subnetActions } from "app/store/subnet";
+import { actions as vlanActions } from "app/store/vlan";
 import subnetsURLs from "app/subnets/urls";
 import {
   subnetDetails as subnetFactory,
@@ -15,51 +17,46 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 
-const renderTestCase = (
-  vlan = vlanFactory({
-    id: 1,
-    dhcp_on: true,
-  }),
-  subnet = subnetFactory({
-    id: 1,
-    vlan: 1,
-  })
-) => {
-  const history = createMemoryHistory({
-    initialEntries: [{ pathname: subnetsURLs.subnet.index({ id: subnet.id }) }],
-  });
+const subnetId = 1;
+const getRootState = () => {
   const state = rootStateFactory({
     subnet: subnetStateFactory({
-      items: [subnet],
+      items: [
+        subnetFactory({
+          id: subnetId,
+          vlan: 1,
+        }),
+      ],
       loading: false,
       loaded: true,
     }),
     vlan: vlanStateFactory({
-      items: [vlan],
+      items: [
+        vlanFactory({
+          id: 1,
+          dhcp_on: true,
+        }),
+      ],
       loading: false,
       loaded: true,
     }),
   });
-  const store = configureStore()(state);
-  return {
-    history,
-    store,
-    ...render(
-      <Provider store={store}>
-        <Router history={history}>
-          <Route
-            exact
-            path={subnetsURLs.subnet.index({ id: subnet.id })}
-            component={() => <DeleteSubnet setActiveForm={jest.fn()} />}
-          />
-        </Router>
-      </Provider>
-    ),
-  };
+  return state;
 };
 
 it("displays a correct error message for a subnet with IPs obtained through DHCP", () => {
-  renderTestCase();
+  const state = getRootState();
+  const history = createMemoryHistory({
+    initialEntries: [{ pathname: subnetsURLs.subnet.index({ id: subnetId }) }],
+  });
+  const store = configureStore()(state);
+  render(
+    <Provider store={store}>
+      <Router history={history}>
+        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+      </Router>
+    </Provider>
+  );
   const deleteSubnetSection = screen.getByRole("region", {
     name: /Delete subnet?/i,
   });
@@ -69,4 +66,26 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
       /This subnet cannot be deleted as there are nodes that have an IP address obtained through DHCP services on this subnet./
     )
   ).toBeInTheDocument();
+});
+
+it("dispatches an action to load vlans and subnets if not loaded", () => {
+  const history = createMemoryHistory({
+    initialEntries: [{ pathname: subnetsURLs.subnet.index({ id: subnetId }) }],
+  });
+  const state = getRootState();
+  state.vlan.loaded = false;
+  state.subnet.loaded = false;
+  const store = configureStore()(state);
+  render(
+    <Provider store={store}>
+      <Router history={history}>
+        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+      </Router>
+    </Provider>
+  );
+
+  expect(store.getActions()).toEqual([
+    vlanActions.fetch(),
+    subnetActions.fetch(),
+  ]);
 });

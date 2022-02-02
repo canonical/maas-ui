@@ -80,7 +80,10 @@ export const getVLANOnSubnet = (
  * @param subnet - All VLANS.
  * @param subnet - The subnet to check.
  */
-export const getIsDHCPEnabled = (vlans?: VLAN[], subnet?: Subnet): boolean => {
+export const getIsDHCPEnabled = (
+  vlans?: VLAN[],
+  subnet?: Subnet | null
+): boolean => {
   if (!vlans || !subnet) {
     return false;
   }

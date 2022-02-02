@@ -1,12 +1,16 @@
+import { useEffect } from "react";
+
 import { Notification, Row, Col } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "app/base/components/FormikForm";
 import TitledSection from "app/base/components/TitledSection";
 import type { EmptyObject } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import { default as subnetSelectors } from "app/store/subnet/selectors";
 import { getCanBeDeleted, getIsDHCPEnabled } from "app/store/subnet/utils";
+import { actions as vlanActions } from "app/store/vlan";
 import { default as vlanSelectors } from "app/store/vlan/selectors";
 import urls from "app/subnets/urls";
 import type { SubnetActionProps } from "app/subnets/views/SubnetDetails/types";
@@ -15,8 +19,12 @@ export const DeleteSubnet = ({
   id,
   setActiveForm,
 }: Omit<SubnetActionProps, "activeForm">): JSX.Element | null => {
-  const subnet = useSelector(subnetSelectors.active);
+  const subnet = useSelector((state: RootState) =>
+    subnetSelectors.getById(state, id)
+  );
   const vlans = useSelector(vlanSelectors.all);
+  const vlanLoaded = useSelector(vlanSelectors.loaded);
+  const subnetLoaded = useSelector(subnetSelectors.loaded);
   const canBeDeleted = subnet ? getCanBeDeleted(vlans, subnet) : false;
   const dispatch = useDispatch();
   const errors = useSelector(subnetSelectors.errors);
@@ -24,6 +32,11 @@ export const DeleteSubnet = ({
   const saved = useSelector(subnetSelectors.saved);
   const dhcpEnabled = getIsDHCPEnabled(vlans, subnet);
   const handleClose = () => setActiveForm(null);
+
+  useEffect(() => {
+    if (!vlanLoaded) dispatch(vlanActions.fetch());
+    if (!subnetLoaded) dispatch(subnetActions.fetch());
+  }, [dispatch, vlanLoaded, subnetLoaded]);
 
   return (
     <TitledSection title="Delete subnet?" headingVisuallyHidden>
