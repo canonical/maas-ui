@@ -1,10 +1,11 @@
 import { useEffect } from "react";
 
-import { Spinner, Strip } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import ControllerLink from "app/base/components/ControllerLink";
 import Definition from "app/base/components/Definition";
+import TitledSection from "app/base/components/TitledSection";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Fabric } from "app/store/fabric/types";
@@ -26,8 +27,7 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
   }, [dispatch, vlansLoaded, controllersLoaded]);
 
   return (
-    <Strip shallow>
-      <h2 className="p-heading--4">Fabric summary</h2>
+    <TitledSection title="Fabric summary">
       <Definition label="Name" description={fabric.name} />
       <Definition label="Rack controllers">
         {!controllersLoaded || !vlansLoaded ? (
@@ -41,7 +41,7 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
         )}
       </Definition>
       <Definition label="Description" description={fabric.description} />
-    </Strip>
+    </TitledSection>
   );
 };
 

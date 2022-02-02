@@ -1,9 +1,7 @@
-import { Strip } from "@canonical/react-components";
+import TitledSection from "app/base/components/TitledSection";
 
 const SubnetUtilisation = (): JSX.Element => (
-  <Strip shallow>
-    <h2 className="p-heading--4">Utilisation</h2>
-  </Strip>
+  <TitledSection title="Utilisation" />
 );
 
 export default SubnetUtilisation;
