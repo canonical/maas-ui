@@ -1,9 +1,7 @@
-import { Strip } from "@canonical/react-components";
+import TitledSection from "app/base/components/TitledSection";
 
 const FabricVLANs = (): JSX.Element => (
-  <Strip shallow>
-    <h2 className="p-heading--4">VLANs on this fabric</h2>
-  </Strip>
+  <TitledSection title="VLANs on this fabric" />
 );
 
 export default FabricVLANs;

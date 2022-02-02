@@ -222,9 +222,10 @@ describe("hooks", () => {
   describe("getId", () => {
     it("generates the id on first render", () => {
       const { result, rerender } = renderHook(() => useId());
+      expect(result.current).toBeTruthy();
       const previousResult = result;
       rerender();
-      expect(result).toEqual(previousResult);
+      expect(result.current).toEqual(previousResult.current);
     });
   });
 });
