@@ -256,11 +256,13 @@ exports[`NodeName can display the form 1`] = `
       }
     >
       <Form
+        aria-label="form"
         className="node-name"
         inline={true}
         onSubmit={[Function]}
       >
         <form
+          aria-label="form"
           className="node-name p-form p-form--inline"
           onSubmit={[Function]}
         >
