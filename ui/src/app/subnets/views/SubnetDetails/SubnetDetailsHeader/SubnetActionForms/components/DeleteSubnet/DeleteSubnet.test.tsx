@@ -61,7 +61,7 @@ const renderTestCase = (
 it("displays a correct error message for a subnet with IPs obtained through DHCP", () => {
   renderTestCase();
   const deleteSubnetSection = screen.getByRole("region", {
-    name: /Delete subnet/i,
+    name: /Delete subnet?/i,
   });
 
   expect(

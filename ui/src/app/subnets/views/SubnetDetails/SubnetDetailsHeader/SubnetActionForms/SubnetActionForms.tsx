@@ -18,13 +18,18 @@ const FormComponents: Record<
 };
 
 const SubnetActionForms = ({
+  id,
   activeForm,
   setActiveForm,
 }: SubnetActionProps): JSX.Element => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   return (
-    <FormComponent activeForm={activeForm} setActiveForm={setActiveForm} />
+    <FormComponent
+      id={id}
+      activeForm={activeForm}
+      setActiveForm={setActiveForm}
+    />
   );
 };
 

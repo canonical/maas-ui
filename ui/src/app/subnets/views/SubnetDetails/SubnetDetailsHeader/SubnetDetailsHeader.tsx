@@ -42,6 +42,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
       headerContent={
         activeForm ? (
           <SubnetActionForms
+            id={subnet.id}
             activeForm={activeForm}
             setActiveForm={setActiveForm}
           />
