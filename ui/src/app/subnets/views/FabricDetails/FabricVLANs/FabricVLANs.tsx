@@ -1,12 +1,12 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Strip, MainTable } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import SpaceLink from "app/base/components/SpaceLink";
 import SubnetLink from "app/base/components/SubnetLink";
+import TitledSection from "app/base/components/TitledSection";
 import VLANLink from "app/base/components/VLANLink";
-import { useId } from "app/base/hooks/base";
 import type { Fabric } from "app/store/fabric/types";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
@@ -14,9 +14,11 @@ import type { Space } from "app/store/space/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
+import { getSubnetsInVLAN } from "app/store/subnet/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
+import { getVLANsInFabric } from "app/store/vlan/utils";
 
 type Columns = {
   available: string | null;
@@ -39,12 +41,6 @@ const getSpaceById = (
 ): Space | undefined => {
   return spaces.find((space) => space?.id === spaceId);
 };
-
-const getSubnetsInVLAN = (subnets: Subnet[], vlanId: VLAN["id"]): Subnet[] =>
-  subnets.filter((subnet) => subnet.vlan === vlanId);
-
-const getVLANsInFabric = (vlans: VLAN[], fabricId: Fabric["id"]): VLAN[] =>
-  vlans.filter((vlan) => vlan.fabric === fabricId);
 
 const getByFabric = (
   data: { subnets: Subnet[]; vlans: VLAN[]; spaces: Space[] },
@@ -80,7 +76,11 @@ const getByFabric = (
 };
 
 const FabricVLANs = ({ fabric }: { fabric: Fabric }): JSX.Element => {
+  const [data, setData] = useState<Columns[]>([]);
   const dispatch = useDispatch();
+  const vlans = useSelector(vlanSelectors.vlanState);
+  const subnets = useSelector(subnetSelectors.subnetState);
+  const spaces = useSelector(spaceSelectors.spaceState);
 
   useEffect(() => {
     dispatch(vlanActions.fetch());
@@ -88,26 +88,21 @@ const FabricVLANs = ({ fabric }: { fabric: Fabric }): JSX.Element => {
     dispatch(spaceActions.fetch());
   }, [dispatch]);
 
-  const vlans = useSelector(vlanSelectors.vlanState);
-  const subnets = useSelector(subnetSelectors.subnetState);
-  const spaces = useSelector(spaceSelectors.spaceState);
-
-  const data = getByFabric(
-    {
-      spaces: spaces.items,
-      subnets: subnets.items,
-      vlans: vlans.items,
-    },
-    fabric
-  );
-
-  const id = useId();
+  useEffect(() => {
+    setData(
+      getByFabric(
+        {
+          spaces: spaces.items,
+          subnets: subnets.items,
+          vlans: vlans.items,
+        },
+        fabric
+      )
+    );
+  }, [spaces, subnets, vlans, fabric]);
 
   return (
-    <Strip shallow aria-labelledby={id}>
-      <h2 id={id} className="p-heading--4">
-        VLANs on this fabric
-      </h2>
+    <TitledSection title="VLANs on this fabric">
       <MainTable
         headers={[
           {
@@ -142,7 +137,7 @@ const FabricVLANs = ({ fabric }: { fabric: Fabric }): JSX.Element => {
           };
         })}
       />
-    </Strip>
+    </TitledSection>
   );
 };
 
