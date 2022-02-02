@@ -153,7 +153,7 @@ const FormikFormContent = <V, E = null>({
     };
   }, [cleanup, dispatch]);
 
-  if (savedRedirect && hasSaved) {
+  if (savedRedirect && saved) {
     return <Redirect to={savedRedirect} />;
   }
 
