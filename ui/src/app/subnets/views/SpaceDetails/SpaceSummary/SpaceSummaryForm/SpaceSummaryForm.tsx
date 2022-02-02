@@ -13,27 +13,21 @@ const spaceSummaryFormSchema = Yup.object().shape({
   description: Yup.string(),
 });
 
-const SpaceSummaryFormFields = () => {
-  return (
-    <>
-      <FormikField label="Name" name="name" type="text" />
-      <FormikField label="Description" name="description" type="text" />
-    </>
-  );
-};
-
 const SpaceSummaryForm = ({
+  space,
   handleDismiss,
 }: {
+  space: Space;
   handleDismiss: () => void;
 }): JSX.Element => {
-  const space = useSelector(spaceSelectors.active);
   const spaceErrors = useSelector(spaceSelectors.errors);
   const saving = useSelector(spaceSelectors.saving);
   const saved = useSelector(spaceSelectors.saved);
   const dispatch = useDispatch();
+
   return (
     <FormikForm<SpaceSummaryValues>
+      aria-label="Edit space summary"
       cleanup={spaceActions.cleanup}
       errors={spaceErrors}
       initialValues={{
@@ -45,8 +39,8 @@ const SpaceSummaryForm = ({
         category: "Space",
         label: "Space summary form",
       }}
-      onSubmit={(values) => {
-        if (space) dispatch(spaceActions.update({ id: space.id, ...values }));
+      onSubmit={({ name, description }) => {
+        dispatch(spaceActions.update({ id: space.id, name, description }));
       }}
       onSuccess={() => {
         handleDismiss();
@@ -54,11 +48,12 @@ const SpaceSummaryForm = ({
       resetOnSave
       saving={saving}
       saved={saved}
-      submitLabel="Save summary"
+      submitLabel="Save"
       onCancel={handleDismiss}
       validationSchema={spaceSummaryFormSchema}
     >
-      <SpaceSummaryFormFields />
+      <FormikField label="Name" name="name" type="text" />
+      <FormikField label="Description" name="description" type="text" />
     </FormikForm>
   );
 };
