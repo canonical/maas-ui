@@ -136,6 +136,7 @@ const AddSubnet = ({
         category: "Subnets form actions",
         label: "Add Subnet",
       }}
+      cleanup={subnetActions.cleanup}
       submitLabel={`Add ${activeForm}`}
       onSubmit={({ cidr, name, fabric, vlan, dns_servers, gateway_ip }) => {
         dispatch(
