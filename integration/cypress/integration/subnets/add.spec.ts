@@ -86,7 +86,7 @@ context("Subnets - Add", () => {
     });
   });
 
-  it("Groups items added to the same fabric correctly", () => {
+  it("can add and delete a new subnet", () => {
     const fabricName = `cy-fabric-${generateId()}`;
     const spaceName = `cy-space-${generateId()}`;
     const vid = generateVid();
@@ -109,6 +109,7 @@ context("Subnets - Add", () => {
         );
       });
 
+    // Check it groups items added to the same fabric correctly
     cy.findAllByRole("row", { name: fabricName })
       .eq(1)
       .within(() => {
@@ -120,8 +121,8 @@ context("Subnets - Add", () => {
           `${vid} (${vlanName})`
         );
         cy.findByRole("column", { name: "Subnet" }).should(
-          "include.text",
-          `(${subnetName})`
+          "contain.text",
+          subnetName
         );
         cy.findByRole("column", { name: "Space" }).should(
           "have.text",
@@ -130,13 +131,16 @@ context("Subnets - Add", () => {
       });
 
     // delete the subnet
-    cy.findByRole("link", { name: `(${subnetName})` }).click();
+    cy.findByRole("link", { name: new RegExp(subnetName) }).click();
     cy.findByRole("button", { name: "Take action" }).click();
+    cy.findByRole("button", { name: "Delete subnet" }).click();
+    cy.findByText(/Are you sure you want to delete this subnet?/).should(
+      "be.visible"
+    );
     cy.findByRole("button", { name: "Delete" }).click();
-    cy.findByRole("button", { name: "Yes, delete subnet" }).click();
 
-    cy.url().should("include", generateNewURL("/networks?by=space"));
-    cy.findByRole("link", { name: `(${subnetName})` }).should("not.exist");
+    cy.url().should("include", generateNewURL("/networks?by=fabric"));
+    cy.findByRole("link", { name: new RegExp(subnetName) }).should("not.exist");
   });
 
   it("displays an error when trying to add a VLAN with a VID that already exists", () => {

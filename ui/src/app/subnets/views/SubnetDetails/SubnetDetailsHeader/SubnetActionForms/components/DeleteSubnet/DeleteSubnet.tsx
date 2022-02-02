@@ -68,6 +68,7 @@ export const DeleteSubnet = ({
           </Col>
           <Col size={4} className="u-align--right">
             <FormikForm<EmptyObject>
+              aria-label="Delete subnet"
               buttonsBordered={false}
               cleanup={subnetActions.cleanup}
               errors={errors}
