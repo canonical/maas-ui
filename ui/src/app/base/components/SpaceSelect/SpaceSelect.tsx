@@ -24,8 +24,8 @@ export const SpaceSelect = ({
   const spacesLoaded = useSelector(spaceSelectors.loaded);
 
   useEffect(() => {
-    if (!spacesLoaded) dispatch(spaceActions.fetch());
-  }, [dispatch, spacesLoaded]);
+    dispatch(spaceActions.fetch());
+  }, [dispatch]);
 
   return (
     <FormikField

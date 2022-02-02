@@ -23,6 +23,7 @@ export type Props<V, E> = {
   children?: ReactNode;
   className?: string;
   cleanup?: () => void;
+  "data-testid"?: string;
   editable?: boolean;
   errors?: APIError<E>;
   inline?: boolean;
@@ -75,6 +76,7 @@ const FormikFormContent = <V, E = null>({
   children,
   className,
   cleanup,
+  "data-testid": dataTestId,
   editable = true,
   errors,
   inline,
@@ -87,7 +89,7 @@ const FormikFormContent = <V, E = null>({
   savedRedirect,
   saving,
   submitDisabled,
-  "aria-label": ariaLabel,
+  "aria-label": ariaLabel = "form",
   ...buttonsProps
 }: Props<V, E>): JSX.Element => {
   const formikContext = useFormikContext<V>();
@@ -160,6 +162,7 @@ const FormikFormContent = <V, E = null>({
   return (
     <Form
       className={className}
+      data-testid={dataTestId}
       inline={inline}
       onSubmit={handleSubmit}
       aria-label={ariaLabel}
