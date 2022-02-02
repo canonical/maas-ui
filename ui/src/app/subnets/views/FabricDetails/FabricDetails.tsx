@@ -14,6 +14,7 @@ import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import { FabricMeta } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
+import { actions as subnetActions } from "app/store/subnet";
 import subnetURLs from "app/subnets/urls";
 import { isId } from "app/utils";
 
@@ -31,6 +32,7 @@ const FabricDetails = (): JSX.Element => {
     if (isValidID) {
       dispatch(fabricActions.get(id));
       dispatch(fabricActions.setActive(id));
+      dispatch(subnetActions.fetch());
     }
 
     const unsetActiveFabricAndCleanup = () => {
