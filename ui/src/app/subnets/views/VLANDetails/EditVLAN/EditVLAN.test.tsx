@@ -128,4 +128,28 @@ describe("EditVLAN", () => {
       store.getActions().find((action) => action.type === expected.type)
     ).toStrictEqual(expected);
   });
+
+  it("allows the space to be unset", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <EditVLAN close={jest.fn()} id={vlan.id} />
+        </MemoryRouter>
+      </Provider>
+    );
+    await waitFor(() =>
+      fireEvent.change(screen.getByRole("combobox", { name: "Space" }), {
+        target: { value: null },
+      })
+    );
+    expect(
+      within(screen.getByRole("combobox", { name: "Space" })).getByRole(
+        "option",
+        { name: "No space", selected: true }
+      )
+    ).toBeInTheDocument();
+  });
 });

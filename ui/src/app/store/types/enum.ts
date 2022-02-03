@@ -51,3 +51,13 @@ export enum PowerState {
   ON = "on",
   UNKNOWN = "unknown",
 }
+
+export enum VLANMTURange {
+  Min = 552,
+  Max = 65535,
+}
+
+export enum VLANVidRange {
+  Min = 0,
+  Max = 4094,
+}

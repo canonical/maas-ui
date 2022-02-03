@@ -17,7 +17,6 @@ const FormikForm = <V, E = null>({
   children,
   className,
   cleanup,
-  "data-testid": dataTestId,
   editable,
   errors,
   inline,
@@ -54,7 +53,6 @@ const FormikForm = <V, E = null>({
         cancelDisabled={cancelDisabled}
         className={className}
         cleanup={cleanup}
-        data-testid={dataTestId}
         editable={editable}
         errors={errors}
         inline={inline}

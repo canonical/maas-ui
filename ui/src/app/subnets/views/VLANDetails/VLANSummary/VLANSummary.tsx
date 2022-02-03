@@ -48,11 +48,7 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
       }
     >
       {editing ? (
-        <EditVLAN
-          close={() => setEditing(false)}
-          data-testid="EditVLAN"
-          id={id}
-        />
+        <EditVLAN close={() => setEditing(false)} id={id} />
       ) : (
         <Row>
           <Col size={6}>

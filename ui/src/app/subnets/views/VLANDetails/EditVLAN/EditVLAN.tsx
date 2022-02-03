@@ -9,35 +9,45 @@ import VLANControllers from "../VLANSummary/VLANControllers";
 import FabricSelect from "app/base/components/FabricSelect";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
 import SpaceSelect from "app/base/components/SpaceSelect";
 import type { RootState } from "app/store/root/types";
+import { getSpaceDisplay } from "app/store/space/utils";
+import { VLANMTURange, VLANVidRange } from "app/store/types/enum";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
 import { VLANMeta } from "app/store/vlan/types";
+import { isId } from "app/utils";
 
 type Props = {
   close: () => void;
   id: VLAN[VLANMeta.PK];
-} & Partial<FormikFormProps<FormValues>>;
+};
 
 export type FormValues = {
   description: VLAN["description"];
   fabric: VLAN["fabric"];
   mtu: VLAN["mtu"];
   name: VLAN["name"];
-  space: VLAN["space"];
+  space?: VLAN["space"];
   vid: VLAN["vid"];
 };
 
+const mtuHelp = `MTU must be between ${VLANMTURange.Min} and ${VLANMTURange.Max}`;
+const vidHelp = `Vid must be between ${VLANVidRange.Min} and ${VLANVidRange.Max}`;
+
 const Schema = Yup.object().shape({
   description: Yup.string(),
-  fabric: Yup.number(),
-  mtu: Yup.number(),
+  fabric: Yup.number().required("Fabric is required"),
+  mtu: Yup.number()
+    .min(VLANMTURange.Min, mtuHelp)
+    .max(VLANMTURange.Max, mtuHelp),
   name: Yup.string(),
   space: Yup.number(),
-  vid: Yup.number().required("VID is required"),
+  vid: Yup.number()
+    .min(VLANVidRange.Min, vidHelp)
+    .max(VLANVidRange.Max, vidHelp)
+    .required("VID is required"),
 });
 
 const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
@@ -57,18 +67,22 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
       </span>
     );
   }
+  const initialValues: FormValues = {
+    description: vlan.description,
+    fabric: vlan.fabric,
+    mtu: vlan.mtu,
+    name: vlan.name,
+    vid: vlan.vid,
+  };
+  if (isId(vlan.space)) {
+    initialValues.space = vlan.space;
+  }
   return (
     <FormikForm<FormValues>
+      aria-label="Edit VLAN"
       cleanup={cleanup}
       errors={errors}
-      initialValues={{
-        description: vlan.description,
-        fabric: vlan.fabric,
-        mtu: vlan.mtu,
-        name: vlan.name,
-        space: vlan.space,
-        vid: vlan.vid,
-      }}
+      initialValues={initialValues}
       onSaveAnalytics={{
         action: "Save VLAN",
         category: "VLAN details",
@@ -105,7 +119,11 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
           />
         </Col>
         <Col size={6}>
-          <SpaceSelect defaultOption={null} name="space" />
+          <SpaceSelect
+            defaultOption={null}
+            defaultOption={{ label: getSpaceDisplay(null), value: "" }}
+            name="space"
+          />
           <FabricSelect defaultOption={null} name="fabric" />
           <VLANControllers id={id} />
         </Col>

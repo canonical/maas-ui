@@ -99,10 +99,11 @@ it("can display the edit form", () => {
       </MemoryRouter>
     </Provider>
   );
+  const formName = "Edit VLAN";
   const button = screen.getByRole("button", { name: "Edit" });
   expect(button).toBeInTheDocument();
-  expect(screen.queryAllByTestId("EditVLAN")).toHaveLength(0);
+  expect(screen.queryAllByRole("form", { name: formName })).toHaveLength(0);
   userEvent.click(button);
   expect(screen.queryAllByRole("button", { name: "Edit" })).toHaveLength(0);
-  expect(screen.getByTestId("EditVLAN")).toBeInTheDocument();
+  expect(screen.getByRole("form", { name: formName })).toBeInTheDocument();
 });

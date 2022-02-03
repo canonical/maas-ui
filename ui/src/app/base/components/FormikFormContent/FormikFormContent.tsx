@@ -76,7 +76,6 @@ const FormikFormContent = <V, E = null>({
   children,
   className,
   cleanup,
-  "data-testid": dataTestId,
   editable = true,
   errors,
   inline,
@@ -89,7 +88,7 @@ const FormikFormContent = <V, E = null>({
   savedRedirect,
   saving,
   submitDisabled,
-  "aria-label": ariaLabel = "form",
+  "aria-label": ariaLabel,
   ...buttonsProps
 }: Props<V, E>): JSX.Element => {
   const formikContext = useFormikContext<V>();
@@ -162,7 +161,6 @@ const FormikFormContent = <V, E = null>({
   return (
     <Form
       className={className}
-      data-testid={dataTestId}
       inline={inline}
       onSubmit={handleSubmit}
       aria-label={ariaLabel}
