@@ -172,6 +172,14 @@ Object {
       "loading": false,
     },
   },
+  "iprange": Object {
+    "errors": null,
+    "items": Array [],
+    "loaded": false,
+    "loading": false,
+    "saved": false,
+    "saving": false,
+  },
   "licensekeys": Object {
     "errors": null,
     "items": Array [],

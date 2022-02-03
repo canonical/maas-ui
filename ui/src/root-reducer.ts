@@ -14,6 +14,7 @@ import domain from "app/store/domain";
 import event from "app/store/event";
 import fabric from "app/store/fabric";
 import general from "app/store/general";
+import iprange from "app/store/iprange";
 import licensekeys from "app/store/licensekeys";
 import machine from "app/store/machine";
 import message from "app/store/message";
@@ -55,6 +56,7 @@ const createAppReducer = (routerReducer: Reducer<RouterState, AnyAction>) =>
     event,
     fabric,
     general,
+    iprange,
     licensekeys,
     machine,
     message,

@@ -21,6 +21,7 @@ import type { DomainState, DomainMeta } from "app/store/domain/types";
 import type { EventState, EventMeta } from "app/store/event/types";
 import type { FabricState, FabricMeta } from "app/store/fabric/types";
 import type { GeneralState, GeneralMeta } from "app/store/general/types";
+import type { IPRangeState, IPRangeMeta } from "app/store/iprange/types";
 import type {
   LicenseKeysState,
   LicenseKeysMeta,
@@ -80,6 +81,7 @@ export type RootState = {
   [EventMeta.MODEL]: EventState;
   [FabricMeta.MODEL]: FabricState;
   [GeneralMeta.MODEL]: GeneralState;
+  [IPRangeMeta.MODEL]: IPRangeState;
   [LicenseKeysMeta.MODEL]: LicenseKeysState;
   [MachineMeta.MODEL]: MachineState;
   [MessageMeta.MODEL]: MessageState;
