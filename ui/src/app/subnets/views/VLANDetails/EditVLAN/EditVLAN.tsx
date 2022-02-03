@@ -120,7 +120,6 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
         </Col>
         <Col size={6}>
           <SpaceSelect
-            defaultOption={null}
             defaultOption={{ label: getSpaceDisplay(null), value: "" }}
             name="space"
           />
