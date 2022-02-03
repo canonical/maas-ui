@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import FabricDetails from "./FabricDetails";
 
 import { actions as fabricActions } from "app/store/fabric";
+import { actions as subnetActions } from "app/store/subnet";
 import subnetsURLs from "app/subnets/urls";
 import {
   fabricState as fabricStateFactory,
@@ -14,7 +15,7 @@ import {
 
 const mockStore = configureStore();
 
-it("dispatches actions to get and set fabric as active on mount", () => {
+it("dispatches actions to fetch necessary data and set fabric as active on mount", () => {
   const state = rootStateFactory();
   const store = mockStore(state);
   render(
@@ -31,7 +32,11 @@ it("dispatches actions to get and set fabric as active on mount", () => {
     </Provider>
   );
 
-  const expectedActions = [fabricActions.get(1), fabricActions.setActive(1)];
+  const expectedActions = [
+    fabricActions.get(1),
+    fabricActions.setActive(1),
+    subnetActions.fetch(),
+  ];
   const actualActions = store.getActions();
   expectedActions.forEach((expectedAction) => {
     expect(

@@ -1,6 +1,8 @@
 import subnet from "./selectors";
 
 import {
+  fabric as fabricFactory,
+  fabricState as fabricStateFactory,
   podDetails as podDetailsFactory,
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -106,6 +108,25 @@ describe("subnet selectors", () => {
       }),
     });
     expect(subnet.getByVLAN(state, 1)).toStrictEqual([subnets[0], subnets[2]]);
+  });
+
+  it("can get subnets for a fabric", () => {
+    const subnets = [
+      subnetFactory({ vlan: 1 }),
+      subnetFactory({ vlan: 2 }),
+      subnetFactory({ vlan: 3 }),
+    ];
+    const fabric = fabricFactory({ id: 101, vlan_ids: [1, 3] });
+    const state = rootStateFactory({
+      fabric: fabricStateFactory({ items: [fabric] }),
+      subnet: subnetStateFactory({
+        items: subnets,
+      }),
+    });
+    expect(subnet.getByFabric(state, 101)).toStrictEqual([
+      subnets[0],
+      subnets[2],
+    ]);
   });
 
   it("can get PXE-enabled subnets that are available to a given pod", () => {

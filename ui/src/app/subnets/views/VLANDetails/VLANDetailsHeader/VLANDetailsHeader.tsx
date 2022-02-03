@@ -51,9 +51,8 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
   );
   const isAdmin = useSelector(authSelectors.isAdmin);
   const [formOpen, setFormOpen] = useState<HeaderForms | null>(null);
-  const isFabricDefault = fabric && vlan && fabric.default_vlan_id === vlan.id;
   const buttons = [];
-  if (isAdmin && !isFabricDefault) {
+  if (isAdmin) {
     buttons.push(
       <Button
         data-testid="delete-vlan"

@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import fabricSelectors from "app/store/fabric/selectors";
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { SubnetMeta } from "app/store/subnet/types";
@@ -113,6 +114,22 @@ const getByVLAN = createSelector(
       return [];
     }
     return subnets.filter(({ vlan }) => vlan === VLANId);
+  }
+);
+
+/**
+ * Get subnets in a given fabric.
+ * @param state - The redux state.
+ * @param fabricId - The id of the fabric.
+ * @returns Subnets in a fabric.
+ */
+const getByFabric = createSelector(
+  [defaultSelectors.all, fabricSelectors.getById],
+  (subnets, fabric) => {
+    if (!fabric) {
+      return [];
+    }
+    return subnets.filter((subnet) => fabric.vlan_ids.includes(subnet.vlan));
   }
 );
 
@@ -236,6 +253,7 @@ const selectors = {
   eventErrors,
   eventErrorsForSubnets,
   getByCIDR,
+  getByFabric,
   getByIds,
   getByPod,
   getByVLAN,
