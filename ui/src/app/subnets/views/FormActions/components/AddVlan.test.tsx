@@ -91,9 +91,15 @@ it("correctly dispatches VLAN create action on form submit", async () => {
 
   userEvent.click(screen.getByRole("button", { name: "Add VLAN" }));
 
+  const expectedAction = vlanActions.create({
+    vid,
+    name,
+    fabric: fabric.id,
+    space: space.id,
+  });
   await waitFor(() =>
-    expect(store.getActions()).toStrictEqual([
-      vlanActions.create({ vid, name, fabric: fabric.id, space: space.id }),
-    ])
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction)
   );
 });

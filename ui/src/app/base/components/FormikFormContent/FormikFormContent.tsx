@@ -23,6 +23,7 @@ export type Props<V, E> = {
   children?: ReactNode;
   className?: string;
   cleanup?: () => void;
+  "data-testid"?: string;
   editable?: boolean;
   errors?: APIError<E>;
   inline?: boolean;
