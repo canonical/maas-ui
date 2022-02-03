@@ -1,54 +1,117 @@
-import { mount } from "enzyme";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import VLANDeleteForm from "./VLANDeleteForm";
 
-import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
 import {
+  fabric as fabricFactory,
+  fabricState as fabricStateFactory,
+  rootState as rootStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
-  rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("VLANDeleteForm", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = rootStateFactory({
-      vlan: vlanStateFactory({
-        items: [vlanFactory({ id: 1 })],
-      }),
-    });
+it("does not allow deletion if the VLAN is the default VLAN in its fabric", () => {
+  const vlan = vlanFactory({ id: 1, fabric: 2 });
+  const fabric = fabricFactory({
+    default_vlan_id: vlan.id,
+    id: 2,
+    vlan_ids: [vlan.id],
   });
-
-  it("calls closeForm on cancel click", () => {
-    const closeForm = jest.fn();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <VLANDeleteForm id={1} closeForm={closeForm} />
-      </Provider>
-    );
-    wrapper.find("button[data-testid='cancel-action']").simulate("click");
-    expect(closeForm).toHaveBeenCalled();
+  const state = rootStateFactory({
+    fabric: fabricStateFactory({
+      items: [fabric],
+    }),
+    vlan: vlanStateFactory({
+      items: [vlan],
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can delete a VLAN", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <VLANDeleteForm id={1} closeForm={jest.fn()} />
-      </Provider>
-    );
-    submitFormikForm(wrapper);
-    const deleteAction = vlanActions.delete(1);
-    expect(
-      store.getActions().find((action) => action.type === deleteAction.type)
-    ).toStrictEqual(deleteAction);
+  expect(
+    screen.getByText(
+      /This VLAN cannot be deleted because it is the default VLAN/i
+    )
+  ).toBeInTheDocument();
+});
+
+it("displays a delete confirmation if the VLAN is not the default for its fabric", () => {
+  const vlan = vlanFactory({ id: 1, fabric: 2 });
+  const fabric = fabricFactory({
+    default_vlan_id: 22,
+    id: 2,
+    vlan_ids: [22, 33],
   });
+  const state = rootStateFactory({
+    fabric: fabricStateFactory({
+      items: [fabric],
+    }),
+    vlan: vlanStateFactory({
+      items: [vlan],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(
+    screen.getByText("Are you sure you want to delete this VLAN?")
+  ).toBeInTheDocument();
+});
+
+it("deletes the VLAN when confirmed", async () => {
+  const vlan = vlanFactory({ id: 1, fabric: 2 });
+  const fabric = fabricFactory({
+    default_vlan_id: 22,
+    id: 2,
+    vlan_ids: [22, 33],
+  });
+  const state = rootStateFactory({
+    fabric: fabricStateFactory({
+      items: [fabric],
+    }),
+    vlan: vlanStateFactory({
+      items: [vlan],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  userEvent.click(screen.getByRole("button", { name: "Delete VLAN" }));
+
+  const expectedActions = [vlanActions.delete(vlan.id)];
+  const actualActions = store.getActions();
+  await waitFor(() =>
+    expectedActions.forEach((expectedAction) => {
+      expect(
+        actualActions.find(
+          (actualAction) => actualAction.type === expectedAction.type
+        )
+      ).toStrictEqual(expectedAction);
+    })
+  );
 });

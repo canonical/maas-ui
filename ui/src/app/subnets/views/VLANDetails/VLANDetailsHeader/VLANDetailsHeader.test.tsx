@@ -124,7 +124,7 @@ describe("VLANDetailsHeader", () => {
     expect(screen.queryByTestId("section-header-subtitle-spinner")).toBeNull();
   });
 
-  it("shows the delete button when the user is an admin and the vlan is not the default", () => {
+  it("shows the delete button when the user is an admin", () => {
     state.user = userStateFactory({
       auth: authStateFactory({
         user: userFactory({ is_superuser: true }),
@@ -145,26 +145,6 @@ describe("VLANDetailsHeader", () => {
     state.user = userStateFactory({
       auth: authStateFactory({
         user: userFactory({ is_superuser: false }),
-      }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/vlan/1234" }]}>
-          <VLANDetailsHeader id={vlan.id} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(screen.queryByTestId("delete-vlan")).toBeNull();
-  });
-
-  it("does not show the delete button if the vlan is the default", () => {
-    state.fabric.items = [
-      fabricFactory({ id: 2, name: "fabric1", default_vlan_id: vlan.id }),
-    ];
-    state.user = userStateFactory({
-      auth: authStateFactory({
-        user: userFactory({ is_superuser: true }),
       }),
     });
     const store = mockStore(state);
