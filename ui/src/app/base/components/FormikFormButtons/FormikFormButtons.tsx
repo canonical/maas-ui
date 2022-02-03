@@ -17,6 +17,7 @@ export type Props<V> = {
   buttonsClassName?: string;
   buttonsHelp?: ReactNode;
   cancelDisabled?: boolean;
+  cancelLabel?: string;
   inline?: boolean;
   onCancel?: FormikContextFunc<V> | null;
   saved?: boolean;
@@ -37,6 +38,7 @@ export const FormikFormButtons = <V,>({
   buttonsClassName,
   buttonsHelp,
   cancelDisabled,
+  cancelLabel = "Cancel",
   inline,
   onCancel,
   saved,
@@ -121,7 +123,7 @@ export const FormikFormButtons = <V,>({
               }
               type="button"
             >
-              Cancel
+              {cancelLabel}
             </Button>
           )}
           {secondaryButton}

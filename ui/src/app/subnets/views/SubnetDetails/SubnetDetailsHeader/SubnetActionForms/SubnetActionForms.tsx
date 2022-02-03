@@ -12,19 +12,24 @@ const FormComponents: Record<
   SubnetAction,
   ({ activeForm, setActiveForm }: SubnetActionProps) => JSX.Element | null
 > = {
-  [SubnetActionTypes.EditBootArchitectures]: EditBootArchitectures,
   [SubnetActionTypes.MapSubnet]: MapSubnet,
+  [SubnetActionTypes.EditBootArchitectures]: EditBootArchitectures,
   [SubnetActionTypes.DeleteSubnet]: DeleteSubnet,
 };
 
 const SubnetActionForms = ({
+  id,
   activeForm,
   setActiveForm,
 }: SubnetActionProps): JSX.Element => {
   const FormComponent = activeForm ? FormComponents[activeForm] : () => null;
 
   return (
-    <FormComponent activeForm={activeForm} setActiveForm={setActiveForm} />
+    <FormComponent
+      id={id}
+      activeForm={activeForm}
+      setActiveForm={setActiveForm}
+    />
   );
 };
 
