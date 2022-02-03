@@ -57,7 +57,7 @@ const SpaceDetails = (): JSX.Element => {
 
   return (
     <Section header={<SpaceDetailsHeader space={space} />}>
-      <SpaceSummary name={space.name} description={space.description} />
+      <SpaceSummary space={space} />
       <SpaceSubnets />
     </Section>
   );
