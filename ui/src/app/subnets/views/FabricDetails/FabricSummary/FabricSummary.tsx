@@ -1,49 +1,42 @@
-import { useEffect } from "react";
+import { useState } from "react";
 
-import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { Button, Row } from "@canonical/react-components";
 
-import ControllerLink from "app/base/components/ControllerLink";
+import EditFabric from "../EditFabric";
+
+import FabricController from "./FabricController";
+
 import Definition from "app/base/components/Definition";
 import TitledSection from "app/base/components/TitledSection";
-import { actions as controllerActions } from "app/store/controller";
-import controllerSelectors from "app/store/controller/selectors";
 import type { Fabric } from "app/store/fabric/types";
-import type { RootState } from "app/store/root/types";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
 
 const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
-  const dispatch = useDispatch();
-  const controllers = useSelector((state: RootState) =>
-    controllerSelectors.getByFabricId(state, fabric.id)
-  );
-  const vlansLoaded = useSelector(vlanSelectors.loaded);
-  const controllersLoaded = useSelector(controllerSelectors.loaded);
-
-  useEffect(() => {
-    if (!vlansLoaded) dispatch(vlanActions.fetch());
-    if (!controllersLoaded) dispatch(controllerActions.fetch());
-  }, [dispatch, vlansLoaded, controllersLoaded]);
+  const [editing, setEditing] = useState(false);
 
   return (
-    <TitledSection title="Fabric summary">
-      <Definition label="Name" description={fabric.name} />
-      <Definition label="Rack controllers">
-        {!controllersLoaded || !vlansLoaded ? (
-          <Spinner aria-label="loading" />
-        ) : (
-          controllers.map((controller) =>
-            controller ? (
-              <ControllerLink
-                key={controller.id}
-                systemId={controller.system_id}
-              />
-            ) : null
-          )
-        )}
-      </Definition>
-      <Definition label="Description" description={fabric.description} />
+    <TitledSection
+      title="Fabric summary"
+      buttons={
+        !editing && (
+          <Button
+            appearance="neutral"
+            className="u-no-margin--bottom"
+            onClick={() => setEditing(true)}
+          >
+            Edit
+          </Button>
+        )
+      }
+    >
+      {editing ? (
+        <EditFabric close={() => setEditing(false)} id={fabric.id} />
+      ) : (
+        <Row>
+          <Definition label="Name" description={fabric.name} />
+          <FabricController id={fabric.id} />
+          <Definition label="Description" description={fabric.description} />
+        </Row>
+      )}
     </TitledSection>
   );
 };
