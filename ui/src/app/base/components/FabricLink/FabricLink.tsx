@@ -1,7 +1,10 @@
+import { useEffect } from "react";
+
 import { Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
 import { getFabricDisplay } from "app/store/fabric/utils";
@@ -13,11 +16,16 @@ type Props = {
 };
 
 const FabricLink = ({ id }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
     fabricSelectors.getById(state, id)
   );
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const fabricDisplay = getFabricDisplay(fabric);
+
+  useEffect(() => {
+    dispatch(fabricActions.fetch());
+  }, [dispatch]);
 
   if (fabricsLoading) {
     // TODO: Put aria-label directly on Spinner component when issue is fixed.

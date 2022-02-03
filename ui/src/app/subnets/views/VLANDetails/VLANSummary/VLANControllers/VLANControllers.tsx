@@ -30,14 +30,13 @@ const VLANControllers = ({ id }: Props): JSX.Element | null => {
   const vlan = useSelector((state: RootState) =>
     vlanSelectors.getById(state, id)
   );
-  const controllers = useSelector((state: RootState) =>
-    controllerSelectors.getByIDs(state, getRackIDs(vlan))
-  );
   const controllersLoading = useSelector(controllerSelectors.loading);
 
   if (!vlan) {
     return null;
   }
+
+  const rackIDs = getRackIDs(vlan);
   return (
     <Definition
       label={
@@ -59,15 +58,9 @@ const VLANControllers = ({ id }: Props): JSX.Element | null => {
           <Spinner />
         </span>
       ) : (
-        controllers.map((controller) =>
-          controller ? (
-            <ControllerLink
-              data-testid="ControllerLink"
-              key={controller.system_id}
-              {...controller}
-            />
-          ) : null
-        )
+        rackIDs.map((rackID) => (
+          <ControllerLink key={rackID} systemId={rackID} />
+        ))
       )}
     </Definition>
   );

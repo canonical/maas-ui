@@ -14,7 +14,7 @@ import {
 
 const mockStore = configureStore();
 
-it("renders a spinner if fabrics are loading", () => {
+it("handles when fabrics are loading", () => {
   const state = rootStateFactory({
     fabric: fabricStateFactory({ items: [], loading: true }),
   });

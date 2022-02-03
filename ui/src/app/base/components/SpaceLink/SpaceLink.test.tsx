@@ -14,7 +14,7 @@ import {
 
 const mockStore = configureStore();
 
-it("renders a spinner if spaces are loading", () => {
+it("handles when spaces are loading", () => {
   const state = rootStateFactory({
     space: spaceStateFactory({ items: [], loading: true }),
   });

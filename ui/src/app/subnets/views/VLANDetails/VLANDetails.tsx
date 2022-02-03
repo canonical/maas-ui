@@ -11,11 +11,7 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
-import { actions as controllerActions } from "app/store/controller";
-import { actions as fabricActions } from "app/store/fabric";
 import type { RootState } from "app/store/root/types";
-import { actions as spaceActions } from "app/store/space";
-import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -35,17 +31,12 @@ const VLANDetails = (): JSX.Element => {
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByVLAN(state, id)
   );
-
   useWindowTitle(`${vlan?.name || "VLAN"} details`);
-  const fabricId = vlan?.fabric;
-  const spaceId = vlan?.space;
 
   useEffect(() => {
     if (isId(id)) {
       dispatch(vlanActions.get(id));
       dispatch(vlanActions.setActive(id));
-      dispatch(controllerActions.fetch());
-      dispatch(subnetActions.fetch());
     }
 
     const unsetActiveVLANAndCleanup = () => {
@@ -54,18 +45,6 @@ const VLANDetails = (): JSX.Element => {
     };
     return unsetActiveVLANAndCleanup;
   }, [dispatch, id]);
-
-  useEffect(() => {
-    if (isId(fabricId)) {
-      dispatch(fabricActions.get(fabricId));
-    }
-  }, [dispatch, fabricId]);
-
-  useEffect(() => {
-    if (isId(spaceId)) {
-      dispatch(spaceActions.get(spaceId));
-    }
-  }, [dispatch, spaceId]);
 
   if (!vlan) {
     const vlanNotFound = !isId(id) || !vlansLoading;
@@ -85,7 +64,7 @@ const VLANDetails = (): JSX.Element => {
   return (
     <Section header={<VLANDetailsHeader id={id} />}>
       <VLANSummary id={id} />
-      <DHCPStatus />
+      <DHCPStatus id={id} />
       <ReservedRanges />
       <VLANSubnets id={id} />
       <DHCPSnippets
