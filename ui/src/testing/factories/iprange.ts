@@ -12,4 +12,6 @@ export const ipRange = extend<TimestampedModel, IPRange>(timestampedModel, {
   start_ip: "1.1.1.99",
   subnet: random,
   type: IPRangeType.Dynamic,
+  user: "",
+  vlan: null,
 });
