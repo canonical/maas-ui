@@ -49,22 +49,18 @@ it("can display buttons", () => {
   expect(screen.getAllByRole("button").length).toBe(2);
 });
 
-it("displays a custom heading", () => {
+it("displays a custom heading level", () => {
   render(
     <TitledSection
       title="echidna says"
       headingElement="h4"
       headingVisuallyHidden={true}
-    >
-      G'day
-    </TitledSection>
+    ></TitledSection>
   );
-  const sectionId = screen.getByRole("heading").id;
-  expect(sectionId).toBeTruthy();
-  expect(screen.getByTestId("titled-section")).toHaveAttribute(
-    "aria-labelledby",
-    sectionId
-  );
+
+  expect(
+    screen.getByRole("heading", { name: "echidna says", level: 4 })
+  ).toBeInTheDocument();
 });
 
 it("adds a custom heading className", () => {
