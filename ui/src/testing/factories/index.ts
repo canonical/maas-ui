@@ -24,6 +24,7 @@ export {
   generatedCertificateState,
   hweKernelsState,
   knownArchitecturesState,
+  ipRangeState,
   licenseKeysState,
   locationState,
   machineActionsState,
@@ -152,6 +153,7 @@ export {
   powerType,
   version,
 } from "./general";
+export { ipRange } from "./iprange";
 export { message } from "./message";
 export { modelRef } from "./model";
 export { nodeDevice } from "./nodedevice";

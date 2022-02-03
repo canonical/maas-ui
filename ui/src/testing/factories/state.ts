@@ -44,6 +44,7 @@ import type {
   PowerTypesState,
   VersionState,
 } from "app/store/general/types";
+import type { IPRangeState } from "app/store/iprange/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine";
 import type {
@@ -217,6 +218,11 @@ export const eventState = define<EventState>({
 export const fabricState = define<FabricState>({
   ...defaultState,
   active: null,
+  errors: null,
+});
+
+export const ipRangeState = define<IPRangeState>({
+  ...defaultState,
   errors: null,
 });
 
@@ -509,6 +515,7 @@ export const rootState = define<RootState>({
   domain: domainState,
   fabric: fabricState,
   general: generalState,
+  iprange: ipRangeState,
   licensekeys: licenseKeysState,
   machine: machineState,
   message: messageState,
