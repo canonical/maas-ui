@@ -10,10 +10,10 @@ export type IPRange = TimestampedModel & {
   comment: string;
   end_ip: string;
   start_ip: string;
-  subnet: Subnet[SubnetMeta.PK];
+  subnet: Subnet[SubnetMeta.PK] | null;
   type: IPRangeType;
-  user?: string;
-  vlan?: VLAN[VLANMeta.PK];
+  user: string;
+  vlan: VLAN[VLANMeta.PK] | null;
 };
 
 export type IPRangeState = GenericState<IPRange, APIError>;
