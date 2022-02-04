@@ -104,6 +104,15 @@ const getByFabric = createSelector(
 );
 
 /**
+ * Returns a list of VLANs with DHCP.
+ * @param state - The redux state.
+ * @returns a list of VLANs with DHCP.
+ */
+const getWithDHCP = createSelector(defaultSelectors.all, (vlans) =>
+  vlans.filter((vlan) => vlan.dhcp_on)
+);
+
+/**
  * Get the vlans statuses.
  * @param state - The redux state.
  * @returns The vlan statuses.
@@ -121,7 +130,7 @@ const getStatusForVLAN = createSelector(
     statuses,
     (
       _state: RootState,
-      id: VLAN[VLANMeta.PK] | null,
+      id: VLAN[VLANMeta.PK] | null | undefined,
       status: keyof VLANStatus
     ) => ({
       id,
@@ -166,7 +175,7 @@ const eventErrorsForVLANs = createSelector(
     eventErrors,
     (
       _state: RootState,
-      ids: VLAN[VLANMeta.PK] | VLAN[VLANMeta.PK][] | null,
+      ids: VLAN[VLANMeta.PK] | VLAN[VLANMeta.PK][] | null | undefined,
       event?: string | null
     ) => ({
       ids,
@@ -207,6 +216,7 @@ const selectors = {
   getByFabric,
   getStatusForVLAN,
   getUnusedForInterface,
+  getWithDHCP,
   vlanState,
 };
 

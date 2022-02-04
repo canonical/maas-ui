@@ -28,6 +28,7 @@ import { isId } from "app/utils";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;
+  openForm: () => void;
 };
 
 // Note this is not the same as the getDHCPStatus VLAN util as it uses slightly
@@ -52,7 +53,7 @@ const getDHCPStatus = (vlan: VLAN, vlans: VLAN[], fabrics: Fabric[]) => {
   return "Disabled";
 };
 
-const DHCPStatus = ({ id }: Props): JSX.Element | null => {
+const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoading = useSelector(fabricSelectors.loading);
@@ -88,7 +89,14 @@ const DHCPStatus = ({ id }: Props): JSX.Element | null => {
     (!!vlan.primary_rack || !!vlan.secondary_rack);
   const hasHighAvailability = !!vlan.primary_rack && !!vlan.secondary_rack;
   return (
-    <TitledSection buttons={<Button>Enable DHCP</Button>} title="DHCP">
+    <TitledSection
+      buttons={
+        <Button disabled={!hasVLANSubnets} onClick={openForm}>
+          Configure DHCP
+        </Button>
+      }
+      title="DHCP"
+    >
       {!hasVLANSubnets && (
         <Notification severity="caution">
           No subnets are available on this VLAN. DHCP cannot be enabled.

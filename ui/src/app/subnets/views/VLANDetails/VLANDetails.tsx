@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import ConfigureDHCP from "./ConfigureDHCP";
 import DHCPStatus from "./DHCPStatus";
 import VLANDetailsHeader from "./VLANDetailsHeader";
 import VLANSubnets from "./VLANSubnets";
@@ -31,6 +32,7 @@ const VLANDetails = (): JSX.Element => {
   const subnets = useSelector((state: RootState) =>
     subnetSelectors.getByVLAN(state, id)
   );
+  const [showDHCPForm, setShowDHCPForm] = useState(false);
   useWindowTitle(`${vlan?.name || "VLAN"} details`);
 
   useEffect(() => {
@@ -63,10 +65,16 @@ const VLANDetails = (): JSX.Element => {
 
   return (
     <Section header={<VLANDetailsHeader id={id} />}>
-      <VLANSummary id={id} />
-      <DHCPStatus id={id} />
-      <ReservedRanges />
-      <VLANSubnets id={id} />
+      {showDHCPForm ? (
+        <ConfigureDHCP closeForm={() => setShowDHCPForm(false)} id={id} />
+      ) : (
+        <>
+          <VLANSummary id={id} />
+          <DHCPStatus id={id} openForm={() => setShowDHCPForm(true)} />
+          <ReservedRanges />
+          <VLANSubnets id={id} />
+        </>
+      )}
       <DHCPSnippets
         subnetIds={subnets.map(({ id }) => id)}
         modelName={VLANMeta.MODEL}
