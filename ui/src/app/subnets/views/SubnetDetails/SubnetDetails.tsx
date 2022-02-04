@@ -63,7 +63,7 @@ const SubnetDetails = (): JSX.Element => {
 
   return (
     <Section header={<SubnetDetailsHeader subnet={subnet} />}>
-      <SubnetSummary subnet={subnet} />
+      <SubnetSummary id={id} />
       <Utilisation />
       <StaticRoutes />
       <ReservedRanges />
