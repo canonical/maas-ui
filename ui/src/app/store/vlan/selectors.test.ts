@@ -82,6 +82,20 @@ describe("vlan selectors", () => {
     expect(vlan.getById(state, 42)).toStrictEqual(items[1]);
   });
 
+  it("can get VLANs in a fabric", () => {
+    const vlans = [
+      vlanFactory({ fabric: 1 }),
+      vlanFactory({ fabric: 2 }),
+      vlanFactory({ fabric: 1 }),
+    ];
+    const state = rootStateFactory({
+      vlan: vlanStateFactory({
+        items: vlans,
+      }),
+    });
+    expect(vlan.getByFabric(state, 1)).toStrictEqual([vlans[0], vlans[2]]);
+  });
+
   it("can filter vlans by name", () => {
     const items = [vlanFactory({ name: "abc" }), vlanFactory({ name: "def" })];
     const state = rootStateFactory({

@@ -257,8 +257,10 @@
 @include UsersList;
 
 // subnets
+@import "~app/subnets/views/FabricDetails/FabricVLANs";
 @import "~app/subnets/views/SubnetsList";
 @import "~app/subnets/views/VLANDetails/VLANSubnets";
+@include FabricVLANs;
 @include VLANSubnets;
 
 #maas-ui {

@@ -1,5 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { Fabric, FabricMeta } from "app/store/fabric/types";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -86,6 +87,20 @@ const getUnusedForInterface = createSelector(
     });
     return vlansInFabric.filter(({ id }) => !usedVLANs.includes(id));
   }
+);
+
+/**
+ * Returns a list of VLANs in a given fabric.
+ * @param state - The redux state.
+ * @param fabricId - The id of the fabric.
+ * @returns a list of VLANs in a given fabric.
+ */
+const getByFabric = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, fabricId: Fabric[FabricMeta.PK]) => fabricId,
+  ],
+  (vlans, fabricId) => vlans.filter((vlan) => vlan.fabric === fabricId)
 );
 
 /**
@@ -189,6 +204,7 @@ const selectors = {
   configuringDHCP,
   eventErrors,
   eventErrorsForVLANs,
+  getByFabric,
   getStatusForVLAN,
   getUnusedForInterface,
   vlanState,
