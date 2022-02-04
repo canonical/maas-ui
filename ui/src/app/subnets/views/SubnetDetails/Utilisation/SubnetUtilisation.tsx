@@ -1,5 +1,6 @@
 import { Row, Col } from "@canonical/react-components";
 
+import Definition from "app/base/components/Definition";
 import TitledSection from "app/base/components/TitledSection";
 import type { SubnetStatistics } from "app/store/subnet/types";
 
@@ -12,42 +13,17 @@ const SubnetUtilisation = ({ statistics }: Props): JSX.Element => {
     <TitledSection title="Utilisation">
       <Row>
         <Col size={6}>
-          <Row>
-            <Col size={2}>
-              <p className="u-text--muted" id="subnet-addresses">
-                Subnet addresses
-              </p>
-            </Col>
-            <Col size={4}>
-              <p aria-labelledby="subnet-addresses">
-                {statistics.total_addresses}
-              </p>
-            </Col>
-          </Row>
-          <Row>
-            <Col size={2}>
-              <p className="u-text--muted" id="subnet-availability">
-                Availability
-              </p>
-            </Col>
-            <Col size={4}>
-              <p aria-labelledby="subnet-availability">
-                {statistics.num_available} ({statistics.available_string})
-              </p>
-            </Col>
-          </Row>
+          <Definition
+            label="Subnet addresses"
+            description={`${statistics.total_addresses}`}
+          />
+          <Definition
+            label="Availability"
+            description={`${statistics.num_available} (${statistics.available_string})`}
+          />
         </Col>
         <Col size={6}>
-          <Row>
-            <Col size={2}>
-              <p className="u-text--muted" id="subnet-used">
-                Used
-              </p>
-            </Col>
-            <Col size={4}>
-              <p aria-labelledby="subnet-used">{statistics.usage_string}</p>
-            </Col>
-          </Row>
+          <Definition label="Used" description={statistics.usage_string} />
         </Col>
       </Row>
     </TitledSection>
