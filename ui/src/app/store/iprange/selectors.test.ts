@@ -4,6 +4,10 @@ import {
   rootState as rootStateFactory,
   ipRange as ipRangeFactory,
   ipRangeState as ipRangeStateFactory,
+  subnet as subnetFactory,
+  subnetState as subnetStateFactory,
+  vlan as vlanFactory,
+  vlanState as vlanStateFactory,
 } from "testing/factories";
 
 describe("all", () => {
@@ -70,5 +74,63 @@ describe("saved", () => {
       }),
     });
     expect(ipRange.saved(state)).toStrictEqual(true);
+  });
+});
+
+describe("getBySubnet", () => {
+  it("returns IP ranges that are in a subnet", () => {
+    const subnet = subnetFactory();
+    const subnet2 = subnetFactory();
+    const items = [
+      ipRangeFactory({ subnet: subnet.id }),
+      ipRangeFactory({ subnet: subnet.id }),
+      ipRangeFactory({ subnet: subnet2.id }),
+    ];
+    const state = rootStateFactory({
+      iprange: ipRangeStateFactory({
+        items,
+      }),
+      subnet: subnetStateFactory({
+        items: [subnet, subnet2],
+      }),
+    });
+    expect(ipRange.getBySubnet(state, subnet.id)).toStrictEqual([
+      items[0],
+      items[1],
+    ]);
+  });
+
+  it("handles a null subnet", () => {
+    const state = rootStateFactory();
+    expect(ipRange.getBySubnet(state, null)).toStrictEqual([]);
+  });
+});
+
+describe("getByVLAN", () => {
+  it("returns IP ranges that are in a VLAN", () => {
+    const vlan = vlanFactory();
+    const vlan2 = vlanFactory();
+    const items = [
+      ipRangeFactory({ vlan: vlan.id }),
+      ipRangeFactory({ vlan: vlan.id }),
+      ipRangeFactory({ vlan: vlan2.id }),
+    ];
+    const state = rootStateFactory({
+      iprange: ipRangeStateFactory({
+        items,
+      }),
+      vlan: vlanStateFactory({
+        items: [vlan, vlan2],
+      }),
+    });
+    expect(ipRange.getByVLAN(state, vlan.id)).toStrictEqual([
+      items[0],
+      items[1],
+    ]);
+  });
+
+  it("handles a null VLAN", () => {
+    const state = rootStateFactory();
+    expect(ipRange.getByVLAN(state, null)).toStrictEqual([]);
   });
 });
