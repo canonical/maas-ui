@@ -9,7 +9,6 @@ import DeleteSubnet from "./DeleteSubnet";
 
 import { actions as subnetActions } from "app/store/subnet";
 import { actions as vlanActions } from "app/store/vlan";
-import subnetURLs from "app/subnets/urls";
 import subnetsURLs from "app/subnets/urls";
 import {
   subnetDetails as subnetFactory,
@@ -158,6 +157,6 @@ it("redirects on save", async () => {
     </Provider>
   );
   await waitFor(() =>
-    expect(history.location.pathname).toEqual(subnetURLs.index)
+    expect(history.location.pathname).toEqual(subnetsURLs.index)
   );
 });
