@@ -1,4 +1,5 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { render, screen, within, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -8,6 +9,7 @@ import FabricSummary from "./FabricSummary";
 import {
   rootState as rootStateFactory,
   fabric as fabricFactory,
+  fabricState as fabricStateFactory,
   vlanState as vlanStateFactory,
   vlan as vlanFactory,
   controller as controllerFactory,
@@ -49,5 +51,40 @@ it("renders correct details", () => {
   ).toBeInTheDocument();
   waitFor(() =>
     expect(screen.getByRole("href", { name: "bolla.maas" })).toBeInTheDocument()
+  );
+});
+
+it("can open and close the Edit fabric summary form", async () => {
+  const fabric = fabricFactory({
+    name: "fabric-1",
+    description: "fabric-1 description",
+  });
+  const state = rootStateFactory({
+    fabric: fabricStateFactory({
+      items: [fabric],
+      loading: false,
+    }),
+  });
+  const store = configureStore()(state);
+  render(
+    <Provider store={store}>
+      <FabricSummary fabric={fabric} />
+    </Provider>
+  );
+  const fabricSummary = screen.getByRole("region", { name: "Fabric summary" });
+  userEvent.click(within(fabricSummary).getByRole("button", { name: "Edit" }));
+  await waitFor(() =>
+    expect(
+      screen.getByRole("form", { name: "Edit fabric summary" })
+    ).toBeInTheDocument()
+  );
+
+  userEvent.click(
+    within(fabricSummary).getByRole("button", { name: "Cancel" })
+  );
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("form", { name: "Edit fabric summary" })
+    ).not.toBeInTheDocument()
   );
 });
