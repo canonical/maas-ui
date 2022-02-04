@@ -5,18 +5,20 @@
     $subnets-width: 40%;
     $available-width: 10%;
 
-    .truncated-border {
-      overflow: visible;
-      position: relative;
+    @media only screen and (min-width: $breakpoint-medium) {
+      .truncated-border {
+        overflow: visible;
+        position: relative;
 
-      &::after {
-        background-color: $color-light;
-        content: "";
-        height: 1px;
-        left: 0;
-        position: absolute;
-        top: -1px;
-        width: $vlan-width + $space-width;
+        &::after {
+          background-color: $color-light;
+          content: "";
+          height: 1px;
+          left: 0;
+          position: absolute;
+          top: -1px;
+          width: $vlan-width + $space-width;
+        }
       }
     }
 

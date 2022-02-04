@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, Row } from "@canonical/react-components";
+import { Button, Col, Row } from "@canonical/react-components";
 
 import EditFabric from "../EditFabric";
 
@@ -32,9 +32,13 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
         <EditFabric close={() => setEditing(false)} id={fabric.id} />
       ) : (
         <Row>
-          <Definition label="Name" description={fabric.name} />
-          <FabricController id={fabric.id} />
-          <Definition label="Description" description={fabric.description} />
+          <Col size={6}>
+            <Definition label="Name" description={fabric.name} />
+            <FabricController id={fabric.id} />
+          </Col>
+          <Col size={6}>
+            <Definition label="Description" description={fabric.description} />
+          </Col>
         </Row>
       )}
     </TitledSection>
