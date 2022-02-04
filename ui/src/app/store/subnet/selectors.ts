@@ -1,5 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { Space } from "../space/types";
+
 import fabricSelectors from "app/store/fabric/selectors";
 import type { PodDetails } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -95,6 +97,25 @@ const getByPod = createSelector(
     return subnets.filter((subnet) =>
       pod.attached_vlans?.includes(subnet.vlan)
     );
+  }
+);
+
+/**
+ * Get subnets in a given space
+ * @param {RootState} state - The redux state.
+ * @param {Pod} VLANId - The id of the VLAN.
+ * @returns {Subnet[]} Subnets for a Space.
+ */
+const getBySpace = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, spaceId: Space["id"] | null) => spaceId,
+  ],
+  (subnets, spaceId) => {
+    if (!isId(spaceId)) {
+      return [];
+    }
+    return subnets.filter((subnet) => subnet.space === spaceId);
   }
 );
 
@@ -256,6 +277,7 @@ const selectors = {
   getByFabric,
   getByIds,
   getByPod,
+  getBySpace,
   getByVLAN,
   getPxeEnabledByPod,
   getStatusForSubnet,
