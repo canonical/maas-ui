@@ -1,9 +1,12 @@
+import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import { MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import type { Dispatch } from "redux";
 
 import TableActions from "app/base/components/TableActions";
+import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
 import { actions as ipRangeActions } from "app/store/iprange";
 import ipRangeSelectors from "app/store/iprange/selectors";
@@ -35,16 +38,64 @@ export enum Labels {
   Actions = "Actions",
 }
 
+export enum ExpandedType {
+  Create,
+  Delete,
+  Update,
+}
+
+type Expanded = {
+  id: IPRange[IPRangeMeta.PK];
+  type: ExpandedType;
+};
+
+const toggleExpanded = (
+  id: IPRange[IPRangeMeta.PK],
+  expanded: Expanded | null,
+  expandedType: ExpandedType,
+  setExpanded: (expanded: Expanded | null) => void
+) =>
+  setExpanded(
+    expanded?.id === id && expanded.type === expandedType
+      ? null
+      : {
+          id,
+          type: expandedType,
+        }
+  );
+
 const generateRows = (
+  dispatch: Dispatch,
   ipRanges: IPRange[],
-  expanded: IPRange["id"] | null,
-  setExpanded: (id: IPRange["id"] | null) => void
+  expanded: Expanded | null,
+  setExpanded: (expanded: Expanded | null) => void,
+  saved: boolean,
+  saving: boolean
 ) =>
   ipRanges.map((ipRange: IPRange) => {
-    const isExpanded = expanded === ipRange.id;
+    const isExpanded = expanded?.id === ipRange.id;
     const isDynamic = ipRange.type === IPRangeType.Dynamic;
     const owner = isDynamic ? "MAAS" : ipRange.user;
     const comment = isDynamic ? "Dynamic" : ipRange.comment;
+    let expandedContent: ReactNode | null = null;
+    if (expanded?.type === ExpandedType.Delete) {
+      expandedContent = (
+        <TableDeleteConfirm
+          deleted={saved}
+          deleting={saving}
+          message="Ensure all in-use IP addresses are registered in MAAS before releasing this range to avoid potential collisions. Are you sure you want to remove this IP range?"
+          onClose={() => setExpanded(null)}
+          onConfirm={() => {
+            dispatch(ipRangeActions.delete(ipRange.id));
+          }}
+          sidebar={false}
+        />
+      );
+    } else if (expanded?.type === ExpandedType.Update) {
+      // TODO: Implement the edit form:
+      // https://github.com/canonical-web-and-design/app-tribe/issues/663
+      expandedContent = "edit";
+    }
     return {
       className: isExpanded ? "p-table__row is-active" : null,
       columns: [
@@ -69,11 +120,21 @@ const generateRows = (
           "aria-label": Labels.Actions,
           content: (
             <TableActions
-              onEdit={() => {
-                setExpanded(expanded === ipRange.id ? null : ipRange.id);
-              }}
               onDelete={() => {
-                setExpanded(expanded === ipRange.id ? null : ipRange.id);
+                toggleExpanded(
+                  ipRange.id,
+                  expanded,
+                  ExpandedType.Delete,
+                  setExpanded
+                );
+              }}
+              onEdit={() => {
+                toggleExpanded(
+                  ipRange.id,
+                  expanded,
+                  ExpandedType.Update,
+                  setExpanded
+                );
               }}
             />
           ),
@@ -81,9 +142,7 @@ const generateRows = (
         },
       ],
       expanded: isExpanded,
-      // TODO: Implement the edit form:
-      // https://github.com/canonical-web-and-design/app-tribe/issues/663
-      expandedContent: isExpanded && "Edit",
+      expandedContent: expandedContent,
       key: ipRange.id,
       sortData: {
         comment,
@@ -97,11 +156,11 @@ const generateRows = (
 
 const ReservedRanges = ({ subnetId, vlanId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const [expanded, setExpanded] = useState<IPRange[IPRangeMeta.PK] | null>(
-    null
-  );
+  const [expanded, setExpanded] = useState<Expanded | null>(null);
   const isSubnet = isId(subnetId);
   const ipRangeLoading = useSelector(ipRangeSelectors.loading);
+  const saved = useSelector(ipRangeSelectors.saved);
+  const saving = useSelector(ipRangeSelectors.saving);
   const ipRanges = useSelector((state: RootState) =>
     isSubnet
       ? ipRangeSelectors.getBySubnet(state, subnetId)
@@ -154,7 +213,14 @@ const ReservedRanges = ({ subnetId, vlanId }: Props): JSX.Element | null => {
             className: "u-align--right",
           },
         ]}
-        rows={generateRows(ipRanges, expanded, setExpanded)}
+        rows={generateRows(
+          dispatch,
+          ipRanges,
+          expanded,
+          setExpanded,
+          saved,
+          saving
+        )}
         sortable
       />
       <a
