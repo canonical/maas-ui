@@ -10,7 +10,10 @@ import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   fabricState as fabricStateFactory,
+  ipRangeState as ipRangeStateFactory,
   rootState as rootStateFactory,
+  subnet as subnetFactory,
+  subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
@@ -169,7 +172,7 @@ it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
 
   expect(
     screen.getByText(
-      "Are you sure you want to disable DHCP relay on this VLAN? All subnets on this VLAN will be affected."
+      "Are you sure you want to disable DHCP on this VLAN? All subnets on this VLAN will be affected."
     )
   ).toBeInTheDocument();
 });
@@ -253,6 +256,73 @@ it("can configure relayed DHCP", async () => {
 
   const expectedAction = vlanActions.configureDHCP({
     controllers: [],
+    id: vlan.id,
+    relay_vlan: relay.id,
+  });
+  const actualAction = store
+    .getActions()
+    .find((action) => action.type === expectedAction.type);
+  expect(actualAction).toStrictEqual(expectedAction);
+});
+
+it("can configure DHCP while also defining a dynamic IP range", async () => {
+  const relay = vlanFactory({ dhcp_on: true, id: 2 });
+  const vlan = vlanFactory({
+    id: 1,
+    primary_rack: null,
+    rack_sids: [],
+    relay_vlan: null,
+    secondary_rack: null,
+  });
+  const subnet = subnetFactory({ vlan: vlan.id });
+  const state = rootStateFactory({
+    iprange: ipRangeStateFactory({ items: [] }),
+    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
+    vlan: vlanStateFactory({ items: [relay, vlan] }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  await waitFor(() => {
+    fireEvent.click(
+      screen.getByRole("radio", { name: "Relay to another VLAN" })
+    );
+    fireEvent.change(screen.getByRole("combobox", { name: "VLAN" }), {
+      target: { value: relay.id.toString() },
+    });
+    fireEvent.change(screen.getByRole("combobox", { name: "Subnet" }), {
+      target: { value: subnet.id.toString() },
+    });
+  });
+
+  await waitFor(() => {
+    fireEvent.change(
+      screen.getByRole("textbox", { name: "Start IP address" }),
+      { target: { value: "192.168.1.1" } }
+    );
+    fireEvent.change(screen.getByRole("textbox", { name: "End IP address" }), {
+      target: { value: "192.168.1.5" },
+    });
+    fireEvent.change(screen.getByRole("textbox", { name: "Gateway IP" }), {
+      target: { value: "192.168.1.6" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
+  });
+
+  const expectedAction = vlanActions.configureDHCP({
+    controllers: [],
+    extra: {
+      end: "192.168.1.5",
+      gateway: "192.168.1.6",
+      start: "192.168.1.1",
+      subnet: subnet.id,
+    },
     id: vlan.id,
     relay_vlan: relay.id,
   });

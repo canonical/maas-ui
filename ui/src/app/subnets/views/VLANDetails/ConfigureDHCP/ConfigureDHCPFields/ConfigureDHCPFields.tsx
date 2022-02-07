@@ -161,15 +161,10 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
           </>
         )}
       </Col>
-      {enableDHCP ? (
-        <>
-          {/* TODO */}
-          <h4>Reserved dynamic range</h4>
-        </>
-      ) : (
+      {!enableDHCP && (
         <Notification severity="caution">
-          Are you sure you want to disable DHCP relay on this VLAN? All subnets
-          on this VLAN will be affected.
+          Are you sure you want to disable DHCP on this VLAN? All subnets on
+          this VLAN will be affected.
         </Notification>
       )}
     </Row>

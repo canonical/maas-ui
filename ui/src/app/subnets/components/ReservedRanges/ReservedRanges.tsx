@@ -13,7 +13,11 @@ import TitledSection from "app/base/components/TitledSection";
 import { actions as ipRangeActions } from "app/store/iprange";
 import ipRangeSelectors from "app/store/iprange/selectors";
 import type { IPRange, IPRangeMeta } from "app/store/iprange/types";
-import { IPRangeType } from "app/store/iprange/types";
+import {
+  getCommentDisplay,
+  getOwnerDisplay,
+  getTypeDisplay,
+} from "app/store/iprange/utils";
 import type { RootState } from "app/store/root/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
@@ -76,9 +80,9 @@ const generateRows = (
 ) =>
   ipRanges.map((ipRange: IPRange) => {
     const isExpanded = expanded?.id === ipRange.id;
-    const isDynamic = ipRange.type === IPRangeType.Dynamic;
-    const owner = isDynamic ? "MAAS" : ipRange.user;
-    const comment = isDynamic ? "Dynamic" : ipRange.comment;
+    const comment = getCommentDisplay(ipRange);
+    const owner = getOwnerDisplay(ipRange);
+    const type = getTypeDisplay(ipRange);
     let expandedContent: ReactNode | null = null;
     const onClose = () => setExpanded(null);
     if (expanded?.type === ExpandedType.Delete) {
@@ -114,7 +118,7 @@ const generateRows = (
         },
         {
           "aria-label": Labels.Type,
-          content: isDynamic ? "Dynamic" : "Reserved",
+          content: type,
         },
         { "aria-label": Labels.Comment, content: comment },
         {
