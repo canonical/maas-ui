@@ -5,6 +5,8 @@ import { MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
+import ReservedRangeForm from "../ReservedRangeForm";
+
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
@@ -78,13 +80,14 @@ const generateRows = (
     const owner = isDynamic ? "MAAS" : ipRange.user;
     const comment = isDynamic ? "Dynamic" : ipRange.comment;
     let expandedContent: ReactNode | null = null;
+    const onClose = () => setExpanded(null);
     if (expanded?.type === ExpandedType.Delete) {
       expandedContent = (
         <TableDeleteConfirm
           deleted={saved}
           deleting={saving}
           message="Ensure all in-use IP addresses are registered in MAAS before releasing this range to avoid potential collisions. Are you sure you want to remove this IP range?"
-          onClose={() => setExpanded(null)}
+          onClose={onClose}
           onConfirm={() => {
             dispatch(ipRangeActions.delete(ipRange.id));
           }}
@@ -92,9 +95,7 @@ const generateRows = (
         />
       );
     } else if (expanded?.type === ExpandedType.Update) {
-      // TODO: Implement the edit form:
-      // https://github.com/canonical-web-and-design/app-tribe/issues/663
-      expandedContent = "edit";
+      expandedContent = <ReservedRangeForm onClose={onClose} id={ipRange.id} />;
     }
     return {
       className: isExpanded ? "p-table__row is-active" : null,
