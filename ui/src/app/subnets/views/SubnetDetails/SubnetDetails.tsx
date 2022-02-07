@@ -66,7 +66,7 @@ const SubnetDetails = (): JSX.Element => {
       <SubnetSummary id={id} />
       <Utilisation statistics={subnet.statistics} />
       <StaticRoutes />
-      <ReservedRanges />
+      <ReservedRanges subnetId={id} />
       <DHCPSnippets
         subnetIds={isId(id) ? [id] : []}
         modelName={SubnetMeta.MODEL}
