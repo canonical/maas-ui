@@ -22,6 +22,7 @@ import type { VLAN } from "app/store/vlan/types";
 import { simpleSortByKey } from "app/utils";
 
 const generateRows = (vlans: VLAN[], subnets: Subnet[]) => {
+  const headers = ["VLAN", "Space", "Subnet", "Available"] as const;
   const rows: MainTableProps["rows"] = [];
   const sortedVLANs = [...vlans].sort(simpleSortByKey("vid"));
 
@@ -32,21 +33,41 @@ const generateRows = (vlans: VLAN[], subnets: Subnet[]) => {
     if (!vlanHasSubnets) {
       rows.push({
         columns: [
-          { content: <VLANLink id={vlan.id} /> },
-          { content: <SpaceLink id={vlan.space} /> },
-          { content: "No subnets" },
-          { content: "—" },
+          { "aria-label": headers[0], content: <VLANLink id={vlan.id} /> },
+          { "aria-label": headers[1], content: <SpaceLink id={vlan.space} /> },
+          { "aria-label": headers[2], content: "No subnets" },
+          { "aria-label": headers[3], content: "—" },
         ],
       });
     } else {
       subnetsInVlan.forEach((subnet, i) => {
         rows.push({
-          className: i > 0 ? "truncated-border" : null,
+          className: i > 0 ? "truncated-border" : "",
           columns: [
-            { content: i === 0 ? <VLANLink id={vlan.id} /> : "" },
-            { content: i === 0 ? <SpaceLink id={vlan.space} /> : "" },
-            { content: <SubnetLink id={subnet.id} /> },
-            { content: subnet.statistics.available_string },
+            {
+              "aria-label": headers[0],
+              content: (
+                <span className={i > 0 ? "u-hide--medium u-hide--large" : ""}>
+                  <VLANLink id={vlan.id} />
+                </span>
+              ),
+            },
+            {
+              "aria-label": headers[1],
+              content: (
+                <span className={i > 0 ? "u-hide--medium u-hide--large" : ""}>
+                  <SpaceLink id={vlan.space} />
+                </span>
+              ),
+            },
+            {
+              "aria-label": headers[2],
+              content: <SubnetLink id={subnet.id} />,
+            },
+            {
+              "aria-label": headers[3],
+              content: subnet.statistics.available_string,
+            },
           ],
         });
       });

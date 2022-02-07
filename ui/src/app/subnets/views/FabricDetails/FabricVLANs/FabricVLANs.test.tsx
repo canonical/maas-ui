@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -23,27 +23,14 @@ const mockStore = configureStore();
 
 it("renders correct details", () => {
   const fabric = fabricFactory({ id: 1, name: "test-fabric", vlan_ids: [2] });
+  const space = spaceFactory({ id: 3, name: "test-space" });
+  const vlan = vlanFactory({ id: 2, fabric: 1, name: "test-vlan", space: 3 });
+  const subnet = subnetFactory({ id: 4, vlan: 2, name: "test-subnet" });
   const state = rootStateFactory({
-    vlan: vlanStateFactory({
-      loaded: true,
-      loading: false,
-      items: [vlanFactory({ id: 2, fabric: 1, name: "test-vlan" })],
-    }),
-    space: spaceStateFactory({
-      loaded: true,
-      loading: false,
-      items: [spaceFactory({ id: 3, name: "test-space" })],
-    }),
-    subnet: subnetStateFactory({
-      loaded: true,
-      loading: false,
-      items: [subnetFactory({ id: 4, vlan: 2, name: "test-subnet" })],
-    }),
-    fabric: fabricStateFactory({
-      items: [fabric],
-      loaded: true,
-      loading: false,
-    }),
+    vlan: vlanStateFactory({ items: [vlan] }),
+    space: spaceStateFactory({ items: [space] }),
+    subnet: subnetStateFactory({ items: [subnet] }),
+    fabric: fabricStateFactory({ items: [fabric] }),
   });
   const store = mockStore(state);
 
@@ -82,26 +69,28 @@ it("renders correct details", () => {
   ).toBeInTheDocument();
 
   expect(
-    screen.getByRole("gridcell", { name: /test-vlan/ })
+    within(screen.getByRole("gridcell", { name: "VLAN" })).getByText(
+      new RegExp(vlan.name)
+    )
   ).toBeInTheDocument();
 
   expect(
-    screen.getByRole("gridcell", { name: /test-subnet/ })
-  ).toBeInTheDocument();
-
-  expect(screen.getByRole("gridcell", { name: "99%" })).toBeInTheDocument();
-
-  expect(
-    screen.getByRole("gridcell", { name: "No space" })
+    within(screen.getByRole("gridcell", { name: "Space" })).getByText(
+      new RegExp(space.name)
+    )
   ).toBeInTheDocument();
 
   expect(
-    screen.getByRole("link", { name: /test-vlan/ }).getAttribute("href")
-  ).toEqual("/vlan/2");
+    within(screen.getByRole("gridcell", { name: "Subnet" })).getByText(
+      new RegExp(subnet.name)
+    )
+  ).toBeInTheDocument();
 
   expect(
-    screen.getByRole("link", { name: /test-subnet/ }).getAttribute("href")
-  ).toEqual("/subnet/4");
+    within(screen.getByRole("gridcell", { name: "Available" })).getByText(
+      new RegExp(subnet.statistics.available_string)
+    )
+  ).toBeInTheDocument();
 });
 
 it("handles a VLAN without any subnets", () => {
@@ -133,7 +122,9 @@ it("handles a VLAN without any subnets", () => {
   );
 
   expect(
-    screen.getByRole("gridcell", { name: /No subnets/ })
+    within(screen.getByRole("gridcell", { name: "Subnet" })).getByText(
+      "No subnets"
+    )
   ).toBeInTheDocument();
 });
 
@@ -176,17 +167,17 @@ it("handles a VLAN with multiple subnets", () => {
       </MemoryRouter>
     </Provider>
   );
+  const subnetCells = screen.getAllByRole("gridcell", { name: "Subnet" });
+  const availableCells = screen.getAllByRole("gridcell", { name: "Available" });
 
-  // We only render the VLAN and space cells for each VLAN once - subsequent
-  // rows should not include this duplicate data.
-  expect(screen.getAllByRole("link", { name: /test-vlan/ }).length).toBe(1);
-  expect(screen.getAllByRole("link", { name: /test-space/ }).length).toBe(1);
-  expect(
-    screen.getByRole("link", { name: /test-subnet-1/ })
-  ).toBeInTheDocument();
-  expect(
-    screen.getByRole("link", { name: /test-subnet-2/ })
-  ).toBeInTheDocument();
-  expect(screen.getByRole("gridcell", { name: /66%/ })).toBeInTheDocument();
-  expect(screen.getByRole("gridcell", { name: /77%/ })).toBeInTheDocument();
+  subnetCells.forEach((cell, i) => {
+    expect(
+      within(cell).getByRole("link", { name: new RegExp(subnets[i].name) })
+    ).toBeInTheDocument();
+  });
+  availableCells.forEach((cell, i) => {
+    expect(
+      within(cell).getByText(subnets[i].statistics.available_string)
+    ).toBeInTheDocument();
+  });
 });

@@ -32,10 +32,10 @@ const generateRows = ({
     return [];
   }
   [...subnets].sort(simpleSortByKey("cidr")).forEach((subnet: Subnet) => {
-    const vlan = getVlanById(vlans, subnet.vlan) as VLAN;
+    const vlan = getVlanById(vlans, subnet.vlan);
     rows.push({
       columns: [
-        { "aria-label": "Subnet", content: <SubnetLink id={subnet?.id} /> },
+        { "aria-label": "Subnet", content: <SubnetLink id={subnet.id} /> },
         {
           "aria-label": "Available IPs",
           content: subnet.statistics.available_string,
