@@ -231,6 +231,32 @@ it("displays content when it is reserved", () => {
   ).toHaveTextContent("what a beaut");
 });
 
+it("displays an edit form", async () => {
+  const vlan = vlanFactory();
+  const state = rootStateFactory({
+    iprange: ipRangeStateFactory({
+      items: [ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id })],
+    }),
+    vlan: vlanStateFactory({
+      items: [vlan],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges vlanId={vlan.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  await waitFor(() => {
+    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+  });
+  expect(
+    screen.getByRole("form", { name: "Edit reserved range" })
+  ).toBeInTheDocument();
+});
+
 it("displays confirm delete message", async () => {
   const vlan = vlanFactory();
   const state = rootStateFactory({
