@@ -1,10 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ReservedRanges, { Labels } from "./ReservedRanges";
 
+import { actions as ipRangeActions } from "app/store/iprange";
 import { IPRangeType } from "app/store/iprange/types";
 import {
   rootState as rootStateFactory,
@@ -228,4 +229,62 @@ it("displays content when it is reserved", () => {
       name: Labels.Comment,
     })
   ).toHaveTextContent("what a beaut");
+});
+
+it("displays confirm delete message", async () => {
+  const vlan = vlanFactory();
+  const state = rootStateFactory({
+    iprange: ipRangeStateFactory({
+      items: [ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id })],
+    }),
+    vlan: vlanStateFactory({
+      items: [vlan],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges vlanId={vlan.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  await waitFor(() => {
+    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+  });
+  expect(
+    screen.getByText(
+      new RegExp("Are you sure you want to remove this IP range?")
+    )
+  ).toBeInTheDocument();
+});
+
+it("dispatches an action to delete a reserved range", async () => {
+  const vlan = vlanFactory();
+  const ipRange = ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id });
+  const state = rootStateFactory({
+    iprange: ipRangeStateFactory({
+      items: [ipRange],
+    }),
+    vlan: vlanStateFactory({
+      items: [vlan],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges vlanId={vlan.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  await waitFor(() => {
+    fireEvent.click(screen.getByTestId("table-actions-delete"));
+    fireEvent.click(screen.getByTestId("action-confirm"));
+  });
+  const expectedAction = ipRangeActions.delete(ipRange.id);
+  const actualAction = store
+    .getActions()
+    .find((action) => action.type === expectedAction.type);
+  expect(actualAction).toStrictEqual(expectedAction);
 });
