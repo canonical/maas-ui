@@ -30,7 +30,7 @@ it("shows a spinner if data is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={1} />
+        <DHCPStatus id={1} openForm={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -38,7 +38,8 @@ it("shows a spinner if data is loading", () => {
   expect(screen.getByTestId("loading-data")).toBeInTheDocument();
 });
 
-it("shows a warning if there are no subnets attached to the VLAN", () => {
+it(`shows a warning and disables Configure DHCP button if there are no subnets
+    attached to the VLAN`, () => {
   const vlan = vlanFactory();
   const state = rootStateFactory({
     subnet: subnetStateFactory({ items: [] }),
@@ -48,12 +49,15 @@ it("shows a warning if there are no subnets attached to the VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} />
+        <DHCPStatus id={vlan.id} openForm={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );
   const dhcpStatus = screen.getByRole("region", { name: "DHCP" });
 
+  expect(
+    within(dhcpStatus).getByRole("button", { name: "Configure DHCP" })
+  ).toBeDisabled();
   expect(
     within(dhcpStatus).getByText(
       "No subnets are available on this VLAN. DHCP cannot be enabled."
@@ -72,7 +76,7 @@ it("does not show a warning if there are subnets attached to the VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} />
+        <DHCPStatus id={vlan.id} openForm={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -98,7 +102,7 @@ it("renders correctly when a VLAN does not have DHCP enabled", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} />
+        <DHCPStatus id={vlan.id} openForm={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -122,7 +126,7 @@ it("renders correctly when a VLAN has external DHCP", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} />
+        <DHCPStatus id={vlan.id} openForm={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -154,7 +158,7 @@ it("renders correctly when a VLAN has relayed DHCP", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} />
+        <DHCPStatus id={vlan.id} openForm={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -184,7 +188,7 @@ it("renders correctly when a VLAN has MAAS-configured DHCP without high availabi
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} />
+        <DHCPStatus id={vlan.id} openForm={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -228,7 +232,7 @@ it("renders correctly when a VLAN has MAAS-configured DHCP with high availabilit
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DHCPStatus id={vlan.id} />
+        <DHCPStatus id={vlan.id} openForm={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );

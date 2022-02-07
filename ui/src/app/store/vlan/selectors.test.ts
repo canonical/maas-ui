@@ -96,6 +96,20 @@ describe("vlan selectors", () => {
     expect(vlan.getByFabric(state, 1)).toStrictEqual([vlans[0], vlans[2]]);
   });
 
+  it("can get VLAN with DHCP", () => {
+    const vlans = [
+      vlanFactory({ dhcp_on: true }),
+      vlanFactory({ dhcp_on: false }),
+      vlanFactory({ dhcp_on: true }),
+    ];
+    const state = rootStateFactory({
+      vlan: vlanStateFactory({
+        items: vlans,
+      }),
+    });
+    expect(vlan.getWithDHCP(state)).toStrictEqual([vlans[0], vlans[2]]);
+  });
+
   it("can filter vlans by name", () => {
     const items = [vlanFactory({ name: "abc" }), vlanFactory({ name: "def" })];
     const state = rootStateFactory({

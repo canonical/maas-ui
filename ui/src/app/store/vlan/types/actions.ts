@@ -13,7 +13,7 @@ export type ConfigureDHCPParams = {
     start?: string;
     subnet?: Subnet[SubnetMeta.PK];
   };
-  relay_vlan?: VLAN[VLANMeta.PK];
+  relay_vlan?: VLAN[VLANMeta.PK] | null;
 };
 
 export type CreateParams = {
