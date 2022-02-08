@@ -10,6 +10,9 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import type { ConfigureDHCPValues } from "../ConfigureDHCP";
+import { DHCPType } from "../ConfigureDHCP";
+
 import DHCPReservedRanges, { Headers } from "./DHCPReservedRanges";
 
 import subnetsURLs from "app/subnets/urls";
@@ -26,15 +29,38 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
-const initialValues = {
-  endIP: "",
-  gatewayIP: "",
-  primaryRack: "",
-  relayVLAN: "",
-  secondaryRack: "",
-  startIP: "",
-  subnet: "",
-};
+let initialValues: ConfigureDHCPValues;
+
+beforeEach(() => {
+  initialValues = {
+    dhcpType: DHCPType.CONTROLLERS,
+    enableDHCP: true,
+    endIP: "",
+    gatewayIP: "",
+    primaryRack: "",
+    relayVLAN: "",
+    secondaryRack: "",
+    startIP: "",
+    subnet: "",
+  };
+});
+
+it("does not render if DHCP is selected to be disabled", () => {
+  initialValues.enableDHCP = false;
+  const state = rootStateFactory();
+  const store = mockStore(state);
+  const { container } = render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+          <DHCPReservedRanges id={1} />
+        </Formik>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(container).toBeEmptyDOMElement();
+});
 
 it("renders a table of IP ranges if the VLAN has any defined", () => {
   const vlan = vlanFactory();

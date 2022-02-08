@@ -14,6 +14,7 @@ import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
+  subnetStatistics as subnetStatisticsFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
@@ -37,7 +38,7 @@ it("shows a spinner while data is loading", () => {
   expect(screen.getByTestId("loading-data")).toBeInTheDocument();
 });
 
-it("correctly initialises data if the VLAN has DHCP from rack controllers", () => {
+it("correctly initialises data if the VLAN has DHCP from rack controllers", async () => {
   const primary = controllerFactory({ system_id: "abc123" });
   const secondary = controllerFactory({ system_id: "def456" });
   const vlan = vlanFactory({
@@ -62,6 +63,13 @@ it("correctly initialises data if the VLAN has DHCP from rack controllers", () =
     </Provider>
   );
 
+  // Wait for Formik validateOnMount to run.
+  await waitFor(() => {
+    expect(
+      screen.getByRole("region", { name: "Configure DHCP" })
+    ).toBeInTheDocument();
+  });
+
   expect(
     screen.getByRole("radio", { name: "Provide DHCP from rack controller(s)" })
   ).toBeChecked();
@@ -79,7 +87,7 @@ it("correctly initialises data if the VLAN has DHCP from rack controllers", () =
   ).not.toBeInTheDocument();
 });
 
-it("correctly initialises data if the VLAN has relayed DHCP", () => {
+it("correctly initialises data if the VLAN has relayed DHCP", async () => {
   const relay = vlanFactory({ dhcp_on: true, id: 2 });
   const vlan = vlanFactory({
     id: 1,
@@ -100,6 +108,13 @@ it("correctly initialises data if the VLAN has relayed DHCP", () => {
     </Provider>
   );
 
+  // Wait for Formik validateOnMount to run.
+  await waitFor(() => {
+    expect(
+      screen.getByRole("region", { name: "Configure DHCP" })
+    ).toBeInTheDocument();
+  });
+
   expect(
     screen.getByRole("radio", { name: "Relay to another VLAN" })
   ).toBeChecked();
@@ -117,7 +132,7 @@ it("correctly initialises data if the VLAN has relayed DHCP", () => {
   ).not.toBeInTheDocument();
 });
 
-it("shows an error if no rack controllers are connected to the VLAN", () => {
+it("shows an error if no rack controllers are connected to the VLAN", async () => {
   const vlan = vlanFactory({
     id: 1,
     primary_rack: null,
@@ -137,11 +152,59 @@ it("shows an error if no rack controllers are connected to the VLAN", () => {
     </Provider>
   );
 
+  // Wait for Formik validateOnMount to run.
+  await waitFor(() => {
+    expect(
+      screen.getByRole("region", { name: "Configure DHCP" })
+    ).toBeInTheDocument();
+  });
+
   expect(
     screen.getByText(
       "This VLAN is not currently being utilised on any rack controller."
     )
   ).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Configure DHCP" })).toBeDisabled();
+});
+
+it(`shows an error if the subnet selected for reserving a dynamic range has no
+    available IP addresses`, async () => {
+  const relay = vlanFactory({ dhcp_on: true, id: 2 });
+  const vlan = vlanFactory({
+    id: 1,
+    primary_rack: null,
+    rack_sids: [],
+    relay_vlan: relay.id,
+    secondary_rack: null,
+  });
+  const subnet = subnetFactory({
+    statistics: subnetStatisticsFactory({ num_available: 0 }),
+    vlan: vlan.id,
+  });
+  const state = rootStateFactory({
+    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
+    vlan: vlanStateFactory({ items: [vlan] }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  await waitFor(() => {
+    fireEvent.change(screen.getByRole("combobox", { name: "Subnet" }), {
+      target: { value: subnet.id.toString() },
+    });
+    fireEvent.blur(screen.getByRole("combobox", { name: "Subnet" }));
+  });
+
+  expect(
+    screen.getByText("This subnet has no available IP addresses.")
+  ).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Configure DHCP" })).toBeDisabled();
 });
 
 it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
@@ -206,9 +269,15 @@ it("can configure DHCP with rack controllers", async () => {
     fireEvent.change(screen.getByRole("combobox", { name: "Primary rack" }), {
       target: { value: primary.system_id },
     });
+  });
+
+  await waitFor(() => {
     fireEvent.change(screen.getByRole("combobox", { name: "Secondary rack" }), {
       target: { value: secondary.system_id },
     });
+  });
+
+  await waitFor(() => {
     fireEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
   });
 

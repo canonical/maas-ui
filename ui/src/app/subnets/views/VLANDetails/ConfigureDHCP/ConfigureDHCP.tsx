@@ -31,7 +31,14 @@ type Props = {
   id?: VLAN[VLANMeta.PK] | null;
 };
 
+export enum DHCPType {
+  CONTROLLERS = "controllers",
+  RELAY = "relay",
+}
+
 export type ConfigureDHCPValues = {
+  dhcpType: "controllers" | "relay";
+  enableDHCP: boolean;
   endIP: string;
   gatewayIP: string;
   primaryRack: Controller[ControllerMeta.PK];
@@ -41,27 +48,12 @@ export type ConfigureDHCPValues = {
   subnet: Subnet[SubnetMeta.PK] | "";
 };
 
-const Schema = Yup.object().shape({
-  endIP: Yup.string().when("subnet", {
-    is: (val: string) => isId(val),
-    then: Yup.string().required("End IP address is required"),
-  }),
-  gatewayIP: Yup.string(),
-  primaryRack: Yup.string(),
-  relayVLAN: Yup.string(),
-  secondaryRack: Yup.string(),
-  startIP: Yup.string().when("subnet", {
-    is: (val: string) => isId(val),
-    then: Yup.string().required("Start IP address is required"),
-  }),
-  subnet: Yup.string(),
-});
-
 const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const controllersLoading = useSelector(controllerSelectors.loading);
   const fabricsLoading = useSelector(fabricSelectors.loading);
   const ipRangesLoading = useSelector(ipRangeSelectors.loading);
+  const subnets = useSelector(subnetSelectors.all);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const vlansLoading = useSelector(vlanSelectors.loading);
   const vlan = useSelector((state: RootState) =>
@@ -92,6 +84,53 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
     dispatch(vlanActions.fetch());
   }, [dispatch]);
 
+  const Schema = Yup.object()
+    .shape({
+      dhcpType: Yup.string().oneOf([DHCPType.CONTROLLERS, DHCPType.RELAY]),
+      enableDHCP: Yup.boolean(),
+      endIP: Yup.string().when("subnet", {
+        is: (val: string) => isId(val),
+        then: Yup.string().required("End IP address is required"),
+      }),
+      gatewayIP: Yup.string(),
+      primaryRack: Yup.string(),
+      relayVLAN: Yup.string(),
+      secondaryRack: Yup.string(),
+      startIP: Yup.string().when("subnet", {
+        is: (val: string) => isId(val),
+        then: Yup.string().required("Start IP address is required"),
+      }),
+      subnet: Yup.string().test(
+        "hasNoIPs",
+        "Selected subnet has not available IPs",
+        (subnetId, context) => {
+          if (isId(subnetId)) {
+            const subnet = subnets.find(
+              (subnet) => subnet.id === Number(subnetId)
+            );
+            if (subnet?.statistics.num_available === 0) {
+              return context.createError({
+                message: "This subnet has no available IP addresses.",
+                path: "subnet",
+              });
+            }
+          }
+          return true;
+        }
+      ),
+    })
+    .test("invalidConfig", "Invalid DHCP configuration", (values, context) => {
+      const { enableDHCP, primaryRack, relayVLAN } = values;
+      if (enableDHCP && !isId(primaryRack) && !isId(relayVLAN)) {
+        return context.createError({
+          message:
+            "Configuration needs at least one rack controller or a relay VLAN.",
+          path: "hidden",
+        });
+      }
+      return true;
+    });
+
   return (
     <Card>
       <TitledSection className="u-no-padding" title="Configure DHCP">
@@ -110,6 +149,10 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
               </a>
             }
             initialValues={{
+              dhcpType: isId(vlan.relay_vlan)
+                ? DHCPType.RELAY
+                : DHCPType.CONTROLLERS,
+              enableDHCP: true,
               endIP: "",
               gatewayIP: "",
               primaryRack: vlan.primary_rack || "",
@@ -127,28 +170,31 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
             onSubmit={(values) => {
               resetConfiguredDHCP();
               dispatch(cleanup());
-              const { primaryRack, relayVLAN, secondaryRack } = values;
+              const { enableDHCP, primaryRack, relayVLAN, secondaryRack } =
+                values;
               const params: ConfigureDHCPParams = {
                 controllers: [],
                 id: vlan.id,
                 relay_vlan: null,
               };
-              if (primaryRack) {
-                params.controllers.push(primaryRack);
-              }
-              if (secondaryRack) {
-                params.controllers.push(secondaryRack);
-              }
-              if (isId(relayVLAN)) {
-                params.relay_vlan = Number(relayVLAN);
-              }
-              if (isId(values.subnet)) {
-                params.extra = {
-                  end: values.endIP,
-                  gateway: values.gatewayIP,
-                  start: values.startIP,
-                  subnet: Number(values.subnet),
-                };
+              if (enableDHCP) {
+                if (primaryRack) {
+                  params.controllers.push(primaryRack);
+                }
+                if (secondaryRack) {
+                  params.controllers.push(secondaryRack);
+                }
+                if (isId(relayVLAN)) {
+                  params.relay_vlan = Number(relayVLAN);
+                }
+                if (isId(values.subnet)) {
+                  params.extra = {
+                    end: values.endIP,
+                    gateway: values.gatewayIP,
+                    start: values.startIP,
+                    subnet: Number(values.subnet),
+                  };
+                }
               }
               dispatch(vlanActions.configureDHCP(params));
             }}
@@ -156,6 +202,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
             saved={saved}
             saving={configuringDHCP}
             submitLabel="Configure DHCP"
+            validateOnMount
             validationSchema={Schema}
           >
             <ConfigureDHCPFields vlan={vlan} />
