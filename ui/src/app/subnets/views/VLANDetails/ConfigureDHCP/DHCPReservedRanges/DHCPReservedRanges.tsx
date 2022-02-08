@@ -131,7 +131,7 @@ const generateFormRow = (
   ];
 };
 
-const DHCPReservedRanges = ({ id }: Props): JSX.Element => {
+const DHCPReservedRanges = ({ id }: Props): JSX.Element | null => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<ConfigureDHCPValues>();
   const dispatch = useDispatch();
@@ -144,6 +144,10 @@ const DHCPReservedRanges = ({ id }: Props): JSX.Element => {
     dispatch(ipRangeActions.fetch());
     dispatch(subnetActions.fetch());
   }, [dispatch]);
+
+  if (!values.enableDHCP) {
+    return null;
+  }
 
   // If the VLAN already has IP ranges defined in its subnets we only display
   // a table of that IP range data. Otherwise, we allow the user to define a
@@ -172,6 +176,7 @@ const DHCPReservedRanges = ({ id }: Props): JSX.Element => {
       subnet?.statistics.suggested_dynamic_range?.start || ""
     );
   };
+
   return (
     <TitledSection title="Reserved dynamic range">
       {hasIPRanges ? (

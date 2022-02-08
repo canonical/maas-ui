@@ -1,16 +1,11 @@
-import { useState } from "react";
+import type { ChangeEvent } from "react";
 
-import {
-  Col,
-  Input,
-  Notification,
-  Row,
-  Select,
-} from "@canonical/react-components";
+import { Col, Notification, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { ConfigureDHCPValues } from "../ConfigureDHCP";
+import { DHCPType } from "../ConfigureDHCP";
 
 import FormikField from "app/base/components/FormikField";
 import controllerSelectors from "app/store/controller/selectors";
@@ -19,12 +14,6 @@ import type { RootState } from "app/store/root/types";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
 import { getFullVLANName } from "app/store/vlan/utils";
-import { isId } from "app/utils";
-
-enum DHCPType {
-  CONTROLLERS = "controllers",
-  RELAY = "relay",
-}
 
 type Props = {
   vlan: VLAN;
@@ -32,8 +21,9 @@ type Props = {
 
 const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
   const {
+    handleChange,
     setFieldValue,
-    values: { primaryRack, secondaryRack },
+    values: { dhcpType, enableDHCP, primaryRack, secondaryRack },
   } = useFormikContext<ConfigureDHCPValues>();
   const fabrics = useSelector(fabricSelectors.all);
   const allVLANs = useSelector(vlanSelectors.all);
@@ -42,10 +32,6 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
   );
   const connectedControllers = useSelector((state: RootState) =>
     controllerSelectors.getByIDs(state, vlan.rack_sids)
-  );
-  const [enableDHCP, setEnableDHCP] = useState(true);
-  const [dhcpType, setDHCPType] = useState<DHCPType>(
-    isId(vlan.relay_vlan) ? DHCPType.RELAY : DHCPType.CONTROLLERS
   );
   const primaryRackOptions = connectedControllers.filter(
     (controller) => controller.system_id !== secondaryRack
@@ -57,13 +43,11 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
   return (
     <Row>
       <Col size={6}>
-        <Input
-          checked={enableDHCP}
-          id="enable-dhcp"
+        <FormikField
           label="MAAS provides DHCP"
           name="enableDHCP"
-          onChange={() => {
-            setEnableDHCP(!enableDHCP);
+          onChange={async (e: ChangeEvent) => {
+            await handleChange(e);
             setFieldValue("primaryRack", "");
             setFieldValue("relayVLAN", "");
             setFieldValue("secondaryRack", "");
@@ -72,13 +56,11 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
         />
         {enableDHCP && (
           <>
-            <Input
-              checked={dhcpType === DHCPType.CONTROLLERS}
-              id="controller-dhcp"
+            <FormikField
               label="Provide DHCP from rack controller(s)"
               name="dhcpType"
-              onChange={() => {
-                setDHCPType(DHCPType.CONTROLLERS);
+              onChange={async (e: ChangeEvent) => {
+                await handleChange(e);
                 setFieldValue(
                   "primaryRack",
                   connectedControllers[0]?.system_id || ""
@@ -130,13 +112,11 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
                 )}
               </>
             )}
-            <Input
-              checked={dhcpType === DHCPType.RELAY}
-              id="relay-dhcp"
+            <FormikField
               label="Relay to another VLAN"
               name="dhcpType"
-              onChange={() => {
-                setDHCPType(DHCPType.RELAY);
+              onChange={async (e: ChangeEvent) => {
+                await handleChange(e);
                 setFieldValue("relayVLAN", vlansWithDHCP[0]?.id || "");
                 setFieldValue("primaryRack", "");
                 setFieldValue("secondaryRack", "");
