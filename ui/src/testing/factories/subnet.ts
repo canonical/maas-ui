@@ -30,7 +30,7 @@ export const subnetStatisticsRange = define<SubnetStatisticsRange>({
 export const subnetStatistics = define<SubnetStatistics>({
   available_string: "99%",
   first_address: "172.16.1.1",
-  ip_version: random,
+  ip_version: 4,
   largest_available: random,
   last_address: "172.16.1.254",
   num_available: random,
@@ -102,7 +102,7 @@ export const subnet = extend<TimestampedModel, BaseSubnet>(timestampedModel, {
   rdns_mode: random,
   space: null,
   statistics: subnetStatistics,
-  version: random,
+  version: 4,
   vlan: random,
 });
 
