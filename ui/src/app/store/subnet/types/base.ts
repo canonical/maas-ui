@@ -24,7 +24,7 @@ export type SubnetStatisticsRange = {
 export type SubnetStatistics = {
   available_string: string;
   first_address: string;
-  ip_version: number;
+  ip_version: 4 | 6;
   largest_available: number;
   last_address: string;
   num_available: number;
@@ -99,7 +99,7 @@ export type BaseSubnet = TimestampedModel & {
   rdns_mode: number;
   space: number | null;
   statistics: SubnetStatistics;
-  version: number;
+  version: 4 | 6;
   vlan: VLAN["id"];
 };
 
