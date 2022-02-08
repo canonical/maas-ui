@@ -25,6 +25,18 @@ describe("general actions", () => {
     });
   });
 
+  it("should handle fetching boot architectures", () => {
+    expect(general.fetchKnownBootArchitectures()).toEqual({
+      type: "general/fetchKnownBootArchitectures",
+      meta: {
+        cache: true,
+        model: "general",
+        method: "known_boot_architectures",
+      },
+      payload: null,
+    });
+  });
+
   it("should handle fetching components to disable", () => {
     expect(general.fetchComponentsToDisable()).toEqual({
       type: "general/fetchComponentsToDisable",

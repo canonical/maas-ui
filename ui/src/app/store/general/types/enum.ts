@@ -21,6 +21,11 @@ export enum BondXmitHashPolicy {
   LAYER3_4 = "layer3+4",
 }
 
+export enum BootProtocol {
+  HTTP = "http",
+  TFTP = "tftp",
+}
+
 export enum DriverType {
   POD = "pod",
   POWER = "power",

@@ -38,6 +38,7 @@ import type {
   GeneratedCertificateState,
   HWEKernelsState,
   KnownArchitecturesState,
+  KnownBootArchitecturesState,
   MachineActionsState,
   OSInfoState,
   PocketsToDisableState,
@@ -351,6 +352,10 @@ export const knownArchitecturesState = define<KnownArchitecturesState>({
   ...defaultGeneralState,
 });
 
+export const knownBootArchitecturesState = define<KnownBootArchitecturesState>({
+  ...defaultGeneralState,
+});
+
 export const machineActionsState = define<MachineActionsState>({
   ...defaultGeneralState,
   data: () => [],
@@ -382,6 +387,7 @@ export const generalState = define<GeneralState>({
   generatedCertificate: generatedCertificateState,
   hweKernels: hweKernelsState,
   knownArchitectures: knownArchitecturesState,
+  knownBootArchitectures: knownBootArchitecturesState,
   machineActions: machineActionsState,
   osInfo: osInfoState,
   pocketsToDisable: pocketsToDisableState,

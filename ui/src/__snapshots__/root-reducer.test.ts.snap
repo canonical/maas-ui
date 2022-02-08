@@ -141,6 +141,12 @@ Object {
       "loaded": false,
       "loading": false,
     },
+    "knownBootArchitectures": Object {
+      "data": Array [],
+      "errors": null,
+      "loaded": false,
+      "loading": false,
+    },
     "machineActions": Object {
       "data": Array [],
       "errors": null,

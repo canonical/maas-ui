@@ -12,6 +12,7 @@ import type {
   GeneratedCertificate,
   HWEKernel,
   KnownArchitecture,
+  KnownBootArchitecture,
   MachineAction,
   OSInfo,
   OSInfoKernels,
@@ -22,6 +23,7 @@ import type {
   Version,
 } from "app/store/general/types";
 import {
+  BootProtocol,
   DriverType,
   PowerFieldScope,
   PowerFieldType,
@@ -60,6 +62,14 @@ export const generatedCertificate = define<GeneratedCertificate>({
 export const hweKernel = define<HWEKernel>(["ga-18.04", "bionic"]);
 
 export const knownArchitecture = define<KnownArchitecture>("amd64");
+
+export const knownBootArchitecture = define<KnownBootArchitecture>({
+  arch_octet: "00:00",
+  bios_boot_method: "pxe",
+  bootloader_arches: "i386/amd64",
+  name: "pxe",
+  protocol: BootProtocol.TFTP,
+});
 
 export const machineAction = define<MachineAction>({
   name: NodeActions.COMMISSION,

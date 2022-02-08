@@ -2,7 +2,7 @@ import type { IPAddressType, SubnetMeta } from "./enum";
 
 import type { APIError } from "app/base/types";
 import type { Domain } from "app/store/domain/types";
-import type { Architecture } from "app/store/general/types";
+import type { KnownBootArchitecture } from "app/store/general/types";
 import type { Pod } from "app/store/pod/types";
 import type {
   Model,
@@ -91,7 +91,7 @@ export type BaseSubnet = TimestampedModel & {
   allow_proxy: boolean;
   cidr: string;
   description: string;
-  disabled_boot_architectures: Architecture[];
+  disabled_boot_architectures: KnownBootArchitecture["name"][];
   dns_servers: string;
   gateway_ip: string | null;
   managed: boolean;

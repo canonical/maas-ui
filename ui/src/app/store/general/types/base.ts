@@ -6,6 +6,7 @@ import type {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
+  BootProtocol,
   DriverType,
   PowerFieldScope,
   PowerFieldType,
@@ -121,6 +122,21 @@ export type KnownArchitecturesState = {
   loading: boolean;
 };
 
+export type KnownBootArchitecture = {
+  arch_octet: string | null;
+  bios_boot_method: string;
+  bootloader_arches: string;
+  name: string;
+  protocol: BootProtocol;
+};
+
+export type KnownBootArchitecturesState = {
+  errors: APIError;
+  data: KnownBootArchitecture[];
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type MachineAction = {
   name: MachineActions;
   sentence: string;
@@ -225,6 +241,7 @@ export type GeneralState = {
   generatedCertificate: GeneratedCertificateState;
   hweKernels: HWEKernelsState;
   knownArchitectures: KnownArchitecturesState;
+  knownBootArchitectures: KnownBootArchitecturesState;
   machineActions: MachineActionsState;
   osInfo: OSInfoState;
   pocketsToDisable: PocketsToDisableState;
