@@ -1,18 +1,24 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-import { MainTable, Spinner } from "@canonical/react-components";
+import {
+  ContextualMenu,
+  MainTable,
+  Spinner,
+} from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import ReservedRangeForm from "../ReservedRangeForm";
 
+import FormCard from "app/base/components/FormCard";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
 import { actions as ipRangeActions } from "app/store/iprange";
 import ipRangeSelectors from "app/store/iprange/selectors";
 import type { IPRange, IPRangeMeta } from "app/store/iprange/types";
+import { IPRangeType } from "app/store/iprange/types";
 import {
   getCommentDisplay,
   getOwnerDisplay,
@@ -22,6 +28,10 @@ import type { RootState } from "app/store/root/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 import { isId } from "app/utils";
+
+export type BaseProps = {
+  menuDisabled?: boolean;
+};
 
 export type SubnetProps = {
   subnetId: Subnet[SubnetMeta.PK] | null;
@@ -33,25 +43,28 @@ export type VLANProps = {
   vlanId: VLAN[VLANMeta.PK] | null;
 };
 
-export type Props = SubnetProps | VLANProps;
+export type Props = BaseProps & (SubnetProps | VLANProps);
 
 export enum Labels {
-  StartIP = "Start IP Address",
+  Actions = "Actions",
+  Comment = "Comment",
   EndIp = "End IP Address",
   Owner = "Owner",
+  ReserveDynamicRange = "Reserve dynamic range",
+  ReserveRange = "Reserve range",
+  StartIP = "Start IP Address",
   Type = "Type",
-  Comment = "Comment",
-  Actions = "Actions",
 }
 
 export enum ExpandedType {
   Create,
+  CreateDynamic,
   Delete,
   Update,
 }
 
 type Expanded = {
-  id: IPRange[IPRangeMeta.PK];
+  id?: IPRange[IPRangeMeta.PK];
   type: ExpandedType;
 };
 
@@ -159,7 +172,11 @@ const generateRows = (
     };
   });
 
-const ReservedRanges = ({ subnetId, vlanId }: Props): JSX.Element | null => {
+const ReservedRanges = ({
+  menuDisabled,
+  subnetId,
+  vlanId,
+}: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
   const isSubnet = isId(subnetId);
@@ -171,13 +188,40 @@ const ReservedRanges = ({ subnetId, vlanId }: Props): JSX.Element | null => {
       ? ipRangeSelectors.getBySubnet(state, subnetId)
       : ipRangeSelectors.getByVLAN(state, vlanId)
   );
+  const isAddingDynamic = expanded?.type === ExpandedType.CreateDynamic;
+  const isAdding = expanded?.type === ExpandedType.Create || isAddingDynamic;
 
   useEffect(() => {
     dispatch(ipRangeActions.fetch());
   }, [dispatch]);
 
   return (
-    <TitledSection title="Reserved ranges">
+    <TitledSection
+      buttons={
+        <ContextualMenu
+          toggleLabel={
+            isAddingDynamic ? Labels.ReserveDynamicRange : Labels.ReserveRange
+          }
+          toggleAppearance="positive"
+          toggleDisabled={menuDisabled}
+          hasToggleIcon
+          position="right"
+          links={[
+            {
+              children: Labels.ReserveRange,
+              "data-testid": "reserve-range-menu-item",
+              onClick: () => setExpanded({ type: ExpandedType.Create }),
+            },
+            {
+              children: Labels.ReserveDynamicRange,
+              "data-testid": "reserve-dynamic-range-menu-item",
+              onClick: () => setExpanded({ type: ExpandedType.CreateDynamic }),
+            },
+          ]}
+        />
+      }
+      title="Reserved ranges"
+    >
       <MainTable
         className="reserved-ranges-table p-table-expanding--light"
         defaultSort="name"
@@ -228,6 +272,17 @@ const ReservedRanges = ({ subnetId, vlanId }: Props): JSX.Element | null => {
         )}
         sortable
       />
+      {isAdding ? (
+        <FormCard sidebar={false}>
+          <ReservedRangeForm
+            onClose={() => setExpanded(null)}
+            createType={
+              isAddingDynamic ? IPRangeType.Dynamic : IPRangeType.Reserved
+            }
+            subnetId={subnetId}
+          />
+        </FormCard>
+      ) : null}
       <a
         className="p-link--external"
         href="https://maas.io/docs/ip-ranges"

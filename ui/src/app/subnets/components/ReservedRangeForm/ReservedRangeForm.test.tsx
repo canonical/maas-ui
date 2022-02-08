@@ -1,9 +1,10 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import ReservedRangeForm from "./ReservedRangeForm";
+import ReservedRangeForm, { Labels } from "./ReservedRangeForm";
 
 import { actions as ipRangeActions } from "app/store/iprange";
 import type { IPRange } from "app/store/iprange/types";
@@ -76,15 +77,15 @@ describe("ReservedRangeForm", () => {
       </Provider>
     );
     expect(
-      screen.getByRole("textbox", { name: "Start IP address" })
+      screen.getByRole("textbox", { name: Labels.StartIp })
     ).toHaveAttribute("value", ipRange.start_ip);
-    expect(
-      screen.getByRole("textbox", { name: "End IP address" })
-    ).toHaveAttribute("value", ipRange.end_ip);
-    expect(screen.getByRole("textbox", { name: "Purpose" })).toHaveAttribute(
+    expect(screen.getByRole("textbox", { name: Labels.EndIp })).toHaveAttribute(
       "value",
-      ipRange.comment
+      ipRange.end_ip
     );
+    expect(
+      screen.getByRole("textbox", { name: Labels.Purpose })
+    ).toHaveAttribute("value", ipRange.comment);
   });
 
   it("initialises the details when editing a dynamic range", () => {
@@ -100,13 +101,52 @@ describe("ReservedRangeForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.getByRole("textbox", { name: "Purpose" })).toHaveAttribute(
-      "value",
-      "Dynamic"
+    expect(
+      screen.getByRole("textbox", { name: Labels.Purpose })
+    ).toHaveAttribute("value", "Dynamic");
+    expect(
+      screen.getByRole("textbox", { name: Labels.Purpose })
+    ).toHaveAttribute("disabled");
+  });
+
+  it("dispatches an action to create a reserved range", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ReservedRangeForm
+            createType={IPRangeType.Reserved}
+            onClose={jest.fn()}
+            subnetId={1}
+          />
+        </MemoryRouter>
+      </Provider>
     );
-    expect(screen.getByRole("textbox", { name: "Purpose" })).toHaveAttribute(
-      "disabled"
+    userEvent.type(
+      screen.getByRole("textbox", { name: Labels.StartIp }),
+      "1.1.1.1"
     );
+    userEvent.type(
+      screen.getByRole("textbox", { name: Labels.EndIp }),
+      "1.1.1.2"
+    );
+    userEvent.type(
+      screen.getByRole("textbox", { name: Labels.Purpose }),
+      "reserved"
+    );
+    await waitFor(() => fireEvent.submit(screen.getByRole("form")));
+    const expected = ipRangeActions.create({
+      comment: "reserved",
+      end_ip: "1.1.1.2",
+      start_ip: "1.1.1.1",
+      subnet: 1,
+      type: IPRangeType.Reserved,
+    });
+    expect(
+      store.getActions().find((action) => action.type === expected.type)
+    ).toStrictEqual(expected);
   });
 
   it("dispatches an action to update a reserved range", async () => {
@@ -156,5 +196,24 @@ describe("ReservedRangeForm", () => {
       .getActions()
       .find((action) => action.type === expected.type);
     expect(actual.payload.params.comment).toBe(expected.payload.params.comment);
+  });
+
+  it("does not display the purpose field when creating a dynamic range", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <ReservedRangeForm
+            createType={IPRangeType.Dynamic}
+            onClose={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      screen.queryAllByRole("textbox", { name: Labels.Purpose })
+    ).toHaveLength(0);
   });
 });
