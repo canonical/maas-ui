@@ -11,11 +11,14 @@ import ipRangeSelectors from "app/store/iprange/selectors";
 import type { IPRange } from "app/store/iprange/types";
 import { IPRangeType, IPRangeMeta } from "app/store/iprange/types";
 import type { RootState } from "app/store/root/types";
+import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import { isId } from "app/utils";
 
 type Props = {
+  createType?: IPRangeType;
   id?: IPRange[IPRangeMeta.PK] | null;
   onClose: () => void;
+  subnetId?: Subnet[SubnetMeta.PK] | null;
 };
 
 export type FormValues = {
@@ -24,6 +27,14 @@ export type FormValues = {
   start_ip: IPRange["start_ip"];
 };
 
+export enum Labels {
+  CreateRange = "Create reserved range",
+  EditRange = "Edit reserved range",
+  EndIp = "End IP address",
+  Purpose = "Purpose",
+  StartIp = "Start IP address",
+}
+
 const Schema = Yup.object().shape({
   comment: Yup.string(),
   end_ip: Yup.string().required("Start IP is required"),
@@ -31,8 +42,10 @@ const Schema = Yup.object().shape({
 });
 
 const ReservedRangeForm = ({
+  createType,
   id,
   onClose,
+  subnetId,
   ...props
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -62,7 +75,7 @@ const ReservedRangeForm = ({
 
   return (
     <FormikForm<FormValues>
-      aria-label={`${isEditing ? "Edit" : "Create"} reserved range`}
+      aria-label={isEditing ? Labels.EditRange : Labels.CreateRange}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
@@ -79,7 +92,15 @@ const ReservedRangeForm = ({
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
-        if (isEditing && ipRange) {
+        if (!isEditing && createType) {
+          dispatch(
+            ipRangeActions.create({
+              subnet: subnetId,
+              type: createType,
+              ...values,
+            })
+          );
+        } else if (isEditing && ipRange) {
           dispatch(
             ipRangeActions.update({
               [IPRangeMeta.PK]: ipRange[IPRangeMeta.PK],
@@ -101,22 +122,24 @@ const ReservedRangeForm = ({
       <Row>
         <Col size={6}>
           <FormikField
-            label="Start IP address"
+            label={Labels.StartIp}
             name="start_ip"
             required
             type="text"
           />
-          <FormikField
-            disabled={showDynamicComment}
-            label="Purpose"
-            name="comment"
-            placeholder="IP range purpose (optional)"
-            type="text"
-          />
+          {isEditing || createType === IPRangeType.Reserved ? (
+            <FormikField
+              disabled={showDynamicComment}
+              label={Labels.Purpose}
+              name="comment"
+              placeholder="IP range purpose (optional)"
+              type="text"
+            />
+          ) : null}
         </Col>
         <Col size={6}>
           <FormikField
-            label="End IP address"
+            label={Labels.EndIp}
             name="end_ip"
             required
             type="text"

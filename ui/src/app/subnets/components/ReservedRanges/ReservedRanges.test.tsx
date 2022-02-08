@@ -3,10 +3,16 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import { Labels as ReservedRangeFormLabels } from "../ReservedRangeForm/ReservedRangeForm";
+
 import ReservedRanges, { Labels } from "./ReservedRanges";
 
 import { actions as ipRangeActions } from "app/store/iprange";
+import type { IPRange } from "app/store/iprange/types";
 import { IPRangeType } from "app/store/iprange/types";
+import type { RootState } from "app/store/root/types";
+import type { Subnet } from "app/store/subnet/types";
+import type { VLAN } from "app/store/vlan/types";
 import {
   rootState as rootStateFactory,
   ipRange as ipRangeFactory,
@@ -18,22 +24,42 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
+let ipRange: IPRange;
+let state: RootState;
+let subnet: Subnet;
+let vlan: VLAN;
 
-it("renders for a subnet", () => {
-  const subnet = subnetFactory();
-  const subnet2 = subnetFactory();
-  const state = rootStateFactory({
+beforeEach(() => {
+  subnet = subnetFactory();
+  vlan = vlanFactory();
+  ipRange = ipRangeFactory({
+    comment: "what a beaut",
+    start_ip: "11.1.1.1",
+    subnet: subnet.id,
+    type: IPRangeType.Reserved,
+    user: "wombat",
+  });
+  state = rootStateFactory({
     iprange: ipRangeStateFactory({
-      items: [
-        ipRangeFactory({ start_ip: "11.1.1.1", subnet: subnet.id }),
-        ipRangeFactory({ start_ip: "11.1.1.2", subnet: subnet.id }),
-        ipRangeFactory({ start_ip: "11.1.1.3", subnet: subnet2.id }),
-      ],
+      items: [ipRange],
     }),
     subnet: subnetStateFactory({
-      items: [subnet, subnet2],
+      items: [subnet],
+    }),
+    vlan: vlanStateFactory({
+      items: [vlan],
     }),
   });
+});
+
+it("renders for a subnet", () => {
+  const subnet2 = subnetFactory();
+  state.iprange.items = [
+    ipRangeFactory({ start_ip: "11.1.1.1", subnet: subnet.id }),
+    ipRangeFactory({ start_ip: "11.1.1.2", subnet: subnet.id }),
+    ipRangeFactory({ start_ip: "11.1.1.3", subnet: subnet2.id }),
+  ];
+  state.subnet.items = [subnet, subnet2];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -64,25 +90,18 @@ it("renders for a subnet", () => {
 });
 
 it("renders for a vlan", () => {
-  const vlan = vlanFactory();
   const vlan2 = vlanFactory();
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({
-      items: [
-        ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id }),
-        ipRangeFactory({ start_ip: "11.1.1.2", vlan: vlan.id }),
-        ipRangeFactory({ start_ip: "11.1.1.3", vlan: vlan2.id }),
-      ],
-    }),
-    vlan: vlanStateFactory({
-      items: [vlan, vlan2],
-    }),
-  });
+  state.iprange.items = [
+    ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id }),
+    ipRangeFactory({ start_ip: "11.1.1.2", vlan: vlan.id }),
+    ipRangeFactory({ start_ip: "11.1.1.3", vlan: vlan2.id }),
+  ];
+  state.vlan.items = [vlan, vlan2];
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
+        <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
       </MemoryRouter>
     </Provider>
   );
@@ -108,12 +127,7 @@ it("renders for a vlan", () => {
 });
 
 it("displays an empty message for a subnet", () => {
-  const subnet = subnetFactory();
-  const state = rootStateFactory({
-    subnet: subnetStateFactory({
-      items: [subnet],
-    }),
-  });
+  state.iprange.items = [];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -128,17 +142,12 @@ it("displays an empty message for a subnet", () => {
 });
 
 it("displays an empty message for a vlan", () => {
-  const vlan = vlanFactory();
-  const state = rootStateFactory({
-    vlan: vlanStateFactory({
-      items: [vlan],
-    }),
-  });
+  state.iprange.items = [];
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
+        <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
       </MemoryRouter>
     </Provider>
   );
@@ -147,22 +156,24 @@ it("displays an empty message for a vlan", () => {
   ).toBeInTheDocument();
 });
 
+it("displays a message if there are no subnets in a VLAN", () => {
+  state.subnet.items = [];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges vlanId={vlan.id} hasVLANSubnets={false} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByText(/No subnets are available on this VLAN/)
+  ).toBeInTheDocument();
+});
+
 it("displays content when it is dynamic", () => {
-  const subnet = subnetFactory();
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({
-      items: [
-        ipRangeFactory({
-          start_ip: "11.1.1.1",
-          subnet: subnet.id,
-          type: IPRangeType.Dynamic,
-        }),
-      ],
-    }),
-    subnet: subnetStateFactory({
-      items: [subnet],
-    }),
-  });
+  ipRange.type = IPRangeType.Dynamic;
+  state.iprange.items = [ipRange];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -189,23 +200,8 @@ it("displays content when it is dynamic", () => {
 });
 
 it("displays content when it is reserved", () => {
-  const subnet = subnetFactory();
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({
-      items: [
-        ipRangeFactory({
-          comment: "what a beaut",
-          start_ip: "11.1.1.1",
-          subnet: subnet.id,
-          type: IPRangeType.Reserved,
-          user: "wombat",
-        }),
-      ],
-    }),
-    subnet: subnetStateFactory({
-      items: [subnet],
-    }),
-  });
+  ipRange.type = IPRangeType.Reserved;
+  state.iprange.items = [ipRange];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -232,20 +228,11 @@ it("displays content when it is reserved", () => {
 });
 
 it("displays an edit form", async () => {
-  const vlan = vlanFactory();
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({
-      items: [ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id })],
-    }),
-    vlan: vlanStateFactory({
-      items: [vlan],
-    }),
-  });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -253,25 +240,16 @@ it("displays an edit form", async () => {
     fireEvent.click(screen.getByRole("button", { name: "Edit" }));
   });
   expect(
-    screen.getByRole("form", { name: "Edit reserved range" })
+    screen.getByRole("form", { name: ReservedRangeFormLabels.EditRange })
   ).toBeInTheDocument();
 });
 
 it("displays confirm delete message", async () => {
-  const vlan = vlanFactory();
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({
-      items: [ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id })],
-    }),
-    vlan: vlanStateFactory({
-      items: [vlan],
-    }),
-  });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -286,21 +264,11 @@ it("displays confirm delete message", async () => {
 });
 
 it("dispatches an action to delete a reserved range", async () => {
-  const vlan = vlanFactory();
-  const ipRange = ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id });
-  const state = rootStateFactory({
-    iprange: ipRangeStateFactory({
-      items: [ipRange],
-    }),
-    vlan: vlanStateFactory({
-      items: [vlan],
-    }),
-  });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
+        <ReservedRanges subnetId={subnet.id} />
       </MemoryRouter>
     </Provider>
   );
@@ -313,4 +281,86 @@ it("dispatches an action to delete a reserved range", async () => {
     .getActions()
     .find((action) => action.type === expectedAction.type);
   expect(actualAction).toStrictEqual(expectedAction);
+});
+
+it("displays an add button when it is reserved", () => {
+  ipRange.type = IPRangeType.Reserved;
+  state.iprange.items = [ipRange];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges subnetId={subnet.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByRole("button", {
+      name: Labels.ReserveRange,
+    })
+  ).toBeInTheDocument();
+});
+
+it("displays an add button when it is dynamic", async () => {
+  ipRange.type = IPRangeType.Dynamic;
+  state.iprange.items = [ipRange];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges subnetId={subnet.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  await waitFor(() => {
+    fireEvent.click(
+      screen.queryAllByRole("button", {
+        name: Labels.ReserveRange,
+      })[0]
+    );
+    fireEvent.click(screen.getByTestId("reserve-dynamic-range-menu-item"));
+  });
+  expect(
+    screen.getByRole("button", {
+      name: Labels.ReserveDynamicRange,
+    })
+  ).toBeInTheDocument();
+});
+
+it("disables the add button if there are no subnets in a VLAN", () => {
+  ipRange.type = IPRangeType.Reserved;
+  state.iprange.items = [ipRange];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges vlanId={vlan.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByRole("button", { name: Labels.ReserveRange })
+  ).toHaveAttribute("disabled");
+});
+
+it("can display an add form", async () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges subnetId={subnet.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  await waitFor(() => {
+    fireEvent.click(
+      screen.queryAllByRole("button", {
+        name: Labels.ReserveRange,
+      })[0]
+    );
+    fireEvent.click(screen.getByTestId("reserve-range-menu-item"));
+  });
+  expect(
+    screen.getByRole("form", { name: ReservedRangeFormLabels.CreateRange })
+  ).toBeInTheDocument();
 });
