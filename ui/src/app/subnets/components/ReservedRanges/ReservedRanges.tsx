@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import {
   ContextualMenu,
   MainTable,
+  Notification,
   Spinner,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,21 +30,19 @@ import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 import { isId } from "app/utils";
 
-export type BaseProps = {
-  menuDisabled?: boolean;
-};
-
 export type SubnetProps = {
   subnetId: Subnet[SubnetMeta.PK] | null;
+  hasVLANSubnets?: never;
   vlanId?: never;
 };
 
 export type VLANProps = {
+  hasVLANSubnets?: boolean;
   subnetId?: never;
   vlanId: VLAN[VLANMeta.PK] | null;
 };
 
-export type Props = BaseProps & (SubnetProps | VLANProps);
+export type Props = SubnetProps | VLANProps;
 
 export enum Labels {
   Actions = "Actions",
@@ -173,7 +172,7 @@ const generateRows = (
   });
 
 const ReservedRanges = ({
-  menuDisabled,
+  hasVLANSubnets,
   subnetId,
   vlanId,
 }: Props): JSX.Element | null => {
@@ -190,6 +189,7 @@ const ReservedRanges = ({
   );
   const isAddingDynamic = expanded?.type === ExpandedType.CreateDynamic;
   const isAdding = expanded?.type === ExpandedType.Create || isAddingDynamic;
+  const isDisabled = isId(vlanId) && !hasVLANSubnets;
 
   useEffect(() => {
     dispatch(ipRangeActions.fetch());
@@ -203,7 +203,7 @@ const ReservedRanges = ({
             isAddingDynamic ? Labels.ReserveDynamicRange : Labels.ReserveRange
           }
           toggleAppearance="positive"
-          toggleDisabled={menuDisabled}
+          toggleDisabled={isDisabled}
           hasToggleIcon
           position="right"
           links={[
@@ -222,6 +222,11 @@ const ReservedRanges = ({
       }
       title="Reserved ranges"
     >
+      {isDisabled ? (
+        <Notification severity="caution">
+          No subnets are available on this VLAN. Ranges cannot be reserved.
+        </Notification>
+      ) : null}
       <MainTable
         className="reserved-ranges-table p-table-expanding--light"
         defaultSort="name"

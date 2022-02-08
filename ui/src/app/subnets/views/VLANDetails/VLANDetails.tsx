@@ -71,7 +71,7 @@ const VLANDetails = (): JSX.Element => {
         <>
           <VLANSummary id={id} />
           <DHCPStatus id={id} openForm={() => setShowDHCPForm(true)} />
-          <ReservedRanges menuDisabled={subnets.length === 0} vlanId={id} />
+          <ReservedRanges hasVLANSubnets={subnets.length > 0} vlanId={id} />
           <VLANSubnets id={id} />
         </>
       )}

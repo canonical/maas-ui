@@ -101,7 +101,7 @@ it("renders for a vlan", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
+        <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
       </MemoryRouter>
     </Provider>
   );
@@ -147,12 +147,27 @@ it("displays an empty message for a vlan", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
+        <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
       </MemoryRouter>
     </Provider>
   );
   expect(
     screen.getByText("No IP ranges have been reserved for this VLAN.")
+  ).toBeInTheDocument();
+});
+
+it("displays a message if there are no subnets in a VLAN", () => {
+  state.subnet.items = [];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges vlanId={vlan.id} hasVLANSubnets={false} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByText(/No subnets are available on this VLAN/)
   ).toBeInTheDocument();
 });
 
@@ -312,14 +327,14 @@ it("displays an add button when it is dynamic", async () => {
   ).toBeInTheDocument();
 });
 
-it("can disable the add button", () => {
+it("disables the add button if there are no subnets in a VLAN", () => {
   ipRange.type = IPRangeType.Reserved;
   state.iprange.items = [ipRange];
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges menuDisabled subnetId={subnet.id} />
+        <ReservedRanges vlanId={vlan.id} />
       </MemoryRouter>
     </Provider>
   );
