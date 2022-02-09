@@ -59,7 +59,7 @@ const SubnetSummaryForm = ({
 
   return (
     <FormikForm<SubnetSummaryFormValues>
-      aria-label="Edit space summary"
+      aria-label="Edit subnet summary"
       cleanup={subnetActions.cleanup}
       errors={subnetErrors}
       initialValues={{
