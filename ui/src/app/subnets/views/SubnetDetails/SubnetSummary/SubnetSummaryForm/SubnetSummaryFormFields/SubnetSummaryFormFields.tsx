@@ -1,41 +1,14 @@
-import { useEffect } from "react";
-
 import { Textarea, Row, Col } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import { useDispatch, useSelector } from "react-redux";
 
 import type { SubnetSummaryFormValues } from "../types";
 
 import FabricSelect from "app/base/components/FabricSelect";
 import FormikField from "app/base/components/FormikField";
 import VLANSelect from "app/base/components/VLANSelect";
-import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
-import { getFabricDisplay } from "app/store/fabric/utils";
-import type { RootState } from "app/store/root/types";
-import type { Subnet } from "app/store/subnet/types";
-import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
-import { getVLANDisplay } from "app/store/vlan/utils";
 
-const SubnetSummaryFormFields = ({
-  subnet,
-}: {
-  subnet: Subnet;
-}): JSX.Element => {
+const SubnetSummaryFormFields = (): JSX.Element => {
   const { values } = useFormikContext<SubnetSummaryFormValues>();
-  const dispatch = useDispatch();
-  const vlan = useSelector((state: RootState) =>
-    vlanSelectors.getById(state, subnet?.vlan)
-  );
-  const fabric = useSelector((state: RootState) =>
-    fabricSelectors.getById(state, vlan?.fabric)
-  );
-
-  useEffect(() => {
-    dispatch(vlanActions.fetch());
-    dispatch(fabricActions.fetch());
-  }, [dispatch]);
 
   return (
     <Row>
@@ -73,23 +46,12 @@ const SubnetSummaryFormFields = ({
           name="allow_dns"
           type="checkbox"
         />
-        {values.fabric && (
-          <FabricSelect
-            name="Fabric"
-            defaultOption={{
-              label: getFabricDisplay(fabric) || "",
-              value: values?.fabric.toString() || "",
-            }}
-          />
-        )}
+        <FabricSelect name="fabric" />
         <VLANSelect
+          fabric={Number(values.fabric)}
           name="vlan"
+          setDefaultValueFromFabric
           showSpinnerOnLoad
-          fabric={vlan?.fabric}
-          defaultOption={{
-            label: getVLANDisplay(vlan) || "",
-            value: values?.vlan.toString(),
-          }}
         />
       </Col>
     </Row>
