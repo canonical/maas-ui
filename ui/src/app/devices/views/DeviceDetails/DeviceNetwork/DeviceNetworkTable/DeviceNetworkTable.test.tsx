@@ -159,9 +159,7 @@ describe("DeviceNetworkTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("SubnetColumn LegacyLink").at(0).text()).toBe(
-      "subnet-cidr"
-    );
+    expect(wrapper.find("SubnetColumn Link").at(0).text()).toBe("subnet-cidr");
     expect(wrapper.find("[data-testid='ip-address']").text()).toBe("1.2.3.99");
   });
 
