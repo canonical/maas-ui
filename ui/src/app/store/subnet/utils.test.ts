@@ -1,7 +1,8 @@
-import { getSubnetDisplay, isSubnetDetails } from "./utils";
+import { getHasIPAddresses, getSubnetDisplay, isSubnetDetails } from "./utils";
 
 import {
   subnet as subnetFactory,
+  subnetIP as subnetIPFactory,
   subnetDetails as subnetDetailsFactory,
 } from "testing/factories";
 
@@ -39,5 +40,26 @@ describe("subnet utils", () => {
       expect(isSubnetDetails(subnet)).toBe(false);
       expect(isSubnetDetails(subnetDetails)).toBe(true);
     });
+  });
+});
+
+describe("getHasIPAddresses", function () {
+  it("handles no arguments provided", function () {
+    expect(getHasIPAddresses()).toBe(false);
+  });
+
+  it("handles non-details subnets", function () {
+    const subnet = subnetFactory();
+    expect(getHasIPAddresses(subnet)).toBe(false);
+  });
+
+  it("returns true if argument has IP addresses", function () {
+    const subnet = subnetDetailsFactory({ ip_addresses: [subnetIPFactory()] });
+    expect(getHasIPAddresses(subnet)).toBe(true);
+  });
+
+  it("returns false if argument has no IP addresses", function () {
+    const subnet = subnetDetailsFactory({ ip_addresses: [] });
+    expect(getHasIPAddresses(subnet)).toBe(false);
   });
 });

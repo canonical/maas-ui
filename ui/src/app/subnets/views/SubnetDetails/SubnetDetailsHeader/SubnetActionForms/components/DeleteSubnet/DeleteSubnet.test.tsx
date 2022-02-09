@@ -12,6 +12,7 @@ import { actions as vlanActions } from "app/store/vlan";
 import subnetsURLs from "app/subnets/urls";
 import {
   subnetDetails as subnetFactory,
+  subnetIP as subnetIPFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
   vlan as vlanFactory,
@@ -47,6 +48,13 @@ const getRootState = () => {
 
 it("displays a correct error message for a subnet with IPs obtained through DHCP", () => {
   const state = getRootState();
+  state.subnet.items = [
+    subnetFactory({
+      id: subnetId,
+      ip_addresses: [subnetIPFactory()],
+      vlan: 1,
+    }),
+  ];
   const history = createMemoryHistory({
     initialEntries: [{ pathname: subnetsURLs.subnet.index({ id: subnetId }) }],
   });
@@ -69,6 +77,56 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
   ).toBeInTheDocument();
 });
 
+it("displays a message if DHCP is disabled on the VLAN", () => {
+  const state = getRootState();
+  state.vlan.items[0].dhcp_on = false;
+  const history = createMemoryHistory({
+    initialEntries: [{ pathname: subnetsURLs.subnet.index({ id: subnetId }) }],
+  });
+  const store = configureStore()(state);
+  render(
+    <Provider store={store}>
+      <Router history={history}>
+        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+      </Router>
+    </Provider>
+  );
+  const deleteSubnetSection = screen.getByRole("region", {
+    name: /Delete subnet?/,
+  });
+
+  expect(
+    within(deleteSubnetSection).getByText(
+      /Beware IP addresses on devices on this subnet might not be retained/
+    )
+  ).toBeInTheDocument();
+});
+
+it("does not display a message if DHCP is enabled on the VLAN", () => {
+  const state = getRootState();
+  state.vlan.items[0].dhcp_on = true;
+  const history = createMemoryHistory({
+    initialEntries: [{ pathname: subnetsURLs.subnet.index({ id: subnetId }) }],
+  });
+  const store = configureStore()(state);
+  render(
+    <Provider store={store}>
+      <Router history={history}>
+        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+      </Router>
+    </Provider>
+  );
+  const deleteSubnetSection = screen.getByRole("region", {
+    name: /Delete subnet?/,
+  });
+
+  expect(
+    within(deleteSubnetSection).queryAllByText(
+      /Beware IP addresses on devices on this subnet might not be retained/
+    )
+  ).toHaveLength(0);
+});
+
 it("dispatches an action to load vlans and subnets if not loaded", () => {
   const history = createMemoryHistory({
     initialEntries: [{ pathname: subnetsURLs.subnet.index({ id: subnetId }) }],
@@ -84,11 +142,15 @@ it("dispatches an action to load vlans and subnets if not loaded", () => {
       </Router>
     </Provider>
   );
-
-  expect(store.getActions()).toEqual([
-    vlanActions.fetch(),
-    subnetActions.fetch(),
-  ]);
+  const expectedActions = [vlanActions.fetch(), subnetActions.fetch()];
+  const actualActions = store.getActions();
+  expectedActions.forEach((expectedAction) => {
+    expect(
+      actualActions.find(
+        (actualAction) => actualAction.type === expectedAction.type
+      )
+    ).toStrictEqual(expectedAction);
+  });
 });
 
 it("dispatches a delete action on submit", async () => {
@@ -111,9 +173,13 @@ it("dispatches a delete action on submit", async () => {
   ).toBeInTheDocument();
   screen.getByRole("button", { name: /Delete/i }).click();
 
-  await waitFor(() =>
-    expect(store.getActions()).toEqual([subnetActions.delete(subnetId)])
-  );
+  await waitFor(() => {
+    const expectedAction = subnetActions.delete(subnetId);
+    const actualAction = store
+      .getActions()
+      .find((actualAction) => actualAction.type === expectedAction.type);
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
 });
 
 it("redirects on save", async () => {

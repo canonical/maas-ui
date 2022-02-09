@@ -11,7 +11,7 @@ import { useHistory } from "react-router";
 
 import { useCycled } from "app/base/hooks";
 import { actions as spaceActions } from "app/store/space";
-import { default as spaceSelectors } from "app/store/space/selectors";
+import spaceSelectors from "app/store/space/selectors";
 import type { Space } from "app/store/space/types";
 import { getCanBeDeleted } from "app/store/space/utils";
 import urls from "app/subnets/urls";
