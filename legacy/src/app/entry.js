@@ -42,22 +42,11 @@ import {
   datastoresOnly
 } from "./controllers/node_details_storage"; // TODO: fix export/namespace
 // prettier-ignore
-import {
-  filterSource
-} from "./controllers/subnet_details"; // TODO: fix export/namespace
-// prettier-ignore
-import {
-  ignoreSelf,
-  removeNoDHCP
-} from "./controllers/vlan_details"; // TODO: fix export/namespace
 import filterByFabric from "./filters/by_fabric";
-import { filterBySpace, filterByNullSpace } from "./filters/by_space";
-import { filterBySubnet, filterBySubnetOrVlan } from "./filters/by_subnet";
-import { filterByVLAN, filterControllersByVLAN } from "./filters/by_vlan";
-import { formatBytes, convertGigabyteToBytes } from "./filters/format_bytes";
+import { filterByVLAN } from "./filters/by_vlan";
+import { formatBytes } from "./filters/format_bytes";
 import { sendAnalyticsEvent } from "./filters/send_analytics_event";
 import orderByDate from "./filters/order_by_date";
-import range from "./filters/range";
 import removeDefaultVLAN from "./filters/remove_default_vlan";
 
 // services
@@ -77,14 +66,12 @@ import RegionConnection from "./services/region";
 import ValidationService from "./services/validation";
 
 // factories
-import ConfigsManager from "./factories/configs";
 import ControllersManager from "./factories/controllers";
 import DHCPSnippetsManager from "./factories/dhcpsnippets";
 import DomainsManager from "./factories/domains";
 import EventsManagerFactory from "./factories/events";
 import FabricsManager from "./factories/fabrics";
 import GeneralManager from "./factories/general";
-import IPRangesManager from "./factories/ipranges";
 import MachinesManager from "./factories/machines";
 import NodeResultsManagerFactory from "./factories/node_results";
 import NodesManager from "./factories/nodes"; // TODO: move to services
@@ -92,8 +79,6 @@ import NotificationsManager from "./factories/notifications";
 import PodsManager from "./factories/pods"; // TODO: move to services
 import ScriptsManager from "./factories/scripts";
 import ServicesManager from "./factories/services";
-import SpacesManager from "./factories/spaces";
-import StaticRoutesManager from "./factories/staticroutes";
 import SubnetsManager from "./factories/subnets";
 import TagsManager from "./factories/tags";
 import UsersManager from "./factories/users";
@@ -102,8 +87,6 @@ import ZonesManager from "./factories/zones";
 
 // controllers
 import MasterController from "./controllers/master";
-import FabricDetailsController from "./controllers/fabric_details";
-import NetworksListController from "./controllers/networks_list";
 // prettier-ignore
 import {
   NodeNetworkingController
@@ -117,9 +100,6 @@ import NodeDetailsController from "./controllers/node_details";
 import NodeEventsController from "./controllers/node_events";
 import NodeResultController from "./controllers/node_result";
 import NodeResultsController from "./controllers/node_results";
-import SpaceDetailsController from "./controllers/space_details";
-import { SubnetDetailsController } from "./controllers/subnet_details";
-import { VLANDetailsController } from "./controllers/vlan_details";
 
 // directives
 // prettier-ignore
@@ -138,11 +118,9 @@ import {
   maasControllerImageStatus
 } from "./directives/controller_image_status";
 import { maasControllerStatus } from "./directives/controller_status";
-import maasDefaultOsSelect from "./directives/default_os_select";
 import maasEnter from "./directives/enter";
 import { maasErrorOverlay } from "./directives/error_overlay";
 import maasErrorToggle from "./directives/error_toggle";
-import maasIpRanges from "./directives/ipranges";
 import {
   maasObjForm,
   maasObjFieldGroup,
@@ -274,41 +252,27 @@ MAAS.config(configureMaas)
   .filter("filterLinkModes", filterLinkModes)
   .filter("removeAvailableByNew", removeAvailableByNew)
   .filter("datastoresOnly", datastoresOnly)
-  .filter("filterSource", filterSource)
-  .filter("ignoreSelf", ignoreSelf)
-  .filter("removeNoDHCP", removeNoDHCP)
   .filter("filterByFabric", filterByFabric)
-  .filter("filterBySpace", filterBySpace)
-  .filter("filterByNullSpace", filterByNullSpace)
-  .filter("filterBySubnet", filterBySubnet)
-  .filter("filterBySubnetOrVlan", filterBySubnetOrVlan)
   .filter("filterByVLAN", filterByVLAN)
-  .filter("filterControllersByVLAN", filterControllersByVLAN)
   .filter("formatBytes", formatBytes)
   .filter("sendAnalyticsEvent", sendAnalyticsEvent)
-  .filter("convertGigabyteToBytes", convertGigabyteToBytes)
   .filter("orderByDate", orderByDate)
-  .filter("range", range)
   .filter("removeDefaultVLAN", removeDefaultVLAN)
   .filter("filterEditInterface", filterEditInterface)
   .filter("filterSelectedInterfaces", filterSelectedInterfaces)
   .filter("filterVLANNotOnFabric", filterVLANNotOnFabric)
   // factories
-  .factory("ConfigsManager", ConfigsManager)
   .factory("ControllersManager", ControllersManager)
   .factory("DHCPSnippetsManager", DHCPSnippetsManager)
   .factory("DomainsManager", DomainsManager)
   .factory("EventsManagerFactory", EventsManagerFactory)
   .factory("FabricsManager", FabricsManager)
   .factory("GeneralManager", GeneralManager)
-  .factory("IPRangesManager", IPRangesManager)
   .factory("MachinesManager", MachinesManager)
   .factory("NodeResultsManagerFactory", NodeResultsManagerFactory)
   .factory("NotificationsManager", NotificationsManager)
   .factory("ScriptsManager", ScriptsManager)
   .factory("ServicesManager", ServicesManager)
-  .factory("SpacesManager", SpacesManager)
-  .factory("StaticRoutesManager", StaticRoutesManager)
   .factory("SubnetsManager", SubnetsManager)
   .factory("TagsManager", TagsManager)
   .factory("UsersManager", UsersManager)
@@ -328,8 +292,6 @@ MAAS.config(configureMaas)
   .service("ValidationService", ValidationService)
   // controllers
   .controller("MasterController", MasterController)
-  .controller("FabricDetailsController", FabricDetailsController)
-  .controller("NetworksListController", NetworksListController)
   .controller("NodeNetworkingController", NodeNetworkingController)
   .controller("NodeFilesystemsController", NodeFilesystemsController)
   .controller(
@@ -341,9 +303,6 @@ MAAS.config(configureMaas)
   .controller("NodeEventsController", NodeEventsController)
   .controller("NodeResultController", NodeResultController)
   .controller("NodeResultsController", NodeResultsController)
-  .controller("SpaceDetailsController", SpaceDetailsController)
-  .controller("SubnetDetailsController", SubnetDetailsController)
-  .controller("VLANDetailsController", VLANDetailsController)
   // directives
   .directive("ngLoading", loading)
   .directive("storageDisksPartitions", storageDisksPartitions)
@@ -355,11 +314,9 @@ MAAS.config(configureMaas)
   .directive("contenteditable", contenteditable)
   .directive("maasControllerImageStatus", maasControllerImageStatus)
   .directive("maasControllerStatus", maasControllerStatus)
-  .directive("maasDefaultOsSelect", maasDefaultOsSelect)
   .directive("maasEnter", maasEnter)
   .directive("maasErrorOverlay", maasErrorOverlay)
   .directive("maasErrorToggle", maasErrorToggle)
-  .directive("maasIpRanges", maasIpRanges)
   .directive("maasObjForm", maasObjForm)
   .directive("maasObjFieldGroup", maasObjFieldGroup)
   .directive("maasObjField", maasObjField)

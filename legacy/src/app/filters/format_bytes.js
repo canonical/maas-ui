@@ -54,19 +54,3 @@ export function formatBytes() {
     }
   };
 }
-
-export function convertGigabyteToBytes() {
-  return function (gigabytes) {
-    var bytesInKilobyte = 1000;
-    var kilobytesInMegabyte = 1000;
-    var megabytesInGigabyte = 1000;
-
-    if (gigabytes) {
-      return Math.round(
-        gigabytes * bytesInKilobyte * kilobytesInMegabyte * megabytesInGigabyte
-      );
-    } else {
-      return 0;
-    }
-  };
-}

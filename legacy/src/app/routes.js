@@ -5,14 +5,9 @@ import {
 } from "@maas-ui/maas-ui-shared";
 
 import layoutTmpl from "./partials/layout.html";
-import fabricDetailsTmpl from "./partials/fabric-details.html";
-import networksListTmpl from "./partials/networks-list.html";
 import nodeDetailsTmpl from "./partials/node-details.html";
 import nodeEventsTmpl from "./partials/node-events.html";
 import nodeResultTmpl from "./partials/node-result.html";
-import spaceDetailsTmpl from "./partials/space-details.html";
-import subnetDetailsTmpl from "./partials/subnet-details.html";
-import vlanDetailsTmpl from "./partials/vlan-details.html";
 
 /* @ngInject */
 const configureRoutes = ($stateProvider, $urlRouterProvider) => {
@@ -174,13 +169,17 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.spaceDetails", {
       url: generateLegacyURL("/space/:space_id"),
-      template: spaceDetailsTmpl,
-      controller: "SpaceDetailsController",
+      redirectTo: (transition) => {
+        const params = transition.params();
+        navigateToNew(`/space/${params.space_id}`);
+      },
     })
     .state("master.fabricDetails", {
       url: generateLegacyURL("/fabric/:fabric_id"),
-      template: fabricDetailsTmpl,
-      controller: "FabricDetailsController",
+      redirectTo: (transition) => {
+        const params = transition.params();
+        navigateToNew(`/fabric/${params.fabric_id}`);
+      },
     })
     .state("master.subnets", {
       url: generateLegacyURL("/subnets"),
@@ -188,20 +187,23 @@ const configureRoutes = ($stateProvider, $urlRouterProvider) => {
     })
     .state("master.network", {
       url: generateLegacyURL("/networks"),
-      template: networksListTmpl,
-      controller: "NetworksListController",
-      reloadOnSearch: false,
+      redirectTo: () => {
+        navigateToNew("/networks");
+      },
     })
     .state("master.subnetDetails", {
       url: generateLegacyURL("/subnet/:subnet_id"),
-      template: subnetDetailsTmpl,
-      controller: "SubnetDetailsController",
+      redirectTo: (transition) => {
+        const params = transition.params();
+        navigateToNew(`/subnet/${params.subnet_id}`);
+      },
     })
     .state("master.vlanDetails", {
       url: generateLegacyURL("/vlan/:vlan_id"),
-      template: vlanDetailsTmpl,
-      controller: "VLANDetailsController",
-      controllerAs: "vlanDetails",
+      redirectTo: (transition) => {
+        const params = transition.params();
+        navigateToNew(`/vlan/${params.vlan_id}`);
+      },
     })
     .state("master.pools", {
       url: generateLegacyURL("/pools"),

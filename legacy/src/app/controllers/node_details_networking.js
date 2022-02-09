@@ -227,7 +227,6 @@ export function NodeNetworkingController(
   NodeResultsManagerFactory,
   ManagerHelperService,
   ValidationService,
-  JSONService,
   DHCPSnippetsManager,
   $log,
   $stateParams
