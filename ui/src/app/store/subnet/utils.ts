@@ -64,41 +64,5 @@ export const getSubnetsInSpace = (
   spaceId: Space["id"]
 ): Subnet[] => subnets.filter((subnet) => subnet.space === spaceId);
 
-/**
- * Get VLAN on a given subnet
- * @param subnets - Subnets.
- * @param vlanId - VLAN id.
- * @return Subnets for a given VLAN id.
- */
-export const getVLANOnSubnet = (
-  vlans: VLAN[],
-  subnet: Subnet
-): VLAN | undefined => vlans.find((vlan) => vlan.id === subnet.vlan);
-
-/**
- * Get if DHCP is enabled on a given subnet
- * @param subnet - All VLANS.
- * @param subnet - The subnet to check.
- */
-export const getIsDHCPEnabled = (
-  vlans?: VLAN[],
-  subnet?: Subnet | null
-): boolean => {
-  if (!vlans || !subnet) {
-    return false;
-  }
-  const vlanOnSubnet = getVLANOnSubnet(vlans, subnet);
-  return vlanOnSubnet?.dhcp_on || false;
-};
-
-/**
- * Get if a subnet can be deleted.
- * @param subnet - The subnet to check.
- */
-export const getCanBeDeleted = (vlans: VLAN[], subnet: Subnet): boolean => {
-  const isDHCPEnabled = getIsDHCPEnabled(vlans, subnet);
-  return !isDHCPEnabled || (isDHCPEnabled && !getHasIPAddresses(subnet));
-};
-
-export const getHasIPAddresses = (subnet?: Subnet): boolean =>
-  isSubnetDetails(subnet) ? subnet?.ip_addresses.length === 0 : false;
+export const getHasIPAddresses = (subnet?: Subnet | null): boolean =>
+  isSubnetDetails(subnet) ? subnet?.ip_addresses.length > 0 : false;
