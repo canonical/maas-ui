@@ -63,6 +63,7 @@ const generalSlice = createSlice({
     generatedCertificate: generateInitialState(null),
     hweKernels: generateInitialState([]),
     knownArchitectures: generateInitialState([]),
+    knownBootArchitectures: generateInitialState([]),
     machineActions: generateInitialState([]),
     osInfo: generateInitialState(null),
     pocketsToDisable: generateInitialState([]),
@@ -108,6 +109,18 @@ const generalSlice = createSlice({
     fetchKnownArchitecturesError: generateErrorReducer("knownArchitectures"),
     fetchKnownArchitecturesSuccess:
       generateSuccessReducer("knownArchitectures"),
+    fetchKnownBootArchitectures: generatePrepareReducer(
+      "known_boot_architectures"
+    ),
+    fetchKnownBootArchitecturesStart: generateStartReducer(
+      "knownBootArchitectures"
+    ),
+    fetchKnownBootArchitecturesError: generateErrorReducer(
+      "knownBootArchitectures"
+    ),
+    fetchKnownBootArchitecturesSuccess: generateSuccessReducer(
+      "knownBootArchitectures"
+    ),
     fetchMachineActions: generatePrepareReducer("machine_actions"),
     fetchMachineActionsStart: generateStartReducer("machineActions"),
     fetchMachineActionsError: generateErrorReducer("machineActions"),

@@ -53,6 +53,12 @@ describe("general reducer", () => {
         loaded: false,
         loading: false,
       },
+      knownBootArchitectures: {
+        data: [],
+        errors: null,
+        loaded: false,
+        loading: false,
+      },
       machineActions: {
         data: [],
         errors: null,
