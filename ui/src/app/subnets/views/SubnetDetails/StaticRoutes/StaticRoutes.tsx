@@ -5,13 +5,17 @@ import { MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
+import SubnetLink from "app/base/components/SubnetLink";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
 import { actions as staticRouteActions } from "app/store/staticroute";
 import staticRouteSelectors from "app/store/staticroute/selectors";
 import type { StaticRoute, StaticRouteMeta } from "app/store/staticroute/types";
+import { actions as subnetActions } from "app/store/subnet";
+import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import { getSubnetDisplay } from "app/store/subnet/utils";
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK] | null;
@@ -53,12 +57,16 @@ const toggleExpanded = (
 const generateRows = (
   dispatch: Dispatch,
   staticRoutes: StaticRoute[],
+  subnets: Subnet[],
   expanded: Expanded | null,
   setExpanded: (expanded: Expanded | null) => void,
   saved: boolean,
   saving: boolean
 ) =>
   staticRoutes.map((staticRoute: StaticRoute) => {
+    const subnet = subnets.find(
+      (subnet) => subnet.id === staticRoute.destination
+    );
     const isExpanded = expanded?.id === staticRoute.id;
     let expandedContent: ReactNode | null = null;
     const onClose = () => setExpanded(null);
@@ -87,7 +95,7 @@ const generateRows = (
         },
         {
           "aria-label": Labels.Destination,
-          content: staticRoute.destination,
+          content: <SubnetLink id={staticRoute.destination} />,
         },
         {
           "aria-label": Labels.Metric,
@@ -122,7 +130,9 @@ const generateRows = (
       expandedContent: expandedContent,
       key: staticRoute.id,
       sortData: {
+        destination: getSubnetDisplay(subnet),
         gateway_ip: staticRoute.gateway_ip,
+        metric: staticRoute.metric,
       },
     };
   });
@@ -130,23 +140,27 @@ const generateRows = (
 const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
-  const loading = useSelector(staticRouteSelectors.loading);
+  const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const saved = useSelector(staticRouteSelectors.saved);
   const saving = useSelector(staticRouteSelectors.saving);
   const staticRoutes = useSelector(staticRouteSelectors.all).filter(
     (staticRoute) => staticRoute.source === subnetId
   );
+  const subnets = useSelector(subnetSelectors.all);
+  const subnetsLoading = useSelector(subnetSelectors.loading);
+  const loading = staticRoutesLoading || subnetsLoading;
 
   useEffect(() => {
     dispatch(staticRouteActions.fetch());
+    dispatch(subnetActions.fetch());
   }, [dispatch]);
 
   return (
     <TitledSection title="Static routes">
       <MainTable
         className="reserved-ranges-table p-table-expanding--light"
-        defaultSort="name"
-        defaultSortDirection="descending"
+        defaultSort="gateway_ip"
+        defaultSortDirection="ascending"
         emptyStateMsg={
           loading ? (
             <Spinner text="Loading..." />
@@ -176,6 +190,7 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
         rows={generateRows(
           dispatch,
           staticRoutes,
+          subnets,
           expanded,
           setExpanded,
           saved,
