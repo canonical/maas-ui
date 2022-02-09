@@ -70,17 +70,6 @@ function MasterController(
             {link.label}
           </a>
         )}
-        generateLegacyLink={(link, props, _appendNewBase) => (
-          <a
-            className={props.className}
-            aria-current={props["aria-current"]}
-            aria-label={props["aria-label"]}
-            role={props.role}
-            href={generateLegacyURL(link.url)}
-          >
-            {link.label}
-          </a>
-        )}
         location={window.location}
         logout={() => {
           localStorage.clear();

@@ -2,11 +2,10 @@ import { useEffect } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
 import configSelectors from "app/store/config/selectors";
 import { NetworkDiscovery } from "app/store/config/types";
 import { actions as fabricActions } from "app/store/fabric";
@@ -14,6 +13,7 @@ import fabricSelectors from "app/store/fabric/selectors";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
+import subnetsURLS from "app/subnets/urls";
 import { simpleSortByKey } from "app/utils";
 
 type SubnetDiscoveryValues = {
@@ -79,21 +79,23 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
                   disabled={discoveryDisabled}
                   label={
                     <>
-                      <LegacyLink
+                      <Link
                         data-testid="subnet-link"
-                        route={baseURLs.subnet({ id: subnet.id })}
+                        to={subnetsURLS.subnet.index({ id: subnet.id })}
                       >
                         {subnet.cidr}
-                      </LegacyLink>
+                      </Link>
                       {targetFabric && (
                         <>
                           <span> on </span>
-                          <LegacyLink
+                          <Link
                             data-testid="fabric-link"
-                            route={baseURLs.fabric({ id: targetFabric.id })}
+                            to={subnetsURLS.fabric.index({
+                              id: targetFabric.id,
+                            })}
                           >
                             {targetFabric.name}
-                          </LegacyLink>
+                          </Link>
                         </>
                       )}
                     </>

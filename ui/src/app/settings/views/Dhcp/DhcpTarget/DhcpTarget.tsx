@@ -4,11 +4,12 @@ import { Spinner } from "@canonical/react-components";
 import { Link } from "react-router-dom";
 
 import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
+import controllersURLs from "app/controllers/urls";
 import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import { useDhcpTarget } from "app/settings/hooks";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
+import subnetsURLs from "app/subnets/urls";
 
 type Props = {
   nodeId?: DHCPSnippet["node"];
@@ -40,16 +41,19 @@ const DhcpTarget = ({ nodeId, subnetId }: Props): JSX.Element | null => {
   }
   let route;
   if (type === "machine" && nodeId) {
-    return <Link to={machineURLs.machine.index({ id: nodeId })}>{name}</Link>;
+    route = machineURLs.machine.index({ id: nodeId });
   } else if (type === "controller" && nodeId) {
-    route = baseURLs.controller({ id: nodeId });
+    return (
+      <LegacyLink route={controllersURLs.controller.index({ id: nodeId })}>
+        {name}
+      </LegacyLink>
+    );
   } else if (type === "device" && nodeId) {
-    return <Link to={deviceURLs.device.index({ id: nodeId })}>{name}</Link>;
+    route = deviceURLs.device.index({ id: nodeId });
   } else if (type === "subnet" && subnetId) {
-    route = baseURLs.subnet({ id: subnetId });
+    route = subnetsURLs.subnet.index({ id: subnetId });
   }
-
-  return route ? <LegacyLink route={route}>{name}</LegacyLink> : null;
+  return route ? <Link to={route}>{name}</Link> : null;
 };
 
 export default DhcpTarget;

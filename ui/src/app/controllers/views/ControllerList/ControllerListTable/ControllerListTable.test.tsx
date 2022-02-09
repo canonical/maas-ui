@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerListTable from "./ControllerListTable";
 
-import baseURLs from "app/base/urls";
+import controllersURLs from "app/controllers/urls";
 import type { Controller } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -47,7 +47,7 @@ describe("ControllerListTable", () => {
     );
 
     expect(wrapper.find("LegacyLink").at(0).prop("route")).toBe(
-      baseURLs.controller({ id: controller.system_id })
+      controllersURLs.controller.index({ id: controller.system_id })
     );
   });
 

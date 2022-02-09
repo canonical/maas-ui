@@ -1,11 +1,10 @@
 import type { ReactNode } from "react";
 
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import LegacyLink from "app/base/components/LegacyLink";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
-import baseURLs from "app/base/urls";
 import fabricSelectors from "app/store/fabric/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
 import { getSubnetDisplay } from "app/store/subnet/utils";
@@ -17,6 +16,7 @@ import {
   getLinkInterface,
 } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
+import subnetsURLs from "app/subnets/urls";
 
 type Props = {
   link?: NetworkLink | null;
@@ -57,12 +57,12 @@ const SubnetColumn = ({ link, nic, node }: Props): JSX.Element | null => {
   let primary: ReactNode = null;
   if (showLinkSubnet) {
     primary = subnet ? (
-      <LegacyLink
+      <Link
         className="p-link--soft"
-        route={baseURLs.subnet({ id: subnet.id })}
+        to={subnetsURLs.subnet.index({ id: subnet.id })}
       >
         {subnetDisplay}
-      </LegacyLink>
+      </Link>
     ) : (
       subnetDisplay
     );
@@ -77,12 +77,12 @@ const SubnetColumn = ({ link, nic, node }: Props): JSX.Element | null => {
       primary={primary}
       secondary={
         showLinkSubnet && subnet ? (
-          <LegacyLink
+          <Link
             className="p-link--muted"
-            route={baseURLs.subnet({ id: subnet.id })}
+            to={subnetsURLs.subnet.index({ id: subnet.id })}
           >
             {subnet.name}
-          </LegacyLink>
+          </Link>
         ) : null
       }
     />

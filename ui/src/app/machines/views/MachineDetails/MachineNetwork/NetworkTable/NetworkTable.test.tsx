@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import NetworkTable from "./NetworkTable";
@@ -52,13 +53,15 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <NetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -68,13 +71,15 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <NetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);
@@ -106,13 +111,15 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <NetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("SubnetColumn DoubleRow").prop("primary")).toBe(
@@ -151,18 +158,18 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <NetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("SubnetColumn LegacyLink").at(0).text()).toBe(
-      "subnet-cidr"
-    );
+    expect(wrapper.find("SubnetColumn Link").at(0).text()).toBe("subnet-cidr");
     expect(wrapper.find("IPColumn DoubleRow").prop("primary")).toBe("1.2.3.99");
   });
 
@@ -202,22 +209,22 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <NetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     const alias = wrapper.findWhere(
       (n) => n.name() === "TableRow" && n.key() === "alias:1"
     );
     expect(alias.exists()).toBe(true);
-    expect(alias.find("SubnetColumn LegacyLink").at(0).text()).toBe(
-      "subnet2-cidr"
-    );
+    expect(alias.find("SubnetColumn Link").at(0).text()).toBe("subnet2-cidr");
     expect(alias.find("IPColumn DoubleRow").prop("primary")).toBe("1.2.3.101");
   });
 
@@ -238,13 +245,15 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable
-          expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <NetworkTable
+            expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
+            setExpanded={jest.fn()}
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     const row = wrapper.findWhere(
@@ -271,13 +280,15 @@ describe("NetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTable
-          expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <NetworkTable
+            expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
+            setExpanded={jest.fn()}
+            selected={[]}
+            setSelected={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     const row = wrapper.findWhere(
@@ -313,13 +324,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       // There should be one checkbox for the child interface.
@@ -330,13 +343,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       expect(wrapper.find("GroupCheckbox").prop("items")).toStrictEqual([
@@ -348,13 +363,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       expect(wrapper.find("Icon[name='tick']").length).toBe(1);
@@ -364,13 +381,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       expect(wrapper.find("DoubleRow[data-testid='fabric']").length).toBe(1);
@@ -380,13 +399,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       expect(wrapper.find("DoubleRow[data-testid='dhcp']").length).toBe(1);
@@ -396,13 +417,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       expect(wrapper.find("SubnetColumn").length).toBe(1);
@@ -412,13 +435,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       expect(wrapper.find("IPColumn").length).toBe(1);
@@ -428,13 +453,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       expect(wrapper.find("NetworkTableActions").length).toBe(1);
@@ -493,13 +520,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       const names = wrapper
@@ -524,13 +553,15 @@ describe("NetworkTable", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </MemoryRouter>
         </Provider>
       );
       wrapper.find("TableHeader").first().find("button").simulate("click");

@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
+import controllersURLs from "app/controllers/urls";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
@@ -44,7 +44,9 @@ export const VLANsColumn = ({ systemId }: Props): JSX.Element | null => {
     <DoubleRow
       primary={
         <LegacyLink
-          route={`${baseURLs.controller({ id: systemId })}?area=vlans`}
+          route={`${controllersURLs.controller.index({
+            id: systemId,
+          })}?area=vlans`}
         >
           <span data-testid="vlan-count">{getVlanCount(controller)}</span>
         </LegacyLink>

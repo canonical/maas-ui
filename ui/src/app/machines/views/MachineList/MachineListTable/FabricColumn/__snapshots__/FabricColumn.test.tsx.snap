@@ -11,12 +11,12 @@ exports[`FabricColumn renders 1`] = `
         status={1}
         tooltipPosition="top-left"
       >
-        <LegacyLink
+        <Link
           className="p-link--soft"
-          route="/fabric/0"
+          to="/fabric/0"
         >
           fabric-0
-        </LegacyLink>
+        </Link>
       </MachineTestStatus>
     }
     primaryAriaLabel="Fabric"
@@ -62,24 +62,24 @@ exports[`FabricColumn renders 1`] = `
                       className="is-inline p-icon--running"
                     />
                   </Icon>
-                  <LegacyLink
+                  <Link
                     className="p-link--soft"
-                    route="/fabric/0"
+                    to="/fabric/0"
                   >
-                    <Link
+                    <LinkAnchor
                       className="p-link--soft"
-                      href="/MAAS/l/fabric/0"
-                      onClick={[Function]}
+                      href="/fabric/0"
+                      navigate={[Function]}
                     >
                       <a
                         className="p-link--soft"
-                        href="/MAAS/l/fabric/0"
+                        href="/fabric/0"
                         onClick={[Function]}
                       >
                         fabric-0
                       </a>
-                    </Link>
-                  </LegacyLink>
+                    </LinkAnchor>
+                  </Link>
                 </span>
               </ScriptStatus>
             </MachineTestStatus>

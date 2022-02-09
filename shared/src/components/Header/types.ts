@@ -4,7 +4,6 @@ export type NavItem = {
   adminOnly?: boolean;
   highlight?: string | string[];
   inHardwareMenu?: boolean;
-  isLegacy?: boolean;
   label: string;
   url: string;
 };

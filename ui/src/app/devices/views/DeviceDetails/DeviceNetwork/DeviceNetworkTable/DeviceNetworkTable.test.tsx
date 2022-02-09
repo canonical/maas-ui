@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
@@ -52,11 +53,13 @@ describe("DeviceNetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeviceNetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <DeviceNetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -66,11 +69,13 @@ describe("DeviceNetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeviceNetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <DeviceNetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);
@@ -102,11 +107,13 @@ describe("DeviceNetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeviceNetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <DeviceNetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("SubnetColumn DoubleRow").prop("primary")).toBe(
@@ -143,11 +150,13 @@ describe("DeviceNetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeviceNetworkTable
-          expanded={null}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <DeviceNetworkTable
+            expanded={null}
+            setExpanded={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("SubnetColumn LegacyLink").at(0).text()).toBe(
@@ -173,11 +182,13 @@ describe("DeviceNetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeviceNetworkTable
-          expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <DeviceNetworkTable
+            expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
+            setExpanded={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     const row = wrapper.findWhere(
@@ -204,11 +215,13 @@ describe("DeviceNetworkTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeviceNetworkTable
-          expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <DeviceNetworkTable
+            expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
+            setExpanded={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
       </Provider>
     );
     const row = wrapper.findWhere(

@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import EditInterfaceTable from "./EditInterfaceTable";
@@ -55,7 +56,9 @@ describe("EditInterfaceTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+        <MemoryRouter>
+          <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -65,7 +68,9 @@ describe("EditInterfaceTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+        <MemoryRouter>
+          <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("MainTable").exists()).toBe(true);
@@ -96,7 +101,9 @@ describe("EditInterfaceTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+        <MemoryRouter>
+          <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("SubnetColumn DoubleRow").prop("primary")).toBe(

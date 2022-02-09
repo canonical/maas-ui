@@ -1,15 +1,15 @@
 import { memo } from "react";
 
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import MachineTestStatus from "../MachineTestStatus";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
+import subnetsURLs from "app/subnets/urls";
 
 type Props = { systemId: Machine["system_id"] };
 
@@ -32,12 +32,12 @@ export const FabricColumn = ({ systemId }: Props): JSX.Element | null => {
             tooltipPosition="top-left"
           >
             {fabricName && (fabricID || fabricID === 0) ? (
-              <LegacyLink
+              <Link
                 className="p-link--soft"
-                route={baseURLs.fabric({ id: fabricID })}
+                to={subnetsURLs.fabric.index({ id: fabricID })}
               >
                 {fabricName}
-              </LegacyLink>
+              </Link>
             ) : (
               "-"
             )}

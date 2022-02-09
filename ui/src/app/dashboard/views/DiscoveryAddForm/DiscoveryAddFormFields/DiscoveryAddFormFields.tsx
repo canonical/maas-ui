@@ -1,14 +1,13 @@
 import { Col, Icon, Row, Select, Tooltip } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import type { DiscoveryAddValues } from "../types";
 import { DeviceType } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
-import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import { DeviceMeta } from "app/store/device/types";
@@ -21,6 +20,7 @@ import { getSubnetDisplay } from "app/store/subnet/utils";
 import { NodeStatusCode } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 import { getVLANDisplay } from "app/store/vlan/utils";
+import subnetsURLs from "app/subnets/urls";
 
 type Props = {
   discovery: Discovery;
@@ -149,18 +149,18 @@ const DiscoveryAddFormFields = ({
           <div className="">
             <p>Fabric</p>
             <p>
-              <LegacyLink route={baseURLs.fabric({ id: discovery.fabric })}>
+              <Link to={subnetsURLs.fabric.index({ id: discovery.fabric })}>
                 {discovery.fabric_name}
-              </LegacyLink>
+              </Link>
             </p>
           </div>
           <div className="u-nudge-down--small">
             <p>VLAN</p>
             <p>
               {vlanDisplay ? (
-                <LegacyLink route={baseURLs.vlan({ id: discovery.vlan })}>
+                <Link to={subnetsURLs.vlan.index({ id: discovery.vlan })}>
                   {vlanDisplay}
-                </LegacyLink>
+                </Link>
               ) : null}
             </p>
           </div>
@@ -168,9 +168,9 @@ const DiscoveryAddFormFields = ({
             <p>Subnet</p>
             {discovery.subnet && subnetDisplay ? (
               <p>
-                <LegacyLink route={baseURLs.subnet({ id: discovery.subnet })}>
+                <Link to={subnetsURLs.subnet.index({ id: discovery.subnet })}>
                   {subnetDisplay}
-                </LegacyLink>
+                </Link>
               </p>
             ) : null}
           </div>

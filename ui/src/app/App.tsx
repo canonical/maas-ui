@@ -3,12 +3,7 @@ import { useEffect } from "react";
 
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import {
-  Footer,
-  generateLegacyURL,
-  Header,
-  navigateToLegacy,
-} from "@maas-ui/maas-ui-shared";
+import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
@@ -151,24 +146,6 @@ export const App = (): JSX.Element => {
         completedIntro={completedIntro && completedUserIntro}
         debug={debug}
         enableAnalytics={analyticsEnabled as boolean}
-        generateLegacyLink={(
-          link: LinkType,
-          props: LinkProps,
-          _appendNewBase: boolean
-        ) => (
-          <a
-            className={props.className}
-            aria-current={props["aria-current"]}
-            aria-label={props["aria-label"]}
-            role={props.role}
-            href={generateLegacyURL(link.url)}
-            onClick={(evt) => {
-              navigateToLegacy(link.url, evt);
-            }}
-          >
-            {link.label}
-          </a>
-        )}
         generateNewLink={(
           link: LinkType,
           props: LinkProps,

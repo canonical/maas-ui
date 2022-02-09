@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import SubnetColumn from "./SubnetColumn";
@@ -54,10 +55,12 @@ describe("SubnetColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
+        <MemoryRouter>
+          <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
+        </MemoryRouter>
       </Provider>
     );
-    const links = wrapper.find("LegacyLink");
+    const links = wrapper.find("Link");
     expect(links.at(0).text()).toBe("subnet-cidr");
     expect(links.at(1).text()).toBe("subnet-name");
   });
@@ -84,10 +87,12 @@ describe("SubnetColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SubnetColumn link={link} nic={nic} node={state.device.items[0]} />
+        <MemoryRouter>
+          <SubnetColumn link={link} nic={nic} node={state.device.items[0]} />
+        </MemoryRouter>
       </Provider>
     );
-    const links = wrapper.find("LegacyLink");
+    const links = wrapper.find("Link");
     expect(links.at(0).text()).toBe("subnet-cidr");
     expect(links.at(1).text()).toBe("subnet-name");
   });
@@ -112,7 +117,9 @@ describe("SubnetColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
+        <MemoryRouter>
+          <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("DoubleRow").prop("primary")).toBe("Unconfigured");
@@ -141,10 +148,12 @@ describe("SubnetColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SubnetColumn nic={nic} node={state.machine.items[0]} />
+        <MemoryRouter>
+          <SubnetColumn nic={nic} node={state.machine.items[0]} />
+        </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("LegacyLink").exists()).toBe(false);
+    expect(wrapper.find("Link").exists()).toBe(false);
     expect(wrapper.find("DoubleRow").prop("primary")).toBe(
       "subnet-cidr (subnet-name)"
     );
