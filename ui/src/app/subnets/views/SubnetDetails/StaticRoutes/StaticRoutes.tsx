@@ -1,9 +1,11 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-import { MainTable, Spinner } from "@canonical/react-components";
+import { Button, MainTable, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
+
+import AddStaticRouteForm from "./AddStaticRouteForm";
 
 import SubnetLink from "app/base/components/SubnetLink";
 import TableActions from "app/base/components/TableActions";
@@ -16,9 +18,10 @@ import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
+import userSelectors from "app/store/user/selectors";
 
 export type Props = {
-  subnetId: Subnet[SubnetMeta.PK] | null;
+  subnetId: Subnet[SubnetMeta.PK];
 };
 
 export enum Labels {
@@ -148,7 +151,9 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
   );
   const subnets = useSelector(subnetSelectors.all);
   const subnetsLoading = useSelector(subnetSelectors.loading);
+  const isSuperUser = useSelector(userSelectors.isSuperUser);
   const loading = staticRoutesLoading || subnetsLoading;
+  const [isAddStaticRouteOpen, setIsAddStaticRouteOpen] = useState(false);
 
   useEffect(() => {
     dispatch(staticRouteActions.fetch());
@@ -156,7 +161,21 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
   }, [dispatch]);
 
   return (
-    <TitledSection title="Static routes">
+    <TitledSection
+      title="Static routes"
+      buttons={
+        isSuperUser ? (
+          <Button
+            disabled={isAddStaticRouteOpen}
+            onClick={() => {
+              setIsAddStaticRouteOpen(true);
+            }}
+          >
+            Add static route
+          </Button>
+        ) : null
+      }
+    >
       <MainTable
         className="reserved-ranges-table p-table-expanding--light"
         defaultSort="gateway_ip"
@@ -198,6 +217,12 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
         )}
         sortable
       />
+      {isAddStaticRouteOpen ? (
+        <AddStaticRouteForm
+          subnetId={subnetId}
+          handleDismiss={() => setIsAddStaticRouteOpen(false)}
+        />
+      ) : null}
     </TitledSection>
   );
 };

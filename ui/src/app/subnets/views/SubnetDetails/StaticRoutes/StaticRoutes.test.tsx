@@ -1,8 +1,10 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import { AddStaticRouteFormLabels } from "./AddStaticRouteForm/AddStaticRouteForm";
 import StaticRoutes, { Labels } from "./StaticRoutes";
 
 import {
@@ -11,6 +13,9 @@ import {
   staticRouteState as staticRouteStateFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
+  authState as authStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -62,4 +67,67 @@ it("renders for a subnet", () => {
       })
       .find((td) => td.textContent === "11.1.1.2")
   ).toBeInTheDocument();
+});
+
+it("can open and close the add static route form", async () => {
+  const subnet = subnetFactory({ id: 1 });
+  const state = rootStateFactory({
+    user: userStateFactory({
+      auth: authStateFactory({
+        user: userFactory(),
+      }),
+      items: [userFactory(), userFactory(), userFactory()],
+    }),
+    staticroute: staticRouteStateFactory({
+      items: [],
+    }),
+    subnet: subnetStateFactory({
+      items: [subnet, subnetFactory({ id: 2 })],
+    }),
+  });
+
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <StaticRoutes subnetId={subnet.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", {
+        name: AddStaticRouteFormLabels.AddStaticRoute,
+      })
+    ).toBeInTheDocument()
+  );
+  userEvent.click(
+    screen.getByRole("button", {
+      name: AddStaticRouteFormLabels.AddStaticRoute,
+    })
+  );
+
+  await waitFor(() =>
+    expect(
+      screen.getByRole("form", {
+        name: AddStaticRouteFormLabels.AddStaticRoute,
+      })
+    ).toBeInTheDocument()
+  );
+
+  userEvent.click(
+    within(
+      screen.getByRole("form", {
+        name: AddStaticRouteFormLabels.AddStaticRoute,
+      })
+    ).getByRole("button", { name: "Cancel" })
+  );
+
+  await waitFor(() =>
+    expect(
+      screen.queryByRole("form", {
+        name: AddStaticRouteFormLabels.AddStaticRoute,
+      })
+    ).not.toBeInTheDocument()
+  );
 });
