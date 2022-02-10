@@ -67,7 +67,7 @@ const SubnetDetails = (): JSX.Element => {
       <StaticRoutes subnetId={id} />
       <ReservedRanges subnetId={id} />
       <DHCPSnippets subnetIds={[id]} modelName={SubnetMeta.MODEL} />
-      <UsedIPs />
+      <UsedIPs subnetId={id} />
     </Section>
   );
 };
