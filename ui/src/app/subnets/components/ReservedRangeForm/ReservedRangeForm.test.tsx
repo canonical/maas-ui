@@ -84,7 +84,7 @@ describe("ReservedRangeForm", () => {
       ipRange.end_ip
     );
     expect(
-      screen.getByRole("textbox", { name: Labels.Purpose })
+      screen.getByRole("textbox", { name: Labels.Comment })
     ).toHaveAttribute("value", ipRange.comment);
   });
 
@@ -102,10 +102,10 @@ describe("ReservedRangeForm", () => {
       </Provider>
     );
     expect(
-      screen.getByRole("textbox", { name: Labels.Purpose })
+      screen.getByRole("textbox", { name: Labels.Comment })
     ).toHaveAttribute("value", "Dynamic");
     expect(
-      screen.getByRole("textbox", { name: Labels.Purpose })
+      screen.getByRole("textbox", { name: Labels.Comment })
     ).toHaveAttribute("disabled");
   });
 
@@ -133,7 +133,7 @@ describe("ReservedRangeForm", () => {
       "1.1.1.2"
     );
     userEvent.type(
-      screen.getByRole("textbox", { name: Labels.Purpose }),
+      screen.getByRole("textbox", { name: Labels.Comment }),
       "reserved"
     );
     await waitFor(() => fireEvent.submit(screen.getByRole("form")));
@@ -198,7 +198,7 @@ describe("ReservedRangeForm", () => {
     expect(actual.payload.params.comment).toBe(expected.payload.params.comment);
   });
 
-  it("does not display the purpose field when creating a dynamic range", async () => {
+  it("does not display the Comment field when creating a dynamic range", async () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -213,7 +213,7 @@ describe("ReservedRangeForm", () => {
       </Provider>
     );
     expect(
-      screen.queryAllByRole("textbox", { name: Labels.Purpose })
+      screen.queryAllByRole("textbox", { name: Labels.Comment })
     ).toHaveLength(0);
   });
 });

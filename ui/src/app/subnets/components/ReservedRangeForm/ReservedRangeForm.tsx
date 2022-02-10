@@ -31,7 +31,7 @@ export enum Labels {
   CreateRange = "Create reserved range",
   EditRange = "Edit reserved range",
   EndIp = "End IP address",
-  Purpose = "Purpose",
+  Comment = "Comment",
   StartIp = "Start IP address",
 }
 
@@ -120,24 +120,15 @@ const ReservedRangeForm = ({
       {...props}
     >
       <Row>
-        <Col size={6}>
+        <Col size={4}>
           <FormikField
             label={Labels.StartIp}
             name="start_ip"
             required
             type="text"
           />
-          {isEditing || createType === IPRangeType.Reserved ? (
-            <FormikField
-              disabled={showDynamicComment}
-              label={Labels.Purpose}
-              name="comment"
-              placeholder="IP range purpose (optional)"
-              type="text"
-            />
-          ) : null}
         </Col>
-        <Col size={6}>
+        <Col size={4}>
           <FormikField
             label={Labels.EndIp}
             name="end_ip"
@@ -145,6 +136,17 @@ const ReservedRangeForm = ({
             type="text"
           />
         </Col>
+        {isEditing || createType === IPRangeType.Reserved ? (
+          <Col size={4}>
+            <FormikField
+              disabled={showDynamicComment}
+              label={Labels.Comment}
+              name="comment"
+              placeholder="IP range comment (optional)"
+              type="text"
+            />
+          </Col>
+        ) : null}
       </Row>
     </FormikForm>
   );
