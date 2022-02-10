@@ -2,7 +2,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 
 import { NotificationSeverity } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
-import { nanoid } from "nanoid/non-secure";
+import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
