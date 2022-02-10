@@ -5,6 +5,7 @@ exports[`GroupCheckbox renders 1`] = `
   checked={false}
   className=""
   disabled={true}
+  id="Uakgb_J5m9g-0JDMbcJqLJ-1"
   label=" "
   labelClassName="is-inline-label"
   onChange={[Function]}

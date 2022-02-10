@@ -70,6 +70,7 @@ exports[`NameColumn renders 1`] = `
               <Input
                 checked={false}
                 className="keep-label-opacity"
+                id="Uakgb_J5m9g-0JDMbcJqLJ-1"
                 label={
                   <Link
                     title="test.maas"
@@ -93,6 +94,7 @@ exports[`NameColumn renders 1`] = `
               >
                 <Field
                   className="u-no-margin--bottom u-nudge--checkbox"
+                  forId="Uakgb_J5m9g-0JDMbcJqLJ-1"
                   label={
                     <Link
                       title="test.maas"
@@ -122,14 +124,17 @@ exports[`NameColumn renders 1`] = `
                         aria-invalid={false}
                         checked={false}
                         className="p-form-validation__input keep-label-opacity"
+                        id="Uakgb_J5m9g-0JDMbcJqLJ-1"
                         onChange={[Function]}
                         type="checkbox"
                       />
                       <Label
                         className="is-inline-label"
+                        forId="Uakgb_J5m9g-0JDMbcJqLJ-1"
                       >
                         <label
                           className="is-inline-label p-form__label"
+                          htmlFor="Uakgb_J5m9g-0JDMbcJqLJ-1"
                         >
                           <Link
                             title="test.maas"

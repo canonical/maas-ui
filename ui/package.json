@@ -121,6 +121,7 @@
     "style-loader": "3.3.1"
   },
   "jest": {
+    "resetMocks": false,
     "snapshotSerializers": [
       "enzyme-to-json/serializer"
     ]
