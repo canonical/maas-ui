@@ -229,6 +229,7 @@ const ReservedRanges = ({
       ) : null}
       <MainTable
         className="reserved-ranges-table p-table-expanding--light"
+        responsive
         defaultSort="name"
         defaultSortDirection="descending"
         emptyStateMsg={
