@@ -59,7 +59,7 @@ const SubnetSummaryForm = ({
 
   return (
     <FormikForm<SubnetSummaryFormValues>
-      aria-label="Edit subnet summary"
+      aria-label="Edit subnet"
       cleanup={subnetActions.cleanup}
       errors={subnetErrors}
       initialValues={{
@@ -69,11 +69,11 @@ const SubnetSummaryForm = ({
         cidr: subnet.cidr,
         description: subnet.description,
         dns_servers: subnet.dns_servers,
-        fabric: vlan.fabric,
+        fabric: vlan.fabric.toString(),
         gateway_ip: subnet.gateway_ip || "",
         managed: subnet.managed,
         name: subnet.name,
-        vlan: subnet.vlan,
+        vlan: subnet.vlan.toString(),
       }}
       onSaveAnalytics={{
         action: "Save",
@@ -94,7 +94,7 @@ const SubnetSummaryForm = ({
             id: subnet.id,
             managed: values.managed,
             name: values.name,
-            vlan: values.vlan,
+            vlan: Number(values.vlan),
           })
         );
       }}

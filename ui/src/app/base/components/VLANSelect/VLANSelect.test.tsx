@@ -53,7 +53,7 @@ describe("VLANSelect", () => {
       </Provider>
     );
     expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      { label: "Select VLAN", value: "" },
+      { disabled: true, label: "Select VLAN", value: "" },
       {
         label: "1 (vlan1)",
         value: "1",
@@ -106,7 +106,7 @@ describe("VLANSelect", () => {
       </Provider>
     );
     expect(wrapper.find(DynamicSelect).prop("options")).toStrictEqual([
-      { label: "Select VLAN", value: "" },
+      { disabled: true, label: "Select VLAN", value: "" },
       {
         label: "1 (vlan1)",
         value: "1",
@@ -128,7 +128,7 @@ describe("VLANSelect", () => {
       </Provider>
     );
     expect(wrapper.find(DynamicSelect).prop("options")).toStrictEqual([
-      { label: "Select VLAN", value: "" },
+      { disabled: true, label: "Select VLAN", value: "" },
       {
         label: "2 (vlan2)",
         value: "2",

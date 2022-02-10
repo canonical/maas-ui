@@ -1,5 +1,4 @@
-import { render, screen, within, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -16,98 +15,88 @@ import {
   fabricState as fabricStateFactory,
 } from "testing/factories";
 
-const subnet = {
-  id: 1,
-  name: "Test subnet",
-  cidr: "192.168.1.1/32",
-  gateway_ip: "192.168.1.1/32",
-  dns_servers: "Test DNS",
-  description: "Test description",
-  managed: true,
-  active_discovery: true,
-  allow_proxy: true,
-  allow_dns: true,
-  space: 1,
-  vlan: 1,
-};
-
-const getRootState = () =>
-  rootStateFactory({
-    subnet: subnetStateFactory({
-      loaded: true,
-      loading: false,
-      items: [subnetFactory(subnet)],
-    }),
-    vlan: vlanStateFactory({
-      loaded: true,
-      loading: false,
-      items: [
-        vlanFactory({
-          id: subnet.vlan,
-          name: "Test VLAN",
-          fabric: 1,
-        }),
-      ],
-    }),
-    fabric: fabricStateFactory({
-      loaded: true,
-      loading: false,
-      items: [
-        fabricFactory({
-          id: 1,
-          name: "Test fabric",
-          vlan_ids: [subnet.vlan],
-        }),
-      ],
-    }),
+it("can dispatch an action to update the subnet", async () => {
+  const fabrics = [
+    fabricFactory({ default_vlan_id: 3, id: 1, vlan_ids: [3] }),
+    fabricFactory({ default_vlan_id: 4, id: 2, vlan_ids: [4] }),
+  ];
+  const vlans = [
+    vlanFactory({ fabric: 1, id: 3 }),
+    vlanFactory({ fabric: 2, id: 4 }),
+  ];
+  const subnet = subnetFactory({
+    active_discovery: false,
+    allow_dns: false,
+    allow_proxy: false,
+    cidr: "192.168.1.0/24",
+    description: "I'm a subnet",
+    dns_servers: "abcde",
+    gateway_ip: "192.168.1.1",
+    managed: false,
+    name: "Old Name",
+    id: 5,
+    vlan: vlans[0].id,
   });
-
-it("dispatches an update action on submit", async () => {
-  const state = getRootState();
+  const state = rootStateFactory({
+    fabric: fabricStateFactory({ items: fabrics, loaded: true }),
+    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
+    vlan: vlanStateFactory({ items: vlans, loaded: true }),
+  });
   const store = configureStore()(state);
-
   render(
     <Provider store={store}>
       <SubnetSummaryForm id={subnet.id} handleDismiss={jest.fn()} />
     </Provider>
   );
 
-  const subnetSummaryForm = screen.getByRole("form", {
-    name: "Edit subnet summary",
-  });
-
-  userEvent.clear(screen.getByLabelText("Name"));
-  userEvent.clear(screen.getByLabelText("Description"));
-  userEvent.type(screen.getByLabelText("Name"), "Test name updated");
-  userEvent.type(
-    screen.getByLabelText("Description"),
-    "Test description updated"
-  );
-  userEvent.click(
-    within(subnetSummaryForm).getByRole("button", { name: "Save" })
-  );
-
   await waitFor(() => {
-    const expectedActions = [
-      subnetActions.update({
-        ...subnet,
-        name: "Test name updated",
-        description: "Test description updated",
-      }),
-      subnetActions.cleanup(),
-    ];
-
-    const actualActions = store.getActions();
-
-    expectedActions.forEach((expectedAction) => {
-      expect(
-        actualActions.find(
-          (actualAction) =>
-            actualAction.type === expectedAction.type &&
-            // Check payload to differentiate "set" and "unset" active actions
-            actualAction.payload?.params === expectedAction.payload?.params
-        )
-      ).toStrictEqual(expectedAction);
+    fireEvent.input(screen.getByRole("textbox", { name: "CIDR" }), {
+      target: { value: "192.168.2.0/24" },
     });
+    fireEvent.input(screen.getByRole("textbox", { name: "Name" }), {
+      target: { value: "New Name" },
+    });
+    fireEvent.input(screen.getByRole("textbox", { name: "Description" }), {
+      target: { value: "I'm a supernet" },
+    });
+    fireEvent.input(screen.getByRole("textbox", { name: "Gateway IP" }), {
+      target: { value: "192.168.2.1" },
+    });
+    fireEvent.input(screen.getByRole("textbox", { name: "DNS" }), {
+      target: { value: "fghij" },
+    });
+    fireEvent.click(
+      screen.getByRole("checkbox", { name: "Managed allocation" })
+    );
+    fireEvent.click(screen.getByRole("checkbox", { name: "Active discovery" }));
+    fireEvent.click(
+      screen.getByRole("checkbox", { name: "Allow DNS resolution" })
+    );
+    fireEvent.click(screen.getByRole("checkbox", { name: "Proxy access" }));
+    fireEvent.change(screen.getByRole("combobox", { name: "Fabric" }), {
+      target: { value: fabrics[1].id.toString() },
+    });
+    fireEvent.change(screen.getByRole("combobox", { name: "VLAN" }), {
+      target: { value: vlans[1].id.toString() },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
   });
+
+  const expectedAction = subnetActions.update({
+    active_discovery: true,
+    allow_dns: true,
+    allow_proxy: true,
+    cidr: "192.168.2.0/24",
+    description: "I'm a supernet",
+    dns_servers: "fghij",
+    gateway_ip: "192.168.2.1",
+    id: subnet.id,
+    managed: true,
+    name: "New Name",
+    vlan: vlans[1].id,
+  });
+  const actualActions = store.getActions();
+  expect(
+    actualActions.find((action) => action.type === expectedAction.type)
+  ).toStrictEqual(expectedAction);
 });
