@@ -11,7 +11,7 @@ export enum IPAddressTypeLabel {
   STICKY = "Sticky",
   USER_RESERVED = "User reserved",
   DHCP = "DHCP",
-  OBSERVED = "Discovered",
+  DISCOVERED = "Discovered",
 }
 
 export enum SubnetMeta {
