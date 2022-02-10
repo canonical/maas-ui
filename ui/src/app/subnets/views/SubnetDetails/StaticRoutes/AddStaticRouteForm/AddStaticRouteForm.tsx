@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Col, Row, Select, Spinner } from "@canonical/react-components";
+import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,6 +8,7 @@ import { Labels } from "../StaticRoutes";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import SubnetSelect from "app/base/components/SubnetSelect";
 import type { RootState } from "app/store/root/types";
 import { actions as staticRouteActions } from "app/store/staticroute";
 import staticRouteSelectors from "app/store/staticroute/selectors";
@@ -35,18 +36,8 @@ const addStaticRouteSchema = Yup.object().shape({
   metric: Yup.number().required("Metric is required"),
 });
 
-const getDestinationsForSource = (subnets: Subnet[], source: Subnet | null) => {
-  const filtered: Subnet[] = [];
-  if (source) {
-    subnets.forEach((subnet) => {
-      if (subnet.id !== source.id && subnet.version === source.version) {
-        filtered.push(subnet);
-      }
-    });
-  }
-
-  return filtered;
-};
+const isDestinationForSource = (destination: Subnet, source: Subnet | null) =>
+  destination.id !== source?.id && destination.version === source?.version;
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK];
@@ -62,19 +53,14 @@ const AddStaticRouteForm = ({
   const dispatch = useDispatch();
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
-  const staticRoutesLoaded = useSelector(staticRouteSelectors.loaded);
-  const subnetsLoaded = useSelector(subnetSelectors.loaded);
   const loading = staticRoutesLoading || subnetsLoading;
-  const subnets = useSelector(subnetSelectors.all);
   const source = useSelector((state: RootState) =>
     subnetSelectors.getById(state, subnetId)
   );
-  const destinationSubnets = getDestinationsForSource(subnets, source);
 
   useEffect(() => {
-    if (!staticRoutesLoaded) dispatch(staticRouteActions.fetch());
-    if (!subnetsLoaded) dispatch(subnetActions.fetch());
-  }, [dispatch, staticRoutesLoaded, subnetsLoaded]);
+    dispatch(subnetActions.fetch());
+  }, [dispatch]);
 
   if (loading) {
     return <Spinner text="Loading..." />;
@@ -122,17 +108,17 @@ const AddStaticRouteForm = ({
           <FormikField label={Labels.GatewayIp} name="gateway_ip" type="text" />
         </Col>
         <Col size={4}>
-          <FormikField
-            component={Select}
+          <SubnetSelect
+            defaultOption={{
+              label: "Select destination",
+              value: "",
+              disabled: true,
+            }}
+            filterFunction={(destination) =>
+              isDestinationForSource(destination, source)
+            }
             label={Labels.Destination}
             name="destination"
-            options={[
-              { label: "Select destination", value: "", disabled: true },
-              ...destinationSubnets.map((subnet) => ({
-                label: subnet.cidr,
-                value: subnet.id,
-              })),
-            ]}
           />
         </Col>
         <Col size={4}>

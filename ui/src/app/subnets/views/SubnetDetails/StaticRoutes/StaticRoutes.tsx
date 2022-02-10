@@ -7,10 +7,12 @@ import type { Dispatch } from "redux";
 
 import AddStaticRouteForm from "./AddStaticRouteForm";
 
+import FormCard from "app/base/components/FormCard";
 import SubnetLink from "app/base/components/SubnetLink";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
+import authSelectors from "app/store/auth/selectors";
 import { actions as staticRouteActions } from "app/store/staticroute";
 import staticRouteSelectors from "app/store/staticroute/selectors";
 import type { StaticRoute, StaticRouteMeta } from "app/store/staticroute/types";
@@ -18,7 +20,6 @@ import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
-import userSelectors from "app/store/user/selectors";
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK];
@@ -38,7 +39,7 @@ export enum ExpandedType {
 }
 
 type Expanded = {
-  id: StaticRoute[StaticRouteMeta.PK];
+  id?: StaticRoute[StaticRouteMeta.PK];
   type: ExpandedType;
 };
 
@@ -151,9 +152,9 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
   );
   const subnets = useSelector(subnetSelectors.all);
   const subnetsLoading = useSelector(subnetSelectors.loading);
-  const isSuperUser = useSelector(userSelectors.isSuperUser);
+  const isAdmin = useSelector(authSelectors.isAdmin);
   const loading = staticRoutesLoading || subnetsLoading;
-  const [isAddStaticRouteOpen, setIsAddStaticRouteOpen] = useState(false);
+  const isAddStaticRouteOpen = expanded?.type === ExpandedType.Create;
 
   useEffect(() => {
     dispatch(staticRouteActions.fetch());
@@ -164,11 +165,11 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
     <TitledSection
       title="Static routes"
       buttons={
-        isSuperUser ? (
+        isAdmin ? (
           <Button
             disabled={isAddStaticRouteOpen}
             onClick={() => {
-              setIsAddStaticRouteOpen(true);
+              setExpanded({ type: ExpandedType.Create });
             }}
           >
             Add static route
@@ -218,10 +219,12 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
         sortable
       />
       {isAddStaticRouteOpen ? (
-        <AddStaticRouteForm
-          subnetId={subnetId}
-          handleDismiss={() => setIsAddStaticRouteOpen(false)}
-        />
+        <FormCard sidebar={false}>
+          <AddStaticRouteForm
+            subnetId={subnetId}
+            handleDismiss={() => setExpanded(null)}
+          />
+        </FormCard>
       ) : null}
     </TitledSection>
   );
