@@ -16,7 +16,7 @@ import { getVLANDisplay } from "app/store/vlan/utils";
 import { isId } from "app/utils";
 
 type Props = {
-  defaultOption?: { label: string; value: string } | null;
+  defaultOption?: { disabled?: boolean; label: string; value: string } | null;
   fabric?: VLAN["fabric"];
   includeDefaultVlan?: boolean;
   showSpinnerOnLoad?: boolean;
@@ -25,7 +25,7 @@ type Props = {
 } & FormikFieldProps;
 
 export const VLANSelect = ({
-  defaultOption = { label: "Select VLAN", value: "" },
+  defaultOption = { disabled: true, label: "Select VLAN", value: "" },
   fabric,
   includeDefaultVlan = true,
   showSpinnerOnLoad = false,
