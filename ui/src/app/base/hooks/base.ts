@@ -4,6 +4,7 @@ import { NotificationSeverity } from "@canonical/react-components";
 import type { NotificationProps } from "@canonical/react-components";
 import { nanoid } from "nanoid/non-secure";
 import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 
 import configSelectors from "app/store/config/selectors";
 import { actions as messageActions } from "app/store/message";
@@ -163,3 +164,14 @@ export const useScrollOnRender = <T extends HTMLElement>(): ((
  * @returns non-secure random ID string
  */
 export const useId = (): string => useRef(nanoid()).current;
+
+/**
+ * Scroll to the top of the window on URL pathname change.
+ */
+export const useScrollToTop = (): void => {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+};
