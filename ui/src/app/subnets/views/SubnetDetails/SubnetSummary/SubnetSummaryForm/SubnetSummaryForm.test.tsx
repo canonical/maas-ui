@@ -76,6 +76,8 @@ it("can dispatch an action to update the subnet", async () => {
     fireEvent.change(screen.getByRole("combobox", { name: "Fabric" }), {
       target: { value: fabrics[1].id.toString() },
     });
+  });
+  await waitFor(() => {
     fireEvent.change(screen.getByRole("combobox", { name: "VLAN" }), {
       target: { value: vlans[1].id.toString() },
     });
