@@ -4,7 +4,7 @@ exports[`RowCheckbox renders 1`] = `
 <Input
   checked={false}
   className="keep-label-opacity"
-  id="Uakgb_J5m9g-0JDMbcJqLJ1"
+  id="Uakgb_J5m9g-0JDMbcJqLJ-1"
   labelClassName="is-inline-label"
   onChange={[Function]}
   type="checkbox"

@@ -19,3 +19,5 @@ beforeEach(() => {
   // the whole test file.
   id = 0;
 });
+
+export {};

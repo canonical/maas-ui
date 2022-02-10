@@ -281,7 +281,7 @@ exports[`NodeName can display the form 1`] = `
               <Input
                 className="node-name__hostname"
                 error={null}
-                id="Uakgb_J5m9g-0JDMbcJqLJ1"
+                id="Uakgb_J5m9g-0JDMbcJqLJ-1"
                 name="hostname"
                 onBlur={[Function]}
                 onChange={[Function]}
@@ -299,7 +299,7 @@ exports[`NodeName can display the form 1`] = `
                 <Field
                   className="u-nudge-left--small u-no-margin--right"
                   error={null}
-                  forId="Uakgb_J5m9g-0JDMbcJqLJ1"
+                  forId="Uakgb_J5m9g-0JDMbcJqLJ-1"
                   labelFirst={true}
                   required={true}
                 >
@@ -312,7 +312,7 @@ exports[`NodeName can display the form 1`] = `
                       <input
                         aria-invalid={false}
                         className="p-form-validation__input node-name__hostname"
-                        id="Uakgb_J5m9g-0JDMbcJqLJ1"
+                        id="Uakgb_J5m9g-0JDMbcJqLJ-1"
                         name="hostname"
                         onBlur={[Function]}
                         onChange={[Function]}

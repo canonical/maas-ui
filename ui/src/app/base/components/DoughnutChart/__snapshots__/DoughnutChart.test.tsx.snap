@@ -16,13 +16,13 @@ exports[`DoughnutChart renders 1`] = `
     position="right"
   >
     <style>
-      #doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ1 .doughnut-chart__segment:hover {
+      #doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ-1 .doughnut-chart__segment:hover {
           stroke-width: 25 !important;
         }
     </style>
     <svg
       className="doughnut-chart__chart"
-      id="doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ1"
+      id="doughnut-chart-Uakgb_J5m9g-0JDMbcJqLJ-1"
       viewBox="0 0 106 106"
     >
       <mask
