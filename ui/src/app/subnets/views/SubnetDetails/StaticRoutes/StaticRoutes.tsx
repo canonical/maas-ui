@@ -191,7 +191,8 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
       }
     >
       <MainTable
-        className="reserved-ranges-table p-table-expanding--light"
+        className="static-routes-table p-table-expanding--light"
+        responsive
         defaultSort="gateway_ip"
         defaultSortDirection="ascending"
         emptyStateMsg={

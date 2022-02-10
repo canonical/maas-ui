@@ -61,8 +61,6 @@ const EditStaticRouteForm = ({
   const dispatch = useDispatch();
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
-  const staticRoutesLoaded = useSelector(staticRouteSelectors.loaded);
-  const subnetsLoaded = useSelector(subnetSelectors.loaded);
   const loading = staticRoutesLoading || subnetsLoading;
   const subnets = useSelector(subnetSelectors.all);
   const staticRoute = useSelector((state: RootState) =>
@@ -74,9 +72,9 @@ const EditStaticRouteForm = ({
   const destinationSubnets = getDestinationsForSource(subnets, source);
 
   useEffect(() => {
-    if (!staticRoutesLoaded) dispatch(staticRouteActions.fetch());
-    if (!subnetsLoaded) dispatch(subnetActions.fetch());
-  }, [dispatch, staticRoutesLoaded, subnetsLoaded]);
+    dispatch(staticRouteActions.fetch());
+    dispatch(subnetActions.fetch());
+  }, [dispatch]);
 
   if (!staticRoute || loading) {
     return <Spinner text="Loading..." />;
