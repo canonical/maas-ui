@@ -4,11 +4,11 @@ import type {
   ElementType,
   HTMLProps,
 } from "react";
-import { useRef } from "react";
 
 import { Input } from "@canonical/react-components";
-import { nanoid } from "@reduxjs/toolkit";
 import { useField } from "formik";
+
+import { useId } from "app/base/hooks/base";
 
 export type Props<C extends ElementType | ComponentType = typeof Input> = {
   component?: C;
@@ -23,12 +23,12 @@ const FormikField = <C extends ElementType | ComponentType = typeof Input>({
   label,
   ...props
 }: Props<C>): JSX.Element => {
-  const id = useRef(nanoid());
+  const id = useId();
   const [field, meta] = useField({ name, type: props.type, value });
   return (
     <Component
       error={meta.touched ? meta.error : null}
-      id={id.current}
+      id={id}
       aria-label={label}
       label={label}
       {...field}

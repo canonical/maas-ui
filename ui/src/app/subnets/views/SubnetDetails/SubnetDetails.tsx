@@ -46,19 +46,18 @@ const SubnetDetails = (): JSX.Element => {
     return unsetActiveSubnetAndCleanup;
   }, [dispatch, id, isValidID]);
 
-  if (!subnet) {
-    const subnetNotFound = !isValidID || !subnetsLoading;
-
-    if (subnetNotFound) {
-      return (
-        <ModelNotFound
-          id={id}
-          linkURL={subnetURLs.indexBy({ by: "fabric" })}
-          modelName="subnet"
-        />
-      );
-    }
+  if (subnetsLoading) {
     return <Section header={<SectionHeader loading />} />;
+  }
+
+  if (!subnet || !isValidID) {
+    return (
+      <ModelNotFound
+        id={id}
+        linkURL={subnetURLs.indexBy({ by: "fabric" })}
+        modelName="subnet"
+      />
+    );
   }
 
   return (
@@ -67,10 +66,7 @@ const SubnetDetails = (): JSX.Element => {
       <Utilisation statistics={subnet.statistics} />
       <StaticRoutes subnetId={id} />
       <ReservedRanges subnetId={id} />
-      <DHCPSnippets
-        subnetIds={isId(id) ? [id] : []}
-        modelName={SubnetMeta.MODEL}
-      />
+      <DHCPSnippets subnetIds={[id]} modelName={SubnetMeta.MODEL} />
       <UsedIPs />
     </Section>
   );
