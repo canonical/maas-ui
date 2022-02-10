@@ -56,10 +56,11 @@ const SubnetUsedIPs = ({ subnetId }: Props): JSX.Element => {
   return (
     <TitledSection title="Used IP addresses">
       <MainTable
-        className="p-table-expanding--light"
+        className="used-ip-table p-table-expanding--light"
         defaultSort="name"
         defaultSortDirection="descending"
         sortable
+        responsive
         emptyStateMsg={
           loading ? (
             <Spinner text="Loading..." />
@@ -70,23 +71,23 @@ const SubnetUsedIPs = ({ subnetId }: Props): JSX.Element => {
         headers={[
           {
             content: Labels.IpAddresses,
-            sortKey: "ip_addresses",
+            sortKey: "ip",
           },
           {
             content: Labels.Type,
-            sortKey: "end_ip",
-          },
-          {
-            content: Labels.Node,
-            sortKey: "owner",
-          },
-          {
-            content: Labels.Interface,
             sortKey: "type",
           },
           {
+            content: Labels.Node,
+            sortKey: "node",
+          },
+          {
+            content: Labels.Interface,
+            sortKey: "interface",
+          },
+          {
             content: Labels.Usage,
-            sortKey: "comment",
+            sortKey: "usage",
           },
           {
             content: Labels.Owner,
@@ -131,6 +132,15 @@ const SubnetUsedIPs = ({ subnetId }: Props): JSX.Element => {
                 content: ip_address.updated,
               },
             ],
+            sortData: {
+              ip: ip_address.ip,
+              type: type,
+              node: ip_address.node_summary?.hostname,
+              interface: ip_address.node_summary?.via,
+              usage: usage,
+              owner: ip_address.user,
+              updated: ip_address.updated,
+            },
           };
         })}
       />

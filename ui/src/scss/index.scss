@@ -262,11 +262,13 @@
 @import "~app/subnets/views/SubnetDetails/SubnetDetailsHeader/SubnetActionForms/components/EditBootArchitectures/BootArchitecturesTable";
 @import "~app/subnets/views/SubnetsList";
 @import "~app/subnets/views/VLANDetails/VLANSubnets";
+@import "~app/subnets/views/SubnetDetails/UsedIPs/_index.scss";
 @include BootArchitecturesTable;
 @include FabricVLANs;
 @include ReservedRanges;
 @include SubnetsList;
 @include VLANSubnets;
+@include UsedIpTable;
 
 #maas-ui {
   background-color: $color-light;

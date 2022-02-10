@@ -1,0 +1,8 @@
+@mixin UsedIpTable {
+  .used-ip-table {
+    th:nth-child(1),
+    td:nth-child(1) {
+      width: 24%;
+    }
+  }
+}

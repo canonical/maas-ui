@@ -13,7 +13,7 @@ import {
 
 const mockStore = configureStore();
 
-it("renders for a subnet", () => {
+it("displays correct IP addresses", () => {
   const subnet = subnetFactory({
     ip_addresses: [
       {
