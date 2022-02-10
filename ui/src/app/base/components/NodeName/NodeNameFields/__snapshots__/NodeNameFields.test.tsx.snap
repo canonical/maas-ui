@@ -18,7 +18,7 @@ exports[`NodeNameFields displays the fields 1`] = `
     <Input
       className="node-name__hostname"
       error={null}
-      id="Uakgb_J5m9g-0JDMbcJqLJ"
+      id="Uakgb_J5m9g-0JDMbcJqLJ1"
       name="hostname"
       onBlur={[Function]}
       onChange={[Function]}
@@ -36,7 +36,7 @@ exports[`NodeNameFields displays the fields 1`] = `
       <Field
         className="u-nudge-left--small u-no-margin--right"
         error={null}
-        forId="Uakgb_J5m9g-0JDMbcJqLJ"
+        forId="Uakgb_J5m9g-0JDMbcJqLJ1"
         labelFirst={true}
         required={true}
       >
@@ -49,7 +49,7 @@ exports[`NodeNameFields displays the fields 1`] = `
             <input
               aria-invalid={false}
               className="p-form-validation__input node-name__hostname"
-              id="Uakgb_J5m9g-0JDMbcJqLJ"
+              id="Uakgb_J5m9g-0JDMbcJqLJ1"
               name="hostname"
               onBlur={[Function]}
               onChange={[Function]}
@@ -102,7 +102,7 @@ exports[`NodeNameFields displays the fields 1`] = `
         className="u-no-margin--bottom"
         disabled={false}
         error={null}
-        id="Uakgb_J5m9g-0JDMbcJqLJ"
+        id="Uakgb_J5m9g-0JDMbcJqLJ2"
         label={null}
         name="domain"
         onBlur={[Function]}
@@ -123,7 +123,7 @@ exports[`NodeNameFields displays the fields 1`] = `
         <Field
           className="u-nudge-left u-no-margin--right"
           error={null}
-          forId="Uakgb_J5m9g-0JDMbcJqLJ"
+          forId="Uakgb_J5m9g-0JDMbcJqLJ2"
           isSelect={true}
           label={null}
           required={true}
@@ -141,7 +141,7 @@ exports[`NodeNameFields displays the fields 1`] = `
                   aria-label={null}
                   className="p-form-validation__input u-no-margin--bottom"
                   disabled={false}
-                  id="Uakgb_J5m9g-0JDMbcJqLJ"
+                  id="Uakgb_J5m9g-0JDMbcJqLJ2"
                   name="domain"
                   onBlur={[Function]}
                   onChange={[Function]}

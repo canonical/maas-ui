@@ -67,12 +67,12 @@ describe("DownloadMenu", () => {
   });
 
   afterEach(() => {
-    jest.clearAllMocks();
+    jest.restoreAllMocks();
     jest.useRealTimers();
   });
 
   afterAll(() => {
-    jest.restoreAllMocks();
+    jest.resetAllMocks();
   });
 
   it("is disabled if there are no downloads", () => {
