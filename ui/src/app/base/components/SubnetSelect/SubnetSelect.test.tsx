@@ -123,4 +123,25 @@ describe("SubnetSelect", () => {
       },
     ]);
   });
+
+  it("can filter the subnets using a provided function", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+          <SubnetSelect
+            filterFunction={(subnet) => subnet.vlan === 4}
+            name="subnet"
+          />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { label: "Select subnet", value: "" },
+      {
+        label: "172.16.2.0/24 (sub2)",
+        value: "2",
+      },
+    ]);
+  });
 });

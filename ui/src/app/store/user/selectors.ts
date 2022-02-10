@@ -61,22 +61,11 @@ const markingIntroCompleteErrors = createSelector(
       ?.error || null
 );
 
-/**
- * Get the auth user superuser status.
- * @param state - The redux state.
- * @returns {Bool} Is auth user superuser.
- */
-const isSuperUser = createSelector(
-  [userState],
-  (userState) => userState.auth.user?.is_superuser ?? false
-);
-
 const selectors = {
   ...defaultSelectors,
   eventErrors,
   markingIntroComplete,
   markingIntroCompleteErrors,
-  isSuperUser,
   statuses,
 };
 

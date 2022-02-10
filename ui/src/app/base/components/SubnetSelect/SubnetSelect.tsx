@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import type { SelectProps } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -10,14 +11,17 @@ import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
 
+type Option = NonNullable<SelectProps["options"]>[0];
+
 type Props = {
-  defaultOption?: { label: string; value: string } | null;
+  defaultOption?: Option | null;
   filterFunction?: (subnet: Subnet) => boolean;
   vlan?: Subnet["vlan"];
 } & FormikFieldProps;
 
 export const SubnetSelect = ({
   defaultOption = { label: "Select subnet", value: "" },
+  filterFunction,
   name,
   vlan,
   ...props
@@ -38,7 +42,11 @@ export const SubnetSelect = ({
     subnets = subnets.filter((subnet) => subnet.vlan === vlan);
   }
 
-  const subnetOptions = subnets.map((subnet) => ({
+  if (subnets && filterFunction) {
+    subnets = subnets.filter(filterFunction);
+  }
+
+  const subnetOptions = subnets.map<Option>((subnet) => ({
     label: getSubnetDisplay(subnet),
     value: subnet.id.toString(),
   }));
