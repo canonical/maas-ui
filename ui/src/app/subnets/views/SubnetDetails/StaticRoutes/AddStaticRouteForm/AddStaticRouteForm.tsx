@@ -15,6 +15,7 @@ import staticRouteSelectors from "app/store/staticroute/selectors";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
+import { getIsDestinationForSource } from "app/store/subnet/utils";
 import { toFormikNumber } from "app/utils";
 
 export type AddStaticRouteValues = {
@@ -35,9 +36,6 @@ const addStaticRouteSchema = Yup.object().shape({
   destination: Yup.string().required("Destination is required"),
   metric: Yup.number().required("Metric is required"),
 });
-
-const isDestinationForSource = (destination: Subnet, source: Subnet | null) =>
-  destination.id !== source?.id && destination.version === source?.version;
 
 export type Props = {
   subnetId: Subnet[SubnetMeta.PK];
@@ -115,7 +113,7 @@ const AddStaticRouteForm = ({
               disabled: true,
             }}
             filterFunction={(destination) =>
-              isDestinationForSource(destination, source)
+              getIsDestinationForSource(destination, source)
             }
             label={Labels.Destination}
             name="destination"

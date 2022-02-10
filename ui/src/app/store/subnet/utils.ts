@@ -66,3 +66,9 @@ export const getSubnetsInSpace = (
 
 export const getHasIPAddresses = (subnet?: Subnet | null): boolean =>
   isSubnetDetails(subnet) ? subnet?.ip_addresses.length > 0 : false;
+
+export const getIsDestinationForSource = (
+  destination: Subnet,
+  source: Subnet | null
+): boolean =>
+  destination.id !== source?.id && destination.version === source?.version;

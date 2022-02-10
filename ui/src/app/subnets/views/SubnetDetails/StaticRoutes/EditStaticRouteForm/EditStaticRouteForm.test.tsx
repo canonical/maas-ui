@@ -15,31 +15,60 @@ import {
   subnet as subnetFactory,
   staticRoute as staticRouteFactory,
   subnetState as subnetStateFactory,
-  authState as authStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
 } from "testing/factories";
+
+it("displays loading text on load", async () => {
+  const mockStore = configureStore();
+  const state = rootStateFactory({
+    staticroute: staticRouteStateFactory({
+      loaded: false,
+      loading: true,
+      items: [],
+    }),
+    subnet: subnetStateFactory({
+      loaded: false,
+      items: [],
+    }),
+  });
+
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <EditStaticRouteForm staticRouteId={1} handleDismiss={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(screen.queryByRole("form")).not.toBeInTheDocument();
+  expect(screen.getByText("Loading...")).toBeInTheDocument();
+});
 
 it("dispatches a correct action on edit static route form submit", async () => {
   const mockStore = configureStore();
-
-  const staticRoute = staticRouteFactory({ id: 9 });
-  const subnet = subnetFactory({ id: 1, cidr: "172.16.1.0/24" });
+  const sourceSubnet = subnetFactory({ id: 1, cidr: "172.16.1.0/24" });
   const destinationSubnet = subnetFactory({ id: 2, cidr: "223.16.1.0/24" });
+  const staticRoute = staticRouteFactory({
+    id: 9,
+    destination: destinationSubnet.id,
+    source: sourceSubnet.id,
+  });
+
+  const newDestinationSubnet = subnetFactory({
+    id: 3,
+    cidr: "222.16.1.0/24",
+  });
+  const newGatewayIp = "11.1.1.2";
+  const newMetric = 3;
+
   const state = rootStateFactory({
-    user: userStateFactory({
-      auth: authStateFactory({
-        user: userFactory(),
-      }),
-      items: [userFactory(), userFactory(), userFactory()],
-    }),
     staticroute: staticRouteStateFactory({
       loaded: true,
       items: [staticRoute],
     }),
     subnet: subnetStateFactory({
       loaded: true,
-      items: [subnet, destinationSubnet],
+      items: [sourceSubnet, destinationSubnet, newDestinationSubnet],
     }),
   });
 
@@ -55,47 +84,51 @@ it("dispatches a correct action on edit static route form submit", async () => {
     </Provider>
   );
 
-  await waitFor(() =>
-    expect(screen.queryByText(/Loading.../)).not.toBeInTheDocument()
+  expect(screen.getByLabelText(Labels.GatewayIp)).toHaveValue(
+    `${staticRoute.gateway_ip}`
   );
+  expect(screen.getByLabelText(Labels.Metric)).toHaveValue(
+    `${staticRoute.metric}`
+  );
+  expect(
+    within(screen.getByLabelText(Labels.Destination)).getByRole("option", {
+      selected: true,
+    })
+  ).toHaveValue(`${destinationSubnet.id}`);
 
-  const editStaticRouteForm = screen.getByRole("form", {
-    name: "Edit static route",
-  });
-
-  const gatewayIp = "11.1.1.2";
-  userEvent.type(
-    within(editStaticRouteForm).getByLabelText(Labels.GatewayIp),
-    gatewayIp
-  );
-  userEvent.clear(within(editStaticRouteForm).getByLabelText(Labels.Metric));
-  userEvent.type(
-    within(editStaticRouteForm).getByLabelText(Labels.Metric),
-    "2"
-  );
   userEvent.selectOptions(
-    within(editStaticRouteForm).getByLabelText(Labels.Destination),
-    `${destinationSubnet.id}`
+    screen.getByLabelText(Labels.Destination),
+    `${newDestinationSubnet.id}`
   );
-  userEvent.click(
-    within(editStaticRouteForm).getByRole("button", {
+
+  userEvent.clear(screen.getByLabelText(Labels.GatewayIp));
+  userEvent.type(screen.getByLabelText(Labels.GatewayIp), newGatewayIp);
+  userEvent.clear(screen.getByLabelText(Labels.Metric));
+  userEvent.type(screen.getByLabelText(Labels.Metric), `${newMetric}`);
+  userEvent.selectOptions(
+    screen.getByLabelText(Labels.Destination),
+    `${newDestinationSubnet.id}`
+  );
+  await userEvent.click(
+    screen.getByRole("button", {
       name: "Save",
     })
   );
 
   const expectedActions = [
     staticRouteActions.update({
-      id: subnet.id,
-      gateway_ip: gatewayIp,
-      destination: destinationSubnet.id,
-      metric: 1,
+      source: sourceSubnet.id,
+      id: staticRoute.id,
+      gateway_ip: newGatewayIp,
+      destination: newDestinationSubnet.id,
+      metric: newMetric,
     }),
   ];
   const actualActions = store.getActions();
   await waitFor(() =>
     expect(
       actualActions.filter(
-        (action) => action.type === staticRouteActions.create.type
+        (action) => action.type === staticRouteActions.update.type
       )
     ).toStrictEqual(expectedActions)
   );

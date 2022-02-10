@@ -136,17 +136,16 @@ it("can open and close the add static route form", async () => {
 it("can open and close the edit static route form", async () => {
   const subnet = subnetFactory({ id: 1 });
   const state = rootStateFactory({
-    user: userStateFactory({
-      auth: authStateFactory({
-        user: userFactory(),
-      }),
-      items: [userFactory(), userFactory(), userFactory()],
-    }),
     staticroute: staticRouteStateFactory({
-      items: [],
+      items: [
+        staticRouteFactory({
+          gateway_ip: "11.1.1.1",
+          source: 1,
+        }),
+      ],
     }),
     subnet: subnetStateFactory({
-      items: [subnet, subnetFactory({ id: 2 })],
+      items: [subnet],
     }),
   });
 
@@ -158,13 +157,7 @@ it("can open and close the edit static route form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  await waitFor(() =>
-    expect(
-      screen.getByRole("button", {
-        name: "Edit",
-      })
-    ).toBeInTheDocument()
-  );
+
   userEvent.click(
     screen.getByRole("button", {
       name: "Edit",
