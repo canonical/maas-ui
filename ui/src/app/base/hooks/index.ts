@@ -4,6 +4,7 @@ export {
   useCycled,
   useProcessing,
   useScrollOnRender,
+  useScrollToTop,
   useWindowTitle,
 } from "./base";
 export { useFormikFormDisabled, useFormikErrors } from "./forms";

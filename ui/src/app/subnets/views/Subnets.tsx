@@ -1,5 +1,6 @@
 import { Route, Switch } from "react-router-dom";
 
+import { useScrollToTop } from "app/base/hooks";
 import NotFound from "app/base/views/NotFound";
 import subnetsURLs from "app/subnets/urls";
 import FabricDetails from "app/subnets/views/FabricDetails";
@@ -9,6 +10,8 @@ import SubnetsList from "app/subnets/views/SubnetsList/SubnetsList";
 import VLANDetails from "app/subnets/views/VLANDetails";
 
 const Subnets = (): JSX.Element => {
+  useScrollToTop();
+
   return (
     <Switch>
       <Route exact path={subnetsURLs.index} render={() => <SubnetsList />} />

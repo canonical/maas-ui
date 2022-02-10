@@ -1,7 +1,24 @@
 import { renderHook } from "@testing-library/react-hooks";
 import TestRenderer from "react-test-renderer";
 
-import { useCycled, useId, useProcessing, useScrollOnRender } from "./base";
+import {
+  useCycled,
+  useId,
+  useProcessing,
+  useScrollOnRender,
+  useScrollToTop,
+} from "./base";
+
+const mockUseLocationValue = {
+  pathname: "/original-pathname",
+  search: "",
+  hash: "",
+  state: null,
+};
+jest.mock("react-router-dom", () => ({
+  ...jest.requireActual("react-router-dom"),
+  useLocation: () => mockUseLocationValue,
+}));
 
 const { act } = TestRenderer;
 
@@ -226,6 +243,35 @@ describe("hooks", () => {
       const previousResult = result;
       rerender();
       expect(result.current).toEqual(previousResult.current);
+    });
+  });
+
+  describe("useScrollToTop", () => {
+    it("scrolls to the top of the page on pathname change", () => {
+      const scrollToSpy = jest.fn();
+      global.scrollTo = scrollToSpy;
+      const { rerender } = renderHook(() => useScrollToTop());
+
+      expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
+      expect(scrollToSpy).toHaveBeenCalledTimes(1);
+
+      mockUseLocationValue.pathname = "/new-pathname";
+      rerender();
+
+      expect(scrollToSpy).toHaveBeenCalledTimes(2);
+    });
+
+    it("does not scroll to the top of the page if pathname stays the same", () => {
+      const scrollToSpy = jest.fn();
+      global.scrollTo = scrollToSpy;
+      const { rerender } = renderHook(() => useScrollToTop());
+
+      expect(scrollToSpy).toHaveBeenCalledWith(0, 0);
+      expect(scrollToSpy).toHaveBeenCalledTimes(1);
+
+      rerender();
+
+      expect(scrollToSpy).toHaveBeenCalledTimes(1);
     });
   });
 });
