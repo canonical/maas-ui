@@ -259,6 +259,7 @@
 // subnets
 @import "~app/subnets/components/ReservedRanges";
 @import "~app/subnets/views/FabricDetails/FabricVLANs";
+@import "~app/subnets/views/SubnetDetails/StaticRoutes";
 @import "~app/subnets/views/SubnetDetails/SubnetDetailsHeader/SubnetActionForms/components/EditBootArchitectures/BootArchitecturesTable";
 @import "~app/subnets/views/SubnetsList";
 @import "~app/subnets/views/VLANDetails/VLANSubnets";
@@ -266,6 +267,7 @@
 @include BootArchitecturesTable;
 @include FabricVLANs;
 @include ReservedRanges;
+@include StaticRoutes;
 @include SubnetsList;
 @include VLANSubnets;
 @include UsedIpTable;

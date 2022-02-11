@@ -12,37 +12,35 @@ import SubnetSelect from "app/base/components/SubnetSelect";
 import type { RootState } from "app/store/root/types";
 import { actions as staticRouteActions } from "app/store/staticroute";
 import staticRouteSelectors from "app/store/staticroute/selectors";
+import type { StaticRoute, StaticRouteMeta } from "app/store/staticroute/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
-import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import { getIsDestinationForSource } from "app/store/subnet/utils";
 import { toFormikNumber } from "app/utils";
 
-export type AddStaticRouteValues = {
-  source: Subnet[SubnetMeta.PK];
-  destination: string;
-  metric: string;
-  gateway_ip: string;
-};
+export type EditStaticRouteValues = Pick<
+  StaticRoute,
+  "source" | "destination" | "metric" | "gateway_ip"
+>;
 
-export enum AddStaticRouteFormLabels {
-  AddStaticRoute = "Add static route",
+export enum EditStaticRouteFormLabels {
+  EditStaticRoute = "Edit static route",
   Save = "Save",
   Cancel = "Cancel",
 }
 
-const addStaticRouteSchema = Yup.object().shape({
+const editStaticRouteSchema = Yup.object().shape({
   gateway_ip: Yup.string().required("Gateway IP is required"),
   destination: Yup.string().required("Destination is required"),
   metric: Yup.number().required("Metric is required"),
 });
 
 export type Props = {
-  subnetId: Subnet[SubnetMeta.PK];
+  staticRouteId: StaticRoute[StaticRouteMeta.PK];
   handleDismiss: () => void;
 };
-const AddStaticRouteForm = ({
-  subnetId,
+const EditStaticRouteForm = ({
+  staticRouteId,
   handleDismiss,
 }: Props): JSX.Element | null => {
   const staticRouteErrors = useSelector(staticRouteSelectors.errors);
@@ -52,39 +50,46 @@ const AddStaticRouteForm = ({
   const staticRoutesLoading = useSelector(staticRouteSelectors.loading);
   const subnetsLoading = useSelector(subnetSelectors.loading);
   const loading = staticRoutesLoading || subnetsLoading;
+  const staticRoute = useSelector((state: RootState) =>
+    staticRouteSelectors.getById(state, staticRouteId)
+  );
   const source = useSelector((state: RootState) =>
-    subnetSelectors.getById(state, subnetId)
+    subnetSelectors.getById(state, staticRoute?.source)
   );
 
   useEffect(() => {
+    dispatch(staticRouteActions.fetch());
     dispatch(subnetActions.fetch());
   }, [dispatch]);
 
-  if (loading) {
-    return <Spinner text="Loading..." />;
+  if (!staticRoute || loading) {
+    return (
+      <Spinner data-testid="edit-static-route-form-loading" text="Loading..." />
+    );
   }
 
   return (
-    <FormikForm<AddStaticRouteValues>
-      aria-label={AddStaticRouteFormLabels.AddStaticRoute}
+    <FormikForm<EditStaticRouteValues>
+      aria-label={EditStaticRouteFormLabels.EditStaticRoute}
       cleanup={staticRouteActions.cleanup}
       errors={staticRouteErrors}
       initialValues={{
-        source: subnetId,
-        gateway_ip: "",
-        destination: "",
-        metric: "0",
+        source: staticRoute.source,
+        gateway_ip: staticRoute.gateway_ip,
+        destination: staticRoute.destination,
+        metric: staticRoute.metric,
       }}
       onSaveAnalytics={{
-        action: AddStaticRouteFormLabels.Save,
+        action: EditStaticRouteFormLabels.Save,
         category: "Subnet",
-        label: AddStaticRouteFormLabels.AddStaticRoute,
+        label: EditStaticRouteFormLabels.EditStaticRoute,
       }}
       onSubmit={({ gateway_ip, destination, metric }) => {
         dispatch(staticRouteActions.cleanup());
         dispatch(
-          staticRouteActions.create({
-            source: subnetId,
+          staticRouteActions.update({
+            id: staticRouteId,
+            source: staticRoute.source,
             gateway_ip,
             destination: toFormikNumber(destination) as number,
             metric: toFormikNumber(metric),
@@ -97,9 +102,9 @@ const AddStaticRouteForm = ({
       resetOnSave
       saving={saving}
       saved={saved}
-      submitLabel={AddStaticRouteFormLabels.Save}
+      submitLabel={EditStaticRouteFormLabels.Save}
       onCancel={handleDismiss}
-      validationSchema={addStaticRouteSchema}
+      validationSchema={editStaticRouteSchema}
     >
       <Row>
         <Col size={4}>
@@ -107,16 +112,16 @@ const AddStaticRouteForm = ({
         </Col>
         <Col size={4}>
           <SubnetSelect
+            label={Labels.Destination}
+            name="destination"
+            filterFunction={(destination) =>
+              getIsDestinationForSource(destination, source)
+            }
             defaultOption={{
               label: "Select destination",
               value: "",
               disabled: true,
             }}
-            filterFunction={(destination) =>
-              getIsDestinationForSource(destination, source)
-            }
-            label={Labels.Destination}
-            name="destination"
           />
         </Col>
         <Col size={4}>
@@ -127,4 +132,4 @@ const AddStaticRouteForm = ({
   );
 };
 
-export default AddStaticRouteForm;
+export default EditStaticRouteForm;

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import AddStaticRouteForm from "./AddStaticRouteForm";
+import EditStaticRouteForm from "./EditStaticRouteForm";
 
 import FormCard from "app/base/components/FormCard";
 import SubnetLink from "app/base/components/SubnetLink";
@@ -88,7 +89,19 @@ const generateRows = (
         />
       );
     } else if (expanded?.type === ExpandedType.Update) {
-      expandedContent = <>Todo: static route edit form</>;
+      expandedContent = (
+        <EditStaticRouteForm
+          staticRouteId={staticRoute.id}
+          handleDismiss={() =>
+            toggleExpanded(
+              staticRoute.id,
+              expanded,
+              ExpandedType.Update,
+              setExpanded
+            )
+          }
+        />
+      );
     }
     return {
       className: isExpanded ? "p-table__row is-active" : null,
@@ -178,7 +191,8 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
       }
     >
       <MainTable
-        className="reserved-ranges-table p-table-expanding--light"
+        className="static-routes-table p-table-expanding--light"
+        responsive
         defaultSort="gateway_ip"
         defaultSortDirection="ascending"
         emptyStateMsg={
