@@ -2,10 +2,9 @@ import { memo, useEffect, useState } from "react";
 
 import { Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
 import { useToggleMenu } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -14,6 +13,7 @@ import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import zoneSelectors from "app/store/zone/selectors";
 import type { Zone, ZoneMeta } from "app/store/zone/types";
+import zonesURLs from "app/zones/urls";
 
 type Props = {
   onToggleMenu?: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
@@ -88,12 +88,12 @@ export const ZoneColumn = ({
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
-          <LegacyLink
+          <Link
             className="p-link--soft"
-            route={baseURLs.zone({ id: machine.zone.id })}
+            to={zonesURLs.details({ id: machine.zone.id })}
           >
             {machine.zone.name}
-          </LegacyLink>
+          </Link>
         </span>
       }
       primaryTitle={machine.zone.name}

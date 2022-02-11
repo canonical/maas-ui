@@ -24,7 +24,6 @@ type Props = {
   completedIntro?: boolean;
   debug?: boolean;
   enableAnalytics?: boolean;
-  generateLegacyLink: GenerateLinkType;
   generateNewLink: GenerateLinkType;
   location: Location | HistoryLocation;
   logout: () => void;
@@ -46,7 +45,7 @@ const useVisible = (initialValue: boolean): [boolean, ToggleVisible] => {
 
 const generateURL = (
   url: NavItem["url"],
-  isLegacy: NavItem["isLegacy"],
+  isLegacy: boolean,
   appendNewBase: boolean
 ) => {
   if (isLegacy) {
@@ -81,7 +80,6 @@ export const Header = ({
   completedIntro,
   debug,
   enableAnalytics,
-  generateLegacyLink,
   generateNewLink,
   location,
   logout,
@@ -188,7 +186,6 @@ export const Header = ({
     },
     {
       highlight: ["/networks", "/subnet", "/space", "/fabric", "/vlan"],
-      isLegacy: true,
       label: "Subnets",
       url: "/networks?by=fabric",
     },
@@ -204,9 +201,7 @@ export const Header = ({
     );
 
   const generateLink: GenerateNavLink = (link: NavItem, props = undefined) => {
-    return link.isLegacy
-      ? generateLegacyLink(link, props, appendNewBase)
-      : generateNewLink(link, props, appendNewBase);
+    return generateNewLink(link, props, appendNewBase);
   };
 
   const generateNavItems = (links: NavItem[]) => {
@@ -395,7 +390,6 @@ Header.propTypes = {
   completedIntro: PropTypes.bool,
   debug: PropTypes.bool,
   enableAnalytics: PropTypes.bool,
-  generateLegacyLink: PropTypes.func.isRequired,
   generateNewLink: PropTypes.func.isRequired,
   location: PropTypes.shape({
     search: PropTypes.string,

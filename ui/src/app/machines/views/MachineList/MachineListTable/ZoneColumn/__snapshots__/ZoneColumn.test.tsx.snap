@@ -21,12 +21,12 @@ exports[`ZoneColumn renders 1`] = `
       <span
         data-testid="zone"
       >
-        <LegacyLink
+        <Link
           className="p-link--soft"
-          route="/zone/0"
+          to="/zone/0"
         >
           zone-north
-        </LegacyLink>
+        </Link>
       </span>
     }
     primaryTitle="zone-north"
@@ -55,24 +55,24 @@ exports[`ZoneColumn renders 1`] = `
             <span
               data-testid="zone"
             >
-              <LegacyLink
+              <Link
                 className="p-link--soft"
-                route="/zone/0"
+                to="/zone/0"
               >
-                <Link
+                <LinkAnchor
                   className="p-link--soft"
-                  href="/MAAS/l/zone/0"
-                  onClick={[Function]}
+                  href="/zone/0"
+                  navigate={[Function]}
                 >
                   <a
                     className="p-link--soft"
-                    href="/MAAS/l/zone/0"
+                    href="/zone/0"
                     onClick={[Function]}
                   >
                     zone-north
                   </a>
-                </Link>
-              </LegacyLink>
+                </LinkAnchor>
+              </Link>
             </span>
           </div>
           <TableMenu

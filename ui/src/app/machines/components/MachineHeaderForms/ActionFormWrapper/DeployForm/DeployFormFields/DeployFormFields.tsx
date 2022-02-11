@@ -16,9 +16,8 @@ import { Link } from "react-router-dom";
 import type { DeployFormValues } from "../DeployForm";
 
 import FormikField from "app/base/components/FormikField";
-import LegacyLink from "app/base/components/LegacyLink";
 import UploadTextArea from "app/base/components/UploadTextArea";
-import baseURLs from "app/base/urls";
+import imagesURLs from "app/images/urls";
 import prefsURLs from "app/preferences/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
@@ -55,7 +54,7 @@ export const DeployFormFields = (): JSX.Element => {
         <Notification data-testid="images-error" severity="negative">
           You will not be able to deploy a machine until at least one valid
           image has been downloaded. To download an image, visit the{" "}
-          <LegacyLink route={baseURLs.images}>images page</LegacyLink>.
+          <Link to={imagesURLs.index}>images page</Link>.
         </Notification>
       )}
       <div className="u-sv2">

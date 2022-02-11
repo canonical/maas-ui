@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import FabricColumn from "./FabricColumn";
@@ -47,7 +48,9 @@ describe("FabricColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FabricColumn nic={nic} node={state.machine.items[0]} />
+        <MemoryRouter>
+          <FabricColumn nic={nic} node={state.machine.items[0]} />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("DoubleRow").exists()).toBe(false);
@@ -70,10 +73,12 @@ describe("FabricColumn", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FabricColumn nic={nic} node={state.machine.items[0]} />
+        <MemoryRouter>
+          <FabricColumn nic={nic} node={state.machine.items[0]} />
+        </MemoryRouter>
       </Provider>
     );
-    const links = wrapper.find("DoubleRow LegacyLink");
+    const links = wrapper.find("DoubleRow Link");
     expect(links.at(0).text()).toBe("fabric-name");
     expect(links.at(1).text()).toBe("2 (vlan-name)");
   });

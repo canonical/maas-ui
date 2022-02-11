@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router";
 import configureStore from "redux-mock-store";
 
 import DashboardConfigurationSubnetForm from "./DashboardConfigurationSubnetForm";
@@ -26,7 +27,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DashboardConfigurationSubnetForm />
+        <MemoryRouter>
+          <DashboardConfigurationSubnetForm />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -40,7 +43,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DashboardConfigurationSubnetForm />
+        <MemoryRouter>
+          <DashboardConfigurationSubnetForm />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -55,7 +60,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DashboardConfigurationSubnetForm />
+        <MemoryRouter>
+          <DashboardConfigurationSubnetForm />
+        </MemoryRouter>
       </Provider>
     );
 
@@ -75,7 +82,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DashboardConfigurationSubnetForm />
+        <MemoryRouter>
+          <DashboardConfigurationSubnetForm />
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
@@ -92,15 +101,17 @@ describe("DashboardConfigurationSubnetForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DashboardConfigurationSubnetForm />
+        <MemoryRouter>
+          <DashboardConfigurationSubnetForm />
+        </MemoryRouter>
       </Provider>
     );
 
     expect(wrapper.find("a[data-testid='subnet-link']").prop("href")).toBe(
-      "/MAAS/l/subnet/1"
+      "/subnet/1"
     );
     expect(wrapper.find("a[data-testid='fabric-link']").prop("href")).toBe(
-      "/MAAS/l/fabric/3"
+      "/fabric/3"
     );
   });
 
@@ -118,7 +129,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DashboardConfigurationSubnetForm />
+        <MemoryRouter>
+          <DashboardConfigurationSubnetForm />
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {

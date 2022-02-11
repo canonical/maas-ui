@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import VLANSummary from "./VLANSummary";
 
-import baseURLs from "app/base/urls";
+import controllersURLs from "app/controllers/urls";
 import type { Controller } from "app/store/controller/types";
 import type { Fabric } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
@@ -86,7 +86,9 @@ it("renders correct details", () => {
     within(vlanSummary).getByRole("link", { name: /controller-abc/i })
   ).toHaveAttribute(
     "href",
-    generateLegacyURL(baseURLs.controller({ id: controller.system_id }))
+    generateLegacyURL(
+      controllersURLs.controller.index({ id: controller.system_id })
+    )
   );
 });
 

@@ -16,7 +16,7 @@ import DeleteRecordForm from "./DeleteRecordForm";
 import EditRecordForm from "./EditRecordForm";
 
 import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
+import controllersURLs from "app/controllers/urls";
 import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -116,7 +116,11 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
         case NodeType.REGION_CONTROLLER:
         case NodeType.REGION_AND_RACK_CONTROLLER:
           nameCell = (
-            <LegacyLink route={baseURLs.controller({ id: resource.system_id })}>
+            <LegacyLink
+              route={controllersURLs.controller.index({
+                id: resource.system_id,
+              })}
+            >
               {resource.name}
             </LegacyLink>
           );

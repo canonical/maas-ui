@@ -1,15 +1,15 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface, NetworkLink, Node } from "app/store/types/node";
 import { getInterfaceFabric, isBondOrBridgeParent } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 import { getVLANDisplay } from "app/store/vlan/utils";
+import subnetURLs from "app/subnets/urls";
 
 type Props = {
   link?: NetworkLink | null;
@@ -38,24 +38,24 @@ const FabricColumn = ({ link, nic, node }: Props): JSX.Element | null => {
       data-testid="fabric"
       primary={
         fabric ? (
-          <LegacyLink
+          <Link
             className="p-link--soft"
-            route={baseURLs.fabric({ id: fabric.id })}
+            to={subnetURLs.fabric.index({ id: fabric.id })}
           >
             {fabricContent}
-          </LegacyLink>
+          </Link>
         ) : (
           fabricContent
         )
       }
       secondary={
         vlan ? (
-          <LegacyLink
+          <Link
             className="p-link--muted"
-            route={baseURLs.vlan({ id: vlan.id })}
+            to={subnetURLs.vlan.index({ id: vlan.id })}
           >
             {getVLANDisplay(vlan)}
-          </LegacyLink>
+          </Link>
         ) : null
       }
     />

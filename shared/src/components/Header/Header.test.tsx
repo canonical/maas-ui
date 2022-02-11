@@ -36,7 +36,6 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -70,7 +69,6 @@ describe("Header", () => {
     render(
       <Header
         authUser={null}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -95,7 +93,6 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -118,7 +115,6 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={false}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -143,7 +139,6 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -167,7 +162,6 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -191,7 +185,6 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -216,7 +209,6 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -240,7 +232,6 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {
@@ -265,7 +256,6 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateLegacyLink={generateURL}
         generateNewLink={generateURL}
         location={
           {

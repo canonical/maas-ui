@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DHCPStatus from "./DHCPStatus";
 
-import baseURLs from "app/base/urls";
+import controllersURLs from "app/controllers/urls";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -204,7 +204,9 @@ it("renders correctly when a VLAN has MAAS-configured DHCP without high availabi
     within(dhcpStatus).getByRole("link", { name: /primary-rack/i })
   ).toHaveAttribute(
     "href",
-    generateLegacyURL(baseURLs.controller({ id: controller.system_id }))
+    generateLegacyURL(
+      controllersURLs.controller.index({ id: controller.system_id })
+    )
   );
 });
 
@@ -248,12 +250,16 @@ it("renders correctly when a VLAN has MAAS-configured DHCP with high availabilit
     within(dhcpStatus).getByRole("link", { name: /primary-rack/i })
   ).toHaveAttribute(
     "href",
-    generateLegacyURL(baseURLs.controller({ id: primaryRack.system_id }))
+    generateLegacyURL(
+      controllersURLs.controller.index({ id: primaryRack.system_id })
+    )
   );
   expect(
     within(dhcpStatus).getByRole("link", { name: /secondary-rack/i })
   ).toHaveAttribute(
     "href",
-    generateLegacyURL(baseURLs.controller({ id: secondaryRack.system_id }))
+    generateLegacyURL(
+      controllersURLs.controller.index({ id: secondaryRack.system_id })
+    )
   );
 });

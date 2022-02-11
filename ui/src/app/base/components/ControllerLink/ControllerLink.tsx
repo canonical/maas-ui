@@ -4,7 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import LegacyLink from "app/base/components/LegacyLink";
-import baseURLs from "app/base/urls";
+import controllerURLs from "app/controllers/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
@@ -38,7 +38,9 @@ const ControllerLink = ({ systemId }: Props): JSX.Element | null => {
     return null;
   }
   return (
-    <LegacyLink route={baseURLs.controller({ id: controller.system_id })}>
+    <LegacyLink
+      route={controllerURLs.controller.index({ id: controller.system_id })}
+    >
       <strong>{controller.hostname}</strong>
       <span>.{controller.domain.name}</span>
     </LegacyLink>

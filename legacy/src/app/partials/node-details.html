@@ -421,7 +421,7 @@
           You can now enable <strong>high availability DHCP</strong> on {$
           node.vlan.fabric_name $} {$ getNotificationVLANText() $}.
           <a
-            href="{$ legacyURLBase $}/vlan/{$ node.vlan.id $}?provide_dhcp=true"
+            href="{$ newURLBase $}/vlan/{$ node.vlan.id $}?provide_dhcp=true"
             >Reconfigure</a
           >
           the DHCP configuration.
@@ -865,12 +865,12 @@
               <tr class="p-table__row" data-ng-repeat="vlanRow in vlanTable">
                 <td title="{$ vlanRow['fabric'].name $}">
                   <a
-                    href="{$ legacyURLBase $}/fabric/{$ vlanRow['fabric'].id $}"
+                    href="{$ newURLBase $}/fabric/{$ vlanRow['fabric'].id $}"
                     >{$ vlanRow['fabric'].name $}</a
                   >
                 </td>
                 <td title="{$ getVLANText(vlanRow['vlan']) $}">
-                  <a href="{$ legacyURLBase $}/vlan/{$ vlanRow['vlan'].id $}"
+                  <a href="{$ newURLBase $}/vlan/{$ vlanRow['vlan'].id $}"
                     >{$ getVLANText(vlanRow['vlan']) $}</a
                   >
                 </td>
@@ -892,7 +892,7 @@
                     data-ng-repeat="subnet in vlanRow['subnets']"
                   >
                     <a
-                      href="{$ legacyURLBase $}/subnet/{$ subnet.id $}"
+                      href="{$ newURLBase $}/subnet/{$ subnet.id $}"
                       title="{$ getSubnetText(subnet) $}"
                       >{$ getSubnetText(subnet) $}</a
                     >
@@ -1165,7 +1165,7 @@
                           <a
                             class="p-link--soft"
                             data-ng-if="interface.fabric"
-                            href="{$ legacyURLBase $}/fabric/{$ interface.fabric.id $}"
+                            href="{$ newURLBase $}/fabric/{$ interface.fabric.id $}"
                             >{$ interface.fabric.name $}</a
                           >
                           <span data-ng-if="!interface.fabric.name"
@@ -1178,7 +1178,7 @@
                           <a
                             class="p-muted-text p-link--muted"
                             data-ng-if="interface.vlan"
-                            href="{$ legacyURLBase $}/vlan/{$ interface.vlan.id $}"
+                            href="{$ newURLBase $}/vlan/{$ interface.vlan.id $}"
                           >
                             {$ getVLANText(interface.vlan) $}
                           </a>
@@ -1200,7 +1200,7 @@
                         <span data-ng-if="interface.subnet.cidr">
                           <a
                             class="p-link--soft"
-                            href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}"
+                            href="{$ newURLBase $}/subnet/{$ interface.subnet.id $}"
                             >{$ interface.subnet.cidr $}</a
                           >
                         </span>
@@ -1216,7 +1216,7 @@
                       >
                         <a
                           class="p-muted-text p-link--muted"
-                          href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}"
+                          href="{$ newURLBase $}/subnet/{$ interface.subnet.id $}"
                           >{$ interface.subnet.name $}</a
                         >
                       </div>
@@ -1463,7 +1463,7 @@
                           <a
                             class="p-link--soft"
                             data-ng-if="editInterface.fabric"
-                            href="{$ legacyURLBase $}/fabric/{$ editInterface.fabric.id $}"
+                            href="{$ newURLBase $}/fabric/{$ editInterface.fabric.id $}"
                             >{$ editInterface.fabric.name $}</a
                           >
                           <span data-ng-if="!editInterface.fabric.name"
@@ -1476,7 +1476,7 @@
                           <a
                             class="p-muted-text p-link--muted"
                             data-ng-if="editInterface.vlan"
-                            href="{$ legacyURLBase $}/vlan/{$ editInterface.vlan.id $}"
+                            href="{$ newURLBase $}/vlan/{$ editInterface.vlan.id $}"
                           >
                             {$ getVLANText(editInterface.vlan) $}
                           </a>
@@ -1498,7 +1498,7 @@
                         <span data-ng-if="editInterface.subnet.cidr">
                           <a
                             class="p-link--soft"
-                            href="{$ legacyURLBase $}/subnet/{$ editInterface.subnet.id $}"
+                            href="{$ newURLBase $}/subnet/{$ editInterface.subnet.id $}"
                             >{$ editInterface.subnet.cidr $}</a
                           >
                         </span>
@@ -1514,7 +1514,7 @@
                       >
                         <a
                           class="p-muted-text p-link--muted"
-                          href="{$ legacyURLBase $}/subnet/{$ editInterface.subnet.id $}"
+                          href="{$ newURLBase $}/subnet/{$ editInterface.subnet.id $}"
                           >{$ editInterface.subnet.name $}</a
                         >
                       </div>
@@ -2330,7 +2330,7 @@
                         <a
                           class="p-link--soft"
                           data-ng-if="interface.fabric"
-                          href="{$ legacyURLBase $}/fabric/{$ interface.fabric.id $}"
+                          href="{$ newURLBase $}/fabric/{$ interface.fabric.id $}"
                           >{$ interface.fabric.name $}</a
                         >
                         <span data-ng-if="!interface.fabric.name"
@@ -2346,7 +2346,7 @@
                         <a
                           class="p-muted-text p-link--muted"
                           data-ng-if="interface.vlan"
-                          href="{$ legacyURLBase $}/vlan/{$ interface.vlan.id $}"
+                          href="{$ newURLBase $}/vlan/{$ interface.vlan.id $}"
                         >
                           {$ getVLANText(interface.vlan) $}
                         </a>
@@ -2369,7 +2369,7 @@
                         <span data-ng-if="interface.subnet.cidr">
                           <a
                             class="p-link--soft"
-                            href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}"
+                            href="{$ newURLBase $}/subnet/{$ interface.subnet.id $}"
                             >{$ interface.subnet.cidr $}</a
                           >
                         </span>
@@ -2387,7 +2387,7 @@
                       <div class="u-text-overflow">
                         <a
                           class="p-muted-text p-link--muted"
-                          href="{$ legacyURLBase $}/subnet/{$ interface.subnet.id $}"
+                          href="{$ newURLBase $}/subnet/{$ interface.subnet.id $}"
                           >{$ interface.subnet.name $}</a
                         >
                       </div>

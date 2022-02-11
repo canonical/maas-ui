@@ -3,9 +3,8 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import LegacyLink from "app/base/components/LegacyLink";
 import { useCanEdit, useIsRackControllerConnected } from "app/base/hooks";
-import baseURLs from "app/base/urls";
+import imagesURLs from "app/images/urls";
 import machineURLs from "app/machines/urls";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import { actions as generalActions } from "app/store/general";
@@ -109,9 +108,8 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
           content: (
             <>
               No boot images have been imported for a valid architecture to be
-              selected. Visit the{" "}
-              <LegacyLink route={baseURLs.images}>images page</LegacyLink> to
-              start the import process.
+              selected. Visit the <Link to={imagesURLs.index}>images page</Link>{" "}
+              to start the import process.
             </>
           ),
           severity: "negative",
