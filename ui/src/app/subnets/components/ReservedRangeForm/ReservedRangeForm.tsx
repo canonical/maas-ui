@@ -31,7 +31,7 @@ export enum Labels {
   CreateRange = "Create reserved range",
   EditRange = "Edit reserved range",
   EndIp = "End IP address",
-  Comment = "Comment",
+  Comment = "Purpose",
   StartIp = "Start IP address",
 }
 
@@ -142,7 +142,7 @@ const ReservedRangeForm = ({
               disabled={showDynamicComment}
               label={Labels.Comment}
               name="comment"
-              placeholder="IP range comment (optional)"
+              placeholder="IP range purpose (optional)"
               type="text"
             />
           </Col>

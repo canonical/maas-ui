@@ -7,12 +7,15 @@ import {
   Notification,
   Spinner,
 } from "@canonical/react-components";
+import type { MainTableCell } from "@canonical/react-components/dist/components/MainTable/MainTable";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import ReservedRangeForm from "../ReservedRangeForm";
 
 import FormCard from "app/base/components/FormCard";
+import SubnetLink from "app/base/components/SubnetLink";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
@@ -52,6 +55,7 @@ export enum Labels {
   ReserveDynamicRange = "Reserve dynamic range",
   ReserveRange = "Reserve range",
   StartIP = "Start IP Address",
+  Subnet = "Subnet",
   Type = "Type",
 }
 
@@ -88,7 +92,8 @@ const generateRows = (
   expanded: Expanded | null,
   setExpanded: (expanded: Expanded | null) => void,
   saved: boolean,
-  saving: boolean
+  saving: boolean,
+  showSubnetColumn: boolean
 ) =>
   ipRanges.map((ipRange: IPRange) => {
     const isExpanded = expanded?.id === ipRange.id;
@@ -113,51 +118,67 @@ const generateRows = (
     } else if (expanded?.type === ExpandedType.Update) {
       expandedContent = <ReservedRangeForm onClose={onClose} id={ipRange.id} />;
     }
+    const columns: MainTableCell[] = [
+      {
+        "aria-label": Labels.StartIP,
+        className: "start-ip-col",
+        content: ipRange.start_ip,
+      },
+      {
+        "aria-label": Labels.EndIp,
+        className: "end-ip-col",
+        content: ipRange.end_ip,
+      },
+      {
+        "aria-label": Labels.Owner,
+        className: "owner-col",
+        content: owner,
+      },
+      {
+        "aria-label": Labels.Type,
+        className: "type-col",
+        content: type,
+      },
+      {
+        "aria-label": Labels.Comment,
+        className: "comment-col",
+        content: comment,
+      },
+      {
+        "aria-label": Labels.Actions,
+        className: "actions-col u-align--right",
+        content: (
+          <TableActions
+            onDelete={() => {
+              toggleExpanded(
+                ipRange.id,
+                expanded,
+                ExpandedType.Delete,
+                setExpanded
+              );
+            }}
+            onEdit={() => {
+              toggleExpanded(
+                ipRange.id,
+                expanded,
+                ExpandedType.Update,
+                setExpanded
+              );
+            }}
+          />
+        ),
+      },
+    ];
+    if (showSubnetColumn) {
+      columns.unshift({
+        "aria-label": Labels.Subnet,
+        className: "subnet-col",
+        content: <SubnetLink id={ipRange.subnet} />,
+      });
+    }
     return {
       className: isExpanded ? "p-table__row is-active" : null,
-      columns: [
-        {
-          "aria-label": Labels.StartIP,
-          content: ipRange.start_ip,
-        },
-        {
-          "aria-label": Labels.EndIp,
-          content: ipRange.end_ip,
-        },
-        {
-          "aria-label": Labels.Owner,
-          content: owner,
-        },
-        {
-          "aria-label": Labels.Type,
-          content: type,
-        },
-        { "aria-label": Labels.Comment, content: comment },
-        {
-          "aria-label": Labels.Actions,
-          content: (
-            <TableActions
-              onDelete={() => {
-                toggleExpanded(
-                  ipRange.id,
-                  expanded,
-                  ExpandedType.Delete,
-                  setExpanded
-                );
-              }}
-              onEdit={() => {
-                toggleExpanded(
-                  ipRange.id,
-                  expanded,
-                  ExpandedType.Update,
-                  setExpanded
-                );
-              }}
-            />
-          ),
-          className: "u-align--right",
-        },
-      ],
+      columns,
       expanded: isExpanded,
       expandedContent: expandedContent,
       key: ipRange.id,
@@ -190,10 +211,51 @@ const ReservedRanges = ({
   const isAddingDynamic = expanded?.type === ExpandedType.CreateDynamic;
   const isAdding = expanded?.type === ExpandedType.Create || isAddingDynamic;
   const isDisabled = isId(vlanId) && !hasVLANSubnets;
+  const showSubnetColumn = isId(vlanId);
 
   useEffect(() => {
     dispatch(ipRangeActions.fetch());
   }, [dispatch]);
+
+  const headers = [
+    {
+      content: Labels.StartIP,
+      className: "start-ip-col",
+      sortKey: "start_ip",
+    },
+    {
+      content: Labels.EndIp,
+      className: "end-ip-col",
+      sortKey: "end_ip",
+    },
+    {
+      content: Labels.Owner,
+      className: "owner-col",
+      sortKey: "owner",
+    },
+    {
+      content: Labels.Type,
+      className: "type-col",
+      sortKey: "type",
+    },
+    {
+      content: Labels.Comment,
+      className: "comment-col",
+      sortKey: "comment",
+    },
+    {
+      content: Labels.Actions,
+      className: "actions-col u-align--right",
+    },
+  ];
+
+  if (showSubnetColumn) {
+    headers.unshift({
+      content: Labels.Subnet,
+      className: "subnet-col",
+      sortKey: "subnet",
+    });
+  }
 
   return (
     <TitledSection
@@ -228,7 +290,13 @@ const ReservedRanges = ({
         </Notification>
       ) : null}
       <MainTable
-        className="reserved-ranges-table p-table-expanding--light"
+        className={classNames(
+          "reserved-ranges-table",
+          "p-table-expanding--light",
+          {
+            "reserved-ranges-table--has-subnet": showSubnetColumn,
+          }
+        )}
         responsive
         defaultSort="name"
         defaultSortDirection="descending"
@@ -242,39 +310,15 @@ const ReservedRanges = ({
           )
         }
         expanding
-        headers={[
-          {
-            content: Labels.StartIP,
-            sortKey: "start_ip",
-          },
-          {
-            content: Labels.EndIp,
-            sortKey: "end_ip",
-          },
-          {
-            content: Labels.Owner,
-            sortKey: "owner",
-          },
-          {
-            content: Labels.Type,
-            sortKey: "type",
-          },
-          {
-            content: Labels.Comment,
-            sortKey: "comment",
-          },
-          {
-            content: Labels.Actions,
-            className: "u-align--right",
-          },
-        ]}
+        headers={headers}
         rows={generateRows(
           dispatch,
           ipRanges,
           expanded,
           setExpanded,
           saved,
-          saving
+          saving,
+          showSubnetColumn
         )}
         sortable
       />
