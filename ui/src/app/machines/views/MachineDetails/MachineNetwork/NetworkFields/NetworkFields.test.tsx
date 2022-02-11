@@ -73,7 +73,10 @@ describe("NetworkFields", () => {
         loaded: true,
       }),
       vlan: vlanStateFactory({
-        items: [vlanFactory({ id: 1, fabric: 1 }), vlanFactory({ fabric: 1 })],
+        items: [
+          vlanFactory({ id: 1, fabric: 1, vid: 1 }),
+          vlanFactory({ fabric: 1, vid: 2 }),
+        ],
         loaded: true,
       }),
     });
@@ -82,8 +85,8 @@ describe("NetworkFields", () => {
   it("changes the vlan to the default for a fabric", async () => {
     state.fabric.items = [fabricFactory({ id: 2, default_vlan_id: 3 })];
     state.vlan.items = [
-      vlanFactory({ id: 1, fabric: 2 }),
-      vlanFactory({ id: 3, fabric: 2 }),
+      vlanFactory({ id: 1, fabric: 2, vid: 1 }),
+      vlanFactory({ id: 3, fabric: 2, vid: 2 }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
