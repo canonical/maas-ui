@@ -49,4 +49,17 @@ describe("simpleSortByKey", () => {
       { name: "Chris12", age: 30 },
     ]);
   });
+
+  it("can sort alphanumeric strings that start with a number", () => {
+    arr = [
+      { name: "2Chris", age: 20 },
+      { name: "12Chris", age: 30 },
+      { name: "1Chris", age: 25 },
+    ];
+    expect(arr.sort(simpleSortByKey("name", { alphanumeric: true }))).toEqual([
+      { name: "1Chris", age: 25 },
+      { name: "2Chris", age: 20 },
+      { name: "12Chris", age: 30 },
+    ]);
+  });
 });

@@ -15,6 +15,7 @@ import type { RootState } from "app/store/root/types";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
 import { getFullVLANName } from "app/store/vlan/utils";
+import { simpleSortByKey } from "app/utils";
 
 type Props = {
   vlan: VLAN;
@@ -93,7 +94,7 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
                           label: controller.hostname,
                           value: controller.system_id,
                         }))
-                        .sort((a, b) => a.label.localeCompare(b.label))}
+                        .sort(simpleSortByKey("label", { alphanumeric: true }))}
                       wrapperClassName="u-nudge-right--x-large"
                     />
                     {connectedControllers.length > 1 && (
@@ -108,7 +109,9 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
                               label: controller.hostname,
                               value: controller.system_id,
                             }))
-                            .sort((a, b) => a.label.localeCompare(b.label)),
+                            .sort(
+                              simpleSortByKey("label", { alphanumeric: true })
+                            ),
                         ]}
                         wrapperClassName="u-nudge-right--x-large"
                       />
