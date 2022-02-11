@@ -364,3 +364,38 @@ it("can display an add form", async () => {
     screen.getByRole("form", { name: ReservedRangeFormLabels.CreateRange })
   ).toBeInTheDocument();
 });
+
+it("displays the subnet column when the table is for a VLAN", () => {
+  state.iprange.items = [
+    ipRangeFactory({ start_ip: "11.1.1.1", vlan: vlan.id }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByRole("gridcell", {
+      name: Labels.Subnet,
+    })
+  ).toBeInTheDocument();
+});
+
+it("does not display the subnet column when the table is for a subnet", () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ReservedRanges subnetId={subnet.id} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.queryByRole("gridcell", {
+      name: Labels.Subnet,
+    })
+  ).not.toBeInTheDocument();
+});
