@@ -121,10 +121,10 @@ it("does not display a message if DHCP is enabled on the VLAN", () => {
   });
 
   expect(
-    within(deleteSubnetSection).queryAllByText(
+    within(deleteSubnetSection).queryByText(
       /Beware IP addresses on devices on this subnet might not be retained/
     )
-  ).toHaveLength(0);
+  ).not.toBeInTheDocument();
 });
 
 it("dispatches an action to load vlans and subnets if not loaded", () => {

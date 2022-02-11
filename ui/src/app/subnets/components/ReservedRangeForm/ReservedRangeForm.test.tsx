@@ -62,7 +62,7 @@ describe("ReservedRangeForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.queryAllByTestId("Spinner")).toHaveLength(0);
+    expect(screen.queryByTestId("Spinner")).not.toBeInTheDocument();
   });
 
   it("initialises the reserved range details when editing", () => {
@@ -213,7 +213,7 @@ describe("ReservedRangeForm", () => {
       </Provider>
     );
     expect(
-      screen.queryAllByRole("textbox", { name: Labels.Comment })
-    ).toHaveLength(0);
+      screen.queryByRole("textbox", { name: Labels.Comment })
+    ).not.toBeInTheDocument();
   });
 });

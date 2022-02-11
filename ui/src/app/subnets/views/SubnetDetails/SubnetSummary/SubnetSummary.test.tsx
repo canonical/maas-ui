@@ -151,8 +151,8 @@ it("renders correct value for 'Managed allocation' if enabled", async () => {
   const label = "Managed allocation";
   expect(screen.getByLabelText(label)).toHaveTextContent("Enabled");
   expect(
-    within(screen.getByText(label)).queryAllByTestId("Tooltip")
-  ).toHaveLength(0);
+    within(screen.getByText(label)).queryByTestId("Tooltip")
+  ).not.toBeInTheDocument();
 });
 
 it("renders correct value for 'Managed allocation' if disabled", async () => {
@@ -213,8 +213,8 @@ it("renders correct value for 'Active discovery' if disabled", async () => {
   const label = "Active discovery";
   expect(screen.getByLabelText(label)).toHaveTextContent("Disabled");
   expect(
-    within(screen.getByText(label)).queryAllByTestId("Tooltip")
-  ).toHaveLength(0);
+    within(screen.getByText(label)).queryByTestId("Tooltip")
+  ).not.toBeInTheDocument();
 });
 
 it("renders correct value for 'Proxy access' if allowed", async () => {
@@ -363,8 +363,8 @@ it("renders the correct value for 'Space' if it has an ID", async () => {
   const label = "Space";
   expect(screen.getByLabelText(label)).toHaveTextContent("Test space");
   expect(
-    within(screen.getByText(label)).queryAllByTestId("Tooltip")
-  ).toHaveLength(0);
+    within(screen.getByText(label)).queryByTestId("Tooltip")
+  ).not.toBeInTheDocument();
 });
 
 it("renders the correct value for 'Space' if no ID", async () => {

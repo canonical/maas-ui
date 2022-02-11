@@ -104,8 +104,12 @@ it("can display the edit form", () => {
   const formName = "Edit VLAN";
   const button = screen.getByRole("button", { name: "Edit" });
   expect(button).toBeInTheDocument();
-  expect(screen.queryAllByRole("form", { name: formName })).toHaveLength(0);
+  expect(
+    screen.queryByRole("form", { name: formName })
+  ).not.toBeInTheDocument();
   userEvent.click(button);
-  expect(screen.queryAllByRole("button", { name: "Edit" })).toHaveLength(0);
+  expect(
+    screen.queryByRole("button", { name: "Edit" })
+  ).not.toBeInTheDocument();
   expect(screen.getByRole("form", { name: formName })).toBeInTheDocument();
 });
