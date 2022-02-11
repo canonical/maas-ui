@@ -6,14 +6,6 @@ export enum IPAddressType {
   DISCOVERED = 6,
 }
 
-export enum IPAddressTypeLabel {
-  AUTO = "Automatic",
-  STICKY = "Sticky",
-  USER_RESERVED = "User reserved",
-  DHCP = "DHCP",
-  DISCOVERED = "Discovered",
-}
-
 export enum SubnetMeta {
   MODEL = "subnet",
   PK = "id",

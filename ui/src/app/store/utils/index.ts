@@ -1,6 +1,7 @@
 export {
   canOpenActionForm,
   getNodeActionTitle,
+  getNodeTypeDisplay,
   nodeIsController,
   nodeIsDevice,
   nodeIsMachine,

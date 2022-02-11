@@ -6,7 +6,36 @@ import type { Machine } from "app/store/machine/types";
 // Import from the common utils to prevent an import loop in machine/utils/index.ts.
 import { isMachineDetails } from "app/store/machine/utils/common";
 import type { Node, NodeDetails } from "app/store/types/node";
-import { NodeActions, NodeLinkType, NodeStatus } from "app/store/types/node";
+import {
+  NodeActions,
+  NodeLinkType,
+  NodeStatus,
+  NodeType,
+  NodeTypeDisplay,
+} from "app/store/types/node";
+
+/**
+ * Get node type display from node type.
+ * @param nodeType - The type of the node.
+ * @returns Node type display.
+ */
+export const getNodeTypeDisplay = (nodeType: NodeType): string => {
+  switch (nodeType) {
+    case NodeType.DEFAULT:
+    case NodeType.MACHINE:
+      return NodeTypeDisplay.MACHINE;
+    case NodeType.DEVICE:
+      return NodeTypeDisplay.DEVICE;
+    case NodeType.RACK_CONTROLLER:
+      return NodeTypeDisplay.RACK_CONTROLLER;
+    case NodeType.REGION_CONTROLLER:
+      return NodeTypeDisplay.REGION_CONTROLLER;
+    case NodeType.REGION_AND_RACK_CONTROLLER:
+      return NodeTypeDisplay.REGION_AND_RACK_CONTROLLER;
+    default:
+      return "Unknown";
+  }
+};
 
 /**
  * Get title from node action name.
