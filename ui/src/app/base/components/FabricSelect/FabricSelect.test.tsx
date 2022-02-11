@@ -97,4 +97,30 @@ describe("FabricSelect", () => {
     );
     expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
   });
+
+  it("orders the fabrics by name", () => {
+    state.fabric.items = [
+      fabricFactory({ id: 1, name: "FABric2" }),
+      fabricFactory({ id: 2, name: "FABric1" }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+          <FabricSelect name="fabric" />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { disabled: true, label: "Select fabric", value: "" },
+      {
+        label: "FABric1",
+        value: "2",
+      },
+      {
+        label: "FABric2",
+        value: "1",
+      },
+    ]);
+  });
 });

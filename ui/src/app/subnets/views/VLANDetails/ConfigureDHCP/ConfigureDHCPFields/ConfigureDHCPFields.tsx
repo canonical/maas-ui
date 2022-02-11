@@ -8,6 +8,7 @@ import type { ConfigureDHCPValues } from "../ConfigureDHCP";
 import { DHCPType } from "../ConfigureDHCP";
 
 import FormikField from "app/base/components/FormikField";
+import VLANSelect from "app/base/components/VLANSelect";
 import controllerSelectors from "app/store/controller/selectors";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { RootState } from "app/store/root/types";
@@ -87,10 +88,12 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
                           : "Primary rack"
                       }
                       name="primaryRack"
-                      options={primaryRackOptions.map((controller) => ({
-                        label: controller.hostname,
-                        value: controller.system_id,
-                      }))}
+                      options={primaryRackOptions
+                        .map((controller) => ({
+                          label: controller.hostname,
+                          value: controller.system_id,
+                        }))
+                        .sort((a, b) => a.label.localeCompare(b.label))}
                       wrapperClassName="u-nudge-right--x-large"
                     />
                     {connectedControllers.length > 1 && (
@@ -100,10 +103,12 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
                         name="secondaryRack"
                         options={[
                           { label: "Unset", value: "" },
-                          ...secondaryRackOptions.map((controller) => ({
-                            label: controller.hostname,
-                            value: controller.system_id,
-                          })),
+                          ...secondaryRackOptions
+                            .map((controller) => ({
+                              label: controller.hostname,
+                              value: controller.system_id,
+                            }))
+                            .sort((a, b) => a.label.localeCompare(b.label)),
                         ]}
                         wrapperClassName="u-nudge-right--x-large"
                       />
@@ -125,17 +130,16 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
               value={DHCPType.RELAY}
             />
             {dhcpType === DHCPType.RELAY && (
-              <FormikField
-                component={Select}
+              <VLANSelect
+                defaultOption={null}
+                generateName={(dhcpVLAN) =>
+                  getFullVLANName(dhcpVLAN.id, allVLANs, fabrics) ||
+                  dhcpVLAN.name
+                }
                 label="VLAN"
                 name="relayVLAN"
-                options={vlansWithDHCP.map((dhcpVLAN) => ({
-                  label:
-                    getFullVLANName(dhcpVLAN.id, allVLANs, fabrics) ||
-                    dhcpVLAN.name,
-                  value: dhcpVLAN.id,
-                }))}
                 wrapperClassName="u-nudge-right--x-large"
+                vlans={vlansWithDHCP}
               />
             )}
           </>

@@ -10,6 +10,7 @@ import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
 import { getSubnetDisplay } from "app/store/subnet/utils";
+import { simpleSortByKey } from "app/utils";
 
 type Option = NonNullable<SelectProps["options"]>[0];
 
@@ -46,10 +47,12 @@ export const SubnetSelect = ({
     subnets = subnets.filter(filterFunction);
   }
 
-  const subnetOptions = subnets.map<Option>((subnet) => ({
-    label: getSubnetDisplay(subnet),
-    value: subnet.id.toString(),
-  }));
+  const subnetOptions = subnets
+    .map<Option>((subnet) => ({
+      label: getSubnetDisplay(subnet),
+      value: subnet.id.toString(),
+    }))
+    .sort(simpleSortByKey("label", { alphanumeric: true }));
 
   if (defaultOption) {
     subnetOptions.unshift(defaultOption);
