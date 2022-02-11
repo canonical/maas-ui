@@ -8,6 +8,7 @@ import DynamicSelect from "../DynamicSelect";
 import VLANSelect from "./VLANSelect";
 
 import type { RootState } from "app/store/root/types";
+import { VlanVid } from "app/store/vlan/types";
 import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
@@ -100,7 +101,7 @@ describe("VLANSelect", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
           <VLANSelect name="vlan" fabric={3} />
         </Formik>
       </Provider>
@@ -132,6 +133,83 @@ describe("VLANSelect", () => {
       {
         label: "2 (vlan2)",
         value: "2",
+      },
+    ]);
+  });
+
+  it("can generate the vlan names", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+          <VLANSelect
+            generateName={(vlan) => `name: ${vlan.name}`}
+            name="vlan"
+          />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { disabled: true, label: "Select VLAN", value: "" },
+      {
+        label: "name: vlan2",
+        value: "2",
+      },
+      {
+        label: "name: vlan1",
+        value: "1",
+      },
+    ]);
+  });
+
+  it("orders the vlans by name", () => {
+    state.vlan.items = [
+      vlanFactory({ id: 1, name: "vlan1", vid: 21, fabric: 3 }),
+      vlanFactory({ id: 2, name: "vlan2", vid: 2, fabric: 4 }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+          <VLANSelect name="vlan" />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { disabled: true, label: "Select VLAN", value: "" },
+      {
+        label: "2 (vlan2)",
+        value: "2",
+      },
+      {
+        label: "21 (vlan1)",
+        value: "1",
+      },
+    ]);
+  });
+
+  it("orders untagged vlans to the start", () => {
+    state.vlan.items = [
+      vlanFactory({ id: 1, name: "vlan1", vid: 21, fabric: 3 }),
+      vlanFactory({ id: 2, vid: VlanVid.UNTAGGED, fabric: 4 }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
+          <VLANSelect name="vlan" />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { disabled: true, label: "Select VLAN", value: "" },
+      {
+        label: "untagged",
+        value: "2",
+      },
+      {
+        label: "21 (vlan1)",
+        value: "1",
       },
     ]);
   });

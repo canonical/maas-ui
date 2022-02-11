@@ -9,10 +9,22 @@
 export const simpleSortByKey =
   <O, K extends keyof O>(
     key: K,
-    { reverse } = { reverse: false }
+    { alphanumeric, reverse }: { alphanumeric?: boolean; reverse?: boolean } = {
+      alphanumeric: false,
+      reverse: false,
+    }
   ): ((a: O, b: O) => number) =>
   (a: O, b: O) => {
-    if (a[key] > b[key]) return reverse ? -1 : 1;
-    if (a[key] < b[key]) return reverse ? 1 : -1;
+    const paramA = a[key];
+    const paramB = b[key];
+    if (
+      alphanumeric &&
+      typeof paramA === "string" &&
+      typeof paramB === "string"
+    ) {
+      return paramA.localeCompare(paramB, "en", { numeric: true });
+    }
+    if (paramA > paramB) return reverse ? -1 : 1;
+    if (a[key] < paramB) return reverse ? 1 : -1;
     return 0;
   };

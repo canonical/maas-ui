@@ -144,4 +144,40 @@ describe("SubnetSelect", () => {
       },
     ]);
   });
+
+  it("orders the subnets by name", () => {
+    state.subnet.items = [
+      subnetFactory({
+        id: 1,
+        name: "sub1",
+        cidr: "1.1.1.1/24",
+        vlan: 3,
+      }),
+      subnetFactory({
+        id: 2,
+        name: "sub2",
+        cidr: "0.0.0.0/24",
+        vlan: 4,
+      }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
+          <SubnetSelect name="subnet" />
+        </Formik>
+      </Provider>
+    );
+    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+      { label: "Select subnet", value: "" },
+      {
+        label: "0.0.0.0/24 (sub2)",
+        value: "2",
+      },
+      {
+        label: "1.1.1.1/24 (sub1)",
+        value: "1",
+      },
+    ]);
+  });
 });

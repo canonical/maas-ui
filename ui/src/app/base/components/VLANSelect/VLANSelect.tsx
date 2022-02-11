@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import type { SelectProps } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
@@ -15,9 +16,12 @@ import type { VLAN } from "app/store/vlan/types";
 import { getVLANDisplay } from "app/store/vlan/utils";
 import { isId } from "app/utils";
 
+type Option = NonNullable<SelectProps["options"]>[0];
+
 type Props = {
-  defaultOption?: { disabled?: boolean; label: string; value: string } | null;
+  defaultOption?: Option | null;
   fabric?: VLAN["fabric"];
+  generateName?: (vlan: VLAN) => string;
   includeDefaultVlan?: boolean;
   showSpinnerOnLoad?: boolean;
   setDefaultValueFromFabric?: boolean;
@@ -27,6 +31,7 @@ type Props = {
 export const VLANSelect = ({
   defaultOption = { disabled: true, label: "Select VLAN", value: "" },
   fabric,
+  generateName,
   includeDefaultVlan = true,
   showSpinnerOnLoad = false,
   setDefaultValueFromFabric,
@@ -42,6 +47,25 @@ export const VLANSelect = ({
     fabricSelectors.getById(state, fabric)
   );
   const { setFieldValue } = useFormikContext();
+
+  const generateVLANName = (vlan: VLAN) =>
+    generateName ? generateName(vlan) : getVLANDisplay(vlan) || "";
+
+  const sort = (a: VLAN, b: VLAN): number => {
+    // Put the untagged vlan(s) at the start.
+    if (a.vid === VlanVid.UNTAGGED && b.vid === VlanVid.UNTAGGED) {
+      return 0;
+    } else if (a.vid === VlanVid.UNTAGGED) {
+      return -1;
+    } else if (b.vid === VlanVid.UNTAGGED) {
+      return 1;
+    }
+    return (
+      getVLANDisplay(a)?.localeCompare(generateVLANName(b), "en", {
+        numeric: true,
+      }) || 0
+    );
+  };
 
   useEffect(() => {
     if (setDefaultValueFromFabric) {
@@ -69,8 +93,8 @@ export const VLANSelect = ({
     vlanList = vlanList.filter(({ vid }) => vid !== VlanVid.UNTAGGED);
   }
 
-  const vlanOptions = vlanList.map((vlan) => ({
-    label: getVLANDisplay(vlan) || "",
+  const vlanOptions = [...vlanList].sort(sort).map<Option>((vlan) => ({
+    label: generateVLANName(vlan),
     value: vlan.id.toString(),
   }));
 

@@ -6,6 +6,7 @@ import DynamicSelect from "app/base/components/DynamicSelect";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
+import { simpleSortByKey } from "app/utils";
 
 type Props = {
   defaultOption?: { label: string; value: string; disabled?: boolean } | null;
@@ -33,10 +34,12 @@ export const FabricSelect = ({
       name={name}
       options={[
         ...(defaultOption ? [defaultOption] : []),
-        ...fabrics.map((fabric) => ({
-          label: fabric.name,
-          value: fabric.id.toString(),
-        })),
+        ...fabrics
+          .map((fabric) => ({
+            label: fabric.name,
+            value: fabric.id.toString(),
+          }))
+          .sort(simpleSortByKey("label", { alphanumeric: true })),
       ]}
       {...props}
     />

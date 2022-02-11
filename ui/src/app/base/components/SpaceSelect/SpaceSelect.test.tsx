@@ -130,3 +130,22 @@ it("can hide the default option", () => {
   );
   expect(screen.queryAllByRole("option")).toHaveLength(0);
 });
+
+it("orders the spaces by name", () => {
+  state.space.items = [
+    spaceFactory({ id: 1, name: "space3" }),
+    spaceFactory({ id: 2, name: "space1" }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <Formik initialValues={{ space: "" }} onSubmit={jest.fn()}>
+        <SpaceSelect name="space" />
+      </Formik>
+    </Provider>
+  );
+  const options = screen.queryAllByRole("option");
+  expect(options[0].textContent).toBe("Select space");
+  expect(options[1].textContent).toBe("space1");
+  expect(options[2].textContent).toBe("space3");
+});

@@ -7,6 +7,7 @@ import FormikField from "app/base/components/FormikField";
 import type { Props as FormikFieldProps } from "app/base/components/FormikField/FormikField";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
+import { simpleSortByKey } from "app/utils";
 
 type Props = {
   defaultOption?: { label: string; value: string; disabled?: boolean } | null;
@@ -35,10 +36,12 @@ export const SpaceSelect = ({
       name={name}
       options={[
         ...(defaultOption ? [defaultOption] : []),
-        ...spaces.map((space) => ({
-          label: space.name,
-          value: space.id.toString(),
-        })),
+        ...spaces
+          .map((space) => ({
+            label: space.name,
+            value: space.id.toString(),
+          }))
+          .sort(simpleSortByKey("label", { alphanumeric: true })),
       ]}
       {...props}
     />
