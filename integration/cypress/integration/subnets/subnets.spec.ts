@@ -11,6 +11,20 @@ context("Subnets", () => {
     cy.findByRole("heading", { level: 1 }).contains("Subnets");
   });
 
+  it("highlights the correct navigation link", () => {
+    cy.get(".p-navigation__link.is-selected a").should(
+      "have.attr",
+      "href",
+      generateNewURL("/networks?by=fabric")
+    );
+    cy.findByRole("navigation", { name: "primary" }).within(() => {
+      cy.findByRole("link", { current: "page" }).should(
+        "have.attr",
+        "href",
+        generateNewURL("/networks?by=fabric")
+      );
+    });
+  });
   it("displays the main networking view correctly", () => {
     const expectedHeaders = [
       "Fabric",
