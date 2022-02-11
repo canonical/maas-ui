@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import StaticRoutes from "./StaticRoutes";
 import SubnetDetailsHeader from "./SubnetDetailsHeader";
 import SubnetSummary from "./SubnetSummary";
-import UsedIPs from "./UsedIPs";
+import SubnetUsedIPs from "./SubnetUsedIPs";
 import Utilisation from "./Utilisation";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
@@ -67,7 +67,7 @@ const SubnetDetails = (): JSX.Element => {
       <StaticRoutes subnetId={id} />
       <ReservedRanges subnetId={id} />
       <DHCPSnippets subnetIds={[id]} modelName={SubnetMeta.MODEL} />
-      <UsedIPs subnetId={id} />
+      <SubnetUsedIPs subnetId={id} />
     </Section>
   );
 };

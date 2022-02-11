@@ -1,9 +1,20 @@
-import { getHasIPAddresses, getSubnetDisplay, isSubnetDetails } from "./utils";
+import { IPAddressType } from "./types";
+import {
+  getHasIPAddresses,
+  getIPTypeDisplay,
+  getIPUsageDisplay,
+  getSubnetDisplay,
+  isSubnetDetails,
+} from "./utils";
 
+import { NodeType } from "app/store/types/node";
 import {
   subnet as subnetFactory,
-  subnetIP as subnetIPFactory,
   subnetDetails as subnetDetailsFactory,
+  subnetIP as subnetIPFactory,
+  subnetBMC as subnetBMCFactory,
+  subnetDNSRecord as subnetDNSRecordFactory,
+  subnetIPNodeSummary as nodeSummaryFactory,
 } from "testing/factories";
 
 describe("subnet utils", () => {
@@ -61,5 +72,56 @@ describe("getHasIPAddresses", function () {
   it("returns false if argument has no IP addresses", function () {
     const subnet = subnetDetailsFactory({ ip_addresses: [] });
     expect(getHasIPAddresses(subnet)).toBe(false);
+  });
+});
+
+describe("getIPTypeDisplay", () => {
+  it("correctly returns the display text for an IP address type", () => {
+    expect(getIPTypeDisplay(IPAddressType.AUTO)).toBe("Automatic");
+    expect(getIPTypeDisplay(IPAddressType.DHCP)).toBe("DHCP");
+    expect(getIPTypeDisplay(IPAddressType.DISCOVERED)).toBe("Discovered");
+    expect(getIPTypeDisplay(IPAddressType.STICKY)).toBe("Sticky");
+    expect(getIPTypeDisplay(IPAddressType.USER_RESERVED)).toBe("User reserved");
+  });
+});
+
+describe("getIPUsageDisplay", () => {
+  it("handles an IP used for a container", () => {
+    const ip = subnetIPFactory({
+      node_summary: nodeSummaryFactory({
+        is_container: true,
+        node_type: NodeType.DEVICE,
+      }),
+    });
+    expect(getIPUsageDisplay(ip)).toBe("Container");
+  });
+
+  it("handles an IP used for a node", () => {
+    const ip = subnetIPFactory({
+      node_summary: nodeSummaryFactory({
+        is_container: false,
+        node_type: NodeType.MACHINE,
+      }),
+    });
+    expect(getIPUsageDisplay(ip)).toBe("Machine");
+  });
+
+  it("handles an IP used in BMCs", () => {
+    const ip = subnetIPFactory({ bmcs: [subnetBMCFactory()] });
+    expect(getIPUsageDisplay(ip)).toBe("BMC");
+  });
+
+  it("handles an IP used in DNS", () => {
+    const ip = subnetIPFactory({ dns_records: [subnetDNSRecordFactory()] });
+    expect(getIPUsageDisplay(ip)).toBe("DNS");
+  });
+
+  it("handles an IP with unknown usage", () => {
+    const ip = subnetIPFactory({
+      bmcs: undefined,
+      dns_records: undefined,
+      node_summary: undefined,
+    });
+    expect(getIPUsageDisplay(ip)).toBe("Unknown");
   });
 });
