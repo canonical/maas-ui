@@ -14,6 +14,8 @@ import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
+import { getSpaceDisplay } from "app/store/space/utils";
+import { VLANVidRange } from "app/store/types/enum";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { toFormikNumber } from "app/utils";
@@ -28,13 +30,13 @@ type AddVlanValues = {
 const vidRangeError = "VID must be a numeric value between 1 and 4094";
 const vlanSchema = Yup.object()
   .shape({
-    space: Yup.number().required("Space is required"),
+    space: Yup.number(),
     fabric: Yup.number().required("Fabric is required"),
     name: Yup.string(),
     vid: Yup.number()
       .typeError(vidRangeError)
-      .min(1, vidRangeError)
-      .max(4094, vidRangeError)
+      .min(VLANVidRange.Min, vidRangeError)
+      .max(VLANVidRange.Max, vidRangeError)
       .required("VID is required"),
   })
   .defined();
@@ -98,7 +100,7 @@ const AddVlan = ({
             component={Input}
             disabled={isSaving}
             label="VID"
-            help="Numeric value between 1 and 4094"
+            help={`Numeric value between ${VLANVidRange.Min} and ${VLANVidRange.Max}`}
           />
         </Col>
         <Col size={6}>
@@ -116,7 +118,11 @@ const AddVlan = ({
           <FabricSelect required name="fabric" disabled={isSaving} />
         </Col>
         <Col size={6}>
-          <SpaceSelect required name="space" disabled={isSaving} />
+          <SpaceSelect
+            defaultOption={{ label: getSpaceDisplay(null), value: "" }}
+            disabled={isSaving}
+            name="space"
+          />
         </Col>
       </Row>
     </FormikForm>
