@@ -3,11 +3,7 @@
 @import "tables/patterns_double-row";
 @import "tables/patterns_table-controllers";
 @import "tables/patterns_table-expanding";
-@import "tables/patters_table-fabrics";
-@import "tables/patterns_table-ipranges";
-@import "tables/patterns_table-static-routes";
 @import "tables/patterns_table-storage";
-@import "tables/patterns_table-subnets";
 @import "tables/patterns_table-testing";
 @import "tables/patterns_table-dhcp-snippets";
 
@@ -15,11 +11,7 @@
 @include maas-double-row;
 @include maas-table-controllers;
 @include maas-table-expanding;
-@include maas-table-fabrics;
-@include maas-table-ipranges;
-@include maas-table-static-routes;
 @include maas-table-storage;
-@include maas-table-subnets;
 @include maas-table-testing;
 @include maas-table-dhcp-snippets;
 
