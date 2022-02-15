@@ -27,6 +27,7 @@ const AddFabric = ({
       aria-label="Add fabric"
       buttonsBordered={false}
       allowAllEmpty
+      cleanup={fabricActions.cleanup}
       initialValues={{ name: "", description: "" }}
       onSaveAnalytics={{
         action: "Add fabric",

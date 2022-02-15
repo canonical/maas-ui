@@ -52,12 +52,31 @@ context("Subnets - Add", () => {
     submitForm(formName);
   };
 
-  it(`displays a newly added Fabric in the subnets table`, () => {
+  it("can add and delete a new fabric", () => {
     const name = `cypress-${generateId()}`;
     completeForm("Fabric", name);
+
     cy.findByRole("table", { name: "Subnets" }).within(() => {
       cy.findByRole("row", { name }).within(() =>
-        cy.findByRole("link", { name }).should("be.visible")
+        cy.findByRole("link", { name }).click()
+      );
+    });
+
+    cy.url().should("include", generateNewURL("/fabric"));
+
+    cy.findByRole("button", { name: "Delete fabric" }).click();
+
+    cy.findByText("Are you sure you want to delete this fabric?").should(
+      "be.visible"
+    );
+
+    cy.findByRole("button", { name: "Delete fabric" }).click();
+
+    cy.url().should("include", generateNewURL("/networks?by=fabric"));
+
+    cy.findByRole("table", { name: "Subnets" }).within(() => {
+      cy.findByRole("row", { name }).within(() =>
+        cy.findByRole("link", { name }).should("not.exist")
       );
     });
   });
