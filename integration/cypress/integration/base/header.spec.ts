@@ -1,4 +1,4 @@
-import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 context("Header", () => {
   beforeEach(() => {
@@ -59,7 +59,7 @@ context("Header", () => {
 
   it("navigates to subnets", () => {
     cy.get(".p-navigation__link a:contains(Subnets)").click();
-    cy.location("pathname").should("eq", generateLegacyURL("/networks"));
+    cy.location("pathname").should("eq", generateNewURL("/networks"));
     cy.location("search").should("eq", "?by=fabric");
     cy.get(".p-navigation__link.is-selected a").contains("Subnets");
   });

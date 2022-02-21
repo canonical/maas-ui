@@ -1,6 +1,4 @@
-import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
-
-const legacyPages = ["/networks"];
+import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
 type Page = { heading: string; url: string };
 const pages: Page[] = [
@@ -26,9 +24,7 @@ pages.forEach(({ heading, url }: Page) => {
       cy.login();
     }
 
-    const pageUrl = legacyPages.includes(url)
-      ? generateLegacyURL(url)
-      : generateNewURL(url);
+    const pageUrl = generateNewURL(url);
 
     cy.visit(pageUrl);
 
