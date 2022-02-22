@@ -79,6 +79,7 @@ export const Footer = ({
             className="p-footer__logo u-float--right"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="-0.835 -0.92 761 101"
+            aria-label="Canonical"
           >
             <path
               fill="#772953"
