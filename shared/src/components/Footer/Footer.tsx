@@ -74,11 +74,12 @@ export const Footer = ({
             Canonical are registered trademarks of Canonical Ltd.
           </p>
         </div>
-        <div className="col-2">
+        <div className="col-small-1 col-medium-1 col-2">
           <svg
             className="p-footer__logo u-float--right"
             xmlns="http://www.w3.org/2000/svg"
             viewBox="-0.835 -0.92 761 101"
+            aria-label="Canonical"
           >
             <path
               fill="#772953"
