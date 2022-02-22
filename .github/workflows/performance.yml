@@ -1,0 +1,28 @@
+name: Sitespeed
+on: [pull_request]
+jobs:
+  sitespeed:
+    name: Sitespeed
+    runs-on: ubuntu-20.04
+    env:
+      MAAS_URL: http://localhost:5240
+    steps:
+      - uses: actions/checkout@main
+      - name: Build MAAS
+        run: |
+          sudo systemctl enable snapd
+          sudo snap install maas-test-db
+          sudo apt install make
+          git clone https://git.launchpad.net/maas && cd maas
+          make install-dependencies
+          git config --file=.gitmodules submodule.src/maasui/src.branch master
+          git submodule sync
+          git submodule update --init --recursive --remote
+          make snap-prime
+          sudo snap try build/dev-snap/prime
+          utilities/connect-snap-interfaces
+          sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
+      - name: curl
+        uses: wei/curl@master
+        with:
+          args: ${{env.MAAS_URL}}/MAAS/r/machines
