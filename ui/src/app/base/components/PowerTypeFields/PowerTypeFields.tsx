@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import BasePowerField from "./BasePowerField";
+import IPMIPowerFields from "./IPMIPowerFields";
 import type { LXDPowerFieldsProps } from "./LXDPowerFields";
 import LXDPowerFields from "./LXDPowerFields";
 
@@ -73,6 +74,15 @@ export const PowerTypeFields = <V extends AnyObject>({
       fieldScopes.includes(field.scope)
     );
     switch (selectedPowerType.name) {
+      case PowerTypeNames.IPMI:
+        fieldContent = (
+          <IPMIPowerFields
+            disabled={disableFields}
+            fields={fieldsInScope}
+            powerParametersValueName={powerParametersValueName}
+          />
+        );
+        break;
       case PowerTypeNames.LXD:
         fieldContent = (
           <LXDPowerFields
