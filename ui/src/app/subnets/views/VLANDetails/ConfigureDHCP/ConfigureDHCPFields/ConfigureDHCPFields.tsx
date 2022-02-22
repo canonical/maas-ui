@@ -48,12 +48,6 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
         <FormikField
           label="MAAS provides DHCP"
           name="enableDHCP"
-          onChange={async (e: ChangeEvent) => {
-            await handleChange(e);
-            setFieldValue("primaryRack", "");
-            setFieldValue("relayVLAN", "");
-            setFieldValue("secondaryRack", "");
-          }}
           type="checkbox"
         />
         {enableDHCP && (
