@@ -35,3 +35,17 @@ export const MachineHeaderViews = {
   ...MachineActionHeaderViews,
   ...MachineNonActionHeaderViews,
 } as const;
+
+export const columns = [
+  "fqdn",
+  "power",
+  "status",
+  "owner",
+  "pool",
+  "zone",
+  "fabric",
+  "cpu",
+  "memory",
+  "disks",
+  "storage",
+] as const;

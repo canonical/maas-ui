@@ -117,4 +117,8 @@
   .machine-list--inline-input {
     display: inline;
   }
+
+  .machines-list-hidden-columns {
+    padding: $sph-inner/2 $sph-inner;
+  }
 }

@@ -41,6 +41,8 @@ describe("MachineListControls", () => {
             setFilter={setFilter}
             setGrouping={jest.fn()}
             setHiddenGroups={jest.fn()}
+            hiddenColumns={[]}
+            toggleHiddenColumn={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

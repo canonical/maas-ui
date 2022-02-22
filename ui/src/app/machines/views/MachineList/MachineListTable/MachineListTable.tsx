@@ -159,7 +159,7 @@ const generateRows = ({
   return sortedMachines.map((row) => {
     const isActive = activeRow === row.system_id;
 
-    const columns = [
+    const columns: TableColumn[] = [
       {
         key: "fqdn",
         className: "fqdn-col",
@@ -277,7 +277,11 @@ const generateRows = ({
       className: classNames("machine-list__machine", "truncated-border", {
         "machine-list__machine--active": isActive,
       }),
-      columns: filterColumns(columns, hiddenColumns, showActions),
+      columns: filterColumns(
+        columns as TableColumn[],
+        hiddenColumns,
+        showActions
+      ),
     };
   });
 };
