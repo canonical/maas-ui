@@ -27,6 +27,7 @@ import TableHeader from "app/base/components/TableHeader";
 import type { TableSort } from "app/base/hooks";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
+import { columns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -159,7 +160,7 @@ const generateRows = ({
   return sortedMachines.map((row) => {
     const isActive = activeRow === row.system_id;
 
-    const columns: TableColumn[] = [
+    const columns = [
       {
         key: "fqdn",
         className: "fqdn-col",
@@ -277,11 +278,7 @@ const generateRows = ({
       className: classNames("machine-list__machine", "truncated-border", {
         "machine-list__machine--active": isActive,
       }),
-      columns: filterColumns(
-        columns as TableColumn[],
-        hiddenColumns,
-        showActions
-      ),
+      columns: filterColumns(columns, hiddenColumns, showActions),
     };
   });
 };
@@ -446,64 +443,54 @@ const generateGroupRows = ({
         className: "machine-list__group",
         columns: [
           {
+            colSpan: columns.length - hiddenColumns.length,
             content: (
-              <DoubleRow
-                data-testid="group-cell"
-                primary={
-                  showActions ? (
-                    <GroupCheckbox
-                      inRow
-                      items={machineIDs}
-                      selectedItems={selectedIDs}
-                      handleGroupCheckbox={handleGroupCheckbox}
-                      inputLabel={<strong>{label}</strong>}
-                    />
-                  ) : (
-                    <strong>{label}</strong>
-                  )
-                }
-                secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
-                secondaryClassName={
-                  showActions ? "u-nudge--secondary-row" : null
-                }
-              />
-            ),
-          },
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {},
-          {
-            content: (
-              <div className="machine-list__group-toggle">
-                <Button
-                  appearance="base"
-                  dense
-                  hasIcon
-                  onClick={() => {
-                    if (collapsed) {
-                      setHiddenGroups &&
-                        setHiddenGroups(
-                          hiddenGroups.filter((group) => group !== label)
-                        );
-                    } else {
-                      setHiddenGroups &&
-                        setHiddenGroups(hiddenGroups.concat([label]));
-                    }
-                  }}
-                >
-                  {collapsed ? (
-                    <i className="p-icon--plus">Show</i>
-                  ) : (
-                    <i className="p-icon--minus">Hide</i>
-                  )}
-                </Button>
-              </div>
+              <>
+                <DoubleRow
+                  data-testid="group-cell"
+                  primary={
+                    showActions ? (
+                      <GroupCheckbox
+                        inRow
+                        items={machineIDs}
+                        selectedItems={selectedIDs}
+                        handleGroupCheckbox={handleGroupCheckbox}
+                        inputLabel={<strong>{label}</strong>}
+                      />
+                    ) : (
+                      <strong>{label}</strong>
+                    )
+                  }
+                  secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
+                  secondaryClassName={
+                    showActions ? "u-nudge--secondary-row" : null
+                  }
+                />
+                <div className="machine-list__group-toggle">
+                  <Button
+                    appearance="base"
+                    dense
+                    hasIcon
+                    onClick={() => {
+                      if (collapsed) {
+                        setHiddenGroups &&
+                          setHiddenGroups(
+                            hiddenGroups.filter((group) => group !== label)
+                          );
+                      } else {
+                        setHiddenGroups &&
+                          setHiddenGroups(hiddenGroups.concat([label]));
+                      }
+                    }}
+                  >
+                    {collapsed ? (
+                      <i className="p-icon--plus">Show</i>
+                    ) : (
+                      <i className="p-icon--minus">Hide</i>
+                    )}
+                  </Button>
+                </div>
+              </>
             ),
           },
         ],

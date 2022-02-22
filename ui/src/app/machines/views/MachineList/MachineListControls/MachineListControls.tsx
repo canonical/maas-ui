@@ -35,38 +35,36 @@ const MachineListControls = ({
   }, [filter]);
 
   return (
-    <>
-      <Row>
-        <Col size={2}>
-          <MachinesFilterAccordion
-            searchText={searchText}
-            setSearchText={(searchText) => {
-              setFilter(searchText);
-            }}
-          />
-        </Col>
-        <Col size={6}>
-          <DebounceSearchBox
-            onDebounced={(debouncedText) => setFilter(debouncedText)}
-            searchText={searchText}
-            setSearchText={setSearchText}
-          />
-        </Col>
-        <Col size={2}>
-          <GroupSelect
-            grouping={grouping}
-            setGrouping={setGrouping}
-            setHiddenGroups={setHiddenGroups}
-          />
-        </Col>
-        <Col size={2}>
-          <HiddenColumnsSelect
-            hiddenColumns={hiddenColumns}
-            toggleHiddenColumn={toggleHiddenColumn}
-          />
-        </Col>
-      </Row>
-    </>
+    <Row>
+      <Col size={2}>
+        <MachinesFilterAccordion
+          searchText={searchText}
+          setSearchText={(searchText) => {
+            setFilter(searchText);
+          }}
+        />
+      </Col>
+      <Col size={6}>
+        <DebounceSearchBox
+          onDebounced={(debouncedText) => setFilter(debouncedText)}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
+      </Col>
+      <Col size={2}>
+        <GroupSelect
+          grouping={grouping}
+          setGrouping={setGrouping}
+          setHiddenGroups={setHiddenGroups}
+        />
+      </Col>
+      <Col size={2}>
+        <HiddenColumnsSelect
+          hiddenColumns={hiddenColumns}
+          toggleHiddenColumn={toggleHiddenColumn}
+        />
+      </Col>
+    </Row>
   );
 };
 

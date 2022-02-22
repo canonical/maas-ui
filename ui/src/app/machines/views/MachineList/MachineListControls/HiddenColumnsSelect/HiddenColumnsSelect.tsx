@@ -26,7 +26,7 @@ const HiddenColumnsSelect = ({
         hiddenColumns.length > 0 ? `(${hiddenColumns.length})` : ""
       }`}
     >
-      <div className="machines-list-hidden-columns">
+      <div className="machines-list-hidden-columns-select">
         {columns.map((column) => (
           <CheckboxInput
             key={column}
