@@ -463,7 +463,7 @@ const generateGroupRows = ({
                   }
                   secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
                   secondaryClassName={
-                    showActions ? "u-nudge--secondary-row" : null
+                    showActions ? "u-nudge--secondary-row u-align--left" : null
                   }
                 />
                 <div className="machine-list__group-toggle">
