@@ -1,6 +1,8 @@
 import type { Machine, MachineStatus } from "./base";
 import type { MachineMeta } from "./enum";
 
+import type { Domain } from "app/store/domain/types";
+import type { PowerType } from "app/store/general/types";
 import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Script } from "app/store/script/types";
@@ -15,6 +17,7 @@ import type {
   NetworkInterface,
   NetworkInterfaceParams,
   NetworkLink,
+  PowerParameters,
 } from "app/store/types/node";
 import type { Zone } from "app/store/zone/types";
 
@@ -112,7 +115,7 @@ export type CreateParams = {
   cpu_count?: Machine["cpu_count"];
   description?: Machine["description"];
   distro_series?: Machine["distro_series"];
-  domain?: Machine["domain"];
+  domain?: { name: Domain["name"] };
   ephemeral_deploy?: boolean;
   extra_macs: Machine["extra_macs"];
   hostname?: Machine["hostname"];
@@ -122,8 +125,12 @@ export type CreateParams = {
   memory?: Machine["memory"];
   min_hwe_kernel?: string;
   osystem?: Machine["osystem"];
+  pool?: { name: ResourcePool["name"] };
+  power_parameters: PowerParameters;
+  power_type: PowerType["name"];
   pxe_mac: Machine["pxe_mac"];
   swap_size?: string;
+  zone?: { name: Zone["name"] };
 };
 
 export type CreatePartitionParams = {
@@ -327,7 +334,7 @@ export type UpdateFilesystemParams = {
   tags?: string[];
 } & OptionalFilesystemParams;
 
-export type UpdateParams = CreateParams & {
+export type UpdateParams = Partial<CreateParams> & {
   [MachineMeta.PK]: Machine[MachineMeta.PK];
   tags?: Machine["tags"];
 };
