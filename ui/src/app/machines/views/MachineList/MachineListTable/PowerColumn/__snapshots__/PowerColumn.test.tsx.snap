@@ -150,7 +150,7 @@ exports[`PowerColumn renders 1`] = `
               >
                 <Button
                   appearance="base"
-                  aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                  aria-controls="mock-nanoid-1"
                   aria-expanded="false"
                   aria-haspopup="true"
                   aria-pressed="false"
@@ -161,7 +161,7 @@ exports[`PowerColumn renders 1`] = `
                   type="button"
                 >
                   <button
-                    aria-controls="Uakgb_J5m9g-0JDMbcJqLJ"
+                    aria-controls="mock-nanoid-1"
                     aria-expanded="false"
                     aria-haspopup="true"
                     aria-pressed="false"

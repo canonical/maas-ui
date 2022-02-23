@@ -1,1 +1,10 @@
-export const nanoid = (): string => "Uakgb_J5m9g-0JDMbcJqLJ";
+let id = 0;
+
+beforeEach(() => {
+  id = 0;
+});
+
+export const nanoid = (): string => {
+  id++;
+  return `mock-nanoid-${id}`;
+};
