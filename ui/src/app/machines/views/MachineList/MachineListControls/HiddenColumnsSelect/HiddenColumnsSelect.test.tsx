@@ -22,6 +22,6 @@ it("calls toggleHiddenColumn correctly on click of a checkbox", () => {
     </Provider>
   );
   userEvent.click(screen.getByRole("button", { name: "Hidden columns" }));
-  userEvent.click(screen.getByRole("checkbox", { name: "status" }));
-  expect(toggleHiddenColumn).toHaveBeenCalledWith("status");
+  userEvent.click(screen.getByRole("checkbox", { name: "RAM" }));
+  expect(toggleHiddenColumn).toHaveBeenCalledWith("memory");
 });

@@ -27,7 +27,7 @@ import TableHeader from "app/base/components/TableHeader";
 import type { TableSort } from "app/base/hooks";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
-import { columns } from "app/machines/constants";
+import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -162,7 +162,7 @@ const generateRows = ({
 
     const columns = [
       {
-        key: "fqdn",
+        key: MachineColumns.FQDN,
         className: "fqdn-col",
         content: (
           <NameColumn
@@ -179,7 +179,7 @@ const generateRows = ({
         ),
       },
       {
-        key: "power",
+        key: MachineColumns.POWER,
         className: "power-col",
         content: (
           <PowerColumn
@@ -190,7 +190,7 @@ const generateRows = ({
         ),
       },
       {
-        key: "status",
+        key: MachineColumns.STATUS,
         className: "status-col",
         content: (
           <StatusColumn
@@ -201,7 +201,7 @@ const generateRows = ({
         ),
       },
       {
-        key: "owner",
+        key: MachineColumns.OWNER,
         className: "owner-col",
         content: (
           <OwnerColumn
@@ -212,7 +212,7 @@ const generateRows = ({
         ),
       },
       {
-        key: "pool",
+        key: MachineColumns.POOL,
         className: "pool-col",
         content: (
           <PoolColumn
@@ -223,7 +223,7 @@ const generateRows = ({
         ),
       },
       {
-        key: "zone",
+        key: MachineColumns.ZONE,
         className: "zone-col",
         content: (
           <ZoneColumn
@@ -234,35 +234,35 @@ const generateRows = ({
         ),
       },
       {
-        key: "fabric",
+        key: MachineColumns.FABRIC,
         className: "fabric-col",
         content: (
           <FabricColumn data-testid="fabric-column" systemId={row.system_id} />
         ),
       },
       {
-        key: "cpu",
+        key: MachineColumns.CPU,
         className: "cores-col",
         content: (
           <CoresColumn data-testid="cpu-column" systemId={row.system_id} />
         ),
       },
       {
-        key: "memory",
+        key: MachineColumns.MEMORY,
         className: "ram-col",
         content: (
           <RamColumn data-testid="memory-column" systemId={row.system_id} />
         ),
       },
       {
-        key: "disks",
+        key: MachineColumns.DISKS,
         className: "disks-col",
         content: (
           <DisksColumn data-testid="disks-column" systemId={row.system_id} />
         ),
       },
       {
-        key: "storage",
+        key: MachineColumns.STORAGE,
         className: "storage-col",
         content: (
           <StorageColumn
@@ -527,7 +527,7 @@ export const MachineListTable = ({
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
     {
-      key: "fqdn",
+      key: MachineColumns.FQDN,
       direction: SortDirection.DESCENDING,
     }
   );
@@ -598,7 +598,7 @@ export const MachineListTable = ({
 
   const headers = [
     {
-      key: "fqdn",
+      key: MachineColumns.FQDN,
       className: "fqdn-col",
       content: (
         <div className="u-flex">
@@ -620,7 +620,7 @@ export const MachineListTable = ({
               }}
               sortKey="fqdn"
             >
-              FQDN
+              {columnLabels[MachineColumns.FQDN]}
             </TableHeader>
             &nbsp;<strong>|</strong>&nbsp;
             <TableHeader
@@ -640,7 +640,7 @@ export const MachineListTable = ({
       ),
     },
     {
-      key: "power",
+      key: MachineColumns.POWER,
       className: "power-col",
       content: (
         <TableHeader
@@ -650,12 +650,12 @@ export const MachineListTable = ({
           onClick={() => updateSort("power_state")}
           sortKey="power_state"
         >
-          Power
+          {columnLabels[MachineColumns.POWER]}
         </TableHeader>
       ),
     },
     {
-      key: "status",
+      key: MachineColumns.STATUS,
       className: "status-col",
       content: (
         <TableHeader
@@ -665,12 +665,12 @@ export const MachineListTable = ({
           onClick={() => updateSort("status")}
           sortKey="status"
         >
-          Status
+          {columnLabels[MachineColumns.STATUS]}
         </TableHeader>
       ),
     },
     {
-      key: "owner",
+      key: MachineColumns.OWNER,
       className: "owner-col",
       content: (
         <>
@@ -680,14 +680,14 @@ export const MachineListTable = ({
             onClick={() => updateSort("owner")}
             sortKey="owner"
           >
-            Owner
+            {columnLabels[MachineColumns.OWNER]}
           </TableHeader>
           <TableHeader>Tags</TableHeader>
         </>
       ),
     },
     {
-      key: "pool",
+      key: MachineColumns.POOL,
       className: "pool-col",
       content: (
         <>
@@ -697,14 +697,14 @@ export const MachineListTable = ({
             onClick={() => updateSort("pool")}
             sortKey="pool"
           >
-            Pool
+            {columnLabels[MachineColumns.POOL]}
           </TableHeader>
           <TableHeader>Note</TableHeader>
         </>
       ),
     },
     {
-      key: "zone",
+      key: MachineColumns.ZONE,
       className: "zone-col",
       content: (
         <>
@@ -714,14 +714,14 @@ export const MachineListTable = ({
             onClick={() => updateSort("zone")}
             sortKey="zone"
           >
-            Zone
+            {columnLabels[MachineColumns.ZONE]}
           </TableHeader>
           <TableHeader>Spaces</TableHeader>
         </>
       ),
     },
     {
-      key: "fabric",
+      key: MachineColumns.FABRIC,
       className: "fabric-col",
       content: (
         <>
@@ -731,14 +731,14 @@ export const MachineListTable = ({
             onClick={() => updateSort("fabric")}
             sortKey="fabric"
           >
-            Fabric
+            {columnLabels[MachineColumns.FABRIC]}
           </TableHeader>
           <TableHeader>VLAN</TableHeader>
         </>
       ),
     },
     {
-      key: "cpu",
+      key: MachineColumns.CPU,
       className: "cores-col u-align--right",
       content: (
         <>
@@ -748,14 +748,14 @@ export const MachineListTable = ({
             onClick={() => updateSort("cpu_count")}
             sortKey="cpu_count"
           >
-            Cores
+            {columnLabels[MachineColumns.CPU]}
           </TableHeader>
           <TableHeader>Arch</TableHeader>
         </>
       ),
     },
     {
-      key: "memory",
+      key: MachineColumns.MEMORY,
       className: "ram-col u-align--right",
       content: (
         <TableHeader
@@ -764,12 +764,12 @@ export const MachineListTable = ({
           onClick={() => updateSort("memory")}
           sortKey="memory"
         >
-          RAM
+          {columnLabels[MachineColumns.MEMORY]}
         </TableHeader>
       ),
     },
     {
-      key: "disks",
+      key: MachineColumns.DISKS,
       className: "disks-col u-align--right",
       content: (
         <TableHeader
@@ -778,12 +778,12 @@ export const MachineListTable = ({
           onClick={() => updateSort("physical_disk_count")}
           sortKey="physical_disk_count"
         >
-          Disks
+          {columnLabels[MachineColumns.DISKS]}
         </TableHeader>
       ),
     },
     {
-      key: "storage",
+      key: MachineColumns.STORAGE,
       className: "storage-col u-align--right",
       content: (
         <TableHeader
@@ -792,7 +792,7 @@ export const MachineListTable = ({
           onClick={() => updateSort("storage")}
           sortKey="storage"
         >
-          Storage
+          {columnLabels[MachineColumns.STORAGE]}
         </TableHeader>
       ),
     },

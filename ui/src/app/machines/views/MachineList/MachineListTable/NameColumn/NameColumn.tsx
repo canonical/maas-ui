@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import NonBreakingSpace from "app/base/components/NonBreakingSpace";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
@@ -130,8 +131,11 @@ export const NameColumn = ({
           primaryRow
         )
       }
-      secondary={secondaryRow}
-      secondaryClassName={handleCheckbox && "u-nudge--secondary-row"}
+      // fallback to non-breaking space to keep equal height of all rows
+      secondary={secondaryRow || <NonBreakingSpace />}
+      secondaryClassName={
+        handleCheckbox && "u-nudge--secondary-row u-align--left"
+      }
     />
   );
 };

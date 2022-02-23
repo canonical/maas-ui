@@ -23,16 +23,16 @@ context("Machine listing", () => {
 
     cy.findAllByRole("button", { name: "Hidden columns" }).click();
     cy.findByLabelText("hidden columns menu").within(() =>
-      cy.findByRole("checkbox", { name: "status" }).click({ force: true })
+      cy.findByRole("checkbox", { name: "Status" }).click({ force: true })
     );
 
     cy.findAllByRole("columnheader").should("have.length", 7);
-    cy.findByRole("header", { name: "status" }).should("not.exist");
+    cy.findByRole("header", { name: "Status" }).should("not.exist");
 
     cy.reload();
 
     // verify that the hidden column is still hidden after refresh
     cy.findAllByRole("columnheader").should("have.length", 7);
-    cy.findByRole("header", { name: "status" }).should("not.exist");
+    cy.findByRole("header", { name: "Status" }).should("not.exist");
   });
 });

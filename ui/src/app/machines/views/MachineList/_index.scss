@@ -50,12 +50,6 @@
     .storage-col {
       @include breakpoint-widths(0, 0, 9%, 8%, 6%);
     }
-
-    th:last-child,
-    td:last-child {
-      text-align: right;
-      justify-content: flex-end;
-    }
   }
 
   .machine-list--grouped .machine-list__machine {

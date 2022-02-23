@@ -1,7 +1,7 @@
 import { CheckboxInput, ContextualMenu } from "@canonical/react-components";
 
 import { useSendAnalytics } from "app/base/hooks";
-import { columns } from "app/machines/constants";
+import { columnLabels, columns } from "app/machines/constants";
 
 type Props = {
   hiddenColumns: string[];
@@ -32,7 +32,7 @@ const HiddenColumnsSelect = ({
             key={column}
             disabled={column === "fqdn"}
             aria-label={column}
-            label={column}
+            label={columnLabels[column]}
             checked={hiddenColumns.includes(column)}
             onChange={() => {
               sendAnalytics(

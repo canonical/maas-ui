@@ -49,3 +49,31 @@ export const columns = [
   "disks",
   "storage",
 ] as const;
+
+export enum MachineColumns {
+  FQDN = "fqdn",
+  POWER = "power",
+  STATUS = "status",
+  OWNER = "owner",
+  POOL = "pool",
+  ZONE = "zone",
+  FABRIC = "fabric",
+  CPU = "cpu",
+  MEMORY = "memory",
+  DISKS = "disks",
+  STORAGE = "storage",
+}
+
+export const columnLabels: Record<MachineColumns, string> = {
+  fqdn: "FQDN",
+  power: "Power",
+  status: "Status",
+  owner: "Owner",
+  pool: "Pool",
+  zone: "Zone",
+  fabric: "Fabric",
+  cpu: "Cores",
+  memory: "RAM",
+  disks: "Disks",
+  storage: "Storage",
+};

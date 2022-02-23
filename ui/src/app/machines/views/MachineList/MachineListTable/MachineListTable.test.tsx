@@ -261,12 +261,7 @@ describe("MachineListTable", () => {
 
     const firstMachine = machines[0];
     expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
+      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
     ).toEqual(firstMachine.fqdn);
     // Click the MAC table header
     wrapper.find('[data-testid="mac-header"]').find("button").simulate("click");
@@ -274,7 +269,7 @@ describe("MachineListTable", () => {
       wrapper
         .find(".machine-list__machine")
         .at(0)
-        .find("TableCell")
+        .find("RowCheckbox")
         .at(0)
         .text()
     ).toEqual(firstMachine.pxe_mac);
@@ -305,12 +300,7 @@ describe("MachineListTable", () => {
       wrapper.find('[data-testid="cores-header"]').find("i").exists()
     ).toBe(false);
     expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
+      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
     ).toEqual(firstMachine.fqdn);
     // Click the cores table header
     wrapper
@@ -324,7 +314,7 @@ describe("MachineListTable", () => {
       wrapper
         .find(".machine-list__machine")
         .at(0)
-        .find("TableCell")
+        .find("RowCheckbox")
         .at(0)
         .text()
     ).toEqual(secondMachine.fqdn);
@@ -362,12 +352,7 @@ describe("MachineListTable", () => {
       wrapper.find('[data-testid="status-header"]').find("i").props().className
     ).toBe("p-icon--contextual-menu");
     expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
+      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
     ).toEqual(firstMachine.fqdn);
 
     // Click the status table header again to reverse sort order
@@ -379,12 +364,7 @@ describe("MachineListTable", () => {
       wrapper.find('[data-testid="status-header"]').find("i").props().className
     ).toBe("p-icon--contextual-menu u-mirror--y");
     expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
+      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
     ).toEqual(secondMachine.fqdn);
 
     // Click the FQDN table header again to return to no sort
@@ -396,12 +376,7 @@ describe("MachineListTable", () => {
       wrapper.find('[data-testid="status-header"]').find("i").exists()
     ).toBe(false);
     expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("TableCell")
-        .at(0)
-        .text()
+      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
     ).toEqual(firstMachine.fqdn);
   });
 
