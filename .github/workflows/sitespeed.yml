@@ -1,0 +1,33 @@
+name: sitespeed.io
+on: [pull_request]
+jobs:
+  run-sitespeed:
+    name: Run sitespeed.io
+    runs-on: ubuntu-20.04
+    env:
+      MAAS_URL: http://localhost:5240
+    steps:
+      - uses: actions/checkout@main
+      - name: Install MAAS
+        run: |
+          sudo systemctl enable snapd
+          sudo snap install maas --channel=latest/edge
+          sudo snap install maas-test-db --channel=latest/edge
+      - name: Initialise MAAS
+        run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
+      - name: Create MAAS admin
+        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+      - name: Wait for MAAS
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: "${{env.MAAS_URL}}/MAAS/r"
+          responseCode: 200
+          timeout: 200000
+          interval: 500
+      - name: Run sitespeed.io tests
+        run: docker run -v "$(pwd)/sitespeed.io:/sitespeed.io" --network=host sitespeedio/sitespeed.io:23.0.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --browsertime.hostname=${{env.MAAS_URL}}
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+          name: sitespeed.io-results
+          path: sitespeed.io/results
