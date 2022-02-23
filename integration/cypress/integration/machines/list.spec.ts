@@ -18,7 +18,7 @@ context("Machine listing", () => {
     );
   });
 
-  it("can hide machine table columns", () => {
+  it.skip("can hide machine table columns", () => {
     cy.findAllByRole("columnheader").should("have.length", 8);
 
     cy.findAllByRole("button", { name: "Hidden columns" }).click();

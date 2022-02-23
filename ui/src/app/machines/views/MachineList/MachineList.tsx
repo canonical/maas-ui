@@ -44,19 +44,6 @@ const MachineList = ({
     "hiddenGroups",
     []
   );
-  const [hiddenColumns, setHiddenColumns] = useStorageState<string[]>(
-    localStorage,
-    "hiddenColumns",
-    []
-  );
-
-  const toggleHiddenColumn = (column: string): void => {
-    if (hiddenColumns.includes(column)) {
-      setHiddenColumns(hiddenColumns.filter((c) => c !== column));
-    } else {
-      setHiddenColumns([...hiddenColumns, column]);
-    }
-  };
 
   useEffect(() => {
     dispatch(tagActions.fetch());
@@ -83,8 +70,6 @@ const MachineList = ({
         </Notification>
       ) : null}
       <MachineListControls
-        hiddenColumns={hiddenColumns}
-        toggleHiddenColumn={toggleHiddenColumn}
         filter={searchFilter}
         grouping={grouping}
         setFilter={setSearchFilter}
@@ -92,7 +77,6 @@ const MachineList = ({
         setHiddenGroups={setHiddenGroups}
       />
       <MachineListTable
-        hiddenColumns={hiddenColumns}
         filter={searchFilter}
         grouping={grouping}
         hiddenGroups={hiddenGroups}

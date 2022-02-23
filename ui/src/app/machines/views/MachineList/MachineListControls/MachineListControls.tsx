@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Col, Row } from "@canonical/react-components";
 
 import GroupSelect from "./GroupSelect";
-import HiddenColumnsSelect from "./HiddenColumnsSelect";
 import MachinesFilterAccordion from "./MachinesFilterAccordion";
 
 import DebounceSearchBox from "app/base/components/DebounceSearchBox";
@@ -14,8 +13,8 @@ type Props = {
   setFilter: (filter: string) => void;
   setGrouping: (group: string) => void;
   setHiddenGroups: (groups: string[]) => void;
-  hiddenColumns: string[];
-  toggleHiddenColumn: (column: string) => void;
+  hiddenColumns?: string[];
+  toggleHiddenColumn?: (column: string) => void;
 };
 
 const MachineListControls = ({
@@ -24,8 +23,6 @@ const MachineListControls = ({
   setFilter,
   setGrouping,
   setHiddenGroups,
-  hiddenColumns,
-  toggleHiddenColumn,
 }: Props): JSX.Element => {
   const [searchText, setSearchText] = useState(filter);
 
@@ -36,7 +33,7 @@ const MachineListControls = ({
 
   return (
     <Row className="machine-list-controls">
-      <Col size={2}>
+      <Col size={3}>
         <MachinesFilterAccordion
           searchText={searchText}
           setSearchText={(searchText) => {
@@ -51,17 +48,11 @@ const MachineListControls = ({
           setSearchText={setSearchText}
         />
       </Col>
-      <Col size={2}>
+      <Col size={3}>
         <GroupSelect
           grouping={grouping}
           setGrouping={setGrouping}
           setHiddenGroups={setHiddenGroups}
-        />
-      </Col>
-      <Col size={2}>
-        <HiddenColumnsSelect
-          hiddenColumns={hiddenColumns}
-          toggleHiddenColumn={toggleHiddenColumn}
         />
       </Col>
     </Row>
