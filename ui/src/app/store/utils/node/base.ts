@@ -47,7 +47,7 @@ export const getNodeActionTitle = (actionName: NodeActions): string => {
     case NodeActions.ABORT:
       return "Abort";
     case NodeActions.ACQUIRE:
-      return "Acquire";
+      return "Allocate";
     case NodeActions.CLONE:
       return "Clone from";
     case NodeActions.COMMISSION:

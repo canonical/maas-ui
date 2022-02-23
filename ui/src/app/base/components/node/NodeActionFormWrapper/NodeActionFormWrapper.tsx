@@ -20,7 +20,7 @@ const getErrorSentence = (
     case NodeActions.ABORT:
       return `${nodeString} cannot abort action`;
     case NodeActions.ACQUIRE:
-      return `${nodeString} cannot be acquired`;
+      return `${nodeString} cannot be allocated`;
     case NodeActions.CLONE:
       return `${nodeString} cannot be cloned to`;
     case NodeActions.COMMISSION:

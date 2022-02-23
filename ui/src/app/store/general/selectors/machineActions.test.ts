@@ -75,7 +75,7 @@ describe("machineActions selectors", () => {
       }),
       machineActionFactory({
         name: NodeActions.ACQUIRE,
-        title: "Acquire...",
+        title: "Allocate...",
         sentence: "acquired",
         type: "lifecycle",
       }),
@@ -95,7 +95,7 @@ describe("machineActions selectors", () => {
     });
     expect(machineActions.getByName(state, NodeActions.ACQUIRE)).toStrictEqual({
       name: NodeActions.ACQUIRE,
-      title: "Acquire...",
+      title: "Allocate...",
       sentence: "acquired",
       type: "lifecycle",
     });

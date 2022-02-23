@@ -28,7 +28,7 @@ describe("OwnerColumn", () => {
           data: [
             machineActionFactory({
               name: NodeActions.ACQUIRE,
-              title: "Acquire...",
+              title: "Allocate...",
             }),
             machineActionFactory({
               name: NodeActions.RELEASE,
@@ -102,7 +102,7 @@ describe("OwnerColumn", () => {
     expect(wrapper.find('[data-testid="tags"]').text()).toEqual("aloof, minty");
   });
 
-  it("can show a menu item to acquire a machine", () => {
+  it("can show a menu item to allocate a machine", () => {
     state.machine.items[0].actions = [NodeActions.ACQUIRE];
     const store = mockStore(state);
     const wrapper = mount(
@@ -117,7 +117,7 @@ describe("OwnerColumn", () => {
     // Open the menu so the elements get rendered.
     wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
     expect(wrapper.find(".p-contextual-menu__link").at(0).text()).toEqual(
-      "Acquire..."
+      "Allocate..."
     );
   });
 
