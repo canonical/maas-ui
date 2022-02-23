@@ -35,7 +35,7 @@ const MachineListControls = ({
   }, [filter]);
 
   return (
-    <Row>
+    <Row className="machine-list-controls">
       <Col size={2}>
         <MachinesFilterAccordion
           searchText={searchText}

@@ -131,6 +131,10 @@
     display: inline;
   }
 
+  .machine-list-controls {
+    grid-gap: 0.5rem;
+  }
+
   .machines-list-hidden-columns-select {
     padding: $sph-inner/2 $sph-inner;
   }
