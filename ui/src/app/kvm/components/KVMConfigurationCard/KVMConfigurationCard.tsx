@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -47,7 +47,6 @@ type Props = {
 };
 
 const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
-  const [hasUpdated, setHasUpdated] = useState(false);
   const dispatch = useDispatch();
   const podErrors = useSelector(podSelectors.errors);
   const podSaved = useSelector(podSelectors.saved);
@@ -57,8 +56,8 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
   return (
     <FormCard highlighted={false} sidebar={false} title="KVM configuration">
       <FormikForm<KVMConfigurationValues>
-        allowUnchanged={hasUpdated}
         cleanup={cleanup}
+        enableReinitialize
         errors={podErrors}
         initialValues={{
           cpu_over_commit_ratio: pod.cpu_over_commit_ratio,
@@ -91,7 +90,6 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
           }
           dispatch(podActions.update(params));
         }}
-        onSuccess={() => setHasUpdated(true)}
         saving={podSaving}
         saved={podSaved}
         submitLabel="Save changes"

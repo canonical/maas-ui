@@ -55,24 +55,22 @@ it("can handle updating a lxd KVM", async () => {
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("combobox", { name: "Zone" }), {
-      target: { value: "3" },
-    });
-    fireEvent.change(screen.getByRole("combobox", { name: "Resource pool" }), {
-      target: { value: "2" },
-    });
-    fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
-      target: { value: "5" },
-    });
-    fireEvent.change(
-      screen.getByRole("slider", { name: "Memory overcommit" }),
-      { target: { value: "7" } }
-    );
+  fireEvent.change(screen.getByRole("combobox", { name: "Zone" }), {
+    target: { value: "3" },
+  });
+  fireEvent.change(screen.getByRole("combobox", { name: "Resource pool" }), {
+    target: { value: "2" },
+  });
+  fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
+    target: { value: "5" },
+  });
+  fireEvent.change(screen.getByRole("slider", { name: "Memory overcommit" }), {
+    target: { value: "7" },
   });
   await waitFor(() => {
-    fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
+    expect(screen.getByRole("button", { name: "Save changes" })).toBeEnabled();
   });
+  fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
   const expectedAction = podActions.update({
     cpu_over_commit_ratio: 5,
@@ -84,9 +82,11 @@ it("can handle updating a lxd KVM", async () => {
     type: PodType.LXD,
     zone: 3,
   });
-  expect(
-    store.getActions().find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+  await waitFor(() => {
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
 });
 
 it("can handle updating a virsh KVM", async () => {
@@ -106,27 +106,25 @@ it("can handle updating a virsh KVM", async () => {
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("combobox", { name: "Zone" }), {
-      target: { value: "3" },
-    });
-    fireEvent.change(screen.getByRole("combobox", { name: "Resource pool" }), {
-      target: { value: "2" },
-    });
-    fireEvent.change(screen.getByLabelText("Password (optional)"), {
-      target: { value: "password" },
-    });
-    fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
-      target: { value: "5" },
-    });
-    fireEvent.change(
-      screen.getByRole("slider", { name: "Memory overcommit" }),
-      { target: { value: "7" } }
-    );
+  fireEvent.change(screen.getByRole("combobox", { name: "Zone" }), {
+    target: { value: "3" },
+  });
+  fireEvent.change(screen.getByRole("combobox", { name: "Resource pool" }), {
+    target: { value: "2" },
+  });
+  fireEvent.change(screen.getByLabelText("Password (optional)"), {
+    target: { value: "password" },
+  });
+  fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
+    target: { value: "5" },
+  });
+  fireEvent.change(screen.getByRole("slider", { name: "Memory overcommit" }), {
+    target: { value: "7" },
   });
   await waitFor(() => {
-    fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
+    expect(screen.getByRole("button", { name: "Save changes" })).toBeEnabled();
   });
+  fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
   const expectedAction = podActions.update({
     cpu_over_commit_ratio: 5,
@@ -139,16 +137,17 @@ it("can handle updating a virsh KVM", async () => {
     type: PodType.VIRSH,
     zone: 3,
   });
-  expect(
-    store.getActions().find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+  await waitFor(() => {
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
 });
 
-it("enables the submit button if form is unchanged after pod successfully updated", async () => {
+it("enables the submit button if form values are different to pod values", async () => {
   const pod = podFactory({
     cpu_over_commit_ratio: 1,
     id: 1,
-    type: PodType.LXD,
   });
   const store = mockStore(state);
   const { rerender } = render(
@@ -165,38 +164,32 @@ it("enables the submit button if form is unchanged after pod successfully update
   expect(screen.getByRole("button", { name: "Save changes" })).toBeDisabled();
 
   // Change value to something other than the initial.
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
-      target: { value: (pod.cpu_over_commit_ratio + 1).toString() },
-    });
+  fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
+    target: { value: (pod.cpu_over_commit_ratio + 1).toString() },
   });
 
   // Submit should be enabled.
-  expect(
-    screen.getByRole("button", { name: "Save changes" })
-  ).not.toBeDisabled();
+  await waitFor(() => {
+    expect(
+      screen.getByRole("button", { name: "Save changes" })
+    ).not.toBeDisabled();
+  });
 
-  // Trigger success handler by changing pod saved value to true.
-  const newStore = mockStore({ ...state, pod: { ...state.pod, saved: true } });
+  // Update the pod with a new value.
+  const updatedPod = {
+    ...pod,
+    cpu_over_commit_ratio: pod.cpu_over_commit_ratio + 1,
+  };
   rerender(
-    <Provider store={newStore}>
+    <Provider store={store}>
       <MemoryRouter
         initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
       >
-        <KVMConfigurationCard pod={pod} />
+        <KVMConfigurationCard pod={updatedPod} />
       </MemoryRouter>
     </Provider>
   );
 
-  // Change back to initial value.
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
-      target: { value: pod.cpu_over_commit_ratio.toString() },
-    });
-  });
-
-  // Submit should still be enabled.
-  expect(
-    screen.getByRole("button", { name: "Save changes" })
-  ).not.toBeDisabled();
+  // Submit should be disabled again.
+  expect(screen.getByRole("button", { name: "Save changes" })).toBeDisabled();
 });
