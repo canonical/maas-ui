@@ -138,6 +138,10 @@ describe("AuthenticationForm", () => {
 
   it("dispatches an action to fetch projects if using a password", () => {
     const setNewPodValues = jest.fn();
+    const generatedCert = generatedCertificateFactory({
+      CN: "my-favourite-kvm@host",
+    });
+    state.general.generatedCertificate.data = generatedCert;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -161,6 +165,8 @@ describe("AuthenticationForm", () => {
     wrapper.update();
 
     const expectedAction = podActions.getProjects({
+      certificate: generatedCert.certificate,
+      key: generatedCert.private_key,
       password: "password",
       power_address: "192.168.1.1",
       type: PodType.LXD,

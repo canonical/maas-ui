@@ -468,6 +468,7 @@ describe("pod reducer", () => {
     const serverAddress = "192.168.1.1";
     const newProjects = [podProjectFactory()];
     const podState = podStateFactory({
+      errors: "it's not working",
       items: [],
       projects: {},
     });
@@ -482,6 +483,7 @@ describe("pod reducer", () => {
       )
     ).toEqual(
       podStateFactory({
+        errors: null,
         projects: { [serverAddress]: newProjects },
       })
     );

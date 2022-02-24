@@ -102,9 +102,9 @@ export const AuthenticationForm = ({
       onSubmit={(values) => {
         dispatch(podActions.cleanup());
         setAuthenticating(true);
+        const certificate = generatedCertificate?.certificate || "";
+        const key = generatedCertificate?.private_key || "";
         if (useCertificate) {
-          const certificate = generatedCertificate?.certificate || "";
-          const key = generatedCertificate?.private_key || "";
           setNewPodValues({
             ...newPodValues,
             certificate,
@@ -121,6 +121,8 @@ export const AuthenticationForm = ({
           setNewPodValues({ ...newPodValues, password: values.password });
           dispatch(
             podActions.getProjects({
+              certificate,
+              key,
               password: values.password,
               power_address: newPodValues.power_address,
               type: PodType.LXD,

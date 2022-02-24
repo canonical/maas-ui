@@ -299,6 +299,7 @@ const podSlice = createSlice({
           GenericItemMeta<GetProjectsParams>
         >
       ) => {
+        state.errors = null;
         const address = action.meta.item.power_address;
         if (address) {
           state.projects[address] = action.payload;
