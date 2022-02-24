@@ -10,7 +10,12 @@ import FormikForm from "app/base/components/FormikForm";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
-import type { Pod, PodDetails, PodPowerParameters } from "app/store/pod/types";
+import type {
+  Pod,
+  PodDetails,
+  PodPowerParameters,
+  UpdateParams,
+} from "app/store/pod/types";
 
 const KVMConfigurationSchema = Yup.object().shape({
   cpu_over_commit_ratio: Yup.number().required("CPU overcommit ratio required"),
@@ -52,6 +57,7 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
     <FormCard highlighted={false} sidebar={false} title="KVM configuration">
       <FormikForm<KVMConfigurationValues>
         cleanup={cleanup}
+        enableReinitialize
         errors={podErrors}
         initialValues={{
           cpu_over_commit_ratio: pod.cpu_over_commit_ratio,
@@ -69,17 +75,19 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
           label: "KVM configuration form",
         }}
         onSubmit={(values) => {
-          const params = {
+          const params: UpdateParams = {
             cpu_over_commit_ratio: values.cpu_over_commit_ratio,
             id: pod.id,
             memory_over_commit_ratio: values.memory_over_commit_ratio,
             pool: Number(values.pool),
             power_address: values.power_address,
-            power_pass:
-              (values.type === PodType.VIRSH && values.power_pass) || undefined,
             tags: values.tags.join(","), // API expects comma-separated string
+            type: values.type,
             zone: Number(values.zone),
           };
+          if (values.type === PodType.VIRSH) {
+            params.power_pass = values.power_pass;
+          }
           dispatch(podActions.update(params));
         }}
         saving={podSaving}

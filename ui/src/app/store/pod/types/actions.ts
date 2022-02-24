@@ -31,6 +31,7 @@ export type CreateParams = {
   password?: string;
   pool?: Pod["pool"];
   power_address?: PodPowerParameters["power_address"];
+  power_pass?: PodPowerParameters["power_pass"];
   project?: PodPowerParameters["project"];
   tags?: string;
   type?: Pod["type"];
