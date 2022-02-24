@@ -49,9 +49,7 @@ it("renders correct details", () => {
   expect(
     screen.getByRole("heading", { name: "Fabric summary" })
   ).toBeInTheDocument();
-  waitFor(() =>
-    expect(screen.getByRole("href", { name: "bolla.maas" })).toBeInTheDocument()
-  );
+  expect(screen.getByText("test-fabric")).toBeInTheDocument();
 });
 
 it("can open and close the Edit fabric summary form", async () => {
@@ -73,11 +71,7 @@ it("can open and close the Edit fabric summary form", async () => {
   );
   const fabricSummary = screen.getByRole("region", { name: "Fabric summary" });
   userEvent.click(within(fabricSummary).getByRole("button", { name: "Edit" }));
-  await waitFor(() =>
-    expect(
-      screen.getByRole("form", { name: "Edit fabric summary" })
-    ).toBeInTheDocument()
-  );
+  await screen.findByRole("form", { name: "Edit fabric summary" });
 
   userEvent.click(
     within(fabricSummary).getByRole("button", { name: "Cancel" })

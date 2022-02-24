@@ -1,4 +1,4 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
+import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -158,9 +158,9 @@ it("displays space details", async () => {
     </Provider>
   );
 
-  const spaceSummary = await waitFor(() =>
-    screen.getByRole("region", { name: "Space summary" })
-  );
+  const spaceSummary = await screen.findByRole("region", {
+    name: "Space summary",
+  });
   expect(within(spaceSummary).getByText(space.name)).toBeInTheDocument();
   expect(within(spaceSummary).getByText(space.description)).toBeInTheDocument();
 });
