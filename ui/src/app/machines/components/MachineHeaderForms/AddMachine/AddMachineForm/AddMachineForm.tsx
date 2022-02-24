@@ -116,7 +116,7 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
   return (
     <>
       {!allLoaded ? (
-        <Strip shallow>
+        <Strip data-testid="loading" shallow>
           <Spinner text="Loading" />
         </Strip>
       ) : (
@@ -156,18 +156,18 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
           onSubmit={(values) => {
             const params = {
               architecture: values.architecture,
-              domain: domains.find((domain) => domain.name === values.domain),
+              domain: { name: values.domain },
               extra_macs: values.extra_macs.filter(Boolean),
               hostname: values.hostname,
               min_hwe_kernel: values.min_hwe_kernel,
-              pool: resourcePools.find((pool) => pool.name === values.pool),
+              pool: { name: values.pool },
               power_parameters: formatPowerParameters(
                 powerType,
                 values.power_parameters
               ),
-              power_type: values.power_type,
+              power_type: values.power_type as PowerType["name"],
               pxe_mac: values.pxe_mac,
-              zone: zones.find((zone) => zone.name === values.zone),
+              zone: { name: values.zone },
             };
             dispatch(machineActions.create(params));
             setSavingMachine(values.hostname || "Machine");

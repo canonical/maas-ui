@@ -61,6 +61,7 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
             key={`extra-macs-${i}`}
           >
             <Input
+              aria-label={`Extra MAC address ${i + 1}`}
               error={errors?.extra_macs && errors.extra_macs[i]}
               maxLength={17}
               onChange={(e) => {

@@ -111,10 +111,10 @@ export const PowerTypeFields = <V extends AnyObject>({
               value: powerType.name,
             })),
           ]}
-          onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+          onChange={async (e: React.ChangeEvent<HTMLSelectElement>) => {
             // Reset errors and touched formik state when selecting a new power
             // type, in order to start validation from new.
-            handleChange(e);
+            await handleChange(e);
             setErrors(initialErrors);
             setTouched(initialTouched);
 

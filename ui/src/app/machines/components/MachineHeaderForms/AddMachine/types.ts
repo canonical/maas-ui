@@ -1,3 +1,4 @@
+import type { PowerType } from "app/store/general/types";
 import type { PowerParameters } from "app/store/types/node";
 
 export type AddMachineValues = {
@@ -8,7 +9,7 @@ export type AddMachineValues = {
   min_hwe_kernel: string;
   pool: string;
   power_parameters: PowerParameters;
-  power_type: string;
+  power_type: PowerType["name"] | "";
   pxe_mac: string;
   zone: string;
 };
