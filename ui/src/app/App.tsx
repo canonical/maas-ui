@@ -172,15 +172,17 @@ export const App = (): JSX.Element => {
         uuid={uuid as string}
         version={version}
       />
-      <div id="main-content">{content}</div>
-      {version && (
-        <Footer
-          debug={debug}
-          enableAnalytics={analyticsEnabled as boolean}
-          version={version}
-        />
-      )}
-      <StatusBar />
+      <main id="main-content">{content}</main>
+      <footer>
+        {version && (
+          <Footer
+            debug={debug}
+            enableAnalytics={analyticsEnabled as boolean}
+            version={version}
+          />
+        )}
+        <StatusBar />
+      </footer>
     </div>
   );
 };

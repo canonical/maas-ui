@@ -13,7 +13,7 @@ export const StatusBar = ({
   version,
 }: Props): JSX.Element => {
   return (
-    <aside className="p-status-bar">
+    <section className="p-status-bar">
       <div className="row">
         <div className="col-6">
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>:{" "}
@@ -25,7 +25,7 @@ export const StatusBar = ({
           </div>
         )}
       </div>
-    </aside>
+    </section>
   );
 };
 

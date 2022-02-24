@@ -20,7 +20,7 @@ const Section = ({
 }: Props): JSX.Element => {
   const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
-    <main className="section" {...props}>
+    <div className="section" {...props}>
       {header ? (
         <div className="section__header-wrapper">
           <Row>
@@ -47,7 +47,7 @@ const Section = ({
           {children}
         </Col>
       </Strip>
-    </main>
+    </div>
   );
 };
 

@@ -4,7 +4,7 @@ exports[`IncompleteCard renders 1`] = `
 <IncompleteCard>
   <IntroSection>
     <Section>
-      <main
+      <div
         className="section"
       >
         <Strip
@@ -139,7 +139,7 @@ exports[`IncompleteCard renders 1`] = `
             </Row>
           </section>
         </Strip>
-      </main>
+      </div>
     </Section>
   </IntroSection>
 </IncompleteCard>

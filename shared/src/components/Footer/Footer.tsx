@@ -40,7 +40,7 @@ export const Footer = ({
   }, [debug, enableAnalytics, version]);
 
   return (
-    <footer className="p-strip--light is-shallow p-footer">
+    <div className="p-strip--light is-shallow p-footer">
       <div className="row">
         <div className="col-10 p-footer__nav">
           <ul className="p-inline-list--middot">
@@ -92,7 +92,7 @@ export const Footer = ({
           </svg>
         </div>
       </div>
-    </footer>
+    </div>
   );
 };
 
