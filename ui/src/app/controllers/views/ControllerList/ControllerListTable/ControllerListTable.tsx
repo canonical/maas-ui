@@ -147,6 +147,7 @@ const ControllerListTable = ({
           content: (
             <div className="u-flex">
               <GroupCheckbox
+                aria-label="all controllers"
                 data-testid="all-controllers-checkbox"
                 handleGroupCheckbox={handleGroupCheckbox}
                 items={controllerIDs}

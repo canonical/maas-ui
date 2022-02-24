@@ -158,6 +158,7 @@ const DeviceListTable = ({
           content: (
             <div className="u-flex">
               <GroupCheckbox
+                aria-label="all devices"
                 data-testid="all-devices-checkbox"
                 handleGroupCheckbox={handleGroupCheckbox}
                 items={deviceIDs}
