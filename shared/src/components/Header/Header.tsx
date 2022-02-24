@@ -318,9 +318,9 @@ export const Header = ({
 
   return (
     <>
-      <span className="u-off-screen">
-        <a href="#main-content">Skip to main content</a>
-      </span>
+      <a href="#main-content" className="p-link--skip">
+        Skip to main content
+      </a>
       <header id="navigation" className="p-navigation is-dark">
         <div className="p-navigation__row row">
           <div className="p-navigation__banner">

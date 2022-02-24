@@ -172,7 +172,7 @@ export const App = (): JSX.Element => {
         uuid={uuid as string}
         version={version}
       />
-      {content}
+      <div id="main-content">{content}</div>
       {version && (
         <Footer
           debug={debug}
