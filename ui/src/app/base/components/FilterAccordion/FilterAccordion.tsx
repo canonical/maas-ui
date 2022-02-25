@@ -180,7 +180,7 @@ const FilterAccordion = <I, PK extends keyof I>({
 
   return (
     <ContextualMenu
-      className="filter-accordion"
+      className="filter-accordion filter-accordion--expanded"
       constrainPanelWidth
       hasToggleIcon
       position="left"

@@ -90,7 +90,14 @@
     }
   }
 
+  .machine-list__group td {
+    position: relative;
+  }
+
   .machine-list__group-toggle {
+    position: absolute;
+    top: 0;
+    right: 0;
     align-items: center;
     display: flex;
     height: 3rem;
@@ -116,5 +123,13 @@
   .machine-list--inline-input .p-form__control,
   .machine-list--inline-input {
     display: inline;
+  }
+
+  .machine-list-controls {
+    grid-gap: 0.5rem;
+  }
+
+  .machines-list-hidden-columns-select {
+    padding: $sph-inner/2 $sph-inner;
   }
 }

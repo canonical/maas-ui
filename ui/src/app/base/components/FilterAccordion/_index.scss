@@ -39,6 +39,11 @@
     width: calc(100% - 1px);
   }
 
+  .filter-accordion--expanded .p-contextual-menu__dropdown {
+    max-width: none !important;
+    min-width: 20rem !important;
+  }
+
   .filter-accordion__item {
     padding-left: $sp-unit * 5;
 

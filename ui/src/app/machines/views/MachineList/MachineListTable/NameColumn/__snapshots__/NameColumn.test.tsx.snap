@@ -31,8 +31,8 @@ exports[`NameColumn renders 1`] = `
         items={Array []}
       />
     }
-    secondary=""
-    secondaryClassName="u-nudge--secondary-row"
+    secondary={<NonBreakingSpace />}
+    secondaryClassName="u-nudge--secondary-row u-align--left"
   >
     <div
       className="p-double-row"
@@ -170,6 +170,13 @@ exports[`NameColumn renders 1`] = `
               </Input>
             </RowCheckbox>
           </div>
+        </div>
+        <div
+          className="p-double-row__secondary-row u-truncate u-nudge--secondary-row u-align--left"
+        >
+          <NonBreakingSpace>
+             
+          </NonBreakingSpace>
         </div>
       </div>
     </div>

@@ -13,6 +13,8 @@ type Props = {
   setFilter: (filter: string) => void;
   setGrouping: (group: string) => void;
   setHiddenGroups: (groups: string[]) => void;
+  hiddenColumns?: string[];
+  toggleHiddenColumn?: (column: string) => void;
 };
 
 const MachineListControls = ({
@@ -30,7 +32,7 @@ const MachineListControls = ({
   }, [filter]);
 
   return (
-    <Row>
+    <Row className="machine-list-controls">
       <Col size={3}>
         <MachinesFilterAccordion
           searchText={searchText}

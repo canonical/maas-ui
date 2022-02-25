@@ -17,4 +17,22 @@ context("Machine listing", () => {
       generateNewURL("/machines")
     );
   });
+
+  it.skip("can hide machine table columns", () => {
+    cy.findAllByRole("columnheader").should("have.length", 8);
+
+    cy.findAllByRole("button", { name: "Hidden columns" }).click();
+    cy.findByLabelText("hidden columns menu").within(() =>
+      cy.findByRole("checkbox", { name: "Status" }).click({ force: true })
+    );
+
+    cy.findAllByRole("columnheader").should("have.length", 7);
+    cy.findByRole("header", { name: "Status" }).should("not.exist");
+
+    cy.reload();
+
+    // verify that the hidden column is still hidden after refresh
+    cy.findAllByRole("columnheader").should("have.length", 7);
+    cy.findByRole("header", { name: "Status" }).should("not.exist");
+  });
 });
