@@ -24,7 +24,7 @@ jobs:
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
@@ -44,10 +44,15 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+<<<<<<< HEAD
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
+=======
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+>>>>>>> df70197d (refactor(ui): upgrade to Vanilla 3)
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
@@ -67,10 +72,15 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
+<<<<<<< HEAD
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
+=======
+      - name: Use Node.js
+        uses: actions/setup-node@v2
+>>>>>>> df70197d (refactor(ui): upgrade to Vanilla 3)
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 16
       - name: Install
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install

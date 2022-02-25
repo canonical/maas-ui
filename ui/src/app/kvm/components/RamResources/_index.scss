@@ -6,7 +6,7 @@
     display: flex;
     flex-direction: column;
     overflow: auto;
-    padding: $spv-inner--medium $sph-inner $spv-inner--x-small $sph-inner;
+    padding: $spv--medium $sph--large $spv--x-small $sph--large;
 
     .ram-resources__chart-container {
       display: flex;
@@ -15,13 +15,13 @@
 
     .ram-resources__chart {
       align-self: center;
-      margin-top: -$spv-inner--large;
+      margin-top: -$spv--large;
       width: $donut-size;
     }
 
     .ram-resources__table {
       margin-bottom: 0;
-      margin-top: -$spv-inner--small;
+      margin-top: -$spv--small;
       width: 100%;
 
       th,
@@ -45,12 +45,12 @@
   // Additional styles for when the component changes layout depending on the
   // viewport size. Otherwise, the component keeps the "mobile" styling.
   .ram-resources--dynamic-layout {
-    @media only screen and (min-width: $breakpoint-medium) {
+    @media only screen and (min-width: $breakpoint-small) {
       flex-direction: row;
 
       .ram-resources__chart-container {
         flex: 1;
-        margin-right: $sph-inner--large;
+        margin-right: $sph--large;
       }
 
       .ram-resources__table-container {
@@ -63,7 +63,7 @@
 
       .ram-resources__chart-container {
         flex: 0;
-        margin-right: $sph-inner;
+        margin-right: $sph--large;
       }
 
       .ram-resources__chart {

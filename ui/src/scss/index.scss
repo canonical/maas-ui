@@ -7,7 +7,7 @@
 // NOTE: If you add another mixin here be sure to check every instance of that
 // component as it alters the class ordering in Vanilla and may cause
 // regressions.
-@import "~vanilla-framework/scss/vanilla";
+@import "vanilla-framework";
 @include vf-b-placeholders;
 @include vf-b-button;
 @include vf-b-grid-definitions;

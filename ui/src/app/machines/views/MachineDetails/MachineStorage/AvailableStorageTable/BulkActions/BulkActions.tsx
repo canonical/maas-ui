@@ -113,7 +113,6 @@ const BulkActions = ({
             position="top-left"
           >
             <Button
-              appearance="neutral"
               data-testid="create-datastore"
               disabled={!createDatastoreEnabled}
               onClick={() => setBulkAction(BulkAction.CREATE_DATASTORE)}
@@ -127,7 +126,6 @@ const BulkActions = ({
             position="top-left"
           >
             <Button
-              appearance="neutral"
               data-testid="add-to-datastore"
               disabled={!updateDatastoreEnabled}
               onClick={() => setBulkAction(BulkAction.UPDATE_DATASTORE)}
@@ -159,7 +157,6 @@ const BulkActions = ({
           position="top-left"
         >
           <Button
-            appearance="neutral"
             data-testid="create-vg"
             disabled={!createVgEnabled}
             onClick={() => setBulkAction(BulkAction.CREATE_VOLUME_GROUP)}
@@ -177,7 +174,6 @@ const BulkActions = ({
           position="top-left"
         >
           <Button
-            appearance="neutral"
             data-testid="create-raid"
             disabled={!createRaidEnabled}
             onClick={() => setBulkAction(BulkAction.CREATE_RAID)}

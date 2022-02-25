@@ -67,7 +67,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
   return (
     <Row>
       <Col size={6}>
-        <h3 className="p-heading--five u-no-margin--bottom">Bond details</h3>
+        <h3 className="p-heading--5 u-no-margin--bottom">Bond details</h3>
         <BondModeSelect defaultOption={null} name="bond_mode" required />
         {showHashPolicy && (
           <HashPolicySelect
@@ -81,7 +81,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
         )}
         <FormikField label="Bond name" name="name" type="text" />
         <TagNameField className="u-sv2" />
-        <h3 className="p-heading--five">Advanced options</h3>
+        <h3 className="p-heading--5">Advanced options</h3>
         <FormikField
           label="Use MAC address from bond member"
           name="macSource"
@@ -164,7 +164,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
         )}
       </Col>
       <Col size={6}>
-        <h3 className="p-heading--five u-no-margin--bottom">Network</h3>
+        <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
         <NetworkFields
           interfaceType={NetworkInterfaceTypes.BOND}
           fabricDisabled

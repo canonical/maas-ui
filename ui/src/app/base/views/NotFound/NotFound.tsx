@@ -12,13 +12,13 @@ const NotFound = ({ includeSection = false }: Props): JSX.Element => {
   if (includeSection) {
     return (
       <Section header={title}>
-        <h2 className="p-heading--four">{message}</h2>
+        <h2 className="p-heading--4">{message}</h2>
       </Section>
     );
   }
   return (
     <>
-      <h2 className="p-heading--four">{title}</h2>
+      <h2 className="p-heading--4">{title}</h2>
       <p>{message}</p>
     </>
   );

@@ -1,6 +1,6 @@
 <div class="row">
-  <h3 class="p-heading--four">Available disks and partitions</h3>
-  <table class="p-table-expanding p-table--disks-partitions col-12">
+  <h3 class="p-heading--4">Available disks and partitions</h3>
+  <table class="p-table--expanding p-table--disks-partitions col-12">
     <thead>
       <tr class="p-table__row">
         <th class="p-double-row p-table__cell">
@@ -196,9 +196,7 @@
                 data-ng-click="toggleMenu()"
                 aria-haspopup="true"
               >
-                <i class="p-icon--contextual-menu u-no-margin--right"
-                  >Actions</i
-                >
+                <i class="p-icon--chevron-down u-no-margin--right">Actions</i>
               </button>
               <div
                 class="p-contextual-menu__dropdown"
@@ -243,11 +241,11 @@
           </div>
         </td>
         <td
-          class="p-table-expanding__panel col-12"
+          class="p-table__expanding-panel col-12"
           data-ng-if="(availableMode === 'edit' || availableMode === 'format-mount' || availableMode === 'partition' || availableMode === 'logical-volume' || availableMode === 'delete') && item.$selected"
         >
           <div class="u-flex--no-wrap" data-ng-if="windowWidth <= 772">
-            <h2 data-ng-click="availableCancel(item)" class="p-heading--four">
+            <h2 data-ng-click="availableCancel(item)" class="p-heading--4">
               <span data-ng-if="availableMode === 'edit'"
                 >Editing {$ item.name $}</span
               >
@@ -771,7 +769,7 @@
         </td>
       </tr>
       <tr class="is-active" data-ng-if="availableMode === 'bcache'">
-        <td class="p-table-expanding__panel">
+        <td class="p-table__expanding-panel">
           <div class="row">
             <div class="u-float--left">
               <input
@@ -797,7 +795,7 @@
           <hr />
           <div class="row">
             <div class="u-flex--no-wrap" data-ng-if="windowWidth <= 772">
-              <h2 data-ng-click="availableCancel()" class="p-heading--four">
+              <h2 data-ng-click="availableCancel()" class="p-heading--4">
                 Creating Bcache
               </h2>
               <button
@@ -983,7 +981,7 @@
         </td>
       </tr>
       <tr class="is-active" data-ng-if="availableMode === 'raid'">
-        <td colspan="8" class="p-table-expanding__panel">
+        <td colspan="8" class="p-table__expanding-panel">
           <div class="row">
             <div class="u-float--left">
               <input
@@ -1009,7 +1007,7 @@
           <hr />
           <div class="row" data-ng-if="windowWidth <= 772">
             <div class="u-flex--no-wrap">
-              <h2 data-ng-click="availableCancel()" class="p-heading--four">
+              <h2 data-ng-click="availableCancel()" class="p-heading--4">
                 Creating RAID
               </h2>
               <button
@@ -1196,7 +1194,7 @@
         </td>
       </tr>
       <tr class="is-active" data-ng-if="availableMode === 'volume-group'">
-        <td colspan="8" class="p-table-expanding__panel">
+        <td colspan="8" class="p-table__expanding-panel">
           <div class="row">
             <div class="u-float--left ng-hide">
               <input
@@ -1222,7 +1220,7 @@
           <hr />
           <div class="row" data-ng-if="windowWidth <= 772">
             <div class="u-flex--no-wrap">
-              <h2 data-ng-click="availableCancel()" class="p-heading--four">
+              <h2 data-ng-click="availableCancel()" class="p-heading--4">
                 Creating volume group
               </h2>
               <button
@@ -1415,7 +1413,7 @@
       <div class="u-align--right">
         <button
           type="button"
-          class="p-button--neutral u-no-margin--bottom"
+          class="p-button u-no-margin--bottom"
           data-ng-click="closeNewDatastorePanel()"
           data-ng-disabled="creatingDatastore"
         >
@@ -1483,7 +1481,7 @@
     <div class="u-align--right">
       <button
         type="button"
-        class="p-button--neutral u-no-margin--bottom"
+        class="p-button u-no-margin--bottom"
         data-ng-click="closeAddToExistingDatastorePanel()"
         data-ng-disabled="updatingDatastore"
       >
@@ -1518,7 +1516,7 @@
   <div>
     <span class="p-tooltip--top-left">
       <button
-        class="p-button--neutral"
+        class="p-button"
         data-ng-disabled="!canCreateRAID() || storageLayout.id === 'vmfs6'"
         data-ng-hide="isAllStorageDisabled() || !canEdit()"
         data-ng-click="createRAID()"
@@ -1542,7 +1540,7 @@
     </span>
     <span class="p-tooltip--top-center">
       <button
-        class="p-button--neutral"
+        class="p-button"
         data-ng-disabled="!canCreateVolumeGroup() || storageLayout.id === 'vmfs6'"
         data-ng-hide="isAllStorageDisabled() || !canEdit()"
         data-ng-click="createVolumeGroup()"
@@ -1566,7 +1564,7 @@
     </span>
     <span class="p-tooltip--top-center">
       <button
-        class="p-button--neutral"
+        class="p-button"
         data-ng-disabled="!canCreateCacheSet() || storageLayout.id === 'vmfs6'"
         data-ng-hide="isAllStorageDisabled() || !canEdit()"
         data-ng-click="createCacheSet(); sendAnalyticsEvent('Machine details', 'Create cache set', 'Disks and partitions')"
@@ -1590,7 +1588,7 @@
     </span>
     <span class="p-tooltip--top-center">
       <button
-        class="p-button--neutral"
+        class="p-button"
         data-ng-class="{ 'p-tooltip': !canCreateBcache() }"
         data-ng-disabled="!canCreateBcache() || storageLayout.id === 'vmfs6'"
         data-ng-hide="isAllStorageDisabled() || !canEdit()"
@@ -1615,7 +1613,7 @@
     </span>
     <span class="p-tooltip--top-center">
       <button
-        class="p-button--neutral"
+        class="p-button"
         data-ng-click="openNewDatastorePanel(); sendAnalyticsEvent('Machine details', 'Create new datastore', 'Disks and partitions')"
         data-ng-hide="isAllStorageDisabled() || !canEdit()"
         data-ng-disabled="!canPerformActionOnDatastoreSet()"
@@ -1642,7 +1640,7 @@
       data-ng-if="storageLayout.id === 'vmfs6'"
     >
       <button
-        class="p-button--neutral"
+        class="p-button"
         data-ng-click="openAddToExistingDatastorePanel()"
         data-ng-hide="isAllStorageDisabled() || !canEdit()"
         data-ng-disabled="!canAddToDatastore()"
@@ -1668,8 +1666,8 @@
 </div>
 
 <div class="row">
-  <h3 class="p-heading--four">Used disks and partitions</h3>
-  <table class="p-table-expanding p-table--used-disks">
+  <h3 class="p-heading--4">Used disks and partitions</h3>
+  <table class="p-table--expanding p-table--used-disks">
     <thead>
       <tr class="p-table__row">
         <th class="p-double-row p-table__cell">
@@ -1832,7 +1830,6 @@
   Learn more about deploying
   <a
     href="https://docs.maas.io/en/installconfig-images"
-    class="p-link--external"
     target="_blank"
     data-ng-click="sendAnalyticsEvent('Machine details', 'Link to Windows docs', 'Disks and partitions')"
     >Windows</a

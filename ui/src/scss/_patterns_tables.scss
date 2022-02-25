@@ -1,5 +1,5 @@
 @mixin maas-tables {
-  .p-table-expanding--light .p-table-expanding__panel {
+  .p-table-expanding--light .p-table__expanding-panel {
     border-top: 1px solid $color-mid-light;
     margin: 0 $sp-small $sp-small $sp-small;
     padding: $sp-small 0 0 0;
@@ -37,8 +37,8 @@
     @extend %table-header-label;
     border-bottom: 1px solid $color-mid-light;
     margin-bottom: 0;
-    padding-bottom: $spv-inner--medium;
-    padding-top: $spv-inner--medium;
+    padding-bottom: $spv--medium;
+    padding-top: $spv--medium;
     text-transform: uppercase;
   }
 

@@ -41,7 +41,7 @@ const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
           {showTitles ? (
             <>
               <h3
-                className="p-heading--five u-no-margin--bottom"
+                className="p-heading--5 u-no-margin--bottom"
                 data-testid="interface-form-heading"
               >
                 Physical details
@@ -62,7 +62,7 @@ const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
         <Col size={6}>
           {showTitles ? (
             <h3
-              className="p-heading--five u-no-margin--bottom"
+              className="p-heading--5 u-no-margin--bottom"
               data-testid="interface-form-heading"
             >
               Network

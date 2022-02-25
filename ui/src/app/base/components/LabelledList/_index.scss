@@ -7,14 +7,14 @@
       display: flex;
       // Vanilla lists have a different padding inside forms, but since this is
       // a custom component we need to make sure it doesn't change.
-      padding: $spv-inner--x-small--scaleable 0 !important;
+      padding: $spv--small 0 !important;
       word-wrap: break-word;
     }
 
     .p-list__item-label {
       color: $color-mid-dark;
       flex: 1 0 0;
-      margin-right: $sph-outer;
+      margin-right: $sph--small;
       text-align: right;
     }
 

@@ -75,7 +75,6 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
           }))
         )}
         position="right"
-        toggleAppearance="neutral"
         toggleLabel="Change storage layout"
       />
     </div>

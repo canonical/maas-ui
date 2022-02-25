@@ -16,11 +16,7 @@ const NameCard = (): JSX.Element => {
       hasErrors={!!errors.name}
       title="Welcome to MAAS"
       titleLink={
-        <Link
-          external
-          href="https://maas.io/docs/configuration-journey"
-          target="_blank"
-        >
+        <Link href="https://maas.io/docs/configuration-journey" target="_blank">
           Help with configuring MAAS
         </Link>
       }

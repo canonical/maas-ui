@@ -1,4 +1,4 @@
-<table class="p-table-expanding p-table--dhcp-snippets" role="grid">
+<table class="p-table--expanding p-table--dhcp-snippets" role="grid">
   <thead>
     <tr role="row">
       <th>Name</th>
@@ -36,7 +36,9 @@
           <span data-ng-if="!snippet.enabled">No</span>
         </div>
       </td>
-      <td data-ng-if="editSnippet.id !== snippet.id">{$ snippet.description $}</td>
+      <td data-ng-if="editSnippet.id !== snippet.id">
+        {$ snippet.description $}
+      </td>
       <td data-ng-if="editSnippet.id !== snippet.id">
         <div class="u-align--right">
           <button
@@ -56,7 +58,10 @@
           </button>
         </div>
       </td>
-      <td class="p-table-expanding__panel" data-ng-if="editSnippet.id === snippet.id">
+      <td
+        class="p-table__expanding-panel"
+        data-ng-if="editSnippet.id === snippet.id"
+      >
         <maas-obj-form
           obj="editSnippet"
           manager="snippetsManager"
@@ -194,7 +199,7 @@
         </maas-obj-form>
       </td>
       <td
-        class="p-table-expanding__panel"
+        class="p-table__expanding-panel"
         data-ng-if="deleteSnippet === snippet"
       >
         <div class="row u-hide u-show--small">
@@ -235,7 +240,7 @@
       </td>
     </tr>
     <tr class="is-active" data-ng-if="newSnippet && allowAddNew" role="row">
-      <td class="p-table-expanding__panel">
+      <td class="p-table__expanding-panel">
         <maas-obj-form
           obj="newSnippet"
           manager="snippetsManager"
@@ -393,7 +398,7 @@
 <div class="row" data-ng-if="allowAddNew">
   <div class="u-align--right">
     <button
-      class="p-button--neutral"
+      class="p-button"
       data-ng-disabled="editing"
       data-ng-if="!newSnippet"
       data-ng-click="editing || snippetAdd()"
@@ -409,8 +414,6 @@
     >
   </li>
   <li class="p-inline-list__item">
-    <a class="p-link--external" href="https://maas.io/docs/dhcp" target="_blank"
-      >About DHCP snippets</a
-    >
+    <a href="https://maas.io/docs/dhcp" target="_blank">About DHCP snippets</a>
   </li>
 </ul>

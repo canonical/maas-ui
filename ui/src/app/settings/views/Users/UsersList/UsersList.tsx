@@ -225,7 +225,7 @@ const UsersList = (): JSX.Element => {
               Machines
             </TableHeader>
           ),
-          className: "u-align--right",
+          className: "u-align--right u-no-wrap",
         },
         {
           content: "Type",
@@ -238,7 +238,7 @@ const UsersList = (): JSX.Element => {
         },
         {
           content: "MAAS keys",
-          className: "u-align--right",
+          className: "u-align--right u-no-wrap",
         },
         {
           content: "Actions",

@@ -2,7 +2,7 @@
   .settings-back-link {
     .settings-back-link__link {
       display: inline-block;
-      margin-bottom: $spv-inner--medium;
+      margin-bottom: $spv--medium;
     }
 
     .p-icon--chevron-up {
@@ -10,7 +10,7 @@
     }
 
     .settings-back-link__divider {
-      margin-bottom: $spv-outer--shallow-scaleable;
+      margin-bottom: $spv--x-large;
     }
   }
 }

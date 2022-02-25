@@ -1,4 +1,4 @@
-$vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
+$vanilla-2-icon-button-side-padding: $sph--small * 1.5;
 @mixin maas-p-buttons {
   // disable override in vanilla that make buttons vertically less padded; this causes issues with alignment with other elements
   table button,
@@ -13,12 +13,12 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
   }
 
   %icon-button-padding {
-    padding: calc(#{$spv-nudge} - 1px) $sph-inner--small;
+    padding: calc(#{$spv-nudge} - 1px) $sph--small;
   }
 
   .p-button--icon {
     margin: 0 !important;
-    padding: 0 #{math.div($sph-inner--small, 2)} !important;
+    padding: 0 #{math.div($sph--small, 2)} !important;
   }
 
   .p-button--close {
@@ -41,16 +41,16 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
   }
 
   *[class*="p-button"] {
-    .p-table-expanding__panel & {
+    .p-table__expanding-panel & {
       margin-bottom: 2 * $spv-nudge-compensation;
 
       &:not(.p-button--close) {
-        padding: calc(#{$spv-nudge} - 1px) $sph-inner;
+        padding: calc(#{$spv-nudge} - 1px) $sph--large;
       }
     }
 
     &.is-small {
-      padding: calc(#{$spv-nudge} - 1px) $sph-inner;
+      padding: calc(#{$spv-nudge} - 1px) $sph--large;
     }
 
     &:not(:last-child) {
@@ -64,7 +64,6 @@ $vanilla-2-icon-button-side-padding: $sph-inner--small * 1.5;
   button,
   [type="submit"],
   .p-button,
-  .p-button--neutral,
   .p-button--brand,
   .p-button--positive,
   .p-button--negative,

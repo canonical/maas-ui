@@ -34,7 +34,7 @@ const ImagesIntro = (): JSX.Element => {
         <SyncedImages className="u-no-padding--bottom" formInCard={false} />
       </IntroCard>
       <div className="u-align--right">
-        <Button appearance="neutral" element={Link} to={introURLs.index}>
+        <Button element={Link} to={introURLs.index}>
           Back
         </Button>
         <Button

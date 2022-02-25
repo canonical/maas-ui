@@ -2,7 +2,7 @@
   .formik-form-buttons {
     align-items: center;
     display: flex;
-    padding: $spv-inner--small 0;
+    padding: $spv--small 0;
 
     &.is-bordered {
       border-top: $border;
@@ -28,10 +28,10 @@
 
     .formik-form-buttons__help {
       flex-grow: 1;
-      padding-right: $sph-inner;
+      padding-right: $sph--large;
     }
 
-    @media only screen and (max-width: $breakpoint-medium) {
+    @media only screen and (max-width: $breakpoint-small) {
       flex-direction: column;
 
       .formik-form-buttons__container {

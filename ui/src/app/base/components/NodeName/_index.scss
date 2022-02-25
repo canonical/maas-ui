@@ -2,7 +2,7 @@
   button.node-name--editable {
     @extend %vf-heading-4;
     margin-bottom: 0;
-    padding: 0 $spv-inner--large;
+    padding: 0 $spv--large;
 
     &:active,
     &:focus,
@@ -19,7 +19,6 @@
     margin-bottom: -1px;
     min-width: 3rem;
     // Remove 2px to account for the top and bottom borders.
-    padding: calc(#{$sp-xx-small} - 2px) $spv-inner--large
-      calc(#{$sp-xx-small} + 1px);
+    padding: calc(#{$sp-xx-small} - 2px) $spv--large calc(#{$sp-xx-small} + 1px);
   }
 }

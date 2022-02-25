@@ -91,7 +91,7 @@
           }
         }
 
-        @media only screen and (max-width: $breakpoint-medium) {
+        @media only screen and (max-width: $breakpoint-small) {
           &:nth-child(1) {
             width: 45%;
           }
@@ -117,7 +117,7 @@
       }
 
       th:nth-child(4) {
-        padding-left: $sph-inner--large;
+        padding-left: $sph--large;
       }
 
       &.indented-border {
@@ -128,7 +128,7 @@
           background-color: $color-light-new;
           content: "";
           height: 1px;
-          left: #{2 * map-get($icon-sizes, default) + $sph-inner--small};
+          left: #{2 * map-get($icon-sizes, default) + $sph--small};
           position: absolute;
           right: 0;
         }
@@ -166,7 +166,7 @@
     }
 
     th:nth-child(4) {
-      padding-left: $sph-inner--large;
+      padding-left: $sph--large;
     }
   }
 

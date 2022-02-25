@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, Spinner } from "@canonical/react-components";
+import { Button, Icon, Spinner } from "@canonical/react-components";
 import classNames from "classnames";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
@@ -66,7 +66,7 @@ const NumaResources = ({ id }: Props): JSX.Element => {
               {expanded ? (
                 <>
                   <span>Show less NUMA nodes</span>
-                  <i className="p-icon--contextual-menu u-mirror--y"></i>
+                  <Icon name="chevron-up" />
                 </>
               ) : (
                 <>
@@ -77,7 +77,7 @@ const NumaResources = ({ id }: Props): JSX.Element => {
                       true
                     )}
                   </span>
-                  <i className="p-icon--contextual-menu"></i>
+                  <Icon name="chevron-down" />
                 </>
               )}
             </Button>

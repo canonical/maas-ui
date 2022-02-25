@@ -143,11 +143,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
             allowUnchanged
             cleanup={cleanup}
             errors={configureDHCPError}
-            buttonsHelp={
-              <a className="p-link--external" href="https://maas.io/docs/dhcp">
-                About DHCP
-              </a>
-            }
+            buttonsHelp={<a href="https://maas.io/docs/dhcp">About DHCP</a>}
             initialValues={{
               dhcpType: isId(vlan.relay_vlan)
                 ? DHCPType.RELAY

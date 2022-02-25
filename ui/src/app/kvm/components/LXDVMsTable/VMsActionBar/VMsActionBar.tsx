@@ -54,7 +54,6 @@ const VMsActionBar = ({
                 setHeaderContent({ view });
               }
             }}
-            toggleAppearance="neutral"
             toggleClassName="u-no-margin--bottom"
           />
           <span className="u-nudge-right">

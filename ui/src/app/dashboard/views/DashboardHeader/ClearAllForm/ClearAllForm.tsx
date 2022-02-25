@@ -41,7 +41,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
         </p>
         <p>
           Learn more about{" "}
-          <Link external href="https://maas.io/docs/network-discovery">
+          <Link href="https://maas.io/docs/network-discovery">
             network discovery
           </Link>
           .

@@ -8,6 +8,10 @@ export type NavItem = {
   url: string;
 };
 
+export type NavLink = Omit<NavItem, "label"> & {
+  label: ReactNode;
+};
+
 export type LinkType = {
   label: ReactNode;
   url: string;
@@ -27,7 +31,7 @@ export type LinkProps = {
   onClick?: (event: React.MouseEvent<HTMLAnchorElement>) => void;
 };
 
-export type GenerateNavLink = (link: NavItem, props?: LinkProps) => ReactNode;
+export type GenerateNavLink = (link: NavLink, props?: LinkProps) => ReactNode;
 
 export type ToggleVisible = (
   evt: React.MouseEvent,

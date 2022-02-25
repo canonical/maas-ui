@@ -14,9 +14,9 @@
 .root-loading {
   @extend %vf-has-box-shadow;
   background-color: $color-x-light;
-  padding-top: $spv-inner--medium;
+  padding-top: $spv--medium;
 
   h4 {
-    margin: 0 $sph-outer $spv-outer--medium 0;
+    margin: 0 $sph--small $spv--large 0;
   }
 }

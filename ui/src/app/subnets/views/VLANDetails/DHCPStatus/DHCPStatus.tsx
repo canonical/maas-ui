@@ -141,9 +141,7 @@ const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
         </Col>
       </Row>
       <p>
-        <a className="p-link--external" href="https://maas.io/docs/dhcp">
-          About DHCP
-        </a>
+        <a href="https://maas.io/docs/dhcp">About DHCP</a>
       </p>
     </TitledSection>
   );

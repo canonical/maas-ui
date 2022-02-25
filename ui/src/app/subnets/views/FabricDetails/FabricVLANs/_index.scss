@@ -5,7 +5,7 @@
     $subnets-width: 40%;
     $available-width: 10%;
 
-    @media only screen and (min-width: $breakpoint-medium) {
+    @media only screen and (min-width: $breakpoint-small) {
       .truncated-border {
         overflow: visible;
         position: relative;

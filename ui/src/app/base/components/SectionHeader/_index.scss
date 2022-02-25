@@ -1,13 +1,13 @@
 @mixin SectionHeader {
   .section-header {
-    padding-top: $spv-inner--medium;
+    padding-top: $spv--medium;
   }
 
   .section-header__title {
-    margin: 0 $sph-outer $spv-outer--medium 0;
+    margin: 0 $sph--small $spv--large 0;
   }
 
   .section-header__subtitle {
-    margin: 0 $sph-outer $spv-outer--medium 0;
+    margin: 0 $sph--small $spv--large 0;
   }
 }

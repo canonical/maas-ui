@@ -3,8 +3,8 @@
   @include vf-icon-size(0.5rem);
   background-color: $color;
   border-radius: 100%;
-  margin-bottom: $spv-inner--x-small;
-  margin-top: $spv-inner--x-small;
+  margin-bottom: $spv--x-small;
+  margin-top: $spv--x-small;
 }
 
 @mixin maas-icon-cluster($color) {
@@ -137,7 +137,7 @@
 
   [class*="p-circle--"].is-inline,
   [class*="p-icon--"].is-inline {
-    margin-right: $sph-inner--small;
+    margin-right: $sph--small;
     top: 0;
   }
 }

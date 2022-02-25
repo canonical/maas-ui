@@ -183,7 +183,6 @@ const DHCPTable = ({
                 All snippets: Settings &gt; DHCP snippets
               </Link>,
               <a
-                className="p-link--external"
                 href="https://maas.io/docs/dhcp"
                 rel="noreferrer"
                 target="_blank"

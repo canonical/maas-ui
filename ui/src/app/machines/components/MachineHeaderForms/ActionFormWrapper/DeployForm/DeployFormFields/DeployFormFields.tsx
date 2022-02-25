@@ -131,10 +131,7 @@ export const DeployFormFields = (): JSX.Element => {
                     Register as MAAS KVM host.
                   </li>
                   <li className="p-inline-list__item">
-                    <a
-                      className="p-link--external"
-                      href="https://maas.io/docs/kvm-introduction"
-                    >
+                    <a href="https://maas.io/docs/kvm-introduction">
                       Read more
                     </a>
                   </li>
@@ -181,10 +178,7 @@ export const DeployFormFields = (): JSX.Element => {
                     Cloud-init user-data&hellip;
                   </li>
                   <li className="p-inline-list__item">
-                    <a
-                      className="p-link--external"
-                      href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
-                    >
+                    <a href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init">
                       Read more
                     </a>
                   </li>

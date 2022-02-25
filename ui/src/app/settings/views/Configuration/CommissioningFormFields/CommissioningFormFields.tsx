@@ -74,10 +74,7 @@ const CommissioningFormFields = (): JSX.Element => {
           <>
             Specify this key to encrypt all communication between IPMI clients
             and the BMC. Leave this blank for no encryption.&nbsp;
-            <Link
-              href="https://maas.io/docs/snap/2.9/ui/power-management#heading--ipmi"
-              external
-            >
+            <Link href="https://maas.io/docs/snap/2.9/ui/power-management#heading--ipmi">
               IPMI and BMC key
             </Link>
           </>

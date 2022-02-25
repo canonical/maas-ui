@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
 
 import type { ButtonProps } from "@canonical/react-components";
-import { Button } from "@canonical/react-components";
-import classNames from "classnames";
+import { Button, Icon } from "@canonical/react-components";
 
 import type { Sort } from "app/base/types";
 
@@ -29,10 +28,12 @@ const TableHeader = ({
     <Button appearance="link" className={className} onClick={onClick}>
       <span>{children}</span>
       {currentSort && currentSort.key === sortKey && (
-        <i
-          className={classNames("p-icon--contextual-menu", {
-            "u-mirror--y": currentSort.direction === "ascending",
-          })}
+        <Icon
+          name={
+            currentSort.direction === "ascending"
+              ? "chevron-up"
+              : "chevron-down"
+          }
         />
       )}
     </Button>

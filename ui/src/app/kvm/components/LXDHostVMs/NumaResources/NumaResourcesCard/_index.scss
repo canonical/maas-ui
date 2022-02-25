@@ -2,13 +2,13 @@
   .numa-resources-card {
     @extend %vf-is-bordered;
     @extend %vf-bg--x-light;
-    margin-bottom: $spv-outer--scaleable;
+    margin-bottom: $spv--x-large;
   }
 
   .numa-resources-card__title {
     border-bottom: $border;
-    margin: 0 $sph-inner;
-    padding: $spv-inner--medium 0 $spv-inner--small 0;
+    margin: 0 $sph--large;
+    padding: $spv--medium 0 $spv--small 0;
   }
 
   .core-resources {

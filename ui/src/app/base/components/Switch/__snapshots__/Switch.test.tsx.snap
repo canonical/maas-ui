@@ -1,9 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`Switch renders 1`] = `
-<label>
+<label
+  className="p-switch"
+>
   <input
-    className="p-switch"
+    className="p-switch__input"
     type="checkbox"
   />
   <div
