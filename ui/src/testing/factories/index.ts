@@ -69,6 +69,10 @@ export {
   vlanStatuses,
   vmClusterState,
   vmClusterStatuses,
+  zoneError,
+  zoneGenericActions,
+  zoneModelAction,
+  zoneModelActions,
   zoneState,
 } from "./state";
 export {

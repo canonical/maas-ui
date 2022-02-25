@@ -1,4 +1,5 @@
 import type { ValueOf } from "@canonical/react-components";
+import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { APIError } from "app/base/types";
 import type { TimestampedModel } from "app/store/types/model";
@@ -17,6 +18,12 @@ export type ModelAction<PK> = {
   [ACTION_STATUS.successful]: PK[];
 };
 
+export type PayloadActionWithMeta<M, P = null> = PayloadAction<
+  P,
+  string,
+  { modelPK: M }
+>;
+
 export type StateError<A extends string, PK> = {
   action: A;
   error: APIError;
@@ -27,6 +34,11 @@ export type StateError<A extends string, PK> = {
 export type ZonePK = Zone[typeof ZONE_PK];
 
 export type ZoneActionNames = ValueOf<typeof ZONE_ACTIONS>;
+
+export type ZonePayloadActionWithMeta<P = null> = PayloadActionWithMeta<
+  ZonePK,
+  P
+>;
 
 export type Zone = TimestampedModel & {
   controllers_count: number;
@@ -41,9 +53,11 @@ export type ZoneGenericActions = {
   [ZONE_ACTIONS.fetch]: ActionStatuses;
 };
 
+export type ZoneModelAction = ModelAction<ZonePK>;
+
 export type ZoneModelActions = {
-  [ZONE_ACTIONS.delete]: ModelAction<ZonePK>;
-  [ZONE_ACTIONS.update]: ModelAction<ZonePK>;
+  [ZONE_ACTIONS.delete]: ZoneModelAction;
+  [ZONE_ACTIONS.update]: ZoneModelAction;
 };
 
 export type ZoneStateError = StateError<ZoneActionNames, ZonePK>;

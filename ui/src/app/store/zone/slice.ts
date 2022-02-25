@@ -15,6 +15,7 @@ import type {
   UpdateParams,
   Zone,
   ZoneActionNames,
+  ZonePayloadActionWithMeta,
   ZoneGenericActions,
   ZoneModelActions,
   ZonePK,
@@ -22,8 +23,6 @@ import type {
 } from "./types";
 
 import type { APIError } from "app/base/types";
-
-type ActionWithMeta<P = null> = PayloadAction<P, string, { modelPK: ZonePK }>;
 
 const {
   cleanup: cleanupAction,
@@ -112,9 +111,9 @@ const zoneSlice = createSlice({
       state.modelActions = initialModelActions;
       for (const key in state.genericActions) {
         const action = key as keyof ZoneGenericActions;
-        // We make sure not to reset fetched state as this will only ever be done
-        // once, where subsequent create/update/delete notify events keep state
-        // up to date.
+        // We make sure not to reset fetched state as this will only ever be
+        // done once, where subsequent create/update/delete notify events keep
+        // state up to date.
         if (action !== fetchAction) {
           state.genericActions[action] = initialGenericActions[action];
         }
@@ -171,10 +170,8 @@ const zoneSlice = createSlice({
       },
     },
     [`${deleteAction}Error`]: {
-      prepare: (error: APIError) => ({
-        payload: error,
-      }),
-      reducer: (state, action: ActionWithMeta<APIError>) => {
+      prepare: (action: ZonePayloadActionWithMeta<APIError>) => action,
+      reducer: (state, action: ZonePayloadActionWithMeta<APIError>) => {
         addError(state, deleteAction, action.payload, action.meta.modelPK);
         updateModelAction(
           state,
@@ -191,8 +188,8 @@ const zoneSlice = createSlice({
       state.items.splice(index, 1);
     },
     [`${deleteAction}Start`]: {
-      prepare: () => ({ payload: null }),
-      reducer: (state, action: ActionWithMeta) => {
+      prepare: (action: ZonePayloadActionWithMeta) => action,
+      reducer: (state, action: ZonePayloadActionWithMeta) => {
         updateModelAction(
           state,
           deleteAction,
@@ -202,10 +199,8 @@ const zoneSlice = createSlice({
       },
     },
     [`${deleteAction}Success`]: {
-      prepare: (zonePK: ZonePK) => ({
-        payload: zonePK,
-      }),
-      reducer: (state, action: ActionWithMeta<ZonePK>) => {
+      prepare: (action: ZonePayloadActionWithMeta<ZonePK>) => action,
+      reducer: (state, action: ZonePayloadActionWithMeta<ZonePK>) => {
         updateModelAction(
           state,
           deleteAction,
@@ -253,10 +248,8 @@ const zoneSlice = createSlice({
       },
     },
     [`${updateAction}Error`]: {
-      prepare: (error: APIError) => ({
-        payload: error,
-      }),
-      reducer: (state, action: ActionWithMeta<APIError>) => {
+      prepare: (action: ZonePayloadActionWithMeta<APIError>) => action,
+      reducer: (state, action: ZonePayloadActionWithMeta<APIError>) => {
         addError(state, updateAction, action.payload, action.meta.modelPK);
         updateModelAction(
           state,
@@ -274,8 +267,8 @@ const zoneSlice = createSlice({
       });
     },
     [`${updateAction}Start`]: {
-      prepare: () => ({ payload: null }),
-      reducer: (state, action: ActionWithMeta) => {
+      prepare: (action: ZonePayloadActionWithMeta) => action,
+      reducer: (state, action: ZonePayloadActionWithMeta) => {
         updateModelAction(
           state,
           updateAction,
@@ -285,12 +278,12 @@ const zoneSlice = createSlice({
       },
     },
     [`${updateAction}Success`]: {
-      prepare: (zone: Zone) => ({ payload: zone }),
-      reducer: (state, action: ActionWithMeta<Zone>) => {
+      prepare: (action: ZonePayloadActionWithMeta<Zone>) => action,
+      reducer: (state, action: ZonePayloadActionWithMeta<Zone>) => {
         updateModelAction(
           state,
           updateAction,
-          actionFailed,
+          actionSuccessful,
           action.meta.modelPK
         );
       },

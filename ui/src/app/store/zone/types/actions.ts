@@ -13,6 +13,4 @@ export type DeleteParams = {
 
 export type UpdateParams = {
   [ZONE_PK]: ZonePK;
-  description?: Zone["description"];
-  name?: Zone["name"];
-};
+} & Partial<CreateParams>;

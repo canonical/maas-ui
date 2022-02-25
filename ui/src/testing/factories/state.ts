@@ -95,11 +95,14 @@ import type {
 } from "app/store/vlan/types";
 import type { VMClusterState } from "app/store/vmcluster/types";
 import type { VMClusterStatuses } from "app/store/vmcluster/types/base";
-import {
-  initialGenericActions as zoneGenericActions,
-  initialModelActions as zoneModelActions,
-} from "app/store/zone";
-import type { ZoneState } from "app/store/zone/types";
+import { ACTION_STATUS, ZONE_ACTIONS } from "app/store/zone/constants";
+import type {
+  ZoneGenericActions,
+  ZoneModelAction,
+  ZoneModelActions,
+  ZoneState,
+  ZoneStateError,
+} from "app/store/zone/types";
 
 const defaultState = {
   errors: () => ({}),
@@ -499,10 +502,32 @@ export const vmClusterState = define<VMClusterState>({
   statuses: vmClusterStatuses,
 });
 
+export const zoneGenericActions = define<ZoneGenericActions>({
+  [ZONE_ACTIONS.create]: ACTION_STATUS.idle,
+  [ZONE_ACTIONS.fetch]: ACTION_STATUS.idle,
+});
+
+export const zoneModelAction = define<ZoneModelAction>({
+  [ACTION_STATUS.failed]: () => [],
+  [ACTION_STATUS.processing]: () => [],
+  [ACTION_STATUS.successful]: () => [],
+});
+
+export const zoneModelActions = define<ZoneModelActions>({
+  [ZONE_ACTIONS.delete]: zoneModelAction,
+  [ZONE_ACTIONS.update]: zoneModelAction,
+});
+
+export const zoneError = define<ZoneStateError>({
+  action: ZONE_ACTIONS.fetch,
+  error: "There was an error",
+  modelPK: null,
+});
+
 export const zoneState = define<ZoneState>({
-  errors: [],
+  errors: () => [],
   genericActions: zoneGenericActions,
-  items: [],
+  items: () => [],
   modelActions: zoneModelActions,
 });
 

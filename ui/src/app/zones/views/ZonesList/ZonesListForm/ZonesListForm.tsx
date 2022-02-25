@@ -21,8 +21,8 @@ export type CreateZoneValues = {
 
 const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const saved = useSelector(zoneSelectors.saved);
-  const saving = useSelector(zoneSelectors.saving);
+  const created = useSelector(zoneSelectors.created);
+  const creating = useSelector(zoneSelectors.creating);
   const cleanup = useCallback(() => zoneActions.cleanup(), []);
   const errors = useSelector((state: RootState) =>
     zoneSelectors.getLatestActionError(state, ZONE_ACTIONS.create)
@@ -49,8 +49,8 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
         );
       }}
       resetOnSave={true}
-      saved={saved}
-      saving={saving}
+      saved={created}
+      saving={creating}
       submitLabel="Add AZ"
     >
       <Row>

@@ -20,7 +20,7 @@ type Props = {
 const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   const [showConfirm, setShowConfirm] = useState(false);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const zonesSaved = useSelector(zoneSelectors.saved);
+  const zoneCreated = useSelector(zoneSelectors.created);
   const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, Number(id))
   );
@@ -32,11 +32,11 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (zonesSaved) {
+    if (zoneCreated) {
       dispatch(zoneActions.cleanup());
       history.push({ pathname: zonesURLs.index });
     }
-  }, [dispatch, zonesSaved, history]);
+  }, [dispatch, zoneCreated, history]);
 
   const isAdmin = useSelector(authSelectors.isAdmin);
   const isDefaultZone = id === 1;

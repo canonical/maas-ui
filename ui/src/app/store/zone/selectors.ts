@@ -69,11 +69,11 @@ const loading = (state: RootState): boolean =>
   getGenericActionStatus(state, ZONE_ACTIONS.fetch) ===
   ACTION_STATUS.processing;
 
-const saved = (state: RootState): boolean =>
+const created = (state: RootState): boolean =>
   getGenericActionStatus(state, ZONE_ACTIONS.create) ===
   ACTION_STATUS.successful;
 
-const saving = (state: RootState): boolean =>
+const creating = (state: RootState): boolean =>
   getGenericActionStatus(state, ZONE_ACTIONS.create) ===
   ACTION_STATUS.processing;
 
@@ -91,6 +91,8 @@ const getLatestActionError = createSelector(
 const selectors = {
   all,
   count,
+  created,
+  creating,
   errors,
   genericActions,
   getById,
@@ -100,8 +102,6 @@ const selectors = {
   loaded,
   loading,
   modelActions,
-  saved,
-  saving,
 };
 
 export default selectors;
