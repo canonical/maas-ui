@@ -1,44 +1,17 @@
 import type { ValueOf } from "@canonical/react-components";
-import type { PayloadAction } from "@reduxjs/toolkit";
 
-import type { APIError } from "app/base/types";
-import type { TimestampedModel } from "app/store/types/model";
 import type {
-  ACTION_STATUS,
-  ZONE_ACTIONS,
-  ZONE_PK,
-} from "app/store/zone/constants";
-
-/* The following types should be made generic, usable across models. */
-export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
-
-export type ModelAction<PK> = {
-  [ACTION_STATUS.failed]: PK[];
-  [ACTION_STATUS.processing]: PK[];
-  [ACTION_STATUS.successful]: PK[];
-};
-
-export type PayloadActionWithMeta<M, P = null> = PayloadAction<
-  P,
-  string,
-  { modelPK: M }
->;
-
-export type StateError<A extends string, PK> = {
-  action: A;
-  error: APIError;
-  modelPK: PK | null;
-};
-/***************************/
+  ActionStatuses,
+  ModelAction,
+  PayloadActionWithMeta,
+  StateError,
+} from "app/base/types";
+import type { TimestampedModel } from "app/store/types/model";
+import type { ZONE_ACTIONS, ZONE_PK } from "app/store/zone/constants";
 
 export type ZonePK = Zone[typeof ZONE_PK];
 
 export type ZoneActionNames = ValueOf<typeof ZONE_ACTIONS>;
-
-export type ZonePayloadActionWithMeta<P = null> = PayloadActionWithMeta<
-  ZonePK,
-  P
->;
 
 export type Zone = TimestampedModel & {
   controllers_count: number;
@@ -59,6 +32,11 @@ export type ZoneModelActions = {
   [ZONE_ACTIONS.delete]: ZoneModelAction;
   [ZONE_ACTIONS.update]: ZoneModelAction;
 };
+
+export type ZonePayloadActionWithMeta<P = null> = PayloadActionWithMeta<
+  ZonePK,
+  P
+>;
 
 export type ZoneStateError = StateError<ZoneActionNames, ZonePK>;
 

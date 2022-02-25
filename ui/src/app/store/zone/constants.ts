@@ -1,12 +1,3 @@
-/* The following constants should be made generic, usable across models. */
-export const ACTION_STATUS = {
-  failed: "failed",
-  idle: "idle",
-  processing: "processing",
-  successful: "successful",
-} as const;
-/***************************/
-
 export const ZONE_PK = "id";
 
 export const ZONE_MODEL = "zone";

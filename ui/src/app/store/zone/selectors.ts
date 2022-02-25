@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import { ACTION_STATUS, ZONE_ACTIONS, ZONE_MODEL, ZONE_PK } from "./constants";
+import { ZONE_ACTIONS, ZONE_MODEL, ZONE_PK } from "./constants";
 import type {
   ZoneActionNames,
   ZoneGenericActions,
@@ -9,6 +9,7 @@ import type {
   ZoneState,
 } from "./types";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
 
 const all = (state: RootState): ZoneState["items"] => state[ZONE_MODEL].items;

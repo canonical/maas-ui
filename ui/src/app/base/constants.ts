@@ -1,3 +1,10 @@
+export const ACTION_STATUS = {
+  failed: "failed",
+  idle: "idle",
+  processing: "processing",
+  successful: "successful",
+} as const;
+
 /**
  * Common column sizes used in <Col> components
  */

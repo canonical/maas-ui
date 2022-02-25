@@ -3,6 +3,7 @@ import type { RouterState } from "redux-first-history";
 
 import { bondOptions } from "./general";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { APIError } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
@@ -95,7 +96,7 @@ import type {
 } from "app/store/vlan/types";
 import type { VMClusterState } from "app/store/vmcluster/types";
 import type { VMClusterStatuses } from "app/store/vmcluster/types/base";
-import { ACTION_STATUS, ZONE_ACTIONS } from "app/store/zone/constants";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import type {
   ZoneGenericActions,
   ZoneModelAction,

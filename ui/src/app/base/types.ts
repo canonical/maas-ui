@@ -1,4 +1,7 @@
 import type { ValueOf } from "@canonical/react-components";
+import type { PayloadAction } from "@reduxjs/toolkit";
+
+import type { ACTION_STATUS } from "./constants";
 
 export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -66,4 +69,24 @@ export type CommonActionFormProps<E = null> = {
   errors?: APIError<E>;
   processingCount: number;
   viewingDetails: boolean;
+};
+
+export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
+
+export type ModelAction<PK> = {
+  [ACTION_STATUS.failed]: PK[];
+  [ACTION_STATUS.processing]: PK[];
+  [ACTION_STATUS.successful]: PK[];
+};
+
+export type PayloadActionWithMeta<M, P = null> = PayloadAction<
+  P,
+  string,
+  { modelPK: M }
+>;
+
+export type StateError<A extends string, PK> = {
+  action: A;
+  error: APIError;
+  modelPK: PK | null;
 };

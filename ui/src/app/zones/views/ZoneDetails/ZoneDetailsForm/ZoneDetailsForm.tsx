@@ -5,9 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
-import { ZONE_ACTIONS, ACTION_STATUS } from "app/store/zone/constants";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {

@@ -2,14 +2,12 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
 import {
-  ACTION_STATUS,
   ZONE_ACTIONS,
   ZONE_MODEL,
   ZONE_PK,
   ZONE_WEBSOCKET_METHODS,
 } from "./constants";
 import type {
-  ActionStatuses,
   CreateParams,
   DeleteParams,
   UpdateParams,
@@ -22,7 +20,8 @@ import type {
   ZoneState,
 } from "./types";
 
-import type { APIError } from "app/base/types";
+import { ACTION_STATUS } from "app/base/constants";
+import type { ActionStatuses, APIError } from "app/base/types";
 
 const {
   cleanup: cleanupAction,
