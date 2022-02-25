@@ -2,6 +2,7 @@ module.exports = {
   parser: "babel-eslint",
   plugins: [
     "react",
+    "testing-library",
     "no-only-tests",
     "@typescript-eslint",
     "prettier",
@@ -105,6 +106,16 @@ module.exports = {
       files: ["**/*.js?(x)"],
       rules: {
         "no-unused-vars": 2,
+      },
+    },
+    {
+      files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      extends: ["plugin:testing-library/react"],
+      rules: {
+        "testing-library/prefer-find-by": "warn",
+        "testing-library/prefer-presence-queries": "warn",
+        "testing-library/no-node-access": "warn",
+        "testing-library/no-wait-for-side-effects": "warn",
       },
     },
   ],

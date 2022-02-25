@@ -95,26 +95,18 @@ it("can open and close the add static route form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  await waitFor(() =>
-    expect(
-      screen.getByRole("button", {
-        name: AddStaticRouteFormLabels.AddStaticRoute,
-      })
-    ).toBeInTheDocument()
-  );
+  await screen.findByRole("button", {
+    name: AddStaticRouteFormLabels.AddStaticRoute,
+  });
   userEvent.click(
     screen.getByRole("button", {
       name: AddStaticRouteFormLabels.AddStaticRoute,
     })
   );
 
-  await waitFor(() =>
-    expect(
-      screen.getByRole("form", {
-        name: AddStaticRouteFormLabels.AddStaticRoute,
-      })
-    ).toBeInTheDocument()
-  );
+  await screen.findByRole("form", {
+    name: AddStaticRouteFormLabels.AddStaticRoute,
+  });
 
   userEvent.click(
     within(
@@ -164,13 +156,9 @@ it("can open and close the edit static route form", async () => {
     })
   );
 
-  await waitFor(() =>
-    expect(
-      screen.getByRole("form", {
-        name: EditStaticRouteFormLabels.EditStaticRoute,
-      })
-    ).toBeInTheDocument()
-  );
+  await screen.findByRole("form", {
+    name: EditStaticRouteFormLabels.EditStaticRoute,
+  });
 
   userEvent.click(
     within(

@@ -50,11 +50,7 @@ it("dispatches a correct action on add static route form submit", async () => {
     </Provider>
   );
 
-  await waitFor(() =>
-    expect(
-      screen.getByRole("form", { name: "Add static route" })
-    ).toBeInTheDocument()
-  );
+  await screen.findByRole("form", { name: "Add static route" });
 
   const addStaticRouteForm = screen.getByRole("form", {
     name: "Add static route",

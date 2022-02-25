@@ -107,6 +107,7 @@
     "eslint-plugin-prettier": "4.0.0",
     "eslint-plugin-react": "7.28.0",
     "eslint-plugin-react-hooks": "4.3.0",
+    "eslint-plugin-testing-library": "5.0.5",
     "formik-devtools-extension": "0.1.7",
     "jest-fetch-mock": "3.0.3",
     "jest-websocket-mock": "2.3.0",

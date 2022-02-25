@@ -13,7 +13,7 @@ const renderTestCase = () => {
   const store = configureStore()(rootStateFactory());
   const setActiveForm = jest.fn();
 
-  const renderResult = render(
+  const view = render(
     <Provider store={store}>
       <MemoryRouter
         initialEntries={[{ pathname: "/networks", key: "testKey" }]}
@@ -22,7 +22,7 @@ const renderTestCase = () => {
       </MemoryRouter>
     </Provider>
   );
-  return { ...renderResult, store, props: { setActiveForm } };
+  return { ...view, store, props: { setActiveForm } };
 };
 
 test("renders the form correctly", async () => {
