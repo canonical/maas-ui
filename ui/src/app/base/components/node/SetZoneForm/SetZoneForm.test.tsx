@@ -24,7 +24,6 @@ describe("SetZoneForm", () => {
           zoneFactory({ id: 0, name: "default" }),
           zoneFactory({ id: 1, name: "zone-1" }),
         ],
-        loaded: true,
       }),
     });
   });

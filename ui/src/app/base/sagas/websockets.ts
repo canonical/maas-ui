@@ -569,7 +569,7 @@ export function* sendMessage(
 ): SagaGenerator<void> {
   const { meta, payload, type } = action;
   const params = payload ? payload.params : null;
-  const { cache, method, model, nocache } = meta;
+  const { cache, method, model, modelPK, nocache } = meta;
   const endpoint = `${model}.${method}`;
   const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
   // If method is 'list' and data has loaded/is loading, do not fetch again
@@ -588,7 +588,7 @@ export function* sendMessage(
     setLoaded(endpoint);
   }
   yield* put({
-    meta: { item: params || payload, modelPK: meta.modelPK },
+    meta: { item: params || payload, modelPK },
     type: `${type}Start`,
   });
 

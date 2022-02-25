@@ -5,9 +5,11 @@ import configureStore from "redux-mock-store";
 
 import AddVirsh from "../AddVirsh";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { PowerTypeNames } from "app/store/general/constants";
 import { PowerFieldScope } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -19,6 +21,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -50,8 +53,10 @@ describe("AddVirshFields", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
         items: [zoneFactory()],
-        loaded: true,
       }),
     });
   });

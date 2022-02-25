@@ -323,7 +323,7 @@ describe("websocket sagas", () => {
         data: JSON.stringify({ request_id: 99, result: { response: "here" } }),
       }).value
     ).toStrictEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "test/action", payload: { id: 808 } });
+    saga.next({ type: "test/action", payload: { id: 808 }, meta: {} });
     expect(saga.next(false).value).toEqual(
       put({
         meta: { item: { id: 808 } },
@@ -343,7 +343,7 @@ describe("websocket sagas", () => {
       result: [{ id: 11 }],
     };
     saga.next({ data: JSON.stringify(response) });
-    saga.next({ type: "test/action" });
+    saga.next({ type: "test/action", meta: {} });
     saga.next();
     expect(saga.next().value).toEqual(call(handleBatch, response));
   });
@@ -475,7 +475,7 @@ describe("websocket sagas", () => {
         }),
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "test/action", payload: { id: 808 } });
+    saga.next({ type: "test/action", payload: { id: 808 }, meta: {} });
     expect(saga.next(false).value).toEqual(
       put({
         error: true,
@@ -499,7 +499,7 @@ describe("websocket sagas", () => {
         }),
       }).value
     ).toEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "test/action", payload: { id: 808 } });
+    saga.next({ type: "test/action", payload: { id: 808 }, meta: {} });
     expect(saga.next(false).value).toEqual(
       put({
         error: true,

@@ -5,12 +5,14 @@ import configureStore from "redux-mock-store";
 
 import AddDeviceForm from "./AddDeviceForm";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { actions as deviceActions } from "app/store/device";
 import { DeviceIpAssignment } from "app/store/device/types";
 import { actions as domainActions } from "app/store/domain";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import { actions as zoneActions } from "app/store/zone";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -18,6 +20,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";
@@ -38,8 +41,10 @@ describe("AddDeviceForm", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
         items: [zoneFactory({ id: 0, name: "default" })],
-        loaded: true,
       }),
     });
   });
@@ -70,7 +75,7 @@ describe("AddDeviceForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.zone.loaded = false;
+    state.zone.genericActions.fetch = ACTION_STATUS.idle;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

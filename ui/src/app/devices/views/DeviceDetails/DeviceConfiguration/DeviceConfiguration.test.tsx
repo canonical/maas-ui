@@ -10,8 +10,10 @@ import { Label as DeviceConfigurationFieldsLabel } from "./DeviceConfigurationFi
 import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
 import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
 import { Label as ZoneSelectLabel } from "app/base/components/ZoneSelect/ZoneSelect";
+import { ACTION_STATUS } from "app/base/constants";
 import { actions as deviceActions } from "app/store/device";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceState as deviceStateFactory,
@@ -19,6 +21,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -40,7 +43,9 @@ describe("DeviceConfiguration", () => {
         ],
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
         items: [zoneFactory({ name: "twilight" })],
       }),
     });

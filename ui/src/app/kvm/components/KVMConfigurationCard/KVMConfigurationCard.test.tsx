@@ -5,9 +5,11 @@ import configureStore from "redux-mock-store";
 
 import KVMConfigurationCard from "./KVMConfigurationCard";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
@@ -15,6 +17,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -32,8 +35,10 @@ beforeEach(() => {
       loaded: true,
     }),
     zone: zoneStateFactory({
+      genericActions: zoneGenericActionsFactory({
+        [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+      }),
       items: [zoneFactory({ id: 3 })],
-      loaded: true,
     }),
   });
 });

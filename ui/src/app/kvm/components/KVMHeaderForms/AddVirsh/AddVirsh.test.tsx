@@ -6,11 +6,13 @@ import configureStore from "redux-mock-store";
 
 import AddVirsh from "./AddVirsh";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { actions as generalActions } from "app/store/general";
 import { PodType } from "app/store/pod/constants";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   configState as configStateFactory,
   generalState as generalStateFactory,
@@ -22,6 +24,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";
@@ -58,8 +61,10 @@ describe("AddVirsh", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
         items: [zoneFactory()],
-        loaded: true,
       }),
     });
   });

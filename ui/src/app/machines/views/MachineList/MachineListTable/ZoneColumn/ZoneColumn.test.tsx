@@ -7,13 +7,16 @@ import configureStore from "redux-mock-store";
 import { ZoneColumn } from "./ZoneColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -35,7 +38,9 @@ describe("ZoneColumn", () => {
         ],
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
         items: [
           zoneFactory({
             id: 0,

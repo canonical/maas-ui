@@ -7,9 +7,11 @@ import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { PodType } from "app/store/pod/constants";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -25,6 +27,7 @@ import {
   spaceState as spaceStateFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { waitForComponentToPaint } from "testing/utils";
@@ -79,7 +82,9 @@ describe("StorageTable", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
       }),
     });
   });

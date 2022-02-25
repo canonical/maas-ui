@@ -4,9 +4,12 @@ import configureStore from "redux-mock-store";
 
 import DeleteConfirm from "./DeleteConfirm";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -19,9 +22,9 @@ describe("DeleteConfirm", () => {
   beforeEach(() => {
     initialState = rootStateFactory({
       zone: zoneStateFactory({
-        errors: {},
-        loading: false,
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
         items: [
           zoneFactory({
             id: 1,

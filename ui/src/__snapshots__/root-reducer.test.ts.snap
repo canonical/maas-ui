@@ -400,12 +400,24 @@ Object {
     },
   },
   "zone": Object {
-    "errors": null,
+    "errors": Array [],
+    "genericActions": Object {
+      "create": "idle",
+      "fetch": "idle",
+    },
     "items": Array [],
-    "loaded": false,
-    "loading": false,
-    "saved": false,
-    "saving": false,
+    "modelActions": Object {
+      "delete": Object {
+        "failed": Array [],
+        "processing": Array [],
+        "successful": Array [],
+      },
+      "update": Object {
+        "failed": Array [],
+        "processing": Array [],
+        "successful": Array [],
+      },
+    },
   },
 }
 `;

@@ -10,8 +10,10 @@ import ComposeForm, {
   getDefaultPoolLocation,
 } from "./ComposeForm";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   domainState as domainStateFactory,
   fabricState as fabricStateFactory,
@@ -28,6 +30,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";
@@ -66,7 +69,9 @@ describe("ComposeForm", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
       }),
     });
   });
@@ -98,7 +103,7 @@ describe("ComposeForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.zone.loaded = false;
+    state.zone.genericActions[ZONE_ACTIONS.fetch] = ACTION_STATUS.idle;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

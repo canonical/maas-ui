@@ -6,14 +6,23 @@ import configureStore from "redux-mock-store";
 
 import MachineListHeader from "./MachineListHeader";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
+  tag as tagFactory,
+  tagState as tagStateFactory,
+  zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
+  zoneState as zoneStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -33,6 +42,24 @@ describe("MachineListHeader", () => {
           abc123: machineStatusFactory({}),
           def456: machineStatusFactory({}),
         },
+      }),
+      resourcepool: resourcePoolStateFactory({
+        errors: {},
+        loaded: false,
+        items: [
+          resourcePoolFactory({ id: 0, name: "default" }),
+          resourcePoolFactory({ id: 1, name: "other" }),
+        ],
+      }),
+      tag: tagStateFactory({
+        loaded: true,
+        items: [tagFactory(), tagFactory()],
+      }),
+      zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
+        items: [zoneFactory()],
       }),
     });
   });

@@ -5,9 +5,11 @@ import configureStore from "redux-mock-store";
 
 import AddMachineForm from "./AddMachineForm";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { PowerFieldType } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   architecturesState as architecturesStateFactory,
   defaultMinHweKernelState as defaultMinHweKernelStateFactory,
@@ -22,6 +24,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -86,12 +89,14 @@ beforeEach(() => {
       loaded: true,
     }),
     zone: zoneStateFactory({
+      genericActions: zoneGenericActionsFactory({
+        [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+      }),
       items: [
         zoneFactory({
           name: "twilight",
         }),
       ],
-      loaded: true,
     }),
   });
 });

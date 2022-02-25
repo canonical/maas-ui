@@ -5,14 +5,17 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   authState as authStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
+  zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
+  zoneState as zoneStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -21,9 +24,9 @@ describe("ZoneDetailsHeader", () => {
   let initialState: RootState;
 
   const testZones = zoneStateFactory({
-    errors: {},
-    loading: false,
-    loaded: true,
+    genericActions: zoneGenericActionsFactory({
+      [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+    }),
     items: [
       zoneFactory({
         id: 1,

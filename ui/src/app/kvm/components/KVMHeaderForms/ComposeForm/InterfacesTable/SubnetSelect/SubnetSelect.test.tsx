@@ -9,8 +9,10 @@ import ComposeForm from "../../ComposeForm";
 
 import type { MenuLink } from "./SubnetSelect";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   domainState as domainStateFactory,
   fabric as fabricFactory,
@@ -29,6 +31,7 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { waitForComponentToPaint } from "testing/utils";
@@ -83,7 +86,9 @@ describe("SubnetSelect", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
       }),
     });
   });

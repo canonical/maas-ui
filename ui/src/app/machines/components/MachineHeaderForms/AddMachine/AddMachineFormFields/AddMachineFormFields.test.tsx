@@ -6,7 +6,9 @@ import configureStore from "redux-mock-store";
 
 import AddMachineForm from "../AddMachineForm";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   architecturesState as architecturesStateFactory,
   defaultMinHweKernelState as defaultMinHweKernelStateFactory,
@@ -20,6 +22,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -66,8 +69,10 @@ describe("AddMachineFormFields", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
         items: [zoneFactory()],
-        loaded: true,
       }),
     });
   });

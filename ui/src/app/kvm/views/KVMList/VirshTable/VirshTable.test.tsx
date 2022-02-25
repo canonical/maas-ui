@@ -5,8 +5,10 @@ import configureStore from "redux-mock-store";
 
 import VirshTable from "./VirshTable";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { SortDirection } from "app/base/types";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -14,6 +16,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -37,7 +40,9 @@ describe("VirshTable", () => {
         ],
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
         items: [
           zoneFactory({ id: pods[0].zone }),
           zoneFactory({ id: pods[1].zone }),

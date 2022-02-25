@@ -28,7 +28,7 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
     zoneSelectors.getById(state, id)
   );
   const errors = useSelector((state: RootState) =>
-    zoneSelectors.getLatestActionError(state, ZONE_ACTIONS.create)
+    zoneSelectors.getLatestActionError(state, ZONE_ACTIONS.update)
   );
   const updateStatus = useSelector((state: RootState) =>
     zoneSelectors.getModelActionStatus(state, id, ZONE_ACTIONS.update)

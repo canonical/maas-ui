@@ -5,13 +5,16 @@ import configureStore from "redux-mock-store";
 
 import LXDSingleSettings from "./LXDSingleSettings";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -33,7 +36,9 @@ describe("LXDSingleSettings", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        }),
       }),
     });
   });
