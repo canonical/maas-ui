@@ -215,7 +215,6 @@ export const Header = ({
           "u-hide--hardware-menu-threshold": link.inHardwareMenu,
         })}
         key={link.url}
-        role="presentation"
       >
         {generateLink(link, {
           "aria-current": isSelected(path, link, appendNewBase)
@@ -240,7 +239,6 @@ export const Header = ({
                   "p-navigation__link p-subnav is-dark hardware-menu",
                   { "is-active": hardwareMenuOpen }
                 )}
-                role="presentation"
               >
                 {/* eslint-disable-next-line */}
                 <a
@@ -293,7 +291,7 @@ export const Header = ({
                 )}
             </li>
           )}
-          <li className="p-navigation__link" role="presentation">
+          <li className="p-navigation__link">
             {/* eslint-disable-next-line */}
             <a
               href="#"
@@ -318,9 +316,9 @@ export const Header = ({
 
   return (
     <>
-      <span className="u-off-screen">
-        <a href="#main-content">Skip to main content</a>
-      </span>
+      <a href="#main-content" className="p-link--skip">
+        Skip to main content
+      </a>
       <header id="navigation" className="p-navigation is-dark">
         <div className="p-navigation__row row">
           <div className="p-navigation__banner">

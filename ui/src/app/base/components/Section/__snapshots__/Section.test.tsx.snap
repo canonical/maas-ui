@@ -16,7 +16,7 @@ exports[`Section renders 1`] = `
     </Row>
   </div>
   <Strip
-    element="main"
+    element="section"
     includeCol={false}
     rowClassName="section__content-wrapper"
     shallow={true}

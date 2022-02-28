@@ -8,12 +8,12 @@ exports[`IncompleteCard renders 1`] = `
         className="section"
       >
         <Strip
-          element="main"
+          element="section"
           includeCol={false}
           rowClassName="section__content-wrapper"
           shallow={true}
         >
-          <main
+          <section
             className="p-strip is-shallow"
           >
             <Row
@@ -137,7 +137,7 @@ exports[`IncompleteCard renders 1`] = `
                 </Col>
               </div>
             </Row>
-          </main>
+          </section>
         </Strip>
       </div>
     </Section>

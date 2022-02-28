@@ -46,7 +46,7 @@ export const Login = (): JSX.Element => {
   }, [dispatch, externalAuthURL]);
 
   return (
-    <Strip element="main">
+    <Strip>
       <Row>
         <Col size={6} emptyLarge={4}>
           {externalAuthURL && error && (

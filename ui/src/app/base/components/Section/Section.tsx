@@ -29,7 +29,7 @@ const Section = ({
         </div>
       ) : null}
       <Strip
-        element="main"
+        element="section"
         includeCol={false}
         rowClassName="section__content-wrapper"
         shallow
