@@ -92,6 +92,11 @@ const Machines = (): JSX.Element => {
           render={() => <PoolEdit />}
         />
         <Route exact path={tagURLs.tags.index} render={() => <Tags />} />
+        <Route
+          exact
+          path={tagURLs.tag.index(null, true)}
+          render={() => <Tags />}
+        />
         <Route path="*" render={() => <NotFound />} />
       </Switch>
     </Section>

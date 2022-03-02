@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import Tags from "./Tags";
 
 import type { RootState } from "app/store/root/types";
+import tagURLs from "app/tags/urls";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -26,15 +27,26 @@ describe("Tags", () => {
     });
   });
 
-  it("displays a loading component if pools are loading", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-          <Tags />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.text().includes("Tags")).toBe(true);
+  [
+    {
+      component: "TagDetails",
+      path: tagURLs.tag.index({ id: 1 }),
+    },
+    {
+      component: "NotFound",
+      path: "/not/a/path",
+    },
+  ].forEach(({ component, path }) => {
+    it(`Displays: ${component} at: ${path}`, () => {
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <MemoryRouter initialEntries={[{ pathname: path }]}>
+            <Tags />
+          </MemoryRouter>
+        </Provider>
+      );
+      expect(wrapper.find(component).exists()).toBe(true);
+    });
   });
 });
