@@ -129,7 +129,9 @@ export const MachineListHeader = ({
           to: poolsURLs.pools,
         },
         {
-          active: location.pathname.startsWith(tagURLs.tags.index),
+          active:
+            location.pathname.startsWith(tagURLs.tags.index) ||
+            location.pathname.startsWith(tagURLs.tag.base),
           component: Link,
           label: `${pluralize("Tag", tags.length, true)}`,
           to: tagURLs.tags.index,

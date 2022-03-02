@@ -136,6 +136,14 @@ const Routes = (): JSX.Element => (
       )}
     />
     <Route
+      path={tagURLs.tag.index(null, true)}
+      render={() => (
+        <ErrorBoundary>
+          <Machines />
+        </ErrorBoundary>
+      )}
+    />
+    <Route
       path={settingsURLs.index}
       render={() => (
         <ErrorBoundary>
