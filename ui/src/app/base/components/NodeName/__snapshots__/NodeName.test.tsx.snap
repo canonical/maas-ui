@@ -300,7 +300,6 @@ exports[`NodeName can display the form 1`] = `
                   className="u-nudge-left--small u-no-margin--right"
                   error={null}
                   forId="mock-nanoid-1"
-                  labelFirst={true}
                   required={true}
                 >
                   <div
@@ -316,6 +315,7 @@ exports[`NodeName can display the form 1`] = `
                         name="hostname"
                         onBlur={[Function]}
                         onChange={[Function]}
+                        required={true}
                         style={
                           Object {
                             "width": "14ch",
