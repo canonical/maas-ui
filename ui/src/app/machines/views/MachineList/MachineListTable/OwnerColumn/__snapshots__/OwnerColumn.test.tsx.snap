@@ -117,7 +117,7 @@ exports[`OwnerColumn renders 1`] = `
                     type="button"
                   >
                     <i
-                      className="p-icon--chevron-down p-contextual-menu__indicator"
+                      className="p-icon--contextual-menu p-contextual-menu__indicator"
                     />
                   </button>
                 </Button>

@@ -26,6 +26,7 @@ exports[`FormikField can render 1`] = `
       forId="username"
       help="Required."
       label="Username"
+      labelFirst={true}
       required={true}
     >
       <div
@@ -53,7 +54,6 @@ exports[`FormikField can render 1`] = `
             name="username"
             onBlur={[Function]}
             onChange={[Function]}
-            required={true}
             type="text"
           />
           <p
