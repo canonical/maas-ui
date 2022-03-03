@@ -1,5 +1,5 @@
-@mixin KVMActionBar {
-  .kvm-action-bar {
+@mixin ActionBar {
+  .action-bar {
     display: grid;
     grid-template-areas:
       "act"
@@ -9,18 +9,18 @@
     grid-template-rows: min-content min-content min-content;
     padding: $spv-inner--medium 0;
 
-    .kvm-action-bar__actions {
+    .action-bar__actions {
       align-items: center;
       display: flex;
       grid-area: act;
     }
 
-    .kvm-action-bar__pagination {
+    .action-bar__pagination {
       grid-area: pag;
       margin-top: $spv-inner--small;
     }
 
-    .kvm-action-bar__search {
+    .action-bar__search {
       grid-area: sea;
       margin-top: $spv-inner--medium;
     }
@@ -32,7 +32,7 @@
       grid-template-columns: auto auto;
       grid-template-rows: min-content min-content;
 
-      .kvm-action-bar__pagination {
+      .action-bar__pagination {
         margin-top: 0;
         text-align: right;
       }
@@ -43,7 +43,7 @@
       grid-template-columns: max-content 1fr max-content;
       grid-template-rows: min-content;
 
-      .kvm-action-bar__search {
+      .action-bar__search {
         margin: 0 $sph-inner;
         max-width: 50rem;
       }

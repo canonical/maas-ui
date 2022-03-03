@@ -71,6 +71,7 @@
 
 // Import and include MAAS component styles
 // base
+@import "~app/base/components/ActionBar";
 @import "~app/base/components/CertificateDownload";
 @import "~app/base/components/CertificateMetadata";
 @import "~app/base/components/ColumnToggle";
@@ -94,6 +95,7 @@
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
+@include ActionBar;
 @include CertificateDownload;
 @include CertificateMetadata;
 @include ColumnToggle;
@@ -143,7 +145,6 @@
 // kvm
 @import "~app/kvm/components/CoreResources";
 @import "~app/kvm/components/CPUColumn/CPUPopover";
-@import "~app/kvm/components/KVMActionBar";
 @import "~app/kvm/components/KVMDetailsHeader";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
@@ -170,7 +171,6 @@
 @import "~app/kvm/views/LXDClusterDetails/LXDClusterSummaryCard";
 @include CoreResources;
 @include CPUPopover;
-@include KVMActionBar;
 @include KVMComposeInterfacesTable;
 @include KVMComposeStorageTable;
 @include KVMDetailsHeader;

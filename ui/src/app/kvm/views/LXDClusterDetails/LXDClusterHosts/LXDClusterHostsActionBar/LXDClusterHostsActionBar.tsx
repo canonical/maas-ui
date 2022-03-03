@@ -1,8 +1,9 @@
 import { Button, Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import ActionBar from "app/base/components/ActionBar";
 import type { SetSearchFilter } from "app/base/types";
-import KVMActionBar from "app/kvm/components/KVMActionBar";
+import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import type { Pod } from "app/store/pod/types";
@@ -43,7 +44,7 @@ const LXDClusterHostsActionBar = ({
   }
 
   return (
-    <KVMActionBar
+    <ActionBar
       actions={
         <Button
           className="u-rotate-right"
@@ -67,6 +68,7 @@ const LXDClusterHostsActionBar = ({
       itemCount={hosts.length}
       loading={loading}
       onSearchChange={setSearchFilter}
+      pageSize={VMS_PER_PAGE}
       searchFilter={searchFilter}
       setCurrentPage={setCurrentPage}
     />
