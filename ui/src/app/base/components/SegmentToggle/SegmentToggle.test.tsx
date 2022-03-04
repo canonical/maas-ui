@@ -19,7 +19,7 @@ const options = [
 
 it("renders a segment for each option", () => {
   render(
-    <SegmentToggle onSelect={jest.fn()} options={options} selected="Green" />
+    <SegmentToggle onSelect={jest.fn()} options={options} selected="#00FF00" />
   );
   expect(screen.getByRole("button", { name: "Red" })).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Green" })).toBeInTheDocument();
@@ -28,18 +28,21 @@ it("renders a segment for each option", () => {
 
 it("highlights the active option", () => {
   render(
-    <SegmentToggle onSelect={jest.fn()} options={options} selected="Green" />
+    <SegmentToggle onSelect={jest.fn()} options={options} selected="#00FF00" />
   );
-  expect(screen.getByRole("button", { name: "Green" })).toHaveClass(
-    "is-active"
-  );
+  expect(
+    screen
+      .getByRole("button", { name: "Green" })
+      .getAttribute("class")
+      ?.includes("is-active")
+  ).toBe(true);
 });
 
 it("calls the callback when clicking a button", () => {
   const onSelect = jest.fn();
   render(
-    <SegmentToggle onSelect={onSelect} options={options} selected="Green" />
+    <SegmentToggle onSelect={onSelect} options={options} selected="#00FF00" />
   );
   screen.getByRole("button", { name: "Blue" }).click();
-  expect(onSelect).toHaveBeenCalledWith("blue");
+  expect(onSelect).toHaveBeenCalledWith("#0000FF");
 });
