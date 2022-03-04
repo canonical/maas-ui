@@ -1,1 +1,1 @@
-export { default, Label } from "./TagList";
+export { default } from "./TagList";

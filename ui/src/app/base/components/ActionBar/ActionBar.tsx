@@ -25,9 +25,10 @@ const ActionBar = ({
   pageSize = 50,
   searchFilter,
   setCurrentPage,
+  ...props
 }: Props): JSX.Element | null => {
   return (
-    <div className="action-bar">
+    <div className="action-bar" {...props}>
       <div className="action-bar__actions">{actions}</div>
       <div className="action-bar__search">
         <SearchBox

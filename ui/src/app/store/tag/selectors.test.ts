@@ -1,4 +1,4 @@
-import tag from "./selectors";
+import tag, { TagSearchFilter } from "./selectors";
 
 import {
   rootState as rootStateFactory,
@@ -63,6 +63,63 @@ describe("tag selectors", () => {
         tag: tagStateFactory({ items: tags }),
       });
       expect(tag.getByIDs(state, [1, 2])).toStrictEqual([tags[0], tags[1]]);
+    });
+  });
+
+  describe("search", () => {
+    const tags = [
+      tagFactory({ id: 1, definition: undefined, name: "jacket" }),
+      tagFactory({ id: 2, definition: "denim", name: "jeans" }),
+      tagFactory({ id: 3, definition: undefined, name: "shirt" }),
+    ];
+
+    it("returns all tags if no filters or search are provided", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.search(state, null, null)).toStrictEqual(tags);
+    });
+
+    it("returns all tags if the filter is set to 'All'", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.search(state, null, TagSearchFilter.All)).toStrictEqual(tags);
+    });
+
+    it("filters automatic tags", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.search(state, null, TagSearchFilter.Auto)).toStrictEqual([
+        tags[1],
+      ]);
+    });
+
+    it("filters manual tags", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.search(state, null, TagSearchFilter.Manual)).toStrictEqual([
+        tags[0],
+        tags[2],
+      ]);
+    });
+
+    it("searches tags", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.search(state, "j", null)).toStrictEqual([tags[0], tags[1]]);
+    });
+
+    it("searches and filters tags", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.search(state, "j", TagSearchFilter.Manual)).toStrictEqual([
+        tags[0],
+      ]);
     });
   });
 });
