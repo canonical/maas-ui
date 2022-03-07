@@ -14,7 +14,7 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v2
@@ -37,7 +37,7 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v2
@@ -60,7 +60,7 @@ jobs:
       matrix:
         node-version: [16.x]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v2
