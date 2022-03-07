@@ -30,6 +30,7 @@ jest.mock(
   "@canonical/react-components/dist/components/Tooltip",
   () => (props: PropsWithChildren<TooltipProps>) => {
     mockTooltip(props);
+    // eslint-disable-next-line testing-library/no-node-access
     return <span data-testid="Tooltip">{props.children}</span>;
   }
 );
@@ -109,7 +110,7 @@ it("renders correct section heading", async () => {
   ).toBeInTheDocument();
 });
 
-it("renders corrent values for static fields", async () => {
+it("renders current values for static fields", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -148,10 +149,10 @@ it("renders correct value for 'Managed allocation' if enabled", async () => {
       </MemoryRouter>
     </Provider>
   );
-  const label = "Managed allocation";
-  expect(screen.getByLabelText(label)).toHaveTextContent("Enabled");
+  const managedAllocation = screen.getByLabelText("Managed allocation");
+  expect(managedAllocation).toHaveTextContent("Enabled");
   expect(
-    within(screen.getByText(label)).queryByTestId("Tooltip")
+    within(managedAllocation).queryByTestId("Tooltip")
   ).not.toBeInTheDocument();
 });
 
@@ -210,10 +211,10 @@ it("renders correct value for 'Active discovery' if disabled", async () => {
       </MemoryRouter>
     </Provider>
   );
-  const label = "Active discovery";
-  expect(screen.getByLabelText(label)).toHaveTextContent("Disabled");
+  const activeDiscovery = screen.getByLabelText("Active discovery");
+  expect(activeDiscovery).toHaveTextContent("Disabled");
   expect(
-    within(screen.getByText(label)).queryByTestId("Tooltip")
+    within(activeDiscovery).queryByTestId("Tooltip")
   ).not.toBeInTheDocument();
 });
 
@@ -360,11 +361,9 @@ it("renders the correct value for 'Space' if it has an ID", async () => {
       </MemoryRouter>
     </Provider>
   );
-  const label = "Space";
-  expect(screen.getByLabelText(label)).toHaveTextContent("Test space");
-  expect(
-    within(screen.getByText(label)).queryByTestId("Tooltip")
-  ).not.toBeInTheDocument();
+  const space = screen.getByLabelText("Space");
+  expect(space).toHaveTextContent("Test space");
+  expect(within(space).queryByTestId("Tooltip")).not.toBeInTheDocument();
 });
 
 it("renders the correct value for 'Space' if no ID", async () => {

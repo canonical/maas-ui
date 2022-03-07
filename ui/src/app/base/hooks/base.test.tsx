@@ -30,6 +30,7 @@ describe("hooks", () => {
 
     beforeEach(() => {
       global.innerHeight = 500;
+      // eslint-disable-next-line testing-library/no-node-access
       html = document.querySelector("html");
       scrollToSpy = jest.fn();
       global.scrollTo = scrollToSpy;

@@ -1,10 +1,12 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import ConfigureDHCP from "./ConfigureDHCP";
 
+import { getSubnetDisplay } from "app/store/subnet/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import {
   controller as controllerFactory,
@@ -194,16 +196,17 @@ it(`shows an error if the subnet selected for reserving a dynamic range has no
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("combobox", { name: "Subnet" }), {
-      target: { value: subnet.id.toString() },
-    });
-    fireEvent.blur(screen.getByRole("combobox", { name: "Subnet" }));
-  });
+  userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Subnet" }),
+    subnet.id.toString()
+  );
+  userEvent.tab();
 
-  expect(
-    screen.getByText("This subnet has no available IP addresses.")
-  ).toBeInTheDocument();
+  await waitFor(() => {
+    expect(
+      screen.getByText("This subnet has no available IP addresses.")
+    ).toBeInTheDocument();
+  });
   expect(screen.getByRole("button", { name: "Configure DHCP" })).toBeDisabled();
 });
 
@@ -227,11 +230,7 @@ it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.click(
-      screen.getByRole("checkbox", { name: "MAAS provides DHCP" })
-    );
-  });
+  userEvent.click(screen.getByRole("checkbox", { name: "MAAS provides DHCP" }));
 
   expect(
     screen.getByText(
@@ -265,31 +264,28 @@ it("can configure DHCP with rack controllers", async () => {
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("combobox", { name: "Primary rack" }), {
-      target: { value: primary.system_id },
-    });
-  });
-
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("combobox", { name: "Secondary rack" }), {
-      target: { value: secondary.system_id },
-    });
-  });
-
-  await waitFor(() => {
-    fireEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
-  });
+  userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Primary rack" }),
+    primary.system_id
+  );
+  userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Secondary rack" }),
+    secondary.system_id
+  );
+  userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
 
   const expectedAction = vlanActions.configureDHCP({
     controllers: [primary.system_id, secondary.system_id],
     id: vlan.id,
     relay_vlan: null,
   });
-  const actualAction = store
-    .getActions()
-    .find((action) => action.type === expectedAction.type);
-  expect(actualAction).toStrictEqual(expectedAction);
+
+  await waitFor(() => {
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === expectedAction.type);
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
 });
 
 it("can configure relayed DHCP", async () => {
@@ -313,25 +309,25 @@ it("can configure relayed DHCP", async () => {
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.click(
-      screen.getByRole("radio", { name: "Relay to another VLAN" })
-    );
-    fireEvent.change(screen.getByRole("combobox", { name: "VLAN" }), {
-      target: { value: relay.id.toString() },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
-  });
+  userEvent.click(screen.getByRole("radio", { name: "Relay to another VLAN" }));
+  userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "VLAN" }),
+    relay.name
+  );
+  userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
 
   const expectedAction = vlanActions.configureDHCP({
     controllers: [],
     id: vlan.id,
     relay_vlan: relay.id,
   });
-  const actualAction = store
-    .getActions()
-    .find((action) => action.type === expectedAction.type);
-  expect(actualAction).toStrictEqual(expectedAction);
+
+  await waitFor(() => {
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === expectedAction.type);
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
 });
 
 it("can configure DHCP while also defining a dynamic IP range", async () => {
@@ -358,31 +354,42 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.click(
-      screen.getByRole("radio", { name: "Relay to another VLAN" })
-    );
-    fireEvent.change(screen.getByRole("combobox", { name: "VLAN" }), {
-      target: { value: relay.id.toString() },
-    });
-    fireEvent.change(screen.getByRole("combobox", { name: "Subnet" }), {
-      target: { value: subnet.id.toString() },
-    });
-  });
+  userEvent.click(screen.getByRole("radio", { name: "Relay to another VLAN" }));
+  userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "VLAN" }),
+    relay.name
+  );
+  userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Subnet" }),
+    getSubnetDisplay(subnet)
+  );
 
-  await waitFor(() => {
-    fireEvent.change(
-      screen.getByRole("textbox", { name: "Start IP address" }),
-      { target: { value: "192.168.1.1" } }
-    );
-    fireEvent.change(screen.getByRole("textbox", { name: "End IP address" }), {
-      target: { value: "192.168.1.5" },
-    });
-    fireEvent.change(screen.getByRole("textbox", { name: "Gateway IP" }), {
-      target: { value: "192.168.1.6" },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
-  });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("textbox", { name: "Start IP address" })
+    ).toBeInTheDocument()
+  );
+  userEvent.clear(screen.getByRole("textbox", { name: "Start IP address" }));
+  userEvent.type(
+    screen.getByRole("textbox", { name: "Start IP address" }),
+    "192.168.1.1"
+  );
+  userEvent.clear(screen.getByRole("textbox", { name: "End IP address" }));
+  userEvent.type(
+    screen.getByRole("textbox", { name: "End IP address" }),
+    "192.168.1.5"
+  );
+  userEvent.clear(screen.getByRole("textbox", { name: "Gateway IP" }));
+  userEvent.type(
+    screen.getByRole("textbox", { name: "Gateway IP" }),
+    "192.168.1.6"
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Configure DHCP" })
+    ).not.toBeDisabled()
+  );
+  userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
 
   const expectedAction = vlanActions.configureDHCP({
     controllers: [],
@@ -395,8 +402,12 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
     id: vlan.id,
     relay_vlan: relay.id,
   });
-  const actualAction = store
-    .getActions()
-    .find((action) => action.type === expectedAction.type);
-  expect(actualAction).toStrictEqual(expectedAction);
+
+  await waitFor(() => {
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === expectedAction.type);
+
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
 });

@@ -108,7 +108,7 @@ describe("VLANDetailsHeader", () => {
       </Provider>
     );
     expect(
-      screen.queryByTestId("section-header-subtitle-spinner")
+      screen.getByTestId("section-header-subtitle-spinner")
     ).toBeInTheDocument();
   });
 
@@ -121,7 +121,9 @@ describe("VLANDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.queryByTestId("section-header-subtitle-spinner")).toBeNull();
+    expect(
+      screen.queryByTestId("section-header-subtitle-spinner")
+    ).not.toBeInTheDocument();
   });
 
   it("shows the delete button when the user is an admin", () => {
@@ -138,7 +140,9 @@ describe("VLANDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.queryByTestId("delete-vlan")).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", { name: "Delete VLAN" })
+    ).toBeInTheDocument();
   });
 
   it("does not show the delete button if the user is not an admin", () => {
@@ -155,6 +159,8 @@ describe("VLANDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(screen.queryByTestId("delete-vlan")).toBeNull();
+    expect(
+      screen.queryByRole("button", { name: "Delete VLAN" })
+    ).not.toBeInTheDocument();
   });
 });

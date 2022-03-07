@@ -169,18 +169,18 @@ it(`renders a subnet select field and prepopulated fields for a reserved range
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("combobox", { name: "Subnet" }), {
-      target: { value: subnet.id },
-    });
+  fireEvent.change(screen.getByRole("combobox", { name: "Subnet" }), {
+    target: { value: subnet.id },
   });
 
-  expect(
-    within(screen.getByRole("gridcell", { name: Headers.Subnet })).getByRole(
-      "combobox",
-      { name: "Subnet" }
-    )
-  ).toBeInTheDocument();
+  await waitFor(() =>
+    expect(
+      within(screen.getByRole("gridcell", { name: Headers.Subnet })).getByRole(
+        "combobox",
+        { name: "Subnet" }
+      )
+    ).toBeInTheDocument()
+  );
   expect(
     within(screen.getByRole("gridcell", { name: Headers.StartIP })).getByRole(
       "textbox",

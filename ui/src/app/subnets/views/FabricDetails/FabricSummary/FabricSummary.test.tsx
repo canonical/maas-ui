@@ -71,7 +71,11 @@ it("can open and close the Edit fabric summary form", async () => {
   );
   const fabricSummary = screen.getByRole("region", { name: "Fabric summary" });
   userEvent.click(within(fabricSummary).getByRole("button", { name: "Edit" }));
-  await screen.findByRole("form", { name: "Edit fabric summary" });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("form", { name: "Edit fabric summary" })
+    ).toBeInTheDocument()
+  );
 
   userEvent.click(
     within(fabricSummary).getByRole("button", { name: "Cancel" })

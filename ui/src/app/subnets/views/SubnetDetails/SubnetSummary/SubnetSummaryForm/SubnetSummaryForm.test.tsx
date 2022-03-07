@@ -49,40 +49,35 @@ it("can dispatch an action to update the subnet", async () => {
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.input(screen.getByRole("textbox", { name: "CIDR" }), {
-      target: { value: "192.168.2.0/24" },
-    });
-    fireEvent.input(screen.getByRole("textbox", { name: "Name" }), {
-      target: { value: "New Name" },
-    });
-    fireEvent.input(screen.getByRole("textbox", { name: "Description" }), {
-      target: { value: "I'm a supernet" },
-    });
-    fireEvent.input(screen.getByRole("textbox", { name: "Gateway IP" }), {
-      target: { value: "192.168.2.1" },
-    });
-    fireEvent.input(screen.getByRole("textbox", { name: "DNS" }), {
-      target: { value: "fghij" },
-    });
-    fireEvent.click(
-      screen.getByRole("checkbox", { name: "Managed allocation" })
-    );
-    fireEvent.click(screen.getByRole("checkbox", { name: "Active discovery" }));
-    fireEvent.click(
-      screen.getByRole("checkbox", { name: "Allow DNS resolution" })
-    );
-    fireEvent.click(screen.getByRole("checkbox", { name: "Proxy access" }));
-    fireEvent.change(screen.getByRole("combobox", { name: "Fabric" }), {
-      target: { value: fabrics[1].id.toString() },
-    });
+  fireEvent.input(screen.getByRole("textbox", { name: "CIDR" }), {
+    target: { value: "192.168.2.0/24" },
   });
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("combobox", { name: "VLAN" }), {
-      target: { value: vlans[1].id.toString() },
-    });
-    fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  fireEvent.input(screen.getByRole("textbox", { name: "Name" }), {
+    target: { value: "New Name" },
   });
+  fireEvent.input(screen.getByRole("textbox", { name: "Description" }), {
+    target: { value: "I'm a supernet" },
+  });
+  fireEvent.input(screen.getByRole("textbox", { name: "Gateway IP" }), {
+    target: { value: "192.168.2.1" },
+  });
+  fireEvent.input(screen.getByRole("textbox", { name: "DNS" }), {
+    target: { value: "fghij" },
+  });
+  fireEvent.click(screen.getByRole("checkbox", { name: "Managed allocation" }));
+  fireEvent.click(screen.getByRole("checkbox", { name: "Active discovery" }));
+  fireEvent.click(
+    screen.getByRole("checkbox", { name: "Allow DNS resolution" })
+  );
+  fireEvent.click(screen.getByRole("checkbox", { name: "Proxy access" }));
+  fireEvent.change(screen.getByRole("combobox", { name: "Fabric" }), {
+    target: { value: fabrics[1].id.toString() },
+  });
+
+  fireEvent.change(screen.getByRole("combobox", { name: "VLAN" }), {
+    target: { value: vlans[1].id.toString() },
+  });
+  fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
   const expectedAction = subnetActions.update({
     active_discovery: true,
@@ -98,7 +93,10 @@ it("can dispatch an action to update the subnet", async () => {
     vlan: vlans[1].id,
   });
   const actualActions = store.getActions();
-  expect(
-    actualActions.find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+
+  await waitFor(() =>
+    expect(
+      actualActions.find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction)
+  );
 });

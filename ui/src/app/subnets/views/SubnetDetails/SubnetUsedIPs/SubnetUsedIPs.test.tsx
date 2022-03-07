@@ -50,14 +50,14 @@ it("displays correct IP addresses", () => {
   ).toHaveLength(2);
   expect(
     screen
-      .queryAllByRole("gridcell", {
+      .getAllByRole("gridcell", {
         name: Labels.IpAddresses,
       })
       .find((td) => td.textContent === "11.1.1.1")
   ).toBeInTheDocument();
   expect(
     screen
-      .queryAllByRole("gridcell", {
+      .getAllByRole("gridcell", {
         name: Labels.IpAddresses,
       })
       .find((td) => td.textContent === "11.1.1.2")

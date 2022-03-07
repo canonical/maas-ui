@@ -178,6 +178,7 @@ it("shows an icon for automatic tags", () => {
   const auto = screen.getByRole("gridcell", {
     name: Label.Auto,
   });
+  // eslint-disable-next-line testing-library/no-node-access
   expect(auto.querySelector(".p-icon--success-grey")).toBeInTheDocument();
 });
 
@@ -200,6 +201,7 @@ it("does not show an icon for manual tags", () => {
   const auto = screen.getByRole("gridcell", {
     name: Label.Auto,
   });
+  // eslint-disable-next-line testing-library/no-node-access
   expect(auto.querySelector(".p-icon--success-grey")).not.toBeInTheDocument();
 });
 
@@ -222,6 +224,7 @@ it("shows an icon for kernel options", () => {
   const auto = screen.getByRole("gridcell", {
     name: Label.Options,
   });
+  // eslint-disable-next-line testing-library/no-node-access
   expect(auto.querySelector(".p-icon--success-grey")).toBeInTheDocument();
 });
 
@@ -244,6 +247,7 @@ it("does not show an icon for tags without kernel options", () => {
   const auto = screen.getByRole("gridcell", {
     name: Label.Options,
   });
+  // eslint-disable-next-line testing-library/no-node-access
   expect(auto.querySelector(".p-icon--success-grey")).not.toBeInTheDocument();
 });
 
