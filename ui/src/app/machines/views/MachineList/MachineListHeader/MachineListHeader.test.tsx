@@ -9,18 +9,10 @@ import MachineListHeader from "./MachineListHeader";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import {
-  generalState as generalStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
-  osInfo as osInfoFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
-  zone as zoneFactory,
-  zoneState as zoneStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -30,23 +22,6 @@ describe("MachineListHeader", () => {
 
   beforeEach(() => {
     state = rootStateFactory({
-      general: generalStateFactory({
-        osInfo: {
-          data: osInfoFactory({
-            osystems: [["ubuntu", "Ubuntu"]],
-            releases: [["ubuntu/bionic", 'Ubuntu 18.04 LTS "Bionic Beaver"']],
-          }),
-          errors: {},
-          loaded: true,
-          loading: false,
-        },
-        machineActions: {
-          data: [],
-          errors: null,
-          loaded: true,
-          loading: false,
-        },
-      }),
       machine: machineStateFactory({
         loaded: true,
         items: [
@@ -57,22 +32,6 @@ describe("MachineListHeader", () => {
           abc123: machineStatusFactory({}),
           def456: machineStatusFactory({}),
         },
-      }),
-      resourcepool: resourcePoolStateFactory({
-        errors: {},
-        loaded: false,
-        items: [
-          resourcePoolFactory({ id: 0, name: "default" }),
-          resourcePoolFactory({ id: 1, name: "other" }),
-        ],
-      }),
-      tag: tagStateFactory({
-        loaded: true,
-        items: [tagFactory(), tagFactory()],
-      }),
-      zone: zoneStateFactory({
-        loaded: true,
-        items: [zoneFactory()],
       }),
     });
   });
@@ -115,30 +74,6 @@ describe("MachineListHeader", () => {
     expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
       "2 machines available"
     );
-  });
-
-  it("displays machine, resource pool and tag counts if loaded", () => {
-    state.machine.loaded = true;
-    state.resourcepool.loaded = true;
-    state.tag.loaded = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    const tabs = wrapper.find('[data-testid="section-header-tabs"]');
-    expect(tabs.find("Link").at(0).text()).toBe("2 Machines");
-    expect(tabs.find("Link").at(1).text()).toBe("2 Resource pools");
-    expect(tabs.find("Link").at(2).text()).toBe("2 Tags");
   });
 
   it("displays a selected machine filter button if some machines have been selected", () => {
@@ -190,27 +125,6 @@ describe("MachineListHeader", () => {
     );
   });
 
-  it("displays add hardware menu and not add pool when at machines route", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper.find('ContextualMenu[data-testid="add-hardware-dropdown"]').length
-    ).toBe(1);
-    expect(wrapper.find('Button[data-testid="add-pool"]').length).toBe(0);
-  });
-
   it("disables the add hardware menu when machines are selected", () => {
     state.machine.selected = ["abc123"];
     const store = mockStore(state);
@@ -233,26 +147,6 @@ describe("MachineListHeader", () => {
         .find(ContextualMenu)
         .props().toggleDisabled
     ).toBe(true);
-  });
-
-  it(`displays add pool button and not hardware dropdown when
-    at pools route`, () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('Button[data-testid="add-pool"]').length).toBe(1);
-    expect(
-      wrapper.find('Button[data-testid="add-hardware-dropdown"]').length
-    ).toBe(0);
   });
 
   it("displays the action title if an action is selected", () => {

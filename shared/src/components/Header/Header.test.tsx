@@ -153,6 +153,98 @@ describe("Header", () => {
     expect(currentMenuItem).toHaveTextContent("Settings");
   });
 
+  it("highlights machines when active", () => {
+    render(
+      <Header
+        authUser={{
+          id: 99,
+          is_superuser: true,
+          username: "koala",
+        }}
+        completedIntro={true}
+        generateNewLink={generateURL}
+        location={
+          {
+            pathname: "/MAAS/r/machines",
+          } as Location
+        }
+        logout={jest.fn()}
+      />
+    );
+    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    expect(currentMenuItem).toBeInTheDocument();
+    expect(currentMenuItem).toHaveTextContent("Machines");
+  });
+
+  it("highlights machines viewing pools", () => {
+    render(
+      <Header
+        authUser={{
+          id: 99,
+          is_superuser: true,
+          username: "koala",
+        }}
+        completedIntro={true}
+        generateNewLink={generateURL}
+        location={
+          {
+            pathname: "/MAAS/r/pools",
+          } as Location
+        }
+        logout={jest.fn()}
+      />
+    );
+    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    expect(currentMenuItem).toBeInTheDocument();
+    expect(currentMenuItem).toHaveTextContent("Machines");
+  });
+
+  it("highlights machines viewing tags", () => {
+    render(
+      <Header
+        authUser={{
+          id: 99,
+          is_superuser: true,
+          username: "koala",
+        }}
+        completedIntro={true}
+        generateNewLink={generateURL}
+        location={
+          {
+            pathname: "/MAAS/r/tags",
+          } as Location
+        }
+        logout={jest.fn()}
+      />
+    );
+    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    expect(currentMenuItem).toBeInTheDocument();
+    expect(currentMenuItem).toHaveTextContent("Machines");
+  });
+
+  it("highlights machines viewing a tag", () => {
+    render(
+      <Header
+        authUser={{
+          id: 99,
+          is_superuser: true,
+          username: "koala",
+        }}
+        completedIntro={true}
+        generateNewLink={generateURL}
+        location={
+          {
+            pathname: "/MAAS/r/tag/1",
+          } as Location
+        }
+        logout={jest.fn()}
+      />
+    );
+    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    expect(currentMenuItem).toBeInTheDocument();
+    expect(currentMenuItem).toHaveTextContent("Machines");
+  });
+
   it("can highlight a legacy URL", () => {
     render(
       <Header

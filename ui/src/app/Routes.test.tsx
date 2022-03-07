@@ -18,6 +18,7 @@ import poolsURLs from "app/pools/urls";
 import prefsURLs from "app/preferences/urls";
 import settingsURLs from "app/settings/urls";
 import subnetsURLs from "app/subnets/urls";
+import tagsURLs from "app/tags/urls";
 import zonesURLs from "app/zones/urls";
 import { rootState as rootStateFactory } from "testing/factories";
 
@@ -83,7 +84,7 @@ describe("Routes", () => {
       path: machineURLs.machine.index({ id: "abc123" }),
     },
     {
-      component: "Machines",
+      component: "Pools",
       path: poolsURLs.pools,
     },
     {
@@ -109,6 +110,14 @@ describe("Routes", () => {
     {
       component: "Subnets",
       path: subnetsURLs.vlan.index({ id: 1 }),
+    },
+    {
+      component: "Tags",
+      path: tagsURLs.tags.index,
+    },
+    {
+      component: "Tags",
+      path: tagsURLs.tag.index({ id: 1 }),
     },
     {
       component: "NotFound",

@@ -147,7 +147,7 @@ export const Header = ({
 
   const links: NavItem[] = [
     {
-      highlight: ["/machine", "/pool"],
+      highlight: ["/machine", "/pool", "/tag"],
       inHardwareMenu: true,
       label: "Machines",
       url: "/machines",

@@ -1,5 +1,8 @@
 import { Redirect, Route, Switch } from "react-router-dom";
 
+import Pools from "./pools/views/Pools";
+import Tags from "./tags/views/Tags";
+
 import ErrorBoundary from "app/base/components/ErrorBoundary";
 import baseURLs from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
@@ -123,7 +126,7 @@ const Routes = (): JSX.Element => (
       path={poolsURLs.pools}
       render={() => (
         <ErrorBoundary>
-          <Machines />
+          <Pools />
         </ErrorBoundary>
       )}
     />
@@ -131,7 +134,7 @@ const Routes = (): JSX.Element => (
       path={tagURLs.tags.index}
       render={() => (
         <ErrorBoundary>
-          <Machines />
+          <Tags />
         </ErrorBoundary>
       )}
     />
@@ -139,7 +142,7 @@ const Routes = (): JSX.Element => (
       path={tagURLs.tag.index(null, true)}
       render={() => (
         <ErrorBoundary>
-          <Machines />
+          <Tags />
         </ErrorBoundary>
       )}
     />

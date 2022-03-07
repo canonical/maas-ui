@@ -1,4 +1,4 @@
-import PoolForm from "../PoolForm";
+import PoolForm from "app/pools/components/PoolForm";
 
 export const PoolAdd = (): JSX.Element => {
   return <PoolForm />;
