@@ -1,10 +1,10 @@
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
-import KVMActionBar from "../../KVMActionBar";
-
+import ActionBar from "app/base/components/ActionBar";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import type { SetSearchFilter } from "app/base/types";
+import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import { MachineHeaderViews } from "app/machines/constants";
 import machineSelectors from "app/store/machine/selectors";
@@ -35,7 +35,7 @@ const VMsActionBar = ({
   const vmActionsDisabled = selectedMachines.length === 0;
 
   return (
-    <KVMActionBar
+    <ActionBar
       actions={
         <>
           <NodeActionMenu
@@ -96,6 +96,7 @@ const VMsActionBar = ({
       itemCount={vms.length}
       loading={loading}
       onSearchChange={setSearchFilter}
+      pageSize={VMS_PER_PAGE}
       searchFilter={searchFilter}
       setCurrentPage={setCurrentPage}
     />
