@@ -21,21 +21,19 @@ it("renders a segment for each option", () => {
   render(
     <SegmentToggle onSelect={jest.fn()} options={options} selected="#00FF00" />
   );
-  expect(screen.getByRole("button", { name: "Red" })).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Green" })).toBeInTheDocument();
-  expect(screen.getByRole("button", { name: "Blue" })).toBeInTheDocument();
+  expect(screen.getByRole("radio", { name: "Red" })).toBeInTheDocument();
+  expect(screen.getByRole("radio", { name: "Green" })).toBeInTheDocument();
+  expect(screen.getByRole("radio", { name: "Blue" })).toBeInTheDocument();
 });
 
-it("highlights the active option", () => {
+it("selects the active option", () => {
   render(
     <SegmentToggle onSelect={jest.fn()} options={options} selected="#00FF00" />
   );
-  expect(
-    screen
-      .getByRole("button", { name: "Green" })
-      .getAttribute("class")
-      ?.includes("is-active")
-  ).toBe(true);
+  expect(screen.getByRole("radio", { name: "Green" })).toHaveAttribute(
+    "aria-checked",
+    "true"
+  );
 });
 
 it("calls the callback when clicking a button", () => {
@@ -43,6 +41,6 @@ it("calls the callback when clicking a button", () => {
   render(
     <SegmentToggle onSelect={onSelect} options={options} selected="#00FF00" />
   );
-  screen.getByRole("button", { name: "Blue" }).click();
+  screen.getByRole("radio", { name: "Blue" }).click();
   expect(onSelect).toHaveBeenCalledWith("#0000FF");
 });

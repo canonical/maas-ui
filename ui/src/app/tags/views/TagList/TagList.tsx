@@ -6,13 +6,9 @@ import TagListControls from "./TagListControls";
 import TagTable from "./TagTable";
 
 import { useWindowTitle } from "app/base/hooks";
+import { useId } from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
-
-export enum TestId {
-  TagListControls = "TagListControls",
-  TagTable = "TagTable",
-}
 
 const TagList = (): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,13 +17,15 @@ const TagList = (): JSX.Element => {
   const tags = useSelector((state: RootState) =>
     tagSelectors.search(state, searchText, filter)
   );
+  const tableId = useId();
 
   useWindowTitle("Tags");
 
   return (
     <>
       <TagListControls
-        data-testid="TagListControls"
+        aria-label="tag list controls"
+        aria-controls={tableId}
         filter={filter}
         currentPage={currentPage}
         setFilter={setFilter}
@@ -37,9 +35,10 @@ const TagList = (): JSX.Element => {
         tagCount={tags.length}
       />
       <TagTable
-        data-testid="TagTable"
+        aria-label="tags"
         currentPage={currentPage}
         filter={filter}
+        id={tableId}
         searchText={searchText}
         setCurrentPage={setCurrentPage}
         tags={tags}

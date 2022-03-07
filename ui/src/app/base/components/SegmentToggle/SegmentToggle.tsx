@@ -1,5 +1,4 @@
 import { Button } from "@canonical/react-components";
-import classNames from "classnames";
 
 type Segment<V> = {
   title: string;
@@ -16,20 +15,27 @@ const SegmentToggle = <V,>({
   onSelect,
   options,
   selected,
+  ...props
 }: Props<V>): JSX.Element => {
   return (
-    <div className="p-segment-toggle">
-      {options.map(({ title, value }) => (
-        <Button
-          className={classNames("p-segment-toggle__button", {
-            "is-active": value === selected,
-          })}
-          key={title}
-          onClick={() => onSelect(value)}
-        >
-          {title}
-        </Button>
-      ))}
+    <div
+      className="p-tab-buttons p-segment-toggle"
+      role="radiogroup"
+      {...props}
+    >
+      <div className="p-tab-buttons__list">
+        {options.map((button) => (
+          <Button
+            aria-checked={button.value === selected}
+            className="p-tab-buttons__button p-segment-toggle__button"
+            key={button.title}
+            onClick={() => onSelect(button.value)}
+            role="radio"
+          >
+            {button.title}
+          </Button>
+        ))}
+      </div>
     </div>
   );
 };

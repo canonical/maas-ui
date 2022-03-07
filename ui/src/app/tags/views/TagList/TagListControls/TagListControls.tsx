@@ -39,6 +39,7 @@ const TagListControls = ({
       {...actionBarProps}
       actions={
         <SegmentToggle
+          aria-label="tag filter"
           options={[
             {
               title: Label.All,

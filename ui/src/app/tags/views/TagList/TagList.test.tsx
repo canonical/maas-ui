@@ -3,7 +3,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import TagList, { TestId } from "./TagList";
+import TagList from "./TagList";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -39,6 +39,6 @@ it("renders", () => {
       </MemoryRouter>
     </Provider>
   );
-  expect(screen.getByTestId(TestId.TagListControls)).toBeInTheDocument();
-  expect(screen.getByTestId(TestId.TagTable)).toBeInTheDocument();
+  expect(screen.getByLabelText("tag list controls")).toBeInTheDocument();
+  expect(screen.getByRole("grid", { name: "tags" })).toBeInTheDocument();
 });

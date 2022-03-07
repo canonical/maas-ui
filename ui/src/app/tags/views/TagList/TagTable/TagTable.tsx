@@ -1,6 +1,10 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
+import type {
+  MainTableProps,
+  PropsWithSpread,
+} from "@canonical/react-components";
 import { Icon, MainTable, Strip, Tooltip } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
@@ -21,13 +25,16 @@ import type { Tag } from "app/store/tag/types";
 import tagURLs from "app/tags/urls";
 import { breakLines, isComparable, unindentString } from "app/utils";
 
-type Props = {
-  currentPage: number;
-  filter: TagSearchFilter;
-  searchText: string;
-  setCurrentPage: (page: number) => void;
-  tags: Tag[];
-};
+type Props = PropsWithSpread<
+  {
+    currentPage: number;
+    filter: TagSearchFilter;
+    searchText: string;
+    setCurrentPage: (page: number) => void;
+    tags: Tag[];
+  },
+  MainTableProps
+>;
 
 export enum Label {
   Actions = "Actions",
