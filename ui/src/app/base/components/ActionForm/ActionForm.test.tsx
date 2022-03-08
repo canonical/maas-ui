@@ -53,6 +53,25 @@ describe("ActionForm", () => {
     expect(wrapper.find("ActionButton").text()).toBe("Process machine");
   });
 
+  it("can override the submit label", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ActionForm
+          actionName="action"
+          initialValues={{}}
+          modelName="machine"
+          onSubmit={jest.fn()}
+          processingCount={0}
+          selectedCount={1}
+          submitLabel="Special save"
+        />
+      </Provider>
+    );
+
+    expect(wrapper.find("ActionButton").text()).toBe("Special save");
+  });
+
   it("can show the correct saving state", () => {
     const store = mockStore(state);
     const wrapper = mount(

@@ -1,0 +1,70 @@
+@mixin move-border-top {
+  @include pseudo-border(top);
+  padding-top: $spv-inner--small;
+  margin-top: $spv-inner--large;
+
+  &::after {
+    // Remove the left border.
+    display: none;
+  }
+}
+
+@mixin TagForm {
+  .tag-form {
+    @extend %base-grid;
+    border-bottom: 1px solid $color-mid-light;
+    padding-bottom: $spv-inner--large;
+    grid:
+      [row1-start] "search changes details" min-content [row1-end]
+      / minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
+
+    .tag-form__search {
+      grid-area: search;
+
+      &::after {
+        top: $spv-inner--small;
+      }
+    }
+
+    .tag-form__changes {
+      @include pseudo-border(left);
+      grid-area: changes;
+
+      &::after {
+        top: $spv-inner--small;
+      }
+    }
+
+    .tag-form__details {
+      @include pseudo-border(left);
+      grid-area: details;
+
+      &::after {
+        top: $spv-inner--small;
+      }
+    }
+
+    @media only screen and (max-width: $breakpoint-large) {
+      grid:
+        [row1-start] "search changes" min-content [row1-end]
+        [row2-start] "details details" min-content [row2-end]
+        / minmax(0, 1fr) minmax(0, 1fr);
+
+      .tag-form__details {
+        @include move-border-top;
+      }
+    }
+
+    @media only screen and (max-width: $breakpoint-medium) {
+      grid:
+        [row1-start] "search" min-content [row1-end]
+        [row2-start] "changes" min-content [row2-end]
+        [row3-start] "details" min-content [row3-end]
+        / minmax(0, 1fr);
+
+      .tag-form__changes {
+        @include move-border-top;
+      }
+    }
+  }
+}

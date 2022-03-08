@@ -81,6 +81,7 @@ export const TagForm = ({
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
+      submitLabel="Save"
       selectedCount={machines.length}
       validationSchema={TagFormSchema}
     >
