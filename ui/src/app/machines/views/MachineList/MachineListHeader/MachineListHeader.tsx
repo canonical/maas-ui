@@ -1,15 +1,13 @@
 import { useEffect } from "react";
 
-import { Button } from "@canonical/react-components";
-import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 
 import AddHardwareMenu from "./AddHardwareMenu";
 
 import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
-import SectionHeader from "app/base/components/SectionHeader";
+import MachinesHeader from "app/base/components/node/MachinesHeader";
 import type { SetSearchFilter } from "app/base/types";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
@@ -19,14 +17,8 @@ import type {
 } from "app/machines/types";
 import machineURLs from "app/machines/urls";
 import { getHeaderTitle } from "app/machines/utils";
-import poolsURLs from "app/pools/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import { actions as resourcePoolActions } from "app/store/resourcepool";
-import resourcePoolSelectors from "app/store/resourcepool/selectors";
-import { actions as tagActions } from "app/store/tag";
-import tagSelectors from "app/store/tag/selectors";
-import tagURLs from "app/tags/urls";
 
 type Props = {
   headerContent: MachineHeaderContent | null;
@@ -43,14 +35,10 @@ export const MachineListHeader = ({
   const location = useLocation();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
-  const resourcePools = useSelector(resourcePoolSelectors.all);
   const selectedMachines = useSelector(machineSelectors.selected);
-  const tags = useSelector(tagSelectors.all);
 
   useEffect(() => {
     dispatch(machineActions.fetch());
-    dispatch(resourcePoolActions.fetch());
-    dispatch(tagActions.fetch());
   }, [dispatch]);
 
   useEffect(() => {
@@ -59,9 +47,9 @@ export const MachineListHeader = ({
     }
   }, [location.pathname, setHeaderContent]);
 
-  const getHeaderButtons = () => {
-    if (location.pathname === machineURLs.machines.index) {
-      return [
+  return (
+    <MachinesHeader
+      buttons={[
         <AddHardwareMenu
           disabled={selectedMachines.length > 0}
           key="add-hardware"
@@ -81,21 +69,7 @@ export const MachineListHeader = ({
             }
           }}
         />,
-      ];
-    }
-    if (location.pathname === poolsURLs.pools) {
-      return [
-        <Button data-testid="add-pool" element={Link} to={poolsURLs.add}>
-          Add pool
-        </Button>,
-      ];
-    }
-    return null;
-  };
-
-  return (
-    <SectionHeader
-      buttons={getHeaderButtons()}
+      ]}
       headerContent={
         headerContent && (
           <MachineHeaderForms
@@ -106,6 +80,7 @@ export const MachineListHeader = ({
           />
         )
       }
+      subtitleLoading={!machinesLoaded}
       subtitle={
         <ModelListSubtitle
           available={machines.length}
@@ -114,29 +89,6 @@ export const MachineListHeader = ({
           selected={selectedMachines.length}
         />
       }
-      subtitleLoading={!machinesLoaded}
-      tabLinks={[
-        {
-          active: location.pathname.startsWith(machineURLs.machines.index),
-          component: Link,
-          label: `${pluralize("Machine", machines.length, true)}`,
-          to: machineURLs.machines.index,
-        },
-        {
-          active: location.pathname.startsWith(poolsURLs.pools),
-          component: Link,
-          label: `${pluralize("Resource pool", resourcePools.length, true)}`,
-          to: poolsURLs.pools,
-        },
-        {
-          active:
-            location.pathname.startsWith(tagURLs.tags.index) ||
-            location.pathname.startsWith(tagURLs.tag.base),
-          component: Link,
-          label: `${pluralize("Tag", tags.length, true)}`,
-          to: tagURLs.tags.index,
-        },
-      ]}
       title={getHeaderTitle("Machines", headerContent)}
     />
   );
