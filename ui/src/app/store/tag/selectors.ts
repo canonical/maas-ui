@@ -38,9 +38,48 @@ const getByIDs = createSelector(
   }
 );
 
+export enum TagSearchFilter {
+  All = "all",
+  Manual = "manual",
+  Auto = "auto",
+}
+
+/**
+ * Get machines that match search terms and filters.
+ * @param state - The redux state.
+ * @param terms - The terms to match against.
+ * @param filter - A .
+ * @returns A filtered list of machines.
+ */
+const search = createSelector(
+  [
+    defaultSelectors.all,
+    (
+      _state: RootState,
+      terms: string | null | undefined,
+      filter: TagSearchFilter | null | undefined
+    ) => ({
+      terms,
+      filter,
+    }),
+  ],
+  (tags: Tag[], { terms, filter }) => {
+    if (filter && filter !== TagSearchFilter.All) {
+      tags = tags.filter(({ definition }) =>
+        filter === TagSearchFilter.Auto ? !!definition : !definition
+      );
+    }
+    if (terms) {
+      tags = tags.filter((tag) => searchFunction(tag, terms));
+    }
+    return tags;
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   getByIDs,
+  search,
 };
 
 export default selectors;

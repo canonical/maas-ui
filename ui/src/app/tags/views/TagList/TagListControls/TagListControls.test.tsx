@@ -3,9 +3,10 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import TagList from "./TagList";
+import TagListControls, { Label } from "./TagListControls";
 
 import type { RootState } from "app/store/root/types";
+import { TagSearchFilter } from "app/store/tag/selectors";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -30,15 +31,24 @@ beforeEach(() => {
   });
 });
 
-it("renders", () => {
+it("can update the filter", () => {
+  const setFilter = jest.fn();
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagList />
+        <TagListControls
+          filter={TagSearchFilter.All}
+          setFilter={setFilter}
+          searchText={""}
+          setSearchText={jest.fn()}
+          currentPage={0}
+          setCurrentPage={jest.fn()}
+          tagCount={0}
+        />
       </MemoryRouter>
     </Provider>
   );
-  expect(screen.getByLabelText("tag list controls")).toBeInTheDocument();
-  expect(screen.getByRole("grid", { name: "tags" })).toBeInTheDocument();
+  screen.getByRole("radio", { name: Label.Manual }).click();
+  expect(setFilter).toHaveBeenCalledWith(TagSearchFilter.Manual);
 });

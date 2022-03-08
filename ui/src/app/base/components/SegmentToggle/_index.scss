@@ -1,0 +1,5 @@
+@mixin SegmentToggle {
+  .p-segment-toggle__button[aria-checked="true"] {
+    background-color: $colors--light-theme--background-active;
+  }
+}
