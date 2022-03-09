@@ -33,8 +33,7 @@ test("getTableData returns grouped fabrics in a correct format", () => {
   const spaces = [spaceFactory()];
 
   expect(
-    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[0]?.columns
-      .fabric
+    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[0]?.fabric
   ).toStrictEqual({
     href: "/fabric/1",
     isVisuallyHidden: false,
@@ -42,8 +41,7 @@ test("getTableData returns grouped fabrics in a correct format", () => {
   });
 
   expect(
-    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[1]?.columns
-      .fabric
+    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[1]?.fabric
   ).toStrictEqual({
     href: "/fabric/1",
     isVisuallyHidden: true,
@@ -51,8 +49,7 @@ test("getTableData returns grouped fabrics in a correct format", () => {
   });
 
   expect(
-    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[2]?.columns
-      .fabric
+    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[2]?.fabric
   ).toStrictEqual({
     href: "/fabric/2",
     isVisuallyHidden: false,

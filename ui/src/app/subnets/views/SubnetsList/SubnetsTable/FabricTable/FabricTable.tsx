@@ -1,101 +1,64 @@
-import { memo } from "react";
+import { useMemo } from "react";
 
-import { Table, TableRow } from "@canonical/react-components";
+import { CellContents } from "../components";
 
-import { getRowPropsAreEqual } from "../utils";
-
-import {
-  TableHeader,
-  TableCell,
-} from "app/subnets/views/SubnetsList/SubnetsTable/components";
+import ModularTable from "app/base/components/ModularTable";
 import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
 
-export const FabricRow = memo(
-  ({ columns }: SubnetsTableRow): JSX.Element => (
-    <TableRow aria-label={columns.fabric.label || undefined}>
-      <TableCell
-        role="rowheader"
-        className="subnets-table__cell--fabric"
-        aria-label="Fabric"
-        cellData={columns.fabric}
-      >
-        {columns.fabric.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--vlan"
-        aria-label="VLAN"
-        cellData={columns.vlan}
-      >
-        {columns.vlan.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--dhcp"
-        aria-label="DHCP"
-        cellData={columns.dhcp}
-      >
-        {columns.dhcp.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--subnet"
-        aria-label="Subnet"
-        cellData={columns.subnet}
-      >
-        {columns.subnet.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--ips"
-        aria-label="IPs"
-        cellData={columns.ips}
-      >
-        {columns.ips.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--space u-align--right"
-        aria-label="Space"
-        cellData={columns.space}
-      >
-        {columns.space.label}
-      </TableCell>
-    </TableRow>
-  ),
-  getRowPropsAreEqual
-);
-
-const FabricTable = ({ rows }: { rows: SubnetsTableRow[] }): JSX.Element => {
+const FabricTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
   return (
-    <Table role="table" className="subnets-table" aria-label="Subnets">
-      <thead>
-        <tr>
-          <TableHeader label="Fabric" className="subnets-table__cell--fabric" />
-          <TableHeader label="VLAN" className="subnets-table__cell--vlan" />
-          <TableHeader label="DHCP" className="subnets-table__cell--dhcp" />
-          <TableHeader label="Subnet" className="subnets-table__cell--subnet" />
-          <TableHeader
-            label="Available IPs"
-            className="subnets-table__cell--ips"
-          />
-          <TableHeader
-            label="Space"
-            className="subnets-table__cell--space u-align--right"
-          />
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, i) => {
-          return (
-            <FabricRow
-              key={`${row.sortData?.fabricId}-${row.sortData?.vlanId}-${i}`}
-              {...row}
-            />
-          );
-        })}
-      </tbody>
-    </Table>
+    <ModularTable<SubnetsTableRow>
+      emptyMsg="Loading..."
+      getTableProps={(tableProps) => ({
+        ...tableProps,
+        className: "subnets-table",
+      })}
+      getCellProps={({ value, column }) => ({
+        className: `subnets-table__cell--${column.id}${
+          value.isVisuallyHidden ? " u-no-border--top" : ""
+        }`,
+      })}
+      getHeaderProps={(header) => ({
+        className: `subnets-table__cell--${header.id}`,
+      })}
+      columns={useMemo(
+        () => [
+          {
+            Header: "Fabric",
+            accessor: "fabric",
+            Cell: CellContents,
+          },
+          {
+            Header: "VLAN",
+            accessor: "vlan",
+            Cell: CellContents,
+          },
+          {
+            Header: "DHCP",
+            accessor: "dhcp",
+            Cell: CellContents,
+          },
+          {
+            Header: "Subnet",
+            accessor: "subnet",
+            Cell: CellContents,
+          },
+          {
+            Header: "Available IPs",
+            accessor: "ips",
+            Cell: CellContents,
+          },
+          {
+            Header: "Space",
+            accessor: "space",
+            className: "u-align--right",
+            Cell: CellContents,
+          },
+        ],
+        []
+      )}
+      data={useMemo(() => data, [data])}
+    />
   );
 };
 

@@ -31,29 +31,6 @@ import {
 } from "app/subnets/urls";
 import { simpleSortByKey } from "app/utils";
 
-export const getRowPropsAreEqual = (
-  prevProps: SubnetsTableRow,
-  nextProps: SubnetsTableRow
-): boolean => {
-  return (
-    prevProps.columns.fabric.label === nextProps.columns.fabric.label &&
-    prevProps.columns.vlan.label === nextProps.columns.vlan.label &&
-    prevProps.columns.vlan.href === nextProps.columns.vlan.href &&
-    prevProps.columns.dhcp.label === nextProps.columns.dhcp.label &&
-    prevProps.columns.subnet.label === nextProps.columns.subnet.label &&
-    prevProps.columns.subnet.href === nextProps.columns.subnet.href &&
-    prevProps.columns.ips.label === nextProps.columns.ips.label &&
-    prevProps.columns.space.label === nextProps.columns.space.label &&
-    prevProps.columns.space.href === nextProps.columns.space.href &&
-    prevProps.columns.space.isVisuallyHidden ===
-      nextProps.columns.space.isVisuallyHidden &&
-    prevProps.columns.vlan.isVisuallyHidden ===
-      nextProps.columns.vlan.isVisuallyHidden &&
-    prevProps.columns.fabric.isVisuallyHidden ===
-      nextProps.columns.fabric.isVisuallyHidden
-  );
-};
-
 const sortBySortKey =
   (key: keyof SortData, { reverse } = { reverse: false }) =>
   (a: SubnetsTableRow, b: SubnetsTableRow): number => {
@@ -72,12 +49,12 @@ const markRepeatedFabricRows = (rows: SubnetsTableRow[]): SubnetsTableRow[] => {
   rows.forEach((row, index) => {
     const previousRow: SubnetsTableRow = rows[index - 1];
 
-    if (row.columns && index > 0) {
+    if (row && index > 0) {
       if (row.sortData?.fabricId === previousRow?.sortData?.fabricId) {
-        row.columns.fabric = { ...row.columns.fabric, isVisuallyHidden: true };
+        row.fabric = { ...row.fabric, isVisuallyHidden: true };
       }
       if (row.sortData?.vlanId === previousRow?.sortData?.vlanId) {
-        row.columns.vlan = { ...row.columns.vlan, isVisuallyHidden: true };
+        row.vlan = { ...row.vlan, isVisuallyHidden: true };
       }
     }
   });
@@ -89,8 +66,8 @@ const markRepeatedSpaceRows = (rows: SubnetsTableRow[]): SubnetsTableRow[] => {
   rows.forEach((row, index) => {
     const previousRow: SubnetsTableRow = rows[index - 1];
 
-    if (row.columns.space?.label === previousRow?.columns.space?.label) {
-      row.columns.space = { ...row.columns.space, isVisuallyHidden: true };
+    if (row.space?.label === previousRow?.space?.label) {
+      row.space = { ...row.space, isVisuallyHidden: true };
     }
   });
 
@@ -111,22 +88,20 @@ const getRowData = ({
   data?: SubnetsTableData;
 }): SubnetsTableRow => {
   return {
-    columns: {
-      fabric: getColumn(getFabricDisplay(fabric), getFabricLink(fabric?.id)),
-      vlan: getColumn(
-        getVLANDisplay(vlan),
-        vlan?.id ? getVLANLink(vlan?.id) : null
-      ),
-      dhcp: getColumn(
-        data ? getDHCPStatus(vlan, data.vlans, data.fabrics, true) : null
-      ),
-      subnet: getColumn(
-        subnet?.id ? getSubnetDisplay(subnet) : null,
-        subnet?.id ? getSubnetLink(subnet?.id) : null
-      ),
-      ips: getColumn(subnet ? getAvailableIPs(subnet) : null),
-      space: getColumn(getSpaceDisplay(space), getSpaceLink(space?.id)),
-    },
+    fabric: getColumn(getFabricDisplay(fabric), getFabricLink(fabric?.id)),
+    vlan: getColumn(
+      getVLANDisplay(vlan),
+      vlan?.id ? getVLANLink(vlan?.id) : null
+    ),
+    dhcp: getColumn(
+      data ? getDHCPStatus(vlan, data.vlans, data.fabrics, true) : null
+    ),
+    subnet: getColumn(
+      subnet?.id ? getSubnetDisplay(subnet) : null,
+      subnet?.id ? getSubnetLink(subnet?.id) : null
+    ),
+    ips: getColumn(subnet ? getAvailableIPs(subnet) : null),
+    space: getColumn(getSpaceDisplay(space), getSpaceLink(space?.id)),
     sortData: {
       fabricId: fabric?.id || "",
       fabricName: getFabricDisplay(fabric)?.toLowerCase() || "",
