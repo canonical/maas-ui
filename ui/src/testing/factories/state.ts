@@ -460,6 +460,7 @@ export const subnetState = define<SubnetState>({
 
 export const tagState = define<TagState>({
   ...defaultState,
+  errors: null,
 });
 
 export const vlanStatus = define<VLANStatus>(DEFAULT_VLAN_STATUSES);
