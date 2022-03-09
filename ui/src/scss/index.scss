@@ -48,6 +48,7 @@
 @import "./patterns_tables";
 @import "./patterns_tabs";
 @import "./patterns_typography";
+@import "./pseudo-border";
 @import "./utilities";
 @include maas-buttons;
 @include maas-cards;
@@ -207,6 +208,7 @@
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults";
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
+@import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm";
 @import "~app/machines/views/MachineDetails/MachineLogs/DownloadMenu";
 @import "~app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogsTable";
 @import "~app/machines/views/MachineDetails/MachineNetwork/NetworkTable";
@@ -231,6 +233,7 @@
 @include NumaCard;
 @include OverviewCard;
 @include SourceMachineSelect;
+@include TagForm;
 
 // preferences
 @import "~app/preferences/views/APIKeys/APIKeyList";
