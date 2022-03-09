@@ -281,7 +281,7 @@ exports[`NodeName can display the form 1`] = `
               <Input
                 className="node-name__hostname"
                 error={null}
-                id="mock-nanoid-1"
+                id="mock-redux-js-nanoid-1"
                 name="hostname"
                 onBlur={[Function]}
                 onChange={[Function]}
@@ -299,7 +299,7 @@ exports[`NodeName can display the form 1`] = `
                 <Field
                   className="u-nudge-left--small u-no-margin--right"
                   error={null}
-                  forId="mock-nanoid-1"
+                  forId="mock-redux-js-nanoid-1"
                   required={true}
                 >
                   <div
@@ -311,7 +311,7 @@ exports[`NodeName can display the form 1`] = `
                       <input
                         aria-invalid={false}
                         className="p-form-validation__input node-name__hostname"
-                        id="mock-nanoid-1"
+                        id="mock-redux-js-nanoid-1"
                         name="hostname"
                         onBlur={[Function]}
                         onChange={[Function]}

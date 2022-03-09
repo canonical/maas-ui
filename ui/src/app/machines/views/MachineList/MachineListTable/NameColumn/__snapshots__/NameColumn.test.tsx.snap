@@ -70,7 +70,7 @@ exports[`NameColumn renders 1`] = `
               <Input
                 checked={false}
                 className="keep-label-opacity"
-                id="mock-nanoid-1"
+                id="mock-redux-js-nanoid-1"
                 label={
                   <Link
                     title="test.maas"
@@ -94,7 +94,7 @@ exports[`NameColumn renders 1`] = `
               >
                 <Field
                   className="u-no-margin--bottom u-nudge--checkbox"
-                  forId="mock-nanoid-1"
+                  forId="mock-redux-js-nanoid-1"
                   label=""
                   labelClassName="is-inline-label"
                 >
@@ -106,7 +106,7 @@ exports[`NameColumn renders 1`] = `
                     >
                       <CheckboxInput
                         checked={false}
-                        id="mock-nanoid-1"
+                        id="mock-redux-js-nanoid-1"
                         label={
                           <Link
                             title="test.maas"
@@ -127,7 +127,7 @@ exports[`NameColumn renders 1`] = `
                       >
                         <CheckableInput
                           checked={false}
-                          id="mock-nanoid-1"
+                          id="mock-redux-js-nanoid-1"
                           indeterminate={false}
                           inputType="checkbox"
                           label={
@@ -155,7 +155,7 @@ exports[`NameColumn renders 1`] = `
                               aria-labelledby="mock-nanoid-1"
                               checked={false}
                               className="p-checkbox__input"
-                              id="mock-nanoid-1"
+                              id="mock-redux-js-nanoid-1"
                               onChange={[Function]}
                               type="checkbox"
                             />

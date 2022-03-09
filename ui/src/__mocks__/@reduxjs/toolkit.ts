@@ -10,7 +10,7 @@ module.exports = {
     // snapshots include the same ids each time the test is run, but also
     // provides unique ids for each element so that tests that select by label
     // can correctly find the element if aria-labelledby is used.
-    return `mock-nanoid-${id}`;
+    return `mock-redux-js-nanoid-${id}`;
   },
 };
 
