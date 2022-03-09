@@ -41,14 +41,11 @@ export type SortDataKey =
   | "cidr";
 
 export type SubnetsTableRow = {
-  columns: {
-    fabric: SubnetsTableColumn;
-    vlan: SubnetsTableColumn;
-    dhcp: SubnetsTableColumn;
-    subnet: SubnetsTableColumn;
-    ips: SubnetsTableColumn;
-    space: SubnetsTableColumn;
-  };
+  fabric: SubnetsTableColumn;
+  vlan: SubnetsTableColumn;
+  dhcp: SubnetsTableColumn;
+  subnet: SubnetsTableColumn;
+  ips: SubnetsTableColumn;
+  space: SubnetsTableColumn;
   sortData: SortData;
-  children?: React.ReactChildren[];
 };

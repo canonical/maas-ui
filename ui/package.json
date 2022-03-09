@@ -87,6 +87,7 @@
     "@testing-library/react": "12.1.4",
     "@testing-library/react-hooks": "7.0.2",
     "@types/path-parse": "1.0.19",
+    "@types/react-table": "7.7.9",
     "@typescript-eslint/eslint-plugin": "5.15.0",
     "@typescript-eslint/parser": "5.15.0",
     "@welldone-software/why-did-you-render": "6.2.3",

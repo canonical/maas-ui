@@ -16,9 +16,9 @@ const SubnetsTable = ({
       <SubnetsControls groupBy={groupBy} setGroupBy={setGroupBy} />
 
       {groupBy === "fabric" ? (
-        <FabricTable rows={rows} />
+        <FabricTable data={rows} />
       ) : (
-        <SpaceTable rows={rows} />
+        <SpaceTable data={rows} />
       )}
     </>
   );
