@@ -14,14 +14,19 @@ const SpaceTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
       getTableProps={(tableProps) => ({
         ...tableProps,
         className: "subnets-table",
+        "aria-label": "Subnets",
       })}
       getCellProps={({ value, column }) => ({
         className: `subnets-table__cell--${column.id}${
           value.isVisuallyHidden ? " u-no-border--top" : ""
         }`,
+        role: column.id === "space" ? "rowheader" : undefined,
       })}
       getHeaderProps={(header) => ({
         className: `subnets-table__cell--${header.id}`,
+      })}
+      getRowProps={(row) => ({
+        "aria-label": row.values.space.label,
       })}
       columns={useMemo(
         () => [

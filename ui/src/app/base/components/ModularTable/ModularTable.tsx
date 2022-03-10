@@ -11,6 +11,7 @@ import type {
   TablePropGetter,
   Cell,
   UseTableOptions,
+  Row,
 } from "react-table";
 
 export type Props<D extends Record<string, unknown>> = {
@@ -33,7 +34,7 @@ export type Props<D extends Record<string, unknown>> = {
   getTableProps?: TablePropGetter<D>;
   getHeaderProps?: (column: Column<D>) => Record<string, unknown>;
   getColumnProps?: (column: Column<D>) => Record<string, unknown>;
-  getRowProps?: (column: Column<D>) => Record<string, unknown>;
+  getRowProps?: (row: Row<D>) => Record<string, unknown>;
   getCellProps?: (cell: Cell<D>) => Record<string, unknown>;
   getRowId?: UseTableOptions<D>["getRowId"];
 };

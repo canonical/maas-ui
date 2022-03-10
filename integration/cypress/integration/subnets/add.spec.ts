@@ -135,18 +135,11 @@ context("Subnets - Add", () => {
         cy.findByRole("rowheader").within(() =>
           cy.findByText(fabricName).should("not.be.visible")
         );
-        cy.findByRole("column", { name: "VLAN" }).should(
-          "have.text",
-          `${vid} (${vlanName})`
-        );
-        cy.findByRole("column", { name: "Subnet" }).should(
-          "contain.text",
-          subnetName
-        );
-        cy.findByRole("column", { name: "Space" }).should(
-          "have.text",
-          spaceName
-        );
+        cy.findAllByRole("gridcell")
+          .eq(0)
+          .should("have.text", `${vid} (${vlanName})`);
+        cy.findAllByRole("gridcell").eq(2).should("contain.text", subnetName);
+        cy.findAllByRole("gridcell").eq(4).should("have.text", spaceName);
       });
 
     // delete the subnet
