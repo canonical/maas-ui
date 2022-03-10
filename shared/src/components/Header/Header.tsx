@@ -297,7 +297,7 @@ export const Header = ({
                 )}
             </li>
           )}
-          <li className="p-navigation__link" role="presentation">
+          <li className="p-navigation__item" role="presentation">
             {/* eslint-disable-next-line */}
             <a
               href="#"
