@@ -8,13 +8,13 @@ import MachineListHeader from "./MachineListHeader";
 
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { NodeActions } from "app/store/types/node";
 
 const mockStore = configureStore();
 
