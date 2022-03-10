@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+import { useStorageState } from "react-storage-hooks";
 
 import AddHardwareMenu from "./AddHardwareMenu";
 
@@ -19,6 +20,8 @@ import machineURLs from "app/machines/urls";
 import { getHeaderTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { NodeActions } from "app/store/types/node";
+import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
   headerContent: MachineHeaderContent | null;
@@ -36,6 +39,11 @@ export const MachineListHeader = ({
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const selectedMachines = useSelector(machineSelectors.selected);
+  const [tagsSeen, setTagsSeen] = useStorageState(
+    localStorage,
+    "machineViewTagsSeen",
+    false
+  );
 
   useEffect(() => {
     dispatch(machineActions.fetch());
@@ -47,6 +55,24 @@ export const MachineListHeader = ({
     }
   }, [location.pathname, setHeaderContent]);
 
+  const getTitle = useCallback(
+    (action: NodeActions) => {
+      if (action === NodeActions.TAG) {
+        const title = getNodeActionTitle(action);
+        if (!tagsSeen) {
+          return (
+            <>
+              {title} <i className="p-text--small">(NEW)</i>
+            </>
+          );
+        }
+        return title;
+      }
+      return null;
+    },
+    [tagsSeen]
+  );
+
   return (
     <MachinesHeader
       buttons={[
@@ -57,10 +83,14 @@ export const MachineListHeader = ({
         />,
         <NodeActionMenu
           alwaysShowLifecycle
+          getTitle={getTitle}
           key="machine-list-action-menu"
           nodeDisplay="machine"
           nodes={selectedMachines}
           onActionClick={(action) => {
+            if (action === NodeActions.TAG && !tagsSeen) {
+              setTagsSeen(true);
+            }
             const view = Object.values(MachineHeaderViews).find(
               ([, actionName]) => actionName === action
             );

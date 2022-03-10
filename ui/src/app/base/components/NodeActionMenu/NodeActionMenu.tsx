@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import type {
   ButtonAppearance,
   ButtonProps,
@@ -21,6 +23,7 @@ type Props = {
   alwaysShowLifecycle?: boolean;
   disabledTooltipPosition?: "left" | "top-left";
   excludeActions?: NodeActions[];
+  getTitle?: (action: NodeActions) => ReactNode | null;
   menuPosition?: "left" | "right";
   nodeDisplay?: string;
   nodes: Node[];
@@ -76,7 +79,8 @@ const getTakeActionLinks = (
   nodes: Node[],
   onActionClick: (action: NodeActions) => void,
   excludeActions: NodeActions[],
-  alwaysShowLifecycle: boolean
+  alwaysShowLifecycle: boolean,
+  getTitle?: Props["getTitle"]
 ) => {
   return actionGroups.reduce<ActionLink[][]>((links, group) => {
     const groupLinks = group.actions.reduce<ActionLink[]>(
@@ -95,7 +99,10 @@ const getTakeActionLinks = (
           groupLinks.push({
             children: (
               <div className="u-flex--between">
-                <span>{getNodeActionTitle(action)}...</span>
+                <span>
+                  {getTitle?.(action) ?? getNodeActionTitle(action)}
+                  ...
+                </span>
                 {nodes.length > 1 && (
                   <span
                     className="u-nudge-right--small"
@@ -127,6 +134,7 @@ export const NodeActionMenu = ({
   alwaysShowLifecycle = false,
   disabledTooltipPosition = "left",
   excludeActions = [],
+  getTitle,
   menuPosition = "right",
   nodeDisplay = "node",
   nodes,
@@ -150,7 +158,8 @@ export const NodeActionMenu = ({
           nodes,
           onActionClick,
           excludeActions,
-          alwaysShowLifecycle
+          alwaysShowLifecycle,
+          getTitle
         )}
         position={menuPosition}
         toggleAppearance={toggleAppearance}
