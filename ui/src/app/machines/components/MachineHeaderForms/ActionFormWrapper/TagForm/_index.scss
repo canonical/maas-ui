@@ -1,7 +1,7 @@
 @mixin move-border-top {
   @include pseudo-border(top);
-  padding-top: $spv-inner--small;
-  margin-top: $spv-inner--large;
+  padding-top: $spv--small;
+  margin-top: $spv--large;
 
   &::after {
     // Remove the left border.
@@ -13,7 +13,7 @@
   .tag-form {
     @extend %base-grid;
     border-bottom: 1px solid $color-mid-light;
-    padding-bottom: $spv-inner--large;
+    padding-bottom: $spv--large;
     grid:
       [row1-start] "search changes details" min-content [row1-end]
       / minmax(0, 1fr) minmax(0, 1fr) minmax(0, 2fr);
@@ -22,7 +22,7 @@
       grid-area: search;
 
       &::after {
-        top: $spv-inner--small;
+        top: $spv--small;
       }
     }
 
@@ -31,7 +31,7 @@
       grid-area: changes;
 
       &::after {
-        top: $spv-inner--small;
+        top: $spv--small;
       }
     }
 
@@ -40,7 +40,7 @@
       grid-area: details;
 
       &::after {
-        top: $spv-inner--small;
+        top: $spv--small;
       }
     }
 
@@ -55,7 +55,7 @@
       }
     }
 
-    @media only screen and (max-width: $breakpoint-medium) {
+    @media only screen and (max-width: $breakpoint-small) {
       grid:
         [row1-start] "search" min-content [row1-end]
         [row2-start] "changes" min-content [row2-end]
