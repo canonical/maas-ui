@@ -2,6 +2,7 @@
 
 import "cypress-axe";
 import "cypress-wait-until";
+import "@percy/cypress";
 import "./commands";
 
 export type A11yPageContext = { url?: string; title?: string };
