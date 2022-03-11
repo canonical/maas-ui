@@ -28,19 +28,8 @@ pages.forEach(({ heading, url }: Page) => {
 
     cy.visit(pageUrl);
 
-    cy.waitUntil(
-      // using `Cypress.$` instead of `cy.get` to prevent test failure
-      // - `cy.get` itself is an assertion and would throw an error when element is not found
-      // https://github.com/NoriSte/cypress-wait-until/issues/75#issuecomment-572685623
-      () => Cypress.$("[data-testid='section-header-title-spinner']").length
-    );
-
+    cy.waitForPageToLoad();
     cy.get("[data-testid='section-header-title']").contains(heading);
-
-    cy.waitUntil(
-      () =>
-        Cypress.$("[data-testid='section-header-subtitle-spinner']").length < 1
-    );
 
     cy.testA11y({ url, title: heading });
   });
