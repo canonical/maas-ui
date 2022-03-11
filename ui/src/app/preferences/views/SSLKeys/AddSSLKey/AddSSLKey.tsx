@@ -57,7 +57,7 @@ export const AddSSLKey = (): JSX.Element => {
         <Row>
           <Col size={5}>
             <FormikField
-              className="ssl-key-form-fields__key"
+              className="ssl-key-form-fields__key p-text--code"
               component={ProxyTextarea}
               name="key"
               label="SSL key"

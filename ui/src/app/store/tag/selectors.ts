@@ -47,6 +47,22 @@ const getManual = createSelector([defaultSelectors.all], (tags) =>
   tags.filter(({ definition }) => !definition)
 );
 
+/**
+ * Get a tag by its name.
+ * @param state - The redux state.
+ * @param name - The tag's name.
+ * @returns A tag.
+ */
+const getByName = createSelector(
+  [defaultSelectors.all, (_state: RootState, name: Tag["name"] | null) => name],
+  (tags, name) => {
+    if (!name) {
+      return null;
+    }
+    return tags.find((tag) => tag.name === name) ?? null;
+  }
+);
+
 export enum TagSearchFilter {
   All = "all",
   Manual = "manual",
@@ -87,6 +103,7 @@ const search = createSelector(
 
 const selectors = {
   ...defaultSelectors,
+  getByName,
   getByIDs,
   getManual,
   search,

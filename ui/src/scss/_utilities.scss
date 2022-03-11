@@ -191,4 +191,8 @@
     white-space: nowrap;
     width: 1px;
   }
+
+  .p-text--code {
+    font-family: unquote($font-monospace);
+  }
 }

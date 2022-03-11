@@ -22,7 +22,26 @@ it("can display the add tag form", () => {
       </MemoryRouter>
     </Provider>
   );
-  // TODO: Test for the form when it is implemented in:
-  // https://github.com/canonical-web-and-design/app-tribe/issues/690
-  expect(screen.getByText("Add tag form")).toBeInTheDocument();
+  expect(screen.getByRole("form", { name: "Create tag" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { name: "Create new tag" })
+  ).toBeInTheDocument();
+  expect(screen.getByTestId("section-header-title").textContent).toBe(
+    "Create new tag"
+  );
+});
+
+it("displays the default title", () => {
+  const store = mockStore(rootStateFactory());
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <TagsHeader headerContent={null} setHeaderContent={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(screen.getByRole("heading", { name: "Machines" })).toBeInTheDocument();
+  expect(screen.getByTestId("section-header-title").textContent).toBe(
+    "Machines"
+  );
 });

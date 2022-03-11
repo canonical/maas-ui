@@ -79,6 +79,28 @@ describe("tag selectors", () => {
     });
   });
 
+  describe("getByName", () => {
+    const tags = [
+      tagFactory({ name: "tag1" }),
+      tagFactory({ name: "tag2" }),
+      tagFactory({ name: "tag3" }),
+    ];
+
+    it("handles the null case", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.getByName(state, null)).toBe(null);
+    });
+
+    it("returns a list of tags given their IDs", () => {
+      const state = rootStateFactory({
+        tag: tagStateFactory({ items: tags }),
+      });
+      expect(tag.getByName(state, "tag2")).toStrictEqual(tags[1]);
+    });
+  });
+
   describe("search", () => {
     const tags = [
       tagFactory({ id: 1, definition: undefined, name: "jacket" }),
