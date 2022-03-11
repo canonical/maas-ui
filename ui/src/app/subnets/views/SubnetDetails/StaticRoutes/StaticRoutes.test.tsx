@@ -50,20 +50,20 @@ it("renders for a subnet", () => {
     </Provider>
   );
   expect(
-    screen.queryAllByRole("gridcell", {
+    screen.getAllByRole("gridcell", {
       name: Labels.GatewayIp,
     })
   ).toHaveLength(2);
   expect(
     screen
-      .queryAllByRole("gridcell", {
+      .getAllByRole("gridcell", {
         name: Labels.GatewayIp,
       })
       .find((td) => td.textContent === "11.1.1.1")
   ).toBeInTheDocument();
   expect(
     screen
-      .queryAllByRole("gridcell", {
+      .getAllByRole("gridcell", {
         name: Labels.GatewayIp,
       })
       .find((td) => td.textContent === "11.1.1.2")
@@ -95,18 +95,25 @@ it("can open and close the add static route form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  await screen.findByRole("button", {
-    name: AddStaticRouteFormLabels.AddStaticRoute,
-  });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", {
+        name: AddStaticRouteFormLabels.AddStaticRoute,
+      })
+    ).toBeInTheDocument()
+  );
   userEvent.click(
     screen.getByRole("button", {
       name: AddStaticRouteFormLabels.AddStaticRoute,
     })
   );
-
-  await screen.findByRole("form", {
-    name: AddStaticRouteFormLabels.AddStaticRoute,
-  });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("form", {
+        name: AddStaticRouteFormLabels.AddStaticRoute,
+      })
+    )
+  );
 
   userEvent.click(
     within(
@@ -156,9 +163,13 @@ it("can open and close the edit static route form", async () => {
     })
   );
 
-  await screen.findByRole("form", {
-    name: EditStaticRouteFormLabels.EditStaticRoute,
-  });
+  await waitFor(() =>
+    expect(
+      screen.getByRole("form", {
+        name: EditStaticRouteFormLabels.EditStaticRoute,
+      })
+    ).toBeInTheDocument()
+  );
 
   userEvent.click(
     within(

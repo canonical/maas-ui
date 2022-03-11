@@ -24,7 +24,7 @@ it("shows a spinner subtitle if the subnet is loading details", () => {
   render(<SubnetDetailsHeader subnet={subnet} />);
 
   expect(
-    screen.queryByTestId("section-header-subtitle-spinner")
+    screen.getByTestId("section-header-subtitle-spinner")
   ).toBeInTheDocument();
 });
 

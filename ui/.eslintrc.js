@@ -112,10 +112,8 @@ module.exports = {
       files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
       extends: ["plugin:testing-library/react"],
       rules: {
-        "testing-library/prefer-find-by": "warn",
-        "testing-library/prefer-presence-queries": "warn",
-        "testing-library/no-node-access": "warn",
-        "testing-library/no-wait-for-side-effects": "warn",
+        "testing-library/prefer-find-by": "off",
+        "testing-library/prefer-explicit-assert": "error",
       },
     },
   ],

@@ -136,7 +136,7 @@ describe("ReservedRangeForm", () => {
       screen.getByRole("textbox", { name: Labels.Comment }),
       "reserved"
     );
-    await waitFor(() => fireEvent.submit(screen.getByRole("form")));
+    fireEvent.submit(screen.getByRole("form"));
     const expected = ipRangeActions.create({
       comment: "reserved",
       end_ip: "1.1.1.2",
@@ -144,9 +144,11 @@ describe("ReservedRangeForm", () => {
       subnet: 1,
       type: IPRangeType.Reserved,
     });
-    expect(
-      store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected);
+    await waitFor(() =>
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected)
+    );
   });
 
   it("dispatches an action to update a reserved range", async () => {
@@ -160,16 +162,18 @@ describe("ReservedRangeForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    await waitFor(() => fireEvent.submit(screen.getByRole("form")));
+    fireEvent.submit(screen.getByRole("form"));
     const expected = ipRangeActions.update({
       comment: ipRange.comment,
       end_ip: ipRange.end_ip,
       id: ipRange.id,
       start_ip: ipRange.start_ip,
     });
-    expect(
-      store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected);
+    await waitFor(() =>
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected)
+    );
   });
 
   it("resets the comment when updating a dynamic range", async () => {
@@ -185,17 +189,21 @@ describe("ReservedRangeForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    await waitFor(() => fireEvent.submit(screen.getByRole("form")));
+    fireEvent.submit(screen.getByRole("form"));
     const expected = ipRangeActions.update({
       comment: ipRange.comment,
       end_ip: ipRange.end_ip,
       id: ipRange.id,
       start_ip: ipRange.start_ip,
     });
-    const actual = store
-      .getActions()
-      .find((action) => action.type === expected.type);
-    expect(actual.payload.params.comment).toBe(expected.payload.params.comment);
+    await waitFor(() => {
+      const actual = store
+        .getActions()
+        .find((action) => action.type === expected.type);
+      expect(actual.payload.params.comment).toBe(
+        expected.payload.params.comment
+      );
+    });
   });
 
   it("does not display the Comment field when creating a dynamic range", async () => {

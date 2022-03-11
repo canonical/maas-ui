@@ -33,7 +33,9 @@ it("displays validation messages for VID", async () => {
   userEvent.type(VidTextBox, "abc");
   userEvent.click(submitButton);
 
-  await screen.findByText(errorMessage);
+  await waitFor(() =>
+    expect(screen.getByText(errorMessage)).toBeInTheDocument()
+  );
 
   userEvent.clear(VidTextBox);
   userEvent.type(VidTextBox, "123");
@@ -45,7 +47,9 @@ it("displays validation messages for VID", async () => {
   userEvent.clear(VidTextBox);
   userEvent.type(VidTextBox, "99999");
 
-  await screen.findByText(errorMessage);
+  await waitFor(() =>
+    expect(screen.getByText(errorMessage)).toBeInTheDocument()
+  );
 });
 
 it("correctly dispatches VLAN create action on form submit", async () => {

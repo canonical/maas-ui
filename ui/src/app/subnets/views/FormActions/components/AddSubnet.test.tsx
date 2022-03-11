@@ -57,7 +57,9 @@ it("correctly dispatches space create action on form submit", async () => {
   userEvent.type(screen.getByRole("textbox", { name: /CIDR/ }), cidr);
   userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
 
-  await screen.findByRole("combobox", { name: "VLAN" });
+  await waitFor(() =>
+    expect(screen.getByRole("combobox", { name: "VLAN" })).toBeInTheDocument()
+  );
   userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Fabric" }),
     fabric.name

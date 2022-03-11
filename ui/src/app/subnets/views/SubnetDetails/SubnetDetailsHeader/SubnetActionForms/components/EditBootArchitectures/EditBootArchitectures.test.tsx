@@ -103,14 +103,12 @@ it("can update the arches to disable", async () => {
   );
   const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
 
-  await waitFor(() => {
-    fireEvent.click(within(nameCells[0]).getByRole("checkbox"));
-  });
-  await waitFor(() => {
-    fireEvent.click(within(nameCells[1]).getByRole("checkbox"));
-  });
+  fireEvent.click(within(nameCells[0]).getByRole("checkbox"));
+  fireEvent.click(within(nameCells[1]).getByRole("checkbox"));
 
-  expect(within(nameCells[0]).getByRole("checkbox")).toBeChecked();
+  await waitFor(() =>
+    expect(within(nameCells[0]).getByRole("checkbox")).toBeChecked()
+  );
   expect(within(nameCells[1]).getByRole("checkbox")).not.toBeChecked();
 });
 
@@ -141,22 +139,20 @@ it("can dispatch an action to update subnet's disabled boot architectures", asyn
   );
   const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
 
-  await waitFor(() => {
-    fireEvent.click(within(nameCells[0]).getByRole("checkbox"));
-  });
-  await waitFor(() => {
-    fireEvent.click(within(nameCells[1]).getByRole("checkbox"));
-  });
-  await waitFor(() => {
-    fireEvent.click(screen.getByRole("button", { name: "Save" }));
-  });
+  fireEvent.click(within(nameCells[0]).getByRole("checkbox"));
+  fireEvent.click(within(nameCells[1]).getByRole("checkbox"));
+
+  fireEvent.click(screen.getByRole("button", { name: "Save" }));
 
   const expectedAction = subnetActions.update({
     id: subnet.id,
     disabled_boot_architectures: "arch1, arch2",
   });
-  const actualActions = store.getActions();
-  expect(
-    actualActions.find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+
+  await waitFor(() => {
+    const actualActions = store.getActions();
+    expect(
+      actualActions.find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
 });

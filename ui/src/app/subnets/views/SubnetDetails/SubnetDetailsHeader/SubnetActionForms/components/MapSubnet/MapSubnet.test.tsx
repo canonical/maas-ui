@@ -62,13 +62,14 @@ it("can map an IPv4 subnet", async () => {
     </Provider>
   );
 
-  await waitFor(() => {
-    fireEvent.click(screen.getByRole("button", { name: "Map subnet" }));
-  });
+  fireEvent.click(screen.getByRole("button", { name: "Map subnet" }));
 
-  const expectedAction = subnetActions.scan(subnet.id);
-  const actualActions = store.getActions();
-  expect(
-    actualActions.find((action) => action.type === expectedAction.type)
-  ).toStrictEqual(expectedAction);
+  await waitFor(() => {
+    const expectedAction = subnetActions.scan(subnet.id);
+    const actualActions = store.getActions();
+
+    expect(
+      actualActions.find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
 });

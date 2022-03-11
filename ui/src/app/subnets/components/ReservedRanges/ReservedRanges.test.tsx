@@ -75,14 +75,14 @@ it("renders for a subnet", () => {
   ).toHaveLength(2);
   expect(
     screen
-      .queryAllByRole("gridcell", {
+      .getAllByRole("gridcell", {
         name: Labels.StartIP,
       })
       .find((td) => td.textContent === "11.1.1.1")
   ).toBeInTheDocument();
   expect(
     screen
-      .queryAllByRole("gridcell", {
+      .getAllByRole("gridcell", {
         name: Labels.StartIP,
       })
       .find((td) => td.textContent === "11.1.1.2")
@@ -112,14 +112,14 @@ it("renders for a vlan", () => {
   ).toHaveLength(2);
   expect(
     screen
-      .queryAllByRole("gridcell", {
+      .getAllByRole("gridcell", {
         name: Labels.StartIP,
       })
       .find((td) => td.textContent === "11.1.1.1")
   ).toBeInTheDocument();
   expect(
     screen
-      .queryAllByRole("gridcell", {
+      .getAllByRole("gridcell", {
         name: Labels.StartIP,
       })
       .find((td) => td.textContent === "11.1.1.2")
@@ -236,12 +236,13 @@ it("displays an edit form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  await waitFor(() => {
-    fireEvent.click(screen.getByRole("button", { name: "Edit" }));
-  });
-  expect(
-    screen.getByRole("form", { name: ReservedRangeFormLabels.EditRange })
-  ).toBeInTheDocument();
+  fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+
+  await waitFor(() =>
+    expect(
+      screen.getByRole("form", { name: ReservedRangeFormLabels.EditRange })
+    ).toBeInTheDocument()
+  );
 });
 
 it("displays confirm delete message", async () => {
@@ -253,14 +254,15 @@ it("displays confirm delete message", async () => {
       </MemoryRouter>
     </Provider>
   );
+  fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+
   await waitFor(() => {
-    fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+    expect(
+      screen.getByText(
+        new RegExp("Are you sure you want to remove this IP range?")
+      )
+    ).toBeInTheDocument();
   });
-  expect(
-    screen.getByText(
-      new RegExp("Are you sure you want to remove this IP range?")
-    )
-  ).toBeInTheDocument();
 });
 
 it("dispatches an action to delete a reserved range", async () => {
@@ -272,15 +274,17 @@ it("dispatches an action to delete a reserved range", async () => {
       </MemoryRouter>
     </Provider>
   );
-  await waitFor(() => {
-    fireEvent.click(screen.getByTestId("table-actions-delete"));
-    fireEvent.click(screen.getByTestId("action-confirm"));
-  });
+  fireEvent.click(screen.getByTestId("table-actions-delete"));
+  fireEvent.click(screen.getByTestId("action-confirm"));
+
   const expectedAction = ipRangeActions.delete(ipRange.id);
-  const actualAction = store
-    .getActions()
-    .find((action) => action.type === expectedAction.type);
-  expect(actualAction).toStrictEqual(expectedAction);
+
+  await waitFor(() => {
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === expectedAction.type);
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
 });
 
 it("displays an add button when it is reserved", () => {
@@ -312,19 +316,20 @@ it("displays an add button when it is dynamic", async () => {
       </MemoryRouter>
     </Provider>
   );
+  fireEvent.click(
+    screen.queryAllByRole("button", {
+      name: Labels.ReserveRange,
+    })[0]
+  );
+  fireEvent.click(screen.getByTestId("reserve-dynamic-range-menu-item"));
+
   await waitFor(() => {
-    fireEvent.click(
-      screen.queryAllByRole("button", {
-        name: Labels.ReserveRange,
-      })[0]
-    );
-    fireEvent.click(screen.getByTestId("reserve-dynamic-range-menu-item"));
+    expect(
+      screen.getByRole("button", {
+        name: Labels.ReserveDynamicRange,
+      })
+    ).toBeInTheDocument();
   });
-  expect(
-    screen.getByRole("button", {
-      name: Labels.ReserveDynamicRange,
-    })
-  ).toBeInTheDocument();
 });
 
 it("disables the add button if there are no subnets in a VLAN", () => {
@@ -352,17 +357,20 @@ it("can display an add form", async () => {
       </MemoryRouter>
     </Provider>
   );
+  fireEvent.click(
+    screen.queryAllByRole("button", {
+      name: Labels.ReserveRange,
+    })[0]
+  );
+  fireEvent.click(screen.getByTestId("reserve-range-menu-item"));
+
   await waitFor(() => {
-    fireEvent.click(
-      screen.queryAllByRole("button", {
-        name: Labels.ReserveRange,
-      })[0]
-    );
-    fireEvent.click(screen.getByTestId("reserve-range-menu-item"));
+    expect(
+      screen.getByRole("form", {
+        name: ReservedRangeFormLabels.CreateRange,
+      })
+    ).toBeInTheDocument();
   });
-  expect(
-    screen.getByRole("form", { name: ReservedRangeFormLabels.CreateRange })
-  ).toBeInTheDocument();
 });
 
 it("displays the subnet column when the table is for a VLAN", () => {

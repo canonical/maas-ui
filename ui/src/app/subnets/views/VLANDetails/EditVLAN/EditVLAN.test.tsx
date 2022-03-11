@@ -114,7 +114,7 @@ describe("EditVLAN", () => {
         </MemoryRouter>
       </Provider>
     );
-    await waitFor(() => fireEvent.submit(screen.getByRole("form")));
+    fireEvent.submit(screen.getByRole("form"));
     const expected = vlanActions.update({
       description: vlan.description,
       fabric: vlan.fabric,
@@ -124,9 +124,11 @@ describe("EditVLAN", () => {
       space: vlan.space,
       vid: vlan.vid,
     });
-    expect(
-      store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected);
+    await waitFor(() =>
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected)
+    );
   });
 
   it("allows the space to be unset", async () => {
@@ -140,16 +142,17 @@ describe("EditVLAN", () => {
         </MemoryRouter>
       </Provider>
     );
+
+    fireEvent.change(screen.getByRole("combobox", { name: "Space" }), {
+      target: { value: null },
+    });
     await waitFor(() =>
-      fireEvent.change(screen.getByRole("combobox", { name: "Space" }), {
-        target: { value: null },
-      })
+      expect(
+        within(screen.getByRole("combobox", { name: "Space" })).getByRole(
+          "option",
+          { name: "No space", selected: true }
+        )
+      ).toBeInTheDocument()
     );
-    expect(
-      within(screen.getByRole("combobox", { name: "Space" })).getByRole(
-        "option",
-        { name: "No space", selected: true }
-      )
-    ).toBeInTheDocument();
   });
 });

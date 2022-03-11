@@ -38,11 +38,11 @@ it("updates to use the fabric's default VLAN on fabric change", async () => {
 
   expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue("3");
 
-  await waitFor(() => {
-    fireEvent.change(screen.getByRole("combobox", { name: "Fabric" }), {
-      target: { value: fabrics[1].id.toString() },
-    });
+  fireEvent.change(screen.getByRole("combobox", { name: "Fabric" }), {
+    target: { value: fabrics[1].id.toString() },
   });
 
-  expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue("5");
+  await waitFor(() =>
+    expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue("5")
+  );
 });
