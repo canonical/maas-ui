@@ -12,7 +12,8 @@
     "serve-base": "yarn --cwd ../proxy serve-base",
     "cypress-run": "yarn cypress run",
     "cypress-run-a11y": "yarn cypress run --config integrationFolder=cypress/integration/accessibility",
-    "cypress-open": "yarn cypress open"
+    "cypress-open": "yarn cypress open",
+    "percy": "./percy.sh"
   },
   "devDependencies": {
     "@maas-ui/maas-ui-shared": "3.2.0",
