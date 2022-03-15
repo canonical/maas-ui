@@ -39,7 +39,7 @@ export const TagFormFields = (): JSX.Element => {
           }
           label="Search existing / add new tags:"
           name="tags"
-          placeholder={undefined}
+          placeholder=""
           showSelectedTags={false}
           storedValue="id"
           tags={tags.map(({ id, name }) => ({ id, name }))}

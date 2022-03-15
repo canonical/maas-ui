@@ -20,7 +20,7 @@ describe("tag selectors", () => {
   it("can get all manual tags", () => {
     const items = [
       tagFactory({ definition: "def1" }),
-      tagFactory({ definition: null }),
+      tagFactory({ definition: "" }),
     ];
     const state = rootStateFactory({
       tag: tagStateFactory({
