@@ -56,3 +56,37 @@ test("getTableData returns grouped fabrics in a correct format", () => {
     label: "test-fabric",
   });
 });
+
+test("getTableData returns fabrics sorted in a correct order", () => {
+  const fabrics = [
+    fabricFactory({ id: 1, name: "fabric-1" }),
+    fabricFactory({ id: 2, name: "1 fabric" }),
+    fabricFactory({ id: 10, name: "fabric-10" }),
+  ];
+  const expectedOrder = ["1 fabric", "fabric-1", "fabric-10"];
+  const tableData = getTableData(
+    { fabrics, vlans: [], subnets: [], spaces: [] },
+    "fabric"
+  );
+  expect(tableData).toHaveLength(3);
+  tableData.forEach((row, index) => {
+    expect(row.fabric.label).toEqual(expectedOrder[index]);
+  });
+});
+
+test("getTableData returns spaces sorted in a correct order", () => {
+  const spaces = [
+    spaceFactory({ id: 1, name: "space-1" }),
+    spaceFactory({ id: 2, name: "1 space" }),
+    spaceFactory({ id: 10, name: "space-10" }),
+  ];
+  const expectedOrder = ["1 space", "space-1", "space-10"];
+  const tableData = getTableData(
+    { fabrics: [], vlans: [], subnets: [], spaces },
+    "space"
+  );
+  expect(tableData).toHaveLength(3);
+  tableData.forEach((row, index) => {
+    expect(row.space.label).toEqual(expectedOrder[index]);
+  });
+});

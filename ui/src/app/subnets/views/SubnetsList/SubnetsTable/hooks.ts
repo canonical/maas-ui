@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 import type { SubnetsTableRow, GroupByKey } from "./types";
 import { getTableData } from "./utils";
 
@@ -47,3 +48,41 @@ export const useSubnetsTable = (
 
   return { rows };
 };
+
+export function usePagination<D>(
+  data: Array<D>,
+  itemsPerPage = SUBNETS_TABLE_ITEMS_PER_PAGE
+): {
+  pageData: Array<D>;
+  currentPage: number;
+  paginate: (pageNumber: number) => void;
+  itemsPerPage: number;
+  totalItems: number;
+} {
+  const totalItems = data.length;
+  const [pageIndex, setPageIndex] = useState(0);
+  const startIndex = pageIndex * itemsPerPage;
+  const paginate = (pageNumber: number) => setPageIndex(pageNumber - 1);
+
+  useEffect(() => {
+    // go to the last available page if the current page is out of bounds
+    if (startIndex >= totalItems) {
+      totalItems / itemsPerPage > 0
+        ? setPageIndex(Math.floor(totalItems / itemsPerPage) - 1)
+        : setPageIndex(0);
+    }
+  }, [pageIndex, startIndex, setPageIndex, totalItems, itemsPerPage]);
+
+  const pageData = useMemo(
+    () => data?.slice(startIndex, startIndex + itemsPerPage),
+    [startIndex, data, itemsPerPage]
+  );
+
+  return {
+    pageData,
+    currentPage: pageIndex + 1,
+    paginate,
+    itemsPerPage,
+    totalItems,
+  };
+}
