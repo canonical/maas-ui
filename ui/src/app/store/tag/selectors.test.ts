@@ -17,6 +17,19 @@ describe("tag selectors", () => {
     expect(tag.all(state)).toEqual(items);
   });
 
+  it("can get all manual tags", () => {
+    const items = [
+      tagFactory({ definition: "def1" }),
+      tagFactory({ definition: null }),
+    ];
+    const state = rootStateFactory({
+      tag: tagStateFactory({
+        items,
+      }),
+    });
+    expect(tag.getManual(state)).toEqual([items[1]]);
+  });
+
   it("can get the loading state", () => {
     const state = rootStateFactory({
       tag: tagStateFactory({

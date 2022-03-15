@@ -29,8 +29,6 @@
     @extend %vf-bg--x-light;
     @extend %vf-has-box-shadow;
     left: 0;
-    max-height: $dropdown-max-height;
-    overflow: auto;
     position: absolute;
     right: 0;
     top: calc(100% - #{$input-margin-bottom});
@@ -40,6 +38,24 @@
   .tag-selector__dropdown-list {
     @extend %vf-list;
     margin-bottom: 0;
+    max-height: $dropdown-max-height;
+    overflow: auto;
+  }
+
+  .tag-selector__dropdown-header {
+    margin-bottom: 0;
+    padding: $spv-inner--x-small $sph-inner--small;
+    position: relative;
+
+    &::after {
+      border-bottom: 1px solid $color-mid-light;
+      bottom: 0;
+      content: "";
+      height: 1px;
+      left: 0;
+      position: absolute;
+      right: 0;
+    }
   }
 
   .tag-selector__dropdown-item {

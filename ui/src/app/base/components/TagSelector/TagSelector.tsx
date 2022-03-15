@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
 import { Button, Input } from "@canonical/react-components";
@@ -21,6 +22,9 @@ export type Props = {
   onTagsUpdate?: (tags: Tag[]) => void;
   placeholder?: string;
   required?: boolean;
+  generateDropdownEntry?: (tag: Tag, highlightedName: ReactNode) => ReactNode;
+  header?: ReactNode;
+  showSelectedTags?: boolean;
   tags: Tag[];
   disabledTags?: Tag[];
 };
@@ -57,12 +61,14 @@ const generateDropdownItems = ({
   selectedTags,
   tags,
   updateTags,
+  generateDropdownEntry,
 }: {
   allowNewTags: Props["allowNewTags"];
   filter: string;
   selectedTags: Tag[];
   tags: Tag[];
   updateTags: UpdateTags;
+  generateDropdownEntry: Props["generateDropdownEntry"];
 }): JSX.Element[] => {
   const dropdownItems = [];
   if (
@@ -97,28 +103,35 @@ const generateDropdownItems = ({
         (tag.displayName || tag.name).includes(filter) &&
         !selectedTags.some((selectedTag) => selectedTag.name === tag.name)
     )
-    .map((tag) => (
-      <li className="tag-selector__dropdown-item" key={tag.name}>
-        <Button
-          appearance="base"
-          className="tag-selector__dropdown-button u-break-word"
-          data-testid="existing-tag"
-          onClick={() => {
-            updateTags([...selectedTags, tag]);
-          }}
-          type="button"
-        >
-          {filter
-            ? highlightMatch(tag.displayName || tag.name, filter)
-            : tag.displayName || tag.name}
-          {tag.description && (
-            <div className="tag-selector__dropdown-item-description">
-              {tag.description}
-            </div>
-          )}
-        </Button>
-      </li>
-    ));
+    .map((tag) => {
+      const highlightedName = filter
+        ? highlightMatch(tag.displayName || tag.name, filter)
+        : tag.displayName || tag.name;
+      return (
+        <li className="tag-selector__dropdown-item" key={tag.name}>
+          <Button
+            appearance="base"
+            className="tag-selector__dropdown-button u-break-word"
+            data-testid="existing-tag"
+            onClick={() => {
+              updateTags([...selectedTags, tag]);
+            }}
+            type="button"
+          >
+            {generateDropdownEntry?.(tag, highlightedName) ?? (
+              <>
+                {highlightedName}
+                {tag.description && (
+                  <div className="tag-selector__dropdown-item-description">
+                    {tag.description}
+                  </div>
+                )}
+              </>
+            )}
+          </Button>
+        </li>
+      );
+    });
 
   return dropdownItems.concat(existingTagItems);
 };
@@ -161,12 +174,15 @@ export const TagSelector = ({
   allowNewTags = false,
   disabled,
   error,
+  generateDropdownEntry,
   help,
   initialSelected = [],
   label,
   onTagsUpdate,
   placeholder = "Tags",
   required = false,
+  header,
+  showSelectedTags = true,
   tags = [],
   disabledTags = [],
   ...props
@@ -176,6 +192,7 @@ export const TagSelector = ({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [selectedTags, setSelectedTags] = useState(initialSelected);
   const [filter, setFilter] = useState("");
+  const hasSelectedTags = showSelectedTags && selectedTags.length > 0;
 
   const updateTags = (newSelectedTags: Tag[], clearFilter = true) => {
     const sortedTags = newSelectedTags.sort((a, b) =>
@@ -210,6 +227,7 @@ export const TagSelector = ({
     selectedTags,
     tags,
     updateTags,
+    generateDropdownEntry,
   });
 
   return (
@@ -226,14 +244,14 @@ export const TagSelector = ({
       {...props}
     >
       <div className="tag-selector">
-        {selectedTags.length > 0 && (
+        {hasSelectedTags && (
           <ul className="tag-selector__selected-list">
             {generateSelectedItems(selectedTags, updateTags, disabledTags)}
           </ul>
         )}
         <Input
           className={classNames("tag-selector__input", {
-            "tags-selected": selectedTags.length > 0,
+            "tags-selected": hasSelectedTags,
           })}
           disabled={disabled}
           onChange={(e) => setFilter(e.target.value)}
@@ -253,6 +271,9 @@ export const TagSelector = ({
         />
         {dropdownOpen && dropdownItems.length >= 1 && (
           <div className="tag-selector__dropdown">
+            {header ? (
+              <div className="tag-selector__dropdown-header">{header}</div>
+            ) : null}
             <ul className="tag-selector__dropdown-list">{dropdownItems}</ul>
           </div>
         )}
