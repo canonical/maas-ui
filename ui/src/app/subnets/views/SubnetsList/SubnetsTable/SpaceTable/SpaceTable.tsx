@@ -5,17 +5,18 @@ import {
   CellContents,
   SpaceCellContents,
 } from "app/subnets/views/SubnetsList/SubnetsTable/components";
+import {
+  subnetColumnLabels,
+  SubnetsColumns,
+} from "app/subnets/views/SubnetsList/SubnetsTable/constants";
 import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
 
 const SpaceTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
   return (
     <ModularTable<SubnetsTableRow>
       emptyMsg="Loading..."
-      getTableProps={(tableProps) => ({
-        ...tableProps,
-        className: "subnets-table",
-        "aria-label": "Subnets",
-      })}
+      className="subnets-table"
+      aria-label="Subnets"
       getCellProps={({ value, column }) => ({
         className: `subnets-table__cell--${column.id}${
           value.isVisuallyHidden ? " u-no-border--top" : ""
@@ -31,33 +32,33 @@ const SpaceTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
       columns={useMemo(
         () => [
           {
-            Header: "Space",
-            accessor: "space",
+            Header: subnetColumnLabels[SubnetsColumns.SPACE],
+            accessor: SubnetsColumns.SPACE,
             Cell: SpaceCellContents,
           },
           {
-            Header: "VLAN",
-            accessor: "vlan",
+            Header: subnetColumnLabels[SubnetsColumns.VLAN],
+            accessor: SubnetsColumns.VLAN,
             Cell: CellContents,
           },
           {
-            Header: "DHCP",
-            accessor: "dhcp",
+            Header: subnetColumnLabels[SubnetsColumns.DHCP],
+            accessor: SubnetsColumns.DHCP,
             Cell: CellContents,
           },
           {
-            Header: "Fabric",
-            accessor: "fabric",
+            Header: subnetColumnLabels[SubnetsColumns.FABRIC],
+            accessor: SubnetsColumns.FABRIC,
             Cell: CellContents,
           },
           {
-            Header: "Subnet",
-            accessor: "subnet",
+            Header: subnetColumnLabels[SubnetsColumns.SUBNET],
+            accessor: SubnetsColumns.SUBNET,
             Cell: CellContents,
           },
           {
-            Header: "Available IPs",
-            accessor: "ips",
+            Header: subnetColumnLabels[SubnetsColumns.IPS],
+            accessor: SubnetsColumns.IPS,
             Cell: CellContents,
           },
         ],

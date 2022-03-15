@@ -1,3 +1,5 @@
+import type { SubnetsColumns } from "./constants";
+
 import type { Fabric } from "app/store/fabric/types";
 import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
@@ -40,12 +42,6 @@ export type SortDataKey =
   | "spaceName"
   | "cidr";
 
-export type SubnetsTableRow = {
-  fabric: SubnetsTableColumn;
-  vlan: SubnetsTableColumn;
-  dhcp: SubnetsTableColumn;
-  subnet: SubnetsTableColumn;
-  ips: SubnetsTableColumn;
-  space: SubnetsTableColumn;
+export type SubnetsTableRow = Record<SubnetsColumns, SubnetsTableColumn> & {
   sortData: SortData;
 };
