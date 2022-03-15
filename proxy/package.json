@@ -29,7 +29,7 @@
     "colors": "1.4.0",
     "concurrently": "7.0.0",
     "dotenv-flow": "3.2.0",
-    "http-proxy-middleware": "2.0.3",
+    "http-proxy-middleware": "2.0.4",
     "npm-package-json-lint": "5.4.2",
     "sass": "1.49.9",
     "wait-on": "6.0.1"
