@@ -18,7 +18,7 @@ exports[`NodeNameFields displays the fields 1`] = `
     <Input
       className="node-name__hostname"
       error={null}
-      id="mock-nanoid-1"
+      id="mock-redux-js-nanoid-1"
       name="hostname"
       onBlur={[Function]}
       onChange={[Function]}
@@ -36,8 +36,7 @@ exports[`NodeNameFields displays the fields 1`] = `
       <Field
         className="u-nudge-left--small u-no-margin--right"
         error={null}
-        forId="mock-nanoid-1"
-        labelFirst={true}
+        forId="mock-redux-js-nanoid-1"
         required={true}
       >
         <div
@@ -49,10 +48,11 @@ exports[`NodeNameFields displays the fields 1`] = `
             <input
               aria-invalid={false}
               className="p-form-validation__input node-name__hostname"
-              id="mock-nanoid-1"
+              id="mock-redux-js-nanoid-1"
               name="hostname"
               onBlur={[Function]}
               onChange={[Function]}
+              required={true}
               style={
                 Object {
                   "width": "0ch",
@@ -102,7 +102,7 @@ exports[`NodeNameFields displays the fields 1`] = `
         className="u-no-margin--bottom"
         disabled={false}
         error={null}
-        id="mock-nanoid-2"
+        id="mock-redux-js-nanoid-2"
         label={null}
         name="domain"
         onBlur={[Function]}
@@ -123,7 +123,7 @@ exports[`NodeNameFields displays the fields 1`] = `
         <Field
           className="u-nudge-left u-no-margin--right"
           error={null}
-          forId="mock-nanoid-2"
+          forId="mock-redux-js-nanoid-2"
           isSelect={true}
           label={null}
           required={true}
@@ -141,7 +141,7 @@ exports[`NodeNameFields displays the fields 1`] = `
                   aria-label={null}
                   className="p-form-validation__input u-no-margin--bottom"
                   disabled={false}
-                  id="mock-nanoid-2"
+                  id="mock-redux-js-nanoid-2"
                   name="domain"
                   onBlur={[Function]}
                   onChange={[Function]}

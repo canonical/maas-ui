@@ -65,7 +65,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
       <>
         <Row className="u-sv2">
           <Col size={8}>
-            <h2 className="p-heading--four">{result.name} details</h2>
+            <h2 className="p-heading--4">{result.name} details</h2>
           </Col>
           <Col size={4} className="u-align--right">
             <Link to={`${machineURLs.machine.index({ id })}/${returnPath}`}>

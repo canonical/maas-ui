@@ -14,7 +14,7 @@
 
   .kvm-storage-cards__meter {
     display: grid;
-    grid-column-gap: $sph-inner;
+    grid-column-gap: $sph--large;
     grid-template-columns: 1fr;
     grid-template-rows: min-content;
 

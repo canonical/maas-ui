@@ -148,7 +148,7 @@ const generateRows = (
               </Button>
               <div className="u-nudge-right--small">
                 <Link
-                  className="p-button--neutral no-background has-icon u-no-margin"
+                  className="p-button no-background has-icon u-no-margin"
                   data-testid="vm-host-settings"
                   to={{
                     pathname: kvmURLs.lxd.cluster.host.edit({

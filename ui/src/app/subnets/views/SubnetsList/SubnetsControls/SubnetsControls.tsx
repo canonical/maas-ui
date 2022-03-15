@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Row, Col, Button, Select } from "@canonical/react-components";
+import { Row, Col, Button, Icon, Select } from "@canonical/react-components";
 
 import type {
   GroupByKey,
@@ -28,7 +28,7 @@ const SubnetsControls = ({
                 hasIcon
                 onClick={() => setIsInfoOpen(!isInfoOpen)}
               >
-                <i className="p-icon--question"></i>
+                <Icon name="help" />
               </Button>
             </>
           }

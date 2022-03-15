@@ -8,12 +8,12 @@ $nudge--smallest: 0.15rem;
   font-size: pow($ms-ratio, -2) * 1rem;
   font-weight: 400;
   line-height: map-get($line-heights, smallest);
-  margin-bottom: map-get($sp-after, default-text) - map-get($nudges, nudge--p);
+  margin-bottom: map-get($sp-after, default-text) - map-get($nudges, p);
   padding-top: $nudge--smallest;
 }
 
 h4,
-.p-heading--four {
+.p-heading--4 {
   & + & {
     margin-top: -(map-get($sp-after, h4)) !important;
   }

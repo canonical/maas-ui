@@ -3,7 +3,7 @@
 exports[`NotFound  can render 1`] = `
 <NotFound>
   <h2
-    className="p-heading--four"
+    className="p-heading--4"
   >
     Error: Page not found.
   </h2>

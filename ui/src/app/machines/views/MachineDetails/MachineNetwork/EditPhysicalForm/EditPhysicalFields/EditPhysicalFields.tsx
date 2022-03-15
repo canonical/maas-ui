@@ -27,9 +27,7 @@ const EditPhysicalFields = ({ nic }: Props): JSX.Element | null => {
   return (
     <Row>
       <Col size={6}>
-        <h3 className="p-heading--five u-no-margin--bottom">
-          Physical details
-        </h3>
+        <h3 className="p-heading--5 u-no-margin--bottom">Physical details</h3>
         <FormikField label="Name" type="text" name="name" />
         <MacAddressField label="MAC address" name="mac_address" />
         <TagNameField />
@@ -48,7 +46,7 @@ const EditPhysicalFields = ({ nic }: Props): JSX.Element | null => {
         />
       </Col>
       <Col size={6}>
-        <h3 className="p-heading--five u-no-margin--bottom">Network</h3>
+        <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
         <NetworkFields editing interfaceType={NetworkInterfaceTypes.PHYSICAL} />
       </Col>
     </Row>

@@ -61,7 +61,7 @@ describe("VirshTable", () => {
       wrapper
         .find('[data-testid="name-header"] i')
         .prop("className")
-        ?.includes("u-mirror--y")
+        ?.includes("p-icon--chevron-up")
     ).toBe(false);
   });
 

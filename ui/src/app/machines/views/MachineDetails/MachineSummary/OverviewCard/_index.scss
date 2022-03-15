@@ -9,65 +9,65 @@
 
     .overview-card__status {
       grid-area: status;
-      padding: $spv-inner--large 0 0 $sph-inner;
+      padding: $spv--large 0 0 $sph--large;
     }
 
     .overview-card__cpu {
       @include pseudo-border(left);
       grid-area: cpu;
-      padding: $spv-inner--large 0 0 0;
+      padding: $spv--large 0 0 0;
       &::after {
-        top: $spv-inner--large;
+        top: $spv--large;
       }
     }
 
     .overview-card__memory {
       @include pseudo-border(left);
       grid-area: memory;
-      padding: $spv-inner--large 0 0 0;
+      padding: $spv--large 0 0 0;
       &::after {
-        top: $spv-inner--large;
+        top: $spv--large;
       }
     }
 
     .overview-card__storage {
       @include pseudo-border(left);
       grid-area: storage;
-      padding: $spv-inner--large $sph-inner 0 0;
+      padding: $spv--large $sph--large 0 0;
       &::after {
-        top: $spv-inner--large;
+        top: $spv--large;
       }
     }
 
     .overview-card__test-warning {
       grid-area: test-warning;
-      padding: $spv-inner--large 0 $spv-inner--large $sph-inner;
+      padding: $spv--large 0 $spv--large $sph--large;
     }
 
     .overview-card__cpu-tests {
       @include pseudo-border(left);
       grid-area: cpu-tests;
-      padding: $spv-inner--large 0;
+      padding: $spv--large 0;
       &::after {
-        bottom: $spv-inner--large;
+        bottom: $spv--large;
       }
     }
 
     .overview-card__memory-tests {
       @include pseudo-border(left);
       grid-area: memory-tests;
-      padding: $spv-inner--large 0;
+      padding: $spv--large 0;
       &::after {
-        bottom: $spv-inner--large;
+        bottom: $spv--large;
       }
     }
 
     .overview-card__storage-tests {
       @include pseudo-border(left);
       grid-area: storage-tests;
-      padding: $spv-inner--large $sph-inner $spv-inner--large 0;
+      padding: $spv--large $sph--large $spv--large 0;
       &::after {
-        bottom: $spv-inner--large;
+        bottom: $spv--large;
       }
     }
 
@@ -77,10 +77,10 @@
       grid-area: details;
       grid-template-columns: repeat(7, minmax(0, 1fr));
       grid-template-rows: auto;
-      padding: $spv-inner--large $sph-inner;
+      padding: $spv--large $sph--large;
 
       > * {
-        padding-right: $sph-inner;
+        padding-right: $sph--large;
 
         &:last-child {
           overflow: hidden;
@@ -102,7 +102,7 @@
 
       .overview-card__status,
       .overview-card__memory {
-        padding: $spv-inner--large 0 0 $sph-inner;
+        padding: $spv--large 0 0 $sph--large;
         &::before {
           content: none;
         }
@@ -110,7 +110,7 @@
 
       .overview-card__test-warning,
       .overview-card__memory-tests {
-        padding: $spv-inner--large 0 $spv-inner--large $sph-inner;
+        padding: $spv--large 0 $spv--large $sph--large;
         &::before {
           content: none;
         }
@@ -119,25 +119,25 @@
       .overview-card__cpu,
       .overview-card__storage {
         @include pseudo-border(left);
-        padding: $spv-inner--large $sph-inner 0 0;
+        padding: $spv--large $sph--large 0 0;
         &::after {
-          top: $spv-inner--large;
+          top: $spv--large;
         }
       }
 
       .overview-card__cpu-tests,
       .overview-card__storage-tests {
         @include pseudo-border(left);
-        padding: $spv-inner--large $sph-inner $spv-inner--large 0;
+        padding: $spv--large $sph--large $spv--large 0;
         &::after {
-          bottom: $spv-inner--large;
+          bottom: $spv--large;
         }
       }
 
       .overview-card__memory {
         @include pseudo-border(top);
         &::before {
-          right: -#{map-get($grid-gutter-widths, large)};
+          right: -#{map-get($grid-gutter-widths, default)};
         }
       }
 
@@ -149,7 +149,7 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
 
         > * {
-          padding-bottom: $spv-inner--small;
+          padding-bottom: $spv--small;
 
           &:last-child {
             grid-column-end: 4;
@@ -163,7 +163,7 @@
       }
     }
 
-    @media only screen and (max-width: $breakpoint-medium) {
+    @media only screen and (max-width: $breakpoint-small) {
       grid:
         [row1-start] "status" min-content [row1-end]
         [row2-start] "test-warning" min-content [row2-end]
@@ -177,14 +177,14 @@
         / 1fr;
 
       .overview-card__status {
-        padding: $spv-inner--large $sph-inner 0 $sph-inner;
+        padding: $spv--large $sph--large 0 $sph--large;
       }
 
       .overview-card__cpu,
       .overview-card__memory,
       .overview-card__storage {
         @include pseudo-border(top);
-        padding: $spv-inner--large $sph-inner 0 $sph-inner;
+        padding: $spv--large $sph--large 0 $sph--large;
         &::before {
           left: 0;
           right: 0;
@@ -196,7 +196,7 @@
       .overview-card__memory-tests,
       .overview-card__storage-tests,
       .overview-card__details {
-        padding: $spv-inner--large $sph-inner;
+        padding: $spv--large $sph--large;
       }
 
       .overview-card__details {

@@ -102,7 +102,7 @@ const GeneralForm = (): JSX.Element => {
         required={true}
         wrapperClassName="u-sv2"
       />
-      <h5 className="u-sv1">Data analytics</h5>
+      <h5>Data analytics</h5>
       <FormikField
         label="Enable analytics to shape improvements to user experience"
         type="checkbox"
@@ -111,14 +111,14 @@ const GeneralForm = (): JSX.Element => {
           <>
             The analytics used in MAAS are Google Analytics, Usabilla and Sentry
             Error Tracking.{" "}
-            <Link href="https://ubuntu.com/legal/data-privacy" external>
+            <Link href="https://ubuntu.com/legal/data-privacy">
               Data privacy
             </Link>
           </>
         }
         wrapperClassName="u-sv3"
       />
-      <h5 className="u-sv1">Notifications</h5>
+      <h5>Notifications</h5>
       <FormikField
         label="Enable new release notifications"
         type="checkbox"

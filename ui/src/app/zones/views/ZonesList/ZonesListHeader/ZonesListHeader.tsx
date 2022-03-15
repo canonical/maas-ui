@@ -23,7 +23,6 @@ const ZonesListHeader = (): JSX.Element => {
 
   let buttons: JSX.Element[] | null = [
     <Button
-      appearance="neutral"
       data-testid="add-zone"
       key="add-zone"
       onClick={() => {

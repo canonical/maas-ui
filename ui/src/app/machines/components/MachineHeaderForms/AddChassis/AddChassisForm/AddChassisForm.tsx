@@ -74,7 +74,6 @@ export const AddChassisForm = ({ clearHeaderContent }: Props): JSX.Element => {
           buttonsHelp={
             <p>
               <Link
-                external
                 href="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
                 rel="noopener noreferrer"
                 target="_blank"

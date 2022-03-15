@@ -1,7 +1,7 @@
 <div class="p-strip is-shallow">
-  <h3 class="p-heading--four">Datastores</h3>
+  <h3 class="p-heading--4">Datastores</h3>
 
-  <table class="p-table-expanding p-table--datastores col-12" role="grid">
+  <table class="p-table--expanding p-table--datastores col-12" role="grid">
     <thead>
       <tr class="p-table__row">
         <th scope="col" aria-sort="none" class="p-table__cell">Name</th>
@@ -73,7 +73,7 @@
               data-ng-click="toggleMenu()"
               aria-haspopup="true"
             >
-              <i class="p-icon--contextual-menu">Actions</i>
+              <i class="p-icon--chevron-down">Actions</i>
             </button>
             <div
               class="p-contextual-menu__dropdown"
@@ -93,12 +93,12 @@
           </div>
         </td>
         <td
-          class="p-table-expanding__panel--bordered"
+          class="p-table__expanding-panel--bordered"
           data-ng-if="filesystem.$selected && filesystemMode === 'delete'"
           aria-hidden="!filesystem.$selected && filesystemMode !== 'delete'"
         >
           <div class="row u-flex--no-wrap" data-ng-if="windowWidth <= 772">
-            <h2 data-ng-click="filesystemCancel()" class="p-heading--four">
+            <h2 data-ng-click="filesystemCancel()" class="p-heading--4">
               <span data-ng-if="filesystemMode === 'delete'"
                 >Removing {$ filesystem.name $}</span
               >
@@ -150,7 +150,7 @@
       >
         <!-- Adding a new TMPFS or RAMFPS filesystem -->
         <td
-          class="p-table-expanding__panel"
+          class="p-table__expanding-panel"
           data-ng-controller="NodeAddSpecialFilesystemController"
           data-ng-switch-when="special"
         >
@@ -164,10 +164,7 @@
           >
             <div class="row" data-ng-if="windowWidth <= 772">
               <div class="u-flex--no-wrap">
-                <h2
-                  data-ng-click="cancel()"
-                  class="u-align--left p-heading--four"
-                >
+                <h2 data-ng-click="cancel()" class="u-align--left p-heading--4">
                   Adding filesystem
                 </h2>
                 <button
@@ -232,7 +229,7 @@
                   Cancel
                 </button>
                 <button
-                  class="p-button--neutral u-width--auto ng-binding"
+                  class="p-button u-width--auto ng-binding"
                   data-ng-disabled="!canMount()"
                   maas-obj-save
                 >

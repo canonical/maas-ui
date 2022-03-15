@@ -2,7 +2,7 @@
   .source-machine-select {
     @extend %vf-is-bordered;
     @extend %vf-has-round-corners;
-    padding: $spv-inner--medium $sph-inner 0 $sph-inner;
+    padding: $spv--medium $sph--large 0 $sph--large;
   }
 
   .source-machine-select__table {

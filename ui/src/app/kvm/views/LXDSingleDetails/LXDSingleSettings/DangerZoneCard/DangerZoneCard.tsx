@@ -27,7 +27,6 @@ const DangerZoneCard = ({
         <Col size={5}>{message}</Col>
         <Col className="u-align--right u-vertically-center" size={5}>
           <Button
-            appearance="neutral"
             className="u-no-margin--bottom"
             data-testid="remove-kvm"
             onClick={() =>

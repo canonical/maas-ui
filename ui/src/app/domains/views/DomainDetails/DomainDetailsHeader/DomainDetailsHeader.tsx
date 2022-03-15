@@ -52,7 +52,6 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
 
   const buttons = [
     <Button
-      appearance="neutral"
       data-testid="add-record"
       key="add-record"
       onClick={() => setFormOpen("add-record")}

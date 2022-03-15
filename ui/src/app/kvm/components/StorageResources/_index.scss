@@ -2,7 +2,7 @@
   .storage-resources {
     display: flex;
     flex-direction: row;
-    padding: $spv-inner--medium $sph-inner;
+    padding: $spv--medium $sph--large;
   }
 
   .single-pool {
@@ -20,14 +20,14 @@
     margin-right: 0;
   }
 
-  @media only screen and (min-width: $breakpoint-medium) {
+  @media only screen and (min-width: $breakpoint-small) {
     .storage-resources {
       flex-direction: row;
     }
 
     .storage-resources__header {
       flex: 1;
-      margin-right: $sph-inner--large;
+      margin-right: $sph--large;
     }
 
     .storage-resources__content {

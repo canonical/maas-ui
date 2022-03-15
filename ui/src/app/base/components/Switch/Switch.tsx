@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import classNames from "classnames";
 import PropTypes from "prop-types";
 
 export type Props = {
@@ -10,9 +11,9 @@ export type Props = {
 
 const Switch = ({ className, label, ...inputProps }: Props): JSX.Element => {
   return (
-    <label className={className}>
+    <label className={classNames(className, "p-switch")}>
       {label}
-      <input className="p-switch" type="checkbox" {...inputProps} />
+      <input className="p-switch__input" type="checkbox" {...inputProps} />
       <div className="p-switch__slider"></div>
     </label>
   );

@@ -1,15 +1,15 @@
 @mixin VmResources {
   .vm-resources {
-    padding: $sph-inner;
+    padding: $sph--large;
   }
 
   .p-contextual-menu .vm-resources__dropdown {
     max-width: none;
     min-width: 0;
-    padding: $spv-inner--x-small $sph-inner--small;
+    padding: $spv--x-small $sph--small;
     // Subtract small screen gutter width and card inner padding to center dropdown.
     width: calc(
-      100vw - #{(map-get($grid-gutter-widths, small) + $sph-inner) * 2}
+      100vw - #{(map-get($grid-gutter-widths, small) + $sph--large) * 2}
     );
 
     .fqdn-col,
@@ -25,7 +25,7 @@
 
     @media only screen and (min-width: $breakpoint-small) {
       width: calc(
-        100vw - #{(map-get($grid-gutter-widths, medium) + $sph-inner) * 2}
+        100vw - #{(map-get($grid-gutter-widths, default) + $sph--large) * 2}
       );
 
       .power-col {
@@ -34,7 +34,7 @@
       }
     }
 
-    @media only screen and (min-width: $breakpoint-medium) {
+    @media only screen and (min-width: $breakpoint-small) {
       width: 40rem;
 
       .cores-col,

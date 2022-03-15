@@ -107,9 +107,7 @@
                 >
                   <div class="u-space-between">
                     <div class="u-align--right">
-                      <div
-                        data-ng-if="action.option.name !== 'test'"
-                      >
+                      <div data-ng-if="action.option.name !== 'test'">
                         <button
                           type="button"
                           class="p-button--base"
@@ -118,7 +116,7 @@
                           Cancel
                         </button>
                         <button
-                          class="p-button--neutral u-no-margin--top"
+                          class="p-button u-no-margin--top"
                           data-ng-class="action.option.name === 'delete' ? 'p-button--negative' : 'p-button--positive'"
                           data-ng-click="actionGo('nodes')"
                           data-ng-hide="hasActionsFailed('nodes')"
@@ -259,9 +257,7 @@
             >
               Cancel
             </button>
-            <button class="p-button--neutral" data-ng-click="actionGo()">
-              Retry
-            </button>
+            <button class="p-button" data-ng-click="actionGo()">Retry</button>
           </div>
         </div>
       </div>
@@ -420,8 +416,7 @@
         <p class="p-notification__response">
           You can now enable <strong>high availability DHCP</strong> on {$
           node.vlan.fabric_name $} {$ getNotificationVLANText() $}.
-          <a
-            href="{$ newURLBase $}/vlan/{$ node.vlan.id $}?provide_dhcp=true"
+          <a href="{$ newURLBase $}/vlan/{$ node.vlan.id $}?provide_dhcp=true"
             >Reconfigure</a
           >
           the DHCP configuration.
@@ -443,16 +438,16 @@
     <div class="p-strip">
       <div class="row">
         <div class="col-10">
-          <h2 data-ng-if="!isController" class="p-heading--four">
+          <h2 data-ng-if="!isController" class="p-heading--4">
             {$ node.node_type_display $} configuration
           </h2>
-          <h2 data-ng-if="isController" class="p-heading--four">
+          <h2 data-ng-if="isController" class="p-heading--4">
             Controller configuration
           </h2>
         </div>
         <div class="col-2 u-align--right" data-ng-if="!summary.editing">
           <button
-            class="p-button--neutral u-float--right u-no-margin--bottom"
+            class="p-button u-float--right u-no-margin--bottom"
             data-ng-if="canEdit()"
             data-ng-click="editSummary()"
           >
@@ -493,7 +488,8 @@
                   data-ng-repeat="tag in node.tags"
                   data-ng-hide="summary.editing"
                 >
-                  <a href="{$ newURLBase $}/controllers?q=tags:({$ getTagName(tag) $})"
+                  <a
+                    href="{$ newURLBase $}/controllers?q=tags:({$ getTagName(tag) $})"
                     >{$ getTagName(tag) $}</a
                   >
                 </span>
@@ -534,12 +530,12 @@
     <div class="p-strip">
       <div class="row" data-ng-if="!isDevice">
         <div class="col-10">
-          <h2 class="p-heading--four">Power configuration</h2>
+          <h2 class="p-heading--4">Power configuration</h2>
         </div>
         <div class="col-2">
           <div class="u-align--right">
             <button
-              class="p-button--neutral u-float--right"
+              class="p-button u-float--right"
               data-ng-show="canEdit() && power_types.length"
               data-ng-click="editPower()"
               data-ng-if="!power.editing"
@@ -665,7 +661,7 @@
   <section class="p-strip" data-ng-if="section.area === 'services'">
     <div class="row" data-ng-show="node.node_type == 3 || node.node_type == 4">
       <div class="col-12">
-        <h3 class="p-heading--four">Region Controller</h3>
+        <h3 class="p-heading--4">Region Controller</h3>
         <ul class="p-list-tree" aria-multiselectable="true" role="tablist">
           <li class="p-list-tree__item">
             <span>
@@ -727,7 +723,7 @@
     </div>
     <div class="row" data-ng-show="node.node_type == 2 || node.node_type == 4">
       <div class="col-12">
-        <h3 class="p-heading--four">Rack Controller</h3>
+        <h3 class="p-heading--4">Rack Controller</h3>
         <ul class="p-list-tree" aria-multiselectable="true" role="tablist">
           <li class="p-list-tree__item p-list-tree__item--group">
             <span>
@@ -850,7 +846,7 @@
       </div>
       <div class="row">
         <form data-ng-if="loaded">
-          <table class="p-table-expanding p-table--controller-vlans">
+          <table class="p-table--expanding p-table--controller-vlans">
             <thead>
               <tr class="p-table__row">
                 <th title="Fabric">Fabric</th>
@@ -864,8 +860,7 @@
             <tbody>
               <tr class="p-table__row" data-ng-repeat="vlanRow in vlanTable">
                 <td title="{$ vlanRow['fabric'].name $}">
-                  <a
-                    href="{$ newURLBase $}/fabric/{$ vlanRow['fabric'].id $}"
+                  <a href="{$ newURLBase $}/fabric/{$ vlanRow['fabric'].id $}"
                     >{$ vlanRow['fabric'].name $}</a
                   >
                 </td>
@@ -977,7 +972,7 @@
           data-ng-if="isInterfaceSelected(interface) && isShowingEdit() && interface.type === editInterface.type"
         >
           <div class="p-card--highlighted">
-            <h2 class="p-heading--four">
+            <h2 class="p-heading--4">
               Edit {$ getInterfaceTypeText(interface).toLowerCase() $}
             </h2>
             <table class="p-table-interface">
@@ -1823,7 +1818,7 @@
             </table>
 
             <button
-              class="p-button--neutral"
+              class="p-button"
               data-ng-click="toggleInterfaces()"
               data-ng-if="showEditButton(editInterface, interfaces)"
             >
@@ -1853,7 +1848,7 @@
                     <div class="p-strip is-shallow">
                       <div class="row">
                         <div class="col-6">
-                          <h3 class="p-heading--five">
+                          <h3 class="p-heading--5">
                             {$ getInterfaceTypeText(interface) $} details
                           </h3>
                           <maas-obj-field
@@ -1964,7 +1959,7 @@
                           class="col-6"
                           data-ng-if="!isAllNetworkingDisabled(interface)"
                         >
-                          <h3 class="p-heading--five">Network</h3>
+                          <h3 class="p-heading--5">Network</h3>
                           <maas-obj-field
                             type="options"
                             key="fabric"
@@ -2120,11 +2115,8 @@
           </div>
         </div>
 
-        <div
-          class="row"
-          data-ng-if="!isShowingEdit()"
-        >
-          <table class="p-table-expanding p-table--controller-interfaces">
+        <div class="row" data-ng-if="!isShowingEdit()">
+          <table class="p-table--expanding p-table--controller-interfaces">
             <thead>
               <tr data-ng-if="!isDevice" class="p-table--is-not-device">
                 <th class="p-double-row">
@@ -2500,7 +2492,7 @@
                       class="p-button--base is-small p-contextual-menu__toggle u-no-margin--right"
                       data-ng-click="toggleMenu()"
                     >
-                      <i class="p-icon--contextual-menu u-no-margin--right"
+                      <i class="p-icon--chevron-down u-no-margin--right"
                         >Actions</i
                       >
                     </button>
@@ -2549,7 +2541,7 @@
                   </div>
                 </td>
                 <td
-                  class="p-table-expanding__panel col-12"
+                  class="p-table__expanding-panel col-12"
                   data-ng-if="isInterfaceSelected(interface) && showEditWarning"
                 >
                   <div class="row">
@@ -2579,7 +2571,7 @@
                   </div>
                 </td>
                 <td
-                  class="p-table-expanding__panel col-12"
+                  class="p-table__expanding-panel col-12"
                   data-ng-if="isInterfaceSelected(interface) && (isEditing(interface) || isShowingDeleteConfirm() || isChangingConnectionStatus)"
                 >
                   <div class="row">
@@ -2589,7 +2581,7 @@
                     >
                       <h2
                         data-ng-click="cancel()"
-                        class="u-float--left p-heading--four"
+                        class="u-float--left p-heading--4"
                       >
                         <span data-ng-if="canAddAlias(newInterface.parent)"
                           >Adding alias</span
@@ -2791,7 +2783,7 @@
                   </div>
                 </td>
                 <td
-                  class="p-table-expanding__panel col-12"
+                  class="p-table__expanding-panel col-12"
                   data-ng-if="isShowingMembers(interface)"
                 >
                   <div
@@ -2934,12 +2926,9 @@
         </div>
       </form>
     </div>
-    <div
-      class="row"
-      data-ng-if="filteredSnippets.length && !isShowingEdit()"
-    >
+    <div class="row" data-ng-if="filteredSnippets.length && !isShowingEdit()">
       <div class="col-12">
-        <h2 class="p-heading--four">DHCP snippets</h2>
+        <h2 class="p-heading--4">DHCP snippets</h2>
         <maas-dhcp-snippets-table
           snippets="filteredSnippets"
         ></maas-dhcp-snippets-table>
@@ -3007,16 +2996,14 @@
             <div
               data-ng-if="storageLayoutIsDisabled(osFamily.layouts) && storageLayoutIsDisabled(osFamily.layouts)"
             >
-              <button class="p-button--neutral" disabled>
-                Change storage layout
-              </button>
+              <button class="p-button" disabled>Change storage layout</button>
             </div>
             <div
               data-ng-if="!(storageLayoutIsDisabled(osFamily.layouts) && storageLayoutIsDisabled(osFamily.layouts))"
             >
               <div class="p-contextual-menu" toggle-ctrl>
                 <button
-                  class="p-button--neutral p-contextual-menu__toggle u-no-margin--bottom u-no-margin--right"
+                  class="p-button p-contextual-menu__toggle u-no-margin--bottom u-no-margin--right"
                   data-ng-click="toggleMenu()"
                 >
                   <span data-ng-if="!updatingStorageLayout">
@@ -3171,10 +3158,10 @@
         </div>
         <div data-ng-show="cachesets.length">
           <div class="row">
-            <h3 class="p-heading--four">Available cache sets</h3>
+            <h3 class="p-heading--4">Available cache sets</h3>
           </div>
           <div class="row">
-            <table class="p-table-expanding">
+            <table class="p-table--expanding">
               <thead>
                 <tr>
                   <th class="col-2">Name</th>
@@ -3222,7 +3209,7 @@
                           class="p-button--base is-small p-contextual-menu__toggle"
                           data-ng-click="toggleMenu()"
                         >
-                          <i class="p-icon--contextual-menu u-no-margin--right"
+                          <i class="p-icon--chevron-down u-no-margin--right"
                             >Actions</i
                           >
                         </button>
@@ -3244,14 +3231,14 @@
                     </div>
                   </td>
                   <td
-                    class="p-table-expanding__panel col-12"
+                    class="p-table__expanding-panel col-12"
                     data-ng-if="cacheset.$selected && cachesetsMode === 'delete'"
                   >
                     <div class="row" data-ng-if="windowWidth <= 772">
                       <div class="col-8">
                         <h2
                           data-ng-click="filesystemCancel()"
-                          class="p-heading--four"
+                          class="p-heading--4"
                         >
                           <span data-ng-if="cachesetsMode === 'delete'"
                             >Removing {$ cacheset.name $}</span
@@ -3363,7 +3350,7 @@
     <div class="row">
       <div class="col-12 u-align--center">
         <button
-          class="p-button--neutral"
+          class="p-button"
           data-ng-show="allowShowMoreEvents()"
           data-ng-click="showMoreEvents()"
         >

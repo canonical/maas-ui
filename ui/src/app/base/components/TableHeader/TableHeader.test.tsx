@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 
 import TableHeader from "./TableHeader";
 
@@ -25,7 +25,7 @@ describe("TableHeader ", () => {
       key: "key",
       direction: SortDirection.DESCENDING,
     };
-    const wrapper = shallow(
+    const wrapper = mount(
       <TableHeader
         currentSort={currentSort}
         onClick={jest.fn()}
@@ -34,7 +34,7 @@ describe("TableHeader ", () => {
         Text
       </TableHeader>
     );
-    expect(wrapper.find(".p-icon--contextual-menu").exists()).toBe(true);
+    expect(wrapper.find(".p-icon--chevron-down").exists()).toBe(true);
   });
 
   it(`renders a flipped contextual icon if currentSort.key matches sortKey
@@ -43,7 +43,7 @@ describe("TableHeader ", () => {
       key: "key",
       direction: SortDirection.ASCENDING,
     };
-    const wrapper = shallow(
+    const wrapper = mount(
       <TableHeader
         currentSort={currentSort}
         onClick={jest.fn()}
@@ -52,8 +52,6 @@ describe("TableHeader ", () => {
         Text
       </TableHeader>
     );
-    expect(wrapper.find(".p-icon--contextual-menu.u-mirror--y").exists()).toBe(
-      true
-    );
+    expect(wrapper.find(".p-icon--chevron-up").exists()).toBe(true);
   });
 });

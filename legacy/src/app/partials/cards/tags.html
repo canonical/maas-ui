@@ -1,11 +1,13 @@
 <header>
-  <h2 class="p-heading--four">Tags</h2>
+  <h2 class="p-heading--4">Tags</h2>
 </header>
 <div>
   <p>
     <span data-ng-if="!node.tags.length"><i>No tags</i></span>
     <span data-ng-repeat="tag in node.tags">
-      <a href="{$ newURLBase $}/controllers?q=tags:({$ tag $})">{$ getTagName(tag) $}</a>
+      <a href="{$ newURLBase $}/controllers?q=tags:({$ tag $})"
+        >{$ getTagName(tag) $}</a
+      >
     </span>
   </p>
   <p data-ng-if="canEdit()">

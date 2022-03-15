@@ -349,7 +349,6 @@ const FilesystemsTable = ({
         {canEditStorage && !addSpecialFormOpen && (
           <Tooltip message="Create a tmpfs or ramfs filesystem.">
             <Button
-              appearance="neutral"
               data-testid="add-special-fs-button"
               onClick={() => setAddSpecialFormOpen(true)}
             >

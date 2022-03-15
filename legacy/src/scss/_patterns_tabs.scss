@@ -20,13 +20,13 @@
       );
       filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#00ffffff', endColorstr='#ffffff',GradientType=1 );
 
-      padding-left: $sph-inner--large;
+      padding-left: $sph--large;
       padding-right: 0;
       $chevron-font-size: 2rem;
       $chevron-width-at-1rem: 4.4; // in px
       $chevron-rendered-width: $chevron-font-size *
         math.div($chevron-width-at-1rem, 16); // divide by 16 to account for units (1 rem == 16px)
-      width: $chevron-rendered-width + $sph-inner--large; // spacing used in buttons + width of symbol
+      width: $chevron-rendered-width + $sph--large; // spacing used in buttons + width of symbol
       z-index: 1;
     }
 

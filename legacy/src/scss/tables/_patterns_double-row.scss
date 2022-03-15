@@ -1,6 +1,6 @@
 @mixin maas-double-row {
-  $checkbox-space: 1rem + $sph-inner;
-  $icon-space: map-get($icon-sizes, default) + $sph-inner--small;
+  $checkbox-space: 1rem + $sph--large;
+  $icon-space: map-get($icon-sizes, default) + $sph--small;
 
   .p-double-row {
     display: block;
@@ -21,12 +21,12 @@
 
     .p-double-row__checkbox {
       @extend %p-double-row__icon-container;
-      margin-right: $sph-inner;
+      margin-right: $sph--large;
     }
 
     .p-double-row__icon-container {
       @extend %p-double-row__icon-container;
-      margin-right: $sph-inner--small;
+      margin-right: $sph--small;
     }
 
     .p-double-row__rows-container--icon {
@@ -53,7 +53,7 @@
       @extend %p-double-row__row;
       color: $color-mid-dark;
       margin-bottom: map-get($line-heights, default-text) -
-        map-get($line-heights, small) - map-get($nudges, nudge--small);
+        map-get($line-heights, small) - map-get($nudges, small);
     }
   }
 }

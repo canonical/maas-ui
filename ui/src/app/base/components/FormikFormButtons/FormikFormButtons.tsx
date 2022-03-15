@@ -64,7 +64,6 @@ export const FormikFormButtons = <V,>({
         : secondarySubmitLabel;
     const button = (
       <Button
-        appearance="neutral"
         className="formik-form-buttons__button"
         data-testid="secondary-submit"
         disabled={secondarySubmitDisabled || submitDisabled}

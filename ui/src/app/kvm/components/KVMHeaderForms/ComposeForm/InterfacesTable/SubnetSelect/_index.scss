@@ -2,8 +2,8 @@
 
 $ratio-total: $subnet-col-ratio + $fabric-col-ratio + $vlan-col-ratio;
 $ratio-multiplier: math.div($ratio-total, $subnet-col-ratio);
-$padding: 2 * $sph-inner--small;
-$pxe-col-compensation: $pxe-col-width - $sph-inner--small;
+$padding: 2 * $sph--small;
+$pxe-col-compensation: $pxe-col-width - $sph--small;
 
 @mixin KVMSubnetSelect {
   .kvm-subnet-select {
@@ -17,7 +17,7 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
         #{$ratio-multiplier} * (100% + #{$padding}) + #{$pxe-col-compensation}
       ) !important;
 
-      @media only screen and (max-width: $breakpoint-medium) {
+      @media only screen and (max-width: $breakpoint-small) {
         width: auto;
       }
     }
@@ -28,7 +28,7 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
         display: flex;
         justify-content: space-between;
         margin-bottom: 0;
-        padding-left: $sph-inner--small;
+        padding-left: $sph--small;
         width: 100%;
 
         > :nth-child(1) {
@@ -59,7 +59,7 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
         // Subnet
         &:nth-child(1) {
           width: calc(
-            #{percentage(math.div($subnet-col-ratio, $ratio-total))} - #{2 * $sph-inner--small}
+            #{percentage(math.div($subnet-col-ratio, $ratio-total))} - #{2 * $sph--small}
           );
         }
 
@@ -75,14 +75,14 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
 
         // PXE
         &:nth-child(4) {
-          width: #{$pxe-col-width - 3 * $sph-inner--small};
+          width: #{$pxe-col-width - 3 * $sph--small};
         }
 
         &:not(:last-child) {
-          padding-right: $sph-inner--small;
+          padding-right: $sph--small;
         }
 
-        @media only screen and (max-width: $breakpoint-medium) {
+        @media only screen and (max-width: $breakpoint-small) {
           &:nth-child(1) {
             width: 100%;
           }
@@ -97,7 +97,7 @@ $pxe-col-compensation: $pxe-col-width - $sph-inner--small;
     }
 
     .p-contextual-menu__non-interactive {
-      padding-top: $spv-inner--small;
+      padding-top: $spv--small;
     }
   }
 }

@@ -87,7 +87,6 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
           <Col small={4} medium={2} size={6} className="u-align--right">
             {canEdit && !editing && (
               <Button
-                appearance="neutral"
                 className="u-no-margin--bottom"
                 data-testid="edit-power-config"
                 onClick={() => setEditing(true)}

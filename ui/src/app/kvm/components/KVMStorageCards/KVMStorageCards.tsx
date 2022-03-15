@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { Button, Card } from "@canonical/react-components";
+import { Button, Card, Icon } from "@canonical/react-components";
 import pluralize from "pluralize";
 
 import { useSendAnalytics } from "app/base/hooks";
@@ -91,7 +91,7 @@ const KVMStorageCards = ({
             {expanded ? (
               <>
                 <span>Show less storage pools</span>
-                <i className="p-icon--contextual-menu u-mirror--y"></i>
+                <Icon name="chevron-up" />
               </>
             ) : (
               <>
@@ -102,7 +102,7 @@ const KVMStorageCards = ({
                     true
                   )}
                 </span>
-                <i className="p-icon--contextual-menu"></i>
+                <Icon name="chevron-down" />
               </>
             )}
           </Button>

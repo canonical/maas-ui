@@ -8,11 +8,11 @@
       color: $color-dark;
     }
   }
-  
+
   // Make skip link work with the custom MAAS layout
   .p-link--skip:focus {
     position: absolute;
     background-color: $color-x-light;
-    padding: $sph-inner;
+    padding: $sph--large;
   }
 }

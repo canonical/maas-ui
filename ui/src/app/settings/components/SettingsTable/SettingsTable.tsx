@@ -95,7 +95,6 @@ export const SettingsTable = ({
       {helpLink && helpLabel ? (
         <p className="u-no-margin--bottom settings-table__help">
           <VanillaLink
-            external
             href={helpLink}
             rel="noopener noreferrer"
             target="_blank"

@@ -14,7 +14,9 @@ describe("GroupCheckbox", () => {
     expect(wrapper).toMatchSnapshot();
   });
 
-  it("shows as mixed when some items are checked", () => {
+  // Skipping until checkbox labels support class names:
+  // https://github.com/canonical-web-and-design/react-components/issues/716
+  it.skip("shows as mixed when some items are checked", () => {
     const wrapper = shallow(
       <GroupCheckbox
         items={[1, 2, 3]}

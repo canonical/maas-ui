@@ -63,7 +63,6 @@ const UserIntro = (): JSX.Element => {
       </IntroCard>
       <div className="u-align--right">
         <Button
-          appearance="neutral"
           data-testid="skip-button"
           onClick={() => {
             setShowSkip(true);

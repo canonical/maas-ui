@@ -53,11 +53,11 @@ export const HardwareMenu = ({
   }, [toggleHardwareMenu]);
 
   return (
-    <ul className="p-subnav__items" ref={wrapperRef}>
+    <ul className="p-navigation__dropdown" ref={wrapperRef}>
       {links.map((link: NavItem) => (
         <li key={link.url}>
           {generateLink(link, {
-            className: "p-subnav__item",
+            className: "p-navigation__dropdown-item",
             onClick: (event) => {
               toggleHardwareMenu(event, false);
             },

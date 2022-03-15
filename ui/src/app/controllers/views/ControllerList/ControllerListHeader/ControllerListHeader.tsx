@@ -33,7 +33,6 @@ const ControllerListHeader = ({
     <SectionHeader
       buttons={[
         <Button
-          appearance="neutral"
           data-testid="add-controller-button"
           disabled={selectedControllers.length > 0}
           onClick={() =>

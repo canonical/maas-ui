@@ -1,7 +1,7 @@
 @mixin LXDHostToolbar {
   .lxd-host-toolbar {
     // Add space between the toolbar and the content below it.
-    padding-bottom: $spv-inner--medium;
+    padding-bottom: $spv--medium;
   }
 
   @media only screen and (min-width: $breakpoint-small) {
@@ -22,11 +22,11 @@
 
     .lxd-host-toolbar__block {
       border-left: $border;
-      padding-left: $sph-inner--large;
-      margin-bottom: $spv-inner--medium;
+      padding-left: $sph--large;
+      margin-bottom: $spv--medium;
 
       &:not(:last-of-type) {
-        padding-right: $sph-inner--large;
+        padding-right: $sph--large;
       }
 
       &.no-divider {
@@ -64,7 +64,7 @@
     .lxd-host-toolbar__block {
       &.no-divider {
         border-left: 0;
-        padding-left: $sph-inner--large;
+        padding-left: $sph--large;
       }
 
       &.lxd-host-toolbar__title {

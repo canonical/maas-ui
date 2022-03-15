@@ -50,11 +50,11 @@
     }
 
     td {
-      padding-bottom: $spv-inner--small;
-      padding-top: $spv-inner--small;
+      padding-bottom: $spv--small;
+      padding-top: $spv--small;
 
       &[aria-label]::before {
-        margin-bottom: $spv-inner--x-small;
+        margin-bottom: $spv--x-small;
       }
     }
 
@@ -66,7 +66,7 @@
       top: initial;
     }
 
-    @media only screen and (min-width: $breakpoint-medium) {
+    @media only screen and (min-width: $breakpoint-small) {
       // Align non-form fields with form fields on larger viewports
       .u-align-non-field {
         padding-top: $sp-unit * 1.75;

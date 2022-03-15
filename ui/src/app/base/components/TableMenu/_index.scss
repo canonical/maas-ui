@@ -1,18 +1,18 @@
 @mixin TableMenu {
   $icon-size: map-get($icon-sizes, default);
-  $icon-space: $icon-size + $sph-inner--small + $sph-inner;
+  $icon-space: $icon-size + $sph--small + $sph--large;
 
   .p-table-menu--hasIcon .p-contextual-menu__non-interactive {
     padding-left: $icon-space;
   }
 
   .p-table-menu .p-contextual-menu__dropdown {
-    margin-left: -$sph-inner;
+    margin-left: -$sph--large;
     min-width: 13rem;
 
     .p-table-menu__icon-space,
     [class*="p-icon"] {
-      margin-right: $sph-inner--small;
+      margin-right: $sph--small;
     }
   }
 

@@ -50,7 +50,8 @@
       color: $color-dark;
       font-weight: 400;
 
-      .p-icon--contextual-menu {
+      .p-icon--chevron-down,
+      .p-icon--chevron-up {
         @include vf-icon-size(0.875rem);
         margin-left: $sp-x-small;
       }

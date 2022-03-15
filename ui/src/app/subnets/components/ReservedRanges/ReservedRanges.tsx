@@ -333,12 +333,7 @@ const ReservedRanges = ({
           />
         </FormCard>
       ) : null}
-      <a
-        className="p-link--external"
-        href="https://maas.io/docs/ip-ranges"
-        rel="noreferrer"
-        target="_blank"
-      >
+      <a href="https://maas.io/docs/ip-ranges" rel="noreferrer" target="_blank">
         About IP ranges
       </a>
     </TitledSection>

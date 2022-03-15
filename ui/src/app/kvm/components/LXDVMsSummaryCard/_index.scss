@@ -30,7 +30,7 @@
       grid-area: vfs;
     }
 
-    @media only screen and (min-width: $breakpoint-medium) {
+    @media only screen and (min-width: $breakpoint-small) {
       grid-template-areas:
         "ram ram ram ram ram ram"
         "cor cor cor cor cor cor"

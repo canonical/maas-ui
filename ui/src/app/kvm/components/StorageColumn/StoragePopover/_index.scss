@@ -1,10 +1,10 @@
 @mixin StoragePopover {
   %storage-popover-grid {
     display: grid;
-    grid-column-gap: $sph-inner;
+    grid-column-gap: $sph--large;
     grid-template-columns: 1fr 5rem 1fr;
-    padding-left: $sph-inner;
-    padding-right: $sph-inner;
+    padding-left: $sph--large;
+    padding-right: $sph--large;
   }
 
   .storage-popover {
@@ -17,8 +17,8 @@
 
   .storage-popover__row {
     @extend %storage-popover-grid;
-    padding-bottom: $spv-inner--small;
-    padding-top: $spv-inner--small;
+    padding-bottom: $spv--small;
+    padding-top: $spv--small;
 
     > * {
       overflow: hidden;
