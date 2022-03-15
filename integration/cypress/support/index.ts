@@ -15,6 +15,7 @@ declare global {
         shouldSkipSetupIntro?: boolean;
       }): void;
       testA11y(pageContext: A11yPageContext): void;
+      waitForPageToLoad(): void;
     }
   }
 }
