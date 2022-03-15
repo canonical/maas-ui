@@ -212,4 +212,23 @@ describe("NodeActionMenu", () => {
       "negative"
     );
   });
+
+  it("can override action titles", () => {
+    const nodes = [
+      machineFactory({
+        actions: [NodeActions.TAG],
+      }),
+    ];
+    const wrapper = mount(
+      <NodeActionMenu
+        getTitle={() => "Overridden"}
+        nodes={nodes}
+        onActionClick={jest.fn()}
+      />
+    );
+    openMenu(wrapper);
+    expect(
+      getActionButton(wrapper, NodeActions.TAG).text().includes("Overridden")
+    ).toBe(true);
+  });
 });

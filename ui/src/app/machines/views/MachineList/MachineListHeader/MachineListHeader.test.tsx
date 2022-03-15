@@ -8,6 +8,7 @@ import MachineListHeader from "./MachineListHeader";
 
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -34,6 +35,10 @@ describe("MachineListHeader", () => {
         },
       }),
     });
+  });
+
+  afterEach(() => {
+    localStorage.clear();
   });
 
   it("displays a loader if machines have not loaded", () => {
@@ -167,5 +172,89 @@ describe("MachineListHeader", () => {
     expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
       "Deploy"
     );
+  });
+
+  it("displays a new label for the tag action", () => {
+    // Set a selected machine so the take action menu becomes enabled.
+    state.machine.selected = ["abc123"];
+    // A machine needs the tag action for it to appear in the menu.
+    state.machine.items = [
+      machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
+    ];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineListHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    // Open the take action menu.
+    wrapper
+      .find(
+        '[data-testid="take-action-dropdown"] button.p-contextual-menu__toggle'
+      )
+      .simulate("click");
+    expect(
+      wrapper
+        .find("button[data-testid='action-link-tag']")
+        .text()
+        .includes("(NEW)")
+    ).toBe(true);
+  });
+
+  it("hides the tag action's new label after it has been clicked", () => {
+    // Set a selected machine so the take action menu becomes enabled.
+    state.machine.selected = ["abc123"];
+    // A machine needs the tag action for it to appear in the menu.
+    state.machine.items = [
+      machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
+    ];
+    const store = mockStore(state);
+    const Header = () => (
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <MachineListHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    let wrapper = mount(<Header />);
+    // Open the take action menu.
+    wrapper
+      .find(
+        '[data-testid="take-action-dropdown"] button.p-contextual-menu__toggle'
+      )
+      .simulate("click");
+    const tagAction = wrapper.find("button[data-testid='action-link-tag']");
+    // The new label should appear before being clicked.
+    expect(tagAction.text().includes("(NEW)")).toBe(true);
+    tagAction.simulate("click");
+    // Render the header again
+    wrapper = mount(<Header />);
+    // Open the take action menu.
+    wrapper
+      .find(
+        '[data-testid="take-action-dropdown"] button.p-contextual-menu__toggle'
+      )
+      .simulate("click");
+    // The new label should now be hidden.
+    expect(
+      wrapper
+        .find("button[data-testid='action-link-tag']")
+        .text()
+        .includes("(NEW)")
+    ).toBe(false);
   });
 });
