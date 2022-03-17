@@ -31,14 +31,6 @@ import {
 } from "app/subnets/urls";
 import { simpleSortByKey } from "app/utils";
 
-const sortBySortKey =
-  (key: keyof SortData, { reverse } = { reverse: false }) =>
-  (a: SubnetsTableRow, b: SubnetsTableRow): number => {
-    if (a.sortData[key] > b.sortData[key]) return reverse ? -1 : 1;
-    if (a.sortData[key] < b.sortData[key]) return reverse ? 1 : -1;
-    return 0;
-  };
-
 const getColumn = (label: string | null, href?: string | null) => ({
   label,
   href: href ? href : null,
@@ -122,7 +114,14 @@ const getOrphanVLANs = (data: SubnetsTableData): SubnetsTableRow[] => {
     rows.push(getRowData({ fabric, vlan, subnet, space: undefined, data }));
   });
 
-  return markRepeatedSpaceRows(rows.sort(sortBySortKey("cidr")));
+  return markRepeatedSpaceRows(
+    rows.sort((a, b) =>
+      simpleSortByKey<SortData, "cidr">("cidr", { alphanumeric: true })(
+        a.sortData,
+        b.sortData
+      )
+    )
+  );
 };
 
 const getBySpaces = (data: SubnetsTableData): SubnetsTableRow[] => {
@@ -143,7 +142,13 @@ const getBySpaces = (data: SubnetsTableData): SubnetsTableRow[] => {
     });
   }
 
-  return markRepeatedSpaceRows(rows.sort(sortBySortKey("spaceName")));
+  return markRepeatedSpaceRows(
+    rows.sort((a, b) =>
+      simpleSortByKey<SortData, "spaceName">("spaceName", {
+        alphanumeric: true,
+      })(a.sortData, b.sortData)
+    )
+  );
 };
 
 const getByFabric = (data: SubnetsTableData): SubnetsTableRow[] => {
@@ -173,7 +178,13 @@ const getByFabric = (data: SubnetsTableData): SubnetsTableRow[] => {
     }
   });
 
-  return markRepeatedFabricRows(rows.sort(sortBySortKey("fabricName")));
+  return markRepeatedFabricRows(
+    rows.sort((a, b) =>
+      simpleSortByKey<SortData, "fabricName">("fabricName", {
+        alphanumeric: true,
+      })(a.sortData, b.sortData)
+    )
+  );
 };
 
 export const getTableData = (

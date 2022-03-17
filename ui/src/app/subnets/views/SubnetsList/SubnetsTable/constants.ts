@@ -15,3 +15,5 @@ export const subnetColumnLabels: Record<SubnetsColumns, string> = {
   [SubnetsColumns.IPS]: "Available IPs",
   [SubnetsColumns.SPACE]: "Space",
 };
+
+export const SUBNETS_TABLE_ITEMS_PER_PAGE = 25;
