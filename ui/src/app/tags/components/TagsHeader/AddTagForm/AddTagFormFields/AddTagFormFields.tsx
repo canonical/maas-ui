@@ -32,7 +32,7 @@ const getDefinitionError = (
   return errors.definition;
 };
 
-export const AddTagForm = (): JSX.Element => {
+export const AddTagFormFields = (): JSX.Element => {
   const { errors } = useFormikContext<CreateParams>();
   const definitionErrorId = useId();
   const definitionError = getDefinitionError(errors, definitionErrorId);
@@ -109,4 +109,4 @@ export const AddTagForm = (): JSX.Element => {
   );
 };
 
-export default AddTagForm;
+export default AddTagFormFields;

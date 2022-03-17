@@ -91,6 +91,10 @@ it("redirects to the newly created tag on save", async () => {
   render(<TagForm />);
   expect(history.location.pathname).toBe(tagsURLs.tags.index);
   userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "tag1");
+  // Simulate the state.tag.saved state going from `save: false` to `saved:
+  // true` which happens when the tag is successfully saved. This in turn will
+  // mean that the form `onSuccess` prop will get called so that the component
+  // knows that the tag was created.
   jest
     .spyOn(baseHooks, "useCycled")
     .mockImplementation(() => [true, () => null]);
