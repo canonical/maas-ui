@@ -100,6 +100,24 @@ describe("TagSelector", () => {
     ).toBe("tag1");
   });
 
+  it("can hide the tags that have been selected", () => {
+    const component = shallow(
+      <TagSelector
+        label="Tags"
+        placeholder="Select or create tags"
+        onTagsUpdate={jest.fn()}
+        showSelectedTags={false}
+        tags={tags}
+      />
+    );
+    component.find(".tag-selector__input").simulate("focus");
+    component.find('[data-testid="existing-tag"]').at(0).simulate("click");
+    expect(component.find('[data-testid="selected-tag"] span').exists()).toBe(
+      false
+    );
+    expect(component.find(".tag-selector__selected-list").exists()).toBe(false);
+  });
+
   it("can remove tags that have been selected", () => {
     const component = shallow(
       <TagSelector
@@ -224,6 +242,42 @@ describe("TagSelector", () => {
     ).toBe(false);
     expect(
       component.find('[data-testid="selected-tag"]').at(1).prop("disabled")
+    ).toBe(true);
+  });
+
+  it("can display a dropdown header", () => {
+    const component = shallow(
+      <TagSelector
+        header={<span data-testid="dropdown-header"></span>}
+        label="Tags"
+        placeholder="Select or create tags"
+        onTagsUpdate={jest.fn()}
+        showSelectedTags={false}
+        tags={tags}
+      />
+    );
+    component.find(".tag-selector__input").simulate("focus");
+    const header = component.find(".tag-selector__dropdown");
+    expect(header.exists()).toBe(true);
+    expect(header.find("[data-testid='dropdown-header']").exists()).toBe(true);
+  });
+
+  it("can customise the dropdown items", () => {
+    const component = shallow(
+      <TagSelector
+        label="Tags"
+        generateDropdownEntry={() => <span data-testid="dropdown-item"></span>}
+        placeholder="Select or create tags"
+        onTagsUpdate={jest.fn()}
+        showSelectedTags={false}
+        tags={tags}
+      />
+    );
+    component.find(".tag-selector__input").simulate("focus");
+    expect(
+      component
+        .find(".tag-selector__dropdown-button [data-testid='dropdown-item']")
+        .exists()
     ).toBe(true);
   });
 });

@@ -38,6 +38,15 @@ const getByIDs = createSelector(
   }
 );
 
+/**
+ * Get a list of manual tags.
+ * @param state - The redux state.
+ * @returns A list of manual tags.
+ */
+const getManual = createSelector([defaultSelectors.all], (tags) =>
+  tags.filter(({ definition }) => !definition)
+);
+
 export enum TagSearchFilter {
   All = "all",
   Manual = "manual",
@@ -79,6 +88,7 @@ const search = createSelector(
 const selectors = {
   ...defaultSelectors,
   getByIDs,
+  getManual,
   search,
 };
 
