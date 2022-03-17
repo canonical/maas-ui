@@ -4,7 +4,7 @@
     "baseUrl": "../node_modules",
     "target": "es6",
     "lib": ["es2016", "dom"],
-    "types": ["cypress", "cypress-axe", "@testing-library/cypress"],
+    "types": ["cypress", "cypress-axe", "@testing-library/cypress", "@percy/cypress"],
     "moduleResolution": "Node"
   },
   "include": ["**/*.ts"]

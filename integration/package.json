@@ -12,10 +12,13 @@
     "serve-base": "yarn --cwd ../proxy serve-base",
     "cypress-run": "yarn cypress run",
     "cypress-run-a11y": "yarn cypress run --config integrationFolder=cypress/integration/accessibility",
-    "cypress-open": "yarn cypress open"
+    "cypress-open": "yarn cypress open",
+    "percy": "./percy.sh"
   },
   "devDependencies": {
     "@maas-ui/maas-ui-shared": "3.2.0",
+    "@percy/cli": "1.0.0-beta.76",
+    "@percy/cypress": "3.1.1",
     "@testing-library/cypress": "8.0.2",
     "@typescript-eslint/eslint-plugin": "5.15.0",
     "@typescript-eslint/parser": "5.15.0",
