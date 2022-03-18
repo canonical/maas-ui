@@ -57,6 +57,19 @@ describe("tag selectors", () => {
     expect(tag.errors(state)).toStrictEqual("Data is incorrect");
   });
 
+  it("can get all automatic tags", () => {
+    const items = [
+      tagFactory({ definition: "def1" }),
+      tagFactory({ definition: "" }),
+    ];
+    const state = rootStateFactory({
+      tag: tagStateFactory({
+        items,
+      }),
+    });
+    expect(tag.getAutomatic(state)).toStrictEqual([items[0]]);
+  });
+
   describe("getByIDs", () => {
     const tags = [
       tagFactory({ id: 1 }),
@@ -98,6 +111,44 @@ describe("tag selectors", () => {
         tag: tagStateFactory({ items: tags }),
       });
       expect(tag.getByName(state, "tag2")).toStrictEqual(tags[1]);
+    });
+  });
+
+  describe("getAutomaticByIDs", () => {
+    const tags = [
+      tagFactory({ id: 1 }),
+      tagFactory({ definition: "def1", id: 2 }),
+      tagFactory({ id: 3 }),
+    ];
+    const state = rootStateFactory({
+      tag: tagStateFactory({ items: tags }),
+    });
+
+    it("handles the null case", () => {
+      expect(tag.getAutomaticByIDs(state, null)).toStrictEqual([]);
+    });
+
+    it("returns a list of tags given their IDs", () => {
+      expect(tag.getAutomaticByIDs(state, [1, 2])).toStrictEqual([tags[1]]);
+    });
+  });
+
+  describe("getManualByIDs", () => {
+    const tags = [
+      tagFactory({ id: 1 }),
+      tagFactory({ definition: "def1", id: 2 }),
+      tagFactory({ id: 3 }),
+    ];
+    const state = rootStateFactory({
+      tag: tagStateFactory({ items: tags }),
+    });
+
+    it("handles the null case", () => {
+      expect(tag.getManualByIDs(state, null)).toStrictEqual([]);
+    });
+
+    it("returns a list of tags given their IDs", () => {
+      expect(tag.getManualByIDs(state, [1, 2])).toStrictEqual([tags[0]]);
     });
   });
 
