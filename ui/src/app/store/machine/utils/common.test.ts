@@ -1,4 +1,4 @@
-import { isMachineDetails } from "./common";
+import { getTagCountsForMachines, isMachineDetails } from "./common";
 
 import {
   machine as machineFactory,
@@ -21,6 +21,23 @@ describe("common machine utils", () => {
 
     it("handles null", () => {
       expect(isMachineDetails(null)).toBe(false);
+    });
+  });
+
+  describe("getTagCountsForMachines", () => {
+    it("gets the tag ids and counts", () => {
+      const machines = [
+        machineFactory({ tags: [1, 2, 3] }),
+        machineFactory({ tags: [3, 1, 4] }),
+      ];
+      expect(getTagCountsForMachines(machines)).toStrictEqual(
+        new Map([
+          [1, 2],
+          [2, 1],
+          [3, 2],
+          [4, 1],
+        ])
+      );
     });
   });
 });

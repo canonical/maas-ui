@@ -1,4 +1,5 @@
-export { isMachineDetails } from "./common";
+export { isMachineDetails, getTagCountsForMachines } from "./common";
+export type { TagIdCountMap } from "./common";
 
 export {
   useCanAddVLAN,

@@ -3,17 +3,23 @@ import type { ReactNode } from "react";
 import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import TagFormChanges from "../TagFormChanges";
+
 import TagField from "app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "app/base/components/TagSelector/TagSelector";
+import type { Machine } from "app/store/machine/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 
 const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
   !!tags.find(({ id }) => tag.id === id)?.kernel_opts;
 
-export const TagFormFields = (): JSX.Element => {
-  const tags = useSelector(tagSelectors.getManual);
+type Props = {
+  machines: Machine[];
+};
 
+export const TagFormFields = ({ machines }: Props): JSX.Element => {
+  const tags = useSelector(tagSelectors.getManual);
   return (
     <div className="tag-form">
       <div className="tag-form__search">
@@ -46,9 +52,7 @@ export const TagFormFields = (): JSX.Element => {
         />
       </div>
       <div className="tag-form__changes">
-        <p className="u-text--muted">
-          Tags for selected machines will appear here.
-        </p>
+        <TagFormChanges machines={machines} />
       </div>
       <div className="tag-form__details">
         <p className="u-text--muted">

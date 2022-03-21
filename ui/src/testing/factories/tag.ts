@@ -8,7 +8,7 @@ import type { TimestampedModel } from "app/store/types/model";
 export const tag = extend<TimestampedModel, Tag>(timestampedModel, {
   comment: "test comment",
   controller_count: 0,
-  definition: "test definition",
+  definition: "",
   device_count: 0,
   kernel_opts: null,
   machine_count: 0,

@@ -85,7 +85,7 @@ export const TagForm = ({
       selectedCount={machines.length}
       validationSchema={TagFormSchema}
     >
-      <TagFormFields />
+      <TagFormFields machines={machines} />
     </ActionForm>
   );
 };

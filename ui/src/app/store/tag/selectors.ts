@@ -13,6 +13,22 @@ const defaultSelectors = generateBaseSelectors<TagState, Tag, TagMeta.PK>(
   searchFunction
 );
 
+const getTagsFromIds = (
+  tags: Tag[],
+  tagIDs: Tag[TagMeta.PK][] | null
+): Tag[] => {
+  if (!tagIDs) {
+    return [];
+  }
+  return tagIDs.reduce<Tag[]>((filteredTags, tagID) => {
+    const tag = tags.find((tag) => tag.id === tagID);
+    if (tag) {
+      filteredTags.push(tag);
+    }
+    return filteredTags;
+  }, []);
+};
+
 /**
  * Get a list of tags from a list of their IDs.
  * @param state - The redux state.
@@ -24,18 +40,7 @@ const getByIDs = createSelector(
     defaultSelectors.all,
     (_state: RootState, tagIDs: Tag[TagMeta.PK][] | null) => tagIDs,
   ],
-  (allTags, tagIDs) => {
-    if (!tagIDs) {
-      return [];
-    }
-    return tagIDs.reduce<Tag[]>((tags, tagID) => {
-      const tag = allTags.find((tag) => tag.id === tagID);
-      if (tag) {
-        tags.push(tag);
-      }
-      return tags;
-    }, []);
-  }
+  (allTags, tagIDs) => getTagsFromIds(allTags, tagIDs)
 );
 
 /**
@@ -45,6 +50,41 @@ const getByIDs = createSelector(
  */
 const getManual = createSelector([defaultSelectors.all], (tags) =>
   tags.filter(({ definition }) => !definition)
+);
+
+/**
+ * Get a list of automatic tags.
+ * @param state - The redux state.
+ * @returns A list of automatic tags.
+ */
+const getAutomatic = createSelector([defaultSelectors.all], (tags) =>
+  // Automatic tags have a definition.
+  tags.filter(({ definition }) => !!definition)
+);
+
+/**
+ * Get a list of tags from a list of their IDs.
+ * @param state - The redux state.
+ * @param ids - A list of tag IDs.
+ * @returns A list of tags.
+ */
+const getAutomaticByIDs = createSelector(
+  [
+    getAutomatic,
+    (_state: RootState, tagIDs: Tag[TagMeta.PK][] | null) => tagIDs,
+  ],
+  (automaticTags, tagIDs) => getTagsFromIds(automaticTags, tagIDs)
+);
+
+/**
+ * Get a list of tags from a list of their IDs.
+ * @param state - The redux state.
+ * @param ids - A list of tag IDs.
+ * @returns A list of tags.
+ */
+const getManualByIDs = createSelector(
+  [getManual, (_state: RootState, tagIDs: Tag[TagMeta.PK][] | null) => tagIDs],
+  (manualTags, tagIDs) => getTagsFromIds(manualTags, tagIDs)
 );
 
 /**
@@ -103,9 +143,12 @@ const search = createSelector(
 
 const selectors = {
   ...defaultSelectors,
-  getByName,
   getByIDs,
+  getByName,
+  getAutomatic,
+  getAutomaticByIDs,
   getManual,
+  getManualByIDs,
   search,
 };
 
