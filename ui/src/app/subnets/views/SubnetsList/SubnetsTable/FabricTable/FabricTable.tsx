@@ -1,15 +1,13 @@
 import { useMemo } from "react";
 
-import { Pagination } from "@canonical/react-components";
+import { Pagination, ModularTable } from "@canonical/react-components";
 
-import { usePagination } from "../hooks";
-
-import ModularTable from "app/base/components/ModularTable";
 import { CellContents } from "app/subnets/views/SubnetsList/SubnetsTable/components";
 import {
   subnetColumnLabels,
   SubnetsColumns,
 } from "app/subnets/views/SubnetsList/SubnetsTable/constants";
+import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
 import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
 
 const FabricTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
@@ -17,7 +15,7 @@ const FabricTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
 
   return (
     <>
-      <ModularTable<SubnetsTableRow>
+      <ModularTable
         emptyMsg="Loading..."
         className="subnets-table"
         aria-label="Subnets by Fabric"

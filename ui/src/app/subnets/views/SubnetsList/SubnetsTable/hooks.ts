@@ -67,7 +67,7 @@ export function usePagination<D>(
   useEffect(() => {
     // go to the last available page if the current page is out of bounds
     if (startIndex >= totalItems) {
-      totalItems / itemsPerPage > 0
+      Math.floor(totalItems / itemsPerPage) > 0
         ? setPageIndex(Math.floor(totalItems / itemsPerPage) - 1)
         : setPageIndex(0);
     }
