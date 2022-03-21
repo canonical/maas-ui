@@ -1,4 +1,9 @@
-import { getTableData } from "./utils";
+import {
+  filterSubnetsBySearchText,
+  getTableData,
+  groupRowsByFabricAndVlan,
+  groupRowsBySpace,
+} from "./utils";
 
 import {
   fabric as fabricFactory,
@@ -20,40 +25,6 @@ test("getTableData generates correct sortData for fabric", () => {
     fabricName: "test-fabric",
     spaceName: "no space",
     vlanId: 1,
-  });
-});
-
-test("getTableData returns grouped fabrics in a correct format", () => {
-  const fabrics = [
-    fabricFactory({ id: 1, vlan_ids: [1] }),
-    fabricFactory({ id: 2 }),
-  ];
-  const vlans = [vlanFactory({ fabric: 1 }), vlanFactory({ fabric: 1 })];
-  const subnets = [subnetFactory(), subnetFactory()];
-  const spaces = [spaceFactory()];
-
-  expect(
-    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[0]?.fabric
-  ).toStrictEqual({
-    href: "/fabric/1",
-    isVisuallyHidden: false,
-    label: "test-fabric",
-  });
-
-  expect(
-    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[1]?.fabric
-  ).toStrictEqual({
-    href: "/fabric/1",
-    isVisuallyHidden: true,
-    label: "test-fabric",
-  });
-
-  expect(
-    getTableData({ fabrics, vlans, subnets, spaces }, "fabric")[2]?.fabric
-  ).toStrictEqual({
-    href: "/fabric/2",
-    isVisuallyHidden: false,
-    label: "test-fabric",
   });
 });
 
@@ -89,4 +60,85 @@ test("getTableData returns spaces sorted in a correct order", () => {
   tableData.forEach((row, index) => {
     expect(row.space.label).toEqual(expectedOrder[index]);
   });
+});
+
+test("groupRowsByFabricAndVlan returns grouped fabrics in a correct format", () => {
+  const fabrics = [
+    fabricFactory({ id: 1, vlan_ids: [1] }),
+    fabricFactory({ id: 2 }),
+  ];
+  const vlans = [vlanFactory({ fabric: 1 }), vlanFactory({ fabric: 1 })];
+  const subnets = [subnetFactory(), subnetFactory()];
+  const spaces = [spaceFactory()];
+  const tableData = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
+
+  expect(groupRowsByFabricAndVlan(tableData)[0].fabric).toStrictEqual({
+    href: "/fabric/1",
+    isVisuallyHidden: false,
+    label: "test-fabric",
+  });
+
+  expect(groupRowsByFabricAndVlan(tableData)[1].fabric).toStrictEqual({
+    href: "/fabric/1",
+    isVisuallyHidden: true,
+    label: "test-fabric",
+  });
+
+  expect(groupRowsByFabricAndVlan(tableData)[2].fabric).toStrictEqual({
+    href: "/fabric/2",
+    isVisuallyHidden: false,
+    label: "test-fabric",
+  });
+});
+
+test("groupRowsBySpace returns grouped spaces in a correct format", () => {
+  const fabrics = [fabricFactory({ id: 1, vlan_ids: [1, 2, 3] })];
+  const vlans = [
+    vlanFactory({ vid: 1, fabric: 1, space: 1 }),
+    vlanFactory({ vid: 2, fabric: 1, space: 1 }),
+    vlanFactory({ vid: 3, fabric: 1, space: 2 }),
+  ];
+  const subnets = [subnetFactory(), subnetFactory()];
+  const spaces = [
+    spaceFactory({ id: 1, name: "space-1" }),
+    spaceFactory({ id: 2, name: "space-2" }),
+  ];
+  const tableData = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
+
+  expect(groupRowsBySpace(tableData)[0].space).toStrictEqual({
+    href: "/space/1",
+    isVisuallyHidden: false,
+    label: "space-1",
+  });
+
+  expect(groupRowsBySpace(tableData)[1].space).toStrictEqual({
+    href: "/space/1",
+    isVisuallyHidden: true,
+    label: "space-1",
+  });
+
+  expect(groupRowsBySpace(tableData)[2].space).toStrictEqual({
+    href: "/space/2",
+    isVisuallyHidden: false,
+    label: "space-2",
+  });
+});
+
+test("filterSubnetsBySearchText matches a correct number of results with each value", () => {
+  const fabrics = [
+    fabricFactory({ id: 1, vlan_ids: [1], name: "test-fabric-1" }),
+    fabricFactory({ id: 2, name: "test-fabric-2" }),
+    fabricFactory({ id: 3, name: "test-fabric-3" }),
+  ];
+  const vlans = [
+    vlanFactory({ id: 1, fabric: 1, space: 1, name: "test-vlan" }),
+  ];
+  const subnets = [subnetFactory({ cidr: "172.16.1.0/24", vlan: 1 })];
+  const spaces = [spaceFactory({ id: 1, name: "space-1" })];
+  const tableRows = getTableData({ fabrics, vlans, subnets, spaces }, "fabric");
+
+  expect(tableRows).toHaveLength(3);
+  expect(filterSubnetsBySearchText(tableRows, "test-fabric-1")).toHaveLength(1);
+  expect(filterSubnetsBySearchText(tableRows, "test-vlan")).toHaveLength(1);
+  expect(filterSubnetsBySearchText(tableRows, "172.16.1.0")).toHaveLength(1);
 });
