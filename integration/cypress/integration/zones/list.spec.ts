@@ -13,7 +13,7 @@ context("Zones", () => {
   });
 
   it("highlights the correct navigation link", () => {
-    cy.get(".p-navigation__link.is-selected a").should(
+    cy.get(".p-navigation__item.is-selected a").should(
       "have.attr",
       "href",
       generateNewURL("/zones")

@@ -8,7 +8,9 @@ exports[`MachineSummary renders 1`] = `
     text="Loading"
   >
     <span
+      aria-live="polite"
       className="p-text--default"
+      role="alert"
     >
       <i
         className="p-icon--spinner u-animation--spin"

@@ -338,11 +338,15 @@ exports[`NodeName can display the form 1`] = `
               className="u-width--auto"
             >
               <span
+                aria-live="polite"
                 className="u-width--auto p-text--default"
+                role="alert"
               >
                 <i
                   className="p-icon--spinner u-animation--spin"
-                />
+                >
+                  Loading
+                </i>
               </span>
             </Spinner>
           </NodeNameFields>

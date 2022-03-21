@@ -37,7 +37,7 @@ describe("AddController", () => {
       </Provider>
     );
     const instructions = wrapper
-      .find("[data-testid='register-snippet']")
+      .find("div[data-testid='register-snippet']")
       .text();
     expect(instructions.includes("http://1.2.3.4/MAAS")).toBe(true);
     expect(instructions.includes("veryverysecret")).toBe(true);
