@@ -35,7 +35,7 @@ it("renders", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagList />
+        <TagList onDelete={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );

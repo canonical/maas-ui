@@ -9,8 +9,13 @@ import { useWindowTitle } from "app/base/hooks";
 import { useId } from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
+import type { Tag, TagMeta } from "app/store/tag/types";
 
-const TagList = (): JSX.Element => {
+type Props = {
+  onDelete: (id: Tag[TagMeta.PK]) => void;
+};
+
+const TagList = ({ onDelete }: Props): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(TagSearchFilter.All);
   const [searchText, setSearchText] = useState("");
@@ -36,6 +41,7 @@ const TagList = (): JSX.Element => {
       />
       <TagTable
         aria-label="tags"
+        onDelete={onDelete}
         currentPage={currentPage}
         filter={filter}
         id={tableId}

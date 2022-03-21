@@ -45,7 +45,7 @@ it("dispatches actions to fetch necessary data", () => {
         <Route
           exact
           path={tagURLs.tag.index(null, true)}
-          component={() => <TagDetails />}
+          component={() => <TagDetails onDelete={jest.fn()} />}
         />
       </MemoryRouter>
     </Provider>
@@ -78,7 +78,7 @@ it("displays a message if the tag does not exist", () => {
         <Route
           exact
           path={tagURLs.tag.index(null, true)}
-          component={() => <TagDetails />}
+          component={() => <TagDetails onDelete={jest.fn()} />}
         />
       </MemoryRouter>
     </Provider>
@@ -103,7 +103,7 @@ it("shows a spinner if the tag has not loaded yet", () => {
         <Route
           exact
           path={tagURLs.tag.index(null, true)}
-          component={() => <TagDetails />}
+          component={() => <TagDetails onDelete={jest.fn()} />}
         />
       </MemoryRouter>
     </Provider>
@@ -131,7 +131,7 @@ it("can link to nodes", () => {
         <Route
           exact
           path={tagURLs.tag.index(null, true)}
-          component={() => <TagDetails />}
+          component={() => <TagDetails onDelete={jest.fn()} />}
         />
       </MemoryRouter>
     </Provider>

@@ -277,6 +277,10 @@
 @include UsedIpTable;
 @include VLANSubnets;
 
+// tags
+@import "~app/tags/components/TagsHeader/DeleteTagForm/DeleteTagFormWarnings/_index.scss";
+@include DeleteTagFormWarnings;
+
 #maas-ui {
   background-color: $color-light;
   min-height: 100vh;
