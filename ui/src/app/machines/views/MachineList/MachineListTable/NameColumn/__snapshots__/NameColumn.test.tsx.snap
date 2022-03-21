@@ -123,6 +123,7 @@ exports[`NameColumn renders 1`] = `
                             </small>
                           </Link>
                         }
+                        labelClassName="is-inline-label"
                         onChange={[Function]}
                       >
                         <CheckableInput
@@ -146,10 +147,11 @@ exports[`NameColumn renders 1`] = `
                               </small>
                             </Link>
                           }
+                          labelClassName="is-inline-label"
                           onChange={[Function]}
                         >
                           <label
-                            className="p-checkbox"
+                            className="is-inline-label p-checkbox"
                           >
                             <input
                               aria-labelledby="mock-nanoid-1"
