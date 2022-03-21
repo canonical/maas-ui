@@ -52,16 +52,16 @@ const MachineHeader = ({
     NodeActions.OFF,
     NodeActions.ON,
   ]);
+  const isDetails = isMachineDetails(machine);
 
   useEffect(() => {
     dispatch(machineActions.get(systemId));
   }, [dispatch, systemId]);
 
-  if (!machine) {
+  if (!machine || !isDetails) {
     return <SectionHeader loading />;
   }
 
-  const isDetails = isMachineDetails(machine);
   const urlBase = `/machine/${systemId}`;
   const checkingPower = statuses?.checkingPower;
 

@@ -11,6 +11,7 @@ import { PowerState } from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
+  machine as machineFactory,
   machineDetails as machineDetailsFactory,
   machineDevice as machineDeviceFactory,
   machineState as machineStateFactory,
@@ -39,6 +40,25 @@ describe("MachineHeader", () => {
 
   it("displays a spinner when loading", () => {
     state.machine.items = [];
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <MachineHeader
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+            systemId="abc123"
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Spinner").exists()).toBe(true);
+  });
+
+  it("displays a spinner when loading the details version of the machine", () => {
+    state.machine.items = [machineFactory({ system_id: "abc123" })];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
