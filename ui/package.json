@@ -11,7 +11,7 @@
   "bugs": "https://github.com/canonical-web-and-design/maas-ui/issues",
   "dependencies": {
     "@canonical/macaroon-bakery": "1.0.0",
-    "@canonical/react-components": "0.31.0",
+    "@canonical/react-components": "0.33.0",
     "@maas-ui/maas-ui-shared": "3.2.0",
     "@reduxjs/toolkit": "1.8.0",
     "@sentry/browser": "6.18.2",
@@ -54,7 +54,7 @@
     "single-spa-react": "4.6.1",
     "typed-redux-saga": "1.4.0",
     "typescript": "4.6.2",
-    "vanilla-framework": "3.0.0",
+    "vanilla-framework": "3.1.1",
     "yup": "0.32.11"
   },
   "scripts": {
@@ -113,7 +113,7 @@
     "jest-websocket-mock": "2.3.0",
     "mock-socket": "9.1.2",
     "npm-package-json-lint": "5.4.2",
-    "prettier": "2.5.1",
+    "prettier": "2.6.0",
     "react-app-rewired": "2.2.1",
     "redux-mock-store": "1.5.4",
     "redux-saga-test-plan": "4.0.4",
