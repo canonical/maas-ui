@@ -16,6 +16,7 @@ import {
 const mockStore = configureStore();
 
 let state: RootState;
+let scrollToSpy: jest.Mock;
 
 beforeEach(() => {
   state = rootStateFactory({
@@ -23,6 +24,13 @@ beforeEach(() => {
       items: [tagFactory({ id: 1 })],
     }),
   });
+  // Mock the scrollTo method as jsdom doesn't support this and will error.
+  scrollToSpy = jest.fn();
+  global.scrollTo = scrollToSpy;
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 it("dispatches an action to delete a tag", async () => {

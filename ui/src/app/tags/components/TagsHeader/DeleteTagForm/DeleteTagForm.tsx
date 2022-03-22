@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
 import FormikForm from "app/base/components/FormikForm";
+import { useScrollToTop } from "app/base/hooks";
 import type { EmptyObject } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -24,6 +25,7 @@ export const DeleteTagForm = ({ id, onClose }: Props): JSX.Element | null => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
+  useScrollToTop();
   if (!tag) {
     return null;
   }

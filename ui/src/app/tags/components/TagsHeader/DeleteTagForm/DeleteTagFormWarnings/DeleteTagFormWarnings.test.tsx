@@ -50,6 +50,50 @@ it("displays warning when deleting a tag with kernel options", async () => {
   ).toBeInTheDocument();
 });
 
+it("displays a kernel options warning with multiple machines", async () => {
+  state.tag.items = [
+    tagFactory({
+      id: 1,
+      kernel_opts: "opts",
+      machine_count: 4,
+      name: "tag1",
+    }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <DeleteTagFormWarnings id={1} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByText(/There are 4 machines with this tag/i)
+  ).toBeInTheDocument();
+});
+
+it("displays a kernel options warning with one machine", async () => {
+  state.tag.items = [
+    tagFactory({
+      id: 1,
+      kernel_opts: "opts",
+      machine_count: 1,
+      name: "tag1",
+    }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <DeleteTagFormWarnings id={1} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByText(/There is 1 machine with this tag/i)
+  ).toBeInTheDocument();
+});
+
 it("displays warning when deleting a tag applied to devices", async () => {
   state.tag.items = [
     tagFactory({

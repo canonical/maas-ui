@@ -34,7 +34,8 @@ export const DeleteTagFormWarnings = ({ id }: Props): JSX.Element | null => {
           className="delete-tag-form-warnings__notification"
           severity="caution"
         >
-          You are deleting a tag with kernel options. There are{" "}
+          You are deleting a tag with kernel options. There{" "}
+          {tag.machine_count === 1 ? "is" : "are"}{" "}
           {pluralize("machine", tag.machine_count, true)} with this tag and they
           will not be affected until they are redeployed.
         </Notification>
