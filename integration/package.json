@@ -31,7 +31,7 @@
     "eslint-plugin-import": "2.25.4",
     "eslint-plugin-no-only-tests": "2.6.0",
     "nanoid": "3.3.1",
-    "npm-package-json-lint": "5.4.2",
+    "npm-package-json-lint": "6.3.0",
     "start-server-and-test": "1.14.0"
   },
   "npmpackagejsonlint": {
