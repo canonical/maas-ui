@@ -8,6 +8,7 @@ import type { TagHeaderContent } from "../types";
 
 import TagDetails from "./TagDetails";
 import TagList from "./TagList";
+import TagMachines from "./TagMachines";
 
 import Section from "app/base/components/Section";
 import NotFound from "app/base/views/NotFound";
@@ -18,10 +19,10 @@ const Tags = (): JSX.Element => {
   const [headerContent, setHeaderContent] = useState<TagHeaderContent | null>(
     null
   );
-  const onDelete = (id: Tag[TagMeta.PK]) =>
+  const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) =>
     setHeaderContent({
       view: TagHeaderViews.DeleteTag,
-      extras: { id },
+      extras: { fromDetails, id },
     });
   return (
     <Section
@@ -37,6 +38,11 @@ const Tags = (): JSX.Element => {
           exact
           path={tagsURLs.tag.index(null, true)}
           render={() => <TagDetails onDelete={onDelete} />}
+        />
+        <Route
+          exact
+          path={tagsURLs.tag.machines(null, true)}
+          render={() => <TagMachines />}
         />
         <Route
           exact

@@ -35,7 +35,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("dispatches an action to create a tagrange", async () => {
+it("dispatches an action to create a tag", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>

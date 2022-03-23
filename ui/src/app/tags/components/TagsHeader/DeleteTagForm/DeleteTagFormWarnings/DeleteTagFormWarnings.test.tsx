@@ -6,7 +6,11 @@ import configureStore from "redux-mock-store";
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
 import type { RootState } from "app/store/root/types";
+import { NodeStatus } from "app/store/types/node";
+import tagsURLs from "app/tags/urls";
 import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
   tag as tagFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
@@ -18,6 +22,14 @@ let state: RootState;
 
 beforeEach(() => {
   state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [
+        machineFactory({
+          status: NodeStatus.DEPLOYED,
+          tags: [1],
+        }),
+      ],
+    }),
     tag: tagStateFactory({
       items: [tagFactory({ id: 1 })],
     }),
@@ -26,6 +38,34 @@ beforeEach(() => {
 
 afterEach(() => {
   jest.restoreAllMocks();
+});
+
+it("does not display a kernel options warning for non-deployed machines", async () => {
+  state.tag.items = [
+    tagFactory({
+      id: 1,
+      kernel_opts: "opts",
+      machine_count: 4,
+      name: "tag1",
+    }),
+  ];
+  state.machine.items = [
+    machineFactory({
+      status: NodeStatus.ALLOCATED,
+      tags: [1],
+    }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <DeleteTagFormWarnings id={1} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.queryByText(/You are deleting a tag with kernel options/i)
+  ).not.toBeInTheDocument();
 });
 
 it("displays warning when deleting a tag with kernel options", async () => {
@@ -51,6 +91,12 @@ it("displays warning when deleting a tag with kernel options", async () => {
 });
 
 it("displays a kernel options warning with multiple machines", async () => {
+  state.machine.items.push(
+    machineFactory({
+      status: NodeStatus.DEPLOYED,
+      tags: [1],
+    })
+  );
   state.tag.items = [
     tagFactory({
       id: 1,
@@ -68,7 +114,7 @@ it("displays a kernel options warning with multiple machines", async () => {
     </Provider>
   );
   expect(
-    screen.getByText(/There are 4 machines with this tag/i)
+    screen.getByText(/There are 2 deployed machines with this tag/i)
   ).toBeInTheDocument();
 });
 
@@ -90,8 +136,30 @@ it("displays a kernel options warning with one machine", async () => {
     </Provider>
   );
   expect(
-    screen.getByText(/There is 1 machine with this tag/i)
+    screen.getByText(/There is 1 deployed machine with this tag/i)
   ).toBeInTheDocument();
+});
+
+it("links to a page to display deployed machines", async () => {
+  state.tag.items = [
+    tagFactory({
+      id: 1,
+      kernel_opts: "opts",
+      machine_count: 4,
+      name: "tag1",
+    }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <DeleteTagFormWarnings id={1} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByRole("link", { name: "Show the deployed machine" })
+  ).toHaveAttribute("href", tagsURLs.tag.machines({ id: 1 }));
 });
 
 it("displays warning when deleting a tag applied to devices", async () => {

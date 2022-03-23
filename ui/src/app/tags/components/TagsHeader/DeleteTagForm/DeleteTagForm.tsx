@@ -1,5 +1,6 @@
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
@@ -13,12 +14,18 @@ import type { Tag, TagMeta } from "app/store/tag/types";
 import tagsURLs from "app/tags/urls";
 
 type Props = {
+  fromDetails?: boolean;
   id: Tag[TagMeta.PK];
   onClose: () => void;
 };
 
-export const DeleteTagForm = ({ id, onClose }: Props): JSX.Element | null => {
+export const DeleteTagForm = ({
+  fromDetails = false,
+  id,
+  onClose,
+}: Props): JSX.Element | null => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const saved = useSelector(tagSelectors.saved);
   const saving = useSelector(tagSelectors.saving);
   const errors = useSelector(tagSelectors.errors);
@@ -26,6 +33,16 @@ export const DeleteTagForm = ({ id, onClose }: Props): JSX.Element | null => {
     tagSelectors.getById(state, id)
   );
   useScrollToTop();
+  const onCancel = () => {
+    onClose();
+    if (fromDetails) {
+      // Explicitly return to the page they user came from in case they have opened
+      // the list of machines.
+      history.push({ pathname: tagsURLs.tag.index({ id: id }) });
+    } else {
+      history.push({ pathname: tagsURLs.tags.index });
+    }
+  };
   if (!tag) {
     return null;
   }
@@ -37,7 +54,7 @@ export const DeleteTagForm = ({ id, onClose }: Props): JSX.Element | null => {
       cleanup={tagActions.cleanup}
       errors={errors}
       initialValues={{}}
-      onCancel={onClose}
+      onCancel={onCancel}
       onSaveAnalytics={{
         action: "Delete",
         category: "Delete tag form",

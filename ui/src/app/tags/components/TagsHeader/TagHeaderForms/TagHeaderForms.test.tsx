@@ -13,6 +13,17 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
+let scrollToSpy: jest.Mock;
+
+beforeEach(() => {
+  // Mock the scrollTo method as jsdom doesn't support this and will error.
+  scrollToSpy = jest.fn();
+  global.scrollTo = scrollToSpy;
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
+});
 
 it("can display the add tag form", () => {
   const store = mockStore(rootStateFactory());
