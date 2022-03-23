@@ -9,14 +9,21 @@ import {
 } from "app/subnets/views/SubnetsList/SubnetsTable/constants";
 import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
 import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
+import { groupRowsByFabricAndVlan } from "app/subnets/views/SubnetsList/SubnetsTable/utils";
 
-const FabricTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
+const FabricTable = ({
+  data,
+  emptyMsg,
+}: {
+  data: SubnetsTableRow[];
+  emptyMsg: string;
+}): JSX.Element => {
   const { pageData, ...paginationProps } = usePagination(data);
 
   return (
     <>
       <ModularTable
-        emptyMsg="Loading..."
+        emptyMsg={emptyMsg}
         className="subnets-table"
         aria-label="Subnets by Fabric"
         getCellProps={({ value, column }) => ({
@@ -67,7 +74,7 @@ const FabricTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
           ],
           []
         )}
-        data={pageData}
+        data={groupRowsByFabricAndVlan(pageData)}
       />
       <Pagination {...paginationProps} aria-label="pagination" />
     </>

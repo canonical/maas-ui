@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { SUBNETS_TABLE_ITEMS_PER_PAGE } from "./constants";
 import type { SubnetsTableRow, GroupByKey } from "./types";
-import { getTableData } from "./utils";
+import { filterSubnetsBySearchText, getTableData } from "./utils";
 
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -17,9 +17,7 @@ import vlanSelectors from "app/store/vlan/selectors";
 
 export const useSubnetsTable = (
   groupBy: GroupByKey = "fabric"
-): {
-  rows: SubnetsTableRow[];
-} => {
+): { rows: SubnetsTableRow[]; loaded: boolean } => {
   const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
@@ -44,9 +42,30 @@ export const useSubnetsTable = (
     if (loaded) {
       setRows(getTableData({ fabrics, vlans, subnets, spaces }, groupBy));
     }
-  }, [loaded, fabrics, vlans, subnets, spaces, setRows, groupBy]);
+  }, [loaded, fabrics, vlans, subnets, spaces, groupBy]);
 
-  return { rows };
+  return { rows, loaded };
+};
+
+export const useSubnetsTableSearch = (
+  rows: SubnetsTableRow[],
+  searchText: string
+): SubnetsTableRow[] => {
+  const [filteredRows, setFilteredRows] = useState<SubnetsTableRow[]>([]);
+
+  useEffect(() => {
+    if (rows.length > 0) {
+      if (searchText.length > 0) {
+        setFilteredRows(filterSubnetsBySearchText(rows, searchText));
+      } else {
+        setFilteredRows(rows);
+      }
+    } else {
+      setFilteredRows([]);
+    }
+  }, [rows, searchText]);
+
+  return filteredRows;
 };
 
 export function usePagination<D>(

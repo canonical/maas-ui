@@ -1,3 +1,6 @@
+import cloneDeep from "clone-deep";
+
+import { SubnetsColumns } from "./constants";
 import type {
   SubnetsTableRow,
   SubnetsTableData,
@@ -37,9 +40,14 @@ const getColumn = (label: string | null, href?: string | null) => ({
   isVisuallyHidden: false,
 });
 
-const markRepeatedFabricRows = (rows: SubnetsTableRow[]): SubnetsTableRow[] => {
-  rows.forEach((row, index) => {
-    const previousRow: SubnetsTableRow = rows[index - 1];
+export const groupRowsByFabricAndVlan = (
+  sourceRows: SubnetsTableRow[]
+): SubnetsTableRow[] => {
+  const rows: SubnetsTableRow[] = [];
+
+  sourceRows.forEach((sourceRow, index) => {
+    const row = cloneDeep(sourceRow);
+    const previousRow = rows[index - 1];
 
     if (row && index > 0) {
       if (row.sortData?.fabricId === previousRow?.sortData?.fabricId) {
@@ -49,18 +57,28 @@ const markRepeatedFabricRows = (rows: SubnetsTableRow[]): SubnetsTableRow[] => {
         row.vlan = { ...row.vlan, isVisuallyHidden: true };
       }
     }
+
+    rows.push(row);
   });
 
   return rows;
 };
 
-const markRepeatedSpaceRows = (rows: SubnetsTableRow[]): SubnetsTableRow[] => {
-  rows.forEach((row, index) => {
-    const previousRow: SubnetsTableRow = rows[index - 1];
+export const groupRowsBySpace = (
+  sourceRows: SubnetsTableRow[]
+): SubnetsTableRow[] => {
+  const rows: SubnetsTableRow[] = [];
 
-    if (row.space?.label === previousRow?.space?.label) {
-      row.space = { ...row.space, isVisuallyHidden: true };
+  sourceRows.forEach((sourceRow, index) => {
+    const row = cloneDeep(sourceRow);
+    const previousRow = rows[index - 1];
+
+    if (row && index > 0) {
+      if (row.space?.label === previousRow?.space?.label) {
+        row.space = { ...row.space, isVisuallyHidden: true };
+      }
     }
+    rows.push(row);
   });
 
   return rows;
@@ -114,12 +132,10 @@ const getOrphanVLANs = (data: SubnetsTableData): SubnetsTableRow[] => {
     rows.push(getRowData({ fabric, vlan, subnet, space: undefined, data }));
   });
 
-  return markRepeatedSpaceRows(
-    rows.sort((a, b) =>
-      simpleSortByKey<SortData, "cidr">("cidr", { alphanumeric: true })(
-        a.sortData,
-        b.sortData
-      )
+  return rows.sort((a, b) =>
+    simpleSortByKey<SortData, "cidr">("cidr", { alphanumeric: true })(
+      a.sortData,
+      b.sortData
     )
   );
 };
@@ -142,12 +158,10 @@ const getBySpaces = (data: SubnetsTableData): SubnetsTableRow[] => {
     });
   }
 
-  return markRepeatedSpaceRows(
-    rows.sort((a, b) =>
-      simpleSortByKey<SortData, "spaceName">("spaceName", {
-        alphanumeric: true,
-      })(a.sortData, b.sortData)
-    )
+  return rows.sort((a, b) =>
+    simpleSortByKey<SortData, "spaceName">("spaceName", {
+      alphanumeric: true,
+    })(a.sortData, b.sortData)
   );
 };
 
@@ -178,12 +192,10 @@ const getByFabric = (data: SubnetsTableData): SubnetsTableRow[] => {
     }
   });
 
-  return markRepeatedFabricRows(
-    rows.sort((a, b) =>
-      simpleSortByKey<SortData, "fabricName">("fabricName", {
-        alphanumeric: true,
-      })(a.sortData, b.sortData)
-    )
+  return rows.sort((a, b) =>
+    simpleSortByKey<SortData, "fabricName">("fabricName", {
+      alphanumeric: true,
+    })(a.sortData, b.sortData)
   );
 };
 
@@ -197,3 +209,17 @@ export const getTableData = (
     return [...getBySpaces(data), ...getOrphanVLANs(data)];
   }
 };
+
+export const filterSubnetsBySearchText = (
+  rows: SubnetsTableRow[],
+  searchText: string
+): SubnetsTableRow[] =>
+  searchText.length === 0
+    ? rows
+    : rows.filter(
+        (row) =>
+          row?.[SubnetsColumns.SUBNET]?.label?.includes(searchText) ||
+          row?.[SubnetsColumns.FABRIC]?.label?.includes(searchText) ||
+          row?.[SubnetsColumns.VLAN]?.label?.includes(searchText) ||
+          row?.[SubnetsColumns.SPACE]?.label?.includes(searchText)
+      );

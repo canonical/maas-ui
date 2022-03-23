@@ -12,14 +12,21 @@ import {
 } from "app/subnets/views/SubnetsList/SubnetsTable/constants";
 import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
 import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
+import { groupRowsBySpace } from "app/subnets/views/SubnetsList/SubnetsTable/utils";
 
-const SpaceTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
+const SpaceTable = ({
+  data,
+  emptyMsg,
+}: {
+  data: SubnetsTableRow[];
+  emptyMsg: string;
+}): JSX.Element => {
   const { pageData, ...paginationProps } = usePagination(data);
 
   return (
     <>
       <ModularTable
-        emptyMsg="Loading..."
+        emptyMsg={emptyMsg}
         className="subnets-table"
         aria-label="Subnets by Space"
         getCellProps={({ value, column }) => ({
@@ -70,7 +77,7 @@ const SpaceTable = ({ data }: { data: SubnetsTableRow[] }): JSX.Element => {
           ],
           []
         )}
-        data={pageData}
+        data={groupRowsBySpace(pageData)}
       />
       <Pagination {...paginationProps} aria-label="pagination" />
     </>

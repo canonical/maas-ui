@@ -373,3 +373,54 @@ it("remains on the same page once the data is updated and page is still availabl
     ).toHaveTextContent("2")
   );
 });
+
+it("displays loading text", async () => {
+  const state = rootStateFactory({
+    fabric: fabricStateFactory({
+      loaded: false,
+    }),
+    vlan: vlanStateFactory({ loaded: false }),
+    subnet: subnetStateFactory({ loaded: false }),
+    space: spaceStateFactory({ loaded: false }),
+  });
+  const mockStore = configureStore();
+  const store = mockStore(state);
+
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
+        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(screen.getAllByRole("table")).toHaveLength(1);
+  userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
+  await waitFor(() =>
+    expect(screen.getByText(/Loading.../)).toBeInTheDocument()
+  );
+});
+
+it("displays correct text when there are no results for the search criteria", async () => {
+  const state = getMockState();
+  const mockStore = configureStore();
+  const store = mockStore(state);
+
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
+        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(screen.getAllByRole("table")).toHaveLength(1);
+  const tableBody = screen.getAllByRole("rowgroup")[1];
+
+  userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
+
+  await waitFor(() =>
+    expect(within(tableBody).getByText(/No results/)).toBeInTheDocument()
+  );
+  expect(within(tableBody).getAllByRole("row")).toHaveLength(1);
+});
