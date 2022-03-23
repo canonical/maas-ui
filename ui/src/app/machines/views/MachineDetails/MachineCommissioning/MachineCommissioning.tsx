@@ -10,6 +10,7 @@ import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
@@ -19,38 +20,36 @@ import { isId } from "app/utils";
 const MachineCommissioning = (): JSX.Element => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
-
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
+  const scriptResults = useSelector((state: RootState) =>
+    scriptResultSelectors.getByNodeId(state, id)
+  );
+  const commissioningResults = useSelector((state: RootState) =>
+    scriptResultSelectors.getCommissioningByNodeId(state, id)
+  );
+  const loading = useSelector((state: RootState) =>
+    scriptResultSelectors.loading(state)
+  );
+  const isDetails = isMachineDetails(machine);
   const previousCommissioningStatus = usePrevious(
-    machine?.commissioning_status.status,
+    isDetails ? machine.commissioning_status.status : null,
     true
   );
   useWindowTitle(`${machine?.fqdn || "Machine"} commissioning`);
 
-  const scriptResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getByNodeId(state, id)
-  );
-
-  const commissioningResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getCommissioningByNodeId(state, id)
-  );
-
-  const loading = useSelector((state: RootState) =>
-    scriptResultSelectors.loading(state)
-  );
-
   useEffect(() => {
     if (
       isId(id) &&
+      isDetails &&
       !loading &&
       (!scriptResults?.length ||
         // Refetch the script results when the commissioning status changes to
         // pending, otherwise the new script results won't be associated with
         // the machine.
-        (machine?.commissioning_status.status === TestStatusStatus.PENDING &&
-          previousCommissioningStatus !== machine?.commissioning_status.status))
+        (machine.commissioning_status.status === TestStatusStatus.PENDING &&
+          previousCommissioningStatus !== machine.commissioning_status.status))
     ) {
       dispatch(scriptResultActions.getByNodeId(id));
     }
@@ -61,6 +60,7 @@ const MachineCommissioning = (): JSX.Element => {
     loading,
     machine,
     id,
+    isDetails,
   ]);
 
   if (isId(id) && scriptResults?.length) {

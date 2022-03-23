@@ -35,7 +35,6 @@ export type MachineActions = Exclude<NodeActions, NodeActions.IMPORT_IMAGES>;
 // pages.
 export type BaseMachine = BaseNode & {
   actions: MachineActions[];
-  commissioning_status: TestStatus;
   error_description: string;
   extra_macs: string[];
   fabrics: string[];
@@ -74,6 +73,7 @@ export type MachineDetails = BaseMachine &
     boot_disk: Disk | null;
     certificate?: CertificateMetadata;
     commissioning_start_time: string;
+    commissioning_status: TestStatus;
     cpu_test_status: TestStatus;
     current_commissioning_script_set: number;
     current_installation_script_set: number;

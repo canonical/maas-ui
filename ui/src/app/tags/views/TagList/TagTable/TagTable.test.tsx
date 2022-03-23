@@ -56,6 +56,7 @@ it("displays tags", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -79,6 +80,7 @@ it("displays the tags in order", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -101,6 +103,7 @@ it("can change the sort order", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -144,6 +147,7 @@ it("displays the tags for the current page", () => {
         <TagTable
           currentPage={2}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -168,6 +172,7 @@ it("shows an icon for automatic tags", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -191,6 +196,7 @@ it("does not show an icon for manual tags", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -214,6 +220,7 @@ it("shows an icon for kernel options", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -237,6 +244,7 @@ it("does not show an icon for tags without kernel options", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -267,6 +275,7 @@ it("can link to nodes", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={tags}
@@ -312,6 +321,7 @@ it("does not display a message if there are tags", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={[]}
@@ -330,6 +340,7 @@ it("displays a message if there are no automatic tags", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.Auto}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={[]}
@@ -350,6 +361,7 @@ it("displays a message if there are no manual tags", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.Manual}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={jest.fn()}
           tags={[]}
@@ -370,6 +382,7 @@ it("displays a message if none match the search terms", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText="nothing"
           setCurrentPage={jest.fn()}
           tags={[]}
@@ -390,6 +403,7 @@ it("displays a message if none match the filter and search terms", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.Auto}
+          onDelete={jest.fn()}
           searchText="nothing"
           setCurrentPage={jest.fn()}
           tags={[]}
@@ -411,6 +425,7 @@ it("returns to the first page if the search changes", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.Auto}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={setCurrentPage}
           tags={[]}
@@ -424,6 +439,7 @@ it("returns to the first page if the search changes", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.Auto}
+          onDelete={jest.fn()}
           searchText="new"
           setCurrentPage={setCurrentPage}
           tags={[]}
@@ -443,6 +459,7 @@ it("returns to the first page if the filter changes", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.All}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={setCurrentPage}
           tags={[]}
@@ -456,6 +473,7 @@ it("returns to the first page if the filter changes", () => {
         <TagTable
           currentPage={1}
           filter={TagSearchFilter.Manual}
+          onDelete={jest.fn()}
           searchText=""
           setCurrentPage={setCurrentPage}
           tags={[]}

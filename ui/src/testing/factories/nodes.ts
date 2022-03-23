@@ -196,7 +196,6 @@ const node = extend<SimpleNode, BaseNode>(simpleNode, {
 
 export const machine = extend<BaseNode, Machine>(node, {
   actions,
-  commissioning_status: testStatus,
   description: "a test machine",
   error_description: "",
   extra_macs,
@@ -305,6 +304,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   bmc: 190,
   boot_disk: null,
   commissioning_start_time: "Thu, 15 Oct. 2020 07:25:10",
+  commissioning_status: testStatus,
   created: "Thu, 15 Oct. 2020 07:25:10",
   current_commissioning_script_set: 6188,
   current_installation_script_set: 6174,

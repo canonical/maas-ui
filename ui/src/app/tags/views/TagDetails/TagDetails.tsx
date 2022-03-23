@@ -22,6 +22,7 @@ import machineURLs from "app/machines/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
+import type { Tag } from "app/store/tag/types";
 import { TagMeta } from "app/store/tag/types";
 import tagURLs from "app/tags/urls";
 import { isId } from "app/utils";
@@ -35,7 +36,11 @@ export enum Label {
   Update = "Last update",
 }
 
-const TagDetails = (): JSX.Element => {
+type Props = {
+  onDelete: (id: Tag[TagMeta.PK]) => void;
+};
+
+const TagDetails = ({ onDelete }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
@@ -73,7 +78,11 @@ const TagDetails = (): JSX.Element => {
           <Button hasIcon>
             <Icon className="is-light" name="edit" /> <span>Edit</span>
           </Button>
-          <Button appearance="negative" hasIcon>
+          <Button
+            appearance="negative"
+            hasIcon
+            onClick={() => onDelete(tag[TagMeta.PK])}
+          >
             <Icon className="is-light" name="delete" /> <span>Delete</span>
           </Button>
         </Col>

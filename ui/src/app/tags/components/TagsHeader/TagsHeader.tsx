@@ -18,6 +18,8 @@ export const getHeaderTitle = (
     switch (name) {
       case TagHeaderViews.AddTag[1]:
         return "Create new tag";
+      case TagHeaderViews.DeleteTag[1]:
+        return "Delete tag";
     }
   }
   return "Machines";

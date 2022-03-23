@@ -22,6 +22,7 @@ import machineURLs from "app/machines/urls";
 import { actions as tagActions } from "app/store/tag";
 import { TagSearchFilter } from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
+import { TagMeta } from "app/store/tag/types";
 import tagURLs from "app/tags/urls";
 import { breakLines, isComparable, unindentString } from "app/utils";
 
@@ -29,6 +30,7 @@ type Props = PropsWithSpread<
   {
     currentPage: number;
     filter: TagSearchFilter;
+    onDelete: (id: Tag[TagMeta.PK]) => void;
     searchText: string;
     setCurrentPage: (page: number) => void;
     tags: Tag[];
@@ -56,7 +58,7 @@ const getSortValue = (sortKey: SortKey, tag: Tag) => {
   return isComparable(value) ? value : null;
 };
 
-const generateRows = (tags: Tag[]) =>
+const generateRows = (tags: Tag[], onDelete: Props["onDelete"]) =>
   tags.map((tag) => {
     return {
       key: `tag-row-${tag.id}`,
@@ -115,8 +117,7 @@ const generateRows = (tags: Tag[]) =>
           content: (
             <TableActions
               onDelete={() => {
-                // TODO: Implement the delete form:
-                // https://github.com/canonical-web-and-design/app-tribe/issues/701
+                onDelete(tag[TagMeta.PK]);
               }}
               onEdit={() => {
                 // TODO: Implement tag edit form:
@@ -172,6 +173,7 @@ const generateNoTagsMessage = (
 const TagTable = ({
   currentPage,
   filter,
+  onDelete,
   searchText,
   setCurrentPage,
   tags,
@@ -267,7 +269,7 @@ const TagTable = ({
             className: "u-align--right",
           },
         ]}
-        rows={generateRows(paginatedTags)}
+        rows={generateRows(paginatedTags, onDelete)}
       />
       {generateNoTagsMessage(tags.length === 0, filter, searchText)}
     </>
