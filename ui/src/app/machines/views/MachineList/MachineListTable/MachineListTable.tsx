@@ -540,7 +540,6 @@ export const MachineListTable = ({
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
     {
-      "aria-label": columnLabels[MachineColumns.FQDN],
       key: MachineColumns.FQDN,
       direction: SortDirection.DESCENDING,
     }
