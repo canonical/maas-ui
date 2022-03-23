@@ -12,8 +12,8 @@ const SubnetsTable = ({
   setGroupBy,
 }: SubnetGroupByProps): JSX.Element | null => {
   const [searchText, setSearchText] = useState("");
-  const { rows, loaded } = useSubnetsTable(groupBy);
-  const filteredRows = useSubnetsTableSearch(rows, searchText);
+  const subnetsTable = useSubnetsTable(groupBy);
+  const { data, loaded } = useSubnetsTableSearch(subnetsTable, searchText);
 
   const handleSearch = (searchText: string): void => {
     setSearchText(searchText);
@@ -30,9 +30,9 @@ const SubnetsTable = ({
       />
 
       {groupBy === "fabric" ? (
-        <FabricTable data={filteredRows} emptyMsg={emptyMsg} />
+        <FabricTable data={data} emptyMsg={emptyMsg} />
       ) : (
-        <SpaceTable data={filteredRows} emptyMsg={emptyMsg} />
+        <SpaceTable data={data} emptyMsg={emptyMsg} />
       )}
     </>
   );
