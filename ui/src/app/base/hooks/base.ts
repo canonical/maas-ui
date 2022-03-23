@@ -127,10 +127,10 @@ export const useProcessing = ({
  * Scroll an element into view on render.
  */
 export const useScrollOnRender = <T extends HTMLElement>(): ((
-  targetNode: T
+  targetNode: T | null
 ) => void) => {
   const htmlRef = useRef<HTMLElement>(document.querySelector("html"));
-  const onRenderRef = useCallback((targetNode) => {
+  const onRenderRef = useCallback((targetNode: T | null) => {
     if (targetNode && htmlRef?.current) {
       const { height: targetHeight, y: targetTop } =
         targetNode.getBoundingClientRect();
