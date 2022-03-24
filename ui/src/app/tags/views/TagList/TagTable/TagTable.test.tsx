@@ -268,6 +268,7 @@ it("can link to nodes", () => {
       name: "a-tag",
     }),
   ];
+  state.tag.items = tags;
   const store = mockStore(state);
   render(
     <Provider store={store}>

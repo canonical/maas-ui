@@ -1,10 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 
-import AddTagFormFields, {
-  INVALID_XPATH_ERROR,
-  Label,
-} from "./AddTagFormFields";
+import DefinitionField, { INVALID_XPATH_ERROR, Label } from "./DefinitionField";
 
 it("overrides the xpath errors", async () => {
   render(
@@ -15,7 +12,7 @@ it("overrides the xpath errors", async () => {
       initialValues={{}}
       onSubmit={jest.fn()}
     >
-      <AddTagFormFields />
+      <DefinitionField />
     </Formik>
   );
   expect(

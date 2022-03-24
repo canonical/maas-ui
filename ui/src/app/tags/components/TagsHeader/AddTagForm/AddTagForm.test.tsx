@@ -5,12 +5,13 @@ import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import AddTagForm from "./AddTagForm";
-import { Label } from "./AddTagFormFields";
+import AddTagForm, { Label } from "./AddTagForm";
 
 import * as baseHooks from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
+import { Label as DefinitionLabel } from "app/tags/components/DefinitionField";
+import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
 import tagsURLs from "app/tags/urls";
 import {
   tag as tagFactory,
@@ -46,7 +47,7 @@ it("dispatches an action to create a tagrange", async () => {
   );
   userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "name1");
   userEvent.type(
-    screen.getByRole("textbox", { name: Label.Definition }),
+    screen.getByRole("textbox", { name: DefinitionLabel.Definition }),
     "definition1"
   );
   userEvent.type(
@@ -54,7 +55,7 @@ it("dispatches an action to create a tagrange", async () => {
     "comment1"
   );
   userEvent.type(
-    screen.getByRole("textbox", { name: Label.KernelOptions }),
+    screen.getByRole("textbox", { name: KernelOptionsLabel.KernelOptions }),
     "options1"
   );
   fireEvent.submit(screen.getByRole("form"));
