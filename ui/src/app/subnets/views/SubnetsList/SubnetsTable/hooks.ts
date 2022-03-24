@@ -15,9 +15,14 @@ import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 
+type UseSubnetsTable = {
+  data: SubnetsTableRow[];
+  loaded: boolean;
+};
+
 export const useSubnetsTable = (
   groupBy: GroupByKey = "fabric"
-): { rows: SubnetsTableRow[]; loaded: boolean } => {
+): UseSubnetsTable => {
   const dispatch = useDispatch();
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
@@ -29,7 +34,10 @@ export const useSubnetsTable = (
   const spacesLoaded = useSelector(spaceSelectors.loaded);
   const loaded = fabricsLoaded && vlansLoaded && subnetsLoaded && spacesLoaded;
 
-  const [rows, setRows] = useState<SubnetsTableRow[]>([]);
+  const [state, setState] = useState<UseSubnetsTable>({
+    data: [],
+    loaded: false,
+  });
 
   useEffect(() => {
     if (!fabricsLoaded) dispatch(fabricActions.fetch());
@@ -40,32 +48,35 @@ export const useSubnetsTable = (
 
   useEffect(() => {
     if (loaded) {
-      setRows(getTableData({ fabrics, vlans, subnets, spaces }, groupBy));
+      setState({
+        data: getTableData({ fabrics, vlans, subnets, spaces }, groupBy),
+        loaded: true,
+      });
     }
   }, [loaded, fabrics, vlans, subnets, spaces, groupBy]);
 
-  return { rows, loaded };
+  return state;
 };
 
 export const useSubnetsTableSearch = (
-  rows: SubnetsTableRow[],
+  subnetsTable: { data: SubnetsTableRow[]; loaded: boolean },
   searchText: string
-): SubnetsTableRow[] => {
-  const [filteredRows, setFilteredRows] = useState<SubnetsTableRow[]>([]);
+): UseSubnetsTable => {
+  const [state, setState] = useState<UseSubnetsTable>({
+    data: [],
+    loaded: false,
+  });
 
   useEffect(() => {
-    if (rows.length > 0) {
-      if (searchText.length > 0) {
-        setFilteredRows(filterSubnetsBySearchText(rows, searchText));
-      } else {
-        setFilteredRows(rows);
-      }
-    } else {
-      setFilteredRows([]);
+    if (subnetsTable.loaded) {
+      setState({
+        data: filterSubnetsBySearchText(subnetsTable.data, searchText),
+        loaded: true,
+      });
     }
-  }, [rows, searchText]);
+  }, [subnetsTable, searchText]);
 
-  return filteredRows;
+  return state;
 };
 
 export function usePagination<D>(
