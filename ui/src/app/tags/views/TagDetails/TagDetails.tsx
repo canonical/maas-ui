@@ -25,6 +25,7 @@ import tagURLs from "app/tags/urls";
 import { isId } from "app/utils";
 
 export enum Label {
+  AppliedTo = "Applied to",
   Comment = "Comment",
   Definition = "Definition (automatic tag)",
   Name = "Tag name",
@@ -92,7 +93,9 @@ const TagDetails = ({ onDelete }: Props): JSX.Element => {
           <Definition description={tag.updated} label={Label.Update} />
         </Col>
         <Col size={2}>
-          <AppliedTo id={id} />
+          <Definition label={Label.AppliedTo}>
+            <AppliedTo id={id} />
+          </Definition>
         </Col>
         <Col size={6}>
           <Definition description={tag.comment} label={Label.Comment} />

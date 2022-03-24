@@ -6,7 +6,6 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip, Tooltip } from "@canonical/react-components";
-import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -16,13 +15,11 @@ import TableActions from "app/base/components/TableActions";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
-import controllerURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
-import machineURLs from "app/machines/urls";
 import { actions as tagActions } from "app/store/tag";
 import { TagSearchFilter } from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { TagMeta } from "app/store/tag/types";
+import AppliedTo from "app/tags/components/AppliedTo";
 import tagURLs from "app/tags/urls";
 import { breakLines, isComparable, unindentString } from "app/utils";
 
@@ -79,34 +76,7 @@ const generateRows = (tags: Tag[], onDelete: Props["onDelete"]) =>
         },
         {
           "aria-label": Label.AppliedTo,
-          content: (
-            <>
-              {tag.machine_count > 0 ? (
-                <Link
-                  className="u-block"
-                  to={`${machineURLs.machines.index}?tags=${tag.name}`}
-                >
-                  {pluralize("machine", tag.machine_count, true)}
-                </Link>
-              ) : null}
-              {tag.controller_count > 0 ? (
-                <Link
-                  className="u-block"
-                  to={`${controllerURLs.controllers.index}?tags=${tag.name}`}
-                >
-                  {pluralize("controller", tag.controller_count, true)}
-                </Link>
-              ) : null}
-              {tag.device_count > 0 ? (
-                <Link
-                  className="u-block"
-                  to={`${deviceURLs.devices.index}?tags=${tag.name}`}
-                >
-                  {pluralize("device", tag.device_count, true)}
-                </Link>
-              ) : null}
-            </>
-          ),
+          content: <AppliedTo id={tag.id} />,
         },
         {
           "aria-label": Label.Options,

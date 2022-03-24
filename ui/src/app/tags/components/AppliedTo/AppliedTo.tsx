@@ -2,7 +2,6 @@ import { useSelector } from "react-redux";
 
 import NodesTagsLink from "../NodesTagsLink";
 
-import Definition from "app/base/components/Definition";
 import { ControllerMeta } from "app/store/controller/types";
 import { DeviceMeta } from "app/store/device/types";
 import { MachineMeta } from "app/store/machine/types";
@@ -14,10 +13,6 @@ type Props = {
   id: Tag[TagMeta.PK];
 };
 
-export enum Label {
-  AppliedTo = "Applied to",
-}
-
 const AppliedTo = ({ id }: Props): JSX.Element | null => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -27,7 +22,7 @@ const AppliedTo = ({ id }: Props): JSX.Element | null => {
     return null;
   }
   return (
-    <Definition label={Label.AppliedTo}>
+    <>
       {tag.machine_count > 0 ? (
         <NodesTagsLink
           count={tag.machine_count}
@@ -49,7 +44,7 @@ const AppliedTo = ({ id }: Props): JSX.Element | null => {
           tags={[tag.name]}
         />
       ) : null}
-    </Definition>
+    </>
   );
 };
 
