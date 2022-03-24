@@ -292,9 +292,10 @@ const getDeployedWithTag = createSelector(
     if (!isId(tagId)) {
       return [];
     }
-    return machines
-      .filter(({ status }) => status === NodeStatus.DEPLOYED)
-      .filter(({ tags }) => tags.includes(tagId));
+    return machines.filter(
+      ({ status, tags }) =>
+        status === NodeStatus.DEPLOYED && tags.includes(tagId)
+    );
   }
 );
 
