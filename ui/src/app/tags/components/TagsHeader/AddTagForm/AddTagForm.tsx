@@ -1,21 +1,28 @@
 import { useEffect, useState } from "react";
 
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
-import AddTagFormFields from "./AddTagFormFields";
-
+import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { CreateParams, Tag } from "app/store/tag/types";
+import DefinitionField from "app/tags/components/DefinitionField";
+import KernelOptionsField from "app/tags/components/KernelOptionsField";
 import tagsURLs from "app/tags/urls";
 
 type Props = {
   onClose: () => void;
 };
+
+export enum Label {
+  Comment = "Comment",
+  Name = "Tag name",
+}
 
 const AddTagFormSchema = Yup.object().shape({
   comment: Yup.string(),
@@ -75,7 +82,27 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
       submitLabel="Save"
       validationSchema={AddTagFormSchema}
     >
-      <AddTagFormFields />
+      <Row>
+        <Col size={6}>
+          <FormikField
+            label={Label.Name}
+            name="name"
+            placeholder="Enter a name for the tag."
+            type="text"
+            required
+          />
+          <FormikField
+            label={Label.Comment}
+            name="comment"
+            placeholder="Add a comment as an explanation for this tag."
+            type="text"
+          />
+          <KernelOptionsField />
+        </Col>
+        <Col size={6}>
+          <DefinitionField />
+        </Col>
+      </Row>
     </FormikForm>
   );
 };

@@ -5,14 +5,22 @@ import type {
   NetworkLinkMode,
 } from "./enum";
 
-import type { Controller, ControllerDetails } from "app/store/controller/types";
-import type { Device, DeviceDetails } from "app/store/device/types";
+import type {
+  Controller,
+  ControllerDetails,
+  ControllerMeta,
+} from "app/store/controller/types";
+import type { Device, DeviceDetails, DeviceMeta } from "app/store/device/types";
 import type {
   BondLacpRate,
   BondMode,
   BondXmitHashPolicy,
 } from "app/store/general/types";
-import type { Machine, MachineDetails } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineDetails,
+  MachineMeta,
+} from "app/store/machine/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import type { Model, ModelRef, TimestampedModel } from "app/store/types/model";
@@ -196,6 +204,11 @@ export type BaseNode = SimpleNode & {
 };
 
 export type Node = Controller | Device | Machine;
+
+export type NodeModel =
+  | ControllerMeta.MODEL
+  | DeviceMeta.MODEL
+  | MachineMeta.MODEL;
 
 export type NodeDetails = ControllerDetails | DeviceDetails | MachineDetails;
 

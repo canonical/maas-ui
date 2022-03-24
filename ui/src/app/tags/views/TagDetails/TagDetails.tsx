@@ -8,7 +8,6 @@ import {
   Row,
   Spinner,
 } from "@canonical/react-components";
-import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
@@ -16,19 +15,16 @@ import Definition from "app/base/components/Definition";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
-import controllerURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
-import machineURLs from "app/machines/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { TagMeta } from "app/store/tag/types";
+import AppliedTo from "app/tags/components/AppliedTo";
 import tagURLs from "app/tags/urls";
 import { isId } from "app/utils";
 
 export enum Label {
-  AppliedTo = "Applied to",
   Comment = "Comment",
   Definition = "Definition (automatic tag)",
   Name = "Tag name",
@@ -96,34 +92,7 @@ const TagDetails = ({ onDelete }: Props): JSX.Element => {
           <Definition description={tag.updated} label={Label.Update} />
         </Col>
         <Col size={2}>
-          <Definition label={Label.AppliedTo}>
-            <>
-              {tag.machine_count > 0 ? (
-                <Link
-                  className="u-block"
-                  to={`${machineURLs.machines.index}?tags=${tag.name}`}
-                >
-                  {pluralize("machine", tag.machine_count, true)}
-                </Link>
-              ) : null}
-              {tag.controller_count > 0 ? (
-                <Link
-                  className="u-block"
-                  to={`${controllerURLs.controllers.index}?tags=${tag.name}`}
-                >
-                  {pluralize("controller", tag.controller_count, true)}
-                </Link>
-              ) : null}
-              {tag.device_count > 0 ? (
-                <Link
-                  className="u-block"
-                  to={`${deviceURLs.devices.index}?tags=${tag.name}`}
-                >
-                  {pluralize("device", tag.device_count, true)}
-                </Link>
-              ) : null}
-            </>
-          </Definition>
+          <AppliedTo id={id} />
         </Col>
         <Col size={6}>
           <Definition description={tag.comment} label={Label.Comment} />
