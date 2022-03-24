@@ -35,7 +35,7 @@ context("Subnets", () => {
       "Space",
     ];
 
-    cy.findByRole("table", { name: "Subnets" }).within(() => {
+    cy.findByRole("table", { name: "Subnets by Fabric" }).within(() => {
       expectedHeaders.forEach((name) => {
         cy.findByRole("columnheader", { name }).should("exist");
       });
@@ -46,25 +46,25 @@ context("Subnets", () => {
     cy.visit(generateNewURL("/networks"));
 
     cy.findByRole("combobox", { name: "Group by" }).within(() => {
-      cy.findByRole("option", { selected: true }).contains("Fabric");
+      cy.findByRole("option", { selected: true }).contains("Group by fabric");
     });
 
     cy.url().should("include", generateNewURL("/networks?by=fabric"));
   });
 
   it("allows grouping by fabric and space", () => {
-    cy.findByRole("table", { name: "Subnets" }).within(() => {
+    cy.findByRole("table", { name: "Subnets by Fabric" }).within(() => {
       cy.findAllByRole("columnheader").first().should("have.text", "Fabric");
     });
 
     cy.findByRole("combobox", { name: "Group by" }).within(() => {
-      cy.findByRole("option", { selected: true }).contains("Fabric");
-      cy.findByRole("option", { selected: false }).contains("Space");
+      cy.findByRole("option", { selected: true }).contains("Group by fabric");
+      cy.findByRole("option", { selected: false }).contains("Group by space");
     });
 
-    cy.findByRole("combobox", { name: "Group by" }).select("Space");
+    cy.findByRole("combobox", { name: "Group by" }).select("Group by space");
 
-    cy.findByRole("table", { name: "Subnets" }).within(() => {
+    cy.findByRole("table", { name: "Subnets by Space" }).within(() => {
       cy.findAllByRole("columnheader").first().should("have.text", "Space");
     });
 

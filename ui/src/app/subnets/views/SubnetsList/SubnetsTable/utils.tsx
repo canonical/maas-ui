@@ -1,3 +1,6 @@
+import cloneDeep from "clone-deep";
+
+import { SubnetsColumns } from "./constants";
 import type {
   SubnetsTableRow,
   SubnetsTableData,
@@ -31,67 +34,51 @@ import {
 } from "app/subnets/urls";
 import { simpleSortByKey } from "app/utils";
 
-export const getRowPropsAreEqual = (
-  prevProps: SubnetsTableRow,
-  nextProps: SubnetsTableRow
-): boolean => {
-  return (
-    prevProps.columns.fabric.label === nextProps.columns.fabric.label &&
-    prevProps.columns.vlan.label === nextProps.columns.vlan.label &&
-    prevProps.columns.vlan.href === nextProps.columns.vlan.href &&
-    prevProps.columns.dhcp.label === nextProps.columns.dhcp.label &&
-    prevProps.columns.subnet.label === nextProps.columns.subnet.label &&
-    prevProps.columns.subnet.href === nextProps.columns.subnet.href &&
-    prevProps.columns.ips.label === nextProps.columns.ips.label &&
-    prevProps.columns.space.label === nextProps.columns.space.label &&
-    prevProps.columns.space.href === nextProps.columns.space.href &&
-    prevProps.columns.space.isVisuallyHidden ===
-      nextProps.columns.space.isVisuallyHidden &&
-    prevProps.columns.vlan.isVisuallyHidden ===
-      nextProps.columns.vlan.isVisuallyHidden &&
-    prevProps.columns.fabric.isVisuallyHidden ===
-      nextProps.columns.fabric.isVisuallyHidden
-  );
-};
-
-const sortBySortKey =
-  (key: keyof SortData, { reverse } = { reverse: false }) =>
-  (a: SubnetsTableRow, b: SubnetsTableRow): number => {
-    if (a.sortData[key] > b.sortData[key]) return reverse ? -1 : 1;
-    if (a.sortData[key] < b.sortData[key]) return reverse ? 1 : -1;
-    return 0;
-  };
-
 const getColumn = (label: string | null, href?: string | null) => ({
   label,
   href: href ? href : null,
   isVisuallyHidden: false,
 });
 
-const markRepeatedFabricRows = (rows: SubnetsTableRow[]): SubnetsTableRow[] => {
-  rows.forEach((row, index) => {
-    const previousRow: SubnetsTableRow = rows[index - 1];
+export const groupRowsByFabricAndVlan = (
+  sourceRows: SubnetsTableRow[]
+): SubnetsTableRow[] => {
+  const rows: SubnetsTableRow[] = [];
 
-    if (row.columns && index > 0) {
+  sourceRows.forEach((sourceRow, index) => {
+    const row = cloneDeep(sourceRow);
+    const previousRow = rows[index - 1];
+
+    if (row && index > 0) {
       if (row.sortData?.fabricId === previousRow?.sortData?.fabricId) {
-        row.columns.fabric = { ...row.columns.fabric, isVisuallyHidden: true };
+        row.fabric = { ...row.fabric, isVisuallyHidden: true };
       }
       if (row.sortData?.vlanId === previousRow?.sortData?.vlanId) {
-        row.columns.vlan = { ...row.columns.vlan, isVisuallyHidden: true };
+        row.vlan = { ...row.vlan, isVisuallyHidden: true };
       }
     }
+
+    rows.push(row);
   });
 
   return rows;
 };
 
-const markRepeatedSpaceRows = (rows: SubnetsTableRow[]): SubnetsTableRow[] => {
-  rows.forEach((row, index) => {
-    const previousRow: SubnetsTableRow = rows[index - 1];
+export const groupRowsBySpace = (
+  sourceRows: SubnetsTableRow[]
+): SubnetsTableRow[] => {
+  const rows: SubnetsTableRow[] = [];
 
-    if (row.columns.space?.label === previousRow?.columns.space?.label) {
-      row.columns.space = { ...row.columns.space, isVisuallyHidden: true };
+  sourceRows.forEach((sourceRow, index) => {
+    const row = cloneDeep(sourceRow);
+    const previousRow = rows[index - 1];
+
+    if (row && index > 0) {
+      if (row.space?.label === previousRow?.space?.label) {
+        row.space = { ...row.space, isVisuallyHidden: true };
+      }
     }
+    rows.push(row);
   });
 
   return rows;
@@ -111,22 +98,20 @@ const getRowData = ({
   data?: SubnetsTableData;
 }): SubnetsTableRow => {
   return {
-    columns: {
-      fabric: getColumn(getFabricDisplay(fabric), getFabricLink(fabric?.id)),
-      vlan: getColumn(
-        getVLANDisplay(vlan),
-        vlan?.id ? getVLANLink(vlan?.id) : null
-      ),
-      dhcp: getColumn(
-        data ? getDHCPStatus(vlan, data.vlans, data.fabrics, true) : null
-      ),
-      subnet: getColumn(
-        subnet?.id ? getSubnetDisplay(subnet) : null,
-        subnet?.id ? getSubnetLink(subnet?.id) : null
-      ),
-      ips: getColumn(subnet ? getAvailableIPs(subnet) : null),
-      space: getColumn(getSpaceDisplay(space), getSpaceLink(space?.id)),
-    },
+    fabric: getColumn(getFabricDisplay(fabric), getFabricLink(fabric?.id)),
+    vlan: getColumn(
+      getVLANDisplay(vlan),
+      vlan?.id ? getVLANLink(vlan?.id) : null
+    ),
+    dhcp: getColumn(
+      data ? getDHCPStatus(vlan, data.vlans, data.fabrics, true) : null
+    ),
+    subnet: getColumn(
+      subnet?.id ? getSubnetDisplay(subnet) : null,
+      subnet?.id ? getSubnetLink(subnet?.id) : null
+    ),
+    ips: getColumn(subnet ? getAvailableIPs(subnet) : null),
+    space: getColumn(getSpaceDisplay(space), getSpaceLink(space?.id)),
     sortData: {
       fabricId: fabric?.id || "",
       fabricName: getFabricDisplay(fabric)?.toLowerCase() || "",
@@ -147,7 +132,12 @@ const getOrphanVLANs = (data: SubnetsTableData): SubnetsTableRow[] => {
     rows.push(getRowData({ fabric, vlan, subnet, space: undefined, data }));
   });
 
-  return markRepeatedSpaceRows(rows.sort(sortBySortKey("cidr")));
+  return rows.sort((a, b) =>
+    simpleSortByKey<SortData, "cidr">("cidr", { alphanumeric: true })(
+      a.sortData,
+      b.sortData
+    )
+  );
 };
 
 const getBySpaces = (data: SubnetsTableData): SubnetsTableRow[] => {
@@ -168,7 +158,11 @@ const getBySpaces = (data: SubnetsTableData): SubnetsTableRow[] => {
     });
   }
 
-  return markRepeatedSpaceRows(rows.sort(sortBySortKey("spaceName")));
+  return rows.sort((a, b) =>
+    simpleSortByKey<SortData, "spaceName">("spaceName", {
+      alphanumeric: true,
+    })(a.sortData, b.sortData)
+  );
 };
 
 const getByFabric = (data: SubnetsTableData): SubnetsTableRow[] => {
@@ -198,7 +192,11 @@ const getByFabric = (data: SubnetsTableData): SubnetsTableRow[] => {
     }
   });
 
-  return markRepeatedFabricRows(rows.sort(sortBySortKey("fabricName")));
+  return rows.sort((a, b) =>
+    simpleSortByKey<SortData, "fabricName">("fabricName", {
+      alphanumeric: true,
+    })(a.sortData, b.sortData)
+  );
 };
 
 export const getTableData = (
@@ -211,3 +209,17 @@ export const getTableData = (
     return [...getBySpaces(data), ...getOrphanVLANs(data)];
   }
 };
+
+export const filterSubnetsBySearchText = (
+  rows: SubnetsTableRow[],
+  searchText: string
+): SubnetsTableRow[] =>
+  searchText.length === 0
+    ? rows
+    : rows.filter(
+        (row) =>
+          row?.[SubnetsColumns.SUBNET]?.label?.includes(searchText) ||
+          row?.[SubnetsColumns.FABRIC]?.label?.includes(searchText) ||
+          row?.[SubnetsColumns.VLAN]?.label?.includes(searchText) ||
+          row?.[SubnetsColumns.SPACE]?.label?.includes(searchText)
+      );

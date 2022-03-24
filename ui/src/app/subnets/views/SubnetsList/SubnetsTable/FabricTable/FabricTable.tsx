@@ -1,101 +1,83 @@
-import { memo } from "react";
+import { useMemo } from "react";
 
-import { Table, TableRow } from "@canonical/react-components";
+import { Pagination, ModularTable } from "@canonical/react-components";
 
-import { getRowPropsAreEqual } from "../utils";
-
+import { CellContents } from "app/subnets/views/SubnetsList/SubnetsTable/components";
 import {
-  TableHeader,
-  TableCell,
-} from "app/subnets/views/SubnetsList/SubnetsTable/components";
+  subnetColumnLabels,
+  SubnetsColumns,
+} from "app/subnets/views/SubnetsList/SubnetsTable/constants";
+import { usePagination } from "app/subnets/views/SubnetsList/SubnetsTable/hooks";
 import type { SubnetsTableRow } from "app/subnets/views/SubnetsList/SubnetsTable/types";
+import { groupRowsByFabricAndVlan } from "app/subnets/views/SubnetsList/SubnetsTable/utils";
 
-export const FabricRow = memo(
-  ({ columns }: SubnetsTableRow): JSX.Element => (
-    <TableRow aria-label={columns.fabric.label || undefined}>
-      <TableCell
-        role="rowheader"
-        className="subnets-table__cell--fabric"
-        aria-label="Fabric"
-        cellData={columns.fabric}
-      >
-        {columns.fabric.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--vlan"
-        aria-label="VLAN"
-        cellData={columns.vlan}
-      >
-        {columns.vlan.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--dhcp"
-        aria-label="DHCP"
-        cellData={columns.dhcp}
-      >
-        {columns.dhcp.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--subnet"
-        aria-label="Subnet"
-        cellData={columns.subnet}
-      >
-        {columns.subnet.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--ips"
-        aria-label="IPs"
-        cellData={columns.ips}
-      >
-        {columns.ips.label}
-      </TableCell>
-      <TableCell
-        role="column"
-        className="subnets-table__cell--space u-align--right"
-        aria-label="Space"
-        cellData={columns.space}
-      >
-        {columns.space.label}
-      </TableCell>
-    </TableRow>
-  ),
-  getRowPropsAreEqual
-);
+const FabricTable = ({
+  data,
+  emptyMsg,
+}: {
+  data: SubnetsTableRow[];
+  emptyMsg: string;
+}): JSX.Element => {
+  const { pageData, ...paginationProps } = usePagination(data);
 
-const FabricTable = ({ rows }: { rows: SubnetsTableRow[] }): JSX.Element => {
   return (
-    <Table role="table" className="subnets-table" aria-label="Subnets">
-      <thead>
-        <tr>
-          <TableHeader label="Fabric" className="subnets-table__cell--fabric" />
-          <TableHeader label="VLAN" className="subnets-table__cell--vlan" />
-          <TableHeader label="DHCP" className="subnets-table__cell--dhcp" />
-          <TableHeader label="Subnet" className="subnets-table__cell--subnet" />
-          <TableHeader
-            label="Available IPs"
-            className="subnets-table__cell--ips"
-          />
-          <TableHeader
-            label="Space"
-            className="subnets-table__cell--space u-align--right"
-          />
-        </tr>
-      </thead>
-      <tbody>
-        {rows.map((row, i) => {
-          return (
-            <FabricRow
-              key={`${row.sortData?.fabricId}-${row.sortData?.vlanId}-${i}`}
-              {...row}
-            />
-          );
+    <>
+      <ModularTable
+        emptyMsg={emptyMsg}
+        className="subnets-table"
+        aria-label="Subnets by Fabric"
+        getCellProps={({ value, column }) => ({
+          className: `subnets-table__cell--${column.id}${
+            value.isVisuallyHidden ? " u-no-border--top" : ""
+          }`,
+          role: column.id === "fabric" ? "rowheader" : undefined,
         })}
-      </tbody>
-    </Table>
+        getHeaderProps={(header) => ({
+          className: `subnets-table__cell--${header.id}`,
+        })}
+        getRowProps={(row) => ({
+          "aria-label": row.values.fabric.label,
+        })}
+        columns={useMemo(
+          () => [
+            {
+              Header: subnetColumnLabels[SubnetsColumns.FABRIC],
+              accessor: SubnetsColumns.FABRIC,
+              Cell: CellContents,
+            },
+            {
+              Header: subnetColumnLabels[SubnetsColumns.VLAN],
+              accessor: SubnetsColumns.VLAN,
+              Cell: CellContents,
+            },
+            {
+              Header: subnetColumnLabels[SubnetsColumns.DHCP],
+              accessor: SubnetsColumns.DHCP,
+              Cell: CellContents,
+            },
+            {
+              Header: subnetColumnLabels[SubnetsColumns.SUBNET],
+              accessor: SubnetsColumns.SUBNET,
+              Cell: CellContents,
+            },
+            {
+              Header: subnetColumnLabels[SubnetsColumns.IPS],
+              accessor: SubnetsColumns.IPS,
+              Cell: CellContents,
+            },
+            {
+              Header: subnetColumnLabels[SubnetsColumns.SPACE],
+              accessor: SubnetsColumns.SPACE,
+              className: "u-align--right",
+              Cell: CellContents,
+            },
+          ],
+          []
+        )}
+        data={groupRowsByFabricAndVlan(pageData)}
+      />
+      <Pagination {...paginationProps} aria-label="pagination" />
+    </>
   );
 };
 
