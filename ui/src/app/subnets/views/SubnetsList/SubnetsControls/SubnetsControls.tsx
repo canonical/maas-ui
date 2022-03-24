@@ -12,11 +12,13 @@ import type {
 const SubnetsControls = ({
   groupBy,
   setGroupBy,
+  searchText: initialSearchText = "",
   handleSearch,
 }: SubnetGroupByProps & {
+  searchText?: string;
   handleSearch: (text: string) => void;
 }): JSX.Element => {
-  const [searchText, setSearchText] = useState("");
+  const [searchText, setSearchText] = useState(initialSearchText);
   const [isInfoOpen, setIsInfoOpen] = useState(false);
 
   return (

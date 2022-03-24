@@ -55,7 +55,7 @@ const VLANDetails = (): JSX.Element => {
       return (
         <ModelNotFound
           id={id}
-          linkURL={subnetURLs.indexBy({ by: "fabric" })}
+          linkURL={subnetURLs.indexWithParams({ by: "fabric" })}
           modelName="VLAN"
         />
       );

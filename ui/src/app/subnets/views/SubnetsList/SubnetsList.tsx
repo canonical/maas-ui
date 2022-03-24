@@ -10,7 +10,7 @@ import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useWindowTitle } from "app/base/hooks";
 import { useQuery } from "app/base/hooks/urls";
-import { SubnetForms } from "app/subnets/enum";
+import { SubnetForms, SubnetsUrlParams } from "app/subnets/enum";
 import type { SubnetForm } from "app/subnets/types";
 import FormActions from "app/subnets/views/FormActions";
 
@@ -19,14 +19,23 @@ const SubnetsList = (): JSX.Element => {
   const [activeForm, setActiveForm] = React.useState<SubnetForm | null>(null);
   const query = useQuery();
   const history = useHistory();
-  const groupBy = query.get("by");
+  const groupBy = query.get(SubnetsUrlParams.By);
+  const searchText = query.get(SubnetsUrlParams.Q) || "";
   const setGroupBy = useCallback(
     (group: GroupByKey) =>
       history.replace({
         pathname: "/networks",
-        search: `?by=${group}`,
+        search: `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`,
       }),
-    [history]
+    [history, searchText]
+  );
+  const setSearchText = useCallback(
+    (searchText) =>
+      history.replace({
+        pathname: "/networks",
+        search: `?${SubnetsUrlParams.By}=${groupBy}&${SubnetsUrlParams.Q}=${searchText}`,
+      }),
+    [history, groupBy]
   );
 
   const hasValidGroupBy = groupBy && ["fabric", "space"].includes(groupBy);
@@ -73,7 +82,12 @@ const SubnetsList = (): JSX.Element => {
       }
     >
       {hasValidGroupBy ? (
-        <SubnetsTable groupBy={groupBy as GroupByKey} setGroupBy={setGroupBy} />
+        <SubnetsTable
+          groupBy={groupBy as GroupByKey}
+          setGroupBy={setGroupBy}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
       ) : null}
     </Section>
   );

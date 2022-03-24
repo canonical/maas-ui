@@ -4,3 +4,8 @@ export enum SubnetForms {
   Space = "Space",
   Subnet = "Subnet",
 }
+
+export enum SubnetsUrlParams {
+  By = "by",
+  Q = "q",
+}

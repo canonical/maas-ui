@@ -1,15 +1,15 @@
-import type { GroupByKey } from "./views/SubnetsList/SubnetsTable/types";
-
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
 import type { Space, SpaceMeta } from "app/store/space/types";
 import type { Subnet, SubnetMeta } from "app/store/subnet/types";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
+import type { SubnetsUrlParams } from "app/subnets/types";
 import { argPath, isId } from "app/utils";
 
 const urls = {
   index: "/networks",
-  indexBy: ({ by }: { by?: GroupByKey } = { by: "fabric" }): string =>
-    `/networks?by=${by}`,
+  indexWithParams: (
+    { by, q }: SubnetsUrlParams = { by: "fabric", q: "" }
+  ): string => `/networks?by=${by}&q=${q}`,
   fabric: {
     index: argPath<{ id: Fabric[FabricMeta.PK] }>("/fabric/:id"),
   },

@@ -1,5 +1,3 @@
-import { useState } from "react";
-
 import FabricTable from "./FabricTable";
 import SpaceTable from "./SpaceTable";
 import { useSubnetsTable, useSubnetsTableSearch } from "./hooks";
@@ -10,14 +8,14 @@ import type { SubnetGroupByProps } from "app/subnets/views/SubnetsList/SubnetsTa
 const SubnetsTable = ({
   groupBy,
   setGroupBy,
-}: SubnetGroupByProps): JSX.Element | null => {
-  const [searchText, setSearchText] = useState("");
+  searchText,
+  setSearchText,
+}: SubnetGroupByProps & {
+  searchText: string;
+  setSearchText: (text: string) => void;
+}): JSX.Element | null => {
   const subnetsTable = useSubnetsTable(groupBy);
   const { data, loaded } = useSubnetsTableSearch(subnetsTable, searchText);
-
-  const handleSearch = (searchText: string): void => {
-    setSearchText(searchText);
-  };
 
   const emptyMsg = !loaded ? "Loading..." : "No results found";
 
@@ -26,7 +24,8 @@ const SubnetsTable = ({
       <SubnetsControls
         groupBy={groupBy}
         setGroupBy={setGroupBy}
-        handleSearch={handleSearch}
+        searchText={searchText}
+        handleSearch={setSearchText}
       />
 
       {groupBy === "fabric" ? (
