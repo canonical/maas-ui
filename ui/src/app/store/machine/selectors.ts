@@ -1,6 +1,8 @@
 import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { Tag, TagMeta } from "../tag/types";
+
 import { ACTIONS } from "app/store/machine/slice";
 import { MachineMeta } from "app/store/machine/types";
 import type {
@@ -13,10 +15,12 @@ import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { NetworkInterface } from "app/store/types/node";
+import { NodeStatus } from "app/store/types/node";
 import {
   generateBaseSelectors,
   getInterfaceById as getInterfaceByIdUtil,
 } from "app/store/utils";
+import { isId } from "app/utils";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
@@ -273,6 +277,28 @@ const getByStatusCode = createSelector(
     machines.filter(({ status_code }) => status_code === statusCode)
 );
 
+/**
+ * Get the deployed machines with the provided tag.
+ * @param state - The redux state.
+ * @param tagId - The tag id.
+ * @returns The deployed machines with the tag.
+ */
+const getDeployedWithTag = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, tagId: Tag[TagMeta.PK] | null) => tagId,
+  ],
+  (machines, tagId) => {
+    if (!isId(tagId)) {
+      return [];
+    }
+    return machines.filter(
+      ({ status, tags }) =>
+        status === NodeStatus.DEPLOYED && tags.includes(tagId)
+    );
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -292,6 +318,7 @@ const selectors = {
   eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   getByStatusCode,
+  getDeployedWithTag,
   getInterfaceById,
   getStatuses,
   getStatusForMachine,

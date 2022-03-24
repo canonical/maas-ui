@@ -27,7 +27,7 @@ type Props = PropsWithSpread<
   {
     currentPage: number;
     filter: TagSearchFilter;
-    onDelete: (id: Tag[TagMeta.PK]) => void;
+    onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
     searchText: string;
     setCurrentPage: (page: number) => void;
     tags: Tag[];

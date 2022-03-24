@@ -34,7 +34,7 @@ export enum Label {
 }
 
 type Props = {
-  onDelete: (id: Tag[TagMeta.PK]) => void;
+  onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
 };
 
 const TagDetails = ({ onDelete }: Props): JSX.Element => {
@@ -78,7 +78,7 @@ const TagDetails = ({ onDelete }: Props): JSX.Element => {
           <Button
             appearance="negative"
             hasIcon
-            onClick={() => onDelete(tag[TagMeta.PK])}
+            onClick={() => onDelete(tag[TagMeta.PK], true)}
           >
             <Icon className="is-light" name="delete" /> <span>Delete</span>
           </Button>

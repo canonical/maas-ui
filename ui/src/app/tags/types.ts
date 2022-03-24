@@ -7,6 +7,9 @@ type HeaderViews = typeof TagHeaderViews;
 
 export type TagHeaderContent =
   | HeaderContent<HeaderViews["AddTag"]>
-  | HeaderContent<HeaderViews["DeleteTag"], { id: Tag[TagMeta.PK] }>;
+  | HeaderContent<
+      HeaderViews["DeleteTag"],
+      { id: Tag[TagMeta.PK]; fromDetails?: boolean }
+    >;
 
 export type TagSetHeaderContent = SetHeaderContent<TagHeaderContent>;

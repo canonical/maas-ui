@@ -162,6 +162,7 @@ const generateRows = ({
 
     const columns = [
       {
+        "aria-label": columnLabels[MachineColumns.FQDN],
         key: MachineColumns.FQDN,
         className: "fqdn-col",
         content: (
@@ -179,6 +180,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.POWER],
         key: MachineColumns.POWER,
         className: "power-col",
         content: (
@@ -190,6 +192,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.STATUS],
         key: MachineColumns.STATUS,
         className: "status-col",
         content: (
@@ -201,6 +204,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.OWNER],
         key: MachineColumns.OWNER,
         className: "owner-col",
         content: (
@@ -212,6 +216,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.POOL],
         key: MachineColumns.POOL,
         className: "pool-col",
         content: (
@@ -223,6 +228,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.ZONE],
         key: MachineColumns.ZONE,
         className: "zone-col",
         content: (
@@ -234,6 +240,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.FABRIC],
         key: MachineColumns.FABRIC,
         className: "fabric-col",
         content: (
@@ -241,6 +248,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.CPU],
         key: MachineColumns.CPU,
         className: "cores-col",
         content: (
@@ -248,6 +256,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.MEMORY],
         key: MachineColumns.MEMORY,
         className: "ram-col",
         content: (
@@ -255,6 +264,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.DISKS],
         key: MachineColumns.DISKS,
         className: "disks-col",
         content: (
@@ -262,6 +272,7 @@ const generateRows = ({
         ),
       },
       {
+        "aria-label": columnLabels[MachineColumns.STORAGE],
         key: MachineColumns.STORAGE,
         className: "storage-col",
         content: (
@@ -275,8 +286,9 @@ const generateRows = ({
 
     return {
       key: row.system_id,
-      className: classNames("machine-list__machine", "truncated-border", {
+      className: classNames("machine-list__machine", {
         "machine-list__machine--active": isActive,
+        "truncated-border": showActions,
       }),
       columns: filterColumns(columns, hiddenColumns, showActions),
     };
@@ -520,6 +532,7 @@ export const MachineListTable = ({
   setHiddenGroups,
   setSearchFilter,
   showActions = true,
+  ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const machinesLoaded = useSelector(machineSelectors.loaded);
@@ -598,6 +611,7 @@ export const MachineListTable = ({
 
   const headers = [
     {
+      "aria-label": columnLabels[MachineColumns.FQDN],
       key: MachineColumns.FQDN,
       className: "fqdn-col",
       content: (
@@ -640,6 +654,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.POWER],
       key: MachineColumns.POWER,
       className: "power-col",
       content: (
@@ -655,6 +670,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.STATUS],
       key: MachineColumns.STATUS,
       className: "status-col",
       content: (
@@ -670,6 +686,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.OWNER],
       key: MachineColumns.OWNER,
       className: "owner-col",
       content: (
@@ -687,6 +704,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.POOL],
       key: MachineColumns.POOL,
       className: "pool-col",
       content: (
@@ -704,6 +722,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.ZONE],
       key: MachineColumns.ZONE,
       className: "zone-col",
       content: (
@@ -721,6 +740,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.FABRIC],
       key: MachineColumns.FABRIC,
       className: "fabric-col",
       content: (
@@ -738,6 +758,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.CPU],
       key: MachineColumns.CPU,
       className: "cores-col u-align--right",
       content: (
@@ -755,6 +776,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.MEMORY],
       key: MachineColumns.MEMORY,
       className: "ram-col u-align--right",
       content: (
@@ -769,6 +791,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.DISKS],
       key: MachineColumns.DISKS,
       className: "disks-col u-align--right",
       content: (
@@ -783,6 +806,7 @@ export const MachineListTable = ({
       ),
     },
     {
+      "aria-label": columnLabels[MachineColumns.STORAGE],
       key: MachineColumns.STORAGE,
       className: "storage-col u-align--right",
       content: (
@@ -839,6 +863,7 @@ export const MachineListTable = ({
             "No machines match the search criteria."
           ) : null
         }
+        {...props}
       />
     </>
   );

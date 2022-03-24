@@ -12,7 +12,7 @@ import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
 
 type Props = {
-  onDelete: (id: Tag[TagMeta.PK]) => void;
+  onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
 };
 
 const TagList = ({ onDelete }: Props): JSX.Element => {

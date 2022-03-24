@@ -19,7 +19,16 @@ export const TagHeaderForms = ({
     case TagHeaderViews.DeleteTag:
       const id = headerContent?.extras?.id;
       if (id) {
-        return <DeleteTagForm id={id} onClose={() => setHeaderContent(null)} />;
+        return (
+          <DeleteTagForm
+            fromDetails={headerContent?.extras?.fromDetails}
+            id={id}
+            // Set a key so that if a different tag is click on while the form
+            // is open then it renders the form again and scrolls to the top.
+            key={id}
+            onClose={() => setHeaderContent(null)}
+          />
+        );
       }
       return null;
     default:
