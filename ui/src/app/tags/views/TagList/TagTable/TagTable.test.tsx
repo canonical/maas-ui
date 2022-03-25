@@ -1,6 +1,8 @@
 import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Route, Router } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import TagTable, { Label, TestId } from "./TagTable";
@@ -11,6 +13,7 @@ import machineURLs from "app/machines/urls";
 import type { RootState } from "app/store/root/types";
 import { TagSearchFilter } from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
+import tagsURLs from "app/tags/urls";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -30,9 +33,11 @@ let tags: Tag[];
 beforeEach(() => {
   tags = [
     tagFactory({
+      id: 1,
       name: "rad",
     }),
     tagFactory({
+      id: 2,
       name: "cool",
     }),
   ];
@@ -483,4 +488,35 @@ it("returns to the first page if the filter changes", () => {
     </Provider>
   );
   expect(setCurrentPage).toHaveBeenCalledWith(1);
+});
+
+it("can go to the tag edit page", () => {
+  const path = tagsURLs.tag.machines({ id: 1 });
+  const history = createMemoryHistory({
+    initialEntries: [{ pathname: path }],
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <Router history={history}>
+        <Route
+          exact
+          path={path}
+          component={() => (
+            <TagTable
+              currentPage={1}
+              filter={TagSearchFilter.All}
+              onDelete={jest.fn()}
+              searchText=""
+              setCurrentPage={jest.fn()}
+              tags={tags}
+            />
+          )}
+        />
+      </Router>
+    </Provider>
+  );
+  userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
+  expect(history.location.pathname).toBe(tagsURLs.tag.update({ id: 2 }));
+  expect(history.location.state).toStrictEqual({ canGoBack: true });
 });

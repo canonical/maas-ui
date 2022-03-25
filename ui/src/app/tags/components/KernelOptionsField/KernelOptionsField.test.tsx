@@ -1,0 +1,78 @@
+import { render, screen } from "@testing-library/react";
+import { Formik } from "formik";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
+
+import KernelOptionsField from "./KernelOptionsField";
+
+import type { RootState } from "app/store/root/types";
+import { NodeStatus } from "app/store/types/node";
+import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  tag as tagFactory,
+  rootState as rootStateFactory,
+  tagState as tagStateFactory,
+} from "testing/factories";
+
+const mockStore = configureStore();
+let state: RootState;
+
+beforeEach(() => {
+  state = rootStateFactory({
+    tag: tagStateFactory({
+      items: [
+        tagFactory({
+          id: 1,
+          name: "rad",
+        }),
+      ],
+    }),
+  });
+});
+
+it("does not display a deployed machines message if a tag is not supplied", () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <KernelOptionsField />
+        </Formik>
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.queryByText(/The new kernel options will not be applied/i)
+  ).not.toBeInTheDocument();
+});
+
+it("displays a deployed machines message when updating a tag", () => {
+  state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [
+        machineFactory({
+          status: NodeStatus.DEPLOYED,
+          tags: [1],
+        }),
+      ],
+    }),
+    tag: tagStateFactory({
+      items: [tagFactory({ id: 1, machine_count: 1 })],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <KernelOptionsField id={1} />
+        </Formik>
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByText(/The new kernel options will not be applied/i)
+  ).toBeInTheDocument();
+});

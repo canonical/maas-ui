@@ -286,7 +286,7 @@ const getByStatusCode = createSelector(
 const getDeployedWithTag = createSelector(
   [
     defaultSelectors.all,
-    (_state: RootState, tagId: Tag[TagMeta.PK] | null) => tagId,
+    (_state: RootState, tagId: Tag[TagMeta.PK] | null | undefined) => tagId,
   ],
   (machines, tagId) => {
     if (!isId(tagId)) {

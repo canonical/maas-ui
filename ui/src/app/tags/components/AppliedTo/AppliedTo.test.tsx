@@ -76,3 +76,27 @@ it("links to nodes", () => {
     `${deviceURLs.devices.index}?tags=a-tag`
   );
 });
+
+it("displays a message if there are no nodes", () => {
+  state.tag.items = [
+    tagFactory({
+      id: 1,
+      machine_count: 0,
+      device_count: 0,
+      controller_count: 0,
+      name: "a-tag",
+    }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+      >
+        <AppliedTo id={1} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(screen.queryByRole("link")).not.toBeInTheDocument();
+  expect(screen.getByText("None")).toBeInTheDocument();
+});

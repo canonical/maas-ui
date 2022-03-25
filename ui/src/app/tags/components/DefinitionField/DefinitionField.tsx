@@ -4,7 +4,7 @@ import { useFormikContext } from "formik";
 
 import FormikField from "app/base/components/FormikField";
 import { useId } from "app/base/hooks/base";
-import type { CreateParams } from "app/store/tag/types";
+import type { CreateParams, UpdateParams } from "app/store/tag/types";
 
 export const INVALID_XPATH_ERROR = "Invalid xpath expression";
 
@@ -33,7 +33,9 @@ const getDefinitionError = (
 };
 
 export const DefinitionField = (): JSX.Element => {
-  const { errors } = useFormikContext<CreateParams>();
+  const { initialValues, errors, values } = useFormikContext<
+    CreateParams | UpdateParams
+  >();
   const definitionErrorId = useId();
   const definitionError = getDefinitionError(errors, definitionErrorId);
 
@@ -46,6 +48,12 @@ export const DefinitionField = (): JSX.Element => {
         error={definitionError}
         label={Label.Definition}
         name="definition"
+        caution={
+          !!initialValues.definition &&
+          values.definition !== initialValues.definition
+            ? "This tag will be unassigned from previous machines that no longer match this definition."
+            : null
+        }
         component={Textarea}
         placeholder={`//node[@class="system"]/vendor = "QEMU" and
 //node[@class="processor"]/vendor[starts-with(.,"Advanced Micro Devices")] and not
