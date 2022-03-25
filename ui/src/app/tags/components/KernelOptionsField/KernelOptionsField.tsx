@@ -1,10 +1,17 @@
 import { Textarea } from "@canonical/react-components";
+import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
-import type { Tag, TagMeta } from "app/store/tag/types";
+import type {
+  CreateParams,
+  Tag,
+  TagMeta,
+  UpdateParams,
+} from "app/store/tag/types";
+import { isId } from "app/utils";
 
 export enum Label {
   KernelOptions = "Kernel options",
@@ -23,7 +30,12 @@ export const KernelOptionsField = ({ id }: Props): JSX.Element => {
   const deployedMachines = useSelector((state: RootState) =>
     machineSelectors.getDeployedWithTag(state, id)
   );
+  const { initialValues, values } = useFormikContext<
+    CreateParams | UpdateParams
+  >();
   const deployedCount = deployedMachines.length;
+  const hasChangedOptions =
+    isId(id) && values.kernel_opts !== initialValues.kernel_opts;
 
   return (
     <FormikField
@@ -31,7 +43,9 @@ export const KernelOptionsField = ({ id }: Props): JSX.Element => {
       label={Label.KernelOptions}
       name="kernel_opts"
       caution={
-        deployedCount > 0 ? generateDeployedMessage(deployedCount) : null
+        deployedCount > 0 && hasChangedOptions
+          ? generateDeployedMessage(deployedCount)
+          : null
       }
       component={Textarea}
       help={

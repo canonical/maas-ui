@@ -1,10 +1,11 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import KernelOptionsField from "./KernelOptionsField";
+import KernelOptionsField, { Label } from "./KernelOptionsField";
 
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
@@ -48,7 +49,7 @@ it("does not display a deployed machines message if a tag is not supplied", () =
   ).not.toBeInTheDocument();
 });
 
-it("displays a deployed machines message when updating a tag", () => {
+it("displays a deployed machines message when updating a tag", async () => {
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -72,7 +73,13 @@ it("displays a deployed machines message when updating a tag", () => {
       </MemoryRouter>
     </Provider>
   );
-  expect(
-    screen.getByText(/The new kernel options will not be applied/i)
-  ).toBeInTheDocument();
+  userEvent.type(
+    screen.getByRole("textbox", { name: Label.KernelOptions }),
+    "options2"
+  );
+  await waitFor(() => {
+    expect(
+      screen.getByText(/The new kernel options will not be applied/i)
+    ).toBeInTheDocument();
+  });
 });

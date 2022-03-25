@@ -38,7 +38,9 @@ export const DefinitionField = (): JSX.Element => {
   >();
   const definitionErrorId = useId();
   const definitionError = getDefinitionError(errors, definitionErrorId);
-
+  const hasChangedDefinition =
+    !!initialValues.definition &&
+    values.definition !== initialValues.definition;
   return (
     <>
       <FormikField
@@ -49,8 +51,7 @@ export const DefinitionField = (): JSX.Element => {
         label={Label.Definition}
         name="definition"
         caution={
-          !!initialValues.definition &&
-          values.definition !== initialValues.definition
+          hasChangedDefinition
             ? "This tag will be unassigned from previous machines that no longer match this definition."
             : null
         }
