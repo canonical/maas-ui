@@ -31,8 +31,9 @@ const NonUbuntuImageSelect = ({
   images,
   resources,
 }: Props): JSX.Element | null => {
-  const { setFieldValue, values } =
-    useFormikContext<{ images: ImageValue[] }>();
+  const { setFieldValue, values } = useFormikContext<{
+    images: ImageValue[];
+  }>();
 
   const isChecked = (image: BaseImageFields) =>
     values.images.some((imageValue) => imageMatchesValue(image, imageValue));

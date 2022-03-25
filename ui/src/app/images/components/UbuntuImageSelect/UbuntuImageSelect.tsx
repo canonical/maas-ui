@@ -38,8 +38,9 @@ const UbuntuImageSelect = ({
   const [selectedRelease, setSelectedRelease] = useState<
     BootResourceUbuntuRelease["name"]
   >(commissioningReleaseName || "");
-  const { setFieldValue, values } =
-    useFormikContext<{ images: ImageValue[] }>();
+  const { setFieldValue, values } = useFormikContext<{
+    images: ImageValue[];
+  }>();
   const { images } = values;
   const availableArches = arches.filter((arch) => !arch.deleted);
   const availableReleases = releases.filter((release) => !release.deleted);

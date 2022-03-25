@@ -22,8 +22,9 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
   const commissioningRelease = useSelector(
     configSelectors.commissioningDistroSeries
   );
-  const { setFieldValue, values } =
-    useFormikContext<{ images: ImageValue[] }>();
+  const { setFieldValue, values } = useFormikContext<{
+    images: ImageValue[];
+  }>();
   const { images } = values;
   const commissioningImages = images.filter(
     (image) => image.release === commissioningRelease
