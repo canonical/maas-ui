@@ -21,23 +21,29 @@ const AppliedTo = ({ id }: Props): JSX.Element | null => {
   if (!tag) {
     return null;
   }
+  const hasMachines = tag.machine_count > 0;
+  const hasControllers = tag.controller_count > 0;
+  const hasDevices = tag.device_count > 0;
+  if (!hasMachines && !hasControllers && !hasDevices) {
+    return <>None</>;
+  }
   return (
     <>
-      {tag.machine_count > 0 ? (
+      {hasMachines ? (
         <NodesTagsLink
           count={tag.machine_count}
           nodeType={MachineMeta.MODEL}
           tags={[tag.name]}
         />
       ) : null}
-      {tag.controller_count > 0 ? (
+      {hasControllers ? (
         <NodesTagsLink
           count={tag.controller_count}
           nodeType={ControllerMeta.MODEL}
           tags={[tag.name]}
         />
       ) : null}
-      {tag.device_count > 0 ? (
+      {hasDevices ? (
         <NodesTagsLink
           count={tag.device_count}
           nodeType={DeviceMeta.MODEL}

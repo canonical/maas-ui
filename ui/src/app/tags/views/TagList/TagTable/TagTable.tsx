@@ -6,8 +6,9 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip, Tooltip } from "@canonical/react-components";
+import type { History } from "history";
 import { useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import { TAGS_PER_PAGE } from "../constants";
 
@@ -55,7 +56,11 @@ const getSortValue = (sortKey: SortKey, tag: Tag) => {
   return isComparable(value) ? value : null;
 };
 
-const generateRows = (tags: Tag[], onDelete: Props["onDelete"]) =>
+const generateRows = (
+  tags: Tag[],
+  onDelete: Props["onDelete"],
+  history: History
+) =>
   tags.map((tag) => {
     return {
       key: `tag-row-${tag.id}`,
@@ -89,10 +94,12 @@ const generateRows = (tags: Tag[], onDelete: Props["onDelete"]) =>
               onDelete={() => {
                 onDelete(tag[TagMeta.PK]);
               }}
-              onEdit={() => {
-                // TODO: Implement tag edit form:
-                // https://github.com/canonical-web-and-design/app-tribe/issues/706
-              }}
+              onEdit={() =>
+                history.push({
+                  pathname: tagURLs.tag.update({ id: tag.id }),
+                  state: { canGoBack: true },
+                })
+              }
             />
           ),
           className: "u-align--right",
@@ -150,6 +157,7 @@ const TagTable = ({
   ...tableProps
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { currentSort, sortRows, updateSort } = useTableSort<Tag, SortKey>(
     getSortValue,
     {
@@ -239,7 +247,7 @@ const TagTable = ({
             className: "u-align--right",
           },
         ]}
-        rows={generateRows(paginatedTags, onDelete)}
+        rows={generateRows(paginatedTags, onDelete, history)}
       />
       {generateNoTagsMessage(tags.length === 0, filter, searchText)}
     </>

@@ -11,6 +11,8 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
+import TagUpdate from "../TagUpdate";
+
 import Definition from "app/base/components/Definition";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useWindowTitle } from "app/base/hooks";
@@ -34,10 +36,11 @@ export enum Label {
 }
 
 type Props = {
+  isEditing?: boolean;
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
 };
 
-const TagDetails = ({ onDelete }: Props): JSX.Element => {
+const TagDetails = ({ isEditing, onDelete }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
@@ -65,6 +68,10 @@ const TagDetails = ({ onDelete }: Props): JSX.Element => {
     );
   }
 
+  if (isEditing) {
+    return <TagUpdate id={id} />;
+  }
+
   return (
     <>
       <Row>
@@ -72,7 +79,14 @@ const TagDetails = ({ onDelete }: Props): JSX.Element => {
           <Link to={tagURLs.tags.index}>&lsaquo; Back to all tags</Link>
         </Col>
         <Col className="u-align--right" size={6}>
-          <Button hasIcon>
+          <Button
+            element={Link}
+            hasIcon
+            to={{
+              pathname: tagURLs.tag.update({ id: tag.id }),
+              state: { canGoBack: true },
+            }}
+          >
             <Icon className="is-light" name="edit" /> <span>Edit</span>
           </Button>
           <Button

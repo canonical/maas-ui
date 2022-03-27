@@ -41,6 +41,11 @@ const Tags = (): JSX.Element => {
         />
         <Route
           exact
+          path={tagsURLs.tag.update(null, true)}
+          render={() => <TagDetails onDelete={onDelete} isEditing />}
+        />
+        <Route
+          exact
           path={tagsURLs.tag.machines(null, true)}
           render={() => <TagMachines />}
         />

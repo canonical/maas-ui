@@ -33,6 +33,10 @@ describe("Tags", () => {
       path: tagURLs.tag.index({ id: 1 }),
     },
     {
+      component: "TagDetails",
+      path: tagURLs.tag.update({ id: 1 }),
+    },
+    {
       component: "TagList",
       path: tagURLs.tags.index,
     },

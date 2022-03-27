@@ -5,10 +5,13 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import DefinitionField, { INVALID_XPATH_ERROR, Label } from "./DefinitionField";
+import KernelOptionsField, { Label } from "./KernelOptionsField";
 
 import type { RootState } from "app/store/root/types";
+import { NodeStatus } from "app/store/types/node";
 import {
+  machine as machineFactory,
+  machineState as machineStateFactory,
   tag as tagFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
@@ -30,55 +33,53 @@ beforeEach(() => {
   });
 });
 
-it("overrides the xpath errors", async () => {
+it("does not display a deployed machines message if a tag is not supplied", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialErrors={{
-            definition: INVALID_XPATH_ERROR,
-          }}
-          initialValues={{}}
-          onSubmit={jest.fn()}
-        >
-          <DefinitionField />
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <KernelOptionsField />
         </Formik>
       </MemoryRouter>
     </Provider>
   );
   expect(
-    screen.getByRole("textbox", { name: Label.Definition })
-  ).toHaveErrorMessage(
-    "The definition is an invalid XPath expression. See our XPath documentation for more examples."
-  );
+    screen.queryByText(/The new kernel options will not be applied/i)
+  ).not.toBeInTheDocument();
 });
 
-it("displays a warning when changing the definition", async () => {
-  state.tag.items[0].definition = "def1";
+it("displays a deployed machines message when updating a tag", async () => {
+  state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [
+        machineFactory({
+          status: NodeStatus.DEPLOYED,
+          tags: [1],
+        }),
+      ],
+    }),
+    tag: tagStateFactory({
+      items: [tagFactory({ id: 1, machine_count: 1 })],
+    }),
+  });
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialErrors={{
-            definition: INVALID_XPATH_ERROR,
-          }}
-          initialValues={{}}
-          onSubmit={jest.fn()}
-        >
-          <DefinitionField id={1} />
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <KernelOptionsField id={1} />
         </Formik>
       </MemoryRouter>
     </Provider>
   );
   userEvent.type(
-    screen.getByRole("textbox", { name: Label.Definition }),
-    "def2"
+    screen.getByRole("textbox", { name: Label.KernelOptions }),
+    "options2"
   );
   await waitFor(() => {
     expect(
-      screen.getByText(/This tag will be unassigned/i)
+      screen.getByText(/The new kernel options will not be applied/i)
     ).toBeInTheDocument();
   });
 });
