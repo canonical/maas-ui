@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import FormikField from "app/base/components/FormikField";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
 import type {
   CreateParams,
   Tag,
@@ -27,15 +28,15 @@ const generateDeployedMessage = (count: number) =>
     : `There are ${count} deployed machines with this tag. The new kernel options will not be applied to these machines until they are redeployed.`;
 
 export const KernelOptionsField = ({ id }: Props): JSX.Element => {
+  const tag = useSelector((state: RootState) =>
+    tagSelectors.getById(state, id)
+  );
   const deployedMachines = useSelector((state: RootState) =>
     machineSelectors.getDeployedWithTag(state, id)
   );
-  const { initialValues, values } = useFormikContext<
-    CreateParams | UpdateParams
-  >();
+  const { values } = useFormikContext<CreateParams | UpdateParams>();
   const deployedCount = deployedMachines.length;
-  const hasChangedOptions =
-    isId(id) && values.kernel_opts !== initialValues.kernel_opts;
+  const hasChangedOptions = isId(id) && values.kernel_opts !== tag?.kernel_opts;
 
   return (
     <FormikField

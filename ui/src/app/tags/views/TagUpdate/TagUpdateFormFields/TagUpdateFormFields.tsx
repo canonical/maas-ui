@@ -76,7 +76,7 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
               </span>
             </Definition>
           ) : (
-            <DefinitionField />
+            <DefinitionField id={id} />
           )}
         </Col>
       </Row>

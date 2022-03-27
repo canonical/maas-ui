@@ -1,10 +1,18 @@
 import { CodeSnippet, Textarea } from "@canonical/react-components";
 import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
+import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import { useId } from "app/base/hooks/base";
-import type { CreateParams, UpdateParams } from "app/store/tag/types";
+import type { RootState } from "app/store/root/types";
+import tagSelectors from "app/store/tag/selectors";
+import type {
+  CreateParams,
+  Tag,
+  TagMeta,
+  UpdateParams,
+} from "app/store/tag/types";
 
 export const INVALID_XPATH_ERROR = "Invalid xpath expression";
 
@@ -14,6 +22,10 @@ export enum Label {
   KernelOptions = "Kernel options",
   Name = "Tag name",
 }
+
+type Props = {
+  id?: Tag[TagMeta.PK];
+};
 
 const getDefinitionError = (
   errors: FormikErrors<CreateParams>,
@@ -32,15 +44,15 @@ const getDefinitionError = (
   return errors.definition;
 };
 
-export const DefinitionField = (): JSX.Element => {
-  const { initialValues, errors, values } = useFormikContext<
-    CreateParams | UpdateParams
-  >();
+export const DefinitionField = ({ id }: Props): JSX.Element => {
+  const { errors, values } = useFormikContext<CreateParams | UpdateParams>();
+  const tag = useSelector((state: RootState) =>
+    tagSelectors.getById(state, id)
+  );
   const definitionErrorId = useId();
   const definitionError = getDefinitionError(errors, definitionErrorId);
   const hasChangedDefinition =
-    !!initialValues.definition &&
-    values.definition !== initialValues.definition;
+    !!tag?.definition && values.definition !== tag?.definition;
   return (
     <>
       <FormikField
