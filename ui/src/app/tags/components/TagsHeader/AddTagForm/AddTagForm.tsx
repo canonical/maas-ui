@@ -66,9 +66,9 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
       }}
       onCancel={onClose}
       onSaveAnalytics={{
-        action: "Submit",
-        category: "Create tag form",
-        label: "Create tag",
+        action: "Valid XPath",
+        category: "XPath tagging",
+        label: "Save",
       }}
       onSubmit={(values) => {
         dispatch(tagActions.cleanup());

@@ -1,9 +1,12 @@
+import { useEffect, useRef } from "react";
+
 import { CodeSnippet, Textarea } from "@canonical/react-components";
 import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
+import { useSendAnalytics } from "app/base/hooks";
 import { useId } from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
@@ -50,9 +53,18 @@ export const DefinitionField = ({ id }: Props): JSX.Element => {
     tagSelectors.getById(state, id)
   );
   const definitionErrorId = useId();
+  const definitionAnalyticsSent = useRef(false);
+  const sendAnalytics = useSendAnalytics();
   const definitionError = getDefinitionError(errors, definitionErrorId);
   const hasChangedDefinition =
     !!tag?.definition && values.definition !== tag?.definition;
+
+  useEffect(() => {
+    if (definitionError && !definitionAnalyticsSent.current) {
+      sendAnalytics("XPath tagging", "Invalid XPath", "Save");
+      definitionAnalyticsSent.current = true;
+    }
+  }, [definitionError, sendAnalytics]);
   return (
     <>
       <FormikField
