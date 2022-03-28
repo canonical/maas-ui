@@ -4,7 +4,7 @@ import { pages } from "../../constants";
 pages.forEach(({ heading, url }) => {
   it(
     `"${heading}" page has no detectable accessibility violations on load`,
-    { defaultCommandTimeout: 10000, retries: 1 },
+    { retries: 1 },
     () => {
       if (url === "/intro/user") {
         cy.login({ shouldSkipIntro: false });
