@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { useSendAnalytics } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
@@ -43,13 +44,19 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
     // provided in this form.
     tagSelectors.getByName(state, savedName)
   );
+  const sendAnalytics = useSendAnalytics();
 
   useEffect(() => {
     if (tag) {
       history.push({ pathname: tagsURLs.tag.index({ id: tag.id }) });
+      if (tag.definition) {
+        sendAnalytics("XPath tagging", "Valid XPath", "Save");
+      } else {
+        sendAnalytics("Create Tag form", "Manual tag created", "Save");
+      }
       onClose();
     }
-  }, [history, onClose, tag]);
+  }, [history, onClose, tag, sendAnalytics]);
 
   return (
     <FormikForm<CreateParams>
@@ -65,11 +72,6 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
         name: "",
       }}
       onCancel={onClose}
-      onSaveAnalytics={{
-        action: "Submit",
-        category: "Create tag form",
-        label: "Create tag",
-      }}
       onSubmit={(values) => {
         dispatch(tagActions.cleanup());
         dispatch(tagActions.create(values));
