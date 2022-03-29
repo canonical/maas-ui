@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -23,18 +23,21 @@ describe("FormikForm", () => {
       }),
     });
   });
-
-  it("can render", () => {
+  it("can render a form", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <FormikForm initialValues={{}} onSubmit={jest.fn()}>
+          <FormikForm
+            initialValues={{}}
+            onSubmit={jest.fn()}
+            aria-label="example"
+          >
             Content
           </FormikForm>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Formik").exists()).toBe(true);
+    expect(screen.getByRole("form", { name: "example" })).toBeInTheDocument();
   });
 });
