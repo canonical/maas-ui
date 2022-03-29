@@ -126,16 +126,10 @@ export const DeployFormFields = (): JSX.Element => {
               disabled={!canBeKVMHost || noImages}
               id="deployVmHost"
               label={
-                <ul className="p-inline-list u-no-margin--bottom">
-                  <li className="p-inline-list__item">
-                    Register as MAAS KVM host.
-                  </li>
-                  <li className="p-inline-list__item">
-                    <a href="https://maas.io/docs/kvm-introduction">
-                      Read more
-                    </a>
-                  </li>
-                </ul>
+                <>
+                  Register as MAAS KVM host.{" "}
+                  <a href="https://maas.io/docs/kvm-introduction">KVM docs</a>
+                </>
               }
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                 const { checked } = evt.target;
@@ -173,16 +167,12 @@ export const DeployFormFields = (): JSX.Element => {
             <FormikField
               disabled={noImages}
               label={
-                <ul className="p-inline-list u-no-margin--bottom">
-                  <li className="p-inline-list__item">
-                    Cloud-init user-data&hellip;
-                  </li>
-                  <li className="p-inline-list__item">
-                    <a href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init">
-                      Read more
-                    </a>
-                  </li>
-                </ul>
+                <>
+                  Cloud-init user-data&hellip;{" "}
+                  <a href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init">
+                    Cloud-init docs
+                  </a>
+                </>
               }
               name="includeUserData"
               type="checkbox"
