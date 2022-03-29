@@ -2301,10 +2301,10 @@
   dependencies:
     macaroon "3.0.4"
 
-"@canonical/react-components@0.33.0":
-  version "0.33.0"
-  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.33.0.tgz#a9f0d6003bf43ddd9036f0a92e087c54a099d3a9"
-  integrity sha512-0ETyN5jGvnzoz6d/w65CDBQ9YX6QtC1uwaujmRCVwQbCTyTU/fgKGlOGMpoiFW432ixPFzL9lGu4KJmiT6QN4Q==
+"@canonical/react-components@0.34.0":
+  version "0.34.0"
+  resolved "https://registry.yarnpkg.com/@canonical/react-components/-/react-components-0.34.0.tgz#2258b7aea9ee92e57762dec84ba362647152680a"
+  integrity sha512-1C0LmLSA9xlwpEA98D8aeOKGnvcufqmOpRC3US1u94gLeanHFjeIP87vHLi7K+DEFlrdhgp+st+iUJR+K9pW+A==
   dependencies:
     "@types/jest" "27.4.1"
     "@types/node" "16.11.26"
