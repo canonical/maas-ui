@@ -56,7 +56,7 @@ context("Subnets - Add", () => {
     const name = `cypress-${generateId()}`;
     completeForm("Fabric", name);
 
-    cy.findByRole("table", { name: "Subnets" }).within(() => {
+    cy.findByRole("table", { name: /Subnets/ }).within(() => {
       cy.findByRole("row", { name }).within(() =>
         cy.findByRole("link", { name }).click()
       );
@@ -74,7 +74,7 @@ context("Subnets - Add", () => {
 
     cy.url().should("include", generateNewURL("/networks?by=fabric"));
 
-    cy.findByRole("table", { name: "Subnets" }).within(() => {
+    cy.findByRole("table", { name: /Subnets/ }).within(() => {
       cy.findByRole("row", { name }).within(() =>
         cy.findByRole("link", { name }).should("not.exist")
       );
@@ -85,7 +85,7 @@ context("Subnets - Add", () => {
     cy.visit(generateNewURL("/networks?by=space"));
     const name = `cypress-${generateId()}`;
     completeForm("Space", name);
-    cy.findByRole("table", { name: "Subnets" }).within(() => {
+    cy.findByRole("table", { name: /Subnets/ }).within(() => {
       cy.findByRole("link", { name }).click();
     });
 
@@ -100,7 +100,7 @@ context("Subnets - Add", () => {
     cy.findByRole("button", { name: "Yes, delete space" }).click();
 
     cy.url().should("include", generateNewURL("/networks?by=space"));
-    cy.findByRole("table", { name: "Subnets" }).within(() => {
+    cy.findByRole("table", { name: /Subnets/ }).within(() => {
       cy.findByRole("link", { name }).should("not.exist");
     });
   });

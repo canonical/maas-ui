@@ -69,7 +69,6 @@ Cypress.Commands.add("testA11y", (pageContext) => {
 Cypress.Commands.add("waitForPageToLoad", () => {
   cy.get("[data-testid='section-header-title-spinner]").should("not.exist");
   cy.get("[data-testid='section-header-subtitle-spinner']").should("not.exist");
-  cy.findByText("Loading...").should("not.exist");
   cy.findByText("Failed to connect").should("not.exist");
   cy.get("[data-testid='section-header-title']").should("be.visible");
 });
