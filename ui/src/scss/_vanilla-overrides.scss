@@ -64,13 +64,3 @@ input[type="radio"] {
     }
   }
 }
-
-// 18-03-2022 Huw: Chips can't accept classnames to override the margin.
-// https://github.com/canonical-web-and-design/react-components/pull/727
-.tag-form__changes {
-  .p-chip,
-  [class^="p-chip--"] {
-    margin-bottom: 0;
-    vertical-align: baseline;
-  }
-}
