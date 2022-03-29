@@ -128,7 +128,7 @@ export const DeployFormFields = (): JSX.Element => {
               label={
                 <>
                   Register as MAAS KVM host.{" "}
-                  <a href="https://maas.io/docs/kvm-introduction">KVM Docs</a>
+                  <a href="https://maas.io/docs/kvm-introduction">KVM docs</a>
                 </>
               }
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
