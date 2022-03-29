@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-import { Icon } from "@canonical/react-components";
+import { Col, Icon, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import TagFormChanges from "../TagFormChanges";
@@ -21,8 +21,8 @@ type Props = {
 export const TagFormFields = ({ machines }: Props): JSX.Element => {
   const tags = useSelector(tagSelectors.getManual);
   return (
-    <div className="tag-form">
-      <div className="tag-form__search">
+    <Row>
+      <Col size={6} className="col-start-large-4">
         <TagField
           generateDropdownEntry={(
             tag: TagSelectorTag,
@@ -43,23 +43,16 @@ export const TagFormFields = ({ machines }: Props): JSX.Element => {
               <span>Kernel options</span>
             </div>
           }
-          label="Search existing / add new tags:"
+          label="Search existing or add new tags"
           name="tags"
           placeholder=""
           showSelectedTags={false}
           storedValue="id"
           tags={tags.map(({ id, name }) => ({ id, name }))}
         />
-      </div>
-      <div className="tag-form__changes">
         <TagFormChanges machines={machines} />
-      </div>
-      <div className="tag-form__details">
-        <p className="u-text--muted">
-          Select a tag to view information about it.
-        </p>
-      </div>
-    </div>
+      </Col>
+    </Row>
   );
 };
 
