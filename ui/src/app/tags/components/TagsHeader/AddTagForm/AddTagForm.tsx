@@ -52,7 +52,7 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
       if (tag.definition) {
         sendAnalytics("XPath tagging", "Valid XPath", "Save");
       } else {
-        sendAnalytics("Create Tag form", "Tag created", "Save");
+        sendAnalytics("Create Tag form", "Manual tag created", "Save");
       }
       onClose();
     }

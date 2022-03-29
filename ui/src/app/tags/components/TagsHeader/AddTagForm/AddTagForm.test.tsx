@@ -180,7 +180,7 @@ it("sends analytics when there is no definition", async () => {
   });
   expect(mockSendAnalytics.mock.calls[0]).toEqual([
     "Create Tag form",
-    "Tag created",
+    "Manual tag created",
     "Save",
   ]);
 });
