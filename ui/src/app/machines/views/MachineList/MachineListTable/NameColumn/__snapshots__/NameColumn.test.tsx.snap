@@ -87,7 +87,7 @@ exports[`NameColumn renders 1`] = `
                     </small>
                   </Link>
                 }
-                labelClassName="is-inline-label"
+                labelClassName="u-no-margin--bottom u-no-padding--top"
                 onChange={[Function]}
                 type="checkbox"
                 wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
@@ -96,7 +96,7 @@ exports[`NameColumn renders 1`] = `
                   className="u-no-margin--bottom u-nudge--checkbox"
                   forId="mock-redux-js-nanoid-1"
                   label=""
-                  labelClassName="is-inline-label"
+                  labelClassName="u-no-margin--bottom u-no-padding--top"
                 >
                   <div
                     className="p-form__group p-form-validation u-no-margin--bottom u-nudge--checkbox"
@@ -123,7 +123,7 @@ exports[`NameColumn renders 1`] = `
                             </small>
                           </Link>
                         }
-                        labelClassName="is-inline-label"
+                        labelClassName="u-no-margin--bottom u-no-padding--top"
                         onChange={[Function]}
                       >
                         <CheckableInput
@@ -147,11 +147,11 @@ exports[`NameColumn renders 1`] = `
                               </small>
                             </Link>
                           }
-                          labelClassName="is-inline-label"
+                          labelClassName="u-no-margin--bottom u-no-padding--top"
                           onChange={[Function]}
                         >
                           <label
-                            className="is-inline-label p-checkbox"
+                            className="u-no-margin--bottom u-no-padding--top p-checkbox"
                           >
                             <input
                               aria-labelledby="mock-nanoid-1"

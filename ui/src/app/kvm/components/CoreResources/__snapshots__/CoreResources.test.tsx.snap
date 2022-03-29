@@ -5,7 +5,7 @@ exports[`CoreResources renders 1`] = `
   className="core-resources"
 >
   <h4
-    className="core-resources__header p-heading--small u-sv1"
+    className="p-text--x-small-capitalised"
   >
     CPU cores
   </h4>

@@ -37,7 +37,7 @@ const RowCheckbox = <I,>({
       className="keep-label-opacity"
       id={id.current}
       label={inputLabel}
-      labelClassName="is-inline-label"
+      labelClassName="u-no-margin--bottom u-no-padding--top"
       onChange={() => handleRowCheckbox(item, items)}
       type="checkbox"
       wrapperClassName="u-no-margin--bottom u-nudge--checkbox"

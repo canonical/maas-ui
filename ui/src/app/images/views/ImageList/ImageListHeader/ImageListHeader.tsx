@@ -87,7 +87,6 @@ const ImageListHeader = (): JSX.Element => {
                       </Tooltip>
                     </span>
                   }
-                  labelClassName="u-sv2"
                   onChange={() => {
                     dispatch(configActions.cleanup());
                     dispatch(
@@ -96,7 +95,7 @@ const ImageListHeader = (): JSX.Element => {
                       })
                     );
                   }}
-                  wrapperClassName="u-flex"
+                  wrapperClassName="u-flex--align-center"
                 />
               </div>,
             ]

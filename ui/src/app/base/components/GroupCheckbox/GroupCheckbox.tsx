@@ -53,7 +53,7 @@ const GroupCheckbox = <S,>({
       disabled={items.length === 0 || disabled}
       id={id.current}
       label={inputLabel ? inputLabel : " "}
-      labelClassName="is-inline-label"
+      labelClassName="u-no-margin--bottom u-no-padding--top"
       onChange={() => handleGroupCheckbox(items, selectedItems)}
       type="checkbox"
       wrapperClassName={classNames("u-no-margin--bottom u-nudge--checkbox", {

@@ -48,6 +48,11 @@
     display: flex;
   }
 
+  .u-flex--align-center {
+    align-items: center;
+    display: flex;
+  }
+
   .u-flex--grow {
     flex-grow: 1;
   }

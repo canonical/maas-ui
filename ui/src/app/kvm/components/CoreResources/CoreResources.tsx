@@ -26,9 +26,7 @@ const CoreResources = ({
         "core-resources--dynamic-layout": dynamicLayout,
       })}
     >
-      <h4 className="core-resources__header p-heading--small u-sv1">
-        CPU cores
-      </h4>
+      <h4 className="p-text--x-small-capitalised">CPU cores</h4>
       <div className="core-resources__meter">
         <KVMResourceMeter
           allocated={allocatedIsArray ? allocated.length : allocated}
@@ -41,9 +39,7 @@ const CoreResources = ({
       {showPinnedSection && (
         <div data-testid="pinned-section">
           <hr />
-          <h4 className="core-resources__header p-heading--small u-sv1">
-            Pinned cores
-          </h4>
+          <h4 className="p-text--x-small-capitalised">Pinned cores</h4>
           <div>
             {allocated.length ? getRanges(allocated).join(", ") : <em>None</em>}
           </div>

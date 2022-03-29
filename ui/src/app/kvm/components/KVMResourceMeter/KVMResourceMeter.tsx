@@ -42,7 +42,7 @@ const KVMResourceMeter = ({
       {detailed && (
         <div className="u-flex--between" data-testid="kvm-resource-details">
           <div className="u-flex--grow u-nudge-left--small">
-            <div className="p-text--x-small-capitalised u-text--muted">
+            <div className="p-text--x-small-capitalised u-text--muted u-sv-1">
               Allocated
               <span className="u-nudge-right--small">
                 <i className="p-circle--link u-no-margin--top"></i>
@@ -54,7 +54,7 @@ const KVMResourceMeter = ({
           </div>
           {formattedOther > 0 && (
             <div className="u-flex--grow u-nudge-left--small">
-              <div className="p-text--x-small-capitalised u-text--muted">
+              <div className="p-text--x-small-capitalised u-text--muted u-sv-1">
                 Others
                 <span className="u-nudge-right--small">
                   <i className="p-circle--positive u-no-margin--top"></i>
@@ -66,7 +66,7 @@ const KVMResourceMeter = ({
             </div>
           )}
           <div className="u-flex--no-shrink">
-            <div className="p-text--x-small-capitalised u-text--muted u-align--right">
+            <div className="p-text--x-small-capitalised u-text--muted u-align--right u-sv-1">
               Free
               <span className="u-nudge-right--small">
                 <i className="p-circle--link-faded u-no-margin--top"></i>
@@ -97,13 +97,16 @@ const KVMResourceMeter = ({
         label={
           detailed ? (
             <div>
-              <div className="p-text--x-small-capitalised u-text--muted">
+              <div className="p-text--x-small-capitalised u-text--muted u-sv-1">
                 Total
               </div>
               <div className="u-align--left">{`${formattedTotal}${formattedUnit}`}</div>
             </div>
           ) : (
-            <small className="u-text--muted" data-testid="kvm-resource-summary">
+            <small
+              className="u-text--muted u-no-margin--bottom"
+              data-testid="kvm-resource-summary"
+            >
               {`${formattedAllocated} of ${formattedTotal}${formattedUnit} allocated`}
             </small>
           )
