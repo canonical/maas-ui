@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Restore node_modules
         id: yarn-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
@@ -40,7 +40,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Restore node_modules
         id: yarn-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
@@ -63,7 +63,7 @@ jobs:
       - uses: actions/checkout@v3
       - name: Restore node_modules
         id: yarn-cache
-        uses: actions/cache@v2
+        uses: actions/cache@v3
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
