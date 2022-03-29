@@ -300,7 +300,9 @@ exports[`NodeName can display the form 1`] = `
                   className="u-nudge-left--small u-no-margin--right"
                   error={null}
                   forId="mock-redux-js-nanoid-1"
+                  helpId="mock-nanoid-2"
                   required={true}
+                  validationId="mock-nanoid-1"
                 >
                   <div
                     className="p-form__group p-form-validation u-nudge-left--small u-no-margin--right"
@@ -309,6 +311,8 @@ exports[`NodeName can display the form 1`] = `
                       className="p-form__control u-clearfix"
                     >
                       <input
+                        aria-describedby={null}
+                        aria-errormessage={null}
                         aria-invalid={false}
                         className="p-form-validation__input node-name__hostname"
                         id="mock-redux-js-nanoid-1"

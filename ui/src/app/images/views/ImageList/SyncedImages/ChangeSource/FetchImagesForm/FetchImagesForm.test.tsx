@@ -17,6 +17,7 @@ import { submitFormikForm } from "testing/utils";
 const mockStore = configureStore();
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
+  useId: jest.fn(),
   usePrevious: jest.fn(),
 }));
 

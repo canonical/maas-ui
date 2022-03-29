@@ -2,6 +2,9 @@
 
 exports[`ResourcePoolSelect renders a list of all resource pools in state 1`] = `
 <select
+  aria-describedby={null}
+  aria-errormessage={null}
+  aria-invalid={false}
   aria-label="Resource pool"
   className="p-form-validation__input"
   disabled={false}

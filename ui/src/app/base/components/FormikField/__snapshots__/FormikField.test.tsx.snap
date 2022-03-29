@@ -25,8 +25,10 @@ exports[`FormikField can render 1`] = `
       error={null}
       forId="username"
       help="Required."
+      helpId="mock-nanoid-2"
       label="Username"
       required={true}
+      validationId="mock-nanoid-1"
     >
       <div
         className="p-form__group p-form-validation"
@@ -46,10 +48,13 @@ exports[`FormikField can render 1`] = `
           className="p-form__control u-clearfix"
         >
           <input
+            aria-describedby="mock-nanoid-2"
+            aria-errormessage={null}
             aria-invalid={false}
             aria-label="Username"
             className="p-form-validation__input"
             id="username"
+            label="Username"
             name="username"
             onBlur={[Function]}
             onChange={[Function]}
@@ -58,6 +63,7 @@ exports[`FormikField can render 1`] = `
           />
           <p
             className="p-form-help-text"
+            id="mock-nanoid-2"
           >
             Required.
           </p>
