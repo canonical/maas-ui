@@ -31,7 +31,7 @@ const StorageResources = ({
       className={classNames("storage-resources", { "single-pool": singlePool })}
     >
       <div className="storage-resources__header">
-        <h4 className="p-text--x-small-capitalised u-sv1">Storage</h4>
+        <h4 className="p-text--x-small-capitalised">Storage</h4>
         {!singlePool && (
           <div data-testid="storage-summary">
             <div className="u-nudge-left">

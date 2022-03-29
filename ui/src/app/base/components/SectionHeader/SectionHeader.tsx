@@ -100,7 +100,7 @@ const SectionHeader = <P,>({
         </div>
         {buttons?.length && !headerContent ? (
           <List
-            className="u-no-margin--bottom"
+            className="section-header__buttons"
             data-testid="section-header-buttons"
             inline
             items={buttons.map((button, i) => ({

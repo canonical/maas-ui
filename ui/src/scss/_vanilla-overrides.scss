@@ -65,13 +65,6 @@ input[type="radio"] {
   }
 }
 
-// 25-02-2022 Huw: Checkbox labels are not passed labels which affects
-// checkboxes in tables.
-// https://github.com/canonical-web-and-design/react-components/issues/716
-.p-double-row__primary-row label.p-checkbox {
-  padding-top: 0;
-}
-
 // 18-03-2022 Huw: Chips can't accept classnames to override the margin.
 // https://github.com/canonical-web-and-design/react-components/pull/727
 .tag-form__changes {
