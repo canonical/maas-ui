@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
 
+import * as analyticsHooks from "app/base/hooks/analytics";
 import * as baseHooks from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -106,4 +107,80 @@ it("redirects to the newly created tag on save", async () => {
   fireEvent.submit(screen.getByRole("form"));
   expect(history.location.pathname).toBe(tagsURLs.tag.index({ id: 8 }));
   expect(onClose).toBeCalled();
+});
+
+it("sends analytics when there is a definition", async () => {
+  const mockSendAnalytics = jest.fn();
+  jest
+    .spyOn(analyticsHooks, "useSendAnalytics")
+    .mockImplementation(() => mockSendAnalytics);
+  const onClose = jest.fn();
+  const store = mockStore(state);
+  const TagForm = () => (
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <AddTagForm onClose={onClose} />
+      </MemoryRouter>
+    </Provider>
+  );
+  render(<TagForm />);
+  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "tag1");
+  // Simulate the state.tag.saved state going from `save: false` to `saved:
+  // true` which happens when the tag is successfully saved. This in turn will
+  // mean that the form `onSuccess` prop will get called so that the component
+  // knows that the tag was created.
+  jest
+    .spyOn(baseHooks, "useCycled")
+    .mockImplementation(() => [true, () => null]);
+  state.tag = tagStateFactory({
+    items: [tagFactory({ id: 8, name: "tag1", definition: "def1" })],
+    saved: true,
+  });
+  fireEvent.submit(screen.getByRole("form"));
+  await waitFor(() => {
+    expect(mockSendAnalytics).toHaveBeenCalled();
+  });
+  expect(mockSendAnalytics.mock.calls[0]).toEqual([
+    "XPath tagging",
+    "Valid XPath",
+    "Save",
+  ]);
+});
+
+it("sends analytics when there is no definition", async () => {
+  const mockSendAnalytics = jest.fn();
+  jest
+    .spyOn(analyticsHooks, "useSendAnalytics")
+    .mockImplementation(() => mockSendAnalytics);
+  const onClose = jest.fn();
+  const store = mockStore(state);
+  const TagForm = () => (
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <AddTagForm onClose={onClose} />
+      </MemoryRouter>
+    </Provider>
+  );
+  render(<TagForm />);
+  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "tag1");
+  // Simulate the state.tag.saved state going from `save: false` to `saved:
+  // true` which happens when the tag is successfully saved. This in turn will
+  // mean that the form `onSuccess` prop will get called so that the component
+  // knows that the tag was created.
+  jest
+    .spyOn(baseHooks, "useCycled")
+    .mockImplementation(() => [true, () => null]);
+  state.tag = tagStateFactory({
+    items: [tagFactory({ id: 8, name: "tag1" })],
+    saved: true,
+  });
+  fireEvent.submit(screen.getByRole("form"));
+  await waitFor(() => {
+    expect(mockSendAnalytics).toHaveBeenCalled();
+  });
+  expect(mockSendAnalytics.mock.calls[0]).toEqual([
+    "Create Tag form",
+    "Tag created",
+    "Save",
+  ]);
 });
