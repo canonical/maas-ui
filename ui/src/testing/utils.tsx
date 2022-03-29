@@ -1,11 +1,17 @@
 import type { ValueOf } from "@canonical/react-components";
+import type { RenderOptions, RenderResult } from "@testing-library/react";
+import { render } from "@testing-library/react";
 import type { ReactWrapper } from "enzyme";
 import { shallow } from "enzyme";
 import type { FormikHelpers } from "formik";
 import { act } from "react-dom/test-utils";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import configureStore from "redux-mock-store";
 
 import FormikForm from "app/base/components/FormikForm";
 import type { AnyObject } from "app/base/types";
+import type { RootState } from "app/store/root/types";
 
 /**
  * Assert that some JSX from Enzyme is equal to some provided JSX.
@@ -93,3 +99,41 @@ export const submitFormikForm = (
     });
   }
 };
+
+type WrapperProps = { state: RootState };
+
+const BrowserRouterWithProvider = ({
+  children,
+  state,
+}: WrapperProps & { children: React.ReactElement }) => {
+  const getMockStore = (state: RootState) => {
+    const mockStore = configureStore();
+    return mockStore(state);
+  };
+
+  return (
+    <Provider store={getMockStore(state)}>
+      <BrowserRouter>{children}</BrowserRouter>
+    </Provider>
+  );
+};
+
+export const renderWithBrowserRouter = (
+  ui: React.ReactElement,
+  options: RenderOptions & {
+    wrapperProps: WrapperProps;
+    route: string;
+  }
+): RenderResult => {
+  window.history.pushState({}, "", options.route);
+
+  return render(ui, {
+    wrapper: (props) => (
+      <BrowserRouterWithProvider {...props} {...options.wrapperProps} />
+    ),
+    ...options,
+  });
+};
+
+export const getUrlParam: URLSearchParams["get"] = (param: string) =>
+  new URLSearchParams(window.location.search).get(param);

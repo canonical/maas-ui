@@ -44,7 +44,12 @@ it("renders a single table variant at a time", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -60,7 +65,12 @@ it("renders Subnets by Fabric table when grouping by Fabric", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -77,7 +87,12 @@ it("renders Subnets by Space table when grouping by Space", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="space" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="space"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -94,7 +109,12 @@ it("displays a correct number of pages", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -126,7 +146,12 @@ it("updates the list of items correctly when navigating to another page", async 
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -179,7 +204,12 @@ it("doesn't display pagination if rows are within items per page limit", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -208,7 +238,12 @@ it("displays correctly paginated rows", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -269,7 +304,12 @@ it("displays the last available page once the currently active has no items", as
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -301,7 +341,12 @@ it("displays the last available page once the currently active has no items", as
   rerender(
     <Provider store={updatedStore}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -330,7 +375,12 @@ it("remains on the same page once the data is updated and page is still availabl
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -359,7 +409,12 @@ it("remains on the same page once the data is updated and page is still availabl
   rerender(
     <Provider store={updatedStore}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
+        <SubnetsTable
+          groupBy="fabric"
+          setGroupBy={jest.fn()}
+          searchText=""
+          setSearchText={jest.fn()}
+        />
       </MemoryRouter>
     </Provider>
   );
@@ -372,55 +427,4 @@ it("remains on the same page once the data is updated and page is still availabl
         .querySelector(".is-active")
     ).toHaveTextContent("2")
   );
-});
-
-it("displays loading text", async () => {
-  const state = rootStateFactory({
-    fabric: fabricStateFactory({
-      loaded: false,
-    }),
-    vlan: vlanStateFactory({ loaded: false }),
-    subnet: subnetStateFactory({ loaded: false }),
-    space: spaceStateFactory({ loaded: false }),
-  });
-  const mockStore = configureStore();
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  expect(screen.getAllByRole("table")).toHaveLength(1);
-  userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
-  await waitFor(() =>
-    expect(screen.getByText(/Loading.../)).toBeInTheDocument()
-  );
-});
-
-it("displays correct text when there are no results for the search criteria", async () => {
-  const state = getMockState();
-  const mockStore = configureStore();
-  const store = mockStore(state);
-
-  render(
-    <Provider store={store}>
-      <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable groupBy="fabric" setGroupBy={jest.fn()} />
-      </MemoryRouter>
-    </Provider>
-  );
-
-  expect(screen.getAllByRole("table")).toHaveLength(1);
-  const tableBody = screen.getAllByRole("rowgroup")[1];
-
-  userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
-
-  await waitFor(() =>
-    expect(within(tableBody).getByText(/No results/)).toBeInTheDocument()
-  );
-  expect(within(tableBody).getAllByRole("row")).toHaveLength(1);
 });

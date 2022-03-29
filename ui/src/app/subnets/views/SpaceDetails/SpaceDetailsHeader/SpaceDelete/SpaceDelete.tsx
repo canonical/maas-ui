@@ -39,7 +39,7 @@ export const SpaceDelete = ({
   };
   useCycled(saved, () => {
     if (saved) {
-      history.replace(urls.indexBy({ by: "space" }));
+      history.replace(urls.indexWithParams({ by: "space" }));
     }
   });
 
