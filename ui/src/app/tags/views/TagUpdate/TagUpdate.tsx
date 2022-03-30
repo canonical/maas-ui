@@ -13,6 +13,7 @@ import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, UpdateParams, TagMeta } from "app/store/tag/types";
+import { NewDefinitionMessage } from "app/tags/constants";
 import tagURLs from "app/tags/urls";
 
 type Props = {
@@ -96,9 +97,7 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
         if (isAuto && values.definition !== tag.definition) {
           dispatch(
             messageActions.add(
-              `Updated ${tag.name}. MAAS will automatically tag every machine
-              that matches the new definition in the background. This can take
-              some time.`,
+              `Updated ${tag.name}. ${NewDefinitionMessage}`,
               NotificationSeverity.POSITIVE
             )
           );
