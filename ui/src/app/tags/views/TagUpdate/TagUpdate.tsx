@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Spinner } from "@canonical/react-components";
+import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
@@ -47,7 +48,6 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
   const saved = useSelector(tagSelectors.saved);
   const saving = useSelector(tagSelectors.saving);
   const errors = useSelector(tagSelectors.errors);
-  const isAuto = !!tag?.definition;
 
   useEffect(() => {
     dispatch(tagActions.fetch());
@@ -57,6 +57,7 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
     return <Spinner data-testid="Spinner" />;
   }
 
+  const isAuto = !!tag.definition;
   const onClose = () => {
     if (location.state?.canGoBack) {
       history.goBack();
@@ -76,9 +77,9 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
       errors={errors}
       initialValues={{
         comment: tag.comment ?? "",
-        definition: tag?.definition ?? "",
+        definition: tag.definition ?? "",
         id: tag.id,
-        kernel_opts: tag?.kernel_opts ?? "",
+        kernel_opts: tag.kernel_opts ?? "",
         name: tag.name,
       }}
       onCancel={onClose}
@@ -91,7 +92,19 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
         dispatch(tagActions.cleanup());
         dispatch(tagActions.update(values));
       }}
-      onSuccess={onClose}
+      onSuccess={(values) => {
+        if (isAuto && values.definition !== tag.definition) {
+          dispatch(
+            messageActions.add(
+              `Updated ${tag.name}. MAAS will automatically tag every machine
+              that matches the new definition in the background. This can take
+              some time.`,
+              NotificationSeverity.POSITIVE
+            )
+          );
+        }
+        onClose();
+      }}
       saved={saved}
       saving={saving}
       submitLabel="Save changes"
