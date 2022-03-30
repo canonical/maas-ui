@@ -1,6 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import StatusBar from "./StatusBar";
 
@@ -15,12 +13,10 @@ import {
   rootState as rootStateFactory,
   versionState as versionStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("StatusBar", () => {
   let state: RootState;
-
   beforeEach(() => {
     jest.useFakeTimers("modern");
     // Thu, 31 Dec. 2020 23:00:00 UTC
@@ -53,14 +49,9 @@ describe("StatusBar", () => {
         }),
       ];
 
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <StatusBar />
-        </Provider>
-      );
+      renderWithMockStore(<StatusBar />, { state });
 
-      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+      expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
         "test.maas: Commissioning in progress..."
       );
     });
@@ -74,14 +65,9 @@ describe("StatusBar", () => {
         }),
       ];
 
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <StatusBar />
-        </Provider>
-      );
+      renderWithMockStore(<StatusBar />, { state });
 
-      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+      expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
         "test.maas: Not yet commissioned"
       );
     });
@@ -96,14 +82,9 @@ describe("StatusBar", () => {
         }),
       ];
 
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <StatusBar />
-        </Provider>
-      );
+      renderWithMockStore(<StatusBar />, { state });
 
-      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+      expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
         "test.maas: Last commissioned 1 minute ago"
       );
     });
@@ -118,14 +99,9 @@ describe("StatusBar", () => {
         }),
       ];
 
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <StatusBar />
-        </Provider>
-      );
+      renderWithMockStore(<StatusBar />, { state });
 
-      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+      expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
         "test.maas: Unable to parse commissioning timestamp (Invalid time value)"
       );
     });

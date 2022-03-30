@@ -118,6 +118,17 @@ const BrowserRouterWithProvider = ({
   );
 };
 
+const WithMockStoreProvider = ({
+  children,
+  state,
+}: WrapperProps & { children: React.ReactElement }) => {
+  const getMockStore = (state: RootState) => {
+    const mockStore = configureStore();
+    return mockStore(state);
+  };
+  return <Provider store={getMockStore(state)}>{children}</Provider>;
+};
+
 export const renderWithBrowserRouter = (
   ui: React.ReactElement,
   options: RenderOptions & {
@@ -134,6 +145,14 @@ export const renderWithBrowserRouter = (
     ...options,
   });
 };
+
+export const renderWithMockStore = (
+  ui: React.ReactElement,
+  wrapperProps: WrapperProps
+): RenderResult =>
+  render(ui, {
+    wrapper: (props) => <WithMockStoreProvider {...props} {...wrapperProps} />,
+  });
 
 export const getUrlParam: URLSearchParams["get"] = (param: string) =>
   new URLSearchParams(window.location.search).get(param);
