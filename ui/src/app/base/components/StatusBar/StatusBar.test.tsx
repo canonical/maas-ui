@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -54,13 +54,13 @@ describe("StatusBar", () => {
       ];
 
       const store = mockStore(state);
-      const wrapper = mount(
+      render(
         <Provider store={store}>
           <StatusBar />
         </Provider>
       );
 
-      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+      expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
         "test.maas: Commissioning in progress..."
       );
     });
@@ -75,13 +75,13 @@ describe("StatusBar", () => {
       ];
 
       const store = mockStore(state);
-      const wrapper = mount(
+      render(
         <Provider store={store}>
           <StatusBar />
         </Provider>
       );
 
-      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+      expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
         "test.maas: Not yet commissioned"
       );
     });
@@ -97,13 +97,13 @@ describe("StatusBar", () => {
       ];
 
       const store = mockStore(state);
-      const wrapper = mount(
+      render(
         <Provider store={store}>
           <StatusBar />
         </Provider>
       );
 
-      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+      expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
         "test.maas: Last commissioned 1 minute ago"
       );
     });
@@ -119,13 +119,13 @@ describe("StatusBar", () => {
       ];
 
       const store = mockStore(state);
-      const wrapper = mount(
+      render(
         <Provider store={store}>
           <StatusBar />
         </Provider>
       );
 
-      expect(wrapper.find("[data-testid='status-bar-status']").text()).toBe(
+      expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
         "test.maas: Unable to parse commissioning timestamp (Invalid time value)"
       );
     });
