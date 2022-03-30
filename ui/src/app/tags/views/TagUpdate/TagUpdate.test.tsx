@@ -198,3 +198,37 @@ it("goes to the tag details page if it can't go back", async () => {
     expect(history.location.pathname).toBe(tagURLs.tag.index({ id: 1 }))
   );
 });
+
+it("shows a confirmation when a tag's definition is updated", async () => {
+  const tag = tagFactory({ id: 1, definition: "abc", name: "baggage" });
+  state.tag.items = [tag];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <TagUpdate id={1} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  const definitionInput = screen.getByRole("textbox", {
+    name: Label.Definition,
+  });
+  userEvent.clear(definitionInput);
+  userEvent.type(definitionInput, "def");
+  fireEvent.submit(screen.getByRole("form"));
+  // Mock state.tag.saved transitioning from "false" to "true"
+  jest
+    .spyOn(baseHooks, "useCycled")
+    .mockImplementation(() => [true, () => null]);
+
+  await waitFor(() => {
+    const action = store
+      .getActions()
+      .find((action) => action.type === "message/add");
+    const strippedMessage = action.payload.message.replace(/\s+/g, " ").trim();
+    expect(strippedMessage).toBe(
+      "Updated baggage. MAAS will automatically tag every machine that matches the new definition in the background. This can take some time."
+    );
+  });
+});
