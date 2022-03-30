@@ -82,6 +82,7 @@ export type MachineDetails = BaseMachine &
     devices: NodeDeviceRef[];
     dhcp_on: boolean;
     disks: Disk[];
+    enable_hw_sync: boolean;
     error: string;
     events: NodeEvent[];
     grouped_storages: GroupedStorage[];
@@ -91,11 +92,13 @@ export type MachineDetails = BaseMachine &
     installation_status: number;
     interface_test_status: TestStatus;
     interfaces: NetworkInterface[];
+    last_sync: string;
     license_key: string;
     memory_test_status: TestStatus;
     metadata: NodeMetadata;
     min_hwe_kernel: string;
     network_test_status: TestStatus;
+    next_sync: string;
     node_type: number;
     numa_nodes: NodeNumaNode[];
     on_network: boolean;
