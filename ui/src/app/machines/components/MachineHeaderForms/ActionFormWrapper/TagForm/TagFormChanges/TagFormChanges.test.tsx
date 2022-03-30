@@ -74,10 +74,6 @@ it("displays a tag details modal when chips are clicked", () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.click(
-    screen.getByRole("button", { name: state.tag.items[0].name })
-  );
-  expect(
-    screen.getByRole("dialog", { name: state.tag.items[0].name })
-  ).toBeInTheDocument();
+  userEvent.click(screen.getByRole("button", { name: "tag1 (2/2)" }));
+  expect(screen.getByRole("dialog", { name: "tag1" })).toBeInTheDocument();
 });
