@@ -1,3 +1,4 @@
+import { NotificationSeverity } from "@canonical/react-components";
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
@@ -7,6 +8,7 @@ import configureStore from "redux-mock-store";
 
 import DeleteTagForm from "./DeleteTagForm";
 
+import * as baseHooks from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { NodeStatus } from "app/store/types/node";
@@ -63,6 +65,25 @@ it("dispatches an action to delete a tag", async () => {
       store.getActions().find((action) => action.type === expected.type)
     ).toStrictEqual(expected)
   );
+});
+
+it("dispatches an action to add a notification when tag successfully deleted", async () => {
+  const useAddMessageMock = jest.spyOn(baseHooks, "useAddMessage");
+  state.tag.saved = true;
+  state.tag.errors = null;
+  state.tag.items[0].name = "tagalog";
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <DeleteTagForm id={1} onClose={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  const mockArgs = useAddMessageMock.mock.calls[0];
+  expect(mockArgs[2]).toBe("Deleted tagalog from tag list.");
+  expect(mockArgs[4]).toBe(NotificationSeverity.POSITIVE);
 });
 
 it("displays a message when deleting a tag on a machine", async () => {
