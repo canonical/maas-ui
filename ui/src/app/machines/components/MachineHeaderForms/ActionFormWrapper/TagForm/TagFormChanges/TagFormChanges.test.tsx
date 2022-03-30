@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -61,4 +62,18 @@ it("displays automatic tags", () => {
   });
   expect(labelCell).toBeInTheDocument();
   expect(labelCell).toHaveAttribute("rowSpan", "2");
+});
+
+it("displays a tag details modal when chips are clicked", () => {
+  state.tag.items[0].name = "tag1";
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <TagFormChanges machines={state.machine.items} />
+      </MemoryRouter>
+    </Provider>
+  );
+  userEvent.click(screen.getByRole("button", { name: "tag1 (2/2)" }));
+  expect(screen.getByRole("dialog", { name: "tag1" })).toBeInTheDocument();
 });
