@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { Col, Row } from "@canonical/react-components";
+import { Col, NotificationSeverity, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -8,12 +8,14 @@ import * as Yup from "yup";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useSendAnalytics } from "app/base/hooks";
+import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { CreateParams, Tag } from "app/store/tag/types";
 import DefinitionField from "app/tags/components/DefinitionField";
 import KernelOptionsField from "app/tags/components/KernelOptionsField";
+import { NewDefinitionMessage } from "app/tags/constants";
 import tagsURLs from "app/tags/urls";
 
 type Props = {
@@ -76,8 +78,16 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
         dispatch(tagActions.cleanup());
         dispatch(tagActions.create(values));
       }}
-      onSuccess={({ name }) => {
+      onSuccess={({ definition, name }) => {
         setSavedName(name);
+        if (!!definition) {
+          dispatch(
+            messageActions.add(
+              `Created ${name}. ${NewDefinitionMessage}`,
+              NotificationSeverity.POSITIVE
+            )
+          );
+        }
       }}
       saved={saved}
       saving={saving}

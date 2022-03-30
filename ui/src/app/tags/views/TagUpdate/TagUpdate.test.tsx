@@ -11,6 +11,7 @@ import * as baseHooks from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
+import { NewDefinitionMessage } from "app/tags/constants";
 import tagURLs from "app/tags/urls";
 import { Label } from "app/tags/views/TagDetails";
 import {
@@ -227,8 +228,6 @@ it("shows a confirmation when a tag's definition is updated", async () => {
       .getActions()
       .find((action) => action.type === "message/add");
     const strippedMessage = action.payload.message.replace(/\s+/g, " ").trim();
-    expect(strippedMessage).toBe(
-      "Updated baggage. MAAS will automatically tag every machine that matches the new definition in the background. This can take some time."
-    );
+    expect(strippedMessage).toBe(`Updated baggage. ${NewDefinitionMessage}`);
   });
 });

@@ -13,6 +13,7 @@ import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { Label as DefinitionLabel } from "app/tags/components/DefinitionField";
 import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
+import { NewDefinitionMessage } from "app/tags/constants";
 import tagsURLs from "app/tags/urls";
 import {
   tag as tagFactory,
@@ -183,4 +184,36 @@ it("sends analytics when there is no definition", async () => {
     "Manual tag created",
     "Save",
   ]);
+});
+
+it("shows a confirmation when an automatic tag is added", async () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <AddTagForm onClose={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "name1");
+  userEvent.type(
+    screen.getByRole("textbox", {
+      name: DefinitionLabel.Definition,
+    }),
+    "definition"
+  );
+  fireEvent.submit(screen.getByRole("form"));
+  // Mock state.tag.saved transitioning from "false" to "true"
+  jest
+    .spyOn(baseHooks, "useCycled")
+    .mockImplementation(() => [true, () => null]);
+
+  await waitFor(() => {
+    const action = store
+      .getActions()
+      .find((action) => action.type === "message/add");
+    const strippedMessage = action.payload.message.replace(/\s+/g, " ").trim();
+    expect(strippedMessage).toBe(`Created name1. ${NewDefinitionMessage}`);
+  });
 });
