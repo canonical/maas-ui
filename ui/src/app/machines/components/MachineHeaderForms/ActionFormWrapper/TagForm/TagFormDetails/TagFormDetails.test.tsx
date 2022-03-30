@@ -1,10 +1,9 @@
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import TagFormChanges, { Label } from "./TagFormChanges";
+import TagFormChanges, { Label, TestId } from "./TagFormChanges";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -30,6 +29,22 @@ beforeEach(() => {
   });
 });
 
+it("displays a message if there are no tags", () => {
+  state.machine.items[0].tags = [];
+  state.machine.items[1].tags = [];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <TagFormChanges machines={state.machine.items} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(screen.getByText(Label.NoTags)).toBeInTheDocument();
+  expect(screen.queryByLabelText(Label.Manual)).not.toBeInTheDocument();
+  expect(screen.queryByLabelText(Label.Automatic)).not.toBeInTheDocument();
+});
+
 it("displays manual tags", () => {
   state.tag.items[0].definition = "";
   state.tag.items[1].definition = "";
@@ -41,9 +56,8 @@ it("displays manual tags", () => {
       </MemoryRouter>
     </Provider>
   );
-  const labelCell = screen.getByRole("cell", { name: Label.Manual });
-  expect(labelCell).toBeInTheDocument();
-  expect(labelCell).toHaveAttribute("rowSpan", "2");
+  expect(screen.getByLabelText(Label.Manual)).toBeInTheDocument();
+  expect(screen.queryByTestId(TestId.Border)).not.toBeInTheDocument();
 });
 
 it("displays automatic tags", () => {
@@ -57,15 +71,13 @@ it("displays automatic tags", () => {
       </MemoryRouter>
     </Provider>
   );
-  const labelCell = screen.getByRole("cell", {
-    name: new RegExp(Label.Automatic),
-  });
-  expect(labelCell).toBeInTheDocument();
-  expect(labelCell).toHaveAttribute("rowSpan", "2");
+  expect(screen.getByLabelText(Label.Automatic)).toBeInTheDocument();
+  expect(screen.queryByTestId(TestId.Border)).not.toBeInTheDocument();
 });
 
-it("displays a tag details modal when chips are clicked", () => {
-  state.tag.items[0].name = "tag1";
+it("displays a border if there are both manual and automatic tags", () => {
+  state.tag.items[0].definition = "def1";
+  state.tag.items[1].definition = "";
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -74,10 +86,7 @@ it("displays a tag details modal when chips are clicked", () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.click(
-    screen.getByRole("button", { name: state.tag.items[0].name })
-  );
-  expect(
-    screen.getByRole("dialog", { name: state.tag.items[0].name })
-  ).toBeInTheDocument();
+  expect(screen.getByLabelText(Label.Automatic)).toBeInTheDocument();
+  expect(screen.getByLabelText(Label.Manual)).toBeInTheDocument();
+  expect(screen.getByTestId(TestId.Border)).toBeInTheDocument();
 });

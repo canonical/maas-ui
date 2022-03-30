@@ -1,10 +1,11 @@
 import type { ReactNode } from "react";
-import { useMemo } from "react";
+import { useState, useMemo } from "react";
 
 import type { ChipProps } from "@canonical/react-components";
-import { Button, Icon, ModularTable } from "@canonical/react-components";
+import { Modal, Button, Icon, ModularTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
+import usePortal from "react-useportal";
 
 import TagChip from "../TagChip";
 
@@ -14,6 +15,7 @@ import { getTagCountsForMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
+import TagDetails from "app/tags/components/TagDetails";
 import tagsURLs from "app/tags/urls";
 
 type Props = {
@@ -39,6 +41,7 @@ const generateRows = (
   machineCount: number,
   tagIdsAndCounts: TagIdCountMap,
   label: ReactNode,
+  toggleTagDetails: (tag: Tag | null) => void,
   chipAppearance?: ChipProps["appearance"],
   onRemove?: (tag: Tag) => void,
   removeLabel?: ReactNode
@@ -55,6 +58,7 @@ const generateRows = (
       <TagChip
         appearance={chipAppearance}
         machineCount={machineCount}
+        onClick={() => toggleTagDetails(tag)}
         tag={tag}
         tagIdsAndCounts={tagIdsAndCounts}
       />
@@ -73,6 +77,21 @@ const generateRows = (
 };
 
 export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
+  const [tagDetails, setTagDetails] = useState<Tag | null>(null);
+  const { openPortal, closePortal, isOpen, Portal } = usePortal();
+  const toggleTagDetails = (tag: Tag | null) => {
+    // usePortal was originally design to work with click events, so to open the
+    // portal programmatically we need to fake the event. This workaround can be
+    // removed when this issue is resolved:
+    // https://github.com/alex-cory/react-useportal/issues/36
+    const NULL_EVENT = { currentTarget: { contains: () => false } };
+    setTagDetails(tag);
+    if (tag) {
+      openPortal(NULL_EVENT);
+    } else {
+      closePortal(NULL_EVENT);
+    }
+  };
   const tagIdsAndCounts = getTagCountsForMachines(machines);
   const tagIds = Array.from(tagIdsAndCounts.keys());
   const automaticTags = useSelector((state: RootState) =>
@@ -117,53 +136,64 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
   }
 
   return (
-    <ModularTable
-      className="tag-form__changes"
-      columns={columns}
-      data={[
-        ...generateRows(
-          manualTags,
-          machineCount,
-          tagIdsAndCounts,
-          Label.Manual,
-          "information",
-          () => {
-            // TODO: Implement removing tags from machines:
-            // https://github.com/canonical-web-and-design/app-tribe/issues/708
-          },
-          <>
-            <span className="u-nudge-left--small">Remove</span>
-            <Icon name="delete" />
-          </>
-        ),
-        ...generateRows(
-          automaticTags,
-          machineCount,
-          tagIdsAndCounts,
-          <>
-            {Label.Automatic}
-            <p className="u-text--muted u-nudge-left">
-              Automatic tags (cannot be unassigned. Go to the{" "}
-              <Link to={tagsURLs.tags.index}>Tags tab</Link> to delete automatic
-              tags).
-            </p>
-          </>
-        ),
-      ]}
-      getCellProps={(props) => {
-        if (props.column.id === Column.Label) {
-          if (props.value?.rowSpan) {
-            // Apply the rowspan prop to those that provide the prop. This will
-            // appear as the first row in each type of tag change.
-            return { rowSpan: props.value?.rowSpan };
+    <>
+      <ModularTable
+        className="tag-form__changes"
+        columns={columns}
+        data={[
+          ...generateRows(
+            manualTags,
+            machineCount,
+            tagIdsAndCounts,
+            Label.Manual,
+            toggleTagDetails,
+            "information",
+            () => {
+              // TODO: Implement removing tags from machines:
+              // https://github.com/canonical-web-and-design/app-tribe/issues/708
+            },
+            <>
+              <span className="u-nudge-left--small">Remove</span>
+              <Icon name="delete" />
+            </>
+          ),
+          ...generateRows(
+            automaticTags,
+            machineCount,
+            tagIdsAndCounts,
+            <>
+              {Label.Automatic}
+              <p className="u-text--muted u-nudge-left">
+                Automatic tags (cannot be unassigned. Go to the{" "}
+                <Link to={tagsURLs.tags.index}>Tags tab</Link> to delete
+                automatic tags).
+              </p>
+            </>,
+            toggleTagDetails
+          ),
+        ]}
+        getCellProps={(props) => {
+          if (props.column.id === Column.Label) {
+            if (props.value?.rowSpan) {
+              // Apply the rowspan prop to those that provide the prop. This will
+              // appear as the first row in each type of tag change.
+              return { rowSpan: props.value?.rowSpan };
+            }
+            // Hide all other label columns as this space will be taken up by the
+            // rowspan column.
+            return { className: "p-table--cell-collapse" };
           }
-          // Hide all other label columns as this space will be taken up by the
-          // rowspan column.
-          return { className: "p-table--cell-collapse" };
-        }
-        return {};
-      }}
-    />
+          return {};
+        }}
+      />
+      {isOpen && tagDetails ? (
+        <Portal>
+          <Modal close={() => toggleTagDetails(null)} title={tagDetails.name}>
+            <TagDetails id={tagDetails.id} narrow />
+          </Modal>
+        </Portal>
+      ) : null}
+    </>
   );
 };
 

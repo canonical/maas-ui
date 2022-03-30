@@ -1,19 +1,11 @@
 import { useEffect } from "react";
 
-import {
-  Button,
-  CodeSnippet,
-  Col,
-  Icon,
-  Row,
-  Spinner,
-} from "@canonical/react-components";
+import { Button, Col, Icon, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import TagUpdate from "../TagUpdate";
 
-import Definition from "app/base/components/Definition";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
@@ -22,7 +14,7 @@ import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { TagMeta } from "app/store/tag/types";
-import AppliedTo from "app/tags/components/AppliedTo";
+import BaseTagDetails from "app/tags/components/TagDetails";
 import tagURLs from "app/tags/urls";
 import { isId } from "app/utils";
 
@@ -99,53 +91,7 @@ const TagDetails = ({ isEditing, onDelete }: Props): JSX.Element => {
         </Col>
       </Row>
       <hr />
-      <Row>
-        <Col size={2}>
-          <Definition description={tag.name} label={Label.Name} />
-        </Col>
-        <Col size={2}>
-          <Definition description={tag.updated} label={Label.Update} />
-        </Col>
-        <Col size={2}>
-          <Definition label={Label.AppliedTo}>
-            <AppliedTo id={id} />
-          </Definition>
-        </Col>
-        <Col size={6}>
-          <Definition description={tag.comment} label={Label.Comment} />
-        </Col>
-      </Row>
-      <hr className="u-sv1" />
-      <Row>
-        <Col size={6}>
-          <p className="u-text--muted">{Label.Options}</p>
-          {tag.kernel_opts ? (
-            <CodeSnippet
-              blocks={[
-                {
-                  code: tag.kernel_opts,
-                },
-              ]}
-            />
-          ) : (
-            "None"
-          )}
-        </Col>
-        <Col size={6}>
-          <p className="u-text--muted">{Label.Definition}</p>
-          {tag.definition ? (
-            <CodeSnippet
-              blocks={[
-                {
-                  code: tag.definition,
-                },
-              ]}
-            />
-          ) : (
-            "None"
-          )}
-        </Col>
-      </Row>
+      <BaseTagDetails id={id} />
     </>
   );
 };
