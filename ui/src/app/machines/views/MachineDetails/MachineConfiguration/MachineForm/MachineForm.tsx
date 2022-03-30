@@ -1,13 +1,13 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
 import { Button, Col, Row, Spinner } from "@canonical/react-components";
-import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import MachineFormFields from "./MachineFormFields";
 
+import Definition from "app/base/components/Definition";
 import FormikForm from "app/base/components/FormikForm";
 import { useCanEdit } from "app/base/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -15,14 +15,12 @@ import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
 
 export type MachineFormValues = {
   architecture: MachineDetails["architecture"];
   description: MachineDetails["description"];
   minHweKernel: MachineDetails["min_hwe_kernel"];
   pool: MachineDetails["pool"]["name"];
-  tags: MachineDetails["tags"];
   zone: MachineDetails["zone"]["name"];
 };
 
@@ -34,7 +32,6 @@ const MachineFormSchema: SchemaOf<MachineFormValues> = Yup.object()
     description: Yup.string(),
     minHweKernel: Yup.string(),
     pool: Yup.string().required("Resource pool is required"),
-    tags: Yup.array().of(Yup.number()),
     zone: Yup.string().required("Zone is required"),
   })
   .defined();
@@ -50,86 +47,93 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
-  const previousSaving = usePrevious(saving);
 
-  // Close the form if saving was successfully completed.
-  useEffect(() => {
-    if (saved && !saving && previousSaving) {
-      setEditing(false);
-    }
-  }, [previousSaving, saved, saving]);
-
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
-
-  if (isMachineDetails(machine)) {
-    return (
-      <>
-        <Row>
-          <Col small={4} medium={4} size={6}>
-            <h4>Machine configuration</h4>
-          </Col>
-          <Col small={4} medium={2} size={6} className="u-align--right">
-            {canEdit && !editing && (
-              <Button
-                className="u-no-margin--bottom"
-                data-testid="edit-machine-config"
-                onClick={() => setEditing(true)}
-              >
-                Edit
-              </Button>
-            )}
-          </Col>
-        </Row>
-        <FormikForm<MachineFormValues>
-          cleanup={cleanup}
-          editable={editing}
-          // Only show machine errors if form is in editing state.
-          errors={editing ? errors : null}
-          initialValues={{
-            architecture: machine.architecture || "",
-            description: machine.description || "",
-            minHweKernel: machine.min_hwe_kernel || "",
-            pool: machine.pool?.name || "",
-            tags: machine.tags || [],
-            zone: machine.zone?.name || "",
-          }}
-          onSaveAnalytics={{
-            action: "Configure machine",
-            category: "Machine details",
-            label: "Save changes",
-          }}
-          onCancel={(_, { initialValues, resetForm }) => {
-            resetForm({ values: initialValues });
-            setEditing(false);
-            dispatch(machineActions.cleanup());
-          }}
-          onSubmit={(values) => {
-            const params = {
-              architecture: values.architecture,
-              description: values.description,
-              extra_macs: machine.extra_macs,
-              pxe_mac: machine.pxe_mac,
-              min_hwe_kernel: values.minHweKernel,
-              pool: { name: values.pool },
-              system_id: machine.system_id,
-              tags: values.tags,
-              zone: { name: values.zone },
-            };
-            dispatch(machineActions.update(params));
-          }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Save changes"
-          validationSchema={MachineFormSchema}
-        >
-          <MachineFormFields editing={editing} />
-        </FormikForm>
-      </>
-    );
+  if (!isMachineDetails(machine)) {
+    return <Spinner text="Loading..." />;
   }
-  return <Spinner text="Loading..." />;
+
+  return (
+    <Row>
+      <Col size={3}>
+        <div className="u-flex--between u-flex--wrap">
+          <h4>Machine configuration</h4>
+          {canEdit && !editing && (
+            <Button
+              className="u-no-margin--bottom u-hide--large"
+              onClick={() => setEditing(true)}
+            >
+              Edit
+            </Button>
+          )}
+        </div>
+      </Col>
+      <Col size={editing ? 9 : 6}>
+        {editing ? (
+          <FormikForm<MachineFormValues>
+            cleanup={cleanup}
+            errors={errors}
+            initialValues={{
+              architecture: machine.architecture || "",
+              description: machine.description || "",
+              minHweKernel: machine.min_hwe_kernel || "",
+              pool: machine.pool?.name || "",
+              zone: machine.zone?.name || "",
+            }}
+            onSaveAnalytics={{
+              action: "Configure machine",
+              category: "Machine details",
+              label: "Save changes",
+            }}
+            onCancel={() => setEditing(false)}
+            onSubmit={(values) => {
+              const params = {
+                architecture: values.architecture,
+                description: values.description,
+                extra_macs: machine.extra_macs,
+                pxe_mac: machine.pxe_mac,
+                min_hwe_kernel: values.minHweKernel,
+                pool: { name: values.pool },
+                system_id: machine.system_id,
+                zone: { name: values.zone },
+              };
+              dispatch(machineActions.update(params));
+            }}
+            onSuccess={() => setEditing(false)}
+            saved={saved}
+            saving={saving}
+            submitLabel="Save changes"
+            validationSchema={MachineFormSchema}
+          >
+            <MachineFormFields />
+          </FormikForm>
+        ) : (
+          <div data-testid="machine-details">
+            <Definition
+              label="Architecture"
+              description={machine.architecture}
+            />
+            <Definition
+              label="Minimum kernel"
+              description={machine.min_hwe_kernel}
+            />
+            <Definition label="Zone" description={machine.zone.name} />
+            <Definition label="Resource pool" description={machine.pool.name} />
+            <Definition label="Note" description={machine.description} />
+          </div>
+        )}
+      </Col>
+      {canEdit && !editing && (
+        <Col className="u-align--right" size={3}>
+          <Button
+            className="u-no-margin--bottom u-hide--small u-hide--medium"
+            onClick={() => setEditing(true)}
+          >
+            Edit
+          </Button>
+        </Col>
+      )}
+    </Row>
+  );
 };
 
 export default MachineForm;

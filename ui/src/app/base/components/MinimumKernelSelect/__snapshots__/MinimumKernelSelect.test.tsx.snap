@@ -16,8 +16,7 @@ exports[`MinimumKernelSelect renders a list of all hwe kernels in state 1`] = `
 >
   <option
     disabled={true}
-    key="Select minimum kernel"
-    value=""
+    key="undefined"
   >
     Select minimum kernel
   </option>

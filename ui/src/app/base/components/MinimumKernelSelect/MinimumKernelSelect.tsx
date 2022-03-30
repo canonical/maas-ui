@@ -37,7 +37,6 @@ export const MinimumKernelSelect = ({
       options={[
         {
           label: "Select minimum kernel",
-          value: "",
           disabled: true,
         },
         { label: "No minimum kernel", value: "" },

@@ -27,6 +27,7 @@ const MachineConfiguration = (): JSX.Element => {
       <Strip shallow>
         <MachineForm systemId={machine.system_id} />
       </Strip>
+      <hr />
       <Strip shallow>
         <PowerForm systemId={machine.system_id} />
       </Strip>
