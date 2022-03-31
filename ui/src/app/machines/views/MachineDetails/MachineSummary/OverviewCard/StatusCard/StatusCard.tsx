@@ -1,4 +1,4 @@
-import { Tooltip } from "@canonical/react-components";
+import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import { PowerTypeNames } from "app/store/general/constants";
@@ -80,6 +80,39 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
               {machine.error_description}
             </Tooltip>
           </p>
+        ) : null}
+        {machine.enable_hw_sync ? (
+          <>
+            <hr />
+            <p className="u-text--muted">
+              Periodic hardware sync enabled{" "}
+              {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
+              {/* TODO: use actual `sync_interval` value from the back-end https://github.com/canonical-web-and-design/app-tribe/issues/782 */}
+              <Tooltip
+                position="right"
+                message={
+                  <>
+                    This machine hardware info is synced every 24 hours.{"\n"}
+                    You can check it at the bottom, in the status bar.{"\n"}More
+                    about this in the{" "}
+                    <a className="p-link--inverted" href="#">
+                      Hardware sync docs
+                    </a>
+                    .
+                  </>
+                }
+              >
+                <Button
+                  aria-label="more about periodic hardware sync"
+                  appearance="base"
+                  dense
+                  hasIcon
+                >
+                  <Icon name="help" />
+                </Button>
+              </Tooltip>
+            </p>
+          </>
         ) : null}
       </div>
       {showFailedTestsWarning(machine) ? (
