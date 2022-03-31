@@ -22,14 +22,19 @@ const DeployForm = (): JSX.Element => {
 
   const defaultOSystem = useSelector(configSelectors.defaultOSystem);
   const defaultDistroSeries = useSelector(configSelectors.defaultDistroSeries);
+  const hardwareSyncInterval = useSelector(
+    configSelectors.hardwareSyncInterval
+  );
 
   return (
     <FormikForm<DeployFormValues>
+      aria-label="deploy configuration"
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
         default_osystem: defaultOSystem || "",
         default_distro_series: defaultDistroSeries || "",
+        hardware_sync_interval: hardwareSyncInterval || "",
       }}
       onSaveAnalytics={{
         action: "Saved",

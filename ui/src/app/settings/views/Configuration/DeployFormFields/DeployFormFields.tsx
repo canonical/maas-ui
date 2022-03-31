@@ -46,6 +46,11 @@ const DeployFormFields = (): JSX.Element => {
         options={distroSeriesOptions}
         name="default_distro_series"
       />
+      <FormikField
+        label="Default hardware sync interval (hours)"
+        name="hardware_sync_interval"
+        type="text"
+      />
     </>
   );
 };
