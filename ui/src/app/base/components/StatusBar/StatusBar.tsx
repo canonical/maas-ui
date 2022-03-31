@@ -8,7 +8,19 @@ import configSelectors from "app/store/config/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import { NodeStatus } from "app/store/types/node";
+
+const getTimeDistanceString = (utcTimeString: string) =>
+  formatDistance(
+    parse(
+      `${utcTimeString} +00`, // let parse fn know it's UTC
+      "E, dd LLL. yyyy HH:mm:ss x",
+      new Date()
+    ),
+    new Date(),
+    { addSuffix: true }
+  );
 
 const getLastCommissionedString = (machine: MachineDetails) => {
   if (machine.status === NodeStatus.COMMISSIONING) {
@@ -17,18 +29,23 @@ const getLastCommissionedString = (machine: MachineDetails) => {
     return "Not yet commissioned";
   }
   try {
-    const distance = formatDistance(
-      parse(
-        `${machine.commissioning_start_time} +00`, // let parse fn know it's UTC
-        "E, dd LLL. yyyy HH:mm:ss x",
-        new Date()
-      ),
-      new Date(),
-      { addSuffix: true }
-    );
+    const distance = getTimeDistanceString(machine.commissioning_start_time);
     return `Last commissioned ${distance}`;
   } catch (error) {
     return `Unable to parse commissioning timestamp (${
+      error instanceof Error ? error.message : error
+    })`;
+  }
+};
+
+const getSyncStatusString = (syncStatus: string) => {
+  if (syncStatus === "") {
+    return "Never";
+  }
+  try {
+    return getTimeDistanceString(syncStatus);
+  } catch (error) {
+    return `Unable to parse sync timestamp (${
       error instanceof Error ? error.message : error
     })`;
   }
@@ -44,7 +61,25 @@ export const StatusBar = (): JSX.Element | null => {
   }
 
   let status: ReactNode = "";
-  if (activeMachine && "commissioning_start_time" in activeMachine) {
+  if (
+    isMachineDetails(activeMachine) &&
+    activeMachine?.status === NodeStatus.DEPLOYED &&
+    activeMachine.enable_hw_sync === true
+  ) {
+    status = (
+      <ul className="p-inline-list u-no-margin--bottom">
+        <li className="p-inline-list__item">
+          <strong>{activeMachine.fqdn}</strong>
+        </li>
+        <li className="p-inline-list__item">
+          Last synced: {getSyncStatusString(activeMachine.last_sync)}
+        </li>
+        <li className="p-inline-list__item">
+          Next sync: {getSyncStatusString(activeMachine.next_sync)}
+        </li>
+      </ul>
+    );
+  } else if (activeMachine && "commissioning_start_time" in activeMachine) {
     const lastCommissioned = getLastCommissionedString(activeMachine);
     status = (
       <>

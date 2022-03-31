@@ -15,12 +15,12 @@ export const StatusBar = ({
   return (
     <aside className="p-status-bar" aria-label="status bar">
       <div className="row">
-        <div className="col-6">
+        <div className="col-4">
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>:{" "}
           <span data-testid="status-bar-version">{version}</span>
         </div>
         {status && (
-          <div className="col-6 u-align--right" data-testid="status-bar-status">
+          <div className="col-8 u-align--right" data-testid="status-bar-status">
             {status}
           </div>
         )}
