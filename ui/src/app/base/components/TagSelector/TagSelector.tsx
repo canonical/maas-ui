@@ -16,6 +16,7 @@ export type Props = {
   allowNewTags?: boolean;
   disabled?: boolean;
   error?: string;
+  externalSelectedTags?: Tag[];
   help?: string;
   initialSelected?: Tag[];
   label?: string | null;
@@ -25,6 +26,7 @@ export type Props = {
   generateDropdownEntry?: (tag: Tag, highlightedName: ReactNode) => ReactNode;
   header?: ReactNode;
   showSelectedTags?: boolean;
+  useExternalTags?: boolean;
   tags: Tag[];
   disabledTags?: Tag[];
 };
@@ -174,6 +176,7 @@ export const TagSelector = ({
   allowNewTags = false,
   disabled,
   error,
+  externalSelectedTags,
   generateDropdownEntry,
   help,
   initialSelected = [],
@@ -184,13 +187,18 @@ export const TagSelector = ({
   header,
   showSelectedTags = true,
   tags = [],
+  useExternalTags = false,
   disabledTags = [],
   ...props
 }: Props): JSX.Element => {
   const wrapperRef = useRef<HTMLSpanElement | null>(null);
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [selectedTags, setSelectedTags] = useState(initialSelected);
+  const [internalSelectedTags, setInternalSelectedTags] =
+    useState(initialSelected);
+  const selectedTags = useExternalTags
+    ? externalSelectedTags || initialSelected
+    : internalSelectedTags;
   const [filter, setFilter] = useState("");
   const hasSelectedTags = showSelectedTags && selectedTags.length > 0;
 
@@ -198,7 +206,9 @@ export const TagSelector = ({
     const sortedTags = newSelectedTags.sort((a, b) =>
       a.name.localeCompare(b.name)
     );
-    setSelectedTags(sortedTags);
+    if (!useExternalTags) {
+      setInternalSelectedTags(sortedTags);
+    }
     onTagsUpdate && onTagsUpdate(sortedTags);
     clearFilter && setFilter("");
   };

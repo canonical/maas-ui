@@ -224,7 +224,7 @@ describe("TagSelector", () => {
     ).toBe("the");
   });
 
-  it("can disabled tags", () => {
+  it("can disable tags", () => {
     const tags = [
       { id: 1, name: "enabledTag" },
       { id: 2, name: "disabledTag" },
@@ -279,5 +279,36 @@ describe("TagSelector", () => {
         .find(".tag-selector__dropdown-button [data-testid='dropdown-item']")
         .exists()
     ).toBe(true);
+  });
+
+  it("can use an external list of selected tags", () => {
+    const component = shallow(
+      <TagSelector
+        externalSelectedTags={[tags[0]]}
+        label="Tags"
+        onTagsUpdate={jest.fn()}
+        tags={tags}
+        useExternalTags
+      />
+    );
+    expect(
+      component.find('[data-testid="selected-tag"] span').at(0).text()
+    ).toBe("tag1");
+  });
+
+  it("handles selecting external tags", () => {
+    const onTagsUpdate = jest.fn();
+    const component = shallow(
+      <TagSelector
+        externalSelectedTags={[tags[0]]}
+        label="Tags"
+        onTagsUpdate={onTagsUpdate}
+        tags={tags}
+        useExternalTags
+      />
+    );
+    component.find(".tag-selector__input").simulate("focus");
+    component.find('[data-testid="existing-tag"]').at(0).simulate("click");
+    expect(onTagsUpdate).toHaveBeenCalledWith([tags[0], tags[1]]);
   });
 });

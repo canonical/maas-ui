@@ -3,11 +3,14 @@ import { useState, useMemo } from "react";
 
 import type { ChipProps } from "@canonical/react-components";
 import { Modal, Button, Icon, ModularTable } from "@canonical/react-components";
+import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import usePortal from "react-useportal";
 
 import TagChip from "../TagChip";
+import { useSelectedTags } from "../hooks";
+import type { TagFormValues } from "../types";
 
 import type { Machine } from "app/store/machine/types";
 import type { TagIdCountMap } from "app/store/machine/utils";
@@ -17,12 +20,14 @@ import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import TagDetails from "app/tags/components/TagDetails";
 import tagsURLs from "app/tags/urls";
+import { toFormikNumber } from "app/utils";
 
 type Props = {
   machines: Machine[];
 };
 
 export enum Label {
+  Added = "To be added",
   Automatic = "Automatic tags",
   Manual = "Currently assigned",
 }
@@ -69,6 +74,7 @@ const generateRows = (
         appearance="base"
         className="is-dense u-no-margin u-no-padding"
         onClick={() => onRemove?.(tag)}
+        type="button"
       >
         {removeLabel}
       </Button>
@@ -77,6 +83,7 @@ const generateRows = (
 };
 
 export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
+  const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const [tagDetails, setTagDetails] = useState<Tag | null>(null);
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
   const toggleTagDetails = (tag: Tag | null) => {
@@ -100,9 +107,11 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
   const manualTags = useSelector((state: RootState) =>
     tagSelectors.getManualByIDs(state, tagIds)
   );
+  const addedTags = useSelectedTags();
   const machineCount = machines.length;
   const hasAutomaticTags = automaticTags.length > 0;
   const hasManualTags = manualTags.length > 0;
+  const hasAddedTags = addedTags.length > 0;
   const columns = useMemo(
     () => [
       {
@@ -131,16 +140,37 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
     ],
     []
   );
-  if (!hasAutomaticTags && !hasManualTags) {
+  if (!hasAutomaticTags && !hasManualTags && !hasAddedTags) {
     return null;
   }
-
+  addedTags.forEach((tag) => {
+    // Added tags will be applied to all machines.
+    tagIdsAndCounts.set(tag.id, machineCount);
+  });
   return (
     <>
       <ModularTable
         className="tag-form__changes"
         columns={columns}
         data={[
+          ...generateRows(
+            addedTags,
+            machineCount,
+            tagIdsAndCounts,
+            Label.Added,
+            toggleTagDetails,
+            "positive",
+            (tag) => {
+              setFieldValue(
+                "tags",
+                values.tags.filter((id) => tag.id !== toFormikNumber(id))
+              );
+            },
+            <>
+              <span className="u-nudge-left--small">Discard</span>
+              <Icon name="close" />
+            </>
+          ),
           ...generateRows(
             manualTags,
             machineCount,
