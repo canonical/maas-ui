@@ -60,7 +60,6 @@ export const CommissionFormFields = ({
             setFieldValue("commissioningScripts", selectedScripts);
           }}
           placeholder="Select additional scripts"
-          required
           tags={commissioningScripts}
           disabledTags={commissioningScripts.filter(
             (script) => script.default === true
@@ -77,7 +76,6 @@ export const CommissionFormFields = ({
             setFieldValue("testingScripts", selectedScripts);
           }}
           placeholder="Select additional scripts"
-          required
           tags={testingScripts}
         />
         {urlScriptsSelected.map((script) => (
