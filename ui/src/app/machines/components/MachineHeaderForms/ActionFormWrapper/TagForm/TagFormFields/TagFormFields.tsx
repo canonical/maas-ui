@@ -20,13 +20,13 @@ type Props = {
 };
 
 export const TagFormFields = ({ machines }: Props): JSX.Element => {
-  const addedTags = useSelectedTags();
+  const selectedTags = useSelectedTags();
   const tags = useSelector(tagSelectors.getManual);
   return (
     <Row>
       <Col size={6} className="col-start-large-4">
         <TagField
-          externalSelectedTags={addedTags}
+          externalSelectedTags={selectedTags}
           generateDropdownEntry={(
             tag: TagSelectorTag,
             highlightedName: ReactNode
@@ -52,7 +52,6 @@ export const TagFormFields = ({ machines }: Props): JSX.Element => {
           showSelectedTags={false}
           storedValue="id"
           tags={tags.map(({ id, name }) => ({ id, name }))}
-          useExternalTags
         />
         <TagFormChanges machines={machines} />
       </Col>

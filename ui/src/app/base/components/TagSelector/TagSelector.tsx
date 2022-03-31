@@ -26,7 +26,6 @@ export type Props = {
   generateDropdownEntry?: (tag: Tag, highlightedName: ReactNode) => ReactNode;
   header?: ReactNode;
   showSelectedTags?: boolean;
-  useExternalTags?: boolean;
   tags: Tag[];
   disabledTags?: Tag[];
 };
@@ -187,7 +186,6 @@ export const TagSelector = ({
   header,
   showSelectedTags = true,
   tags = [],
-  useExternalTags = false,
   disabledTags = [],
   ...props
 }: Props): JSX.Element => {
@@ -196,8 +194,9 @@ export const TagSelector = ({
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [internalSelectedTags, setInternalSelectedTags] =
     useState(initialSelected);
+  const useExternalTags = !!externalSelectedTags;
   const selectedTags = useExternalTags
-    ? externalSelectedTags || initialSelected
+    ? externalSelectedTags
     : internalSelectedTags;
   const [filter, setFilter] = useState("");
   const hasSelectedTags = showSelectedTags && selectedTags.length > 0;

@@ -13,17 +13,17 @@ import { toFormikNumber } from "app/utils";
  */
 export const useSelectedTags = (): Tag[] => {
   const { values } = useFormikContext<TagFormValues>();
+  // The Formik values are strings so we need to convert these into numbers so
+  // they can be used in the selector.
+  const tagIds = values.tags.reduce<Tag[TagMeta.PK][]>((tagList, id) => {
+    const idNumber = toFormikNumber(id);
+    if (idNumber) {
+      tagList.push(idNumber);
+    }
+    return tagList;
+  }, []);
   const selectedTags = useSelector((state: RootState) =>
-    tagSelectors.getByIDs(
-      state,
-      values.tags.reduce<Tag[TagMeta.PK][]>((tagList, id) => {
-        const idNumber = toFormikNumber(id);
-        if (idNumber) {
-          tagList.push(idNumber);
-        }
-        return tagList;
-      }, [])
-    )
+    tagSelectors.getByIDs(state, tagIds)
   );
   return selectedTags;
 };

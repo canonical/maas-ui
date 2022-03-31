@@ -288,7 +288,6 @@ describe("TagSelector", () => {
         label="Tags"
         onTagsUpdate={jest.fn()}
         tags={tags}
-        useExternalTags
       />
     );
     expect(
@@ -304,7 +303,6 @@ describe("TagSelector", () => {
         label="Tags"
         onTagsUpdate={onTagsUpdate}
         tags={tags}
-        useExternalTags
       />
     );
     component.find(".tag-selector__input").simulate("focus");
