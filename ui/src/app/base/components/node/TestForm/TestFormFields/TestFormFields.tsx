@@ -49,7 +49,6 @@ export const TestFormFields = ({
             setFieldValue("scripts", selectedScripts);
           }}
           placeholder="Select scripts"
-          required
           tags={scripts.map(({ id, name }) => ({
             id,
             name,
