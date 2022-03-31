@@ -4,6 +4,7 @@ import { Col, Icon, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import TagFormChanges from "../TagFormChanges";
+import { useSelectedTags } from "../hooks";
 
 import TagField from "app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "app/base/components/TagSelector/TagSelector";
@@ -19,11 +20,13 @@ type Props = {
 };
 
 export const TagFormFields = ({ machines }: Props): JSX.Element => {
+  const selectedTags = useSelectedTags();
   const tags = useSelector(tagSelectors.getManual);
   return (
     <Row>
       <Col size={6} className="col-start-large-4">
         <TagField
+          externalSelectedTags={selectedTags}
           generateDropdownEntry={(
             tag: TagSelectorTag,
             highlightedName: ReactNode

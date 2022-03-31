@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import TagFormFields from "./TagFormFields";
+import type { TagFormValues } from "./types";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
@@ -13,10 +14,6 @@ import tagSelectors from "app/store/tag/selectors";
 import { NodeActions } from "app/store/types/node";
 
 type Props = MachineActionFormProps;
-
-export type TagFormValues = {
-  tags: string[];
-};
 
 const TagFormSchema = Yup.object().shape({
   tags: Yup.array()
