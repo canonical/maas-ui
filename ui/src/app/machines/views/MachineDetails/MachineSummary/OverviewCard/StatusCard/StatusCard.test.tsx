@@ -122,9 +122,32 @@ describe("StatusCard", () => {
     );
   });
 
-  it("displays a message when the hardware sync is enabled", () => {
+  it("does not display a sync status for deployed machines with hardware sync disabled", () => {
+    const machine = machineDetailsFactory({
+      enable_hw_sync: false,
+      status: NodeStatus.DEPLOYED,
+    });
+    const store = mockStore(state);
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <StatusCard machine={machine} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      screen.queryByText(/Periodic hardware sync/)
+    ).not.toBeInTheDocument();
+  });
+
+  it("displays a sync status and link to docs for deployed machines with hardware sync enabled", () => {
     const machine = machineDetailsFactory({
       enable_hw_sync: true,
+      status: NodeStatus.DEPLOYED,
     });
     const store = mockStore(state);
 
@@ -141,12 +164,23 @@ describe("StatusCard", () => {
     expect(
       screen.getByText("Periodic hardware sync enabled")
     ).toBeInTheDocument();
+    userEvent.click(
+      screen.getByRole("button", {
+        name: "more about periodic hardware sync",
+      })
+    );
+    expect(
+      screen.getByRole("link", { name: "Hardware sync docs" })
+    ).toBeVisible();
   });
 
-  it("displays deployed hardware sync interval and link to docs in the hardware sync tooltip", () => {
+  it("displays deployed hardware sync interval in a correct format", () => {
     const machine = machineDetailsFactory({
       enable_hw_sync: true,
+      status: NodeStatus.DEPLOYED,
+      sync_interval: 900,
     });
+
     const store = mockStore(state);
 
     render(
@@ -163,10 +197,7 @@ describe("StatusCard", () => {
       screen.getByRole("button", { name: "more about periodic hardware sync" })
     );
     expect(
-      screen.getByText(/This machine hardware info is synced every 24 hours/)
-    ).toBeVisible();
-    expect(
-      screen.getByRole("link", { name: "Hardware sync docs" })
+      screen.getByText(/This machine hardware info is synced every 15 minutes./)
     ).toBeVisible();
   });
 });

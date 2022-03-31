@@ -356,6 +356,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   storage_layout_issues: () => [],
   supported_filesystems: () => [],
   swap_size: null,
+  sync_interval: 900,
   testing_start_time: "Thu, 15 Oct. 2020 07:25:10",
   updated: "Fri, 23 Oct. 2020 05:24:41",
 });

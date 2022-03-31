@@ -110,6 +110,7 @@ export type MachineDetails = BaseMachine &
     storage_layout_issues: string[];
     storage_test_status: TestStatus;
     supported_filesystems: SupportedFilesystem[];
+    sync_interval: number;
     swap_size: number | null;
     testing_start_time: string;
   };

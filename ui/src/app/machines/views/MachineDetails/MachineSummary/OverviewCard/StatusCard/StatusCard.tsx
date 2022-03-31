@@ -1,4 +1,5 @@
 import { Button, Icon, Tooltip } from "@canonical/react-components";
+import { formatDuration, intervalToDuration } from "date-fns";
 import { useSelector } from "react-redux";
 
 import { PowerTypeNames } from "app/store/general/constants";
@@ -7,7 +8,11 @@ import { useFormattedOS } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
-import { NodeStatusCode, TestStatusStatus } from "app/store/types/node";
+import {
+  NodeStatus,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
 import { breakLines } from "app/utils";
 
 type Props = {
@@ -35,6 +40,14 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
 
   return machine.testing_status.status === TestStatusStatus.FAILED;
 };
+
+const formatSyncInterval = (syncInterval: number) =>
+  formatDuration(
+    intervalToDuration({
+      start: 0,
+      end: syncInterval * 1000,
+    })
+  );
 
 const StatusCard = ({ machine }: Props): JSX.Element => {
   const formattedOS = useFormattedOS(machine);
@@ -81,7 +94,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
             </Tooltip>
           </p>
         ) : null}
-        {machine.enable_hw_sync ? (
+        {machine.status === NodeStatus.DEPLOYED && machine.enable_hw_sync ? (
           <>
             <hr />
             <p className="u-text--muted">
@@ -92,7 +105,8 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
                 position="right"
                 message={
                   <>
-                    This machine hardware info is synced every 24 hours.{"\n"}
+                    This machine hardware info is synced every{" "}
+                    {formatSyncInterval(machine.sync_interval)}.{"\n"}
                     You can check it at the bottom, in the status bar.{"\n"}More
                     about this in the{" "}
                     <a className="p-link--inverted" href="#">
