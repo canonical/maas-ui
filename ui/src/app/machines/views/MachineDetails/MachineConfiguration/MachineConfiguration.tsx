@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 import MachineForm from "./MachineForm";
 import PowerForm from "./PowerForm";
+import TagForm from "./TagForm";
 
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
@@ -26,6 +27,10 @@ const MachineConfiguration = (): JSX.Element => {
     <>
       <Strip shallow>
         <MachineForm systemId={machine.system_id} />
+      </Strip>
+      <hr />
+      <Strip shallow>
+        <TagForm systemId={machine.system_id} />
       </Strip>
       <hr />
       <Strip shallow>
