@@ -148,11 +148,20 @@ export const renderWithBrowserRouter = (
 
 export const renderWithMockStore = (
   ui: React.ReactElement,
-  wrapperProps: WrapperProps
-): RenderResult =>
-  render(ui, {
-    wrapper: (props) => <WithMockStoreProvider {...props} {...wrapperProps} />,
+  options: RenderOptions & {
+    state: RootState;
+  }
+): RenderResult => {
+  const rendered = render(ui, {
+    wrapper: (props) => (
+      <WithMockStoreProvider {...props} state={options.state} />
+    ),
+    ...options,
   });
+  return {
+    ...rendered,
+  };
+};
 
 export const getUrlParam: URLSearchParams["get"] = (param: string) =>
   new URLSearchParams(window.location.search).get(param);

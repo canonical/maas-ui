@@ -104,7 +104,7 @@ it("can handle an incorrectly formatted commissioning timestamp", () => {
   );
 });
 
-it("For deployed machines with hardware sync enabled displays Last and Next sync instead of Last commissioned date", () => {
+it("displays Last and Next sync instead of Last commissioned date for deployed machines with hardware sync enabled ", () => {
   state.machine.items = [
     machineDetailsFactory({
       commissioning_start_time: "Thu, 31 Dec. 2020 22:59:00",
@@ -117,9 +117,7 @@ it("For deployed machines with hardware sync enabled displays Last and Next sync
     }),
   ];
 
-  renderWithMockStore(<StatusBar />, {
-    state,
-  });
+  renderWithMockStore(<StatusBar />, { state: state });
 
   expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
     /Last commissioned/
@@ -135,7 +133,35 @@ it("For deployed machines with hardware sync enabled displays Last and Next sync
   );
 });
 
-it("Displays correct text for machines with hardware sync enabled and no last_sync or next_sync", () => {
+it("doesn't display last or next sync for deploying machines with hardware sync enabled", () => {
+  state.machine.items = [
+    machineDetailsFactory({
+      commissioning_start_time: "Thu, 31 Dec. 2020 22:59:00",
+      fqdn: "test.maas",
+      status: NodeStatus.DEPLOYING,
+      system_id: "abc123",
+      enable_hw_sync: true,
+      last_sync: "Thu, 31 Dec. 2020 22:00:00",
+      next_sync: "Thu, 31 Dec. 2020 23:01:00",
+    }),
+  ];
+
+  renderWithMockStore(<StatusBar />, {
+    state,
+  });
+
+  expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
+    /Last commissioned/
+  );
+  expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
+    /Last synced/
+  );
+  expect(screen.getByTestId("status-bar-status")).not.toHaveTextContent(
+    /Next sync/
+  );
+});
+
+it("displays correct text for machines with hardware sync enabled and no last_sync or next_sync", () => {
   state.machine.items = [
     machineDetailsFactory({
       commissioning_start_time: "Thu, 31 Dec. 2020 22:59:00",
