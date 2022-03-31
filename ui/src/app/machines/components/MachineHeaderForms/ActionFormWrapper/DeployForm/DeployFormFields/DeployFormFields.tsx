@@ -2,11 +2,14 @@ import { useState } from "react";
 import * as React from "react";
 
 import {
+  Button,
   Col,
+  Icon,
   Input,
   Notification,
   Row,
   Select,
+  Tooltip,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
@@ -24,6 +27,7 @@ import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
+import { breakLines } from "app/utils";
 
 export const DeployFormFields = (): JSX.Element => {
   const [deployVmHost, setDeployVmHost] = useState(false);
@@ -183,6 +187,34 @@ export const DeployFormFields = (): JSX.Element => {
               wrapperClassName={classNames({
                 "u-sv2": userDataVisible,
               })}
+            />
+            <FormikField
+              disabled
+              type="checkbox"
+              name="enable_hw_sync"
+              label={
+                <>
+                  Periodically sync hardware{" "}
+                  <Tooltip
+                    positionElementClassName="u-display-inline-important"
+                    message={breakLines(
+                      "Enable this to make MAAS periodically check the hardware configuration of this machine and reflect any possible change after the deployment."
+                    )}
+                  >
+                    <Button
+                      type="button"
+                      appearance="base"
+                      aria-label="more about periodically sync hardware"
+                      className="u-no-margin--bottom"
+                    >
+                      <Icon name="information" />
+                    </Button>
+                  </Tooltip>
+                  {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
+                  <a href="#">Hardware sync docs</a>
+                </>
+              }
+              help="Hardware sync interval: 6 hours - Admins can change this in the global settings."
             />
             {userDataVisible && (
               <UploadTextArea

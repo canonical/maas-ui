@@ -427,4 +427,29 @@ describe("DeployFormFields", () => {
     // Previous kernel selection should be cleared.
     expect(wrapper.find("Select[name='kernel']").prop("value")).toBe("");
   });
+
+  it("displays 'periodically sync hardware' checkbox", async () => {
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+    }
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("FormikField[name='enable_hw_sync']").exists()).toBe(
+      true
+    );
+  });
 });
