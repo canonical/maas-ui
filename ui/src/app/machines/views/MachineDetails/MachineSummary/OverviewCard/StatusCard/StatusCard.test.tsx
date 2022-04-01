@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -39,7 +40,7 @@ describe("StatusCard", () => {
     machine.locked = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -49,7 +50,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='locked']").exists()).toEqual(true);
+    expect(screen.getByTestId("locked")).toBeInTheDocument();
   });
 
   it("renders os info", () => {
@@ -62,7 +63,7 @@ describe("StatusCard", () => {
     });
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -72,7 +73,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='os-info']").text()).toEqual(
+    expect(screen.getByTestId("os-info")).toHaveTextContent(
       'Ubuntu 20.04 LTS "Focal Fossa"'
     );
   });
@@ -83,7 +84,7 @@ describe("StatusCard", () => {
 
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -93,7 +94,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='failed-test-warning']").text()).toEqual(
+    expect(screen.getByTestId("failed-test-warning")).toHaveTextContent(
       "Warning: Some tests failed, use with caution."
     );
   });
@@ -106,7 +107,7 @@ describe("StatusCard", () => {
     });
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -116,8 +117,87 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='error-description']").text()).toBe(
+    expect(screen.getByTestId("error-description")).toHaveTextContent(
       "machine is on fire"
     );
+  });
+
+  it("does not display a sync status for deployed machines with hardware sync disabled", () => {
+    const machine = machineDetailsFactory({
+      enable_hw_sync: false,
+      status: NodeStatus.DEPLOYED,
+    });
+    const store = mockStore(state);
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <StatusCard machine={machine} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      screen.queryByText(/Periodic hardware sync/)
+    ).not.toBeInTheDocument();
+  });
+
+  it("displays a sync status and link to docs for deployed machines with hardware sync enabled", () => {
+    const machine = machineDetailsFactory({
+      enable_hw_sync: true,
+      status: NodeStatus.DEPLOYED,
+    });
+    const store = mockStore(state);
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <StatusCard machine={machine} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      screen.getByText("Periodic hardware sync enabled")
+    ).toBeInTheDocument();
+    userEvent.click(
+      screen.getByRole("button", {
+        name: "more about periodic hardware sync",
+      })
+    );
+    expect(
+      screen.getByRole("link", { name: "Hardware sync docs" })
+    ).toBeVisible();
+  });
+
+  it("displays deployed hardware sync interval in a correct format", () => {
+    const machine = machineDetailsFactory({
+      enable_hw_sync: true,
+      status: NodeStatus.DEPLOYED,
+      sync_interval: 900,
+    });
+
+    const store = mockStore(state);
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <StatusCard machine={machine} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    userEvent.click(
+      screen.getByRole("button", { name: "more about periodic hardware sync" })
+    );
+    expect(
+      screen.getByText(/This machine hardware info is synced every 15 minutes./)
+    ).toBeVisible();
   });
 });

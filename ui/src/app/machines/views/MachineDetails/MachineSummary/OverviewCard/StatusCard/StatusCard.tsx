@@ -1,13 +1,19 @@
-import { Tooltip } from "@canonical/react-components";
+import { Button, Icon, Tooltip } from "@canonical/react-components";
+import { formatDuration, intervalToDuration } from "date-fns";
 import { useSelector } from "react-redux";
 
+import type { Seconds } from "app/base/types";
 import { PowerTypeNames } from "app/store/general/constants";
 import type { MachineDetails } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
-import { NodeStatusCode, TestStatusStatus } from "app/store/types/node";
+import {
+  NodeStatus,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
 import { breakLines } from "app/utils";
 
 type Props = {
@@ -35,6 +41,14 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
 
   return machine.testing_status.status === TestStatusStatus.FAILED;
 };
+
+const formatSyncInterval = (syncInterval: Seconds) =>
+  formatDuration(
+    intervalToDuration({
+      start: 0,
+      end: syncInterval * 1000,
+    })
+  );
 
 const StatusCard = ({ machine }: Props): JSX.Element => {
   const formattedOS = useFormattedOS(machine);
@@ -80,6 +94,40 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
               {machine.error_description}
             </Tooltip>
           </p>
+        ) : null}
+        {machine.status === NodeStatus.DEPLOYED && machine.enable_hw_sync ? (
+          <>
+            <hr />
+            <p className="u-text--muted">
+              Periodic hardware sync enabled{" "}
+              {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
+              {/* TODO: use actual `sync_interval` value from the back-end https://github.com/canonical-web-and-design/app-tribe/issues/782 */}
+              <Tooltip
+                position="right"
+                message={
+                  <>
+                    This machine hardware info is synced every{" "}
+                    {formatSyncInterval(machine.sync_interval)}.{"\n"}
+                    You can check it at the bottom, in the status bar.{"\n"}More
+                    about this in the{" "}
+                    <a className="p-link--inverted" href="#todo">
+                      Hardware sync docs
+                    </a>
+                    .
+                  </>
+                }
+              >
+                <Button
+                  aria-label="more about periodic hardware sync"
+                  appearance="base"
+                  dense
+                  hasIcon
+                >
+                  <Icon name="help" />
+                </Button>
+              </Tooltip>
+            </p>
+          </>
         ) : null}
       </div>
       {showFailedTestsWarning(machine) ? (
