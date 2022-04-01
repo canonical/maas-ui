@@ -1,6 +1,6 @@
 import type { MachineMeta } from "./enum";
 
-import type { APIError } from "app/base/types";
+import type { APIError, Seconds } from "app/base/types";
 import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { CertificateMetadata, PowerType } from "app/store/general/types";
 import type { PowerState, StorageLayout } from "app/store/types/enum";
@@ -110,7 +110,7 @@ export type MachineDetails = BaseMachine &
     storage_layout_issues: string[];
     storage_test_status: TestStatus;
     supported_filesystems: SupportedFilesystem[];
-    sync_interval: number;
+    sync_interval: Seconds;
     swap_size: number | null;
     testing_start_time: string;
   };

@@ -2,6 +2,7 @@ import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { useSelector } from "react-redux";
 
+import type { Seconds } from "app/base/types";
 import { PowerTypeNames } from "app/store/general/constants";
 import type { MachineDetails } from "app/store/machine/types";
 import { useFormattedOS } from "app/store/machine/utils";
@@ -41,7 +42,7 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
   return machine.testing_status.status === TestStatusStatus.FAILED;
 };
 
-const formatSyncInterval = (syncInterval: number) =>
+const formatSyncInterval = (syncInterval: Seconds) =>
   formatDuration(
     intervalToDuration({
       start: 0,
