@@ -1,6 +1,6 @@
 import type { MachineMeta } from "./enum";
 
-import type { APIError } from "app/base/types";
+import type { APIError, Seconds } from "app/base/types";
 import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { CertificateMetadata, PowerType } from "app/store/general/types";
 import type { PowerState, StorageLayout } from "app/store/types/enum";
@@ -82,6 +82,7 @@ export type MachineDetails = BaseMachine &
     devices: NodeDeviceRef[];
     dhcp_on: boolean;
     disks: Disk[];
+    enable_hw_sync: boolean;
     error: string;
     events: NodeEvent[];
     grouped_storages: GroupedStorage[];
@@ -91,11 +92,13 @@ export type MachineDetails = BaseMachine &
     installation_status: number;
     interface_test_status: TestStatus;
     interfaces: NetworkInterface[];
+    last_sync: string;
     license_key: string;
     memory_test_status: TestStatus;
     metadata: NodeMetadata;
     min_hwe_kernel: string;
     network_test_status: TestStatus;
+    next_sync: string;
     node_type: number;
     numa_nodes: NodeNumaNode[];
     on_network: boolean;
@@ -107,6 +110,7 @@ export type MachineDetails = BaseMachine &
     storage_layout_issues: string[];
     storage_test_status: TestStatus;
     supported_filesystems: SupportedFilesystem[];
+    sync_interval: Seconds;
     swap_size: number | null;
     testing_start_time: string;
   };
