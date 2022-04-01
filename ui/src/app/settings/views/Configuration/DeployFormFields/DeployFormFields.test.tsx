@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -61,15 +61,54 @@ describe("DeployFormFields", () => {
     });
   });
 
-  it("can render", () => {
+  it("displays the deploy configuration form with correct fields", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <DeployForm />
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("DeployFormFields").exists()).toBe(true);
+
+    const form = screen.getByRole("form", { name: "deploy configuration" });
+    expect(form).toBeInTheDocument();
+
+    expect(
+      within(form).getByRole("combobox", {
+        name: /Default operating system used for deployment/,
+      })
+    ).toBeInTheDocument();
+    expect(
+      within(form).getByRole("combobox", {
+        name: /Default OS release used for deployment/,
+      })
+    ).toBeInTheDocument();
+    expect(
+      within(form).getByRole("textbox", {
+        name: /Default hardware sync interval/,
+      })
+    ).toBeInTheDocument();
+  });
+
+  it("displays the default hardware sync interval option with a correct value", () => {
+    const syncIntervalValue = "1h";
+    // TODO: Investigate mutating state in integration tests https://github.com/canonical-web-and-design/app-tribe/issues/794
+    state.config.items.push({
+      name: "hardware_sync_interval",
+      value: syncIntervalValue,
+    });
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <DeployForm />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      screen.getByRole("textbox", { name: /Default hardware sync interval/ })
+    ).toHaveValue(syncIntervalValue);
   });
 });

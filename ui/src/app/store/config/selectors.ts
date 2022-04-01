@@ -514,6 +514,10 @@ const bootImagesAutoImport = createSelector([all], (configs) =>
   getValueFromName<boolean>(configs, "boot_images_auto_import")
 );
 
+const hardwareSyncInterval = createSelector([all], (configs) =>
+  getValueFromName<string>(configs, "hardware_sync_interval")
+);
+
 const config = {
   activeDiscoveryInterval,
   all,
@@ -536,6 +540,7 @@ const config = {
   enableDiskErasing,
   enableHttpProxy,
   errors,
+  hardwareSyncInterval,
   httpProxy,
   kernelParams,
   loaded,
