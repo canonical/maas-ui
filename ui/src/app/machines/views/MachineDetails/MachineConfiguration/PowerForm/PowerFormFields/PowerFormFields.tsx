@@ -8,8 +8,9 @@ import PowerTypeFields from "app/base/components/PowerTypeFields";
 import { useIsRackControllerConnected } from "app/base/hooks";
 import { PowerTypeNames } from "app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import { PowerFieldScope } from "app/store/general/types";
+import { getPowerTypeFromName } from "app/store/general/utils";
 import type { MachineDetails } from "app/store/machine/types";
+import { getMachineFieldScopes } from "app/store/machine/utils";
 
 type Props = {
   editing: boolean;
@@ -20,12 +21,9 @@ const PowerFormFields = ({ editing, machine }: Props): JSX.Element => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const { values } = useFormikContext<PowerFormValues>();
   const isRackControllerConnected = useIsRackControllerConnected();
-
-  const powerType = powerTypes.find((type) => type.name === values.powerType);
+  const powerType = getPowerTypeFromName(powerTypes, values.powerType);
   const machineInPod = Boolean(machine.pod);
-  const fieldScopes = machineInPod
-    ? [PowerFieldScope.NODE]
-    : [PowerFieldScope.BMC, PowerFieldScope.NODE];
+  const fieldScopes = getMachineFieldScopes(machine);
 
   return (
     <Row>

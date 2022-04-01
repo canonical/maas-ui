@@ -1,11 +1,13 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import PowerForm from "./PowerForm";
+import PowerForm, { Labels } from "./PowerForm";
 
 import { PowerTypeNames } from "app/store/general/constants";
+import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -18,252 +20,124 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
-describe("PowerForm", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = rootStateFactory({
-      general: generalStateFactory({
-        powerTypes: powerTypesStateFactory({
-          data: [powerTypeFactory({ fields: [], name: "manual" })],
-          loaded: true,
-        }),
-      }),
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-  });
-
-  it("is not editable if machine does not have edit permission", () => {
-    state.machine.items[0].permissions = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PowerForm systemId="abc123" />
-      </Provider>
-    );
-
-    expect(
-      wrapper.find("button[data-testid='edit-power-config']").exists()
-    ).toBe(false);
-  });
-
-  it("is disabled until the edit button is pressed", () => {
-    state.machine.items[0].permissions = ["edit"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PowerForm systemId="abc123" />
-      </Provider>
-    );
-    expect(wrapper.find("FormikForm").prop("editable")).toBe(false);
-
-    wrapper.find("button[data-testid='edit-power-config']").simulate("click");
-    expect(wrapper.find("FormikForm").prop("editable")).toBe(true);
-  });
-
-  it("only shows errors if the form is in editing state", () => {
-    state.machine.items[0].permissions = ["edit"];
-    state.machine.errors = "Everything is ruined";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PowerForm systemId="abc123" />
-      </Provider>
-    );
-    const notificationExists = () =>
-      wrapper
-        .findWhere(
-          (n) =>
-            n.name() === "Notification" &&
-            n.text().includes("Everything is ruined")
-        )
-        .exists();
-    expect(notificationExists()).toBe(false);
-
-    // Click "Edit" button
-    wrapper.find("button[data-testid='edit-power-config']").simulate("click");
-    expect(notificationExists()).toBe(true);
-  });
-
-  it("initialises the form with machine power parameters", () => {
-    state.general.powerTypes.data = [
-      powerTypeFactory({
-        fields: [
-          powerFieldFactory({ name: "field1" }),
-          powerFieldFactory({ name: "field2" }),
+let state: RootState;
+beforeEach(() => {
+  state = rootStateFactory({
+    general: generalStateFactory({
+      powerTypes: powerTypesStateFactory({
+        data: [
+          powerTypeFactory({
+            fields: [
+              powerFieldFactory({
+                name: "amt-field",
+                label: "AMT field",
+                field_type: PowerFieldType.STRING,
+                scope: PowerFieldScope.NODE,
+              }),
+            ],
+            name: PowerTypeNames.AMT,
+          }),
+          powerTypeFactory({
+            fields: [
+              powerFieldFactory({
+                name: "apc-field",
+                label: "APC field",
+                field_type: PowerFieldType.STRING,
+                scope: PowerFieldScope.NODE,
+              }),
+            ],
+            name: PowerTypeNames.APC,
+          }),
         ],
-        name: PowerTypeNames.MANUAL,
+        loaded: true,
       }),
-    ];
-    state.machine.items = [
-      machineDetailsFactory({
-        power_parameters: {
-          field1: "value1",
-          field2: "value2",
-        },
-        power_type: PowerTypeNames.MANUAL,
-        system_id: "abc123",
+    }),
+    machine: machineStateFactory({
+      items: [
+        machineDetailsFactory({
+          permissions: ["edit"],
+          power_type: PowerTypeNames.AMT,
+          system_id: "abc123",
+        }),
+      ],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PowerForm systemId="abc123" />
-      </Provider>
-    );
-
-    expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
-      powerType: PowerTypeNames.MANUAL,
-      powerParameters: { field1: "value1", field2: "value2" },
-    });
+    }),
   });
+});
 
-  it("resets the form fields when editing is cancelled", async () => {
-    state.general.powerTypes.data = [
-      powerTypeFactory({
-        fields: [powerFieldFactory({ name: "field1" })],
-        name: PowerTypeNames.MANUAL,
-      }),
-      powerTypeFactory({
-        fields: [powerFieldFactory({ default: "value2", name: "field2" })],
-        name: PowerTypeNames.LXD,
-      }),
-    ];
-    state.machine.items = [
-      machineDetailsFactory({
-        pod: undefined, // Unset pod so power type select is enabled
-        power_parameters: {
-          field1: "value1",
-        },
-        power_type: PowerTypeNames.MANUAL,
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PowerForm systemId="abc123" />
-      </Provider>
-    );
+it("is not editable if machine does not have edit permission", () => {
+  state.machine.items[0].permissions = [];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <PowerForm systemId="abc123" />
+    </Provider>
+  );
 
-    // Check that the power type and field are initialised correctly.
-    expect(wrapper.find("select[name='powerType']").prop("value")).toBe(
-      PowerTypeNames.MANUAL
-    );
-    expect(
-      wrapper.find("input[name='powerParameters.field1']").prop("value")
-    ).toBe("value1");
-    expect(wrapper.find("input[name='powerParameters.field2']").exists()).toBe(
-      false
-    );
+  expect(
+    screen.queryByRole("button", { name: Labels.Edit })
+  ).not.toBeInTheDocument();
+});
 
-    // Get into editing state and change the power type
-    await act(async () => {
-      wrapper.find("button[data-testid='edit-power-config']").simulate("click");
-      wrapper.find("select[name='powerType']").simulate("change", {
-        target: { name: "powerType", value: PowerTypeNames.LXD },
-      });
-    });
-    wrapper.update();
+it("is editable if machine has edit permission", () => {
+  state.machine.items[0].permissions = ["edit"];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <PowerForm systemId="abc123" />
+    </Provider>
+  );
 
-    // Check that power type and field have changed.
-    expect(wrapper.find("select[name='powerType']").prop("value")).toBe(
-      PowerTypeNames.LXD
-    );
-    expect(wrapper.find("input[name='powerParameters.field1']").exists()).toBe(
-      false
-    );
-    expect(
-      wrapper.find("input[name='powerParameters.field2']").prop("value")
-    ).toBe("value2");
+  expect(screen.getAllByRole("button", { name: Labels.Edit }).length).not.toBe(
+    0
+  );
+});
 
-    // Click the "Cancel" button
-    await act(async () => {
-      wrapper.find("button[data-testid='cancel-action']").simulate("click");
-    });
-    wrapper.update();
-
-    // Check that the power type and field are reverted to initial values.
-    expect(wrapper.find("select[name='powerType']").prop("value")).toBe(
-      PowerTypeNames.MANUAL
-    );
-    expect(
-      wrapper.find("input[name='powerParameters.field1']").prop("value")
-    ).toBe("value1");
-    expect(wrapper.find("input[name='powerParameters.field2']").exists()).toBe(
-      false
-    );
+it("correctly dispatches an action to update a machine's power", async () => {
+  const machine = machineDetailsFactory({
+    permissions: ["edit"],
+    power_type: PowerTypeNames.AMT,
+    system_id: "abc123",
   });
+  state.machine.items = [machine];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <PowerForm systemId="abc123" />
+    </Provider>
+  );
 
-  it("dispatches cleanup action on cancel", () => {
-    state.machine.items[0].permissions = ["edit"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PowerForm systemId="abc123" />
-      </Provider>
-    );
-
-    // Get into editing state and then cancel editing.
-    act(() => {
-      wrapper.find("button[data-testid='edit-power-config']").simulate("click");
-    });
-    wrapper.update();
-    act(() => {
-      wrapper.find("button[data-testid='cancel-action']").simulate("click");
-    });
-    wrapper.update();
-
-    // Check that the cleanup action was dispatched.
-    expect(
-      store.getActions().some((action) => action.type === "machine/cleanup")
-    );
+  userEvent.click(screen.getAllByRole("button", { name: Labels.Edit })[0]);
+  fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
+    target: { value: PowerTypeNames.APC },
   });
-
-  it("correctly dispatches an action to update a machine's power", () => {
-    const machine = machineDetailsFactory({
-      permissions: ["edit"],
-      system_id: "abc123",
-    });
-    state.machine.items = [machine];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PowerForm systemId="abc123" />
-      </Provider>
-    );
-
-    submitFormikForm(wrapper, {
-      powerParameters: {},
-      powerType: "manual",
-    });
-
+  await waitFor(() => {
     expect(
-      store.getActions().find((action) => action.type === "machine/update")
-    ).toStrictEqual({
-      meta: {
-        method: "update",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          extra_macs: machine.extra_macs,
-          power_parameters: {},
-          power_type: "manual",
-          pxe_mac: machine.pxe_mac,
-          system_id: machine.system_id,
-        },
-      },
-      type: "machine/update",
-    });
+      screen.getByRole("textbox", { name: "APC field" })
+    ).toBeInTheDocument();
+  });
+  userEvent.clear(screen.getByRole("textbox", { name: "APC field" }));
+  userEvent.type(screen.getByRole("textbox", { name: "APC field" }), "abcde");
+  userEvent.click(screen.getByRole("button", { name: "Save changes" }));
+
+  const expectedAction = machineActions.update({
+    extra_macs: machine.extra_macs,
+    power_parameters: {
+      "apc-field": "abcde",
+    },
+    power_type: PowerTypeNames.APC,
+    pxe_mac: machine.pxe_mac,
+    system_id: machine.system_id,
+  });
+  const actualActions = store.getActions();
+  await waitFor(() => {
+    expect(
+      actualActions.find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 });

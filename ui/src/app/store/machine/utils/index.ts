@@ -1,4 +1,8 @@
-export { isMachineDetails, getTagCountsForMachines } from "./common";
+export {
+  isMachineDetails,
+  getMachineFieldScopes,
+  getTagCountsForMachines,
+} from "./common";
 export type { TagIdCountMap } from "./common";
 
 export {
