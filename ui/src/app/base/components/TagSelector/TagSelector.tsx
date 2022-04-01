@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect, useRef, useState } from "react";
 
-import { Button, Input } from "@canonical/react-components";
+import { Button, Input, useId } from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
 import classNames from "classnames";
 
@@ -20,6 +20,7 @@ export type Props = {
   help?: string;
   initialSelected?: Tag[];
   label?: string | null;
+  onAddNewTag?: (name: string) => void;
   onTagsUpdate?: (tags: Tag[]) => void;
   placeholder?: string;
   required?: boolean;
@@ -58,6 +59,8 @@ const sanitiseFilter = (filterText: string) => ({
 
 const generateDropdownItems = ({
   allowNewTags,
+  onAddNewTag,
+  setFilter,
   filter,
   selectedTags,
   tags,
@@ -65,6 +68,8 @@ const generateDropdownItems = ({
   generateDropdownEntry,
 }: {
   allowNewTags: Props["allowNewTags"];
+  onAddNewTag: Props["onAddNewTag"];
+  setFilter: (filter: string) => void;
   filter: string;
   selectedTags: Tag[];
   tags: Tag[];
@@ -87,7 +92,13 @@ const generateDropdownItems = ({
           className="tag-selector__dropdown-button u-break-word"
           data-testid="new-tag"
           onClick={() => {
-            updateTags([...selectedTags, sanitiseFilter(filter)]);
+            const cleanedFilter = sanitiseFilter(filter);
+            if (onAddNewTag) {
+              onAddNewTag(cleanedFilter.name);
+              setFilter("");
+            } else {
+              updateTags([...selectedTags, cleanedFilter]);
+            }
           }}
           type="button"
         >
@@ -180,6 +191,7 @@ export const TagSelector = ({
   help,
   initialSelected = [],
   label,
+  onAddNewTag,
   onTagsUpdate,
   placeholder = "Tags",
   required = false,
@@ -190,7 +202,7 @@ export const TagSelector = ({
   ...props
 }: Props): JSX.Element => {
   const wrapperRef = useRef<HTMLSpanElement | null>(null);
-
+  const inputId = useId();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [internalSelectedTags, setInternalSelectedTags] =
     useState(initialSelected);
@@ -232,6 +244,8 @@ export const TagSelector = ({
 
   const dropdownItems = generateDropdownItems({
     allowNewTags,
+    onAddNewTag,
+    setFilter,
     filter,
     selectedTags,
     tags,
@@ -242,6 +256,7 @@ export const TagSelector = ({
   return (
     <Field
       error={error}
+      forId={inputId}
       help={help}
       label={
         label ? (
@@ -263,13 +278,20 @@ export const TagSelector = ({
             "tags-selected": hasSelectedTags,
           })}
           disabled={disabled}
+          id={inputId}
           onChange={(e) => setFilter(e.target.value)}
           onFocus={() => setDropdownOpen(true)}
           onKeyPress={(e) => {
             if (e.key === "Enter") {
               e.preventDefault();
               if (allowNewTags) {
-                updateTags([...selectedTags, sanitiseFilter(filter)]);
+                const cleanedFilter = sanitiseFilter(filter);
+                if (onAddNewTag) {
+                  onAddNewTag(cleanedFilter.name);
+                  setFilter("");
+                } else {
+                  updateTags([...selectedTags, cleanedFilter]);
+                }
               }
             }
           }}

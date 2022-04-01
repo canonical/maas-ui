@@ -16,4 +16,10 @@
       @include breakpoint-widths(20%, 20%, 20%, 20%, 20%);
     }
   }
+
+  @media (min-width: $breakpoint-large) {
+    .tag-form__modal .p-modal__dialog {
+      width: 50%;
+    }
+  }
 }

@@ -83,3 +83,60 @@ it("displays a deployed machines message when updating a tag", async () => {
     ).toBeInTheDocument();
   });
 });
+
+it("displays a deployed machines message when passed machines", async () => {
+  const machines = [
+    machineFactory({
+      status: NodeStatus.DEPLOYED,
+      tags: [1],
+    }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <KernelOptionsField deployedMachines={machines} />
+        </Formik>
+      </MemoryRouter>
+    </Provider>
+  );
+  userEvent.type(
+    screen.getByRole("textbox", { name: Label.KernelOptions }),
+    "options2"
+  );
+  await waitFor(() => {
+    expect(
+      screen.getByText(/The new kernel options will not be applied/i)
+    ).toBeInTheDocument();
+  });
+});
+
+it("can display a provided deployed machines message", async () => {
+  const machines = [
+    machineFactory({
+      status: NodeStatus.DEPLOYED,
+      tags: [1],
+    }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <KernelOptionsField
+            deployedMachines={machines}
+            generateDeployedMessage={(count) => `${count} deployed machine`}
+          />
+        </Formik>
+      </MemoryRouter>
+    </Provider>
+  );
+  userEvent.type(
+    screen.getByRole("textbox", { name: Label.KernelOptions }),
+    "options2"
+  );
+  await waitFor(() => {
+    expect(screen.getByText(/1 deployed machine/i)).toBeInTheDocument();
+  });
+});

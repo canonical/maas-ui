@@ -157,6 +157,28 @@ describe("TagSelector", () => {
     ).toBe("new-tag");
   });
 
+  it("can call a provide function to create a new tag", () => {
+    const onAddNewTag = jest.fn();
+    const component = shallow(
+      <TagSelector
+        allowNewTags
+        onAddNewTag={onAddNewTag}
+        label="Tags"
+        placeholder="Select or create tags"
+        onTagsUpdate={jest.fn()}
+        tags={tags}
+      />
+    );
+    component.find(".tag-selector__input").simulate("focus");
+    component
+      .find(".tag-selector__input")
+      .simulate("change", { target: { value: "new-tag" } });
+    component.find('[data-testid="new-tag"]').simulate("click");
+    expect(onAddNewTag).toHaveBeenCalledWith("new-tag");
+    // The input should get cleared.
+    expect(component.find(".tag-selector__input").prop("value")).toBe("");
+  });
+
   it("sanitises text when creating new tag", () => {
     const component = shallow(
       <TagSelector
