@@ -211,7 +211,7 @@ export const DeployFormFields = (): JSX.Element => {
                     </Button>
                   </Tooltip>
                   {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
-                  <a href="#">Hardware sync docs</a>
+                  <a href="#todo">Hardware sync docs</a>
                 </>
               }
               help="Hardware sync interval: 6 hours - Admins can change this in the global settings."
