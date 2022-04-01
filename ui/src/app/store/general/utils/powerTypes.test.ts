@@ -1,6 +1,8 @@
 import {
   formatPowerParameters,
   generatePowerParametersSchema,
+  getFieldsInScope,
+  getPowerTypeFromName,
 } from "./powerTypes";
 
 import { PowerFieldScope } from "app/store/general/types";
@@ -124,6 +126,30 @@ describe("powerTypes utils", () => {
       ]);
       expect("power_address" in schema).toBe(true);
       expect("power_pass" in schema).toBe(false);
+    });
+  });
+
+  describe("getFieldsInScope", () => {
+    it("can get a list of power fields that are in the given field scopes", () => {
+      const fields = [
+        powerFieldFactory({ scope: PowerFieldScope.BMC }),
+        powerFieldFactory({ scope: PowerFieldScope.NODE }),
+      ];
+      const powerType = powerTypeFactory({ fields });
+
+      expect(getFieldsInScope(powerType, [PowerFieldScope.BMC])).toStrictEqual([
+        fields[0],
+      ]);
+      expect(getFieldsInScope(null, [PowerFieldScope.BMC])).toStrictEqual([]);
+    });
+  });
+
+  describe("getPowerTypeFromName", () => {
+    it("can get a power type from its name", () => {
+      const powerTypes = [powerTypeFactory({ name: "manual" })];
+
+      expect(getPowerTypeFromName(powerTypes, "manual")).toBe(powerTypes[0]);
+      expect(getPowerTypeFromName(powerTypes, "other")).toBe(null);
     });
   });
 });

@@ -1,8 +1,14 @@
-import { getTagCountsForMachines, isMachineDetails } from "./common";
+import {
+  getMachineFieldScopes,
+  getTagCountsForMachines,
+  isMachineDetails,
+} from "./common";
 
+import { PowerFieldScope } from "app/store/general/types";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
+  modelRef as modelRefFactory,
 } from "testing/factories";
 
 describe("common machine utils", () => {
@@ -38,6 +44,25 @@ describe("common machine utils", () => {
           [4, 1],
         ])
       );
+    });
+  });
+
+  describe("getMachineFieldScopes", () => {
+    it("gets the field scopes for a machine in a pod", () => {
+      const machine = machineFactory({ pod: modelRefFactory() });
+
+      expect(getMachineFieldScopes(machine)).toStrictEqual([
+        PowerFieldScope.NODE,
+      ]);
+    });
+
+    it("gets the field scopes for a machine not in a pod", () => {
+      const machine = machineFactory({ pod: undefined });
+
+      expect(getMachineFieldScopes(machine)).toStrictEqual([
+        PowerFieldScope.BMC,
+        PowerFieldScope.NODE,
+      ]);
     });
   });
 });

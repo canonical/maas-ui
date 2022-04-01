@@ -16,6 +16,10 @@ import { actions as generalActions } from "app/store/general";
 import { PowerTypeNames } from "app/store/general/constants";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
+import {
+  getFieldsInScope,
+  getPowerTypeFromName,
+} from "app/store/general/utils";
 
 type Props = {
   customFieldProps?: {
@@ -70,9 +74,7 @@ export const PowerTypeFields = <V extends AnyObject>({
   if (!powerTypesLoaded) {
     fieldContent = <Spinner text="Loading..." />;
   } else if (selectedPowerType) {
-    const fieldsInScope = selectedPowerType.fields.filter((field) =>
-      fieldScopes.includes(field.scope)
-    );
+    const fieldsInScope = getFieldsInScope(selectedPowerType, fieldScopes);
     switch (selectedPowerType.name) {
       case PowerTypeNames.IPMI:
         fieldContent = (
@@ -128,9 +130,7 @@ export const PowerTypeFields = <V extends AnyObject>({
             setErrors(initialErrors);
             setTouched(initialTouched);
 
-            const powerType = powerTypes.find(
-              (type) => type.name === e.target.value
-            );
+            const powerType = getPowerTypeFromName(powerTypes, e.target.value);
             // Explicitly set the fields of the selected power type to defaults.
             // This is necessary because some field names are shared across
             // power types (e.g. "power_address"), meaning the value would otherwise

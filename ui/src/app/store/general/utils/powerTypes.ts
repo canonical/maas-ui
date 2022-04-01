@@ -1,7 +1,7 @@
 import * as Yup from "yup";
 import type { ObjectShape } from "yup/lib/object";
 
-import type { PowerType } from "app/store/general/types";
+import type { PowerField, PowerType } from "app/store/general/types";
 import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
 import type { PowerParameters } from "app/store/types/node";
 
@@ -74,3 +74,26 @@ export const generatePowerParametersSchema = (
     }
     return schema;
   }, {}) || {};
+
+/**
+ * Get a list of power fields that are included in the given field scopes.
+ * @param powerType - Power type whose fields to check.
+ * @param fieldScopes - The scopes of the fields to be included.
+ * @returns List of power fields included in given field scopes.
+ */
+export const getFieldsInScope = (
+  powerType: PowerType | null,
+  fieldScopes: PowerFieldScope[]
+): PowerField[] =>
+  powerType?.fields.filter((field) => fieldScopes.includes(field.scope)) || [];
+
+/**
+ * Get a power type from its name.
+ * @param powerTypes - List of power types to check.
+ * @param name - Name of the power type to find.
+ * @returns Power type that matches given name.
+ */
+export const getPowerTypeFromName = (
+  powerTypes: PowerType[],
+  name: string
+): PowerType | null => powerTypes.find((type) => type.name === name) || null;
