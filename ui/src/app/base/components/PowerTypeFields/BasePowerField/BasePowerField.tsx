@@ -8,13 +8,11 @@ import type { PowerField } from "app/store/general/types";
 import type { PowerParameters } from "app/store/types/node";
 
 type Props = {
-  disabled?: boolean;
   field: PowerField;
   powerParametersValueName?: string;
 };
 
 export const BasePowerField = <V extends AnyObject>({
-  disabled = false,
   field,
   powerParametersValueName = "power_parameters",
 }: Props): JSX.Element => {
@@ -38,7 +36,6 @@ export const BasePowerField = <V extends AnyObject>({
             <Input
               checked={checked}
               data-testid="multi-choice-checkbox"
-              disabled={disabled}
               id={id}
               key={id}
               label={label}
@@ -59,7 +56,6 @@ export const BasePowerField = <V extends AnyObject>({
   return (
     <FormikField
       component={field_type === PowerFieldType.CHOICE ? Select : Input}
-      disabled={disabled}
       key={fieldName}
       label={label}
       name={fieldName}

@@ -2,7 +2,6 @@ import type { Machine, MachineStatus } from "./base";
 import type { MachineMeta } from "./enum";
 
 import type { Domain } from "app/store/domain/types";
-import type { PowerType } from "app/store/general/types";
 import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Script } from "app/store/script/types";
@@ -127,7 +126,7 @@ export type CreateParams = {
   osystem?: Machine["osystem"];
   pool?: { name: ResourcePool["name"] };
   power_parameters: PowerParameters;
-  power_type: PowerType["name"];
+  power_type: Machine["power_type"];
   pxe_mac: Machine["pxe_mac"];
   swap_size?: string;
   zone?: { name: Zone["name"] };

@@ -98,6 +98,25 @@ it("is editable if machine has edit permission", () => {
   );
 });
 
+it("renders read-only text fields until edit button is pressed", () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <PowerForm systemId="abc123" />
+    </Provider>
+  );
+
+  expect(
+    screen.queryByRole("combobox", { name: "Power type" })
+  ).not.toBeInTheDocument();
+
+  userEvent.click(screen.getAllByRole("button", { name: Labels.Edit })[0]);
+
+  expect(
+    screen.getByRole("combobox", { name: "Power type" })
+  ).toBeInTheDocument();
+});
+
 it("correctly dispatches an action to update a machine's power", async () => {
   const machine = machineDetailsFactory({
     permissions: ["edit"],

@@ -11,7 +11,6 @@ import type { PowerField as PowerFieldType } from "app/store/general/types";
 import type { PowerParameters } from "app/store/types/node";
 
 type Props = {
-  disabled?: boolean;
   fields: PowerFieldType[];
   powerParametersValueName?: string;
 };
@@ -21,7 +20,6 @@ export const WORKAROUNDS_FIELD_NAME = "workaround_flags";
 export const NONE_WORKAROUND_VALUE = "";
 
 export const IPMIPowerFields = <V extends AnyObject>({
-  disabled = false,
   fields,
   powerParametersValueName = "power_parameters",
 }: Props): JSX.Element | null => {
@@ -67,7 +65,6 @@ export const IPMIPowerFields = <V extends AnyObject>({
                   return (
                     <Input
                       checked={checked}
-                      disabled={disabled}
                       id={id}
                       key={id}
                       label={label}
@@ -92,7 +89,6 @@ export const IPMIPowerFields = <V extends AnyObject>({
         } else {
           content.push(
             <BasePowerField
-              disabled={disabled}
               field={field}
               key={field.name}
               powerParametersValueName={powerParametersValueName}
