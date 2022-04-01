@@ -429,9 +429,6 @@ describe("DeployFormFields", () => {
   });
 
   it("displays 'periodically sync hardware' checkbox", async () => {
-    if (state.general.osInfo.data) {
-      state.general.osInfo.data.default_release = "bionic";
-    }
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
