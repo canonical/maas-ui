@@ -10,6 +10,7 @@ import {
   Row,
   Select,
   Tooltip,
+  useId,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
@@ -34,6 +35,8 @@ export const DeployFormFields = (): JSX.Element => {
   const [userDataVisible, setUserDataVisible] = useState(false);
   const formikProps = useFormikContext<DeployFormValues>();
   const { handleChange, setFieldValue, values } = formikProps;
+  const deployVmHostHelpText = useId();
+  const enableHwSyncHelpText = useId();
 
   const user = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
@@ -126,6 +129,9 @@ export const DeployFormFields = (): JSX.Element => {
           </Col>
           <Col size={9}>
             <Input
+              // TODO: use an Input help text prop instead once the bug below is resolved
+              // https://github.com/canonical-web-and-design/react-components/issues/748
+              aria-describedby={deployVmHostHelpText}
               checked={deployVmHost}
               disabled={!canBeKVMHost || noImages}
               id="deployVmHost"
@@ -146,7 +152,11 @@ export const DeployFormFields = (): JSX.Element => {
               }}
               type="checkbox"
             />
-            <p className="p-form-help-text" style={{ paddingLeft: "2rem" }}>
+            <p
+              id={deployVmHostHelpText}
+              className="p-form-help-text"
+              style={{ paddingLeft: "2rem" }}
+            >
               Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially
               supported.
             </p>
@@ -192,6 +202,9 @@ export const DeployFormFields = (): JSX.Element => {
               disabled
               type="checkbox"
               name="enable_hw_sync"
+              // TODO: use an Input help text prop instead once the bug below is resolved
+              // https://github.com/canonical-web-and-design/react-components/issues/748
+              aria-describedby={enableHwSyncHelpText}
               label={
                 <>
                   Periodically sync hardware{" "}
@@ -205,18 +218,26 @@ export const DeployFormFields = (): JSX.Element => {
                       type="button"
                       appearance="base"
                       aria-label="more about periodically sync hardware"
-                      className="u-no-margin--bottom"
+                      className="u-no-margin--bottom u-no-padding"
                     >
                       <Icon name="information" />
                     </Button>
                   </Tooltip>
-                  {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
+                  {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}{" "}
                   <a href="#todo">Hardware sync docs</a>
                 </>
               }
-              // TODO: use real sync interval https://github.com/canonical-web-and-design/app-tribe/issues/780
-              help="Hardware sync interval: 6 hours - Admins can change this in the global settings."
             />
+            {/* TODO: use real sync interval
+                https://github.com/canonical-web-and-design/app-tribe/issues/780 */}
+            <p
+              id={enableHwSyncHelpText}
+              className="p-form-help-text"
+              style={{ paddingLeft: "2rem" }}
+            >
+              Hardware sync interval: 6 hours - Admins can change this in the
+              global settings.
+            </p>
             {userDataVisible && (
               <UploadTextArea
                 label="Upload script"
