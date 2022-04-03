@@ -17,7 +17,7 @@ import KernelOptionsField from "app/tags/components/KernelOptionsField";
 type Props = {
   machines: Machine[];
   name: string | null;
-  onClose: (tag: Tag | null) => void;
+  onTagCreated: (tag: Tag) => void;
 };
 
 export enum Label {
@@ -32,7 +32,11 @@ const AddTagFormSchema = Yup.object().shape({
   name: Yup.string().required("Name is required."),
 });
 
-export const AddTagForm = ({ machines, name, onClose }: Props): JSX.Element => {
+export const AddTagForm = ({
+  machines,
+  name,
+  onTagCreated,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);
   const saved = useSelector(tagSelectors.saved);
@@ -46,9 +50,9 @@ export const AddTagForm = ({ machines, name, onClose }: Props): JSX.Element => {
 
   useEffect(() => {
     if (tag) {
-      onClose(tag);
+      onTagCreated(tag);
     }
-  }, [onClose, tag]);
+  }, [onTagCreated, tag]);
 
   return (
     <FormikForm<CreateParams>

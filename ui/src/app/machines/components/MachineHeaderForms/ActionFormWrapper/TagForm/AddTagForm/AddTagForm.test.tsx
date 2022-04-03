@@ -39,7 +39,7 @@ it("dispatches an action to create a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <AddTagForm machines={[]} name="new-tag" onClose={jest.fn()} />
+        <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />
       </MemoryRouter>
     </Provider>
   );
@@ -65,7 +65,7 @@ it("dispatches an action to create a tag", async () => {
 });
 
 it("returns the newly created tag on save", async () => {
-  const onClose = jest.fn();
+  const onTagCreated = jest.fn();
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -74,7 +74,11 @@ it("returns the newly created tag on save", async () => {
           exact
           path={tagsURLs.tags.index}
           component={() => (
-            <AddTagForm machines={[]} name="new-tag" onClose={onClose} />
+            <AddTagForm
+              machines={[]}
+              name="new-tag"
+              onTagCreated={onTagCreated}
+            />
           )}
         />
       </MemoryRouter>
@@ -93,5 +97,5 @@ it("returns the newly created tag on save", async () => {
     saved: true,
   });
   fireEvent.submit(screen.getByRole("form"));
-  await waitFor(() => expect(onClose).toHaveBeenCalledWith(newTag));
+  await waitFor(() => expect(onTagCreated).toHaveBeenCalledWith(newTag));
 });

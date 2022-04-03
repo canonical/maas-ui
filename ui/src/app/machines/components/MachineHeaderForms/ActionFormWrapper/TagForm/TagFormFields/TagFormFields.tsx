@@ -90,13 +90,8 @@ export const TagFormFields = ({ machines }: Props): JSX.Element => {
             <AddTagForm
               machines={machines}
               name={newTagName}
-              onClose={(tag) => {
-                if (tag) {
-                  setFieldValue(
-                    "tags",
-                    values.tags.concat([tag.id.toString()])
-                  );
-                }
+              onTagCreated={(tag) => {
+                setFieldValue("tags", values.tags.concat([tag.id.toString()]));
                 setNewTagName(null);
                 closePortal(NULL_EVENT);
               }}
