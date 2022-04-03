@@ -27,6 +27,7 @@ type Props = {
 };
 
 export enum Label {
+  Table = "Tag changes",
   Added = "To be added",
   Automatic = "Automatic tags",
   Manual = "Currently assigned",
@@ -150,6 +151,7 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
   return (
     <>
       <ModularTable
+        aria-label={Label.Table}
         className="tag-form__changes"
         columns={columns}
         data={[
@@ -218,7 +220,11 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
       />
       {isOpen && tagDetails ? (
         <Portal>
-          <Modal close={() => toggleTagDetails(null)} title={tagDetails.name}>
+          <Modal
+            className="tag-form__modal"
+            close={() => toggleTagDetails(null)}
+            title={tagDetails.name}
+          >
             <TagDetails id={tagDetails.id} narrow />
           </Modal>
         </Portal>

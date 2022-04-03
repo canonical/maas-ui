@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import machineSelectors from "app/store/machine/selectors";
+import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type {
@@ -19,24 +20,34 @@ export enum Label {
 }
 
 type Props = {
+  deployedMachines?: Machine[];
+  generateDeployedMessage?: (count: number) => string;
   id?: Tag[TagMeta.PK];
 };
 
-const generateDeployedMessage = (count: number) =>
+const generateDeployedMessageForExisting = (count: number) =>
   count === 1
     ? `There is ${count} deployed machine with this tag. The new kernel options will not be applied to this machine until it is redeployed.`
     : `There are ${count} deployed machines with this tag. The new kernel options will not be applied to these machines until they are redeployed.`;
 
-export const KernelOptionsField = ({ id }: Props): JSX.Element => {
+export const KernelOptionsField = ({
+  deployedMachines: suppliedDeployedMachines,
+  generateDeployedMessage = generateDeployedMessageForExisting,
+  id,
+}: Props): JSX.Element => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
-  const deployedMachines = useSelector((state: RootState) =>
+  const deployedMachinesForTag = useSelector((state: RootState) =>
     machineSelectors.getDeployedWithTag(state, id)
   );
+  const deployedMachines = suppliedDeployedMachines ?? deployedMachinesForTag;
   const { values } = useFormikContext<CreateParams | UpdateParams>();
   const deployedCount = deployedMachines.length;
-  const hasChangedOptions = isId(id) && values.kernel_opts !== tag?.kernel_opts;
+  const changedExistingOptions =
+    isId(id) && values.kernel_opts !== tag?.kernel_opts;
+  const setNewOptions = !isId(id) && values.kernel_opts;
+  const hasChangedOptions = changedExistingOptions || setNewOptions;
 
   return (
     <FormikField
