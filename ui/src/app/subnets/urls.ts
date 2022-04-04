@@ -7,9 +7,11 @@ import { argPath, isId } from "app/utils";
 
 const urls = {
   index: "/networks",
-  indexWithParams: (
-    { by, q }: SubnetsUrlParams = { by: "fabric", q: "" }
-  ): string => `/networks?by=${by}&q=${q}`,
+  indexWithParams: (options: SubnetsUrlParams): string => {
+    const defaults = { by: "fabric", q: "" };
+    const { by, q } = { ...defaults, ...options };
+    return `/networks?by=${by}&q=${q}`;
+  },
   fabric: {
     index: argPath<{ id: Fabric[FabricMeta.PK] }>("/fabric/:id"),
   },
