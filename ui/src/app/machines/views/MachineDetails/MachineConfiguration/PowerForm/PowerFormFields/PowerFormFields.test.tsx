@@ -32,107 +32,6 @@ describe("PowerFormFields", () => {
     });
   });
 
-  it("shows an error if no rack controller is connected", () => {
-    state.general.powerTypes.data = [];
-    const machine = machineDetailsFactory({ system_id: "abc123" });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            powerParameters: {},
-            powerType: "power-type",
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerFormFields editing={false} machine={machine} />
-        </Formik>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-testid='no-rack-controller']").exists()).toBe(
-      true
-    );
-  });
-
-  it("shows an error if a power type has not been set", () => {
-    const machine = machineDetailsFactory({ system_id: "abc123" });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            powerParameters: {},
-            powerType: "",
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerFormFields editing={false} machine={machine} />
-        </Formik>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-testid='no-power-type']").exists()).toBe(true);
-  });
-
-  it("shows a warning if the power type is set to manual", () => {
-    const machine = machineDetailsFactory({ system_id: "abc123" });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            powerParameters: {},
-            powerType: "manual",
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerFormFields editing={false} machine={machine} />
-        </Formik>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-testid='manual-power-type']").exists()).toBe(
-      true
-    );
-  });
-
-  it("shows an error if editing and the selected power type is missing packages", () => {
-    state.general.powerTypes.data = [
-      powerTypeFactory({
-        description: "the Infinity gauntlet",
-        missing_packages: ["green-infinity-stone", "red-infinity-stone"],
-        name: "ultimate-power",
-      }),
-    ];
-    const machine = machineDetailsFactory({ system_id: "abc123" });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            powerParameters: {},
-            powerType: "ultimate-power",
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerFormFields editing machine={machine} />
-        </Formik>
-      </Provider>
-    );
-
-    expect(wrapper.find("[data-testid='missing-packages']").exists()).toBe(
-      true
-    );
-    expect(
-      wrapper
-        .find("[data-testid='missing-packages'] .p-notification__message")
-        .text()
-    ).toBe(
-      "Power control software for the Infinity gauntlet is missing from the rack controller. To proceed, install the following packages on the rack controller: green-infinity-stone, red-infinity-stone"
-    );
-  });
-
   it("disables the power select and limits field scopes to node if machine is in a pod", () => {
     state.general.powerTypes.data = [
       powerTypeFactory({
@@ -146,7 +45,7 @@ describe("PowerFormFields", () => {
             scope: PowerFieldScope.BMC,
           }),
         ],
-        name: "power-type",
+        name: "manual",
       }),
     ];
     const machine = machineDetailsFactory({
@@ -155,7 +54,7 @@ describe("PowerFormFields", () => {
         name: "pod",
       },
       power_bmc_node_count: 1,
-      power_type: "power-type",
+      power_type: "manual",
       system_id: "abc123",
     });
     const store = mockStore(state);
@@ -164,11 +63,11 @@ describe("PowerFormFields", () => {
         <Formik
           initialValues={{
             powerParameters: {},
-            powerType: "power-type",
+            powerType: "manual",
           }}
           onSubmit={jest.fn()}
         >
-          <PowerFormFields editing machine={machine} />
+          <PowerFormFields machine={machine} />
         </Formik>
       </Provider>
     );

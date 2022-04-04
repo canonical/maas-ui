@@ -25,7 +25,6 @@ type Props = {
   customFieldProps?: {
     [PowerTypeNames.LXD]?: Partial<LXDPowerFieldsProps>;
   };
-  disableFields?: boolean;
   disableSelect?: boolean;
   forChassis?: boolean;
   powerParametersValueName?: string;
@@ -36,7 +35,6 @@ type Props = {
 
 export const PowerTypeFields = <V extends AnyObject>({
   customFieldProps,
-  disableFields = false,
   disableSelect = false,
   forChassis = false,
   powerParametersValueName = "power_parameters",
@@ -79,7 +77,6 @@ export const PowerTypeFields = <V extends AnyObject>({
       case PowerTypeNames.IPMI:
         fieldContent = (
           <IPMIPowerFields
-            disabled={disableFields}
             fields={fieldsInScope}
             powerParametersValueName={powerParametersValueName}
           />
@@ -88,7 +85,6 @@ export const PowerTypeFields = <V extends AnyObject>({
       case PowerTypeNames.LXD:
         fieldContent = (
           <LXDPowerFields
-            disabled={disableFields}
             fields={fieldsInScope}
             powerParametersValueName={powerParametersValueName}
             {...(customFieldProps?.lxd || {})}
@@ -98,7 +94,6 @@ export const PowerTypeFields = <V extends AnyObject>({
       default:
         fieldContent = fieldsInScope.map((field) => (
           <BasePowerField
-            disabled={disableFields}
             field={field}
             key={field.name}
             powerParametersValueName={powerParametersValueName}

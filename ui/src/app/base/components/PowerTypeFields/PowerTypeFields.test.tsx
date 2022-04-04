@@ -256,34 +256,6 @@ describe("PowerTypeFields", () => {
     );
   });
 
-  it("can disable the power type fields", () => {
-    const powerTypes = [
-      powerTypeFactory({
-        fields: [powerFieldFactory({ name: "parameter1" })],
-        name: PowerTypeNames.MANUAL,
-      }),
-    ];
-    state.general.powerTypes.data = powerTypes;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            power_parameters: {},
-            power_type: PowerTypeNames.MANUAL,
-          }}
-          onSubmit={jest.fn()}
-        >
-          <PowerTypeFields disableFields />
-        </Formik>
-      </Provider>
-    );
-
-    expect(
-      wrapper.find("input[name='power_parameters.parameter1']").prop("disabled")
-    ).toBe(true);
-  });
-
   it("resets the fields of the selected power type on change", async () => {
     // Mock two power types that share a power parameter "parameter1"
     const powerTypes = [
@@ -317,7 +289,7 @@ describe("PowerTypeFields", () => {
           }}
           onSubmit={jest.fn()}
         >
-          <PowerTypeFields disableFields />
+          <PowerTypeFields />
         </Formik>
       </Provider>
     );
@@ -365,13 +337,15 @@ describe("PowerTypeFields", () => {
           onSubmit={jest.fn()}
         >
           <PowerTypeFields
-            customFieldProps={{ lxd: { forConfiguration: true } }}
+            customFieldProps={{ lxd: { initialShouldGenerateCert: false } }}
           />
         </Formik>
       </Provider>
     );
 
     expect(wrapper.find(LXDPowerFields).exists()).toBe(true);
-    expect(wrapper.find(LXDPowerFields).prop("forConfiguration")).toBe(true);
+    expect(wrapper.find(LXDPowerFields).prop("initialShouldGenerateCert")).toBe(
+      false
+    );
   });
 });

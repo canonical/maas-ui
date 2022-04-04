@@ -49,7 +49,7 @@ export type BaseMachine = BaseNode & {
   pod?: ModelRef;
   pool: ModelRef;
   power_state: PowerState;
-  power_type: PowerType["name"];
+  power_type: PowerType["name"] | "";
   pxe_mac_vendor?: string;
   pxe_mac?: string;
   spaces: string[];

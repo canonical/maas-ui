@@ -8,16 +8,6 @@ import { powerField as powerFieldFactory } from "testing/factories";
 import { waitForComponentToPaint } from "testing/utils";
 
 describe("BasePowerField", () => {
-  it("can be disabled", () => {
-    const field = powerFieldFactory();
-    const wrapper = mount(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
-        <BasePowerField disabled field={field} />
-      </Formik>
-    );
-    expect(wrapper.find("input").prop("disabled")).toBe(true);
-  });
-
   it("can be given a custom power parameters name", () => {
     const field = powerFieldFactory({ name: "field-name" });
     const wrapper = mount(

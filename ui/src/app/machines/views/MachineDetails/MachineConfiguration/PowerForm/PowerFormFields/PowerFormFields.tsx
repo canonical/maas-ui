@@ -1,67 +1,31 @@
-import { Col, Notification, Row } from "@canonical/react-components";
-import { useFormikContext } from "formik";
-import { useSelector } from "react-redux";
+import { Col, Row } from "@canonical/react-components";
 
 import type { PowerFormValues } from "../PowerForm";
 
 import PowerTypeFields from "app/base/components/PowerTypeFields";
-import { useIsRackControllerConnected } from "app/base/hooks";
 import { PowerTypeNames } from "app/store/general/constants";
-import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
-import { getPowerTypeFromName } from "app/store/general/utils";
 import type { MachineDetails } from "app/store/machine/types";
 import { getMachineFieldScopes } from "app/store/machine/utils";
 
 type Props = {
-  editing: boolean;
   machine: MachineDetails;
 };
 
-const PowerFormFields = ({ editing, machine }: Props): JSX.Element => {
-  const powerTypes = useSelector(powerTypesSelectors.get);
-  const { values } = useFormikContext<PowerFormValues>();
-  const isRackControllerConnected = useIsRackControllerConnected();
-  const powerType = getPowerTypeFromName(powerTypes, values.powerType);
-  const machineInPod = Boolean(machine.pod);
+const PowerFormFields = ({ machine }: Props): JSX.Element => {
+  const isMachineInPod = Boolean(machine.pod);
   const fieldScopes = getMachineFieldScopes(machine);
 
   return (
     <Row>
       <Col size={6}>
-        {!isRackControllerConnected && (
-          <Notification data-testid="no-rack-controller" severity="negative">
-            Power configuration is currently disabled because no rack controller
-            is currently connected to the region.
-          </Notification>
-        )}
-        {isRackControllerConnected && !values.powerType && (
-          <Notification data-testid="no-power-type" severity="negative">
-            This node does not have a power type set and MAAS will be unable to
-            control it. Update the power information below.
-          </Notification>
-        )}
-        {values.powerType === "manual" && (
-          <Notification data-testid="manual-power-type" severity="caution">
-            Power control for this power type will need to be handled manually.
-          </Notification>
-        )}
-        {editing && powerType && powerType?.missing_packages.length > 0 && (
-          <Notification data-testid="missing-packages" severity="negative">
-            Power control software for {powerType?.description} is missing from
-            the rack controller. To proceed, install the following packages on
-            the rack controller: {powerType.missing_packages.join(", ") || ""}
-          </Notification>
-        )}
         <PowerTypeFields<PowerFormValues>
           customFieldProps={{
             [PowerTypeNames.LXD]: {
-              canEditCertificate: !machineInPod,
-              editing,
-              machine,
+              canEditCertificate: !isMachineInPod,
+              initialShouldGenerateCert: !machine.certificate,
             },
           }}
-          disableFields={!editing}
-          disableSelect={!editing || machineInPod}
+          disableSelect={isMachineInPod}
           fieldScopes={fieldScopes}
           powerParametersValueName="powerParameters"
           powerTypeValueName="powerType"
