@@ -1,5 +1,5 @@
 import * as React from "react";
-import ReactDOM from "react-dom";
+import ReactDOM from "react-dom/client";
 import singleSpaReact from "single-spa-react";
 
 import packageJson from "../package.json";
@@ -23,6 +23,7 @@ const reactLifecycles = singleSpaReact({
       </div>
     );
   },
+  renderType: "createRoot",
 });
 
 export const { bootstrap } = reactLifecycles;

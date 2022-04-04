@@ -3,7 +3,7 @@ import { StrictMode } from "react";
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { createBrowserHistory } from "history";
-import ReactDOM from "react-dom";
+import { createRoot } from "react-dom/client";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { createReduxHistoryContext } from "redux-first-history";
@@ -62,7 +62,11 @@ const Root = (): JSX.Element => {
 
 if (process.env.REACT_APP_STANDALONE === "true") {
   require("@maas-ui/maas-ui-root/dist/assets/css/root-application.css");
-  ReactDOM.render(<Root />, document.getElementById("root"));
+  const container = document.getElementById("root");
+  if (container) {
+    const root = createRoot(container);
+    root.render(<Root />);
+  }
 }
 
 require("./scss/index.scss");
