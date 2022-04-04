@@ -228,6 +228,7 @@ export type DeployParams = {
     register_vmhost?: boolean;
     install_kvm?: boolean;
     user_data?: string;
+    enable_hw_sync?: boolean;
   };
 };
 

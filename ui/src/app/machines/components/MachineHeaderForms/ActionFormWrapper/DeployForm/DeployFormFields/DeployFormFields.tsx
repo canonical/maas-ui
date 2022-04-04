@@ -202,9 +202,8 @@ export const DeployFormFields = (): JSX.Element => {
               })}
             />
             <FormikField
-              disabled
               type="checkbox"
-              name="enable_hw_sync"
+              name="enableHwSync"
               // TODO: use an Input help text prop instead once the bug below is resolved
               // https://github.com/canonical-web-and-design/react-components/issues/748
               aria-describedby={enableHwSyncHelpText}

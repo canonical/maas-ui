@@ -247,6 +247,81 @@ describe("DeployForm", () => {
     ]);
   });
 
+  it("ignores enable_hw_sync if checkbox is not checked", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      submitFormikForm(wrapper, {
+        includeUserData: false,
+        kernel: "",
+        oSystem: "ubuntu",
+        release: "bionic",
+        userData: "",
+        vmHostType: "",
+        enableHwSync: false,
+      })
+    );
+    expect(
+      store.getActions().find((action) => action.type === "machine/deploy")
+        .payload.params.extra
+    ).toStrictEqual({
+      osystem: "ubuntu",
+      distro_series: "bionic",
+      hwe_kernel: "",
+    });
+  });
+
+  it("adds enable_hw_sync if checkbox is checked", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() =>
+      submitFormikForm(wrapper, {
+        includeUserData: false,
+        kernel: "",
+        oSystem: "ubuntu",
+        release: "bionic",
+        userData: "",
+        vmHostType: "",
+        enableHwSync: true,
+      })
+    );
+    expect(
+      store.getActions().find((action) => action.type === "machine/deploy")
+        .payload.params.extra
+    ).toStrictEqual({
+      osystem: "ubuntu",
+      distro_series: "bionic",
+      hwe_kernel: "",
+      enable_hw_sync: true,
+    });
+  });
+
   it("ignores user-data if the cloud-init option is not checked", () => {
     const store = mockStore(state);
     const wrapper = mount(

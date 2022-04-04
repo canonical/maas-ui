@@ -1,5 +1,5 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -18,7 +18,6 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -132,7 +131,7 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_osystem = "centos";
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -146,7 +145,7 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Select[name='oSystem']").props().value).toBe("centos");
+    expect(screen.getByRole("combobox", { name: "OS" })).toHaveValue("centos");
   });
 
   it("correctly sets release to default", () => {
@@ -154,7 +153,7 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -168,13 +167,18 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Select[name='release']").props().value).toBe("bionic");
+    expect(screen.getByRole("combobox", { name: "Release" })).toHaveValue(
+      "bionic"
+    );
   });
 
-  it("correctly sets minimum kernel to default", () => {
-    state.general.defaultMinHweKernel.data = "ga-18.04";
+  it("correctly sets minimum kernel to default", async () => {
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+      state.general.defaultMinHweKernel.data = "ga-18.04";
+    }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -188,8 +192,10 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Select[name='kernel']").props().value).toBe(
-      "ga-18.04"
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue(
+        "ga-18.04"
+      )
     );
   });
 
@@ -198,7 +204,7 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "xenial";
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -212,26 +218,23 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
-      true
+    expect(
+      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
+    ).toBeDisabled();
+    userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Release" }),
+      'Ubuntu 18.04 LTS "Bionic Beaver"'
     );
-    await act(async () => {
-      wrapper
-        .find("select[name='release']")
-        .simulate("change", { target: { name: "release", value: "bionic" } });
-    });
-    wrapper.update();
-    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
-      false
+
+    await waitFor(() =>
+      expect(
+        screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
+      ).toBeEnabled()
     );
-    await act(async () => {
-      wrapper
-        .find("select[name='release']")
-        .simulate("change", { target: { name: "release", value: "focal" } });
-    });
-    wrapper.update();
-    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
-      false
+    await waitFor(() =>
+      expect(
+        screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
+      ).toBeEnabled()
     );
   });
 
@@ -240,7 +243,7 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -256,26 +259,26 @@ describe("DeployFormFields", () => {
     );
     // Initial selection is Ubuntu 18.04. Switch to CentOS 6 to CentOS 7 back to
     // Ubuntu 18.04 and checkbox should be enabled.
-    await act(async () => {
-      wrapper
-        .find("Select[name='oSystem']")
-        .simulate("change", { target: { name: "oSystem", value: "centos" } });
-    });
-    wrapper.update();
-    await act(async () => {
-      wrapper
-        .find("Select[name='release']")
-        .simulate("change", { target: { name: "release", value: "centos70" } });
-    });
-    wrapper.update();
-    await act(async () => {
-      wrapper
-        .find("Select[name='oSystem']")
-        .simulate("change", { target: { name: "oSystem", value: "ubuntu" } });
-    });
-    wrapper.update();
-    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
-      false
+    userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "OS" }),
+      "CentOS"
+    );
+    userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Release" }),
+      "CentOS 7"
+    );
+    userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "OS" }),
+      "Ubuntu"
+    );
+    userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Release" }),
+      "bionic"
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
+      ).not.toBeDisabled()
     );
   });
 
@@ -284,7 +287,7 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -298,13 +301,20 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Input[name='vmHostType']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("radio", { name: /LXD/ })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("radio", { name: /libvirt/ })
+    ).not.toBeInTheDocument();
 
-    wrapper.find("input[id='deployVmHost']").simulate("change", {
-      target: { checked: "checked", id: "deployVmHost" },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Input[name='vmHostType']").exists()).toBe(true);
+    userEvent.click(
+      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
+    );
+    await waitFor(() =>
+      expect(screen.getByRole("radio", { name: /LXD/ })).toBeInTheDocument()
+    );
+    expect(screen.getByRole("radio", { name: /libvirt/ })).toBeInTheDocument();
   });
 
   it("displays a warning if user has no SSH keys", () => {
@@ -312,7 +322,7 @@ describe("DeployFormFields", () => {
       state.user.auth.user.sshkeys_count = 0;
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -326,7 +336,7 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='sshkeys-warning']").exists()).toBe(true);
+    expect(screen.getByTestId("sshkeys-warning")).toBeInTheDocument();
   });
 
   it(`displays an error and disables form fields if there are no OSes or
@@ -336,7 +346,7 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.releases = [];
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -350,16 +360,12 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='images-error']").exists()).toBe(true);
-    expect(wrapper.find("FormikField[name='oSystem']").props().disabled).toBe(
-      true
-    );
-    expect(wrapper.find("FormikField[name='release']").props().disabled).toBe(
-      true
-    );
-    expect(wrapper.find("Input[id='deployVmHost']").props().disabled).toBe(
-      true
-    );
+    expect(screen.getByTestId("images-error")).toBeInTheDocument();
+    expect(screen.getByRole("combobox", { name: "OS" })).toBeDisabled();
+    expect(screen.getByRole("combobox", { name: "Release" })).toBeDisabled();
+    expect(
+      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
+    ).toBeDisabled();
   });
 
   it("can display the user data input", async () => {
@@ -367,7 +373,7 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
@@ -381,14 +387,17 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikField[name='userData']").exists()).toBe(false);
-    await act(async () => {
-      wrapper.find("input[name='includeUserData']").simulate("change", {
-        target: { name: "includeUserData", checked: true },
-      });
-    });
-    wrapper.update();
-    expect(wrapper.find("FormikField[name='userData']").exists()).toBe(true);
+    expect(
+      screen.queryByPlaceholderText(/Paste or drop script here/)
+    ).not.toBeInTheDocument();
+    userEvent.click(
+      screen.getByRole("checkbox", { name: /Cloud-init user-data/ })
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByPlaceholderText(/Paste or drop script here/)
+      ).toBeInTheDocument()
+    );
   });
 
   it("resets kernel selection on OS/release change", async () => {
@@ -396,7 +405,7 @@ describe("DeployFormFields", () => {
       state.general.osInfo.data.default_release = "bionic";
     }
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -411,29 +420,31 @@ describe("DeployFormFields", () => {
       </Provider>
     );
     // Default release is Ubuntu 18.04. Change kernel to non-default.
-    await act(async () => {
-      wrapper
-        .find("Select[name='kernel']")
-        .simulate("change", { target: { name: "kernel", value: "ga-18.04" } });
-    });
-    wrapper.update();
+    userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      "ga-18.04"
+    );
     // Change release to Ubuntu 20.04.
-    await act(async () => {
-      wrapper.find("Select[name='release']").simulate("change", {
-        target: { name: "release", value: "ubuntu/focal" },
-      });
-    });
-    wrapper.update();
+    userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Release" }),
+      'Ubuntu 20.04 LTS "Focal Fossa"'
+    );
     // Previous kernel selection should be cleared.
-    expect(wrapper.find("Select[name='kernel']").prop("value")).toBe("");
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("")
+    );
   });
 
-  it("displays the global setting for hardware sync interval", async () => {
+  it("displays 'periodically sync hardware' checkbox with global setting and additional tooltip information", async () => {
+    state.config.items.push({
+      name: "hardware_sync_interval",
+      value: "2h",
+    });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
           <DeployForm
             clearHeaderContent={jest.fn()}
@@ -445,10 +456,88 @@ describe("DeployFormFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("FormikField[name='enable_hw_sync']").exists()).toBe(
-      true
+    const tooltipText =
+      /Enable this to make MAAS periodically check the hardware/;
+    expect(screen.getByText(/Hardware sync interval: 2h/)).toBeInTheDocument();
+    expect(screen.queryByText(tooltipText)).not.toBeInTheDocument();
+    userEvent.hover(
+      screen.getByRole("button", {
+        name: /more about periodically sync hardware/,
+      })
     );
+    expect(screen.getByText(tooltipText)).toBeInTheDocument();
   });
 
-  it("adds an additional enable_hw_sync field in the request on submit", () => {});
+  it("'Periodically sync hardware' is unchecked by default", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
+    ).not.toBeChecked();
+    userEvent.click(
+      screen.getByRole("button", { name: /Start deployment for machine/ })
+    );
+
+    await waitFor(() => {
+      const action = store
+        .getActions()
+        .find((action) => action.type === "machine/deploy");
+      return expect(
+        action?.payload?.params?.extra?.enable_hw_sync
+      ).toBeUndefined();
+    });
+  });
+
+  it("adds a enable_hw_sync field to the request on submit", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[state.machine.items[0]]}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    userEvent.click(
+      screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
+    );
+    userEvent.click(
+      screen.getByRole("button", { name: /Start deployment for machine/ })
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
+      ).toBeChecked()
+    );
+
+    await waitFor(() => {
+      const action = store
+        .getActions()
+        .find((action) => action.type === "machine/deploy");
+      return expect(action?.payload?.params?.extra?.enable_hw_sync).toEqual(
+        true
+      );
+    });
+  });
 });
