@@ -428,7 +428,7 @@ describe("DeployFormFields", () => {
     expect(wrapper.find("Select[name='kernel']").prop("value")).toBe("");
   });
 
-  it("displays 'periodically sync hardware' checkbox", async () => {
+  it("displays the global setting for hardware sync interval", async () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -449,4 +449,6 @@ describe("DeployFormFields", () => {
       true
     );
   });
+
+  it("adds an additional enable_hw_sync field in the request on submit", () => {});
 });

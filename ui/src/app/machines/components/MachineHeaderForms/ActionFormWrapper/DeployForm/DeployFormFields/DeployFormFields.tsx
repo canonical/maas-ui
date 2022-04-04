@@ -54,6 +54,9 @@ export const DeployFormFields = (): JSX.Element => {
     setDeployVmHost(false);
     setFieldValue("vmHostType", "");
   };
+  const hardwareSyncInterval = useSelector(
+    configSelectors.hardwareSyncInterval
+  );
 
   return (
     <>
@@ -228,15 +231,13 @@ export const DeployFormFields = (): JSX.Element => {
                 </>
               }
             />
-            {/* TODO: use real sync interval
-                https://github.com/canonical-web-and-design/app-tribe/issues/780 */}
             <p
               id={enableHwSyncHelpText}
               className="p-form-help-text"
               style={{ paddingLeft: "2rem" }}
             >
-              Hardware sync interval: 6 hours - Admins can change this in the
-              global settings.
+              Hardware sync interval: {hardwareSyncInterval} - Admins can change
+              this in the global settings.
             </p>
             {userDataVisible && (
               <UploadTextArea
