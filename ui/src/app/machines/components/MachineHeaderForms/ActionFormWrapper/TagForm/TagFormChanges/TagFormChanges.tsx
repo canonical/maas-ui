@@ -193,14 +193,7 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
             automaticTags,
             machineCount,
             tagIdsAndCounts,
-            <>
-              {Label.Automatic}
-              <p className="u-text--muted u-nudge-left">
-                Automatic tags (cannot be unassigned. Go to the{" "}
-                <Link to={tagsURLs.tags.index}>Tags tab</Link> to delete
-                automatic tags).
-              </p>
-            </>,
+            Label.Automatic,
             toggleTagDetails
           ),
         ]}
@@ -218,6 +211,13 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
           return {};
         }}
       />
+      {hasAutomaticTags && (
+        <p className="u-text--muted u-nudge-right--small">
+          These tags cannot be unassigned. Go to the{" "}
+          <Link to={tagsURLs.tags.index}>Tags tab</Link> to manage automatic
+          tags.
+        </p>
+      )}
       {isOpen && tagDetails ? (
         <Portal>
           <Modal
