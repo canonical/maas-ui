@@ -9,7 +9,7 @@ import { Link } from "react-router-dom";
 import usePortal from "react-useportal";
 
 import TagChip from "../TagChip";
-import { useSelectedTags } from "../hooks";
+import { useSelectedTags, useUnchangedTags } from "../hooks";
 import type { TagFormValues } from "../types";
 
 import type { Machine } from "app/store/machine/types";
@@ -27,10 +27,20 @@ type Props = {
 };
 
 export enum Label {
-  Table = "Tag changes",
   Added = "To be added",
   Automatic = "Automatic tags",
+  Discard = "Discard",
   Manual = "Currently assigned",
+  Remove = "Remove",
+  Removed = "To be removed",
+  Table = "Tag changes",
+}
+
+export enum TestId {
+  Added = "added",
+  Auto = "auto",
+  Manual = "manual",
+  Removed = "removed",
 }
 
 export enum Column {
@@ -40,9 +50,17 @@ export enum Column {
   Options = "options",
 }
 
-type LabelCol = { children: ReactNode; rowSpan: number };
+type LabelCol = {
+  children?: ReactNode;
+  rowSpan?: number;
+  row: {
+    "aria-label": Label;
+    "data-testid": TestId;
+  };
+};
 
 const generateRows = (
+  rowType: string,
   tags: Tag[],
   machineCount: number,
   tagIdsAndCounts: TagIdCountMap,
@@ -53,13 +71,14 @@ const generateRows = (
   removeLabel?: ReactNode
 ) => {
   return tags.map((tag, i) => ({
-    label:
-      i === 0
-        ? {
-            children: label,
-            rowSpan: tags.length,
-          }
-        : null,
+    label: {
+      children: i === 0 ? label : null,
+      rowSpan: i === 0 ? tags.length : null,
+      row: {
+        "aria-label": tag.name,
+        "data-testid": rowType,
+      },
+    },
     name: (
       <TagChip
         appearance={chipAppearance}
@@ -105,21 +124,24 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
   const automaticTags = useSelector((state: RootState) =>
     tagSelectors.getAutomaticByIDs(state, tagIds)
   );
-  const manualTags = useSelector((state: RootState) =>
+  const allManualTags = useSelector((state: RootState) =>
     tagSelectors.getManualByIDs(state, tagIds)
   );
-  const addedTags = useSelectedTags();
+  const manualTags = useUnchangedTags(allManualTags);
+  const addedTags = useSelectedTags("added");
+  const removedTags = useSelectedTags("removed");
   const machineCount = machines.length;
   const hasAutomaticTags = automaticTags.length > 0;
   const hasManualTags = manualTags.length > 0;
   const hasAddedTags = addedTags.length > 0;
+  const hasRemovedTags = removedTags.length > 0;
   const columns = useMemo(
     () => [
       {
         accessor: Column.Label,
         // The data for this column is supplied inside a children prop so that
         // the data can also return the appropriate rowspan (used in getCellProps).
-        Cell: ({ value }: { value?: LabelCol }) => value?.children || null,
+        Cell: ({ value }: { value: LabelCol }) => value.children || null,
         className: "label-col",
         Header: "Tag changes",
       },
@@ -141,7 +163,7 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
     ],
     []
   );
-  if (!hasAutomaticTags && !hasManualTags && !hasAddedTags) {
+  if (!hasAutomaticTags && !hasManualTags && !hasAddedTags && !hasRemovedTags) {
     return null;
   }
   addedTags.forEach((tag) => {
@@ -156,6 +178,7 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
         columns={columns}
         data={[
           ...generateRows(
+            TestId.Added,
             addedTags,
             machineCount,
             tagIdsAndCounts,
@@ -164,32 +187,55 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
             "positive",
             (tag) => {
               setFieldValue(
-                "tags",
-                values.tags.filter((id) => tag.id !== toFormikNumber(id))
+                "added",
+                values.added.filter((id) => tag.id !== toFormikNumber(id))
               );
             },
             <>
-              <span className="u-nudge-left--small">Discard</span>
+              <span className="u-nudge-left--small">{Label.Discard}</span>
               <Icon name="close" />
             </>
           ),
           ...generateRows(
+            TestId.Removed,
+            removedTags,
+            machineCount,
+            tagIdsAndCounts,
+            Label.Removed,
+            toggleTagDetails,
+            "negative",
+            (tag) => {
+              setFieldValue(
+                "removed",
+                values.removed.filter((id) => tag.id !== toFormikNumber(id))
+              );
+            },
+            <>
+              <span className="u-nudge-left--small">{Label.Discard}</span>
+              <Icon name="close" />
+            </>
+          ),
+          ...generateRows(
+            TestId.Manual,
             manualTags,
             machineCount,
             tagIdsAndCounts,
             Label.Manual,
             toggleTagDetails,
             "information",
-            () => {
-              // TODO: Implement removing tags from machines:
-              // https://github.com/canonical-web-and-design/app-tribe/issues/708
+            (tag) => {
+              setFieldValue(
+                "removed",
+                values.removed.concat([tag.id.toString()])
+              );
             },
             <>
-              <span className="u-nudge-left--small">Remove</span>
+              <span className="u-nudge-left--small">{Label.Remove}</span>
               <Icon name="delete" />
             </>
           ),
           ...generateRows(
+            TestId.Auto,
             automaticTags,
             machineCount,
             tagIdsAndCounts,
@@ -217,6 +263,7 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
           }
           return {};
         }}
+        getRowProps={(row) => row.values.label.row}
       />
       {isOpen && tagDetails ? (
         <Portal>

@@ -58,13 +58,49 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
+it("displays available tags in the dropdown", async () => {
+  state.machine.items[0].tags = [3];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
+          <TagFormFields machines={state.machine.items} />
+        </Formik>
+      </MemoryRouter>
+    </Provider>
+  );
+  const changes = screen.getByRole("table", {
+    name: TagFormChangesLabel.Table,
+  });
+  const tagRow = within(changes).getByRole("row", {
+    name: "tag3",
+  });
+  // Set a tag to be removed.
+  userEvent.click(
+    within(tagRow).getByRole("button", { name: TagFormChangesLabel.Remove })
+  );
+  // Open the tag selector dropdown.
+  screen.getByRole("textbox", { name: Label.TagInput }).focus();
+  // Set a tag to be added.
+  userEvent.click(
+    screen.getByRole("option", {
+      name: "tag1",
+    })
+  );
+  expect(screen.getAllByRole("option")).toHaveLength(1);
+  await waitFor(() =>
+    expect(screen.getByRole("option", { name: "tag2" })).toBeInTheDocument()
+  );
+});
+
 it("displays the new tags", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
         <Formik
-          initialValues={{ tags: [tags[0].id, tags[2].id] }}
+          initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
           onSubmit={jest.fn()}
         >
           <TagFormFields machines={state.machine.items} />
@@ -88,7 +124,7 @@ it("can open a create tag form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ tags: [] }} onSubmit={jest.fn()}>
+        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
           <TagFormFields machines={[]} />
         </Formik>
       </MemoryRouter>
@@ -110,7 +146,10 @@ it("updates the new tags after creating a tag", async () => {
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ tags }} onSubmit={jest.fn()}>
+        <Formik
+          initialValues={{ added: tags, removed: [] }}
+          onSubmit={jest.fn()}
+        >
           <TagFormFields machines={state.machine.items} />
         </Formik>
       </MemoryRouter>

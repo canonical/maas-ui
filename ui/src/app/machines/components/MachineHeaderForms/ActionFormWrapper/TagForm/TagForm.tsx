@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -16,10 +16,8 @@ import { NodeActions } from "app/store/types/node";
 type Props = MachineActionFormProps;
 
 const TagFormSchema = Yup.object().shape({
-  tags: Yup.array()
-    .of(Yup.string())
-    .min(1)
-    .required("You must select at least one tag."),
+  added: Yup.array().of(Yup.string()),
+  removed: Yup.array().of(Yup.string()),
 });
 
 export const TagForm = ({
@@ -30,16 +28,13 @@ export const TagForm = ({
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const [initialValues, setInitialValues] = useState<TagFormValues>({
-    tags: [],
-  });
   const tagsLoaded = useSelector(tagSelectors.loaded);
 
   let formErrors: Record<string, string | string[]> | null = null;
   if (errors && typeof errors === "object" && "name" in errors) {
     formErrors = {
       ...errors,
-      tags: errors.name,
+      added: errors.name,
     } as Record<string, string | string[]>;
     delete formErrors.name;
   }
@@ -53,7 +48,10 @@ export const TagForm = ({
       actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
       errors={formErrors}
-      initialValues={initialValues}
+      initialValues={{
+        added: [],
+        removed: [],
+      }}
       loaded={tagsLoaded}
       modelName="machine"
       onCancel={clearHeaderContent}
@@ -64,17 +62,16 @@ export const TagForm = ({
       }}
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
-        if (values.tags && values.tags.length) {
+        if (values.added.length) {
           machines.forEach((machine) => {
             dispatch(
               machineActions.tag({
                 systemId: machine.system_id,
-                tags: values.tags,
+                tags: values.added,
               })
             );
           });
         }
-        setInitialValues(values);
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
