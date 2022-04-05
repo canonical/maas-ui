@@ -109,11 +109,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
                     This machine hardware info is synced every{" "}
                     {formatSyncInterval(machine.sync_interval)}.{"\n"}
                     You can check it at the bottom, in the status bar.{"\n"}More
-                    about this in the{" "}
-                    <a className="p-link--inverted" href="#todo">
-                      Hardware sync docs
-                    </a>
-                    .
+                    about this in the <a href="#todo">Hardware sync docs</a>.
                   </>
                 }
               >
