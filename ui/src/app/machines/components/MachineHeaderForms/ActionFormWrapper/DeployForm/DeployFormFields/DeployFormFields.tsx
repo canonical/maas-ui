@@ -2,11 +2,15 @@ import { useState } from "react";
 import * as React from "react";
 
 import {
+  Button,
   Col,
+  Icon,
   Input,
   Notification,
   Row,
   Select,
+  Tooltip,
+  useId,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
@@ -24,12 +28,15 @@ import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
+import { breakLines } from "app/utils";
 
 export const DeployFormFields = (): JSX.Element => {
   const [deployVmHost, setDeployVmHost] = useState(false);
   const [userDataVisible, setUserDataVisible] = useState(false);
   const formikProps = useFormikContext<DeployFormValues>();
   const { handleChange, setFieldValue, values } = formikProps;
+  const deployVmHostHelpText = useId();
+  const enableHwSyncHelpText = useId();
 
   const user = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
@@ -47,6 +54,9 @@ export const DeployFormFields = (): JSX.Element => {
     setDeployVmHost(false);
     setFieldValue("vmHostType", "");
   };
+  const hardwareSyncInterval = useSelector(
+    configSelectors.hardwareSyncInterval
+  );
 
   return (
     <>
@@ -122,6 +132,9 @@ export const DeployFormFields = (): JSX.Element => {
           </Col>
           <Col size={9}>
             <Input
+              // TODO: use an Input help text prop instead once the bug below is resolved
+              // https://github.com/canonical-web-and-design/react-components/issues/748
+              aria-describedby={deployVmHostHelpText}
               checked={deployVmHost}
               disabled={!canBeKVMHost || noImages}
               id="deployVmHost"
@@ -142,7 +155,10 @@ export const DeployFormFields = (): JSX.Element => {
               }}
               type="checkbox"
             />
-            <p className="p-form-help-text" style={{ paddingLeft: "2rem" }}>
+            <p
+              id={deployVmHostHelpText}
+              className="p-form-help-text is-tick-element"
+            >
               Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially
               supported.
             </p>
@@ -184,6 +200,42 @@ export const DeployFormFields = (): JSX.Element => {
                 "u-sv2": userDataVisible,
               })}
             />
+            <FormikField
+              type="checkbox"
+              name="enableHwSync"
+              // TODO: use an Input help text prop instead once the bug below is resolved
+              // https://github.com/canonical-web-and-design/react-components/issues/748
+              aria-describedby={enableHwSyncHelpText}
+              label={
+                <>
+                  Periodically sync hardware{" "}
+                  <Tooltip
+                    positionElementClassName="u-display-inline-important"
+                    message={breakLines(
+                      "Enable this to make MAAS periodically check the hardware configuration of this machine and reflect any possible change after the deployment."
+                    )}
+                  >
+                    <Button
+                      type="button"
+                      appearance="base"
+                      aria-label="more about periodically sync hardware"
+                      className="u-no-margin--bottom u-no-padding"
+                    >
+                      <Icon name="information" />
+                    </Button>
+                  </Tooltip>
+                  {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}{" "}
+                  <a href="#todo">Hardware sync docs</a>
+                </>
+              }
+            />
+            <p
+              id={enableHwSyncHelpText}
+              className="p-form-help-text is-tick-element"
+            >
+              Hardware sync interval: {hardwareSyncInterval} - Admins can change
+              this in the global settings.
+            </p>
             {userDataVisible && (
               <UploadTextArea
                 label="Upload script"

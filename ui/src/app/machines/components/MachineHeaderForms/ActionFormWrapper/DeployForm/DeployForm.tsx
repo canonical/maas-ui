@@ -14,7 +14,7 @@ import {
   osInfo as osInfoSelectors,
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
-import type { MachineEventErrors } from "app/store/machine/types";
+import type { DeployParams, MachineEventErrors } from "app/store/machine/types";
 import { PodType } from "app/store/pod/constants";
 import { NodeActions } from "app/store/types/node";
 
@@ -23,6 +23,7 @@ const DeploySchema = Yup.object().shape({
   release: Yup.string().required("Release is required"),
   kernel: Yup.string(),
   includeUserData: Yup.boolean(),
+  enableHwSync: Yup.boolean(),
   vmHostType: Yup.string().oneOf([PodType.LXD, PodType.VIRSH, ""]),
 });
 
@@ -33,6 +34,7 @@ export type DeployFormValues = {
   release: string;
   userData?: string;
   vmHostType: string;
+  enableHwSync: boolean;
 };
 
 type Props = MachineActionFormProps;
@@ -90,6 +92,7 @@ export const DeployForm = ({
         includeUserData: false,
         userData: "",
         vmHostType: "",
+        enableHwSync: false,
       }}
       loaded={defaultMinHweKernelLoaded && osInfoLoaded}
       modelName="machine"
@@ -103,10 +106,11 @@ export const DeployForm = ({
         dispatch(machineActions.cleanup());
         const hasUserData =
           values.includeUserData && values.userData && values.userData !== "";
-        const extra = {
+        const extra: DeployParams["extra"] = {
           osystem: values.oSystem,
           distro_series: values.release,
           hwe_kernel: values.kernel,
+          ...(values.enableHwSync && { enable_hw_sync: true }),
           ...(values.vmHostType === PodType.LXD && { register_vmhost: true }),
           ...(values.vmHostType === PodType.VIRSH && { install_kvm: true }),
           ...(hasUserData && { user_data: values.userData }),
