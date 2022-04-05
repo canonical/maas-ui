@@ -212,7 +212,7 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
             },
             <>
               <span className="u-nudge-left--small">{Label.Discard}</span>
-              <Icon name="close" />
+              <Icon aria-hidden="true" name="close" />
             </>
           ),
           ...generateRows(
@@ -231,7 +231,7 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
             },
             <>
               <span className="u-nudge-left--small">{Label.Remove}</span>
-              <Icon name="delete" />
+              <Icon aria-hidden="true" name="delete" />
             </>
           ),
           ...generateRows(
