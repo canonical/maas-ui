@@ -231,11 +231,6 @@ describe("DeployFormFields", () => {
         screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
       ).toBeEnabled()
     );
-    await waitFor(() =>
-      expect(
-        screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
-      ).toBeEnabled()
-    );
   });
 
   it("enables KVM host checkbox when switching to Ubuntu 18.04 from a different OS/Release", async () => {
