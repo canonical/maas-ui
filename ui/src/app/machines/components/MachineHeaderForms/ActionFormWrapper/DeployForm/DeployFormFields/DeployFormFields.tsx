@@ -157,8 +157,7 @@ export const DeployFormFields = (): JSX.Element => {
             />
             <p
               id={deployVmHostHelpText}
-              className="p-form-help-text"
-              style={{ paddingLeft: "2rem" }}
+              className="p-form-help-text is-tick-element"
             >
               Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially
               supported.
@@ -232,8 +231,7 @@ export const DeployFormFields = (): JSX.Element => {
             />
             <p
               id={enableHwSyncHelpText}
-              className="p-form-help-text"
-              style={{ paddingLeft: "2rem" }}
+              className="p-form-help-text is-tick-element"
             >
               Hardware sync interval: {hardwareSyncInterval} - Admins can change
               this in the global settings.
