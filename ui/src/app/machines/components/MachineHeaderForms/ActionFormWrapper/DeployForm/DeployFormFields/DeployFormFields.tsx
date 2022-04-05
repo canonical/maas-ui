@@ -30,6 +30,9 @@ import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import { breakLines } from "app/utils";
 
+const formatHardwareSyncInterval = (syncInterval: string | null) =>
+  `${syncInterval?.replace(/\D/g, "")}min`;
+
 export const DeployFormFields = (): JSX.Element => {
   const [deployVmHost, setDeployVmHost] = useState(false);
   const [userDataVisible, setUserDataVisible] = useState(false);
@@ -233,8 +236,9 @@ export const DeployFormFields = (): JSX.Element => {
               id={enableHwSyncHelpText}
               className="p-form-help-text is-tick-element"
             >
-              Hardware sync interval: {hardwareSyncInterval} - Admins can change
-              this in the global settings.
+              Hardware sync interval:{" "}
+              {formatHardwareSyncInterval(hardwareSyncInterval)} - Admins can
+              change this in the global settings.
             </p>
             {userDataVisible && (
               <UploadTextArea

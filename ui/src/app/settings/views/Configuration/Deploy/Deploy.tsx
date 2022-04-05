@@ -29,7 +29,7 @@ const Deploy = (): JSX.Element => {
   }, [dispatch, loaded]);
 
   return (
-    <Row>
+    <Row data-testid="deploy-configuration-view">
       <Col size={6}>
         {loading && <Spinner text="Loading..." />}
         {loaded && <DeployForm />}

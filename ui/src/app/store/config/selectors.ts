@@ -1,5 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
 
+import type { TimeSpanString } from "../types/node";
+
 import type {
   AutoIpmiPrivilegeLevel,
   Config,
@@ -515,7 +517,7 @@ const bootImagesAutoImport = createSelector([all], (configs) =>
 );
 
 const hardwareSyncInterval = createSelector([all], (configs) =>
-  getValueFromName<string>(configs, "hardware_sync_interval")
+  getValueFromName<TimeSpanString>(configs, "hardware_sync_interval")
 );
 
 const config = {

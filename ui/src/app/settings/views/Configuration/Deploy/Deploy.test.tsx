@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -16,15 +16,19 @@ describe("Deploy", () => {
     state = rootStateFactory();
   });
 
-  it("loads", () => {
+  it("loads", async () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Deploy />
       </Provider>
     );
-    expect(wrapper.exists()).toBe(true);
+    await waitFor(() =>
+      expect(
+        screen.getByTestId("deploy-configuration-view")
+      ).toBeInTheDocument()
+    );
   });
 
   it(`dispatches actions to fetch config and general os info if either has not
@@ -32,7 +36,7 @@ describe("Deploy", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <Deploy />
       </Provider>

@@ -3,6 +3,7 @@ import type { ValueOf } from "@canonical/react-components";
 export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export type Seconds = number;
+export type Minutes = number;
 
 export const SortDirection = {
   ASCENDING: "ascending",

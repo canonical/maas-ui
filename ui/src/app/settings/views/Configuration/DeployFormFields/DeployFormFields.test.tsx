@@ -1,4 +1,5 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -92,7 +93,7 @@ describe("DeployFormFields", () => {
   });
 
   it("displays the default hardware sync interval option with a correct value", () => {
-    const syncIntervalValue = "1h";
+    const syncIntervalValue = "15m";
     // TODO: Investigate mutating state in integration tests https://github.com/canonical-web-and-design/app-tribe/issues/794
     state.config.items.push({
       name: "hardware_sync_interval",
@@ -109,6 +110,45 @@ describe("DeployFormFields", () => {
 
     expect(
       screen.getByRole("textbox", { name: /Default hardware sync interval/ })
-    ).toHaveValue(syncIntervalValue);
+    ).toHaveValue("15");
+  });
+
+  it("adds a hardware_sync_interval field to the request on submit", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <DeployForm />
+      </Provider>
+    );
+
+    userEvent.clear(
+      screen.getByRole("textbox", { name: /Default hardware sync interval/ })
+    );
+    userEvent.type(
+      screen.getByRole("textbox", {
+        name: /Default hardware sync interval/,
+      }),
+      "30"
+    );
+
+    userEvent.click(
+      screen.getByRole("button", {
+        name: /Save/,
+      })
+    );
+
+    await waitFor(() => {
+      const action = store
+        .getActions()
+        .find((action) => action.type === "config/update");
+      const hardwareSyncParam = action.payload.params.find(
+        (param: Record<string, unknown>) =>
+          param.name === "hardware_sync_interval"
+      );
+      return expect(hardwareSyncParam).toEqual({
+        name: "hardware_sync_interval",
+        value: "30m",
+      });
+    });
   });
 });
