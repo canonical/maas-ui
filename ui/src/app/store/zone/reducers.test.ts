@@ -221,7 +221,14 @@ describe("update", () => {
     });
 
     expect(
-      reducers(initialState, actions.updateStart({ meta: { modelPK: 123 } }))
+      reducers(
+        initialState,
+        actions.updateStart({
+          meta: { modelPK: 123 },
+          payload: null,
+          type: "updateStart",
+        })
+      )
     ).toEqual(
       zoneStateFactory({
         modelActions: zoneModelActionsFactory({
@@ -234,7 +241,9 @@ describe("update", () => {
   });
 
   it("reduces updateSuccess", () => {
+    const zone = zoneFactory({ id: 123 });
     const initialState = zoneStateFactory({
+      items: [],
       modelActions: zoneModelActionsFactory({
         [ZONE_ACTIONS.update]: zoneModelActionFactory({
           [ACTION_STATUS.processing]: [123],
@@ -244,7 +253,14 @@ describe("update", () => {
     });
 
     expect(
-      reducers(initialState, actions.updateSuccess({ meta: { modelPK: 123 } }))
+      reducers(
+        initialState,
+        actions.updateSuccess({
+          meta: { modelPK: 123 },
+          payload: zone,
+          type: "updateSuccess",
+        })
+      )
     ).toEqual(
       zoneStateFactory({
         modelActions: zoneModelActionsFactory({
@@ -257,7 +273,7 @@ describe("update", () => {
     );
   });
 
-  it("reduces updateFailed", () => {
+  it("reduces updateError", () => {
     const initialState = zoneStateFactory({
       errors: [],
       modelActions: zoneModelActionsFactory({
@@ -272,7 +288,11 @@ describe("update", () => {
     expect(
       reducers(
         initialState,
-        actions.updateError({ meta: { modelPK: 123 }, payload: errorMessage })
+        actions.updateError({
+          meta: { modelPK: 123 },
+          payload: errorMessage,
+          type: "updateError",
+        })
       )
     ).toEqual(
       zoneStateFactory({
@@ -318,7 +338,14 @@ describe("delete", () => {
     });
 
     expect(
-      reducers(initialState, actions.deleteStart({ meta: { modelPK: 123 } }))
+      reducers(
+        initialState,
+        actions.deleteStart({
+          meta: { modelPK: 123 },
+          payload: null,
+          type: "deleteStart",
+        })
+      )
     ).toEqual(
       zoneStateFactory({
         modelActions: zoneModelActionsFactory({
@@ -341,7 +368,14 @@ describe("delete", () => {
     });
 
     expect(
-      reducers(initialState, actions.deleteSuccess({ meta: { modelPK: 123 } }))
+      reducers(
+        initialState,
+        actions.deleteSuccess({
+          meta: { modelPK: 123 },
+          payload: 123,
+          type: "deleteSuccess",
+        })
+      )
     ).toEqual(
       zoneStateFactory({
         modelActions: zoneModelActionsFactory({
@@ -354,7 +388,7 @@ describe("delete", () => {
     );
   });
 
-  it("reduces deleteFailed", () => {
+  it("reduces deleteError", () => {
     const initialState = zoneStateFactory({
       errors: [],
       modelActions: zoneModelActionsFactory({
@@ -369,7 +403,11 @@ describe("delete", () => {
     expect(
       reducers(
         initialState,
-        actions.deleteError({ meta: { modelPK: 123 }, payload: errorMessage })
+        actions.deleteError({
+          meta: { modelPK: 123 },
+          payload: errorMessage,
+          type: "deleteError",
+        })
       )
     ).toEqual(
       zoneStateFactory({

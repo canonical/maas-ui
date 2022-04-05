@@ -133,11 +133,11 @@ const zoneSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    [`${createAction}Error`]: (state, action: PayloadAction<APIError>) => {
+    createError: (state, action: PayloadAction<APIError>) => {
       addError(state, createAction, action.payload);
       updateGenericAction(state, createAction, actionFailed);
     },
-    [`${createAction}Notify`]: (state, action: PayloadAction<Zone>) => {
+    createNotify: (state, action: PayloadAction<Zone>) => {
       const existingIdx = state.items.findIndex(
         (existingItem) => existingItem[ZONE_PK] === action.payload[ZONE_PK]
       );
@@ -147,10 +147,10 @@ const zoneSlice = createSlice({
         state.items.push(action.payload);
       }
     },
-    [`${createAction}Start`]: (state) => {
+    createStart: (state) => {
       updateGenericAction(state, createAction, actionProcessing);
     },
-    [`${createAction}Success`]: (state) => {
+    createSuccess: (state) => {
       updateGenericAction(state, createAction, actionSuccessful);
     },
     [deleteAction]: {
@@ -168,7 +168,7 @@ const zoneSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    [`${deleteAction}Error`]: {
+    deleteError: {
       prepare: (action: ZonePayloadActionWithMeta<APIError>) => action,
       reducer: (state, action: ZonePayloadActionWithMeta<APIError>) => {
         addError(state, deleteAction, action.payload, action.meta.modelPK);
@@ -180,13 +180,13 @@ const zoneSlice = createSlice({
         );
       },
     },
-    [`${deleteAction}Notify`]: (state, action: PayloadAction<ZonePK>) => {
+    deleteNotify: (state, action: PayloadAction<ZonePK>) => {
       const index = state.items.findIndex(
         (item) => item[ZONE_PK] === action.payload
       );
       state.items.splice(index, 1);
     },
-    [`${deleteAction}Start`]: {
+    deleteStart: {
       prepare: (action: ZonePayloadActionWithMeta) => action,
       reducer: (state, action: ZonePayloadActionWithMeta) => {
         updateModelAction(
@@ -197,7 +197,7 @@ const zoneSlice = createSlice({
         );
       },
     },
-    [`${deleteAction}Success`]: {
+    deleteSuccess: {
       prepare: (action: ZonePayloadActionWithMeta<ZonePK>) => action,
       reducer: (state, action: ZonePayloadActionWithMeta<ZonePK>) => {
         updateModelAction(
@@ -220,14 +220,14 @@ const zoneSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    [`${fetchAction}Error`]: (state, action: PayloadAction<APIError>) => {
+    fetchError: (state, action: PayloadAction<APIError>) => {
       addError(state, fetchAction, action.payload);
       updateGenericAction(state, fetchAction, actionFailed);
     },
-    [`${fetchAction}Start`]: (state) => {
+    fetchStart: (state) => {
       updateGenericAction(state, fetchAction, actionProcessing);
     },
-    [`${fetchAction}Success`]: (state, action: PayloadAction<Zone[]>) => {
+    fetchSuccess: (state, action: PayloadAction<Zone[]>) => {
       state.items = action.payload;
       updateGenericAction(state, fetchAction, actionSuccessful);
     },
@@ -246,7 +246,7 @@ const zoneSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    [`${updateAction}Error`]: {
+    updateError: {
       prepare: (action: ZonePayloadActionWithMeta<APIError>) => action,
       reducer: (state, action: ZonePayloadActionWithMeta<APIError>) => {
         addError(state, updateAction, action.payload, action.meta.modelPK);
@@ -258,14 +258,14 @@ const zoneSlice = createSlice({
         );
       },
     },
-    [`${updateAction}Notify`]: (state, action: PayloadAction<Zone>) => {
+    updateNotify: (state, action: PayloadAction<Zone>) => {
       state.items.forEach((zone, i) => {
         if (zone[ZONE_PK] === action.payload[ZONE_PK]) {
           state.items[i] = action.payload;
         }
       });
     },
-    [`${updateAction}Start`]: {
+    updateStart: {
       prepare: (action: ZonePayloadActionWithMeta) => action,
       reducer: (state, action: ZonePayloadActionWithMeta) => {
         updateModelAction(
@@ -276,7 +276,7 @@ const zoneSlice = createSlice({
         );
       },
     },
-    [`${updateAction}Success`]: {
+    updateSuccess: {
       prepare: (action: ZonePayloadActionWithMeta<Zone>) => action,
       reducer: (state, action: ZonePayloadActionWithMeta<Zone>) => {
         updateModelAction(
