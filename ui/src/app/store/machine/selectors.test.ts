@@ -186,6 +186,65 @@ describe("machine selectors", () => {
     expect(machine.processing(state)).toStrictEqual(["abc123"]);
   });
 
+  it("can get machines that are tagging", () => {
+    const machines = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+    ];
+    const statuses = machineStatusesFactory({
+      abc123: machineStatusFactory({ tagging: true }),
+      def456: machineStatusFactory(),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: machines,
+        statuses,
+      }),
+    });
+    expect(machine.tagging(state)).toStrictEqual([machines[0]]);
+  });
+
+  it("can get machines that are untagging", () => {
+    const machines = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+    ];
+    const statuses = machineStatusesFactory({
+      abc123: machineStatusFactory({ untagging: true }),
+      def456: machineStatusFactory(),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: machines,
+        statuses,
+      }),
+    });
+    expect(machine.untagging(state)).toStrictEqual([machines[0]]);
+  });
+
+  it("can get machines that are either tagging or untagging", () => {
+    const machines = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+      machineFactory({ system_id: "ghi789" }),
+    ];
+    const statuses = machineStatusesFactory({
+      abc123: machineStatusFactory({ tagging: true }),
+      def456: machineStatusFactory({ untagging: true }),
+      ghi789: machineStatusFactory(),
+    });
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: machines,
+        statuses,
+      }),
+    });
+    expect(machine.updatingTags(state)).toStrictEqual([
+      machines[0],
+      machines[1],
+    ]);
+  });
+
   it("can get machines that are saving pools", () => {
     const items = [
       machineFactory({ system_id: "808" }),
@@ -333,6 +392,25 @@ describe("machine selectors", () => {
     expect(machine.eventErrorsForIds(state, "abc123", null)).toStrictEqual([
       machineEventErrors[0],
     ]);
+  });
+
+  it("can get event errors for a machine and multiple events", () => {
+    const machineEventErrors = [
+      machineEventErrorFactory({ id: "abc123", event: NodeActions.TAG }),
+      machineEventErrorFactory({ id: "abc123", event: NodeActions.UNTAG }),
+      machineEventErrorFactory({ id: "abc123", event: NodeActions.ABORT }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        eventErrors: machineEventErrors,
+      }),
+    });
+    expect(
+      machine.eventErrorsForIds(state, "abc123", [
+        NodeActions.TAG,
+        NodeActions.UNTAG,
+      ])
+    ).toStrictEqual([machineEventErrors[0], machineEventErrors[1]]);
   });
 
   it("can get event errors for multiple machines", () => {

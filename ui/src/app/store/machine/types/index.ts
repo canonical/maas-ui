@@ -35,6 +35,7 @@ export type {
   TestParams,
   UnlinkSubnetParams,
   UnmountSpecialParams,
+  UntagParams,
   UpdateDiskParams,
   UpdateFilesystemParams,
   UpdateParams,

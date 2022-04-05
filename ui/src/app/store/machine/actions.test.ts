@@ -1,5 +1,6 @@
 import { actions } from "./slice";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import {
   BondLacpRate,
   BondMode,
@@ -65,6 +66,8 @@ describe("machine actions", () => {
         hostname: "machine1",
         description: "a machine",
         extra_macs: [],
+        power_parameters: {},
+        power_type: PowerTypeNames.MANUAL,
         pxe_mac: "",
       })
     ).toEqual({
@@ -78,6 +81,8 @@ describe("machine actions", () => {
           hostname: "machine1",
           description: "a machine",
           extra_macs: [],
+          power_parameters: {},
+          power_type: PowerTypeNames.MANUAL,
           pxe_mac: "",
         },
       },
@@ -561,22 +566,37 @@ describe("machine actions", () => {
   });
 
   it("can handle tagging a machine", () => {
-    expect(actions.tag({ systemId: "abc123", tags: ["tag1", "tag2"] })).toEqual(
-      {
-        type: "machine/tag",
-        meta: {
-          model: "machine",
-          method: "action",
+    expect(actions.tag({ systemId: "abc123", tags: [1, 2] })).toEqual({
+      type: "machine/tag",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.TAG,
+          extra: { tags: [1, 2] },
+          system_id: "abc123",
         },
-        payload: {
-          params: {
-            action: NodeActions.TAG,
-            extra: { tags: ["tag1", "tag2"] },
-            system_id: "abc123",
-          },
+      },
+    });
+  });
+
+  it("can handle untagging a machine", () => {
+    expect(actions.untag({ systemId: "abc123", tags: [1, 2] })).toEqual({
+      type: "machine/untag",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.UNTAG,
+          extra: { tags: [1, 2] },
+          system_id: "abc123",
         },
-      }
-    );
+      },
+    });
   });
 
   it("can handle cloning a machine", () => {

@@ -6,6 +6,7 @@ import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { ResourcePool } from "app/store/resourcepool/types";
 import type { Script } from "app/store/script/types";
 import type { Subnet } from "app/store/subnet/types";
+import type { Tag, TagMeta } from "app/store/tag/types";
 import type {
   DiskTypes,
   NetworkLinkMode,
@@ -298,7 +299,7 @@ export type SetZoneParams = {
 
 export type TagParams = {
   systemId: Machine[MachineMeta.PK];
-  tags: string[];
+  tags: Tag[TagMeta.PK][];
 };
 
 export type TestParams = {
@@ -317,6 +318,11 @@ export type UnlinkSubnetParams = {
 export type UnmountSpecialParams = {
   mountPoint: string;
   systemId: Machine[MachineMeta.PK];
+};
+
+export type UntagParams = {
+  systemId: Machine[MachineMeta.PK];
+  tags: Tag[TagMeta.PK][];
 };
 
 export type UpdateDiskParams = {

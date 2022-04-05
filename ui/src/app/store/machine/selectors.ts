@@ -81,6 +81,20 @@ ACTIONS.forEach(({ status }) => {
 });
 
 /**
+ * Get the machines that are either tagging or untagging.
+ * @param state - The redux state.
+ * @returns Machines that are either tagging or untagging.
+ */
+const updatingTags = createSelector(
+  [defaultSelectors.all, statuses],
+  (machines: Machine[], statuses: MachineStatuses) =>
+    machines.filter(
+      ({ system_id }) =>
+        statuses[system_id]?.["tagging"] || statuses[system_id]?.["untagging"]
+    )
+);
+
+/**
  * Get the statuses for a machine.
  * @param state - The redux state.
  * @param id - A machine's system id.
@@ -202,7 +216,7 @@ const eventErrorsForIds = createSelector(
     (
       _state: RootState,
       ids: Machine[MachineMeta.PK] | Machine[MachineMeta.PK][],
-      event?: string | null
+      event?: string[] | string | null
     ) => ({
       ids,
       event,
@@ -220,7 +234,9 @@ const eventErrorsForIds = createSelector(
       // If an event has been provided as `null` then filter for errors with
       // a null event.
       if (event || event === null) {
-        match = matchesId && error.event === event;
+        const eventArray = Array.isArray(event) ? event : [event];
+        const matchesEvent = eventArray.some((e) => error.event === e);
+        match = matchesId && matchesEvent;
       } else {
         match = matchesId;
       }
@@ -341,7 +357,9 @@ const selectors = {
   turningOn: statusSelectors["turningOn"],
   unlocking: statusSelectors["unlocking"],
   unlinkingSubnet: statusSelectors["unlinkingSubnet"],
+  untagging: statusSelectors["untagging"],
   unselected,
+  updatingTags,
 };
 
 export default selectors;

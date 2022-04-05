@@ -149,6 +149,7 @@ export enum NodeActions {
   TAG = "tag",
   TEST = "test",
   UNLOCK = "unlock",
+  UNTAG = "untag",
 }
 
 export enum TestStatusStatus {

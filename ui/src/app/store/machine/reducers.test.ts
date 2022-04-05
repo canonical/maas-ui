@@ -611,4 +611,93 @@ describe("machine reducer", () => {
       );
     });
   });
+
+  describe("untag", () => {
+    it("reduces untagStart", () => {
+      const machine = machineFactory({ system_id: "abc123" });
+      const initialState = machineStateFactory({
+        items: [machine],
+        statuses: { abc123: machineStatusFactory({ untagging: false }) },
+      });
+
+      expect(
+        reducers(
+          initialState,
+          actions.untagStart({
+            item: machine,
+          })
+        )
+      ).toEqual(
+        machineStateFactory({
+          items: [machine],
+          statuses: {
+            abc123: machineStatusFactory({
+              untagging: true,
+            }),
+          },
+        })
+      );
+    });
+
+    it("reduces untagSuccess", () => {
+      const machine = machineFactory({ system_id: "abc123" });
+      const initialState = machineStateFactory({
+        items: [machine],
+        statuses: { abc123: machineStatusFactory({ untagging: true }) },
+      });
+
+      expect(
+        reducers(
+          initialState,
+          actions.untagSuccess({
+            item: machine,
+          })
+        )
+      ).toEqual(
+        machineStateFactory({
+          items: [machine],
+          statuses: {
+            abc123: machineStatusFactory({
+              untagging: false,
+            }),
+          },
+        })
+      );
+    });
+
+    it("reduces untagError", () => {
+      const machine = machineFactory({ system_id: "abc123" });
+      const initialState = machineStateFactory({
+        items: [machine],
+        statuses: { abc123: machineStatusFactory({ untagging: true }) },
+      });
+
+      expect(
+        reducers(
+          initialState,
+          actions.untagError({
+            item: machine,
+            payload: "Untagging failed.",
+          })
+        )
+      ).toEqual(
+        machineStateFactory({
+          errors: "Untagging failed.",
+          eventErrors: [
+            machineEventErrorFactory({
+              error: "Untagging failed.",
+              event: NodeActions.UNTAG,
+              id: "abc123",
+            }),
+          ],
+          items: [machine],
+          statuses: {
+            abc123: machineStatusFactory({
+              untagging: false,
+            }),
+          },
+        })
+      );
+    });
+  });
 });

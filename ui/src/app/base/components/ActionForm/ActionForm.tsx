@@ -84,7 +84,8 @@ const getLabel = (
     case NodeActions.SET_ZONE:
       return `${processing ? "Setting" : "Set"} zone for ${modelString}`;
     case NodeActions.TAG:
-      return `${processing ? "Tagging" : "Tag"} ${modelString}`;
+    case NodeActions.UNTAG:
+      return `${processing ? "Updating" : "Update"} tags for ${modelString}`;
     case NodeActions.TEST:
       return `${processing ? "Starting" : "Start"} tests for ${modelString}`;
     case NodeActions.UNLOCK:

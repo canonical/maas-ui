@@ -1,1 +1,1 @@
-export { default } from "./TagFormChanges";
+export { default, Label } from "./TagFormChanges";
