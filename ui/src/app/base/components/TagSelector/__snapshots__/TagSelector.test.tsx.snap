@@ -15,6 +15,7 @@ exports[`TagSelector renders and matches the snapshot when closed 1`] = `
     className="tag-selector"
   >
     <Input
+      aria-haspopup="listbox"
       className="tag-selector__input"
       id="mock-nanoid-1"
       onChange={[Function]}
@@ -81,6 +82,7 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
           className="tag-selector"
         >
           <Input
+            aria-haspopup="listbox"
             className="tag-selector__input"
             id="mock-nanoid-1"
             onChange={[Function]}
@@ -106,6 +108,7 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
                   <input
                     aria-describedby={null}
                     aria-errormessage={null}
+                    aria-haspopup="listbox"
                     aria-invalid={false}
                     className="p-form-validation__input tag-selector__input"
                     id="mock-nanoid-1"
@@ -182,6 +185,7 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
           className="tag-selector"
         >
           <Input
+            aria-haspopup="listbox"
             className="tag-selector__input"
             id="mock-nanoid-1"
             onChange={[Function]}
@@ -207,6 +211,7 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
                   <input
                     aria-describedby={null}
                     aria-errormessage={null}
+                    aria-haspopup="listbox"
                     aria-invalid={false}
                     className="p-form-validation__input tag-selector__input"
                     id="mock-nanoid-1"

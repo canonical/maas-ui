@@ -8,12 +8,13 @@ import usePortal from "react-useportal";
 
 import AddTagForm from "../AddTagForm";
 import TagFormChanges from "../TagFormChanges";
-import { useSelectedTags } from "../hooks";
+import { useSelectedTags, useUnchangedTags } from "../hooks";
 import type { TagFormValues } from "../types";
 
 import TagField from "app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "app/base/components/TagSelector/TagSelector";
 import type { Machine } from "app/store/machine/types";
+import { getTagCountsForMachines } from "app/store/machine/utils";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 
@@ -39,8 +40,15 @@ export const TagFormFields = ({ machines }: Props): JSX.Element => {
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
   const [newTagName, setNewTagName] = useState<string | null>(null);
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
-  const selectedTags = useSelectedTags();
+  const selectedTags = useSelectedTags("added");
   const tags = useSelector(tagSelectors.getManual);
+  const tagIdsAndCounts = getTagCountsForMachines(machines);
+  // Tags can't be added if they already exist on all machines or already in
+  // the added/removed lists.
+  const unchangedTags = useUnchangedTags(tags);
+  const availableTags = unchangedTags.filter(
+    (tag) => tagIdsAndCounts.get(tag.id) !== machines.length
+  );
   return (
     <>
       <Row>
@@ -67,7 +75,7 @@ export const TagFormFields = ({ machines }: Props): JSX.Element => {
               </div>
             }
             label={Label.TagInput}
-            name="tags"
+            name="added"
             onAddNewTag={(name) => {
               setNewTagName(name);
               openPortal(NULL_EVENT);
@@ -75,7 +83,7 @@ export const TagFormFields = ({ machines }: Props): JSX.Element => {
             placeholder=""
             showSelectedTags={false}
             storedValue="id"
-            tags={tags.map(({ id, name }) => ({ id, name }))}
+            tags={availableTags.map(({ id, name }) => ({ id, name }))}
           />
           <TagFormChanges machines={machines} />
         </Col>
@@ -91,7 +99,10 @@ export const TagFormFields = ({ machines }: Props): JSX.Element => {
               machines={machines}
               name={newTagName}
               onTagCreated={(tag) => {
-                setFieldValue("tags", values.tags.concat([tag.id.toString()]));
+                setFieldValue(
+                  "added",
+                  values.added.concat([tag.id.toString()])
+                );
                 setNewTagName(null);
                 closePortal(NULL_EVENT);
               }}

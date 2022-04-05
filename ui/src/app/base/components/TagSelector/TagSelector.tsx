@@ -123,11 +123,14 @@ const generateDropdownItems = ({
         <li className="tag-selector__dropdown-item" key={tag.name}>
           <Button
             appearance="base"
+            aria-label={tag.displayName}
+            aria-selected={false}
             className="tag-selector__dropdown-button u-break-word"
             data-testid="existing-tag"
             onClick={() => {
               updateTags([...selectedTags, tag]);
             }}
+            role="option"
             type="button"
           >
             {generateDropdownEntry?.(tag, highlightedName) ?? (
@@ -274,6 +277,7 @@ export const TagSelector = ({
           </ul>
         )}
         <Input
+          aria-haspopup="listbox"
           className={classNames("tag-selector__input", {
             "tags-selected": hasSelectedTags,
           })}
@@ -301,7 +305,7 @@ export const TagSelector = ({
           value={filter}
         />
         {dropdownOpen && dropdownItems.length >= 1 && (
-          <div className="tag-selector__dropdown">
+          <div className="tag-selector__dropdown" role="listbox">
             {header ? (
               <div className="tag-selector__dropdown-header">{header}</div>
             ) : null}

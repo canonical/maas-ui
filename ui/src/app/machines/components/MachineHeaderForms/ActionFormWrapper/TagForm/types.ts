@@ -1,3 +1,4 @@
 export type TagFormValues = {
-  tags: string[];
+  added: string[];
+  removed: string[];
 };

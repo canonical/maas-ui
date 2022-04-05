@@ -73,7 +73,7 @@ describe("TagForm", () => {
 
     act(() =>
       submitFormikForm(wrapper, {
-        tags: ["tag1", "tag2"],
+        added: ["tag1", "tag2"],
       })
     );
     expect(
