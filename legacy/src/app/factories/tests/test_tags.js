@@ -10,9 +10,10 @@ describe("TagsManager", function () {
   beforeEach(angular.mock.module("MAAS"));
 
   // Load the TagsManager.
-  var TagsManager;
+  let TagsManager, RegionConnection;
   beforeEach(inject(function ($injector) {
     TagsManager = $injector.get("TagsManager");
+    RegionConnection = $injector.get("RegionConnection");
   }));
 
   it("set requires attributes", function () {
@@ -27,13 +28,22 @@ describe("TagsManager", function () {
         TagsManager._items.push({ name: tag, id: i });
       });
       expect(TagsManager.autocomplete("a")).toStrictEqual([
-        { name: "apple", id: 0 },
-        { name: "banana", id: 1 },
-        { name: "cake", id: 2 },
+        "apple",
+        "banana",
+        "cake",
       ]);
-      expect(TagsManager.autocomplete("do")).toStrictEqual([
-        { name: "donut", id: 3 },
-      ]);
+      expect(TagsManager.autocomplete("do")).toStrictEqual(["donut"]);
+    });
+  });
+
+  describe("create", function () {
+    it("calls the region with expected parameters", function () {
+      var result = {};
+      spyOn(RegionConnection, "callMethod").and.returnValue(result);
+      expect(TagsManager.create("new-tag")).toBe(result);
+      expect(RegionConnection.callMethod).toHaveBeenCalledWith("tag.create", {
+        name: "new-tag",
+      });
     });
   });
 });

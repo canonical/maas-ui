@@ -1170,10 +1170,11 @@ describe("NodeDetailsController", function () {
       expect(calledWithNode).not.toBe(node);
     });
 
-    it("calls updateItem with new hostname on node", function () {
+    it("calls updateItem with new hostname on node", function (done) {
       makeController();
+      const updateItemDefer = $q.defer();
       spyOn(ControllersManager, "updateItem").and.returnValue(
-        $q.defer().promise
+        updateItemDefer.promise
       );
       spyOn($scope, "editHeaderInvalid").and.returnValue(false);
 
@@ -1181,10 +1182,14 @@ describe("NodeDetailsController", function () {
       $scope.node = node;
       $scope.header.editing = true;
       $scope.header.hostname.value = newName;
+      updateItemDefer.promise.then(function () {
+        var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
+        expect(calledWithNode.hostname).toBe(newName);
+        done();
+      });
       $scope.saveEditHeader();
-
-      var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
-      expect(calledWithNode.hostname).toBe(newName);
+      updateItemDefer.resolve();
+      $rootScope.$digest();
     });
 
     it("calls updateName once updateItem resolves", function () {
@@ -1285,25 +1290,62 @@ describe("NodeDetailsController", function () {
       expect(calledWithNode).not.toBe(node);
     });
 
-    it("calls updateItem with new copied values on node", function () {
+    it("calls updateItem with new copied values on node", function (done) {
       makeController();
+      const updateItemDefer = $q.defer();
       spyOn(ControllersManager, "updateItem").and.returnValue(
-        $q.defer().promise
+        updateItemDefer.promise
       );
-
       $scope.node = node;
       configureSummary();
+      $scope.tags = $scope.summary.tags.map((tag, i) => ({
+        id: i,
+        name: tag.text,
+      }));
       var newZone = $scope.summary.zone.selected;
       var newTags = [];
-      angular.forEach($scope.summary.tags, function (tag) {
+      angular.forEach($scope.tags, function (tag) {
         newTags.push(tag.id);
       });
+      updateItemDefer.promise.then(function () {
+        var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
+        expect(calledWithNode.zone).toEqual(newZone);
+        expect(calledWithNode.zone).not.toBe(newZone);
+        expect(calledWithNode.tags).toEqual(newTags);
+        done();
+      });
       $scope.saveEditSummary();
+      updateItemDefer.resolve();
+      $rootScope.$digest();
+    });
 
-      var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
-      expect(calledWithNode.zone).toEqual(newZone);
-      expect(calledWithNode.zone).not.toBe(newZone);
-      expect(calledWithNode.tags).toEqual(newTags);
+    it("creates new tags before updating the node", function (done) {
+      makeController();
+      const updateItemDefer = $q.defer();
+      spyOn(ControllersManager, "updateItem").and.returnValue(
+        updateItemDefer.promise
+      );
+      node.tags = [1];
+      $scope.node = node;
+      configureSummary();
+      // Set the first tag to be an existing tag.
+      $scope.tags = [{ id: 1, name: $scope.summary.tags[0].text }];
+      const createDefer = $q.defer();
+      spyOn(TagsManager, "create").and.returnValue(createDefer.promise);
+      updateItemDefer.promise.then(function () {
+        var createTag = TagsManager.create.calls.argsFor(0)[0];
+        expect(createTag).toEqual($scope.summary.tags[1].text);
+        var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
+        // The node should be updated with the new tag id.
+        expect(calledWithNode.tags).toEqual([1, 2]);
+        done();
+      });
+      $scope.saveEditSummary();
+      // Return the values for the second tag.
+      createDefer.resolve({ id: 2, name: $scope.summary.tags[1].text });
+      $rootScope.$digest();
+      updateItemDefer.resolve();
+      $rootScope.$digest();
     });
 
     it("logs error if not disconnected error", function () {
@@ -1314,13 +1356,15 @@ describe("NodeDetailsController", function () {
 
       $scope.node = node;
       configureSummary();
+      $scope.tags = $scope.summary.tags.map((tag, i) => ({
+        id: i,
+        name: tag.text,
+      }));
       $scope.saveEditSummary();
-
       spyOn($log, "error");
       var error = makeName("error");
       defer.reject(error);
       $rootScope.$digest();
-
       expect($log.error).toHaveBeenCalledWith(error);
     });
   });
@@ -1439,10 +1483,11 @@ describe("NodeDetailsController", function () {
       expect(calledWithNode).not.toBe(node);
     });
 
-    it("calls updateItem with new copied values on node", function () {
+    it("calls updateItem with new copied values on node", function (done) {
       makeController();
+      const updateItemDefer = $q.defer();
       spyOn(ControllersManager, "updateItem").and.returnValue(
-        $q.defer().promise
+        updateItemDefer.promise
       );
 
       var newPowerType = {
@@ -1456,12 +1501,17 @@ describe("NodeDetailsController", function () {
       $scope.power.editing = true;
       $scope.power.type = newPowerType;
       $scope.power.parameters = newPowerParameters;
+      updateItemDefer.promise.then(function () {
+        var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
+        expect(calledWithNode.power_type).toBe(newPowerType.name);
+        expect(calledWithNode.power_parameters).toEqual(newPowerParameters);
+        expect(calledWithNode.power_parameters).not.toBe(newPowerParameters);
+        done();
+      });
       $scope.saveEditPower();
-
-      var calledWithNode = ControllersManager.updateItem.calls.argsFor(0)[0];
-      expect(calledWithNode.power_type).toBe(newPowerType.name);
-      expect(calledWithNode.power_parameters).toEqual(newPowerParameters);
-      expect(calledWithNode.power_parameters).not.toBe(newPowerParameters);
+      $rootScope.$digest();
+      updateItemDefer.resolve();
+      $rootScope.$digest();
     });
 
     it("calls handleSaveError once updateItem is rejected", function () {

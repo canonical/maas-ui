@@ -46,6 +46,7 @@ export const getRanges = (array) => {
 
 /* @ngInject */
 function NodeDetailsController(
+  $q,
   $scope,
   $rootScope,
   $stateParams,
@@ -406,7 +407,7 @@ function NodeDetailsController(
     summary.tags = node.tags.reduce((tags, tagId) => {
       const tag = $scope.tags.find(({ id }) => id === tagId);
       if (tag) {
-        tags.push(tag);
+        tags.push(tag.name);
       }
       return tags;
     }, []);
@@ -496,13 +497,21 @@ function NodeDetailsController(
   }
 
   // Update the node with new data on the region.
-  $scope.updateNode = function (node, queryPower) {
+  $scope.updateNode = function (node, queryPower, newTags = []) {
     if (angular.isUndefined(queryPower)) {
       queryPower = false;
     }
-
-    return $scope.nodesManager
-      .updateItem(node)
+    let createTags = newTags.map((tagName) => TagsManager.create(tagName));
+    // Create all new tags before updating the node.
+    return $q
+      .all(createTags)
+      .then((newTags) => {
+        if (newTags?.length) {
+          let tagIds = newTags.map(({ id }) => id);
+          node.tags = node.tags.concat(tagIds);
+        }
+        return $scope.nodesManager.updateItem(node);
+      })
       .then(function () {
         updateHeader();
         updateSummary();
@@ -887,12 +896,19 @@ function NodeDetailsController(
     var node = angular.copy($scope.node);
     node.zone = angular.copy($scope.summary.zone.selected);
     node.tags = [];
-    angular.forEach($scope.summary.tags, function (tag) {
-      node.tags.push(tag.id);
+    let newTags = [];
+    angular.forEach($scope.summary.tags, function ({ text: tagName }) {
+      const tag = $scope.tags.find(({ name }) => name === tagName);
+      if (tag) {
+        node.tags.push(tag.id);
+      } else {
+        // If the tag name does not match an existing tag then set it to be created.
+        newTags.push(tagName);
+      }
     });
 
     // Update the node.
-    $scope.updateNode(node);
+    $scope.updateNode(node, false, newTags);
   };
 
   // Return true if the current power type selection is invalid.
