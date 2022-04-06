@@ -120,6 +120,19 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
           content:
             "Commission this machine to get CPU, Memory and Storage information.",
         },
+        {
+          active: !machine.is_sync_healthy,
+          content: (
+            <>
+              This machine was not synced when it was scheduled. Check the{" "}
+              <Link to={machineURLs.machine.logs.index({ id })}>
+                machine logs
+              </Link>{" "}
+              for more information.
+            </>
+          ),
+          severity: "caution",
+        },
       ]}
     />
   );

@@ -323,6 +323,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   installation_start_time: "Thu, 15 Oct. 2020 07:25:10",
   installation_status: 3,
   interfaces: () => [],
+  is_sync_healthy: true,
   last_sync: "",
   license_key: "",
   metadata: () => ({
