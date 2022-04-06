@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -12,7 +12,7 @@ describe("ActionBar", () => {
   it("displays provided actions", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <ActionBar
           actions={<span data-testid="actions">Actions</span>}
@@ -24,6 +24,6 @@ describe("ActionBar", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("[data-testid='actions']").exists()).toBe(true);
+    expect(screen.getByTestId("actions")).toBeInTheDocument();
   });
 });

@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -18,7 +18,7 @@ describe("Settings", () => {
   it("dispatches action to fetch config on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings", key: "testKey" }]}
@@ -49,7 +49,7 @@ describe("Settings", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings", key: "testKey" }]}
@@ -58,8 +58,10 @@ describe("Settings", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("SectionHeader").prop("title")).toEqual(
-      "You do not have permission to view this page."
-    );
+    expect(
+      screen.getByRole("heading", {
+        name: /You do not have permission to view this page./,
+      })
+    ).toBeInTheDocument();
   });
 });
