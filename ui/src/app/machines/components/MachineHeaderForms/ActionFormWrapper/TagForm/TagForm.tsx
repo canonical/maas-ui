@@ -9,6 +9,7 @@ import type { TagFormValues } from "./types";
 import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { NodeActions } from "app/store/types/node";
@@ -44,10 +45,10 @@ export const TagForm = ({
   }, [dispatch]);
 
   return (
-    <ActionForm<TagFormValues>
+    <ActionForm<TagFormValues, MachineEventErrors>
       actionName={NodeActions.TAG}
       cleanup={machineActions.cleanup}
-      errors={formErrors}
+      errors={formErrors || errors}
       initialValues={{
         added: [],
         removed: [],
@@ -67,7 +68,17 @@ export const TagForm = ({
             dispatch(
               machineActions.tag({
                 systemId: machine.system_id,
-                tags: values.added,
+                tags: values.added.map((id) => Number(id)),
+              })
+            );
+          });
+        }
+        if (values.removed.length) {
+          machines.forEach((machine) => {
+            dispatch(
+              machineActions.untag({
+                systemId: machine.system_id,
+                tags: values.removed.map((id) => Number(id)),
               })
             );
           });

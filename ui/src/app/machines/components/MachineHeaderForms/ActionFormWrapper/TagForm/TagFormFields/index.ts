@@ -1,1 +1,1 @@
-export { default } from "./TagFormFields";
+export { default, Label } from "./TagFormFields";

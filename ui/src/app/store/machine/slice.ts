@@ -41,6 +41,7 @@ import type {
   TestParams,
   UnlinkSubnetParams,
   UnmountSpecialParams,
+  UntagParams,
   UpdateDiskParams,
   UpdateFilesystemParams,
   UpdateParams,
@@ -245,6 +246,10 @@ export const ACTIONS: Action[] = [
     status: "unmountingSpecial",
   },
   {
+    name: NodeActions.UNTAG,
+    status: "untagging",
+  },
+  {
     name: "update-disk",
     status: "updatingDisk",
   },
@@ -309,6 +314,7 @@ export const DEFAULT_STATUSES = {
   unlocking: false,
   unlinkingSubnet: false,
   unmountingSpecial: false,
+  untagging: false,
   updatingDisk: false,
   updatingFilesystem: false,
   updatingInterface: false,
@@ -1561,6 +1567,27 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
+    [NodeActions.UNTAG]: {
+      prepare: (params: UntagParams) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.UNTAG,
+            extra: { tags: params.tags },
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    untagError: statusHandlers.untag.error,
+    untagStart: statusHandlers.untag.start,
+    untagSuccess: statusHandlers.untag.success,
     updateDisk: {
       prepare: (params: UpdateDiskParams) => ({
         meta: {

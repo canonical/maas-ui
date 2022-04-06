@@ -39,6 +39,9 @@ type Props = {
   viewingDetails: boolean;
 };
 
+const isTagUpdateAction = (action: MachineActions) =>
+  [NodeActions.TAG, NodeActions.UNTAG].includes(action);
+
 const getProcessingCount = (
   selectedMachines: Machine[],
   processingMachines: Machine[],
@@ -58,6 +61,14 @@ const getProcessingCount = (
   }, 0);
 };
 
+const getProcessingSelector = (action: MachineActions) => {
+  if (isTagUpdateAction(action)) {
+    return machineSelectors.updatingTags;
+  }
+  const actionStatus = ACTIONS.find(({ name }) => name === action)?.status;
+  return actionStatus ? statusSelectors[actionStatus] : () => [];
+};
+
 export const ActionFormWrapper = ({
   action,
   applyConfiguredNetworking,
@@ -68,17 +79,18 @@ export const ActionFormWrapper = ({
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const actionStatus = ACTIONS.find(({ name }) => name === action)?.status;
-  const processingMachines = useSelector(
-    actionStatus ? statusSelectors[actionStatus] : () => []
-  );
+  const processingMachines = useSelector(getProcessingSelector(action));
+  // When updating tags we want to surface both "tag" and "untag" errors.
+  const errorEvents = isTagUpdateAction(action)
+    ? [NodeActions.TAG, NodeActions.UNTAG]
+    : [kebabToCamelCase(action)];
   // The form expects one error, so we only show the latest error with the
   // assumption that all selected machines fail in the same way.
   const errors = useSelector((state: RootState) =>
     machineSelectors.eventErrorsForIds(
       state,
       machines.map(({ system_id }) => system_id),
-      kebabToCamelCase(action)
+      errorEvents
     )
   )[0]?.error;
   const processingCount = getProcessingCount(
@@ -154,6 +166,7 @@ export const ActionFormWrapper = ({
           />
         );
       case NodeActions.TAG:
+      case NodeActions.UNTAG:
         return <TagForm {...commonMachineFormProps} />;
       case NodeActions.TEST:
         return (
