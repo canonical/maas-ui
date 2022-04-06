@@ -4,10 +4,11 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import TagForm from "./TagForm";
+import TagForm, { Label } from "./TagForm";
 import { Label as TagFormChangesLabel } from "./TagFormChanges";
 import { Label as TagFormFieldsLabel } from "./TagFormFields";
 
+import * as baseHooks from "app/base/hooks/base";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
@@ -30,6 +31,13 @@ beforeEach(() => {
       loaded: true,
     }),
   });
+  jest
+    .spyOn(baseHooks, "useCycled")
+    .mockImplementation(() => [false, () => null]);
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 it("dispatches action to fetch tags on load", () => {
@@ -170,5 +178,41 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
           action.type === expectedActions[1].type
       );
     expect(actualActions).toStrictEqual(expectedActions);
+  });
+});
+
+it("shows a notification on success", async () => {
+  const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+      >
+        <TagForm
+          clearHeaderContent={jest.fn()}
+          machines={machines}
+          processingCount={0}
+          viewingDetails={false}
+        />
+      </MemoryRouter>
+    </Provider>
+  );
+  userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
+  userEvent.click(screen.getByRole("option", { name: "tag2" }));
+  userEvent.click(
+    screen.getByRole("button", { name: TagFormChangesLabel.Remove })
+  );
+  userEvent.click(screen.getByRole("button", { name: "Save" }));
+  // Mock state.tag.saved transitioning from "false" to "true"
+  jest
+    .spyOn(baseHooks, "useCycled")
+    .mockImplementation(() => [true, () => null]);
+
+  await waitFor(() => {
+    const action = store
+      .getActions()
+      .find((action) => action.type === "message/add");
+    expect(action.payload.message).toBe(Label.Saved);
   });
 });
