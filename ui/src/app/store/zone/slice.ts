@@ -32,9 +32,9 @@ const {
 } = ZONE_ACTIONS;
 
 const {
-  failed: actionFailed,
-  processing: actionProcessing,
-  successful: actionSuccessful,
+  error: errorStatus,
+  loading: loadingStatus,
+  success: successStatus,
 } = ACTION_STATUS;
 
 export const initialGenericActions: ZoneGenericActions = {
@@ -44,14 +44,14 @@ export const initialGenericActions: ZoneGenericActions = {
 
 export const initialModelActions: ZoneModelActions = {
   [deleteAction]: {
-    [actionFailed]: [],
-    [actionProcessing]: [],
-    [actionSuccessful]: [],
+    [errorStatus]: [],
+    [loadingStatus]: [],
+    [successStatus]: [],
   },
   [updateAction]: {
-    [actionFailed]: [],
-    [actionProcessing]: [],
-    [actionSuccessful]: [],
+    [errorStatus]: [],
+    [loadingStatus]: [],
+    [successStatus]: [],
   },
 };
 
@@ -79,21 +79,19 @@ const updateModelAction = (
   modelPK: ZonePK
 ) => {
   const statuses = state.modelActions[actionName];
-  statuses[actionFailed] = statuses[actionFailed].filter(
+  statuses[errorStatus] = statuses[errorStatus].filter((id) => id !== modelPK);
+  statuses[loadingStatus] = statuses[loadingStatus].filter(
     (id) => id !== modelPK
   );
-  statuses[actionProcessing] = statuses[actionProcessing].filter(
+  statuses[successStatus] = statuses[successStatus].filter(
     (id) => id !== modelPK
   );
-  statuses[actionSuccessful] = statuses[actionSuccessful].filter(
-    (id) => id !== modelPK
-  );
-  if (status === actionFailed) {
-    statuses[actionFailed].push(modelPK);
-  } else if (status === actionProcessing) {
-    statuses[actionProcessing].push(modelPK);
+  if (status === errorStatus) {
+    statuses[errorStatus].push(modelPK);
+  } else if (status === loadingStatus) {
+    statuses[loadingStatus].push(modelPK);
   } else {
-    statuses[actionSuccessful].push(modelPK);
+    statuses[successStatus].push(modelPK);
   }
 };
 
@@ -135,7 +133,7 @@ const zoneSlice = createSlice({
     },
     createError: (state, action: PayloadAction<APIError>) => {
       addError(state, createAction, action.payload);
-      updateGenericAction(state, createAction, actionFailed);
+      updateGenericAction(state, createAction, errorStatus);
     },
     createNotify: (state, action: PayloadAction<Zone>) => {
       const existingIdx = state.items.findIndex(
@@ -148,10 +146,10 @@ const zoneSlice = createSlice({
       }
     },
     createStart: (state) => {
-      updateGenericAction(state, createAction, actionProcessing);
+      updateGenericAction(state, createAction, loadingStatus);
     },
     createSuccess: (state) => {
-      updateGenericAction(state, createAction, actionSuccessful);
+      updateGenericAction(state, createAction, successStatus);
     },
     [deleteAction]: {
       prepare: (params: DeleteParams) => ({
@@ -175,7 +173,7 @@ const zoneSlice = createSlice({
         updateModelAction(
           state,
           deleteAction,
-          actionFailed,
+          errorStatus,
           action.meta.modelPK
         );
       },
@@ -192,7 +190,7 @@ const zoneSlice = createSlice({
         updateModelAction(
           state,
           deleteAction,
-          actionProcessing,
+          loadingStatus,
           action.meta.modelPK
         );
       },
@@ -203,7 +201,7 @@ const zoneSlice = createSlice({
         updateModelAction(
           state,
           deleteAction,
-          actionSuccessful,
+          successStatus,
           action.meta.modelPK
         );
       },
@@ -222,14 +220,14 @@ const zoneSlice = createSlice({
     },
     fetchError: (state, action: PayloadAction<APIError>) => {
       addError(state, fetchAction, action.payload);
-      updateGenericAction(state, fetchAction, actionFailed);
+      updateGenericAction(state, fetchAction, errorStatus);
     },
     fetchStart: (state) => {
-      updateGenericAction(state, fetchAction, actionProcessing);
+      updateGenericAction(state, fetchAction, loadingStatus);
     },
     fetchSuccess: (state, action: PayloadAction<Zone[]>) => {
       state.items = action.payload;
-      updateGenericAction(state, fetchAction, actionSuccessful);
+      updateGenericAction(state, fetchAction, successStatus);
     },
     [updateAction]: {
       prepare: (params: UpdateParams) => ({
@@ -253,7 +251,7 @@ const zoneSlice = createSlice({
         updateModelAction(
           state,
           updateAction,
-          actionFailed,
+          errorStatus,
           action.meta.modelPK
         );
       },
@@ -271,7 +269,7 @@ const zoneSlice = createSlice({
         updateModelAction(
           state,
           updateAction,
-          actionProcessing,
+          loadingStatus,
           action.meta.modelPK
         );
       },
@@ -282,7 +280,7 @@ const zoneSlice = createSlice({
         updateModelAction(
           state,
           updateAction,
-          actionSuccessful,
+          successStatus,
           action.meta.modelPK
         );
       },

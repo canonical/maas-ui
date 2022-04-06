@@ -21,14 +21,14 @@ it("returns the initial state", () => {
     items: [],
     modelActions: {
       [ZONE_ACTIONS.delete]: {
-        [ACTION_STATUS.failed]: [],
-        [ACTION_STATUS.processing]: [],
-        [ACTION_STATUS.successful]: [],
+        [ACTION_STATUS.error]: [],
+        [ACTION_STATUS.loading]: [],
+        [ACTION_STATUS.success]: [],
       },
       [ZONE_ACTIONS.update]: {
-        [ACTION_STATUS.failed]: [],
-        [ACTION_STATUS.processing]: [],
-        [ACTION_STATUS.successful]: [],
+        [ACTION_STATUS.error]: [],
+        [ACTION_STATUS.loading]: [],
+        [ACTION_STATUS.success]: [],
       },
     },
   });
@@ -38,7 +38,7 @@ describe("cleanup", () => {
   it("does not clear fetch action status", () => {
     const initialState = zoneStateFactory({
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
       }),
     });
 
@@ -49,13 +49,13 @@ describe("cleanup", () => {
     const initialState = zoneStateFactory({
       errors: [zoneErrorFactory()],
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.create]: ACTION_STATUS.failed,
+        [ZONE_ACTIONS.create]: ACTION_STATUS.error,
       }),
       modelActions: zoneModelActionsFactory({
         [ZONE_ACTIONS.update]: zoneModelActionFactory({
-          [ACTION_STATUS.failed]: [1],
-          [ACTION_STATUS.processing]: [2],
-          [ACTION_STATUS.successful]: [3],
+          [ACTION_STATUS.error]: [1],
+          [ACTION_STATUS.loading]: [2],
+          [ACTION_STATUS.success]: [3],
         }),
       }),
     });
@@ -68,9 +68,9 @@ describe("cleanup", () => {
         }),
         modelActions: zoneModelActionsFactory({
           [ZONE_ACTIONS.update]: zoneModelActionFactory({
-            [ACTION_STATUS.failed]: [],
-            [ACTION_STATUS.processing]: [],
-            [ACTION_STATUS.successful]: [],
+            [ACTION_STATUS.error]: [],
+            [ACTION_STATUS.loading]: [],
+            [ACTION_STATUS.success]: [],
           }),
         }),
       })
@@ -89,7 +89,7 @@ describe("create", () => {
     expect(reducers(initialState, actions.createStart())).toEqual(
       zoneStateFactory({
         genericActions: zoneGenericActionsFactory({
-          [ZONE_ACTIONS.create]: ACTION_STATUS.processing,
+          [ZONE_ACTIONS.create]: ACTION_STATUS.loading,
         }),
       })
     );
@@ -98,14 +98,14 @@ describe("create", () => {
   it("reduces createSuccess", () => {
     const initialState = zoneStateFactory({
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.create]: ACTION_STATUS.processing,
+        [ZONE_ACTIONS.create]: ACTION_STATUS.loading,
       }),
     });
 
     expect(reducers(initialState, actions.createSuccess())).toEqual(
       zoneStateFactory({
         genericActions: zoneGenericActionsFactory({
-          [ZONE_ACTIONS.create]: ACTION_STATUS.successful,
+          [ZONE_ACTIONS.create]: ACTION_STATUS.success,
         }),
       })
     );
@@ -115,7 +115,7 @@ describe("create", () => {
     const initialState = zoneStateFactory({
       errors: [],
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.create]: ACTION_STATUS.processing,
+        [ZONE_ACTIONS.create]: ACTION_STATUS.loading,
       }),
     });
     const errorMessage = "Unable to create zone";
@@ -129,7 +129,7 @@ describe("create", () => {
           }),
         ],
         genericActions: zoneGenericActionsFactory({
-          [ZONE_ACTIONS.create]: ACTION_STATUS.failed,
+          [ZONE_ACTIONS.create]: ACTION_STATUS.error,
         }),
       })
     );
@@ -160,7 +160,7 @@ describe("fetch", () => {
     expect(reducers(initialState, actions.fetchStart())).toEqual(
       zoneStateFactory({
         genericActions: zoneGenericActionsFactory({
-          [ZONE_ACTIONS.fetch]: ACTION_STATUS.processing,
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
         }),
       })
     );
@@ -169,7 +169,7 @@ describe("fetch", () => {
   it("reduces fetchSuccess", () => {
     const initialState = zoneStateFactory({
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.processing,
+        [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
       }),
       items: [],
     });
@@ -178,7 +178,7 @@ describe("fetch", () => {
     expect(reducers(initialState, actions.fetchSuccess(fetchedZones))).toEqual(
       zoneStateFactory({
         genericActions: zoneGenericActionsFactory({
-          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
         }),
         items: fetchedZones,
       })
@@ -189,7 +189,7 @@ describe("fetch", () => {
     const initialState = zoneStateFactory({
       errors: [],
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.processing,
+        [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
       }),
     });
     const errorMessage = "Unable to fetch zones";
@@ -203,7 +203,7 @@ describe("fetch", () => {
           }),
         ],
         genericActions: zoneGenericActionsFactory({
-          [ZONE_ACTIONS.fetch]: ACTION_STATUS.failed,
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.error,
         }),
       })
     );
@@ -215,7 +215,7 @@ describe("update", () => {
     const initialState = zoneStateFactory({
       modelActions: zoneModelActionsFactory({
         [ZONE_ACTIONS.update]: zoneModelActionFactory({
-          [ACTION_STATUS.processing]: [],
+          [ACTION_STATUS.loading]: [],
         }),
       }),
     });
@@ -233,7 +233,7 @@ describe("update", () => {
       zoneStateFactory({
         modelActions: zoneModelActionsFactory({
           [ZONE_ACTIONS.update]: zoneModelActionFactory({
-            [ACTION_STATUS.processing]: [123],
+            [ACTION_STATUS.loading]: [123],
           }),
         }),
       })
@@ -246,8 +246,8 @@ describe("update", () => {
       items: [],
       modelActions: zoneModelActionsFactory({
         [ZONE_ACTIONS.update]: zoneModelActionFactory({
-          [ACTION_STATUS.processing]: [123],
-          [ACTION_STATUS.successful]: [],
+          [ACTION_STATUS.loading]: [123],
+          [ACTION_STATUS.success]: [],
         }),
       }),
     });
@@ -265,8 +265,8 @@ describe("update", () => {
       zoneStateFactory({
         modelActions: zoneModelActionsFactory({
           [ZONE_ACTIONS.update]: zoneModelActionFactory({
-            [ACTION_STATUS.processing]: [],
-            [ACTION_STATUS.successful]: [123],
+            [ACTION_STATUS.loading]: [],
+            [ACTION_STATUS.success]: [123],
           }),
         }),
       })
@@ -278,8 +278,8 @@ describe("update", () => {
       errors: [],
       modelActions: zoneModelActionsFactory({
         [ZONE_ACTIONS.update]: zoneModelActionFactory({
-          [ACTION_STATUS.failed]: [],
-          [ACTION_STATUS.processing]: [123],
+          [ACTION_STATUS.error]: [],
+          [ACTION_STATUS.loading]: [123],
         }),
       }),
     });
@@ -305,8 +305,8 @@ describe("update", () => {
         ],
         modelActions: zoneModelActionsFactory({
           [ZONE_ACTIONS.update]: zoneModelActionFactory({
-            [ACTION_STATUS.failed]: [123],
-            [ACTION_STATUS.processing]: [],
+            [ACTION_STATUS.error]: [123],
+            [ACTION_STATUS.loading]: [],
           }),
         }),
       })
@@ -332,7 +332,7 @@ describe("delete", () => {
     const initialState = zoneStateFactory({
       modelActions: zoneModelActionsFactory({
         [ZONE_ACTIONS.delete]: zoneModelActionFactory({
-          [ACTION_STATUS.processing]: [],
+          [ACTION_STATUS.loading]: [],
         }),
       }),
     });
@@ -350,7 +350,7 @@ describe("delete", () => {
       zoneStateFactory({
         modelActions: zoneModelActionsFactory({
           [ZONE_ACTIONS.delete]: zoneModelActionFactory({
-            [ACTION_STATUS.processing]: [123],
+            [ACTION_STATUS.loading]: [123],
           }),
         }),
       })
@@ -361,8 +361,8 @@ describe("delete", () => {
     const initialState = zoneStateFactory({
       modelActions: zoneModelActionsFactory({
         [ZONE_ACTIONS.delete]: zoneModelActionFactory({
-          [ACTION_STATUS.processing]: [123],
-          [ACTION_STATUS.successful]: [],
+          [ACTION_STATUS.loading]: [123],
+          [ACTION_STATUS.success]: [],
         }),
       }),
     });
@@ -380,8 +380,8 @@ describe("delete", () => {
       zoneStateFactory({
         modelActions: zoneModelActionsFactory({
           [ZONE_ACTIONS.delete]: zoneModelActionFactory({
-            [ACTION_STATUS.processing]: [],
-            [ACTION_STATUS.successful]: [123],
+            [ACTION_STATUS.loading]: [],
+            [ACTION_STATUS.success]: [123],
           }),
         }),
       })
@@ -393,8 +393,8 @@ describe("delete", () => {
       errors: [],
       modelActions: zoneModelActionsFactory({
         [ZONE_ACTIONS.delete]: zoneModelActionFactory({
-          [ACTION_STATUS.failed]: [],
-          [ACTION_STATUS.processing]: [123],
+          [ACTION_STATUS.error]: [],
+          [ACTION_STATUS.loading]: [123],
         }),
       }),
     });
@@ -420,8 +420,8 @@ describe("delete", () => {
         ],
         modelActions: zoneModelActionsFactory({
           [ZONE_ACTIONS.delete]: zoneModelActionFactory({
-            [ACTION_STATUS.failed]: [123],
-            [ACTION_STATUS.processing]: [],
+            [ACTION_STATUS.error]: [123],
+            [ACTION_STATUS.loading]: [],
           }),
         }),
       })

@@ -28,10 +28,10 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
     zoneSelectors.getById(state, id)
   );
   const errors = useSelector((state: RootState) =>
-    zoneSelectors.getLatestActionError(state, ZONE_ACTIONS.update)
+    zoneSelectors.getLatestError(state, ZONE_ACTIONS.update, id)
   );
   const updateStatus = useSelector((state: RootState) =>
-    zoneSelectors.getModelActionStatus(state, id, ZONE_ACTIONS.update)
+    zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.update, id)
   );
 
   useEffect(() => {
@@ -59,8 +59,8 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
             })
           );
         }}
-        saved={updateStatus === ACTION_STATUS.successful}
-        saving={updateStatus === ACTION_STATUS.processing}
+        saved={updateStatus === ACTION_STATUS.success}
+        saving={updateStatus === ACTION_STATUS.loading}
         submitLabel="Update AZ"
       >
         <Row>

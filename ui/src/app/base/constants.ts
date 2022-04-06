@@ -1,8 +1,8 @@
 export const ACTION_STATUS = {
-  failed: "failed",
+  error: "error",
   idle: "idle",
-  processing: "processing",
-  successful: "successful",
+  loading: "loading",
+  success: "success",
 } as const;
 
 /**

@@ -25,7 +25,7 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
   const creating = useSelector(zoneSelectors.creating);
   const cleanup = useCallback(() => zoneActions.cleanup(), []);
   const errors = useSelector((state: RootState) =>
-    zoneSelectors.getLatestActionError(state, ZONE_ACTIONS.create)
+    zoneSelectors.getLatestError(state, ZONE_ACTIONS.create)
   );
 
   return (

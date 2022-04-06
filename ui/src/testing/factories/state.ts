@@ -509,9 +509,9 @@ export const zoneGenericActions = define<ZoneGenericActions>({
 });
 
 export const zoneModelAction = define<ZoneModelAction>({
-  [ACTION_STATUS.failed]: () => [],
-  [ACTION_STATUS.processing]: () => [],
-  [ACTION_STATUS.successful]: () => [],
+  [ACTION_STATUS.error]: () => [],
+  [ACTION_STATUS.loading]: () => [],
+  [ACTION_STATUS.success]: () => [],
 });
 
 export const zoneModelActions = define<ZoneModelActions>({

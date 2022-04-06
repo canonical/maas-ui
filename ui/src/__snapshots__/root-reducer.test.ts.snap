@@ -408,14 +408,14 @@ Object {
     "items": Array [],
     "modelActions": Object {
       "delete": Object {
-        "failed": Array [],
-        "processing": Array [],
-        "successful": Array [],
+        "error": Array [],
+        "loading": Array [],
+        "success": Array [],
       },
       "update": Object {
-        "failed": Array [],
-        "processing": Array [],
-        "successful": Array [],
+        "error": Array [],
+        "loading": Array [],
+        "success": Array [],
       },
     },
   },

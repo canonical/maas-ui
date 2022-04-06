@@ -74,9 +74,9 @@ export type CommonActionFormProps<E = null> = {
 export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
 
 export type ModelAction<PK> = {
-  [ACTION_STATUS.failed]: PK[];
-  [ACTION_STATUS.processing]: PK[];
-  [ACTION_STATUS.successful]: PK[];
+  [ACTION_STATUS.error]: PK[];
+  [ACTION_STATUS.loading]: PK[];
+  [ACTION_STATUS.success]: PK[];
 };
 
 export type PayloadActionWithMeta<M, P = null> = PayloadAction<

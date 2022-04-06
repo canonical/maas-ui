@@ -42,7 +42,7 @@ describe("AddDeviceForm", () => {
       }),
       zone: zoneStateFactory({
         genericActions: zoneGenericActionsFactory({
-          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
         }),
         items: [zoneFactory({ id: 0, name: "default" })],
       }),

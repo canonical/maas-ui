@@ -83,7 +83,7 @@ it("can get a zone by id", () => {
 
 it("can get a zone generic action's status", () => {
   const genericActions = zoneGenericActionsFactory({
-    [ZONE_ACTIONS.fetch]: ACTION_STATUS.failed,
+    [ZONE_ACTIONS.fetch]: ACTION_STATUS.error,
   });
   const state = rootStateFactory({
     zone: zoneStateFactory({
@@ -92,14 +92,14 @@ it("can get a zone generic action's status", () => {
   });
 
   expect(zone.getGenericActionStatus(state, ZONE_ACTIONS.fetch)).toBe(
-    ACTION_STATUS.failed
+    ACTION_STATUS.error
   );
 });
 
 it("can get a zone's model action status", () => {
   const modelActions = zoneModelActionsFactory({
     [ZONE_ACTIONS.update]: zoneModelActionFactory({
-      [ACTION_STATUS.processing]: [123],
+      [ACTION_STATUS.loading]: [123],
     }),
   });
   const state = rootStateFactory({
@@ -108,8 +108,8 @@ it("can get a zone's model action status", () => {
     }),
   });
 
-  expect(zone.getModelActionStatus(state, 123, ZONE_ACTIONS.update)).toBe(
-    ACTION_STATUS.processing
+  expect(zone.getModelActionStatus(state, ZONE_ACTIONS.update, 123)).toBe(
+    ACTION_STATUS.loading
   );
 });
 
@@ -117,7 +117,7 @@ it("can get the zone loading state", () => {
   const state = rootStateFactory({
     zone: zoneStateFactory({
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.processing,
+        [ZONE_ACTIONS.fetch]: ACTION_STATUS.loading,
       }),
     }),
   });
@@ -129,7 +129,7 @@ it("can get the zone loaded state", () => {
   const state = rootStateFactory({
     zone: zoneStateFactory({
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+        [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
       }),
     }),
   });
@@ -141,7 +141,7 @@ it("can get the zone creating state", () => {
   const state = rootStateFactory({
     zone: zoneStateFactory({
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.create]: ACTION_STATUS.processing,
+        [ZONE_ACTIONS.create]: ACTION_STATUS.loading,
       }),
     }),
   });
@@ -153,7 +153,7 @@ it("can get the zone created state", () => {
   const state = rootStateFactory({
     zone: zoneStateFactory({
       genericActions: zoneGenericActionsFactory({
-        [ZONE_ACTIONS.create]: ACTION_STATUS.successful,
+        [ZONE_ACTIONS.create]: ACTION_STATUS.success,
       }),
     }),
   });
@@ -189,7 +189,7 @@ it("can get the latest error for an action", () => {
     }),
   });
 
-  expect(zone.getLatestActionError(state, ZONE_ACTIONS.delete, 123)).toEqual(
+  expect(zone.getLatestError(state, ZONE_ACTIONS.delete, 123)).toEqual(
     latestErrorMessage
   );
 });

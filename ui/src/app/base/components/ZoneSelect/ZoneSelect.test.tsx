@@ -21,7 +21,7 @@ describe("ZoneSelect", () => {
     const state = rootStateFactory({
       zone: zoneStateFactory({
         genericActions: zoneGenericActionsFactory({
-          [ZONE_ACTIONS.fetch]: ACTION_STATUS.successful,
+          [ZONE_ACTIONS.fetch]: ACTION_STATUS.success,
         }),
         items: [
           zoneFactory({ id: 101, name: "Pool 1" }),

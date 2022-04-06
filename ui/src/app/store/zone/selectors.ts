@@ -11,6 +11,7 @@ import type {
 
 import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
+import { isId } from "app/utils";
 
 const all = (state: RootState): ZoneState["items"] => state[ZONE_MODEL].items;
 
@@ -28,7 +29,7 @@ const count = createSelector([all], (zones) => zones.length);
 const getById = createSelector(
   [all, (_state: RootState, id: ZonePK | null | undefined) => id],
   (zones, id) => {
-    if (id === null || id === undefined) {
+    if (!isId(id)) {
       return null;
     }
     return zones.find((zone) => zone[ZONE_PK] === id) || null;
@@ -44,49 +45,48 @@ const getGenericActionStatus = createSelector(
 );
 
 const getModelActionStatus = createSelector(
-  (state: RootState, modelPK: ZonePK, action: keyof ZoneModelActions) => ({
+  (state: RootState, action: keyof ZoneModelActions, modelPK: ZonePK) => ({
     action,
     modelActions: modelActions(state),
     modelPK,
   }),
   ({ action, modelActions, modelPK }) => {
-    const { failed, processing, successful } = modelActions[action];
-    if (failed.includes(modelPK)) {
-      return ACTION_STATUS.failed;
-    } else if (processing.includes(modelPK)) {
-      return ACTION_STATUS.processing;
-    } else if (successful.includes(modelPK)) {
-      return ACTION_STATUS.successful;
+    const { error, loading, success } = modelActions[action];
+    if (error.includes(modelPK)) {
+      return ACTION_STATUS.error;
+    } else if (loading.includes(modelPK)) {
+      return ACTION_STATUS.loading;
+    } else if (success.includes(modelPK)) {
+      return ACTION_STATUS.success;
     }
     return ACTION_STATUS.idle;
   }
 );
 
 const loaded = (state: RootState): boolean =>
-  getGenericActionStatus(state, ZONE_ACTIONS.fetch) ===
-  ACTION_STATUS.successful;
+  getGenericActionStatus(state, ZONE_ACTIONS.fetch) === ACTION_STATUS.success;
 
 const loading = (state: RootState): boolean =>
-  getGenericActionStatus(state, ZONE_ACTIONS.fetch) ===
-  ACTION_STATUS.processing;
+  getGenericActionStatus(state, ZONE_ACTIONS.fetch) === ACTION_STATUS.loading;
 
 const created = (state: RootState): boolean =>
-  getGenericActionStatus(state, ZONE_ACTIONS.create) ===
-  ACTION_STATUS.successful;
+  getGenericActionStatus(state, ZONE_ACTIONS.create) === ACTION_STATUS.success;
 
 const creating = (state: RootState): boolean =>
-  getGenericActionStatus(state, ZONE_ACTIONS.create) ===
-  ACTION_STATUS.processing;
+  getGenericActionStatus(state, ZONE_ACTIONS.create) === ACTION_STATUS.loading;
 
-const getLatestActionError = createSelector(
+const getLatestError = createSelector(
   (
     state: RootState,
-    action: ZoneActionNames,
+    action: ZoneActionNames | null = null,
     modelPK: ZonePK | null = null
   ) => ({ action, errors: errors(state), modelPK }),
   ({ action, errors, modelPK }) =>
-    errors.find((error) => error.action === action && error.modelPK === modelPK)
-      ?.error || null
+    errors.find((error) => {
+      const matchesAction = action ? error.action === action : true;
+      const matchesModelPK = modelPK ? error.modelPK === modelPK : true;
+      return matchesAction && matchesModelPK;
+    })?.error || null
 );
 
 const selectors = {
@@ -98,7 +98,7 @@ const selectors = {
   genericActions,
   getById,
   getGenericActionStatus,
-  getLatestActionError,
+  getLatestError,
   getModelActionStatus,
   loaded,
   loading,

@@ -21,7 +21,6 @@ import zoneURLs from "app/zones/urls";
 
 const ZoneDetails = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [showForm, setShowForm] = useState(false);
   const zoneID = useGetURLId(ZONE_PK);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const zonesLoading = useSelector(zoneSelectors.loading);
