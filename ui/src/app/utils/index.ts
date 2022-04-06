@@ -27,3 +27,8 @@ export { someInArray } from "./someInArray";
 export { someNotAll } from "./someNotAll";
 export { toFormikNumber } from "./toFormikNumber";
 export { unindentString } from "./unindentString";
+export {
+  timeSpanToDuration,
+  timeSpanToSeconds,
+  timeSpanToMinutes,
+} from "./timeSpan";

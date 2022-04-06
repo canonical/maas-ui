@@ -1,11 +1,8 @@
 import type { Duration } from "date-fns";
 
-import type { Minutes, Seconds } from "app/base/types";
-import type { TimeSpanString } from "app/store/types/node";
+import type { Minutes, Seconds, TimeSpan } from "app/base/types";
 
-export const timeSpanToDuration = (
-  timeSpan: TimeSpanString | null
-): Duration => {
+export const timeSpanToDuration = (timeSpan: TimeSpan | null): Duration => {
   if (!timeSpan) {
     return {};
   }
@@ -31,14 +28,13 @@ const durationToSeconds = (duration: Duration): Seconds | null => {
   return total > 0 ? total : null;
 };
 
-export const formatTimeSpanStringToSeconds = (
-  timeSpan: TimeSpanString | null
-): Seconds | null => durationToSeconds(timeSpanToDuration(timeSpan));
+export const timeSpanToSeconds = (timeSpan: TimeSpan | null): Seconds | null =>
+  durationToSeconds(timeSpanToDuration(timeSpan));
 
-export const formatTimeSpanStringToMinutes = (
-  timeSpan: TimeSpanString | null
+export const timeSpanToMinutes = (
+  timeSpan: TimeSpan | null
 ): Minutes | null => {
-  const seconds = formatTimeSpanStringToSeconds(timeSpan);
+  const seconds = timeSpanToSeconds(timeSpan);
   if (!seconds) {
     return null;
   }

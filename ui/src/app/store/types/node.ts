@@ -399,12 +399,6 @@ export type LinkParams = {
   subnet?: Subnet["id"];
 };
 
-/**
- * hours / minutes / seconds in systemd.time timespan format, e.g. "1h 15m 20seconds"
- * https://www.freedesktop.org/software/systemd/man/systemd.time.html
- */
-export type TimeSpanString = string;
-
 // On the API backend the update is processed by a form that handles all node
 // types so this type must allow all possible parameters.
 export type UpdateInterfaceParams = {

@@ -141,14 +141,14 @@ describe("DeployFormFields", () => {
       const action = store
         .getActions()
         .find((action) => action.type === "config/update");
-      const hardwareSyncParam = action.payload.params.find(
-        (param: Record<string, unknown>) =>
-          param.name === "hardware_sync_interval"
+      return expect(action.payload.params).toEqual(
+        expect.arrayContaining([
+          {
+            name: "hardware_sync_interval",
+            value: "30m",
+          },
+        ])
       );
-      return expect(hardwareSyncParam).toEqual({
-        name: "hardware_sync_interval",
-        value: "30m",
-      });
     });
   });
 });

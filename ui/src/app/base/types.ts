@@ -4,6 +4,11 @@ export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit
 
 export type Seconds = number;
 export type Minutes = number;
+/**
+ * hours / minutes / seconds in systemd.time timespan format, e.g. "1h 15m 20seconds"
+ * https://www.freedesktop.org/software/systemd/man/systemd.time.html
+ */
+export type TimeSpan = string;
 
 export const SortDirection = {
   ASCENDING: "ascending",

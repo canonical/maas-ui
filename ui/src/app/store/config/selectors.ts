@@ -1,7 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { TimeSpanString } from "../types/node";
-
+import type { TimeSpan } from "app/base/types";
 import type {
   AutoIpmiPrivilegeLevel,
   Config,
@@ -11,7 +10,6 @@ import type {
 } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import type { StorageLayout } from "app/store/types/enum";
-
 /**
  * Returns value of an object in an array, given a certain name.
  * @param {Config[]} arr - Array to search for name.
@@ -517,7 +515,7 @@ const bootImagesAutoImport = createSelector([all], (configs) =>
 );
 
 const hardwareSyncInterval = createSelector([all], (configs) =>
-  getValueFromName<TimeSpanString>(configs, "hardware_sync_interval")
+  getValueFromName<TimeSpan>(configs, "hardware_sync_interval")
 );
 
 const config = {
