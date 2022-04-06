@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { NotificationSeverity } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -10,11 +11,16 @@ import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
+import { actions as messageActions } from "app/store/message";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { NodeActions } from "app/store/types/node";
 
 type Props = MachineActionFormProps;
+
+export enum Label {
+  Saved = "Saved all tag changes.",
+}
 
 const TagFormSchema = Yup.object().shape({
   added: Yup.array().of(Yup.string()),
@@ -84,7 +90,12 @@ export const TagForm = ({
           });
         }
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={() => {
+        clearHeaderContent();
+        dispatch(
+          messageActions.add(Label.Saved, NotificationSeverity.POSITIVE)
+        );
+      }}
       processingCount={processingCount}
       submitLabel="Save"
       selectedCount={machines.length}
