@@ -181,6 +181,56 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
   });
 });
 
+it("shows saving label if not viewing from machine config page", () => {
+  const machines = [
+    machineFactory({ system_id: "abc123", tags: [] }),
+    machineFactory({ system_id: "def456", tags: [] }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+      >
+        <TagForm
+          clearHeaderContent={jest.fn()}
+          machines={machines}
+          processingCount={1}
+          viewingDetails={false}
+          viewingMachineConfig={false}
+        />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(screen.getByTestId("saving-label")).toBeInTheDocument();
+});
+
+it("does not show saving label if viewing from machine config page", () => {
+  const machines = [
+    machineFactory({ system_id: "abc123", tags: [] }),
+    machineFactory({ system_id: "def456", tags: [] }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+      >
+        <TagForm
+          clearHeaderContent={jest.fn()}
+          machines={machines}
+          processingCount={1}
+          viewingDetails
+          viewingMachineConfig
+        />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
+});
+
 it("shows a notification on success", async () => {
   const machines = [machineFactory({ system_id: "abc123", tags: [1] })];
   const store = mockStore(state);

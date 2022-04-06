@@ -126,4 +126,25 @@ describe("ActionForm", () => {
       "Processing 0 of 2 machines..."
     );
   });
+
+  it("can override showing the processing count", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <ActionForm
+          actionName="action"
+          initialValues={{}}
+          modelName="machine"
+          onSubmit={jest.fn()}
+          processingCount={1}
+          selectedCount={2}
+          showProcessingCount={false}
+        />
+      </Provider>
+    );
+    submitFormikForm(wrapper);
+    wrapper.update();
+
+    expect(wrapper.find("[data-testid='saving-label']").exists()).toBe(false);
+  });
 });

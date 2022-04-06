@@ -23,6 +23,7 @@ const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
 
 type Props = {
   machines: Machine[];
+  viewingMachineConfig?: boolean;
 };
 
 export enum Label {
@@ -36,7 +37,10 @@ export enum Label {
 // https://github.com/alex-cory/react-useportal/issues/36
 const NULL_EVENT = { currentTarget: { contains: () => false } };
 
-export const TagFormFields = ({ machines }: Props): JSX.Element => {
+export const TagFormFields = ({
+  machines,
+  viewingMachineConfig = false,
+}: Props): JSX.Element => {
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
   const [newTagName, setNewTagName] = useState<string | null>(null);
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
@@ -52,7 +56,7 @@ export const TagFormFields = ({ machines }: Props): JSX.Element => {
   return (
     <>
       <Row>
-        <Col size={6} className="col-start-large-4">
+        <Col emptyLarge={viewingMachineConfig ? undefined : 4} size={6}>
           <TagField
             externalSelectedTags={selectedTags}
             generateDropdownEntry={(

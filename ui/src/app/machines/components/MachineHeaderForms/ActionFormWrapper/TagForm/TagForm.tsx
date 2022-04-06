@@ -16,7 +16,7 @@ import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { NodeActions } from "app/store/types/node";
 
-type Props = MachineActionFormProps;
+type Props = MachineActionFormProps & { viewingMachineConfig?: boolean };
 
 export enum Label {
   Saved = "Saved all tag changes.",
@@ -33,6 +33,7 @@ export const TagForm = ({
   machines,
   processingCount,
   viewingDetails,
+  viewingMachineConfig = false,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const tagsLoaded = useSelector(tagSelectors.loaded);
@@ -97,11 +98,15 @@ export const TagForm = ({
         );
       }}
       processingCount={processingCount}
+      showProcessingCount={!viewingMachineConfig}
       submitLabel="Save"
       selectedCount={machines.length}
       validationSchema={TagFormSchema}
     >
-      <TagFormFields machines={machines} />
+      <TagFormFields
+        machines={machines}
+        viewingMachineConfig={viewingMachineConfig}
+      />
     </ActionForm>
   );
 };

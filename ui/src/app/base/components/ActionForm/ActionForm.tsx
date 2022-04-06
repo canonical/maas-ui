@@ -104,6 +104,7 @@ export type Props<V, E = null> = Omit<
   modelName: string;
   processingCount: number;
   selectedCount: number;
+  showProcessingCount?: boolean;
   submitLabel?: string;
 };
 
@@ -117,6 +118,7 @@ const ActionForm = <V, E = null>({
   onSubmit,
   processingCount,
   selectedCount,
+  showProcessingCount = true,
   submitLabel,
   ...formikFormProps
 }: Props<V, E>): JSX.Element | null => {
@@ -148,12 +150,16 @@ const ActionForm = <V, E = null>({
       }}
       saved={processingComplete}
       saving={processingCount > 0}
-      savingLabel={`${getLabel(
-        modelName,
-        actionName,
-        selectedOnSubmit,
-        processingCount
-      )}...`}
+      savingLabel={
+        showProcessingCount
+          ? `${getLabel(
+              modelName,
+              actionName,
+              selectedOnSubmit,
+              processingCount
+            )}...`
+          : null
+      }
       submitLabel={
         submitLabel ?? getLabel(modelName, actionName, selectedCount)
       }

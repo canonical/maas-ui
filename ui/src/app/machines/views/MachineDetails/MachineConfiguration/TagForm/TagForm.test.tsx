@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import TagForm from "./TagForm";
 
+import { Label as TagFormFieldsLabel } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm/TagFormFields";
 import machineURLs from "app/machines/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -43,6 +44,7 @@ describe("TagForm", () => {
           tagFactory({ id: 1, name: "tag-1" }),
           tagFactory({ id: 2, name: "tag-2" }),
         ],
+        loaded: true,
       }),
     });
   });
@@ -103,7 +105,9 @@ describe("TagForm", () => {
 
     userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
 
-    expect(screen.getByLabelText("tag-form")).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(TagFormFieldsLabel.TagInput)
+    ).toBeInTheDocument();
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });
 });
