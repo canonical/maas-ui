@@ -1,20 +1,19 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Button, Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
 import TagLinks from "app/base/components/TagLinks";
 import { useCanEdit } from "app/base/hooks";
-import type { EmptyObject } from "app/base/types";
+import TagActionForm from "app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm";
 import machineURLs from "app/machines/urls";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
-import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
+import { FilterMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
+import { NodeActions } from "app/store/types/node";
 
 type Props = { systemId: MachineDetails["system_id"] };
 
@@ -27,10 +26,13 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
     tagSelectors.getByIDs(state, machine?.tags || [])
   );
   const tagsLoading = useSelector(tagSelectors.loading);
-  const errors = useSelector(machineSelectors.errors);
-  const saved = useSelector(machineSelectors.saved);
-  const saving = useSelector(machineSelectors.saving);
-  const cleanup = useCallback(() => machineActions.cleanup(), []);
+  const taggingMachines = useSelector(machineSelectors.updatingTags);
+  const errors = useSelector((state: RootState) =>
+    machineSelectors.eventErrorsForIds(state, systemId, [
+      NodeActions.TAG,
+      NodeActions.UNTAG,
+    ])
+  )[0]?.error;
   const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
 
@@ -38,7 +40,7 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
     dispatch(tagActions.fetch());
   }, [dispatch]);
 
-  if (!isMachineDetails(machine) || tagsLoading) {
+  if (!machine || tagsLoading) {
     return <Spinner text="Loading..." />;
   }
 
@@ -59,25 +61,13 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
       </Col>
       <Col size={editing ? 9 : 6}>
         {editing ? (
-          <FormikForm<EmptyObject>
-            aria-label="tag-form"
-            cleanup={cleanup}
+          <TagActionForm
+            clearHeaderContent={() => setEditing(false)}
             errors={errors}
-            initialValues={{}}
-            onSaveAnalytics={{
-              action: "Update machine tags",
-              category: "Machine details",
-              label: "Save changes",
-            }}
-            onCancel={() => setEditing(false)}
-            onSubmit={() => {
-              return;
-            }}
-            onSuccess={() => setEditing(false)}
-            saved={saved}
-            saving={saving}
-            submitDisabled
-            submitLabel="Save changes"
+            machines={[machine]}
+            processingCount={taggingMachines.length}
+            viewingDetails
+            viewingMachineConfig
           />
         ) : (
           <p>
