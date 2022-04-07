@@ -1,13 +1,13 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import EditableSection, { Labels } from "./EditableSection";
 
-it("shows an edit button if content can be edited and not currently editing", () => {
+it("can toggle showing content depending on editing state", () => {
   render(
     <EditableSection
       canEdit
-      editing={false}
-      setEditing={jest.fn()}
+      renderContent={(editing) => (editing ? <div>Is editing</div> : null)}
       title="Title"
     />
   );
@@ -15,26 +15,19 @@ it("shows an edit button if content can be edited and not currently editing", ()
   expect(
     screen.getByRole("button", { name: Labels.EditButton })
   ).toBeInTheDocument();
-});
+  expect(screen.queryByText("Is editing")).not.toBeInTheDocument();
 
-it("does not show an edit button if currently editing", () => {
-  render(
-    <EditableSection canEdit editing setEditing={jest.fn()} title="Title" />
-  );
+  userEvent.click(screen.getByRole("button", { name: Labels.EditButton }));
 
   expect(
     screen.queryByRole("button", { name: Labels.EditButton })
   ).not.toBeInTheDocument();
+  expect(screen.getByText("Is editing")).toBeInTheDocument();
 });
 
 it("does not show an edit button if content cannot be edited", () => {
   render(
-    <EditableSection
-      canEdit={false}
-      editing={false}
-      setEditing={jest.fn()}
-      title="Title"
-    />
+    <EditableSection canEdit={false} renderContent={() => null} title="Title" />
   );
 
   expect(

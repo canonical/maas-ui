@@ -1,3 +1,6 @@
+import type { ReactNode } from "react";
+import { useState } from "react";
+
 import type { PropsWithSpread } from "@canonical/react-components";
 import { Button } from "@canonical/react-components";
 
@@ -7,10 +10,12 @@ import TitledSection from "app/base/components/TitledSection";
 type Props = PropsWithSpread<
   {
     canEdit?: boolean;
-    editing: boolean;
-    setEditing: (editing: boolean) => void;
+    renderContent: (
+      editing: boolean,
+      setEditing: (editing: boolean) => void
+    ) => ReactNode;
   },
-  TitledSectionProps
+  Omit<TitledSectionProps, "children">
 >;
 
 export enum Labels {
@@ -19,10 +24,10 @@ export enum Labels {
 
 const EditableSection = ({
   canEdit = true,
-  editing,
-  setEditing,
+  renderContent,
   ...titledSectionProps
 }: Props): JSX.Element => {
+  const [editing, setEditing] = useState(false);
   const showEditButton = canEdit && !editing;
 
   return (
@@ -38,7 +43,9 @@ const EditableSection = ({
         ) : null
       }
       {...titledSectionProps}
-    />
+    >
+      {renderContent(editing, setEditing)}
+    </TitledSection>
   );
 };
 

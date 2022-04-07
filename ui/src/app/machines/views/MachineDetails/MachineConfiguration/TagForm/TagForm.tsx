@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -34,7 +34,6 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
       NodeActions.UNTAG,
     ])
   )[0]?.error;
-  const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
 
   useEffect(() => {
@@ -48,34 +47,33 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
   return (
     <EditableSection
       canEdit={canEdit}
-      editing={editing}
       hasSidebarTitle
-      setEditing={setEditing}
-      title="Tags"
-    >
-      {editing ? (
-        <TagActionForm
-          clearHeaderContent={() => setEditing(false)}
-          errors={errors}
-          machines={[machine]}
-          processingCount={taggingMachines.length}
-          viewingDetails
-          viewingMachineConfig
-        />
-      ) : (
-        <p>
-          <TagLinks
-            getLinkURL={(tag) => {
-              const filter = FilterMachines.filtersToQueryString({
-                tags: [`=${tag.name}`],
-              });
-              return `${machineURLs.machines.index}${filter}`;
-            }}
-            tags={tags}
+      renderContent={(editing, setEditing) =>
+        editing ? (
+          <TagActionForm
+            clearHeaderContent={() => setEditing(false)}
+            errors={errors}
+            machines={[machine]}
+            processingCount={taggingMachines.length}
+            viewingDetails
+            viewingMachineConfig
           />
-        </p>
-      )}
-    </EditableSection>
+        ) : (
+          <p>
+            <TagLinks
+              getLinkURL={(tag) => {
+                const filter = FilterMachines.filtersToQueryString({
+                  tags: [`=${tag.name}`],
+                });
+                return `${machineURLs.machines.index}${filter}`;
+              }}
+              tags={tags}
+            />
+          </p>
+        )
+      }
+      title="Tags"
+    />
   );
 };
 

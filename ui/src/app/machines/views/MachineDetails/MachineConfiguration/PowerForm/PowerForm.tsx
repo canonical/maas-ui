@@ -47,7 +47,6 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerTypesLoading = useSelector(powerTypesSelectors.loading);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
-  const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
   const [selectedPowerType, setSelectedPowerType] = useState<PowerType | null>(
     null
@@ -85,61 +84,60 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
   return (
     <EditableSection
       canEdit={canEdit}
-      editing={editing}
       hasSidebarTitle
-      setEditing={setEditing}
+      renderContent={(editing, setEditing) =>
+        editing ? (
+          <FormikForm<PowerFormValues>
+            allowAllEmpty
+            allowUnchanged
+            cleanup={cleanup}
+            editable={editing}
+            errors={errors}
+            initialValues={{
+              powerType: machine.power_type,
+              powerParameters: initialPowerParameters,
+            }}
+            onSaveAnalytics={{
+              action: "Configure power",
+              category: "Machine details",
+              label: "Save changes",
+            }}
+            onCancel={() => setEditing(false)}
+            onSubmit={(values) => {
+              const params = {
+                extra_macs: machine.extra_macs,
+                power_parameters: formatPowerParameters(
+                  selectedPowerType,
+                  values.powerParameters,
+                  fieldScopes
+                ),
+                power_type: values.powerType,
+                pxe_mac: machine.pxe_mac,
+                system_id: machine.system_id,
+              };
+              dispatch(machineActions.update(params));
+            }}
+            onSuccess={() => setEditing(false)}
+            onValuesChanged={(values) => {
+              const powerType = getPowerTypeFromName(
+                powerTypes,
+                values.powerType
+              );
+              setSelectedPowerType(powerType);
+            }}
+            saved={saved}
+            saving={saving}
+            submitLabel="Save changes"
+            validationSchema={PowerFormSchema}
+          >
+            <PowerFormFields machine={machine} />
+          </FormikForm>
+        ) : (
+          <PowerParameters machine={machine} />
+        )
+      }
       title="Power configuration"
-    >
-      {editing ? (
-        <FormikForm<PowerFormValues>
-          allowAllEmpty
-          allowUnchanged
-          cleanup={cleanup}
-          editable={editing}
-          errors={errors}
-          initialValues={{
-            powerType: machine.power_type,
-            powerParameters: initialPowerParameters,
-          }}
-          onSaveAnalytics={{
-            action: "Configure power",
-            category: "Machine details",
-            label: "Save changes",
-          }}
-          onCancel={() => setEditing(false)}
-          onSubmit={(values) => {
-            const params = {
-              extra_macs: machine.extra_macs,
-              power_parameters: formatPowerParameters(
-                selectedPowerType,
-                values.powerParameters,
-                fieldScopes
-              ),
-              power_type: values.powerType,
-              pxe_mac: machine.pxe_mac,
-              system_id: machine.system_id,
-            };
-            dispatch(machineActions.update(params));
-          }}
-          onSuccess={() => setEditing(false)}
-          onValuesChanged={(values) => {
-            const powerType = getPowerTypeFromName(
-              powerTypes,
-              values.powerType
-            );
-            setSelectedPowerType(powerType);
-          }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Save changes"
-          validationSchema={PowerFormSchema}
-        >
-          <PowerFormFields machine={machine} />
-        </FormikForm>
-      ) : (
-        <PowerParameters machine={machine} />
-      )}
-    </EditableSection>
+    />
   );
 };
 

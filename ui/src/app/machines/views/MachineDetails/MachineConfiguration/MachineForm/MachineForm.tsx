@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -46,7 +46,6 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
-  const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
 
   if (!isMachineDetails(machine)) {
@@ -57,62 +56,64 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
     <EditableSection
       canEdit={canEdit}
       className="u-no-padding--top"
-      editing={editing}
       hasSidebarTitle
-      setEditing={setEditing}
+      renderContent={(editing, setEditing) =>
+        editing ? (
+          <FormikForm<MachineFormValues>
+            cleanup={cleanup}
+            errors={errors}
+            initialValues={{
+              architecture: machine.architecture || "",
+              description: machine.description || "",
+              minHweKernel: machine.min_hwe_kernel || "",
+              pool: machine.pool?.name || "",
+              zone: machine.zone?.name || "",
+            }}
+            onSaveAnalytics={{
+              action: "Configure machine",
+              category: "Machine details",
+              label: "Save changes",
+            }}
+            onCancel={() => setEditing(false)}
+            onSubmit={(values) => {
+              const params = {
+                architecture: values.architecture,
+                description: values.description,
+                extra_macs: machine.extra_macs,
+                pxe_mac: machine.pxe_mac,
+                min_hwe_kernel: values.minHweKernel,
+                pool: { name: values.pool },
+                system_id: machine.system_id,
+                zone: { name: values.zone },
+              };
+              dispatch(machineActions.update(params));
+            }}
+            onSuccess={() => setEditing(false)}
+            saved={saved}
+            saving={saving}
+            submitLabel="Save changes"
+            validationSchema={MachineFormSchema}
+          >
+            <MachineFormFields />
+          </FormikForm>
+        ) : (
+          <div data-testid="machine-details">
+            <Definition
+              label="Architecture"
+              description={machine.architecture}
+            />
+            <Definition
+              label="Minimum kernel"
+              description={machine.min_hwe_kernel}
+            />
+            <Definition label="Zone" description={machine.zone.name} />
+            <Definition label="Resource pool" description={machine.pool.name} />
+            <Definition label="Note" description={machine.description} />
+          </div>
+        )
+      }
       title="Machine configuration"
-    >
-      {editing ? (
-        <FormikForm<MachineFormValues>
-          cleanup={cleanup}
-          errors={errors}
-          initialValues={{
-            architecture: machine.architecture || "",
-            description: machine.description || "",
-            minHweKernel: machine.min_hwe_kernel || "",
-            pool: machine.pool?.name || "",
-            zone: machine.zone?.name || "",
-          }}
-          onSaveAnalytics={{
-            action: "Configure machine",
-            category: "Machine details",
-            label: "Save changes",
-          }}
-          onCancel={() => setEditing(false)}
-          onSubmit={(values) => {
-            const params = {
-              architecture: values.architecture,
-              description: values.description,
-              extra_macs: machine.extra_macs,
-              pxe_mac: machine.pxe_mac,
-              min_hwe_kernel: values.minHweKernel,
-              pool: { name: values.pool },
-              system_id: machine.system_id,
-              zone: { name: values.zone },
-            };
-            dispatch(machineActions.update(params));
-          }}
-          onSuccess={() => setEditing(false)}
-          saved={saved}
-          saving={saving}
-          submitLabel="Save changes"
-          validationSchema={MachineFormSchema}
-        >
-          <MachineFormFields />
-        </FormikForm>
-      ) : (
-        <div data-testid="machine-details">
-          <Definition label="Architecture" description={machine.architecture} />
-          <Definition
-            label="Minimum kernel"
-            description={machine.min_hwe_kernel}
-          />
-          <Definition label="Zone" description={machine.zone.name} />
-          <Definition label="Resource pool" description={machine.pool.name} />
-          <Definition label="Note" description={machine.description} />
-        </div>
-      )}
-    </EditableSection>
+    />
   );
 };
 
