@@ -105,6 +105,7 @@ export const TagForm = ({
     >
       <TagFormFields
         machines={machines}
+        viewingDetails={viewingDetails}
         viewingMachineConfig={viewingMachineConfig}
       />
     </ActionForm>

@@ -12,6 +12,7 @@ import TagChip from "../TagChip";
 import { useSelectedTags, useUnchangedTags } from "../hooks";
 import type { TagFormValues } from "../types";
 
+import { NULL_EVENT } from "app/base/constants";
 import type { Machine } from "app/store/machine/types";
 import type { TagIdCountMap } from "app/store/machine/utils";
 import { getTagCountsForMachines } from "app/store/machine/utils";
@@ -107,11 +108,6 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
   const [tagDetails, setTagDetails] = useState<Tag | null>(null);
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
   const toggleTagDetails = (tag: Tag | null) => {
-    // usePortal was originally design to work with click events, so to open the
-    // portal programmatically we need to fake the event. This workaround can be
-    // removed when this issue is resolved:
-    // https://github.com/alex-cory/react-useportal/issues/36
-    const NULL_EVENT = { currentTarget: { contains: () => false } };
     setTagDetails(tag);
     if (tag) {
       openPortal(NULL_EVENT);

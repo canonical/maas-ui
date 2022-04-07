@@ -16,6 +16,10 @@ export type Props = {
 } & Omit<Partial<FormikFieldProps>, "name"> &
   Omit<Partial<TagSelectorProps>, "tags">;
 
+export enum Label {
+  Input = "Tags",
+}
+
 const TagField = <V extends AnyObject = AnyObject>({
   storedValue = "name",
   name,
@@ -28,7 +32,7 @@ const TagField = <V extends AnyObject = AnyObject>({
     <FormikField
       allowNewTags
       component={TagSelector}
-      label="Tags"
+      label={Label.Input}
       name={name}
       onTagsUpdate={(tags: TagSelectorTag[]) =>
         setFieldValue(
