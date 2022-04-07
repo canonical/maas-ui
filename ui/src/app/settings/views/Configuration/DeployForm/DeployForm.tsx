@@ -12,7 +12,10 @@ import { timeSpanToMinutes } from "app/utils";
 const DeploySchema = Yup.object().shape({
   default_osystem: Yup.string(),
   commissioning_distro_series: Yup.string(),
-  hardware_sync_interval: Yup.number().min(1),
+  hardware_sync_interval: Yup.number().min(
+    1,
+    "Hardware sync interval must be at least 1 minute"
+  ),
 });
 
 const DeployForm = (): JSX.Element => {

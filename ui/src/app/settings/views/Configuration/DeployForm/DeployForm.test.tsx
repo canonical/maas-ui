@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import DeployForm from "../DeployForm";
+import DeployForm from "./DeployForm";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -150,5 +150,26 @@ describe("DeployFormFields", () => {
         ])
       );
     });
+  });
+
+  it("displays an error message when providing an invalid hardware sync interval value", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <DeployForm />
+      </Provider>
+    );
+
+    const hardwareSyncInput = screen.getByRole("textbox", {
+      name: /Default hardware sync interval/,
+    });
+    userEvent.clear(hardwareSyncInput);
+    userEvent.type(hardwareSyncInput, "0");
+    userEvent.tab();
+    await waitFor(() =>
+      expect(hardwareSyncInput).toHaveErrorMessage(
+        /Hardware sync interval must be at least 1 minute/
+      )
+    );
   });
 });
