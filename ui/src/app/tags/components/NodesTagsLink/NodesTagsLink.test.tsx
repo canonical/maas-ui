@@ -22,7 +22,7 @@ it("create a link to machines", () => {
   expect(machineLink).toBeInTheDocument();
   expect(machineLink).toHaveAttribute(
     "href",
-    `${machineURLs.machines.index}?tags=a-tag`
+    `${machineURLs.machines.index}?tags==a-tag`
   );
 });
 
@@ -42,7 +42,7 @@ it("create a link to controllers", () => {
   expect(controllerLink).toBeInTheDocument();
   expect(controllerLink).toHaveAttribute(
     "href",
-    `${controllerURLs.controllers.index}?tags=a-tag`
+    `${controllerURLs.controllers.index}?tags==a-tag`
   );
 });
 
@@ -58,6 +58,6 @@ it("create a link to devices", () => {
   expect(deviceLink).toBeInTheDocument();
   expect(deviceLink).toHaveAttribute(
     "href",
-    `${deviceURLs.devices.index}?tags=a-tag`
+    `${deviceURLs.devices.index}?tags==a-tag`
   );
 });
