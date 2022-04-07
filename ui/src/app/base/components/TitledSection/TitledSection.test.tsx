@@ -74,3 +74,17 @@ it("adds a custom heading className", () => {
     "u-no-margin--bottom"
   );
 });
+
+it("can display a full span title", () => {
+  render(<TitledSection hasSidebarTitle={false} title="Title" />);
+
+  expect(screen.getByTestId("has-fullspan-title")).toBeInTheDocument();
+  expect(screen.queryByTestId("has-sidebar-title")).not.toBeInTheDocument();
+});
+
+it("can display the title in a sidebar", () => {
+  render(<TitledSection hasSidebarTitle title="Title" />);
+
+  expect(screen.getByTestId("has-sidebar-title")).toBeInTheDocument();
+  expect(screen.queryByTestId("has-fullspan-title")).not.toBeInTheDocument();
+});

@@ -1,6 +1,6 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
-import { Button, Col, Row, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import MachineFormFields from "./MachineFormFields";
 
 import Definition from "app/base/components/Definition";
+import EditableSection from "app/base/components/EditableSection";
 import FormikForm from "app/base/components/FormikForm";
 import { useCanEdit } from "app/base/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -45,7 +46,6 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
   const saved = useSelector(machineSelectors.saved);
   const saving = useSelector(machineSelectors.saving);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
-  const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
 
   if (!isMachineDetails(machine)) {
@@ -53,22 +53,12 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
   }
 
   return (
-    <Row>
-      <Col size={3}>
-        <div className="u-flex--between u-flex--wrap">
-          <h4>Machine configuration</h4>
-          {canEdit && !editing && (
-            <Button
-              className="u-no-margin--bottom u-hide--large"
-              onClick={() => setEditing(true)}
-            >
-              Edit
-            </Button>
-          )}
-        </div>
-      </Col>
-      <Col size={editing ? 9 : 6}>
-        {editing ? (
+    <EditableSection
+      canEdit={canEdit}
+      className="u-no-padding--top"
+      hasSidebarTitle
+      renderContent={(editing, setEditing) =>
+        editing ? (
           <FormikForm<MachineFormValues>
             cleanup={cleanup}
             errors={errors}
@@ -120,19 +110,10 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
             <Definition label="Resource pool" description={machine.pool.name} />
             <Definition label="Note" description={machine.description} />
           </div>
-        )}
-      </Col>
-      {canEdit && !editing && (
-        <Col className="u-align--right" size={3}>
-          <Button
-            className="u-no-margin--bottom u-hide--small u-hide--medium"
-            onClick={() => setEditing(true)}
-          >
-            Edit
-          </Button>
-        </Col>
-      )}
-    </Row>
+        )
+      }
+      title="Machine configuration"
+    />
   );
 };
 

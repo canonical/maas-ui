@@ -1,8 +1,9 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { Button, Col, Row, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import EditableSection from "app/base/components/EditableSection";
 import TagLinks from "app/base/components/TagLinks";
 import { useCanEdit } from "app/base/hooks";
 import TagActionForm from "app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm";
@@ -33,7 +34,6 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
       NodeActions.UNTAG,
     ])
   )[0]?.error;
-  const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
 
   useEffect(() => {
@@ -45,22 +45,11 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
   }
 
   return (
-    <Row>
-      <Col size={3}>
-        <div className="u-flex--between u-flex--wrap">
-          <h4>Tags</h4>
-          {canEdit && !editing && (
-            <Button
-              className="u-no-margin--bottom u-hide--large"
-              onClick={() => setEditing(true)}
-            >
-              Edit
-            </Button>
-          )}
-        </div>
-      </Col>
-      <Col size={editing ? 9 : 6}>
-        {editing ? (
+    <EditableSection
+      canEdit={canEdit}
+      hasSidebarTitle
+      renderContent={(editing, setEditing) =>
+        editing ? (
           <TagActionForm
             clearHeaderContent={() => setEditing(false)}
             errors={errors}
@@ -81,19 +70,10 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
               tags={tags}
             />
           </p>
-        )}
-      </Col>
-      {canEdit && !editing && (
-        <Col className="u-align--right" size={3}>
-          <Button
-            className="u-no-margin--bottom u-hide--small u-hide--medium"
-            onClick={() => setEditing(true)}
-          >
-            Edit
-          </Button>
-        </Col>
-      )}
-    </Row>
+        )
+      }
+      title="Tags"
+    />
   );
 };
 

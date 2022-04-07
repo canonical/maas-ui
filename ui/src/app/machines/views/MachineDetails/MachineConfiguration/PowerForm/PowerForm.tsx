@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Button, Col, Row, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import PowerFormFields from "./PowerFormFields";
 import PowerParameters from "./PowerParameters";
 
+import EditableSection from "app/base/components/EditableSection";
 import FormikForm from "app/base/components/FormikForm";
 import { useCanEdit } from "app/base/hooks";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
@@ -33,10 +34,6 @@ export type PowerFormValues = {
   powerParameters: PowerParametersType;
 };
 
-export enum Labels {
-  Edit = "Edit",
-}
-
 type Props = { systemId: Machine["system_id"] };
 
 const PowerForm = ({ systemId }: Props): JSX.Element | null => {
@@ -50,7 +47,6 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
   const powerTypes = useSelector(powerTypesSelectors.get);
   const powerTypesLoading = useSelector(powerTypesSelectors.loading);
   const cleanup = useCallback(() => machineActions.cleanup(), []);
-  const [editing, setEditing] = useState(false);
   const canEdit = useCanEdit(machine, true);
   const [selectedPowerType, setSelectedPowerType] = useState<PowerType | null>(
     null
@@ -86,22 +82,11 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
     .defined();
 
   return (
-    <Row>
-      <Col size={3}>
-        <div className="u-flex--between u-flex--wrap">
-          <h4>Power configuration</h4>
-          {canEdit && !editing && (
-            <Button
-              className="u-no-margin--bottom u-hide--large"
-              onClick={() => setEditing(true)}
-            >
-              {Labels.Edit}
-            </Button>
-          )}
-        </div>
-      </Col>
-      <Col size={editing ? 9 : 6}>
-        {editing ? (
+    <EditableSection
+      canEdit={canEdit}
+      hasSidebarTitle
+      renderContent={(editing, setEditing) =>
+        editing ? (
           <FormikForm<PowerFormValues>
             allowAllEmpty
             allowUnchanged
@@ -149,19 +134,10 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
           </FormikForm>
         ) : (
           <PowerParameters machine={machine} />
-        )}
-      </Col>
-      {canEdit && !editing && (
-        <Col className="u-align--right" size={3}>
-          <Button
-            className="u-no-margin--bottom u-hide--small u-hide--medium"
-            onClick={() => setEditing(true)}
-          >
-            {Labels.Edit}
-          </Button>
-        </Col>
-      )}
-    </Row>
+        )
+      }
+      title="Power configuration"
+    />
   );
 };
 

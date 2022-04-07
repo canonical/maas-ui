@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineForm from "./MachineForm";
 
+import { Labels } from "app/base/components/EditableSection";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
@@ -53,7 +54,7 @@ describe("MachineForm", () => {
     );
 
     expect(
-      screen.queryByRole("button", { name: "Edit" })
+      screen.queryByRole("button", { name: Labels.EditButton })
     ).not.toBeInTheDocument();
   });
 
@@ -66,7 +67,9 @@ describe("MachineForm", () => {
       </Provider>
     );
 
-    expect(screen.getAllByRole("button", { name: "Edit" }).length).not.toBe(0);
+    expect(
+      screen.getAllByRole("button", { name: Labels.EditButton }).length
+    ).not.toBe(0);
   });
 
   it("renders read-only text fields until edit button is pressed", () => {
@@ -79,7 +82,9 @@ describe("MachineForm", () => {
 
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
 
-    userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
+    userEvent.click(
+      screen.getAllByRole("button", { name: Labels.EditButton })[0]
+    );
 
     expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
@@ -98,7 +103,9 @@ describe("MachineForm", () => {
       </Provider>
     );
 
-    userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
+    userEvent.click(
+      screen.getAllByRole("button", { name: Labels.EditButton })[0]
+    );
     const noteField = screen.getByRole("textbox", { name: "Note" });
     userEvent.clear(noteField);
     userEvent.type(noteField, "New note");
