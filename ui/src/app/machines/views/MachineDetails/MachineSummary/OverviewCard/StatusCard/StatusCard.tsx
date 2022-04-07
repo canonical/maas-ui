@@ -101,19 +101,13 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
             <p className="u-text--muted">
               Periodic hardware sync enabled{" "}
               {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
-              {/* TODO: use actual `sync_interval` value from the back-end https://github.com/canonical-web-and-design/app-tribe/issues/782 */}
               <Tooltip
                 position="right"
                 message={
                   <>
                     This machine hardware info is synced every{" "}
                     {formatSyncInterval(machine.sync_interval)}.{"\n"}
-                    You can check it at the bottom, in the status bar.{"\n"}More
-                    about this in the{" "}
-                    <a href="#todo" className="is-on-dark">
-                      Hardware sync docs
-                    </a>
-                    .
+                    You can check it at the bottom, in the status bar.
                   </>
                 }
               >

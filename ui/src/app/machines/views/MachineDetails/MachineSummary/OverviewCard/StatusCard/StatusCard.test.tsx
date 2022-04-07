@@ -169,9 +169,10 @@ describe("StatusCard", () => {
         name: "more about periodic hardware sync",
       })
     );
+    /* TODO: Enable this check after adding docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */
     expect(
-      screen.getByRole("link", { name: "Hardware sync docs" })
-    ).toBeVisible();
+      screen.queryByRole("link", { name: "Hardware sync docs" })
+    ).not.toBeInTheDocument();
   });
 
   it("displays deployed hardware sync interval in a correct format", () => {
