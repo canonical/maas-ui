@@ -1,3 +1,4 @@
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -31,9 +32,10 @@ const SpaceSummaryForm = ({
       cleanup={spaceActions.cleanup}
       errors={spaceErrors}
       initialValues={{
-        name: space?.name || "",
-        description: space?.description || "",
+        name: space.name,
+        description: space.description,
       }}
+      onCancel={handleDismiss}
       onSaveAnalytics={{
         action: "Save",
         category: "Space",
@@ -49,11 +51,14 @@ const SpaceSummaryForm = ({
       saving={saving}
       saved={saved}
       submitLabel="Save"
-      onCancel={handleDismiss}
       validationSchema={spaceSummaryFormSchema}
     >
-      <FormikField label="Name" name="name" type="text" />
-      <FormikField label="Description" name="description" type="text" />
+      <Row>
+        <Col size={6}>
+          <FormikField label="Name" name="name" type="text" />
+          <FormikField label="Description" name="description" type="text" />
+        </Col>
+      </Row>
     </FormikForm>
   );
 };

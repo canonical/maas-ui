@@ -1,12 +1,12 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { Button, Row, Col } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 
 import ZoneDetailsContent from "./ZoneDetailsContent";
 import ZoneDetailsForm from "./ZoneDetailsForm";
 import ZoneDetailsHeader from "./ZoneDetailsHeader";
 
+import EditableSection from "app/base/components/EditableSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
@@ -21,7 +21,6 @@ import zoneURLs from "app/zones/urls";
 
 const ZoneDetails = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [showForm, setShowForm] = useState(false);
   const zoneID = useGetURLId(ZoneMeta.PK);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const zonesLoading = useSelector(zoneSelectors.loading);
@@ -42,27 +41,19 @@ const ZoneDetails = (): JSX.Element => {
 
   return (
     <Section header={<ZoneDetailsHeader id={zoneID} />}>
-      {showForm ? (
-        <ZoneDetailsForm
-          id={zoneID}
-          closeForm={() => {
-            setShowForm(false);
-          }}
-        />
-      ) : (
-        <Row>
-          <Col size={6}>
+      <EditableSection
+        canEdit={isAdmin}
+        className="u-no-padding--top"
+        hasSidebarTitle
+        renderContent={(editing, setEditing) =>
+          editing ? (
+            <ZoneDetailsForm id={zoneID} closeForm={() => setEditing(false)} />
+          ) : (
             <ZoneDetailsContent id={zoneID} />
-          </Col>
-          {isAdmin && (
-            <Col size={6} className="u-align--right">
-              <Button data-testid="edit-zone" onClick={() => setShowForm(true)}>
-                Edit
-              </Button>
-            </Col>
-          )}
-        </Row>
-      )}
+          )
+        }
+        title="Zone summary"
+      />
     </Section>
   );
 };

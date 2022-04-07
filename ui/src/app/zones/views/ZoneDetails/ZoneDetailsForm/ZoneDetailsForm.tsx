@@ -26,7 +26,7 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
   const saving = useSelector(zoneSelectors.saving);
   const cleanup = useCallback(() => zoneActions.cleanup(), []);
   const zone = useSelector((state: RootState) =>
-    zoneSelectors.getById(state, Number(id))
+    zoneSelectors.getById(state, id)
   );
 
   useEffect(() => {
@@ -36,8 +36,6 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
   if (zone) {
     return (
       <FormikForm<CreateZoneValues>
-        buttonsAlign="right"
-        buttonsBordered={false}
         cleanup={cleanup}
         errors={errors}
         initialValues={{
@@ -56,7 +54,6 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
             })
           );
         }}
-        resetOnSave={true}
         saved={saved}
         saving={saving}
         submitLabel="Update AZ"

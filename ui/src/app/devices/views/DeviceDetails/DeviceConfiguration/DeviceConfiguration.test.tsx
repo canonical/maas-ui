@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import DeviceConfiguration, { Label } from "./DeviceConfiguration";
 import { Label as DeviceConfigurationFieldsLabel } from "./DeviceConfigurationFields/DeviceConfigurationFields";
 
+import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
 import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
 import { Label as ZoneSelectLabel } from "app/base/components/ZoneSelect/ZoneSelect";
 import { actions as deviceActions } from "app/store/device";
@@ -85,7 +86,11 @@ describe("DeviceConfiguration", () => {
       </Provider>
     );
 
-    userEvent.click(screen.getByRole("button", { name: Label.Edit }));
+    userEvent.click(
+      screen.getAllByRole("button", {
+        name: EditableSectionLabels.EditButton,
+      })[0]
+    );
 
     expect(screen.queryByTestId("device-details")).not.toBeInTheDocument();
     expect(screen.getByRole("form", { name: Label.Form })).toBeInTheDocument();
@@ -100,7 +105,11 @@ describe("DeviceConfiguration", () => {
         </MemoryRouter>
       </Provider>
     );
-    userEvent.click(screen.getByRole("button", { name: Label.Edit }));
+    userEvent.click(
+      screen.getAllByRole("button", {
+        name: EditableSectionLabels.EditButton,
+      })[0]
+    );
     const deviceNote = screen.getByRole("textbox", {
       name: DeviceConfigurationFieldsLabel.Note,
     });

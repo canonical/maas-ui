@@ -1,9 +1,11 @@
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 
-import { Button, Col, Row, Strip } from "@canonical/react-components";
+import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import Definition from "app/base/components/Definition";
+import EditableSection from "app/base/components/EditableSection";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import authSelectors from "app/store/auth/selectors";
@@ -31,6 +33,7 @@ type Props = {
 
 const DomainSummary = ({ id }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
+  const isAdmin = useSelector(authSelectors.isAdmin);
   const domain = useSelector((state: RootState) =>
     domainsSelectors.getById(state, id)
   );
@@ -39,111 +42,88 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
   const saving = useSelector(domainsSelectors.saving);
   const cleanup = useCallback(() => domainActions.cleanup(), []);
 
-  const isAdmin = useSelector(authSelectors.isAdmin);
-  const [isFormOpen, setFormOpen] = useState(false);
-
   if (!domain) {
     return null;
   }
 
-  const form = (
-    <FormikForm<EditDomainValues>
-      buttonsAlign="right"
-      buttonsBordered={false}
-      cleanup={cleanup}
-      data-testid="domain-summary-form"
-      errors={errors}
-      initialValues={{
-        authoritative: domain.authoritative,
-        name: domain.name || "",
-        ttl: domain.ttl || "",
-      }}
-      onCancel={() => setFormOpen(false)}
-      onSubmit={(values) => {
-        dispatch(cleanup());
-        dispatch(
-          domainActions.update({
-            authoritative: values.authoritative,
-            id: domain.id,
-            name: values.name,
-            ttl: values.ttl || null,
-          })
-        );
-      }}
-      onSuccess={() => setFormOpen(false)}
-      saved={saved}
-      saving={saving}
-      submitLabel="Save"
-      validationSchema={EditDomainSchema}
-    >
-      <Row>
-        <Col size={6}>
-          <FormikField
-            label="Name"
-            name="name"
-            placeholder="Name"
-            required
-            type="text"
-          />
-        </Col>
-        <Col size={6}>
-          <FormikField label="TTL" min={MIN_TTL} name="ttl" type="number" />
-        </Col>
-      </Row>
-      <Row>
-        <Col size={6}>
-          <FormikField
-            label="Authoritative"
-            name="authoritative"
-            type="checkbox"
-          />
-        </Col>
-      </Row>
-    </FormikForm>
-  );
-
-  const details = (
-    <>
-      <Row data-testid="domain-summary">
-        <Col size={2}>
-          <p className="u-text--muted">Name:</p>
-        </Col>
-        <Col size={4}>
-          <p>{domain.name}</p>
-        </Col>
-        <Col size={2}>
-          <p className="u-text--muted">TTL:</p>
-        </Col>
-        <Col size={4}>
-          <p>{domain.ttl || "(default)"}</p>
-        </Col>
-      </Row>
-      <Row>
-        <Col size={2}>
-          <p className="u-text--muted">Authoritative:</p>
-        </Col>
-        <Col size={4}>
-          <p>{domain.authoritative ? "Yes" : "No"}</p>
-        </Col>
-      </Row>
-    </>
-  );
   return (
-    <Strip shallow>
-      <Row>
-        <Col size={8}>
-          <h3 className="p-heading--4">Domain summary</h3>
-        </Col>
-        {isAdmin && !isFormOpen && (
-          <Col size={4} className="u-align--right">
-            <Button onClick={() => setFormOpen(true)} data-testid="edit-domain">
-              Edit
-            </Button>
-          </Col>
-        )}
-      </Row>
-      {isFormOpen ? form : details}
-    </Strip>
+    <EditableSection
+      canEdit={isAdmin}
+      hasSidebarTitle
+      renderContent={(editing, setEditing) =>
+        editing ? (
+          <FormikForm<EditDomainValues>
+            buttonsAlign="right"
+            buttonsBordered={false}
+            cleanup={cleanup}
+            data-testid="domain-summary-form"
+            errors={errors}
+            initialValues={{
+              authoritative: domain.authoritative,
+              name: domain.name || "",
+              ttl: domain.ttl || "",
+            }}
+            onCancel={() => setEditing(false)}
+            onSubmit={(values) => {
+              dispatch(cleanup());
+              dispatch(
+                domainActions.update({
+                  authoritative: values.authoritative,
+                  id: domain.id,
+                  name: values.name,
+                  ttl: values.ttl || null,
+                })
+              );
+            }}
+            onSuccess={() => setEditing(false)}
+            saved={saved}
+            saving={saving}
+            submitLabel="Save"
+            validationSchema={EditDomainSchema}
+          >
+            <Row>
+              <Col size={6}>
+                <FormikField
+                  label="Name"
+                  name="name"
+                  placeholder="Name"
+                  required
+                  type="text"
+                />
+              </Col>
+              <Col size={6}>
+                <FormikField
+                  label="TTL"
+                  min={MIN_TTL}
+                  name="ttl"
+                  type="number"
+                />
+              </Col>
+            </Row>
+            <Row>
+              <Col size={6}>
+                <FormikField
+                  label="Authoritative"
+                  name="authoritative"
+                  type="checkbox"
+                />
+              </Col>
+            </Row>
+          </FormikForm>
+        ) : (
+          <Row data-testid="domain-summary">
+            <Col size={6}>
+              <Definition label="Name">{domain.name}</Definition>
+              <Definition label="TTL">{domain.ttl || "(default)"}</Definition>
+              <Definition label="Authoritative">
+                {domain.authoritative ? "Yes" : "No"}
+              </Definition>
+            </Col>
+          </Row>
+        )
+      }
+      title="Domain summary"
+    />
   );
 };
 

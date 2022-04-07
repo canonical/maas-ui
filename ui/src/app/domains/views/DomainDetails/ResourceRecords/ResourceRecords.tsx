@@ -53,7 +53,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
 
   if (loading) {
     return (
-      <Strip>
+      <Strip shallow>
         <Spinner text="Loading..." />
       </Strip>
     );
@@ -207,7 +207,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
   });
 
   return (
-    <Strip>
+    <Strip shallow>
       <Row>
         <Col size={12}>
           <h3 className="p-heading--4">Resource records</h3>

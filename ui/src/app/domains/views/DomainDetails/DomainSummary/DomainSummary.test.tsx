@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DomainSummary from "./DomainSummary";
 
+import { Labels } from "app/base/components/EditableSection";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -69,9 +70,15 @@ describe("DomainSummary", () => {
         <DomainSummary id={1} />
       </Provider>
     );
-    expect(wrapper.find('button[data-testid="edit-domain"]').exists()).toBe(
-      false
-    );
+
+    expect(
+      wrapper
+        .findWhere(
+          (node) =>
+            node.type() === "button" && node.text() === Labels.EditButton
+        )
+        .exists()
+    ).toBe(false);
   });
 
   describe("when user is admin", () => {
@@ -104,9 +111,14 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      expect(wrapper.find('button[data-testid="edit-domain"]').exists()).toBe(
-        true
-      );
+      expect(
+        wrapper
+          .findWhere(
+            (node) =>
+              node.type() === "button" && node.text() === Labels.EditButton
+          )
+          .exists()
+      ).toBe(true);
     });
 
     it("renders the form when Edit button is clicked", () => {
@@ -118,7 +130,13 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      wrapper.find('button[data-testid="edit-domain"]').simulate("click");
+      wrapper
+        .findWhere(
+          (node) =>
+            node.type() === "button" && node.text() === Labels.EditButton
+        )
+        .at(0)
+        .simulate("click");
 
       expect(wrapper.find('[data-testid="domain-summary"]').exists()).toBe(
         false
@@ -137,7 +155,13 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      wrapper.find('button[data-testid="edit-domain"]').simulate("click");
+      wrapper
+        .findWhere(
+          (node) =>
+            node.type() === "button" && node.text() === Labels.EditButton
+        )
+        .at(0)
+        .simulate("click");
       wrapper.find("button[data-testid='cancel-action']").simulate("click");
 
       expect(wrapper.find('[data-testid="domain-summary"]').exists()).toBe(
@@ -157,7 +181,13 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      wrapper.find('button[data-testid="edit-domain"]').simulate("click");
+      wrapper
+        .findWhere(
+          (node) =>
+            node.type() === "button" && node.text() === Labels.EditButton
+        )
+        .at(0)
+        .simulate("click");
 
       act(() =>
         submitFormikForm(wrapper, {
