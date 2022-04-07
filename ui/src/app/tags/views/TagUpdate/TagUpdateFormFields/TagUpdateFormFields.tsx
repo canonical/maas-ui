@@ -65,14 +65,15 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
           <KernelOptionsField id={id} />
         </Col>
         <Col size={6}>
-          {/* // TODO: Add the link to the docs:
-          // https://github.com/canonical-web-and-design/app-tribe/issues/748 */}
           {!tag.definition ? (
             <Definition label={Label.Definition}>
               <span className="p-form-help-text">
                 This is a manual tag. Definitions cannot be added to manual
                 tags. To learn more about this, check our{" "}
-                <a href="#todo">XPath documentation</a>.
+                <a href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions">
+                  XPath documentation
+                </a>
+                .
               </span>
             </Definition>
           ) : (

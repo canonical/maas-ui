@@ -61,12 +61,13 @@ export const KernelOptionsField = ({
       }
       component={Textarea}
       help={
-        // TODO: Add the link to the docs:
-        // https://github.com/canonical-web-and-design/app-tribe/issues/748
         <>
           Kernel options are appended to the kernel command line during booting
           while machines are commissioning or deploying. Read more about kernel
-          options in <a href="#todo">tag management.</a>
+          options in{" "}
+          <a href="https://maas.io/docs/how-to-work-with-tags#heading--kernel-options">
+            tag management.
+          </a>
         </>
       }
       placeholder="e.g. nomodeset console=tty0 console=ttys0,115200n8 amd_iommu=on kvm-amd.nested=1"
