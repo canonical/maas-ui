@@ -7,10 +7,15 @@ import FormikForm from "app/base/components/FormikForm";
 import DeployFormFields from "app/settings/views/Configuration/DeployFormFields";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
+import { timeSpanToMinutes } from "app/utils";
 
 const DeploySchema = Yup.object().shape({
   default_osystem: Yup.string(),
   commissioning_distro_series: Yup.string(),
+  hardware_sync_interval: Yup.number().min(
+    1,
+    "Hardware sync interval must be at least 1 minute"
+  ),
 });
 
 const DeployForm = (): JSX.Element => {
@@ -25,6 +30,7 @@ const DeployForm = (): JSX.Element => {
   const hardwareSyncInterval = useSelector(
     configSelectors.hardwareSyncInterval
   );
+  const hardwareSyncIntervalMinutes = timeSpanToMinutes(hardwareSyncInterval);
 
   return (
     <FormikForm<DeployFormValues>
@@ -34,7 +40,7 @@ const DeployForm = (): JSX.Element => {
       initialValues={{
         default_osystem: defaultOSystem || "",
         default_distro_series: defaultDistroSeries || "",
-        hardware_sync_interval: hardwareSyncInterval || "",
+        hardware_sync_interval: `${hardwareSyncIntervalMinutes}` || "",
       }}
       onSaveAnalytics={{
         action: "Saved",
@@ -42,7 +48,13 @@ const DeployForm = (): JSX.Element => {
         label: "Deploy form",
       }}
       onSubmit={(values, { resetForm }) => {
-        dispatch(updateConfig(values));
+        const configValues = {
+          ...values,
+          ...(values.hardware_sync_interval && {
+            hardware_sync_interval: `${values.hardware_sync_interval}m`,
+          }),
+        };
+        dispatch(updateConfig(configValues));
         resetForm({ values });
       }}
       saving={saving}

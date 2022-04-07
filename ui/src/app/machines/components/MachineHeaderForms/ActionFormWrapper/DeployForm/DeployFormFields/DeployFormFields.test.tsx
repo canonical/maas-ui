@@ -433,7 +433,7 @@ describe("DeployFormFields", () => {
   it("displays 'periodically sync hardware' checkbox with global setting and additional tooltip information", async () => {
     state.config.items.push({
       name: "hardware_sync_interval",
-      value: "2h",
+      value: "15m",
     });
     const store = mockStore(state);
     render(
@@ -453,7 +453,9 @@ describe("DeployFormFields", () => {
 
     const tooltipText =
       /Enable this to make MAAS periodically check the hardware/;
-    expect(screen.getByText(/Hardware sync interval: 2h/)).toBeInTheDocument();
+    expect(
+      screen.getByText(/Hardware sync interval: 15min/)
+    ).toBeInTheDocument();
     expect(screen.queryByText(tooltipText)).not.toBeInTheDocument();
     userEvent.hover(
       screen.getByRole("button", {

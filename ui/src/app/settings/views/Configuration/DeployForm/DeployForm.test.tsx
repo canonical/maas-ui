@@ -1,9 +1,10 @@
-import { render, screen, within } from "@testing-library/react";
+import { render, screen, within, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import DeployForm from "../DeployForm";
+import DeployForm from "./DeployForm";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -92,7 +93,7 @@ describe("DeployFormFields", () => {
   });
 
   it("displays the default hardware sync interval option with a correct value", () => {
-    const syncIntervalValue = "1h";
+    const syncIntervalValue = "15m";
     // TODO: Investigate mutating state in integration tests https://github.com/canonical-web-and-design/app-tribe/issues/794
     state.config.items.push({
       name: "hardware_sync_interval",
@@ -109,6 +110,66 @@ describe("DeployFormFields", () => {
 
     expect(
       screen.getByRole("textbox", { name: /Default hardware sync interval/ })
-    ).toHaveValue(syncIntervalValue);
+    ).toHaveValue("15");
+  });
+
+  it("adds a hardware_sync_interval field to the request on submit", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <DeployForm />
+      </Provider>
+    );
+
+    userEvent.clear(
+      screen.getByRole("textbox", { name: /Default hardware sync interval/ })
+    );
+    userEvent.type(
+      screen.getByRole("textbox", {
+        name: /Default hardware sync interval/,
+      }),
+      "30"
+    );
+
+    userEvent.click(
+      screen.getByRole("button", {
+        name: /Save/,
+      })
+    );
+
+    await waitFor(() => {
+      const action = store
+        .getActions()
+        .find((action) => action.type === "config/update");
+      return expect(action.payload.params).toEqual(
+        expect.arrayContaining([
+          {
+            name: "hardware_sync_interval",
+            value: "30m",
+          },
+        ])
+      );
+    });
+  });
+
+  it("displays an error message when providing an invalid hardware sync interval value", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <DeployForm />
+      </Provider>
+    );
+
+    const hardwareSyncInput = screen.getByRole("textbox", {
+      name: /Default hardware sync interval/,
+    });
+    userEvent.clear(hardwareSyncInput);
+    userEvent.type(hardwareSyncInput, "0");
+    userEvent.tab();
+    await waitFor(() =>
+      expect(hardwareSyncInput).toHaveErrorMessage(
+        /Hardware sync interval must be at least 1 minute/
+      )
+    );
   });
 });
