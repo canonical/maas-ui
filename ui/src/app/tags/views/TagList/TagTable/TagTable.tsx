@@ -213,8 +213,6 @@ const TagTable = ({
               <>
                 {Label.Auto}{" "}
                 <Tooltip
-                  // TODO: add a link to the docs:
-                  // https://github.com/canonical-web-and-design/app-tribe/issues/739
                   message={
                     <>
                       {breakLines(
@@ -224,7 +222,7 @@ const TagTable = ({
                         )
                       )}
                       <br />
-                      <a href="#todo">
+                      <a href="https://maas.io/docs/how-to-work-with-tags#heading--automatic-tags">
                         Check the documentation about automatic tags.
                       </a>
                     </>

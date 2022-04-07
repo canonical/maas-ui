@@ -35,12 +35,13 @@ const getDefinitionError = (
   definitionErrorId: string
 ) => {
   if (errors.definition?.includes(INVALID_XPATH_ERROR)) {
-    // TODO: Add the link to the docs:
-    // https://github.com/canonical-web-and-design/app-tribe/issues/748
     return (
       <span id={definitionErrorId}>
         The definition is an invalid XPath expression. See our{" "}
-        <a href="#todo">XPath documentation</a> for more examples.
+        <a href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions">
+          XPath expressions documentation
+        </a>{" "}
+        for more examples.
       </span>
     );
   }
@@ -85,12 +86,13 @@ export const DefinitionField = ({ id }: Props): JSX.Element => {
 //node[@id="firmware"]/capabilities/capability/@id = "uefi"`}
         rows={3}
       />
-      {/* // TODO: Add the link to the docs:
-          // https://github.com/canonical-web-and-design/app-tribe/issues/748 */}
       <p className="p-form-help-text u-sv1">
         Add an XPath expression as a definition. MAAS will auto-assign this tag
-        to all current and future machines that match this definition. More
-        about how to use <a href="#todo">XPath Expression</a>.
+        to all current and future machines that match this definition.{" "}
+        <a href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions">
+          Learn how to use XPath expressions
+        </a>
+        .
       </p>
       <p className="p-form-help-text u-sv1">
         This will tag legacy KVM vms running on AMD-based Hosts:
