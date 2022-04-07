@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import TagForm from "./TagForm";
 
+import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
 import { Label as TagFormFieldsLabel } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm/TagFormFields";
 import machineURLs from "app/machines/urls";
 import { FilterMachines } from "app/store/machine/utils";
@@ -61,7 +62,7 @@ describe("TagForm", () => {
     );
 
     expect(
-      screen.queryByRole("button", { name: "Edit" })
+      screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
     ).not.toBeInTheDocument();
   });
 
@@ -76,7 +77,10 @@ describe("TagForm", () => {
       </Provider>
     );
 
-    expect(screen.getAllByRole("button", { name: "Edit" }).length).not.toBe(0);
+    expect(
+      screen.getAllByRole("button", { name: EditableSectionLabels.EditButton })
+        .length
+    ).not.toBe(0);
   });
 
   it("renders list of tag links until edit button is pressed", () => {
@@ -103,7 +107,11 @@ describe("TagForm", () => {
       })}`
     );
 
-    userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
+    userEvent.click(
+      screen.getAllByRole("button", {
+        name: EditableSectionLabels.EditButton,
+      })[0]
+    );
 
     expect(
       screen.getByLabelText(TagFormFieldsLabel.TagInput)

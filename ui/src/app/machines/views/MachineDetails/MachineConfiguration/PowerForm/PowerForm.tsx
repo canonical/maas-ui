@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Button, Col, Row, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import PowerFormFields from "./PowerFormFields";
 import PowerParameters from "./PowerParameters";
 
+import EditableSection from "app/base/components/EditableSection";
 import FormikForm from "app/base/components/FormikForm";
 import { useCanEdit } from "app/base/hooks";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
@@ -32,10 +33,6 @@ export type PowerFormValues = {
   powerType: Machine["power_type"];
   powerParameters: PowerParametersType;
 };
-
-export enum Labels {
-  Edit = "Edit",
-}
 
 type Props = { systemId: Machine["system_id"] };
 
@@ -86,82 +83,63 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
     .defined();
 
   return (
-    <Row>
-      <Col size={3}>
-        <div className="u-flex--between u-flex--wrap">
-          <h4>Power configuration</h4>
-          {canEdit && !editing && (
-            <Button
-              className="u-no-margin--bottom u-hide--large"
-              onClick={() => setEditing(true)}
-            >
-              {Labels.Edit}
-            </Button>
-          )}
-        </div>
-      </Col>
-      <Col size={editing ? 9 : 6}>
-        {editing ? (
-          <FormikForm<PowerFormValues>
-            allowAllEmpty
-            allowUnchanged
-            cleanup={cleanup}
-            editable={editing}
-            errors={errors}
-            initialValues={{
-              powerType: machine.power_type,
-              powerParameters: initialPowerParameters,
-            }}
-            onSaveAnalytics={{
-              action: "Configure power",
-              category: "Machine details",
-              label: "Save changes",
-            }}
-            onCancel={() => setEditing(false)}
-            onSubmit={(values) => {
-              const params = {
-                extra_macs: machine.extra_macs,
-                power_parameters: formatPowerParameters(
-                  selectedPowerType,
-                  values.powerParameters,
-                  fieldScopes
-                ),
-                power_type: values.powerType,
-                pxe_mac: machine.pxe_mac,
-                system_id: machine.system_id,
-              };
-              dispatch(machineActions.update(params));
-            }}
-            onSuccess={() => setEditing(false)}
-            onValuesChanged={(values) => {
-              const powerType = getPowerTypeFromName(
-                powerTypes,
-                values.powerType
-              );
-              setSelectedPowerType(powerType);
-            }}
-            saved={saved}
-            saving={saving}
-            submitLabel="Save changes"
-            validationSchema={PowerFormSchema}
-          >
-            <PowerFormFields machine={machine} />
-          </FormikForm>
-        ) : (
-          <PowerParameters machine={machine} />
-        )}
-      </Col>
-      {canEdit && !editing && (
-        <Col className="u-align--right" size={3}>
-          <Button
-            className="u-no-margin--bottom u-hide--small u-hide--medium"
-            onClick={() => setEditing(true)}
-          >
-            {Labels.Edit}
-          </Button>
-        </Col>
+    <EditableSection
+      canEdit={canEdit}
+      editing={editing}
+      hasSidebarTitle
+      setEditing={setEditing}
+      title="Power configuration"
+    >
+      {editing ? (
+        <FormikForm<PowerFormValues>
+          allowAllEmpty
+          allowUnchanged
+          cleanup={cleanup}
+          editable={editing}
+          errors={errors}
+          initialValues={{
+            powerType: machine.power_type,
+            powerParameters: initialPowerParameters,
+          }}
+          onSaveAnalytics={{
+            action: "Configure power",
+            category: "Machine details",
+            label: "Save changes",
+          }}
+          onCancel={() => setEditing(false)}
+          onSubmit={(values) => {
+            const params = {
+              extra_macs: machine.extra_macs,
+              power_parameters: formatPowerParameters(
+                selectedPowerType,
+                values.powerParameters,
+                fieldScopes
+              ),
+              power_type: values.powerType,
+              pxe_mac: machine.pxe_mac,
+              system_id: machine.system_id,
+            };
+            dispatch(machineActions.update(params));
+          }}
+          onSuccess={() => setEditing(false)}
+          onValuesChanged={(values) => {
+            const powerType = getPowerTypeFromName(
+              powerTypes,
+              values.powerType
+            );
+            setSelectedPowerType(powerType);
+          }}
+          saved={saved}
+          saving={saving}
+          submitLabel="Save changes"
+          validationSchema={PowerFormSchema}
+        >
+          <PowerFormFields machine={machine} />
+        </FormikForm>
+      ) : (
+        <PowerParameters machine={machine} />
       )}
-    </Row>
+    </EditableSection>
   );
 };
 

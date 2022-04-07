@@ -3,8 +3,9 @@ import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import PowerForm, { Labels } from "./PowerForm";
+import PowerForm from "./PowerForm";
 
+import { Labels } from "app/base/components/EditableSection";
 import { PowerTypeNames } from "app/store/general/constants";
 import { PowerFieldScope, PowerFieldType } from "app/store/general/types";
 import { actions as machineActions } from "app/store/machine";
@@ -80,7 +81,7 @@ it("is not editable if machine does not have edit permission", () => {
   );
 
   expect(
-    screen.queryByRole("button", { name: Labels.Edit })
+    screen.queryByRole("button", { name: Labels.EditButton })
   ).not.toBeInTheDocument();
 });
 
@@ -93,9 +94,9 @@ it("is editable if machine has edit permission", () => {
     </Provider>
   );
 
-  expect(screen.getAllByRole("button", { name: Labels.Edit }).length).not.toBe(
-    0
-  );
+  expect(
+    screen.getAllByRole("button", { name: Labels.EditButton }).length
+  ).not.toBe(0);
 });
 
 it("renders read-only text fields until edit button is pressed", () => {
@@ -110,7 +111,9 @@ it("renders read-only text fields until edit button is pressed", () => {
     screen.queryByRole("combobox", { name: "Power type" })
   ).not.toBeInTheDocument();
 
-  userEvent.click(screen.getAllByRole("button", { name: Labels.Edit })[0]);
+  userEvent.click(
+    screen.getAllByRole("button", { name: Labels.EditButton })[0]
+  );
 
   expect(
     screen.getByRole("combobox", { name: "Power type" })
@@ -131,7 +134,9 @@ it("correctly dispatches an action to update a machine's power", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getAllByRole("button", { name: Labels.Edit })[0]);
+  userEvent.click(
+    screen.getAllByRole("button", { name: Labels.EditButton })[0]
+  );
   fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
     target: { value: PowerTypeNames.APC },
   });

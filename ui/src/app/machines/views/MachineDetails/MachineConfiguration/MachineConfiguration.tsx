@@ -1,4 +1,4 @@
-import { Spinner, Strip } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import MachineForm from "./MachineForm";
@@ -25,17 +25,11 @@ const MachineConfiguration = (): JSX.Element => {
 
   return (
     <>
-      <Strip shallow>
-        <MachineForm systemId={machine.system_id} />
-      </Strip>
+      <MachineForm systemId={machine.system_id} />
       <hr />
-      <Strip shallow>
-        <TagForm systemId={machine.system_id} />
-      </Strip>
+      <TagForm systemId={machine.system_id} />
       <hr />
-      <Strip shallow>
-        <PowerForm systemId={machine.system_id} />
-      </Strip>
+      <PowerForm systemId={machine.system_id} />
     </>
   );
 };

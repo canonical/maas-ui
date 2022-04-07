@@ -1,8 +1,9 @@
 import { useEffect, useState } from "react";
 
-import { Button, Col, Row, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import EditableSection from "app/base/components/EditableSection";
 import TagLinks from "app/base/components/TagLinks";
 import { useCanEdit } from "app/base/hooks";
 import TagActionForm from "app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm";
@@ -45,55 +46,36 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
   }
 
   return (
-    <Row>
-      <Col size={3}>
-        <div className="u-flex--between u-flex--wrap">
-          <h4>Tags</h4>
-          {canEdit && !editing && (
-            <Button
-              className="u-no-margin--bottom u-hide--large"
-              onClick={() => setEditing(true)}
-            >
-              Edit
-            </Button>
-          )}
-        </div>
-      </Col>
-      <Col size={editing ? 9 : 6}>
-        {editing ? (
-          <TagActionForm
-            clearHeaderContent={() => setEditing(false)}
-            errors={errors}
-            machines={[machine]}
-            processingCount={taggingMachines.length}
-            viewingDetails
-            viewingMachineConfig
+    <EditableSection
+      canEdit={canEdit}
+      editing={editing}
+      hasSidebarTitle
+      setEditing={setEditing}
+      title="Tags"
+    >
+      {editing ? (
+        <TagActionForm
+          clearHeaderContent={() => setEditing(false)}
+          errors={errors}
+          machines={[machine]}
+          processingCount={taggingMachines.length}
+          viewingDetails
+          viewingMachineConfig
+        />
+      ) : (
+        <p>
+          <TagLinks
+            getLinkURL={(tag) => {
+              const filter = FilterMachines.filtersToQueryString({
+                tags: [`=${tag.name}`],
+              });
+              return `${machineURLs.machines.index}${filter}`;
+            }}
+            tags={tags}
           />
-        ) : (
-          <p>
-            <TagLinks
-              getLinkURL={(tag) => {
-                const filter = FilterMachines.filtersToQueryString({
-                  tags: [`=${tag.name}`],
-                });
-                return `${machineURLs.machines.index}${filter}`;
-              }}
-              tags={tags}
-            />
-          </p>
-        )}
-      </Col>
-      {canEdit && !editing && (
-        <Col className="u-align--right" size={3}>
-          <Button
-            className="u-no-margin--bottom u-hide--small u-hide--medium"
-            onClick={() => setEditing(true)}
-          >
-            Edit
-          </Button>
-        </Col>
+        </p>
       )}
-    </Row>
+    </EditableSection>
   );
 };
 
