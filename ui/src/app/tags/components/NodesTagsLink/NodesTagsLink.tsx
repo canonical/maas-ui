@@ -7,6 +7,7 @@ import machineURLs from "app/machines/urls";
 import { ControllerMeta } from "app/store/controller/types";
 import { DeviceMeta } from "app/store/device/types";
 import { MachineMeta } from "app/store/machine/types";
+import { FilterMachines } from "app/store/machine/utils";
 import type { Tag } from "app/store/tag/types";
 import type { NodeModel } from "app/store/types/node";
 
@@ -40,8 +41,11 @@ const NodesTagsLink = ({
   if (!url || !nodeName) {
     return null;
   }
+  const filters = FilterMachines.filtersToQueryString({
+    tags: [`=${tags.join(",")}`],
+  });
   return (
-    <Link className="u-block" to={`${url}?tags==${tags.join(",")}`}>
+    <Link className="u-block" to={`${url}${filters}`}>
       {pluralize(nodeName, count, true)}
     </Link>
   );
