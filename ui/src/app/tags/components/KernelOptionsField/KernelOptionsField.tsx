@@ -63,11 +63,11 @@ export const KernelOptionsField = ({
       help={
         <>
           Kernel options are appended to the kernel command line during booting
-          while machines are commissioning or deploying. Read more about kernel
-          options in{" "}
+          while machines are commissioning or deploying.{" "}
           <a href="https://maas.io/docs/how-to-work-with-tags#heading--kernel-options">
-            tag management.
+            Read more about kernel options in tag management
           </a>
+          .
         </>
       }
       placeholder="e.g. nomodeset console=tty0 console=ttys0,115200n8 amd_iommu=on kvm-amd.nested=1"
