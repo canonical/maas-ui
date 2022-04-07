@@ -224,8 +224,7 @@ export const DeployFormFields = (): JSX.Element => {
                       <Icon name="information" />
                     </Button>
                   </Tooltip>
-                  {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}{" "}
-                  <a href="#todo">Hardware sync docs</a>
+                  {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
                 </>
               }
             />
