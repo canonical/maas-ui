@@ -13,6 +13,7 @@ import type { TagFormValues } from "../types";
 
 import TagField from "app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "app/base/components/TagSelector/TagSelector";
+import { NULL_EVENT } from "app/base/constants";
 import type { Machine } from "app/store/machine/types";
 import { getTagCountsForMachines } from "app/store/machine/utils";
 import tagSelectors from "app/store/tag/selectors";
@@ -23,6 +24,7 @@ const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
 
 type Props = {
   machines: Machine[];
+  viewingDetails?: boolean;
   viewingMachineConfig?: boolean;
 };
 
@@ -31,14 +33,9 @@ export enum Label {
   TagInput = "Search existing or add new tags",
 }
 
-// usePortal was originally design to work with click events, so to open the
-// portal programmatically we need to fake the event. This workaround can be
-// removed when this issue is resolved:
-// https://github.com/alex-cory/react-useportal/issues/36
-const NULL_EVENT = { currentTarget: { contains: () => false } };
-
 export const TagFormFields = ({
   machines,
+  viewingDetails = false,
   viewingMachineConfig = false,
 }: Props): JSX.Element => {
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
@@ -110,6 +107,8 @@ export const TagFormFields = ({
                 setNewTagName(null);
                 closePortal(NULL_EVENT);
               }}
+              viewingDetails={viewingDetails}
+              viewingMachineConfig={viewingMachineConfig}
             />
           </Modal>
         </Portal>

@@ -1,20 +1,13 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import { Label as TagFormChangesLabel } from "../TagFormChanges/TagFormChanges";
+import DeviceConfigurationFields, { Label } from "./DeviceConfigurationFields";
 
-import TagFormFields, { Label } from "./TagFormFields";
-
+import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
 import * as baseHooks from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
@@ -58,80 +51,19 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("displays available tags in the dropdown", async () => {
-  state.machine.items[0].tags = [3];
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormFields machines={state.machine.items} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
-  );
-  const changes = screen.getByRole("table", {
-    name: TagFormChangesLabel.Table,
-  });
-  const tagRow = within(changes).getByRole("row", {
-    name: "tag3",
-  });
-  // Set a tag to be removed.
-  userEvent.click(
-    within(tagRow).getByRole("button", { name: TagFormChangesLabel.Remove })
-  );
-  // Open the tag selector dropdown.
-  screen.getByRole("textbox", { name: Label.TagInput }).focus();
-  // Set a tag to be added.
-  userEvent.click(
-    screen.getByRole("option", {
-      name: "tag1",
-    })
-  );
-  expect(screen.getAllByRole("option")).toHaveLength(1);
-  await waitFor(() =>
-    expect(screen.getByRole("option", { name: "tag2" })).toBeInTheDocument()
-  );
-});
-
-it("displays the new tags", () => {
-  const store = mockStore(state);
-  render(
-    <Provider store={store}>
-      <MemoryRouter>
-        <Formik
-          initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
-          onSubmit={jest.fn()}
-        >
-          <TagFormFields machines={state.machine.items} />
-        </Formik>
-      </MemoryRouter>
-    </Provider>
-  );
-  const changes = screen.getByRole("table", {
-    name: TagFormChangesLabel.Table,
-  });
-  expect(
-    within(changes).getByRole("button", { name: "tag1 (1/1)" })
-  ).toBeInTheDocument();
-  expect(
-    within(changes).getByRole("button", { name: "tag3 (1/1)" })
-  ).toBeInTheDocument();
-});
-
 it("can open a create tag form", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormFields machines={[]} />
+        <Formik initialValues={{ tags: [] }} onSubmit={jest.fn()}>
+          <DeviceConfigurationFields />
         </Formik>
       </MemoryRouter>
     </Provider>
   );
   userEvent.type(
-    screen.getByRole("textbox", { name: Label.TagInput }),
+    screen.getByRole("textbox", { name: TagFieldLabel.Input }),
     "name1{enter}"
   );
   await waitFor(() =>
@@ -146,11 +78,8 @@ it("updates the new tags after creating a tag", async () => {
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialValues={{ added: tags, removed: [] }}
-          onSubmit={jest.fn()}
-        >
-          <TagFormFields machines={state.machine.items} />
+        <Formik initialValues={{ tags: tags }} onSubmit={jest.fn()}>
+          <DeviceConfigurationFields />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -160,7 +89,7 @@ it("updates the new tags after creating a tag", async () => {
     screen.queryByRole("button", { name: /new-tag/i })
   ).not.toBeInTheDocument();
   userEvent.type(
-    screen.getByRole("textbox", { name: Label.TagInput }),
+    screen.getByRole("textbox", { name: TagFieldLabel.Input }),
     "new-tag{enter}"
   );
   // Simulate the state.tag.saved state going from `save: false` to `saved:
@@ -175,12 +104,7 @@ it("updates the new tags after creating a tag", async () => {
   state.tag.items.push(newTag);
   fireEvent.submit(screen.getByRole("form", { name: AddTagFormLabel.Form }));
   rerender(<Form tags={[newTag.id]} />);
-  const changes = screen.getByRole("table", {
-    name: TagFormChangesLabel.Table,
-  });
   await waitFor(() =>
-    expect(
-      within(changes).getByRole("button", { name: /new-tag/i })
-    ).toBeInTheDocument()
+    expect(screen.getByRole("button", { name: /new-tag/i })).toBeInTheDocument()
   );
 });

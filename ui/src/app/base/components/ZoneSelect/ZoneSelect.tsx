@@ -16,9 +16,13 @@ type Props = {
   valueKey?: keyof Zone;
 } & HTMLProps<HTMLSelectElement>;
 
+export enum Label {
+  Zone = "Zone",
+}
+
 export const DomainSelect = ({
   disabled = false,
-  label = "Zone",
+  label = Label.Zone,
   name,
   valueKey = "name",
   ...props

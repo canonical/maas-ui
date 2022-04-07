@@ -19,7 +19,7 @@ export enum Label {
   KernelOptions = "Kernel options",
 }
 
-type Props = {
+export type Props = {
   deployedMachines?: Machine[];
   generateDeployedMessage?: (count: number) => string;
   id?: Tag[TagMeta.PK];

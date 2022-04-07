@@ -1,40 +1,33 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import AddTagForm, { Label } from "./AddTagForm";
+import AddTagForm from "./AddTagForm";
+import type { Props } from "./AddTagForm";
 
-import * as baseHooks from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
-import tagsURLs from "app/tags/urls";
-import {
-  tag as tagFactory,
-  rootState as rootStateFactory,
-  tagState as tagStateFactory,
-} from "testing/factories";
+import { rootState as rootStateFactory } from "testing/factories";
+
+const mockBaseAddTagForm = jest.fn();
+jest.mock("app/tags/components/AddTagForm", () => (props: Props) => {
+  mockBaseAddTagForm(props);
+  return null;
+});
 
 const mockStore = configureStore();
 
 let state: RootState;
 
 beforeEach(() => {
-  state = rootStateFactory({
-    tag: tagStateFactory(),
-  });
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [false, () => null]);
+  state = rootStateFactory();
 });
 
 afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("dispatches an action to create a tag", async () => {
+it("set the analytics category for the machine list", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -43,59 +36,95 @@ it("dispatches an action to create a tag", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(
-    screen.getByRole("textbox", { name: Label.Comment }),
-    "comment1"
-  );
-  userEvent.type(
-    screen.getByRole("textbox", { name: KernelOptionsLabel.KernelOptions }),
-    "options1"
-  );
-  fireEvent.submit(screen.getByRole("form"));
-  const expected = tagActions.create({
-    comment: "comment1",
-    kernel_opts: "options1",
-    name: "new-tag",
-  });
-  await waitFor(() =>
-    expect(
-      store.getActions().find((action) => action.type === expected.type)
-    ).toStrictEqual(expected)
+  expect(mockBaseAddTagForm).toHaveBeenCalledWith(
+    expect.objectContaining({
+      onSaveAnalytics: {
+        action: "Manual tag created",
+        category: "Machine list create tag form",
+        label: "Save",
+      },
+    })
   );
 });
 
-it("returns the newly created tag on save", async () => {
-  const onTagCreated = jest.fn();
+it("set the analytics category for the machine details", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Route
-          exact
-          path={tagsURLs.tags.index}
-          component={() => (
-            <AddTagForm
-              machines={[]}
-              name="new-tag"
-              onTagCreated={onTagCreated}
-            />
-          )}
+        <AddTagForm
+          machines={[]}
+          name="new-tag"
+          onTagCreated={jest.fn()}
+          viewingDetails
         />
       </MemoryRouter>
     </Provider>
   );
-  // Simulate the state.tag.saved state going from `save: false` to `saved:
-  // true` which happens when the tag is successfully saved. This in turn will
-  // mean that the form `onSuccess` prop will get called so that the component
-  // knows that the tag was created.
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [true, () => null]);
-  const newTag = tagFactory({ id: 8, name: "new-tag" });
-  state.tag = tagStateFactory({
-    items: [newTag],
-    saved: true,
-  });
-  fireEvent.submit(screen.getByRole("form"));
-  await waitFor(() => expect(onTagCreated).toHaveBeenCalledWith(newTag));
+  expect(mockBaseAddTagForm).toHaveBeenCalledWith(
+    expect.objectContaining({
+      onSaveAnalytics: {
+        action: "Manual tag created",
+        category: "Machine details create tag form",
+        label: "Save",
+      },
+    })
+  );
+});
+
+it("set the analytics category for the machine config", async () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <AddTagForm
+          machines={[]}
+          name="new-tag"
+          onTagCreated={jest.fn()}
+          viewingMachineConfig
+        />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(mockBaseAddTagForm).toHaveBeenCalledWith(
+    expect.objectContaining({
+      onSaveAnalytics: {
+        action: "Manual tag created",
+        category: "Machine configuration create tag form",
+        label: "Save",
+      },
+    })
+  );
+});
+
+it("generates a deployed message for a single machine", async () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    mockBaseAddTagForm.mock.calls[0][0]
+      .generateDeployedMessage(1)
+      .startsWith("1 selected machine is deployed")
+  ).toBe(true);
+});
+
+it("generates a deployed message for multiple machines", async () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    mockBaseAddTagForm.mock.calls[0][0]
+      .generateDeployedMessage(2)
+      .startsWith("2 selected machines are deployed")
+  ).toBe(true);
 });
