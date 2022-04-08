@@ -18,13 +18,14 @@ import type { TagIdCountMap } from "app/store/machine/utils";
 import { getTagCountsForMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
+import type { Tag, TagMeta } from "app/store/tag/types";
 import TagDetails from "app/tags/components/TagDetails";
 import tagsURLs from "app/tags/urls";
 import { toFormikNumber } from "app/utils";
 
 type Props = {
   machines: Machine[];
+  newTags: Tag[TagMeta.PK][];
 };
 
 export enum Label {
@@ -37,7 +38,7 @@ export enum Label {
   Table = "Tag changes",
 }
 
-export enum TestId {
+export enum RowType {
   Added = "added",
   Auto = "auto",
   Manual = "manual",
@@ -56,7 +57,7 @@ type LabelCol = {
   rowSpan?: number;
   row: {
     "aria-label": Label;
-    "data-testid": TestId;
+    "data-testid": RowType;
   };
 };
 
@@ -67,6 +68,7 @@ const generateRows = (
   tagIdsAndCounts: TagIdCountMap,
   label: ReactNode,
   toggleTagDetails: (tag: Tag | null) => void,
+  newTags: Tag[TagMeta.PK][],
   chipAppearance?: ChipProps["appearance"],
   onRemove?: (tag: Tag) => void,
   removeLabel?: ReactNode
@@ -83,6 +85,11 @@ const generateRows = (
     name: (
       <TagChip
         appearance={chipAppearance}
+        lead={
+          rowType === RowType.Added && newTags.includes(tag.id)
+            ? "NEW"
+            : undefined
+        }
         machineCount={machineCount}
         onClick={() => toggleTagDetails(tag)}
         tag={tag}
@@ -103,7 +110,10 @@ const generateRows = (
   }));
 };
 
-export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
+export const TagFormChanges = ({
+  machines,
+  newTags,
+}: Props): JSX.Element | null => {
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const [tagDetails, setTagDetails] = useState<Tag | null>(null);
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
@@ -174,12 +184,13 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
         columns={columns}
         data={[
           ...generateRows(
-            TestId.Added,
+            RowType.Added,
             addedTags,
             machineCount,
             tagIdsAndCounts,
             Label.Added,
             toggleTagDetails,
+            newTags,
             "positive",
             (tag) => {
               setFieldValue(
@@ -193,12 +204,13 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
             </>
           ),
           ...generateRows(
-            TestId.Removed,
+            RowType.Removed,
             removedTags,
             machineCount,
             tagIdsAndCounts,
             Label.Removed,
             toggleTagDetails,
+            newTags,
             "negative",
             (tag) => {
               setFieldValue(
@@ -212,12 +224,13 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
             </>
           ),
           ...generateRows(
-            TestId.Manual,
+            RowType.Manual,
             manualTags,
             machineCount,
             tagIdsAndCounts,
             Label.Manual,
             toggleTagDetails,
+            newTags,
             "information",
             (tag) => {
               setFieldValue(
@@ -231,12 +244,13 @@ export const TagFormChanges = ({ machines }: Props): JSX.Element | null => {
             </>
           ),
           ...generateRows(
-            TestId.Auto,
+            RowType.Auto,
             automaticTags,
             machineCount,
             tagIdsAndCounts,
             Label.Automatic,
-            toggleTagDetails
+            toggleTagDetails,
+            newTags
           ),
         ]}
         getCellProps={(props) => {
