@@ -494,11 +494,10 @@
                   >
                 </span>
                 <tags-input
+                  add-from-autocomplete-only="false"
                   allowed-tags-pattern="[\w-]+"
                   data-ng-model="summary.tags"
                   data-ng-hide="!summary.editing"
-                  display-property="name"
-                  key-property="id"
                 >
                   <auto-complete
                     source="tagsAutocomplete($query)"

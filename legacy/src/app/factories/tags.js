@@ -25,6 +25,11 @@ function TagsManager(RegionConnection, Manager) {
 
   TagsManager.prototype = new Manager();
 
+  // Create a tag.
+  TagsManager.prototype.create = function (tagName) {
+    return RegionConnection.callMethod("tag.create", { name: tagName });
+  };
+
   // Helper for autocomplete that will return a string of tags that
   // contain the query text.
   TagsManager.prototype.autocomplete = function (query) {
@@ -47,7 +52,7 @@ function TagsManager(RegionConnection, Manager) {
 
     angular.forEach(this._items, function (item) {
       if (item.name.indexOf(query) > -1) {
-        matching.push(item);
+        matching.push(item.name);
       }
     });
     return matching;
