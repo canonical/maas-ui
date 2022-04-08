@@ -2,8 +2,8 @@
 
 exports[`GroupCheckbox renders 1`] = `
 <Input
+  aria-checked="false"
   checked={false}
-  className=""
   disabled={true}
   id="mock-redux-js-nanoid-1"
   label=" "

@@ -460,8 +460,8 @@ describe("MachineListTable", () => {
         wrapper
           .find("[data-testid='group-cell'] input")
           .at(0)
-          .hasClass("p-checkbox--mixed")
-      ).toBe(false);
+          .prop("aria-checked")
+      ).not.toBe("mixed");
     });
 
     it("shows a checked checkbox in header row if all machines are selected", () => {
@@ -492,8 +492,8 @@ describe("MachineListTable", () => {
       expect(
         wrapper
           .find("[data-testid='all-machines-checkbox'] input")
-          .hasClass("p-checkbox--mixed")
-      ).toBe(false);
+          .prop("aria-checked")
+      ).not.toBe("mixed");
     });
 
     it("correctly dispatches action when unchecked machine checkbox clicked", () => {
@@ -639,9 +639,7 @@ describe("MachineListTable", () => {
       });
     });
 
-    // Skipping until checkbox labels support class names:
-    // https://github.com/canonical-web-and-design/react-components/issues/716
-    it.skip("shows group checkbox in mixed selection state if some machines selected", () => {
+    it("shows group checkbox in mixed selection state if some machines selected", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
@@ -664,8 +662,8 @@ describe("MachineListTable", () => {
         wrapper
           .find("[data-testid='group-cell'] input")
           .at(0)
-          .hasClass("p-checkbox--mixed")
-      ).toBe(true);
+          .prop("aria-checked")
+      ).toBe("mixed");
     });
 
     it("correctly dispatches action when unchecked header checkbox clicked", () => {
@@ -771,9 +769,7 @@ describe("MachineListTable", () => {
     });
   });
 
-  // Skipping until checkbox labels support class names:
-  // https://github.com/canonical-web-and-design/react-components/issues/716
-  it.skip("shows header checkbox in mixed selection state if some machines selected", () => {
+  it("shows header checkbox in mixed selection state if some machines selected", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -796,8 +792,8 @@ describe("MachineListTable", () => {
       wrapper
         .find("[data-testid='all-machines-checkbox'] input")
         .at(0)
-        .hasClass("p-checkbox--mixed")
-    ).toBe(true);
+        .prop("aria-checked")
+    ).toBe("mixed");
   });
 
   it("remove selected filter when unchecking the only checked machine", () => {
