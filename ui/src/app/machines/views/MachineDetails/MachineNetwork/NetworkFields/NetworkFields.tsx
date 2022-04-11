@@ -83,6 +83,9 @@ const NetworkFields = ({
     for (let i = position + 1; i < fieldOrder.length; i++) {
       let value = "";
       if (fieldOrder[i] === "mode") {
+        // When editing and the subnet has been changed to another subnet then
+        // set the mode to auto, otherwise if the subnet is set to unconfigured
+        // then the link mode also needs to be set to unconfigured (LINK_UP).
         value =
           editing && hasSubnet ? NetworkLinkMode.AUTO : NetworkLinkMode.LINK_UP;
       }
