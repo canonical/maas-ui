@@ -10,6 +10,10 @@ type Props = {
   subnet?: Subnet["id"] | null;
 } & FormikFieldProps;
 
+export enum Label {
+  Select = "IP mode",
+}
+
 const getAvailableLinkModes = (
   interfaceType: NetworkInterfaceTypes | null,
   subnet?: Subnet["id"] | null
