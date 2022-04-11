@@ -33,14 +33,6 @@
     min-width: auto;
   }
 
-  .p-checkbox--mixed:checked {
-    + label::after {
-      border-left: 0;
-      top: 0.3125rem;
-      transform: none;
-    }
-  }
-
   // Custom styling for form fields inside a table.
   .p-form--table {
     input,

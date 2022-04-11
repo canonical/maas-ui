@@ -43,6 +43,7 @@ import {
   groupAsMap,
   isComparable,
   simpleSortByKey,
+  someInArray,
 } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
@@ -463,6 +464,12 @@ const generateGroupRows = ({
                   primary={
                     showActions ? (
                       <GroupCheckbox
+                        checkAllSelected={(_, selectedIDs) =>
+                          machineIDs.every((id) => selectedIDs.includes(id))
+                        }
+                        checkSelected={(_, selectedIDs) =>
+                          someInArray(selectedIDs, machineIDs)
+                        }
                         inRow
                         items={machineIDs}
                         selectedItems={selectedIDs}
@@ -618,10 +625,10 @@ export const MachineListTable = ({
         <div className="u-flex">
           {showActions && (
             <GroupCheckbox
+              data-testid="all-machines-checkbox"
+              handleGroupCheckbox={handleGroupCheckbox}
               items={machineIDs}
               selectedItems={selectedIDs}
-              handleGroupCheckbox={handleGroupCheckbox}
-              data-testid="all-machines-checkbox"
             />
           )}
           <div>
