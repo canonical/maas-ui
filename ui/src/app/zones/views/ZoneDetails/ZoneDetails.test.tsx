@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetails from "./ZoneDetails";
 
+import { Labels } from "app/base/components/EditableSection";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -55,7 +56,14 @@ describe("ZoneDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="edit-zone"]').exists()).toBe(true);
+    expect(
+      wrapper
+        .findWhere(
+          (node) =>
+            node.type() === "button" && node.text() === Labels.EditButton
+        )
+        .exists()
+    ).toBe(true);
   });
 
   it("hides Edit button if user is not admin", () => {
@@ -77,6 +85,13 @@ describe("ZoneDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="edit-zone"]').exists()).toBe(false);
+    expect(
+      wrapper
+        .findWhere(
+          (node) =>
+            node.type() === "button" && node.text() === Labels.EditButton
+        )
+        .exists()
+    ).toBe(false);
   });
 });

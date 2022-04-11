@@ -81,14 +81,12 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
       <Row>
         <Col size={6}>
           <FormikField label="Name" name="name" type="text" />
-          <FabricController id={fabric.id} />
-        </Col>
-        <Col size={6}>
           <FormikField
             component={Textarea}
             label="Description"
             name="description"
           />
+          <FabricController id={fabric.id} />
         </Col>
       </Row>
     </FormikForm>

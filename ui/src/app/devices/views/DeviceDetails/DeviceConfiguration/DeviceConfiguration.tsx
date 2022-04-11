@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
-import { Button, Spinner, Strip } from "@canonical/react-components";
+import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,6 +8,7 @@ import DeviceConfigurationFields from "./DeviceConfigurationFields";
 import type { DeviceConfigurationValues } from "./types";
 
 import Definition from "app/base/components/Definition";
+import EditableSection from "app/base/components/EditableSection";
 import FormikForm from "app/base/components/FormikForm";
 import TagLinks from "app/base/components/TagLinks";
 import { useWindowTitle } from "app/base/hooks";
@@ -26,7 +27,6 @@ type Props = {
 };
 
 export enum Label {
-  Edit = "Edit",
   Form = "Device configuration",
 }
 
@@ -50,7 +50,6 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
     tagSelectors.getByIDs(state, device?.tags || null)
   );
   const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const [editing, setEditing] = useState(false);
   const loaded = isDeviceDetails(device) && zonesLoaded;
   useWindowTitle(`${`${device?.hostname}` || "Device"} configuration`);
 
@@ -66,74 +65,67 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
     );
   }
   return (
-    <Strip shallow>
-      <div className="u-flex--between">
-        <h4>Device configuration</h4>
-        {!editing && (
-          <Button
-            className="u-no-margin--bottom"
-            data-testid="edit-device-button"
-            onClick={() => setEditing(true)}
+    <EditableSection
+      className="u-no-padding--top"
+      hasSidebarTitle
+      renderContent={(editing, setEditing) =>
+        editing ? (
+          <FormikForm<DeviceConfigurationValues>
+            aria-label={Label.Form}
+            cleanup={deviceActions.cleanup}
+            data-testid="device-config-form"
+            editable={editing}
+            errors={updateDeviceError}
+            initialValues={{
+              description: device.description,
+              tags: device.tags,
+              zone: device.zone?.name || "",
+            }}
+            onSaveAnalytics={{
+              action: "Configure device",
+              category: "Device details",
+              label: "Save changes",
+            }}
+            onCancel={() => setEditing(false)}
+            onSubmit={(values) => {
+              const params = {
+                description: values.description,
+                system_id: device.system_id,
+                tags: values.tags,
+                zone: { name: values.zone },
+              };
+              dispatch(deviceActions.update(params));
+            }}
+            onSuccess={() => setEditing(false)}
+            saved={deviceSaved}
+            saving={deviceSaving}
+            submitLabel="Save changes"
+            validationSchema={DeviceConfigurationSchema}
           >
-            {Label.Edit}
-          </Button>
-        )}
-      </div>
-      {editing ? (
-        <FormikForm<DeviceConfigurationValues>
-          aria-label={Label.Form}
-          cleanup={deviceActions.cleanup}
-          data-testid="device-config-form"
-          editable={editing}
-          errors={updateDeviceError}
-          initialValues={{
-            description: device.description,
-            tags: device.tags,
-            zone: device.zone?.name || "",
-          }}
-          onSaveAnalytics={{
-            action: "Configure device",
-            category: "Device details",
-            label: "Save changes",
-          }}
-          onCancel={() => setEditing(false)}
-          onSubmit={(values) => {
-            const params = {
-              description: values.description,
-              system_id: device.system_id,
-              tags: values.tags,
-              zone: { name: values.zone },
-            };
-            dispatch(deviceActions.update(params));
-          }}
-          onSuccess={() => setEditing(false)}
-          saved={deviceSaved}
-          saving={deviceSaving}
-          submitLabel="Save changes"
-          validationSchema={DeviceConfigurationSchema}
-        >
-          <DeviceConfigurationFields />
-        </FormikForm>
-      ) : (
-        <div data-testid="device-details">
-          <Definition label="Zone" description={device.zone.name} />
-          <Definition label="Note" description={device.description} />
-          <Definition label="Tags">
-            {device.tags.length ? (
-              <TagLinks
-                getLinkURL={(tag) => {
-                  const filter = FilterDevices.filtersToQueryString({
-                    tags: [`=${tag.name}`],
-                  });
-                  return `${deviceURLs.devices.index}${filter}`;
-                }}
-                tags={deviceTags}
-              />
-            ) : null}
-          </Definition>
-        </div>
-      )}
-    </Strip>
+            <DeviceConfigurationFields />
+          </FormikForm>
+        ) : (
+          <div data-testid="device-details">
+            <Definition label="Zone" description={device.zone.name} />
+            <Definition label="Note" description={device.description} />
+            <Definition label="Tags">
+              {device.tags.length ? (
+                <TagLinks
+                  getLinkURL={(tag) => {
+                    const filter = FilterDevices.filtersToQueryString({
+                      tags: [`=${tag.name}`],
+                    });
+                    return `${deviceURLs.devices.index}${filter}`;
+                  }}
+                  tags={deviceTags}
+                />
+              ) : null}
+            </Definition>
+          </div>
+        )
+      }
+      title="Device configuration"
+    />
   );
 };
 
