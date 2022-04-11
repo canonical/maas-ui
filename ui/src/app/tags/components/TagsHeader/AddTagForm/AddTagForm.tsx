@@ -8,6 +8,7 @@ import * as Yup from "yup";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useSendAnalytics } from "app/base/hooks";
+import { TAG_NAME_REGEX } from "app/base/validation";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -25,13 +26,16 @@ type Props = {
 export enum Label {
   Comment = "Comment",
   Name = "Tag name",
+  NameValidation = "Tag names can only contain letters, numbers, dashes or underscores.",
 }
 
 const AddTagFormSchema = Yup.object().shape({
   comment: Yup.string(),
   definition: Yup.string(),
   kernel_opts: Yup.string(),
-  name: Yup.string().required("Name is required."),
+  name: Yup.string()
+    .matches(TAG_NAME_REGEX, Label.NameValidation)
+    .required("Name is required."),
 });
 
 export const AddTagForm = ({ onClose }: Props): JSX.Element => {

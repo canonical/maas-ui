@@ -217,3 +217,22 @@ it("shows a confirmation when an automatic tag is added", async () => {
     expect(strippedMessage).toBe(`Created name1. ${NewDefinitionMessage}`);
   });
 });
+
+it("shows an error if tag name is invalid", async () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
+        <AddTagForm onClose={jest.fn()} />
+      </MemoryRouter>
+    </Provider>
+  );
+
+  const nameInput = screen.getByRole("textbox", { name: Label.Name });
+  userEvent.type(nameInput, "invalid name");
+  userEvent.tab();
+
+  await waitFor(() =>
+    expect(nameInput).toHaveErrorMessage(`Error: ${Label.NameValidation}`)
+  );
+});
