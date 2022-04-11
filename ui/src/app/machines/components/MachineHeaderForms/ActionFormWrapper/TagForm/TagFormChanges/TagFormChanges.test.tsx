@@ -5,7 +5,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import TagFormChanges, { Label, TestId } from "./TagFormChanges";
+import TagFormChanges, { Label, RowType } from "./TagFormChanges";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -42,7 +42,7 @@ it("displays manual tags", () => {
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} />
+          <TagFormChanges machines={state.machine.items} newTags={[]} />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -52,11 +52,11 @@ it("displays manual tags", () => {
   expect(labelCell).toHaveAttribute("rowSpan", "2");
   expect(screen.getByRole("row", { name: "tag1" })).toHaveAttribute(
     "data-testid",
-    TestId.Manual
+    RowType.Manual
   );
   expect(screen.getByRole("row", { name: "tag2" })).toHaveAttribute(
     "data-testid",
-    TestId.Manual
+    RowType.Manual
   );
 });
 
@@ -68,7 +68,7 @@ it("displays automatic tags", () => {
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} />
+          <TagFormChanges machines={state.machine.items} newTags={[]} />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -80,15 +80,15 @@ it("displays automatic tags", () => {
   expect(labelCell).toHaveAttribute("rowSpan", "2");
   expect(screen.getByRole("row", { name: "tag1" })).toHaveAttribute(
     "data-testid",
-    TestId.Auto
+    RowType.Auto
   );
   expect(screen.getByRole("row", { name: "tag2" })).toHaveAttribute(
     "data-testid",
-    TestId.Auto
+    RowType.Auto
   );
 });
 
-it("displays added tags", () => {
+it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
   state.machine.items[0].tags = [];
   const tags = state.tag.items;
   const store = mockStore(state);
@@ -99,7 +99,10 @@ it("displays added tags", () => {
           initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
           onSubmit={jest.fn()}
         >
-          <TagFormChanges machines={[state.machine.items[0]]} />
+          <TagFormChanges
+            machines={[state.machine.items[0]]}
+            newTags={[tags[1].id]}
+          />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -107,16 +110,14 @@ it("displays added tags", () => {
   const labelCell = screen.getByRole("cell", {
     name: new RegExp(Label.Added),
   });
+  const existingTagRow = screen.getByRole("row", { name: "tag1" });
+  const newTagRow = screen.getByRole("row", { name: "tag2" });
   expect(labelCell).toBeInTheDocument();
   expect(labelCell).toHaveAttribute("rowSpan", "2");
-  expect(screen.getByRole("row", { name: "tag1" })).toHaveAttribute(
-    "data-testid",
-    TestId.Added
-  );
-  expect(screen.getByRole("row", { name: "tag2" })).toHaveAttribute(
-    "data-testid",
-    TestId.Added
-  );
+  expect(existingTagRow).toHaveAttribute("data-testid", RowType.Added);
+  expect(within(existingTagRow).queryByText("New")).not.toBeInTheDocument();
+  expect(newTagRow).toHaveAttribute("data-testid", RowType.Added);
+  expect(within(newTagRow).getByText("NEW")).toBeInTheDocument();
 });
 
 it("discards added tags", async () => {
@@ -130,13 +131,13 @@ it("discards added tags", async () => {
           initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
           onSubmit={jest.fn()}
         >
-          <TagFormChanges machines={[state.machine.items[0]]} />
+          <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
         </Formik>
       </MemoryRouter>
     </Provider>
   );
   const row = screen.getByRole("row", { name: "tag1" });
-  expect(row).toHaveAttribute("data-testid", TestId.Added);
+  expect(row).toHaveAttribute("data-testid", RowType.Added);
   userEvent.click(within(row).getByRole("button", { name: Label.Discard }));
   await waitFor(() => {
     expect(screen.queryByRole("row", { name: "tag1" })).not.toBeInTheDocument();
@@ -150,7 +151,7 @@ it("displays a tag details modal when chips are clicked", () => {
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} />
+          <TagFormChanges machines={state.machine.items} newTags={[]} />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -165,21 +166,21 @@ it("can remove manual tags", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} />
+          <TagFormChanges machines={state.machine.items} newTags={[]} />
         </Formik>
       </MemoryRouter>
     </Provider>
   );
   const tagName = "tag1";
   const manualRow = screen.getByRole("row", { name: tagName });
-  expect(manualRow).toHaveAttribute("data-testid", TestId.Manual);
+  expect(manualRow).toHaveAttribute("data-testid", RowType.Manual);
   userEvent.click(
     within(manualRow).getByRole("button", { name: Label.Remove })
   );
   // Get the tag's new row.
   const updatedRow = screen.getByRole("row", { name: tagName });
   await waitFor(() =>
-    expect(updatedRow).toHaveAttribute("data-testid", TestId.Removed)
+    expect(updatedRow).toHaveAttribute("data-testid", RowType.Removed)
   );
 });
 
@@ -194,7 +195,7 @@ it("displays removed tags", () => {
           initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
           onSubmit={jest.fn()}
         >
-          <TagFormChanges machines={[state.machine.items[0]]} />
+          <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -206,11 +207,11 @@ it("displays removed tags", () => {
   expect(labelCell).toHaveAttribute("rowSpan", "2");
   expect(screen.getByRole("row", { name: "tag1" })).toHaveAttribute(
     "data-testid",
-    TestId.Removed
+    RowType.Removed
   );
   expect(screen.getByRole("row", { name: "tag2" })).toHaveAttribute(
     "data-testid",
-    TestId.Removed
+    RowType.Removed
   );
 });
 
@@ -224,18 +225,18 @@ it("discards removed tags", async () => {
           initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
           onSubmit={jest.fn()}
         >
-          <TagFormChanges machines={[state.machine.items[0]]} />
+          <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
         </Formik>
       </MemoryRouter>
     </Provider>
   );
   const row = screen.getByRole("row", { name: "tag1" });
-  expect(row).toHaveAttribute("data-testid", TestId.Removed);
+  expect(row).toHaveAttribute("data-testid", RowType.Removed);
   userEvent.click(within(row).getByRole("button", { name: Label.Discard }));
   await waitFor(() => {
     expect(screen.queryByRole("row", { name: "tag1" })).toHaveAttribute(
       "data-testid",
-      TestId.Manual
+      RowType.Manual
     );
   });
 });

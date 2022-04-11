@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { NotificationSeverity } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,6 +14,7 @@ import type { MachineEventErrors } from "app/store/machine/types";
 import { actions as messageActions } from "app/store/message";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
+import type { Tag, TagMeta } from "app/store/tag/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = MachineActionFormProps & { viewingMachineConfig?: boolean };
@@ -37,6 +38,7 @@ export const TagForm = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const tagsLoaded = useSelector(tagSelectors.loaded);
+  const [newTags, setNewTags] = useState<Tag[TagMeta.PK][]>([]);
 
   let formErrors: Record<string, string | string[]> | null = null;
   if (errors && typeof errors === "object" && "name" in errors) {
@@ -105,6 +107,8 @@ export const TagForm = ({
     >
       <TagFormFields
         machines={machines}
+        newTags={newTags}
+        setNewTags={setNewTags}
         viewingDetails={viewingDetails}
         viewingMachineConfig={viewingMachineConfig}
       />

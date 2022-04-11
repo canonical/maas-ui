@@ -17,13 +17,15 @@ import { NULL_EVENT } from "app/base/constants";
 import type { Machine } from "app/store/machine/types";
 import { getTagCountsForMachines } from "app/store/machine/utils";
 import tagSelectors from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
+import type { Tag, TagMeta } from "app/store/tag/types";
 
 const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
   !!tags.find(({ id }) => tag.id === id)?.kernel_opts;
 
 type Props = {
   machines: Machine[];
+  newTags: Tag[TagMeta.PK][];
+  setNewTags: (tags: Tag[TagMeta.PK][]) => void;
   viewingDetails?: boolean;
   viewingMachineConfig?: boolean;
 };
@@ -35,6 +37,8 @@ export enum Label {
 
 export const TagFormFields = ({
   machines,
+  newTags,
+  setNewTags,
   viewingDetails = false,
   viewingMachineConfig = false,
 }: Props): JSX.Element => {
@@ -86,7 +90,7 @@ export const TagFormFields = ({
             storedValue="id"
             tags={availableTags.map(({ id, name }) => ({ id, name }))}
           />
-          <TagFormChanges machines={machines} />
+          <TagFormChanges machines={machines} newTags={newTags} />
         </Col>
       </Row>
       {isOpen ? (
@@ -105,6 +109,7 @@ export const TagFormFields = ({
                   values.added.concat([tag.id.toString()])
                 );
                 setNewTagName(null);
+                setNewTags([...newTags, tag.id]);
                 closePortal(NULL_EVENT);
               }}
               viewingDetails={viewingDetails}

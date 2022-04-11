@@ -65,7 +65,11 @@ it("displays available tags in the dropdown", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormFields machines={state.machine.items} />
+          <TagFormFields
+            machines={state.machine.items}
+            newTags={[]}
+            setNewTags={jest.fn()}
+          />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -94,7 +98,7 @@ it("displays available tags in the dropdown", async () => {
   );
 });
 
-it("displays the new tags", () => {
+it("displays the tags to be added", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -103,7 +107,11 @@ it("displays the new tags", () => {
           initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
           onSubmit={jest.fn()}
         >
-          <TagFormFields machines={state.machine.items} />
+          <TagFormFields
+            machines={state.machine.items}
+            newTags={[]}
+            setNewTags={jest.fn()}
+          />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -125,7 +133,7 @@ it("can open a create tag form", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormFields machines={[]} />
+          <TagFormFields machines={[]} newTags={[]} setNewTags={jest.fn()} />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -143,6 +151,7 @@ it("can open a create tag form", async () => {
 
 it("updates the new tags after creating a tag", async () => {
   const store = mockStore(state);
+  const setNewTags = jest.fn();
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
@@ -150,7 +159,11 @@ it("updates the new tags after creating a tag", async () => {
           initialValues={{ added: tags, removed: [] }}
           onSubmit={jest.fn()}
         >
-          <TagFormFields machines={state.machine.items} />
+          <TagFormFields
+            machines={state.machine.items}
+            newTags={[]}
+            setNewTags={setNewTags}
+          />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -183,4 +196,5 @@ it("updates the new tags after creating a tag", async () => {
       within(changes).getByRole("button", { name: /new-tag/i })
     ).toBeInTheDocument()
   );
+  expect(setNewTags).toHaveBeenCalledWith([newTag.id]);
 });
