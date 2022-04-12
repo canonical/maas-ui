@@ -18,8 +18,8 @@ const VmResources = ({ loading = false, vms }: Props): JSX.Element => {
           <ContextualMenu
             data-testid="vms-dropdown"
             dropdownClassName="vm-resources__dropdown"
-            toggleAppearance="base"
-            toggleClassName="vm-resources__toggle is-dense p-button--link"
+            toggleAppearance="link"
+            toggleClassName="vm-resources__toggle is-dense"
             toggleDisabled={vms.length === 0}
             toggleLabel={`Total VMs: ${vms.length}`}
           >

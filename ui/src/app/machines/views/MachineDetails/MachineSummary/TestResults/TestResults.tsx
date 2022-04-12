@@ -141,7 +141,7 @@ const TestResults = ({
               position={"top-left"}
             >
               <Button
-                className="p-button--link"
+                appearance="link"
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
                   setHeaderContent({
