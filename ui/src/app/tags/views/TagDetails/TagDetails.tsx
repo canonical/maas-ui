@@ -15,30 +15,36 @@ import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { TagMeta } from "app/store/tag/types";
 import BaseTagDetails from "app/tags/components/TagDetails";
+import { TagViewState } from "app/tags/types";
 import tagURLs from "app/tags/urls";
 import { isId } from "app/utils";
 
 export enum Label {
+  Title = "Tag details",
   AppliedTo = "Applied to",
   Comment = "Comment",
   Definition = "Definition (automatic tag)",
+  DeleteButton = "Delete",
+  EditButton = "Edit",
   Name = "Tag name",
   Options = "Kernel options",
   Update = "Last update",
 }
 
-type Props = {
-  isEditing?: boolean;
+export type Props = {
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
+  tagViewState?: TagViewState | null;
 };
 
-const TagDetails = ({ isEditing, onDelete }: Props): JSX.Element => {
+const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const id = useGetURLId(TagMeta.PK);
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
   const tagsLoading = useSelector(tagSelectors.loading);
+  // Don't show the buttons when any of the forms are visible.
+  const showButtons = !tagViewState;
 
   useWindowTitle(tag ? `Tag: ${tag.name}` : "Tag");
 
@@ -60,39 +66,47 @@ const TagDetails = ({ isEditing, onDelete }: Props): JSX.Element => {
     );
   }
 
-  if (isEditing) {
+  if (tagViewState === TagViewState.Updating) {
     return <TagUpdate id={id} />;
   }
 
   return (
-    <>
+    <div aria-label={Label.Title}>
       <Row>
         <Col size={6}>
-          <Link to={tagURLs.tags.index}>&lsaquo; Back to all tags</Link>
+          <Link className="u-sv3" to={tagURLs.tags.index}>
+            &lsaquo; Back to all tags
+          </Link>
         </Col>
         <Col className="u-align--right" size={6}>
-          <Button
-            element={Link}
-            hasIcon
-            to={{
-              pathname: tagURLs.tag.update({ id: tag.id }),
-              state: { canGoBack: true },
-            }}
-          >
-            <Icon className="is-light" name="edit" /> <span>Edit</span>
-          </Button>
-          <Button
-            appearance="negative"
-            hasIcon
-            onClick={() => onDelete(tag[TagMeta.PK], true)}
-          >
-            <Icon className="is-light" name="delete" /> <span>Delete</span>
-          </Button>
+          {showButtons ? (
+            <>
+              <Button
+                element={Link}
+                hasIcon
+                to={{
+                  pathname: tagURLs.tag.update({ id: tag.id }),
+                  state: { canGoBack: true },
+                }}
+              >
+                <Icon className="is-light" name="edit" />{" "}
+                <span>{Label.EditButton}</span>
+              </Button>
+              <Button
+                appearance="negative"
+                hasIcon
+                onClick={() => onDelete(tag[TagMeta.PK], true)}
+              >
+                <Icon className="is-light" name="delete" />{" "}
+                <span>{Label.DeleteButton}</span>
+              </Button>
+            </>
+          ) : null}
         </Col>
       </Row>
       <hr />
       <BaseTagDetails id={id} />
-    </>
+    </div>
   );
 };
 

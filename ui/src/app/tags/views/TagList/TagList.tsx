@@ -15,6 +15,10 @@ type Props = {
   onDelete: (id: Tag[TagMeta.PK], fromDetails?: boolean) => void;
 };
 
+export enum Label {
+  Title = "Tag list",
+}
+
 const TagList = ({ onDelete }: Props): JSX.Element => {
   const [currentPage, setCurrentPage] = useState(1);
   const [filter, setFilter] = useState(TagSearchFilter.All);
@@ -27,7 +31,7 @@ const TagList = ({ onDelete }: Props): JSX.Element => {
   useWindowTitle("Tags");
 
   return (
-    <>
+    <div aria-label={Label.Title}>
       <TagListControls
         aria-label="tag list controls"
         aria-controls={tableId}
@@ -49,7 +53,7 @@ const TagList = ({ onDelete }: Props): JSX.Element => {
         setCurrentPage={setCurrentPage}
         tags={tags}
       />
-    </>
+    </div>
   );
 };
 

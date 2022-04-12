@@ -4,11 +4,18 @@ import MachinesHeader from "app/base/components/node/MachinesHeader";
 import TagHeaderForms from "app/tags/components/TagsHeader/TagHeaderForms";
 import { TagHeaderViews } from "app/tags/constants";
 import type { TagHeaderContent, TagSetHeaderContent } from "app/tags/types";
+import { TagViewState } from "app/tags/types";
 
-type Props = {
+export type Props = {
   headerContent: TagHeaderContent | null;
   setHeaderContent: TagSetHeaderContent;
+  tagViewState?: TagViewState | null;
 };
+
+export enum Label {
+  CreateButton = "Create new tag",
+  Header = "Tags header",
+}
 
 export const getHeaderTitle = (
   headerContent: TagHeaderContent | null
@@ -28,17 +35,25 @@ export const getHeaderTitle = (
 export const TagsHeader = ({
   headerContent,
   setHeaderContent,
+  tagViewState,
 }: Props): JSX.Element => {
   return (
     <MachinesHeader
-      buttons={[
-        <Button
-          appearance="positive"
-          onClick={() => setHeaderContent({ view: TagHeaderViews.AddTag })}
-        >
-          Create new tag
-        </Button>,
-      ]}
+      aria-label={Label.Header}
+      buttons={
+        tagViewState === TagViewState.Updating
+          ? null
+          : [
+              <Button
+                appearance="positive"
+                onClick={() =>
+                  setHeaderContent({ view: TagHeaderViews.AddTag })
+                }
+              >
+                {Label.CreateButton}
+              </Button>,
+            ]
+      }
       headerContent={
         headerContent && (
           <TagHeaderForms

@@ -1,10 +1,13 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { fireEvent, screen, within } from "@testing-library/react";
 
+import { Label as TagsHeaderLabel } from "../components/TagsHeader/TagsHeader";
+
+import { Label as TagDetailsLabel } from "./TagDetails/TagDetails";
+import { Label as TagListLabel } from "./TagList/TagList";
+import { Label as TagUpdateLabel } from "./TagUpdate/TagUpdate";
 import Tags from "./Tags";
 
+import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
 import type { RootState } from "app/store/root/types";
 import tagURLs from "app/tags/urls";
 import {
@@ -12,49 +15,146 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("Tags", () => {
+  let scrollToSpy: jest.Mock;
   let state: RootState;
 
   beforeEach(() => {
     state = rootStateFactory({
       tag: tagStateFactory({
         loaded: true,
-        items: [tagFactory(), tagFactory()],
+        items: [tagFactory({ id: 1 }), tagFactory()],
       }),
     });
+    // Mock the scrollTo method as jsdom doesn't support this and will error.
+    scrollToSpy = jest.fn();
+    global.scrollTo = scrollToSpy;
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   [
     {
-      component: "TagDetails",
+      label: TagDetailsLabel.Title,
       path: tagURLs.tag.index({ id: 1 }),
     },
     {
-      component: "TagDetails",
+      label: TagUpdateLabel.Form,
       path: tagURLs.tag.update({ id: 1 }),
     },
     {
-      component: "TagList",
+      label: TagListLabel.Title,
       path: tagURLs.tags.index,
     },
     {
-      component: "NotFound",
+      label: NotFoundLabel.Title,
       path: "/not/a/path",
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Tags />
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+  ].forEach(({ label, path }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<Tags />, {
+        wrapperProps: { state },
+        route: path,
+      });
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
+  });
+
+  it("shows buttons when not displaying forms", () => {
+    renderWithBrowserRouter(<Tags />, {
+      wrapperProps: { state },
+      route: tagURLs.tag.index({ id: 1 }),
+    });
+    const header = screen.getByLabelText(TagsHeaderLabel.Header);
+    const details = screen.getByLabelText(TagDetailsLabel.Title);
+    expect(
+      within(header).getByRole("button", { name: TagsHeaderLabel.CreateButton })
+    ).toBeInTheDocument();
+    expect(
+      within(details).getByRole("button", {
+        name: TagDetailsLabel.DeleteButton,
+      })
+    ).toBeInTheDocument();
+    expect(
+      within(details).getByRole("link", { name: TagDetailsLabel.EditButton })
+    ).toBeInTheDocument();
+  });
+
+  it("hides buttons when deleting tags", () => {
+    renderWithBrowserRouter(<Tags />, {
+      wrapperProps: { state },
+      route: tagURLs.tag.index({ id: 1 }),
+    });
+    const header = screen.getByLabelText(TagsHeaderLabel.Header);
+    const details = screen.getByLabelText(TagDetailsLabel.Title);
+    fireEvent.click(
+      within(details).getByRole("button", {
+        name: TagDetailsLabel.DeleteButton,
+      })
+    );
+    expect(
+      within(header).queryByRole("button", {
+        name: TagsHeaderLabel.CreateButton,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      within(details).queryByRole("button", {
+        name: TagDetailsLabel.DeleteButton,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      within(details).queryByRole("link", { name: TagDetailsLabel.EditButton })
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides buttons when updating tags", () => {
+    renderWithBrowserRouter(<Tags />, {
+      wrapperProps: { state },
+      route: tagURLs.tag.update({ id: 1 }),
+    });
+    const header = screen.getByLabelText(TagsHeaderLabel.Header);
+    const details = screen.getByLabelText(TagUpdateLabel.Form);
+    expect(
+      within(header).queryByRole("button", {
+        name: TagsHeaderLabel.CreateButton,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      within(details).queryByRole("button", {
+        name: TagDetailsLabel.DeleteButton,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      within(details).queryByRole("link", { name: TagDetailsLabel.EditButton })
+    ).not.toBeInTheDocument();
+  });
+
+  it("hides buttons when creating tags", () => {
+    renderWithBrowserRouter(<Tags />, {
+      wrapperProps: { state },
+      route: tagURLs.tag.index({ id: 1 }),
+    });
+    const header = screen.getByLabelText(TagsHeaderLabel.Header);
+    const details = screen.getByLabelText(TagDetailsLabel.Title);
+    fireEvent.click(
+      within(header).getByRole("button", { name: TagsHeaderLabel.CreateButton })
+    );
+    expect(
+      within(header).queryByRole("button", {
+        name: TagsHeaderLabel.CreateButton,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      within(details).queryByRole("button", {
+        name: TagDetailsLabel.DeleteButton,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      within(details).queryByRole("link", { name: TagDetailsLabel.EditButton })
+    ).not.toBeInTheDocument();
   });
 });

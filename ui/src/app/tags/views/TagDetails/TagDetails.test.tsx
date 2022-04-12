@@ -11,6 +11,7 @@ import TagDetails from "./TagDetails";
 
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
+import { TagViewState } from "app/tags/types";
 import tagURLs from "app/tags/urls";
 import {
   rootState as rootStateFactory,
@@ -125,7 +126,12 @@ it("can display the edit form", () => {
         <Route
           exact
           path={tagURLs.tag.update(null, true)}
-          component={() => <TagDetails isEditing onDelete={jest.fn()} />}
+          component={() => (
+            <TagDetails
+              tagViewState={TagViewState.Updating}
+              onDelete={jest.fn()}
+            />
+          )}
         />
       </MemoryRouter>
     </Provider>

@@ -13,3 +13,9 @@ export type TagHeaderContent =
     >;
 
 export type TagSetHeaderContent = SetHeaderContent<TagHeaderContent>;
+
+export enum TagViewState {
+  Creating = "creating",
+  Deleting = "deleting",
+  Updating = "updating",
+}
