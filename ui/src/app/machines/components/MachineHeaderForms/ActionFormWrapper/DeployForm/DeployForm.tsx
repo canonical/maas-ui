@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -62,6 +63,14 @@ export const DeployForm = ({
     dispatch(machineActions.fetch());
   }, [dispatch]);
 
+  if (!defaultMinHweKernelLoaded || !osInfoLoaded) {
+    return (
+      <Strip data-testid="loading-deploy-data">
+        <Spinner text="Loading..." />
+      </Strip>
+    );
+  }
+
   // Default OS+release is set in the backend even if the image has not yet been
   // downloaded. The following conditionals check whether the OS+release actually
   // exist in state before setting initial values in the form.
@@ -94,7 +103,6 @@ export const DeployForm = ({
         vmHostType: "",
         enableHwSync: false,
       }}
-      loaded={defaultMinHweKernelLoaded && osInfoLoaded}
       modelName="machine"
       onCancel={clearHeaderContent}
       onSaveAnalytics={{

@@ -129,6 +129,36 @@ describe("DeployForm", () => {
     });
   });
 
+  it("shows a spinner if data has not loaded yet", () => {
+    const state = rootStateFactory({
+      general: generalStateFactory({
+        osInfo: osInfoStateFactory({
+          loaded: false,
+        }),
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-testid='loading-deploy-data']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("form").exists()).toBe(false);
+  });
+
   it("correctly dispatches actions to deploy given machines", () => {
     const store = mockStore(state);
     const wrapper = mount(
