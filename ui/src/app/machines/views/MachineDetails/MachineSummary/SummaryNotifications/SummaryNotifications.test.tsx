@@ -182,6 +182,7 @@ describe("SummaryNotifications", () => {
         </MemoryRouter>
       </Provider>
     );
+    expect(screen.getByRole("status")).toBeInTheDocument();
     expect(screen.getByRole("status")).toHaveTextContent(
       /This machine was not synced when it was scheduled./i
     );

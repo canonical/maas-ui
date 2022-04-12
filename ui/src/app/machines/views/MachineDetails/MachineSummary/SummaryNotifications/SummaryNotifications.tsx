@@ -15,6 +15,7 @@ import {
   isMachineDetails,
   useHasInvalidArchitecture,
 } from "app/store/machine/utils";
+import { getHasSyncFailed } from "app/store/machine/utils/common";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
 import type { NodeEvent } from "app/store/types/node";
@@ -48,6 +49,7 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
   const canEdit = useCanEdit(machine, true);
   const isRackControllerConnected = useIsRackControllerConnected();
   const hasInvalidArchitecture = useHasInvalidArchitecture(machine);
+  const hasSyncFailed = getHasSyncFailed(machine);
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());
@@ -121,7 +123,7 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
             "Commission this machine to get CPU, Memory and Storage information.",
         },
         {
-          active: machine.is_sync_healthy === false,
+          active: hasSyncFailed,
           content: (
             <>
               This machine was not synced when it was scheduled. Check the{" "}

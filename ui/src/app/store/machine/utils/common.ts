@@ -44,3 +44,13 @@ export const getMachineFieldScopes = (machine: Machine): PowerFieldScope[] => {
   }
   return [PowerFieldScope.BMC, PowerFieldScope.NODE];
 };
+
+/**
+ * @returns Whether this machine failed to sync when it was scheduled.
+ */
+export const getHasSyncFailed = (machine?: Machine | null): boolean => {
+  if (!machine || !isMachineDetails(machine)) {
+    return false;
+  }
+  return machine.is_sync_healthy === false;
+};
