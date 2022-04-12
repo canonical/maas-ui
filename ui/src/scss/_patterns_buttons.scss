@@ -7,68 +7,26 @@
     }
   }
 
-  // Button styles that make it look like a link
-  .p-button--link {
-    @extend %vf-button-base;
-    background-color: inherit;
-    border: 0 !important;
-    color: $color-link;
-    font-size: inherit;
-    line-height: 1rem;
-    margin-bottom: 0;
+  // Custom class for sort buttons in table headers. We don't use the default
+  // Vanilla th[aria-sort] pattern due to the use of double rows in MAAS, so we
+  // approximate it with these styles.
+  .p-button--table-header {
+    @extend %table-header-label;
+    color: $color-dark;
+    margin: 0;
     padding: 0;
-    pointer-events: all;
-    text-align: left;
-    text-transform: inherit;
-
-    &:visited {
-      color: $color-link;
-    }
 
     &:hover {
-      background-color: inherit;
       color: $color-link;
-      text-decoration: underline;
     }
 
-    &:active {
-      background-color: inherit !important;
-    }
-
-    &:focus {
-      color: $color-link;
-      outline: 0;
-      text-decoration: underline;
-    }
-
-    &.is-inline {
-      margin: 0;
-    }
-
-    // Table header sort buttons
-    th & {
-      color: $color-dark;
-      font-weight: 400;
-
-      .p-icon--chevron-down,
-      .p-icon--chevron-up {
-        @include vf-icon-size(0.875rem);
-        margin-left: $sp-x-small;
-      }
+    [class*="p-icon"] {
+      @include vf-icon-size(0.875rem);
+      margin-left: $sp-x-small;
     }
   }
 
   [class*="p-button"].no-background {
     background-color: transparent;
-  }
-
-  table .p-button--link {
-    margin: 0;
-    padding-bottom: 0;
-    padding-top: 0;
-  }
-
-  .p-button--link:not(:last-of-type):not(:only-of-type) {
-    margin-right: 0;
   }
 }
