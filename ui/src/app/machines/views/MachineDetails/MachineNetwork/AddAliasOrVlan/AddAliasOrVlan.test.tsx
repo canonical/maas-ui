@@ -11,6 +11,7 @@ import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";
 import {
   fabric as fabricFactory,
+  fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
@@ -18,6 +19,7 @@ import {
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
+  vlanState as vlanStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";
 
@@ -147,6 +149,70 @@ describe("AddAliasOrVlan", () => {
     expect(wrapper.find("FormikForm").prop("secondarySubmitTooltip")).toBe(
       "There are no more unused VLANS for this interface."
     );
+  });
+
+  it("correctly initialises fabric and VLAN when adding an alias", () => {
+    const fabric = fabricFactory({ id: 1 });
+    const vlan = vlanFactory({ fabric: fabric.id, id: 5001 });
+    const nic = machineInterfaceFactory({ vlan_id: vlan.id });
+    const machine = machineDetailsFactory({
+      system_id: "abc123",
+      interfaces: [nic],
+    });
+    const state = rootStateFactory({
+      fabric: fabricStateFactory({
+        items: [fabric],
+        loaded: true,
+        loading: false,
+      }),
+      machine: machineStateFactory({
+        items: [machine],
+        statuses: machineStatusesFactory({
+          [machine.system_id]: machineStatusFactory(),
+        }),
+      }),
+      vlan: vlanStateFactory({
+        items: [vlan],
+        loaded: true,
+        loading: false,
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <AddAliasOrVlan
+            interfaceType={NetworkInterfaceTypes.ALIAS}
+            nic={nic}
+            systemId="abc123"
+            close={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      wrapper
+        .findWhere(
+          (node) =>
+            node.name() === "select" &&
+            node.prop("name") === "fabric" &&
+            node.prop("value") === fabric.id
+        )
+        .exists()
+    ).toBe(true);
+    expect(
+      wrapper
+        .findWhere(
+          (node) =>
+            node.name() === "select" &&
+            node.prop("name") === "vlan" &&
+            node.prop("value") === vlan.id
+        )
+        .exists()
+    ).toBe(true);
   });
 
   it("correctly dispatches actions to add a VLAN", () => {
