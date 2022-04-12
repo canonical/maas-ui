@@ -23,6 +23,7 @@ context("Machine listing", () => {
 
     cy.findAllByRole("button", { name: "Hidden columns" }).click();
     cy.findByLabelText("hidden columns menu").within(() =>
+      // eslint-disable-next-line cypress/no-force
       cy.findByRole("checkbox", { name: "Status" }).click({ force: true })
     );
 
