@@ -1,10 +1,11 @@
 import { useState } from "react";
 
-import { Route, Switch } from "react-router-dom";
+import { matchPath, Route, Switch, useLocation } from "react-router-dom";
 
 import TagsHeader from "../components/TagsHeader";
 import { TagHeaderViews } from "../constants";
 import type { TagHeaderContent } from "../types";
+import { TagViewState } from "../types";
 
 import TagDetails from "./TagDetails";
 import TagList from "./TagList";
@@ -15,10 +16,33 @@ import NotFound from "app/base/views/NotFound";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import tagsURLs from "app/tags/urls";
 
+const getViewState = (
+  headerContent: TagHeaderContent | null,
+  pathname: string
+) => {
+  if (headerContent?.view === TagHeaderViews.DeleteTag) {
+    return TagViewState.Deleting;
+  }
+  if (headerContent?.view === TagHeaderViews.AddTag) {
+    return TagViewState.Creating;
+  }
+  const isUpdating = matchPath(pathname, {
+    path: tagsURLs.tag.update(null, true),
+    exact: true,
+    strict: false,
+  });
+  if (isUpdating) {
+    return TagViewState.Updating;
+  }
+  return null;
+};
+
 const Tags = (): JSX.Element => {
+  const { pathname } = useLocation();
   const [headerContent, setHeaderContent] = useState<TagHeaderContent | null>(
     null
   );
+  const tagViewState = getViewState(headerContent, pathname);
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) =>
     setHeaderContent({
       view: TagHeaderViews.DeleteTag,
@@ -30,6 +54,7 @@ const Tags = (): JSX.Element => {
         <TagsHeader
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}
+          tagViewState={tagViewState}
         />
       }
     >
@@ -37,12 +62,16 @@ const Tags = (): JSX.Element => {
         <Route
           exact
           path={tagsURLs.tag.index(null, true)}
-          render={() => <TagDetails onDelete={onDelete} />}
+          render={() => (
+            <TagDetails onDelete={onDelete} tagViewState={tagViewState} />
+          )}
         />
         <Route
           exact
           path={tagsURLs.tag.update(null, true)}
-          render={() => <TagDetails onDelete={onDelete} isEditing />}
+          render={() => (
+            <TagDetails onDelete={onDelete} tagViewState={tagViewState} />
+          )}
         />
         <Route
           exact

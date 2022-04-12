@@ -5,22 +5,25 @@ type Props = {
   includeSection?: boolean;
 };
 
+export enum Label {
+  Title = "Error: Page not found.",
+}
+
 const NotFound = ({ includeSection = false }: Props): JSX.Element => {
-  const title = "Error: Page not found.";
-  useWindowTitle(title);
+  useWindowTitle(Label.Title);
   const message = `The requested URL ${window.location.pathname} was not found on this server.`;
   if (includeSection) {
     return (
-      <Section header={title}>
+      <Section header={Label.Title} aria-label={Label.Title}>
         <h2 className="p-heading--4">{message}</h2>
       </Section>
     );
   }
   return (
-    <>
-      <h2 className="p-heading--4">{title}</h2>
+    <div aria-label={Label.Title}>
+      <h2 className="p-heading--4">{Label.Title}</h2>
       <p>{message}</p>
-    </>
+    </div>
   );
 };
 
