@@ -20,6 +20,10 @@ type Props = {
   vlan?: Subnet["vlan"];
 } & FormikFieldProps;
 
+export enum Label {
+  Select = "Subnet",
+}
+
 export const SubnetSelect = ({
   defaultOption = { label: "Select subnet", value: "" },
   filterFunction,

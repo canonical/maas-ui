@@ -28,6 +28,10 @@ type Props = {
   vlans?: VLAN[] | null;
 } & FormikFieldProps;
 
+export enum Label {
+  Select = "VLAN",
+}
+
 export const VLANSelect = ({
   defaultOption = { disabled: true, label: "Select VLAN", value: "" },
   fabric,

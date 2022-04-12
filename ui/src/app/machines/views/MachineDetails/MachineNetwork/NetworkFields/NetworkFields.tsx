@@ -57,6 +57,10 @@ type Props = {
   vlans?: VLAN[] | null;
 };
 
+export enum Label {
+  IPAddress = "IP address",
+}
+
 const NetworkFields = ({
   editing,
   fabricDisabled,
@@ -70,13 +74,20 @@ const NetworkFields = ({
   const subnets: Subnet[] = useSelector(subnetSelectors.all);
   const { handleChange, setFieldValue, values } =
     useFormikContext<NetworkValues>();
-  const resetFollowingFields = (name: keyof NetworkValues) => {
+  const resetFollowingFields = (
+    name: keyof NetworkValues,
+    hasSubnet?: boolean
+  ) => {
     // Reset all fields after this one.
     const position = fieldOrder.indexOf(name);
     for (let i = position + 1; i < fieldOrder.length; i++) {
       let value = "";
       if (fieldOrder[i] === "mode") {
-        value = editing ? NetworkLinkMode.AUTO : NetworkLinkMode.LINK_UP;
+        // When editing and the subnet has been changed to another subnet then
+        // set the mode to auto, otherwise if the subnet is set to unconfigured
+        // then the link mode also needs to be set to unconfigured (LINK_UP).
+        value =
+          editing && hasSubnet ? NetworkLinkMode.AUTO : NetworkLinkMode.LINK_UP;
       }
       setFieldValue(fieldOrder[i], value);
     }
@@ -128,7 +139,7 @@ const NetworkFields = ({
         name="subnet"
         onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
           handleChange(evt);
-          resetFollowingFields("subnet");
+          resetFollowingFields("subnet", !!evt.target.value);
         }}
         vlan={toFormikNumber(values.vlan)}
       />
@@ -156,7 +167,7 @@ const NetworkFields = ({
         />
       ) : null}
       {values.mode === NetworkLinkMode.STATIC ? (
-        <FormikField label="IP address" type="text" name="ip_address" />
+        <FormikField label={Label.IPAddress} type="text" name="ip_address" />
       ) : null}
     </>
   );

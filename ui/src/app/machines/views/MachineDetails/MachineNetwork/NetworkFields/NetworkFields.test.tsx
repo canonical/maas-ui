@@ -1,13 +1,25 @@
-import { mount } from "enzyme";
-import type { ReactWrapper } from "enzyme";
+import {
+  fireEvent,
+  render,
+  screen,
+  waitFor,
+  within,
+} from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import NetworkFields from "./NetworkFields";
+import NetworkFields, {
+  Label as NetworkFieldsLabel,
+  networkFieldsInitialValues,
+} from "./NetworkFields";
 
+import { Label as FabricSelectLabel } from "app/base/components/FabricSelect/FabricSelect";
+import { Label as LinkModeSelectLabel } from "app/base/components/LinkModeSelect/LinkModeSelect";
+import { Label as SubnetSelectLabel } from "app/base/components/SubnetSelect/SubnetSelect";
+import { Label as VLANSelectLabel } from "app/base/components/VLANSelect/VLANSelect";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
 import {
@@ -27,31 +39,16 @@ import {
 
 const mockStore = configureStore();
 
-const changeField = async (
-  wrapper: ReactWrapper,
-  selector: string,
-  name: string,
-  value: unknown
-) => {
-  return act(async () => {
-    wrapper.find(selector).simulate("change", {
-      target: {
-        name,
-        value,
-      },
-    });
-  });
-};
-
 describe("NetworkFields", () => {
   let state: RootState;
 
   beforeEach(() => {
+    const vlan = vlanFactory({ fabric: 1, vid: 1 });
     state = rootStateFactory({
       fabric: fabricStateFactory({
         items: [
-          fabricFactory({ id: 1, default_vlan_id: 1 }),
-          fabricFactory({ default_vlan_id: 1 }),
+          fabricFactory({ id: 1, default_vlan_id: vlan.id }),
+          fabricFactory({ default_vlan_id: vlan.id }),
         ],
         loaded: true,
       }),
@@ -67,238 +64,348 @@ describe("NetworkFields", () => {
       }),
       subnet: subnetStateFactory({
         items: [
-          subnetFactory({ id: 1, vlan: 1 }),
-          subnetFactory({ id: 2, vlan: 1 }),
+          subnetFactory({ vlan: vlan.id }),
+          subnetFactory({ vlan: vlan.id }),
         ],
         loaded: true,
       }),
       vlan: vlanStateFactory({
-        items: [
-          vlanFactory({ id: 1, fabric: 1, vid: 1 }),
-          vlanFactory({ fabric: 1, vid: 2 }),
-        ],
+        items: [vlan, vlanFactory({ fabric: 1, vid: 2 })],
         loaded: true,
       }),
     });
   });
 
   it("changes the vlan to the default for a fabric", async () => {
-    state.fabric.items = [fabricFactory({ id: 2, default_vlan_id: 3 })];
+    const fabric = fabricFactory();
     state.vlan.items = [
-      vlanFactory({ id: 1, fabric: 2, vid: 1 }),
-      vlanFactory({ id: 3, fabric: 2, vid: 2 }),
+      vlanFactory({ fabric: fabric.id, vid: 1 }),
+      vlanFactory({ fabric: fabric.id, vid: 2 }),
     ];
+    fabric.default_vlan_id = state.vlan.items[1].id;
+    state.fabric.items = [fabric];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("VLANSelect select").prop("value")).toBe("1");
-    await changeField(wrapper, "FabricSelect select", "fabric", 2);
-    wrapper.update();
-    expect(wrapper.find("VLANSelect select").prop("value")).toBe(3);
+    const vlanSelect = screen.getByRole("combobox", {
+      name: VLANSelectLabel.Select,
+    });
+    await waitFor(() =>
+      expect(
+        within(vlanSelect).getByRole("option", { selected: true })
+      ).toHaveAttribute("value", state.vlan.items[0].id.toString())
+    );
+    fireEvent.change(
+      screen.getByRole("combobox", { name: FabricSelectLabel.Select }),
+      {
+        target: { value: fabric.id.toString() },
+      }
+    );
+    await waitFor(() =>
+      expect(
+        within(vlanSelect).getByRole("option", { selected: true })
+      ).toHaveAttribute("value", state.vlan.items[1].id.toString())
+    );
   });
 
   it("resets all fields after vlan when the fabric is changed", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
-    // Set the values of the fields so they're all visible and have values.
-    await changeField(wrapper, "SubnetSelect select", "subnet", 2);
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "LinkModeSelect select",
-      "mode",
-      NetworkLinkMode.STATIC
+    const subnetSelect = screen.getByRole("combobox", {
+      name: SubnetSelectLabel.Select,
+    });
+    await waitFor(() =>
+      expect(
+        within(subnetSelect).getByRole("option", { selected: true })
+      ).toHaveAttribute("value", "")
     );
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "FormikField[name='ip_address'] input",
-      "ip_address",
+    // Set the values of the fields so they're all visible and have values.
+    fireEvent.change(subnetSelect, {
+      target: { value: state.subnet.items[1].id.toString() },
+    });
+    fireEvent.change(
+      screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
+      {
+        target: { value: NetworkLinkMode.STATIC },
+      }
+    );
+    userEvent.type(
+      screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );
     // Change the fabric and the other fields should reset.
-    await changeField(wrapper, "FabricSelect select", "fabric", 2);
-    wrapper.update();
-    expect(wrapper.find("SubnetSelect select").prop("value")).toBe("");
-    expect(wrapper.find("LinkModeSelect").exists()).toBe(false);
-    expect(wrapper.find("FormikField[name='ip_address']").exists()).toBe(false);
+    fireEvent.change(
+      screen.getByRole("combobox", { name: FabricSelectLabel.Select }),
+      {
+        target: { value: state.fabric.items[1].id.toString() },
+      }
+    );
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
+      ).not.toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
+      ).not.toBeInTheDocument()
+    );
+    await waitFor(() =>
+      expect(
+        within(subnetSelect).getByRole("option", { selected: true })
+      ).toHaveAttribute("value", "")
+    );
   });
 
   it("resets all fields after vlan when it is changed", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
     // Set the values of the fields so they're all visible and have values.
-    await changeField(wrapper, "SubnetSelect select", "subnet", 2);
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "LinkModeSelect select",
-      "mode",
-      NetworkLinkMode.STATIC
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: state.subnet.items[1].id.toString() },
+      }
     );
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "FormikField[name='ip_address'] input",
-      "ip_address",
+    fireEvent.change(
+      screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
+      {
+        target: { value: NetworkLinkMode.STATIC },
+      }
+    );
+    userEvent.type(
+      screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );
     // Change the VLAN and the other fields should reset.
-    await changeField(wrapper, "VLANSelect select", "vlan", 2);
-    wrapper.update();
-    expect(wrapper.find("SubnetSelect select").prop("value")).toBe("");
-    expect(wrapper.find("LinkModeSelect").exists()).toBe(false);
-    expect(wrapper.find("FormikField[name='ip_address']").exists()).toBe(false);
+    fireEvent.change(
+      screen.getByRole("combobox", { name: VLANSelectLabel.Select }),
+      {
+        target: { value: state.subnet.items[1].id.toString() },
+      }
+    );
+    const subnetSelect = screen.getByRole("combobox", {
+      name: SubnetSelectLabel.Select,
+    });
+    await waitFor(() =>
+      expect(
+        within(subnetSelect).getByRole("option", { selected: true })
+      ).toHaveAttribute("value", "")
+    );
+    expect(
+      screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
+    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
+      ).not.toBeInTheDocument()
+    );
   });
 
   it("resets all fields after subnet when it is changed", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
     // Set the values of the fields so they're all visible and have values.
-    await changeField(wrapper, "SubnetSelect select", "subnet", 2);
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "LinkModeSelect select",
-      "mode",
-      NetworkLinkMode.STATIC
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: state.subnet.items[1].id.toString() },
+      }
     );
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "FormikField[name='ip_address'] input",
-      "ip_address",
+    fireEvent.change(
+      screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
+      {
+        target: { value: NetworkLinkMode.STATIC },
+      }
+    );
+    userEvent.type(
+      screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );
     // Change the subnet and the other fields should reset.
-    await changeField(wrapper, "SubnetSelect select", "subnet", "");
-    wrapper.update();
-    expect(wrapper.find("LinkModeSelect").exists()).toBe(false);
-    expect(wrapper.find("FormikField[name='ip_address']").exists()).toBe(false);
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: "" },
+      }
+    );
+    expect(
+      screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
+    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
+      ).not.toBeInTheDocument()
+    );
   });
 
   it("sets the ip address to the first address from the subnet when the mode is static", async () => {
     state.subnet.items.push(
       subnetFactory({
-        id: 3,
         statistics: subnetStatisticsFactory({
           first_address: "1.2.3.4",
         }),
-        vlan: 1,
+        vlan: state.vlan.items[0].id,
       })
     );
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
     // Set the values of the fields so they're all visible and have values.
-    await changeField(wrapper, "SubnetSelect select", "subnet", 3);
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "LinkModeSelect select",
-      "mode",
-      NetworkLinkMode.STATIC
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: state.subnet.items[2].id },
+      }
     );
-    wrapper.update();
-    expect(
-      wrapper.find("FormikField[name='ip_address'] input").prop("value")
-    ).toBe("1.2.3.4");
+    fireEvent.change(
+      screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
+      {
+        target: { value: NetworkLinkMode.STATIC },
+      }
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
+      ).toHaveAttribute("value", "1.2.3.4")
+    );
   });
 
   it("does not display the mode field if a subnet has not been chosen", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("LinkModeSelect").exists()).toBe(false);
-    expect(wrapper.find("FormikField[name='ip_address']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
+    ).not.toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
+      ).not.toBeInTheDocument()
+    );
   });
 
   it("displays the mode field if a subnet has been chosen", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
-    await changeField(wrapper, "SubnetSelect select", "subnet", 2);
-    wrapper.update();
-    expect(wrapper.find("LinkModeSelect").exists()).toBe(true);
-    expect(wrapper.find("LinkModeSelect select").prop("value")).toBe(
-      NetworkLinkMode.LINK_UP
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: state.subnet.items[1].id.toString() },
+      }
+    );
+    expect(
+      screen.getByRole("combobox", { name: LinkModeSelectLabel.Select })
+    ).toBeInTheDocument();
+    const linkModeSelect = screen.getByRole("combobox", {
+      name: LinkModeSelectLabel.Select,
+    });
+    await waitFor(() =>
+      expect(
+        within(linkModeSelect).getByRole("option", { selected: true })
+      ).toHaveAttribute("value", NetworkLinkMode.LINK_UP)
     );
   });
 
-  it("reset the mode field to 'auto' when editing", async () => {
+  it("reset the mode field to 'auto' when editing and changed subnet", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields
               interfaceType={NetworkInterfaceTypes.PHYSICAL}
               editing
@@ -307,77 +414,158 @@ describe("NetworkFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    await changeField(wrapper, "SubnetSelect select", "subnet", 2);
-    wrapper.update();
-    expect(wrapper.find("LinkModeSelect").exists()).toBe(true);
-    expect(wrapper.find("LinkModeSelect select").prop("value")).toBe(
-      NetworkLinkMode.AUTO
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: state.subnet.items[1].id.toString() },
+      }
+    );
+    expect(
+      screen.getByRole("combobox", { name: LinkModeSelectLabel.Select })
+    ).toBeInTheDocument();
+    const linkModeSelect = screen.getByRole("combobox", {
+      name: LinkModeSelectLabel.Select,
+    });
+    await waitFor(() =>
+      expect(
+        within(linkModeSelect).getByRole("option", { selected: true })
+      ).toHaveAttribute("value", NetworkLinkMode.AUTO)
     );
   });
 
-  it("does not display the ip address field if the mode has not been chosen", () => {
+  it("reset the mode field to 'unconfigured' when editing and removed subnet", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    const onSubmit = jest.fn();
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={{
+              ...networkFieldsInitialValues,
+              mode: NetworkLinkMode.AUTO,
+            }}
+            onSubmit={onSubmit}
+          >
+            {({ handleSubmit }) => (
+              <form onSubmit={handleSubmit} aria-label="test form">
+                <NetworkFields
+                  interfaceType={NetworkInterfaceTypes.PHYSICAL}
+                  editing
+                />
+              </form>
+            )}
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    // Remove the subnet.
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: "" },
+      }
+    );
+    expect(
+      screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
+    ).not.toBeInTheDocument();
+    fireEvent.submit(screen.getByRole("form", { name: "test form" }));
+    await waitFor(() =>
+      expect(onSubmit.mock.calls[0][0].mode).toBe(NetworkLinkMode.LINK_UP)
+    );
+  });
+
+  it("does not display the ip address field if the mode has not been chosen", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikField[name='ip_address']").exists()).toBe(false);
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
+      ).not.toBeInTheDocument()
+    );
   });
 
   it("does not display the ip address field if the chosen mode is not static", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
-    await changeField(wrapper, "SubnetSelect select", "subnet", 2);
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "LinkModeSelect select",
-      "mode",
-      NetworkLinkMode.AUTO
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: state.subnet.items[1].id.toString() },
+      }
     );
-    wrapper.update();
-    expect(wrapper.find("FormikField[name='ip_address']").exists()).toBe(false);
+    fireEvent.change(
+      screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
+      {
+        target: { value: NetworkLinkMode.AUTO },
+      }
+    );
+    await waitFor(() =>
+      expect(
+        screen.queryByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
+      ).not.toBeInTheDocument()
+    );
   });
 
   it("displays the ip address field if the mode is static", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <Formik
+            initialValues={networkFieldsInitialValues}
+            onSubmit={jest.fn()}
+          >
             <NetworkFields interfaceType={NetworkInterfaceTypes.PHYSICAL} />
           </Formik>
         </MemoryRouter>
       </Provider>
     );
-    await changeField(wrapper, "SubnetSelect select", "subnet", 2);
-    wrapper.update();
-    await changeField(
-      wrapper,
-      "LinkModeSelect select",
-      "mode",
-      NetworkLinkMode.STATIC
+    fireEvent.change(
+      screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
+      {
+        target: { value: state.subnet.items[1].id.toString() },
+      }
     );
-    wrapper.update();
-    expect(wrapper.find("FormikField[name='ip_address']").exists()).toBe(true);
+    fireEvent.change(
+      screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
+      {
+        target: { value: NetworkLinkMode.STATIC },
+      }
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress })
+      ).toBeInTheDocument()
+    );
   });
 });
