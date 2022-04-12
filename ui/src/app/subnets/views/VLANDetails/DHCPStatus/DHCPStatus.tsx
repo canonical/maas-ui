@@ -141,7 +141,11 @@ const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
         </Col>
       </Row>
       <p>
-        <a href="https://maas.io/docs/dhcp" rel="noreferrer" target="_blank">
+        <a
+          href="https://maas.io/docs/dhcp"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
           About DHCP
         </a>
       </p>

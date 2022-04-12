@@ -113,7 +113,7 @@ const GeneralForm = (): JSX.Element => {
             Error Tracking.{" "}
             <Link
               href="https://ubuntu.com/legal/data-privacy"
-              rel="noreferrer"
+              rel="noreferrer noopener"
               target="_blank"
             >
               Data privacy

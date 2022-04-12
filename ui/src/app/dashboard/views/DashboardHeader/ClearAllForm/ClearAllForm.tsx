@@ -43,7 +43,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
           Learn more about{" "}
           <Link
             href="https://maas.io/docs/network-discovery"
-            rel="noreferrer"
+            rel="noreferrer noopener"
             target="_blank"
           >
             network discovery

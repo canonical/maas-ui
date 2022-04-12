@@ -143,7 +143,7 @@ export const DeployFormFields = (): JSX.Element => {
                   Register as MAAS KVM host.{" "}
                   <a
                     href="https://maas.io/docs/kvm-introduction"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                     target="_blank"
                   >
                     KVM docs
@@ -193,7 +193,7 @@ export const DeployFormFields = (): JSX.Element => {
                   Cloud-init user-data&hellip;{" "}
                   <a
                     href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
-                    rel="noreferrer"
+                    rel="noreferrer noopener"
                     target="_blank"
                   >
                     Cloud-init docs

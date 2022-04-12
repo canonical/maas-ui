@@ -72,7 +72,7 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
                 tags. To learn more about this, check our{" "}
                 <a
                   href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
-                  rel="noreferrer"
+                  rel="noreferrer noopener"
                   target="_blank"
                 >
                   XPath expressions documentation

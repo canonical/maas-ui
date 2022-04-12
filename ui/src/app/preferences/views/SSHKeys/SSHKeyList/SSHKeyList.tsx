@@ -13,7 +13,7 @@ const SSHKeyList = (): JSX.Element => {
       />
       <Link
         href="https://maas.io/docs/user-accounts#heading--ssh-keys"
-        rel="noreferrer"
+        rel="noreferrer noopener"
         target="_blank"
       >
         About SSH keys

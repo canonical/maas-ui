@@ -40,7 +40,7 @@ const getDefinitionError = (
         The definition is an invalid XPath expression. See our{" "}
         <a
           href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           target="_blank"
         >
           XPath expressions documentation
@@ -95,7 +95,7 @@ export const DefinitionField = ({ id }: Props): JSX.Element => {
         to all current and future machines that match this definition.{" "}
         <a
           href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
-          rel="noreferrer"
+          rel="noreferrer noopener"
           target="_blank"
         >
           Learn how to use XPath expressions

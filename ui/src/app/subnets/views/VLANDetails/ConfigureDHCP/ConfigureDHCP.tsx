@@ -146,7 +146,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
             buttonsHelp={
               <a
                 href="https://maas.io/docs/dhcp"
-                rel="noreferrer"
+                rel="noreferrer noopener"
                 target="_blank"
               >
                 About DHCP
