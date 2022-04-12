@@ -35,7 +35,13 @@ export const StatusColumn = ({ systemId }: Props): JSX.Element | null => {
           <>
             {issue}
             <br />
-            <a href="https://discourse.maas.io/t/4555">More info</a>
+            <a
+              href="https://discourse.maas.io/t/4555"
+              rel="noreferrer"
+              target="_blank"
+            >
+              More info
+            </a>
           </>
         }
         position="top-center"

@@ -64,7 +64,11 @@ export const KernelOptionsField = ({
         <>
           Kernel options are appended to the kernel command line during booting
           while machines are commissioning or deploying.{" "}
-          <a href="https://maas.io/docs/how-to-work-with-tags#heading--kernel-options">
+          <a
+            href="https://maas.io/docs/how-to-work-with-tags#heading--kernel-options"
+            rel="noreferrer"
+            target="_blank"
+          >
             Read more about kernel options in tag management
           </a>
           .
