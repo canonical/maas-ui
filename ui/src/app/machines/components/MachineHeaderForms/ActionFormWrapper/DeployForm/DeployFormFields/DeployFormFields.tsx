@@ -10,7 +10,6 @@ import {
   Row,
   Select,
   Tooltip,
-  useId,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
@@ -35,8 +34,6 @@ export const DeployFormFields = (): JSX.Element => {
   const [userDataVisible, setUserDataVisible] = useState(false);
   const formikProps = useFormikContext<DeployFormValues>();
   const { handleChange, setFieldValue, values } = formikProps;
-  const deployVmHostHelpText = useId();
-  const enableHwSyncHelpText = useId();
 
   const user = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
@@ -132,9 +129,6 @@ export const DeployFormFields = (): JSX.Element => {
           </Col>
           <Col size={9}>
             <Input
-              // TODO: use an Input help text prop instead once the bug below is resolved
-              // https://github.com/canonical-web-and-design/react-components/issues/748
-              aria-describedby={deployVmHostHelpText}
               checked={deployVmHost}
               disabled={!canBeKVMHost || noImages}
               id="deployVmHost"
@@ -150,6 +144,7 @@ export const DeployFormFields = (): JSX.Element => {
                   </a>
                 </>
               }
+              help="Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported."
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                 const { checked } = evt.target;
                 if (checked) {
@@ -161,13 +156,6 @@ export const DeployFormFields = (): JSX.Element => {
               }}
               type="checkbox"
             />
-            <p
-              id={deployVmHostHelpText}
-              className="p-form-help-text is-tick-element"
-            >
-              Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially
-              supported.
-            </p>
             {deployVmHost && (
               <>
                 <FormikField
@@ -213,9 +201,6 @@ export const DeployFormFields = (): JSX.Element => {
             <FormikField
               type="checkbox"
               name="enableHwSync"
-              // TODO: use an Input help text prop instead once the bug below is resolved
-              // https://github.com/canonical-web-and-design/react-components/issues/748
-              aria-describedby={enableHwSyncHelpText}
               label={
                 <>
                   Periodically sync hardware{" "}
@@ -237,14 +222,10 @@ export const DeployFormFields = (): JSX.Element => {
                   {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
                 </>
               }
+              help={`Hardware sync interval: ${timeSpanToMinutes(
+                hardwareSyncInterval
+              )}min - Admins can change this in the global settings.`}
             />
-            <p
-              id={enableHwSyncHelpText}
-              className="p-form-help-text is-tick-element"
-            >
-              Hardware sync interval: {timeSpanToMinutes(hardwareSyncInterval)}
-              min - Admins can change this in the global settings.
-            </p>
             {userDataVisible && (
               <UploadTextArea
                 label="Upload script"
