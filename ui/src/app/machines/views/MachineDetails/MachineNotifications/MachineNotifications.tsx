@@ -17,9 +17,11 @@ type Props = {
 const MachineNotifications = ({ notifications }: Props): JSX.Element => {
   const notificationList = notifications.reduce<ReactNode[]>(
     (collection, { active, content, severity, title }, i) => {
+      // Use the `status` role for information that is not important enough to be an `alert`.
+      const role = severity === "negative" ? "alert" : "status";
       if (active) {
         collection.push(
-          <Notification key={i} severity={severity} title={title}>
+          <Notification key={i} role={role} severity={severity} title={title}>
             {content}
           </Notification>
         );
@@ -31,7 +33,9 @@ const MachineNotifications = ({ notifications }: Props): JSX.Element => {
 
   return (
     <section className="p-strip u-no-padding--top u-no-padding--bottom">
-      <div className="row">{notificationList}</div>
+      <div className="row" data-testid="machine-notifications-list">
+        {notificationList}
+      </div>
     </section>
   );
 };
