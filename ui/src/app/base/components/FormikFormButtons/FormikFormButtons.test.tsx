@@ -60,9 +60,12 @@ it("can display a tooltip for the secondary submit action", async () => {
       />
     </Formik>
   );
-  expect(screen.queryByText("Will add another")).not.toBeInTheDocument();
-  userEvent.hover(screen.getByRole("button", { name: "Save and add another" }));
-  expect(screen.getByText("Will add another")).toBeInTheDocument();
+  expect(
+    screen.getByRole("button", { name: "Save and add another" })
+  ).toHaveAccessibleDescription("Will add another");
+  expect(
+    screen.getByRole("tooltip", { name: "Will add another" })
+  ).toBeInTheDocument();
 });
 
 it("displays a border if bordered is true", () => {

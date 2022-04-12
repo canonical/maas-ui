@@ -26,6 +26,7 @@ exports[`FormikField can render 1`] = `
       forId="username"
       help="Required."
       helpId="mock-nanoid-2"
+      isTickElement={false}
       label="Username"
       required={true}
       validationId="mock-nanoid-1"

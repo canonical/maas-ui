@@ -38,6 +38,7 @@ exports[`NodeNameFields displays the fields 1`] = `
         error={null}
         forId="mock-redux-js-nanoid-1"
         helpId="mock-nanoid-2"
+        isTickElement={false}
         required={true}
         validationId="mock-nanoid-1"
       >

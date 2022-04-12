@@ -89,11 +89,54 @@ exports[`CoresColumn renders 1`] = `
                 }
               >
                 <span
+                  aria-describedby="mock-nanoid-1"
                   data-testid="arch"
+                  key=".0"
                 >
                   amd64
                 </span>
               </span>
+              <Component>
+                <Portal
+                  containerInfo={
+                    <div>
+                      <span
+                        class="p-tooltip--btm-left is-detached u-off-screen"
+                        data-testid="tooltip-portal"
+                        style="position: absolute; left: -99999999999999px; top: -99999999999999px;"
+                      >
+                        <span
+                          class="p-tooltip__message"
+                          id="mock-nanoid-1"
+                          role="tooltip"
+                        >
+                          amd64/generic
+                        </span>
+                      </span>
+                    </div>
+                  }
+                >
+                  <span
+                    className="p-tooltip--btm-left is-detached u-off-screen"
+                    data-testid="tooltip-portal"
+                    style={
+                      Object {
+                        "left": -99999999999999,
+                        "position": "absolute",
+                        "top": -99999999999999,
+                      }
+                    }
+                  >
+                    <span
+                      className="p-tooltip__message"
+                      id="mock-nanoid-1"
+                      role="tooltip"
+                    >
+                      amd64/generic
+                    </span>
+                  </span>
+                </Portal>
+              </Component>
             </span>
           </Tooltip>
         </div>
