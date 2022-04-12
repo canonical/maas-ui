@@ -38,7 +38,11 @@ const getDefinitionError = (
     return (
       <span id={definitionErrorId}>
         The definition is an invalid XPath expression. See our{" "}
-        <a href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions">
+        <a
+          href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
           XPath expressions documentation
         </a>{" "}
         for more examples.
@@ -89,7 +93,11 @@ export const DefinitionField = ({ id }: Props): JSX.Element => {
       <p className="p-form-help-text u-sv1">
         Add an XPath expression as a definition. MAAS will auto-assign this tag
         to all current and future machines that match this definition.{" "}
-        <a href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions">
+        <a
+          href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
+          rel="noreferrer noopener"
+          target="_blank"
+        >
           Learn how to use XPath expressions
         </a>
         .

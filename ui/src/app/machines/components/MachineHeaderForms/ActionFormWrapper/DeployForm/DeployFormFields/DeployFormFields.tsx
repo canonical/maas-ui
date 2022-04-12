@@ -141,7 +141,13 @@ export const DeployFormFields = (): JSX.Element => {
               label={
                 <>
                   Register as MAAS KVM host.{" "}
-                  <a href="https://maas.io/docs/kvm-introduction">KVM docs</a>
+                  <a
+                    href="https://maas.io/docs/kvm-introduction"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
+                    KVM docs
+                  </a>
                 </>
               }
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
@@ -185,7 +191,11 @@ export const DeployFormFields = (): JSX.Element => {
               label={
                 <>
                   Cloud-init user-data&hellip;{" "}
-                  <a href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init">
+                  <a
+                    href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
+                    rel="noreferrer noopener"
+                    target="_blank"
+                  >
                     Cloud-init docs
                   </a>
                 </>

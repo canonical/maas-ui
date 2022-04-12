@@ -184,7 +184,7 @@ const DHCPTable = ({
               </Link>,
               <a
                 href="https://maas.io/docs/dhcp"
-                rel="noreferrer"
+                rel="noreferrer noopener"
                 target="_blank"
               >
                 About DHCP snippets

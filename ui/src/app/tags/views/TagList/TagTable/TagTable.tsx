@@ -222,7 +222,11 @@ const TagTable = ({
                         )
                       )}
                       <br />
-                      <a href="https://maas.io/docs/how-to-work-with-tags#heading--automatic-tags">
+                      <a
+                        href="https://maas.io/docs/how-to-work-with-tags#heading--automatic-tags"
+                        rel="noreferrer noopener"
+                        target="_blank"
+                      >
                         Check the documentation about automatic tags.
                       </a>
                     </>

@@ -57,7 +57,11 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
       />
       <Row>
         <Col size={6}>
-          <a href="https://maas.io/docs/rack-controller">
+          <a
+            href="https://maas.io/docs/rack-controller"
+            rel="noreferrer noopener"
+            target="_blank"
+          >
             Help with adding a rack controller
           </a>
         </Col>

@@ -70,7 +70,11 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
               <span className="p-form-help-text">
                 This is a manual tag. Definitions cannot be added to manual
                 tags. To learn more about this, check our{" "}
-                <a href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions">
+                <a
+                  href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
                   XPath expressions documentation
                 </a>
                 .

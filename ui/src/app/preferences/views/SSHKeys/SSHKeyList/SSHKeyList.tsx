@@ -11,7 +11,11 @@ const SSHKeyList = (): JSX.Element => {
       <BaseSSHKeyList
         buttons={[{ label: "Import SSH key", url: prefsURLs.sshKeys.add }]}
       />
-      <Link href="https://maas.io/docs/user-accounts#heading--ssh-keys">
+      <Link
+        href="https://maas.io/docs/user-accounts#heading--ssh-keys"
+        rel="noreferrer noopener"
+        target="_blank"
+      >
         About SSH keys
       </Link>
     </>
