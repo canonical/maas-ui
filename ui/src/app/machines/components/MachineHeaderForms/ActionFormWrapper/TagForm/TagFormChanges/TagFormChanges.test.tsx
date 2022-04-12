@@ -240,3 +240,30 @@ it("discards removed tags", async () => {
     );
   });
 });
+
+it("shows a message if no tags are assigned to the selected machines", () => {
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machineFactory({ tags: [] }), machineFactory({ tags: [] })],
+      loaded: true,
+      loading: false,
+    }),
+    tag: tagStateFactory({
+      items: [tagFactory(), tagFactory()],
+      loaded: true,
+      loading: false,
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
+          <TagFormChanges machines={state.machine.items} newTags={[]} />
+        </Formik>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(screen.getByText(Label.NoTags)).toBeInTheDocument();
+});

@@ -36,6 +36,7 @@ export enum Label {
   Remove = "Remove",
   Removed = "To be removed",
   Table = "Tag changes",
+  NoTags = "No tags are currently assigned to the selected machines.",
 }
 
 export enum RowType {
@@ -170,7 +171,7 @@ export const TagFormChanges = ({
     []
   );
   if (!hasAutomaticTags && !hasManualTags && !hasAddedTags && !hasRemovedTags) {
-    return null;
+    return <p className="u-text--muted">{Label.NoTags}</p>;
   }
   addedTags.forEach((tag) => {
     // Added tags will be applied to all machines.
