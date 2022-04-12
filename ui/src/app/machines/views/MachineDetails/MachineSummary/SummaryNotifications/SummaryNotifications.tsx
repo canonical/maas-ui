@@ -121,7 +121,7 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
             "Commission this machine to get CPU, Memory and Storage information.",
         },
         {
-          active: !machine.is_sync_healthy,
+          active: machine.is_sync_healthy === false,
           content: (
             <>
               This machine was not synced when it was scheduled. Check the{" "}
