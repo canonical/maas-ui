@@ -129,8 +129,8 @@ const EditAliasOrVlanForm = ({
         const payload = preparePayload({
           ...values,
           interface_id: nic.id,
+          link_id: link?.id,
           system_id: systemId,
-          ...(isAlias ? { link_id: link?.id } : {}),
         }) as UpdateInterfaceParams;
         dispatch(machineActions.updateInterface(payload));
       }}
