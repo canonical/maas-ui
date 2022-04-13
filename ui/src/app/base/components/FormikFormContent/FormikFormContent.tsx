@@ -26,6 +26,7 @@ export type Props<V, E> = {
   "data-testid"?: string;
   editable?: boolean;
   errors?: APIError<E>;
+  footer?: ReactNode;
   inline?: boolean;
   loading?: boolean;
   onSaveAnalytics?: {
@@ -78,6 +79,7 @@ const FormikFormContent = <V, E = null>({
   cleanup,
   editable = true,
   errors,
+  footer,
   inline,
   loading,
   onSaveAnalytics = {},
@@ -183,6 +185,7 @@ const FormikFormContent = <V, E = null>({
           submitDisabled={loading || saving || formDisabled || submitDisabled}
         />
       )}
+      {footer}
     </Form>
   );
 };

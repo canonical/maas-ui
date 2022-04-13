@@ -1,4 +1,7 @@
+import { useEffect } from "react";
+
 import { Spinner } from "@canonical/react-components";
+import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
@@ -11,34 +14,51 @@ import { DomainMeta } from "app/store/domain/types";
 
 type Props = {
   saving?: boolean;
+  setHostnameError: (
+    error: FormikErrors<FormValues>["hostname"] | null
+  ) => void;
 };
 
-export const NodeNameFields = ({ saving }: Props): JSX.Element => {
+export const NodeNameFields = ({
+  saving,
+  setHostnameError,
+}: Props): JSX.Element => {
   const domainsLoaded = useSelector(domainSelectors.loaded);
-  const { values } = useFormikContext<FormValues>();
+  const { errors, values } = useFormikContext<FormValues>();
+  const hostnameError = errors.hostname;
+
+  useEffect(() => {
+    setHostnameError(hostnameError ?? null);
+  }, [hostnameError, setHostnameError]);
 
   return (
     <>
-      <FormikField
-        type="text"
-        className="node-name__hostname"
-        disabled={saving}
-        name="hostname"
-        required={true}
-        style={{ width: `${values.hostname.length}ch` }}
-        takeFocus
-        wrapperClassName="u-nudge-left--small u-no-margin--right"
-      />
-      <span className="u-nudge-left--small u-no-margin--right">.</span>
+      <div className="node-name__hostname-wrapper u-no-margin--right">
+        <div aria-hidden="true" className="node-name__hostname-spacer">
+          {values.hostname}
+        </div>
+        <FormikField
+          type="text"
+          className="node-name__hostname"
+          disabled={saving}
+          displayError={false}
+          label="Hostname"
+          name="hostname"
+          takeFocus
+          wrapperClassName="u-no-margin--right"
+        />
+      </div>
+      <span className="node-name__dot u-nudge-right--small u-nudge-left--small u-no-margin--right">
+        .
+      </span>
       {domainsLoaded ? (
         <DomainSelect
           className="u-no-margin--bottom"
           disabled={saving}
-          label={null}
+          label="Domain"
           name="domain"
-          required
           valueKey={DomainMeta.PK}
-          wrapperClassName="u-nudge-left u-no-margin--right"
+          wrapperClassName="node-name__domain"
         />
       ) : (
         <Spinner className="u-width--auto" />

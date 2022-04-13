@@ -22,6 +22,20 @@ describe("SectionHeader", () => {
     );
   });
 
+  it("displays the title as a h1 by default", () => {
+    const wrapper = shallow(<SectionHeader title="Title" />);
+    const title = wrapper.find("h1[data-testid='section-header-title']");
+    expect(title.exists()).toBe(true);
+    expect(title.hasClass("p-heading--4")).toBe(true);
+  });
+
+  it("can change the title element", () => {
+    const wrapper = shallow(<SectionHeader title="Title" titleElement="div" />);
+    const title = wrapper.find("div[data-testid='section-header-title']");
+    expect(title.exists()).toBe(true);
+    expect(title.hasClass("p-heading--4")).toBe(false);
+  });
+
   it("shows a spinner instead of title if loading", () => {
     const wrapper = shallow(
       <SectionHeader title="Title" subtitle="Subtitle" loading />

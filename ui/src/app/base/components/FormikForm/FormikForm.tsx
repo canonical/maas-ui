@@ -19,6 +19,7 @@ const FormikForm = <V, E = null>({
   cleanup,
   editable,
   errors,
+  footer,
   inline,
   loading,
   onCancel,
@@ -55,6 +56,7 @@ const FormikForm = <V, E = null>({
         cleanup={cleanup}
         editable={editable}
         errors={errors}
+        footer={footer}
         inline={inline}
         loading={loading}
         onCancel={onCancel}

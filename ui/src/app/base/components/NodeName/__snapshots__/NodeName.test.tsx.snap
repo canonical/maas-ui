@@ -5,6 +5,7 @@ exports[`NodeName can display the form 1`] = `
   buttonsAlign="right"
   buttonsBordered={false}
   className="node-name"
+  footer={null}
   initialValues={
     Object {
       "domain": "99",
@@ -245,6 +246,7 @@ exports[`NodeName can display the form 1`] = `
       buttonsAlign="right"
       buttonsBordered={false}
       className="node-name"
+      footer={null}
       inline={true}
       onCancel={[Function]}
       onSaveAnalytics={
@@ -264,78 +266,88 @@ exports[`NodeName can display the form 1`] = `
           className="node-name p-form p-form--inline"
           onSubmit={[Function]}
         >
-          <NodeNameFields>
-            <FormikField
-              className="node-name__hostname"
-              name="hostname"
-              required={true}
-              style={
-                Object {
-                  "width": "14ch",
-                }
-              }
-              takeFocus={true}
-              type="text"
-              wrapperClassName="u-nudge-left--small u-no-margin--right"
+          <NodeNameFields
+            setHostnameError={[Function]}
+          >
+            <div
+              className="node-name__hostname-wrapper u-no-margin--right"
             >
-              <Input
+              <div
+                aria-hidden="true"
+                className="node-name__hostname-spacer"
+              >
+                test-machine-5
+              </div>
+              <FormikField
                 className="node-name__hostname"
-                error={null}
-                id="mock-redux-js-nanoid-1"
+                displayError={false}
+                label="Hostname"
                 name="hostname"
-                onBlur={[Function]}
-                onChange={[Function]}
-                required={true}
-                style={
-                  Object {
-                    "width": "14ch",
-                  }
-                }
                 takeFocus={true}
                 type="text"
-                value="test-machine-5"
-                wrapperClassName="u-nudge-left--small u-no-margin--right"
+                wrapperClassName="u-no-margin--right"
               >
-                <Field
-                  className="u-nudge-left--small u-no-margin--right"
+                <Input
+                  aria-label="Hostname"
+                  className="node-name__hostname"
                   error={null}
-                  forId="mock-redux-js-nanoid-1"
-                  helpId="mock-nanoid-2"
-                  isTickElement={false}
-                  required={true}
-                  validationId="mock-nanoid-1"
+                  id="mock-redux-js-nanoid-1"
+                  label="Hostname"
+                  name="hostname"
+                  onBlur={[Function]}
+                  onChange={[Function]}
+                  takeFocus={true}
+                  type="text"
+                  value="test-machine-5"
+                  wrapperClassName="u-no-margin--right"
                 >
-                  <div
-                    className="p-form__group p-form-validation u-nudge-left--small u-no-margin--right"
+                  <Field
+                    className="u-no-margin--right"
+                    error={null}
+                    forId="mock-redux-js-nanoid-1"
+                    helpId="mock-nanoid-2"
+                    isTickElement={false}
+                    label="Hostname"
+                    validationId="mock-nanoid-1"
                   >
                     <div
-                      className="p-form__control u-clearfix"
+                      className="p-form__group p-form-validation u-no-margin--right"
                     >
-                      <input
-                        aria-describedby={null}
-                        aria-errormessage={null}
-                        aria-invalid={false}
-                        className="p-form-validation__input node-name__hostname"
-                        id="mock-redux-js-nanoid-1"
-                        name="hostname"
-                        onBlur={[Function]}
-                        onChange={[Function]}
-                        required={true}
-                        style={
-                          Object {
-                            "width": "14ch",
-                          }
-                        }
-                        type="text"
-                        value="test-machine-5"
-                      />
+                      <Label
+                        forId="mock-redux-js-nanoid-1"
+                      >
+                        <label
+                          className="p-form__label"
+                          htmlFor="mock-redux-js-nanoid-1"
+                        >
+                          Hostname
+                        </label>
+                      </Label>
+                      <div
+                        className="p-form__control u-clearfix"
+                      >
+                        <input
+                          aria-describedby={null}
+                          aria-errormessage={null}
+                          aria-invalid={false}
+                          aria-label="Hostname"
+                          className="p-form-validation__input node-name__hostname"
+                          id="mock-redux-js-nanoid-1"
+                          label="Hostname"
+                          name="hostname"
+                          onBlur={[Function]}
+                          onChange={[Function]}
+                          type="text"
+                          value="test-machine-5"
+                        />
+                      </div>
                     </div>
-                  </div>
-                </Field>
-              </Input>
-            </FormikField>
+                  </Field>
+                </Input>
+              </FormikField>
+            </div>
             <span
-              className="u-nudge-left--small u-no-margin--right"
+              className="node-name__dot u-nudge-right--small u-nudge-left--small u-no-margin--right"
             >
               .
             </span>

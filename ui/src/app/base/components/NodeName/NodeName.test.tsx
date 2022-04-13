@@ -1,10 +1,12 @@
 import { mount } from "enzyme";
+import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import NodeName from "./NodeName";
 import type { Props as NodeNameProps } from "./NodeName";
+import NodeNameFields from "./NodeNameFields";
 
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -176,5 +178,30 @@ describe("NodeName", () => {
       saving: false,
     });
     expect(setEditingName).toHaveBeenCalledWith(false);
+  });
+
+  it("can display a hostname error", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <NodeName
+            editingName={true}
+            node={machine}
+            onSubmit={jest.fn()}
+            setEditingName={jest.fn()}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    act(() => {
+      wrapper.find(NodeNameFields).props().setHostnameError("Uh oh!");
+    });
+    wrapper.update();
+    const error = wrapper.find(".node-name__error");
+    expect(error.exists()).toBe(true);
+    expect(error.text()).toBe("Error: Uh oh!");
   });
 });

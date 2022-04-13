@@ -181,6 +181,8 @@ describe("EditAliasOrVlanForm", () => {
   });
 
   it("dispatches an action to update a VLAN", async () => {
+    const link = networkLinkFactory({ id: 101 });
+    nic.links = [networkLinkFactory(), link];
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -190,6 +192,7 @@ describe("EditAliasOrVlanForm", () => {
           <EditAliasOrVlanForm
             close={jest.fn()}
             interfaceType={NetworkInterfaceTypes.VLAN}
+            link={link}
             nic={nic}
             systemId="abc123"
           />
@@ -221,6 +224,7 @@ describe("EditAliasOrVlanForm", () => {
           fabric: 1,
           interface_id: nic.id,
           ip_address: "1.2.3.4",
+          link_id: link.id,
           mode: NetworkLinkMode.STATIC,
           subnet: 1,
           system_id: "abc123",

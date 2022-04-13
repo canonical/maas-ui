@@ -234,6 +234,7 @@ const MachineHeader = ({
           />
         )
       }
+      titleElement={editingName ? "div" : "h1"}
     />
   );
 };
