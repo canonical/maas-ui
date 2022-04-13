@@ -1,4 +1,5 @@
 import {
+  getHasSyncFailed,
   getMachineFieldScopes,
   getTagCountsForMachines,
   isMachineDetails,
@@ -63,6 +64,22 @@ describe("common machine utils", () => {
         PowerFieldScope.BMC,
         PowerFieldScope.NODE,
       ]);
+    });
+  });
+
+  describe("getHasSyncFailed", () => {
+    it("returns false if is_sync_healthy is true or undefined", () => {
+      expect(
+        getHasSyncFailed(machineDetailsFactory({ is_sync_healthy: true }))
+      ).toBe(false);
+      expect(
+        getHasSyncFailed(machineDetailsFactory({ is_sync_healthy: undefined }))
+      ).toBe(false);
+    });
+    it("returns true if is_sync_healthy is false", () => {
+      expect(
+        getHasSyncFailed(machineDetailsFactory({ is_sync_healthy: false }))
+      ).toBe(true);
     });
   });
 });

@@ -92,6 +92,7 @@ export type MachineDetails = BaseMachine &
     installation_status: number;
     interface_test_status: TestStatus;
     interfaces: NetworkInterface[];
+    is_sync_healthy?: boolean;
     last_sync: string;
     license_key: string;
     memory_test_status: TestStatus;

@@ -1,4 +1,5 @@
 import type { Duration } from "date-fns";
+import { secondsToMinutes } from "date-fns";
 
 import type { Minutes, Seconds, TimeSpan } from "app/base/types";
 
@@ -38,5 +39,5 @@ export const timeSpanToMinutes = (
   if (!seconds) {
     return null;
   }
-  return Math.floor(seconds / 60);
+  return secondsToMinutes(seconds);
 };
