@@ -6,9 +6,9 @@ import configureStore from "redux-mock-store";
 
 import CommissionForm from "./CommissionForm";
 
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { ScriptType } from "app/store/script/types";
-import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -115,63 +115,40 @@ describe("CommissionForm", () => {
         scriptInputs: { testingScript0: { url: "www.url.com" } },
       })
     );
+
     expect(
       store
         .getActions()
         .filter((action) => action.type === "machine/commission")
     ).toStrictEqual([
-      {
-        type: "machine/commission",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.COMMISSION,
-            extra: {
-              enable_ssh: true,
-              skip_bmc_config: true,
-              skip_networking: true,
-              skip_storage: true,
-              commissioning_scripts: [
-                state.script.items[1].id,
-                "update_firmware",
-                "configure_hba",
-              ],
-              testing_scripts: [state.script.items[0].id],
-              script_input: { testingScript0: { url: "www.url.com" } },
-            },
-            system_id: "abc123",
-          },
-        },
-      },
-      {
-        type: "machine/commission",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.COMMISSION,
-            extra: {
-              enable_ssh: true,
-              skip_bmc_config: true,
-              skip_networking: true,
-              skip_storage: true,
-              commissioning_scripts: [
-                state.script.items[1].id,
-                "update_firmware",
-                "configure_hba",
-              ],
-              testing_scripts: [state.script.items[0].id],
-              script_input: { testingScript0: { url: "www.url.com" } },
-            },
-            system_id: "def456",
-          },
-        },
-      },
+      machineActions.commission({
+        system_id: "abc123",
+        enable_ssh: true,
+        skip_bmc_config: true,
+        skip_networking: true,
+        skip_storage: true,
+        commissioning_scripts: [
+          state.script.items[1].id,
+          "update_firmware",
+          "configure_hba",
+        ],
+        testing_scripts: [state.script.items[0].id],
+        script_input: { testingScript0: { url: "www.url.com" } },
+      }),
+      machineActions.commission({
+        system_id: "def456",
+        enable_ssh: true,
+        skip_bmc_config: true,
+        skip_networking: true,
+        skip_storage: true,
+        commissioning_scripts: [
+          state.script.items[1].id,
+          "update_firmware",
+          "configure_hba",
+        ],
+        testing_scripts: [state.script.items[0].id],
+        script_input: { testingScript0: { url: "www.url.com" } },
+      }),
     ]);
   });
 });

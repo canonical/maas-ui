@@ -82,7 +82,9 @@ export const ControllerActionFormWrapper = ({
           <DeleteForm
             onSubmit={() => {
               controllers.forEach((controller) => {
-                dispatch(controllerActions.delete(controller.system_id));
+                dispatch(
+                  controllerActions.delete({ system_id: controller.system_id })
+                );
               });
             }}
             redirectURL={controllerURLs.controllers.index}
@@ -97,8 +99,8 @@ export const ControllerActionFormWrapper = ({
               controllers.forEach((controller) => {
                 dispatch(
                   controllerActions.setZone({
-                    systemId: controller.system_id,
-                    zoneId: zoneID,
+                    system_id: controller.system_id,
+                    zone_id: zoneID,
                   })
                 );
               });
@@ -112,7 +114,14 @@ export const ControllerActionFormWrapper = ({
             applyConfiguredNetworking={applyConfiguredNetworking}
             hardwareType={hardwareType}
             onTest={(args) => {
-              dispatch(controllerActions.test(args));
+              dispatch(
+                controllerActions.test({
+                  enable_ssh: args.enableSSH,
+                  script_input: args.scriptInputs,
+                  system_id: args.systemId,
+                  testing_scripts: args.scripts.map((script) => script.id),
+                })
+              );
             }}
             {...commonNodeFormProps}
           />

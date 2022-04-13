@@ -7,13 +7,16 @@ import type {
   ControllerState,
   ControllerStatus,
   CreateParams,
-  SetZoneParams,
-  TestParams,
   UpdateParams,
 } from "./types";
 import { ControllerMeta } from "./types";
 import type { ImageSyncStatuses } from "./types/base";
 
+import type {
+  BaseNodeActionParams,
+  SetZoneParams,
+  TestParams,
+} from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import type { GenericItemMeta, StatusHandlers } from "app/store/utils/slice";
 import {
@@ -216,7 +219,7 @@ const controllerSlice = createSlice({
       }
     },
     delete: {
-      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: ControllerMeta.MODEL,
           method: "action",
@@ -225,7 +228,7 @@ const controllerSlice = createSlice({
           params: {
             action: NodeActions.DELETE,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -316,7 +319,7 @@ const controllerSlice = createSlice({
       state.loading = false;
     },
     importImages: {
-      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: ControllerMeta.MODEL,
           method: "action",
@@ -325,7 +328,7 @@ const controllerSlice = createSlice({
           params: {
             action: NodeActions.IMPORT_IMAGES,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -337,7 +340,7 @@ const controllerSlice = createSlice({
     importImagesStart: statusHandlers.importImages.start,
     importImagesSuccess: statusHandlers.importImages.success,
     off: {
-      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: ControllerMeta.MODEL,
           method: "action",
@@ -346,7 +349,7 @@ const controllerSlice = createSlice({
           params: {
             action: NodeActions.OFF,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -358,7 +361,7 @@ const controllerSlice = createSlice({
     offStart: statusHandlers.off.start,
     offSuccess: statusHandlers.off.success,
     on: {
-      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: ControllerMeta.MODEL,
           method: "action",
@@ -367,7 +370,7 @@ const controllerSlice = createSlice({
           params: {
             action: NodeActions.ON,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -379,7 +382,7 @@ const controllerSlice = createSlice({
     onStart: statusHandlers.on.start,
     onSuccess: statusHandlers.on.success,
     overrideFailedTesting: {
-      prepare: (system_id: Controller[ControllerMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: ControllerMeta.MODEL,
           method: "action",
@@ -388,7 +391,7 @@ const controllerSlice = createSlice({
           params: {
             action: NodeActions.OVERRIDE_FAILED_TESTING,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -544,8 +547,10 @@ const controllerSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.SET_ZONE,
-            extra: { zone_id: params.zoneId },
-            system_id: params.systemId,
+            extra: {
+              zone_id: params.zone_id,
+            },
+            system_id: params.system_id,
           },
         },
       }),
@@ -566,12 +571,11 @@ const controllerSlice = createSlice({
           params: {
             action: NodeActions.TEST,
             extra: {
-              enable_ssh: params.enableSSH,
-              script_input: params.scriptInputs,
-              testing_scripts:
-                params.scripts && params.scripts.map((script) => script.id),
+              enable_ssh: params.enable_ssh,
+              script_input: params.script_input,
+              testing_scripts: params.testing_scripts,
             },
-            system_id: params.systemId,
+            system_id: params.system_id,
           },
         },
       }),

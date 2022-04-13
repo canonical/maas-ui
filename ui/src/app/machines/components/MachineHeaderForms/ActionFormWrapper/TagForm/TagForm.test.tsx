@@ -90,8 +90,8 @@ it("correctly dispatches actions to tag machines", async () => {
 
   await waitFor(() => {
     const expectedActions = [
-      machineActions.tag({ systemId: "abc123", tags: [1, 2] }),
-      machineActions.tag({ systemId: "def456", tags: [1, 2] }),
+      machineActions.tag({ system_id: "abc123", tags: [1, 2] }),
+      machineActions.tag({ system_id: "def456", tags: [1, 2] }),
     ];
     const actualActions = store
       .getActions()
@@ -130,8 +130,8 @@ it("correctly dispatches actions to untag machines", async () => {
 
   await waitFor(() => {
     const expectedActions = [
-      machineActions.untag({ systemId: "abc123", tags: [1, 2] }),
-      machineActions.untag({ systemId: "def456", tags: [1, 2] }),
+      machineActions.untag({ system_id: "abc123", tags: [1, 2] }),
+      machineActions.untag({ system_id: "def456", tags: [1, 2] }),
     ];
     const actualActions = store
       .getActions()
@@ -167,8 +167,8 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
 
   await waitFor(() => {
     const expectedActions = [
-      machineActions.tag({ systemId: "abc123", tags: [2] }),
-      machineActions.untag({ systemId: "abc123", tags: [1] }),
+      machineActions.tag({ system_id: "abc123", tags: [2] }),
+      machineActions.untag({ system_id: "abc123", tags: [1] }),
     ];
     const actualActions = store
       .getActions()

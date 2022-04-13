@@ -58,8 +58,8 @@ export const MarkBrokenForm = ({
         machines.forEach((machine) => {
           dispatch(
             machineActions.markBroken({
-              systemId: machine.system_id,
               message: values.comment,
+              system_id: machine.system_id,
             })
           );
         });

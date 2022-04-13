@@ -76,7 +76,7 @@ export const TagForm = ({
           machines.forEach((machine) => {
             dispatch(
               machineActions.tag({
-                systemId: machine.system_id,
+                system_id: machine.system_id,
                 tags: values.added.map((id) => Number(id)),
               })
             );
@@ -86,7 +86,7 @@ export const TagForm = ({
           machines.forEach((machine) => {
             dispatch(
               machineActions.untag({
-                systemId: machine.system_id,
+                system_id: machine.system_id,
                 tags: values.removed.map((id) => Number(id)),
               })
             );

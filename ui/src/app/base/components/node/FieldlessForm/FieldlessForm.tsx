@@ -53,7 +53,7 @@ export const FieldlessForm = <E,>({
           const [, actionFunction] =
             Object.entries(actions).find(([key]) => key === actionMethod) || [];
           if (actionFunction) {
-            dispatch(actionFunction(node.system_id));
+            dispatch(actionFunction({ system_id: node.system_id }));
           }
         });
       }}

@@ -9,7 +9,10 @@ import type { CommissionFormValues, FormattedScript } from "./types";
 import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import type { MachineEventErrors } from "app/store/machine/types";
+import type {
+  CommissionParams,
+  MachineEventErrors,
+} from "app/store/machine/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -129,19 +132,26 @@ export const CommissionForm = ({
           testingScripts,
           scriptInputs,
         } = values;
+        const commissioningScriptsParam: CommissionParams["commissioning_scripts"] =
+          commissioningScripts.map((script) => script.id);
+        if (updateFirmware) {
+          commissioningScriptsParam.push("update_firmware");
+        }
+        if (configureHBA) {
+          commissioningScriptsParam.push("configure_hba");
+        }
+        const testingScriptsParam = testingScripts.map((script) => script.id);
         machines.forEach((machine) => {
           dispatch(
             machineActions.commission({
-              systemId: machine.system_id,
-              enableSSH,
-              skipBMCConfig,
-              skipNetworking,
-              skipStorage,
-              updateFirmware,
-              configureHBA,
-              commissioningScripts,
-              testingScripts,
-              scriptInputs,
+              commissioning_scripts: commissioningScriptsParam,
+              enable_ssh: enableSSH,
+              script_input: scriptInputs,
+              skip_bmc_config: skipBMCConfig,
+              skip_networking: skipNetworking,
+              skip_storage: skipStorage,
+              system_id: machine.system_id,
+              testing_scripts: testingScriptsParam,
             })
           );
         });

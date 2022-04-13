@@ -21,10 +21,12 @@ import type {
   MachineDetails,
   MachineMeta,
 } from "app/store/machine/types";
+import type { Script, ScriptMeta } from "app/store/script/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import type { Model, ModelRef, TimestampedModel } from "app/store/types/model";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
+import type { Zone, ZoneMeta } from "app/store/zone/types";
 
 export enum NodeType {
   DEFAULT = 0,
@@ -392,6 +394,10 @@ export type NodeVlan = Model & {
 
 export type WorkloadAnnotations = { [x: string]: string };
 
+export type BaseNodeActionParams = {
+  system_id: Node["system_id"];
+};
+
 // Common params for methods that can accept a link.
 export type LinkParams = {
   default_gateway?: boolean;
@@ -400,9 +406,23 @@ export type LinkParams = {
   subnet?: Subnet["id"];
 };
 
+export type ScriptInputParam = {
+  [x: string]: { url: string };
+};
+
+export type SetZoneParams = BaseNodeActionParams & {
+  zone_id: Zone[ZoneMeta.PK];
+};
+
+export type TestParams = BaseNodeActionParams & {
+  enable_ssh?: boolean;
+  script_input?: ScriptInputParam;
+  testing_scripts?: (Script[ScriptMeta.PK] | Script["name"])[];
+};
+
 // On the API backend the update is processed by a form that handles all node
 // types so this type must allow all possible parameters.
-export type UpdateInterfaceParams = {
+export type UpdateInterfaceParams = BaseNodeActionParams & {
   bridge_fd?: NetworkInterfaceParams["bridge_fd"];
   bridge_stp?: NetworkInterfaceParams["bridge_stp"];
   bond_downdelay?: NetworkInterfaceParams["bond_downdelay"];
@@ -423,7 +443,6 @@ export type UpdateInterfaceParams = {
   name?: NetworkInterface["name"];
   numa_node?: NetworkInterface["numa_node"];
   parents?: NetworkInterface["parents"];
-  system_id: SimpleNode["system_id"];
   tags?: NetworkInterface["tags"];
   vlan?: NetworkInterface["vlan_id"];
 } & LinkParams;

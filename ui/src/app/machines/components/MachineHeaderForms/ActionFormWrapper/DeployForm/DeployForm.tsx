@@ -15,7 +15,7 @@ import {
   osInfo as osInfoSelectors,
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
-import type { DeployParams, MachineEventErrors } from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { PodType } from "app/store/pod/constants";
 import { NodeActions } from "app/store/types/node";
 
@@ -114,15 +114,6 @@ export const DeployForm = ({
         dispatch(machineActions.cleanup());
         const hasUserData =
           values.includeUserData && values.userData && values.userData !== "";
-        const extra: DeployParams["extra"] = {
-          osystem: values.oSystem,
-          distro_series: values.release,
-          hwe_kernel: values.kernel,
-          ...(values.enableHwSync && { enable_hw_sync: true }),
-          ...(values.vmHostType === PodType.LXD && { register_vmhost: true }),
-          ...(values.vmHostType === PodType.VIRSH && { install_kvm: true }),
-          ...(hasUserData && { user_data: values.userData }),
-        };
         if (hasUserData) {
           sendAnalytics(
             "Machine list deploy form",
@@ -132,7 +123,20 @@ export const DeployForm = ({
         }
         machines.forEach((machine) => {
           dispatch(
-            machineActions.deploy({ systemId: machine.system_id, extra })
+            machineActions.deploy({
+              distro_series: values.release,
+              hwe_kernel: values.kernel,
+              osystem: values.oSystem,
+              system_id: machine.system_id,
+              ...(values.enableHwSync && { enable_hw_sync: true }),
+              ...(values.vmHostType === PodType.LXD && {
+                register_vmhost: true,
+              }),
+              ...(values.vmHostType === PodType.VIRSH && {
+                install_kvm: true,
+              }),
+              ...(hasUserData && { user_data: values.userData }),
+            })
           );
         });
       }}

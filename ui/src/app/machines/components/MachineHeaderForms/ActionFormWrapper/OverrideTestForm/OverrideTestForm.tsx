@@ -138,7 +138,11 @@ export const OverrideTestForm = ({
         dispatch(machineActions.cleanup());
         const { suppressResults } = values;
         machines.forEach((machine) => {
-          dispatch(machineActions.overrideFailedTesting(machine.system_id));
+          dispatch(
+            machineActions.overrideFailedTesting({
+              system_id: machine.system_id,
+            })
+          );
         });
         if (suppressResults) {
           machines.forEach((machine) => {

@@ -47,7 +47,12 @@ export const PoolColumn = ({
         children: pool.name,
         "data-testid": "change-pool-link",
         onClick: () => {
-          dispatch(machineActions.setPool({ systemId, poolId: pool.id }));
+          dispatch(
+            machineActions.setPool({
+              pool_id: pool.id,
+              system_id: systemId,
+            })
+          );
           setUpdating(pool.id);
         },
       }));

@@ -13,11 +13,14 @@ import type {
   CreatePhysicalParams,
   DeleteInterfaceParams,
   LinkSubnetParams,
-  SetZoneParams,
   UnlinkSubnetParams,
 } from "./types/actions";
 
-import type { UpdateInterfaceParams } from "app/store/types/node";
+import type {
+  BaseNodeActionParams,
+  SetZoneParams,
+  UpdateInterfaceParams,
+} from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import {
   generateCommonReducers,
@@ -171,7 +174,7 @@ const deviceSlice = createSlice({
       state.loaded = true;
     },
     delete: {
-      prepare: (system_id: Device[DeviceMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: DeviceMeta.MODEL,
           method: "action",
@@ -180,7 +183,7 @@ const deviceSlice = createSlice({
           params: {
             action: NodeActions.DELETE,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -326,8 +329,10 @@ const deviceSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.SET_ZONE,
-            extra: { zone_id: params.zone_id },
-            [DeviceMeta.PK]: params[DeviceMeta.PK],
+            extra: {
+              zone_id: params.zone_id,
+            },
+            system_id: params.system_id,
           },
         },
       }),

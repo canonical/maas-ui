@@ -55,7 +55,12 @@ export const ZoneColumn = ({
         children: zone.name,
         "data-testid": "change-zone-link",
         onClick: () => {
-          dispatch(machineActions.setZone({ systemId, zoneId: zone.id }));
+          dispatch(
+            machineActions.setZone({
+              system_id: systemId,
+              zone_id: zone.id,
+            })
+          );
           setUpdating(zone.id);
         },
       }));

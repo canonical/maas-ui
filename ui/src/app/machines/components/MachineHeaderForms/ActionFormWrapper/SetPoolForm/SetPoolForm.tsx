@@ -82,8 +82,8 @@ export const SetPoolForm = ({
             machines.forEach((machine) => {
               dispatch(
                 machineActions.setPool({
-                  systemId: machine.system_id,
-                  poolId: pool.id,
+                  pool_id: pool.id,
+                  system_id: machine.system_id,
                 })
               );
             });

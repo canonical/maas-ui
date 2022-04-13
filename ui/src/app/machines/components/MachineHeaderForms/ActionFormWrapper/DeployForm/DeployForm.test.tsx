@@ -7,9 +7,9 @@ import configureStore from "redux-mock-store";
 import DeployForm from "./DeployForm";
 
 import * as hooks from "app/base/hooks/analytics";
+import { actions as machineActions } from "app/store/machine";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
-import { NodeActions } from "app/store/types/node";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -187,42 +187,18 @@ describe("DeployForm", () => {
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
-      {
-        type: "machine/deploy",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DEPLOY,
-            extra: {
-              osystem: "ubuntu",
-              distro_series: "bionic",
-              hwe_kernel: "",
-            },
-            system_id: "abc123",
-          },
-        },
-      },
-      {
-        type: "machine/deploy",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DEPLOY,
-            extra: {
-              osystem: "ubuntu",
-              distro_series: "bionic",
-              hwe_kernel: "",
-            },
-            system_id: "def456",
-          },
-        },
-      },
+      machineActions.deploy({
+        distro_series: "bionic",
+        hwe_kernel: "",
+        osystem: "ubuntu",
+        system_id: "abc123",
+      }),
+      machineActions.deploy({
+        distro_series: "bionic",
+        hwe_kernel: "",
+        osystem: "ubuntu",
+        system_id: "def456",
+      }),
     ]);
   });
 
@@ -255,25 +231,13 @@ describe("DeployForm", () => {
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
-      {
-        type: "machine/deploy",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DEPLOY,
-            extra: {
-              osystem: "ubuntu",
-              distro_series: "bionic",
-              hwe_kernel: "",
-              user_data: "test script",
-            },
-            system_id: "abc123",
-          },
-        },
-      },
+      machineActions.deploy({
+        distro_series: "bionic",
+        hwe_kernel: "",
+        osystem: "ubuntu",
+        system_id: "abc123",
+        user_data: "test script",
+      }),
     ]);
   });
 
@@ -306,12 +270,14 @@ describe("DeployForm", () => {
     );
     expect(
       store.getActions().find((action) => action.type === "machine/deploy")
-        .payload.params.extra
-    ).toStrictEqual({
-      osystem: "ubuntu",
-      distro_series: "bionic",
-      hwe_kernel: "",
-    });
+    ).toStrictEqual(
+      machineActions.deploy({
+        distro_series: "bionic",
+        hwe_kernel: "",
+        osystem: "ubuntu",
+        system_id: "abc123",
+      })
+    );
   });
 
   it("adds enable_hw_sync if checkbox is checked", () => {
@@ -343,13 +309,15 @@ describe("DeployForm", () => {
     );
     expect(
       store.getActions().find((action) => action.type === "machine/deploy")
-        .payload.params.extra
-    ).toStrictEqual({
-      osystem: "ubuntu",
-      distro_series: "bionic",
-      hwe_kernel: "",
-      enable_hw_sync: true,
-    });
+    ).toStrictEqual(
+      machineActions.deploy({
+        distro_series: "bionic",
+        enable_hw_sync: true,
+        hwe_kernel: "",
+        osystem: "ubuntu",
+        system_id: "abc123",
+      })
+    );
   });
 
   it("ignores user-data if the cloud-init option is not checked", () => {
@@ -381,24 +349,12 @@ describe("DeployForm", () => {
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
-      {
-        type: "machine/deploy",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DEPLOY,
-            extra: {
-              osystem: "ubuntu",
-              distro_series: "bionic",
-              hwe_kernel: "",
-            },
-            system_id: "abc123",
-          },
-        },
-      },
+      machineActions.deploy({
+        distro_series: "bionic",
+        hwe_kernel: "",
+        osystem: "ubuntu",
+        system_id: "abc123",
+      }),
     ]);
   });
 

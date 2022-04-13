@@ -52,7 +52,7 @@ export const PowerColumn = ({
     menuLinks.push({
       children: <PowerIcon powerState={PowerState.ON}>Turn on</PowerIcon>,
       onClick: () => {
-        dispatch(machineActions.on(systemId));
+        dispatch(machineActions.on({ system_id: systemId }));
         setUpdating(machine.power_state);
       },
     });
@@ -61,7 +61,7 @@ export const PowerColumn = ({
     menuLinks.push({
       children: <PowerIcon powerState={PowerState.OFF}>Turn off</PowerIcon>,
       onClick: () => {
-        dispatch(machineActions.off(systemId));
+        dispatch(machineActions.off({ system_id: systemId }));
         setUpdating(machine.power_state);
       },
     });

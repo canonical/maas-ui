@@ -3,8 +3,11 @@ import type { MachineMeta } from "./enum";
 
 import type { Domain } from "app/store/domain/types";
 import type { LicenseKeys } from "app/store/licensekeys/types";
-import type { ResourcePool } from "app/store/resourcepool/types";
-import type { Script } from "app/store/script/types";
+import type {
+  ResourcePool,
+  ResourcePoolMeta,
+} from "app/store/resourcepool/types";
+import type { Script, ScriptMeta } from "app/store/script/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import type {
@@ -13,11 +16,13 @@ import type {
   StorageLayout,
 } from "app/store/types/enum";
 import type {
+  BaseNodeActionParams,
   LinkParams,
   NetworkInterface,
   NetworkInterfaceParams,
   NetworkLink,
   PowerParameters,
+  ScriptInputParam,
 } from "app/store/types/node";
 import type { Zone } from "app/store/zone/types";
 
@@ -31,24 +36,20 @@ export type ApplyStorageLayoutParams = {
   storageLayout: StorageLayout;
 };
 
-export type CloneParams = {
+export type CloneParams = BaseNodeActionParams & {
   destinations: Machine[MachineMeta.PK][];
   interfaces: boolean;
   storage: boolean;
-  system_id: Machine[MachineMeta.PK];
 };
 
-export type CommissionParams = {
-  systemId: Machine[MachineMeta.PK];
-  enableSSH: boolean;
-  skipBMCConfig: boolean;
-  skipNetworking: boolean;
-  skipStorage: boolean;
-  updateFirmware: boolean;
-  configureHBA: boolean;
-  commissioningScripts: Script[];
-  testingScripts: Script[];
-  scriptInputs: ScriptInput;
+export type CommissionParams = BaseNodeActionParams & {
+  commissioning_scripts?: (Script[ScriptMeta.PK] | Script["name"])[];
+  enable_ssh?: boolean;
+  script_input?: ScriptInputParam;
+  skip_bmc_config?: boolean;
+  skip_networking?: boolean;
+  skip_storage?: boolean;
+  testing_scripts?: (Script[ScriptMeta.PK] | Script["name"])[];
 };
 
 export type CreateBcacheParams = {
@@ -220,17 +221,14 @@ export type DeleteVolumeGroupParams = {
   volumeGroupId: number;
 };
 
-export type DeployParams = {
-  systemId: Machine[MachineMeta.PK];
-  extra?: {
-    osystem: Machine["osystem"];
-    distro_series: Machine["distro_series"];
-    hwe_kernel: string;
-    register_vmhost?: boolean;
-    install_kvm?: boolean;
-    user_data?: string;
-    enable_hw_sync?: boolean;
-  };
+export type DeployParams = BaseNodeActionParams & {
+  distro_series?: Machine["distro_series"];
+  enable_hw_sync?: boolean;
+  hwe_kernel?: string;
+  install_kvm?: boolean;
+  osystem?: Machine["osystem"];
+  register_vmhost?: boolean;
+  user_data?: string;
 };
 
 export type GetSummaryXmlParams = {
@@ -252,9 +250,8 @@ export type LinkSubnetParams = {
   system_id: Machine[MachineMeta.PK];
 };
 
-export type MarkBrokenParams = {
-  systemId: Machine[MachineMeta.PK];
-  message: string;
+export type MarkBrokenParams = BaseNodeActionParams & {
+  message?: string;
 };
 
 export type MountSpecialParams = {
@@ -270,17 +267,10 @@ export type OptionalFilesystemParams = {
   mountPoint?: string;
 };
 
-export type ReleaseParams = {
-  systemId: Machine[MachineMeta.PK];
-  extra: {
-    erase?: boolean;
-    quick_erase?: boolean;
-    secure_erase?: boolean;
-  };
-};
-
-export type ScriptInput = {
-  [x: string]: { url: string };
+export type ReleaseParams = BaseNodeActionParams & {
+  erase?: boolean;
+  quick_erase?: boolean;
+  secure_erase?: boolean;
 };
 
 export type SetBootDiskParams = {
@@ -288,26 +278,12 @@ export type SetBootDiskParams = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export type SetPoolParams = {
-  systemId: Machine[MachineMeta.PK];
-  poolId: ResourcePool["id"];
+export type SetPoolParams = BaseNodeActionParams & {
+  pool_id: ResourcePool[ResourcePoolMeta.PK];
 };
 
-export type SetZoneParams = {
-  systemId: Machine[MachineMeta.PK];
-  zoneId: Zone["id"];
-};
-
-export type TagParams = {
-  systemId: Machine[MachineMeta.PK];
+export type TagParams = BaseNodeActionParams & {
   tags: Tag[TagMeta.PK][];
-};
-
-export type TestParams = {
-  systemId: Machine[MachineMeta.PK];
-  scripts?: Script[];
-  enableSSH: boolean;
-  scriptInputs: ScriptInput;
 };
 
 export type UnlinkSubnetParams = {
@@ -321,8 +297,7 @@ export type UnmountSpecialParams = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export type UntagParams = {
-  systemId: Machine[MachineMeta.PK];
+export type UntagParams = BaseNodeActionParams & {
   tags: Tag[TagMeta.PK][];
 };
 

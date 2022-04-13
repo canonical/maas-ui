@@ -54,7 +54,7 @@ export const useMachineActions = (
                 ([key]) => key === actionMethod
               ) || [];
             if (actionFunction) {
-              dispatch(actionFunction(systemId));
+              dispatch(actionFunction({ system_id: systemId }));
             }
             onClick && onClick();
           },
