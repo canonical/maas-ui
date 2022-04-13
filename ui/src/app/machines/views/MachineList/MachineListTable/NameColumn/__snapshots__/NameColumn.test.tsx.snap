@@ -96,6 +96,7 @@ exports[`NameColumn renders 1`] = `
                   className="u-no-margin--bottom u-nudge--checkbox"
                   forId="mock-redux-js-nanoid-1"
                   helpId="mock-nanoid-2"
+                  isTickElement={true}
                   label=""
                   labelClassName="u-no-margin--bottom u-no-padding--top"
                   validationId="mock-nanoid-1"

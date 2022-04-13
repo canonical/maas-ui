@@ -96,6 +96,7 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
             <Field
               forId="mock-nanoid-1"
               helpId="mock-nanoid-3"
+              isTickElement={false}
               required={false}
               validationId="mock-nanoid-2"
             >
@@ -199,6 +200,7 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
             <Field
               forId="mock-nanoid-1"
               helpId="mock-nanoid-3"
+              isTickElement={false}
               required={false}
               validationId="mock-nanoid-2"
             >

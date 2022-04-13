@@ -451,18 +451,11 @@ describe("DeployFormFields", () => {
       </Provider>
     );
 
-    const tooltipText =
-      /Enable this to make MAAS periodically check the hardware/;
     expect(
-      screen.getByText(/Hardware sync interval: 15min/)
-    ).toBeInTheDocument();
-    expect(screen.queryByText(tooltipText)).not.toBeInTheDocument();
-    userEvent.hover(
-      screen.getByRole("button", {
-        name: /more about periodically sync hardware/,
+      screen.getByRole("tooltip", {
+        name: /Enable this to make MAAS periodically check the hardware/,
       })
-    );
-    expect(screen.getByText(tooltipText)).toBeInTheDocument();
+    ).toBeInTheDocument();
   });
 
   it("'Periodically sync hardware' is unchecked by default", async () => {
