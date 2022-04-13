@@ -28,13 +28,7 @@ const SubnetLink = ({ id }: Props): JSX.Element => {
   }, [dispatch]);
 
   if (subnetsLoading) {
-    // TODO: Put aria-label directly on Spinner component when issue is fixed.
-    // https://github.com/canonical-web-and-design/react-components/issues/651
-    return (
-      <span aria-label="Loading subnets">
-        <Spinner />
-      </span>
-    );
+    return <Spinner aria-label="Loading subnets" />;
   }
   if (!subnet) {
     return <>{subnetDisplay}</>;

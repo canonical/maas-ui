@@ -26,13 +26,7 @@ const MachineLink = ({ systemId }: Props): JSX.Element | null => {
   }, [dispatch]);
 
   if (machinesLoading) {
-    // TODO: Put aria-label directly on Spinner component when issue is fixed.
-    // https://github.com/canonical-web-and-design/react-components/issues/651
-    return (
-      <span aria-label="Loading machines">
-        <Spinner />
-      </span>
-    );
+    return <Spinner aria-label="Loading machines" />;
   }
   if (!machine) {
     return null;

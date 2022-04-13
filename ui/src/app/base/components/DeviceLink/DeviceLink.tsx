@@ -26,13 +26,7 @@ const DeviceLink = ({ systemId }: Props): JSX.Element | null => {
   }, [dispatch]);
 
   if (devicesLoading) {
-    // TODO: Put aria-label directly on Spinner component when issue is fixed.
-    // https://github.com/canonical-web-and-design/react-components/issues/651
-    return (
-      <span aria-label="Loading devices">
-        <Spinner />
-      </span>
-    );
+    return <Spinner aria-label="Loading devices" />;
   }
   if (!device) {
     return null;

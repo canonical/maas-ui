@@ -34,11 +34,11 @@ const generateSubtitle = (
   let content = subtitle;
   if (subtitleLoading) {
     content = (
-      // TODO: pass the `data-testid` directly to Spinner once once issue below is resolved:
-      // https://github.com/canonical-web-and-design/react-components/issues/651
-      <span data-testid="section-header-subtitle-spinner">
-        <Spinner className="u-text--muted" text="Loading..." />
-      </span>
+      <Spinner
+        className="u-text--muted"
+        text="Loading..."
+        data-testid="section-header-subtitle-spinner"
+      />
     );
   } else if (typeof subtitle === "string") {
     content = <span className="u-text--muted">{subtitle}</span>;
