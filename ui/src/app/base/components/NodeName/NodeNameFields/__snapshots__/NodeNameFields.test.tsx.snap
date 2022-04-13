@@ -18,89 +18,83 @@ exports[`NodeNameFields displays the fields 1`] = `
     }
   }
 >
-  <FormikField
-    className="node-name__hostname"
-    displayError={false}
-    label="Hostname"
-    name="hostname"
-    style={
-      Object {
-        "width": "0ch",
-      }
-    }
-    takeFocus={true}
-    type="text"
-    wrapperClassName="u-no-margin--right"
+  <div
+    className="node-name__hostname-wrapper u-no-margin--right"
   >
-    <Input
-      aria-label="Hostname"
+    <div
+      aria-hidden="true"
+      className="node-name__hostname-spacer"
+    />
+    <FormikField
       className="node-name__hostname"
-      error={null}
-      id="mock-redux-js-nanoid-1"
+      displayError={false}
       label="Hostname"
       name="hostname"
-      onBlur={[Function]}
-      onChange={[Function]}
-      style={
-        Object {
-          "width": "0ch",
-        }
-      }
       takeFocus={true}
       type="text"
-      value=""
       wrapperClassName="u-no-margin--right"
     >
-      <Field
-        className="u-no-margin--right"
+      <Input
+        aria-label="Hostname"
+        className="node-name__hostname"
         error={null}
-        forId="mock-redux-js-nanoid-1"
-        helpId="mock-nanoid-2"
+        id="mock-redux-js-nanoid-1"
         label="Hostname"
-        validationId="mock-nanoid-1"
+        name="hostname"
+        onBlur={[Function]}
+        onChange={[Function]}
+        takeFocus={true}
+        type="text"
+        value=""
+        wrapperClassName="u-no-margin--right"
       >
-        <div
-          className="p-form__group p-form-validation u-no-margin--right"
+        <Field
+          className="u-no-margin--right"
+          error={null}
+          forId="mock-redux-js-nanoid-1"
+          helpId="mock-nanoid-2"
+          isTickElement={false}
+          label="Hostname"
+          validationId="mock-nanoid-1"
         >
-          <Label
-            forId="mock-redux-js-nanoid-1"
-          >
-            <label
-              className="p-form__label"
-              htmlFor="mock-redux-js-nanoid-1"
-            >
-              Hostname
-            </label>
-          </Label>
           <div
-            className="p-form__control u-clearfix"
+            className="p-form__group p-form-validation u-no-margin--right"
           >
-            <input
-              aria-describedby={null}
-              aria-errormessage={null}
-              aria-invalid={false}
-              aria-label="Hostname"
-              className="p-form-validation__input node-name__hostname"
-              id="mock-redux-js-nanoid-1"
-              label="Hostname"
-              name="hostname"
-              onBlur={[Function]}
-              onChange={[Function]}
-              style={
-                Object {
-                  "width": "0ch",
-                }
-              }
-              type="text"
-              value=""
-            />
+            <Label
+              forId="mock-redux-js-nanoid-1"
+            >
+              <label
+                className="p-form__label"
+                htmlFor="mock-redux-js-nanoid-1"
+              >
+                Hostname
+              </label>
+            </Label>
+            <div
+              className="p-form__control u-clearfix"
+            >
+              <input
+                aria-describedby={null}
+                aria-errormessage={null}
+                aria-invalid={false}
+                aria-label="Hostname"
+                className="p-form-validation__input node-name__hostname"
+                id="mock-redux-js-nanoid-1"
+                label="Hostname"
+                name="hostname"
+                onBlur={[Function]}
+                onChange={[Function]}
+                type="text"
+                value=""
+              />
+            </div>
           </div>
-        </div>
-      </Field>
-    </Input>
-  </FormikField>
+        </Field>
+      </Input>
+    </FormikField>
+  </div>
   <span
-    className="node-name__dot u-nudge-left--small u-no-margin--right"
+    className="node-name__dot u-nudge-right--small u-nudge-left--small u-no-margin--right"
   >
     .
   </span>
