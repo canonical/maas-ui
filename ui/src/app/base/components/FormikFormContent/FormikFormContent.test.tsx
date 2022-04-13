@@ -476,4 +476,23 @@ describe("FormikFormContent", () => {
     await waitForComponentToPaint(wrapper);
     expect(onSuccess).toHaveBeenCalledTimes(1);
   });
+
+  it("can display a footer", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <Formik initialValues={{}} onSubmit={jest.fn()}>
+            <FormikFormContent
+              onCancel={jest.fn()}
+              footer={<div data-testid="footer"></div>}
+            >
+              Content
+            </FormikFormContent>
+          </Formik>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("[data-testid='footer']").exists()).toBe(true);
+  });
 });

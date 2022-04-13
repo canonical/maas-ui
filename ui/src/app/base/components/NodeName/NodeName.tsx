@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Button, Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import type { FormikErrors } from "formik";
 import * as Yup from "yup";
 
 import NodeNameFields from "./NodeNameFields";
@@ -33,13 +34,14 @@ export type FormValues = {
 
 const hostnamePattern = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])*$/;
 
+export enum Label {
+  HostnamePatternError = "Hostname must only contain letters, numbers and hyphens.",
+}
+
 const Schema = Yup.object().shape({
   hostname: Yup.string()
     .max(63, "Hostname must be 63 characters or less.")
-    .matches(
-      hostnamePattern,
-      "Hostname must only contain letters, numbers and hyphens."
-    )
+    .matches(hostnamePattern, Label.HostnamePatternError)
     .required(),
   domain: Yup.string(),
 });
@@ -52,6 +54,9 @@ const NodeName = ({
   saved,
   saving,
 }: Props): JSX.Element => {
+  const [hostnameError, setHostnameError] = useState<
+    FormikErrors<FormValues>["hostname"] | null
+  >(null);
   const canEdit = useCanEdit(node);
   const previousSaving = usePrevious(saving);
 
@@ -84,6 +89,15 @@ const NodeName = ({
       buttonsAlign="right"
       buttonsBordered={false}
       className="node-name"
+      footer={
+        hostnameError ? (
+          <div className="node-name__error is-error">
+            <p className="p-form-validation__message u-no-margin--bottom">
+              <strong>Error:</strong> {hostnameError}
+            </p>
+          </div>
+        ) : null
+      }
       initialValues={{
         domain: String(node.domain.id),
         hostname: node.hostname,
@@ -102,7 +116,7 @@ const NodeName = ({
       saved={saved}
       validationSchema={Schema}
     >
-      <NodeNameFields saving={saving} />
+      <NodeNameFields saving={saving} setHostnameError={setHostnameError} />
     </FormikForm>
   );
 };

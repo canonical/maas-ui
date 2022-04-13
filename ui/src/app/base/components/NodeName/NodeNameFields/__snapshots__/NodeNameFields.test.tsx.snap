@@ -1,11 +1,28 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NodeNameFields displays the fields 1`] = `
-<NodeNameFields>
+<NodeNameFields
+  setHostnameError={
+    [MockFunction] {
+      "calls": Array [
+        Array [
+          null,
+        ],
+      ],
+      "results": Array [
+        Object {
+          "type": "return",
+          "value": undefined,
+        },
+      ],
+    }
+  }
+>
   <FormikField
     className="node-name__hostname"
+    displayError={false}
+    label="Hostname"
     name="hostname"
-    required={true}
     style={
       Object {
         "width": "0ch",
@@ -13,16 +30,17 @@ exports[`NodeNameFields displays the fields 1`] = `
     }
     takeFocus={true}
     type="text"
-    wrapperClassName="u-nudge-left--small u-no-margin--right"
+    wrapperClassName="u-no-margin--right"
   >
     <Input
+      aria-label="Hostname"
       className="node-name__hostname"
       error={null}
       id="mock-redux-js-nanoid-1"
+      label="Hostname"
       name="hostname"
       onBlur={[Function]}
       onChange={[Function]}
-      required={true}
       style={
         Object {
           "width": "0ch",
@@ -31,19 +49,29 @@ exports[`NodeNameFields displays the fields 1`] = `
       takeFocus={true}
       type="text"
       value=""
-      wrapperClassName="u-nudge-left--small u-no-margin--right"
+      wrapperClassName="u-no-margin--right"
     >
       <Field
-        className="u-nudge-left--small u-no-margin--right"
+        className="u-no-margin--right"
         error={null}
         forId="mock-redux-js-nanoid-1"
         helpId="mock-nanoid-2"
-        required={true}
+        label="Hostname"
         validationId="mock-nanoid-1"
       >
         <div
-          className="p-form__group p-form-validation u-nudge-left--small u-no-margin--right"
+          className="p-form__group p-form-validation u-no-margin--right"
         >
+          <Label
+            forId="mock-redux-js-nanoid-1"
+          >
+            <label
+              className="p-form__label"
+              htmlFor="mock-redux-js-nanoid-1"
+            >
+              Hostname
+            </label>
+          </Label>
           <div
             className="p-form__control u-clearfix"
           >
@@ -51,12 +79,13 @@ exports[`NodeNameFields displays the fields 1`] = `
               aria-describedby={null}
               aria-errormessage={null}
               aria-invalid={false}
+              aria-label="Hostname"
               className="p-form-validation__input node-name__hostname"
               id="mock-redux-js-nanoid-1"
+              label="Hostname"
               name="hostname"
               onBlur={[Function]}
               onChange={[Function]}
-              required={true}
               style={
                 Object {
                   "width": "0ch",
@@ -71,23 +100,22 @@ exports[`NodeNameFields displays the fields 1`] = `
     </Input>
   </FormikField>
   <span
-    className="u-nudge-left--small u-no-margin--right"
+    className="node-name__dot u-nudge-left--small u-no-margin--right"
   >
     .
   </span>
   <DomainSelect
     className="u-no-margin--bottom"
-    label={null}
+    label="Domain"
     name="domain"
-    required={true}
     valueKey="id"
-    wrapperClassName="u-nudge-left u-no-margin--right"
+    wrapperClassName="node-name__domain"
   >
     <FormikField
       className="u-no-margin--bottom"
       component={[Function]}
       disabled={false}
-      label={null}
+      label="Domain"
       name="domain"
       options={
         Array [
@@ -98,16 +126,15 @@ exports[`NodeNameFields displays the fields 1`] = `
           },
         ]
       }
-      required={true}
-      wrapperClassName="u-nudge-left u-no-margin--right"
+      wrapperClassName="node-name__domain"
     >
       <Select
-        aria-label={null}
+        aria-label="Domain"
         className="u-no-margin--bottom"
         disabled={false}
         error={null}
         id="mock-redux-js-nanoid-2"
-        label={null}
+        label="Domain"
         name="domain"
         onBlur={[Function]}
         onChange={[Function]}
@@ -120,23 +147,31 @@ exports[`NodeNameFields displays the fields 1`] = `
             },
           ]
         }
-        required={true}
         value=""
-        wrapperClassName="u-nudge-left u-no-margin--right"
+        wrapperClassName="node-name__domain"
       >
         <Field
-          className="u-nudge-left u-no-margin--right"
+          className="node-name__domain"
           error={null}
           forId="mock-redux-js-nanoid-2"
           helpId="mock-nanoid-4"
           isSelect={true}
-          label={null}
-          required={true}
+          label="Domain"
           validationId="mock-nanoid-3"
         >
           <div
-            className="p-form__group p-form-validation u-nudge-left u-no-margin--right"
+            className="p-form__group p-form-validation node-name__domain"
           >
+            <Label
+              forId="mock-redux-js-nanoid-2"
+            >
+              <label
+                className="p-form__label"
+                htmlFor="mock-redux-js-nanoid-2"
+              >
+                Domain
+              </label>
+            </Label>
             <div
               className="p-form__control u-clearfix"
             >
@@ -147,7 +182,7 @@ exports[`NodeNameFields displays the fields 1`] = `
                   aria-describedby={null}
                   aria-errormessage={null}
                   aria-invalid={false}
-                  aria-label={null}
+                  aria-label="Domain"
                   className="p-form-validation__input u-no-margin--bottom"
                   disabled={false}
                   id="mock-redux-js-nanoid-2"

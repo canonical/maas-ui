@@ -13,12 +13,55 @@
     }
   }
 
+  .node-name__error {
+    // Force the errors to wrap onto a new line rather than appear on the same
+    // row as the inline fields.
+    flex-basis: 100%;
+  }
+
+  .node-name__error .p-form-validation__message {
+    margin-top: $spv--small;
+  }
+
   [type="text"].node-name__hostname {
     @extend %vf-heading-4;
-    box-sizing: content-box;
-    margin-bottom: -1px;
-    min-width: 3rem;
-    // Remove 2px to account for the top and bottom borders.
-    padding: calc(#{$sp-xx-small} - 2px) $spv--large calc(#{$sp-xx-small} + 1px);
+
+    @media only screen and (min-width: $breakpoint-large) {
+      box-sizing: content-box;
+      margin-bottom: -1px;
+      min-width: 3rem;
+      // Remove 2px to account for the top and bottom borders.
+      padding: calc(#{$sp-xx-small} - 2px) $spv--large
+        calc(#{$sp-xx-small} + 1px);
+    }
+  }
+
+  @media only screen and (max-width: $breakpoint-large) {
+    .node-name__dot {
+      // Hide the dot on small screens.
+      display: none;
+    }
+
+    .node-name__hostname {
+      // Don't auto size the name input to match the content.
+      width: 100% !important;
+    }
+
+    .node-name__domain {
+      // Add space before the buttons.
+      margin-bottom: $spv--small;
+    }
+  }
+
+  @media only screen and (min-width: $breakpoint-large) {
+    .node-name__hostname {
+      // Add space before the dot.
+      margin-right: $sph--small;
+    }
+
+    .node-name label {
+      // Hide the labels on large screens.
+      display: none;
+    }
   }
 }
