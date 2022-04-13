@@ -11,7 +11,7 @@ exports[`SectionHeader can render 1`] = `
       className="section-header__titles u-flex--align-baseline u-flex--grow u-flex--wrap"
     >
       <h1
-        className="section-header__title p-heading--4 u-flex--no-shrink"
+        className="section-header__title u-flex--no-shrink p-heading--4"
         data-testid="section-header-title"
       >
         Title

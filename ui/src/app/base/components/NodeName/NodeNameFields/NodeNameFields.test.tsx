@@ -51,7 +51,7 @@ describe("NodeNameFields", () => {
             }}
             onSubmit={jest.fn()}
           >
-            <NodeNameFields />
+            <NodeNameFields setHostnameError={jest.fn()} />
           </FormikForm>
         </MemoryRouter>
       </Provider>
@@ -73,7 +73,7 @@ describe("NodeNameFields", () => {
             }}
             onSubmit={jest.fn()}
           >
-            <NodeNameFields />
+            <NodeNameFields setHostnameError={jest.fn()} />
           </FormikForm>
         </MemoryRouter>
       </Provider>
@@ -95,7 +95,7 @@ describe("NodeNameFields", () => {
             }}
             onSubmit={jest.fn()}
           >
-            <NodeNameFields saving />
+            <NodeNameFields saving setHostnameError={jest.fn()} />
           </FormikForm>
         </MemoryRouter>
       </Provider>
@@ -103,5 +103,29 @@ describe("NodeNameFields", () => {
     expect(
       wrapper.find("FormikField").everyWhere((n) => Boolean(n.prop("disabled")))
     ).toBe(true);
+  });
+
+  it("updates the hostname errors if they exist", () => {
+    const setHostnameError = jest.fn();
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+        >
+          <FormikForm
+            initialErrors={{ hostname: "Uh oh!" }}
+            initialValues={{
+              domain: "",
+              hostname: "",
+            }}
+            onSubmit={jest.fn()}
+          >
+            <NodeNameFields saving setHostnameError={setHostnameError} />
+          </FormikForm>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(setHostnameError).toHaveBeenCalledWith("Uh oh!");
   });
 });

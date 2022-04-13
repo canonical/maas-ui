@@ -18,6 +18,7 @@ export type Props<P = LinkProps> = {
   tabLinks?: DataTestElement<TabsProps<P>["links"]>;
   title?: ReactNode;
   titleClassName?: string;
+  titleElement?: keyof JSX.IntrinsicElements;
 };
 
 const generateSubtitle = (
@@ -66,6 +67,7 @@ const SectionHeader = <P,>({
   tabLinks,
   title,
   titleClassName,
+  titleElement: TitleElement = "h1",
   ...props
 }: Props<P>): JSX.Element | null => {
   return (
@@ -81,15 +83,18 @@ const SectionHeader = <P,>({
               <Spinner text="Loading..." aria-hidden="true" />
             </h4>
           ) : (
-            <h1
+            <TitleElement
               className={classNames(
-                "section-header__title p-heading--4 u-flex--no-shrink",
-                titleClassName
+                "section-header__title u-flex--no-shrink",
+                titleClassName,
+                {
+                  "p-heading--4": TitleElement === "h1",
+                }
               )}
               data-testid="section-header-title"
             >
               {title}
-            </h1>
+            </TitleElement>
           )}
           {generateSubtitle(
             subtitle,

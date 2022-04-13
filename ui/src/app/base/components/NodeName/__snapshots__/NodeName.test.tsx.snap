@@ -5,6 +5,7 @@ exports[`NodeName can display the form 1`] = `
   buttonsAlign="right"
   buttonsBordered={false}
   className="node-name"
+  footer={null}
   initialValues={
     Object {
       "domain": "99",
@@ -245,6 +246,7 @@ exports[`NodeName can display the form 1`] = `
       buttonsAlign="right"
       buttonsBordered={false}
       className="node-name"
+      footer={null}
       inline={true}
       onCancel={[Function]}
       onSaveAnalytics={
@@ -264,11 +266,14 @@ exports[`NodeName can display the form 1`] = `
           className="node-name p-form p-form--inline"
           onSubmit={[Function]}
         >
-          <NodeNameFields>
+          <NodeNameFields
+            setHostnameError={[Function]}
+          >
             <FormikField
               className="node-name__hostname"
+              displayError={false}
+              label="Hostname"
               name="hostname"
-              required={true}
               style={
                 Object {
                   "width": "14ch",
@@ -276,16 +281,17 @@ exports[`NodeName can display the form 1`] = `
               }
               takeFocus={true}
               type="text"
-              wrapperClassName="u-nudge-left--small u-no-margin--right"
+              wrapperClassName="u-no-margin--right"
             >
               <Input
+                aria-label="Hostname"
                 className="node-name__hostname"
                 error={null}
                 id="mock-redux-js-nanoid-1"
+                label="Hostname"
                 name="hostname"
                 onBlur={[Function]}
                 onChange={[Function]}
-                required={true}
                 style={
                   Object {
                     "width": "14ch",
@@ -294,19 +300,29 @@ exports[`NodeName can display the form 1`] = `
                 takeFocus={true}
                 type="text"
                 value="test-machine-5"
-                wrapperClassName="u-nudge-left--small u-no-margin--right"
+                wrapperClassName="u-no-margin--right"
               >
                 <Field
-                  className="u-nudge-left--small u-no-margin--right"
+                  className="u-no-margin--right"
                   error={null}
                   forId="mock-redux-js-nanoid-1"
                   helpId="mock-nanoid-2"
-                  required={true}
+                  label="Hostname"
                   validationId="mock-nanoid-1"
                 >
                   <div
-                    className="p-form__group p-form-validation u-nudge-left--small u-no-margin--right"
+                    className="p-form__group p-form-validation u-no-margin--right"
                   >
+                    <Label
+                      forId="mock-redux-js-nanoid-1"
+                    >
+                      <label
+                        className="p-form__label"
+                        htmlFor="mock-redux-js-nanoid-1"
+                      >
+                        Hostname
+                      </label>
+                    </Label>
                     <div
                       className="p-form__control u-clearfix"
                     >
@@ -314,12 +330,13 @@ exports[`NodeName can display the form 1`] = `
                         aria-describedby={null}
                         aria-errormessage={null}
                         aria-invalid={false}
+                        aria-label="Hostname"
                         className="p-form-validation__input node-name__hostname"
                         id="mock-redux-js-nanoid-1"
+                        label="Hostname"
                         name="hostname"
                         onBlur={[Function]}
                         onChange={[Function]}
-                        required={true}
                         style={
                           Object {
                             "width": "14ch",
@@ -334,7 +351,7 @@ exports[`NodeName can display the form 1`] = `
               </Input>
             </FormikField>
             <span
-              className="u-nudge-left--small u-no-margin--right"
+              className="node-name__dot u-nudge-left--small u-no-margin--right"
             >
               .
             </span>
