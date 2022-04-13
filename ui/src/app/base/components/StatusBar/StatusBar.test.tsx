@@ -73,6 +73,7 @@ it("can show if a machine has not been commissioned yet", () => {
 it("can show the last time a machine was commissioned", () => {
   state.machine.items = [
     machineDetailsFactory({
+      enable_hw_sync: false,
       commissioning_start_time: "Thu, 31 Dec. 2020 22:59:00",
       fqdn: "test.maas",
       status: NodeStatus.DEPLOYED,
@@ -90,6 +91,7 @@ it("can show the last time a machine was commissioned", () => {
 it("can handle an incorrectly formatted commissioning timestamp", () => {
   state.machine.items = [
     machineDetailsFactory({
+      enable_hw_sync: false,
       commissioning_start_time: "2020-03-01 09:12:43",
       fqdn: "test.maas",
       status: NodeStatus.DEPLOYED,

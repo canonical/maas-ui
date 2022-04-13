@@ -313,7 +313,7 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   devices: () => [],
   dhcp_on: false,
   disks: () => [],
-  enable_hw_sync: false,
+  enable_hw_sync: true,
   error_description: "",
   error: "",
   events: () => [],
@@ -323,8 +323,6 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   installation_start_time: "Thu, 15 Oct. 2020 07:25:10",
   installation_status: 3,
   interfaces: () => [],
-  is_sync_healthy: true,
-  last_sync: "",
   license_key: "",
   metadata: () => ({
     cpu_model: "Intel(R) Xeon(R) CPU E5620",
@@ -342,7 +340,6 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
     chassis_version: "pc-q35-5.1",
   }),
   min_hwe_kernel: "",
-  next_sync: "",
   node_type: 0,
   numa_nodes: () => [],
   on_network: false,
@@ -357,7 +354,6 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   storage_layout_issues: () => [],
   supported_filesystems: () => [],
   swap_size: null,
-  sync_interval: 900,
   testing_start_time: "Thu, 15 Oct. 2020 07:25:10",
   updated: "Fri, 23 Oct. 2020 05:24:41",
 });

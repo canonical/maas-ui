@@ -1,6 +1,6 @@
 import { timeSpanToMinutes, timeSpanToSeconds } from "./timeSpan";
 
-describe("formatTimeSpanStringToSeconds", () => {
+describe("timeSpanToSeconds", () => {
   it("converts a partial timespan string to a number of seconds", () => {
     expect(timeSpanToSeconds("60s")).toEqual(60);
     expect(timeSpanToSeconds("1m")).toEqual(60);
@@ -14,9 +14,9 @@ describe("formatTimeSpanStringToSeconds", () => {
     expect(timeSpanToSeconds("1h1m1s")).toEqual(3661);
   });
 
-  it("returns null for a timespan string in an invalid format", () => {
-    expect(timeSpanToSeconds("1")).toEqual(null);
-    expect(timeSpanToSeconds("s")).toEqual(null);
+  it("returns 0 for a timespan string in an invalid format", () => {
+    expect(timeSpanToSeconds("1")).toEqual(0);
+    expect(timeSpanToSeconds("s")).toEqual(0);
   });
 });
 
