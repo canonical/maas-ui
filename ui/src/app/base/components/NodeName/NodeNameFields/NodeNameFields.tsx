@@ -33,18 +33,22 @@ export const NodeNameFields = ({
 
   return (
     <>
-      <FormikField
-        type="text"
-        className="node-name__hostname"
-        disabled={saving}
-        displayError={false}
-        label="Hostname"
-        name="hostname"
-        style={{ width: `${values.hostname.length}ch` }}
-        takeFocus
-        wrapperClassName="u-no-margin--right"
-      />
-      <span className="node-name__dot u-nudge-left--small u-no-margin--right">
+      <div className="node-name__hostname-wrapper u-no-margin--right">
+        <div aria-hidden="true" className="node-name__hostname-spacer">
+          {values.hostname}
+        </div>
+        <FormikField
+          type="text"
+          className="node-name__hostname"
+          disabled={saving}
+          displayError={false}
+          label="Hostname"
+          name="hostname"
+          takeFocus
+          wrapperClassName="u-no-margin--right"
+        />
+      </div>
+      <span className="node-name__dot u-nudge-right--small u-nudge-left--small u-no-margin--right">
         .
       </span>
       {domainsLoaded ? (
