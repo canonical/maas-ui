@@ -65,6 +65,7 @@ exports[`NodeName can display the form 1`] = `
                 error={null}
                 forId="mock-redux-js-nanoid-1"
                 helpId="mock-nanoid-2"
+                isTickElement={false}
                 label="Hostname"
                 validationId="mock-nanoid-1"
               >
