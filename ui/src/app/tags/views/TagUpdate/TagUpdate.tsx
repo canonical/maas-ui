@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import * as Yup from "yup";
 
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -70,12 +71,7 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
   };
 
   return (
-    <FormikForm<UpdateParams>
-      aria-label="Update tag"
-      buttonsAlign="right"
-      buttonsBordered={true}
-      cleanup={tagActions.cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         comment: tag.comment ?? "",
         definition: tag.definition ?? "",
@@ -83,34 +79,42 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
         kernel_opts: tag.kernel_opts ?? "",
         name: tag.name,
       }}
-      onCancel={onClose}
-      onSaveAnalytics={{
-        action: "Submit",
-        category: "Update tag form",
-        label: "Update tag",
-      }}
       onSubmit={(values) => {
         dispatch(tagActions.cleanup());
         dispatch(tagActions.update(values));
       }}
-      onSuccess={(values) => {
-        if (isAuto && values.definition !== tag.definition) {
-          dispatch(
-            messageActions.add(
-              `Updated ${tag.name}. ${NewDefinitionMessage}`,
-              NotificationSeverity.POSITIVE
-            )
-          );
-        }
-        onClose();
-      }}
-      saved={saved}
-      saving={saving}
-      submitLabel="Save changes"
       validationSchema={isAuto ? UpdateAutoTagFormSchema : UpdateTagFormSchema}
     >
-      <TagUpdateFormFields id={id} />
-    </FormikForm>
+      <FormikFormContent<UpdateParams>
+        aria-label="Update tag"
+        buttonsAlign="right"
+        buttonsBordered={true}
+        cleanup={tagActions.cleanup}
+        errors={errors}
+        onCancel={onClose}
+        onSaveAnalytics={{
+          action: "Submit",
+          category: "Update tag form",
+          label: "Update tag",
+        }}
+        onSuccess={(values) => {
+          if (isAuto && values.definition !== tag.definition) {
+            dispatch(
+              messageActions.add(
+                `Updated ${tag.name}. ${NewDefinitionMessage}`,
+                NotificationSeverity.POSITIVE
+              )
+            );
+          }
+          onClose();
+        }}
+        saved={saved}
+        saving={saving}
+        submitLabel="Save changes"
+      >
+        <TagUpdateFormFields id={id} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

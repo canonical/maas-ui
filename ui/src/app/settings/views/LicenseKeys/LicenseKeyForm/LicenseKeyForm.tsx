@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -10,7 +11,7 @@ import LicenseKeyFormFields from "../LicenseKeyFormFields";
 import type { LicenseKeyFormValues } from "./types";
 
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import settingsURLs from "app/settings/urls";
 import { actions as generalActions } from "app/store/general";
@@ -70,23 +71,13 @@ export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
       {!isLoaded ? (
         <Spinner text="loading..." />
       ) : osystems.length > 0 ? (
-        <FormikForm<LicenseKeyFormValues>
-          cleanup={licenseKeysActions.cleanup}
-          errors={errors}
+        <Formik
           initialValues={{
             osystem: licenseKey ? licenseKey.osystem : osystems[0][0],
             distro_series: licenseKey
               ? licenseKey.distro_series
               : releases[osystems[0][0]][0].value,
             license_key: licenseKey ? licenseKey.license_key : "",
-          }}
-          onCancel={() =>
-            history.push({ pathname: settingsURLs.licenseKeys.index })
-          }
-          onSaveAnalytics={{
-            action: "Saved",
-            category: "License keys settings",
-            label: `${title} form`,
           }}
           onSubmit={(values) => {
             const params = {
@@ -108,14 +99,27 @@ export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
             }
             setSaving(`${params.osystem} (${params.distro_series})`);
           }}
-          saving={saving}
-          saved={saved}
-          savedRedirect={settingsURLs.licenseKeys.index}
-          submitLabel={editing ? "Update license key" : "Add license key"}
           validationSchema={LicenseKeySchema}
         >
-          <LicenseKeyFormFields osystems={osystems} releases={releases} />
-        </FormikForm>
+          <FormikFormContent<LicenseKeyFormValues>
+            cleanup={licenseKeysActions.cleanup}
+            errors={errors}
+            onCancel={() =>
+              history.push({ pathname: settingsURLs.licenseKeys.index })
+            }
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "License keys settings",
+              label: `${title} form`,
+            }}
+            saving={saving}
+            saved={saved}
+            savedRedirect={settingsURLs.licenseKeys.index}
+            submitLabel={editing ? "Update license key" : "Add license key"}
+          >
+            <LicenseKeyFormFields osystems={osystems} releases={releases} />
+          </FormikFormContent>
+        </Formik>
       ) : (
         <span>No available licensed operating systems.</span>
       )}

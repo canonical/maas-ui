@@ -2,9 +2,10 @@ import type { ReactNode } from "react";
 import { useCallback } from "react";
 
 import { Notification } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { EmptyObject } from "app/base/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -61,25 +62,28 @@ const FabricDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
     );
   }
   return (
-    <FormikForm<EmptyObject>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{}}
-      onCancel={closeForm}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(fabricActions.delete(id));
       }}
-      savedRedirect={subnetURLs.indexWithParams({ by: "fabric" })}
-      saved={saved}
-      saving={saving}
-      submitAppearance="negative"
-      submitDisabled={fabricIsDefault || hasSubnets}
-      submitLabel="Delete fabric"
     >
-      {warning}
-    </FormikForm>
+      <FormikFormContent<EmptyObject>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        savedRedirect={subnetURLs.indexWithParams({ by: "fabric" })}
+        saved={saved}
+        saving={saving}
+        submitAppearance="negative"
+        submitDisabled={fabricIsDefault || hasSubnets}
+        submitLabel="Delete fabric"
+      >
+        {warning}
+      </FormikFormContent>
+    </Formik>
   );
 };
 

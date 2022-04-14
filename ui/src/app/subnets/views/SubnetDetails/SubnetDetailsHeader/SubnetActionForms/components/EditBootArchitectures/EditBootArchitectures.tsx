@@ -1,12 +1,13 @@
 import { useCallback, useEffect } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import BootArchitecturesTable from "./BootArchitecturesTable";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as generalActions } from "app/store/general";
 import { knownBootArchitectures as knownBootArchitecturesSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
@@ -53,18 +54,9 @@ export const EditBootArchitectures = ({
 
   const closeForm = () => setActiveForm(null);
   return (
-    <FormikForm<FormValues>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         disabled_boot_architectures: subnet.disabled_boot_architectures,
-      }}
-      onCancel={closeForm}
-      onSaveAnalytics={{
-        action: "Edit boot architectures",
-        category: "Subnet details",
-        label: "Edit boot architectures",
       }}
       onSubmit={(values) => {
         dispatch(cleanup());
@@ -76,14 +68,26 @@ export const EditBootArchitectures = ({
           })
         );
       }}
-      onSuccess={closeForm}
-      saved={saved}
-      saving={saving}
-      submitLabel="Save"
       validationSchema={Schema}
     >
-      <BootArchitecturesTable />
-    </FormikForm>
+      <FormikFormContent<FormValues>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        onSaveAnalytics={{
+          action: "Edit boot architectures",
+          category: "Subnet details",
+          label: "Edit boot architectures",
+        }}
+        onSuccess={closeForm}
+        saved={saved}
+        saving={saving}
+        submitLabel="Save"
+      >
+        <BootArchitecturesTable />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

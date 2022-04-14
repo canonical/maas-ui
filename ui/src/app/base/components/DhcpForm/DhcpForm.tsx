@@ -1,14 +1,16 @@
 import { useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import type { FormikErrors } from "formik";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import type { DHCPFormValues } from "./types";
 
 import DhcpFormFields from "app/base/components/DhcpFormFields";
-import FormikForm from "app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
+import type { Props as FormikFormContentProps } from "app/base/components/FormikFormContent";
 import { useAddMessage } from "app/base/hooks";
 import { useDhcpTarget } from "app/settings/hooks";
 import { actions as controllerActions } from "app/store/controller";
@@ -40,7 +42,9 @@ type Props = {
   analyticsCategory: string;
   id?: DHCPSnippet["id"];
   onSave?: () => void;
-} & Partial<FormikFormProps<DHCPFormValues>>;
+} & Partial<
+  FormikFormContentProps<DHCPFormValues, FormikErrors<DHCPFormValues>>
+>;
 
 export const DhcpForm = ({
   analyticsCategory,
@@ -89,9 +93,7 @@ export const DhcpForm = ({
   }
 
   return (
-    <FormikForm<DHCPFormValues>
-      cleanup={dhcpsnippetActions.cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         description: dhcpSnippet ? dhcpSnippet.description : "",
         enabled: dhcpSnippet ? dhcpSnippet.enabled : false,
@@ -101,11 +103,6 @@ export const DhcpForm = ({
         name: dhcpSnippet ? dhcpSnippet.name : "",
         type: (dhcpSnippet && targetType) || "",
         value: dhcpSnippet ? dhcpSnippet.value : "",
-      }}
-      onSaveAnalytics={{
-        action: "Saved",
-        category: analyticsCategory,
-        label: `${editing ? "Edit" : "Add"} form`,
       }}
       onSubmit={(values) => {
         const params: {
@@ -140,15 +137,25 @@ export const DhcpForm = ({
         }
         setSaving(params.name);
       }}
-      onSuccess={() => onSave && onSave()}
-      saving={saving}
-      saved={saved}
-      submitLabel="Save snippet"
       validationSchema={DhcpSchema}
-      {...props}
     >
-      <DhcpFormFields editing={editing} />
-    </FormikForm>
+      <FormikFormContent<DHCPFormValues>
+        cleanup={dhcpsnippetActions.cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: analyticsCategory,
+          label: `${editing ? "Edit" : "Add"} form`,
+        }}
+        onSuccess={() => onSave && onSave()}
+        saving={saving}
+        saved={saved}
+        submitLabel="Save snippet"
+        {...props}
+      >
+        <DhcpFormFields editing={editing} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

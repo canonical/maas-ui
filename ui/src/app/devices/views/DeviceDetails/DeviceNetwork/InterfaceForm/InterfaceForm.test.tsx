@@ -1,10 +1,10 @@
 import { mount } from "enzyme";
+import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import InterfaceForm from "./InterfaceForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { DeviceNetworkInterface } from "app/store/device/types";
 import { DeviceIpAssignment } from "app/store/device/types";
 import type { RootState } from "app/store/root/types";
@@ -113,7 +113,7 @@ describe("InterfaceForm", () => {
         />
       </Provider>
     );
-    expect(wrapper.find(FormikForm).prop("initialValues")).toStrictEqual({
+    expect(wrapper.find(Formik).prop("initialValues")).toStrictEqual({
       ...nicData,
       subnet: subnet.id,
     });
@@ -134,7 +134,7 @@ describe("InterfaceForm", () => {
         />
       </Provider>
     );
-    expect(wrapper.find(FormikForm).prop("initialValues")).toStrictEqual({
+    expect(wrapper.find(Formik).prop("initialValues")).toStrictEqual({
       ip_address: "",
       ip_assignment: DeviceIpAssignment.DYNAMIC,
       mac_address: "",

@@ -1,10 +1,11 @@
 import { useCallback, useEffect } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import UbuntuImageSelect from "app/images/components/UbuntuImageSelect";
 import type { ImageValue } from "app/images/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
@@ -83,12 +84,8 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
         Showing images fetched from <strong>{source.url || "maas.io"}</strong>
       </h4>
       <hr />
-      <FormikForm<FetchedImagesValues>
-        allowUnchanged
-        buttonsBordered={false}
-        cleanup={cleanup}
+      <Formik
         enableReinitialize
-        errors={error}
         initialValues={{
           images: [
             {
@@ -99,7 +96,6 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
             },
           ],
         }}
-        onCancel={closeForm}
         onSubmit={(values) => {
           dispatch(cleanup());
           const osystems = values.images.reduce<OsystemParam[]>(
@@ -126,21 +122,29 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
           };
           dispatch(bootResourceActions.saveUbuntu(params));
         }}
-        onSuccess={() => {
-          dispatch(bootResourceActions.poll({ continuous: false }));
-          closeForm();
-        }}
-        saved={saved}
-        saving={saving}
-        submitLabel="Update selection"
         validationSchema={FetchedImagesSchema}
       >
-        <UbuntuImageSelect
-          arches={arches}
-          releases={releases}
-          resources={resources}
-        />
-      </FormikForm>
+        <FormikFormContent<FetchedImagesValues>
+          allowUnchanged
+          buttonsBordered={false}
+          cleanup={cleanup}
+          errors={error}
+          onCancel={closeForm}
+          onSuccess={() => {
+            dispatch(bootResourceActions.poll({ continuous: false }));
+            closeForm();
+          }}
+          saved={saved}
+          saving={saving}
+          submitLabel="Update selection"
+        >
+          <UbuntuImageSelect
+            arches={arches}
+            releases={releases}
+            resources={resources}
+          />
+        </FormikFormContent>
+      </Formik>
     </>
   );
 };

@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
 import { Link, Spinner, Strip } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import AddChassisFormFields from "../AddChassisFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
@@ -26,6 +27,8 @@ import machineSelectors from "app/store/machine/selectors";
 type Props = {
   clearHeaderContent: ClearHeaderContent;
 };
+
+type AddChassisParams = { [x: string]: string };
 
 export const AddChassisForm = ({ clearHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -70,33 +73,14 @@ export const AddChassisForm = ({ clearHeaderContent }: Props): JSX.Element => {
           <Spinner text="Loading" />
         </Strip>
       ) : (
-        <FormikForm
-          buttonsHelp={
-            <p>
-              <Link
-                href="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Help with adding chassis
-              </Link>
-            </p>
-          }
-          cleanup={machineActions.cleanup}
-          errors={machineErrors}
+        <Formik
           initialValues={{
             domain: (domains.length && domains[0].name) || "",
             power_parameters: initialPowerParameters,
             power_type: "",
           }}
-          onCancel={clearHeaderContent}
-          onSaveAnalytics={{
-            action: secondarySubmit ? "Save and add another" : "Save",
-            category: "Chassis",
-            label: "Add chassis form",
-          }}
           onSubmit={(values) => {
-            const params: { [x: string]: string } = {
+            const params: AddChassisParams = {
               chassis_type: values.power_type,
               domain: values.domain,
             };
@@ -112,33 +96,55 @@ export const AddChassisForm = ({ clearHeaderContent }: Props): JSX.Element => {
             dispatch(machineActions.addChassis(params));
             setSavingChassis(params.hostname?.toString() || "chassis");
           }}
-          onSuccess={() => {
-            if (!secondarySubmit) {
-              clearHeaderContent();
-            }
-            setSecondarySubmit(false);
-          }}
-          onValuesChanged={(values) => {
-            const powerType = chassisPowerTypes.find(
-              (type) => type.name === values.power_type
-            );
-            if (powerType) {
-              setPowerType(powerType);
-            }
-          }}
-          resetOnSave
-          saving={machineSaving}
-          saved={machineSaved}
-          secondarySubmit={(_, { submitForm }) => {
-            setSecondarySubmit(true);
-            submitForm();
-          }}
-          secondarySubmitLabel="Save and add another"
-          submitLabel="Save chassis"
           validationSchema={AddChassisSchema}
         >
-          <AddChassisFormFields />
-        </FormikForm>
+          <FormikFormContent<AddChassisParams>
+            buttonsHelp={
+              <p>
+                <Link
+                  href="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Help with adding chassis
+                </Link>
+              </p>
+            }
+            cleanup={machineActions.cleanup}
+            errors={machineErrors}
+            onCancel={clearHeaderContent}
+            onSaveAnalytics={{
+              action: secondarySubmit ? "Save and add another" : "Save",
+              category: "Chassis",
+              label: "Add chassis form",
+            }}
+            onSuccess={() => {
+              if (!secondarySubmit) {
+                clearHeaderContent();
+              }
+              setSecondarySubmit(false);
+            }}
+            onValuesChanged={(values) => {
+              const powerType = chassisPowerTypes.find(
+                (type) => type.name === values.power_type
+              );
+              if (powerType) {
+                setPowerType(powerType);
+              }
+            }}
+            resetOnSave
+            saving={machineSaving}
+            saved={machineSaved}
+            secondarySubmit={(_, { submitForm }) => {
+              setSecondarySubmit(true);
+              submitForm();
+            }}
+            secondarySubmitLabel="Save and add another"
+            submitLabel="Save chassis"
+          >
+            <AddChassisFormFields />
+          </FormikFormContent>
+        </Formik>
       )}
     </>
   );

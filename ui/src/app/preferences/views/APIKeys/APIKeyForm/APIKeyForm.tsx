@@ -1,11 +1,12 @@
 import { Col, Row } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import prefsURLs from "app/preferences/urls";
 import { actions as tokenActions } from "app/store/token";
@@ -42,18 +43,9 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
 
   return (
     <FormCard title={title}>
-      <FormikForm
-        allowAllEmpty={!editing}
-        cleanup={tokenActions.cleanup}
-        errors={errors}
+      <Formik
         initialValues={{
           name: token ? token.consumer.name : "",
-        }}
-        onCancel={() => history.push({ pathname: prefsURLs.apiKeys.index })}
-        onSaveAnalytics={{
-          action: "Saved",
-          category: "API keys preferences",
-          label: "Generate API key form",
         }}
         onSubmit={(values) => {
           if (editing) {
@@ -69,29 +61,41 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
             dispatch(tokenActions.create(values));
           }
         }}
-        saving={saving}
-        saved={saved}
-        savedRedirect={prefsURLs.apiKeys.index}
-        submitLabel={editing ? "Save API key" : "Generate API key"}
         validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}
       >
-        <Row>
-          <Col size={4}>
-            <FormikField
-              name="name"
-              label={`API key name${editing ? "" : " (optional)"}`}
-              required={editing}
-              type="text"
-            />
-          </Col>
-          <Col size={4}>
-            <p className="form-card__help">
-              The API key is used to log in to the API from the MAAS CLI and by
-              other services connecting to MAAS, such as Juju.
-            </p>
-          </Col>
-        </Row>
-      </FormikForm>
+        <FormikFormContent
+          allowAllEmpty={!editing}
+          cleanup={tokenActions.cleanup}
+          errors={errors}
+          onCancel={() => history.push({ pathname: prefsURLs.apiKeys.index })}
+          onSaveAnalytics={{
+            action: "Saved",
+            category: "API keys preferences",
+            label: "Generate API key form",
+          }}
+          saving={saving}
+          saved={saved}
+          savedRedirect={prefsURLs.apiKeys.index}
+          submitLabel={editing ? "Save API key" : "Generate API key"}
+        >
+          <Row>
+            <Col size={4}>
+              <FormikField
+                name="name"
+                label={`API key name${editing ? "" : " (optional)"}`}
+                required={editing}
+                type="text"
+              />
+            </Col>
+            <Col size={4}>
+              <p className="form-card__help">
+                The API key is used to log in to the API from the MAAS CLI and
+                by other services connecting to MAAS, such as Juju.
+              </p>
+            </Col>
+          </Row>
+        </FormikFormContent>
+      </Formik>
     </FormCard>
   );
 };

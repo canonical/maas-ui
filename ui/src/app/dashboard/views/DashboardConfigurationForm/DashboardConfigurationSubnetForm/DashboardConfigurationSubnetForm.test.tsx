@@ -66,7 +66,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("FormikForm").exists()).toBe(true);
+    expect(wrapper.find("FormikFormContent").exists()).toBe(true);
   });
 
   it("disables the form if discovery is disabled", () => {
@@ -87,7 +87,7 @@ describe("DashboardConfigurationSubnetForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
+    expect(wrapper.find("FormikFormContent").prop("submitDisabled")).toBe(true);
     expect(wrapper.find("FormikField").first().prop("disabled")).toBe(true);
   });
 

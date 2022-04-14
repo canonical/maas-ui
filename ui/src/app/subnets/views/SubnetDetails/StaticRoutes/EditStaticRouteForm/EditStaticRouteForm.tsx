@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 
 import { Col, Row, Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import { Labels } from "../StaticRoutes";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import SubnetSelect from "app/base/components/SubnetSelect";
 import type { RootState } from "app/store/root/types";
 import { actions as staticRouteActions } from "app/store/staticroute";
@@ -69,20 +70,12 @@ const EditStaticRouteForm = ({
   }
 
   return (
-    <FormikForm<EditStaticRouteValues>
-      aria-label={EditStaticRouteFormLabels.EditStaticRoute}
-      cleanup={staticRouteActions.cleanup}
-      errors={staticRouteErrors}
+    <Formik
       initialValues={{
         source: staticRoute.source,
         gateway_ip: staticRoute.gateway_ip,
         destination: staticRoute.destination,
         metric: staticRoute.metric,
-      }}
-      onSaveAnalytics={{
-        action: EditStaticRouteFormLabels.Save,
-        category: "Subnet",
-        label: EditStaticRouteFormLabels.EditStaticRoute,
       }}
       onSubmit={({ gateway_ip, destination, metric }) => {
         dispatch(staticRouteActions.cleanup());
@@ -96,39 +89,54 @@ const EditStaticRouteForm = ({
           })
         );
       }}
-      onSuccess={() => {
-        handleDismiss();
-      }}
-      resetOnSave
-      saving={saving}
-      saved={saved}
-      submitLabel={EditStaticRouteFormLabels.Save}
-      onCancel={handleDismiss}
       validationSchema={editStaticRouteSchema}
     >
-      <Row>
-        <Col size={4}>
-          <FormikField label={Labels.GatewayIp} name="gateway_ip" type="text" />
-        </Col>
-        <Col size={4}>
-          <SubnetSelect
-            label={Labels.Destination}
-            name="destination"
-            filterFunction={(destination) =>
-              getIsDestinationForSource(destination, source)
-            }
-            defaultOption={{
-              label: "Select destination",
-              value: "",
-              disabled: true,
-            }}
-          />
-        </Col>
-        <Col size={4}>
-          <FormikField label={Labels.Metric} name="metric" type="text" />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<EditStaticRouteValues>
+        aria-label={EditStaticRouteFormLabels.EditStaticRoute}
+        cleanup={staticRouteActions.cleanup}
+        errors={staticRouteErrors}
+        onSaveAnalytics={{
+          action: EditStaticRouteFormLabels.Save,
+          category: "Subnet",
+          label: EditStaticRouteFormLabels.EditStaticRoute,
+        }}
+        onSuccess={() => {
+          handleDismiss();
+        }}
+        resetOnSave
+        saving={saving}
+        saved={saved}
+        submitLabel={EditStaticRouteFormLabels.Save}
+        onCancel={handleDismiss}
+      >
+        <Row>
+          <Col size={4}>
+            <FormikField
+              label={Labels.GatewayIp}
+              name="gateway_ip"
+              type="text"
+            />
+          </Col>
+          <Col size={4}>
+            <SubnetSelect
+              label={Labels.Destination}
+              name="destination"
+              filterFunction={(destination) =>
+                getIsDestinationForSource(destination, source)
+              }
+              defaultOption={{
+                label: "Select destination",
+                value: "",
+                disabled: true,
+              }}
+            />
+          </Col>
+          <Col size={4}>
+            <FormikField label={Labels.Metric} name="metric" type="text" />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

@@ -1,9 +1,10 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import type { DeployFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import DeployFormFields from "app/settings/views/Configuration/DeployFormFields";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -33,19 +34,11 @@ const DeployForm = (): JSX.Element => {
   const hardwareSyncIntervalMinutes = timeSpanToMinutes(hardwareSyncInterval);
 
   return (
-    <FormikForm<DeployFormValues>
-      aria-label="deploy configuration"
-      buttonsAlign="left"
-      buttonsBordered={false}
+    <Formik
       initialValues={{
         default_osystem: defaultOSystem || "",
         default_distro_series: defaultDistroSeries || "",
         hardware_sync_interval: `${hardwareSyncIntervalMinutes}` || "",
-      }}
-      onSaveAnalytics={{
-        action: "Saved",
-        category: "Configuration settings",
-        label: "Deploy form",
       }}
       onSubmit={(values, { resetForm }) => {
         const configValues = {
@@ -57,12 +50,23 @@ const DeployForm = (): JSX.Element => {
         dispatch(updateConfig(configValues));
         resetForm({ values });
       }}
-      saving={saving}
-      saved={saved}
       validationSchema={DeploySchema}
     >
-      <DeployFormFields />
-    </FormikForm>
+      <FormikFormContent<DeployFormValues>
+        aria-label="deploy configuration"
+        buttonsAlign="left"
+        buttonsBordered={false}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "Configuration settings",
+          label: "Deploy form",
+        }}
+        saving={saving}
+        saved={saved}
+      >
+        <DeployFormFields />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

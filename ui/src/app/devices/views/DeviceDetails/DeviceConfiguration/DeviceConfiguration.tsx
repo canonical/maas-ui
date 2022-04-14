@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,7 +10,7 @@ import type { DeviceConfigurationValues } from "./types";
 
 import Definition from "app/base/components/Definition";
 import EditableSection from "app/base/components/EditableSection";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import TagLinks from "app/base/components/TagLinks";
 import { useWindowTitle } from "app/base/hooks";
 import deviceURLs from "app/devices/urls";
@@ -70,23 +71,12 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (
-          <FormikForm<DeviceConfigurationValues>
-            aria-label={Label.Form}
-            cleanup={deviceActions.cleanup}
-            data-testid="device-config-form"
-            editable={editing}
-            errors={updateDeviceError}
+          <Formik
             initialValues={{
               description: device.description,
               tags: device.tags,
               zone: device.zone?.name || "",
             }}
-            onSaveAnalytics={{
-              action: "Configure device",
-              category: "Device details",
-              label: "Save changes",
-            }}
-            onCancel={() => setEditing(false)}
             onSubmit={(values) => {
               const params = {
                 description: values.description,
@@ -96,14 +86,28 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
               };
               dispatch(deviceActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
-            saved={deviceSaved}
-            saving={deviceSaving}
-            submitLabel="Save changes"
             validationSchema={DeviceConfigurationSchema}
           >
-            <DeviceConfigurationFields />
-          </FormikForm>
+            <FormikFormContent<DeviceConfigurationValues>
+              aria-label={Label.Form}
+              cleanup={deviceActions.cleanup}
+              data-testid="device-config-form"
+              editable={editing}
+              errors={updateDeviceError}
+              onSaveAnalytics={{
+                action: "Configure device",
+                category: "Device details",
+                label: "Save changes",
+              }}
+              onCancel={() => setEditing(false)}
+              onSuccess={() => setEditing(false)}
+              saved={deviceSaved}
+              saving={deviceSaving}
+              submitLabel="Save changes"
+            >
+              <DeviceConfigurationFields />
+            </FormikFormContent>
+          </Formik>
         ) : (
           <div data-testid="device-details">
             <Definition label="Zone" description={device.zone.name} />

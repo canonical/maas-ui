@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 
 import { Col, Spinner, Row } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import StorageFormFields from "./StorageFormFields";
 import type { StorageFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -48,30 +49,33 @@ const StorageForm = (): JSX.Element => {
       <Col size={6}>
         {loading && <Spinner text="Loading..." />}
         {loaded && (
-          <FormikForm<StorageFormValues>
-            buttonsAlign="left"
-            buttonsBordered={false}
+          <Formik
             initialValues={{
               default_storage_layout: defaultStorageLayout || "",
               disk_erase_with_quick_erase: diskEraseWithQuick || false,
               disk_erase_with_secure_erase: diskEraseWithSecure || false,
               enable_disk_erasing_on_release: enableDiskErasing || false,
             }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Storage settings",
-              label: "Storage form",
-            }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
-            saving={saving}
-            saved={saved}
             validationSchema={StorageSchema}
           >
-            <StorageFormFields />
-          </FormikForm>
+            <FormikFormContent<StorageFormValues>
+              buttonsAlign="left"
+              buttonsBordered={false}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Storage settings",
+                label: "Storage form",
+              }}
+              saving={saving}
+              saved={saved}
+            >
+              <StorageFormFields />
+            </FormikFormContent>
+          </Formik>
         )}
       </Col>
     </Row>

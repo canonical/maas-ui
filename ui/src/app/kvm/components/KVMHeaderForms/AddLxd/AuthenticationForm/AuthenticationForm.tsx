@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Link, Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,7 +10,7 @@ import type { AddLxdStepValues, NewPodValues } from "../types";
 
 import AuthenticationFormFields from "./AuthenticationFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
@@ -83,22 +84,7 @@ export const AuthenticationForm = ({
   }, [dispatch]);
 
   return (
-    <FormikForm<AuthenticationFormValues>
-      allowAllEmpty
-      buttonsHelp={
-        useCertificate && authenticating ? (
-          <Spinner
-            data-testid="trust-confirmation-spinner"
-            text="Waiting for LXD confirmation that trust is added."
-          />
-        ) : null
-      }
-      cancelDisabled={false}
-      errors={displayErrors ? errors : null}
-      initialValues={{
-        password: "",
-      }}
-      onCancel={clearHeaderContent}
+    <Formik
       onSubmit={(values) => {
         dispatch(podActions.cleanup());
         setAuthenticating(true);
@@ -130,42 +116,60 @@ export const AuthenticationForm = ({
           );
         }
       }}
-      saving={!useCertificate && authenticating}
-      submitDisabled={useCertificate && authenticating}
-      submitLabel="Check authentication"
+      initialValues={{
+        password: "",
+      }}
       validationSchema={AuthenticationFormSchema}
     >
-      <div className="u-flex--between">
-        <div>
-          <p>
-            <strong>
-              LXD host: {newPodValues.name} ({newPodValues.power_address})
-            </strong>
-          </p>
+      <FormikFormContent<AuthenticationFormValues>
+        allowAllEmpty
+        buttonsHelp={
+          useCertificate && authenticating ? (
+            <Spinner
+              data-testid="trust-confirmation-spinner"
+              text="Waiting for LXD confirmation that trust is added."
+            />
+          ) : null
+        }
+        cancelDisabled={false}
+        errors={displayErrors ? errors : null}
+        onCancel={clearHeaderContent}
+        saving={!useCertificate && authenticating}
+        submitDisabled={useCertificate && authenticating}
+        submitLabel="Check authentication"
+      >
+        <div className="u-flex--between">
+          <div>
+            <p>
+              <strong>
+                LXD host: {newPodValues.name} ({newPodValues.power_address})
+              </strong>
+            </p>
+          </div>
+          <div>
+            <p>
+              <Link
+                href="https://discourse.maas.io/t/lxd-authentication/4856"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                How to trust a certificate in LXD
+              </Link>
+            </p>
+          </div>
         </div>
-        <div>
-          <p>
-            <Link
-              href="https://discourse.maas.io/t/lxd-authentication/4856"
-              rel="noopener noreferrer"
-              target="_blank"
-            >
-              How to trust a certificate in LXD
-            </Link>
-          </p>
-        </div>
-      </div>
-      <hr />
-      <p>
-        <strong>This certificate is not trusted by LXD yet.</strong>
-      </p>
-      <AuthenticationFormFields
-        disabled={authenticating}
-        generatedCertificate={generatedCertificate}
-        setUseCertificate={setUseCertificate}
-        useCertificate={useCertificate}
-      />
-    </FormikForm>
+        <hr />
+        <p>
+          <strong>This certificate is not trusted by LXD yet.</strong>
+        </p>
+        <AuthenticationFormFields
+          disabled={authenticating}
+          generatedCertificate={generatedCertificate}
+          setUseCertificate={setUseCertificate}
+          useCertificate={useCertificate}
+        />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

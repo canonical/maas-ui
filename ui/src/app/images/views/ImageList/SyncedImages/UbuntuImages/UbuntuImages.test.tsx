@@ -222,6 +222,6 @@ describe("UbuntuImages", () => {
     expect(wrapper.find("[data-testid='too-many-sources']").exists()).toBe(
       true
     );
-    expect(wrapper.find("FormikForm").prop("editable")).toBe(false);
+    expect(wrapper.find("FormikFormContent").prop("editable")).toBe(false);
   });
 });

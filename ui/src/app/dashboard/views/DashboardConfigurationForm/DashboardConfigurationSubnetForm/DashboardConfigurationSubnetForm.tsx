@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import configSelectors from "app/store/config/selectors";
 import { NetworkDiscovery } from "app/store/config/types";
 import { actions as fabricActions } from "app/store/fabric";
@@ -47,9 +48,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
     });
 
     content = (
-      <FormikForm<SubnetDiscoveryValues>
-        buttonsAlign="left"
-        buttonsBordered={false}
+      <Formik
         initialValues={initialValues}
         onSubmit={(values, { resetForm }) => {
           subnets.forEach((subnet) => {
@@ -64,50 +63,55 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
           });
           resetForm({ values });
         }}
-        saving={saving}
-        saved={saved}
-        submitDisabled={discoveryDisabled}
       >
-        <ul className="p-list is-split">
-          {sortedSubnets.map((subnet) => {
-            const targetFabric = fabrics.find((fabric) =>
-              fabric.vlan_ids.includes(subnet.vlan)
-            );
-            return (
-              <li className="p-list__item" key={`subnet-${subnet.id}`}>
-                <FormikField
-                  disabled={discoveryDisabled}
-                  label={
-                    <>
-                      <Link
-                        data-testid="subnet-link"
-                        to={subnetsURLS.subnet.index({ id: subnet.id })}
-                      >
-                        {subnet.cidr}
-                      </Link>
-                      {targetFabric && (
-                        <>
-                          <span> on </span>
-                          <Link
-                            data-testid="fabric-link"
-                            to={subnetsURLS.fabric.index({
-                              id: targetFabric.id,
-                            })}
-                          >
-                            {targetFabric.name}
-                          </Link>
-                        </>
-                      )}
-                    </>
-                  }
-                  name={`${subnet.id}`}
-                  type="checkbox"
-                />
-              </li>
-            );
-          })}
-        </ul>
-      </FormikForm>
+        <FormikFormContent<SubnetDiscoveryValues>
+          buttonsAlign="left"
+          buttonsBordered={false}
+          saving={saving}
+          saved={saved}
+          submitDisabled={discoveryDisabled}
+        >
+          <ul className="p-list is-split">
+            {sortedSubnets.map((subnet) => {
+              const targetFabric = fabrics.find((fabric) =>
+                fabric.vlan_ids.includes(subnet.vlan)
+              );
+              return (
+                <li className="p-list__item" key={`subnet-${subnet.id}`}>
+                  <FormikField
+                    disabled={discoveryDisabled}
+                    label={
+                      <>
+                        <Link
+                          data-testid="subnet-link"
+                          to={subnetsURLS.subnet.index({ id: subnet.id })}
+                        >
+                          {subnet.cidr}
+                        </Link>
+                        {targetFabric && (
+                          <>
+                            <span> on </span>
+                            <Link
+                              data-testid="fabric-link"
+                              to={subnetsURLS.fabric.index({
+                                id: targetFabric.id,
+                              })}
+                            >
+                              {targetFabric.name}
+                            </Link>
+                          </>
+                        )}
+                      </>
+                    }
+                    name={`${subnet.id}`}
+                    type="checkbox"
+                  />
+                </li>
+              );
+            })}
+          </ul>
+        </FormikFormContent>
+      </Formik>
     );
   }
 

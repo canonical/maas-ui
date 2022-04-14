@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,7 +9,7 @@ import type { BridgeFormValues } from "../AddBridgeForm/types";
 import BridgeFormFields from "../BridgeFormFields";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -77,10 +78,7 @@ const EditBridgeForm = ({
   }
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
-    <FormikForm<BridgeFormValues, MachineEventErrors>
-      allowUnchanged
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         bridge_fd: nic.params?.bridge_fd || "",
         bridge_stp: nic.params?.bridge_stp || false,
@@ -94,12 +92,6 @@ const EditBridgeForm = ({
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
-      onSaveAnalytics={{
-        action: "Edit bridge",
-        category: "Machine details networking",
-        label: "Edit bridge form",
-      }}
-      onCancel={close}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
@@ -111,14 +103,26 @@ const EditBridgeForm = ({
         }) as UpdateInterfaceParams;
         dispatch(machineActions.updateInterface(payload));
       }}
-      resetOnSave
-      saved={saved}
-      saving={saving}
-      submitLabel={`Save ${interfaceTypeDisplay}`}
       validationSchema={InterfaceSchema}
     >
-      <BridgeFormFields typeDisabled />
-    </FormikForm>
+      <FormikFormContent<BridgeFormValues, MachineEventErrors>
+        allowUnchanged
+        cleanup={cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: "Edit bridge",
+          category: "Machine details networking",
+          label: "Edit bridge form",
+        }}
+        onCancel={close}
+        resetOnSave
+        saved={saved}
+        saving={saving}
+        submitLabel={`Save ${interfaceTypeDisplay}`}
+      >
+        <BridgeFormFields typeDisabled />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

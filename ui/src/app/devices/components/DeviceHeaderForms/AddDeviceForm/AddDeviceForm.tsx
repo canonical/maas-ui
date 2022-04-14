@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,7 +10,7 @@ import type { AddDeviceValues } from "./types";
 
 import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
@@ -94,9 +95,7 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
   }
 
   return (
-    <FormikForm<AddDeviceValues>
-      cleanup={deviceActions.cleanup}
-      errors={devicesErrors}
+    <Formik<AddDeviceValues>
       initialValues={{
         domain: (domains.length && domains[0].name) || "",
         hostname: "",
@@ -111,12 +110,6 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
           },
         ],
         zone: (zones.length && zones[0].name) || "",
-      }}
-      onCancel={clearHeaderContent}
-      onSaveAnalytics={{
-        action: "Add device",
-        category: "Device list",
-        label: secondarySubmit ? "Save and add another" : "Save device",
       }}
       onSubmit={(values) => {
         const { domain, hostname, interfaces, zone } = values;
@@ -154,39 +147,50 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
         dispatch(deviceActions.create(params));
         setSavingDevice(values.hostname || "Device");
       }}
-      onSuccess={() => {
-        if (!secondarySubmit) {
-          clearHeaderContent();
-        }
-        setSecondarySubmit(false);
-      }}
-      resetOnSave
-      saving={devicesSaving}
-      saved={devicesSaved}
-      secondarySubmit={(_, { submitForm }) => {
-        setSecondarySubmit(true);
-        submitForm();
-      }}
-      secondarySubmitLabel="Save and add another"
-      submitLabel="Save device"
       validationSchema={AddDeviceSchema}
     >
-      <Row>
-        <Col size={5}>
-          <FormikField
-            label="Device name"
-            name="hostname"
-            placeholder="Device name (optional)"
-            type="text"
-          />
-          <DomainSelect name="domain" required />
-          <ZoneSelect name="zone" required />
-        </Col>
-      </Row>
-      <Strip shallow>
-        <AddDeviceInterfaces />
-      </Strip>
-    </FormikForm>
+      <FormikFormContent<AddDeviceValues>
+        cleanup={deviceActions.cleanup}
+        errors={devicesErrors}
+        onCancel={clearHeaderContent}
+        onSaveAnalytics={{
+          action: "Add device",
+          category: "Device list",
+          label: secondarySubmit ? "Save and add another" : "Save device",
+        }}
+        onSuccess={() => {
+          if (!secondarySubmit) {
+            clearHeaderContent();
+          }
+          setSecondarySubmit(false);
+        }}
+        resetOnSave
+        saving={devicesSaving}
+        saved={devicesSaved}
+        secondarySubmit={(_, { submitForm }) => {
+          setSecondarySubmit(true);
+          submitForm();
+        }}
+        secondarySubmitLabel="Save and add another"
+        submitLabel="Save device"
+      >
+        <Row>
+          <Col size={5}>
+            <FormikField
+              label="Device name"
+              name="hostname"
+              placeholder="Device name (optional)"
+              type="text"
+            />
+            <DomainSelect name="domain" required />
+            <ZoneSelect name="zone" required />
+          </Col>
+        </Row>
+        <Strip shallow>
+          <AddDeviceInterfaces />
+        </Strip>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

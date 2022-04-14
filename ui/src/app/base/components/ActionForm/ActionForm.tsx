@@ -1,9 +1,11 @@
 import { useState } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
+import type { FormikConfig } from "formik";
+import { Formik } from "formik";
 
-import type { FormikFormProps } from "app/base/components/FormikForm";
-import FormikForm from "app/base/components/FormikForm";
+import type { Props as FormikFormContentProps } from "app/base/components/FormikFormContent";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useProcessing } from "app/base/hooks";
 import { NodeActions } from "app/store/types/node";
 
@@ -96,16 +98,21 @@ const getLabel = (
 };
 
 export type Props<V, E = null> = Omit<
-  FormikFormProps<V, E>,
+  FormikFormContentProps<V, E>,
   "buttonsAlign" | "saved" | "saving" | "savingLabel" | "submitLabel"
 > & {
   actionName: string;
   loaded?: boolean;
+  initialTouched?: FormikConfig<V>["initialTouched"];
+  initialValues: FormikConfig<V>["initialValues"];
   modelName: string;
+  onSubmit: FormikConfig<V>["onSubmit"];
   processingCount: number;
   selectedCount: number;
   showProcessingCount?: boolean;
   submitLabel?: string;
+  validateOnMount?: FormikConfig<V>["validateOnMount"];
+  validationSchema?: FormikConfig<V>["validationSchema"];
 };
 
 const ActionForm = <V, E = null>({
@@ -113,6 +120,8 @@ const ActionForm = <V, E = null>({
   buttonsBordered = false,
   children,
   errors,
+  initialTouched,
+  initialValues,
   loaded = true,
   modelName,
   onSubmit,
@@ -120,7 +129,9 @@ const ActionForm = <V, E = null>({
   selectedCount,
   showProcessingCount = true,
   submitLabel,
-  ...formikFormProps
+  validateOnMount,
+  validationSchema,
+  ...formikFormContentProps
 }: Props<V, E>): JSX.Element | null => {
   const [selectedOnSubmit, setSelectedOnSubmit] = useState(selectedCount);
   const processingComplete = useProcessing({
@@ -137,10 +148,9 @@ const ActionForm = <V, E = null>({
   }
 
   return (
-    <FormikForm<V, E>
-      buttonsAlign="right"
-      buttonsBordered={buttonsBordered}
-      errors={errors}
+    <Formik<V>
+      initialTouched={initialTouched}
+      initialValues={initialValues}
       onSubmit={(values?, formikHelpers?) => {
         onSubmit(values, formikHelpers);
         // Set selected count in component state once form is submitted, so
@@ -148,25 +158,33 @@ const ActionForm = <V, E = null>({
         // selectedCount prop, e.g. unselecting or deleting items.
         setSelectedOnSubmit(selectedCount);
       }}
-      saved={processingComplete}
-      saving={processingCount > 0}
-      savingLabel={
-        showProcessingCount
-          ? `${getLabel(
-              modelName,
-              actionName,
-              selectedOnSubmit,
-              processingCount
-            )}...`
-          : null
-      }
-      submitLabel={
-        submitLabel ?? getLabel(modelName, actionName, selectedCount)
-      }
-      {...formikFormProps}
+      validateOnMount={validateOnMount}
+      validationSchema={validationSchema}
     >
-      {children}
-    </FormikForm>
+      <FormikFormContent<V, E>
+        buttonsAlign="right"
+        buttonsBordered={buttonsBordered}
+        errors={errors}
+        saved={processingComplete}
+        saving={processingCount > 0}
+        savingLabel={
+          showProcessingCount
+            ? `${getLabel(
+                modelName,
+                actionName,
+                selectedOnSubmit,
+                processingCount
+              )}...`
+            : null
+        }
+        submitLabel={
+          submitLabel ?? getLabel(modelName, actionName, selectedCount)
+        }
+        {...formikFormContentProps}
+      >
+        {children}
+      </FormikFormContent>
+    </Formik>
   );
 };
 

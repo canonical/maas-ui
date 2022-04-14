@@ -1,8 +1,9 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
@@ -26,31 +27,34 @@ const KernelParametersForm = (): JSX.Element => {
   const kernelParams = useSelector(configSelectors.kernelParams);
 
   return (
-    <FormikForm<KernelParametersValues>
-      buttonsAlign="left"
-      buttonsBordered={false}
+    <Formik
       initialValues={{
         kernel_opts: kernelParams || "",
-      }}
-      onSaveAnalytics={{
-        action: "Saved",
-        category: "Configuration settings",
-        label: "Kernel parameters form",
       }}
       onSubmit={(values) => {
         dispatch(updateConfig(values));
       }}
-      resetOnSave
-      saving={saving}
-      saved={saved}
       validationSchema={KernelParametersSchema}
     >
-      <FormikField
-        label="Global boot parameters always passed to the kernel"
-        type="text"
-        name="kernel_opts"
-      />
-    </FormikForm>
+      <FormikFormContent<KernelParametersValues>
+        buttonsAlign="left"
+        buttonsBordered={false}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "Configuration settings",
+          label: "Kernel parameters form",
+        }}
+        resetOnSave
+        saving={saving}
+        saved={saved}
+      >
+        <FormikField
+          label="Global boot parameters always passed to the kernel"
+          type="text"
+          name="kernel_opts"
+        />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

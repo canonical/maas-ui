@@ -1,10 +1,11 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import UpdateDatastoreFields from "./UpdateDatastoreFields";
 
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -62,18 +63,9 @@ export const UpdateDatastore = ({
 
     return (
       <FormCard sidebar={false}>
-        <FormikForm<UpdateDatastoreValues, MachineEventErrors>
-          allowUnchanged
-          cleanup={machineActions.cleanup}
-          errors={errors}
+        <Formik
           initialValues={{
             datastore: datastores[0].id,
-          }}
-          onCancel={closeForm}
-          onSaveAnalytics={{
-            action: "Update datastore",
-            category: "Machine storage",
-            label: "Add to datastore",
           }}
           onSubmit={(values: UpdateDatastoreValues) => {
             const [blockDeviceIds, partitionIds] =
@@ -86,16 +78,28 @@ export const UpdateDatastore = ({
             };
             dispatch(machineActions.updateVmfsDatastore(params));
           }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Add to datastore"
           validationSchema={UpdateDatastoreSchema}
         >
-          <UpdateDatastoreFields
-            datastores={datastores}
-            storageDevices={selected}
-          />
-        </FormikForm>
+          <FormikFormContent<UpdateDatastoreValues, MachineEventErrors>
+            allowUnchanged
+            cleanup={machineActions.cleanup}
+            errors={errors}
+            onCancel={closeForm}
+            onSaveAnalytics={{
+              action: "Update datastore",
+              category: "Machine storage",
+              label: "Add to datastore",
+            }}
+            saved={saved}
+            saving={saving}
+            submitLabel="Add to datastore"
+          >
+            <UpdateDatastoreFields
+              datastores={datastores}
+              storageDevices={selected}
+            />
+          </FormikFormContent>
+        </Formik>
       </FormCard>
     );
   }

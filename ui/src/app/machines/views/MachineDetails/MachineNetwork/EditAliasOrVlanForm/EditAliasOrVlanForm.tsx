@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { Col, Row, Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,7 +10,7 @@ import NetworkFields, {
 } from "../NetworkFields/NetworkFields";
 import type { NetworkValues } from "../NetworkFields/NetworkFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import TagNameField from "app/base/components/TagNameField";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -106,9 +107,7 @@ const EditAliasOrVlanForm = ({
   const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
   const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link);
   return (
-    <FormikForm<EditAliasOrVlanValues, MachineEventErrors>
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         fabric: vlan?.fabric || "",
         ip_address: ipAddress || "",
@@ -117,12 +116,6 @@ const EditAliasOrVlanForm = ({
         vlan: nic.vlan_id,
         ...(isVLAN ? { tags: nic.tags } : {}),
       }}
-      onSaveAnalytics={{
-        action: `Save ${interfaceType}`,
-        category: "Machine details networking",
-        label: `Edit ${interfaceType} form`,
-      }}
-      onCancel={close}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
@@ -134,31 +127,42 @@ const EditAliasOrVlanForm = ({
         }) as UpdateInterfaceParams;
         dispatch(machineActions.updateInterface(payload));
       }}
-      resetOnSave
-      saved={saved}
-      saving={saving}
-      submitLabel={`Save ${interfaceTypeDisplay}`}
       validationSchema={AliasOrVlanSchema}
     >
-      <Row>
-        {isVLAN ? (
+      <FormikFormContent<EditAliasOrVlanValues, MachineEventErrors>
+        cleanup={cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: `Save ${interfaceType}`,
+          category: "Machine details networking",
+          label: `Edit ${interfaceType} form`,
+        }}
+        onCancel={close}
+        resetOnSave
+        saved={saved}
+        saving={saving}
+        submitLabel={`Save ${interfaceTypeDisplay}`}
+      >
+        <Row>
+          {isVLAN ? (
+            <Col size={6}>
+              <h3 className="p-heading--5 u-no-margin--bottom">VLAN details</h3>
+              <TagNameField />
+            </Col>
+          ) : null}
           <Col size={6}>
-            <h3 className="p-heading--5 u-no-margin--bottom">VLAN details</h3>
-            <TagNameField />
+            <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
+            <NetworkFields
+              fabricDisabled={true}
+              includeUnconfiguredSubnet={isVLAN}
+              includeDefaultVlan={!isVLAN}
+              interfaceType={interfaceType}
+              vlanDisabled={isAlias}
+            />
           </Col>
-        ) : null}
-        <Col size={6}>
-          <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
-          <NetworkFields
-            fabricDisabled={true}
-            includeUnconfiguredSubnet={isVLAN}
-            includeDefaultVlan={!isVLAN}
-            interfaceType={interfaceType}
-            vlanDisabled={isAlias}
-          />
-        </Col>
-      </Row>
-    </FormikForm>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

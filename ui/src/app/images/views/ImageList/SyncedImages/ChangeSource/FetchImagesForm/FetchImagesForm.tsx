@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FetchImagesFormFields from "./FetchImagesFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { APIError } from "app/base/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
@@ -48,31 +49,34 @@ const FetchImagesForm = ({ closeForm, setSource }: Props): JSX.Element => {
   const saved = !saving && previousSaving && !errors;
 
   return (
-    <FormikForm<FetchImagesValues>
-      allowUnchanged
-      cleanup={cleanup}
-      errors={errors as APIError}
+    <Formik
       initialValues={{
         keyring_data: "",
         keyring_filename: "",
         source_type: BootResourceSourceType.MAAS_IO,
         url: "",
       }}
-      onCancel={closeForm}
       onSubmit={(values) => {
         dispatch(cleanup());
         dispatch(bootResourceActions.fetch(values));
       }}
-      onSuccess={(values) => {
-        setSource(values);
-      }}
-      saved={saved}
-      saving={saving}
-      submitLabel="Connect"
       validationSchema={FetchImagesSchema}
     >
-      <FetchImagesFormFields />
-    </FormikForm>
+      <FormikFormContent<FetchImagesValues>
+        allowUnchanged
+        cleanup={cleanup}
+        errors={errors as APIError}
+        onCancel={closeForm}
+        onSuccess={(values) => {
+          setSource(values);
+        }}
+        saved={saved}
+        saving={saving}
+        submitLabel="Connect"
+      >
+        <FetchImagesFormFields />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

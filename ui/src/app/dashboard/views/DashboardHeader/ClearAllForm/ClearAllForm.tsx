@@ -5,9 +5,10 @@ import {
   Notification,
   NotificationSeverity,
 } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { EmptyObject } from "app/base/types";
 import configSelectors from "app/store/config/selectors";
 import { NetworkDiscovery } from "app/store/config/types";
@@ -61,40 +62,43 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
     );
   }
   return (
-    <FormikForm<EmptyObject>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{}}
-      onCancel={closeForm}
-      onSaveAnalytics={{
-        action: "Network discovery",
-        category: "Clear network discoveries",
-        label: "Clear network discoveries button",
-      }}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(discoveryActions.clear());
       }}
-      onSuccess={() => {
-        dispatch(
-          messageActions.add(
-            "All discoveries cleared.",
-            NotificationSeverity.INFORMATION
-          )
-        );
-        closeForm();
-      }}
-      saving={saving}
-      saved={saved}
-      submitLabel="Clear all discoveries"
-      secondarySubmitLabel="Save and add another"
     >
-      <Notification severity={NotificationSeverity.CAUTION} title="Warning:">
-        Clearing all discoveries will remove all items from the list below.
-      </Notification>
-      {content}
-    </FormikForm>
+      <FormikFormContent<EmptyObject>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        onSaveAnalytics={{
+          action: "Network discovery",
+          category: "Clear network discoveries",
+          label: "Clear network discoveries button",
+        }}
+        onSuccess={() => {
+          dispatch(
+            messageActions.add(
+              "All discoveries cleared.",
+              NotificationSeverity.INFORMATION
+            )
+          );
+          closeForm();
+        }}
+        saving={saving}
+        saved={saved}
+        submitLabel="Clear all discoveries"
+        secondarySubmitLabel="Save and add another"
+      >
+        <Notification severity={NotificationSeverity.CAUTION} title="Warning:">
+          Clearing all discoveries will remove all items from the list below.
+        </Notification>
+        {content}
+      </FormikFormContent>
+    </Formik>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -14,7 +15,7 @@ import {
 import type { BridgeFormValues } from "./types";
 
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { Selected } from "app/base/components/node/networking/types";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -93,10 +94,7 @@ const AddBridgeForm = ({
   return (
     <FormCard sidebar={false} stacked title="Create bridge">
       <InterfaceFormTable interfaces={selected} systemId={systemId} />
-      <FormikForm<BridgeFormValues, MachineEventErrors>
-        allowUnchanged
-        cleanup={cleanup}
-        errors={errors}
+      <Formik<BridgeFormValues>
         initialValues={{
           ...networkFieldsInitialValues,
           bridge_fd: "",
@@ -110,12 +108,6 @@ const AddBridgeForm = ({
           // Prefill the vlan from the parent interface.
           vlan: nic.vlan_id,
         }}
-        onSaveAnalytics={{
-          action: "Create bridge",
-          category: "Machine details networking",
-          label: "Create bridge form",
-        }}
-        onCancel={close}
         onSubmit={(values) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());
@@ -126,14 +118,26 @@ const AddBridgeForm = ({
           }) as CreateBridgeParams;
           dispatch(machineActions.createBridge(payload));
         }}
-        resetOnSave
-        saved={saved}
-        saving={saving}
-        submitLabel="Save interface"
         validationSchema={InterfaceSchema}
       >
-        <BridgeFormFields />
-      </FormikForm>
+        <FormikFormContent<BridgeFormValues, MachineEventErrors>
+          allowUnchanged
+          cleanup={cleanup}
+          errors={errors}
+          onSaveAnalytics={{
+            action: "Create bridge",
+            category: "Machine details networking",
+            label: "Create bridge form",
+          }}
+          onCancel={close}
+          resetOnSave
+          saved={saved}
+          saving={saving}
+          submitLabel="Save interface"
+        >
+          <BridgeFormFields />
+        </FormikFormContent>
+      </Formik>
     </FormCard>
   );
 };

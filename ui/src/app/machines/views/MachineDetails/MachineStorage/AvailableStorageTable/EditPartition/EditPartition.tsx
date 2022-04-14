@@ -1,9 +1,10 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import EditPartitionFields from "./EditPartitionFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -56,19 +57,11 @@ export const EditPartition = ({
     const fs = partition.filesystem;
 
     return (
-      <FormikForm<EditPartitionValues, MachineEventErrors>
-        cleanup={machineActions.cleanup}
-        errors={errors}
+      <Formik
         initialValues={{
           fstype: fs?.fstype || "",
           mountOptions: fs?.mount_options || "",
           mountPoint: fs?.mount_point || "",
-        }}
-        onCancel={closeExpanded}
-        onSaveAnalytics={{
-          action: "Edit partition",
-          category: "Machine storage",
-          label: "Save",
         }}
         onSubmit={(values) => {
           const { fstype, mountOptions, mountPoint } = values;
@@ -83,13 +76,24 @@ export const EditPartition = ({
 
           dispatch(machineActions.updateFilesystem(params));
         }}
-        saved={saved}
-        saving={saving}
-        submitLabel="Save"
         validationSchema={EditPartitionSchema}
       >
-        <EditPartitionFields partition={partition} systemId={systemId} />
-      </FormikForm>
+        <FormikFormContent<EditPartitionValues, MachineEventErrors>
+          cleanup={machineActions.cleanup}
+          errors={errors}
+          onCancel={closeExpanded}
+          onSaveAnalytics={{
+            action: "Edit partition",
+            category: "Machine storage",
+            label: "Save",
+          }}
+          saved={saved}
+          saving={saving}
+          submitLabel="Save"
+        >
+          <EditPartitionFields partition={partition} systemId={systemId} />
+        </FormikFormContent>
+      </Formik>
     );
   }
   return null;

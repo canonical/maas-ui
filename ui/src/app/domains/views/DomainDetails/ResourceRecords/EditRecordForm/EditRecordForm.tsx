@@ -1,10 +1,11 @@
 import { useCallback } from "react";
 
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import RecordFields from "app/domains/components/RecordFields";
 import { actions as domainActions } from "app/store/domain";
 import { MIN_TTL } from "app/store/domain/constants";
@@ -41,17 +42,13 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
   const cleanup = useCallback(() => domainActions.cleanup(), []);
 
   return (
-    <FormikForm<EditRecordValues>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         name: resource.name || "",
         rrtype: resource.rrtype,
         rrdata: resource.rrdata || "",
         ttl: resource.ttl || "",
       }}
-      onCancel={closeForm}
       onSubmit={(values) => {
         dispatch(cleanup());
         const params = {
@@ -63,17 +60,24 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
         };
         dispatch(domainActions.updateRecord(params));
       }}
-      onSuccess={() => {
-        closeForm();
-      }}
-      saving={saving}
-      saved={saved}
-      submitLabel="Save record"
-      submitDisabled={false}
       validationSchema={EditRecordSchema}
     >
-      <RecordFields editing />
-    </FormikForm>
+      <FormikFormContent<EditRecordValues>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        onSuccess={() => {
+          closeForm();
+        }}
+        saving={saving}
+        saved={saved}
+        submitLabel="Save record"
+        submitDisabled={false}
+      >
+        <RecordFields editing />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

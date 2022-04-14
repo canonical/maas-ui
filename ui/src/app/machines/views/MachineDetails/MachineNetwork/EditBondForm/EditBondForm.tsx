@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -16,7 +17,7 @@ import {
 import InterfaceFormTable from "../InterfaceFormTable";
 import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type {
   Selected,
   SetSelected,
@@ -167,10 +168,7 @@ const EditBondForm = ({
   const membersHaveChanged = !arrayItemsEqual(selectedIds, nic.parents);
   const macAddress = nic.mac_address || "";
   return (
-    <FormikForm<BondFormValues, MachineEventErrors>
-      allowUnchanged={membersHaveChanged}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik<BondFormValues>
       initialValues={{
         bond_downdelay: nic.params?.bond_downdelay || 0,
         bond_lacp_rate: nic.params?.bond_lacp_rate || "",
@@ -190,12 +188,6 @@ const EditBondForm = ({
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
-      onSaveAnalytics={{
-        action: "Save bond",
-        category: "Machine details networking",
-        label: "Edit bond form",
-      }}
-      onCancel={closeForm}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
@@ -215,28 +207,40 @@ const EditBondForm = ({
           );
         }
       }}
-      resetOnSave
-      saved={saved}
-      saving={saving}
-      submitDisabled={!hasEnoughNics}
-      submitLabel="Save interface"
       validationSchema={InterfaceSchema}
     >
-      <InterfaceFormTable
-        interfaces={rows}
-        selected={selected}
-        selectedEditable={editingMembers}
-        setSelected={setSelected}
-        systemId={systemId}
-      />
-      <ToggleMembers
-        editingMembers={editingMembers}
-        selected={selected}
-        setEditingMembers={setEditingMembers}
-        validNics={validNics}
-      />
-      <BondFormFields selected={selected} systemId={systemId} />
-    </FormikForm>
+      <FormikFormContent<BondFormValues, MachineEventErrors>
+        allowUnchanged={membersHaveChanged}
+        cleanup={cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: "Save bond",
+          category: "Machine details networking",
+          label: "Edit bond form",
+        }}
+        onCancel={closeForm}
+        resetOnSave
+        saved={saved}
+        saving={saving}
+        submitDisabled={!hasEnoughNics}
+        submitLabel="Save interface"
+      >
+        <InterfaceFormTable
+          interfaces={rows}
+          selected={selected}
+          selectedEditable={editingMembers}
+          setSelected={setSelected}
+          systemId={systemId}
+        />
+        <ToggleMembers
+          editingMembers={editingMembers}
+          selected={selected}
+          setEditingMembers={setEditingMembers}
+          validNics={validNics}
+        />
+        <BondFormFields selected={selected} systemId={systemId} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

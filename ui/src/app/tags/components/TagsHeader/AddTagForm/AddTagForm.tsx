@@ -1,12 +1,13 @@
 import { useEffect, useState } from "react";
 
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useSendAnalytics } from "app/base/hooks";
 import { TAG_NAME_REGEX } from "app/base/validation";
 import { actions as messageActions } from "app/store/message";
@@ -65,61 +66,64 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
   }, [history, onClose, tag, sendAnalytics]);
 
   return (
-    <FormikForm<CreateParams>
-      aria-label="Create tag"
-      buttonsAlign="right"
-      buttonsBordered={true}
-      cleanup={tagActions.cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         comment: "",
         definition: "",
         kernel_opts: "",
         name: "",
       }}
-      onCancel={onClose}
       onSubmit={(values) => {
         dispatch(tagActions.cleanup());
         dispatch(tagActions.create(values));
       }}
-      onSuccess={({ definition, name }) => {
-        setSavedName(name);
-        if (!!definition) {
-          dispatch(
-            messageActions.add(
-              `Created ${name}. ${NewDefinitionMessage}`,
-              NotificationSeverity.POSITIVE
-            )
-          );
-        }
-      }}
-      saved={saved}
-      saving={saving}
-      submitLabel="Save"
       validationSchema={AddTagFormSchema}
     >
-      <Row>
-        <Col size={6}>
-          <FormikField
-            label={Label.Name}
-            name="name"
-            placeholder="Enter a name for the tag."
-            type="text"
-            required
-          />
-          <FormikField
-            label={Label.Comment}
-            name="comment"
-            placeholder="Add a comment as an explanation for this tag."
-            type="text"
-          />
-          <KernelOptionsField />
-        </Col>
-        <Col size={6}>
-          <DefinitionField />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<CreateParams>
+        aria-label="Create tag"
+        buttonsAlign="right"
+        buttonsBordered={true}
+        cleanup={tagActions.cleanup}
+        errors={errors}
+        onCancel={onClose}
+        onSuccess={({ definition, name }) => {
+          setSavedName(name);
+          if (!!definition) {
+            dispatch(
+              messageActions.add(
+                `Created ${name}. ${NewDefinitionMessage}`,
+                NotificationSeverity.POSITIVE
+              )
+            );
+          }
+        }}
+        saved={saved}
+        saving={saving}
+        submitLabel="Save"
+      >
+        <Row>
+          <Col size={6}>
+            <FormikField
+              label={Label.Name}
+              name="name"
+              placeholder="Enter a name for the tag."
+              type="text"
+              required
+            />
+            <FormikField
+              label={Label.Comment}
+              name="comment"
+              placeholder="Add a comment as an explanation for this tag."
+              type="text"
+            />
+            <KernelOptionsField />
+          </Col>
+          <Col size={6}>
+            <DefinitionField />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

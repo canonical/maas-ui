@@ -2,13 +2,15 @@ import { useEffect } from "react";
 
 import type { PropsWithSpread } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
+import type { FormikConfig, FormikErrors } from "formik";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import InterfaceFormFields from "./InterfaceFormFields";
 
-import type { FormikFormProps } from "app/base/components/FormikForm";
-import FormikForm from "app/base/components/FormikForm";
+import type { Props as FormikFormContentProps } from "app/base/components/FormikFormContent";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as deviceActions } from "app/store/device";
@@ -41,11 +43,19 @@ type Props = PropsWithSpread<
     closeForm: () => void;
     linkId?: NetworkLink["id"] | null;
     nicId?: DeviceNetworkInterface["id"] | null;
-    onSubmit: FormikFormProps<InterfaceFormValues>["onSubmit"];
+    onSubmit: FormikConfig<InterfaceFormValues>["onSubmit"];
     showTitles?: boolean;
     systemId: Device[DeviceMeta.PK];
   },
-  Partial<Omit<FormikFormProps<InterfaceFormValues>, "onSubmit">>
+  Partial<
+    Omit<
+      FormikFormContentProps<
+        InterfaceFormValues,
+        FormikErrors<InterfaceFormValues>
+      >,
+      "onSubmit"
+    >
+  >
 >;
 
 export type InterfaceFormValues = {
@@ -120,9 +130,7 @@ const InterfaceForm = ({
     link
   );
   return (
-    <FormikForm<InterfaceFormValues>
-      cleanup={deviceActions.cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         ip_address: nic?.ip_address || "",
         ip_assignment: nic?.ip_assignment || DeviceIpAssignment.DYNAMIC,
@@ -131,15 +139,20 @@ const InterfaceForm = ({
         subnet: subnet?.id || "",
         tags: nic?.tags || [],
       }}
-      onCancel={closeForm}
       onSubmit={onSubmit}
-      onSuccess={closeForm}
-      submitLabel="Save interface"
       validationSchema={InterfaceFormSchema}
-      {...props}
     >
-      <InterfaceFormFields showTitles={showTitles} />
-    </FormikForm>
+      <FormikFormContent<InterfaceFormValues>
+        cleanup={deviceActions.cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        onSuccess={closeForm}
+        submitLabel="Save interface"
+        {...props}
+      >
+        <InterfaceFormFields showTitles={showTitles} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

@@ -1,12 +1,13 @@
 import { useEffect } from "react";
 
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import SubnetSummaryFormFields from "./SubnetSummaryFormFields";
 import type { SubnetSummaryFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as fabricActions } from "app/store/fabric";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
@@ -58,10 +59,7 @@ const SubnetSummaryForm = ({
   }
 
   return (
-    <FormikForm<SubnetSummaryFormValues>
-      aria-label="Edit subnet"
-      cleanup={subnetActions.cleanup}
-      errors={subnetErrors}
+    <Formik
       initialValues={{
         active_discovery: subnet.active_discovery,
         allow_dns: subnet.allow_dns,
@@ -74,11 +72,6 @@ const SubnetSummaryForm = ({
         managed: subnet.managed,
         name: subnet.name,
         vlan: subnet.vlan.toString(),
-      }}
-      onSaveAnalytics={{
-        action: "Save",
-        category: "Subnet",
-        label: "Subnet summary form",
       }}
       onSubmit={(values) => {
         dispatch(subnetActions.cleanup());
@@ -98,18 +91,29 @@ const SubnetSummaryForm = ({
           })
         );
       }}
-      onSuccess={() => {
-        handleDismiss();
-      }}
-      resetOnSave
-      saving={saving}
-      saved={saved}
-      submitLabel="Save"
-      onCancel={handleDismiss}
       validationSchema={subnetSummaryFormSchema}
     >
-      <SubnetSummaryFormFields />
-    </FormikForm>
+      <FormikFormContent<SubnetSummaryFormValues>
+        aria-label="Edit subnet"
+        cleanup={subnetActions.cleanup}
+        errors={subnetErrors}
+        onSaveAnalytics={{
+          action: "Save",
+          category: "Subnet",
+          label: "Subnet summary form",
+        }}
+        onSuccess={() => {
+          handleDismiss();
+        }}
+        resetOnSave
+        saving={saving}
+        saved={saved}
+        submitLabel="Save"
+        onCancel={handleDismiss}
+      >
+        <SubnetSummaryFormFields />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

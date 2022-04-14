@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 
 import { Link, Spinner, Strip } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import AddMachineFormFields from "../AddMachineFormFields";
 import type { AddMachineValues } from "../types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
@@ -120,20 +121,7 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
           <Spinner text="Loading" />
         </Strip>
       ) : (
-        <FormikForm<AddMachineValues>
-          buttonsHelp={
-            <p>
-              <Link
-                href="https://maas.io/docs/add-machines"
-                rel="noopener noreferrer"
-                target="_blank"
-              >
-                Help with adding machines
-              </Link>
-            </p>
-          }
-          cleanup={machineActions.cleanup}
-          errors={machineErrors}
+        <Formik
           initialValues={{
             architecture: (architectures.length && architectures[0]) || "",
             domain: (domains.length && domains[0].name) || "",
@@ -145,12 +133,6 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
             power_type: "",
             pxe_mac: "",
             zone: (zones.length && zones[0].name) || "",
-          }}
-          onCancel={clearHeaderContent}
-          onSaveAnalytics={{
-            action: secondarySubmit ? "Save and add another" : "Save",
-            category: "Machine",
-            label: "Add machine form",
           }}
           onSubmit={(values) => {
             const params = {
@@ -171,33 +153,55 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
             dispatch(machineActions.create(params));
             setSavingMachine(values.hostname || "Machine");
           }}
-          onSuccess={() => {
-            if (!secondarySubmit) {
-              clearHeaderContent();
-            }
-            setSecondarySubmit(false);
-          }}
-          onValuesChanged={(values) => {
-            const powerType = powerTypes.find(
-              (type) => type.name === values.power_type
-            );
-            if (powerType) {
-              setPowerType(powerType);
-            }
-          }}
-          resetOnSave
-          saving={machineSaving}
-          saved={machineSaved}
-          secondarySubmit={(_, { submitForm }) => {
-            setSecondarySubmit(true);
-            submitForm();
-          }}
-          secondarySubmitLabel="Save and add another"
-          submitLabel="Save machine"
           validationSchema={AddMachineSchema}
         >
-          <AddMachineFormFields saved={machineSaved} />
-        </FormikForm>
+          <FormikFormContent<AddMachineValues>
+            buttonsHelp={
+              <p>
+                <Link
+                  href="https://maas.io/docs/add-machines"
+                  rel="noopener noreferrer"
+                  target="_blank"
+                >
+                  Help with adding machines
+                </Link>
+              </p>
+            }
+            cleanup={machineActions.cleanup}
+            errors={machineErrors}
+            onCancel={clearHeaderContent}
+            onSaveAnalytics={{
+              action: secondarySubmit ? "Save and add another" : "Save",
+              category: "Machine",
+              label: "Add machine form",
+            }}
+            onSuccess={() => {
+              if (!secondarySubmit) {
+                clearHeaderContent();
+              }
+              setSecondarySubmit(false);
+            }}
+            onValuesChanged={(values) => {
+              const powerType = powerTypes.find(
+                (type) => type.name === values.power_type
+              );
+              if (powerType) {
+                setPowerType(powerType);
+              }
+            }}
+            resetOnSave
+            saving={machineSaving}
+            saved={machineSaved}
+            secondarySubmit={(_, { submitForm }) => {
+              setSecondarySubmit(true);
+              submitForm();
+            }}
+            secondarySubmitLabel="Save and add another"
+            submitLabel="Save machine"
+          >
+            <AddMachineFormFields saved={machineSaved} />
+          </FormikFormContent>
+        </Formik>
       )}
     </>
   );

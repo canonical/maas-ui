@@ -1,13 +1,14 @@
 import { useCallback } from "react";
 
 import { Col, Row, Spinner, Textarea } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FabricController from "../FabricSummary/FabricController";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
@@ -46,20 +47,11 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
     );
   }
   return (
-    <FormikForm<FormValues>
-      aria-label="Edit fabric summary"
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         name: fabric.name,
         description: fabric.description,
       }}
-      onSaveAnalytics={{
-        action: "Save fabric",
-        category: "Fabric details",
-        label: "Edit fabric form",
-      }}
-      onCancel={close}
       onSubmit={({ name, description }) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
@@ -71,25 +63,37 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
           })
         );
       }}
-      onSuccess={() => close()}
-      resetOnSave
-      saved={saved}
-      saving={saving}
-      submitLabel="Save summary"
       validationSchema={Schema}
     >
-      <Row>
-        <Col size={6}>
-          <FormikField label="Name" name="name" type="text" />
-          <FormikField
-            component={Textarea}
-            label="Description"
-            name="description"
-          />
-          <FabricController id={fabric.id} />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<FormValues>
+        aria-label="Edit fabric summary"
+        cleanup={cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: "Save fabric",
+          category: "Fabric details",
+          label: "Edit fabric form",
+        }}
+        onCancel={close}
+        onSuccess={() => close()}
+        resetOnSave
+        saved={saved}
+        saving={saving}
+        submitLabel="Save summary"
+      >
+        <Row>
+          <Col size={6}>
+            <FormikField label="Name" name="name" type="text" />
+            <FormikField
+              component={Textarea}
+              label="Description"
+              name="description"
+            />
+            <FabricController id={fabric.id} />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

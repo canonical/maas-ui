@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { Row, Col, Input } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,7 +9,7 @@ import type { FormActionProps } from "../FormActions";
 
 import FabricSelect from "app/base/components/FabricSelect";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import SpaceSelect from "app/base/components/SpaceSelect";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
@@ -58,22 +59,13 @@ const AddVlan = ({
   }, [dispatch, fabricsLoaded, spacesLoaded]);
 
   return (
-    <FormikForm<AddVlanValues>
-      aria-label="Add VLAN"
-      validationSchema={vlanSchema}
-      buttonsBordered={false}
+    <Formik
       initialValues={{
         vid: "",
         name: "",
         fabric: "",
         space: "",
       }}
-      onSaveAnalytics={{
-        action: "Add VLAN",
-        category: "Subnets form actions",
-        label: "Add VLAN",
-      }}
-      submitLabel={`Add ${activeForm}`}
       onSubmit={({ name, fabric, vid, space }) => {
         dispatch(
           vlanActions.create({
@@ -84,48 +76,60 @@ const AddVlan = ({
           })
         );
       }}
-      onCancel={() => setActiveForm(null)}
-      onSuccess={() => setActiveForm(null)}
-      saving={isSaving}
-      saved={isSaved}
-      errors={errors}
+      validationSchema={vlanSchema}
     >
-      <Row>
-        <Col size={6}>
-          <FormikField
-            takeFocus
-            required
-            type="text"
-            name="vid"
-            component={Input}
-            disabled={isSaving}
-            label="VID"
-            help={`Numeric value between ${VLANVidRange.Min} and ${VLANVidRange.Max}`}
-          />
-        </Col>
-        <Col size={6}>
-          <FormikField
-            type="text"
-            name="name"
-            component={Input}
-            disabled={isSaving}
-            label="Name"
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col size={6}>
-          <FabricSelect required name="fabric" disabled={isSaving} />
-        </Col>
-        <Col size={6}>
-          <SpaceSelect
-            defaultOption={{ label: getSpaceDisplay(null), value: "" }}
-            disabled={isSaving}
-            name="space"
-          />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<AddVlanValues>
+        aria-label="Add VLAN"
+        buttonsBordered={false}
+        onSaveAnalytics={{
+          action: "Add VLAN",
+          category: "Subnets form actions",
+          label: "Add VLAN",
+        }}
+        submitLabel={`Add ${activeForm}`}
+        onCancel={() => setActiveForm(null)}
+        onSuccess={() => setActiveForm(null)}
+        saving={isSaving}
+        saved={isSaved}
+        errors={errors}
+      >
+        <Row>
+          <Col size={6}>
+            <FormikField
+              takeFocus
+              required
+              type="text"
+              name="vid"
+              component={Input}
+              disabled={isSaving}
+              label="VID"
+              help={`Numeric value between ${VLANVidRange.Min} and ${VLANVidRange.Max}`}
+            />
+          </Col>
+          <Col size={6}>
+            <FormikField
+              type="text"
+              name="name"
+              component={Input}
+              disabled={isSaving}
+              label="Name"
+            />
+          </Col>
+        </Row>
+        <Row>
+          <Col size={6}>
+            <FabricSelect required name="fabric" disabled={isSaving} />
+          </Col>
+          <Col size={6}>
+            <SpaceSelect
+              defaultOption={{ label: getSpaceDisplay(null), value: "" }}
+              disabled={isSaving}
+              name="space"
+            />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

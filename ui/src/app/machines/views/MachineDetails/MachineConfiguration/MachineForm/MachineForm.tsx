@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
@@ -9,7 +10,7 @@ import MachineFormFields from "./MachineFormFields";
 
 import Definition from "app/base/components/Definition";
 import EditableSection from "app/base/components/EditableSection";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useCanEdit } from "app/base/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -59,9 +60,7 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (
-          <FormikForm<MachineFormValues>
-            cleanup={cleanup}
-            errors={errors}
+          <Formik
             initialValues={{
               architecture: machine.architecture || "",
               description: machine.description || "",
@@ -69,12 +68,6 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
               pool: machine.pool?.name || "",
               zone: machine.zone?.name || "",
             }}
-            onSaveAnalytics={{
-              action: "Configure machine",
-              category: "Machine details",
-              label: "Save changes",
-            }}
-            onCancel={() => setEditing(false)}
             onSubmit={(values) => {
               const params = {
                 architecture: values.architecture,
@@ -88,14 +81,25 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
               };
               dispatch(machineActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
-            saved={saved}
-            saving={saving}
-            submitLabel="Save changes"
             validationSchema={MachineFormSchema}
           >
-            <MachineFormFields />
-          </FormikForm>
+            <FormikFormContent<MachineFormValues>
+              cleanup={cleanup}
+              errors={errors}
+              onSaveAnalytics={{
+                action: "Configure machine",
+                category: "Machine details",
+                label: "Save changes",
+              }}
+              onCancel={() => setEditing(false)}
+              onSuccess={() => setEditing(false)}
+              saved={saved}
+              saving={saving}
+              submitLabel="Save changes"
+            >
+              <MachineFormFields />
+            </FormikFormContent>
+          </Formik>
         ) : (
           <div data-testid="machine-details">
             <Definition

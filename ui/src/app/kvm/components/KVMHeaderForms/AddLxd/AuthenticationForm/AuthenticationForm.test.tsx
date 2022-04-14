@@ -8,7 +8,7 @@ import type { NewPodValues } from "../types";
 
 import AuthenticationForm from "./AuthenticationForm";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -230,7 +230,9 @@ describe("AuthenticationForm", () => {
     );
     submitFormikForm(wrapper);
     wrapper.update();
-    expect(wrapper.find(FormikForm).prop("errors")).toBe("it didn't work");
+    expect(wrapper.find(FormikFormContent).prop("errors")).toBe(
+      "it didn't work"
+    );
     // It should not have reverted to the previous screen.
     expect(setStep).not.toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
   });
@@ -255,7 +257,7 @@ describe("AuthenticationForm", () => {
     );
     submitFormikForm(wrapper);
     wrapper.update();
-    expect(wrapper.find(FormikForm).prop("errors")).toBe(null);
+    expect(wrapper.find(FormikFormContent).prop("errors")).toBe(null);
     // It should not have reverted to the previous screen.
     expect(setStep).not.toHaveBeenCalledWith(AddLxdSteps.CREDENTIALS);
   });

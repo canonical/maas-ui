@@ -1,12 +1,14 @@
 import { useState } from "react";
 
 import { Button } from "@canonical/react-components";
+import type { FormikErrors } from "formik";
+import { Formik } from "formik";
 import { useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
+import type { Props as FormikFormContentProps } from "app/base/components/FormikFormContent";
 import authSelectors from "app/store/auth/selectors";
 import statusSelectors from "app/store/status/selectors";
 import userSelectors from "app/store/user/selectors";
@@ -28,7 +30,7 @@ export type Props = {
   onSave: (values: UserValues) => void;
   onUpdateFields?: (values: UserValues) => void;
   user?: User | null;
-} & Partial<FormikFormProps<UserValues>>;
+} & Partial<FormikFormContentProps<UserValues, FormikErrors<UserValues>>>;
 
 const schemaFields = {
   email: Yup.string()
@@ -113,105 +115,108 @@ export const UserForm = ({
     ? CurrentPasswordUserSchema
     : UserSchema;
   return (
-    <FormikForm<UserValues>
+    <Formik
       enableReinitialize
-      errors={errors}
       initialValues={initialValues}
       onSubmit={(values, { resetForm }) => {
         onSave(values);
         resetForm({ values });
       }}
-      saving={saving}
-      saved={saved}
-      onSuccess={() => {
-        setPasswordVisible(false);
-      }}
-      onValuesChanged={(values) => {
-        onUpdateFields && onUpdateFields(values);
-      }}
-      resetOnSave
       validationSchema={
         editing && !passwordVisible ? NoPasswordUserSchema : fullSchema
       }
-      {...formProps}
     >
-      <FormikField
-        autoComplete="username"
-        disabled={formDisabled}
-        name="username"
-        help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-        label="Username"
-        required={true}
-        type="text"
-      />
-      <FormikField
-        disabled={formDisabled}
-        name="fullName"
-        label="Full name (optional)"
-        type="text"
-      />
-      <FormikField
-        disabled={formDisabled}
-        name="email"
-        label="Email address"
-        required={true}
-        type="email"
-      />
-      {includeUserType && (
+      <FormikFormContent<UserValues>
+        errors={errors}
+        saving={saving}
+        saved={saved}
+        onSuccess={() => {
+          setPasswordVisible(false);
+        }}
+        onValuesChanged={(values) => {
+          onUpdateFields && onUpdateFields(values);
+        }}
+        resetOnSave
+        {...formProps}
+      >
+        <FormikField
+          autoComplete="username"
+          disabled={formDisabled}
+          name="username"
+          help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
+          label="Username"
+          required={true}
+          type="text"
+        />
         <FormikField
           disabled={formDisabled}
-          name="isSuperuser"
-          label="MAAS administrator"
-          type="checkbox"
+          name="fullName"
+          label="Full name (optional)"
+          type="text"
         />
-      )}
-      {editing && !passwordVisible && (
-        <div className="u-sv2">
-          <Button
-            appearance="link"
-            data-testid="toggle-passwords"
-            onClick={() => setPasswordVisible(!passwordVisible)}
-          >
-            Change password&hellip;
-          </Button>
-        </div>
-      )}
-      {passwordVisible && (
-        <>
-          {includeCurrentPassword && (
+        <FormikField
+          disabled={formDisabled}
+          name="email"
+          label="Email address"
+          required={true}
+          type="email"
+        />
+        {includeUserType && (
+          <FormikField
+            disabled={formDisabled}
+            name="isSuperuser"
+            label="MAAS administrator"
+            type="checkbox"
+          />
+        )}
+        {editing && !passwordVisible && (
+          <div className="u-sv2">
+            <Button
+              appearance="link"
+              data-testid="toggle-passwords"
+              onClick={() => setPasswordVisible(!passwordVisible)}
+            >
+              Change password&hellip;
+            </Button>
+          </div>
+        )}
+        {passwordVisible && (
+          <>
+            {includeCurrentPassword && (
+              <FormikField
+                autoComplete="current-password"
+                disabled={formDisabled}
+                name="old_password"
+                label="Current password"
+                required={true}
+                type="password"
+              />
+            )}
             <FormikField
-              autoComplete="current-password"
+              autoComplete="new-password"
               disabled={formDisabled}
-              name="old_password"
-              label="Current password"
+              name="password"
+              label={includeCurrentPassword ? "New password" : "Password"}
               required={true}
               type="password"
             />
-          )}
-          <FormikField
-            autoComplete="new-password"
-            disabled={formDisabled}
-            name="password"
-            label={includeCurrentPassword ? "New password" : "Password"}
-            required={true}
-            type="password"
-          />
-          <FormikField
-            autoComplete="new-password"
-            disabled={formDisabled}
-            name="passwordConfirm"
-            help="Enter the same password as before, for verification"
-            label={
-              includeCurrentPassword
-                ? "New password (again)"
-                : "Password (again)"
-            }
-            required={true}
-            type="password"
-          />
-        </>
-      )}
-    </FormikForm>
+            <FormikField
+              autoComplete="new-password"
+              disabled={formDisabled}
+              name="passwordConfirm"
+              help="Enter the same password as before, for verification"
+              label={
+                includeCurrentPassword
+                  ? "New password (again)"
+                  : "Password (again)"
+              }
+              required={true}
+              type="password"
+            />
+          </>
+        )}
+      </FormikFormContent>
+    </Formik>
   );
 };
 

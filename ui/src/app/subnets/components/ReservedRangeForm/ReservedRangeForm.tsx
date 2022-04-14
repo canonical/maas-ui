@@ -1,11 +1,12 @@
 import { useCallback } from "react";
 
 import { Col, Row, Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as ipRangeActions } from "app/store/iprange";
 import ipRangeSelectors from "app/store/iprange/selectors";
 import type { IPRange } from "app/store/iprange/types";
@@ -74,21 +75,12 @@ const ReservedRangeForm = ({
   }
 
   return (
-    <FormikForm<FormValues>
-      aria-label={isEditing ? Labels.EditRange : Labels.CreateRange}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         comment: initialComment,
         end_ip: ipRange?.end_ip ?? "",
         start_ip: ipRange?.start_ip ?? "",
       }}
-      onSaveAnalytics={{
-        action: "Save reserved range",
-        category: "Reserved ranges table",
-        label: `${isEditing ? "Edit" : "Create"} reserved range form`,
-      }}
-      onCancel={onClose}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
@@ -111,44 +103,56 @@ const ReservedRangeForm = ({
           );
         }
       }}
-      onSuccess={() => onClose()}
-      resetOnSave
-      saved={saved}
-      saving={saving}
-      submitLabel={isEditing ? "Save" : "Reserve"}
       validationSchema={Schema}
-      {...props}
     >
-      <Row>
-        <Col size={4}>
-          <FormikField
-            label={Labels.StartIp}
-            name="start_ip"
-            required
-            type="text"
-          />
-        </Col>
-        <Col size={4}>
-          <FormikField
-            label={Labels.EndIp}
-            name="end_ip"
-            required
-            type="text"
-          />
-        </Col>
-        {isEditing || createType === IPRangeType.Reserved ? (
+      <FormikFormContent<FormValues>
+        aria-label={isEditing ? Labels.EditRange : Labels.CreateRange}
+        cleanup={cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: "Save reserved range",
+          category: "Reserved ranges table",
+          label: `${isEditing ? "Edit" : "Create"} reserved range form`,
+        }}
+        onCancel={onClose}
+        onSuccess={() => onClose()}
+        resetOnSave
+        saved={saved}
+        saving={saving}
+        submitLabel={isEditing ? "Save" : "Reserve"}
+        {...props}
+      >
+        <Row>
           <Col size={4}>
             <FormikField
-              disabled={showDynamicComment}
-              label={Labels.Comment}
-              name="comment"
-              placeholder="IP range purpose (optional)"
+              label={Labels.StartIp}
+              name="start_ip"
+              required
               type="text"
             />
           </Col>
-        ) : null}
-      </Row>
-    </FormikForm>
+          <Col size={4}>
+            <FormikField
+              label={Labels.EndIp}
+              name="end_ip"
+              required
+              type="text"
+            />
+          </Col>
+          {isEditing || createType === IPRangeType.Reserved ? (
+            <Col size={4}>
+              <FormikField
+                disabled={showDynamicComment}
+                label={Labels.Comment}
+                name="comment"
+                placeholder="IP range purpose (optional)"
+                type="text"
+              />
+            </Col>
+          ) : null}
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

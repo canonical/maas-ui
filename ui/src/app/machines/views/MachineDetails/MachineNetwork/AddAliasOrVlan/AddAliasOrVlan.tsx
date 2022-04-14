@@ -1,6 +1,7 @@
 import { useCallback, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -12,7 +13,7 @@ import {
 import AddAliasOrVlanFields from "./AddAliasOrVlanFields";
 import type { AddAliasOrVlanValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useScrollOnRender } from "app/base/hooks";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
@@ -82,21 +83,13 @@ const AddAliasOrVlan = ({
   }
   return (
     <div ref={onRenderRef}>
-      <FormikForm<AddAliasOrVlanValues, MachineEventErrors>
-        cleanup={cleanup}
-        errors={errors}
+      <Formik
         initialValues={{
           ...networkFieldsInitialValues,
           ...(isAlias ? {} : { tags: [] }),
           fabric: nicVLAN?.fabric || "",
           vlan: nic.vlan_id,
         }}
-        onSaveAnalytics={{
-          action: `Add ${interfaceType}`,
-          category: "Machine details networking",
-          label: `Add ${interfaceType} form`,
-        }}
-        onCancel={close}
         onSubmit={(values) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());
@@ -120,30 +113,41 @@ const AddAliasOrVlan = ({
             dispatch(machineActions.createVlan(params));
           }
         }}
-        resetOnSave
-        saved={saved}
-        saving={saving}
-        secondarySubmit={(_, { submitForm }) => {
-          // Flag that the form was submitted by the secondary action.
-          setSecondarySubmit(true);
-          submitForm();
-        }}
-        secondarySubmitDisabled={!canAddAnother}
-        secondarySubmitLabel="Save and add another"
-        secondarySubmitTooltip={
-          canAddAnother
-            ? null
-            : "There are no more unused VLANS for this interface."
-        }
-        submitLabel="Save interface"
         validationSchema={InterfaceSchema}
       >
-        <AddAliasOrVlanFields
-          nic={nic}
-          interfaceType={interfaceType}
-          systemId={systemId}
-        />
-      </FormikForm>
+        <FormikFormContent<AddAliasOrVlanValues, MachineEventErrors>
+          cleanup={cleanup}
+          errors={errors}
+          onSaveAnalytics={{
+            action: `Add ${interfaceType}`,
+            category: "Machine details networking",
+            label: `Add ${interfaceType} form`,
+          }}
+          onCancel={close}
+          resetOnSave
+          saved={saved}
+          saving={saving}
+          secondarySubmit={(_, { submitForm }) => {
+            // Flag that the form was submitted by the secondary action.
+            setSecondarySubmit(true);
+            submitForm();
+          }}
+          secondarySubmitDisabled={!canAddAnother}
+          secondarySubmitLabel="Save and add another"
+          secondarySubmitTooltip={
+            canAddAnother
+              ? null
+              : "There are no more unused VLANS for this interface."
+          }
+          submitLabel="Save interface"
+        >
+          <AddAliasOrVlanFields
+            nic={nic}
+            interfaceType={interfaceType}
+            systemId={systemId}
+          />
+        </FormikFormContent>
+      </Formik>
     </div>
   );
 };

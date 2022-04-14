@@ -158,7 +158,7 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm").prop("errors")).toEqual({
+    expect(wrapper.find("FormikFormContent").prop("errors")).toEqual({
       username: ["Username already exists"],
       password: ["Password too short"],
     });

@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from "react";
 
 import { Row, NotificationSeverity } from "@canonical/react-components";
 import classNames from "classnames";
+import { Formik } from "formik";
 import type { FileRejection, FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
@@ -12,7 +13,7 @@ import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
 
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as messageActions } from "app/store/message";
 import { actions as scriptActions } from "app/store/script";
@@ -143,9 +144,8 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
         </div>
       </Row>
       <Row>
-        <FormikForm
+        <Formik
           initialValues={{}}
-          onCancel={() => history.push({ pathname: listLocation })}
           onSubmit={() => {
             dispatch(scriptActions.cleanup());
             if (script?.script) {
@@ -164,17 +164,21 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
               setSavedScript(script.name);
             }
           }}
-          saved={saved}
-          saving={saving}
-          submitDisabled={acceptedFiles.length === 0}
-          submitLabel="Upload script"
         >
-          {uploadedFile ? (
-            <p>
-              {`${uploadedFile.path} (${uploadedFile.size} bytes) ready for upload.`}
-            </p>
-          ) : null}
-        </FormikForm>
+          <FormikFormContent
+            onCancel={() => history.push({ pathname: listLocation })}
+            saved={saved}
+            saving={saving}
+            submitDisabled={acceptedFiles.length === 0}
+            submitLabel="Upload script"
+          >
+            {uploadedFile ? (
+              <p>
+                {`${uploadedFile.path} (${uploadedFile.size} bytes) ready for upload.`}
+              </p>
+            ) : null}
+          </FormikFormContent>
+        </Formik>
       </Row>
     </FormCard>
   );

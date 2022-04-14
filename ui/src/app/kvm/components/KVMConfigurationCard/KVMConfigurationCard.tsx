@@ -1,12 +1,13 @@
 import { useCallback } from "react";
 
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import KVMConfigurationCardFields from "./KVMConfigurationCardFields";
 
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
@@ -55,10 +56,8 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
 
   return (
     <FormCard highlighted={false} sidebar={false} title="KVM configuration">
-      <FormikForm<KVMConfigurationValues>
-        cleanup={cleanup}
+      <Formik
         enableReinitialize
-        errors={podErrors}
         initialValues={{
           cpu_over_commit_ratio: pod.cpu_over_commit_ratio,
           memory_over_commit_ratio: pod.memory_over_commit_ratio,
@@ -68,11 +67,6 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
           tags: pod.tags,
           type: pod.type,
           zone: pod.zone,
-        }}
-        onSaveAnalytics={{
-          action: "Edit KVM",
-          category: "KVM details settings",
-          label: "KVM configuration form",
         }}
         onSubmit={(values) => {
           const params: UpdateParams = {
@@ -90,13 +84,23 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
           }
           dispatch(podActions.update(params));
         }}
-        saving={podSaving}
-        saved={podSaved}
-        submitLabel="Save changes"
         validationSchema={KVMConfigurationSchema}
       >
-        <KVMConfigurationCardFields zoneDisabled={zoneDisabled} />
-      </FormikForm>
+        <FormikFormContent<KVMConfigurationValues>
+          cleanup={cleanup}
+          errors={podErrors}
+          onSaveAnalytics={{
+            action: "Edit KVM",
+            category: "KVM details settings",
+            label: "KVM configuration form",
+          }}
+          saving={podSaving}
+          saved={podSaved}
+          submitLabel="Save changes"
+        >
+          <KVMConfigurationCardFields zoneDisabled={zoneDisabled} />
+        </FormikFormContent>
+      </Formik>
     </FormCard>
   );
 };

@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { Card, Icon } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
@@ -9,7 +10,7 @@ import ConnectivityCard from "./ConnectivityCard";
 import NameCard from "./NameCard";
 import type { MaasIntroValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import TableConfirm from "app/base/components/TableConfirm";
 import IntroSection from "app/intro/components/IntroSection";
 import { useExitURL } from "app/intro/hooks";
@@ -69,23 +70,13 @@ const MaasIntro = (): JSX.Element => {
   return (
     <IntroSection loading={loading}>
       <>
-        <FormikForm<MaasIntroValues>
-          allowUnchanged
-          buttonsBordered={false}
-          cleanup={configActions.cleanup}
-          editable={!showSkip}
-          errors={errors}
+        <Formik
           initialValues={{
             httpProxy: httpProxy || "",
             mainArchiveUrl: mainArchive?.url || "",
             name: maasName || "",
             portsArchiveUrl: portsArchive?.url || "",
             upstreamDns: upstreamDns || "",
-          }}
-          onSaveAnalytics={{
-            action: "Saved",
-            category: "Intro",
-            label: "Intro form",
           }}
           onSubmit={(values) => {
             dispatch(configActions.cleanup());
@@ -116,19 +107,32 @@ const MaasIntro = (): JSX.Element => {
               );
             }
           }}
-          saving={saving}
-          saved={saved}
-          savedRedirect={introURLs.images}
-          secondarySubmit={() => {
-            setShowSkip(true);
-          }}
-          secondarySubmitLabel="Skip setup"
-          submitLabel="Save and continue"
           validationSchema={MaasIntroSchema}
         >
-          <NameCard />
-          <ConnectivityCard />
-        </FormikForm>
+          <FormikFormContent<MaasIntroValues>
+            allowUnchanged
+            buttonsBordered={false}
+            cleanup={configActions.cleanup}
+            editable={!showSkip}
+            errors={errors}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Intro",
+              label: "Intro form",
+            }}
+            saving={saving}
+            saved={saved}
+            savedRedirect={introURLs.images}
+            secondarySubmit={() => {
+              setShowSkip(true);
+            }}
+            secondarySubmitLabel="Skip setup"
+            submitLabel="Save and continue"
+          >
+            <NameCard />
+            <ConnectivityCard />
+          </FormikFormContent>
+        </Formik>
         {showSkip && (
           <Card data-testid="skip-setup" highlighted>
             <TableConfirm

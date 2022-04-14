@@ -1,12 +1,13 @@
 import { Col, Row, Textarea } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import prefsURLs from "app/preferences/urls";
 import { actions as sslkeyActions } from "app/store/sslkey";
@@ -35,46 +36,49 @@ export const AddSSLKey = (): JSX.Element => {
 
   return (
     <FormCard title="Add SSL key">
-      <FormikForm
-        cleanup={sslkeyActions.cleanup}
-        errors={errors}
+      <Formik
         initialValues={{ key: "" }}
-        onCancel={() => history.push({ pathname: prefsURLs.sslKeys.index })}
-        onSaveAnalytics={{
-          action: "Saved",
-          category: "SSL keys preferences",
-          label: "Add SSL key form",
-        }}
         onSubmit={(values) => {
           dispatch(sslkeyActions.create(values));
         }}
-        saving={saving}
-        saved={saved}
-        savedRedirect={prefsURLs.sslKeys.index}
-        submitLabel="Save SSL key"
         validationSchema={SSLKeySchema}
       >
-        <Row>
-          <Col size={5}>
-            <FormikField
-              className="ssl-key-form-fields__key p-text--code"
-              component={ProxyTextarea}
-              name="key"
-              label="SSL key"
-              autoComplete="off"
-              autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"
-            />
-          </Col>
-          <Col size={3}>
-            <p className="form-card__help">
-              You will be able to access Windows winrm service with a registered
-              key.
-            </p>
-          </Col>
-        </Row>
-      </FormikForm>
+        <FormikFormContent
+          cleanup={sslkeyActions.cleanup}
+          errors={errors}
+          onCancel={() => history.push({ pathname: prefsURLs.sslKeys.index })}
+          onSaveAnalytics={{
+            action: "Saved",
+            category: "SSL keys preferences",
+            label: "Add SSL key form",
+          }}
+          saving={saving}
+          saved={saved}
+          savedRedirect={prefsURLs.sslKeys.index}
+          submitLabel="Save SSL key"
+        >
+          <Row>
+            <Col size={5}>
+              <FormikField
+                className="ssl-key-form-fields__key p-text--code"
+                component={ProxyTextarea}
+                name="key"
+                label="SSL key"
+                autoComplete="off"
+                autoCorrect="off"
+                autoCapitalize="off"
+                spellCheck="false"
+              />
+            </Col>
+            <Col size={3}>
+              <p className="form-card__help">
+                You will be able to access Windows winrm service with a
+                registered key.
+              </p>
+            </Col>
+          </Row>
+        </FormikFormContent>
+      </Formik>
     </FormCard>
   );
 };

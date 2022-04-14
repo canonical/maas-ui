@@ -1,10 +1,11 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import CreateRaidFields from "./CreateRaidFields";
 
 import FormCard from "app/base/components/FormCard";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -91,10 +92,7 @@ export const CreateRaid = ({
   if (isMachineDetails(machine)) {
     return (
       <FormCard sidebar={false}>
-        <FormikForm<CreateRaidValues, MachineEventErrors>
-          allowUnchanged
-          cleanup={machineActions.cleanup}
-          errors={errors}
+        <Formik
           initialValues={{
             blockDeviceIds: initialBlockDevices,
             fstype: "",
@@ -106,12 +104,6 @@ export const CreateRaid = ({
             spareBlockDeviceIds: [],
             sparePartitionIds: [],
             tags: [],
-          }}
-          onCancel={closeForm}
-          onSaveAnalytics={{
-            action: "Create RAID",
-            category: "Machine storage",
-            label: "Create RAID",
           }}
           onSubmit={(values) => {
             const {
@@ -137,18 +129,32 @@ export const CreateRaid = ({
                 ...(fstype && mountPoint && { mountPoint }),
                 ...(blockDeviceIds.length > 0 && { blockDeviceIds }),
                 ...(partitionIds.length > 0 && { partitionIds }),
-                ...(spareBlockDeviceIds.length > 0 && { spareBlockDeviceIds }),
+                ...(spareBlockDeviceIds.length > 0 && {
+                  spareBlockDeviceIds,
+                }),
                 ...(sparePartitionIds.length > 0 && { sparePartitionIds }),
               })
             );
           }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Create RAID"
           validationSchema={CreateRaidSchema}
         >
-          <CreateRaidFields storageDevices={selected} systemId={systemId} />
-        </FormikForm>
+          <FormikFormContent<CreateRaidValues, MachineEventErrors>
+            allowUnchanged
+            cleanup={machineActions.cleanup}
+            errors={errors}
+            onCancel={closeForm}
+            onSaveAnalytics={{
+              action: "Create RAID",
+              category: "Machine storage",
+              label: "Create RAID",
+            }}
+            saved={saved}
+            saving={saving}
+            submitLabel="Create RAID"
+          >
+            <CreateRaidFields storageDevices={selected} systemId={systemId} />
+          </FormikFormContent>
+        </Formik>
       </FormCard>
     );
   }

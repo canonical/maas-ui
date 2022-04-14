@@ -1,9 +1,10 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import AddPartitionFields from "./AddPartitionFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
@@ -98,10 +99,7 @@ export const AddPartition = ({
     const AddPartitionSchema = generateSchema(disk.available_size);
 
     return (
-      <FormikForm<AddPartitionValues, MachineEventErrors>
-        allowUnchanged
-        cleanup={machineActions.cleanup}
-        errors={errors}
+      <Formik
         initialValues={{
           fstype: "",
           mountOptions: "",
@@ -111,12 +109,6 @@ export const AddPartition = ({
             roundFunc: "floor",
           }).value,
           unit: "GB",
-        }}
-        onCancel={closeExpanded}
-        onSaveAnalytics={{
-          action: "Add partition",
-          category: "Machine storage",
-          label: "Add partition",
         }}
         onSubmit={(values) => {
           dispatch(machineActions.cleanup());
@@ -137,13 +129,28 @@ export const AddPartition = ({
 
           dispatch(machineActions.createPartition(params));
         }}
-        saved={saved}
-        saving={saving}
-        submitLabel="Add partition"
         validationSchema={AddPartitionSchema}
       >
-        <AddPartitionFields partitionName={partitionName} systemId={systemId} />
-      </FormikForm>
+        <FormikFormContent<AddPartitionValues, MachineEventErrors>
+          allowUnchanged
+          cleanup={machineActions.cleanup}
+          errors={errors}
+          onCancel={closeExpanded}
+          onSaveAnalytics={{
+            action: "Add partition",
+            category: "Machine storage",
+            label: "Add partition",
+          }}
+          saved={saved}
+          saving={saving}
+          submitLabel="Add partition"
+        >
+          <AddPartitionFields
+            partitionName={partitionName}
+            systemId={systemId}
+          />
+        </FormikFormContent>
+      </Formik>
     );
   }
   return null;

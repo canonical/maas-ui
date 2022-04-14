@@ -3,13 +3,13 @@ import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
 import type { ReactWrapper } from "enzyme";
 import { shallow } from "enzyme";
-import type { FormikHelpers } from "formik";
+import type { FormikHelpers, FormikValues } from "formik";
+import { Formik } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { AnyObject } from "app/base/types";
 import type { RootState } from "app/store/root/types";
 
@@ -83,13 +83,13 @@ export const waitForComponentToPaint = async (
 export const submitFormikForm = (
   wrapper: ReactWrapper,
   values: AnyObject = {},
-  helpers: Partial<FormikHelpers<unknown>> = {}
+  helpers: Partial<FormikHelpers<FormikValues>> = {}
 ): void => {
   const formikHelpers = {
     resetForm: jest.fn(),
     ...helpers,
-  } as FormikHelpers<unknown>;
-  const onSubmit = wrapper.find(FormikForm).prop("onSubmit");
+  } as FormikHelpers<FormikValues>;
+  const onSubmit = wrapper.find(Formik).prop("onSubmit");
   // In strict mode this is correctly inferred as a function so can be use with
   // `.invoke("onSubmit")` but with strict mode turned off we first have to be
   // sure it is a function.

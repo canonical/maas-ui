@@ -1,10 +1,11 @@
 import { useCallback } from "react";
 
 import { Row, Col, Textarea } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
@@ -25,17 +26,11 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
   const cleanup = useCallback(() => zoneActions.cleanup(), []);
 
   return (
-    <FormikForm<CreateZoneValues>
-      buttonsAlign="right"
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         description: "",
         name: "",
       }}
-      onCancel={closeForm}
-      onSuccess={closeForm}
       onSubmit={(values) => {
         dispatch(
           zoneActions.create({
@@ -44,28 +39,37 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
           })
         );
       }}
-      resetOnSave={true}
-      saved={saved}
-      saving={saving}
-      submitLabel="Add AZ"
     >
-      <Row>
-        <Col size={6}>
-          <FormikField
-            label="Name"
-            placeholder="Name"
-            type="text"
-            name="name"
-            required
-          />
-          <FormikField
-            component={Textarea}
-            label="Description"
-            name="description"
-          />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<CreateZoneValues>
+        buttonsAlign="right"
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        onSuccess={closeForm}
+        resetOnSave={true}
+        saved={saved}
+        saving={saving}
+        submitLabel="Add AZ"
+      >
+        <Row>
+          <Col size={6}>
+            <FormikField
+              label="Name"
+              placeholder="Name"
+              type="text"
+              name="name"
+              required
+            />
+            <FormikField
+              component={Textarea}
+              label="Description"
+              name="description"
+            />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

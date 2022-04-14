@@ -1,17 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`NodeName can display the form 1`] = `
-<FormikForm
+<FormikFormContent
   buttonsAlign="right"
   buttonsBordered={false}
   className="node-name"
   footer={null}
-  initialValues={
-    Object {
-      "domain": "99",
-      "hostname": "test-machine-5",
-    }
-  }
   inline={true}
   onCancel={[Function]}
   onSaveAnalytics={
@@ -21,404 +15,166 @@ exports[`NodeName can display the form 1`] = `
       "label": "name",
     }
   }
-  onSubmit={[Function]}
-  validationSchema={
-    ObjectSchema {
-      "_blacklist": ReferenceSet {
-        "list": Set {},
-        "refs": Map {},
-      },
-      "_blacklistError": undefined,
-      "_excludedEdges": Array [],
-      "_nodes": Array [
-        "domain",
-        "hostname",
-      ],
-      "_sortErrors": [Function],
-      "_typeError": [Function],
-      "_whitelist": ReferenceSet {
-        "list": Set {},
-        "refs": Map {},
-      },
-      "_whitelistError": undefined,
-      "conditions": Array [],
-      "deps": Array [],
-      "exclusiveTests": Object {},
-      "fields": Object {
-        "domain": StringSchema {
-          "_blacklist": ReferenceSet {
-            "list": Set {},
-            "refs": Map {},
-          },
-          "_mutate": undefined,
-          "_typeError": [Function],
-          "_whitelist": ReferenceSet {
-            "list": Set {},
-            "refs": Map {},
-          },
-          "conditions": Array [],
-          "deps": Array [],
-          "exclusiveTests": Object {},
-          "spec": Object {
-            "abortEarly": true,
-            "nullable": false,
-            "presence": "optional",
-            "recursive": true,
-            "strict": false,
-            "strip": false,
-          },
-          "tests": Array [],
-          "transforms": Array [
-            [Function],
-          ],
-          "type": "string",
-        },
-        "hostname": StringSchema {
-          "_blacklist": ReferenceSet {
-            "list": Set {},
-            "refs": Map {},
-          },
-          "_blacklistError": undefined,
-          "_mutate": undefined,
-          "_typeError": [Function],
-          "_whitelist": ReferenceSet {
-            "list": Set {},
-            "refs": Map {},
-          },
-          "_whitelistError": undefined,
-          "conditions": Array [],
-          "deps": Array [],
-          "exclusiveTests": Object {
-            "matches": false,
-            "max": true,
-            "required": true,
-          },
-          "spec": Object {
-            "abortEarly": true,
-            "nullable": false,
-            "presence": "required",
-            "recursive": true,
-            "strict": false,
-            "strip": false,
-          },
-          "tests": Array [
-            [Function],
-            [Function],
-            [Function],
-          ],
-          "transforms": Array [
-            [Function],
-          ],
-          "type": "string",
-        },
-      },
-      "spec": Object {
-        "abortEarly": true,
-        "nullable": false,
-        "presence": "optional",
-        "recursive": true,
-        "strict": false,
-        "strip": false,
-      },
-      "tests": Array [],
-      "transforms": Array [
-        [Function],
-      ],
-      "type": "object",
-    }
-  }
 >
-  <Formik
-    initialValues={
-      Object {
-        "domain": "99",
-        "hostname": "test-machine-5",
-      }
-    }
+  <Form
+    className="node-name"
+    inline={true}
     onSubmit={[Function]}
-    validationSchema={
-      ObjectSchema {
-        "_blacklist": ReferenceSet {
-          "list": Set {},
-          "refs": Map {},
-        },
-        "_blacklistError": undefined,
-        "_excludedEdges": Array [],
-        "_nodes": Array [
-          "domain",
-          "hostname",
-        ],
-        "_sortErrors": [Function],
-        "_typeError": [Function],
-        "_whitelist": ReferenceSet {
-          "list": Set {},
-          "refs": Map {},
-        },
-        "_whitelistError": undefined,
-        "conditions": Array [],
-        "deps": Array [],
-        "exclusiveTests": Object {},
-        "fields": Object {
-          "domain": StringSchema {
-            "_blacklist": ReferenceSet {
-              "list": Set {},
-              "refs": Map {},
-            },
-            "_mutate": undefined,
-            "_typeError": [Function],
-            "_whitelist": ReferenceSet {
-              "list": Set {},
-              "refs": Map {},
-            },
-            "conditions": Array [],
-            "deps": Array [],
-            "exclusiveTests": Object {},
-            "spec": Object {
-              "abortEarly": true,
-              "nullable": false,
-              "presence": "optional",
-              "recursive": true,
-              "strict": false,
-              "strip": false,
-            },
-            "tests": Array [],
-            "transforms": Array [
-              [Function],
-            ],
-            "type": "string",
-          },
-          "hostname": StringSchema {
-            "_blacklist": ReferenceSet {
-              "list": Set {},
-              "refs": Map {},
-            },
-            "_blacklistError": undefined,
-            "_mutate": undefined,
-            "_typeError": [Function],
-            "_whitelist": ReferenceSet {
-              "list": Set {},
-              "refs": Map {},
-            },
-            "_whitelistError": undefined,
-            "conditions": Array [],
-            "deps": Array [],
-            "exclusiveTests": Object {
-              "matches": false,
-              "max": true,
-              "required": true,
-            },
-            "spec": Object {
-              "abortEarly": true,
-              "nullable": false,
-              "presence": "required",
-              "recursive": true,
-              "strict": false,
-              "strip": false,
-            },
-            "tests": Array [
-              [Function],
-              [Function],
-              [Function],
-            ],
-            "transforms": Array [
-              [Function],
-            ],
-            "type": "string",
-          },
-        },
-        "spec": Object {
-          "abortEarly": true,
-          "nullable": false,
-          "presence": "optional",
-          "recursive": true,
-          "strict": false,
-          "strip": false,
-        },
-        "tests": Array [],
-        "transforms": Array [
-          [Function],
-        ],
-        "type": "object",
-      }
-    }
   >
-    <FormikFormContent
-      buttonsAlign="right"
-      buttonsBordered={false}
-      className="node-name"
-      footer={null}
-      inline={true}
-      onCancel={[Function]}
-      onSaveAnalytics={
-        Object {
-          "action": "Saved",
-          "category": "Node details header",
-          "label": "name",
-        }
-      }
+    <form
+      className="node-name p-form p-form--inline"
+      onSubmit={[Function]}
     >
-      <Form
-        className="node-name"
-        inline={true}
-        onSubmit={[Function]}
+      <NodeNameFields
+        setHostnameError={[Function]}
       >
-        <form
-          className="node-name p-form p-form--inline"
-          onSubmit={[Function]}
+        <div
+          className="node-name__hostname-wrapper u-no-margin--right"
         >
-          <NodeNameFields
-            setHostnameError={[Function]}
+          <div
+            aria-hidden="true"
+            className="node-name__hostname-spacer"
           >
-            <div
-              className="node-name__hostname-wrapper u-no-margin--right"
+            test-machine-5
+          </div>
+          <FormikField
+            className="node-name__hostname"
+            displayError={false}
+            label="Hostname"
+            name="hostname"
+            takeFocus={true}
+            type="text"
+            wrapperClassName="u-no-margin--right"
+          >
+            <Input
+              aria-label="Hostname"
+              className="node-name__hostname"
+              error={null}
+              id="mock-redux-js-nanoid-1"
+              label="Hostname"
+              name="hostname"
+              onBlur={[Function]}
+              onChange={[Function]}
+              takeFocus={true}
+              type="text"
+              value="test-machine-5"
+              wrapperClassName="u-no-margin--right"
             >
-              <div
-                aria-hidden="true"
-                className="node-name__hostname-spacer"
-              >
-                test-machine-5
-              </div>
-              <FormikField
-                className="node-name__hostname"
-                displayError={false}
+              <Field
+                className="u-no-margin--right"
+                error={null}
+                forId="mock-redux-js-nanoid-1"
+                helpId="mock-nanoid-2"
                 label="Hostname"
-                name="hostname"
-                takeFocus={true}
-                type="text"
-                wrapperClassName="u-no-margin--right"
+                validationId="mock-nanoid-1"
               >
-                <Input
-                  aria-label="Hostname"
-                  className="node-name__hostname"
-                  error={null}
-                  id="mock-redux-js-nanoid-1"
-                  label="Hostname"
-                  name="hostname"
-                  onBlur={[Function]}
-                  onChange={[Function]}
-                  takeFocus={true}
-                  type="text"
-                  value="test-machine-5"
-                  wrapperClassName="u-no-margin--right"
+                <div
+                  className="p-form__group p-form-validation u-no-margin--right"
                 >
-                  <Field
-                    className="u-no-margin--right"
-                    error={null}
+                  <Label
                     forId="mock-redux-js-nanoid-1"
-                    helpId="mock-nanoid-2"
-                    isTickElement={false}
-                    label="Hostname"
-                    validationId="mock-nanoid-1"
                   >
-                    <div
-                      className="p-form__group p-form-validation u-no-margin--right"
+                    <label
+                      className="p-form__label"
+                      htmlFor="mock-redux-js-nanoid-1"
                     >
-                      <Label
-                        forId="mock-redux-js-nanoid-1"
-                      >
-                        <label
-                          className="p-form__label"
-                          htmlFor="mock-redux-js-nanoid-1"
-                        >
-                          Hostname
-                        </label>
-                      </Label>
-                      <div
-                        className="p-form__control u-clearfix"
-                      >
-                        <input
-                          aria-describedby={null}
-                          aria-errormessage={null}
-                          aria-invalid={false}
-                          aria-label="Hostname"
-                          className="p-form-validation__input node-name__hostname"
-                          id="mock-redux-js-nanoid-1"
-                          label="Hostname"
-                          name="hostname"
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          type="text"
-                          value="test-machine-5"
-                        />
-                      </div>
-                    </div>
-                  </Field>
-                </Input>
-              </FormikField>
-            </div>
-            <span
-              className="node-name__dot u-nudge-right--small u-nudge-left--small u-no-margin--right"
-            >
-              .
-            </span>
-            <Spinner
-              className="u-width--auto"
-            >
-              <span
-                aria-live="polite"
-                className="u-width--auto p-text--default"
-                role="alert"
-              >
-                <i
-                  className="p-icon--spinner u-animation--spin"
-                >
-                  Loading
-                </i>
-              </span>
-            </Spinner>
-          </NodeNameFields>
-          <FormikFormButtons
-            buttonsAlign="right"
-            buttonsBordered={false}
-            inline={true}
-            onCancel={[Function]}
-            saved={false}
-            submitDisabled={true}
+                      Hostname
+                    </label>
+                  </Label>
+                  <div
+                    className="p-form__control u-clearfix"
+                  >
+                    <input
+                      aria-describedby={null}
+                      aria-errormessage={null}
+                      aria-invalid={false}
+                      aria-label="Hostname"
+                      className="p-form-validation__input node-name__hostname"
+                      id="mock-redux-js-nanoid-1"
+                      label="Hostname"
+                      name="hostname"
+                      onBlur={[Function]}
+                      onChange={[Function]}
+                      type="text"
+                      value="test-machine-5"
+                    />
+                  </div>
+                </div>
+              </Field>
+            </Input>
+          </FormikField>
+        </div>
+        <span
+          className="node-name__dot u-nudge-right--small u-nudge-left--small u-no-margin--right"
+        >
+          .
+        </span>
+        <Spinner
+          className="u-width--auto"
+        >
+          <span
+            aria-live="polite"
+            className="u-width--auto p-text--default"
+            role="alert"
           >
-            <div
-              className="formik-form-buttons is-inline"
-              data-testid="buttons-wrapper"
+            <i
+              className="p-icon--spinner u-animation--spin"
             >
-              <div
-                className="formik-form-buttons__container u-align--right"
+              Loading
+            </i>
+          </span>
+        </Spinner>
+      </NodeNameFields>
+      <FormikFormButtons
+        buttonsAlign="right"
+        buttonsBordered={false}
+        inline={true}
+        onCancel={[Function]}
+        saved={false}
+        submitDisabled={true}
+      >
+        <div
+          className="formik-form-buttons is-inline"
+          data-testid="buttons-wrapper"
+        >
+          <div
+            className="formik-form-buttons__container u-align--right"
+          >
+            <Button
+              appearance="base"
+              className="formik-form-buttons__button"
+              data-testid="cancel-action"
+              onClick={[Function]}
+              type="button"
+            >
+              <button
+                className="p-button--base formik-form-buttons__button"
+                data-testid="cancel-action"
+                onClick={[Function]}
+                type="button"
               >
-                <Button
-                  appearance="base"
-                  className="formik-form-buttons__button"
-                  data-testid="cancel-action"
-                  onClick={[Function]}
-                  type="button"
-                >
-                  <button
-                    className="p-button--base formik-form-buttons__button"
-                    data-testid="cancel-action"
-                    onClick={[Function]}
-                    type="button"
-                  >
-                    Cancel
-                  </button>
-                </Button>
-                <ActionButton
-                  appearance="positive"
-                  className="formik-form-buttons__button"
-                  disabled={true}
-                  success={false}
-                  type="submit"
-                >
-                  <button
-                    className="formik-form-buttons__button p-action-button p-button--positive is-disabled"
-                    disabled={true}
-                    type="submit"
-                  >
-                    Save
-                  </button>
-                </ActionButton>
-              </div>
-            </div>
-          </FormikFormButtons>
-        </form>
-      </Form>
-    </FormikFormContent>
-  </Formik>
-</FormikForm>
+                Cancel
+              </button>
+            </Button>
+            <ActionButton
+              appearance="positive"
+              className="formik-form-buttons__button"
+              disabled={true}
+              success={false}
+              type="submit"
+            >
+              <button
+                className="formik-form-buttons__button p-action-button p-button--positive is-disabled"
+                disabled={true}
+                type="submit"
+              >
+                Save
+              </button>
+            </ActionButton>
+          </div>
+        </div>
+      </FormikFormButtons>
+    </form>
+  </Form>
+</FormikFormContent>
 `;

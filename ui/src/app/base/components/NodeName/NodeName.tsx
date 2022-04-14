@@ -3,11 +3,12 @@ import { useEffect, useState } from "react";
 import { Button, Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import type { FormikErrors } from "formik";
+import { Formik } from "formik";
 import * as Yup from "yup";
 
 import NodeNameFields from "./NodeNameFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useCanEdit } from "app/base/hooks";
 import type { Device } from "app/store/device/types";
 import type { Domain, DomainMeta } from "app/store/domain/types";
@@ -85,39 +86,42 @@ const NodeName = ({
     );
   }
   return (
-    <FormikForm<FormValues>
-      buttonsAlign="right"
-      buttonsBordered={false}
-      className="node-name"
-      footer={
-        hostnameError ? (
-          <div className="node-name__error is-error">
-            <p className="p-form-validation__message u-no-margin--bottom">
-              <strong>Error:</strong> {hostnameError}
-            </p>
-          </div>
-        ) : null
-      }
+    <Formik
       initialValues={{
         domain: String(node.domain.id),
         hostname: node.hostname,
       }}
-      inline
-      onCancel={() => setEditingName(false)}
-      onSaveAnalytics={{
-        action: "Saved",
-        category: "Node details header",
-        label: "name",
-      }}
       onSubmit={({ hostname, domain }) => {
         onSubmit(hostname, Number(domain));
       }}
-      saving={saving}
-      saved={saved}
       validationSchema={Schema}
     >
-      <NodeNameFields saving={saving} setHostnameError={setHostnameError} />
-    </FormikForm>
+      <FormikFormContent<FormValues>
+        buttonsAlign="right"
+        buttonsBordered={false}
+        className="node-name"
+        footer={
+          hostnameError ? (
+            <div className="node-name__error is-error">
+              <p className="p-form-validation__message u-no-margin--bottom">
+                <strong>Error:</strong> {hostnameError}
+              </p>
+            </div>
+          ) : null
+        }
+        inline
+        onCancel={() => setEditingName(false)}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "Node details header",
+          label: "name",
+        }}
+        saving={saving}
+        saved={saved}
+      >
+        <NodeNameFields saving={saving} setHostnameError={setHostnameError} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

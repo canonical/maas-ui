@@ -1,13 +1,14 @@
 import { useCallback, useEffect } from "react";
 
 import { Card, Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import ConfigureDHCPFields from "./ConfigureDHCPFields";
 import DHCPReservedRanges from "./DHCPReservedRanges";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import TitledSection from "app/base/components/TitledSection";
 import { useCycled } from "app/base/hooks";
 import { actions as controllerActions } from "app/store/controller";
@@ -139,19 +140,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
             <Spinner text="Loading..." />
           </span>
         ) : (
-          <FormikForm<ConfigureDHCPValues>
-            allowUnchanged
-            cleanup={cleanup}
-            errors={configureDHCPError}
-            buttonsHelp={
-              <a
-                href="https://maas.io/docs/dhcp"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
-                About DHCP
-              </a>
-            }
+          <Formik
             initialValues={{
               dhcpType: isId(vlan.relay_vlan)
                 ? DHCPType.RELAY
@@ -165,12 +154,6 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
               startIP: "",
               subnet: "",
             }}
-            onSaveAnalytics={{
-              action: "Configure DHCP",
-              category: "VLAN details",
-              label: "Configure DHCP form",
-            }}
-            onCancel={closeForm}
             onSubmit={(values) => {
               resetConfiguredDHCP();
               dispatch(cleanup());
@@ -202,16 +185,37 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
               }
               dispatch(vlanActions.configureDHCP(params));
             }}
-            onSuccess={() => closeForm()}
-            saved={saved}
-            saving={configuringDHCP}
-            submitLabel="Configure DHCP"
             validateOnMount
             validationSchema={Schema}
           >
-            <ConfigureDHCPFields vlan={vlan} />
-            <DHCPReservedRanges id={vlan.id} />
-          </FormikForm>
+            <FormikFormContent<ConfigureDHCPValues>
+              allowUnchanged
+              cleanup={cleanup}
+              errors={configureDHCPError}
+              buttonsHelp={
+                <a
+                  href="https://maas.io/docs/dhcp"
+                  rel="noreferrer noopener"
+                  target="_blank"
+                >
+                  About DHCP
+                </a>
+              }
+              onSaveAnalytics={{
+                action: "Configure DHCP",
+                category: "VLAN details",
+                label: "Configure DHCP form",
+              }}
+              onCancel={closeForm}
+              onSuccess={() => closeForm()}
+              saved={saved}
+              saving={configuringDHCP}
+              submitLabel="Configure DHCP"
+            >
+              <ConfigureDHCPFields vlan={vlan} />
+              <DHCPReservedRanges id={vlan.id} />
+            </FormikFormContent>
+          </Formik>
         )}
       </TitledSection>
     </Card>

@@ -1,13 +1,14 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import AddVirshFields from "./AddVirshFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
@@ -96,21 +97,13 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
     .defined();
 
   return (
-    <FormikForm<AddVirshValues>
-      cleanup={cleanup}
-      errors={podErrors}
+    <Formik
       initialValues={{
         name: "",
         pool: resourcePools.length ? resourcePools[0].id : "",
         power_parameters: initialPowerParameters,
         type: PodType.VIRSH,
         zone: zones.length ? zones[0].id : "",
-      }}
-      onCancel={clearHeaderContent}
-      onSaveAnalytics={{
-        action: "Save virsh KVM",
-        category: "Add KVM form",
-        label: "Save KVM",
       }}
       onSubmit={(values) => {
         if (virshPowerType) {
@@ -127,20 +120,31 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
           setSavingPod(values.name || "virsh KVM host");
         }
       }}
-      saving={podSaving}
-      saved={podSaved}
-      submitDisabled={!virshPowerType}
-      submitLabel="Save Virsh host"
       validationSchema={AddVirshSchema}
     >
-      {virshPowerType ? (
-        <AddVirshFields />
-      ) : (
-        <Strip data-testid="virsh-unsupported" shallow>
-          Virsh is not supported on this MAAS.
-        </Strip>
-      )}
-    </FormikForm>
+      <FormikFormContent<AddVirshValues>
+        cleanup={cleanup}
+        errors={podErrors}
+        onCancel={clearHeaderContent}
+        onSaveAnalytics={{
+          action: "Save virsh KVM",
+          category: "Add KVM form",
+          label: "Save KVM",
+        }}
+        saving={podSaving}
+        saved={podSaved}
+        submitDisabled={!virshPowerType}
+        submitLabel="Save Virsh host"
+      >
+        {virshPowerType ? (
+          <AddVirshFields />
+        ) : (
+          <Strip data-testid="virsh-unsupported" shallow>
+            Virsh is not supported on this MAAS.
+          </Strip>
+        )}
+      </FormikFormContent>
+    </Formik>
   );
 };
 

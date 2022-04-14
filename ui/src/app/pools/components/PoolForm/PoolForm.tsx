@@ -1,12 +1,13 @@
 import { useState } from "react";
 
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import poolsURLs from "app/pools/urls";
 import { actions as poolActions } from "app/store/resourcepool";
@@ -62,16 +63,8 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
 
   return (
     <FormCard sidebar={false} title={title}>
-      <FormikForm
-        cleanup={poolActions.cleanup}
-        errors={errors}
+      <Formik
         initialValues={initialValues}
-        onCancel={() => history.push({ pathname: poolsURLs.pools })}
-        onSaveAnalytics={{
-          action: "Saved",
-          category: "Resource pool",
-          label: "Add pool form",
-        }}
         onSubmit={(values) => {
           dispatch(poolActions.cleanup());
           if (pool) {
@@ -86,15 +79,26 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
           }
           setSaving(values.name);
         }}
-        saved={saved}
-        savedRedirect={poolsURLs.pools}
-        saving={saving}
-        submitLabel="Save pool"
         validationSchema={PoolSchema}
       >
-        <FormikField type="text" name="name" label="Name (required)" />
-        <FormikField type="text" name="description" label="Description" />
-      </FormikForm>
+        <FormikFormContent
+          cleanup={poolActions.cleanup}
+          errors={errors}
+          onCancel={() => history.push({ pathname: poolsURLs.pools })}
+          onSaveAnalytics={{
+            action: "Saved",
+            category: "Resource pool",
+            label: "Add pool form",
+          }}
+          saved={saved}
+          savedRedirect={poolsURLs.pools}
+          saving={saving}
+          submitLabel="Save pool"
+        >
+          <FormikField type="text" name="name" label="Name (required)" />
+          <FormikField type="text" name="description" label="Description" />
+        </FormikFormContent>
+      </Formik>
     </FormCard>
   );
 };

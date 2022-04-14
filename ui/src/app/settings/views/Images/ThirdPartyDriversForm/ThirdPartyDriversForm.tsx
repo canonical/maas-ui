@@ -1,8 +1,9 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
@@ -22,31 +23,34 @@ const ThirdPartyDriversForm = (): JSX.Element => {
   );
 
   return (
-    <FormikForm
-      buttonsAlign="left"
-      buttonsBordered={false}
+    <Formik
       initialValues={{
         enable_third_party_drivers: thirdPartyDriversEnabled,
-      }}
-      onSaveAnalytics={{
-        action: "Saved",
-        category: "Images settings",
-        label: "Ubuntu form",
       }}
       onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
         resetForm({ values });
       }}
-      saving={saving}
-      saved={saved}
       validationSchema={ThirdPartyDriversSchema}
     >
-      <FormikField
-        label="Enable the installation of proprietary drivers (i.e. HPVSA)"
-        type="checkbox"
-        name="enable_third_party_drivers"
-      />
-    </FormikForm>
+      <FormikFormContent
+        buttonsAlign="left"
+        buttonsBordered={false}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "Images settings",
+          label: "Ubuntu form",
+        }}
+        saving={saving}
+        saved={saved}
+      >
+        <FormikField
+          label="Enable the installation of proprietary drivers (i.e. HPVSA)"
+          type="checkbox"
+          name="enable_third_party_drivers"
+        />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

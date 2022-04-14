@@ -9,11 +9,12 @@ import {
   Row,
   Strip,
 } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as statusActions } from "app/store/status";
 import statusSelectors from "app/store/status/selectors";
@@ -89,8 +90,7 @@ export const Login = (): JSX.Element => {
                   Go to login page
                 </Button>
               ) : (
-                <FormikForm<LoginValues>
-                  errors={error}
+                <Formik
                   initialValues={{
                     password: "",
                     username: "",
@@ -98,25 +98,29 @@ export const Login = (): JSX.Element => {
                   onSubmit={(values) => {
                     dispatch(statusActions.login(values));
                   }}
-                  saving={authenticating}
-                  saved={authenticated}
-                  submitLabel="Login"
                   validationSchema={LoginSchema}
                 >
-                  <FormikField
-                    name="username"
-                    label="Username"
-                    required={true}
-                    takeFocus
-                    type="text"
-                  />
-                  <FormikField
-                    name="password"
-                    label="Password"
-                    required={true}
-                    type="password"
-                  />
-                </FormikForm>
+                  <FormikFormContent<LoginValues>
+                    errors={error}
+                    saving={authenticating}
+                    saved={authenticated}
+                    submitLabel="Login"
+                  >
+                    <FormikField
+                      name="username"
+                      label="Username"
+                      required={true}
+                      takeFocus
+                      type="text"
+                    />
+                    <FormikField
+                      name="password"
+                      label="Password"
+                      required={true}
+                      type="password"
+                    />
+                  </FormikFormContent>
+                </Formik>
               )}
             </Card>
           )}

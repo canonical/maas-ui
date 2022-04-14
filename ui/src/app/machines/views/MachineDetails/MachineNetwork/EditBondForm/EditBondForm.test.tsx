@@ -247,7 +247,7 @@ describe("EditBondForm", () => {
     await waitForComponentToPaint(wrapper);
     wrapper.setProps({ selected: [] });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
+    expect(wrapper.find("FormikFormContent").prop("submitDisabled")).toBe(true);
   });
 
   it("enables the submit button if only the members have changed", async () => {
@@ -305,7 +305,9 @@ describe("EditBondForm", () => {
       ],
     });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(false);
+    expect(wrapper.find("FormikFormContent").prop("submitDisabled")).toBe(
+      false
+    );
   });
 
   it("fetches the necessary data on load", async () => {

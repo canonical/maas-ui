@@ -1,9 +1,10 @@
 import { useCallback } from "react";
 
 import { Icon } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { EmptyObject } from "app/base/types";
 import domainsURLs from "app/domains/urls";
 import { actions as domainActions } from "app/store/domain";
@@ -38,31 +39,34 @@ const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
   }
 
   return (
-    <FormikForm<EmptyObject>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{}}
-      onCancel={closeForm}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(domainActions.delete(id));
       }}
-      savedRedirect={domainsURLs.domains}
-      saved={saved}
-      saving={saving}
-      submitAppearance="negative"
-      submitDisabled={!canBeDeleted}
-      submitLabel="Delete domain"
     >
-      <p
-        className="u-no-margin--bottom u-no-max-width"
-        data-testid="delete-message"
+      <FormikFormContent<EmptyObject>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        savedRedirect={domainsURLs.domains}
+        saved={saved}
+        saving={saving}
+        submitAppearance="negative"
+        submitDisabled={!canBeDeleted}
+        submitLabel="Delete domain"
       >
-        <Icon name="error" className="is-inline" />
-        {message}
-      </p>
-    </FormikForm>
+        <p
+          className="u-no-margin--bottom u-no-max-width"
+          data-testid="delete-message"
+        >
+          <Icon name="error" className="is-inline" />
+          {message}
+        </p>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

@@ -2,9 +2,10 @@ import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Col, Notification, Row } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import TitledSection from "app/base/components/TitledSection";
 import type { EmptyObject } from "app/base/types";
 import { actions as subnetActions } from "app/store/subnet";
@@ -57,23 +58,26 @@ export const DeleteSubnet = ({
       <Row>
         <Col size={8}>{message}</Col>
       </Row>
-      <FormikForm<EmptyObject>
-        aria-label="Delete subnet"
-        buttonsBordered={false}
-        cleanup={subnetActions.cleanup}
-        errors={errors}
+      <Formik
         initialValues={{}}
-        onCancel={handleClose}
         onSubmit={() => {
           dispatch(subnetActions.delete(id));
         }}
-        savedRedirect={subnetURLs.index}
-        saved={saved}
-        saving={saving}
-        submitAppearance="negative"
-        submitDisabled={!canBeDeleted}
-        submitLabel="Delete"
-      />
+      >
+        <FormikFormContent<EmptyObject>
+          aria-label="Delete subnet"
+          buttonsBordered={false}
+          cleanup={subnetActions.cleanup}
+          errors={errors}
+          onCancel={handleClose}
+          savedRedirect={subnetURLs.index}
+          saved={saved}
+          saving={saving}
+          submitAppearance="negative"
+          submitDisabled={!canBeDeleted}
+          submitLabel="Delete"
+        />
+      </Formik>
     </TitledSection>
   );
 };

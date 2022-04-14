@@ -1,9 +1,10 @@
 import { useCallback } from "react";
 
 import { Icon } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { EmptyObject } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -41,12 +42,8 @@ const DeleteRecordForm = ({
     ).length > 1;
 
   return (
-    <FormikForm<EmptyObject>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{}}
-      onCancel={closeForm}
       onSubmit={() => {
         dispatch(cleanup());
         const params = {
@@ -56,19 +53,26 @@ const DeleteRecordForm = ({
         };
         dispatch(domainActions.deleteRecord(params));
       }}
-      onSuccess={() => {
-        closeForm();
-      }}
-      saving={saving}
-      saved={saved}
-      submitAppearance="negative"
-      submitLabel="Delete record"
     >
-      <p className="u-no-margin--bottom u-no-max-width">
-        <Icon name="error" className="is-inline" />
-        Are you sure you want to delete this record?
-      </p>
-    </FormikForm>
+      <FormikFormContent<EmptyObject>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        onSuccess={() => {
+          closeForm();
+        }}
+        saving={saving}
+        saved={saved}
+        submitAppearance="negative"
+        submitLabel="Delete record"
+      >
+        <p className="u-no-margin--bottom u-no-max-width">
+          <Icon name="error" className="is-inline" />
+          Are you sure you want to delete this record?
+        </p>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

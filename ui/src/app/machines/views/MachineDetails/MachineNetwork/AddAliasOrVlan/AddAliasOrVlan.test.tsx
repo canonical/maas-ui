@@ -80,10 +80,10 @@ describe("AddAliasOrVlan", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitDisabled")).toBe(
-      false
-    );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitLabel")).toBe(
+    expect(
+      wrapper.find("FormikFormContent").prop("secondarySubmitDisabled")
+    ).toBe(false);
+    expect(wrapper.find("FormikFormContent").prop("secondarySubmitLabel")).toBe(
       "Save and add another"
     );
   });
@@ -118,12 +118,12 @@ describe("AddAliasOrVlan", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitDisabled")).toBe(
-      false
-    );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitTooltip")).toBe(
-      null
-    );
+    expect(
+      wrapper.find("FormikFormContent").prop("secondarySubmitDisabled")
+    ).toBe(false);
+    expect(
+      wrapper.find("FormikFormContent").prop("secondarySubmitTooltip")
+    ).toBe(null);
   });
 
   it("disables the save-another button when there are no unused VLANS", () => {
@@ -143,12 +143,12 @@ describe("AddAliasOrVlan", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitDisabled")).toBe(
-      true
-    );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitTooltip")).toBe(
-      "There are no more unused VLANS for this interface."
-    );
+    expect(
+      wrapper.find("FormikFormContent").prop("secondarySubmitDisabled")
+    ).toBe(true);
+    expect(
+      wrapper.find("FormikFormContent").prop("secondarySubmitTooltip")
+    ).toBe("There are no more unused VLANS for this interface.");
   });
 
   it("correctly initialises fabric and VLAN when adding an alias", () => {

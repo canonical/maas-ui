@@ -1,13 +1,15 @@
 import { useState } from "react";
 
+import type { FormikErrors } from "formik";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import SSHKeyFormFields from "./SSHKeyFormFields";
 import type { SSHKeyFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
+import type { Props as FormikFormContentProps } from "app/base/components/FormikFormContent";
 import { useAddMessage } from "app/base/hooks";
 import { actions as sshkeyActions } from "app/store/sshkey";
 import sshkeySelectors from "app/store/sshkey/selectors";
@@ -26,7 +28,9 @@ const SSHKeySchema = Yup.object().shape({
 
 type Props = {
   cols?: number;
-} & Partial<FormikFormProps<SSHKeyFormValues>>;
+} & Partial<
+  FormikFormContentProps<SSHKeyFormValues, FormikErrors<SSHKeyFormValues>>
+>;
 
 export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -43,9 +47,7 @@ export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
   );
 
   return (
-    <FormikForm<SSHKeyFormValues>
-      cleanup={sshkeyActions.cleanup}
-      errors={errors}
+    <Formik
       initialValues={{ auth_id: "", protocol: "", key: "" }}
       onSubmit={(values) => {
         setAdding(true);
@@ -55,14 +57,19 @@ export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
           dispatch(sshkeyActions.import(values));
         }
       }}
-      saving={saving}
-      saved={saved}
-      submitLabel="Import SSH key"
       validationSchema={SSHKeySchema}
-      {...props}
     >
-      <SSHKeyFormFields cols={cols} />
-    </FormikForm>
+      <FormikFormContent<SSHKeyFormValues>
+        cleanup={sshkeyActions.cleanup}
+        errors={errors}
+        saving={saving}
+        saved={saved}
+        submitLabel="Import SSH key"
+        {...props}
+      >
+        <SSHKeyFormFields cols={cols} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

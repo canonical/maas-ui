@@ -1,11 +1,11 @@
 import { mount } from "enzyme";
+import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import NodeNameFields from "./NodeNameFields";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
@@ -44,7 +44,7 @@ describe("NodeNameFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <FormikForm
+          <Formik
             initialValues={{
               domain: "",
               hostname: "",
@@ -52,7 +52,7 @@ describe("NodeNameFields", () => {
             onSubmit={jest.fn()}
           >
             <NodeNameFields setHostnameError={jest.fn()} />
-          </FormikForm>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -66,7 +66,7 @@ describe("NodeNameFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <FormikForm
+          <Formik
             initialValues={{
               domain: "",
               hostname: "",
@@ -74,7 +74,7 @@ describe("NodeNameFields", () => {
             onSubmit={jest.fn()}
           >
             <NodeNameFields setHostnameError={jest.fn()} />
-          </FormikForm>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -88,7 +88,7 @@ describe("NodeNameFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <FormikForm
+          <Formik
             initialValues={{
               domain: "",
               hostname: "",
@@ -96,7 +96,7 @@ describe("NodeNameFields", () => {
             onSubmit={jest.fn()}
           >
             <NodeNameFields saving setHostnameError={jest.fn()} />
-          </FormikForm>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );
@@ -113,7 +113,7 @@ describe("NodeNameFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <FormikForm
+          <Formik
             initialErrors={{ hostname: "Uh oh!" }}
             initialValues={{
               domain: "",
@@ -122,7 +122,7 @@ describe("NodeNameFields", () => {
             onSubmit={jest.fn()}
           >
             <NodeNameFields saving setHostnameError={setHostnameError} />
-          </FormikForm>
+          </Formik>
         </MemoryRouter>
       </Provider>
     );

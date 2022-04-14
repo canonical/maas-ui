@@ -1,6 +1,7 @@
 import { useCallback } from "react";
 
 import { Col, Row, Spinner, Textarea } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,7 +9,7 @@ import VLANControllers from "../VLANSummary/VLANControllers";
 
 import FabricSelect from "app/base/components/FabricSelect";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import SpaceSelect from "app/base/components/SpaceSelect";
 import type { RootState } from "app/store/root/types";
 import { getSpaceDisplay } from "app/store/space/utils";
@@ -78,17 +79,8 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
     initialValues.space = vlan.space;
   }
   return (
-    <FormikForm<FormValues>
-      aria-label="Edit VLAN"
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={initialValues}
-      onSaveAnalytics={{
-        action: "Save VLAN",
-        category: "VLAN details",
-        label: "Edit VLAN form",
-      }}
-      onCancel={close}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
@@ -99,35 +91,47 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
           })
         );
       }}
-      onSuccess={() => close()}
-      resetOnSave
-      saved={saved}
-      saving={saving}
-      submitLabel="Save summary"
       validationSchema={Schema}
-      {...props}
     >
-      <Row>
-        <Col size={6}>
-          <FormikField label="VID" name="vid" required type="text" />
-          <FormikField label="Name" name="name" type="text" />
-          <FormikField label="MTU" name="mtu" type="text" />
-          <FormikField
-            component={Textarea}
-            label="Description"
-            name="description"
-          />
-        </Col>
-        <Col size={6}>
-          <SpaceSelect
-            defaultOption={{ label: getSpaceDisplay(null), value: "" }}
-            name="space"
-          />
-          <FabricSelect defaultOption={null} name="fabric" />
-          <VLANControllers id={id} />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<FormValues>
+        aria-label="Edit VLAN"
+        cleanup={cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: "Save VLAN",
+          category: "VLAN details",
+          label: "Edit VLAN form",
+        }}
+        onCancel={close}
+        onSuccess={() => close()}
+        resetOnSave
+        saved={saved}
+        saving={saving}
+        submitLabel="Save summary"
+        {...props}
+      >
+        <Row>
+          <Col size={6}>
+            <FormikField label="VID" name="vid" required type="text" />
+            <FormikField label="Name" name="name" type="text" />
+            <FormikField label="MTU" name="mtu" type="text" />
+            <FormikField
+              component={Textarea}
+              label="Description"
+              name="description"
+            />
+          </Col>
+          <Col size={6}>
+            <SpaceSelect
+              defaultOption={{ label: getSpaceDisplay(null), value: "" }}
+              name="space"
+            />
+            <FabricSelect defaultOption={null} name="fabric" />
+            <VLANControllers id={id} />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

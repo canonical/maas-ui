@@ -1,9 +1,10 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import Fields from "../CommissioningFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { AutoIpmiPrivilegeLevel } from "app/store/config/types";
@@ -49,9 +50,7 @@ const CommissioningForm = (): JSX.Element => {
   );
 
   return (
-    <FormikForm<CommissioningFormValues>
-      buttonsAlign="left"
-      buttonsBordered={false}
+    <Formik
       initialValues={{
         commissioning_distro_series: commissioningDistroSeries || "",
         default_min_hwe_kernel: defaultMinKernelVersion || "",
@@ -60,21 +59,26 @@ const CommissioningForm = (): JSX.Element => {
         maas_auto_ipmi_user_privilege_level:
           ipmiPrivilegeLevel || AutoIpmiPrivilegeLevel.ADMIN,
       }}
-      onSaveAnalytics={{
-        action: "Saved",
-        category: "Configuration settings",
-        label: "Commissioning form",
-      }}
       onSubmit={(values, { resetForm }) => {
         dispatch(configActions.update(values));
         resetForm({ values });
       }}
-      saving={saving}
-      saved={saved}
       validationSchema={CommissioningSchema}
     >
-      <Fields />
-    </FormikForm>
+      <FormikFormContent<CommissioningFormValues>
+        buttonsAlign="left"
+        buttonsBordered={false}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "Configuration settings",
+          label: "Commissioning form",
+        }}
+        saving={saving}
+        saved={saved}
+      >
+        <Fields />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

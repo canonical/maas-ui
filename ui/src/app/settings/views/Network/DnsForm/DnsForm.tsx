@@ -1,11 +1,12 @@
 import { useEffect } from "react";
 
 import { Col, Spinner, Row, Select } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -45,47 +46,50 @@ const DnsForm = (): JSX.Element => {
       <Col size={6}>
         {loading && <Spinner text="Loading..." />}
         {loaded && (
-          <FormikForm
-            buttonsAlign="left"
-            buttonsBordered={false}
+          <Formik
             initialValues={{
               dnssec_validation: dnssecValidation || "",
               dns_trusted_acl: dnsTrustedAcl || "",
               upstream_dns: upstreamDns || "",
             }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Network settings",
-              label: "DNS form",
-            }}
             onSubmit={(values, { resetForm }) => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
-            saving={saving}
-            saved={saved}
             validationSchema={DnsSchema}
           >
-            <FormikField
-              name="upstream_dns"
-              label="Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)"
-              help="Only used when MAAS is running its own DNS server. This value is used as the value of 'forwarders' in the DNS server config."
-              type="text"
-            />
-            <FormikField
-              component={Select}
-              options={dnssecOptions}
-              name="dnssec_validation"
-              label="Enable DNSSEC validation of upstream zones"
-              help="Only used when MAAS is running its own DNS server. This value is used as the value of 'dnssec_validation' in the DNS server config."
-            />
-            <FormikField
-              name="dns_trusted_acl"
-              label="List of external networks (not previously known), that will be allowed to use MAAS for DNS resolution"
-              help="MAAS keeps a list of networks that are allowed to use MAAS for DNS resolution. This option allows to add extra networks (not previously known) to the trusted ACL where this list of networks is kept. It also supports specifying IPs or ACL names."
-              type="text"
-            />
-          </FormikForm>
+            <FormikFormContent
+              buttonsAlign="left"
+              buttonsBordered={false}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Network settings",
+                label: "DNS form",
+              }}
+              saving={saving}
+              saved={saved}
+            >
+              <FormikField
+                name="upstream_dns"
+                label="Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)"
+                help="Only used when MAAS is running its own DNS server. This value is used as the value of 'forwarders' in the DNS server config."
+                type="text"
+              />
+              <FormikField
+                component={Select}
+                options={dnssecOptions}
+                name="dnssec_validation"
+                label="Enable DNSSEC validation of upstream zones"
+                help="Only used when MAAS is running its own DNS server. This value is used as the value of 'dnssec_validation' in the DNS server config."
+              />
+              <FormikField
+                name="dns_trusted_acl"
+                label="List of external networks (not previously known), that will be allowed to use MAAS for DNS resolution"
+                help="MAAS keeps a list of networks that are allowed to use MAAS for DNS resolution. This option allows to add extra networks (not previously known) to the trusted ACL where this list of networks is kept. It also supports specifying IPs or ACL names."
+                type="text"
+              />
+            </FormikFormContent>
+          </Formik>
         )}
       </Col>
     </Row>

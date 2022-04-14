@@ -1,5 +1,5 @@
 import { Row, Col, Input } from "@canonical/react-components";
-import { useFormikContext } from "formik";
+import { Formik, useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -7,7 +7,7 @@ import type { FormActionProps } from "../FormActions";
 
 import FabricSelect from "app/base/components/FabricSelect";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import VLANSelect from "app/base/components/VLANSelect";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -118,11 +118,7 @@ const AddSubnet = ({
   const errors = useSelector(subnetSelectors.errors);
 
   return (
-    <FormikForm<AddSubnetValues>
-      aria-label="Add subnet"
-      validationSchema={addSubnetSchema}
-      buttonsBordered={false}
-      allowAllEmpty
+    <Formik
       initialValues={{
         vlan: "",
         name: "",
@@ -131,13 +127,6 @@ const AddSubnet = ({
         dns_servers: "",
         fabric: "",
       }}
-      onSaveAnalytics={{
-        action: "Add Subnet",
-        category: "Subnets form actions",
-        label: "Add Subnet",
-      }}
-      cleanup={subnetActions.cleanup}
-      submitLabel={`Add ${activeForm}`}
       onSubmit={({ cidr, name, fabric, vlan, dns_servers, gateway_ip }) => {
         dispatch(
           subnetActions.create({
@@ -150,14 +139,28 @@ const AddSubnet = ({
           })
         );
       }}
-      onCancel={() => setActiveForm(null)}
-      onSuccess={() => setActiveForm(null)}
-      saving={isSaving}
-      saved={isSaved}
-      errors={errors}
+      validationSchema={addSubnetSchema}
     >
-      <AddSubnetFields isSaving={isSaving} />
-    </FormikForm>
+      <FormikFormContent<AddSubnetValues>
+        aria-label="Add subnet"
+        buttonsBordered={false}
+        allowAllEmpty
+        onSaveAnalytics={{
+          action: "Add Subnet",
+          category: "Subnets form actions",
+          label: "Add Subnet",
+        }}
+        cleanup={subnetActions.cleanup}
+        submitLabel={`Add ${activeForm}`}
+        onCancel={() => setActiveForm(null)}
+        onSuccess={() => setActiveForm(null)}
+        saving={isSaving}
+        saved={isSaved}
+        errors={errors}
+      >
+        <AddSubnetFields isSaving={isSaving} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

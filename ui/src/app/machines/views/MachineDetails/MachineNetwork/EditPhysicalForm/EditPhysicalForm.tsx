@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -9,7 +10,7 @@ import { networkFieldsSchema } from "../NetworkFields/NetworkFields";
 import EditPhysicalFields from "./EditPhysicalFields";
 import type { EditPhysicalValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import { MAC_ADDRESS_REGEX } from "app/base/validation";
 import { useMachineDetailsForm } from "app/machines/hooks";
@@ -107,9 +108,7 @@ const EditPhysicalForm = ({
   const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
 
   return (
-    <FormikForm<EditPhysicalValues, MachineEventErrors>
-      cleanup={cleanup}
-      errors={errors}
+    <Formik<EditPhysicalValues>
       initialValues={{
         fabric: vlan?.fabric || "",
         // Convert the speeds to GB.
@@ -127,12 +126,6 @@ const EditPhysicalForm = ({
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
-      onSaveAnalytics={{
-        action: "Save physical interface",
-        category: "Machine details networking",
-        label: "Edit physical interface form",
-      }}
-      onCancel={close}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
@@ -156,14 +149,25 @@ const EditPhysicalForm = ({
           machineActions.updateInterface(payload as UpdateInterfaceParams)
         );
       }}
-      resetOnSave
-      saved={saved}
-      saving={saving}
-      submitLabel="Save interface"
       validationSchema={InterfaceSchema}
     >
-      <EditPhysicalFields nic={nic} />
-    </FormikForm>
+      <FormikFormContent<EditPhysicalValues, MachineEventErrors>
+        cleanup={cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: "Save physical interface",
+          category: "Machine details networking",
+          label: "Edit physical interface form",
+        }}
+        onCancel={close}
+        resetOnSave
+        saved={saved}
+        saving={saving}
+        submitLabel="Save interface"
+      >
+        <EditPhysicalFields nic={nic} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

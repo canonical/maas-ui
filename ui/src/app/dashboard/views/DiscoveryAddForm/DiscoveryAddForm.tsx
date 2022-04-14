@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 import * as Yup from "yup";
@@ -9,7 +10,7 @@ import DiscoveryAddFormFields from "./DiscoveryAddFormFields";
 import { DeviceType } from "./types";
 import type { DiscoveryAddValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useCycled } from "app/base/hooks";
 import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
@@ -173,7 +174,7 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   }
 
   return (
-    <FormikForm<DiscoveryAddValues>
+    <Formik
       initialValues={{
         [DeviceMeta.PK]: "",
         domain: (domainByName || defaultDomain)?.name || "",
@@ -182,65 +183,68 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
         parent: "",
         type: initialDeviceType,
       }}
-      allowUnchanged
-      className="u-width--full"
-      cleanup={discoveryActions.cleanup}
-      errors={errors}
-      onSaveAnalytics={{
-        action: "Add discovery",
-        category: "Dashboard",
-        label: "Add discovery form",
-      }}
-      onCancel={onClose}
       onSubmit={(values) => {
         // The normal submit button should not redirect anywhere.
         setRedirect(null);
         formSubmit(dispatch, discovery, values);
       }}
-      onSuccess={(values) => {
-        // Refetch the discoveries so that this discovery will get removed
-        // from the list.
-        dispatch(discoveryActions.fetch());
-        if (!redirect) {
-          onClose();
-          let device: string;
-          if (values.hostname) {
-            device = values.hostname;
-          } else if (values.type === DeviceType.INTERFACE) {
-            device = `An ${values.type}`;
-          } else {
-            device = `A ${values.type}`;
-          }
-          dispatch(
-            messageActions.add(
-              `${device} has been added.`,
-              NotificationSeverity.POSITIVE
-            )
-          );
-        }
-      }}
-      savedRedirect={redirect}
-      saved={processed}
-      saving={processing}
-      secondarySubmit={(values) => {
-        // The secondary submit should redirect to the device/devices.
-        setRedirectURL(values, setRedirect);
-        formSubmit(dispatch, discovery, values);
-      }}
-      secondarySubmitLabel={(values) =>
-        values.parent
-          ? "Save and go to machine details"
-          : "Save and go to device listing"
-      }
-      submitLabel="Save"
       validationSchema={DiscoveryAddSchema}
     >
-      <DiscoveryAddFormFields
-        discovery={discovery}
-        setDevice={setDevice}
-        setDeviceType={setDeviceType}
-      />
-    </FormikForm>
+      <FormikFormContent<DiscoveryAddValues>
+        allowUnchanged
+        className="u-width--full"
+        cleanup={discoveryActions.cleanup}
+        errors={errors}
+        onSaveAnalytics={{
+          action: "Add discovery",
+          category: "Dashboard",
+          label: "Add discovery form",
+        }}
+        onCancel={onClose}
+        onSuccess={(values) => {
+          // Refetch the discoveries so that this discovery will get removed
+          // from the list.
+          dispatch(discoveryActions.fetch());
+          if (!redirect) {
+            onClose();
+            let device: string;
+            if (values.hostname) {
+              device = values.hostname;
+            } else if (values.type === DeviceType.INTERFACE) {
+              device = `An ${values.type}`;
+            } else {
+              device = `A ${values.type}`;
+            }
+            dispatch(
+              messageActions.add(
+                `${device} has been added.`,
+                NotificationSeverity.POSITIVE
+              )
+            );
+          }
+        }}
+        savedRedirect={redirect}
+        saved={processed}
+        saving={processing}
+        secondarySubmit={(values) => {
+          // The secondary submit should redirect to the device/devices.
+          setRedirectURL(values, setRedirect);
+          formSubmit(dispatch, discovery, values);
+        }}
+        secondarySubmitLabel={(values) =>
+          values.parent
+            ? "Save and go to machine details"
+            : "Save and go to device listing"
+        }
+        submitLabel="Save"
+      >
+        <DiscoveryAddFormFields
+          discovery={discovery}
+          setDevice={setDevice}
+          setDeviceType={setDeviceType}
+        />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

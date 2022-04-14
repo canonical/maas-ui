@@ -252,7 +252,7 @@ describe("AddBondForm", () => {
     await waitForComponentToPaint(wrapper);
     wrapper.setProps({ selected: [] });
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
+    expect(wrapper.find("FormikFormContent").prop("submitDisabled")).toBe(true);
   });
 
   it("fetches the necessary data on load", async () => {

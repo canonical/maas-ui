@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
+import type { FormikErrors } from "formik";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import UpdateCertificateFields from "./UpdateCertificateFields";
 
-import type { FormikFormProps } from "app/base/components/FormikForm";
-import FormikForm from "app/base/components/FormikForm";
+import type { Props as FormikFormContentProps } from "app/base/components/FormikFormContent";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as generalActions } from "app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
 import { actions as podActions } from "app/store/pod";
@@ -59,7 +61,10 @@ const UpdateCertificate = ({
     password: Yup.string(),
   });
 
-  let onCancel: FormikFormProps<UpdateCertificateValues>["onCancel"];
+  let onCancel: FormikFormContentProps<
+    UpdateCertificateValues,
+    FormikErrors<UpdateCertificateValues>
+  >["onCancel"];
   if (hasCertificateData) {
     // Pods created after MAAS 3.1.0 will already have certificate data, so
     // can close the form on cancel.
@@ -75,12 +80,8 @@ const UpdateCertificate = ({
   }
 
   return (
-    <FormikForm<UpdateCertificateValues>
-      allowAllEmpty={shouldGenerateCert}
-      allowUnchanged={shouldGenerateCert}
-      errors={podErrors}
+    <Formik
       initialValues={{ certificate: "", key: "", password: "" }}
-      onCancel={onCancel}
       onSubmit={(values) => {
         if (generatedCertificate) {
           dispatch(
@@ -109,20 +110,27 @@ const UpdateCertificate = ({
           );
         }
       }}
-      onSuccess={closeForm}
-      saved={podSaved}
-      saving={generatingCertificate || podSaving}
-      submitLabel={
-        shouldGenerateCert && !generatedCertificate ? "Next" : "Save"
-      }
       validationSchema={UpdateCertificateSchema}
     >
-      <UpdateCertificateFields
-        generatedCertificate={generatedCertificate}
-        shouldGenerateCert={shouldGenerateCert}
-        setShouldGenerateCert={setShouldGenerateCert}
-      />
-    </FormikForm>
+      <FormikFormContent<UpdateCertificateValues>
+        allowAllEmpty={shouldGenerateCert}
+        allowUnchanged={shouldGenerateCert}
+        errors={podErrors}
+        onCancel={onCancel}
+        onSuccess={closeForm}
+        saved={podSaved}
+        saving={generatingCertificate || podSaving}
+        submitLabel={
+          shouldGenerateCert && !generatedCertificate ? "Next" : "Save"
+        }
+      >
+        <UpdateCertificateFields
+          generatedCertificate={generatedCertificate}
+          shouldGenerateCert={shouldGenerateCert}
+          setShouldGenerateCert={setShouldGenerateCert}
+        />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

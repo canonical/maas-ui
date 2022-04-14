@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 import DiscoveryAddForm from "./DiscoveryAddForm";
 import { DeviceType } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as deviceActions } from "app/store/device";
 import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
 import type { Discovery } from "app/store/discovery/types";
@@ -105,7 +105,7 @@ describe("DiscoveryAddForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm").prop("errors")).toStrictEqual({
+    expect(wrapper.find("FormikFormContent").prop("errors")).toStrictEqual({
       hostname: "Name is invalid",
     });
   });
@@ -200,7 +200,7 @@ describe("DiscoveryAddForm", () => {
       </Provider>
     );
 
-    const onSuccess = wrapper.find(FormikForm).prop("onSuccess");
+    const onSuccess = wrapper.find(FormikFormContent).prop("onSuccess");
     onSuccess &&
       onSuccess({
         hostname: "koala",
@@ -222,7 +222,7 @@ describe("DiscoveryAddForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    const onSuccess = wrapper.find(FormikForm).prop("onSuccess");
+    const onSuccess = wrapper.find(FormikFormContent).prop("onSuccess");
     onSuccess &&
       onSuccess({
         type: DeviceType.DEVICE,
@@ -245,7 +245,7 @@ describe("DiscoveryAddForm", () => {
       </Provider>
     );
 
-    const onSuccess = wrapper.find(FormikForm).prop("onSuccess");
+    const onSuccess = wrapper.find(FormikFormContent).prop("onSuccess");
     onSuccess &&
       onSuccess({
         type: DeviceType.INTERFACE,

@@ -1,10 +1,11 @@
 import { useCallback } from "react";
 
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import RecordFields from "app/domains/components/RecordFields";
 import { actions as domainActions } from "app/store/domain";
 import { MIN_TTL } from "app/store/domain/constants";
@@ -45,17 +46,13 @@ const AddRecordForm = ({ closeForm, id }: Props): JSX.Element => {
   const cleanup = useCallback(() => domainActions.cleanup(), []);
 
   return (
-    <FormikForm<CreateRecordValues>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         name: "",
         rrtype: RecordType.A,
         rrdata: "",
         ttl: "",
       }}
-      onCancel={closeForm}
       onSubmit={(values) => {
         dispatch(cleanup());
         if (isAddressRecord(values.rrtype)) {
@@ -77,16 +74,23 @@ const AddRecordForm = ({ closeForm, id }: Props): JSX.Element => {
           dispatch(domainActions.createDNSData(params));
         }
       }}
-      onSuccess={() => {
-        closeForm();
-      }}
-      saving={saving}
-      saved={saved}
-      submitLabel="Add record"
       validationSchema={CreateRecordSchema}
     >
-      <RecordFields />
-    </FormikForm>
+      <FormikFormContent<CreateRecordValues>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        onSuccess={() => {
+          closeForm();
+        }}
+        saving={saving}
+        saved={saved}
+        submitLabel="Add record"
+      >
+        <RecordFields />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

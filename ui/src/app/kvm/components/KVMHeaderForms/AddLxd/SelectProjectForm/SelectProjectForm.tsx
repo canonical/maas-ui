@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
@@ -13,7 +14,7 @@ import type {
 
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
@@ -97,16 +98,10 @@ export const SelectProjectForm = ({
   );
 
   return (
-    <FormikForm<SelectProjectFormValues>
+    <Formik
       initialValues={{
         existingProject: "",
         newProject: "",
-      }}
-      onCancel={clearHeaderContent}
-      onSaveAnalytics={{
-        action: "Save LXD KVM",
-        category: "Add KVM form",
-        label: "Save KVM",
       }}
       onSubmit={(values) => {
         dispatch(cleanup());
@@ -124,13 +119,22 @@ export const SelectProjectForm = ({
         dispatch(podActions.create(params));
         setSavingPod(newPodValues.name || "LXD KVM host");
       }}
-      saved={saved}
-      saving={saving}
-      submitLabel="Save LXD host"
       validationSchema={SelectProjectSchema}
     >
-      <SelectProjectFormFields newPodValues={newPodValues} />
-    </FormikForm>
+      <FormikFormContent<SelectProjectFormValues>
+        onCancel={clearHeaderContent}
+        onSaveAnalytics={{
+          action: "Save LXD KVM",
+          category: "Add KVM form",
+          label: "Save KVM",
+        }}
+        saved={saved}
+        saving={saving}
+        submitLabel="Save LXD host"
+      >
+        <SelectProjectFormFields newPodValues={newPodValues} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

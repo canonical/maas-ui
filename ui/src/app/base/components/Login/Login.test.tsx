@@ -34,7 +34,7 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm").exists()).toBe(true);
+    expect(wrapper.find("FormikFormContent").exists()).toBe(true);
   });
 
   it("can render external login", () => {

@@ -252,6 +252,6 @@ describe("DhcpForm", () => {
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.find("FormikForm").exists()).toBe(false);
+    expect(wrapper.find("FormikFormContent").exists()).toBe(false);
   });
 });

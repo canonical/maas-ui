@@ -1,12 +1,13 @@
 import { useCallback, useState } from "react";
 
 import { Col, Row } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { DOMAIN_NAME_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -51,52 +52,55 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
   };
 
   return (
-    <FormikForm<CreateDomainValues>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         name: "",
         authoritative: true,
       }}
-      onCancel={closeForm}
       onSubmit={(values) => {
         createDomain(values);
         setShouldClose(true);
       }}
-      onSuccess={() => {
-        if (shouldClose) {
-          closeForm();
-        }
-      }}
-      resetOnSave={!shouldClose}
-      saving={saving}
-      saved={saved}
-      submitLabel="Save domain"
       validationSchema={CreateDomainSchema}
-      secondarySubmit={(values) => {
-        createDomain(values);
-        setShouldClose(false);
-      }}
-      secondarySubmitLabel="Save and add another"
     >
-      <Row>
-        <Col size={6}>
-          <FormikField
-            label="Name"
-            type="text"
-            name="name"
-            placeholder="Domain name"
-            required
-          />
-          <FormikField
-            label="Authoritative"
-            type="checkbox"
-            name="authoritative"
-          />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<CreateDomainValues>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        onSuccess={() => {
+          if (shouldClose) {
+            closeForm();
+          }
+        }}
+        resetOnSave={!shouldClose}
+        saving={saving}
+        saved={saved}
+        submitLabel="Save domain"
+        secondarySubmit={(values) => {
+          createDomain(values);
+          setShouldClose(false);
+        }}
+        secondarySubmitLabel="Save and add another"
+      >
+        <Row>
+          <Col size={6}>
+            <FormikField
+              label="Name"
+              type="text"
+              name="name"
+              placeholder="Domain name"
+              required
+            />
+            <FormikField
+              label="Authoritative"
+              type="checkbox"
+              name="authoritative"
+            />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

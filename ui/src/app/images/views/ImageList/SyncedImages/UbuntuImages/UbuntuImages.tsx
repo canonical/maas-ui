@@ -2,10 +2,11 @@ import { useCallback } from "react";
 
 import { Notification, Strip } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import UbuntuImageSelect from "app/images/components/UbuntuImageSelect";
 import type { ImageValue } from "app/images/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
@@ -96,13 +97,8 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
         </Notification>
       )}
       <Strip shallow>
-        <FormikForm<UbuntuImagesValues>
-          allowUnchanged
-          buttonsBordered={false}
-          cleanup={cleanup}
-          editable={!tooManySources}
+        <Formik
           enableReinitialize
-          errors={error}
           initialValues={{
             images: initialImages,
           }}
@@ -138,26 +134,34 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
                 };
             dispatch(bootResourceActions.saveUbuntu(params));
           }}
-          onSuccess={() => {
-            dispatch(bootResourceActions.poll({ continuous: false }));
-          }}
-          saved={saved}
-          saving={saving || stoppingImport}
-          savingLabel={stoppingImport ? "Stopping image import..." : null}
-          secondarySubmit={() => {
-            dispatch(cleanup());
-            dispatch(bootResourceActions.stopImport());
-          }}
-          secondarySubmitLabel={canStopImport ? "Stop import" : null}
-          submitLabel="Update selection"
           validationSchema={UbuntuImagesSchema}
         >
-          <UbuntuImageSelect
-            arches={ubuntu.arches}
-            releases={ubuntu.releases}
-            resources={resources}
-          />
-        </FormikForm>
+          <FormikFormContent<UbuntuImagesValues>
+            allowUnchanged
+            buttonsBordered={false}
+            cleanup={cleanup}
+            editable={!tooManySources}
+            errors={error}
+            onSuccess={() => {
+              dispatch(bootResourceActions.poll({ continuous: false }));
+            }}
+            saved={saved}
+            saving={saving || stoppingImport}
+            savingLabel={stoppingImport ? "Stopping image import..." : null}
+            secondarySubmit={() => {
+              dispatch(cleanup());
+              dispatch(bootResourceActions.stopImport());
+            }}
+            secondarySubmitLabel={canStopImport ? "Stop import" : null}
+            submitLabel="Update selection"
+          >
+            <UbuntuImageSelect
+              arches={ubuntu.arches}
+              releases={ubuntu.releases}
+              resources={resources}
+            />
+          </FormikFormContent>
+        </Formik>
       </Strip>
     </>
   );

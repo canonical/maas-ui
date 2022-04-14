@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import type { SchemaOf } from "yup";
 import * as Yup from "yup";
@@ -9,7 +10,7 @@ import PowerFormFields from "./PowerFormFields";
 import PowerParameters from "./PowerParameters";
 
 import EditableSection from "app/base/components/EditableSection";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useCanEdit } from "app/base/hooks";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { PowerType } from "app/store/general/types";
@@ -87,22 +88,11 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (
-          <FormikForm<PowerFormValues>
-            allowAllEmpty
-            allowUnchanged
-            cleanup={cleanup}
-            editable={editing}
-            errors={errors}
+          <Formik
             initialValues={{
               powerType: machine.power_type,
               powerParameters: initialPowerParameters,
             }}
-            onSaveAnalytics={{
-              action: "Configure power",
-              category: "Machine details",
-              label: "Save changes",
-            }}
-            onCancel={() => setEditing(false)}
             onSubmit={(values) => {
               const params = {
                 extra_macs: machine.extra_macs,
@@ -117,21 +107,35 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
               };
               dispatch(machineActions.update(params));
             }}
-            onSuccess={() => setEditing(false)}
-            onValuesChanged={(values) => {
-              const powerType = getPowerTypeFromName(
-                powerTypes,
-                values.powerType
-              );
-              setSelectedPowerType(powerType);
-            }}
-            saved={saved}
-            saving={saving}
-            submitLabel="Save changes"
             validationSchema={PowerFormSchema}
           >
-            <PowerFormFields machine={machine} />
-          </FormikForm>
+            <FormikFormContent<PowerFormValues>
+              allowAllEmpty
+              allowUnchanged
+              cleanup={cleanup}
+              editable={editing}
+              errors={errors}
+              onSaveAnalytics={{
+                action: "Configure power",
+                category: "Machine details",
+                label: "Save changes",
+              }}
+              onCancel={() => setEditing(false)}
+              onSuccess={() => setEditing(false)}
+              onValuesChanged={(values) => {
+                const powerType = getPowerTypeFromName(
+                  powerTypes,
+                  values.powerType
+                );
+                setSelectedPowerType(powerType);
+              }}
+              saved={saved}
+              saving={saving}
+              submitLabel="Save changes"
+            >
+              <PowerFormFields machine={machine} />
+            </FormikFormContent>
+          </Formik>
         ) : (
           <PowerParameters machine={machine} />
         )

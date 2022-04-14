@@ -1,9 +1,10 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import AddLogicalVolumeFields from "./AddLogicalVolumeFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
@@ -104,10 +105,7 @@ export const AddLogicalVolume = ({
     const AddLogicalVolumeSchema = generateSchema(disk.available_size);
 
     return (
-      <FormikForm<AddLogicalVolumeValues, MachineEventErrors>
-        allowUnchanged
-        cleanup={machineActions.cleanup}
-        errors={errors}
+      <Formik
         initialValues={{
           fstype: "",
           mountOptions: "",
@@ -119,12 +117,6 @@ export const AddLogicalVolume = ({
           }).value,
           tags: [],
           unit: "GB",
-        }}
-        onCancel={closeExpanded}
-        onSaveAnalytics={{
-          action: "Add logical volume",
-          category: "Machine storage",
-          label: "Add logical volume",
         }}
         onSubmit={(values: AddLogicalVolumeValues) => {
           const { fstype, mountOptions, mountPoint, name, size, tags, unit } =
@@ -146,13 +138,25 @@ export const AddLogicalVolume = ({
 
           dispatch(machineActions.createLogicalVolume(params));
         }}
-        saved={saved}
-        saving={saving}
-        submitLabel="Add logical volume"
         validationSchema={AddLogicalVolumeSchema}
       >
-        <AddLogicalVolumeFields systemId={systemId} />
-      </FormikForm>
+        <FormikFormContent<AddLogicalVolumeValues, MachineEventErrors>
+          allowUnchanged
+          cleanup={machineActions.cleanup}
+          errors={errors}
+          onCancel={closeExpanded}
+          onSaveAnalytics={{
+            action: "Add logical volume",
+            category: "Machine storage",
+            label: "Add logical volume",
+          }}
+          saved={saved}
+          saving={saving}
+          submitLabel="Add logical volume"
+        >
+          <AddLogicalVolumeFields systemId={systemId} />
+        </FormikFormContent>
+      </Formik>
     );
   }
   return null;

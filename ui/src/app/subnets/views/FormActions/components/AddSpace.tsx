@@ -1,10 +1,11 @@
 import { Row, Col, Input } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import type { FormActionProps } from "../FormActions";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as spaceActions } from "app/store/space";
 import spaceSelectors from "app/store/space/selectors";
 
@@ -22,39 +23,42 @@ const AddSpace = ({
   const errors = useSelector(spaceSelectors.errors);
 
   return (
-    <FormikForm<AddSpaceValues>
-      aria-label="Add space"
-      buttonsBordered={false}
-      allowAllEmpty
+    <Formik
       initialValues={{ name: "" }}
-      onSaveAnalytics={{
-        action: "Add space",
-        category: "Subnets form actions",
-        label: "Add space",
-      }}
-      submitLabel={`Add ${activeForm}`}
       onSubmit={({ name }) => {
         dispatch(spaceActions.create({ name }));
       }}
-      onCancel={() => setActiveForm(null)}
-      onSuccess={() => setActiveForm(null)}
-      saving={isSaving}
-      saved={isSaved}
-      errors={errors}
     >
-      <Row>
-        <Col size={6}>
-          <FormikField
-            takeFocus
-            type="text"
-            name="name"
-            component={Input}
-            disabled={isSaving}
-            label="Name (optional)"
-          />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<AddSpaceValues>
+        aria-label="Add space"
+        buttonsBordered={false}
+        allowAllEmpty
+        onSaveAnalytics={{
+          action: "Add space",
+          category: "Subnets form actions",
+          label: "Add space",
+        }}
+        submitLabel={`Add ${activeForm}`}
+        onCancel={() => setActiveForm(null)}
+        onSuccess={() => setActiveForm(null)}
+        saving={isSaving}
+        saved={isSaved}
+        errors={errors}
+      >
+        <Row>
+          <Col size={6}>
+            <FormikField
+              takeFocus
+              type="text"
+              name="name"
+              component={Input}
+              disabled={isSaving}
+              label="Name (optional)"
+            />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 
 import { Col, Spinner, Row } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -8,7 +9,7 @@ import ProxyFormFields from "../ProxyFormFields";
 
 import type { ProxyFormValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -48,17 +49,10 @@ const ProxyForm = (): JSX.Element => {
       <Col size={6}>
         {loading && <Spinner text="Loading..." />}
         {loaded && (
-          <FormikForm<ProxyFormValues>
-            buttonsAlign="left"
-            buttonsBordered={false}
+          <Formik
             initialValues={{
               httpProxy: httpProxy || "",
               proxyType,
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Network settings",
-              label: "Proxy form",
             }}
             onSubmit={(values, { resetForm }) => {
               const { httpProxy, proxyType } = values;
@@ -98,12 +92,22 @@ const ProxyForm = (): JSX.Element => {
               dispatch(updateConfig(formattedValues));
               resetForm({ values });
             }}
-            saving={saving}
-            saved={saved}
             validationSchema={ProxySchema}
           >
-            <ProxyFormFields />
-          </FormikForm>
+            <FormikFormContent<ProxyFormValues>
+              buttonsAlign="left"
+              buttonsBordered={false}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Network settings",
+                label: "Proxy form",
+              }}
+              saving={saving}
+              saved={saved}
+            >
+              <ProxyFormFields />
+            </FormikFormContent>
+          </Formik>
         )}
       </Col>
     </Row>

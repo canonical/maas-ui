@@ -1,12 +1,13 @@
 import { useState } from "react";
 
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useAddMessage, useScrollToTop } from "app/base/hooks";
 import type { EmptyObject } from "app/base/types";
 import type { RootState } from "app/store/root/types";
@@ -59,48 +60,51 @@ export const DeleteTagForm = ({
     return null;
   }
   return (
-    <FormikForm<EmptyObject>
-      aria-label="Delete tag"
-      buttonsAlign="right"
-      buttonsBordered={true}
-      cleanup={tagActions.cleanup}
-      errors={errors}
+    <Formik
       initialValues={{}}
-      onCancel={onCancel}
-      onSaveAnalytics={{
-        action: "Delete",
-        category: "Delete tag form",
-        label: "Delete tag",
-      }}
       onSubmit={() => {
         setDeletedTag(tag.name);
         dispatch(tagActions.cleanup());
         dispatch(tagActions.delete(tag.id));
       }}
-      onSuccess={() => {
-        onClose();
-      }}
-      saved={saved}
-      savedRedirect={tagsURLs.tags.index}
-      saving={saving}
-      submitAppearance="negative"
-      submitLabel="Delete"
     >
-      <Row>
-        <Col size={6}>
-          <h4 className="u-nudge-down--small">
-            {`${tag.name} will be deleted${
-              tag.machine_count > 0
-                ? " and unassigned from every tagged machine"
-                : ""
-            }. Are you sure?`}
-          </h4>
-        </Col>
-        <Col size={6}>
-          <DeleteTagFormWarnings id={id} />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<EmptyObject>
+        aria-label="Delete tag"
+        buttonsAlign="right"
+        buttonsBordered={true}
+        cleanup={tagActions.cleanup}
+        errors={errors}
+        onCancel={onCancel}
+        onSaveAnalytics={{
+          action: "Delete",
+          category: "Delete tag form",
+          label: "Delete tag",
+        }}
+        onSuccess={() => {
+          onClose();
+        }}
+        saved={saved}
+        savedRedirect={tagsURLs.tags.index}
+        saving={saving}
+        submitAppearance="negative"
+        submitLabel="Delete"
+      >
+        <Row>
+          <Col size={6}>
+            <h4 className="u-nudge-down--small">
+              {`${tag.name} will be deleted${
+                tag.machine_count > 0
+                  ? " and unassigned from every tagged machine"
+                  : ""
+              }. Are you sure?`}
+            </h4>
+          </Col>
+          <Col size={6}>
+            <DeleteTagFormWarnings id={id} />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

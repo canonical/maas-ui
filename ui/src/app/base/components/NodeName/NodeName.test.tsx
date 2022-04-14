@@ -147,7 +147,7 @@ describe("NodeName", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm")).toMatchSnapshot();
+    expect(wrapper.find("FormikFormContent")).toMatchSnapshot();
   });
 
   it("closes the form when it saves", () => {

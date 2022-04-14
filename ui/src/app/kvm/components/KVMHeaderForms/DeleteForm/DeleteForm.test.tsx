@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import DeleteForm from "./DeleteForm";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
@@ -49,7 +49,7 @@ describe("DeleteForm", () => {
     );
     wrapper.find("Formik").simulate("submit");
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+    expect(wrapper.find("FormikFormContent").prop("saving")).toBe(true);
     expect(wrapper.find('[data-testid="saving-label"]').text()).toBe(
       "Removing KVM host..."
     );
@@ -75,7 +75,7 @@ describe("DeleteForm", () => {
     );
     wrapper.find("Formik").simulate("submit");
     await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
+    expect(wrapper.find("FormikFormContent").prop("saving")).toBe(true);
     expect(wrapper.find('[data-testid="saving-label"]').text()).toBe(
       "Removing cluster..."
     );
@@ -244,7 +244,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(<Proxy />);
 
     // Cluster is being deleted - form shouldn't be saved yet.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(wrapper.find(FormikFormContent).prop("saved")).toBe(false);
 
     // Mock the change from deleting the cluster to no longer deleting the
     // cluster, then rerender the component.
@@ -253,7 +253,7 @@ describe("DeleteForm", () => {
     wrapper.update();
 
     // Form should have saved successfully.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(true);
+    expect(wrapper.find(FormikFormContent).prop("saved")).toBe(true);
   });
 
   it("sets the form to saved when a pod has been deleted", () => {
@@ -277,7 +277,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(<Proxy />);
 
     // Pod is being deleted - form shouldn't be saved yet.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(wrapper.find(FormikFormContent).prop("saved")).toBe(false);
 
     // Mock the change from deleting the pod to no longer deleting the pod, then
     // rerender the component.
@@ -286,7 +286,7 @@ describe("DeleteForm", () => {
     wrapper.update();
 
     // Form should have saved successfully.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(true);
+    expect(wrapper.find(FormikFormContent).prop("saved")).toBe(true);
   });
 
   it("clusters do not get marked as deleted if there is an error", () => {
@@ -310,7 +310,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(<Proxy />);
 
     // Cluster is being deleted - form shouldn't be saved yet.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(wrapper.find(FormikFormContent).prop("saved")).toBe(false);
 
     // Mock the change from deleting the cluster to no longer deleting the
     // cluster including an error, then rerender the component.
@@ -325,7 +325,7 @@ describe("DeleteForm", () => {
     wrapper.update();
 
     // Form should not have saved successfully.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(wrapper.find(FormikFormContent).prop("saved")).toBe(false);
   });
 
   it("pods do not get marked as deleted if there is an error", () => {
@@ -349,7 +349,7 @@ describe("DeleteForm", () => {
     const wrapper = mount(<Proxy />);
 
     // Pod is being deleted - form shouldn't be saved yet.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(wrapper.find(FormikFormContent).prop("saved")).toBe(false);
 
     // Mock the change from deleting the pod to no longer deleting the pod
     // including an error, then rerender the component.
@@ -359,6 +359,6 @@ describe("DeleteForm", () => {
     wrapper.update();
 
     // Form should not have saved successfully.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(wrapper.find(FormikFormContent).prop("saved")).toBe(false);
   });
 });

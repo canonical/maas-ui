@@ -2,10 +2,11 @@ import { useCallback } from "react";
 
 import { Strip } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import NonUbuntuImageSelect from "app/images/components/NonUbuntuImageSelect";
 import type { ImageValue } from "app/images/types";
 import { actions as bootResourceActions } from "app/store/bootresource";
@@ -86,12 +87,8 @@ const OtherImages = (): JSX.Element | null => {
       <hr />
       <Strip shallow className="u-no-padding--bottom">
         <h4>Other images</h4>
-        <FormikForm<OtherImagesValues>
-          allowUnchanged
-          buttonsBordered={false}
-          cleanup={cleanup}
+        <Formik
           enableReinitialize
-          errors={error}
           initialValues={{
             images: initialImages,
           }}
@@ -105,22 +102,29 @@ const OtherImages = (): JSX.Element | null => {
             };
             dispatch(bootResourceActions.saveOther(params));
           }}
-          onSuccess={() => {
-            dispatch(bootResourceActions.poll({ continuous: false }));
-          }}
-          saved={saved}
-          saving={saving || stoppingImport}
-          savingLabel={stoppingImport ? "Stopping image import..." : null}
-          secondarySubmit={() => {
-            dispatch(cleanup());
-            dispatch(bootResourceActions.stopImport());
-          }}
-          secondarySubmitLabel={canStopImport ? "Stop import" : null}
-          submitLabel="Update selection"
           validationSchema={OtherImagesSchema}
         >
-          <NonUbuntuImageSelect images={otherImages} resources={resources} />
-        </FormikForm>
+          <FormikFormContent<OtherImagesValues>
+            allowUnchanged
+            buttonsBordered={false}
+            cleanup={cleanup}
+            errors={error}
+            onSuccess={() => {
+              dispatch(bootResourceActions.poll({ continuous: false }));
+            }}
+            saved={saved}
+            saving={saving || stoppingImport}
+            savingLabel={stoppingImport ? "Stopping image import..." : null}
+            secondarySubmit={() => {
+              dispatch(cleanup());
+              dispatch(bootResourceActions.stopImport());
+            }}
+            secondarySubmitLabel={canStopImport ? "Stop import" : null}
+            submitLabel="Update selection"
+          >
+            <NonUbuntuImageSelect images={otherImages} resources={resources} />
+          </FormikFormContent>
+        </Formik>
       </Strip>
     </>
   );

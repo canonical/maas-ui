@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 
 import type { PropsWithSpread } from "@canonical/react-components";
 import { Col, Row } from "@canonical/react-components";
+import type { FormikErrors } from "formik";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
-import type { Props as FormikFormProps } from "app/base/components/FormikForm/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
+import type { Props as FormikFormContentProps } from "app/base/components/FormikFormContent";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
@@ -22,7 +24,7 @@ type Props = PropsWithSpread<
     name: string | null;
     onTagCreated: (tag: Tag) => void;
   },
-  Partial<FormikFormProps<CreateParams>>
+  Partial<FormikFormContentProps<CreateParams, FormikErrors<CreateParams>>>
 >;
 
 export enum Label {
@@ -62,13 +64,7 @@ export const AddTagForm = ({
   }, [onTagCreated, tag]);
 
   return (
-    <FormikForm<CreateParams>
-      aria-label={Label.Form}
-      allowUnchanged
-      buttonsAlign="left"
-      buttonsBordered={false}
-      cleanup={tagActions.cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         comment: "",
         kernel_opts: "",
@@ -78,38 +74,47 @@ export const AddTagForm = ({
         dispatch(tagActions.cleanup());
         dispatch(tagActions.create(values));
       }}
-      onSuccess={({ name }) => {
-        setSavedName(name);
-      }}
-      saved={saved}
-      saving={saving}
-      submitAppearance="neutral"
-      submitLabel="Create and add to tag changes"
       validationSchema={AddTagFormSchema}
-      {...props}
     >
-      <Row className="u-no-padding">
-        <Col size={12}>
-          <FormikField
-            label={Label.Name}
-            name="name"
-            placeholder="Enter a name for the tag."
-            type="text"
-            required
-          />
-          <FormikField
-            label={Label.Comment}
-            name="comment"
-            placeholder="Add a comment as an explanation for this tag."
-            type="text"
-          />
-          <KernelOptionsField
-            generateDeployedMessage={generateDeployedMessage}
-            deployedMachines={deployedMachines}
-          />
-        </Col>
-      </Row>
-    </FormikForm>
+      <FormikFormContent<CreateParams>
+        aria-label={Label.Form}
+        allowUnchanged
+        buttonsAlign="left"
+        buttonsBordered={false}
+        cleanup={tagActions.cleanup}
+        errors={errors}
+        onSuccess={({ name }) => {
+          setSavedName(name);
+        }}
+        saved={saved}
+        saving={saving}
+        submitAppearance="neutral"
+        submitLabel="Create and add to tag changes"
+        {...props}
+      >
+        <Row className="u-no-padding">
+          <Col size={12}>
+            <FormikField
+              label={Label.Name}
+              name="name"
+              placeholder="Enter a name for the tag."
+              type="text"
+              required
+            />
+            <FormikField
+              label={Label.Comment}
+              name="comment"
+              placeholder="Add a comment as an explanation for this tag."
+              type="text"
+            />
+            <KernelOptionsField
+              generateDeployedMessage={generateDeployedMessage}
+              deployedMachines={deployedMachines}
+            />
+          </Col>
+        </Row>
+      </FormikFormContent>
+    </Formik>
   );
 };
 

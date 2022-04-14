@@ -1,10 +1,11 @@
 import { useCallback } from "react";
 
 import { Notification } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
 import FabricLink from "app/base/components/FabricLink";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { EmptyObject } from "app/base/types";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { RootState } from "app/store/root/types";
@@ -38,34 +39,37 @@ const VLANDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
 
   const isDefaultVLAN = vlan.id === fabric.default_vlan_id;
   return (
-    <FormikForm<EmptyObject>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={errors}
+    <Formik
       initialValues={{}}
-      onCancel={closeForm}
       onSubmit={() => {
         dispatch(cleanup());
         dispatch(vlanActions.delete(id));
       }}
-      savedRedirect={subnetURLs.index}
-      saved={saved}
-      saving={saving}
-      submitAppearance="negative"
-      submitDisabled={isDefaultVLAN}
-      submitLabel="Delete VLAN"
     >
-      {isDefaultVLAN ? (
-        <Notification borderless inline severity="negative">
-          This VLAN cannot be deleted because it is the default VLAN for{" "}
-          <FabricLink id={fabric.id} />.
-        </Notification>
-      ) : (
-        <Notification borderless inline severity="caution">
-          Are you sure you want to delete this VLAN?
-        </Notification>
-      )}
-    </FormikForm>
+      <FormikFormContent<EmptyObject>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={errors}
+        onCancel={closeForm}
+        savedRedirect={subnetURLs.index}
+        saved={saved}
+        saving={saving}
+        submitAppearance="negative"
+        submitDisabled={isDefaultVLAN}
+        submitLabel="Delete VLAN"
+      >
+        {isDefaultVLAN ? (
+          <Notification borderless inline severity="negative">
+            This VLAN cannot be deleted because it is the default VLAN for{" "}
+            <FabricLink id={fabric.id} />.
+          </Notification>
+        ) : (
+          <Notification borderless inline severity="caution">
+            Are you sure you want to delete this VLAN?
+          </Notification>
+        )}
+      </FormikFormContent>
+    </Formik>
   );
 };
 

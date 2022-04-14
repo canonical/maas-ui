@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -12,7 +13,7 @@ import type {
 
 import CredentialsFormFields from "./CredentialsFormFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
@@ -108,11 +109,8 @@ export const CredentialsForm = ({
     .defined();
 
   return (
-    <FormikForm<CredentialsFormValues>
-      allowUnchanged={!!newPodValues.power_address}
+    <Formik
       enableReinitialize
-      errors={errors}
-      cleanup={cleanup}
       initialValues={{
         certificate: newPodValues.certificate,
         key: newPodValues.key,
@@ -121,7 +119,6 @@ export const CredentialsForm = ({
         power_address: newPodValues.power_address,
         zone: newPodValues.zone,
       }}
-      onCancel={clearHeaderContent}
       onSubmit={(values) => {
         cleanup();
         setSubmissionErrors(null);
@@ -144,15 +141,22 @@ export const CredentialsForm = ({
           );
         }
       }}
-      saving={authenticating || generatingCertificate}
-      submitLabel="Next"
       validationSchema={CredentialsFormSchema}
     >
-      <CredentialsFormFields
-        setShouldGenerateCert={setShouldGenerateCert}
-        shouldGenerateCert={shouldGenerateCert}
-      />
-    </FormikForm>
+      <FormikFormContent<CredentialsFormValues>
+        allowUnchanged={!!newPodValues.power_address}
+        errors={errors}
+        cleanup={cleanup}
+        onCancel={clearHeaderContent}
+        saving={authenticating || generatingCertificate}
+        submitLabel="Next"
+      >
+        <CredentialsFormFields
+          setShouldGenerateCert={setShouldGenerateCert}
+          shouldGenerateCert={shouldGenerateCert}
+        />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

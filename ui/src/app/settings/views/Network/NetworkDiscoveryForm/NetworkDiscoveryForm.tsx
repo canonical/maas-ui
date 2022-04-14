@@ -1,13 +1,14 @@
 import { useEffect } from "react";
 
 import { Col, Spinner, Row } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
 import type { NetworkDiscoveryValues } from "./types";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -45,17 +46,10 @@ const NetworkDiscoveryForm = (): JSX.Element => {
       <Col size={6}>
         {loading && <Spinner text="Loading..." />}
         {loaded && (
-          <FormikForm<NetworkDiscoveryValues>
-            buttonsAlign="left"
-            buttonsBordered={false}
+          <Formik<NetworkDiscoveryValues>
             initialValues={{
               active_discovery_interval: activeDiscoveryInterval || "",
               network_discovery: networkDiscovery || "",
-            }}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Network settings",
-              label: "Network discovery form",
             }}
             onSubmit={(values, { resetForm }) => {
               if (values.network_discovery === NetworkDiscovery.DISABLED) {
@@ -65,12 +59,22 @@ const NetworkDiscoveryForm = (): JSX.Element => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
-            saving={saving}
-            saved={saved}
             validationSchema={NetworkDiscoverySchema}
           >
-            <NetworkDiscoveryFormFields />
-          </FormikForm>
+            <FormikFormContent<NetworkDiscoveryValues>
+              buttonsAlign="left"
+              buttonsBordered={false}
+              onSaveAnalytics={{
+                action: "Saved",
+                category: "Network settings",
+                label: "Network discovery form",
+              }}
+              saving={saving}
+              saved={saved}
+            >
+              <NetworkDiscoveryFormFields />
+            </FormikFormContent>
+          </Formik>
         )}
       </Col>
     </Row>

@@ -1,9 +1,10 @@
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import CreateBcacheFields from "./CreateBcacheFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -86,10 +87,7 @@ export const CreateBcache = ({
     }
 
     return (
-      <FormikForm<CreateBcacheValues, MachineEventErrors>
-        allowUnchanged
-        cleanup={machineActions.cleanup}
-        errors={errors}
+      <Formik
         initialValues={{
           cacheMode: BcacheModes.WRITE_BACK,
           cacheSetId: cacheSets[0].id,
@@ -98,12 +96,6 @@ export const CreateBcache = ({
           mountPoint: "",
           name: getInitialName(machine.disks),
           tags: [],
-        }}
-        onCancel={closeExpanded}
-        onSaveAnalytics={{
-          action: "Create bcache",
-          category: "Machine storage",
-          label: "Create bcache",
         }}
         onSubmit={(values) => {
           const {
@@ -131,17 +123,29 @@ export const CreateBcache = ({
 
           dispatch(machineActions.createBcache(params));
         }}
-        saved={saved}
-        saving={saving}
-        submitLabel="Create bcache"
         validationSchema={CreateBcacheSchema}
       >
-        <CreateBcacheFields
-          cacheSets={cacheSets}
-          storageDevice={storageDevice}
-          systemId={systemId}
-        />
-      </FormikForm>
+        <FormikFormContent<CreateBcacheValues, MachineEventErrors>
+          allowUnchanged
+          cleanup={machineActions.cleanup}
+          errors={errors}
+          onCancel={closeExpanded}
+          onSaveAnalytics={{
+            action: "Create bcache",
+            category: "Machine storage",
+            label: "Create bcache",
+          }}
+          saved={saved}
+          saving={saving}
+          submitLabel="Create bcache"
+        >
+          <CreateBcacheFields
+            cacheSets={cacheSets}
+            storageDevice={storageDevice}
+            systemId={systemId}
+          />
+        </FormikFormContent>
+      </Formik>
     );
   }
   return null;

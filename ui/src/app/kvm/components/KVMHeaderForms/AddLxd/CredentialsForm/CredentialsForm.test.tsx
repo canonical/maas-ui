@@ -8,7 +8,7 @@ import type { NewPodValues } from "../types";
 
 import CredentialsForm from "./CredentialsForm";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -306,7 +306,7 @@ describe("CredentialsForm", () => {
     );
 
     expect(setStep).not.toHaveBeenCalled();
-    expect(wrapper.find(FormikForm).prop("errors")).toBe(
+    expect(wrapper.find(FormikFormContent).prop("errors")).toBe(
       "Failed to fetch projects."
     );
   });
@@ -346,7 +346,9 @@ describe("CredentialsForm", () => {
       </Provider>
     );
     expect(setStep).not.toHaveBeenCalled();
-    expect(wrapper.find(FormikForm).prop("errors")).toBe("name too long");
+    expect(wrapper.find(FormikFormContent).prop("errors")).toBe(
+      "name too long"
+    );
   });
 
   it("clears the submission errors when unmounting", () => {

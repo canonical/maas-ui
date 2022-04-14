@@ -1,9 +1,10 @@
+import { Formik } from "formik";
 import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 
 import EditDiskFields from "./EditDiskFields";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
@@ -48,20 +49,12 @@ export const EditDisk = ({
   );
 
   return (
-    <FormikForm<EditDiskValues, MachineEventErrors>
-      cleanup={machineActions.cleanup}
-      errors={errors}
+    <Formik
       initialValues={{
         fstype: disk.filesystem?.fstype || "",
         mountOptions: disk.filesystem?.mount_options || "",
         mountPoint: disk.filesystem?.mount_point || "",
         tags: disk.tags || [],
-      }}
-      onCancel={closeExpanded}
-      onSaveAnalytics={{
-        action: `Edit ${formatType(disk, true)}`,
-        category: "Machine storage",
-        label: "Save",
       }}
       onSubmit={(values) => {
         const { fstype, mountOptions, mountPoint, tags } = values;
@@ -76,13 +69,24 @@ export const EditDisk = ({
 
         dispatch(machineActions.updateDisk(params));
       }}
-      saved={saved}
-      saving={saving}
-      submitLabel="Save"
       validationSchema={EditDiskSchema}
     >
-      <EditDiskFields disk={disk} systemId={systemId} />
-    </FormikForm>
+      <FormikFormContent<EditDiskValues, MachineEventErrors>
+        cleanup={machineActions.cleanup}
+        errors={errors}
+        onCancel={closeExpanded}
+        onSaveAnalytics={{
+          action: `Edit ${formatType(disk, true)}`,
+          category: "Machine storage",
+          label: "Save",
+        }}
+        saved={saved}
+        saving={saving}
+        submitLabel="Save"
+      >
+        <EditDiskFields disk={disk} systemId={systemId} />
+      </FormikFormContent>
+    </Formik>
   );
 };
 

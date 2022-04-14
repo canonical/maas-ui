@@ -1,10 +1,11 @@
 import { useCallback } from "react";
 
 import { Notification, Spinner, Strip } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useCycled } from "app/base/hooks";
 import type { EmptyObject } from "app/base/types";
 import dashboardURLs from "app/dashboard/urls";
@@ -42,35 +43,38 @@ export const MapSubnet = ({
   const closeForm = () => setActiveForm(null);
   const isIPv4 = subnet.version === 4;
   return (
-    <FormikForm<EmptyObject>
-      buttonsBordered={false}
-      cleanup={cleanup}
-      errors={scanError}
+    <Formik
       initialValues={{}}
-      onCancel={closeForm}
       onSubmit={() => {
         resetScanned();
         dispatch(cleanup());
         dispatch(subnetActions.scan(id));
       }}
-      onSuccess={closeForm}
-      saved={saved}
-      saving={scanning}
-      submitDisabled={!isIPv4}
-      submitLabel="Map subnet"
     >
-      {isIPv4 ? (
-        <>
-          You will start mapping your subnet. Go to the{" "}
-          <Link to={dashboardURLs.index}>dashboard</Link> to see the discovered
-          items.
-        </>
-      ) : (
-        <Notification borderless inline severity="negative" title="Error:">
-          Only IPv4 subnets can be scanned.
-        </Notification>
-      )}
-    </FormikForm>
+      <FormikFormContent<EmptyObject>
+        buttonsBordered={false}
+        cleanup={cleanup}
+        errors={scanError}
+        onCancel={closeForm}
+        onSuccess={closeForm}
+        saved={saved}
+        saving={scanning}
+        submitDisabled={!isIPv4}
+        submitLabel="Map subnet"
+      >
+        {isIPv4 ? (
+          <>
+            You will start mapping your subnet. Go to the{" "}
+            <Link to={dashboardURLs.index}>dashboard</Link> to see the
+            discovered items.
+          </>
+        ) : (
+          <Notification borderless inline severity="negative" title="Error:">
+            Only IPv4 subnets can be scanned.
+          </Notification>
+        )}
+      </FormikFormContent>
+    </Formik>
   );
 };
 

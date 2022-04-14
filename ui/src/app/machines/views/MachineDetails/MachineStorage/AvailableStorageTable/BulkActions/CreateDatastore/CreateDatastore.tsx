@@ -7,12 +7,13 @@ import {
   TableHeader,
   TableRow,
 } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -79,18 +80,9 @@ export const CreateDatastore = ({
   if (isMachineDetails(machine)) {
     return (
       <FormCard sidebar={false}>
-        <FormikForm<CreateDatastoreValues, MachineEventErrors>
-          allowUnchanged
-          cleanup={machineActions.cleanup}
-          errors={errors}
+        <Formik
           initialValues={{
             name: getInitialName(machine.disks),
-          }}
-          onCancel={closeForm}
-          onSaveAnalytics={{
-            action: "Create datastore",
-            category: "Machine storage",
-            label: "Create datastore",
           }}
           onSubmit={(values: CreateDatastoreValues) => {
             const [blockDeviceIds, partitionIds] =
@@ -103,45 +95,57 @@ export const CreateDatastore = ({
             };
             dispatch(machineActions.createVmfsDatastore(params));
           }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Create datastore"
           validationSchema={CreateDatastoreSchema}
         >
-          <Row>
-            <Col small={4} medium={6} size={6}>
-              <Table>
-                <thead>
-                  <TableRow>
-                    <TableHeader>Name</TableHeader>
-                    <TableHeader>Size</TableHeader>
-                    <TableHeader>Device type</TableHeader>
-                  </TableRow>
-                </thead>
-                <tbody>
-                  {selected.map((device) => (
-                    <TableRow key={`${device.type}-${device.id}`}>
-                      <TableCell>{device.name}</TableCell>
-                      <TableCell>{formatSize(device.size)}</TableCell>
-                      <TableCell>{formatType(device)}</TableCell>
+          <FormikFormContent<CreateDatastoreValues, MachineEventErrors>
+            allowUnchanged
+            cleanup={machineActions.cleanup}
+            errors={errors}
+            onCancel={closeForm}
+            onSaveAnalytics={{
+              action: "Create datastore",
+              category: "Machine storage",
+              label: "Create datastore",
+            }}
+            saved={saved}
+            saving={saving}
+            submitLabel="Create datastore"
+          >
+            <Row>
+              <Col small={4} medium={6} size={6}>
+                <Table>
+                  <thead>
+                    <TableRow>
+                      <TableHeader>Name</TableHeader>
+                      <TableHeader>Size</TableHeader>
+                      <TableHeader>Device type</TableHeader>
                     </TableRow>
-                  ))}
-                </tbody>
-              </Table>
-            </Col>
-            <Col small={4} medium={6} size={6}>
-              <FormikField label="Name" name="name" required type="text" />
-              <Input
-                data-testid="datastore-size"
-                disabled
-                label="Size"
-                value={`${formatSize(totalSize)}`}
-                type="text"
-              />
-              <Input disabled label="Filesystem" value="VMFS6" type="text" />
-            </Col>
-          </Row>
-        </FormikForm>
+                  </thead>
+                  <tbody>
+                    {selected.map((device) => (
+                      <TableRow key={`${device.type}-${device.id}`}>
+                        <TableCell>{device.name}</TableCell>
+                        <TableCell>{formatSize(device.size)}</TableCell>
+                        <TableCell>{formatType(device)}</TableCell>
+                      </TableRow>
+                    ))}
+                  </tbody>
+                </Table>
+              </Col>
+              <Col small={4} medium={6} size={6}>
+                <FormikField label="Name" name="name" required type="text" />
+                <Input
+                  data-testid="datastore-size"
+                  disabled
+                  label="Size"
+                  value={`${formatSize(totalSize)}`}
+                  type="text"
+                />
+                <Input disabled label="Filesystem" value="VMFS6" type="text" />
+              </Col>
+            </Row>
+          </FormikFormContent>
+        </Formik>
       </FormCard>
     );
   }

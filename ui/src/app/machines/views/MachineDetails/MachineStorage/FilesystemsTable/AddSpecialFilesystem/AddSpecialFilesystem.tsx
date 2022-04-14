@@ -1,10 +1,11 @@
 import { Col, Row, Select } from "@canonical/react-components";
+import { Formik } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
-import FormikForm from "app/base/components/FormikForm";
+import FormikFormContent from "app/base/components/FormikFormContent";
 import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -57,19 +58,11 @@ export const AddSpecialFilesystem = ({
 
     return (
       <FormCard data-testid="confirmation-form" sidebar={false}>
-        <FormikForm<AddSpecialFilesystemValues, MachineEventErrors>
-          cleanup={machineActions.cleanup}
-          errors={errors}
+        <Formik
           initialValues={{
             fstype: "",
             mountOptions: "",
             mountPoint: "",
-          }}
-          onCancel={closeForm}
-          onSaveAnalytics={{
-            action: "Add special filesystem",
-            category: "Machine storage",
-            label: "Mount",
           }}
           onSubmit={(values) => {
             dispatch(machineActions.cleanup());
@@ -81,44 +74,55 @@ export const AddSpecialFilesystem = ({
             };
             dispatch(machineActions.mountSpecial(params));
           }}
-          saved={saved}
-          saving={saving}
-          submitLabel="Mount"
           validationSchema={AddSpecialFilesystemSchema}
         >
-          <Row>
-            <Col size={6}>
-              <FormikField
-                component={Select}
-                label="Type"
-                name="fstype"
-                options={[
-                  {
-                    label: "Select filesystem type",
-                    value: "",
-                    disabled: true,
-                  },
-                  ...fsOptions,
-                ]}
-                required
-              />
-              <FormikField
-                help="Absolute path to filesystem"
-                label="Mount point"
-                name="mountPoint"
-                placeholder="/path/to/filesystem"
-                required
-                type="text"
-              />
-              <FormikField
-                help='Comma-separated list without spaces, e.g. "noexec,size=1024k"'
-                label="Mount options"
-                name="mountOptions"
-                type="text"
-              />
-            </Col>
-          </Row>
-        </FormikForm>
+          <FormikFormContent<AddSpecialFilesystemValues, MachineEventErrors>
+            cleanup={machineActions.cleanup}
+            errors={errors}
+            onCancel={closeForm}
+            onSaveAnalytics={{
+              action: "Add special filesystem",
+              category: "Machine storage",
+              label: "Mount",
+            }}
+            saved={saved}
+            saving={saving}
+            submitLabel="Mount"
+          >
+            <Row>
+              <Col size={6}>
+                <FormikField
+                  component={Select}
+                  label="Type"
+                  name="fstype"
+                  options={[
+                    {
+                      label: "Select filesystem type",
+                      value: "",
+                      disabled: true,
+                    },
+                    ...fsOptions,
+                  ]}
+                  required
+                />
+                <FormikField
+                  help="Absolute path to filesystem"
+                  label="Mount point"
+                  name="mountPoint"
+                  placeholder="/path/to/filesystem"
+                  required
+                  type="text"
+                />
+                <FormikField
+                  help='Comma-separated list without spaces, e.g. "noexec,size=1024k"'
+                  label="Mount options"
+                  name="mountOptions"
+                  type="text"
+                />
+              </Col>
+            </Row>
+          </FormikFormContent>
+        </Formik>
       </FormCard>
     );
   }
