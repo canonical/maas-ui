@@ -70,14 +70,14 @@ export const ReleaseForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         const { enableErase, quickErase, secureErase } = values;
-        const extra = {
-          erase: enableErase,
-          quick_erase: enableErase && quickErase,
-          secure_erase: enableErase && secureErase,
-        };
         machines.forEach((machine) => {
           dispatch(
-            machineActions.release({ systemId: machine.system_id, extra })
+            machineActions.release({
+              erase: enableErase,
+              quick_erase: enableErase && quickErase,
+              secure_erase: enableErase && secureErase,
+              system_id: machine.system_id,
+            })
           );
         });
       }}

@@ -131,7 +131,9 @@ export const ActionFormWrapper = ({
           <DeleteForm
             onSubmit={() => {
               machines.forEach((machine) => {
-                dispatch(machineActions.delete(machine.system_id));
+                dispatch(
+                  machineActions.delete({ system_id: machine.system_id })
+                );
               });
             }}
             redirectURL={machineURLs.machines.index}
@@ -156,8 +158,8 @@ export const ActionFormWrapper = ({
               machines.forEach((machine) => {
                 dispatch(
                   machineActions.setZone({
-                    systemId: machine.system_id,
-                    zoneId: zoneID,
+                    system_id: machine.system_id,
+                    zone_id: zoneID,
                   })
                 );
               });
@@ -174,7 +176,14 @@ export const ActionFormWrapper = ({
             applyConfiguredNetworking={applyConfiguredNetworking}
             hardwareType={hardwareType}
             onTest={(args) => {
-              dispatch(machineActions.test(args));
+              dispatch(
+                machineActions.test({
+                  enable_ssh: args.enableSSH,
+                  script_input: args.scriptInputs,
+                  system_id: args.systemId,
+                  testing_scripts: args.scripts.map((script) => script.id),
+                })
+              );
             }}
             {...commonNodeFormProps}
           />

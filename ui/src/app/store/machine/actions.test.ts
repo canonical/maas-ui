@@ -13,10 +13,7 @@ import {
   StorageLayout,
 } from "app/store/types/enum";
 import { NodeActions } from "app/store/types/node";
-import {
-  script as scriptFactory,
-  scriptResult as scriptResultFactory,
-} from "testing/factories";
+import { scriptResult as scriptResultFactory } from "testing/factories";
 
 describe("machine actions", () => {
   it("should handle fetching machines", () => {
@@ -119,8 +116,8 @@ describe("machine actions", () => {
   it("can handle setting the pool", () => {
     expect(
       actions.setPool({
-        systemId: "abc123",
-        poolId: 909,
+        system_id: "abc123",
+        pool_id: 909,
       })
     ).toEqual({
       type: "machine/setPool",
@@ -141,7 +138,7 @@ describe("machine actions", () => {
   });
 
   it("can handle setting the zone", () => {
-    expect(actions.setZone({ systemId: "abc123", zoneId: 909 })).toEqual({
+    expect(actions.setZone({ system_id: "abc123", zone_id: 909 })).toEqual({
       type: "machine/setZone",
       meta: {
         model: "machine",
@@ -160,7 +157,7 @@ describe("machine actions", () => {
   });
 
   it("can handle turning on the machine", () => {
-    expect(actions.on("abc123")).toEqual({
+    expect(actions.on({ system_id: "abc123" })).toEqual({
       type: "machine/on",
       meta: {
         model: "machine",
@@ -177,7 +174,7 @@ describe("machine actions", () => {
   });
 
   it("can handle turning off the machine", () => {
-    expect(actions.off("abc123")).toEqual({
+    expect(actions.off({ system_id: "abc123" })).toEqual({
       type: "machine/off",
       meta: {
         model: "machine",
@@ -209,7 +206,7 @@ describe("machine actions", () => {
   });
 
   it("can handle acquiring a machine", () => {
-    expect(actions.acquire("abc123")).toEqual({
+    expect(actions.acquire({ system_id: "abc123" })).toEqual({
       type: "machine/acquire",
       meta: {
         model: "machine",
@@ -228,12 +225,10 @@ describe("machine actions", () => {
   it("can handle releasing a machine", () => {
     expect(
       actions.release({
-        systemId: "abc123",
-        extra: {
-          erase: true,
-          quick_erase: false,
-          secure_erase: true,
-        },
+        erase: true,
+        quick_erase: false,
+        secure_erase: true,
+        system_id: "abc123",
       })
     ).toEqual({
       type: "machine/release",
@@ -252,13 +247,15 @@ describe("machine actions", () => {
   });
 
   it("can handle deploying a machine", () => {
-    const extra = {
-      osystem: "ubuntu",
-      distro_series: "bionic",
-      hwe_kernel: "ga-16.04",
-      install_kvm: false,
-    };
-    expect(actions.deploy({ systemId: "abc123", extra })).toEqual({
+    expect(
+      actions.deploy({
+        distro_series: "bionic",
+        hwe_kernel: "ga-16.04",
+        install_kvm: false,
+        osystem: "ubuntu",
+        system_id: "abc123",
+      })
+    ).toEqual({
       type: "machine/deploy",
       meta: {
         model: "machine",
@@ -267,7 +264,12 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: NodeActions.DEPLOY,
-          extra,
+          extra: {
+            distro_series: "bionic",
+            hwe_kernel: "ga-16.04",
+            install_kvm: false,
+            osystem: "ubuntu",
+          },
           system_id: "abc123",
         },
       },
@@ -313,7 +315,7 @@ describe("machine actions", () => {
   });
 
   it("can handle aborting a machine", () => {
-    expect(actions.abort("abc123")).toEqual({
+    expect(actions.abort({ system_id: "abc123" })).toEqual({
       type: "machine/abort",
       meta: {
         model: "machine",
@@ -332,22 +334,14 @@ describe("machine actions", () => {
   it("can handle commissioning a machine", () => {
     expect(
       actions.commission({
-        systemId: "abc123",
-        enableSSH: true,
-        skipBMCConfig: false,
-        skipNetworking: false,
-        skipStorage: false,
-        updateFirmware: true,
-        configureHBA: true,
-        commissioningScripts: [
-          scriptFactory({ id: 0, name: "commissioningScript0" }),
-          scriptFactory({ id: 2, name: "commissioningScript2" }),
-        ],
-        testingScripts: [
-          scriptFactory({ id: 0, name: "testingScript0" }),
-          scriptFactory({ id: 2, name: "testScript2" }),
-        ],
-        scriptInputs: { testingScript0: { url: "www.url.com" } },
+        commissioning_scripts: [0, 2, "update_firmware", "configure_hba"],
+        enable_ssh: true,
+        script_input: { testingScript0: { url: "www.url.com" } },
+        skip_bmc_config: false,
+        skip_networking: false,
+        skip_storage: false,
+        system_id: "abc123",
+        testing_scripts: [0, 2],
       })
     ).toEqual({
       meta: {
@@ -358,13 +352,13 @@ describe("machine actions", () => {
         params: {
           action: NodeActions.COMMISSION,
           extra: {
+            commissioning_scripts: [0, 2, "update_firmware", "configure_hba"],
             enable_ssh: true,
+            script_input: { testingScript0: { url: "www.url.com" } },
             skip_bmc_config: false,
             skip_networking: false,
             skip_storage: false,
-            commissioning_scripts: [0, 2, "update_firmware", "configure_hba"],
             testing_scripts: [0, 2],
-            script_input: { testingScript0: { url: "www.url.com" } },
           },
           system_id: "abc123",
         },
@@ -376,13 +370,10 @@ describe("machine actions", () => {
   it("can handle testing a machine", () => {
     expect(
       actions.test({
-        systemId: "abc123",
-        scripts: [
-          scriptFactory({ id: 0, name: "test0" }),
-          scriptFactory({ id: 2, name: "test2" }),
-        ],
-        enableSSH: true,
-        scriptInputs: { "test-0": { url: "www.url.com" } },
+        enable_ssh: true,
+        script_input: { "test-0": { url: "www.url.com" } },
+        system_id: "abc123",
+        testing_scripts: [0, 2],
       })
     ).toEqual({
       type: "machine/test",
@@ -426,7 +417,7 @@ describe("machine actions", () => {
   });
 
   it("can putting a machine into rescue mode", () => {
-    expect(actions.rescueMode("abc123")).toEqual({
+    expect(actions.rescueMode({ system_id: "abc123" })).toEqual({
       type: "machine/rescueMode",
       meta: {
         model: "machine",
@@ -443,7 +434,7 @@ describe("machine actions", () => {
   });
 
   it("can handle making a machine exit rescue mode", () => {
-    expect(actions.exitRescueMode("abc123")).toEqual({
+    expect(actions.exitRescueMode({ system_id: "abc123" })).toEqual({
       type: "machine/exitRescueMode",
       meta: {
         model: "machine",
@@ -461,7 +452,7 @@ describe("machine actions", () => {
 
   it("can handle marking a machine as broken", () => {
     expect(
-      actions.markBroken({ systemId: "abc123", message: "machine is on fire" })
+      actions.markBroken({ system_id: "abc123", message: "machine is on fire" })
     ).toEqual({
       type: "machine/markBroken",
       meta: {
@@ -481,7 +472,7 @@ describe("machine actions", () => {
   });
 
   it("can handle marking a machine as fixed", () => {
-    expect(actions.markFixed("abc123")).toEqual({
+    expect(actions.markFixed({ system_id: "abc123" })).toEqual({
       type: "machine/markFixed",
       meta: {
         model: "machine",
@@ -498,7 +489,7 @@ describe("machine actions", () => {
   });
 
   it("can handle overriding failed testing on a machine", () => {
-    expect(actions.overrideFailedTesting("abc123")).toEqual({
+    expect(actions.overrideFailedTesting({ system_id: "abc123" })).toEqual({
       type: "machine/overrideFailedTesting",
       meta: {
         model: "machine",
@@ -515,7 +506,7 @@ describe("machine actions", () => {
   });
 
   it("can handle locking a machine", () => {
-    expect(actions.lock("abc123")).toEqual({
+    expect(actions.lock({ system_id: "abc123" })).toEqual({
       type: "machine/lock",
       meta: {
         model: "machine",
@@ -532,7 +523,7 @@ describe("machine actions", () => {
   });
 
   it("can handle unlocking a machine", () => {
-    expect(actions.unlock("abc123")).toEqual({
+    expect(actions.unlock({ system_id: "abc123" })).toEqual({
       type: "machine/unlock",
       meta: {
         model: "machine",
@@ -549,7 +540,7 @@ describe("machine actions", () => {
   });
 
   it("can handle deleting a machine", () => {
-    expect(actions.delete("abc123")).toEqual({
+    expect(actions.delete({ system_id: "abc123" })).toEqual({
       type: "machine/delete",
       meta: {
         model: "machine",
@@ -566,7 +557,7 @@ describe("machine actions", () => {
   });
 
   it("can handle tagging a machine", () => {
-    expect(actions.tag({ systemId: "abc123", tags: [1, 2] })).toEqual({
+    expect(actions.tag({ system_id: "abc123", tags: [1, 2] })).toEqual({
       type: "machine/tag",
       meta: {
         model: "machine",
@@ -583,7 +574,7 @@ describe("machine actions", () => {
   });
 
   it("can handle untagging a machine", () => {
-    expect(actions.untag({ systemId: "abc123", tags: [1, 2] })).toEqual({
+    expect(actions.untag({ system_id: "abc123", tags: [1, 2] })).toEqual({
       type: "machine/untag",
       meta: {
         model: "machine",

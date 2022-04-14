@@ -36,9 +36,7 @@ import type {
   ReleaseParams,
   SetBootDiskParams,
   SetPoolParams,
-  SetZoneParams,
   TagParams,
-  TestParams,
   UnlinkSubnetParams,
   UnmountSpecialParams,
   UntagParams,
@@ -48,9 +46,13 @@ import type {
   UpdateVmfsDatastoreParams,
 } from "./types";
 
-import type { Script } from "app/store/script/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
-import type { UpdateInterfaceParams } from "app/store/types/node";
+import type {
+  BaseNodeActionParams,
+  SetZoneParams,
+  TestParams,
+  UpdateInterfaceParams,
+} from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
 import {
@@ -370,7 +372,7 @@ const machineSlice = createSlice({
       UpdateParams
     >(MachineMeta.MODEL, MachineMeta.PK, setErrors),
     [NodeActions.ABORT]: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -379,7 +381,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.ABORT,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -391,7 +393,7 @@ const machineSlice = createSlice({
     [`${NodeActions.ABORT}Start`]: statusHandlers.abort.start,
     [`${NodeActions.ABORT}Success`]: statusHandlers.abort.success,
     [NodeActions.ACQUIRE]: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -400,7 +402,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.ACQUIRE,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -505,21 +507,6 @@ const machineSlice = createSlice({
     cloneSuccess: statusHandlers.clone.success,
     [NodeActions.COMMISSION]: {
       prepare: (params: CommissionParams) => {
-        let formattedCommissioningScripts: (string | Script["id"])[] = [];
-        if (
-          params.commissioningScripts &&
-          params.commissioningScripts.length > 0
-        ) {
-          formattedCommissioningScripts = params.commissioningScripts.map(
-            (script) => script.id
-          );
-          if (params.updateFirmware) {
-            formattedCommissioningScripts.push("update_firmware");
-          }
-          if (params.configureHBA) {
-            formattedCommissioningScripts.push("configure_hba");
-          }
-        }
         return {
           meta: {
             model: MachineMeta.MODEL,
@@ -528,18 +515,16 @@ const machineSlice = createSlice({
           payload: {
             params: {
               action: NodeActions.COMMISSION,
-              system_id: params.systemId,
               extra: {
-                enable_ssh: params.enableSSH,
-                skip_bmc_config: params.skipBMCConfig,
-                skip_networking: params.skipNetworking,
-                skip_storage: params.skipStorage,
-                commissioning_scripts: formattedCommissioningScripts,
-                testing_scripts:
-                  params.testingScripts &&
-                  params.testingScripts.map((script) => script.id),
-                script_input: params.scriptInputs,
+                commissioning_scripts: params.commissioning_scripts,
+                enable_ssh: params.enable_ssh,
+                script_input: params.script_input,
+                skip_bmc_config: params.skip_bmc_config,
+                skip_networking: params.skip_networking,
+                skip_storage: params.skip_storage,
+                testing_scripts: params.testing_scripts,
               },
+              system_id: params.system_id,
             },
           },
         };
@@ -792,7 +777,7 @@ const machineSlice = createSlice({
     createVolumeGroupStart: statusHandlers.createVolumeGroup.start,
     createVolumeGroupSuccess: statusHandlers.createVolumeGroup.success,
     [NodeActions.DELETE]: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -801,7 +786,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.DELETE,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -954,8 +939,16 @@ const machineSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.DEPLOY,
-            extra: params.extra || {},
-            system_id: params.systemId,
+            extra: {
+              distro_series: params.distro_series,
+              enable_hw_sync: params.enable_hw_sync,
+              hwe_kernel: params.hwe_kernel,
+              install_kvm: params.install_kvm,
+              osystem: params.osystem,
+              register_vmhost: params.register_vmhost,
+              user_data: params.user_data,
+            },
+            system_id: params.system_id,
           },
         },
       }),
@@ -967,7 +960,7 @@ const machineSlice = createSlice({
     [`${NodeActions.DEPLOY}Start`]: statusHandlers.deploy.start,
     [`${NodeActions.DEPLOY}Success`]: statusHandlers.deploy.success,
     exitRescueMode: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -976,7 +969,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.EXIT_RESCUE_MODE,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1127,7 +1120,7 @@ const machineSlice = createSlice({
     linkSubnetStart: statusHandlers.linkSubnet.start,
     linkSubnetSuccess: statusHandlers.linkSubnet.success,
     [NodeActions.LOCK]: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1136,7 +1129,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.LOCK,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1156,8 +1149,10 @@ const machineSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.MARK_BROKEN,
-            extra: { message: params.message },
-            system_id: params.systemId,
+            extra: {
+              message: params.message,
+            },
+            system_id: params.system_id,
           },
         },
       }),
@@ -1169,7 +1164,7 @@ const machineSlice = createSlice({
     markBrokenStart: statusHandlers.markBroken.start,
     markBrokenSuccess: statusHandlers.markBroken.success,
     markFixed: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1178,7 +1173,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.MARK_FIXED,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1212,7 +1207,7 @@ const machineSlice = createSlice({
     mountSpecialStart: statusHandlers.mountSpecial.start,
     mountSpecialSuccess: statusHandlers.mountSpecial.success,
     [NodeActions.OFF]: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1221,7 +1216,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.OFF,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1233,7 +1228,7 @@ const machineSlice = createSlice({
     [`${NodeActions.OFF}Start`]: statusHandlers.off.start,
     [`${NodeActions.OFF}Success`]: statusHandlers.off.success,
     [NodeActions.ON]: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1242,7 +1237,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.ON,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1254,7 +1249,7 @@ const machineSlice = createSlice({
     [`${NodeActions.ON}Start`]: statusHandlers.on.start,
     [`${NodeActions.ON}Success`]: statusHandlers.on.success,
     overrideFailedTesting: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1263,7 +1258,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.OVERRIDE_FAILED_TESTING,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1283,8 +1278,12 @@ const machineSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.RELEASE,
-            extra: params.extra,
-            system_id: params.systemId,
+            extra: {
+              erase: params.erase,
+              quick_erase: params.quick_erase,
+              secure_erase: params.secure_erase,
+            },
+            system_id: params.system_id,
           },
         },
       }),
@@ -1296,7 +1295,7 @@ const machineSlice = createSlice({
     [`${NodeActions.RELEASE}Start`]: statusHandlers.release.start,
     [`${NodeActions.RELEASE}Success`]: statusHandlers.release.success,
     rescueMode: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1305,7 +1304,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.RESCUE_MODE,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1374,8 +1373,10 @@ const machineSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.SET_POOL,
-            extra: { pool_id: params.poolId },
-            system_id: params.systemId,
+            extra: {
+              pool_id: params.pool_id,
+            },
+            system_id: params.system_id,
           },
         },
       }),
@@ -1406,8 +1407,10 @@ const machineSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.SET_ZONE,
-            extra: { zone_id: params.zoneId },
-            system_id: params.systemId,
+            extra: {
+              zone_id: params.zone_id,
+            },
+            system_id: params.system_id,
           },
         },
       }),
@@ -1447,8 +1450,10 @@ const machineSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.TAG,
-            extra: { tags: params.tags },
-            system_id: params.systemId,
+            extra: {
+              tags: params.tags,
+            },
+            system_id: params.system_id,
           },
         },
       }),
@@ -1469,12 +1474,11 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.TEST,
             extra: {
-              enable_ssh: params.enableSSH,
-              script_input: params.scriptInputs,
-              testing_scripts:
-                params.scripts && params.scripts.map((script) => script.id),
+              enable_ssh: params.enable_ssh,
+              script_input: params.script_input,
+              testing_scripts: params.testing_scripts,
             },
-            system_id: params.systemId,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1486,7 +1490,7 @@ const machineSlice = createSlice({
     [`${NodeActions.TEST}Start`]: statusHandlers.test.start,
     [`${NodeActions.TEST}Success`]: statusHandlers.test.success,
     [NodeActions.UNLOCK]: {
-      prepare: (system_id: Machine[MachineMeta.PK]) => ({
+      prepare: (params: BaseNodeActionParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "action",
@@ -1495,7 +1499,7 @@ const machineSlice = createSlice({
           params: {
             action: NodeActions.UNLOCK,
             extra: {},
-            system_id,
+            system_id: params.system_id,
           },
         },
       }),
@@ -1576,8 +1580,10 @@ const machineSlice = createSlice({
         payload: {
           params: {
             action: NodeActions.UNTAG,
-            extra: { tags: params.tags },
-            system_id: params.systemId,
+            extra: {
+              tags: params.tags,
+            },
+            system_id: params.system_id,
           },
         },
       }),

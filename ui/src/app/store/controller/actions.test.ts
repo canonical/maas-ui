@@ -1,7 +1,6 @@
 import { actions } from "./slice";
 
 import { NodeActions } from "app/store/types/node";
-import { script as scriptFactory } from "testing/factories";
 
 describe("controller actions", () => {
   it("should handle checking images", () => {
@@ -120,7 +119,7 @@ describe("controller actions", () => {
   });
 
   it("can handle deleting a controller", () => {
-    expect(actions.delete("abc123")).toEqual({
+    expect(actions.delete({ system_id: "abc123" })).toEqual({
       type: "controller/delete",
       meta: {
         model: "controller",
@@ -144,7 +143,7 @@ describe("controller actions", () => {
   });
 
   it("can handle setting the zone", () => {
-    expect(actions.setZone({ systemId: "abc123", zoneId: 909 })).toEqual({
+    expect(actions.setZone({ system_id: "abc123", zone_id: 909 })).toEqual({
       type: "controller/setZone",
       meta: {
         model: "controller",
@@ -163,7 +162,7 @@ describe("controller actions", () => {
   });
 
   it("can handle turning on the controller", () => {
-    expect(actions.on("abc123")).toEqual({
+    expect(actions.on({ system_id: "abc123" })).toEqual({
       type: "controller/on",
       meta: {
         model: "controller",
@@ -180,7 +179,7 @@ describe("controller actions", () => {
   });
 
   it("can handle turning off the controller", () => {
-    expect(actions.off("abc123")).toEqual({
+    expect(actions.off({ system_id: "abc123" })).toEqual({
       type: "controller/off",
       meta: {
         model: "controller",
@@ -199,13 +198,10 @@ describe("controller actions", () => {
   it("can handle testing a controller", () => {
     expect(
       actions.test({
-        systemId: "abc123",
-        scripts: [
-          scriptFactory({ id: 0, name: "test0" }),
-          scriptFactory({ id: 2, name: "test2" }),
-        ],
-        enableSSH: true,
-        scriptInputs: { "test-0": { url: "www.url.com" } },
+        enable_ssh: true,
+        script_input: { "test-0": { url: "www.url.com" } },
+        system_id: "abc123",
+        testing_scripts: [0, 2],
       })
     ).toEqual({
       type: "controller/test",
@@ -228,7 +224,7 @@ describe("controller actions", () => {
   });
 
   it("can handle overriding failed testing on a controller", () => {
-    expect(actions.overrideFailedTesting("abc123")).toEqual({
+    expect(actions.overrideFailedTesting({ system_id: "abc123" })).toEqual({
       type: "controller/overrideFailedTesting",
       meta: {
         model: "controller",
@@ -245,7 +241,7 @@ describe("controller actions", () => {
   });
 
   it("can handle importing images", () => {
-    expect(actions.importImages("abc123")).toEqual({
+    expect(actions.importImages({ system_id: "abc123" })).toEqual({
       type: "controller/importImages",
       meta: {
         model: "controller",

@@ -66,7 +66,7 @@ export const ActionFormWrapper = ({
           onSubmit={() => {
             dispatch(deviceActions.cleanup());
             devices.forEach((device) => {
-              dispatch(deviceActions.delete(device.system_id));
+              dispatch(deviceActions.delete({ system_id: device.system_id }));
             });
           }}
           redirectURL={deviceURLs.devices.index}

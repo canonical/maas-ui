@@ -278,7 +278,7 @@ describe("device actions", () => {
   });
 
   it("can handle deleting a device", () => {
-    expect(actions.delete("abc123")).toEqual({
+    expect(actions.delete({ system_id: "abc123" })).toEqual({
       type: "device/delete",
       meta: {
         model: "device",

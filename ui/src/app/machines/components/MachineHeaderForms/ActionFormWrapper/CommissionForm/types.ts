@@ -1,5 +1,5 @@
-import type { ScriptInput } from "app/store/machine/types/actions";
 import type { Script } from "app/store/script/types";
+import type { ScriptInputParam } from "app/store/types/node";
 
 export type CommissionFormValues = {
   enableSSH: boolean;
@@ -10,7 +10,7 @@ export type CommissionFormValues = {
   configureHBA: boolean;
   commissioningScripts: Script[];
   testingScripts: Script[];
-  scriptInputs: ScriptInput;
+  scriptInputs: ScriptInputParam;
 };
 
 export type FormattedScript = Script & {

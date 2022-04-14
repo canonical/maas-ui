@@ -53,7 +53,10 @@ export const generateMachinePoolActionCreators = (
 ): NextActionCreator<ResourcePool>[] =>
   machineIDs.map(
     (machineID) => (result: ResourcePool) =>
-      machineActions.setPool({ systemId: machineID, poolId: result.id })
+      machineActions.setPool({
+        pool_id: result.id,
+        system_id: machineID,
+      })
   );
 
 /**
