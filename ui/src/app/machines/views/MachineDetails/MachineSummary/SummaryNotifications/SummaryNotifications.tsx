@@ -15,7 +15,10 @@ import {
   isMachineDetails,
   useHasInvalidArchitecture,
 } from "app/store/machine/utils";
-import { getHasSyncFailed } from "app/store/machine/utils/common";
+import {
+  getHasSyncFailed,
+  shouldShowHardwareSyncStatus,
+} from "app/store/machine/utils/common";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
 import type { NodeEvent } from "app/store/types/node";
@@ -49,7 +52,8 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
   const canEdit = useCanEdit(machine, true);
   const isRackControllerConnected = useIsRackControllerConnected();
   const hasInvalidArchitecture = useHasInvalidArchitecture(machine);
-  const hasSyncFailed = getHasSyncFailed(machine);
+  const hasSyncFailed =
+    shouldShowHardwareSyncStatus(machine) && getHasSyncFailed(machine);
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());

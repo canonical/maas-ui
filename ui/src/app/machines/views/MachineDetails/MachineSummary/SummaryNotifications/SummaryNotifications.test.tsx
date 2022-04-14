@@ -7,6 +7,7 @@ import SummaryNotifications from "./SummaryNotifications";
 
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
+import { NodeStatus } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
   generalState as generalStateFactory,
@@ -169,6 +170,7 @@ describe("SummaryNotifications", () => {
       machineDetailsFactory({
         architecture: "amd64",
         system_id: "abc123",
+        status: NodeStatus.DEPLOYED,
         is_sync_healthy: false,
       }),
     ];

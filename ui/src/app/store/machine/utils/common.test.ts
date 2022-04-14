@@ -3,9 +3,11 @@ import {
   getMachineFieldScopes,
   getTagCountsForMachines,
   isMachineDetails,
+  shouldShowHardwareSyncStatus,
 } from "./common";
 
 import { PowerFieldScope } from "app/store/general/types";
+import { NodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -80,6 +82,41 @@ describe("common machine utils", () => {
       expect(
         getHasSyncFailed(machineDetailsFactory({ is_sync_healthy: false }))
       ).toBe(true);
+    });
+  });
+
+  describe("shouldShowHardwareSyncStatus", () => {
+    it("returns false for deploying machines", () => {
+      expect(
+        shouldShowHardwareSyncStatus(
+          machineDetailsFactory({
+            status: NodeStatus.DEPLOYING,
+            enable_hw_sync: true,
+          })
+        )
+      ).toBe(false);
+    });
+
+    it("returns true for deployed machines with hardware sync enabled", () => {
+      expect(
+        shouldShowHardwareSyncStatus(
+          machineDetailsFactory({
+            status: NodeStatus.DEPLOYED,
+            enable_hw_sync: true,
+          })
+        )
+      ).toBe(true);
+    });
+
+    it("returns false for deployed machines with hardware sync disabled", () => {
+      expect(
+        shouldShowHardwareSyncStatus(
+          machineDetailsFactory({
+            status: NodeStatus.DEPLOYED,
+            enable_hw_sync: false,
+          })
+        )
+      ).toBe(false);
     });
   });
 });
