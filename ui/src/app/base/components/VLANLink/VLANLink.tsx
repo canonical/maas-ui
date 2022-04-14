@@ -28,13 +28,7 @@ const VLANLink = ({ id }: Props): JSX.Element => {
   }, [dispatch]);
 
   if (vlansLoading) {
-    // TODO: Put aria-label directly on Spinner component when issue is fixed.
-    // https://github.com/canonical-web-and-design/react-components/issues/651
-    return (
-      <span aria-label="Loading VLANs">
-        <Spinner />
-      </span>
-    );
+    return <Spinner aria-label="Loading VLANs" />;
   }
   if (!vlan) {
     return <>{vlanDisplay}</>;
