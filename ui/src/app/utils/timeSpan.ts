@@ -1,5 +1,5 @@
 import type { Duration } from "date-fns";
-import { secondsToMinutes } from "date-fns";
+import { add, differenceInSeconds, secondsToMinutes } from "date-fns";
 
 import type { Minutes, Seconds, TimeSpan } from "app/base/types";
 
@@ -8,36 +8,25 @@ export const timeSpanToDuration = (timeSpan: TimeSpan | null): Duration => {
     return {};
   }
   return {
-    hours: Number(timeSpan.match(/([\d]+)\s*(?:hs?|hours?)\s*/)?.[1]),
-    minutes: Number(timeSpan.match(/([\d]+)\s*(?:ms?|mins?|minutes?)\s*/)?.[1]),
-    seconds: Number(timeSpan.match(/([\d]+)\s*(?:s|secs?|seconds?)\s*/)?.[1]),
+    hours:
+      Number(timeSpan.match(/([\d]+)\s*(?:hs?|hours?)\s*/)?.[1]) || undefined,
+    minutes:
+      Number(timeSpan.match(/([\d]+)\s*(?:ms?|mins?|minutes?)\s*/)?.[1]) ||
+      undefined,
+    seconds:
+      Number(timeSpan.match(/([\d]+)\s*(?:s|secs?|seconds?)\s*/)?.[1]) ||
+      undefined,
   };
 };
 
-const durationToSeconds = (duration: Duration): Seconds | null => {
-  const multiplier = {
-    hours: 3600,
-    minutes: 60,
-    seconds: 1,
-  };
-  const total = Object.entries(duration).reduce((total, [key, value]) => {
-    if (!value) {
-      return total;
-    }
-    return (total += value * multiplier[key as keyof typeof multiplier]);
-  }, 0);
-  return total > 0 ? total : null;
-};
+const durationToSeconds = (duration: Duration): Seconds =>
+  differenceInSeconds(add(new Date(), duration), new Date());
 
-export const timeSpanToSeconds = (timeSpan: TimeSpan | null): Seconds | null =>
+const durationToMinutes = (duration: Duration): Minutes =>
+  secondsToMinutes(differenceInSeconds(add(new Date(), duration), new Date()));
+
+export const timeSpanToSeconds = (timeSpan: TimeSpan | null): Seconds =>
   durationToSeconds(timeSpanToDuration(timeSpan));
 
-export const timeSpanToMinutes = (
-  timeSpan: TimeSpan | null
-): Minutes | null => {
-  const seconds = timeSpanToSeconds(timeSpan);
-  if (!seconds) {
-    return null;
-  }
-  return secondsToMinutes(seconds);
-};
+export const timeSpanToMinutes = (timeSpan: TimeSpan | null): Minutes =>
+  durationToMinutes(timeSpanToDuration(timeSpan));

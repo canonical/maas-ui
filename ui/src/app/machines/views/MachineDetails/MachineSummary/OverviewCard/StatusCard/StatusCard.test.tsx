@@ -148,6 +148,7 @@ describe("StatusCard", () => {
     const machine = machineDetailsFactory({
       enable_hw_sync: true,
       status: NodeStatus.DEPLOYED,
+      sync_interval: 900,
     });
     const store = mockStore(state);
 

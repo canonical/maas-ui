@@ -222,9 +222,15 @@ export const DeployFormFields = (): JSX.Element => {
                   {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
                 </>
               }
-              help={`Hardware sync interval: ${timeSpanToMinutes(
-                hardwareSyncInterval
-              )}min - Admins can change this in the global settings.`}
+              help={
+                <>
+                  Hardware sync interval:{" "}
+                  {!hardwareSyncInterval
+                    ? "Invalid"
+                    : `${timeSpanToMinutes(hardwareSyncInterval)} minutes`}{" "}
+                  - Admins can change this in the global settings.
+                </>
+              }
             />
             {userDataVisible && (
               <UploadTextArea

@@ -67,7 +67,8 @@ export type BaseMachine = BaseNode & {
 // used in the machine details pages. This type contains all possible properties
 // of a machine model.
 export type MachineDetails = BaseMachine &
-  TimestampFields & {
+  TimestampFields &
+  HardwareSyncFields & {
     bios_boot_method: string;
     bmc: number;
     boot_disk: Disk | null;
@@ -82,7 +83,6 @@ export type MachineDetails = BaseMachine &
     devices: NodeDeviceRef[];
     dhcp_on: boolean;
     disks: Disk[];
-    enable_hw_sync: boolean;
     error: string;
     events: NodeEvent[];
     grouped_storages: GroupedStorage[];
@@ -92,14 +92,11 @@ export type MachineDetails = BaseMachine &
     installation_status: number;
     interface_test_status: TestStatus;
     interfaces: NetworkInterface[];
-    is_sync_healthy?: boolean;
-    last_sync: string;
     license_key: string;
     memory_test_status: TestStatus;
     metadata: NodeMetadata;
     min_hwe_kernel: string;
     network_test_status: TestStatus;
-    next_sync: string;
     node_type: number;
     numa_nodes: NodeNumaNode[];
     on_network: boolean;
@@ -111,10 +108,21 @@ export type MachineDetails = BaseMachine &
     storage_layout_issues: string[];
     storage_test_status: TestStatus;
     supported_filesystems: SupportedFilesystem[];
-    sync_interval: Seconds;
     swap_size: number | null;
     testing_start_time: string;
   };
+
+type HardwareSyncFields =
+  | {
+      enable_hw_sync: false;
+    }
+  | {
+      enable_hw_sync: true;
+      last_sync: string;
+      next_sync: string;
+      is_sync_healthy: boolean;
+      sync_interval: Seconds;
+    };
 
 // Depending on where the user has navigated in the app, machines in state can
 // either be of type BaseMachine or MachineDetails.

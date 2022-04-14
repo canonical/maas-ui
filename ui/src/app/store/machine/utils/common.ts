@@ -49,7 +49,7 @@ export const getMachineFieldScopes = (machine: Machine): PowerFieldScope[] => {
  * @returns Whether this machine failed to sync when it was scheduled.
  */
 export const getHasSyncFailed = (machine?: Machine | null): boolean => {
-  if (!machine || !isMachineDetails(machine)) {
+  if (!isMachineDetails(machine) || !machine.enable_hw_sync) {
     return false;
   }
   return machine.is_sync_healthy === false;

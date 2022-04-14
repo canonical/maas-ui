@@ -452,10 +452,35 @@ describe("DeployFormFields", () => {
     );
 
     expect(
+      screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
+    ).toHaveAccessibleDescription(/Hardware sync interval: 15 minutes/);
+    expect(
       screen.getByRole("tooltip", {
         name: /Enable this to make MAAS periodically check the hardware/,
       })
     ).toBeInTheDocument();
+  });
+
+  it("displays a correct description text for an invalid sync interval", () => {
+    state.config.items.push({ name: "hardware_sync_interval", value: "" });
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <DeployForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(
+      screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
+    ).toHaveAccessibleDescription(/Hardware sync interval: Invalid/i);
   });
 
   it("'Periodically sync hardware' is unchecked by default", async () => {
