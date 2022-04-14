@@ -180,5 +180,17 @@
         >
       </span>
     </li>
+    <li
+      class="p-list-tree__item"
+      data-ng-if="(node.node_type == 2 || node.node_type == 4) && services.reverse_proxy"
+    >
+      <span>
+        <span class="p-icon--{$ getServiceClass(services.reverse_proxy) $}"></span
+        >&nbsp;reverse-proxy
+        <span data-ng-if="services.reverse_proxy.status_info">
+          &ndash; <small>{$ services.reverse_proxy.status_info $}</small></span
+        >
+      </span>
+    </li>
   </ul>
 </div>
