@@ -9,6 +9,10 @@ export const Nav = (): JSX.Element => (
         subNav: [
           { path: settingsURLs.configuration.general, label: "General" },
           {
+            path: settingsURLs.configuration.security,
+            label: "Security",
+          },
+          {
             path: settingsURLs.configuration.commissioning,
             label: "Commissioning",
           },

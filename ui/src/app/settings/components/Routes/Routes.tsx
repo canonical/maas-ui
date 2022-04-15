@@ -6,6 +6,7 @@ import Commissioning from "app/settings/views/Configuration/Commissioning";
 import Deploy from "app/settings/views/Configuration/Deploy";
 import General from "app/settings/views/Configuration/General";
 import KernelParameters from "app/settings/views/Configuration/KernelParameters";
+import Security from "app/settings/views/Configuration/Security";
 import DhcpAdd from "app/settings/views/Dhcp/DhcpAdd";
 import DhcpEdit from "app/settings/views/Dhcp/DhcpEdit";
 import DhcpList from "app/settings/views/Dhcp/DhcpList";
@@ -37,6 +38,11 @@ const Routes = (): JSX.Element => {
         exact
         path={settingsURLs.configuration.general}
         render={() => <General />}
+      />
+      <Route
+        exact
+        path={settingsURLs.configuration.security}
+        render={() => <Security />}
       />
       <Route
         exact
