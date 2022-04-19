@@ -43,6 +43,7 @@ import type {
   OSInfoState,
   PocketsToDisableState,
   PowerTypesState,
+  TLSCertificateState,
   VersionState,
 } from "app/store/general/types";
 import type { IPRangeState } from "app/store/iprange/types";
@@ -374,6 +375,11 @@ export const powerTypesState = define<PowerTypesState>({
   ...defaultGeneralState,
 });
 
+export const tlsCertificateState = define<TLSCertificateState>({
+  ...defaultGeneralState,
+  data: null,
+});
+
 export const versionState = define<VersionState>({
   ...defaultGeneralState,
   data: "",
@@ -392,6 +398,7 @@ export const generalState = define<GeneralState>({
   osInfo: osInfoState,
   pocketsToDisable: pocketsToDisableState,
   powerTypes: powerTypesState,
+  tlsCertificate: tlsCertificateState,
   version: versionState,
 });
 

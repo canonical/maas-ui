@@ -20,6 +20,7 @@ import type {
   PocketToDisable,
   PowerField,
   PowerType,
+  TLSCertificate,
   Version,
 } from "app/store/general/types";
 import {
@@ -117,6 +118,11 @@ export const powerType = define<PowerType>({
   missing_packages: () => [],
   name: PowerTypeNames.MANUAL,
   queryable: false,
+});
+
+export const tlsCertificate = define<TLSCertificate>({
+  certificate: "certificate",
+  ...certificateMetadata(),
 });
 
 export const version = define<Version>("test version");

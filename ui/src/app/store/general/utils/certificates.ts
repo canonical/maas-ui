@@ -1,4 +1,8 @@
-import type { CertificateMetadata } from "app/store/general/types";
+import type { EmptyObject } from "app/base/types";
+import type {
+  CertificateMetadata,
+  TLSCertificate,
+} from "app/store/general/types";
 
 /**
  * Split a certificate name in to object and host names, where certificate names
@@ -24,3 +28,12 @@ export const splitCertificateName = (
   const name = split.slice(0, split.length - 1).join("@");
   return { name, host };
 };
+
+/**
+ * Determine whether a certificate is a TLS certificate
+ * @param cert - the certificate to check.
+ * @returns whether the certificate is of type TLSCertificate.
+ */
+export const isTlsCertificate = (
+  cert?: TLSCertificate | EmptyObject | null
+): cert is TLSCertificate => (cert && "certificate" in cert) || false;

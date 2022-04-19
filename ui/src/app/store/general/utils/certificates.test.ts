@@ -1,4 +1,6 @@
-import { splitCertificateName } from "./certificates";
+import { isTlsCertificate, splitCertificateName } from "./certificates";
+
+import { tlsCertificate as tlsCertificateFactory } from "testing/factories";
 
 describe("splitCertificateName", () => {
   it("handles null case", () => {
@@ -21,5 +23,14 @@ describe("splitCertificateName", () => {
       host: "host",
       name: "machine@address",
     });
+  });
+});
+
+describe("isTlsCertificate", () => {
+  it("can determine whether a certificate is a TLS certificate", () => {
+    expect(isTlsCertificate(tlsCertificateFactory())).toBe(true);
+    expect(isTlsCertificate({})).toBe(false);
+    expect(isTlsCertificate(null)).toBe(false);
+    expect(isTlsCertificate()).toBe(false);
   });
 });

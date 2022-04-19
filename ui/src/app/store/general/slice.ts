@@ -68,6 +68,7 @@ const generalSlice = createSlice({
     osInfo: generateInitialState(null),
     pocketsToDisable: generateInitialState([]),
     powerTypes: generateInitialState([]),
+    tlsCertificate: generateInitialState(null),
     version: generateInitialState(""),
   } as GeneralState,
   reducers: {
@@ -137,6 +138,10 @@ const generalSlice = createSlice({
     fetchPowerTypesStart: generateStartReducer("powerTypes"),
     fetchPowerTypesError: generateErrorReducer("powerTypes"),
     fetchPowerTypesSuccess: generateSuccessReducer("powerTypes"),
+    fetchTlsCertificate: generatePrepareReducer("tls_certificate"),
+    fetchTlsCertificateStart: generateStartReducer("tlsCertificate"),
+    fetchTlsCertificateError: generateErrorReducer("tlsCertificate"),
+    fetchTlsCertificateSuccess: generateSuccessReducer("tlsCertificate"),
     fetchVersion: generatePrepareReducer("version"),
     fetchVersionStart: generateStartReducer("version"),
     fetchVersionError: generateErrorReducer("version"),

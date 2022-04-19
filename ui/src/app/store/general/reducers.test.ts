@@ -6,6 +6,8 @@ import {
   generalState as generalStateFactory,
   generatedCertificate as certificateFactory,
   generatedCertificateState as generatedCertificateStateFactory,
+  tlsCertificate as tlsCertificateFactory,
+  tlsCertificateState as tlsCertificateStateFactory,
 } from "testing/factories";
 
 describe("general reducer", () => {
@@ -83,6 +85,12 @@ describe("general reducer", () => {
         loaded: false,
         loading: false,
       },
+      tlsCertificate: {
+        data: null,
+        errors: null,
+        loaded: false,
+        loading: false,
+      },
       version: {
         data: "",
         errors: null,
@@ -146,6 +154,65 @@ describe("general reducer", () => {
       generalStateFactory({
         bondOptions: bondOptionsStateFactory({
           errors: "Could not fetch bond options",
+          loaded: false,
+          loading: false,
+        }),
+      })
+    );
+  });
+
+  it("reduces fetchTlsCertificateStart", () => {
+    const initialState = generalStateFactory({
+      tlsCertificate: tlsCertificateStateFactory({ loading: false }),
+    });
+    expect(reducers(initialState, actions.fetchTlsCertificateStart())).toEqual(
+      generalStateFactory({
+        tlsCertificate: tlsCertificateStateFactory({ loading: true }),
+      })
+    );
+  });
+
+  it("reduces fetchTlsCertificateSuccess", () => {
+    const initialState = generalStateFactory({
+      tlsCertificate: tlsCertificateStateFactory({
+        data: null,
+        loading: true,
+        loaded: false,
+      }),
+    });
+    const fetchedTlsCertificate = tlsCertificateFactory();
+    expect(
+      reducers(
+        initialState,
+        actions.fetchTlsCertificateSuccess(fetchedTlsCertificate)
+      )
+    ).toEqual(
+      generalStateFactory({
+        tlsCertificate: tlsCertificateStateFactory({
+          data: fetchedTlsCertificate,
+          loading: false,
+          loaded: true,
+        }),
+      })
+    );
+  });
+
+  it("reduces fetchTlsCertificateError", () => {
+    const initialState = generalStateFactory({
+      tlsCertificate: tlsCertificateStateFactory({
+        errors: null,
+        loaded: false,
+        loading: true,
+      }),
+    });
+    const error = "Could not fetch TLS certificate";
+
+    expect(
+      reducers(initialState, actions.fetchTlsCertificateError(error))
+    ).toEqual(
+      generalStateFactory({
+        tlsCertificate: tlsCertificateStateFactory({
+          errors: error,
           loaded: false,
           loading: false,
         }),

@@ -12,7 +12,7 @@ import type {
   PowerFieldType,
 } from "./enum";
 
-import type { APIError } from "app/base/types";
+import type { APIError, EmptyObject } from "app/base/types";
 import type { MachineActions } from "app/store/machine/types";
 
 export type Architecture = string;
@@ -224,6 +224,16 @@ export type PowerTypesState = {
   loading: boolean;
 };
 
+export type TLSCertificate =
+  | Omit<CertificateData, "private_key"> & CertificateMetadata;
+
+export type TLSCertificateState = {
+  errors: APIError;
+  data: TLSCertificate | EmptyObject | null;
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type Version = string;
 
 export type VersionState = {
@@ -246,5 +256,6 @@ export type GeneralState = {
   osInfo: OSInfoState;
   pocketsToDisable: PocketsToDisableState;
   powerTypes: PowerTypesState;
+  tlsCertificate: TLSCertificateState;
   version: VersionState;
 };

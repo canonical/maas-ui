@@ -60,6 +60,7 @@ export {
   subnetStatus,
   subnetStatuses,
   tagState,
+  tlsCertificateState,
   tokenState,
   userState,
   versionState,
@@ -153,6 +154,7 @@ export {
   powerField,
   powerFieldChoice,
   powerType,
+  tlsCertificate,
   version,
 } from "./general";
 export { ipRange } from "./iprange";
