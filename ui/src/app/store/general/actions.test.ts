@@ -133,6 +133,18 @@ describe("general actions", () => {
     });
   });
 
+  it("should handle fetching TLS certificate", () => {
+    expect(general.fetchTlsCertificate()).toEqual({
+      type: "general/fetchTlsCertificate",
+      meta: {
+        cache: true,
+        model: "general",
+        method: "tls_certificate",
+      },
+      payload: null,
+    });
+  });
+
   it("should handle fetching version", () => {
     expect(general.fetchVersion()).toEqual({
       type: "general/fetchVersion",

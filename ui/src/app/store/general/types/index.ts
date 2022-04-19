@@ -38,6 +38,8 @@ export type {
   PowerField,
   PowerType,
   PowerTypesState,
+  TLSCertificate,
+  TLSCertificateState,
   Version,
   VersionState,
 } from "./base";

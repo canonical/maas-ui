@@ -10,4 +10,5 @@ export { default as machineActions } from "./machineActions";
 export { default as osInfo } from "./osInfo";
 export { default as pocketsToDisable } from "./pocketsToDisable";
 export { default as powerTypes } from "./powerTypes";
+export { default as tlsCertificate } from "./tlsCertificate";
 export { default as version } from "./version";
