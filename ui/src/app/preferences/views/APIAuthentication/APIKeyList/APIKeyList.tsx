@@ -6,7 +6,7 @@ import type { Dispatch } from "redux";
 
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
-import { useAddMessage, useWindowTitle } from "app/base/hooks";
+import { useAddMessage } from "app/base/hooks";
 import prefsURLs from "app/preferences/urls";
 import SettingsTable from "app/settings/components/SettingsTable";
 import { actions as tokenActions } from "app/store/token";
@@ -40,7 +40,7 @@ const generateRows = (
           content: (
             <TableActions
               copyValue={token}
-              editPath={prefsURLs.apiKeys.edit({ id })}
+              editPath={prefsURLs.apiAuthentication.keys.edit({ id })}
               onDelete={() => setExpandedId(id)}
             />
           ),
@@ -89,8 +89,6 @@ const APIKeyList = (): JSX.Element => {
     dispatch(tokenActions.fetch());
   }, [dispatch]);
 
-  useWindowTitle("API keys");
-
   return (
     <>
       {errors && typeof errors === "string" && (
@@ -102,7 +100,7 @@ const APIKeyList = (): JSX.Element => {
         buttons={[
           {
             label: "Generate MAAS API key",
-            url: prefsURLs.apiKeys.add,
+            url: prefsURLs.apiAuthentication.keys.add,
           },
         ]}
         headers={[
@@ -130,6 +128,7 @@ const APIKeyList = (): JSX.Element => {
           saving
         )}
         tableClassName="apikey-list"
+        title="API keys"
       />
     </>
   );

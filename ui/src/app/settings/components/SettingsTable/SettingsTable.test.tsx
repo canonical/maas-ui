@@ -23,6 +23,14 @@ describe("SettingsTable", () => {
     expect(wrapper.find("FormCardButtons")).toMatchSnapshot();
   });
 
+  it("can be given a title", () => {
+    const wrapper = shallow(<SettingsTable title="Title!" />);
+
+    expect(wrapper.find("[data-testid='settings-table-title']").text()).toBe(
+      "Title!"
+    );
+  });
+
   it("can show the loading state", () => {
     const wrapper = shallow(
       <SettingsTable
