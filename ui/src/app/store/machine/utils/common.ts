@@ -1,6 +1,7 @@
 import { PowerFieldScope } from "app/store/general/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
+import { NodeStatus } from "app/store/types/node";
 
 /**
  * Whether a machine has a Machine or MachineDetails type.
@@ -44,6 +45,22 @@ export const getMachineFieldScopes = (machine: Machine): PowerFieldScope[] => {
   }
   return [PowerFieldScope.BMC, PowerFieldScope.NODE];
 };
+
+/**
+ * @returns Whether this machine is deployed and has hardware sync enabled.
+ */
+export function isDeployedWithHardwareSync(
+  machine?: Machine | null
+): machine is MachineDetails & {
+  enable_hw_sync: true;
+  status: NodeStatus.DEPLOYED;
+} {
+  return (
+    isMachineDetails(machine) &&
+    machine.status === NodeStatus.DEPLOYED &&
+    machine.enable_hw_sync === true
+  );
+}
 
 /**
  * @returns Whether this machine failed to sync when it was scheduled.
