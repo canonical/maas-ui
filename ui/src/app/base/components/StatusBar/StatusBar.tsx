@@ -8,7 +8,7 @@ import configSelectors from "app/store/config/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
-import { shouldShowHardwareSyncStatus } from "app/store/machine/utils/common";
+import { isDeployedWithHardwareSync } from "app/store/machine/utils/common";
 import { NodeStatus } from "app/store/types/node";
 
 const getTimeDistanceString = (utcTimeString: string) =>
@@ -61,7 +61,7 @@ export const StatusBar = (): JSX.Element | null => {
   }
 
   let status: ReactNode = "";
-  if (shouldShowHardwareSyncStatus(activeMachine)) {
+  if (isDeployedWithHardwareSync(activeMachine)) {
     status = (
       <ul className="p-inline-list u-no-margin--bottom">
         <li className="p-inline-list__item">

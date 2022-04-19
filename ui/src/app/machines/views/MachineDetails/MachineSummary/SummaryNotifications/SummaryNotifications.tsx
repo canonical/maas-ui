@@ -17,7 +17,7 @@ import {
 } from "app/store/machine/utils";
 import {
   getHasSyncFailed,
-  shouldShowHardwareSyncStatus,
+  isDeployedWithHardwareSync,
 } from "app/store/machine/utils/common";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
@@ -53,7 +53,7 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
   const isRackControllerConnected = useIsRackControllerConnected();
   const hasInvalidArchitecture = useHasInvalidArchitecture(machine);
   const hasSyncFailed =
-    shouldShowHardwareSyncStatus(machine) && getHasSyncFailed(machine);
+    isDeployedWithHardwareSync(machine) && getHasSyncFailed(machine);
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());

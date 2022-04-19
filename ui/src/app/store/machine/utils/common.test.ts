@@ -3,7 +3,7 @@ import {
   getMachineFieldScopes,
   getTagCountsForMachines,
   isMachineDetails,
-  shouldShowHardwareSyncStatus,
+  isDeployedWithHardwareSync,
 } from "./common";
 
 import { PowerFieldScope } from "app/store/general/types";
@@ -85,10 +85,10 @@ describe("common machine utils", () => {
     });
   });
 
-  describe("shouldShowHardwareSyncStatus", () => {
+  describe("isDeployedWithHardwareSync", () => {
     it("returns false for deploying machines", () => {
       expect(
-        shouldShowHardwareSyncStatus(
+        isDeployedWithHardwareSync(
           machineDetailsFactory({
             status: NodeStatus.DEPLOYING,
             enable_hw_sync: true,
@@ -99,7 +99,7 @@ describe("common machine utils", () => {
 
     it("returns true for deployed machines with hardware sync enabled", () => {
       expect(
-        shouldShowHardwareSyncStatus(
+        isDeployedWithHardwareSync(
           machineDetailsFactory({
             status: NodeStatus.DEPLOYED,
             enable_hw_sync: true,
@@ -110,7 +110,7 @@ describe("common machine utils", () => {
 
     it("returns false for deployed machines with hardware sync disabled", () => {
       expect(
-        shouldShowHardwareSyncStatus(
+        isDeployedWithHardwareSync(
           machineDetailsFactory({
             status: NodeStatus.DEPLOYED,
             enable_hw_sync: false,

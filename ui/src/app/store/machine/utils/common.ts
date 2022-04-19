@@ -47,9 +47,9 @@ export const getMachineFieldScopes = (machine: Machine): PowerFieldScope[] => {
 };
 
 /**
- * @returns Whether this machine hardware sync status should be shown.
+ * @returns Whether this machine is deployed and has hardware sync enabled.
  */
-export function shouldShowHardwareSyncStatus(
+export function isDeployedWithHardwareSync(
   machine?: Machine | null
 ): machine is MachineDetails & {
   enable_hw_sync: true;
