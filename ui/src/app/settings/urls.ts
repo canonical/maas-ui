@@ -12,6 +12,7 @@ const urls = {
     general: "/settings/configuration/general",
     index: "/settings/configuration",
     kernelParameters: "/settings/configuration/kernel-parameters",
+    security: "/settings/configuration/security",
   },
   dhcp: {
     add: "/settings/dhcp/add",
