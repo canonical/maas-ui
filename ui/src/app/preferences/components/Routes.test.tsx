@@ -17,16 +17,16 @@ describe("Routes", () => {
       path: prefsURLs.details,
     },
     {
-      component: "APIKeyList",
-      path: prefsURLs.apiKeys.index,
+      component: "APIAuthentication",
+      path: prefsURLs.apiAuthentication.index,
     },
     {
       component: "APIKeyAdd",
-      path: prefsURLs.apiKeys.add,
+      path: prefsURLs.apiAuthentication.keys.add,
     },
     {
       component: "APIKeyEdit",
-      path: prefsURLs.apiKeys.edit({ id: 1 }),
+      path: prefsURLs.apiAuthentication.keys.edit({ id: 1 }),
     },
     {
       component: "SSHKeyList",
