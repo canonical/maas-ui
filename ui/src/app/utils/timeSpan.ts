@@ -19,11 +19,15 @@ export const timeSpanToDuration = (timeSpan: TimeSpan | null): Duration => {
   };
 };
 
-const durationToSeconds = (duration: Duration): Seconds =>
-  differenceInSeconds(add(new Date(), duration), new Date());
+const durationToSeconds = (duration: Duration): Seconds => {
+  const now = new Date();
+  return differenceInSeconds(add(now, duration), now);
+};
 
-const durationToMinutes = (duration: Duration): Minutes =>
-  secondsToMinutes(differenceInSeconds(add(new Date(), duration), new Date()));
+const durationToMinutes = (duration: Duration): Minutes => {
+  const now = new Date();
+  return secondsToMinutes(differenceInSeconds(add(now, duration), now));
+};
 
 export const timeSpanToSeconds = (timeSpan: TimeSpan | null): Seconds =>
   durationToSeconds(timeSpanToDuration(timeSpan));

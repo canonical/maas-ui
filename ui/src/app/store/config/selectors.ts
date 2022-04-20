@@ -1,6 +1,6 @@
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { TimeSpan } from "app/base/types";
+import type { Days, TimeSpan } from "app/base/types";
 import type {
   AutoIpmiPrivilegeLevel,
   Config,
@@ -518,6 +518,24 @@ const hardwareSyncInterval = createSelector([all], (configs) =>
   getValueFromName<TimeSpan>(configs, "hardware_sync_interval")
 );
 
+/**
+ * Returns MAAS config for whether the TLS expiration notification is enabled.
+ * @param state - The redux state.
+ * @returns Whether the TLS expiration notification is enabled.
+ */
+const tlsCertExpirationNotificationEnabled = createSelector([all], (configs) =>
+  getValueFromName<boolean>(configs, "tls_cert_expiration_notification_enabled")
+);
+
+/**
+ * Returns MAAS config for the interval in which to show TLS expiration notification.
+ * @param state - The redux state.
+ * @returns The interval in which to show TLS expiration notification.
+ */
+const tlsCertExpirationNotificationInterval = createSelector([all], (configs) =>
+  getValueFromName<Days>(configs, "tls_cert_expiration_notification_interval")
+);
+
 const config = {
   activeDiscoveryInterval,
   all,
@@ -562,6 +580,8 @@ const config = {
   saving,
   storageLayoutOptions,
   thirdPartyDriversEnabled,
+  tlsCertExpirationNotificationEnabled,
+  tlsCertExpirationNotificationInterval,
   upstreamDns,
   usePeerProxy,
   uuid,

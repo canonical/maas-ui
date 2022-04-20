@@ -6,7 +6,6 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { actions as generalActions } from "app/store/general";
 import { tlsCertificate as tlsCertificateSelectors } from "app/store/general/selectors";
-import { isTlsCertificate } from "app/store/general/utils";
 import { breakLines, unindentString } from "app/utils";
 
 export enum Labels {
@@ -20,13 +19,12 @@ const TLSCertificate = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const tlsCertificate = useSelector(tlsCertificateSelectors.get);
   const loaded = useSelector(tlsCertificateSelectors.loaded);
-  const isTlsEnabled = isTlsCertificate(tlsCertificate);
 
   useEffect(() => {
     dispatch(generalActions.fetchTlsCertificate());
   }, [dispatch]);
 
-  if (!isTlsEnabled) {
+  if (!tlsCertificate) {
     return (
       <>
         <h2 className="p-heading--5 u-sv-1">{Labels.Title}</h2>
