@@ -1,33 +1,37 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`TagSelector renders and matches the snapshot when closed 1`] = `
-<Field
-  forId="mock-nanoid-1"
-  label={
-    <span
-      onClick={[Function]}
-    >
-      Tags
-    </span>
-  }
+<div
+  id="mock-nanoid-1"
 >
-  <div
-    className="tag-selector"
+  <Field
+    forId="mock-nanoid-2"
+    label={
+      <span
+        onClick={[Function]}
+      >
+        Tags
+      </span>
+    }
   >
-    <Input
-      aria-haspopup="listbox"
-      className="tag-selector__input"
-      id="mock-nanoid-1"
-      onChange={[Function]}
-      onFocus={[Function]}
-      onKeyPress={[Function]}
-      placeholder="Select or create tags"
-      required={false}
-      type="text"
-      value=""
-    />
-  </div>
-</Field>
+    <div
+      className="tag-selector"
+    >
+      <Input
+        aria-haspopup="listbox"
+        className="tag-selector__input"
+        id="mock-nanoid-2"
+        onChange={[Function]}
+        onFocus={[Function]}
+        onKeyPress={[Function]}
+        placeholder="Select or create tags"
+        required={false}
+        type="text"
+        value=""
+      />
+    </div>
+  </Field>
+</div>
 `;
 
 exports[`TagSelector renders and matches the snapshot when opened 1`] = `
@@ -48,87 +52,91 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
     ]
   }
 >
-  <Field
-    forId="mock-nanoid-1"
-    label={
-      <span
-        onClick={[Function]}
-      >
-        Tags
-      </span>
-    }
+  <div
+    id="mock-nanoid-1"
   >
-    <div
-      className="p-form__group p-form-validation"
+    <Field
+      forId="mock-nanoid-2"
+      label={
+        <span
+          onClick={[Function]}
+        >
+          Tags
+        </span>
+      }
     >
-      <Label
-        forId="mock-nanoid-1"
-      >
-        <label
-          className="p-form__label"
-          htmlFor="mock-nanoid-1"
-        >
-          <span
-            onClick={[Function]}
-          >
-            Tags
-          </span>
-        </label>
-      </Label>
       <div
-        className="p-form__control u-clearfix"
+        className="p-form__group p-form-validation"
       >
-        <div
-          className="tag-selector"
+        <Label
+          forId="mock-nanoid-2"
         >
-          <Input
-            aria-haspopup="listbox"
-            className="tag-selector__input"
-            id="mock-nanoid-1"
-            onChange={[Function]}
-            onFocus={[Function]}
-            onKeyPress={[Function]}
-            placeholder="Select or create tags"
-            required={false}
-            type="text"
-            value=""
+          <label
+            className="p-form__label"
+            htmlFor="mock-nanoid-2"
           >
-            <Field
-              forId="mock-nanoid-1"
-              helpId="mock-nanoid-3"
-              isTickElement={false}
-              required={false}
-              validationId="mock-nanoid-2"
+            <span
+              onClick={[Function]}
             >
-              <div
-                className="p-form__group p-form-validation"
+              Tags
+            </span>
+          </label>
+        </Label>
+        <div
+          className="p-form__control u-clearfix"
+        >
+          <div
+            className="tag-selector"
+          >
+            <Input
+              aria-haspopup="listbox"
+              className="tag-selector__input"
+              id="mock-nanoid-2"
+              onChange={[Function]}
+              onFocus={[Function]}
+              onKeyPress={[Function]}
+              placeholder="Select or create tags"
+              required={false}
+              type="text"
+              value=""
+            >
+              <Field
+                forId="mock-nanoid-2"
+                helpId="mock-nanoid-4"
+                isTickElement={false}
+                required={false}
+                validationId="mock-nanoid-3"
               >
                 <div
-                  className="p-form__control u-clearfix"
+                  className="p-form__group p-form-validation"
                 >
-                  <input
-                    aria-describedby={null}
-                    aria-errormessage={null}
-                    aria-haspopup="listbox"
-                    aria-invalid={false}
-                    className="p-form-validation__input tag-selector__input"
-                    id="mock-nanoid-1"
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    onKeyPress={[Function]}
-                    placeholder="Select or create tags"
-                    required={false}
-                    type="text"
-                    value=""
-                  />
+                  <div
+                    className="p-form__control u-clearfix"
+                  >
+                    <input
+                      aria-describedby={null}
+                      aria-errormessage={null}
+                      aria-haspopup="listbox"
+                      aria-invalid={false}
+                      className="p-form-validation__input tag-selector__input"
+                      id="mock-nanoid-2"
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onKeyPress={[Function]}
+                      placeholder="Select or create tags"
+                      required={false}
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
-              </div>
-            </Field>
-          </Input>
+              </Field>
+            </Input>
+          </div>
         </div>
       </div>
-    </div>
-  </Field>
+    </Field>
+  </div>
 </TagSelector>
 `;
 
@@ -152,86 +160,90 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
     ]
   }
 >
-  <Field
-    forId="mock-nanoid-1"
-    label={
-      <span
-        onClick={[Function]}
-      >
-        Tags
-      </span>
-    }
+  <div
+    id="mock-nanoid-1"
   >
-    <div
-      className="p-form__group p-form-validation"
+    <Field
+      forId="mock-nanoid-2"
+      label={
+        <span
+          onClick={[Function]}
+        >
+          Tags
+        </span>
+      }
     >
-      <Label
-        forId="mock-nanoid-1"
-      >
-        <label
-          className="p-form__label"
-          htmlFor="mock-nanoid-1"
-        >
-          <span
-            onClick={[Function]}
-          >
-            Tags
-          </span>
-        </label>
-      </Label>
       <div
-        className="p-form__control u-clearfix"
+        className="p-form__group p-form-validation"
       >
-        <div
-          className="tag-selector"
+        <Label
+          forId="mock-nanoid-2"
         >
-          <Input
-            aria-haspopup="listbox"
-            className="tag-selector__input"
-            id="mock-nanoid-1"
-            onChange={[Function]}
-            onFocus={[Function]}
-            onKeyPress={[Function]}
-            placeholder="Select or create tags"
-            required={false}
-            type="text"
-            value=""
+          <label
+            className="p-form__label"
+            htmlFor="mock-nanoid-2"
           >
-            <Field
-              forId="mock-nanoid-1"
-              helpId="mock-nanoid-3"
-              isTickElement={false}
-              required={false}
-              validationId="mock-nanoid-2"
+            <span
+              onClick={[Function]}
             >
-              <div
-                className="p-form__group p-form-validation"
+              Tags
+            </span>
+          </label>
+        </Label>
+        <div
+          className="p-form__control u-clearfix"
+        >
+          <div
+            className="tag-selector"
+          >
+            <Input
+              aria-haspopup="listbox"
+              className="tag-selector__input"
+              id="mock-nanoid-2"
+              onChange={[Function]}
+              onFocus={[Function]}
+              onKeyPress={[Function]}
+              placeholder="Select or create tags"
+              required={false}
+              type="text"
+              value=""
+            >
+              <Field
+                forId="mock-nanoid-2"
+                helpId="mock-nanoid-4"
+                isTickElement={false}
+                required={false}
+                validationId="mock-nanoid-3"
               >
                 <div
-                  className="p-form__control u-clearfix"
+                  className="p-form__group p-form-validation"
                 >
-                  <input
-                    aria-describedby={null}
-                    aria-errormessage={null}
-                    aria-haspopup="listbox"
-                    aria-invalid={false}
-                    className="p-form-validation__input tag-selector__input"
-                    id="mock-nanoid-1"
-                    onChange={[Function]}
-                    onFocus={[Function]}
-                    onKeyPress={[Function]}
-                    placeholder="Select or create tags"
-                    required={false}
-                    type="text"
-                    value=""
-                  />
+                  <div
+                    className="p-form__control u-clearfix"
+                  >
+                    <input
+                      aria-describedby={null}
+                      aria-errormessage={null}
+                      aria-haspopup="listbox"
+                      aria-invalid={false}
+                      className="p-form-validation__input tag-selector__input"
+                      id="mock-nanoid-2"
+                      onChange={[Function]}
+                      onFocus={[Function]}
+                      onKeyPress={[Function]}
+                      placeholder="Select or create tags"
+                      required={false}
+                      type="text"
+                      value=""
+                    />
+                  </div>
                 </div>
-              </div>
-            </Field>
-          </Input>
+              </Field>
+            </Input>
+          </div>
         </div>
       </div>
-    </div>
-  </Field>
+    </Field>
+  </div>
 </TagSelector>
 `;
