@@ -9,6 +9,7 @@ export type Props<L = null> = {
   onToggleMenu?: ContextualMenuProps<L>["onToggleMenu"];
   position?: ContextualMenuProps<L>["position"];
   positionNode?: ContextualMenuProps<L>["positionNode"];
+  "aria-label"?: ContextualMenuProps<L>["aria-label"];
   title?: string | null;
 };
 
@@ -20,11 +21,13 @@ const TableMenu = <L,>({
   onToggleMenu,
   position = "left",
   positionNode,
+  "aria-label": ariaLabel,
 }: Props<L>): JSX.Element => {
   // If there are no links then make it an empty array so that it can be validly spread below.
   links = links || [];
   return (
     <ContextualMenu
+      toggleProps={{ "aria-label": ariaLabel || title || undefined }}
       className={classNames("p-table-menu", className)}
       hasToggleIcon
       links={[

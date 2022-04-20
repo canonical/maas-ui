@@ -58,6 +58,7 @@ export const AddSpecialFilesystem = ({
     return (
       <FormCard data-testid="confirmation-form" sidebar={false}>
         <FormikForm<AddSpecialFilesystemValues, MachineEventErrors>
+          aria-label="Add special filesystem"
           cleanup={machineActions.cleanup}
           errors={errors}
           initialValues={{

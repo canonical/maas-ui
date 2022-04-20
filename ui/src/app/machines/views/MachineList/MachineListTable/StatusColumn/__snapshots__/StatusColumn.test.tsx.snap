@@ -363,6 +363,11 @@ exports[`StatusColumn renders 1`] = `
               toggleAppearance="base"
               toggleClassName="u-no-margin--bottom p-table-menu__toggle"
               toggleDisabled={false}
+              toggleProps={
+                Object {
+                  "aria-label": "Take action:",
+                }
+              }
             >
               <span
                 className="p-table-menu p-contextual-menu p-contextual-menu--left"
@@ -377,6 +382,7 @@ exports[`StatusColumn renders 1`] = `
                   aria-controls="mock-nanoid-1"
                   aria-expanded="false"
                   aria-haspopup="true"
+                  aria-label="Take action:"
                   aria-pressed="false"
                   className="p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                   disabled={false}
@@ -388,6 +394,7 @@ exports[`StatusColumn renders 1`] = `
                     aria-controls="mock-nanoid-1"
                     aria-expanded="false"
                     aria-haspopup="true"
+                    aria-label="Take action:"
                     aria-pressed="false"
                     className="p-button--base has-icon p-contextual-menu__toggle u-no-margin--bottom p-table-menu__toggle"
                     disabled={false}
