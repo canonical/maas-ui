@@ -199,6 +199,14 @@ export const DeployFormFields = (): JSX.Element => {
                 "u-sv2": userDataVisible,
               })}
             />
+            {userDataVisible && (
+              <UploadTextArea
+                label="Upload script"
+                name="userData"
+                placeholder="Paste or drop script here."
+                rows={10}
+              />
+            )}
             <FormikField
               type="checkbox"
               name="enableHwSync"
@@ -239,14 +247,6 @@ export const DeployFormFields = (): JSX.Element => {
                 </>
               }
             />
-            {userDataVisible && (
-              <UploadTextArea
-                label="Upload script"
-                name="userData"
-                placeholder="Paste or drop script here."
-                rows={10}
-              />
-            )}
           </Col>
         </Row>
         {user && user.sshkeys_count === 0 && (
