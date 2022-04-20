@@ -1,8 +1,9 @@
 import type { ReactNode } from "react";
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 
 import { Button, Input, useId } from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
+import { useClickOutside } from "@maas-ui/maas-ui-shared";
 import classNames from "classnames";
 
 export type Tag = {
@@ -204,7 +205,9 @@ export const TagSelector = ({
   disabledTags = [],
   ...props
 }: Props): JSX.Element => {
-  const wrapperRef = useRef<HTMLSpanElement | null>(null);
+  const [wrapperRef, wrapperId] = useClickOutside<HTMLDivElement>(() =>
+    setDropdownOpen(false)
+  );
   const inputId = useId();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [internalSelectedTags, setInternalSelectedTags] =
@@ -227,24 +230,6 @@ export const TagSelector = ({
     clearFilter && setFilter("");
   };
 
-  const handleClickOutside = (e: MouseEvent) => {
-    const target = e.target as HTMLElement;
-    if (
-      wrapperRef.current &&
-      !wrapperRef.current?.contains(target) &&
-      !target.className.includes("tag-selector")
-    ) {
-      setDropdownOpen(false);
-    }
-  };
-
-  useEffect(() => {
-    document.addEventListener("click", handleClickOutside, false);
-    return () => {
-      document.removeEventListener("click", handleClickOutside, false);
-    };
-  }, []);
-
   const dropdownItems = generateDropdownItems({
     allowNewTags,
     onAddNewTag,
@@ -257,63 +242,63 @@ export const TagSelector = ({
   });
 
   return (
-    <Field
-      error={error}
-      forId={inputId}
-      help={help}
-      label={
-        label ? (
-          <span onClick={() => setDropdownOpen(true)} ref={wrapperRef}>
-            {label}
-          </span>
-        ) : undefined
-      }
-      {...props}
-    >
-      <div className="tag-selector">
-        {hasSelectedTags && (
-          <ul className="tag-selector__selected-list">
-            {generateSelectedItems(selectedTags, updateTags, disabledTags)}
-          </ul>
-        )}
-        <Input
-          aria-haspopup="listbox"
-          className={classNames("tag-selector__input", {
-            "tags-selected": hasSelectedTags,
-          })}
-          disabled={disabled}
-          id={inputId}
-          onChange={(e) => setFilter(e.target.value)}
-          onFocus={() => setDropdownOpen(true)}
-          onKeyPress={(e) => {
-            if (e.key === "Enter") {
-              e.preventDefault();
-              if (allowNewTags) {
-                const cleanedFilter = sanitiseFilter(filter);
-                if (onAddNewTag) {
-                  onAddNewTag(cleanedFilter.name);
-                  setFilter("");
-                } else {
-                  updateTags([...selectedTags, cleanedFilter]);
+    <div id={wrapperId} ref={wrapperRef}>
+      <Field
+        error={error}
+        forId={inputId}
+        help={help}
+        label={
+          label ? (
+            <span onClick={() => setDropdownOpen(true)}>{label}</span>
+          ) : undefined
+        }
+        {...props}
+      >
+        <div className="tag-selector">
+          {hasSelectedTags && (
+            <ul className="tag-selector__selected-list">
+              {generateSelectedItems(selectedTags, updateTags, disabledTags)}
+            </ul>
+          )}
+          <Input
+            aria-haspopup="listbox"
+            className={classNames("tag-selector__input", {
+              "tags-selected": hasSelectedTags,
+            })}
+            disabled={disabled}
+            id={inputId}
+            onChange={(e) => setFilter(e.target.value)}
+            onFocus={() => setDropdownOpen(true)}
+            onKeyPress={(e) => {
+              if (e.key === "Enter") {
+                e.preventDefault();
+                if (allowNewTags) {
+                  const cleanedFilter = sanitiseFilter(filter);
+                  if (onAddNewTag) {
+                    onAddNewTag(cleanedFilter.name);
+                    setFilter("");
+                  } else {
+                    updateTags([...selectedTags, cleanedFilter]);
+                  }
                 }
               }
-            }
-          }}
-          placeholder={selectedTags.length !== tags.length ? placeholder : ""}
-          required={required}
-          type="text"
-          value={filter}
-        />
-        {dropdownOpen && dropdownItems.length >= 1 && (
-          <div className="tag-selector__dropdown" role="listbox">
-            {header ? (
-              <div className="tag-selector__dropdown-header">{header}</div>
-            ) : null}
-            <ul className="tag-selector__dropdown-list">{dropdownItems}</ul>
-          </div>
-        )}
-      </div>
-    </Field>
+            }}
+            placeholder={selectedTags.length !== tags.length ? placeholder : ""}
+            required={required}
+            type="text"
+            value={filter}
+          />
+          {dropdownOpen && dropdownItems.length >= 1 && (
+            <div className="tag-selector__dropdown" role="listbox">
+              {header ? (
+                <div className="tag-selector__dropdown-header">{header}</div>
+              ) : null}
+              <ul className="tag-selector__dropdown-list">{dropdownItems}</ul>
+            </div>
+          )}
+        </div>
+      </Field>
+    </div>
   );
 };
 

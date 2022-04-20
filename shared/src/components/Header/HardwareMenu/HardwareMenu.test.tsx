@@ -1,6 +1,7 @@
+import React from "react";
+
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
 
 import { HardwareMenu } from "./HardwareMenu";
 
@@ -29,7 +30,6 @@ describe("HardwareMenu", () => {
         links={[
           {
             inHardwareMenu: true,
-            isLegacy: false,
             label: "Machines",
             url: "/machines",
           },
@@ -51,7 +51,6 @@ describe("HardwareMenu", () => {
         links={[
           {
             inHardwareMenu: true,
-            isLegacy: false,
             label: "Machines",
             url: "/machines",
           },

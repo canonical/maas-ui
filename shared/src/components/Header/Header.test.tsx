@@ -1,9 +1,10 @@
-import { render, screen, within } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import React from "react";
 
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+
 import { Header } from "./Header";
-import { GenerateLinkType } from "./types";
+import type { GenerateLinkType } from "./types";
 
 describe("Header", () => {
   let generateURL: GenerateLinkType;
@@ -126,7 +127,7 @@ describe("Header", () => {
     );
     expect(screen.getByRole("list", { name: "main" })).toBeInTheDocument();
     expect(
-      within(screen.getByRole("list", { name: "main" })).queryByRole("link")
+      within(screen.queryByRole("list", { name: "main" })).queryByRole("link")
     ).not.toBeInTheDocument();
   });
 

@@ -1,10 +1,13 @@
-import classNames from "classnames";
-import PropTypes from "prop-types";
 import React, { useEffect, useRef, useState } from "react";
+
+import classNames from "classnames";
 import type { Location as HistoryLocation } from "history";
+import PropTypes from "prop-types";
+
+import type { TSFixMe } from "../../types";
+import { generateLegacyURL, generateNewURL } from "../../utils";
 
 import HardwareMenu from "./HardwareMenu";
-import { generateLegacyURL, generateNewURL } from "../../utils";
 import type {
   GenerateLinkType,
   GenerateNavLink,
@@ -12,8 +15,6 @@ import type {
   NavLink,
   ToggleVisible,
 } from "./types";
-
-import type { TSFixMe } from "../../types";
 
 type Props = {
   appendNewBase?: boolean;
@@ -87,10 +88,10 @@ export const Header = ({
   rootScope,
   uuid,
   version,
-}: Props) => {
+}: Props): JSX.Element => {
   const [hardwareMenuOpen, toggleHardwareMenu] = useVisible(false);
   const [mobileMenuOpen, toggleMobileMenu] = useVisible(false);
-  let sendPageview = useRef<(() => void) | null>(null);
+  const sendPageview = useRef<(() => void) | null>(null);
   const previousURL = useRef<string>();
 
   useEffect(() => {
@@ -98,23 +99,26 @@ export const Header = ({
       (function (w, d, s, l, i) {
         w[l] = w[l] || [];
         w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        var f = d.getElementsByTagName(s)[0],
+        const f = d.getElementsByTagName(s)[0],
           j = d.createElement(s),
           dl = l !== "dataLayer" ? "&l=" + l : "";
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         j.async = true;
         const src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-ignore
         j.src = src;
         if (document.querySelectorAll(`script[src="${src}"]`).length === 0) {
           f.parentNode.insertBefore(j, f);
         }
       })(window, document, "script", "dataLayer", "GTM-P4TGJR9");
-
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.ga =
         window.ga ||
         function () {
+          // eslint-disable-next-line prefer-rest-params
           (window.ga.q = window.ga.q || []).push(arguments);
           return window.ga;
         };
