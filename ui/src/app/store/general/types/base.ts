@@ -12,7 +12,7 @@ import type {
   PowerFieldType,
 } from "./enum";
 
-import type { APIError, EmptyObject } from "app/base/types";
+import type { APIError } from "app/base/types";
 import type { MachineActions } from "app/store/machine/types";
 
 export type Architecture = string;
@@ -229,7 +229,7 @@ export type TLSCertificate =
 
 export type TLSCertificateState = {
   errors: APIError;
-  data: TLSCertificate | EmptyObject | null;
+  data: TLSCertificate | null;
   loaded: boolean;
   loading: boolean;
 };

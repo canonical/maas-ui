@@ -1,4 +1,4 @@
-export { isTlsCertificate, splitCertificateName } from "./certificates";
+export { splitCertificateName } from "./certificates";
 
 export { useInitialPowerParameters } from "./hooks";
 

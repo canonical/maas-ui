@@ -514,4 +514,36 @@ describe("config selectors", () => {
       expect(config.rpcSharedSecret(state)).toBe("veryverysecret");
     });
   });
+
+  describe("tlsCertExpirationNotificationEnabled", () => {
+    it("returns MAAS config for TLS cert expiration notification enabled", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({
+              name: "tls_cert_expiration_notification_enabled",
+              value: true,
+            }),
+          ],
+        }),
+      });
+      expect(config.tlsCertExpirationNotificationEnabled(state)).toBe(true);
+    });
+  });
+
+  describe("tlsCertExpirationNotificationInterval", () => {
+    it("returns MAAS config for TLS cert expiration notification interval", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({
+              name: "tls_cert_expiration_notification_interval",
+              value: 45,
+            }),
+          ],
+        }),
+      });
+      expect(config.tlsCertExpirationNotificationInterval(state)).toBe(45);
+    });
+  });
 });

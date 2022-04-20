@@ -9,7 +9,6 @@ import TLSEnabled from "./TLSEnabled";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import { tlsCertificate as tlsCertificateSelectors } from "app/store/general/selectors";
-import { isTlsCertificate } from "app/store/general/utils";
 
 const Security = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -25,10 +24,9 @@ const Security = (): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
-  const isTlsEnabled = isTlsCertificate(tlsCertificate);
   return (
     <Row>
-      <Col size={6}>{isTlsEnabled ? <TLSEnabled /> : <TLSDisabled />}</Col>
+      <Col size={6}>{tlsCertificate ? <TLSEnabled /> : <TLSDisabled />}</Col>
     </Row>
   );
 };

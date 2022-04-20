@@ -36,7 +36,7 @@ it("displays a message if TLS is disabled", () => {
   const state = rootStateFactory({
     general: generalStateFactory({
       tlsCertificate: tlsCertificateStateFactory({
-        data: {},
+        data: null,
         loaded: true,
       }),
     }),

@@ -28,7 +28,7 @@ it("renders TLS disabled section if no TLS certificate is present", () => {
   const state = rootStateFactory({
     general: generalStateFactory({
       tlsCertificate: tlsCertificateStateFactory({
-        data: {},
+        data: null,
         loaded: true,
       }),
     }),
