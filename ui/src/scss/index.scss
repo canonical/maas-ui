@@ -246,6 +246,7 @@
 
 // settings
 @import "~app/settings/components/SettingsTable";
+@import "~app/settings/views/Configuration/Security/TLSEnabled/TLSEnabledFields";
 @import "~app/settings/views/Dhcp/DhcpList";
 @import "~app/settings/views/LicenseKeys/LicenseKeyList";
 @import "~app/settings/views/Repositories/RepositoriesList";
@@ -260,6 +261,7 @@
 @include RepositoryFormFields;
 @include ScriptsList;
 @include ScriptsUpload;
+@include TLSEnabledFields;
 @include UsersList;
 
 // subnets
