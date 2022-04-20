@@ -1,14 +1,4 @@
-import MockDate from "mockdate";
-
 import { timeSpanToMinutes, timeSpanToSeconds } from "./timeSpan";
-
-beforeAll(() => {
-  MockDate.set("2020-01-01");
-});
-
-afterAll(() => {
-  MockDate.reset();
-});
 
 describe("timeSpanToSeconds", () => {
   it("converts a partial timespan string to a number of seconds", () => {
