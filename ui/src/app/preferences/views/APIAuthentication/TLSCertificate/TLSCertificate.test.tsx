@@ -18,21 +18,7 @@ afterEach(() => {
   jest.restoreAllMocks();
 });
 
-it("displays loading text if TLS certificate has not loaded", () => {
-  const state = rootStateFactory({
-    general: generalStateFactory({
-      tlsCertificate: tlsCertificateStateFactory({
-        data: null,
-        loaded: false,
-      }),
-    }),
-  });
-  renderWithMockStore(<TLSCertificate />, { state });
-
-  expect(screen.getByText(/Loading.../)).toBeInTheDocument();
-});
-
-it("displays a message if TLS is disabled", () => {
+it("does not render if there is no TLS certificate", () => {
   const state = rootStateFactory({
     general: generalStateFactory({
       tlsCertificate: tlsCertificateStateFactory({
@@ -41,9 +27,9 @@ it("displays a message if TLS is disabled", () => {
       }),
     }),
   });
-  renderWithMockStore(<TLSCertificate />, { state });
+  const { container } = renderWithMockStore(<TLSCertificate />, { state });
 
-  expect(screen.getByText(Labels.NotEnabled)).toBeInTheDocument();
+  expect(container).toBeEmptyDOMElement();
 });
 
 it("renders TLS certificate data if it exists", () => {

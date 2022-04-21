@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Button, Icon, Spinner, Tooltip } from "@canonical/react-components";
+import { Button, Icon, Tooltip } from "@canonical/react-components";
 import fileDownload from "js-file-download";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,27 +11,19 @@ import { breakLines, unindentString } from "app/utils";
 export enum Labels {
   Download = "Download TLS certificate",
   Filename = "TLS certificate",
-  NotEnabled = "TLS has not been enabled on this MAAS.",
   Title = "TLS certificate",
 }
 
 const TLSCertificate = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const tlsCertificate = useSelector(tlsCertificateSelectors.get);
-  const loaded = useSelector(tlsCertificateSelectors.loaded);
 
   useEffect(() => {
     dispatch(generalActions.fetchTlsCertificate());
   }, [dispatch]);
 
   if (!tlsCertificate) {
-    return (
-      <>
-        <h2 className="p-heading--5 u-sv-1">{Labels.Title}</h2>
-        <p>{loaded ? Labels.NotEnabled : <Spinner text="Loading..." />}</p>
-        <hr />
-      </>
-    );
+    return null;
   }
 
   return (

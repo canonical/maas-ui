@@ -14,6 +14,6 @@ export enum ConfigMeta {
 }
 
 export enum TLSExpiryNotificationInterval {
-  MIN = 0,
+  MIN = 1,
   MAX = 90,
 }
