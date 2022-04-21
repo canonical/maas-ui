@@ -18,6 +18,7 @@ app.get(`${BASENAME}/`, (req, res) =>
 // Proxy API endpoints to the MAAS.
 app.use(
   createProxyMiddleware([`${BASENAME}/api`, `${BASENAME}/accounts`], {
+    secure: false,
     target: process.env.MAAS_URL,
   })
 );
@@ -25,6 +26,7 @@ app.use(
 // Proxy the WebSocket API endpoint to the MAAS.
 app.use(
   createProxyMiddleware(`${BASENAME}/ws`, {
+    secure: false,
     target: process.env.MAAS_URL,
     ws: true,
   })
