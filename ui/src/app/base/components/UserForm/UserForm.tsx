@@ -169,6 +169,7 @@ export const UserForm = ({
         <div className="u-sv2">
           <Button
             appearance="link"
+            className="u-no-margin--bottom"
             data-testid="toggle-passwords"
             onClick={() => setPasswordVisible(!passwordVisible)}
           >

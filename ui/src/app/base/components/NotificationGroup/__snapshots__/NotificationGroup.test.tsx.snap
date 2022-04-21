@@ -71,6 +71,7 @@ exports[`NotificationGroup renders 1`] = `
           <Button
             appearance="link"
             aria-label="2 negative, click to open messages."
+            className="u-no-margin--bottom"
             onClick={[Function]}
           >
             <span
@@ -85,7 +86,8 @@ exports[`NotificationGroup renders 1`] = `
           </Button>
           <Button
             appearance="link"
-            className="u-nudge-right"
+            className="u-no-margin--bottom"
+            inline={true}
             onClick={[Function]}
           >
             Dismiss all
@@ -106,11 +108,12 @@ exports[`NotificationGroup renders 1`] = `
             <Button
               appearance="link"
               aria-label="2 negative, click to open messages."
+              className="u-no-margin--bottom"
               onClick={[Function]}
             >
               <button
                 aria-label="2 negative, click to open messages."
-                className="p-button--link"
+                className="p-button--link u-no-margin--bottom"
                 onClick={[Function]}
               >
                 <span
@@ -130,11 +133,12 @@ exports[`NotificationGroup renders 1`] = `
             </Button>
             <Button
               appearance="link"
-              className="u-nudge-right"
+              className="u-no-margin--bottom"
+              inline={true}
               onClick={[Function]}
             >
               <button
-                className="p-button--link u-nudge-right"
+                className="p-button--link is-inline u-no-margin--bottom"
                 onClick={[Function]}
               >
                 Dismiss all

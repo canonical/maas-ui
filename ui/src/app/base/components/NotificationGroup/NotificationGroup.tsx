@@ -52,6 +52,7 @@ const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
             <Button
               appearance="link"
               aria-label={`${notifications.length} ${severity}, click to open messages.`}
+              className="u-no-margin--bottom"
               onClick={(evt: React.MouseEvent) => {
                 evt.preventDefault();
                 setGroupOpen(!groupOpen);
@@ -68,7 +69,8 @@ const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
             {dismissable && (
               <Button
                 appearance="link"
-                className="u-nudge-right"
+                className="u-no-margin--bottom"
+                inline
                 onClick={() => dismissAll(notifications, dispatch)}
               >
                 Dismiss all

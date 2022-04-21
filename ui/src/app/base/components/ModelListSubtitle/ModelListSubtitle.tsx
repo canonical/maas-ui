@@ -41,6 +41,7 @@ export const ModelListSubtitle = ({
     return (
       <Button
         appearance="link"
+        className="u-no-margin--bottom"
         data-testid="filter-selected"
         onClick={filterSelected}
       >
