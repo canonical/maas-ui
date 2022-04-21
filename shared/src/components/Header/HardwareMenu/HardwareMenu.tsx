@@ -1,5 +1,7 @@
-import PropTypes from "prop-types";
 import React, { useEffect, useRef } from "react";
+
+import PropTypes from "prop-types";
+
 import type { GenerateNavLink, NavItem, ToggleVisible } from "../types";
 
 type Props = {
@@ -12,7 +14,7 @@ export const HardwareMenu = ({
   generateLink,
   links,
   toggleHardwareMenu,
-}: Props) => {
+}: Props): JSX.Element => {
   const wrapperRef = useRef(null);
   const handleClickOutsideRef = useRef(null);
 

@@ -1,4 +1,8 @@
-import React from "react";
+import type React from "react";
+import type { MutableRefObject } from "react";
+import { useEffect, useRef, useCallback } from "react";
+
+import { nanoid } from "nanoid";
 
 export const BASENAME = process.env.BASENAME;
 export const LEGACY_BASENAME = process.env.LEGACY_BASENAME;
@@ -6,13 +10,14 @@ export const REACT_BASENAME = process.env.REACT_BASENAME;
 
 export type Route = string;
 
-export const generateLegacyURL = (route?: Route) =>
+export const generateLegacyURL = (route?: Route): string =>
   `${BASENAME}${LEGACY_BASENAME}${route || ""}`;
 
-export const generateNewURL = (route?: Route, appendBase = true) =>
+export const generateNewURL = (route?: Route, appendBase = true): string =>
   `${appendBase ? BASENAME : ""}${REACT_BASENAME}${route || ""}`;
 
-export const generateBaseURL = (route?: Route) => `${BASENAME}${route || ""}`;
+export const generateBaseURL = (route?: Route): string =>
+  `${BASENAME}${route || ""}`;
 
 const pushRoute = (route: Route) => window.history.pushState(null, null, route);
 
@@ -37,14 +42,14 @@ const navigate = (route: Route, evt?: MouseEvent | React.MouseEvent) => {
 export const navigateToLegacy = (
   route?: Route,
   evt?: MouseEvent | React.MouseEvent
-) => {
+): void => {
   navigate(generateLegacyURL(route), evt);
 };
 
 export const navigateToNew = (
   route?: Route,
   evt?: MouseEvent | React.MouseEvent
-) => {
+): void => {
   navigate(generateNewURL(route), evt);
 };
 
@@ -54,7 +59,10 @@ export const navigateToNew = (
  * @param powerType - A power type.
  * @return The formatted power type or the original power type key.
  */
-export const extractPowerType = (description: string, powerType: string) => {
+export const extractPowerType = (
+  description: string,
+  powerType: string
+): string => {
   if (!powerType) {
     return null;
   }
@@ -67,4 +75,48 @@ export const extractPowerType = (description: string, powerType: string) => {
   return position === -1
     ? powerType
     : description.substring(position, position + powerType.length);
+};
+
+/**
+ * Get a random ID string
+ * @returns non-secure random ID string
+ */
+export const useId = (): string => useRef(nanoid()).current;
+
+/**
+ * Handle clicks outside an element.
+ * @returns An id and ref to pass to the element to handle clicks
+ * outside of.
+ */
+export const useClickOutside = <E extends HTMLElement>(
+  onClickOutside: () => void
+): [MutableRefObject<E>, string] => {
+  const wrapperRef = useRef<E | null>(null);
+  const id = useId();
+
+  const handleClickOutside = useCallback(
+    (evt: MouseEvent) => {
+      const target = evt.target as HTMLElement;
+      // The target might be something like an SVG node which doesn't provide
+      // the class name as a string.
+      const isValidTarget =
+        typeof (evt?.target as HTMLElement)?.className === "string";
+      if (
+        !isValidTarget ||
+        (wrapperRef.current &&
+          !wrapperRef.current?.contains(target) &&
+          target.id !== id)
+      ) {
+        onClickOutside();
+      }
+    },
+    [id, onClickOutside]
+  );
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside, false);
+    return () =>
+      document.removeEventListener("click", handleClickOutside, false);
+  }, [handleClickOutside]);
+  return [wrapperRef, id];
 };
