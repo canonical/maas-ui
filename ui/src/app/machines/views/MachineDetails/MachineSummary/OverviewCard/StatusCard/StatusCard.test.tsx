@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import StatusCard from "./StatusCard";
 
+import maasDocsUrls from "app/base/maasDocsUrls";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
@@ -170,10 +171,14 @@ describe("StatusCard", () => {
         name: "more about periodic hardware sync",
       })
     );
-    /* TODO: Enable this check after adding docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */
-    expect(
-      screen.queryByRole("link", { name: "Hardware sync docs" })
-    ).not.toBeInTheDocument();
+    const hardwareSyncDocs = screen.getByRole("link", {
+      name: "Hardware sync docs",
+    });
+    expect(hardwareSyncDocs).toBeInTheDocument();
+    expect(hardwareSyncDocs).toHaveAttribute(
+      "href",
+      maasDocsUrls.customisingDeployedMachines
+    );
   });
 
   it("displays deployed hardware sync interval in a correct format", () => {

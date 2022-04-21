@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -35,13 +36,13 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='no-filesystems']").text()).toBe(
+    expect(screen.getByTestId("no-filesystems")).toHaveTextContent(
       "No filesystems defined."
     );
   });
@@ -61,16 +62,18 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("disk-fs");
-    expect(wrapper.find("TableRow TableCell").at(3).text()).toBe(
-      "/disk-fs/path"
+    expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
+      "disk-fs"
     );
+    expect(
+      screen.getByRole("gridcell", { name: "Mount point" })
+    ).toHaveTextContent("/disk-fs/path");
   });
 
   it("can show filesystems associated with partitions", () => {
@@ -93,18 +96,18 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    expect(wrapper.find("TableRow TableCell").at(0).text()).toBe(
+    expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
       "partition-fs"
     );
-    expect(wrapper.find("TableRow TableCell").at(3).text()).toBe(
-      "/partition-fs/path"
-    );
+    expect(
+      screen.getByRole("gridcell", { name: "Mount point" })
+    ).toHaveTextContent("/partition-fs/path");
   });
 
   it("can show special filesystems", () => {
@@ -124,16 +127,18 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    expect(wrapper.find("TableRow TableCell").at(0).text()).toBe("—");
-    expect(wrapper.find("TableRow TableCell").at(3).text()).toBe(
-      "/special-fs/path"
+    expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
+      "—"
     );
+    expect(
+      screen.getByRole("gridcell", { name: "Mount point" })
+    ).toHaveTextContent("/special-fs/path");
   });
 
   it("can show an add special filesystem form if storage can be edited", () => {
@@ -146,17 +151,17 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    wrapper
-      .find("button[data-testid='add-special-fs-button']")
-      .simulate("click");
+    userEvent.click(screen.getByTestId("add-special-fs-button"));
 
-    expect(wrapper.find("AddSpecialFilesystem").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: "Add special filesystem" })
+    ).toBeInTheDocument();
   });
 
   it("can remove a disk's filesystem", () => {
@@ -176,24 +181,21 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Remove")
-      )
-      .simulate("click");
-    wrapper.find("ActionButton").simulate("click");
-
-    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
-      "Are you sure you want to remove this filesystem?"
+    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    userEvent.click(
+      screen.getByRole("button", { name: "Remove filesystem..." })
     );
+    userEvent.click(screen.getByRole("button", { name: "Remove" }));
+
+    expect(
+      screen.getByText("Are you sure you want to remove this filesystem?")
+    ).toBeInTheDocument();
     expect(
       store
         .getActions()
@@ -232,24 +234,21 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Remove")
-      )
-      .simulate("click");
-    wrapper.find("ActionButton").simulate("click");
-
-    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
-      "Are you sure you want to remove this filesystem?"
+    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    userEvent.click(
+      screen.getByRole("button", { name: "Remove filesystem..." })
     );
+    userEvent.click(screen.getByRole("button", { name: "Remove" }));
+
+    expect(
+      screen.getByText("Are you sure you want to remove this filesystem?")
+    ).toBeInTheDocument();
     expect(
       store
         .getActions()
@@ -289,24 +288,23 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Remove")
-      )
-      .simulate("click");
-    wrapper.find("ActionButton").simulate("click");
-
-    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
-      "Are you sure you want to remove this special filesystem?"
+    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    userEvent.click(
+      screen.getByRole("button", { name: "Remove filesystem..." })
     );
+    userEvent.click(screen.getByRole("button", { name: "Remove" }));
+
+    expect(
+      screen.getByText(
+        "Are you sure you want to remove this special filesystem?"
+      )
+    ).toBeInTheDocument();
     expect(
       store
         .getActions()
@@ -343,24 +341,21 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Unmount")
-      )
-      .simulate("click");
-    wrapper.find("ActionButton").simulate("click");
-
-    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
-      "Are you sure you want to unmount this filesystem?"
+    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    userEvent.click(
+      screen.getByRole("button", { name: "Unmount filesystem..." })
     );
+    userEvent.click(screen.getByRole("button", { name: "Unmount" }));
+
+    expect(
+      screen.getByText("Are you sure you want to unmount this filesystem?")
+    ).toBeInTheDocument();
     expect(
       store
         .getActions()
@@ -400,24 +395,21 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage systemId="abc123" />
       </Provider>
     );
 
-    wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Unmount")
-      )
-      .simulate("click");
-    wrapper.find("ActionButton").simulate("click");
-
-    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
-      "Are you sure you want to unmount this filesystem?"
+    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    userEvent.click(
+      screen.getByRole("button", { name: "Unmount filesystem..." })
     );
+    userEvent.click(screen.getByRole("button", { name: "Unmount" }));
+
+    expect(
+      screen.getByText("Are you sure you want to unmount this filesystem?")
+    ).toBeInTheDocument();
     expect(
       store
         .getActions()
@@ -457,11 +449,11 @@ describe("FilesystemsTable", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <FilesystemsTable canEditStorage={false} systemId="abc123" />
       </Provider>
     );
-    expect(wrapper.find("TableActionsDropdown").prop("disabled")).toBe(true);
+    expect(screen.getByRole("button", { name: /Take action/ })).toBeDisabled();
   });
 });

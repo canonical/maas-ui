@@ -20,6 +20,7 @@ import type { DeployFormValues } from "../DeployForm";
 
 import FormikField from "app/base/components/FormikField";
 import UploadTextArea from "app/base/components/UploadTextArea";
+import maasDocsUrls from "app/base/maasDocsUrls";
 import imagesURLs from "app/images/urls";
 import prefsURLs from "app/preferences/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -198,6 +199,14 @@ export const DeployFormFields = (): JSX.Element => {
                 "u-sv2": userDataVisible,
               })}
             />
+            {userDataVisible && (
+              <UploadTextArea
+                label="Upload script"
+                name="userData"
+                placeholder="Paste or drop script here."
+                rows={10}
+              />
+            )}
             <FormikField
               type="checkbox"
               name="enableHwSync"
@@ -218,8 +227,14 @@ export const DeployFormFields = (): JSX.Element => {
                     >
                       <Icon name="information" />
                     </Button>
-                  </Tooltip>
-                  {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
+                  </Tooltip>{" "}
+                  <a
+                    href={maasDocsUrls.customisingDeployedMachines}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    Hardware sync docs
+                  </a>
                 </>
               }
               help={
@@ -232,14 +247,6 @@ export const DeployFormFields = (): JSX.Element => {
                 </>
               }
             />
-            {userDataVisible && (
-              <UploadTextArea
-                label="Upload script"
-                name="userData"
-                placeholder="Paste or drop script here."
-                rows={10}
-              />
-            )}
           </Col>
         </Row>
         {user && user.sshkeys_count === 0 && (

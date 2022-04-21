@@ -2,6 +2,7 @@ import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { useSelector } from "react-redux";
 
+import maasDocsUrls from "app/base/maasDocsUrls";
 import type { Seconds } from "app/base/types";
 import { PowerTypeNames } from "app/store/general/constants";
 import type { MachineDetails } from "app/store/machine/types";
@@ -100,14 +101,23 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
             <hr />
             <p className="u-text--muted">
               Periodic hardware sync enabled{" "}
-              {/* TODO: Update docs links https://github.com/canonical-web-and-design/app-tribe/issues/787 */}
               <Tooltip
                 position="right"
                 message={
                   <>
                     This machine hardware info is synced every{" "}
                     {formatSyncInterval(machine.sync_interval)}.{"\n"}
-                    You can check it at the bottom, in the status bar.
+                    You can check it at the bottom, in the status bar.{"\n"}
+                    More about this in the{" "}
+                    <a
+                      href={maasDocsUrls.customisingDeployedMachines}
+                      rel="noopener noreferrer"
+                      target="_blank"
+                      className="is-on-dark"
+                    >
+                      Hardware sync docs
+                    </a>
+                    .
                   </>
                 }
               >
