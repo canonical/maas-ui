@@ -8,7 +8,7 @@ $color-light-new: #e5e5e5;
 $color-navigation-active-bar: $color-brand;
 
 $breakpoint-x-large: 1300px;
-$breakpoint-navigation-threshold: 870px;
+$breakpoint-navigation-threshold: 925px;
 $increase-font-size-on-larger-screens: false;
 
 // XXX Caleb 02/06/2020 Sidenav looks disabled on #f7f7f7 background.
@@ -18,5 +18,3 @@ $colors--light-theme--background-highlight: rgba(#111, 0.03);
 $colors--light-theme--border-default: rgba(#111, 0.2);
 $colors--light-theme--border-high-contrast: rgba(#111, 0.56);
 $colors--light-theme--border-low-contrast: rgba(#111, 0.1);
-
-// $multi: 1;

@@ -2,7 +2,7 @@
 @mixin maas-navigation {
   $breakpoint-hardware-menu: 1200px;
 
-  .hardware-menu {
+  .p-navigation__hardware-menu {
     display: none;
 
     @media (min-width: $breakpoint-navigation-threshold) and (max-width: $breakpoint-hardware-menu) {
@@ -14,5 +14,9 @@
     @media (min-width: $breakpoint-navigation-threshold) and (max-width: $breakpoint-hardware-menu) {
       display: none;
     }
+  }
+
+  .p-navigation__maas-logo {
+    vertical-align: top;
   }
 }

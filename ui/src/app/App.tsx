@@ -1,4 +1,4 @@
-import type { ReactNode, AriaAttributes, AriaRole } from "react";
+import type { ReactNode } from "react";
 import { useEffect } from "react";
 
 import { Notification } from "@canonical/react-components";
@@ -30,18 +30,6 @@ declare global {
     legacyWS: WebSocket;
   }
 }
-
-export type LinkType = {
-  label: ReactNode;
-  url: string;
-};
-
-export type LinkProps = {
-  className?: string;
-  role?: AriaRole;
-  "aria-current"?: AriaAttributes["aria-current"];
-  "aria-label"?: AriaAttributes["aria-label"];
-};
 
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -146,21 +134,17 @@ export const App = (): JSX.Element => {
         completedIntro={completedIntro && completedUserIntro}
         debug={debug}
         enableAnalytics={analyticsEnabled as boolean}
-        generateNewLink={(
-          link: LinkType,
-          props: LinkProps,
-          _appendNewBase: boolean
-        ) => (
-          <Link
-            className={props.className}
-            aria-current={props["aria-current"]}
-            aria-label={props["aria-label"]}
-            role={props.role}
-            to={link.url}
-          >
-            {link.label}
-          </Link>
-        )}
+        generateNewLink={({ label, url, isSelected, ...props }) =>
+          url ? (
+            <Link {...props} to={url}>
+              {label}
+            </Link>
+          ) : (
+            // Handle elements that don't need to navigate using react-router
+            // e.g. the logout link.
+            <a {...props}>{label}</a>
+          )
+        }
         location={location}
         logout={() => {
           dispatch(statusActions.logout());
