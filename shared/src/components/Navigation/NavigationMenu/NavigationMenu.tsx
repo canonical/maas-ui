@@ -27,7 +27,7 @@ const NavigationMenu = ({
 }: Props): JSX.Element => {
   const [isOpen, setIsOpen] = useState(false);
   const closeMenu = useCallback(() => setIsOpen(false), [setIsOpen]);
-  const [menuRef, menuId] = useClickOutside<HTMLAnchorElement>(closeMenu);
+  const [menuRef, menuId] = useClickOutside<HTMLButtonElement>(closeMenu);
   return (
     <li
       {...props}
@@ -39,12 +39,9 @@ const NavigationMenu = ({
         }
       )}
     >
-      {/* TODO: replace anchor with button https://github.com/canonical-web-and-design/maas-ui/issues/3454 */}
-      {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/role-supports-aria-props */}
-      <a
-        href="#"
+      <button
         aria-controls={menuId}
-        className="p-navigation__link"
+        className="p-navigation__link u-no-margin--right"
         onClick={(evt) => {
           evt.preventDefault();
           setIsOpen(!isOpen);
@@ -52,7 +49,7 @@ const NavigationMenu = ({
         ref={menuRef}
       >
         {label}
-      </a>
+      </button>
       <ul
         aria-hidden={!isOpen}
         className={classNames("p-navigation__dropdown", {

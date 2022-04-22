@@ -77,11 +77,10 @@ describe("Header", () => {
     const primaryNavigation = screen.getByRole("navigation", {
       name: "primary",
     });
-    expect(
-      within(primaryNavigation).queryByRole("list", {
-        name: "main",
-      })
-    ).not.toBeInTheDocument();
+    const mainNav = screen.getByRole("list", {
+      name: "main",
+    });
+    expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
     expect(
       within(primaryNavigation).queryByRole("list", {
         name: "user",
@@ -98,7 +97,9 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        generateNewLink={generateURL}
+        generateNewLink={({ url, label, isSelected, ...props }) => (
+          <button {...props}>{label}</button>
+        )}
         location={
           {
             pathname: "/",
@@ -107,7 +108,7 @@ describe("Header", () => {
         logout={logout}
       />
     );
-    userEvent.click(screen.getByRole("link", { name: "Log out" }));
+    userEvent.click(screen.getByRole("button", { name: "Log out" }));
     expect(logout).toHaveBeenCalled();
   });
 
@@ -120,7 +121,9 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={false}
-        generateNewLink={generateURL}
+        generateNewLink={({ url, label, isSelected, ...props }) => (
+          <button {...props}>{label}</button>
+        )}
         location={
           {
             pathname: "/",
@@ -129,14 +132,13 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
+    const mainNav = screen.getByRole("list", { name: "main" });
+    expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
+    const userNav = screen.queryByRole("list", { name: "user" });
+    expect(within(userNav).queryByRole("link")).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("list", { name: "main" })
-    ).not.toBeInTheDocument();
-    const userLinks = within(
-      screen.queryByRole("list", { name: "user" })
-    ).getAllByRole("link");
-    expect(userLinks.length).toBe(1);
-    expect(userLinks[0].textContent).toBe("Log out");
+      within(userNav).getByRole("button", { name: "Log out" })
+    ).toBeInTheDocument();
   });
 
   it("can highlight active URL", () => {

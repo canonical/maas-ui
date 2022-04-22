@@ -158,8 +158,10 @@ export const Header = ({
 }: Props): JSX.Element => {
   const sendPageview = useRef<(() => void) | null>(null);
   const previousURL = useRef<string>();
-  // Hide the navigation items when the user is not authenticated.
-  const showLinks = !!authUser;
+  const isAuthenticated = !!authUser;
+  // Hide the navigation items when the user is not authenticated or hasn't been
+  // through the intro process.
+  const showLinks = isAuthenticated && completedIntro;
 
   useEffect(() => {
     if (!debug && enableAnalytics && uuid && version && authUser) {
@@ -236,7 +238,7 @@ export const Header = ({
       <Navigation
         generateLink={generateNewLink}
         items={
-          showLinks && completedIntro
+          showLinks
             ? [
                 {
                   className: "p-navigation__hardware-menu",
@@ -248,9 +250,9 @@ export const Header = ({
             : null
         }
         itemsRight={
-          showLinks
+          isAuthenticated
             ? [
-                ...(completedIntro
+                ...(showLinks
                   ? [
                       {
                         isSelected: location.pathname.startsWith(
@@ -263,12 +265,10 @@ export const Header = ({
                   : []),
                 {
                   label: "Log out",
-                  onClick: (evt) => {
-                    evt.preventDefault();
+                  onClick: () => {
                     localStorage.removeItem("maas-config");
                     logout();
                   },
-                  url: "#",
                 },
               ]
             : null
@@ -285,7 +285,6 @@ export const Header = ({
               xmlns="http://www.w3.org/2000/svg"
               height="24"
               viewBox="545.3 412.6 100 25.2"
-              className="p-navigation__maas-logo"
               aria-hidden="true"
             >
               <path

@@ -88,7 +88,7 @@ it("can display menus", () => {
     />
   );
   expect(
-    screen.getByRole("link", { name: "THIS IS A MENU" })
+    screen.getByRole("button", { name: "THIS IS A MENU" })
   ).toBeInTheDocument();
 });
 
@@ -285,6 +285,6 @@ it("does not close the mobile menu when clicking on a nav menu", () => {
   const banner = screen.getByRole("banner");
   userEvent.click(screen.getByRole("button", { name: "Menu" }));
   expect(banner.className.includes("has-menu-open")).toBe(true);
-  userEvent.click(screen.getByRole("link", { name: "THIS IS A MENU" }));
+  userEvent.click(screen.getByRole("button", { name: "THIS IS A MENU" }));
   expect(banner.className.includes("has-menu-open")).toBe(true);
 });

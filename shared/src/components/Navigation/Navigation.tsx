@@ -144,7 +144,6 @@ const Navigation = ({
   };
   return (
     <header
-      id="navigation"
       {...headerProps}
       className={classNames("p-navigation", headerProps.className, {
         "has-menu-open": mobileMenuOpen,
@@ -202,11 +201,13 @@ const Navigation = ({
           </ul>
         </div>
         <nav className="p-navigation__nav" {...navProps}>
-          {items ? (
-            <ul className="p-navigation__items" {...leftNavProps}>
-              {generateItems(items, closeMobileMenu, generateLink)}
-            </ul>
-          ) : null}
+          {/* 
+            Always include the left nav list so that it takes up the space 
+            before the right nav list.
+          */}
+          <ul className="p-navigation__items" {...leftNavProps}>
+            {items ? generateItems(items, closeMobileMenu, generateLink) : null}
+          </ul>
           {itemsRight || hasSearch ? (
             <ul className="p-navigation__items" {...rightNavProps}>
               {itemsRight

@@ -142,7 +142,7 @@ export const App = (): JSX.Element => {
           ) : (
             // Handle elements that don't need to navigate using react-router
             // e.g. the logout link.
-            <a {...props}>{label}</a>
+            <button {...props}>{label}</button>
           )
         }
         location={location}
