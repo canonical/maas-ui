@@ -1,10 +1,9 @@
-import { Icon } from "@canonical/react-components";
+import { Icon, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import TLSEnabledFields from "./TLSEnabledFields";
 
-import CertificateDownload from "app/base/components/CertificateDownload";
 import CertificateMetadata from "app/base/components/CertificateMetadata";
 import FormikForm from "app/base/components/FormikForm";
 import { actions as configActions } from "app/store/config";
@@ -20,15 +19,17 @@ export type TLSEnabledValues = {
 export enum Labels {
   NotificationCheckbox = "Notify the certificate is due to expire in...",
   Interval = "Days",
-  IntervalRangeError = "Notification interval must be between 0 and 90 days.",
+  Textarea = "TLS certificate",
 }
+
+const INTERVAL_RANGE_ERROR = `Notification interval must be between ${TLSExpiryNotificationInterval.MIN} and ${TLSExpiryNotificationInterval.MAX} days.`;
 
 const TLSEnabledSchema = Yup.object()
   .shape({
     notificationEnabled: Yup.boolean(),
     notificationInterval: Yup.number()
-      .min(TLSExpiryNotificationInterval.MIN, Labels.IntervalRangeError)
-      .max(TLSExpiryNotificationInterval.MAX, Labels.IntervalRangeError),
+      .min(TLSExpiryNotificationInterval.MIN, INTERVAL_RANGE_ERROR)
+      .max(TLSExpiryNotificationInterval.MAX, INTERVAL_RANGE_ERROR),
   })
   .defined();
 
@@ -61,9 +62,12 @@ const TLSEnabled = (): JSX.Element | null => {
           fingerprint: tlsCertificate.fingerprint,
         }}
       />
-      <CertificateDownload
-        certificate={tlsCertificate.certificate}
-        filename="TLS certificate"
+      <Textarea
+        aria-label={Labels.Textarea}
+        className="p-textarea--readonly"
+        readOnly
+        rows={5}
+        value={tlsCertificate.certificate}
       />
       <FormikForm<TLSEnabledValues>
         buttonsAlign="left"

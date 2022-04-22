@@ -1,6 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import * as fileDownload from "js-file-download";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -18,14 +17,7 @@ import {
 
 const mockStore = configureStore();
 
-jest.mock("js-file-download", () => jest.fn());
-
-afterEach(() => {
-  jest.restoreAllMocks();
-});
-
-it("can generate a download based on the TLS certificate details", async () => {
-  const downloadSpy = jest.spyOn(fileDownload, "default");
+it("renders certificate content", () => {
   const tlsCertificate = tlsCertificateFactory();
   const state = rootStateFactory({
     general: generalStateFactory({
@@ -42,14 +34,9 @@ it("can generate a download based on the TLS certificate details", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByRole("button", { name: /Download certificate/ }));
-
-  await waitFor(() => {
-    expect(downloadSpy).toHaveBeenCalledWith(
-      tlsCertificate.certificate,
-      "TLS certificate"
-    );
-  });
+  expect(screen.getByRole("textbox", { name: Labels.Textarea })).toHaveValue(
+    tlsCertificate.certificate
+  );
 });
 
 it("disables the interval field if notification is not enabled", async () => {
