@@ -55,19 +55,19 @@ function MasterController(
         }
         debug={debug}
         enableAnalytics={window.CONFIG.enable_analytics}
-        generateNewLink={(link, props, _appendNewBase) => (
+        generateNewLink={({ isSelected, url, label, onClick, ...props }) => (
           <a
-            className={props.className}
-            aria-current={props["aria-current"]}
-            aria-label={props["aria-label"]}
-            role={props.role}
-            href={generateNewURL(link.url)}
+            {...props}
+            href={url ? generateNewURL(url) : null}
             target="_self"
             onClick={(evt) => {
-              navigateToNew(link.url, evt);
+              if (url) {
+                navigateToNew(url, evt);
+              }
+              onClick?.();
             }}
           >
-            {link.label}
+            {label}
           </a>
         )}
         location={window.location}

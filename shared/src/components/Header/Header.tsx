@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 import classNames from "classnames";
 import type { Location as HistoryLocation } from "history";
@@ -6,15 +6,9 @@ import PropTypes from "prop-types";
 
 import type { TSFixMe } from "../../types";
 import { generateLegacyURL, generateNewURL } from "../../utils";
+import Navigation, { Theme } from "../Navigation";
 
-import HardwareMenu from "./HardwareMenu";
-import type {
-  GenerateLinkType,
-  GenerateNavLink,
-  NavItem,
-  NavLink,
-  ToggleVisible,
-} from "./types";
+import type { GenerateLink } from "components/Navigation/types";
 
 type Props = {
   appendNewBase?: boolean;
@@ -26,7 +20,7 @@ type Props = {
   completedIntro?: boolean;
   debug?: boolean;
   enableAnalytics?: boolean;
-  generateNewLink: GenerateLinkType;
+  generateNewLink: GenerateLink;
   location: Location | HistoryLocation;
   logout: () => void;
   rootScope?: TSFixMe;
@@ -34,16 +28,64 @@ type Props = {
   version?: string;
 };
 
-const useVisible = (initialValue: boolean): [boolean, ToggleVisible] => {
-  const [value, setValue] = useState(initialValue);
-  const toggleValue = (evt: React.MouseEvent, preventDefault = true) => {
-    if (preventDefault) {
-      evt.preventDefault();
-    }
-    setValue(!value);
-  };
-  return [value, toggleValue];
+type NavItem = {
+  adminOnly?: boolean;
+  highlight?: string | string[];
+  inHardwareMenu?: boolean;
+  label: string;
+  url: string;
 };
+
+const navLinks: NavItem[] = [
+  {
+    highlight: ["/machine", "/pool", "/tag"],
+    inHardwareMenu: true,
+    label: "Machines",
+    url: "/machines",
+  },
+  {
+    highlight: "/device",
+    inHardwareMenu: true,
+    label: "Devices",
+    url: "/devices",
+  },
+  {
+    adminOnly: true,
+    highlight: "/controller",
+    inHardwareMenu: true,
+    label: "Controllers",
+    url: "/controllers",
+  },
+  {
+    inHardwareMenu: true,
+    label: "KVM",
+    url: "/kvm",
+  },
+  {
+    label: "Images",
+    url: "/images",
+  },
+  {
+    highlight: "/domain",
+    label: "DNS",
+    url: "/domains",
+  },
+  {
+    highlight: "/zone",
+    label: "AZs",
+    url: "/zones",
+  },
+  {
+    highlight: ["/networks", "/subnet", "/space", "/fabric", "/vlan"],
+    label: "Subnets",
+    url: "/networks?by=fabric",
+  },
+  {
+    adminOnly: true,
+    label: "Settings",
+    url: "/settings",
+  },
+];
 
 const generateURL = (
   url: NavItem["url"],
@@ -58,7 +100,7 @@ const generateURL = (
   return url;
 };
 
-const isSelected = (path: string, link: NavLink, appendNewBase: boolean) => {
+const isSelected = (path: string, link: NavItem, appendNewBase: boolean) => {
   // Use the provided highlight(s) or just use the url.
   let highlights = link.highlight || link.url;
   // If the provided highlights aren't an array then make them one so that we
@@ -76,6 +118,31 @@ const isSelected = (path: string, link: NavLink, appendNewBase: boolean) => {
   );
 };
 
+const generateItems = (
+  links: NavItem[],
+  location: Props["location"],
+  appendNewBase: boolean,
+  forHardwareMenu: boolean
+) => {
+  if (forHardwareMenu) {
+    // Only include the items for the hardware menu.
+    links = links.filter((link) => link.inHardwareMenu);
+  }
+  const path = location.pathname + location.search;
+  return links.map((link) => ({
+    className: classNames("p-navigation__item", {
+      // Items that are also displayed in the hardware menu need to be hidden
+      // when the hardware menu is visible.
+      "u-hide--hardware-menu-threshold":
+        link.inHardwareMenu && !forHardwareMenu,
+    }),
+    isSelected: isSelected(path, link, appendNewBase),
+    key: link.url,
+    label: link.label,
+    url: link.url,
+  }));
+};
+
 export const Header = ({
   appendNewBase = true,
   authUser,
@@ -89,10 +156,12 @@ export const Header = ({
   uuid,
   version,
 }: Props): JSX.Element => {
-  const [hardwareMenuOpen, toggleHardwareMenu] = useVisible(false);
-  const [mobileMenuOpen, toggleMobileMenu] = useVisible(false);
   const sendPageview = useRef<(() => void) | null>(null);
   const previousURL = useRef<string>();
+  const isAuthenticated = !!authUser;
+  // Hide the navigation items when the user is not authenticated or hasn't been
+  // through the intro process.
+  const showLinks = isAuthenticated && completedIntro;
 
   useEffect(() => {
     if (!debug && enableAnalytics && uuid && version && authUser) {
@@ -150,177 +219,13 @@ export const Header = ({
     }
   }, [location, rootScope]);
 
-  const links: NavItem[] = [
-    {
-      highlight: ["/machine", "/pool", "/tag"],
-      inHardwareMenu: true,
-      label: "Machines",
-      url: "/machines",
-    },
-    {
-      highlight: "/device",
-      inHardwareMenu: true,
-      label: "Devices",
-      url: "/devices",
-    },
-    {
-      adminOnly: true,
-      highlight: "/controller",
-      inHardwareMenu: true,
-      label: "Controllers",
-      url: "/controllers",
-    },
-    {
-      inHardwareMenu: true,
-      label: "KVM",
-      url: "/kvm",
-    },
-    {
-      label: "Images",
-      url: "/images",
-    },
-    {
-      highlight: "/domain",
-      label: "DNS",
-      url: "/domains",
-    },
-    {
-      highlight: "/zone",
-      label: "AZs",
-      url: "/zones",
-    },
-    {
-      highlight: ["/networks", "/subnet", "/space", "/fabric", "/vlan"],
-      label: "Subnets",
-      url: "/networks?by=fabric",
-    },
-    {
-      adminOnly: true,
-      label: "Settings",
-      url: "/settings",
-    },
-  ]
+  const links = navLinks
     // Remove the admin only items if the user is not an admin.
     .filter(
       ({ adminOnly }) => !adminOnly || (authUser && authUser.is_superuser)
     );
 
-  const generateLink: GenerateNavLink = (link: NavItem, props = undefined) => {
-    return generateNewLink(link, props, appendNewBase);
-  };
-
-  const generateNavItems = (links: NavItem[]) => {
-    const hardwareLinks = links.filter((link) => link.inHardwareMenu);
-    const path = location.pathname + location.search;
-
-    const linkItems = links.map((link) => (
-      <li
-        className={classNames("p-navigation__item", {
-          "is-selected": isSelected(path, link, appendNewBase),
-          "u-hide--hardware-menu-threshold": link.inHardwareMenu,
-        })}
-        key={link.url}
-      >
-        {generateLink(link, {
-          "aria-current": isSelected(path, link, appendNewBase)
-            ? "page"
-            : undefined,
-          className: "p-navigation__link",
-        })}
-      </li>
-    ));
-
-    return (
-      <nav
-        aria-label="primary"
-        className={classNames("p-navigation__nav", {
-          "u-show": mobileMenuOpen,
-        })}
-      >
-        <span className="u-off-screen">
-          <a href="#main-content">Jump to main content</a>
-        </span>
-        <ul className="p-navigation__items" aria-label="main">
-          {completedIntro && (
-            <>
-              <li
-                className={classNames(
-                  "p-navigation__item--dropdown-toggle hardware-menu",
-                  { "is-active": hardwareMenuOpen }
-                )}
-              >
-                {/* eslint-disable-next-line */}
-                <a
-                  onClick={toggleHardwareMenu}
-                  className="p-navigation__link hardware-menu__toggle"
-                >
-                  Hardware
-                </a>
-                {hardwareMenuOpen && (
-                  <HardwareMenu
-                    generateLink={(link, props) =>
-                      generateLink(link, {
-                        ...props,
-                        "aria-current": isSelected(path, link, appendNewBase)
-                          ? "page"
-                          : undefined,
-                      })
-                    }
-                    links={hardwareLinks}
-                    toggleHardwareMenu={toggleHardwareMenu}
-                  />
-                )}
-              </li>
-              {linkItems}
-            </>
-          )}
-        </ul>
-        <ul className="p-navigation__items" aria-label="user">
-          {completedIntro && (
-            <li
-              className={classNames("p-navigation__item", {
-                "is-selected": location.pathname.startsWith(
-                  generateURL("/account/prefs", false, appendNewBase)
-                ),
-              })}
-            >
-              {authUser &&
-                generateLink(
-                  {
-                    label: authUser.username,
-                    url: "/account/prefs",
-                  },
-                  {
-                    "aria-current": location.pathname.startsWith(
-                      generateURL("/account/prefs", false, appendNewBase)
-                    )
-                      ? "page"
-                      : undefined,
-                    className: "p-navigation__link",
-                  }
-                )}
-            </li>
-          )}
-          <li className="p-navigation__item" role="presentation">
-            {/* eslint-disable-next-line */}
-            <a
-              href="#"
-              onClick={(evt) => {
-                evt.preventDefault();
-                localStorage.removeItem("maas-config");
-                logout();
-              }}
-              className="p-navigation__link"
-            >
-              Log out
-            </a>
-          </li>
-        </ul>
-      </nav>
-    );
-  };
-
-  const homepageLink: NavItem = authUser?.is_superuser
+  const homepageLink = authUser?.is_superuser
     ? { url: "/dashboard", label: "Homepage" }
     : { url: "/machines", label: "Homepage" };
   const path = location.pathname + location.search;
@@ -330,60 +235,76 @@ export const Header = ({
       <a href="#main-content" className="p-link--skip">
         Skip to main content
       </a>
-      <header id="navigation" className="p-navigation is-dark">
-        <div className="p-navigation__row">
-          <div className="p-navigation__banner">
-            <div className="p-navigation__logo">
-              {generateLink(
+      <Navigation
+        generateLink={generateNewLink}
+        items={
+          showLinks
+            ? [
                 {
-                  label: (
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="100"
-                      height="25.2"
-                      viewBox="545.3 412.6 100 25.2"
-                      className="p-navigation__image"
-                      aria-hidden="true"
-                    >
-                      <path
-                        fill="#E95420"
-                        d="M557.9 412.6c-7 0-12.6 5.7-12.6 12.6 0 7 5.7 12.6 12.6 12.6 7 0 12.6-5.7 12.6-12.6 0-7-5.6-12.6-12.6-12.6z"
-                      />
-                      <g fill="#FFF">
-                        <path d="M563.8 419.2h-11.9c-.3 0-.5.2-.5.5v.7c0 .3.2.5.5.5h11.9c.3 0 .5-.2.5-.5v-.7c.1-.3-.2-.5-.5-.5zM563.8 422.6h-11.9c-.3 0-.5.2-.5.5v.7c0 .3.2.5.5.5h11.9c.3 0 .5-.2.5-.5v-.7c.1-.3-.2-.5-.5-.5zM563.8 426h-11.9c-.3 0-.5.2-.5.5v.7c0 .3.2.5.5.5h11.9c.3 0 .5-.2.5-.5v-.7c.1-.2-.2-.5-.5-.5zM563.8 429.4h-11.9c-.3 0-.5.2-.5.5v.7c0 .3.2.5.5.5h11.9c.3 0 .5-.2.5-.5v-.6c.1-.3-.2-.6-.5-.6z" />
-                      </g>
-                      <g fill="#FFF">
-                        <path d="M587.1 431.3c-.2-.4-.4-1-.7-1.7-.3-.7-.7-1.5-1.1-2.3-.4-.8-.8-1.7-1.2-2.5-.4-.9-.8-1.7-1.2-2.5l-1-2-.6-1.2c-.2 2.1-.4 4.4-.5 6.9-.1 2.5-.2 5.1-.3 7.8h-1.7c.2-3.2.3-6.3.5-9.2s.4-5.8.7-8.4h1.5c.5.9 1.1 1.8 1.6 2.9.6 1.1 1.2 2.3 1.7 3.5.6 1.2 1.1 2.4 1.7 3.5s1 2.2 1.4 3.1c.4-.9.9-2 1.4-3.1.5-1.2 1.1-2.3 1.7-3.5.6-1.2 1.1-2.4 1.7-3.5.6-1.1 1.1-2.1 1.6-2.9h1.5c.3 2.7.5 5.5.7 8.4s.4 6 .5 9.2h-1.8c-.1-2.7-.2-5.3-.3-7.8-.1-2.5-.3-4.8-.5-6.9l-.6 1.2-1 2c-.4.8-.8 1.6-1.2 2.5-.4.9-.8 1.7-1.2 2.5-.4.8-.7 1.6-1.1 2.3-.3.7-.6 1.3-.7 1.7h-1.5zM613.1 433.9c-.3-.9-.6-1.7-.9-2.5-.3-.8-.6-1.6-.8-2.3h-8.6c-.3.8-.6 1.5-.9 2.3-.3.8-.6 1.6-.9 2.5h-1.8c.7-1.8 1.3-3.6 1.9-5.1.6-1.6 1.2-3.1 1.8-4.5.6-1.4 1.1-2.8 1.7-4.1l1.8-3.9h1.5l1.8 3.9c.6 1.3 1.1 2.7 1.7 4.1.6 1.4 1.2 2.9 1.7 4.5.6 1.6 1.2 3.3 1.9 5.1h-1.9zm-6-15.7c-.6 1.5-1.3 3-1.9 4.5-.6 1.5-1.2 3.1-1.9 4.9h7.5c-.7-1.8-1.3-3.4-1.9-4.9-.6-1.6-1.2-3.1-1.8-4.5zM630.4 433.9c-.3-.9-.6-1.7-.9-2.5-.3-.8-.6-1.6-.8-2.3H620c-.3.8-.6 1.5-.9 2.3-.3.8-.6 1.6-.9 2.5h-1.8c.7-1.8 1.3-3.6 1.9-5.1.6-1.6 1.2-3.1 1.8-4.5.6-1.4 1.1-2.8 1.7-4.1l1.8-3.9h1.5l1.8 3.9c.6 1.3 1.1 2.7 1.7 4.1s1.2 2.9 1.7 4.5c.6 1.6 1.2 3.3 1.9 5.1h-1.8zm-6.1-15.7c-.6 1.5-1.3 3-1.9 4.5-.6 1.5-1.2 3.1-1.9 4.9h7.5c-.7-1.8-1.3-3.4-1.9-4.9-.5-1.6-1.1-3.1-1.8-4.5zM639.1 432.7c1.4 0 2.4-.3 3.2-.8.8-.5 1.1-1.3 1.1-2.4 0-.6-.1-1.2-.4-1.6-.2-.4-.6-.8-1-1.1s-.9-.6-1.4-.8c-.5-.2-1.1-.4-1.7-.7-.7-.3-1.4-.6-2-.9-.6-.3-1.1-.6-1.5-1-.4-.4-.7-.8-.9-1.3-.2-.5-.3-1.1-.3-1.7 0-1.5.5-2.7 1.5-3.4s2.4-1.2 4.2-1.2c.5 0 .9 0 1.4.1s.9.2 1.3.3c.4.1.8.2 1.1.4.3.1.6.3.8.4l-.6 1.5c-.5-.3-1.1-.6-1.8-.8s-1.5-.3-2.3-.3c-.6 0-1.1.1-1.5.2-.5.1-.9.3-1.2.5s-.6.6-.8.9c-.2.4-.3.8-.3 1.4 0 .5.1 1 .3 1.4.2.4.5.7.9 1 .4.3.8.5 1.3.7.5.2 1 .5 1.6.7.7.3 1.4.6 2 .9.6.3 1.2.6 1.6 1 .5.4.8.9 1.1 1.4.3.6.4 1.2.4 2.1 0 1.6-.6 2.8-1.7 3.6s-2.6 1.2-4.5 1.2c-.7 0-1.3 0-1.9-.1s-1.1-.2-1.5-.3c-.4-.1-.8-.3-1.1-.4-.3-.1-.5-.3-.7-.4l.6-1.5c.2.1.4.2.7.4.3.1.6.3 1 .4.4.1.8.2 1.3.3.6-.1 1.1-.1 1.7-.1z" />
-                      </g>
-                    </svg>
-                  ),
-                  url: homepageLink.url,
+                  className: "p-navigation__hardware-menu",
+                  items: generateItems(links, location, appendNewBase, true),
+                  label: "Hardware",
                 },
+                ...generateItems(links, location, appendNewBase, false),
+              ]
+            : null
+        }
+        itemsRight={
+          isAuthenticated
+            ? [
+                ...(showLinks
+                  ? [
+                      {
+                        isSelected: location.pathname.startsWith(
+                          generateURL("/account/prefs", false, appendNewBase)
+                        ),
+                        label: authUser.username,
+                        url: "/account/prefs",
+                      },
+                    ]
+                  : []),
                 {
-                  className: "p-navigation__item",
-                  "aria-label": homepageLink.label,
-                  "aria-current": isSelected(path, homepageLink, appendNewBase)
-                    ? "page"
-                    : undefined,
-                }
-              )}
-            </div>
-            {/* TODO: replace anchor with button https://github.com/canonical-web-and-design/maas-ui/issues/3454 */}
-            {/* eslint-disable-next-line jsx-a11y/anchor-is-valid, jsx-a11y/role-supports-aria-props */}
-            <a
-              href="#"
-              className="p-navigation__toggle--open"
-              title="Toggle menu"
-              onClick={toggleMobileMenu}
-              aria-haspopup="true"
-              aria-expanded={mobileMenuOpen}
+                  label: "Log out",
+                  onClick: () => {
+                    localStorage.removeItem("maas-config");
+                    logout();
+                  },
+                },
+              ]
+            : null
+        }
+        leftNavProps={{ "aria-label": "main" }}
+        logo={generateNewLink({
+          "aria-label": homepageLink.label,
+          "aria-current": isSelected(path, homepageLink, appendNewBase)
+            ? "page"
+            : undefined,
+          className: "p-navigation__link",
+          label: (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              height="24"
+              viewBox="545.3 412.6 100 25.2"
+              aria-hidden="true"
             >
-              {mobileMenuOpen ? "Close menu" : "Menu"}
-            </a>
-          </div>
-          {authUser && generateNavItems(links)}
-        </div>
-      </header>
+              <path
+                fill="#E95420"
+                d="M557.9 412.6c-7 0-12.6 5.7-12.6 12.6 0 7 5.7 12.6 12.6 12.6 7 0 12.6-5.7 12.6-12.6 0-7-5.6-12.6-12.6-12.6z"
+              />
+              <g fill="#FFF">
+                <path d="M563.8 419.2h-11.9c-.3 0-.5.2-.5.5v.7c0 .3.2.5.5.5h11.9c.3 0 .5-.2.5-.5v-.7c.1-.3-.2-.5-.5-.5zM563.8 422.6h-11.9c-.3 0-.5.2-.5.5v.7c0 .3.2.5.5.5h11.9c.3 0 .5-.2.5-.5v-.7c.1-.3-.2-.5-.5-.5zM563.8 426h-11.9c-.3 0-.5.2-.5.5v.7c0 .3.2.5.5.5h11.9c.3 0 .5-.2.5-.5v-.7c.1-.2-.2-.5-.5-.5zM563.8 429.4h-11.9c-.3 0-.5.2-.5.5v.7c0 .3.2.5.5.5h11.9c.3 0 .5-.2.5-.5v-.6c.1-.3-.2-.6-.5-.6z" />
+              </g>
+              <g fill="#FFF">
+                <path d="M587.1 431.3c-.2-.4-.4-1-.7-1.7-.3-.7-.7-1.5-1.1-2.3-.4-.8-.8-1.7-1.2-2.5-.4-.9-.8-1.7-1.2-2.5l-1-2-.6-1.2c-.2 2.1-.4 4.4-.5 6.9-.1 2.5-.2 5.1-.3 7.8h-1.7c.2-3.2.3-6.3.5-9.2s.4-5.8.7-8.4h1.5c.5.9 1.1 1.8 1.6 2.9.6 1.1 1.2 2.3 1.7 3.5.6 1.2 1.1 2.4 1.7 3.5s1 2.2 1.4 3.1c.4-.9.9-2 1.4-3.1.5-1.2 1.1-2.3 1.7-3.5.6-1.2 1.1-2.4 1.7-3.5.6-1.1 1.1-2.1 1.6-2.9h1.5c.3 2.7.5 5.5.7 8.4s.4 6 .5 9.2h-1.8c-.1-2.7-.2-5.3-.3-7.8-.1-2.5-.3-4.8-.5-6.9l-.6 1.2-1 2c-.4.8-.8 1.6-1.2 2.5-.4.9-.8 1.7-1.2 2.5-.4.8-.7 1.6-1.1 2.3-.3.7-.6 1.3-.7 1.7h-1.5zM613.1 433.9c-.3-.9-.6-1.7-.9-2.5-.3-.8-.6-1.6-.8-2.3h-8.6c-.3.8-.6 1.5-.9 2.3-.3.8-.6 1.6-.9 2.5h-1.8c.7-1.8 1.3-3.6 1.9-5.1.6-1.6 1.2-3.1 1.8-4.5.6-1.4 1.1-2.8 1.7-4.1l1.8-3.9h1.5l1.8 3.9c.6 1.3 1.1 2.7 1.7 4.1.6 1.4 1.2 2.9 1.7 4.5.6 1.6 1.2 3.3 1.9 5.1h-1.9zm-6-15.7c-.6 1.5-1.3 3-1.9 4.5-.6 1.5-1.2 3.1-1.9 4.9h7.5c-.7-1.8-1.3-3.4-1.9-4.9-.6-1.6-1.2-3.1-1.8-4.5zM630.4 433.9c-.3-.9-.6-1.7-.9-2.5-.3-.8-.6-1.6-.8-2.3H620c-.3.8-.6 1.5-.9 2.3-.3.8-.6 1.6-.9 2.5h-1.8c.7-1.8 1.3-3.6 1.9-5.1.6-1.6 1.2-3.1 1.8-4.5.6-1.4 1.1-2.8 1.7-4.1l1.8-3.9h1.5l1.8 3.9c.6 1.3 1.1 2.7 1.7 4.1s1.2 2.9 1.7 4.5c.6 1.6 1.2 3.3 1.9 5.1h-1.8zm-6.1-15.7c-.6 1.5-1.3 3-1.9 4.5-.6 1.5-1.2 3.1-1.9 4.9h7.5c-.7-1.8-1.3-3.4-1.9-4.9-.5-1.6-1.1-3.1-1.8-4.5zM639.1 432.7c1.4 0 2.4-.3 3.2-.8.8-.5 1.1-1.3 1.1-2.4 0-.6-.1-1.2-.4-1.6-.2-.4-.6-.8-1-1.1s-.9-.6-1.4-.8c-.5-.2-1.1-.4-1.7-.7-.7-.3-1.4-.6-2-.9-.6-.3-1.1-.6-1.5-1-.4-.4-.7-.8-.9-1.3-.2-.5-.3-1.1-.3-1.7 0-1.5.5-2.7 1.5-3.4s2.4-1.2 4.2-1.2c.5 0 .9 0 1.4.1s.9.2 1.3.3c.4.1.8.2 1.1.4.3.1.6.3.8.4l-.6 1.5c-.5-.3-1.1-.6-1.8-.8s-1.5-.3-2.3-.3c-.6 0-1.1.1-1.5.2-.5.1-.9.3-1.2.5s-.6.6-.8.9c-.2.4-.3.8-.3 1.4 0 .5.1 1 .3 1.4.2.4.5.7.9 1 .4.3.8.5 1.3.7.5.2 1 .5 1.6.7.7.3 1.4.6 2 .9.6.3 1.2.6 1.6 1 .5.4.8.9 1.1 1.4.3.6.4 1.2.4 2.1 0 1.6-.6 2.8-1.7 3.6s-2.6 1.2-4.5 1.2c-.7 0-1.3 0-1.9-.1s-1.1-.2-1.5-.3c-.4-.1-.8-.3-1.1-.4-.3-.1-.5-.3-.7-.4l.6-1.5c.2.1.4.2.7.4.3.1.6.3 1 .4.4.1.8.2 1.3.3.6-.1 1.1-.1 1.7-.1z" />
+              </g>
+            </svg>
+          ),
+          url: homepageLink.url,
+        })}
+        navProps={{ "aria-label": "primary" }}
+        rightNavProps={{ "aria-label": "user" }}
+        theme={Theme.DARK}
+      />
     </>
   );
 };

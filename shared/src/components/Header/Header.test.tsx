@@ -3,23 +3,17 @@ import React from "react";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
+import type { GenerateLink } from "../Navigation";
+
 import { Header } from "./Header";
-import type { GenerateLinkType } from "./types";
 
 describe("Header", () => {
-  let generateURL: GenerateLinkType;
+  let generateURL: GenerateLink;
 
   beforeEach(() => {
-    generateURL = (link, props, _appendNewBase) => (
-      <a
-        className={props.className}
-        aria-current={props["aria-current"]}
-        aria-label={props["aria-label"]}
-        role={props.role}
-        href={link.url}
-        onClick={jest.fn}
-      >
-        {link.label}
+    generateURL = ({ url, label, isSelected, ...props }) => (
+      <a {...props} href={url}>
+        {label}
       </a>
     );
   });
@@ -80,8 +74,17 @@ describe("Header", () => {
       />
     );
     expect(screen.getByRole("banner")).toBeInTheDocument();
+    const primaryNavigation = screen.getByRole("navigation", {
+      name: "primary",
+    });
+    const mainNav = screen.getByRole("list", {
+      name: "main",
+    });
+    expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
     expect(
-      screen.queryByRole("navigation", { name: "primary" })
+      within(primaryNavigation).queryByRole("list", {
+        name: "user",
+      })
     ).not.toBeInTheDocument();
   });
 
@@ -94,7 +97,9 @@ describe("Header", () => {
           is_superuser: true,
           username: "koala",
         }}
-        generateNewLink={generateURL}
+        generateNewLink={({ url, label, isSelected, ...props }) => (
+          <button {...props}>{label}</button>
+        )}
         location={
           {
             pathname: "/",
@@ -103,7 +108,7 @@ describe("Header", () => {
         logout={logout}
       />
     );
-    userEvent.click(screen.getByRole("link", { name: "Log out" }));
+    userEvent.click(screen.getByRole("button", { name: "Log out" }));
     expect(logout).toHaveBeenCalled();
   });
 
@@ -116,7 +121,9 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={false}
-        generateNewLink={generateURL}
+        generateNewLink={({ url, label, isSelected, ...props }) => (
+          <button {...props}>{label}</button>
+        )}
         location={
           {
             pathname: "/",
@@ -125,10 +132,13 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    expect(screen.getByRole("list", { name: "main" })).toBeInTheDocument();
+    const mainNav = screen.getByRole("list", { name: "main" });
+    expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
+    const userNav = screen.queryByRole("list", { name: "user" });
+    expect(within(userNav).queryByRole("link")).not.toBeInTheDocument();
     expect(
-      within(screen.queryByRole("list", { name: "main" })).queryByRole("link")
-    ).not.toBeInTheDocument();
+      within(userNav).getByRole("button", { name: "Log out" })
+    ).toBeInTheDocument();
   });
 
   it("can highlight active URL", () => {
@@ -149,7 +159,7 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Settings");
   });
@@ -172,7 +182,7 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
   });
@@ -195,7 +205,7 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
   });
@@ -218,7 +228,7 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
   });
@@ -241,32 +251,9 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
-  });
-
-  it("can highlight a legacy URL", () => {
-    render(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        generateNewLink={generateURL}
-        location={
-          {
-            pathname: "/MAAS/l/devices",
-          } as Location
-        }
-        logout={jest.fn()}
-      />
-    );
-    const currentMenuItem = screen.getByRole("link", { current: "page" });
-    expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Devices");
   });
 
   it("can highlight a url with a query param", () => {
@@ -288,7 +275,7 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Subnets");
   });
@@ -311,7 +298,7 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    const currentMenuItem = screen.getByRole("link", { current: "page" });
+    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
     expect(currentMenuItem).toHaveTextContent("Machines");
   });
