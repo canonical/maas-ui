@@ -142,6 +142,7 @@ const TestResults = ({
             >
               <Button
                 appearance="link"
+                className="u-no-margin--bottom"
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
                   setHeaderContent({

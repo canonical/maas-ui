@@ -121,8 +121,8 @@ export const NodeActionFormWrapper = ({
             . To proceed,{" "}
             <Button
               appearance="link"
+              className="u-no-margin--bottom"
               data-testid="on-update-selected"
-              inline
               onClick={() => onUpdateSelected(actionableNodeIDs)}
             >
               update your selection

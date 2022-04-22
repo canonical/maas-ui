@@ -73,7 +73,6 @@ const FetchImagesFormFields = (): JSX.Element => {
                 />
                 <Button
                   appearance="link"
-                  className="u-sv2"
                   data-testid="hide-advanced"
                   onClick={() => {
                     setShowAdvanced(false);
@@ -87,7 +86,6 @@ const FetchImagesFormFields = (): JSX.Element => {
             ) : (
               <Button
                 appearance="link"
-                className="u-sv2"
                 data-testid="show-advanced"
                 onClick={() => setShowAdvanced(true)}
               >
