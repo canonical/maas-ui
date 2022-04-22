@@ -61,6 +61,7 @@ const VMsActionBar = ({
               className="u-rotate-right"
               appearance="base"
               data-testid="refresh-kvm"
+              dense
               hasIcon
               onClick={onRefreshClick}
               small
@@ -79,6 +80,7 @@ const VMsActionBar = ({
             <Button
               appearance="base"
               data-testid="delete-vm"
+              dense
               disabled={vmActionsDisabled}
               hasIcon
               onClick={() =>

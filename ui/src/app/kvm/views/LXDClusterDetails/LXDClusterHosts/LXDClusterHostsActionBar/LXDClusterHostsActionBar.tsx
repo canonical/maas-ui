@@ -50,6 +50,7 @@ const LXDClusterHostsActionBar = ({
           className="u-rotate-right"
           appearance="base"
           data-testid="refresh-hosts"
+          dense
           hasIcon
           onClick={() => {
             if (cluster.hosts.length) {

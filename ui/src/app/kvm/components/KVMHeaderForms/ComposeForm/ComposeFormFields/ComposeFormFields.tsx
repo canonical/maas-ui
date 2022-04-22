@@ -108,7 +108,7 @@ export const ComposeFormFields = ({
             type="checkbox"
           />
         </Tooltip>
-        <p>Cores</p>
+        <p className="u-no-margin--bottom">Cores</p>
         <Input
           checked={!pinningCores}
           id="not-pinning-cores"

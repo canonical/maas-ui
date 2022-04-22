@@ -1,4 +1,4 @@
-import { Col, Icon, MainTable, Row } from "@canonical/react-components";
+import { Icon, MainTable } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 
@@ -163,124 +163,118 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
   });
   const sortedRows = sortRows(rows, zones);
   return (
-    <Row>
-      <Col size={12}>
-        <MainTable
-          className="lxd-table"
-          headers={[
-            {
-              className: "name-col",
-              content: (
-                <>
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="name-header"
-                    onClick={() => updateSort("name")}
-                    sortKey="name"
-                  >
-                    Name
-                  </TableHeader>
-                  <TableHeader>Project</TableHeader>
-                </>
-              ),
-            },
-            {
-              className: "host-type-col",
-              content: (
-                <TableHeader
-                  className="p-double-row__header-spacer"
-                  currentSort={currentSort}
-                  data-testid="host-type-header"
-                  onClick={() => updateSort("hostType")}
-                  sortKey="hostType"
-                >
-                  KVM host type
-                </TableHeader>
-              ),
-            },
-            {
-              className: "vms-col u-align--right",
-              content: (
-                <>
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="vms-header"
-                    onClick={() => updateSort("vms")}
-                    sortKey="vms"
-                  >
-                    VM<span className="u-no-text-transform">s</span>
-                  </TableHeader>
-                  <TableHeader>LXD version</TableHeader>
-                </>
-              ),
-            },
-            {
-              className: "tags-col",
-              content: (
-                <TableHeader data-testid="tags-header">Tags</TableHeader>
-              ),
-            },
-            {
-              className: "zone-col",
-              content: (
-                <>
-                  <TableHeader
-                    data-testid="zone-header"
-                    currentSort={currentSort}
-                    onClick={() => updateSort("zone")}
-                    sortKey="zone"
-                  >
-                    AZ
-                  </TableHeader>
-                  <TableHeader>Resource pool</TableHeader>
-                </>
-              ),
-            },
-            {
-              className: "cpu-col",
-              content: (
-                <TableHeader
-                  data-testid="cpu-header"
-                  currentSort={currentSort}
-                  onClick={() => updateSort("cpu")}
-                  sortKey="cpu"
-                >
-                  CPU cores
-                </TableHeader>
-              ),
-            },
-            {
-              className: "ram-col",
-              content: (
-                <TableHeader
-                  data-testid="ram-header"
-                  currentSort={currentSort}
-                  onClick={() => updateSort("ram")}
-                  sortKey="ram"
-                >
-                  RAM
-                </TableHeader>
-              ),
-            },
-            {
-              className: "storage-col",
-              content: (
-                <TableHeader
-                  data-testid="storage-header"
-                  currentSort={currentSort}
-                  onClick={() => updateSort("storage")}
-                  sortKey="storage"
-                >
-                  Storage
-                </TableHeader>
-              ),
-            },
-          ]}
-          paginate={50}
-          rows={generateRows(sortedRows)}
-        />
-      </Col>
-    </Row>
+    <MainTable
+      className="lxd-table"
+      headers={[
+        {
+          className: "name-col",
+          content: (
+            <>
+              <TableHeader
+                currentSort={currentSort}
+                data-testid="name-header"
+                onClick={() => updateSort("name")}
+                sortKey="name"
+              >
+                Name
+              </TableHeader>
+              <TableHeader>Project</TableHeader>
+            </>
+          ),
+        },
+        {
+          className: "host-type-col",
+          content: (
+            <TableHeader
+              className="p-double-row__header-spacer"
+              currentSort={currentSort}
+              data-testid="host-type-header"
+              onClick={() => updateSort("hostType")}
+              sortKey="hostType"
+            >
+              KVM host type
+            </TableHeader>
+          ),
+        },
+        {
+          className: "vms-col u-align--right",
+          content: (
+            <>
+              <TableHeader
+                currentSort={currentSort}
+                data-testid="vms-header"
+                onClick={() => updateSort("vms")}
+                sortKey="vms"
+              >
+                VM<span className="u-no-text-transform">s</span>
+              </TableHeader>
+              <TableHeader>LXD version</TableHeader>
+            </>
+          ),
+        },
+        {
+          className: "tags-col",
+          content: <TableHeader data-testid="tags-header">Tags</TableHeader>,
+        },
+        {
+          className: "zone-col",
+          content: (
+            <>
+              <TableHeader
+                data-testid="zone-header"
+                currentSort={currentSort}
+                onClick={() => updateSort("zone")}
+                sortKey="zone"
+              >
+                AZ
+              </TableHeader>
+              <TableHeader>Resource pool</TableHeader>
+            </>
+          ),
+        },
+        {
+          className: "cpu-col",
+          content: (
+            <TableHeader
+              data-testid="cpu-header"
+              currentSort={currentSort}
+              onClick={() => updateSort("cpu")}
+              sortKey="cpu"
+            >
+              CPU cores
+            </TableHeader>
+          ),
+        },
+        {
+          className: "ram-col",
+          content: (
+            <TableHeader
+              data-testid="ram-header"
+              currentSort={currentSort}
+              onClick={() => updateSort("ram")}
+              sortKey="ram"
+            >
+              RAM
+            </TableHeader>
+          ),
+        },
+        {
+          className: "storage-col",
+          content: (
+            <TableHeader
+              data-testid="storage-header"
+              currentSort={currentSort}
+              onClick={() => updateSort("storage")}
+              sortKey="storage"
+            >
+              Storage
+            </TableHeader>
+          ),
+        },
+      ]}
+      paginate={50}
+      rows={generateRows(sortedRows)}
+    />
   );
 };
 

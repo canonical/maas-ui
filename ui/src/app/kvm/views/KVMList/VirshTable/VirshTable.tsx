@@ -1,4 +1,4 @@
-import { Col, MainTable, Row } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import TableHeader from "app/base/components/TableHeader";
@@ -115,109 +115,105 @@ const VirshTable = (): JSX.Element => {
   const sortedKVMs = sortRows(virshKvms, pools);
 
   return (
-    <Row>
-      <Col size={12}>
-        <MainTable
-          className="virsh-table"
-          headers={[
-            {
-              className: "name-col",
-              content: (
-                <>
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="name-header"
-                    onClick={() => updateSort("name")}
-                    sortKey="name"
-                  >
-                    Name
-                  </TableHeader>
-                  <TableHeader>Address</TableHeader>
-                </>
-              ),
-            },
-            {
-              className: "vms-col u-align--right",
-              content: (
-                <TableHeader
-                  currentSort={currentSort}
-                  data-testid="vms-header"
-                  onClick={() => updateSort("vms")}
-                  sortKey="vms"
-                >
-                  VM<span className="u-no-text-transform">s</span>
-                </TableHeader>
-              ),
-            },
-            {
-              className: "tags-col",
-              content: (
-                <TableHeader data-testid="tags-header" sortKey="tags">
-                  Tags
-                </TableHeader>
-              ),
-            },
-            {
-              className: "pool-col",
-              content: (
-                <>
-                  <TableHeader
-                    currentSort={currentSort}
-                    data-testid="pool-header"
-                    onClick={() => updateSort("pool")}
-                    sortKey="pool"
-                  >
-                    Resource pool
-                  </TableHeader>
-                  <TableHeader>Az</TableHeader>
-                </>
-              ),
-            },
-            {
-              className: "cpu-col",
-              content: (
-                <TableHeader
-                  currentSort={currentSort}
-                  data-testid="cpu-header"
-                  onClick={() => updateSort("cpu")}
-                  sortKey="cpu"
-                >
-                  CPU cores
-                </TableHeader>
-              ),
-            },
-            {
-              className: "ram-col",
-              content: (
-                <TableHeader
-                  currentSort={currentSort}
-                  data-testid="ram-header"
-                  onClick={() => updateSort("ram")}
-                  sortKey="ram"
-                >
-                  RAM
-                </TableHeader>
-              ),
-            },
-            {
-              className: "storage-col",
-              content: (
-                <TableHeader
-                  currentSort={currentSort}
-                  data-testid="storage-header"
-                  onClick={() => updateSort("storage")}
-                  sortKey="storage"
-                >
-                  Storage
-                </TableHeader>
-              ),
-            },
-          ]}
-          paginate={50}
-          rows={generateRows(sortedKVMs)}
-        />
-      </Col>
-    </Row>
+    <MainTable
+      className="virsh-table"
+      headers={[
+        {
+          className: "name-col",
+          content: (
+            <>
+              <TableHeader
+                currentSort={currentSort}
+                data-testid="name-header"
+                onClick={() => updateSort("name")}
+                sortKey="name"
+              >
+                Name
+              </TableHeader>
+              <TableHeader>Address</TableHeader>
+            </>
+          ),
+        },
+        {
+          className: "vms-col u-align--right",
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              data-testid="vms-header"
+              onClick={() => updateSort("vms")}
+              sortKey="vms"
+            >
+              VM<span className="u-no-text-transform">s</span>
+            </TableHeader>
+          ),
+        },
+        {
+          className: "tags-col",
+          content: (
+            <TableHeader data-testid="tags-header" sortKey="tags">
+              Tags
+            </TableHeader>
+          ),
+        },
+        {
+          className: "pool-col",
+          content: (
+            <>
+              <TableHeader
+                currentSort={currentSort}
+                data-testid="pool-header"
+                onClick={() => updateSort("pool")}
+                sortKey="pool"
+              >
+                Resource pool
+              </TableHeader>
+              <TableHeader>Az</TableHeader>
+            </>
+          ),
+        },
+        {
+          className: "cpu-col",
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              data-testid="cpu-header"
+              onClick={() => updateSort("cpu")}
+              sortKey="cpu"
+            >
+              CPU cores
+            </TableHeader>
+          ),
+        },
+        {
+          className: "ram-col",
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              data-testid="ram-header"
+              onClick={() => updateSort("ram")}
+              sortKey="ram"
+            >
+              RAM
+            </TableHeader>
+          ),
+        },
+        {
+          className: "storage-col",
+          content: (
+            <TableHeader
+              currentSort={currentSort}
+              data-testid="storage-header"
+              onClick={() => updateSort("storage")}
+              sortKey="storage"
+            >
+              Storage
+            </TableHeader>
+          ),
+        },
+      ]}
+      paginate={50}
+      rows={generateRows(sortedKVMs)}
+    />
   );
 };
 
