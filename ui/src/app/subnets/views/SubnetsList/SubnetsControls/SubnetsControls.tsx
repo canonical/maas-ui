@@ -31,9 +31,8 @@ const SubnetsControls = ({
         />
       </Col>
       <Col size={3}>
-        <Row className="subnets-controls-group-by">
+        <div className="u-flex--align-baseline">
           <Select
-            stacked
             aria-label="Group by"
             name="groupBy"
             value={groupBy}
@@ -50,38 +49,38 @@ const SubnetsControls = ({
                 value: SubnetsColumns.SPACE,
               },
             ]}
+            wrapperClassName="u-flex--grow"
           />
-          <Button
-            aria-label="more about group by"
-            appearance="base"
-            dense
-            hasIcon
-            onClick={() => setIsInfoOpen(!isInfoOpen)}
-          >
-            <Icon name="help" />
-          </Button>
-        </Row>
-        <Row>
-          {isInfoOpen ? (
-            <div
-              className="u-nudge-down--x-small"
-              data-testId="subnets-groupby-help-text"
+          <div className="u-nudge-right">
+            <Button
+              aria-label="more about group by"
+              appearance="base"
+              dense
+              hasIcon
+              onClick={() => setIsInfoOpen(!isInfoOpen)}
             >
-              <p className="p-form-help-text">
-                <strong>Fabric</strong> is a set of consistent interconnected
-                VLANs that are capable of mutual communication.
-              </p>
-              <p className="p-form-help-text">
-                <strong>Space</strong> is a grouping of networks (VLANs and
-                their subnets) that are able to mutually communicate with each
-                other.
-              </p>
-              <p className="p-form-help-text">
-                Subnets within a space do not need to belong to the same fabric.
-              </p>
-            </div>
-          ) : null}
-        </Row>
+              <Icon name="help" />
+            </Button>
+          </div>
+        </div>
+        {isInfoOpen ? (
+          <div
+            className="u-nudge-down--x-small"
+            data-testid="subnets-groupby-help-text"
+          >
+            <p className="p-form-help-text">
+              <strong>Fabric</strong> is a set of consistent interconnected
+              VLANs that are capable of mutual communication.
+            </p>
+            <p className="p-form-help-text">
+              <strong>Space</strong> is a grouping of networks (VLANs and their
+              subnets) that are able to mutually communicate with each other.
+            </p>
+            <p className="p-form-help-text">
+              Subnets within a space do not need to belong to the same fabric.
+            </p>
+          </div>
+        ) : null}
       </Col>
     </Row>
   );
