@@ -1,4 +1,4 @@
-import { Col, Row, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import LxdKVMHostTable from "./LxdKVMHostTable";
@@ -87,13 +87,7 @@ const LxdTable = (): JSX.Element | null => {
     // https://github.com/canonical-web-and-design/app-squad/issues/340.
     return null;
   }
-  return (
-    <Row>
-      <Col size={12}>
-        <LxdKVMHostTable rows={rows} />
-      </Col>
-    </Row>
-  );
+  return <LxdKVMHostTable rows={rows} />;
 };
 
 export default LxdTable;

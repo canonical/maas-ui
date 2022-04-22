@@ -134,8 +134,9 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                   </TableCell>
                   <TableCell aria-label="Boot" className="u-align-non-field">
                     <FormikField
+                      aria-label="Boot"
                       checked={bootDisk === disk.id}
-                      label=" "
+                      labelClassName="p-radio--inline u-nudge-right--small"
                       name="bootDisk"
                       onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
                         handleChange(e);
