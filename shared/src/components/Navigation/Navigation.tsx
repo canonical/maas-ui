@@ -155,11 +155,11 @@ const Navigation = ({
     >
       <div className="p-navigation__row">
         <div className="p-navigation__banner">
-          <div className="p-navigation__tagged-logo">
-            {
-              // Display the standard logo if the props were
-              // provided otherwise display the full element provided.
-              isLogoProps(logo) ? (
+          {
+            // Display the standard logo if the props were
+            // provided otherwise display the full element provided.
+            isLogoProps(logo) ? (
+              <div className="p-navigation__tagged-logo">
                 <a className="p-navigation__link" href={logo.url}>
                   <div className="p-navigation__logo-tag">
                     <img
@@ -170,11 +170,11 @@ const Navigation = ({
                   </div>
                   <span className="p-navigation__logo-title">{logo.title}</span>
                 </a>
-              ) : (
-                logo
-              )
-            }
-          </div>
+              </div>
+            ) : (
+              <div className="p-navigation__logo">{logo}</div>
+            )
+          }
           <ul className="p-navigation__items">
             {
               // When the header has a search box then this button is used to
