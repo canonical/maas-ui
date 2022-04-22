@@ -15,7 +15,7 @@ import StorageTable from "./StorageTable";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { ClearHeaderContent } from "app/base/types";
-import { RANGE_REGEX } from "app/base/validation";
+import { hostnameValidation, RANGE_REGEX } from "app/base/validation";
 import { useActivePod } from "app/kvm/hooks";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -326,7 +326,7 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
         )
         .min(1, "At least one disk is required"),
       domain: Yup.string(),
-      hostname: Yup.string(),
+      hostname: hostnameValidation,
       hugepagesBacked: Yup.boolean(),
       interfaces: Yup.array().of(
         Yup.object()

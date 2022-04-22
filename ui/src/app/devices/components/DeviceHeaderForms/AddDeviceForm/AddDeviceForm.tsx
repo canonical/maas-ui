@@ -13,7 +13,7 @@ import FormikForm from "app/base/components/FormikForm";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
-import { MAC_ADDRESS_REGEX } from "app/base/validation";
+import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceIpAssignment } from "app/store/device/types";
@@ -30,7 +30,7 @@ type Props = {
 
 const AddDeviceSchema = Yup.object().shape({
   domain: Yup.string().required("Domain required"),
-  hostname: Yup.string(),
+  hostname: hostnameValidation,
   interfaces: Yup.array()
     .of(
       Yup.object().shape({
