@@ -238,7 +238,7 @@
 @include TagForm;
 
 // preferences
-@import "~app/preferences/views/APIAuthentication/APIKeyList";
+@import "~app/preferences/views/APIKeys/APIKeyList";
 @import "~app/preferences/views/SSLKeys/AddSSLKey";
 @import "~app/preferences/views/SSLKeys/SSLKeyList";
 @include APIKeyList;

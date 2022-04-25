@@ -49,9 +49,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
         initialValues={{
           name: token ? token.consumer.name : "",
         }}
-        onCancel={() =>
-          history.push({ pathname: prefsURLs.apiAuthentication.index })
-        }
+        onCancel={() => history.push({ pathname: prefsURLs.apiKeys.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "API keys preferences",
@@ -73,7 +71,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
         }}
         saving={saving}
         saved={saved}
-        savedRedirect={prefsURLs.apiAuthentication.index}
+        savedRedirect={prefsURLs.apiKeys.index}
         submitLabel={editing ? "Save API key" : "Generate API key"}
         validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}
       >
