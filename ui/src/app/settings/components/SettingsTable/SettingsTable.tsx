@@ -30,7 +30,6 @@ export type Props = {
   searchPlaceholder?: string;
   searchText?: string;
   tableClassName?: string;
-  title?: string;
 };
 
 export const SettingsTable = ({
@@ -46,7 +45,6 @@ export const SettingsTable = ({
   searchPlaceholder,
   searchText,
   tableClassName,
-  title,
   ...tableProps
 }: Props): JSX.Element => {
   return (
@@ -59,13 +57,7 @@ export const SettingsTable = ({
             value={searchText}
           />
         ) : (
-          <div className="p-table-actions__space-left">
-            {title ? (
-              <h2 className="p-heading--5" data-testid="settings-table-title">
-                {title}
-              </h2>
-            ) : null}
-          </div>
+          <div className="p-table-actions__space-left"></div>
         )}
         {buttons?.map(({ label, url, disabled = false, tooltip }) =>
           tooltip ? (

@@ -2,9 +2,9 @@ import { Route, Redirect, Switch } from "react-router-dom";
 
 import NotFound from "app/base/views/NotFound";
 import prefsURLs from "app/preferences/urls";
-import APIAuthentication from "app/preferences/views/APIAuthentication";
-import APIKeyAdd from "app/preferences/views/APIAuthentication/APIKeyAdd";
-import APIKeyEdit from "app/preferences/views/APIAuthentication/APIKeyEdit";
+import APIKeyAdd from "app/preferences/views/APIKeys/APIKeyAdd";
+import APIKeyEdit from "app/preferences/views/APIKeys/APIKeyEdit";
+import APIKeyList from "app/preferences/views/APIKeys/APIKeyList";
 import Details from "app/preferences/views/Details";
 import AddSSHKey from "app/preferences/views/SSHKeys/AddSSHKey";
 import SSHKeyList from "app/preferences/views/SSHKeys/SSHKeyList";
@@ -18,17 +18,13 @@ const Routes = (): JSX.Element => {
       <Route exact path={prefsURLs.details} render={() => <Details />} />
       <Route
         exact
-        path={prefsURLs.apiAuthentication.index}
-        render={() => <APIAuthentication />}
+        path={prefsURLs.apiKeys.index}
+        render={() => <APIKeyList />}
       />
+      <Route exact path={prefsURLs.apiKeys.add} render={() => <APIKeyAdd />} />
       <Route
         exact
-        path={prefsURLs.apiAuthentication.keys.add}
-        render={() => <APIKeyAdd />}
-      />
-      <Route
-        exact
-        path={prefsURLs.apiAuthentication.keys.edit(null, true)}
+        path={prefsURLs.apiKeys.edit(null, true)}
         render={() => <APIKeyEdit />}
       />
       <Route

@@ -9,8 +9,8 @@ export const Nav = (): JSX.Element => (
         label: "Details",
       },
       {
-        path: prefsURLs.apiAuthentication.index,
-        label: "API authentication",
+        path: prefsURLs.apiKeys.index,
+        label: "API keys",
       },
       {
         path: prefsURLs.sshKeys.index,
