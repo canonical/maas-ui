@@ -105,6 +105,8 @@ exports[`NodeName can display the form 1`] = `
             [Function],
             [Function],
             [Function],
+            [Function],
+            [Function],
           ],
           "transforms": Array [
             [Function],
@@ -216,6 +218,8 @@ exports[`NodeName can display the form 1`] = `
               "strip": false,
             },
             "tests": Array [
+              [Function],
+              [Function],
               [Function],
               [Function],
               [Function],

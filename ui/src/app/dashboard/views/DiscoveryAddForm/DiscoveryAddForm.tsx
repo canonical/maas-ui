@@ -11,6 +11,7 @@ import type { DiscoveryAddValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
 import { useCycled } from "app/base/hooks";
+import { hostnameValidation } from "app/base/validation";
 import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import { actions as deviceActions } from "app/store/device";
@@ -105,7 +106,7 @@ const DiscoveryAddSchema = Yup.object().shape({
     ),
   }),
   domain: Yup.string(),
-  hostname: Yup.string(),
+  hostname: hostnameValidation,
   ip_assignment: Yup.string(),
   parent: Yup.string(),
   type: Yup.string(),

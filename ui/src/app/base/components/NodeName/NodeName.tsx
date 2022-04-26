@@ -9,6 +9,7 @@ import NodeNameFields from "./NodeNameFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import { useCanEdit } from "app/base/hooks";
+import { hostnameValidation } from "app/base/validation";
 import type { Device } from "app/store/device/types";
 import type { Domain, DomainMeta } from "app/store/domain/types";
 import type { Machine } from "app/store/machine/types";
@@ -32,17 +33,8 @@ export type FormValues = {
   domain: string;
 };
 
-const hostnamePattern = /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])*$/;
-
-export enum Label {
-  HostnamePatternError = "Hostname must only contain letters, numbers and hyphens.",
-}
-
 const Schema = Yup.object().shape({
-  hostname: Yup.string()
-    .max(63, "Hostname must be 63 characters or less.")
-    .matches(hostnamePattern, Label.HostnamePatternError)
-    .required(),
+  hostname: hostnameValidation.required(),
   domain: Yup.string(),
 });
 

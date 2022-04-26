@@ -1,3 +1,5 @@
+import * as Yup from "yup";
+
 /**
  * Validate domain name e.g. "www.example.com"
  * XXX This should be updated as it currently allows e.g. "www.example.com."
@@ -25,3 +27,19 @@ export const RANGE_REGEX = /^\d{1,3}(-\d{1,3})?(,\s*(\d{1,3}(-\d{1,3})?))*$/;
  * Validate tag name string (only alphanumeric, dash or underscore)
  */
 export const TAG_NAME_REGEX = /^[a-zA-Z0-9_-]+$/;
+
+export enum HostnameValidationLabel {
+  LengthError = "Hostname must be 63 characters or less.",
+  CharactersError = "Hostname must only contain letters, numbers and hyphens.",
+  DashStartError = "Hostname must not start wth a hyphen.",
+  DashEndError = "Hostname must not end wth a hyphen.",
+}
+
+export const hostnameValidation = Yup.string()
+  .max(63, HostnameValidationLabel.LengthError)
+  // Validate host name only contains alphanumeric or dash.
+  .matches(/^[a-zA-Z0-9-]*$/, HostnameValidationLabel.CharactersError)
+  // Validate host name does not start with a dash.
+  .matches(/^[a-zA-Z0-9]/, HostnameValidationLabel.DashStartError)
+  // Validate host name does not end with a dash.
+  .matches(/[a-zA-Z0-9]$/, HostnameValidationLabel.DashEndError);

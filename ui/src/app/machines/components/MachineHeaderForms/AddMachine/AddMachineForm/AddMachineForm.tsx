@@ -10,7 +10,7 @@ import type { AddMachineValues } from "../types";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
-import { MAC_ADDRESS_REGEX } from "app/base/validation";
+import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as generalActions } from "app/store/general";
@@ -88,7 +88,7 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
     extra_macs: Yup.array().of(
       Yup.string().matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
     ),
-    hostname: Yup.string(),
+    hostname: hostnameValidation,
     min_hwe_kernel: Yup.string(),
     pool: Yup.string().required("Resource pool required"),
     power_parameters: Yup.object().shape(
