@@ -56,6 +56,9 @@ const AddAliasOrVlan = ({
   const unusedVLANs = useSelector((state: RootState) =>
     vlanSelectors.getUnusedForInterface(state, machine, nic)
   );
+  const nicVLAN = useSelector((state: RootState) =>
+    vlanSelectors.getById(state, nic?.vlan_id)
+  );
   const cleanup = useCallback(() => machineActions.cleanup(), []);
   const isAlias = interfaceType === NetworkInterfaceTypes.ALIAS;
   const { errors, saved, saving } = useMachineDetailsForm(
@@ -85,6 +88,8 @@ const AddAliasOrVlan = ({
         initialValues={{
           ...networkFieldsInitialValues,
           ...(isAlias ? {} : { tags: [] }),
+          fabric: nicVLAN?.fabric || "",
+          vlan: nic.vlan_id,
         }}
         onSaveAnalytics={{
           action: `Add ${interfaceType}`,
