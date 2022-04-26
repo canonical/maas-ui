@@ -28,18 +28,18 @@ export const RANGE_REGEX = /^\d{1,3}(-\d{1,3})?(,\s*(\d{1,3}(-\d{1,3})?))*$/;
  */
 export const TAG_NAME_REGEX = /^[a-zA-Z0-9_-]+$/;
 
-/**
- * Validate host name string (only alphanumeric or dash and does not start or
- * end with a dash)
- */
-export const hostnamePattern =
-  /^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9-]*[a-zA-Z0-9])*$/;
-
 export enum HostnameValidationLabel {
   LengthError = "Hostname must be 63 characters or less.",
-  PatternError = "Hostname must only contain letters, numbers and hyphens.",
+  CharactersError = "Hostname must only contain letters, numbers and hyphens.",
+  DashStartError = "Hostname must not start wth a hyphen.",
+  DashEndError = "Hostname must not end wth a hyphen.",
 }
 
 export const hostnameValidation = Yup.string()
   .max(63, HostnameValidationLabel.LengthError)
-  .matches(hostnamePattern, HostnameValidationLabel.PatternError);
+  // Validate host name only contains alphanumeric or dash.
+  .matches(/^[a-zA-Z0-9-]*$/, HostnameValidationLabel.CharactersError)
+  // Validate host name does not start with a dash.
+  .matches(/^[a-zA-Z0-9]/, HostnameValidationLabel.DashStartError)
+  // Validate host name does not end with a dash.
+  .matches(/[a-zA-Z0-9]$/, HostnameValidationLabel.DashEndError);

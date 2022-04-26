@@ -1,21 +1,45 @@
-import { hostnamePattern } from "./validation";
+import { ValidationError } from "yup";
 
-describe("hostname validation", () => {
-  const regex = new RegExp(hostnamePattern);
+import { hostnameValidation, HostnameValidationLabel } from "./validation";
 
-  it("handles valid strings", () => {
-    expect(regex.test("valid-name")).toBe(true);
+describe("hostname regex", () => {
+  it("handles valid characters", async () => {
+    await expect(hostnameValidation.validate("valid-name")).resolves.toBe(
+      "valid-name"
+    );
   });
 
-  it("handles invalid characters", () => {
-    expect(regex.test("valid_name")).toBe(false);
+  it("handles invalid characters", async () => {
+    await expect(
+      hostnameValidation.validate("valid_name")
+    ).rejects.toStrictEqual(
+      new ValidationError(HostnameValidationLabel.CharactersError)
+    );
   });
 
-  it("is invalid if it starts with a dash", () => {
-    expect(regex.test("-invalidname")).toBe(false);
+  it("is invalid if it starts with a dash", async () => {
+    await expect(
+      hostnameValidation.validate("-invalidname")
+    ).rejects.toStrictEqual(
+      new ValidationError(HostnameValidationLabel.DashStartError)
+    );
   });
 
-  it("is invalid if it ends with a dash", () => {
-    expect(regex.test("invalidname-")).toBe(false);
+  it("is invalid if it ends with a dash", async () => {
+    await expect(
+      hostnameValidation.validate("invalidname-")
+    ).rejects.toStrictEqual(
+      new ValidationError(HostnameValidationLabel.DashEndError)
+    );
+  });
+
+  it("is invalid if it is longer than 63 characters", async () => {
+    await expect(
+      hostnameValidation.validate(
+        "invalidnamethatiswaytoolongimeanthisislongbyanystandardormeasure"
+      )
+    ).rejects.toStrictEqual(
+      new ValidationError(HostnameValidationLabel.LengthError)
+    );
   });
 });
