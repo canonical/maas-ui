@@ -267,16 +267,12 @@ it("displays correctly paginated rows", async () => {
     })
   );
 
-  /**
-   * TODO: replace querySelector with testing library method once react-components is fixed
-   * https://github.com/canonical-web-and-design/app-tribe/issues/764
-   */
   await waitFor(() =>
     expect(
-      screen
-        .getByRole("navigation", { name: "pagination" })
-        // eslint-disable-next-line testing-library/no-node-access
-        .querySelector(".is-active")
+      within(screen.getByRole("navigation", { name: "pagination" })).getByRole(
+        "button",
+        { current: "page" }
+      )
     ).toHaveTextContent("2")
   );
 
