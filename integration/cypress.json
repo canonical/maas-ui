@@ -4,6 +4,8 @@
   "env": {
     "username": "admin",
     "password": "test",
+    "nonAdminUsername": "user",
+    "nonAdminPassword": "test",
     "skipA11yFailures": true
   },
   "projectId": "gp2cox",

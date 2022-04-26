@@ -1,8 +1,8 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-context("Header", () => {
+context("Header - non-admin", () => {
   beforeEach(() => {
-    cy.login();
+    cy.loginNonAdmin();
     // Need the window to be wide enough so that menu items aren't hidden under
     // the hardware menu.
     cy.viewport("macbook-13");
@@ -13,6 +13,16 @@ context("Header", () => {
     cy.get(".p-navigation__logo a").click();
     cy.location("pathname").should("eq", generateNewURL("/machines"));
     cy.get(".p-navigation__item.is-selected a").contains("Machines");
+  });
+});
+
+context("Header - admin", () => {
+  beforeEach(() => {
+    cy.login();
+    // Need the window to be wide enough so that menu items aren't hidden under
+    // the hardware menu.
+    cy.viewport("macbook-13");
+    cy.visit(generateNewURL("/"));
   });
 
   it("navigates to machines", () => {

@@ -15,6 +15,7 @@ declare global {
         shouldSkipIntro?: boolean;
         shouldSkipSetupIntro?: boolean;
       }): void;
+      loginNonAdmin(): void;
       testA11y(pageContext: A11yPageContext): void;
       waitForPageToLoad(): void;
     }
