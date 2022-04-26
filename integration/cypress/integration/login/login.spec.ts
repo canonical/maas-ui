@@ -6,7 +6,7 @@ context("Login page", () => {
   });
 
   it("is disabled by default", () => {
-    cy.get("button").should("have.attr", "disabled", "disabled");
+    cy.findByRole("button", { name: "Login" }).should("be.disabled");
   });
 
   it("shows form errors if username is focused and blurred while empty", () => {
@@ -22,10 +22,10 @@ context("Login page", () => {
   });
 
   it("enables the form if both fields have values", () => {
-    cy.get("button").should("have.attr", "disabled", "disabled");
+    cy.findByRole("button", { name: "Login" }).should("be.disabled");
     cy.get("input[name='username']").type("username");
     cy.get("input[name='password']").type("password");
-    cy.get("button").should("not.have.attr", "disabled", "disabled");
+    cy.findByRole("button", { name: "Login" }).should("not.be.disabled");
   });
 
   it("displays an error notification if wrong credentials provided", () => {
