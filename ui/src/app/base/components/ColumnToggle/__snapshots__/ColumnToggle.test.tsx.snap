@@ -3,14 +3,17 @@
 exports[`ColumnToggle  renders 1`] = `
 <Button
   appearance="link"
-  className="column-toggle"
-  inline={true}
+  className="column-toggle u-flex--between u-no-margin u-no-padding"
   onClick={[Function]}
 >
   <span
-    className="column-toggle__name"
+    className="u-flex--grow u-nudge-left--small"
   >
     maas.local
   </span>
+  <Icon
+    className="u-flex--no-shrink"
+    name="chevron-down"
+  />
 </Button>
 `;

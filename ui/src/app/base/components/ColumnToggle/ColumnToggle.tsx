@@ -1,8 +1,7 @@
 import type { ReactNode } from "react";
 import { useRef } from "react";
 
-import { Button } from "@canonical/react-components";
-import classNames from "classnames";
+import { Button, Icon } from "@canonical/react-components";
 
 type Props = {
   isExpanded: boolean;
@@ -21,10 +20,7 @@ const ColumnToggle = ({
   return (
     <Button
       appearance="link"
-      className={classNames("column-toggle", {
-        "is-active": isExpanded,
-      })}
-      inline
+      className="column-toggle u-flex--between u-no-margin u-no-padding"
       onClick={() => {
         if (isExpanded) {
           onClose();
@@ -44,9 +40,13 @@ const ColumnToggle = ({
         }
       }}
     >
-      <span className="column-toggle__name" ref={buttonNode}>
+      <span className="u-flex--grow u-nudge-left--small" ref={buttonNode}>
         {label}
       </span>
+      <Icon
+        className="u-flex--no-shrink"
+        name={`chevron-${isExpanded ? "up" : "down"}`}
+      />
     </Button>
   );
 };
