@@ -3,13 +3,10 @@ import { generateNewURL } from "@maas-ui/maas-ui-shared";
 context("Header - non-admin", () => {
   beforeEach(() => {
     cy.loginNonAdmin();
-    // Need the window to be wide enough so that menu items aren't hidden under
-    // the hardware menu.
-    cy.viewport("macbook-13");
     cy.visit(generateNewURL("/"));
   });
 
-  it("navigates to the machine list when clicking on the logo as a non admin", () => {
+  it("navigates to the machine list when clicking on the logo", () => {
     cy.get(".p-navigation__logo a").click();
     cy.location("pathname").should("eq", generateNewURL("/machines"));
     cy.get(".p-navigation__item.is-selected a").contains("Machines");
