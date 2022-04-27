@@ -27,8 +27,10 @@ const Definition = ({ label, children, description }: Props): JSX.Element => {
       </p>
       {description ? (
         <p aria-labelledby={id}>{description}</p>
-      ) : React.Children.toArray(children).length > 0 ? (
-        React.Children.toArray(children).map(
+      ) : React.Children.toArray(children).filter((child) => child !== "")
+          .length > 0 ? (
+        React.Children.map(
+          children,
           (child, i) =>
             child && (
               <p key={i} aria-labelledby={id}>

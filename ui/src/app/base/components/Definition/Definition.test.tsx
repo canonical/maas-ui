@@ -36,3 +36,10 @@ it("displays alternative text with no description provided", () => {
   expect(screen.getByText("Term")).toBeInTheDocument();
   expect(screen.getByText("—")).toBeInTheDocument();
 });
+
+it("displays alternative text for empty string as description", () => {
+  // eslint-disable-next-line prettier/prettier
+  render(<Definition label="Term">{""}</Definition>);
+  expect(screen.getByText("Term")).toBeInTheDocument();
+  expect(screen.getByText("—")).toBeInTheDocument();
+});
