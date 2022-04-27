@@ -6,8 +6,8 @@ context("Header - non-admin", () => {
     cy.visit(generateNewURL("/"));
   });
 
-  it("navigates to the machine list when clicking on the logo", () => {
-    cy.get(".p-navigation__logo a").click();
+  it("navigates to machines when clicking on the logo", () => {
+    cy.findByRole("link", { name: "Homepage" }).click();
     cy.location("pathname").should("eq", generateNewURL("/machines"));
     cy.get(".p-navigation__item.is-selected a").contains("Machines");
   });
@@ -20,6 +20,15 @@ context("Header - admin", () => {
     // the hardware menu.
     cy.viewport("macbook-13");
     cy.visit(generateNewURL("/"));
+  });
+
+  it("navigates to dashboard when clicking on the logo", () => {
+    cy.waitForPageToLoad();
+    cy.findByRole("link", { name: "Homepage" }).click();
+    cy.location("pathname").should("eq", generateNewURL("/dashboard"));
+    cy.findByRole("link", { current: "page", name: "Homepage" }).should(
+      "exist"
+    );
   });
 
   it("navigates to machines", () => {
