@@ -5,7 +5,7 @@
   <p>
     <span data-ng-if="!node.tags.length"><i>No tags</i></span>
     <span data-ng-repeat="tag in node.tags">
-      <a href="{$ newURLBase $}/controllers?q=tags:({$ tag $})"
+      <a href="{$ newURLBase $}/controllers?q=tags:({$ getTagName(tag) $})"
         >{$ getTagName(tag) $}</a
       >
     </span>
