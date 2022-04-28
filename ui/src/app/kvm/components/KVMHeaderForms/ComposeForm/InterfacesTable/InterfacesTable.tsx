@@ -168,17 +168,17 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
 
               return (
                 <TableRow key={iface.id}>
-                  <TableCell aria-label="Name">
+                  <TableCell data-heading="Name">
                     <FormikField name={`interfaces[${i}].name`} type="text" />
                   </TableCell>
-                  <TableCell aria-label="IP address">
+                  <TableCell data-heading="IP address">
                     <FormikField
                       name={`interfaces[${i}].ipAddress`}
                       placeholder="Leave empty to auto-assign"
                       type="text"
                     />
                   </TableCell>
-                  <TableCell aria-label="Space">
+                  <TableCell data-heading="Space">
                     <FormikField
                       component={Select}
                       name={`interfaces[${i}].space`}
@@ -199,7 +199,7 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
                       ]}
                     />
                   </TableCell>
-                  <TableCell aria-label="Subnet">
+                  <TableCell data-heading="Subnet">
                     <SubnetSelect
                       hostId={hostId}
                       iface={iface}
@@ -209,17 +209,20 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
                       }}
                     />
                   </TableCell>
-                  <TableCell aria-label="Fabric" className="u-align-non-field">
+                  <TableCell
+                    data-heading="Fabric"
+                    className="u-align-non-field"
+                  >
                     {fabric?.name || ""}
                   </TableCell>
-                  <TableCell aria-label="VLAN" className="u-align-non-field">
+                  <TableCell data-heading="VLAN" className="u-align-non-field">
                     {vlan?.name || ""}
                   </TableCell>
-                  <TableCell aria-label="PXE" className="u-align-non-field">
+                  <TableCell data-heading="PXE" className="u-align-non-field">
                     <i className={getPxeIconClass(pod, vlan)}></i>
                   </TableCell>
                   <TableCell
-                    aria-label="Actions"
+                    data-heading="Actions"
                     className="u-align--right u-no-padding--right u-align-non-field"
                   >
                     <TableActions
@@ -234,10 +237,10 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
         ) : (
           <tbody>
             <TableRow data-testid="undefined-interface">
-              <TableCell aria-label="Name">
+              <TableCell data-heading="Name">
                 <em>default</em>
               </TableCell>
-              <TableCell aria-label="IP address" colSpan={7}>
+              <TableCell data-heading="IP address" colSpan={7}>
                 Created by hypervisor at compose time
               </TableCell>
             </TableRow>

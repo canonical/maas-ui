@@ -24,9 +24,7 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
     <Table className="network-card-table" responsive>
       <thead>
         <TableRow>
-          <TableHeader aria-label="Name" className="name">
-            Name
-          </TableHeader>
+          <TableHeader className="name">Name</TableHeader>
           <TableHeader className="mac">MAC</TableHeader>
           <TableHeader className="speed">Link speed</TableHeader>
           <TableHeader className="fabric">
@@ -51,19 +49,19 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
 
           return (
             <TableRow key={iface.id}>
-              <TableCell aria-label="Name" className="name">
+              <TableCell data-heading="Name" className="name">
                 {iface.name}
               </TableCell>
-              <TableCell aria-label="MAC" className="mac">
+              <TableCell data-heading="MAC" className="mac">
                 {iface.mac_address}
               </TableCell>
-              <TableCell aria-label="Link speed" className="speed">
+              <TableCell data-heading="Link speed" className="speed">
                 {formatSpeedUnits(iface.link_speed)}
               </TableCell>
-              <TableCell aria-label="Fabric" className="fabric">
+              <TableCell data-heading="Fabric" className="fabric">
                 {getFabricDisplay(fabric) || "Unknown"}
               </TableCell>
-              <TableCell aria-label="DHCP" className="dhcp">
+              <TableCell data-heading="DHCP" className="dhcp">
                 {dhcpStatus}
                 {dhcpStatus === "Relayed" && (
                   <Tooltip
@@ -76,7 +74,7 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
                   </Tooltip>
                 )}
               </TableCell>
-              <TableCell aria-label="SR-IOV" className="sriov">
+              <TableCell data-heading="SR-IOV" className="sriov">
                 {iface.sriov_max_vf > 0 ? "Yes" : "No"}
               </TableCell>
             </TableRow>
