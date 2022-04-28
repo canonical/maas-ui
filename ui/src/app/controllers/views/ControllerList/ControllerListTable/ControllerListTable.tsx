@@ -133,6 +133,7 @@ const ControllerListTable = ({
 
   return (
     <MainTable
+      aria-label="controllers list"
       className="controller-list-table"
       emptyStateMsg={
         loading ? (
