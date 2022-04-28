@@ -1,7 +1,11 @@
-import maasDocsUrls from "@maas-ui/maas-ui/src/app/base/maasDocsUrls";
+import docsUrls from "@maas-ui/maas-ui/src/app/base/docsUrls";
 
-context("maas.io docs contain specified resources", () => {
-  Object.values(maasDocsUrls).forEach((url) => {
+context("docs resources exists", () => {
+  beforeEach(() => {
+    cy.setCookie("_cookies_accepted", "all");
+  });
+
+  Object.values(docsUrls).forEach((url) => {
     it(url, () => {
       cy.visit(url);
       const { hash } = new URL(url);
