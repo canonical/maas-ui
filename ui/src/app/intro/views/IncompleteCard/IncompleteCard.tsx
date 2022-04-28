@@ -1,5 +1,6 @@
 import { Link } from "@canonical/react-components";
 
+import docsUrls from "app/base/docsUrls";
 import IntroCard from "app/intro/components/IntroCard";
 import IntroSection from "app/intro/components/IntroSection";
 
@@ -11,10 +12,7 @@ const IncompleteCard = (): JSX.Element => {
         data-testid="maas-name-form"
         title="Welcome to MAAS"
         titleLink={
-          <Link
-            href="https://maas.io/docs/configuration-journey"
-            target="_blank"
-          >
+          <Link href={docsUrls.configurationJourney} target="_blank">
             Help with configuring MAAS
           </Link>
         }

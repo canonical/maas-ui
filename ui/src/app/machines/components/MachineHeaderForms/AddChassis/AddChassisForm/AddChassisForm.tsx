@@ -7,6 +7,7 @@ import * as Yup from "yup";
 import AddChassisFormFields from "../AddChassisFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import docsUrls from "app/base/docsUrls";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
@@ -74,7 +75,7 @@ export const AddChassisForm = ({ clearHeaderContent }: Props): JSX.Element => {
           buttonsHelp={
             <p>
               <Link
-                href="https://maas.io/docs/add-machines#heading--add-nodes-via-a-chassis"
+                href={docsUrls.addNodesViaChassis}
                 rel="noopener noreferrer"
                 target="_blank"
               >

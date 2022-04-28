@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
+import docsUrls from "app/base/docsUrls";
 import { useSendAnalytics } from "app/base/hooks";
 import { useId } from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
@@ -39,7 +40,7 @@ const getDefinitionError = (
       <span id={definitionErrorId}>
         The definition is an invalid XPath expression. See our{" "}
         <a
-          href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
+          href={docsUrls.tagsXpathExpressions}
           rel="noreferrer noopener"
           target="_blank"
         >
@@ -94,7 +95,7 @@ export const DefinitionField = ({ id }: Props): JSX.Element => {
         Add an XPath expression as a definition. MAAS will auto-assign this tag
         to all current and future machines that match this definition.{" "}
         <a
-          href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
+          href={docsUrls.tagsXpathExpressions}
           rel="noreferrer noopener"
           target="_blank"
         >

@@ -2,7 +2,7 @@ import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { useSelector } from "react-redux";
 
-import maasDocsUrls from "app/base/maasDocsUrls";
+import docsUrls from "app/base/docsUrls";
 import type { Seconds } from "app/base/types";
 import { PowerTypeNames } from "app/store/general/constants";
 import type { MachineDetails } from "app/store/machine/types";
@@ -110,7 +110,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
                     You can check it at the bottom, in the status bar.{"\n"}
                     More about this in the{" "}
                     <a
-                      href={maasDocsUrls.customisingDeployedMachines}
+                      href={docsUrls.customisingDeployedMachines}
                       rel="noopener noreferrer"
                       target="_blank"
                       className="is-on-dark"

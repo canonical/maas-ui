@@ -9,6 +9,7 @@ import DHCPReservedRanges from "./DHCPReservedRanges";
 
 import FormikForm from "app/base/components/FormikForm";
 import TitledSection from "app/base/components/TitledSection";
+import docsUrls from "app/base/docsUrls";
 import { useCycled } from "app/base/hooks";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
@@ -144,11 +145,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
             cleanup={cleanup}
             errors={configureDHCPError}
             buttonsHelp={
-              <a
-                href="https://maas.io/docs/dhcp"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
+              <a href={docsUrls.dhcp} rel="noreferrer noopener" target="_blank">
                 About DHCP
               </a>
             }

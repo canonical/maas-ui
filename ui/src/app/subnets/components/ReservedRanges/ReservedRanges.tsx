@@ -19,6 +19,7 @@ import SubnetLink from "app/base/components/SubnetLink";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TitledSection from "app/base/components/TitledSection";
+import docsUrls from "app/base/docsUrls";
 import { actions as ipRangeActions } from "app/store/iprange";
 import ipRangeSelectors from "app/store/iprange/selectors";
 import type { IPRange, IPRangeMeta } from "app/store/iprange/types";
@@ -333,11 +334,7 @@ const ReservedRanges = ({
           />
         </FormCard>
       ) : null}
-      <a
-        href="https://maas.io/docs/ip-ranges"
-        rel="noreferrer noopener"
-        target="_blank"
-      >
+      <a href={docsUrls.ipRanges} rel="noreferrer noopener" target="_blank">
         About IP ranges
       </a>
     </TitledSection>

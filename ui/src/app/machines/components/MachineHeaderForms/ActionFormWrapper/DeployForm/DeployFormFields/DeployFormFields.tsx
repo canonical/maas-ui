@@ -20,7 +20,7 @@ import type { DeployFormValues } from "../DeployForm";
 
 import FormikField from "app/base/components/FormikField";
 import UploadTextArea from "app/base/components/UploadTextArea";
-import maasDocsUrls from "app/base/maasDocsUrls";
+import docsUrls from "app/base/docsUrls";
 import imagesURLs from "app/images/urls";
 import prefsURLs from "app/preferences/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -137,7 +137,7 @@ export const DeployFormFields = (): JSX.Element => {
                 <>
                   Register as MAAS KVM host.{" "}
                   <a
-                    href="https://maas.io/docs/kvm-introduction"
+                    href={docsUrls.kvmIntroduction}
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -181,7 +181,7 @@ export const DeployFormFields = (): JSX.Element => {
                 <>
                   Cloud-init user-data&hellip;{" "}
                   <a
-                    href="https://maas.io/docs/custom-node-setup-preseed#heading--cloud-init"
+                    href={docsUrls.cloudInit}
                     rel="noreferrer noopener"
                     target="_blank"
                   >
@@ -229,7 +229,7 @@ export const DeployFormFields = (): JSX.Element => {
                     </Button>
                   </Tooltip>{" "}
                   <a
-                    href={maasDocsUrls.customisingDeployedMachines}
+                    href={docsUrls.customisingDeployedMachines}
                     rel="noopener noreferrer"
                     target="_blank"
                   >

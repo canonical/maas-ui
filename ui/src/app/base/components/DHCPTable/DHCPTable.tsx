@@ -9,6 +9,7 @@ import TitledSection from "../TitledSection";
 import EditDHCP from "./EditDHCP";
 
 import TableActions from "app/base/components/TableActions";
+import docsUrls from "app/base/docsUrls";
 import settingsURLs from "app/settings/urls";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
@@ -182,11 +183,7 @@ const DHCPTable = ({
               <Link to={settingsURLs.dhcp.index}>
                 All snippets: Settings &gt; DHCP snippets
               </Link>,
-              <a
-                href="https://maas.io/docs/dhcp"
-                rel="noreferrer noopener"
-                target="_blank"
-              >
+              <a href={docsUrls.dhcp} rel="noreferrer noopener" target="_blank">
                 About DHCP snippets
               </a>,
             ]}

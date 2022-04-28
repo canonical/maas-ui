@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 
 import Definition from "app/base/components/Definition";
 import FormikField from "app/base/components/FormikField";
+import docsUrls from "app/base/docsUrls";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
@@ -71,7 +72,7 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
                 This is a manual tag. Definitions cannot be added to manual
                 tags. To learn more about this, check our{" "}
                 <a
-                  href="https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions"
+                  href={docsUrls.tagsXpathExpressions}
                   rel="noreferrer noopener"
                   target="_blank"
                 >

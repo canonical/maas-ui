@@ -4,6 +4,7 @@ import { useFormikContext } from "formik";
 import type { MaasIntroValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
+import docsUrls from "app/base/docsUrls";
 import IntroCard from "app/intro/components/IntroCard";
 
 const NameCard = (): JSX.Element => {
@@ -16,7 +17,7 @@ const NameCard = (): JSX.Element => {
       hasErrors={!!errors.name}
       title="Welcome to MAAS"
       titleLink={
-        <Link href="https://maas.io/docs/configuration-journey" target="_blank">
+        <Link href={docsUrls.configurationJourney} target="_blank">
           Help with configuring MAAS
         </Link>
       }

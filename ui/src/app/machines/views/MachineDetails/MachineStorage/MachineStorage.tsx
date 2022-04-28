@@ -9,6 +9,7 @@ import DatastoresTable from "./DatastoresTable";
 import FilesystemsTable from "./FilesystemsTable";
 import UsedStorageTable from "./UsedStorageTable";
 
+import docsUrls from "app/base/docsUrls";
 import { useSendAnalytics, useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import settingsURLs from "app/settings/urls";
@@ -79,7 +80,7 @@ const MachineStorage = (): JSX.Element => {
             Learn more about deploying{" "}
             <a
               data-testid="docs-footer-link"
-              href="https://maas.io/docs/images"
+              href={docsUrls.images}
               onClick={() =>
                 sendAnalytics(
                   "Machine storage",
