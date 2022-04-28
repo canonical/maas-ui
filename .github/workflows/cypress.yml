@@ -28,6 +28,7 @@ jobs:
       - name: Run Cypress tests without a user
         uses: cypress-io/github-action@master
         with:
+          browser: chrome
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
           spec: "**/no-users/*.spec.ts"
