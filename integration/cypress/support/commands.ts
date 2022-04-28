@@ -29,6 +29,13 @@ Cypress.Commands.add("login", (options) => {
   });
 });
 
+Cypress.Commands.add("loginNonAdmin", () => {
+  cy.login({
+    username: Cypress.env("nonAdminUsername"),
+    password: Cypress.env("nonAdminPassword"),
+  });
+});
+
 function logViolations(violations: Result[], pageContext: A11yPageContext) {
   const divider =
     "\n====================================================================================================\n";
