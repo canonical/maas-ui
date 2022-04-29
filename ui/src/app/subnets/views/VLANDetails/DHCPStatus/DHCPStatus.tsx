@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import ControllerLink from "app/base/components/ControllerLink";
 import Definition from "app/base/components/Definition";
 import TitledSection from "app/base/components/TitledSection";
+import docsUrls from "app/base/docsUrls";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
@@ -141,11 +142,7 @@ const DHCPStatus = ({ id, openForm }: Props): JSX.Element | null => {
         </Col>
       </Row>
       <p>
-        <a
-          href="https://maas.io/docs/dhcp"
-          rel="noreferrer noopener"
-          target="_blank"
-        >
+        <a href={docsUrls.dhcp} rel="noreferrer noopener" target="_blank">
           About DHCP
         </a>
       </p>

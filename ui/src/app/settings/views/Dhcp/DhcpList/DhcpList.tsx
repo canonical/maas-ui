@@ -8,6 +8,7 @@ import type { Dispatch } from "redux";
 import ColumnToggle from "app/base/components/ColumnToggle";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import docsUrls from "app/base/docsUrls";
 import { useWindowTitle, useAddMessage } from "app/base/hooks";
 import SettingsTable from "app/settings/components/SettingsTable";
 import settingsURLs from "app/settings/urls";
@@ -256,7 +257,7 @@ const DhcpList = (): JSX.Element => {
         },
       ]}
       helpLabel="About DHCP"
-      helpLink="https://maas.io/docs/dhcp"
+      helpLink={docsUrls.dhcp}
       loaded={dhcpsnippetLoaded}
       loading={dhcpsnippetLoading}
       rows={generateRows(

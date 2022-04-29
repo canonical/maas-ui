@@ -7,6 +7,7 @@ import { useSelector } from "react-redux";
 import type { CommissioningFormValues } from "../CommissioningForm";
 
 import FormikField from "app/base/components/FormikField";
+import docsUrls from "app/base/docsUrls";
 import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
@@ -75,7 +76,7 @@ const CommissioningFormFields = (): JSX.Element => {
             Specify this key to encrypt all communication between IPMI clients
             and the BMC. Leave this blank for no encryption.&nbsp;
             <Link
-              href="https://maas.io/docs/snap/2.9/ui/power-management#heading--ipmi"
+              href={docsUrls.ipmi}
               rel="noreferrer noopener"
               target="_blank"
             >

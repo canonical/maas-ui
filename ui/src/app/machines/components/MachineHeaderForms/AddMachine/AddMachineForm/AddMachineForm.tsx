@@ -8,6 +8,7 @@ import AddMachineFormFields from "../AddMachineFormFields";
 import type { AddMachineValues } from "../types";
 
 import FormikForm from "app/base/components/FormikForm";
+import docsUrls from "app/base/docsUrls";
 import { useAddMessage } from "app/base/hooks";
 import type { ClearHeaderContent } from "app/base/types";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
@@ -124,7 +125,7 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
           buttonsHelp={
             <p>
               <Link
-                href="https://maas.io/docs/add-machines"
+                href={docsUrls.addMachines}
                 rel="noopener noreferrer"
                 target="_blank"
               >

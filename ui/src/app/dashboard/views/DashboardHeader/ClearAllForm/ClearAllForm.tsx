@@ -8,6 +8,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "app/base/components/FormikForm";
+import docsUrls from "app/base/docsUrls";
 import type { EmptyObject } from "app/base/types";
 import configSelectors from "app/store/config/selectors";
 import { NetworkDiscovery } from "app/store/config/types";
@@ -42,7 +43,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
         <p>
           Learn more about{" "}
           <Link
-            href="https://maas.io/docs/network-discovery"
+            href={docsUrls.networkDiscovery}
             rel="noreferrer noopener"
             target="_blank"
           >

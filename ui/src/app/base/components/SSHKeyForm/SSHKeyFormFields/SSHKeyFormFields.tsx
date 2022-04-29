@@ -13,6 +13,7 @@ import type { SSHKeyFormValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 import { COL_SIZES } from "app/base/constants";
+import docsUrls from "app/base/docsUrls";
 
 type Props = {
   cols?: number;
@@ -76,11 +77,7 @@ export const SSHKeyFormFields = ({
           </p>
         </Col>
       </Row>
-      <Link
-        href="https://maas.io/docs/user-accounts#heading--ssh-keys"
-        rel="noreferrer noopener"
-        target="_blank"
-      >
+      <Link href={docsUrls.sshKeys} rel="noreferrer noopener" target="_blank">
         About SSH keys
       </Link>
     </>

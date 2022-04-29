@@ -3,6 +3,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
+import docsUrls from "app/base/docsUrls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -65,7 +66,7 @@ export const KernelOptionsField = ({
           Kernel options are appended to the kernel command line during booting
           while machines are commissioning or deploying.{" "}
           <a
-            href="https://maas.io/docs/how-to-work-with-tags#heading--kernel-options"
+            href={docsUrls.tagsKernelOptions}
             rel="noreferrer noopener"
             target="_blank"
           >

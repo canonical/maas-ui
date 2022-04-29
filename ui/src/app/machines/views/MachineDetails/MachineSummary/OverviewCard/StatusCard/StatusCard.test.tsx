@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import StatusCard from "./StatusCard";
 
-import maasDocsUrls from "app/base/maasDocsUrls";
+import docsUrls from "app/base/docsUrls";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
@@ -177,7 +177,7 @@ describe("StatusCard", () => {
     expect(hardwareSyncDocs).toBeInTheDocument();
     expect(hardwareSyncDocs).toHaveAttribute(
       "href",
-      maasDocsUrls.customisingDeployedMachines
+      docsUrls.customisingDeployedMachines
     );
   });
 

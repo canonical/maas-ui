@@ -1,6 +1,7 @@
 import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import docsUrls from "app/base/docsUrls";
 import type { ClearHeaderContent } from "app/base/types";
 import configSelectors from "app/store/config/selectors";
 
@@ -58,7 +59,7 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
       <Row>
         <Col size={6}>
           <a
-            href="https://maas.io/docs/rack-controller"
+            href={docsUrls.rackController}
             rel="noreferrer noopener"
             target="_blank"
           >

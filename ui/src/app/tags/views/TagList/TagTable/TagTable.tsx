@@ -14,6 +14,7 @@ import { TAGS_PER_PAGE } from "../constants";
 
 import TableActions from "app/base/components/TableActions";
 import TableHeader from "app/base/components/TableHeader";
+import docsUrls from "app/base/docsUrls";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { actions as tagActions } from "app/store/tag";
@@ -223,7 +224,7 @@ const TagTable = ({
                       )}
                       <br />
                       <a
-                        href="https://maas.io/docs/how-to-work-with-tags#heading--automatic-tags"
+                        href={docsUrls.tagsAutomatic}
                         rel="noreferrer noopener"
                         target="_blank"
                       >
