@@ -47,7 +47,7 @@ const generateRows = (vlans: VLAN[], subnets: Subnet[]) => {
             {
               "aria-label": headers[0],
               content: (
-                <span className={i > 0 ? "u-hide--medium u-hide--large" : ""}>
+                <span className={i > 0 ? "u-hide--large" : ""}>
                   <VLANLink id={vlan.id} />
                 </span>
               ),
@@ -55,7 +55,7 @@ const generateRows = (vlans: VLAN[], subnets: Subnet[]) => {
             {
               "aria-label": headers[1],
               content: (
-                <span className={i > 0 ? "u-hide--medium u-hide--large" : ""}>
+                <span className={i > 0 ? "u-hide--large" : ""}>
                   <SpaceLink id={vlan.space} />
                 </span>
               ),
