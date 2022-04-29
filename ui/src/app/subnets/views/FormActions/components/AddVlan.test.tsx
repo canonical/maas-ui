@@ -52,7 +52,7 @@ it("displays validation messages for VID", async () => {
   );
 });
 
-it("correctly dispatches VLAN create action on form submit", async () => {
+it("correctly dispatches VLAN cleanup and create actions on form submit", async () => {
   const vid = 123;
   const name = "VLAN name";
   const space = { id: 1, name: "space1" };
@@ -91,15 +91,21 @@ it("correctly dispatches VLAN create action on form submit", async () => {
 
   userEvent.click(screen.getByRole("button", { name: "Add VLAN" }));
 
-  const expectedAction = vlanActions.create({
-    vid,
-    name,
-    fabric: fabric.id,
-    space: space.id,
+  const expectedActions = [
+    vlanActions.cleanup(),
+    vlanActions.create({
+      vid,
+      name,
+      fabric: fabric.id,
+      space: space.id,
+    }),
+  ];
+  await waitFor(() => {
+    const actualActions = store.getActions();
+    expectedActions.forEach((expectedAction) => {
+      expect(
+        actualActions.find(({ type }) => type === expectedAction.type)
+      ).toStrictEqual(expectedAction);
+    });
   });
-  await waitFor(() =>
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction)
-  );
 });
