@@ -231,12 +231,14 @@ describe("InterfacesTable", () => {
         .simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe(
+    expect(wrapper.find("TableCell[data-heading='Fabric']").text()).toBe(
       fabric.name
     );
-    expect(wrapper.find("TableCell[aria-label='VLAN']").text()).toBe(vlan.name);
+    expect(wrapper.find("TableCell[data-heading='VLAN']").text()).toBe(
+      vlan.name
+    );
     expect(
-      wrapper.find("TableCell[aria-label='PXE'] i").prop("className")
+      wrapper.find("TableCell[data-heading='PXE'] i").prop("className")
     ).toBe("p-icon--success");
   });
 
@@ -264,14 +266,14 @@ describe("InterfacesTable", () => {
     wrapper.find("[data-testid='define-interfaces'] button").simulate("click");
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("SubnetSelect").text()).toBe("pxe-subnet");
-    expect(wrapper.find("TableCell[aria-label='Fabric']").text()).toBe(
+    expect(wrapper.find("TableCell[data-heading='Fabric']").text()).toBe(
       "pxe-fabric"
     );
-    expect(wrapper.find("TableCell[aria-label='VLAN']").text()).toBe(
+    expect(wrapper.find("TableCell[data-heading='VLAN']").text()).toBe(
       "pxe-vlan"
     );
     expect(
-      wrapper.find("TableCell[aria-label='PXE'] i").prop("className")
+      wrapper.find("TableCell[data-heading='PXE'] i").prop("className")
     ).toBe("p-icon--success");
   });
 });

@@ -95,7 +95,7 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
               const isBootDisk = disk.id === bootDisk;
               return (
                 <TableRow key={disk.id}>
-                  <TableCell aria-label="Size">
+                  <TableCell data-heading="Size">
                     <FormikField
                       caution={
                         isBootDisk && disk.size < 8
@@ -116,7 +116,7 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                       type="number"
                     />
                   </TableCell>
-                  <TableCell aria-label="Location">
+                  <TableCell data-heading="Location">
                     <PoolSelect
                       disk={disk}
                       hostId={hostId}
@@ -125,14 +125,14 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                       }}
                     />
                   </TableCell>
-                  <TableCell aria-label="Tags">
+                  <TableCell data-heading="Tags">
                     <TagNameField
                       label={null}
                       name={`disks[${i}].tags`}
                       placeholder="Add tags"
                     />
                   </TableCell>
-                  <TableCell aria-label="Boot" className="u-align-non-field">
+                  <TableCell data-heading="Boot" className="u-align-non-field">
                     <FormikField
                       aria-label="Boot"
                       checked={bootDisk === disk.id}
@@ -146,7 +146,7 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                     />
                   </TableCell>
                   <TableCell
-                    aria-label="Actions"
+                    data-heading="Actions"
                     className="u-align--right u-no-padding--right u-align-non-field"
                   >
                     <TableActions
