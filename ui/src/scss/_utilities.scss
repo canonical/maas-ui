@@ -23,6 +23,10 @@
     text-transform: none !important;
   }
 
+  .u-display--block {
+    display: block !important;
+  }
+
   .u-display-inline {
     display: inline;
   }
@@ -184,6 +188,10 @@
   .u-text--default-size {
     font-size: map-get($base-font-sizes, base);
     font-weight: $font-weight-regular-text;
+  }
+
+  .u-no-border {
+    border: 0 !important;
   }
 
   .u-no-border--top {

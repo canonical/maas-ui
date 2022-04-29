@@ -4,6 +4,11 @@ import { Textarea, Row, Col } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
+import ActiveDiscoveryLabel from "../../components/ActiveDiscoveryLabel";
+import AllowDNSResolutionLabel from "../../components/AllowDNSResolutionLabel";
+import ManagedAllocationLabel from "../../components/ManagedAllocationLabel";
+import ProxyAccessLabel from "../../components/ProxyAccessLabel";
+import SubnetSpace from "../../components/SubnetSpace";
 import type { SubnetSummaryFormValues } from "../types";
 
 import FabricSelect from "app/base/components/FabricSelect";
@@ -12,7 +17,6 @@ import VLANSelect from "app/base/components/VLANSelect";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { RootState } from "app/store/root/types";
 import vlanSelectors from "app/store/vlan/selectors";
-import SubnetSpace from "app/subnets/views/SubnetDetails/SubnetSummary/SubnetSpace";
 
 const SubnetSummaryFormFields = (): JSX.Element => {
   const { handleChange, setFieldValue, values } =
@@ -69,18 +73,22 @@ const SubnetSummaryFormFields = (): JSX.Element => {
       </Col>
       <Col size={6}>
         <FormikField
-          label="Managed allocation"
+          label={<ManagedAllocationLabel managed={values.managed} />}
           name="managed"
           type="checkbox"
         />
         <FormikField
-          label="Active discovery"
+          label={<ActiveDiscoveryLabel managed={values.managed} />}
           name="active_discovery"
           type="checkbox"
         />
-        <FormikField label="Proxy access" name="allow_proxy" type="checkbox" />
         <FormikField
-          label="Allow DNS resolution"
+          label={<ProxyAccessLabel allowProxy={values.allow_proxy} />}
+          name="allow_proxy"
+          type="checkbox"
+        />
+        <FormikField
+          label={<AllowDNSResolutionLabel allowDNS={values.allow_dns} />}
           name="allow_dns"
           type="checkbox"
         />
