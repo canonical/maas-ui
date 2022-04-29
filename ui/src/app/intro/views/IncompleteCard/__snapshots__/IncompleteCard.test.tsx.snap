@@ -36,7 +36,7 @@ exports[`IncompleteCard renders 1`] = `
                       title="Welcome to MAAS"
                       titleLink={
                         <Link
-                          href="https://maas.io/docs/configuration-journey"
+                          href="https://maas.io/docs/how-to-install-maas#heading--configure-maas"
                           target="_blank"
                         >
                           Help with configuring MAAS
@@ -66,7 +66,7 @@ exports[`IncompleteCard renders 1`] = `
                                 className="p-text--default u-text--default-size"
                               >
                                 <Link
-                                  href="https://maas.io/docs/configuration-journey"
+                                  href="https://maas.io/docs/how-to-install-maas#heading--configure-maas"
                                   target="_blank"
                                 >
                                   Help with configuring MAAS
@@ -105,12 +105,12 @@ exports[`IncompleteCard renders 1`] = `
                                 className="p-text--default u-text--default-size"
                               >
                                 <Link
-                                  href="https://maas.io/docs/configuration-journey"
+                                  href="https://maas.io/docs/how-to-install-maas#heading--configure-maas"
                                   target="_blank"
                                 >
                                   <a
                                     className=""
-                                    href="https://maas.io/docs/configuration-journey"
+                                    href="https://maas.io/docs/how-to-install-maas#heading--configure-maas"
                                     target="_blank"
                                   >
                                     Help with configuring MAAS
