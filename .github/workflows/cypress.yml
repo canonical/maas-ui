@@ -28,7 +28,6 @@ jobs:
       - name: Run Cypress tests without a user
         uses: cypress-io/github-action@master
         with:
-          browser: chrome
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
           spec: "**/no-users/*.spec.ts"
@@ -44,7 +43,7 @@ jobs:
       - name: Run Cypress tests with a user
         uses: cypress-io/github-action@master
         with:
-          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000,ignoreTestFiles="**/no-users/*"
+          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000,ignoreTestFiles="**/{no-users,docs-links}/*"
           install: false
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
           working-directory: integration
@@ -62,4 +61,32 @@ jobs:
           RUN_ID: ${{ github.run_id }}
         with:
           filename: .github/ISSUE_TEMPLATE/cypress-failure.md
+          update_existing: true
+  docs:
+    name: maas.io/docs links
+    runs-on: ubuntu-20.04
+    steps:
+      - uses: actions/checkout@main
+      - name: Get branch name
+        uses: nelonoel/branch-name@v1.0.1
+      - name: Build shared
+        run: |
+          sudo apt install yarn
+          yarn build-shared
+      - name: Run Cypress docs tests
+        uses: cypress-io/github-action@master
+        with:
+          browser: chrome
+          config: baseUrl=http://maas.io/docs
+          spec: "**/docs-links/*.spec.ts"
+          working-directory: integration
+      - name: Create issue on failure
+        if: failure()
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        with:
+          filename: .github/ISSUE_TEMPLATE/maas-io-docs-failed.md
           update_existing: true
