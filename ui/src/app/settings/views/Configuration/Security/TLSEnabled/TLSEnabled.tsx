@@ -1,4 +1,4 @@
-import { Icon, Textarea } from "@canonical/react-components";
+import { Icon, Spinner, Textarea } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
@@ -17,6 +17,7 @@ export type TLSEnabledValues = {
 };
 
 export enum Labels {
+  Loading = "Loading security settings",
   NotificationCheckbox = "Notify the certificate is due to expire in...",
   Interval = "Days",
   Textarea = "TLS certificate",
@@ -41,9 +42,15 @@ const TLSEnabled = (): JSX.Element | null => {
   const notificationInterval = useSelector(
     configSelectors.tlsCertExpirationNotificationInterval
   );
+  const configLoading = useSelector(configSelectors.loading);
+  const tlsCertificateLoading = useSelector(tlsCertificateSelectors.loading);
   const tlsCertificate = useSelector(tlsCertificateSelectors.get);
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+
+  if (configLoading || tlsCertificateLoading) {
+    return <Spinner aria-label={Labels.Loading} />;
+  }
 
   if (!tlsCertificate) {
     return null;
@@ -79,8 +86,8 @@ const TLSEnabled = (): JSX.Element | null => {
         }}
         onSaveAnalytics={{
           action: "Saved",
-          category: "Storage settings",
-          label: "Storage form",
+          category: "Security settings",
+          label: "Security form",
         }}
         onSubmit={(values, { resetForm }) => {
           const { notificationEnabled, notificationInterval } = values;
