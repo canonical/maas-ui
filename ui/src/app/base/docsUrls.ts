@@ -1,6 +1,6 @@
 const docsUrls = {
   customisingDeployedMachines:
-    "https://maas.io/docs/how-to-customise-machines#heading--about-customising-deployed-machines",
+    "https://maas.io/docs/about-customising-machines#heading--about-customising-deployed-machines",
   dhcp: "https://maas.io/docs/how-to-manage-dhcp",
   sshKeys: "https://maas.io/docs/how-to-manage-user-accounts#heading--ssh-keys",
   rackController: "https://maas.io/docs/how-to-manage-racks",
