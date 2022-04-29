@@ -56,12 +56,12 @@ const VLANDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
       submitLabel="Delete VLAN"
     >
       {isDefaultVLAN ? (
-        <Notification borderless inline severity="negative">
+        <Notification borderless severity="negative">
           This VLAN cannot be deleted because it is the default VLAN for{" "}
           <FabricLink id={fabric.id} />.
         </Notification>
       ) : (
-        <Notification borderless inline severity="caution">
+        <Notification borderless severity="caution">
           Are you sure you want to delete this VLAN?
         </Notification>
       )}
