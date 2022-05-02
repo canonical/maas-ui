@@ -17,6 +17,40 @@ import {
 
 const mockStore = configureStore();
 
+it("displays a spinner while loading config", () => {
+  const state = rootStateFactory({
+    config: configStateFactory({
+      loading: true,
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <TLSEnabled />
+    </Provider>
+  );
+
+  expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
+});
+
+it("displays a spinner while loading the certificate", () => {
+  const state = rootStateFactory({
+    general: generalStateFactory({
+      tlsCertificate: tlsCertificateStateFactory({
+        loading: true,
+      }),
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <TLSEnabled />
+    </Provider>
+  );
+
+  expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
+});
+
 it("renders certificate content", () => {
   const tlsCertificate = tlsCertificateFactory();
   const state = rootStateFactory({
