@@ -18,7 +18,7 @@ export type TLSEnabledValues = {
 
 export enum Labels {
   Loading = "Loading security settings",
-  NotificationCheckbox = "Notify the certificate is due to expire in...",
+  NotificationCheckbox = "Notify when the certificate is due to expire in...",
   Interval = "Days",
   Textarea = "TLS certificate",
 }
