@@ -75,7 +75,7 @@ const MachineTestsTable = ({
                       disabled={!isSuppressible}
                       id={`suppress-${result.id}`}
                       label=" "
-                      labelClassName="is-inline-label"
+                      labelClassName="p-checkbox--inline u-no-padding--left"
                       onChange={() => {
                         if (result.suppressed) {
                           dispatch(
