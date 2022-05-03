@@ -49,6 +49,6 @@ it("can update the filter", () => {
       </MemoryRouter>
     </Provider>
   );
-  screen.getByRole("radio", { name: Label.Manual }).click();
+  screen.getByRole("tab", { name: Label.Manual }).click();
   expect(setFilter).toHaveBeenCalledWith(TagSearchFilter.Manual);
 });

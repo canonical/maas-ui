@@ -94,7 +94,6 @@
 @import "~app/base/components/Popover";
 @import "~app/base/components/Section";
 @import "~app/base/components/SectionHeader";
-@import "~app/base/components/SegmentToggle";
 @import "~app/base/components/SSHKeyList";
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
@@ -119,7 +118,6 @@
 @include Popover;
 @include Section;
 @include SectionHeader;
-@include SegmentToggle;
 @include SSHKeyList;
 @include Stepper;
 @include TableMenu;

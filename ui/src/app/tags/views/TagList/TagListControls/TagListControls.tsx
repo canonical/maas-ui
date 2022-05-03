@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 import { TAGS_PER_PAGE } from "../constants";
 
 import ActionBar from "app/base/components/ActionBar";
-import SegmentToggle from "app/base/components/SegmentToggle";
+import SegmentedControl from "app/base/components/SegmentedControl";
 import type { SetSearchFilter } from "app/base/types";
 import tagSelectors, { TagSearchFilter } from "app/store/tag/selectors";
 
@@ -38,7 +38,7 @@ const TagListControls = ({
     <ActionBar
       {...actionBarProps}
       actions={
-        <SegmentToggle
+        <SegmentedControl
           aria-label="tag filter"
           options={[
             {
