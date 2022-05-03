@@ -1,7 +1,6 @@
-import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Col, Notification, Row } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "app/base/components/FormikForm";
@@ -29,34 +28,12 @@ export const DeleteSubnet = ({
     dispatch(subnetActions.fetch());
   }, [dispatch]);
 
-  let message: ReactNode;
-
-  if (canBeDeleted) {
-    message = (
-      <>
-        <p>Are you sure you want to delete this subnet?</p>
-        {dhcpEnabled ? null : (
-          <p>
-            Beware IP addresses on devices on this subnet might not be retained.
-          </p>
-        )}
-      </>
-    );
-  } else {
-    message = (
-      <Notification inline severity="negative" title="Error:">
-        This subnet cannot be deleted as there are nodes that have an IP address
-        obtained through DHCP services on this subnet. Release these nodes in
-        order to proceed.
-      </Notification>
-    );
-  }
-
   return (
-    <TitledSection title="Delete subnet?" headingVisuallyHidden>
-      <Row>
-        <Col size={8}>{message}</Col>
-      </Row>
+    <TitledSection
+      className="u-no-padding"
+      headingVisuallyHidden
+      title="Delete subnet?"
+    >
       <FormikForm<EmptyObject>
         aria-label="Delete subnet"
         buttonsBordered={false}
@@ -73,7 +50,26 @@ export const DeleteSubnet = ({
         submitAppearance="negative"
         submitDisabled={!canBeDeleted}
         submitLabel="Delete"
-      />
+      >
+        {canBeDeleted ? (
+          <Notification borderless severity="caution">
+            Are you sure you want to delete this subnet?
+            {dhcpEnabled ? null : (
+              <>
+                <br />
+                Beware IP addresses on devices on this subnet might not be
+                retained.
+              </>
+            )}
+          </Notification>
+        ) : (
+          <Notification borderless severity="negative">
+            This subnet cannot be deleted as there are nodes that have an IP
+            address obtained through DHCP services on this subnet. Release these
+            nodes in order to proceed.
+          </Notification>
+        )}
+      </FormikForm>
     </TitledSection>
   );
 };

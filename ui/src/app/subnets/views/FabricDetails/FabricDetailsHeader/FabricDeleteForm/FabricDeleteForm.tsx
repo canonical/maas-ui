@@ -41,21 +41,21 @@ const FabricDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
   let warning: ReactNode;
   if (fabricIsDefault) {
     warning = (
-      <Notification borderless inline severity="negative">
+      <Notification borderless severity="negative">
         This fabric cannot be deleted because it is the default fabric for this
         MAAS.
       </Notification>
     );
   } else if (hasSubnets) {
     warning = (
-      <Notification borderless inline severity="negative">
+      <Notification borderless severity="negative">
         This fabric cannot be deleted because it has subnets attached. Remove
         all subnets from the VLANs on this fabric to allow deletion.
       </Notification>
     );
   } else {
     warning = (
-      <Notification borderless inline severity="caution">
+      <Notification borderless severity="caution">
         Are you sure you want to delete this fabric?
       </Notification>
     );

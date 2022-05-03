@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
@@ -57,7 +57,7 @@ it("shows the space name as the section title", () => {
   );
 });
 
-it("displays a delete confirmation before delete", () => {
+it("displays a delete confirmation before delete", async () => {
   const { store } = renderTestCase(
     spaceFactory({
       id: 1,
@@ -65,21 +65,24 @@ it("displays a delete confirmation before delete", () => {
       description: "space 1 description",
     })
   );
-  userEvent.click(screen.getByRole("button", { name: "Delete" }));
+  userEvent.click(screen.getByRole("button", { name: "Delete space" }));
   expect(
-    screen.getByText("Are you sure you want to delete space1 space?")
+    screen.getByText("Are you sure you want to delete this space?")
   ).toBeInTheDocument();
 
-  userEvent.click(screen.getByRole("button", { name: "Yes, delete space" }));
+  userEvent.click(screen.getByRole("button", { name: "Delete space" }));
 
-  const expectedActions = [spaceActions.delete(1)];
-  const actualActions = store.getActions();
-  expectedActions.forEach((expectedAction) => {
-    expect(
-      actualActions.find(
-        (actualAction) => actualAction.type === expectedAction.type
-      )
-    ).toStrictEqual(expectedAction);
+  const expectedActions = [spaceActions.cleanup(), spaceActions.delete(1)];
+
+  await waitFor(() => {
+    const actualActions = store.getActions();
+    expectedActions.forEach((expectedAction) => {
+      expect(
+        actualActions.find(
+          (actualAction) => actualAction.type === expectedAction.type
+        )
+      ).toStrictEqual(expectedAction);
+    });
   });
 });
 
@@ -92,9 +95,9 @@ it("displays an error if there are any subnets on the space.", () => {
       subnet_ids: [1],
     })
   );
-  userEvent.click(screen.getByRole("button", { name: "Delete" }));
+  userEvent.click(screen.getByRole("button", { name: "Delete space" }));
   expect(screen.getByText(/Space cannot be deleted/)).toBeInTheDocument();
-  userEvent.click(screen.getByRole("button", { name: "Close notification" }));
+  userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
   expect(screen.queryByText(/Space cannot be deleted/)).not.toBeInTheDocument();
 });

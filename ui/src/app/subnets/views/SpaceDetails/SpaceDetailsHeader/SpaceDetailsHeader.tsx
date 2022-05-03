@@ -17,12 +17,8 @@ const SpaceDetailsHeader = ({ space }: Props): JSX.Element => {
     <SectionHeader
       title={space.name}
       buttons={[
-        <Button
-          appearance="negative"
-          disabled={isDeleteOpen}
-          onClick={() => setIsDeleteOpen(true)}
-        >
-          Delete
+        <Button disabled={isDeleteOpen} onClick={() => setIsDeleteOpen(true)}>
+          Delete space
         </Button>,
       ]}
       headerContent={
