@@ -18,6 +18,12 @@ app.get(`${BASENAME}/`, (req, res) =>
 // Proxy API endpoints to the MAAS.
 app.use(
   createProxyMiddleware([`${BASENAME}/api`, `${BASENAME}/accounts`], {
+    changeOrigin: true,
+    onProxyReq(proxyReq) {
+      // Django's CSRF protection requires requests to come from the correct
+      // protocol, so this makes XHR requests work when using TLS certs.
+      proxyReq.setHeader("Referer", `${process.env.MAAS_URL}${proxyReq.path}`);
+    },
     secure: false,
     target: process.env.MAAS_URL,
   })
