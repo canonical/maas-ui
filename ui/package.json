@@ -86,7 +86,7 @@
   "devDependencies": {
     "@testing-library/jest-dom": "5.16.3",
     "@testing-library/react": "12.1.4",
-    "@testing-library/react-hooks": "7.0.2",
+    "@testing-library/react-hooks": "8.0.0",
     "@types/clone-deep": "4.0.1",
     "@types/path-parse": "1.0.19",
     "@typescript-eslint/eslint-plugin": "5.18.0",
