@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -17,7 +18,13 @@ it("shows a warning tooltip if the subnet is not in a space", () => {
     </Provider>
   );
 
-  expect(screen.getByTestId("no-space")).toBeInTheDocument();
+  userEvent.click(screen.getByRole("button"));
+
+  expect(
+    screen.getByRole("tooltip", {
+      name: /This subnet does not belong to a space/,
+    })
+  ).toBeInTheDocument();
 });
 
 it("does not show a warning tooltip if the subnet is in a space", () => {
@@ -29,5 +36,5 @@ it("does not show a warning tooltip if the subnet is in a space", () => {
     </Provider>
   );
 
-  expect(screen.queryByTestId("no-space")).not.toBeInTheDocument();
+  expect(screen.queryByRole("button")).not.toBeInTheDocument();
 });
