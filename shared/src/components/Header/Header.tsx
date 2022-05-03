@@ -279,13 +279,14 @@ export const Header = ({
           "aria-current": isSelected(path, homepageLink, appendNewBase)
             ? "page"
             : undefined,
-          className: "p-navigation__link",
+          className: "p-navigation__item",
           label: (
             <svg
-              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true"
+              className="p-navigation__image"
               height="24"
               viewBox="545.3 412.6 100 25.2"
-              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
             >
               <path
                 fill="#E95420"
