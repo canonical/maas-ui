@@ -4,6 +4,8 @@ import {
   Icon,
 } from "@canonical/react-components";
 
+import docsUrls from "app/base/docsUrls";
+
 const TLSDisabled = (): JSX.Element => {
   return (
     <>
@@ -24,11 +26,13 @@ const TLSDisabled = (): JSX.Element => {
         ]}
       />
       <p>
-        {/*
-          TODO: Add docs links
-          https://github.com/canonical-web-and-design/app-tribe/issues/829
-        */}
-        <a href="#todo">More about MAAS native TLS</a>
+        <a
+          href={docsUrls.aboutNativeTLS}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          More about MAAS native TLS
+        </a>
       </p>
     </>
   );

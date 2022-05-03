@@ -5,6 +5,7 @@ import type { TLSEnabledValues } from "../TLSEnabled";
 import { Labels } from "../TLSEnabled";
 
 import FormikField from "app/base/components/FormikField";
+import docsUrls from "app/base/docsUrls";
 import { TLSExpiryNotificationInterval } from "app/store/config/types";
 
 const TLSEnabledFields = (): JSX.Element => {
@@ -40,11 +41,13 @@ const TLSEnabledFields = (): JSX.Element => {
         />
       </div>
       <p>
-        {/*
-          TODO: Add docs links
-          https://github.com/canonical-web-and-design/app-tribe/issues/829
-        */}
-        <a href="#todo">How to set up auto-renew for certificates</a>
+        <a
+          href={docsUrls.autoRenewTLSCert}
+          rel="noreferrer noopener"
+          target="_blank"
+        >
+          How to set up auto-renew for certificates
+        </a>
       </p>
     </>
   );
