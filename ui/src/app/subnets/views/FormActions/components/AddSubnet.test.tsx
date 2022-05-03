@@ -15,7 +15,7 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 
-it("correctly dispatches space create action on form submit", async () => {
+it("correctly dispatches subnet cleanup and create actions on form submit", async () => {
   const vlan1 = vlanFactory({ id: 111, fabric: 5 });
   const vlan2 = vlanFactory({
     id: 222,
@@ -74,6 +74,7 @@ it("correctly dispatches space create action on form submit", async () => {
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([
+      subnetActions.cleanup(),
       subnetActions.create({
         cidr,
         fabric: fabric.id,

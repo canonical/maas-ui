@@ -24,9 +24,9 @@ const AddFabric = ({
 
   return (
     <FormikForm<AddFabricValues>
+      allowAllEmpty
       aria-label="Add fabric"
       buttonsBordered={false}
-      allowAllEmpty
       cleanup={fabricActions.cleanup}
       initialValues={{ name: "", description: "" }}
       onSaveAnalytics={{
@@ -36,6 +36,7 @@ const AddFabric = ({
       }}
       submitLabel={`Add ${activeForm}`}
       onSubmit={({ name, description }) => {
+        dispatch(fabricActions.cleanup());
         dispatch(fabricActions.create({ name, description }));
       }}
       onCancel={() => setActiveForm(null)}

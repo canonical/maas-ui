@@ -23,9 +23,10 @@ const AddSpace = ({
 
   return (
     <FormikForm<AddSpaceValues>
+      allowAllEmpty
       aria-label="Add space"
       buttonsBordered={false}
-      allowAllEmpty
+      cleanup={spaceActions.cleanup}
       initialValues={{ name: "" }}
       onSaveAnalytics={{
         action: "Add space",
@@ -34,6 +35,7 @@ const AddSpace = ({
       }}
       submitLabel={`Add ${activeForm}`}
       onSubmit={({ name }) => {
+        dispatch(spaceActions.cleanup());
         dispatch(spaceActions.create({ name }));
       }}
       onCancel={() => setActiveForm(null)}

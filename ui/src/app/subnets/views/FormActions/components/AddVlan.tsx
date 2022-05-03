@@ -62,6 +62,7 @@ const AddVlan = ({
       aria-label="Add VLAN"
       validationSchema={vlanSchema}
       buttonsBordered={false}
+      cleanup={vlanActions.cleanup}
       initialValues={{
         vid: "",
         name: "",
@@ -75,6 +76,7 @@ const AddVlan = ({
       }}
       submitLabel={`Add ${activeForm}`}
       onSubmit={({ name, fabric, vid, space }) => {
+        dispatch(vlanActions.cleanup());
         dispatch(
           vlanActions.create({
             name,

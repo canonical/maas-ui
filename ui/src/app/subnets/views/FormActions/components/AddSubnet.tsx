@@ -122,7 +122,6 @@ const AddSubnet = ({
       aria-label="Add subnet"
       validationSchema={addSubnetSchema}
       buttonsBordered={false}
-      allowAllEmpty
       initialValues={{
         vlan: "",
         name: "",
@@ -139,6 +138,7 @@ const AddSubnet = ({
       cleanup={subnetActions.cleanup}
       submitLabel={`Add ${activeForm}`}
       onSubmit={({ cidr, name, fabric, vlan, dns_servers, gateway_ip }) => {
+        dispatch(subnetActions.cleanup());
         dispatch(
           subnetActions.create({
             cidr,

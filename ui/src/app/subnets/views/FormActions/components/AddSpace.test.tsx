@@ -9,7 +9,7 @@ import AddSpace from "./AddSpace";
 import { actions as spaceActions } from "app/store/space";
 import { rootState as rootStateFactory } from "testing/factories";
 
-test("correctly dispatches space create action on form submit", async () => {
+test("correctly dispatches space cleanup and create actions on form submit", async () => {
   const store = configureStore()(rootStateFactory());
 
   render(
@@ -30,6 +30,9 @@ test("correctly dispatches space create action on form submit", async () => {
   userEvent.click(screen.getByRole("button", { name: /Add Space/ }));
 
   await waitFor(() =>
-    expect(store.getActions()).toStrictEqual([spaceActions.create({ name })])
+    expect(store.getActions()).toStrictEqual([
+      spaceActions.cleanup(),
+      spaceActions.create({ name }),
+    ])
   );
 });

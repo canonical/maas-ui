@@ -35,7 +35,7 @@ test("renders the form correctly", async () => {
   expect(screen.getByRole("button", { name: /Add Fabric/ })).toBeEnabled();
 });
 
-test("correctly dispatches fabric create action on submit with name provided", async () => {
+test("correctly dispatches fabric cleanup and create actions on submit with name provided", async () => {
   const { store } = renderTestCase();
 
   expect(screen.getByRole("button", { name: "Cancel" })).toBeVisible();
@@ -43,12 +43,13 @@ test("correctly dispatches fabric create action on submit with name provided", a
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([
+      fabricActions.cleanup(),
       fabricActions.create({ name: "", description: "" }),
     ])
   );
 });
 
-test("correctly dispatches fabric create action on submit with name provided", async () => {
+test("correctly dispatches fabric cleanup and create actions on submit with name provided", async () => {
   const { store } = renderTestCase();
 
   const name = "Fabric name";
@@ -57,12 +58,13 @@ test("correctly dispatches fabric create action on submit with name provided", a
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([
+      fabricActions.cleanup(),
       fabricActions.create({ name, description: "" }),
     ])
   );
 });
 
-test("correctly dispatches fabric create action on submit with all details provided", async () => {
+test("correctly dispatches fabric cleanup and create actions on submit with all details provided", async () => {
   const { store } = renderTestCase();
 
   expect(screen.getByRole("button", { name: "Cancel" })).toBeVisible();
@@ -79,6 +81,7 @@ test("correctly dispatches fabric create action on submit with all details provi
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([
+      fabricActions.cleanup(),
       fabricActions.create({ name, description }),
     ])
   );
