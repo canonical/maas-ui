@@ -25,13 +25,13 @@
   },
   "devDependencies": {
     "@maas-ui/maas-ui-shared": "3.2.0",
-    "address": "1.1.2",
+    "address": "1.2.0",
     "colors": "1.4.0",
     "concurrently": "7.1.0",
     "dotenv-flow": "3.2.0",
-    "http-proxy-middleware": "2.0.4",
+    "http-proxy-middleware": "2.0.6",
     "npm-package-json-lint": "6.3.0",
-    "sass": "1.49.11",
+    "sass": "1.51.0",
     "wait-on": "6.0.1"
   },
   "npmpackagejsonlint": {
