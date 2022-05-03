@@ -63,4 +63,14 @@ input[type="radio"] {
       margin-bottom: $sph--x-small;
     }
   }
+  }
+
+  @media screen and (max-width: $breakpoint-navigation-threshold) {
+  // 29-04-2022 Huw: Fix for navigation buttons not being full width inside the
+  // mobile menu.
+  // https://github.com/canonical-web-and-design/vanilla-framework/issues/4444
+  button.p-navigation__link {
+    text-align: left;
+    width: 100%;
+  }
 }
