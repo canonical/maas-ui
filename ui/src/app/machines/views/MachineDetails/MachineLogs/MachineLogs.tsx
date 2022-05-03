@@ -31,9 +31,8 @@ const MachineLogs = ({ systemId }: Props): JSX.Element => {
   );
   return (
     <>
-      <div className="u-flex">
+      <div className="u-position--relative">
         <Tabs
-          className="u-flex--grow"
           links={[
             {
               active:
