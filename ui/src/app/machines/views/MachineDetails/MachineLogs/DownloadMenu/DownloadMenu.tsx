@@ -112,9 +112,8 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
     return null;
   }
   return (
-    <div>
+    <div className="download-menu">
       <ContextualMenu
-        className="download-menu"
         hasToggleIcon
         links={[
           ...generateItem(

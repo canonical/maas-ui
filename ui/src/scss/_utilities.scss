@@ -169,6 +169,10 @@
     color: $color-mid-dark !important;
   }
 
+  .u-position--relative {
+    position: relative !important;
+  }
+
   .u-upper-case--first:first-letter {
     text-transform: capitalize;
   }
