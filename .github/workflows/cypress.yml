@@ -30,7 +30,7 @@ jobs:
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: "**/no-users/*.spec.ts"
+          spec: "**/no-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
           working-directory: integration
       - name: Create MAAS admin
@@ -43,8 +43,9 @@ jobs:
       - name: Run Cypress tests with a user
         uses: cypress-io/github-action@master
         with:
-          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000,ignoreTestFiles="**/{no-users,docs-links}/*"
+          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
+          spec: "**/with-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
           working-directory: integration
       - uses: actions/upload-artifact@v3
@@ -78,7 +79,7 @@ jobs:
         with:
           browser: chrome
           config: baseUrl=http://maas.io/docs
-          spec: "**/docs-links/*.spec.ts"
+          spec: "**/docs-links/**/*.spec.ts"
           working-directory: integration
       - name: Create issue on failure
         if: failure()
