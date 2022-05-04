@@ -2,14 +2,11 @@ import { useState } from "react";
 import * as React from "react";
 
 import {
-  Button,
   Col,
-  Icon,
   Input,
   Notification,
   Row,
   Select,
-  Tooltip,
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useFormikContext } from "formik";
@@ -19,6 +16,7 @@ import { Link } from "react-router-dom";
 import type { DeployFormValues } from "../DeployForm";
 
 import FormikField from "app/base/components/FormikField";
+import TooltipButton from "app/base/components/TooltipButton";
 import UploadTextArea from "app/base/components/UploadTextArea";
 import docsUrls from "app/base/docsUrls";
 import imagesURLs from "app/images/urls";
@@ -28,7 +26,7 @@ import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
-import { timeSpanToMinutes, breakLines } from "app/utils";
+import { timeSpanToMinutes } from "app/utils";
 
 export const DeployFormFields = (): JSX.Element => {
   const [deployVmHost, setDeployVmHost] = useState(false);
@@ -213,21 +211,12 @@ export const DeployFormFields = (): JSX.Element => {
               label={
                 <>
                   Periodically sync hardware{" "}
-                  <Tooltip
-                    positionElementClassName="u-display--inline"
-                    message={breakLines(
-                      "Enable this to make MAAS periodically check the hardware configuration of this machine and reflect any possible change after the deployment."
-                    )}
-                  >
-                    <Button
-                      type="button"
-                      appearance="base"
-                      aria-label="more about periodically sync hardware"
-                      className="u-no-margin--bottom u-no-padding"
-                    >
-                      <Icon name="information" />
-                    </Button>
-                  </Tooltip>{" "}
+                  <TooltipButton
+                    aria-label="more about periodically sync hardware"
+                    message={`Enable this to make MAAS periodically check the
+                    hardware configuration of this machine and reflect any
+                    possible change after the deployment.`}
+                  />{" "}
                   <a
                     href={docsUrls.customisingDeployedMachines}
                     rel="noopener noreferrer"

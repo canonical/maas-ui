@@ -1,7 +1,8 @@
-import { Col, Icon, Input, Tooltip } from "@canonical/react-components";
+import { Col, Input } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
+import TooltipButton from "app/base/components/TooltipButton";
 import type { ImageValue } from "app/images/types";
 import type {
   BaseImageFields,
@@ -113,18 +114,15 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
                 <span>
                   {arch.name}
                   {isDisabled(arch) && (
-                    <Tooltip
+                    <TooltipButton
                       className="u-nudge-right--small"
-                      data-testid="disabled-arch-tooltip"
                       message={
                         isLastCommissioningArch(arch)
                           ? "At least one architecture must be selected for the default commissioning release."
                           : `${arch.name} is not available on ${release.title}.`
                       }
                       positionElementClassName="u-display--inline"
-                    >
-                      <Icon name="help" />
-                    </Tooltip>
+                    />
                   )}
                 </span>
               }

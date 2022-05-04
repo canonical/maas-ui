@@ -187,8 +187,8 @@
   }
 
   .u-text--default-size {
-    font-size: map-get($base-font-sizes, base);
-    font-weight: $font-weight-regular-text;
+    font-size: map-get($base-font-sizes, base) !important;
+    font-weight: $font-weight-regular-text !important;
   }
 
   .u-text--light {

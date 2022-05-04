@@ -1,9 +1,9 @@
 import type { ReactNode } from "react";
 
-import { Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import TooltipButton from "app/base/components/TooltipButton";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -40,16 +40,20 @@ const SpeedColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
 
   if (!isConnected) {
     icon = (
-      <Tooltip position="top-left" message="This interface is disconnected.">
-        <Icon name="disconnected" />
-      </Tooltip>
+      <TooltipButton
+        iconName="disconnected"
+        message="This interface is disconnected."
+        position="top-left"
+      />
     );
   }
   if (isConnected && nic.link_speed < nic.interface_speed) {
     icon = (
-      <Tooltip position="top-left" message="Link connected to slow interface.">
-        <Icon name="warning" />
-      </Tooltip>
+      <TooltipButton
+        iconName="warning"
+        message="Link connected to slow interface."
+        position="top-left"
+      />
     );
   }
 

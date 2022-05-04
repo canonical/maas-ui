@@ -1,7 +1,8 @@
-import { Button, Icon, Tooltip } from "@canonical/react-components";
+import { Tooltip } from "@canonical/react-components";
 import { formatDuration, intervalToDuration } from "date-fns";
 import { useSelector } from "react-redux";
 
+import TooltipButton from "app/base/components/TooltipButton";
 import docsUrls from "app/base/docsUrls";
 import type { Seconds } from "app/base/types";
 import { PowerTypeNames } from "app/store/general/constants";
@@ -101,7 +102,12 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
             <hr />
             <p className="u-text--muted">
               Periodic hardware sync enabled{" "}
-              <Tooltip
+              <TooltipButton
+                buttonProps={{
+                  "aria-label": "more about periodic hardware sync",
+                }}
+                className="u-nudge-right--small"
+                iconName="help"
                 position="right"
                 message={
                   <>
@@ -120,16 +126,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
                     .
                   </>
                 }
-              >
-                <Button
-                  aria-label="more about periodic hardware sync"
-                  appearance="base"
-                  dense
-                  hasIcon
-                >
-                  <Icon name="help" />
-                </Button>
-              </Tooltip>
+              />
             </p>
           </>
         ) : null}

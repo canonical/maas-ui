@@ -23,8 +23,11 @@ describe("NumaNodes", () => {
     const wrapper = mount(<NumaNodes disk={disk} />);
 
     expect(wrapper.find("[data-testid='numa-nodes']").text()).toBe("0, 1");
-    expect(wrapper.find("[data-testid='numa-warning']").prop("message")).toBe(
-      "This volume is spread over multiple NUMA nodes which may cause suboptimal performance."
-    );
+    expect(
+      wrapper
+        .find("[role='tooltip']")
+        .text()
+        .match(/This volume is spread over multiple NUMA nodes/)
+    ).toBeTruthy();
   });
 });

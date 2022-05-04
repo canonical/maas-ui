@@ -164,6 +164,6 @@ describe("ControllerStatus", () => {
       </Provider>
     );
     expect(wrapper.find("Icon").prop("name")).toEqual("power-unknown");
-    expect(wrapper.find("Tooltip").prop("message")).toBe(null);
+    expect(wrapper.find("Tooltip").exists()).toBe(false);
   });
 });

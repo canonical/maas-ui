@@ -13,12 +13,14 @@ import { breakLines, unindentString } from "app/utils";
 type Props = Omit<TooltipProps, "children"> & {
   buttonProps?: SubComponentProps<ButtonProps>;
   children?: ReactNode;
-  iconProps?: SubComponentProps<IconProps>;
+  iconName?: IconProps["name"];
+  iconProps?: SubComponentProps<Omit<IconProps, "name">>;
 };
 
 const TooltipButton = ({
   buttonProps,
   children,
+  iconName = "information",
   iconProps,
   message,
   ...tooltipProps
@@ -34,13 +36,13 @@ const TooltipButton = ({
     >
       <Button
         appearance="base"
-        className="u-display--block u-no-border u-no-margin"
+        className="u-no-border u-no-margin u-text--default-size"
         hasIcon
         small
         type="button"
         {...buttonProps}
       >
-        {children || <Icon name="information" {...iconProps} />}
+        {children || <Icon name={iconName} {...iconProps} />}
       </Button>
     </Tooltip>
   );

@@ -99,9 +99,7 @@ describe("VersionColumn", () => {
       </Provider>
     );
     expect(wrapper.find('[data-testid="origin"]').text()).toBe("Deb ");
-    expect(wrapper.find('[data-testid="origin-tooltip"]').prop("message")).toBe(
-      "stable"
-    );
+    expect(wrapper.find('[role="tooltip"]').text()).toBe("stable");
   });
 
   it("can display a cohort tooltip", () => {
@@ -119,7 +117,7 @@ describe("VersionColumn", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="origin-tooltip"]').prop("message")).toBe(
+    expect(wrapper.find('[role="tooltip"]').text()).toBe(
       "Cohort key: \nMSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM \nUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT \nI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV \nhM2ViNzQwZGZmYzk5OWFiYWU="
     );
   });

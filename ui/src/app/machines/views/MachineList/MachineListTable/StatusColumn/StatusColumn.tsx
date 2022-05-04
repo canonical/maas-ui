@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import TooltipButton from "app/base/components/TooltipButton";
 import { useMachineActions } from "app/base/hooks";
 import { useToggleMenu } from "app/machines/hooks";
 import machineSelectors from "app/store/machine/selectors";
@@ -43,12 +44,12 @@ const getStatusIcon = (machine: Machine) => {
     !hideFailedTestWarningStatuses.includes(machine.status_code)
   ) {
     return (
-      <Tooltip
+      <TooltipButton
+        iconName="warning"
+        iconProps={{ "data-testid": "status-icon" }}
         message="Machine has failed tests; use with caution."
         position="top-left"
-      >
-        <i className="p-icon--warning" data-testid="status-icon" />
-      </Tooltip>
+      />
     );
   }
   return "";

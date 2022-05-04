@@ -1,7 +1,7 @@
-import { Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import TooltipButton from "app/base/components/TooltipButton";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
@@ -34,10 +34,7 @@ export const VersionColumn = ({ systemId }: Props): JSX.Element | null => {
         <span data-testid="version">
           {versions.current.version ?? (
             <>
-              Unknown{" "}
-              <Tooltip message="Less than 2.3.0">
-                <Icon name="information" />
-              </Tooltip>
+              Unknown <TooltipButton message="Less than 2.3.0" />
             </>
           )}
         </span>
@@ -50,12 +47,7 @@ export const VersionColumn = ({ systemId }: Props): JSX.Element | null => {
             {!!origin && <>{isDeb ? "Deb" : origin} </>}
           </span>
           {!!(cohortTooltip || isDeb) && (
-            <Tooltip
-              data-testid="origin-tooltip"
-              message={isDeb ? origin : cohortTooltip}
-            >
-              <Icon name="information" />
-            </Tooltip>
+            <TooltipButton message={isDeb ? origin : cohortTooltip} />
           )}
         </>
       }

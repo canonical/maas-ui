@@ -1,12 +1,13 @@
 import type { ChangeEvent } from "react";
 
-import { Link, Select, Tooltip } from "@canonical/react-components";
+import { Link, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { CommissioningFormValues } from "../CommissioningForm";
 
 import FormikField from "app/base/components/FormikField";
+import TooltipButton from "app/base/components/TooltipButton";
 import docsUrls from "app/base/docsUrls";
 import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
@@ -87,9 +88,10 @@ const CommissioningFormFields = (): JSX.Element => {
         label={
           <>
             K_g BMC key&nbsp;
-            <Tooltip message="Once set, the IPMI K_g BMC key is REQUIRED after next commissioning.">
-              <i className="p-icon--help"></i>
-            </Tooltip>
+            <TooltipButton
+              iconName="help"
+              message="Once set, the IPMI K_g BMC key is REQUIRED after next commissioning."
+            />
           </>
         }
         name="maas_auto_ipmi_k_g_bmc_key"

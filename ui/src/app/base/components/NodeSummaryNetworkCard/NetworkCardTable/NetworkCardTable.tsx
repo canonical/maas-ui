@@ -3,10 +3,10 @@ import {
   TableCell,
   TableHeader,
   TableRow,
-  Tooltip,
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import TooltipButton from "app/base/components/TooltipButton";
 import fabricSelectors from "app/store/fabric/selectors";
 import { getFabricDisplay } from "app/store/fabric/utils";
 import type { NetworkInterface } from "app/store/types/node";
@@ -29,11 +29,11 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
           <TableHeader className="speed">Link speed</TableHeader>
           <TableHeader className="fabric">
             Fabric
-            <Tooltip message="Untagged traffic only" position="top-right">
-              <div className="u-nudge-right--small">
-                <i className="p-icon--information"></i>
-              </div>
-            </Tooltip>
+            <TooltipButton
+              className="u-nudge-right--small"
+              message="Untagged traffic only"
+              position="top-right"
+            />
           </TableHeader>
           <TableHeader className="dhcp">DHCP</TableHeader>
           <TableHeader className="sriov">SR-IOV</TableHeader>
@@ -64,14 +64,11 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
               <TableCell data-heading="DHCP" className="dhcp">
                 {dhcpStatus}
                 {dhcpStatus === "Relayed" && (
-                  <Tooltip
+                  <TooltipButton
+                    className="u-nudge-right--small"
                     message={getDHCPStatus(vlan, vlans, fabrics, true)}
                     position="btm-right"
-                  >
-                    <div className="u-nudge-right--small">
-                      <i className="p-icon--information"></i>
-                    </div>
-                  </Tooltip>
+                  />
                 )}
               </TableCell>
               <TableCell data-heading="SR-IOV" className="sriov">

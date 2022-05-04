@@ -1,10 +1,10 @@
-import { Icon, Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import type { SetExpanded } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import TableMenu from "app/base/components/TableMenu";
 import type { Props as TableMenuProps } from "app/base/components/TableMenu/TableMenu";
+import TooltipButton from "app/base/components/TooltipButton";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -117,9 +117,11 @@ const NetworkTableActions = ({
           children: item.tooltip ? (
             <span className="u-flex">
               <span className="u-flex--grow">{item.label}</span>
-              <Tooltip message={item.tooltip} position="top-right">
-                <Icon className="u-no-margin--right" name="help" />
-              </Tooltip>
+              <TooltipButton
+                iconName="help"
+                message={item.tooltip}
+                position="top-right"
+              />
             </span>
           ) : (
             item.label

@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 
 import ScriptStatus from "./ScriptStatus";
 
@@ -59,5 +59,20 @@ describe("ScriptStatus", () => {
       <ScriptStatus status={ScriptResultStatus.PASSED} />
     );
     expect(wrapper.find("Icon").prop("className")).toBe("");
+  });
+
+  it("can have its icon wrapped in a tooltip", () => {
+    const wrapper = mount(
+      <ScriptStatus
+        status={ScriptResultStatus.PASSED}
+        tooltipMessage="Tooltip!"
+        tooltipPosition="top-right"
+      />
+    );
+
+    expect(wrapper.find("[role='tooltip']").text()).toBe("Tooltip!");
+    expect(wrapper.find("[className*='p-tooltip--top-right']").exists()).toBe(
+      true
+    );
   });
 });

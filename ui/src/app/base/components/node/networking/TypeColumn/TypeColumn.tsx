@@ -1,6 +1,5 @@
-import { Icon, Tooltip } from "@canonical/react-components";
-
 import DoubleRow from "app/base/components/DoubleRow";
+import TooltipButton from "app/base/components/TooltipButton";
 import type { NetworkInterface, NetworkLink, Node } from "app/store/types/node";
 import { getInterfaceNumaNodes, getInterfaceTypeText } from "app/store/utils";
 
@@ -19,12 +18,11 @@ const TypeColumn = ({ link, nic, node }: Props): JSX.Element | null => {
       data-testid="type"
       icon={
         numaNodes && numaNodes.length > 1 ? (
-          <Tooltip
+          <TooltipButton
+            iconName="warning"
             position="top-left"
             message="This bond is spread over multiple NUMA nodes. This may lead to suboptimal performance."
-          >
-            <Icon name="warning" />
-          </Tooltip>
+          />
         ) : null
       }
       iconSpace={true}

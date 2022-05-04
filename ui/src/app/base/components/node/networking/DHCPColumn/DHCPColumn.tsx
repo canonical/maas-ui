@@ -1,7 +1,8 @@
-import { Icon, Spinner, Tooltip } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import TooltipButton from "app/base/components/TooltipButton";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
@@ -29,12 +30,10 @@ const DHCPColumn = ({ nic }: Props): JSX.Element | null => {
       data-testid="dhcp"
       icon={
         vlan && vlan.relay_vlan ? (
-          <Tooltip
+          <TooltipButton
             position="btm-right"
             message={getDHCPStatus(vlan, vlans, fabrics, true)}
-          >
-            <Icon name="information" />
-          </Tooltip>
+          />
         ) : null
       }
       iconSpace={true}

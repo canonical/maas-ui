@@ -5,7 +5,7 @@ import type {
   MainTableProps,
   PropsWithSpread,
 } from "@canonical/react-components";
-import { Icon, MainTable, Strip, Tooltip } from "@canonical/react-components";
+import { Icon, MainTable, Strip } from "@canonical/react-components";
 import type { History } from "history";
 import { useDispatch } from "react-redux";
 import { Link, useHistory } from "react-router-dom";
@@ -14,6 +14,7 @@ import { TAGS_PER_PAGE } from "../constants";
 
 import TableActions from "app/base/components/TableActions";
 import TableHeader from "app/base/components/TableHeader";
+import TooltipButton from "app/base/components/TooltipButton";
 import docsUrls from "app/base/docsUrls";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
@@ -23,7 +24,7 @@ import type { Tag } from "app/store/tag/types";
 import { TagMeta } from "app/store/tag/types";
 import AppliedTo from "app/tags/components/AppliedTo";
 import tagURLs from "app/tags/urls";
-import { breakLines, isComparable, unindentString } from "app/utils";
+import { isComparable } from "app/utils";
 
 type Props = PropsWithSpread<
   {
@@ -213,17 +214,15 @@ const TagTable = ({
             content: (
               <>
                 {Label.Auto}{" "}
-                <Tooltip
+                <TooltipButton
                   message={
                     <>
-                      {breakLines(
-                        unindentString(
-                          `Automatic tags are automatically applied to every 
-                        machine that matches their definition.`
-                        )
-                      )}
+                      Automatic tags are automatically applied to every
+                      <br />
+                      machine that matches their definition.
                       <br />
                       <a
+                        className="is-on-dark"
                         href={docsUrls.tagsAutomatic}
                         rel="noreferrer noopener"
                         target="_blank"
@@ -233,9 +232,7 @@ const TagTable = ({
                     </>
                   }
                   position="top-center"
-                >
-                  <Icon name="information" />
-                </Tooltip>
+                />
               </>
             ),
           },

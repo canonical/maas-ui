@@ -1,4 +1,3 @@
-import { Tooltip } from "@canonical/react-components";
 import type { Position } from "@canonical/react-components/dist/components/Tooltip/Tooltip";
 
 import ScriptStatus from "app/base/components/ScriptStatus";
@@ -22,13 +21,13 @@ const MachineTestStatus = ({
 
     case TestStatusStatus.FAILED:
       return (
-        <Tooltip
-          message="Machine has failed tests."
-          position={tooltipPosition}
-          positionElementClassName="p-double-row__tooltip-inner"
+        <ScriptStatus
+          status={status}
+          tooltipMessage="Machine has failed tests."
+          tooltipPosition={tooltipPosition}
         >
-          <ScriptStatus status={status}>{children}</ScriptStatus>
-        </Tooltip>
+          {children}
+        </ScriptStatus>
       );
 
     default:
