@@ -46,7 +46,7 @@ export const DeleteTagFormWarnings = ({ id }: Props): JSX.Element | null => {
           className="delete-tag-form-warnings__notification"
           severity="caution"
         >
-          <span className="u-block">
+          <span className="u-display--block">
             You are deleting a tag with kernel options.{" "}
             {generateDeployedMessage(deployedCount)}
           </span>

@@ -11,4 +11,8 @@
     font-size: 1rem;
     font-weight: 300;
   }
+
+  .p-text--code {
+    font-family: unquote($font-monospace);
+  }
 }

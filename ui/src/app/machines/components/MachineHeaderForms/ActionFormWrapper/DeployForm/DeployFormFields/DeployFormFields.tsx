@@ -214,7 +214,7 @@ export const DeployFormFields = (): JSX.Element => {
                 <>
                   Periodically sync hardware{" "}
                   <Tooltip
-                    positionElementClassName="u-display-inline-important"
+                    positionElementClassName="u-display--inline"
                     message={breakLines(
                       "Enable this to make MAAS periodically check the hardware configuration of this machine and reflect any possible change after the deployment."
                     )}

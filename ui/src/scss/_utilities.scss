@@ -1,19 +1,30 @@
 @mixin maas-utilities {
-  // Vertically align checkboxes in double row table headers
-  .u-align-header-checkbox {
-    top: -$form-tick-box-nudge;
+  %display-flex {
+    display: flex !important;
   }
 
-  .u-break-word {
-    word-break: break-word !important;
+  // Vertically align checkboxes in double row table headers
+  .u-align-header-checkbox {
+    top: -$form-tick-box-nudge !important;
+  }
+
+  // Align non-form fields with form fields on larger viewports
+  .u-align-non-field {
+    @media only screen and (min-width: $breakpoint-small) {
+      padding-top: $sp-unit * 1.75 !important;
+    }
+  }
+
+  .u-auto-min-width {
+    min-width: auto !important;
   }
 
   .u-break-spaces {
     white-space: break-spaces !important;
   }
 
-  .u-no-wrap {
-    white-space: nowrap;
+  .u-break-word {
+    word-break: break-word !important;
   }
 
   .u-default-text {
@@ -27,34 +38,49 @@
     display: block !important;
   }
 
-  .u-display-inline {
-    display: inline;
-  }
-
-  .u-display-inline-important {
+  .u-display--inline {
     display: inline !important;
   }
 
-  .u-display-inline-block {
+  .u-display--inline-block {
     display: inline-block !important;
   }
 
   .u-flex {
-    display: flex;
-  }
-
-  .u-block {
-    display: block !important;
+    @extend %display-flex;
   }
 
   .u-flex--align-baseline {
-    align-items: baseline;
-    display: flex;
+    @extend %display-flex;
+    align-items: baseline !important;
   }
 
   .u-flex--align-center {
-    align-items: center;
-    display: flex;
+    @extend %display-flex;
+    align-items: center !important;
+  }
+
+  .u-flex--between {
+    @extend %display-flex;
+    justify-content: space-between !important;
+  }
+
+  .u-flex--column-align-end {
+    @extend %display-flex;
+    align-items: flex-end !important;
+    flex-direction: column !important;
+  }
+
+  .u-flex--column-x-small {
+    @extend %display-flex;
+    @media only screen and (max-width: $breakpoint-x-small) {
+      flex-direction: column;
+    }
+  }
+
+  .u-flex--end {
+    @extend %display-flex;
+    justify-content: flex-end !important;
   }
 
   .u-flex--grow {
@@ -65,41 +91,31 @@
     flex-shrink: 0;
   }
 
-  .u-flex--between {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .u-flex--end {
-    display: flex;
-    justify-content: flex-end;
-  }
-
   .u-flex--vertically {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-  }
-
-  .u-flex--column-align-end {
-    align-items: flex-end;
-    display: flex !important;
-    flex-direction: column;
-  }
-
-  .u-flex--column-x-small {
-    @media only screen and (max-width: $breakpoint-x-small) {
-      flex-direction: column;
-    }
+    @extend %display-flex;
+    flex-direction: column !important;
+    justify-content: space-between !important;
   }
 
   .u-flex--wrap {
-    display: flex;
-    flex-wrap: wrap;
+    @extend %display-flex;
+    flex-wrap: wrap !important;
+  }
+
+  .u-no-border {
+    border: 0 !important;
+  }
+
+  .u-no-border--top {
+    border-top: 0 !important;
   }
 
   .u-no-text-transform {
     text-transform: none !important;
+  }
+
+  .u-no-wrap {
+    white-space: nowrap !important;
   }
 
   .u-nudge-down {
@@ -157,8 +173,9 @@
   .u-nudge-up--x-small {
     margin-top: -$sp-x-small !important;
   }
-  .u-nudge-down--x-small {
-    margin-bottom: $sp-x-small !important;
+
+  .u-position--relative {
+    position: relative !important;
   }
 
   .u-rotate-left {
@@ -169,37 +186,17 @@
     transform: rotate(90deg) !important;
   }
 
-  .u-text--light {
-    color: $color-mid-dark !important;
-  }
-
-  .u-position--relative {
-    position: relative !important;
-  }
-
-  .u-upper-case--first:first-letter {
-    text-transform: capitalize;
-  }
-
-  .u-width--auto {
-    width: auto;
-  }
-
-  .u-width--full {
-    width: 100%;
-  }
-
   .u-text--default-size {
     font-size: map-get($base-font-sizes, base);
     font-weight: $font-weight-regular-text;
   }
 
-  .u-no-border {
-    border: 0 !important;
+  .u-text--light {
+    color: $color-mid-dark !important;
   }
 
-  .u-no-border--top {
-    border-top: 0 !important;
+  .u-upper-case--first:first-letter {
+    text-transform: capitalize !important;
   }
 
   .u-visually-hidden:not(:focus):not(:active) {
@@ -212,7 +209,11 @@
     width: 1px;
   }
 
-  .p-text--code {
-    font-family: unquote($font-monospace);
+  .u-width--auto {
+    width: auto !important;
+  }
+
+  .u-width--full {
+    width: 100% !important;
   }
 }

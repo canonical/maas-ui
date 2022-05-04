@@ -159,7 +159,7 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
         <Col className="u-align--right" size={6}>
           Show
           <Select
-            className="u-auto-width"
+            className="u-auto-min-width"
             defaultValue={pageSize.toString()}
             name="page-size"
             onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
@@ -183,10 +183,10 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
                 label: "200",
               },
             ]}
-            wrapperClassName="u-display-inline-block u-nudge-right"
+            wrapperClassName="u-display--inline-block u-nudge-right"
           />
           <ArrowPagination
-            className="u-display-inline-block u-nudge-right"
+            className="u-display--inline-block u-nudge-right"
             currentPage={currentPage}
             itemCount={unpaginatedEvents.length}
             pageSize={pageSize}
