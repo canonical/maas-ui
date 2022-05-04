@@ -47,7 +47,7 @@ const highlightMatch = (text: string, match: string): JSX.Element => {
       {textArray.map((item, i) => (
         <span key={`${item}${i}`}>
           {item}
-          {i !== textArray.length - 1 && <em>{match}</em>}
+          {i !== textArray.length - 1 && <strong>{match}</strong>}
         </span>
       ))}
     </span>
