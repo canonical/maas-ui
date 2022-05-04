@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
 import ColumnToggle from "app/base/components/ColumnToggle";
+import DhcpSnippetType from "app/base/components/DhcpSnippetType";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import docsUrls from "app/base/docsUrls";
@@ -108,7 +109,12 @@ const generateRows = (
           role: "rowheader",
         },
         {
-          content: type,
+          content: (
+            <DhcpSnippetType
+              nodeId={dhcpsnippet.node}
+              subnetId={dhcpsnippet.subnet}
+            />
+          ),
         },
         {
           content: (dhcpsnippet.node || dhcpsnippet.subnet) && (

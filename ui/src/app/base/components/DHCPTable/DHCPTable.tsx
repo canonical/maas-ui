@@ -8,6 +8,7 @@ import TitledSection from "../TitledSection";
 
 import EditDHCP from "./EditDHCP";
 
+import DhcpSnippetType from "app/base/components/DhcpSnippetType";
 import TableActions from "app/base/components/TableActions";
 import docsUrls from "app/base/docsUrls";
 import settingsURLs from "app/settings/urls";
@@ -64,7 +65,12 @@ const generateRows = (
           role: "rowheader",
         },
         {
-          content: typeLabel,
+          content: (
+            <DhcpSnippetType
+              nodeId={dhcpsnippet.node}
+              subnetId={dhcpsnippet.subnet}
+            />
+          ),
         },
         {
           content: appliesTo,
