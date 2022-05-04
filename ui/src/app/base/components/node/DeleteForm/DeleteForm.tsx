@@ -1,6 +1,6 @@
 import { Redirect } from "react-router-dom";
 
-import MachineActionConfirmationText from "../../NodeActionConfirmationText";
+import NodeActionConfirmationText from "../../NodeActionConfirmationText";
 import type { NodeActionFormProps } from "../types";
 
 import ActionForm from "app/base/components/ActionForm";
@@ -55,9 +55,10 @@ export const DeleteForm = <E,>({
       selectedCount={nodes.length}
       submitAppearance="negative"
     >
-      <MachineActionConfirmationText
+      <NodeActionConfirmationText
         nodes={nodes}
         action={NodeActions.DELETE}
+        modelName={modelName}
       />
     </ActionForm>
   );

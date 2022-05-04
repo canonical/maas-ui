@@ -8,6 +8,7 @@ import { machine as machineFactory } from "testing/factories";
 it("displays correct confirmation text for deleting a single node", () => {
   render(
     <NodeActionConfirmationText
+      modelName="machine"
       nodes={[machineFactory({ fqdn: "test" })]}
       action={NodeActions.DELETE}
     />
@@ -20,6 +21,7 @@ it("displays correct confirmation text for deleting a single node", () => {
 it("displays correct confirmation text for deleting multiple nodes", () => {
   render(
     <NodeActionConfirmationText
+      modelName="machine"
       nodes={[
         machineFactory({ fqdn: "test" }),
         machineFactory({ fqdn: "test2" }),
@@ -28,7 +30,6 @@ it("displays correct confirmation text for deleting multiple nodes", () => {
     />
   );
   expect(
-    screen.getByText(/Are you sure you want to delete the following?/)
+    screen.getByText(/Are you sure you want to delete 2 machines?/)
   ).toBeInTheDocument();
-  expect(screen.getByText(/test, test2/)).toBeInTheDocument();
 });
