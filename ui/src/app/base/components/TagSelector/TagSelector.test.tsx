@@ -236,13 +236,13 @@ describe("TagSelector", () => {
       component.find('[data-testid="existing-tag"] > span').at(0).text()
     ).toBe("there");
     expect(
-      component.find('[data-testid="existing-tag"] > span em').at(0).text()
+      component.find('[data-testid="existing-tag"] > span strong').at(0).text()
     ).toBe("the");
     expect(
       component.find('[data-testid="existing-tag"] > span').at(1).text()
     ).toBe("other");
     expect(
-      component.find('[data-testid="existing-tag"] > span em').at(1).text()
+      component.find('[data-testid="existing-tag"] > span strong').at(1).text()
     ).toBe("the");
   });
 
