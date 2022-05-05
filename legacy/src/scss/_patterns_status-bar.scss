@@ -11,4 +11,20 @@
     background-color: $color-mid-x-light;
     padding: $spv--small 0;
   }
+
+  .p-status-bar__row {
+    @extend %fixed-width-container;
+    column-gap: $sph--small;
+    flex-direction: column;
+
+    @media only screen and (min-width: $breakpoint-large) {
+      flex-direction: row;
+    }
+  }
+
+  .p-status-bar__secondary {
+    @media only screen and (min-width: $breakpoint-large) {
+      justify-content: flex-end;
+    }
+  }
 }

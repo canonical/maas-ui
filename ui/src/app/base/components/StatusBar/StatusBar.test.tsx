@@ -49,9 +49,7 @@ it("can show if a machine is currently commissioning", () => {
 
   renderWithMockStore(<StatusBar />, { state });
 
-  expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
-    "test.maas: Commissioning in progress..."
-  );
+  expect(screen.getByText(/Commissioning in progress.../)).toBeInTheDocument();
 });
 
 it("can show if a machine has not been commissioned yet", () => {
@@ -65,9 +63,7 @@ it("can show if a machine has not been commissioned yet", () => {
 
   renderWithMockStore(<StatusBar />, { state });
 
-  expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
-    "test.maas: Not yet commissioned"
-  );
+  expect(screen.getByText(/Not yet commissioned/)).toBeInTheDocument();
 });
 
 it("can show the last time a machine was commissioned", () => {
@@ -83,9 +79,9 @@ it("can show the last time a machine was commissioned", () => {
 
   renderWithMockStore(<StatusBar />, { state });
 
-  expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
-    "test.maas: Last commissioned 1 minute ago"
-  );
+  expect(
+    screen.getByText(/Last commissioned: 1 minute ago/)
+  ).toBeInTheDocument();
 });
 
 it("can handle an incorrectly formatted commissioning timestamp", () => {
@@ -101,9 +97,9 @@ it("can handle an incorrectly formatted commissioning timestamp", () => {
 
   renderWithMockStore(<StatusBar />, { state });
 
-  expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
-    "test.maas: Unable to parse commissioning timestamp (Invalid time value)"
-  );
+  expect(
+    screen.getByText(/Unable to parse commissioning timestamp/)
+  ).toBeInTheDocument();
 });
 
 it("displays Last and Next sync instead of Last commissioned date for deployed machines with hardware sync enabled ", () => {

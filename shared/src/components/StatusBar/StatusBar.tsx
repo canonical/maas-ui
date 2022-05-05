@@ -15,13 +15,17 @@ export const StatusBar = ({
 }: Props): JSX.Element => {
   return (
     <aside className="p-status-bar" aria-label="status bar">
-      <div className="row">
-        <div className="col-4">
-          <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>:{" "}
+      <div className="p-status-bar__row u-flex">
+        <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
+          <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
+          :&nbsp;
           <span data-testid="status-bar-version">{version}</span>
         </div>
         {status && (
-          <div className="col-8 u-align--right" data-testid="status-bar-status">
+          <div
+            className="p-status-bar__secondary u-flex--grow u-flex--wrap"
+            data-testid="status-bar-status"
+          >
             {status}
           </div>
         )}

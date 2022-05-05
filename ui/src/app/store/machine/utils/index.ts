@@ -1,7 +1,9 @@
 export {
-  isMachineDetails,
+  getHasSyncFailed,
   getMachineFieldScopes,
   getTagCountsForMachines,
+  isDeployedWithHardwareSync,
+  isMachineDetails,
 } from "./common";
 export type { TagIdCountMap } from "./common";
 
