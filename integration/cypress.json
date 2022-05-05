@@ -9,5 +9,9 @@
     "skipA11yFailures": true
   },
   "projectId": "gp2cox",
-  "video": false
+  "video": false,
+  "retries": {
+    "runMode": 2,
+    "openMode": 0
+  }
 }

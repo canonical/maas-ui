@@ -19,6 +19,8 @@ context("Controller listing", () => {
   });
 
   it("can add a tag to the controller", () => {
+    const tagName = "new-tag";
+
     // displays the controller details page on click of the controller name
     cy.findByRole("gridcell", { name: "Name" }).within(() => {
       cy.findByRole("link").click();
@@ -35,19 +37,20 @@ context("Controller listing", () => {
     })
       .first()
       .click();
-    cy.get("input[placeholder='Add a tag']").type("test-tag");
+
+    cy.get("input[placeholder='Add a tag']").type(`${tagName}{enter}{esc}`);
     cy.findByRole("button", { name: /Save changes/ }).click();
 
     cy.findByRole("tab", { name: /Controller summary/ }).click();
-    cy.findByRole("link", { name: "new-tag" }).should("exist");
+    cy.findByRole("link", { name: tagName }).should("exist");
 
     // displays the controller listing page filtered by tag on click of the tag name
-    cy.findByRole("link", { name: "new-tag" }).click();
+    cy.findByRole("link", { name: tagName }).click();
 
     // displays the correct tag in the searchbox
     cy.findByRole("searchbox", { name: /Search/ }).should(
       "have.value",
-      "tag:(new-tag)"
+      `tags:(${tagName})`
     );
 
     // displays the correct number of controllers

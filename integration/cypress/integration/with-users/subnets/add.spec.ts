@@ -91,15 +91,15 @@ context("Subnets - Add", () => {
 
     cy.url().should("include", generateNewURL("/space"));
 
-    cy.findByRole("button", { name: "Delete" }).click();
+    cy.findByRole("button", { name: "Delete space" }).click();
 
-    cy.findByText(`Are you sure you want to delete ${name} space?`).should(
+    cy.findByText(`Are you sure you want to delete this space?`).should(
       "be.visible"
     );
 
-    cy.findByRole("button", { name: "Yes, delete space" }).click();
+    cy.findByRole("button", { name: "Delete space" }).click();
 
-    cy.url().should("include", generateNewURL("/networks?by=space"));
+    cy.url().should("include", generateNewURL("/networks?by=fabric"));
     cy.findByRole("table", { name: /Subnets/ }).within(() => {
       cy.findByRole("link", { name }).should("not.exist");
     });
