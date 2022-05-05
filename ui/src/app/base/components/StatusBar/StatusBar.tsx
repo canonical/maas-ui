@@ -8,7 +8,10 @@ import configSelectors from "app/store/config/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
-import { isDeployedWithHardwareSync } from "app/store/machine/utils/common";
+import {
+  isDeployedWithHardwareSync,
+  isMachineDetails,
+} from "app/store/machine/utils";
 import { NodeStatus } from "app/store/types/node";
 
 const getTimeDistanceString = (utcTimeString: string) =>
@@ -30,7 +33,7 @@ const getLastCommissionedString = (machine: MachineDetails) => {
   }
   try {
     const distance = getTimeDistanceString(machine.commissioning_start_time);
-    return `Last commissioned ${distance}`;
+    return `Last commissioned: ${distance}`;
   } catch (error) {
     return `Unable to parse commissioning timestamp (${
       error instanceof Error ? error.message : error
@@ -60,36 +63,32 @@ export const StatusBar = (): JSX.Element | null => {
     return null;
   }
 
-  let status: ReactNode = "";
-  if (isDeployedWithHardwareSync(activeMachine)) {
+  let status: ReactNode;
+  if (isMachineDetails(activeMachine)) {
+    const statuses = [activeMachine.fqdn];
+    if (isDeployedWithHardwareSync(activeMachine)) {
+      statuses.push(
+        `Last synced: ${getSyncStatusString(activeMachine.last_sync)}`
+      );
+      statuses.push(
+        `Next sync: ${getSyncStatusString(activeMachine.next_sync)}`
+      );
+    } else {
+      statuses.push(getLastCommissionedString(activeMachine));
+    }
     status = (
-      <ul className="p-inline-list u-no-margin--bottom">
-        <li className="p-inline-list__item">
-          <strong>{activeMachine.fqdn}</strong>
-        </li>
-        <li className="p-inline-list__item">
-          Last synced: {getSyncStatusString(activeMachine.last_sync)}
-        </li>
-        <li className="p-inline-list__item">
-          Next sync: {getSyncStatusString(activeMachine.next_sync)}
-        </li>
+      <ul className="p-inline-list u-flex--wrap u-no-margin--bottom">
+        {statuses.map((status, i) => (
+          <li className="p-inline-list__item" key={status}>
+            {i === 0 ? <strong>{status}</strong> : status}
+          </li>
+        ))}
       </ul>
-    );
-  } else if (activeMachine && "commissioning_start_time" in activeMachine) {
-    const lastCommissioned = getLastCommissionedString(activeMachine);
-    status = (
-      <>
-        <strong>{activeMachine.fqdn}</strong>: <span>{lastCommissioned}</span>
-      </>
     );
   }
 
   return (
-    <SharedStatusBar
-      maasName={maasName as string}
-      status={status}
-      version={version}
-    />
+    <SharedStatusBar maasName={maasName} status={status} version={version} />
   );
 };
 
