@@ -91,6 +91,80 @@ export const getNodeActionTitle = (actionName: NodeActions): string => {
   }
 };
 
+export const getNodeActionLabel = (
+  modelString: string,
+  actionName: string,
+  isProcessing: boolean
+): string => {
+  switch (actionName) {
+    case NodeActions.ABORT:
+      return `${
+        isProcessing ? "Aborting" : "Abort"
+      } actions for ${modelString}`;
+    case NodeActions.ACQUIRE:
+      return `${isProcessing ? "Allocating" : "Allocate"} ${modelString}`;
+    case NodeActions.CLONE:
+      return isProcessing ? "Cloning in progress" : `Clone to ${modelString}`;
+    case NodeActions.COMMISSION:
+      return `${
+        isProcessing ? "Starting" : "Start"
+      } commissioning for ${modelString}`;
+    case "compose":
+      return `${isProcessing ? "Composing" : "Compose"} ${modelString}`;
+    case NodeActions.DELETE:
+      return `${isProcessing ? "Deleting" : "Delete"} ${modelString}`;
+    case NodeActions.DEPLOY:
+      return `${
+        isProcessing ? "Starting" : "Start"
+      } deployment for ${modelString}`;
+    case NodeActions.EXIT_RESCUE_MODE:
+      return `${
+        isProcessing ? "Exiting" : "Exit"
+      } rescue mode for ${modelString}`;
+    case NodeActions.IMPORT_IMAGES:
+      return `${
+        isProcessing ? "Importing images" : "Import images"
+      } for ${modelString}`;
+    case NodeActions.LOCK:
+      return `${isProcessing ? "Locking" : "Lock"} ${modelString}`;
+    case NodeActions.ON:
+      return `${isProcessing ? "Powering" : "Power"} on ${modelString}`;
+    case NodeActions.OFF:
+      return `${isProcessing ? "Powering" : "Power"} off ${modelString}`;
+    case NodeActions.MARK_BROKEN:
+      return `${isProcessing ? "Marking" : "Mark"} ${modelString} broken`;
+    case NodeActions.MARK_FIXED:
+      return `${isProcessing ? "Marking" : "Mark"} ${modelString} fixed`;
+    case NodeActions.OVERRIDE_FAILED_TESTING:
+      return `${
+        isProcessing ? "Overriding" : "Override"
+      } failed tests for ${modelString}`;
+    case NodeActions.RELEASE:
+      return `${isProcessing ? "Releasing" : "Release"} ${modelString}`;
+    case "refresh":
+      return `${isProcessing ? "Refreshing" : "Refresh"} ${modelString}`;
+    case "remove":
+      return `${isProcessing ? "Removing" : "Remove"} ${modelString}`;
+    case NodeActions.RESCUE_MODE:
+      return `${
+        isProcessing ? "Entering" : "Enter"
+      } rescue mode for ${modelString}`;
+    case NodeActions.SET_POOL:
+      return `${isProcessing ? "Setting" : "Set"} pool for ${modelString}`;
+    case NodeActions.SET_ZONE:
+      return `${isProcessing ? "Setting" : "Set"} zone for ${modelString}`;
+    case NodeActions.TAG:
+    case NodeActions.UNTAG:
+      return `${isProcessing ? "Updating" : "Update"} tags for ${modelString}`;
+    case NodeActions.TEST:
+      return `${isProcessing ? "Starting" : "Start"} tests for ${modelString}`;
+    case NodeActions.UNLOCK:
+      return `${isProcessing ? "Unlocking" : "Unlock"} ${modelString}`;
+    default:
+      return `${isProcessing ? "Processing" : "Process"} ${modelString}`;
+  }
+};
+
 // TODO: Replace NodeLinkType with NodeType when it is made available on all
 // node list types.
 // https://bugs.launchpad.net/maas/+bug/1951893

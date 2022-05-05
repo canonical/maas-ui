@@ -5,7 +5,7 @@ import { Spinner, Strip } from "@canonical/react-components";
 import type { FormikFormProps } from "app/base/components/FormikForm";
 import FormikForm from "app/base/components/FormikForm";
 import { useProcessing } from "app/base/hooks";
-import { NodeActions } from "app/store/types/node";
+import { getNodeActionLabel } from "app/store/utils";
 
 const getLabel = (
   modelName: string,
@@ -27,72 +27,7 @@ const getLabel = (
     // e.g. "2 machines"
     modelString = `${selectedCount} ${modelName}s`;
   }
-
-  switch (actionName) {
-    case NodeActions.ABORT:
-      return `${processing ? "Aborting" : "Abort"} actions for ${modelString}`;
-    case NodeActions.ACQUIRE:
-      return `${processing ? "Allocating" : "Allocate"} ${modelString}`;
-    case NodeActions.CLONE:
-      return processing ? "Cloning in progress" : `Clone to ${modelString}`;
-    case NodeActions.COMMISSION:
-      return `${
-        processing ? "Starting" : "Start"
-      } commissioning for ${modelString}`;
-    case "compose":
-      return `${processing ? "Composing" : "Compose"} ${modelString}`;
-    case NodeActions.DELETE:
-      return `${processing ? "Deleting" : "Delete"} ${modelString}`;
-    case NodeActions.DEPLOY:
-      return `${
-        processing ? "Starting" : "Start"
-      } deployment for ${modelString}`;
-    case NodeActions.EXIT_RESCUE_MODE:
-      return `${
-        processing ? "Exiting" : "Exit"
-      } rescue mode for ${modelString}`;
-    case NodeActions.IMPORT_IMAGES:
-      return `${
-        processing ? "Importing images" : "Import images"
-      } for ${modelString}`;
-    case NodeActions.LOCK:
-      return `${processing ? "Locking" : "Lock"} ${modelString}`;
-    case NodeActions.ON:
-      return `${processing ? "Powering" : "Power"} on ${modelString}`;
-    case NodeActions.OFF:
-      return `${processing ? "Powering" : "Power"} off ${modelString}`;
-    case NodeActions.MARK_BROKEN:
-      return `${processing ? "Marking" : "Mark"} ${modelString} broken`;
-    case NodeActions.MARK_FIXED:
-      return `${processing ? "Marking" : "Mark"} ${modelString} fixed`;
-    case NodeActions.OVERRIDE_FAILED_TESTING:
-      return `${
-        processing ? "Overriding" : "Override"
-      } failed tests for ${modelString}`;
-    case NodeActions.RELEASE:
-      return `${processing ? "Releasing" : "Release"} ${modelString}`;
-    case "refresh":
-      return `${processing ? "Refreshing" : "Refresh"} ${modelString}`;
-    case "remove":
-      return `${processing ? "Removing" : "Remove"} ${modelString}`;
-    case NodeActions.RESCUE_MODE:
-      return `${
-        processing ? "Entering" : "Enter"
-      } rescue mode for ${modelString}`;
-    case NodeActions.SET_POOL:
-      return `${processing ? "Setting" : "Set"} pool for ${modelString}`;
-    case NodeActions.SET_ZONE:
-      return `${processing ? "Setting" : "Set"} zone for ${modelString}`;
-    case NodeActions.TAG:
-    case NodeActions.UNTAG:
-      return `${processing ? "Updating" : "Update"} tags for ${modelString}`;
-    case NodeActions.TEST:
-      return `${processing ? "Starting" : "Start"} tests for ${modelString}`;
-    case NodeActions.UNLOCK:
-      return `${processing ? "Unlocking" : "Unlock"} ${modelString}`;
-    default:
-      return `${processing ? "Processing" : "Process"} ${modelString}`;
-  }
+  return getNodeActionLabel(modelString, actionName, processing);
 };
 
 export type Props<V, E = null> = Omit<
