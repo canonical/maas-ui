@@ -67,7 +67,12 @@ Cypress.Commands.add("testA11y", (pageContext) => {
   cy.injectAxe();
   cy.checkA11y(
     undefined,
-    undefined,
+    {
+      runOnly: {
+        type: "tag",
+        values: ["wcag21aa"],
+      },
+    },
     (violations) => logViolations(violations, pageContext),
     Cypress.env("skipA11yFailures")
   );

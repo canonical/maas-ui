@@ -1,5 +1,5 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
-import { pages } from "../../../constants";
+import { pages } from "../../constants";
 
 pages.forEach(({ heading, url }) => {
   it(

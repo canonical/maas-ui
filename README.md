@@ -2,6 +2,7 @@
 
 ![CI](https://github.com/canonical-web-and-design/maas-ui/workflows/CI/badge.svg)
 ![Cypress](https://github.com/canonical-web-and-design/maas-ui/workflows/Cypress/badge.svg)
+![accessibility](https://github.com/canonical-web-and-design/maas-ui/workflows/accessibility/badge.svg)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 - [About](#about)
