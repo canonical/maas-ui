@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import DhcpType from "./DhcpSnippetType";
+import DhcpSnippetType from "./DhcpSnippetType";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -77,7 +77,7 @@ it("displays a loading component if loading", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <DhcpType subnetId={808} />
+      <DhcpSnippetType subnetId={808} />
     </Provider>
   );
   expect(screen.getByText("Loading")).toBeInTheDocument();
@@ -87,7 +87,7 @@ it("displays a global type", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <DhcpType subnetId={null} nodeId={null} />
+      <DhcpSnippetType subnetId={null} nodeId={null} />
     </Provider>
   );
   expect(screen.getByText("Global")).toBeInTheDocument();
@@ -97,7 +97,7 @@ it("can display a Machine type", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <DhcpType nodeId="xyz" />
+      <DhcpSnippetType nodeId="xyz" />
     </Provider>
   );
   expect(screen.getByText("Machine")).toBeInTheDocument();
