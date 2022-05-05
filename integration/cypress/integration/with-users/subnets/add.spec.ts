@@ -1,5 +1,5 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
-import { generateId, generateVid } from "../utils";
+import { generateId, generateVid } from "../../utils";
 
 context("Subnets - Add", () => {
   beforeEach(() => {

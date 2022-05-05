@@ -1,7 +1,7 @@
 import { customAlphabet } from "nanoid";
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { generateMac } from "../utils";
+import { generateMac } from "../../utils";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
