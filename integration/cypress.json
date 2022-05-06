@@ -6,7 +6,7 @@
     "password": "test",
     "nonAdminUsername": "user",
     "nonAdminPassword": "test",
-    "skipA11yFailures": true
+    "skipA11yFailures": false
   },
   "projectId": "gp2cox",
   "video": false,
