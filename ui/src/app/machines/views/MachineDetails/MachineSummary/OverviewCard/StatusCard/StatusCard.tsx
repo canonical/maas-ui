@@ -103,9 +103,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
             <p className="u-text--muted">
               Periodic hardware sync enabled{" "}
               <TooltipButton
-                buttonProps={{
-                  "aria-label": "more about periodic hardware sync",
-                }}
+                aria-label="more about periodic hardware sync"
                 className="u-nudge-right--small"
                 iconName="help"
                 position="right"

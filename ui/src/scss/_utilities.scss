@@ -199,6 +199,10 @@
     text-transform: capitalize !important;
   }
 
+  .u-no-line-height {
+    line-height: 0 !important;
+  }
+
   .u-visually-hidden:not(:focus):not(:active) {
     clip: rect(0 0 0 0);
     clip-path: inset(50%);

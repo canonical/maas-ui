@@ -216,6 +216,7 @@ export const DeployFormFields = (): JSX.Element => {
                     message={`Enable this to make MAAS periodically check the
                     hardware configuration of this machine and reflect any
                     possible change after the deployment.`}
+                    positionElementClassName="u-display--inline"
                   />{" "}
                   <a
                     href={docsUrls.customisingDeployedMachines}

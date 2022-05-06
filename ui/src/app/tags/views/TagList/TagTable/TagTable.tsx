@@ -215,6 +215,7 @@ const TagTable = ({
               <>
                 {Label.Auto}{" "}
                 <TooltipButton
+                  aria-label="More about automatic tags"
                   message={
                     <>
                       Automatic tags are automatically applied to every
