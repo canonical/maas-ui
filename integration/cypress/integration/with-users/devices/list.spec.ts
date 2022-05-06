@@ -1,5 +1,5 @@
 import { generateNewURL } from "@maas-ui/maas-ui-shared";
-import { generateMac } from "../utils";
+import { generateMac } from "../../utils";
 
 context("Device listing", () => {
   beforeEach(() => {
