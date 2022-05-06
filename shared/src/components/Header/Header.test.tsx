@@ -321,10 +321,9 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
-      "href",
-      "/dashboard"
-    );
+    expect(
+      within(screen.getByLabelText("Homepage")).getByRole("link")
+    ).toHaveAttribute("href", "/dashboard");
   });
 
   it("links from the logo to the machine list for non admins", () => {
@@ -345,9 +344,8 @@ describe("Header", () => {
         logout={jest.fn()}
       />
     );
-    expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
-      "href",
-      "/machines"
-    );
+    expect(
+      within(screen.getByLabelText("Homepage")).getByRole("link")
+    ).toHaveAttribute("href", "/machines");
   });
 });
