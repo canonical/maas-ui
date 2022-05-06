@@ -323,7 +323,7 @@ describe("Header", () => {
     );
     expect(
       within(screen.getByLabelText("Homepage")).getByRole("link")
-    ).toHaveAttribute("href", "/dashboard");
+    ).toHaveAttribute("href", "/MAAS/r/dashboard");
   });
 
   it("links from the logo to the machine list for non admins", () => {
@@ -346,6 +346,6 @@ describe("Header", () => {
     );
     expect(
       within(screen.getByLabelText("Homepage")).getByRole("link")
-    ).toHaveAttribute("href", "/machines");
+    ).toHaveAttribute("href", "/MAAS/r/machines");
   });
 });
