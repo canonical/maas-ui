@@ -79,19 +79,30 @@ const isLogoProps = (logo: Props["logo"]): logo is LogoProps =>
  * Display the standard logo if the props were provided otherwise display the
  * full element provided.
  */
-const generateLogo = (logo: Props["logo"]) => {
+const generateLogo = (logo: Props["logo"], generateLink: GenerateLink) => {
   if (isLogoProps(logo)) {
     const { url, src, title, icon, ...logoProps } = logo;
+    const content = (
+      <>
+        <div className="p-navigation__logo-tag">
+          {icon ?? <img className="p-navigation__logo-icon" src={src} alt="" />}
+        </div>
+        <span className="p-navigation__logo-title">{title}</span>
+      </>
+    );
     return (
       <div className="p-navigation__tagged-logo" {...logoProps}>
-        <a className="p-navigation__link" href={logo.url}>
-          <div className="p-navigation__logo-tag">
-            {logo.icon ?? (
-              <img className="p-navigation__logo-icon" src={logo.src} alt="" />
-            )}
-          </div>
-          <span className="p-navigation__logo-title">{logo.title}</span>
-        </a>
+        {generateLink ? (
+          generateLink({
+            className: "p-navigation__link",
+            label: content,
+            url,
+          })
+        ) : (
+          <a className="p-navigation__link" href={url}>
+            {content}
+          </a>
+        )}
       </div>
     );
   }
@@ -177,7 +188,7 @@ const Navigation = ({
     >
       <div className="p-navigation__row">
         <div className="p-navigation__banner">
-          {generateLogo(logo)}
+          {generateLogo(logo, generateLink)}
           <ul className="p-navigation__items">
             {
               // When the header has a search box then this button is used to

@@ -61,6 +61,26 @@ it("can display a standard logo", () => {
   );
 });
 
+it("can display a standard logo with a generated link", () => {
+  render(
+    <Navigation
+      generateLink={({ url, label, isSelected, ...props }) => (
+        <a {...props} aria-current="page" href={url}>
+          {label}
+        </a>
+      )}
+      logo={{
+        src: "http://this.is.the.logo.svg",
+        title: "This is the site name",
+        url: "/this/is/the/logo/link",
+      }}
+    />
+  );
+  expect(
+    screen.getByRole("link", { name: "This is the site name" })
+  ).toHaveAttribute("aria-current", "page");
+});
+
 it("can provide a custom logo", () => {
   render(
     <Navigation
