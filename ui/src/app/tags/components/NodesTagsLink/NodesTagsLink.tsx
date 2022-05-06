@@ -45,7 +45,7 @@ const NodesTagsLink = ({
     tags: [`=${tags.join(",")}`],
   });
   return (
-    <Link className="u-block" to={`${url}${filters}`}>
+    <Link className="u-display--block" to={`${url}${filters}`}>
       {pluralize(nodeName, count, true)}
     </Link>
   );

@@ -1,12 +1,4 @@
 @mixin maas-buttons {
-  // Prevent default Vanilla buttons spanning full width on mobile
-  @media only screen and (max-width: $breakpoint-x-small) {
-    button,
-    [class*="p-button"] {
-      width: auto;
-    }
-  }
-
   // Custom class for sort buttons in table headers. We don't use the default
   // Vanilla th[aria-sort] pattern due to the use of double rows in MAAS, so we
   // approximate it with these styles.

@@ -15,11 +15,16 @@
 @include vf-p-icon-back-to-top;
 @include vf-p-icon-begin-downloading;
 @include vf-p-icon-change-version;
+@include vf-p-icon-edit;
 @include vf-p-icon-inspector-debug;
 @include vf-p-icon-lock-locked-active;
+@include vf-p-icon-power-off;
 @include vf-p-icon-restart;
 @include vf-p-icon-settings;
+@include vf-p-icon-status-waiting;
 @include vf-p-icon-success-grey;
+@include vf-p-icon-task-outstanding;
+@include vf-p-icon-unit-running;
 @include vf-p-navigation;
 @include vf-p-lists;
 @include vf-u-baseline-grid;
@@ -33,7 +38,6 @@
 
 // Import and include MAAS global styles
 @import "./patterns_buttons";
-@import "./patterns_cards";
 @import "./patterns_contextual-menu";
 @import "./patterns_double-row";
 @import "./patterns_footer";
@@ -41,9 +45,7 @@
 @import "./patterns_grids";
 @import "./patterns_icons";
 @import "./patterns_links";
-@import "./patterns_lists";
 @import "./patterns_navigation";
-@import "./patterns_notifications";
 @import "./patterns_status-bar";
 @import "./patterns_switches";
 @import "./patterns_table-actions";
@@ -53,7 +55,6 @@
 @import "./pseudo-border";
 @import "./utilities";
 @include maas-buttons;
-@include maas-cards;
 @include maas-contextual-menu;
 @include maas-double-row;
 @include maas-footer;
@@ -61,9 +62,7 @@
 @include maas-grids;
 @include maas-icons;
 @include maas-links;
-@include maas-lists;
 @include maas-navigation;
-@include maas-notifications;
 @include maas-status-bar;
 @include maas-switches;
 @include maas-table-actions;

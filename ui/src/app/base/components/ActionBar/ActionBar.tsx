@@ -40,7 +40,7 @@ const ActionBar = ({
       </div>
       <div className="action-bar__pagination">
         <ArrowPagination
-          className="u-display-inline-block"
+          className="u-display--inline-block"
           currentPage={currentPage}
           itemCount={itemCount}
           loading={loading}

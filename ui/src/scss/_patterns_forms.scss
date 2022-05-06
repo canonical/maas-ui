@@ -1,4 +1,6 @@
 @mixin maas-forms {
+  // Adds an "X" close button to the right of an input. Used in Add Machine form
+  // for removing extra MAC addresses.
   .p-input--closeable {
     position: relative;
 
@@ -29,10 +31,6 @@
     }
   }
 
-  select.u-auto-width {
-    min-width: auto;
-  }
-
   // Custom styling for form fields inside a table.
   .p-form--table {
     input,
@@ -41,28 +39,8 @@
       min-width: 0;
     }
 
-    td {
-      padding-bottom: $spv--small;
-      padding-top: $spv--small;
-
-      &[aria-label]::before {
-        margin-bottom: $spv--x-small;
-      }
-    }
-
     .p-form-validation__message {
       margin-top: 0;
-    }
-
-    .tag-selector__dropdown {
-      top: initial;
-    }
-
-    @media only screen and (min-width: $breakpoint-small) {
-      // Align non-form fields with form fields on larger viewports
-      .u-align-non-field {
-        padding-top: $sp-unit * 1.75;
-      }
     }
   }
 

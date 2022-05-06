@@ -21,7 +21,7 @@ const FetchImagesFormFields = (): JSX.Element => {
       <Col size={6}>
         <h4>Choose source</h4>
         <ul className="p-inline-list">
-          <li className="p-inline-list__item u-display-inline-block">
+          <li className="p-inline-list__item u-display--inline-block">
             <FormikField
               id="maas-source"
               label="maas.io"
@@ -36,7 +36,7 @@ const FetchImagesFormFields = (): JSX.Element => {
               value={BootResourceSourceType.MAAS_IO}
             />
           </li>
-          <li className="p-inline-list__item u-display-inline-block u-nudge-right">
+          <li className="p-inline-list__item u-display--inline-block u-nudge-right">
             <FormikField
               id="custom-source"
               label="Custom"

@@ -121,7 +121,7 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
                           ? "At least one architecture must be selected for the default commissioning release."
                           : `${arch.name} is not available on ${release.title}.`
                       }
-                      positionElementClassName="u-display-inline-important"
+                      positionElementClassName="u-display--inline"
                     >
                       <Icon name="help" />
                     </Tooltip>
