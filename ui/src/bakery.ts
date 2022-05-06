@@ -11,6 +11,7 @@ const visit = (error: { Info: { VisitURL: string } }) => {
 };
 
 const bakery = new Bakery({
+  protocolVersion: 1,
   storage: new BakeryStorage(localStorage, {}),
   visitPage: visit,
 });
