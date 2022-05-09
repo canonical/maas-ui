@@ -79,7 +79,9 @@ const generateRows = (
         },
         {
           "aria-label": Label.Auto,
-          content: !!tag.definition ? <Icon name="success-grey" /> : null,
+          content: !!tag.definition ? (
+            <Icon aria-label="Automatic tag" name="success-grey" />
+          ) : null,
         },
         {
           "aria-label": Label.AppliedTo,
