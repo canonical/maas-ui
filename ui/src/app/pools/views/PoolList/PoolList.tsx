@@ -64,6 +64,7 @@ const generateRows = (
           content: row.description,
         },
         {
+          className: "u-align--right",
           content: (
             <TableActions
               deleteDisabled={
@@ -82,7 +83,6 @@ const generateRows = (
               onDelete={() => setExpandedId(row.id)}
             />
           ),
-          className: "u-align--right",
         },
       ],
       expanded: expanded,
@@ -102,9 +102,9 @@ const generateRows = (
       ),
       key: row.name,
       sortData: {
-        name: row.name,
-        machines: row.machine_total_count,
         description: row.description,
+        machines: row.machine_total_count,
+        name: row.name,
       },
     };
   });
@@ -179,8 +179,8 @@ const Pools = (): JSX.Element => {
                     sortKey: "description",
                   },
                   {
-                    content: "Actions",
                     className: "u-align--right",
+                    content: "Actions",
                   },
                 ]}
                 expanding={true}

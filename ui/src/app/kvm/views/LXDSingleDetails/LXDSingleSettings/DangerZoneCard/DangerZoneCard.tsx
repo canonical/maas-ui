@@ -31,8 +31,8 @@ const DangerZoneCard = ({
             data-testid="remove-kvm"
             onClick={() =>
               setHeaderContent({
-                view: KVMHeaderViews.DELETE_KVM,
                 extras: { clusterId, hostId },
+                view: KVMHeaderViews.DELETE_KVM,
               })
             }
           >

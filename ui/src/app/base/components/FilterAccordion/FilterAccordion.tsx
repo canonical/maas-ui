@@ -121,7 +121,6 @@ const FilterAccordion = <I, PK extends keyof I>({
       const filterValues = filterOptions.get(filter);
       if (filterValues && filterValues.size > 0) {
         options.push({
-          title: filterNames.get(filter),
           content: (
             <List
               className="u-no-margin--bottom"
@@ -161,6 +160,7 @@ const FilterAccordion = <I, PK extends keyof I>({
             />
           ),
           key: filter,
+          title: filterNames.get(filter),
         });
       }
       return options;

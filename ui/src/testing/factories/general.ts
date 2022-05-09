@@ -88,11 +88,11 @@ export const osInfoKernels = define<OSInfoKernels>({
 });
 
 export const osInfo = define<OSInfo>({
-  osystems: () => [],
-  releases: () => [],
-  kernels: osInfoKernels,
   default_osystem: "ubuntu",
   default_release: "bionic",
+  kernels: osInfoKernels,
+  osystems: () => [],
+  releases: () => [],
 });
 
 export const pocketToDisable = define<PocketToDisable>("updates");

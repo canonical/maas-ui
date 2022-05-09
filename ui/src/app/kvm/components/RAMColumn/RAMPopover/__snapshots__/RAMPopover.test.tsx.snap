@@ -141,7 +141,7 @@ exports[`RAMPopover renders 1`] = `
             <div>
               <div
                 class="p-popover ram-popover"
-                style="position: absolute; top: 0px; right: 1024px;"
+                style="position: absolute; right: 1024px; top: 0px;"
               >
                 <div
                   class="ram-popover__header p-table__header"

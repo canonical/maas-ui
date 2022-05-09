@@ -24,12 +24,12 @@ const ZonesListTable = (): JSX.Element => {
   const headers = [
     { content: "Name", sortKey: "name" },
     { content: "Description", sortKey: "description" },
-    { content: "Machines", sortKey: "machines", className: "u-align--right" },
-    { content: "Devices", sortKey: "devices", className: "u-align--right" },
+    { className: "u-align--right", content: "Machines", sortKey: "machines" },
+    { className: "u-align--right", content: "Devices", sortKey: "devices" },
     {
+      className: "u-align--right",
       content: "Controllers",
       sortKey: "controllers",
-      className: "u-align--right",
     },
   ];
   const rows = zones.map((zone) => {
@@ -40,7 +40,6 @@ const ZonesListTable = (): JSX.Element => {
       zone: [zone.name],
     });
     return {
-      key: zone.id,
       className: "p-table__row",
       columns: [
         {
@@ -54,36 +53,37 @@ const ZonesListTable = (): JSX.Element => {
           content: zone.description,
         },
         {
+          className: "u-align--right",
           content: (
             <Link to={`${machineURLs.machines.index}${machinesFilter}`}>
               {zone.machines_count}
             </Link>
           ),
-          className: "u-align--right",
         },
         {
+          className: "u-align--right",
           content: (
             <Link to={`${deviceURLs.devices.index}${devicesFilter}`}>
               {zone.devices_count}
             </Link>
           ),
-          className: "u-align--right",
         },
         {
+          className: "u-align--right",
           content: (
             <Link to={controllersURLs.controllers.index}>
               {zone.controllers_count}
             </Link>
           ),
-          className: "u-align--right",
         },
       ],
+      key: zone.id,
       sortData: {
-        name: zone.name,
-        description: zone.description,
-        machines: zone.machines_count,
-        devices: zone.devices_count,
         controllers: zone.controllers_count,
+        description: zone.description,
+        devices: zone.devices_count,
+        machines: zone.machines_count,
+        name: zone.name,
       },
     };
   });

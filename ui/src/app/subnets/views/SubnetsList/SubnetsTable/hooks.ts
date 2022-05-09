@@ -49,7 +49,7 @@ export const useSubnetsTable = (
   useEffect(() => {
     if (loaded) {
       setState({
-        data: getTableData({ fabrics, vlans, subnets, spaces }, groupBy),
+        data: getTableData({ fabrics, spaces, subnets, vlans }, groupBy),
         loaded: true,
       });
     }
@@ -109,10 +109,10 @@ export function usePagination<D>(
   );
 
   return {
-    pageData,
     currentPage: pageIndex + 1,
-    paginate,
     itemsPerPage,
+    pageData,
+    paginate,
     totalItems,
   };
 }

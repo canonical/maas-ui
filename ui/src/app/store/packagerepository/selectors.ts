@@ -39,6 +39,6 @@ const portsArchive = (state: RootState): PackageRepository | null =>
     (repo) => repo.default && repo.name === "ports_archive"
   ) || null;
 
-const selectors = { ...defaultSelectors, portsArchive, mainArchive };
+const selectors = { ...defaultSelectors, mainArchive, portsArchive };
 
 export default selectors;

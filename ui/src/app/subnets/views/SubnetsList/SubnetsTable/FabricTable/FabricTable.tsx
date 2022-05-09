@@ -41,35 +41,35 @@ const FabricTable = ({
         columns={useMemo(
           () => [
             {
+              Cell: CellContents,
               Header: subnetColumnLabels[SubnetsColumns.FABRIC],
               accessor: SubnetsColumns.FABRIC,
-              Cell: CellContents,
             },
             {
+              Cell: CellContents,
               Header: subnetColumnLabels[SubnetsColumns.VLAN],
               accessor: SubnetsColumns.VLAN,
-              Cell: CellContents,
             },
             {
+              Cell: CellContents,
               Header: subnetColumnLabels[SubnetsColumns.DHCP],
               accessor: SubnetsColumns.DHCP,
-              Cell: CellContents,
             },
             {
+              Cell: CellContents,
               Header: subnetColumnLabels[SubnetsColumns.SUBNET],
               accessor: SubnetsColumns.SUBNET,
-              Cell: CellContents,
             },
             {
+              Cell: CellContents,
               Header: subnetColumnLabels[SubnetsColumns.IPS],
               accessor: SubnetsColumns.IPS,
-              Cell: CellContents,
             },
             {
+              Cell: CellContents,
               Header: subnetColumnLabels[SubnetsColumns.SPACE],
               accessor: SubnetsColumns.SPACE,
               className: "u-align--right",
-              Cell: CellContents,
             },
           ],
           []

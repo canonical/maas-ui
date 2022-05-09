@@ -40,13 +40,13 @@ const statusHandlers = generateStatusHandlers<VLANState, VLAN, VLANMeta.PK>(
 );
 
 const vlanSlice = createSlice({
-  name: VLANMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
     eventErrors: [],
     statuses: {},
   } as VLANState,
+  name: VLANMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       VLANState,
@@ -57,8 +57,8 @@ const vlanSlice = createSlice({
     configureDHCP: {
       prepare: (params: ConfigureDHCPParams) => ({
         meta: {
-          model: VLANMeta.MODEL,
           method: "configure_dhcp",
+          model: VLANMeta.MODEL,
         },
         payload: {
           params,
@@ -103,8 +103,8 @@ const vlanSlice = createSlice({
     get: {
       prepare: (id: VLAN[VLANMeta.PK]) => ({
         meta: {
-          model: VLANMeta.MODEL,
           method: "get",
+          model: VLANMeta.MODEL,
         },
         payload: {
           params: { [VLANMeta.PK]: id },
@@ -143,8 +143,8 @@ const vlanSlice = createSlice({
     setActive: {
       prepare: (id: VLAN[VLANMeta.PK] | null) => ({
         meta: {
-          model: VLANMeta.MODEL,
           method: "set_active",
+          model: VLANMeta.MODEL,
         },
         payload: {
           // Server unsets active item if primary key is not sent.

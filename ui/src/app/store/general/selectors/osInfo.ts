@@ -40,8 +40,8 @@ const _getUbuntuKernelOptions = (
   const noMin = ["", "No minimum kernel"];
 
   return [noMin, ...kernelOptions].map((option) => ({
-    value: option[0],
     label: option[1],
+    value: option[0],
   }));
 };
 
@@ -96,8 +96,8 @@ const _getOsReleases = (
       );
     }
     osReleases = releases.map((release: OSInfoRelease) => ({
-      value: release[0].split("/")[1],
       label: release[1],
+      value: release[0].split("/")[1],
     }));
   }
 
@@ -176,12 +176,12 @@ const getLicensedOsystems = createSelector(
 
 const osInfo = {
   ...generalSelectors,
-  getUbuntuKernelOptions,
-  getAllUbuntuKernelOptions,
-  getOsReleases,
   getAllOsReleases,
+  getAllUbuntuKernelOptions,
   getLicensedOsReleases,
   getLicensedOsystems,
+  getOsReleases,
+  getUbuntuKernelOptions,
 };
 
 export default osInfo;

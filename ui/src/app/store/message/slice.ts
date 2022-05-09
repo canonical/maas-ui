@@ -12,10 +12,10 @@ const getMessageId = () => {
 };
 
 const messageSlice = createSlice({
-  name: MessageMeta.MODEL,
   initialState: {
     items: [],
   } as MessageState,
+  name: MessageMeta.MODEL,
   reducers: {
     add: {
       prepare: (

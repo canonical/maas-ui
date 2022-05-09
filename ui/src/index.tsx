@@ -28,18 +28,18 @@ const sagaMiddleware = createSagaMiddleware();
 const checkMiddleware = process.env.REACT_APP_CHECK_MIDDLEWARE === "true";
 const middleware = [
   ...getDefaultMiddleware({
-    thunk: false,
     immutableCheck: checkMiddleware,
     serializableCheck: checkMiddleware,
+    thunk: false,
   }),
   sagaMiddleware,
   routerMiddleware,
 ];
 
 export const store = configureStore({
-  reducer,
-  middleware,
   devTools: process.env.NODE_ENV !== "production",
+  middleware,
+  reducer,
 });
 
 export const history = createReduxHistory(store);

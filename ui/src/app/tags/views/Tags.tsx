@@ -27,8 +27,8 @@ const getViewState = (
     return TagViewState.Creating;
   }
   const isUpdating = matchPath(pathname, {
-    path: tagsURLs.tag.update(null, true),
     exact: true,
+    path: tagsURLs.tag.update(null, true),
     strict: false,
   });
   if (isUpdating) {
@@ -45,8 +45,8 @@ const Tags = (): JSX.Element => {
   const tagViewState = getViewState(headerContent, pathname);
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) =>
     setHeaderContent({
-      view: TagHeaderViews.DeleteTag,
       extras: { fromDetails, id },
+      view: TagHeaderViews.DeleteTag,
     });
   return (
     <Section

@@ -15,8 +15,8 @@ import {
 } from "app/store/utils/slice";
 
 const ipRangeSlice = createSlice({
-  name: IPRangeMeta.MODEL,
   initialState: genericInitialState as IPRangeState,
+  name: IPRangeMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       IPRangeState,
@@ -28,8 +28,8 @@ const ipRangeSlice = createSlice({
     get: {
       prepare: (id: IPRange[IPRangeMeta.PK]) => ({
         meta: {
-          model: IPRangeMeta.MODEL,
           method: "get",
+          model: IPRangeMeta.MODEL,
         },
         payload: {
           params: { id },
@@ -39,9 +39,6 @@ const ipRangeSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    getStart: (state: IPRangeState) => {
-      state.loading = true;
-    },
     getError: (
       state: IPRangeState,
       action: PayloadAction<IPRangeState["errors"]>
@@ -49,6 +46,9 @@ const ipRangeSlice = createSlice({
       state.errors = action.payload;
       state.loading = false;
       state.saving = false;
+    },
+    getStart: (state: IPRangeState) => {
+      state.loading = true;
     },
     getSuccess: (state: IPRangeState, action: PayloadAction<IPRange>) => {
       const ipRange = action.payload;

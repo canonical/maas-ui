@@ -17,7 +17,7 @@ export enum Label {
 }
 
 export const FabricSelect = ({
-  defaultOption = { label: "Select fabric", value: "", disabled: true },
+  defaultOption = { disabled: true, label: "Select fabric", value: "" },
   name,
   label = "Fabric",
   disabled,

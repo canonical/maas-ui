@@ -14,6 +14,6 @@ export const splitImageName = (
 ): { os: string; arch: string; subArch: string; release: string } => {
   const split = name.split("/");
   return split.length === 4
-    ? { os: split[0], arch: split[1], subArch: split[2], release: split[3] }
-    : { os: "", arch: "", subArch: "", release: "" };
+    ? { arch: split[1], os: split[0], release: split[3], subArch: split[2] }
+    : { arch: "", os: "", release: "", subArch: "" };
 };

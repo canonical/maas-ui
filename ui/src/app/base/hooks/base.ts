@@ -149,9 +149,9 @@ export const useScrollOnRender = <T extends HTMLElement>(): ((
       const targetPartiallyOffBottom = topOnScreen && bottomOffBottom;
       if (topOffBottom || topOffTop || targetPartiallyOffBottom) {
         window.scrollTo({
-          top: targetTop,
-          left: 0,
           behavior: "smooth",
+          left: 0,
+          top: targetTop,
         });
       }
     }

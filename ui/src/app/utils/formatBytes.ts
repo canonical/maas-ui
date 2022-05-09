@@ -33,7 +33,7 @@ export const formatBytes = (
   const negative = value < 0;
   const parsedValue = Math.abs(value);
   if (parsedValue === 0) {
-    return { value: 0, unit: convertTo || "B" };
+    return { unit: convertTo || "B", value: 0 };
   }
   const k = binary ? 1024 : 1000;
   const sizes = binary
@@ -58,7 +58,7 @@ export const formatBytes = (
   }
 
   return {
-    value: negative ? -valueInUnit : valueInUnit,
     unit: sizes[j],
+    value: negative ? -valueInUnit : valueInUnit,
   };
 };

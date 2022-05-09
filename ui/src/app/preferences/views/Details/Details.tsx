@@ -56,8 +56,8 @@ export const Details = (): JSX.Element => {
               if (authUser) {
                 dispatch(
                   userActions.update({
-                    id: authUser.id,
                     email: values.email,
+                    id: authUser.id,
                     is_superuser: values.isSuperuser,
                     last_name: values.fullName,
                     username: values.username,
@@ -71,9 +71,9 @@ export const Details = (): JSX.Element => {
               if (passwordChanged) {
                 dispatch(
                   authActions.changePassword({
-                    old_password: values.old_password,
                     new_password1: values.password,
                     new_password2: values.passwordConfirm,
+                    old_password: values.old_password,
                   })
                 );
               }

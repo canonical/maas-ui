@@ -30,17 +30,17 @@ export type NetworkValues = {
 };
 
 export const networkFieldsSchema = {
+  fabric: Yup.number().required("Fabric is required"),
   ip_address: Yup.string(),
   mode: Yup.mixed().oneOf(Object.values(NetworkLinkMode)),
-  fabric: Yup.number().required("Fabric is required"),
   subnet: Yup.number(),
   vlan: Yup.number().required("VLAN is required"),
 };
 
 export const networkFieldsInitialValues = {
+  fabric: "",
   ip_address: "",
   mode: "",
-  fabric: "",
   subnet: "",
   vlan: "",
 } as NetworkValues;

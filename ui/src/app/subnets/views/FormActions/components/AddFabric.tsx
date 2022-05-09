@@ -28,7 +28,7 @@ const AddFabric = ({
       aria-label="Add fabric"
       buttonsBordered={false}
       cleanup={fabricActions.cleanup}
-      initialValues={{ name: "", description: "" }}
+      initialValues={{ description: "", name: "" }}
       onSaveAnalytics={{
         action: "Add fabric",
         category: "Subnets form actions",
@@ -37,7 +37,7 @@ const AddFabric = ({
       submitLabel={`Add ${activeForm}`}
       onSubmit={({ name, description }) => {
         dispatch(fabricActions.cleanup());
-        dispatch(fabricActions.create({ name, description }));
+        dispatch(fabricActions.create({ description, name }));
       }}
       onCancel={() => setActiveForm(null)}
       onSuccess={() => setActiveForm(null)}

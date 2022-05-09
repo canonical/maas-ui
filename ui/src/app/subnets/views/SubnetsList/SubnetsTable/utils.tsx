@@ -35,9 +35,9 @@ import {
 import { simpleSortByKey } from "app/utils";
 
 const getColumn = (label: string | null, href?: string | null) => ({
-  label,
   href: href ? href : null,
   isVisuallyHidden: false,
+  label,
 });
 
 export const groupRowsByFabricAndVlan = (
@@ -98,28 +98,28 @@ const getRowData = ({
   data?: SubnetsTableData;
 }): SubnetsTableRow => {
   return {
-    fabric: getColumn(getFabricDisplay(fabric), getFabricLink(fabric?.id)),
-    vlan: getColumn(
-      getVLANDisplay(vlan),
-      vlan?.id ? getVLANLink(vlan?.id) : null
-    ),
     dhcp: getColumn(
       data ? getDHCPStatus(vlan, data.vlans, data.fabrics, true) : null
     ),
+    fabric: getColumn(getFabricDisplay(fabric), getFabricLink(fabric?.id)),
+    ips: getColumn(subnet ? getAvailableIPs(subnet) : null),
+    sortData: {
+      cidr: subnet?.cidr || "",
+      fabricId: fabric?.id || "",
+      fabricName: getFabricDisplay(fabric)?.toLowerCase() || "",
+
+      spaceName: getSpaceDisplay(space)?.toLowerCase() || "",
+      vlanId: vlan?.id || "",
+    },
+    space: getColumn(getSpaceDisplay(space), getSpaceLink(space?.id)),
     subnet: getColumn(
       subnet?.id ? getSubnetDisplay(subnet) : null,
       subnet?.id ? getSubnetLink(subnet?.id) : null
     ),
-    ips: getColumn(subnet ? getAvailableIPs(subnet) : null),
-    space: getColumn(getSpaceDisplay(space), getSpaceLink(space?.id)),
-    sortData: {
-      fabricId: fabric?.id || "",
-      fabricName: getFabricDisplay(fabric)?.toLowerCase() || "",
-      vlanId: vlan?.id || "",
-
-      spaceName: getSpaceDisplay(space)?.toLowerCase() || "",
-      cidr: subnet?.cidr || "",
-    },
+    vlan: getColumn(
+      getVLANDisplay(vlan),
+      vlan?.id ? getVLANLink(vlan?.id) : null
+    ),
   };
 };
 
@@ -129,7 +129,7 @@ const getOrphanVLANs = (data: SubnetsTableData): SubnetsTableRow[] => {
   subnets.forEach((subnet) => {
     const vlan = getVlanById(data.vlans, subnet.vlan) as VLAN;
     const fabric = getFabricById(data.fabrics, vlan.fabric) as Fabric;
-    rows.push(getRowData({ fabric, vlan, subnet, space: undefined, data }));
+    rows.push(getRowData({ data, fabric, space: undefined, subnet, vlan }));
   });
 
   return rows.sort((a, b) =>
@@ -148,12 +148,12 @@ const getBySpaces = (data: SubnetsTableData): SubnetsTableRow[] => {
       const subnets = getSubnetsInSpace(data.subnets, space.id);
 
       if (subnets.length < 1) {
-        rows.push(getRowData({ space, data }));
+        rows.push(getRowData({ data, space }));
       }
       subnets.forEach((subnet) => {
         const vlan = getVlanById(data.vlans, subnet.vlan) as VLAN;
         const fabric = getFabricById(data.fabrics, vlan.fabric) as Fabric;
-        rows.push(getRowData({ fabric, vlan, subnet, space, data }));
+        rows.push(getRowData({ data, fabric, space, subnet, vlan }));
       });
     });
   }
@@ -181,11 +181,11 @@ const getByFabric = (data: SubnetsTableData): SubnetsTableRow[] => {
         const vlanHasSubnets = subnetsInVLAN.length > 0;
         if (!vlanHasSubnets) {
           const space = getSpaceById(data.spaces, vlan.space);
-          rows.push(getRowData({ fabric, vlan, space, data }));
+          rows.push(getRowData({ data, fabric, space, vlan }));
         } else {
           subnetsInVLAN.forEach((subnet) => {
             const space = getSpaceById(data.spaces, subnet.space);
-            rows.push(getRowData({ fabric, vlan, subnet, space, data }));
+            rows.push(getRowData({ data, fabric, space, subnet, vlan }));
           });
         }
       });

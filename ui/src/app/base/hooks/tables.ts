@@ -44,12 +44,12 @@ export const useTableSort = <I, K extends string | null, A = null>(
 
     if (newSortKey === key) {
       if (direction === SortDirection.ASCENDING) {
-        setCurrentSort({ key: null, direction: SortDirection.NONE });
+        setCurrentSort({ direction: SortDirection.NONE, key: null });
       } else {
-        setCurrentSort({ key, direction: SortDirection.ASCENDING });
+        setCurrentSort({ direction: SortDirection.ASCENDING, key });
       }
     } else {
-      setCurrentSort({ key: newSortKey, direction: SortDirection.DESCENDING });
+      setCurrentSort({ direction: SortDirection.DESCENDING, key: newSortKey });
     }
   };
 

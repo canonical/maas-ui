@@ -52,9 +52,9 @@ export const readScript = (
     if (binaryStr) {
       const meta = hasMetadata(binaryStr);
       callback({
+        hasMetadata: meta,
         name: scriptName,
         script: binaryStr,
-        hasMetadata: meta,
       });
     } else {
       callback(null);

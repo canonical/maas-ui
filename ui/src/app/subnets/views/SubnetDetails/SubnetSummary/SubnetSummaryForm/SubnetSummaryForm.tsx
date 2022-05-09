@@ -16,15 +16,15 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 
 const subnetSummaryFormSchema = Yup.object().shape({
-  name: Yup.string(),
-  cidr: Yup.string(),
-  gateway_ip: Yup.string(),
-  dns_servers: Yup.string(),
-  description: Yup.string(),
-  managed: Yup.boolean(),
   active_discovery: Yup.boolean(),
-  allow_proxy: Yup.boolean(),
   allow_dns: Yup.boolean(),
+  allow_proxy: Yup.boolean(),
+  cidr: Yup.string(),
+  description: Yup.string(),
+  dns_servers: Yup.string(),
+  gateway_ip: Yup.string(),
+  managed: Yup.boolean(),
+  name: Yup.string(),
   vlan: Yup.number().required("VLAN is required"),
 });
 

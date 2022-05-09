@@ -45,8 +45,8 @@ const getOptionsFromName = <V extends ConfigValues>(
   const found = arr.find((item) => item.name === name);
   if (found && found.choices) {
     return found.choices.map((choice) => ({
-      value: choice[0],
       label: choice[1],
+      value: choice[0],
     }));
   }
   return null;
@@ -552,9 +552,9 @@ const config = {
   diskEraseWithQuick,
   diskEraseWithSecure,
   distroSeriesOptions,
+  dnsTrustedAcl,
   dnssecOptions,
   dnssecValidation,
-  dnsTrustedAcl,
   enableDiskErasing,
   enableHttpProxy,
   errors,
@@ -563,10 +563,10 @@ const config = {
   kernelParams,
   loaded,
   loading,
-  maasName,
-  maasAutoIpmiUser,
   maasAutoIpmiKGBmcKey,
+  maasAutoIpmiUser,
   maasAutoUserPrivilegeLevel,
+  maasName,
   maasUrl,
   networkDiscovery,
   networkDiscoveryOptions,

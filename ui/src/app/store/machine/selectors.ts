@@ -141,8 +141,8 @@ const search = createSelector(
       terms: string | null,
       selectedIDs: Machine[MachineMeta.PK][]
     ) => ({
-      terms,
       selectedIDs,
+      terms,
     }),
   ],
   (items: Machine[], tags, { terms, selectedIDs }) => {
@@ -218,8 +218,8 @@ const eventErrorsForIds = createSelector(
       ids: Machine[MachineMeta.PK] | Machine[MachineMeta.PK][],
       event?: string[] | string | null
     ) => ({
-      ids,
       event,
+      ids,
     }),
   ],
   (errors: MachineState["eventErrors"][0][], { ids, event }) => {
@@ -336,8 +336,8 @@ const selectors = {
   getByStatusCode,
   getDeployedWithTag,
   getInterfaceById,
-  getStatuses,
   getStatusForMachine,
+  getStatuses,
   linkingSubnet: statusSelectors["linkingSubnet"],
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
@@ -355,10 +355,10 @@ const selectors = {
   testing: statusSelectors["testing"],
   turningOff: statusSelectors["turningOff"],
   turningOn: statusSelectors["turningOn"],
-  unlocking: statusSelectors["unlocking"],
   unlinkingSubnet: statusSelectors["unlinkingSubnet"],
-  untagging: statusSelectors["untagging"],
+  unlocking: statusSelectors["unlocking"],
   unselected,
+  untagging: statusSelectors["untagging"],
   updatingTags,
 };
 

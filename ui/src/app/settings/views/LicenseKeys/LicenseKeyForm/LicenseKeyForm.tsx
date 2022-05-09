@@ -25,9 +25,9 @@ type Props = {
 };
 
 const LicenseKeySchema = Yup.object().shape({
-  osystem: Yup.string().required("Operating system is required"),
   distro_series: Yup.string().required("Release is required"),
   license_key: Yup.string().required("A license key is required"),
+  osystem: Yup.string().required("Operating system is required"),
 });
 
 export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
@@ -74,11 +74,11 @@ export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
           cleanup={licenseKeysActions.cleanup}
           errors={errors}
           initialValues={{
-            osystem: licenseKey ? licenseKey.osystem : osystems[0][0],
             distro_series: licenseKey
               ? licenseKey.distro_series
               : releases[osystems[0][0]][0].value,
             license_key: licenseKey ? licenseKey.license_key : "",
+            osystem: licenseKey ? licenseKey.osystem : osystems[0][0],
           }}
           onCancel={() =>
             history.push({ pathname: settingsURLs.licenseKeys.index })
@@ -90,9 +90,9 @@ export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
           }}
           onSubmit={(values) => {
             const params = {
-              osystem: values.osystem,
               distro_series: values.distro_series,
               license_key: values.license_key,
+              osystem: values.osystem,
             };
             if (editing) {
               if (licenseKey) {

@@ -49,8 +49,8 @@ const DatastoresTable = ({
     { content: "Size" },
     { content: "Mount point" },
     {
-      content: "Actions",
       className: "u-align--right",
+      content: "Actions",
     },
   ];
 
@@ -68,6 +68,7 @@ const DatastoresTable = ({
             { content: formatSize(disk.size) },
             { content: fs.mount_point },
             {
+              className: "u-align--right",
               content: (
                 <TableActionsDropdown
                   actions={[
@@ -82,7 +83,6 @@ const DatastoresTable = ({
                   }
                 />
               ),
-              className: "u-align--right",
             },
           ].map((column, i) => ({
             ...column,

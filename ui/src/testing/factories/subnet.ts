@@ -39,8 +39,8 @@ export const subnetStatistics = define<SubnetStatistics>({
   suggested_dynamic_range: subnetStatisticsRange,
   suggested_gateway: null,
   total_addresses: random,
-  usage_string: "1%",
   usage: random,
+  usage_string: "1%",
 });
 
 export const subnetBMCNode = define<SubnetBMCNode>({

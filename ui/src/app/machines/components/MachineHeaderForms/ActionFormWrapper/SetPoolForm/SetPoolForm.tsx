@@ -31,9 +31,9 @@ export const SetPoolForm = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [initialValues, setInitialValues] = useState<SetPoolFormValues>({
-    poolSelection: "select",
     description: "",
     name: "",
+    poolSelection: "select",
   });
   const poolErrors = useSelector(resourcePoolSelectors.errors);
   const resourcePools = useSelector(resourcePoolSelectors.all);

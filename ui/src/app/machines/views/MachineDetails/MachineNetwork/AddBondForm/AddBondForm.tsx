@@ -157,7 +157,7 @@ const AddBondForm = ({
   // When editing the bond members then display all valid nics, otherwise just
   // show the selected nics.
   const rows = editingMembers
-    ? validNics.map(({ id, links }) => ({ nicId: id, linkId: links[0]?.id }))
+    ? validNics.map(({ id, links }) => ({ linkId: links[0]?.id, nicId: id }))
     : selected;
   const macAddress = firstNic?.mac_address || "";
   return (
@@ -170,16 +170,16 @@ const AddBondForm = ({
           ...networkFieldsInitialValues,
           bond_downdelay: 0,
           bond_lacp_rate: "",
-          bond_mode: BondMode.ACTIVE_BACKUP,
           bond_miimon: 0,
+          bond_mode: BondMode.ACTIVE_BACKUP,
           bond_updelay: 0,
           bond_xmit_hash_policy: "",
           fabric: vlan ? vlan.fabric : "",
           linkMonitoring: "",
           mac_address: macAddress,
-          name: nextName || "",
-          macSource: MacSource.NIC,
           macNic: macAddress,
+          macSource: MacSource.NIC,
+          name: nextName || "",
           subnet: subnet ? subnet.id : "",
           tags: [],
           vlan: bondVLAN || "",

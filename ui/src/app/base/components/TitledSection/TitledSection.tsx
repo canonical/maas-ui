@@ -36,8 +36,8 @@ const Heading = ({ element, id, className, children }: HeadingProps) =>
   React.createElement(
     element,
     {
-      id,
       className,
+      id,
     },
     children
   );

@@ -150,8 +150,8 @@ const VMsTable = ({
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
     {
-      key: "hostname",
       direction: SortDirection.DESCENDING,
+      key: "hostname",
     }
   );
   const sortedVms = sortRows(vms);

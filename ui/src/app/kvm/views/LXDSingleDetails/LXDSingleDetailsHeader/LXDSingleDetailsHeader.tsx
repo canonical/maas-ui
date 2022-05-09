@@ -95,16 +95,16 @@ const LXDSingleDetailsHeader = ({
                 ),
               },
               {
-                title: "VMs:",
                 subtitle: `${pod.resources.vm_count.tracked} available`,
+                title: "VMs:",
               },
               {
-                title: "AZ:",
                 subtitle: zone?.name || <Spinner />,
+                title: "AZ:",
               },
               {
-                title: "LXD project:",
                 subtitle: pod.power_parameters.project,
+                title: "LXD project:",
               },
             ]
           : []

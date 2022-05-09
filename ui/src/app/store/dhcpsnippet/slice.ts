@@ -9,8 +9,8 @@ import {
 } from "app/store/utils/slice";
 
 const dhcpSnippetSlice = createSlice({
-  name: DHCPSnippetMeta.MODEL,
   initialState: genericInitialState as DHCPSnippetState,
+  name: DHCPSnippetMeta.MODEL,
   reducers: generateCommonReducers<
     DHCPSnippetState,
     DHCPSnippetMeta.PK,

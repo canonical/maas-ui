@@ -96,8 +96,8 @@ export const ChangeStorageLayout = ({ systemId }: Props): JSX.Element => {
           dispatch(machineActions.cleanup());
           dispatch(
             machineActions.applyStorageLayout({
-              systemId,
               storageLayout: selectedLayout.value,
+              systemId,
             })
           );
         }}

@@ -34,16 +34,16 @@ const AddDeviceSchema = Yup.object().shape({
   interfaces: Yup.array()
     .of(
       Yup.object().shape({
-        mac: Yup.string()
-          .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
-          .required("MAC address is required"),
-        ip_assignment: Yup.string().required("IP assignment is required"),
         ip_address: Yup.string().when("ip_assignment", {
           is: (ipAssignment: DeviceIpAssignment) =>
             ipAssignment === DeviceIpAssignment.STATIC ||
             ipAssignment === DeviceIpAssignment.EXTERNAL,
           then: Yup.string().required("IP address is required"),
         }),
+        ip_assignment: Yup.string().required("IP assignment is required"),
+        mac: Yup.string()
+          .matches(MAC_ADDRESS_REGEX, "Invalid MAC address")
+          .required("MAC address is required"),
         subnet: Yup.number().when("ip_assignment", {
           is: (ipAssignment: DeviceIpAssignment) =>
             ipAssignment === DeviceIpAssignment.STATIC,
@@ -141,7 +141,7 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
             }
             return split;
           },
-          { primary_mac: "", extra_macs: [] }
+          { extra_macs: [], primary_mac: "" }
         );
         const params = {
           domain: { name: domain },

@@ -24,12 +24,34 @@ type HistoryItemMeta = {
 type LogsItemMeta = HistoryItemMeta & { data_type: ScriptResultDataType };
 
 const scriptResultSlice = createSlice({
-  name: ScriptResultMeta.MODEL,
+  extraReducers: {
+    "noderesult/createNotify": (state, action) => {
+      const existingIdx = state.items.findIndex(
+        (existingItem) => existingItem.id === action.payload.id
+      );
+      if (existingIdx !== -1) {
+        state.items[existingIdx] = action.payload;
+      } else {
+        state.items.push(action.payload);
+      }
+    },
+    "noderesult/updateNotify": (state, action) => {
+      const existingIdx = state.items.findIndex(
+        (existingItem) => existingItem.id === action.payload.id
+      );
+      if (existingIdx !== -1) {
+        state.items[existingIdx] = action.payload;
+      } else {
+        state.items.push(action.payload);
+      }
+    },
+  },
   initialState: {
     ...genericInitialState,
     history: {},
     logs: null,
   } as ScriptResultState,
+  name: ScriptResultMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       ScriptResultState,
@@ -40,8 +62,8 @@ const scriptResultSlice = createSlice({
     get: {
       prepare: (id: ScriptResult[ScriptResultMeta.PK]) => ({
         meta: {
-          model: "noderesult",
           method: "get",
+          model: "noderesult",
         },
         payload: {
           params: {
@@ -53,39 +75,11 @@ const scriptResultSlice = createSlice({
         // no state changes needed
       },
     },
-    getStart: (state: ScriptResultState, _action: PayloadAction<null>) => {
-      state.loading = true;
-    },
-    getError: (
-      state: ScriptResultState,
-      action: PayloadAction<ScriptResultState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.loading = false;
-    },
-    getSuccess: (
-      state: ScriptResultState,
-      action: PayloadAction<ScriptResult>
-    ) => {
-      const result = action.payload;
-      const i = state.items.findIndex(
-        (draftItem: ScriptResult) => draftItem.id === result.id
-      );
-      if (i !== -1) {
-        state.items[i] = result;
-      } else {
-        state.items.push(result);
-      }
-      if (!(result.id in state.history)) {
-        state.history[result.id] = [];
-      }
-      state.loading = false;
-    },
     getByNodeId: {
       prepare: (nodeID: Node["system_id"]) => ({
         meta: {
-          model: "noderesult",
           method: "list",
+          model: "noderesult",
           nocache: true,
         },
         payload: {
@@ -98,12 +92,6 @@ const scriptResultSlice = createSlice({
         // no state changes needed
       },
     },
-    getByNodeIdStart: (
-      state: ScriptResultState,
-      _action: PayloadAction<null>
-    ) => {
-      state.loading = true;
-    },
     getByNodeIdError: (
       state: ScriptResultState,
       action: PayloadAction<ScriptResultState["errors"]>
@@ -111,6 +99,12 @@ const scriptResultSlice = createSlice({
       state.errors = action.payload;
       state.loading = false;
       state.saving = false;
+    },
+    getByNodeIdStart: (
+      state: ScriptResultState,
+      _action: PayloadAction<null>
+    ) => {
+      state.loading = true;
     },
     getByNodeIdSuccess: {
       prepare: (
@@ -149,11 +143,18 @@ const scriptResultSlice = createSlice({
         state.loaded = true;
       },
     },
+    getError: (
+      state: ScriptResultState,
+      action: PayloadAction<ScriptResultState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state.loading = false;
+    },
     getHistory: {
       prepare: (id: ScriptResult[ScriptResultMeta.PK]) => ({
         meta: {
-          model: "noderesult",
           method: "get_history",
+          model: "noderesult",
           nocache: true,
         },
         payload: {
@@ -166,12 +167,6 @@ const scriptResultSlice = createSlice({
         // no state changes needed
       },
     },
-    getHistoryStart: (
-      state: ScriptResultState,
-      _action: PayloadAction<null>
-    ) => {
-      state.loading = true;
-    },
     getHistoryError: (
       state: ScriptResultState,
       action: PayloadAction<ScriptResultState["errors"]>
@@ -179,6 +174,12 @@ const scriptResultSlice = createSlice({
       state.errors = action.payload;
       state.loading = false;
       state.saving = false;
+    },
+    getHistoryStart: (
+      state: ScriptResultState,
+      _action: PayloadAction<null>
+    ) => {
+      state.loading = true;
     },
     getHistorySuccess: {
       prepare: (
@@ -211,23 +212,20 @@ const scriptResultSlice = createSlice({
         type: ScriptResultDataType
       ) => ({
         meta: {
-          model: "noderesult",
           method: "get_result_data",
+          model: "noderesult",
           nocache: true,
         },
         payload: {
           params: {
-            id,
             data_type: type,
+            id,
           },
         },
       }),
       reducer: () => {
         // no state changes needed
       },
-    },
-    getLogsStart: (state: ScriptResultState, _action: PayloadAction<null>) => {
-      state.loading = true;
     },
     getLogsError: (
       state: ScriptResultState,
@@ -237,6 +235,9 @@ const scriptResultSlice = createSlice({
       state.loading = false;
       state.saving = false;
     },
+    getLogsStart: (state: ScriptResultState, _action: PayloadAction<null>) => {
+      state.loading = true;
+    },
     getLogsSuccess: {
       prepare: (
         id: ScriptResult[ScriptResultMeta.PK],
@@ -245,8 +246,8 @@ const scriptResultSlice = createSlice({
       ) => ({
         meta: {
           item: {
-            id,
             data_type: logType,
+            id,
           },
         },
         payload,
@@ -267,27 +268,26 @@ const scriptResultSlice = createSlice({
         state.loaded = true;
       },
     },
-  },
-  extraReducers: {
-    "noderesult/createNotify": (state, action) => {
-      const existingIdx = state.items.findIndex(
-        (existingItem) => existingItem.id === action.payload.id
-      );
-      if (existingIdx !== -1) {
-        state.items[existingIdx] = action.payload;
-      } else {
-        state.items.push(action.payload);
-      }
+    getStart: (state: ScriptResultState, _action: PayloadAction<null>) => {
+      state.loading = true;
     },
-    "noderesult/updateNotify": (state, action) => {
-      const existingIdx = state.items.findIndex(
-        (existingItem) => existingItem.id === action.payload.id
+    getSuccess: (
+      state: ScriptResultState,
+      action: PayloadAction<ScriptResult>
+    ) => {
+      const result = action.payload;
+      const i = state.items.findIndex(
+        (draftItem: ScriptResult) => draftItem.id === result.id
       );
-      if (existingIdx !== -1) {
-        state.items[existingIdx] = action.payload;
+      if (i !== -1) {
+        state.items[i] = result;
       } else {
-        state.items.push(action.payload);
+        state.items.push(result);
       }
+      if (!(result.id in state.history)) {
+        state.history[result.id] = [];
+      }
+      state.loading = false;
     },
   },
 });

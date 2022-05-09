@@ -32,11 +32,11 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
 
   const CreateDomainSchema: SchemaOf<CreateDomainValues> = Yup.object()
     .shape({
+      authoritative: Yup.bool(),
       name: Yup.string()
         .required("Domain name cannot be empty")
         .matches(DOMAIN_NAME_REGEX, "The domain name is invalid")
         .max(253, "Domain name is too long"),
-      authoritative: Yup.bool(),
     })
     .defined();
 
@@ -56,8 +56,8 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        name: "",
         authoritative: true,
+        name: "",
       }}
       onCancel={closeForm}
       onSubmit={(values) => {

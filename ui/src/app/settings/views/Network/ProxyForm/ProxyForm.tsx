@@ -14,13 +14,13 @@ import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
 const ProxySchema = Yup.object().shape({
-  proxyType: Yup.string().required(),
   httpProxy: Yup.string().when("proxyType", {
     is: (val: string) => val === "externalProxy" || val === "peerProxy",
     then: Yup.string()
       .url("Must be a valid URL.")
       .required("Please enter the proxy URL."),
   }),
+  proxyType: Yup.string().required(),
 });
 
 const ProxyForm = (): JSX.Element => {
@@ -67,30 +67,30 @@ const ProxyForm = (): JSX.Element => {
               switch (proxyType) {
                 case "builtInProxy":
                   formattedValues = {
-                    http_proxy: "",
                     enable_http_proxy: true,
+                    http_proxy: "",
                     use_peer_proxy: false,
                   };
                   break;
                 case "externalProxy":
                   formattedValues = {
-                    http_proxy: httpProxy,
                     enable_http_proxy: true,
+                    http_proxy: httpProxy,
                     use_peer_proxy: false,
                   };
                   break;
                 case "peerProxy":
                   formattedValues = {
-                    http_proxy: httpProxy,
                     enable_http_proxy: true,
+                    http_proxy: httpProxy,
                     use_peer_proxy: true,
                   };
                   break;
                 case "noProxy":
                 default:
                   formattedValues = {
-                    http_proxy: "",
                     enable_http_proxy: false,
+                    http_proxy: "",
                     use_peer_proxy: false,
                   };
                   break;

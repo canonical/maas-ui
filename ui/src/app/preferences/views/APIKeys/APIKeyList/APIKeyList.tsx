@@ -37,6 +37,7 @@ const generateRows = (
           content: token,
         },
         {
+          className: "u-align--right",
           content: (
             <TableActions
               copyValue={token}
@@ -44,7 +45,6 @@ const generateRows = (
               onDelete={() => setExpandedId(id)}
             />
           ),
-          className: "u-align--right",
         },
       ],
       expanded: expanded,
@@ -114,8 +114,8 @@ const APIKeyList = (): JSX.Element => {
             content: "Key",
           },
           {
-            content: "Actions",
             className: "u-align--right",
+            content: "Actions",
           },
         ]}
         loaded={loaded}

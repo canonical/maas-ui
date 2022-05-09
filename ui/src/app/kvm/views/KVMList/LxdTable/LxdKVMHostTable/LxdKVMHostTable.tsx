@@ -82,7 +82,6 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
   rows.map((row) => {
     const isCluster = row.hostType === LxdKVMHostType.Cluster;
     return {
-      key: row.key,
       columns: [
         {
           className: "name-col",
@@ -148,6 +147,7 @@ const generateRows = (rows: LxdKVMHostTableRow[]) =>
           ),
         },
       ],
+      key: row.key,
     };
   });
 
@@ -158,8 +158,8 @@ const LxdKVMHostTable = ({ rows }: Props): JSX.Element => {
     SortKey,
     Zone[]
   >(getSortValue, {
-    key: "name",
     direction: SortDirection.DESCENDING,
+    key: "name",
   });
   const sortedRows = sortRows(rows, zones);
   return (

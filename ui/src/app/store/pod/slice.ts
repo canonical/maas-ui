@@ -55,13 +55,13 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, PodMeta.PK>(
 );
 
 const podSlice = createSlice({
-  name: PodMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
     projects: {},
     statuses: {},
   } as PodState,
+  name: PodMeta.MODEL,
   reducers: {
     ...generateCommonReducers<PodState, PodMeta.PK, CreateParams, UpdateParams>(
       PodMeta.MODEL,
@@ -70,6 +70,23 @@ const podSlice = createSlice({
     clearProjects: (state: PodState) => {
       state.projects = {};
     },
+    compose: {
+      prepare: (params: ComposeParams) => ({
+        meta: {
+          method: "compose",
+          model: PodMeta.MODEL,
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    composeError: statusHandlers.compose.error,
+    composeStart: statusHandlers.compose.start,
+    composeSuccess: statusHandlers.compose.success,
     createNotify: (state: PodState, action) => {
       // In the event that the server erroneously attempts to create an existing machine,
       // due to a race condition etc., ensure we update instead of creating duplicates.
@@ -83,28 +100,11 @@ const podSlice = createSlice({
         state.statuses[action.payload.id] = DEFAULT_STATUSES;
       }
     },
-    compose: {
-      prepare: (params: ComposeParams) => ({
-        meta: {
-          model: PodMeta.MODEL,
-          method: "compose",
-        },
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    composeError: statusHandlers.compose.error,
-    composeStart: statusHandlers.compose.start,
-    composeSuccess: statusHandlers.compose.success,
     delete: {
       prepare: (params: DeleteParams) => ({
         meta: {
-          model: PodMeta.MODEL,
           method: "delete",
+          model: PodMeta.MODEL,
         },
         payload: {
           params,
@@ -115,8 +115,6 @@ const podSlice = createSlice({
       },
     },
     deleteError: statusHandlers.delete.error,
-    deleteStart: statusHandlers.delete.start,
-    deleteSuccess: statusHandlers.delete.success,
     deleteNotify: (state: PodState, action) => {
       const index = state.items.findIndex(
         (item: Pod) => item.id === action.payload
@@ -125,6 +123,8 @@ const podSlice = createSlice({
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
     },
+    deleteStart: statusHandlers.delete.start,
+    deleteSuccess: statusHandlers.delete.success,
     fetchSuccess: (state: PodState, action: PayloadAction<Pod[]>) => {
       state.loading = false;
       state.loaded = true;
@@ -154,8 +154,8 @@ const podSlice = createSlice({
     get: {
       prepare: (podID: Pod[PodMeta.PK]) => ({
         meta: {
-          model: PodMeta.MODEL,
           method: "get",
+          model: PodMeta.MODEL,
         },
         payload: {
           params: { id: podID },
@@ -165,35 +165,16 @@ const podSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    getStart: (state: PodState) => {
-      state.loading = true;
-    },
     getError: (state: PodState, action: PayloadAction<PodState["errors"]>) => {
       state.errors = action.payload;
       state.loading = false;
       state.saving = false;
     },
-    getSuccess: (state: PodState, action: PayloadAction<Pod>) => {
-      const pod = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Pod) => draftItem.id === pod.id
-      );
-      if (i !== -1) {
-        state.items[i] = pod;
-      } else {
-        state.items.push(pod);
-        // Set up the statuses for this pod.
-        state.statuses[pod.id] = DEFAULT_STATUSES;
-      }
-      state.loading = false;
-    },
     getProjects: {
       prepare: (params: GetProjectsParams) => ({
         meta: {
-          model: PodMeta.MODEL,
           method: "get_projects",
+          model: PodMeta.MODEL,
         },
         payload: {
           params,
@@ -202,6 +183,12 @@ const podSlice = createSlice({
       reducer: () => {
         // No state changes need to be handled for this action.
       },
+    },
+    getProjectsError: (
+      state: PodState,
+      action: PayloadAction<PodState["errors"]>
+    ) => {
+      state.errors = action.payload;
     },
     getProjectsSuccess: {
       prepare: (
@@ -231,17 +218,30 @@ const podSlice = createSlice({
         }
       },
     },
-    getProjectsError: (
-      state: PodState,
-      action: PayloadAction<PodState["errors"]>
-    ) => {
-      state.errors = action.payload;
+    getStart: (state: PodState) => {
+      state.loading = true;
+    },
+    getSuccess: (state: PodState, action: PayloadAction<Pod>) => {
+      const pod = action.payload;
+      // If the item already exists, update it, otherwise
+      // add it to the store.
+      const i = state.items.findIndex(
+        (draftItem: Pod) => draftItem.id === pod.id
+      );
+      if (i !== -1) {
+        state.items[i] = pod;
+      } else {
+        state.items.push(pod);
+        // Set up the statuses for this pod.
+        state.statuses[pod.id] = DEFAULT_STATUSES;
+      }
+      state.loading = false;
     },
     pollLxdServer: {
       prepare: (params: PollLxdServerParams) => ({
         meta: {
-          model: PodMeta.MODEL,
           method: "get_projects",
+          model: PodMeta.MODEL,
           poll: true,
         },
         payload: {
@@ -250,19 +250,6 @@ const podSlice = createSlice({
             type: PodType.LXD,
           },
         },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    pollLxdServerStop: {
-      prepare: () => ({
-        meta: {
-          model: PodMeta.MODEL,
-          method: "get_projects",
-          pollStop: true,
-        },
-        payload: null,
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
@@ -277,6 +264,19 @@ const podSlice = createSlice({
       // not yet authenticated an error is returned, but the API might respond
       // with other errors (e.g. if you've provided an invalid LXD address).
       state.errors = action.payload;
+    },
+    pollLxdServerStop: {
+      prepare: () => ({
+        meta: {
+          method: "get_projects",
+          model: PodMeta.MODEL,
+          pollStop: true,
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
     },
     pollLxdServerSuccess: {
       prepare: (
@@ -309,8 +309,8 @@ const podSlice = createSlice({
     refresh: {
       prepare: (id: Pod[PodMeta.PK]) => ({
         meta: {
-          model: PodMeta.MODEL,
           method: "refresh",
+          model: PodMeta.MODEL,
         },
         payload: {
           params: { id },
@@ -326,8 +326,8 @@ const podSlice = createSlice({
     setActive: {
       prepare: (id: Pod[PodMeta.PK] | null) => ({
         meta: {
-          model: PodMeta.MODEL,
           method: "set_active",
+          model: PodMeta.MODEL,
         },
         payload: {
           // Server unsets active pod if primary key (id) is not sent.

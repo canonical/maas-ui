@@ -111,7 +111,7 @@ export const PowerTypeFields = <V extends AnyObject>({
           label="Power type"
           name={powerTypeValueName}
           options={[
-            { label: "Select power type", value: "", disabled: true },
+            { disabled: true, label: "Select power type", value: "" },
             ...powerTypes.map((powerType) => ({
               key: `power-type-${powerType.name}`,
               label: powerType.description,

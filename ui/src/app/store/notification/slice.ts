@@ -10,8 +10,8 @@ import {
 } from "app/store/utils/slice";
 
 const notificationSlice = createSlice({
-  name: NotificationMeta.MODEL,
   initialState: genericInitialState as NotificationState,
+  name: NotificationMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       NotificationState,
@@ -22,8 +22,8 @@ const notificationSlice = createSlice({
     dismiss: {
       prepare: (id: Notification[NotificationMeta.PK]) => ({
         meta: {
-          model: NotificationMeta.MODEL,
           method: "dismiss",
+          model: NotificationMeta.MODEL,
         },
         payload: {
           params: {
@@ -35,16 +35,16 @@ const notificationSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    dismissStart: (state: NotificationState) => {
-      state.saved = false;
-      state.saving = true;
-    },
     dismissError: (
       state: NotificationState,
       action: PayloadAction<NotificationState["errors"]>
     ) => {
       state.errors = action.payload;
       state.saving = false;
+    },
+    dismissStart: (state: NotificationState) => {
+      state.saved = false;
+      state.saving = true;
     },
     dismissSuccess: (state: NotificationState) => {
       state.errors = null;

@@ -93,8 +93,8 @@ const statusHandlers = generateStatusHandlers<
   ControllerMeta.PK,
   ACTIONS.map((action) => {
     const handler: StatusHandlers<ControllerState, Controller> = {
-      status: kebabToCamelCase(action.name),
       method: "action",
+      status: kebabToCamelCase(action.name),
       statusKey: action.status,
     };
     return handler;
@@ -103,7 +103,6 @@ const statusHandlers = generateStatusHandlers<
 );
 
 const controllerSlice = createSlice({
-  name: ControllerMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
@@ -112,6 +111,7 @@ const controllerSlice = createSlice({
     selected: [],
     statuses: {},
   } as ControllerState,
+  name: ControllerMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       ControllerState,
@@ -122,8 +122,8 @@ const controllerSlice = createSlice({
     checkImages: {
       prepare: (ids: Controller[ControllerMeta.PK][]) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "check_images",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: ids.map((id) => ({ [ControllerMeta.PK]: id })),
@@ -221,8 +221,8 @@ const controllerSlice = createSlice({
     delete: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "action",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: {
@@ -278,8 +278,8 @@ const controllerSlice = createSlice({
     get: {
       prepare: (id: Controller[ControllerMeta.PK]) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "get",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: { [ControllerMeta.PK]: id },
@@ -321,8 +321,8 @@ const controllerSlice = createSlice({
     importImages: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "action",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: {
@@ -342,8 +342,8 @@ const controllerSlice = createSlice({
     off: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "action",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: {
@@ -363,8 +363,8 @@ const controllerSlice = createSlice({
     on: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "action",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: {
@@ -384,8 +384,8 @@ const controllerSlice = createSlice({
     overrideFailedTesting: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "action",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: {
@@ -405,8 +405,8 @@ const controllerSlice = createSlice({
     pollCheckImages: {
       prepare: (ids: Controller[ControllerMeta.PK][], pollId: string) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "check_images",
+          model: ControllerMeta.MODEL,
           poll: true,
           // There may be multiple check_images request being polled for
           // different controllers so manage this polling request with an ID.
@@ -465,8 +465,8 @@ const controllerSlice = createSlice({
     pollCheckImagesStop: {
       prepare: (pollId: string) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "check_images",
+          model: ControllerMeta.MODEL,
           pollId,
           pollStop: true,
         },
@@ -506,8 +506,8 @@ const controllerSlice = createSlice({
     setActive: {
       prepare: (system_id: Controller[ControllerMeta.PK] | null) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "set_active",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           // Server unsets active item if primary key (system_id) is not sent.
@@ -541,8 +541,8 @@ const controllerSlice = createSlice({
     setZone: {
       prepare: (params: SetZoneParams) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "action",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: {
@@ -564,8 +564,8 @@ const controllerSlice = createSlice({
     test: {
       prepare: (params: TestParams) => ({
         meta: {
-          model: ControllerMeta.MODEL,
           method: "action",
+          model: ControllerMeta.MODEL,
         },
         payload: {
           params: {

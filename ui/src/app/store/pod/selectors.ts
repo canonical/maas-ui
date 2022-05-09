@@ -209,8 +209,8 @@ const filteredVMs = createSelector(
   [
     tagSelectors.all,
     (state: RootState, podId: Pod[PodMeta.PK], terms: string) => ({
-      terms,
       selectedIDs: machine.selectedIDs(state),
+      terms,
       vms: getVMs(state, podId),
     }),
   ],
@@ -317,8 +317,8 @@ const getVmResource = createSelector(
       podId: Pod[PodMeta.PK],
       machineId: Machine["system_id"]
     ) => ({
-      pod: defaultSelectors.getById(state, podId),
       machineId,
+      pod: defaultSelectors.getById(state, podId),
     }),
   ],
   ({ machineId, pod }) => {
@@ -337,10 +337,10 @@ const selectors = {
   deleting,
   filteredVMs,
   getAllHosts,
-  getHost,
-  getVMs,
   getByLxdServer,
+  getHost,
   getProjectsByLxdServer,
+  getVMs,
   getVmResource,
   groupByLxdServer,
   kvms,

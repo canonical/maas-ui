@@ -23,8 +23,8 @@ type PoolFormValues = {
 };
 
 const PoolSchema = Yup.object().shape({
-  name: Yup.string().required("name is required"),
   description: Yup.string(),
+  name: Yup.string().required("name is required"),
 });
 
 export const PoolForm = ({ pool }: Props): JSX.Element => {
@@ -47,14 +47,14 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
   if (pool) {
     title = "Edit pool";
     initialValues = {
-      name: pool.name,
       description: pool.description,
+      name: pool.name,
     };
   } else {
     title = "Add pool";
     initialValues = {
-      name: "",
       description: "",
+      name: "",
     };
   }
 

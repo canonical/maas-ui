@@ -105,7 +105,6 @@ export const DoughnutChart = ({
         r={radius}
         style={{
           stroke: color,
-          strokeWidth: segmentWidth,
           // The dash array used is:
           // 1 - We want there to be a space before the first visible dash so
           //     by setting this to 0 we can use the next dash for the space.
@@ -117,6 +116,8 @@ export const DoughnutChart = ({
           strokeDasharray: `0 ${startPosition.toFixed(
             2
           )} ${segmentLength.toFixed(2)} ${remainingSpace.toFixed(2)}`,
+
+          strokeWidth: segmentWidth,
         }}
         // Rotate the segment so that the segments start at the top of
         // the chart.

@@ -121,8 +121,8 @@ const LXDHostToolbar = ({
               hasIcon
               onClick={() =>
                 setHeaderContent({
-                  view: KVMHeaderViews.COMPOSE_VM,
                   extras: { hostId },
+                  view: KVMHeaderViews.COMPOSE_VM,
                 })
               }
             >

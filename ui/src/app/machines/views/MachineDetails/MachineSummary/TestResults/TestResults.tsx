@@ -146,8 +146,8 @@ const TestResults = ({
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
                   setHeaderContent({
-                    view: MachineHeaderViews.TEST_MACHINE,
                     extras: { hardwareType: hardwareType },
+                    view: MachineHeaderViews.TEST_MACHINE,
                   });
                   sendAnalytics(
                     "Machine details",

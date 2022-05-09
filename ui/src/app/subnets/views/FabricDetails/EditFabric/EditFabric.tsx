@@ -24,8 +24,8 @@ export type FormValues = {
 };
 
 const Schema = Yup.object().shape({
-  name: Yup.string(),
   description: Yup.string(),
+  name: Yup.string(),
 });
 
 const EditFabric = ({ close, id }: Props): JSX.Element | null => {
@@ -51,8 +51,8 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        name: fabric.name,
         description: fabric.description,
+        name: fabric.name,
       }}
       onSaveAnalytics={{
         action: "Save fabric",
@@ -65,9 +65,9 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
         dispatch(cleanup());
         dispatch(
           fabricActions.update({
+            description,
             id: fabric.id,
             name,
-            description,
           })
         );
       }}

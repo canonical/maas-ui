@@ -23,17 +23,17 @@ import {
 import type { Model } from "app/store/types/model";
 
 export const bootResource = extend<Model, BootResource>(model, {
-  rtype: 0,
-  name: "ubuntu/bionic",
-  title: "18.04 LTS",
   arch: "amd64",
-  size: "650.4 MB",
   complete: false,
-  status: "Waiting for rack controller(s) to sync",
-  icon: "waiting",
   downloading: false,
-  numberOfNodes: 0,
+  icon: "waiting",
   lastUpdate: "Tue, 08 Jun. 2021 02:12:47",
+  name: "ubuntu/bionic",
+  numberOfNodes: 0,
+  rtype: 0,
+  size: "650.4 MB",
+  status: "Waiting for rack controller(s) to sync",
+  title: "18.04 LTS",
 });
 
 export const bootResourceUbuntu = define<BootResourceUbuntu>({
@@ -44,10 +44,10 @@ export const bootResourceUbuntu = define<BootResourceUbuntu>({
 });
 
 export const bootResourceUbuntuArch = define<BootResourceUbuntuArch>({
-  name: "amd64",
-  title: "amd64",
   checked: false,
   deleted: false,
+  name: "amd64",
+  title: "amd64",
 });
 
 export const bootResourceUbuntuCoreImage = define<BootResourceUbuntuCoreImage>({
@@ -58,18 +58,18 @@ export const bootResourceUbuntuCoreImage = define<BootResourceUbuntuCoreImage>({
 });
 
 export const bootResourceUbuntuSource = define<BootResourceUbuntuSource>({
+  keyring_data: "aabbccdd",
+  keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
   source_type: BootResourceSourceType.MAAS_IO,
   url: "http://images.maas.io/ephemeral-v3/stable/",
-  keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
-  keyring_data: "aabbccdd",
 });
 
 export const bootResourceUbuntuRelease = define<BootResourceUbuntuRelease>({
+  checked: false,
+  deleted: false,
   name: "xenial",
   title: "16.04 LTS",
   unsupported_arches: () => [],
-  checked: false,
-  deleted: false,
 });
 
 export const bootResourceOtherImage = define<BootResourceOtherImage>({
@@ -80,17 +80,17 @@ export const bootResourceOtherImage = define<BootResourceOtherImage>({
 });
 
 export const bootResourceFetchedArch = define<BootResourceFetchedArch>({
-  name: "amd64",
-  title: "amd64",
   checked: false,
   deleted: false,
+  name: "amd64",
+  title: "amd64",
 });
 
 export const bootResourceFetchedRelease = define<BootResourceFetchedRelease>({
-  name: "xenial",
-  title: "16.04 LTS",
   checked: false,
   deleted: false,
+  name: "xenial",
+  title: "16.04 LTS",
 });
 
 export const bootResourceFetchedImages = define<BootResourceFetchedImages>({
@@ -108,7 +108,7 @@ export const bootResourceStatuses = define<BootResourceStatuses>({
   fetching: false,
   polling: false,
   savingOther: false,
-  savingUbuntuCore: false,
   savingUbuntu: false,
+  savingUbuntuCore: false,
   stoppingImport: false,
 });

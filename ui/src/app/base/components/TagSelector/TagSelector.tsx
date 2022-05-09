@@ -232,13 +232,13 @@ export const TagSelector = ({
 
   const dropdownItems = generateDropdownItems({
     allowNewTags,
-    onAddNewTag,
-    setFilter,
     filter,
+    generateDropdownEntry,
+    onAddNewTag,
     selectedTags,
+    setFilter,
     tags,
     updateTags,
-    generateDropdownEntry,
   });
 
   return (

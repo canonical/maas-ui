@@ -7,10 +7,10 @@ import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
 const VMWareSchema = Yup.object().shape({
+  vcenter_datacenter: Yup.string(),
+  vcenter_password: Yup.string(),
   vcenter_server: Yup.string(),
   vcenter_username: Yup.string(),
-  vcenter_password: Yup.string(),
-  vcenter_datacenter: Yup.string(),
 });
 
 const VMWareForm = (): JSX.Element => {
@@ -30,10 +30,10 @@ const VMWareForm = (): JSX.Element => {
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
+        vcenter_datacenter: vCenterDatacenter,
+        vcenter_password: vCenterPassword,
         vcenter_server: vCenterServer,
         vcenter_username: vCenterUsername,
-        vcenter_password: vCenterPassword,
-        vcenter_datacenter: vCenterDatacenter,
       }}
       onSaveAnalytics={{
         action: "Saved",

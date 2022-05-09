@@ -44,13 +44,14 @@ const generateImageRow = (
   return {
     columns: [
       {
-        content: image.title,
         className: "release-col",
+        content: image.title,
         "data-testid": "new-image-title",
       },
-      { content: image.arch, className: "arch-col" },
-      { content: "—", className: "size-col" },
+      { className: "arch-col", content: image.arch },
+      { className: "size-col", content: "—" },
       {
+        className: "status-col",
         content: (
           <DoubleRow
             data-testid="new-image-status"
@@ -58,9 +59,9 @@ const generateImageRow = (
             primary="Selected for download"
           />
         ),
-        className: "status-col",
       },
       {
+        className: "actions-col u-align--right",
         content: onClear ? (
           <TableActions
             clearDisabled={!canBeCleared}
@@ -75,13 +76,12 @@ const generateImageRow = (
         ) : (
           ""
         ),
-        className: "actions-col u-align--right",
       },
     ],
     key: `${image.os}-${image.release}-${image.arch}-${image.resourceId}`,
     sortData: {
-      title: image.title,
       arch: image.arch,
+      title: image.title,
     },
   };
 };
@@ -119,10 +119,11 @@ const generateResourceRow = (
       "is-active": isExpanded,
     }),
     columns: [
-      { content: resource.title, className: "release-col" },
-      { content: resource.arch, className: "arch-col" },
-      { content: resource.size, className: "size-col" },
+      { className: "release-col", content: resource.title },
+      { className: "arch-col", content: resource.arch },
+      { className: "size-col", content: resource.size },
       {
+        className: "status-col",
         content: (
           <DoubleRow
             data-testid="resource-status"
@@ -130,9 +131,9 @@ const generateResourceRow = (
             primary={statusText}
           />
         ),
-        className: "status-col",
       },
       {
+        className: "actions-col u-align--right",
         content: (
           <TableActions
             data-testid="image-actions"
@@ -145,7 +146,6 @@ const generateResourceRow = (
             onDelete={() => setExpanded(resource.id)}
           />
         ),
-        className: "actions-col u-align--right",
       },
     ],
     expanded: isExpanded,
@@ -157,10 +157,10 @@ const generateResourceRow = (
     ) : null,
     key: `resource-${resource.id}`,
     sortData: {
-      title: resource.title,
       arch: resource.arch,
       size: resource.size,
       status: resource.status,
+      title: resource.title,
     },
   };
 };
@@ -223,15 +223,15 @@ const ImagesTable = ({
       emptyStateMsg="No images have been selected."
       expanding
       headers={[
-        { content: "Release", className: "release-col", sortKey: "title" },
-        { content: "Architecture", className: "arch-col", sortKey: "arch" },
-        { content: "Size", className: "size-col", sortKey: "size" },
+        { className: "release-col", content: "Release", sortKey: "title" },
+        { className: "arch-col", content: "Architecture", sortKey: "arch" },
+        { className: "size-col", content: "Size", sortKey: "size" },
         {
-          content: <span className="u-nudge-right--large">Status</span>,
           className: "status-col",
+          content: <span className="u-nudge-right--large">Status</span>,
           sortKey: "status",
         },
-        { content: "Actions", className: "actions-col u-align--right" },
+        { className: "actions-col u-align--right", content: "Actions" },
       ]}
       rows={rows}
       sortable

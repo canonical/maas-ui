@@ -28,10 +28,10 @@ const getPositionStyle = (
     left: number | null;
     right: number | null;
   } = {
-    position: "absolute",
-    top: top + height + window.scrollY || 0,
     left: null,
+    position: "absolute",
     right: null,
+    top: top + height + window.scrollY || 0,
   };
 
   if (position === "left") {

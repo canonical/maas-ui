@@ -20,11 +20,11 @@ import { PodType } from "app/store/pod/constants";
 import { NodeActions } from "app/store/types/node";
 
 const DeploySchema = Yup.object().shape({
+  enableHwSync: Yup.boolean(),
+  includeUserData: Yup.boolean(),
+  kernel: Yup.string(),
   oSystem: Yup.string().required("OS is required"),
   release: Yup.string().required("Release is required"),
-  kernel: Yup.string(),
-  includeUserData: Yup.boolean(),
-  enableHwSync: Yup.boolean(),
   vmHostType: Yup.string().oneOf([PodType.LXD, PodType.VIRSH, ""]),
 });
 
@@ -95,13 +95,13 @@ export const DeployForm = ({
       cleanup={machineActions.cleanup}
       errors={errors}
       initialValues={{
+        enableHwSync: false,
+        includeUserData: false,
+        kernel: defaultMinHweKernel || "",
         oSystem: initialOS,
         release: initialRelease,
-        kernel: defaultMinHweKernel || "",
-        includeUserData: false,
         userData: "",
         vmHostType: "",
-        enableHwSync: false,
       }}
       modelName="machine"
       onCancel={clearHeaderContent}

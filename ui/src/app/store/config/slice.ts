@@ -6,14 +6,19 @@ import type { Config, ConfigState, ConfigValues } from "./types";
 import { genericInitialState } from "app/store/utils/slice";
 
 const statusSlice = createSlice({
-  name: "config",
   initialState: genericInitialState as ConfigState,
+  name: "config",
   reducers: {
+    cleanup: (state: ConfigState) => {
+      state.errors = null;
+      state.saved = false;
+      state.saving = false;
+    },
     fetch: {
       prepare: () => ({
         meta: {
-          model: "config",
           method: "list",
+          model: "config",
         },
         payload: null,
       }),
@@ -21,15 +26,15 @@ const statusSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    fetchStart: (state: ConfigState) => {
-      state.loading = true;
-    },
     fetchError: (
       state: ConfigState,
       action: PayloadAction<ConfigState["errors"]>
     ) => {
       state.errors = action.payload;
       state.loading = false;
+    },
+    fetchStart: (state: ConfigState) => {
+      state.loading = true;
     },
     fetchSuccess: (
       state: ConfigState,
@@ -50,8 +55,8 @@ const statusSlice = createSlice({
         return {
           meta: {
             dispatchMultiple: true,
-            model: "config",
             method: "update",
+            model: "config",
           },
           payload: {
             params,
@@ -62,20 +67,11 @@ const statusSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    updateStart: (state: ConfigState) => {
-      state.saved = false;
-      state.saving = true;
-    },
     updateError: (
       state: ConfigState,
       action: PayloadAction<ConfigState["errors"]>
     ) => {
       state.errors = action.payload;
-      state.saving = false;
-    },
-    updateSuccess: (state: ConfigState) => {
-      state.errors = null;
-      state.saved = true;
       state.saving = false;
     },
     updateNotify: (
@@ -89,9 +85,13 @@ const statusSlice = createSlice({
         }
       }
     },
-    cleanup: (state: ConfigState) => {
-      state.errors = null;
+    updateStart: (state: ConfigState) => {
       state.saved = false;
+      state.saving = true;
+    },
+    updateSuccess: (state: ConfigState) => {
+      state.errors = null;
+      state.saved = true;
       state.saving = false;
     },
   },

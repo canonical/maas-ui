@@ -9,8 +9,8 @@ import {
 } from "app/store/utils/slice";
 
 const sslKeySlice = createSlice({
-  name: SSLKeyMeta.MODEL,
   initialState: genericInitialState as SSLKeyState,
+  name: SSLKeyMeta.MODEL,
   reducers: generateCommonReducers<
     SSLKeyState,
     SSLKeyMeta.PK,

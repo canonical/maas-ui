@@ -108,8 +108,8 @@ const eventErrorsForDevices = createSelector(
       ids: Device[DeviceMeta.PK] | Device[DeviceMeta.PK][] | null,
       event?: string | null
     ) => ({
-      ids,
       event,
+      ids,
     }),
   ],
   (errors: DeviceState["eventErrors"][0][], { ids, event }) => {
@@ -199,8 +199,8 @@ const search = createSelector(
       terms: string | null,
       selectedIDs: Device[DeviceMeta.PK][]
     ) => ({
-      terms,
       selectedIDs,
+      terms,
     }),
   ],
   (items: Device[], tags, { selectedIDs, terms }) => {
@@ -227,9 +227,9 @@ const getInterfaceById = createSelector(
       interfaceId?: DeviceNetworkInterface["id"] | null,
       linkId?: NetworkInterface["id"] | null
     ) => ({
+      deviceId,
       interfaceId,
       linkId,
-      deviceId,
     }),
   ],
   (items: Device[], { linkId, interfaceId, deviceId }) => {

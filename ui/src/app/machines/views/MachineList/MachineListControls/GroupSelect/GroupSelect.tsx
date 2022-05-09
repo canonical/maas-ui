@@ -8,28 +8,28 @@ type Props = {
 
 const groupOptions = [
   {
-    value: "none",
     label: "No grouping",
+    value: "none",
   },
   {
-    value: "owner",
     label: "Group by owner",
+    value: "owner",
   },
   {
-    value: "pool",
     label: "Group by pool",
+    value: "pool",
   },
   {
-    value: "power_state",
     label: "Group by power state",
+    value: "power_state",
   },
   {
-    value: "status",
     label: "Group by status",
+    value: "status",
   },
   {
-    value: "zone",
     label: "Group by zone",
+    value: "zone",
   },
 ];
 

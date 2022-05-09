@@ -63,8 +63,8 @@ export const useDhcpTarget = (
   }, [dispatch]);
 
   return {
-    loading: isLoading,
     loaded: hasLoaded,
+    loading: isLoading,
     target: subnet || machine || device || controller,
     type:
       (subnet && "subnet") ||

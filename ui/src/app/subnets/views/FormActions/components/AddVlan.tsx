@@ -30,9 +30,9 @@ type AddVlanValues = {
 const vidRangeError = "VID must be a numeric value between 1 and 4094";
 const vlanSchema = Yup.object()
   .shape({
-    space: Yup.number(),
     fabric: Yup.number().required("Fabric is required"),
     name: Yup.string(),
+    space: Yup.number(),
     vid: Yup.number()
       .typeError(vidRangeError)
       .min(VLANVidRange.Min, vidRangeError)
@@ -64,10 +64,10 @@ const AddVlan = ({
       buttonsBordered={false}
       cleanup={vlanActions.cleanup}
       initialValues={{
-        vid: "",
-        name: "",
         fabric: "",
+        name: "",
         space: "",
+        vid: "",
       }}
       onSaveAnalytics={{
         action: "Add VLAN",
@@ -79,10 +79,10 @@ const AddVlan = ({
         dispatch(vlanActions.cleanup());
         dispatch(
           vlanActions.create({
-            name,
             fabric: toFormikNumber(fabric),
-            vid: toFormikNumber(vid) as number,
+            name,
             space: toFormikNumber(space),
+            vid: toFormikNumber(vid) as number,
           })
         );
       }}

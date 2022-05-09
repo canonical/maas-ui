@@ -8,52 +8,52 @@ export const Nav = (): JSX.Element => (
       {
         label: "Configuration",
         subNav: [
-          { path: settingsURLs.configuration.general, label: "General" },
+          { label: "General", path: settingsURLs.configuration.general },
           {
-            path: settingsURLs.configuration.security,
             label: "Security",
+            path: settingsURLs.configuration.security,
           },
           {
-            path: settingsURLs.configuration.commissioning,
             label: "Commissioning",
+            path: settingsURLs.configuration.commissioning,
           },
-          { path: settingsURLs.configuration.deploy, label: "Deploy" },
+          { label: "Deploy", path: settingsURLs.configuration.deploy },
           {
-            path: settingsURLs.configuration.kernelParameters,
             label: "Kernel parameters",
+            path: settingsURLs.configuration.kernelParameters,
           },
         ],
       },
       {
-        path: settingsURLs.users.index,
         label: "Users",
+        path: settingsURLs.users.index,
       },
       {
         label: "Images",
         subNav: [
-          { path: settingsURLs.images.ubuntu, label: "Ubuntu" },
-          { path: settingsURLs.images.windows, label: "Windows" },
-          { path: settingsURLs.images.vmware, label: "VMware" },
+          { label: "Ubuntu", path: settingsURLs.images.ubuntu },
+          { label: "Windows", path: settingsURLs.images.windows },
+          { label: "VMware", path: settingsURLs.images.vmware },
         ],
       },
       {
-        path: settingsURLs.licenseKeys.index,
         label: "License keys",
+        path: settingsURLs.licenseKeys.index,
       },
       {
-        path: settingsURLs.storage,
         label: "Storage",
+        path: settingsURLs.storage,
       },
       {
         label: "Network",
         subNav: [
-          { path: settingsURLs.network.proxy, label: "Proxy" },
-          { path: settingsURLs.network.dns, label: "DNS" },
-          { path: settingsURLs.network.ntp, label: "NTP" },
-          { path: settingsURLs.network.syslog, label: "Syslog" },
+          { label: "Proxy", path: settingsURLs.network.proxy },
+          { label: "DNS", path: settingsURLs.network.dns },
+          { label: "NTP", path: settingsURLs.network.ntp },
+          { label: "Syslog", path: settingsURLs.network.syslog },
           {
-            path: settingsURLs.network.networkDiscovery,
             label: "Network discovery",
+            path: settingsURLs.network.networkDiscovery,
           },
         ],
       },
@@ -61,22 +61,22 @@ export const Nav = (): JSX.Element => (
         label: "Scripts",
         subNav: [
           {
-            path: settingsURLs.scripts.commissioning.index,
             label: "Commissioning scripts",
+            path: settingsURLs.scripts.commissioning.index,
           },
           {
-            path: settingsURLs.scripts.testing.index,
             label: "Testing scripts",
+            path: settingsURLs.scripts.testing.index,
           },
         ],
       },
       {
-        path: settingsURLs.dhcp.index,
         label: "DHCP snippets",
+        path: settingsURLs.dhcp.index,
       },
       {
-        path: settingsURLs.repositories.index,
         label: "Package repos",
+        path: settingsURLs.repositories.index,
       },
     ]}
     openToggleText="Settings menu"

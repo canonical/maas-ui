@@ -6,11 +6,11 @@ import { MIN_TTL } from "app/store/domain/constants";
 import { RecordType } from "app/store/domain/types";
 
 const recordTypeOptions = [
-  { value: "", label: "Type", disabled: true },
+  { disabled: true, label: "Type", value: "" },
   ...Object.values(RecordType).map((value) => {
     return {
-      value: value,
       label: value,
+      value: value,
     };
   }),
 ];

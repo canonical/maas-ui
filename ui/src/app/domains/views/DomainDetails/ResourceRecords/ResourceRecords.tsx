@@ -80,8 +80,8 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
       sortKey: "data",
     },
     {
-      content: "Actions",
       className: "u-align--right",
+      content: "Actions",
     },
   ];
 
@@ -144,6 +144,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
           content: resource.rrdata,
         },
         {
+          className: "u-align--right",
           content: (
             <ContextualMenu
               hasToggleIcon={true}
@@ -170,15 +171,8 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
               ]}
             />
           ),
-          className: "u-align--right",
         },
       ],
-      sortData: {
-        name: resource.name,
-        type: resource.rrtype,
-        ttl: resource.ttl,
-        data: resource.rrdata,
-      },
       expanded: isExpanded,
       expandedContent: isExpanded ? (
         <Row>
@@ -203,6 +197,12 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
           </Col>
         </Row>
       ) : null,
+      sortData: {
+        data: resource.rrdata,
+        name: resource.name,
+        ttl: resource.ttl,
+        type: resource.rrtype,
+      },
     };
   });
 

@@ -146,8 +146,8 @@ const MachineNetworkActions = ({
           disabled={isAllNetworkingDisabled}
           onClick={() => {
             setHeaderContent({
-              view: MachineHeaderViews.TEST_MACHINE,
               extras: { applyConfiguredNetworking: true },
+              view: MachineHeaderViews.TEST_MACHINE,
             });
             sendAnalytics(
               "Machine details",

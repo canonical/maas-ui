@@ -10,8 +10,8 @@ import {
 } from "app/store/utils/slice";
 
 const scriptSlice = createSlice({
-  name: ScriptMeta.MODEL,
   initialState: genericInitialState as ScriptState,
+  name: ScriptMeta.MODEL,
   reducers: {
     ...generateCommonReducers<ScriptState, ScriptMeta.PK, void, void>(
       ScriptMeta.MODEL,
@@ -24,9 +24,9 @@ const scriptSlice = createSlice({
         revision?: number
       ) => ({
         meta: {
-          model: ScriptMeta.MODEL,
-          method: "get_script",
           fileContextKey: fileId,
+          method: "get_script",
+          model: ScriptMeta.MODEL,
           useFileContext: true,
         },
         payload: {
@@ -40,15 +40,15 @@ const scriptSlice = createSlice({
         // no state changes needed
       },
     },
-    getStart: (state: ScriptState, _action: PayloadAction<null>) => {
-      state.loading = true;
-    },
     getError: (
       state: ScriptState,
       action: PayloadAction<ScriptState["errors"]>
     ) => {
       state.errors = action.payload;
       state.loading = false;
+    },
+    getStart: (state: ScriptState, _action: PayloadAction<null>) => {
+      state.loading = true;
     },
     getSuccess: (state: ScriptState) => {
       state.loading = false;
@@ -60,9 +60,9 @@ const scriptSlice = createSlice({
         name?: Script["name"] | null
       ) => ({
         payload: {
-          type,
           contents,
           name,
+          type,
         },
       }),
       reducer: () => {

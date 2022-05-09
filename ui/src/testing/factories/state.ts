@@ -108,8 +108,8 @@ const defaultState = {
 };
 
 const defaultGeneralState = {
-  errors: null,
   data: () => [],
+  errors: null,
   loaded: false,
   loading: false,
 };
@@ -136,8 +136,8 @@ export const bootResourceState = define<BootResourceState>({
     fetching: false,
     polling: false,
     savingOther: false,
-    savingUbuntuCore: false,
     savingUbuntu: false,
+    savingUbuntuCore: false,
     stoppingImport: false,
   }),
   ubuntu: null,
@@ -164,9 +164,9 @@ export const controllerImageSyncStatuses = define<ImageSyncStatuses>({
 export const controllerEventError = define<
   EventError<Controller, APIError, ControllerMeta.PK>
 >({
-  id: random().toString(),
   error: "Uh oh",
   event: "tag",
+  id: random().toString(),
 });
 
 export const controllerState = define<ControllerState>({
@@ -188,9 +188,9 @@ export const deviceStatuses = define<DeviceStatuses>({
 export const deviceEventError = define<
   EventError<Device, APIError, DeviceMeta.PK>
 >({
-  id: random().toString(),
   error: "Uh oh",
   event: "tag",
+  id: random().toString(),
 });
 
 export const deviceState = define<DeviceState>({
@@ -241,9 +241,9 @@ export const machineStatuses = define<MachineStatuses>({
 export const machineEventError = define<
   EventError<Machine, APIError<MachineEventErrors>, MachineMeta.PK>
 >({
-  id: random().toString(),
   error: "Uh oh",
   event: "tag",
+  id: random().toString(),
 });
 
 export const machineState = define<MachineState>({
@@ -452,9 +452,9 @@ export const subnetStatuses = define<SubnetStatuses>({
 export const subnetEventError = define<
   EventError<Subnet, APIError, SubnetMeta.PK>
 >({
-  id: random(),
   error: "Uh oh",
   event: "scan",
+  id: random(),
 });
 
 export const subnetState = define<SubnetState>({
@@ -477,9 +477,9 @@ export const vlanStatuses = define<VLANStatuses>({
 });
 
 export const vlanEventError = define<EventError<VLAN, APIError, VLANMeta.PK>>({
-  id: random(),
   error: "Uh oh",
   event: "configureDHCP",
+  id: random(),
 });
 
 export const vlanState = define<VLANState>({
@@ -507,15 +507,15 @@ export const zoneState = define<ZoneState>({
 });
 
 export const locationState = define<RouterState["location"]>({
+  hash: "",
   pathname: "/",
   search: "",
   state: null,
-  hash: "",
 });
 
 export const routerState = define<RouterState>({
-  location: locationState,
   action: "POP",
+  location: locationState,
 });
 
 export const rootState = define<RootState>({
@@ -523,10 +523,10 @@ export const rootState = define<RootState>({
   config: configState,
   controller: controllerState,
   device: deviceState,
-  discovery: discoveryState,
-  event: eventState,
   dhcpsnippet: dhcpSnippetState,
+  discovery: discoveryState,
   domain: domainState,
+  event: eventState,
   fabric: fabricState,
   general: generalState,
   iprange: ipRangeState,
@@ -534,14 +534,14 @@ export const rootState = define<RootState>({
   machine: machineState,
   message: messageState,
   nodedevice: nodeDeviceState,
-  notification: notificationState,
   nodescriptresult: nodeScriptResultState,
+  notification: notificationState,
   packagerepository: packageRepositoryState,
   pod: podState,
   resourcepool: resourcePoolState,
   router: routerState,
-  scriptresult: scriptResultState,
   script: scriptState,
+  scriptresult: scriptResultState,
   service: serviceState,
   space: spaceState,
   sshkey: sshKeyState,

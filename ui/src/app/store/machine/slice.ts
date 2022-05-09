@@ -275,6 +275,7 @@ export const DEFAULT_STATUSES = {
   applyingStorageLayout: false,
   checkingPower: false,
   cloning: false,
+  commissioning: false,
   creatingBcache: false,
   creatingBond: false,
   creatingBridge: false,
@@ -286,7 +287,6 @@ export const DEFAULT_STATUSES = {
   creatingVlan: false,
   creatingVmfsDatastore: false,
   creatingVolumeGroup: false,
-  commissioning: false,
   deleting: false,
   deletingCacheSet: false,
   deletingDisk: false,
@@ -313,8 +313,8 @@ export const DEFAULT_STATUSES = {
   testing: false,
   turningOff: false,
   turningOn: false,
-  unlocking: false,
   unlinkingSubnet: false,
+  unlocking: false,
   unmountingSpecial: false,
   untagging: false,
   updatingDisk: false,
@@ -346,8 +346,8 @@ const statusHandlers = generateStatusHandlers<
   MachineMeta.PK,
   ACTIONS.map((action) => {
     const handler: StatusHandlers<MachineState, Machine> = {
-      status: kebabToCamelCase(action.name),
       method: "action",
+      status: kebabToCamelCase(action.name),
       statusKey: action.status,
     };
     return handler;
@@ -356,7 +356,6 @@ const statusHandlers = generateStatusHandlers<
 );
 
 const machineSlice = createSlice({
-  name: MachineMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
@@ -364,6 +363,7 @@ const machineSlice = createSlice({
     selected: [],
     statuses: {},
   } as MachineState,
+  name: MachineMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       MachineState,
@@ -374,8 +374,8 @@ const machineSlice = createSlice({
     [NodeActions.ABORT]: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -395,8 +395,8 @@ const machineSlice = createSlice({
     [NodeActions.ACQUIRE]: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -444,8 +444,8 @@ const machineSlice = createSlice({
     applyStorageLayout: {
       prepare: (params: ApplyStorageLayoutParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "apply_storage_layout",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -464,8 +464,8 @@ const machineSlice = createSlice({
     checkPower: {
       prepare: (system_id: Machine[MachineMeta.PK]) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "check_power",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -483,8 +483,8 @@ const machineSlice = createSlice({
     [NodeActions.CLONE]: {
       prepare: (params: CloneParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -509,8 +509,8 @@ const machineSlice = createSlice({
       prepare: (params: CommissionParams) => {
         return {
           meta: {
-            model: MachineMeta.MODEL,
             method: "action",
+            model: MachineMeta.MODEL,
           },
           payload: {
             params: {
@@ -539,18 +539,18 @@ const machineSlice = createSlice({
     createBcache: {
       prepare: (params: CreateBcacheParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_bcache",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
+            blockId: "block_id",
             cacheMode: "cache_mode",
             cacheSetId: "cache_set",
-            systemId: MachineMeta.PK,
-            blockId: "block_id",
             mountOptions: "mount_options",
             mountPoint: "mount_point",
             partitionId: "partition_id",
+            systemId: MachineMeta.PK,
           }),
         },
       }),
@@ -564,8 +564,8 @@ const machineSlice = createSlice({
     createBond: {
       prepare: (params: CreateBondParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_bond",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -581,8 +581,8 @@ const machineSlice = createSlice({
     createBridge: {
       prepare: (params: CreateBridgeParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_bridge",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -598,8 +598,8 @@ const machineSlice = createSlice({
     createCacheSet: {
       prepare: (params: CreateCacheSetParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_cache_set",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
@@ -619,8 +619,8 @@ const machineSlice = createSlice({
     createLogicalVolume: {
       prepare: (params: CreateLogicalVolumeParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_logical_volume",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
@@ -654,8 +654,8 @@ const machineSlice = createSlice({
     createPartition: {
       prepare: (params: CreatePartitionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_partition",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -678,8 +678,8 @@ const machineSlice = createSlice({
     createPhysical: {
       prepare: (params: CreatePhysicalParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_physical",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -695,8 +695,8 @@ const machineSlice = createSlice({
     createRaid: {
       prepare: (params: CreateRaidParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_raid",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
@@ -720,8 +720,8 @@ const machineSlice = createSlice({
     createVlan: {
       prepare: (params: CreateVlanParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_vlan",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -737,8 +737,8 @@ const machineSlice = createSlice({
     createVmfsDatastore: {
       prepare: (params: CreateVmfsDatastoreParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_vmfs_datastore",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
@@ -758,8 +758,8 @@ const machineSlice = createSlice({
     createVolumeGroup: {
       prepare: (params: CreateVolumeGroupParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "create_volume_group",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
@@ -779,8 +779,8 @@ const machineSlice = createSlice({
     [NodeActions.DELETE]: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -811,8 +811,8 @@ const machineSlice = createSlice({
     deleteCacheSet: {
       prepare: (params: DeleteCacheSetParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "delete_cache_set",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -831,8 +831,8 @@ const machineSlice = createSlice({
     deleteDisk: {
       prepare: (params: DeleteDiskParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "delete_disk",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -851,8 +851,8 @@ const machineSlice = createSlice({
     deleteFilesystem: {
       prepare: (params: DeleteFilesystemParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "delete_filesystem",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
@@ -873,8 +873,8 @@ const machineSlice = createSlice({
     deleteInterface: {
       prepare: (params: DeleteInterfaceParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "delete_interface",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -893,8 +893,8 @@ const machineSlice = createSlice({
     deletePartition: {
       prepare: (params: DeletePartitionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "delete_partition",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -913,8 +913,8 @@ const machineSlice = createSlice({
     deleteVolumeGroup: {
       prepare: (params: DeleteVolumeGroupParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "delete_volume_group",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -933,8 +933,8 @@ const machineSlice = createSlice({
     [NodeActions.DEPLOY]: {
       prepare: (params: DeployParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -962,8 +962,8 @@ const machineSlice = createSlice({
     exitRescueMode: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -984,8 +984,8 @@ const machineSlice = createSlice({
       prepare: () => ({
         meta: {
           batch: true,
-          model: MachineMeta.MODEL,
           method: "list",
+          model: MachineMeta.MODEL,
           subsequentLimit: 100,
         },
         payload: {
@@ -1019,8 +1019,8 @@ const machineSlice = createSlice({
     get: {
       prepare: (machineID: Machine[MachineMeta.PK]) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "get",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: { system_id: machineID },
@@ -1061,10 +1061,12 @@ const machineSlice = createSlice({
     getSummaryXml: {
       prepare: (params: GetSummaryXmlParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
-          method: "get_summary_xml",
           // This request needs to store the results in the file context.
           fileContextKey: params.fileId,
+
+          method: "get_summary_xml",
+
+          model: MachineMeta.MODEL,
           useFileContext: true,
         },
         payload: {
@@ -1083,10 +1085,12 @@ const machineSlice = createSlice({
     getSummaryYaml: {
       prepare: (params: GetSummaryYamlParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
-          method: "get_summary_yaml",
           // This request needs to store the results in the file context.
           fileContextKey: params.fileId,
+
+          method: "get_summary_yaml",
+
+          model: MachineMeta.MODEL,
           useFileContext: true,
         },
         payload: {
@@ -1105,8 +1109,8 @@ const machineSlice = createSlice({
     linkSubnet: {
       prepare: (params: LinkSubnetParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "link_subnet",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -1122,8 +1126,8 @@ const machineSlice = createSlice({
     [NodeActions.LOCK]: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1143,8 +1147,8 @@ const machineSlice = createSlice({
     markBroken: {
       prepare: (params: MarkBrokenParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1166,8 +1170,8 @@ const machineSlice = createSlice({
     markFixed: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1187,8 +1191,8 @@ const machineSlice = createSlice({
     mountSpecial: {
       prepare: (params: MountSpecialParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "mount_special",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1209,8 +1213,8 @@ const machineSlice = createSlice({
     [NodeActions.OFF]: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1230,8 +1234,8 @@ const machineSlice = createSlice({
     [NodeActions.ON]: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1251,8 +1255,8 @@ const machineSlice = createSlice({
     overrideFailedTesting: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1272,8 +1276,8 @@ const machineSlice = createSlice({
     [NodeActions.RELEASE]: {
       prepare: (params: ReleaseParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1297,8 +1301,8 @@ const machineSlice = createSlice({
     rescueMode: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1318,8 +1322,8 @@ const machineSlice = createSlice({
     setActive: {
       prepare: (system_id: Machine[MachineMeta.PK] | null) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "set_active",
+          model: MachineMeta.MODEL,
         },
         payload: {
           // Server unsets active item if primary key (system_id) is not sent.
@@ -1347,8 +1351,8 @@ const machineSlice = createSlice({
     setBootDisk: {
       prepare: (params: SetBootDiskParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "set_boot_disk",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1367,8 +1371,8 @@ const machineSlice = createSlice({
     setPool: {
       prepare: (params: SetPoolParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1401,8 +1405,8 @@ const machineSlice = createSlice({
     setZone: {
       prepare: (params: SetZoneParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1427,13 +1431,13 @@ const machineSlice = createSlice({
         scripts: ScriptResult[]
       ) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "set_script_result_suppressed",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
-            system_id: machineID,
             script_result_ids: scripts.map((script) => script.id),
+            system_id: machineID,
           },
         },
       }),
@@ -1444,8 +1448,8 @@ const machineSlice = createSlice({
     [NodeActions.TAG]: {
       prepare: (params: TagParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1467,8 +1471,8 @@ const machineSlice = createSlice({
     [NodeActions.TEST]: {
       prepare: (params: TestParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1492,8 +1496,8 @@ const machineSlice = createSlice({
     [NodeActions.UNLOCK]: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1513,8 +1517,8 @@ const machineSlice = createSlice({
     unlinkSubnet: {
       prepare: (params: UnlinkSubnetParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "unlink_subnet",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1534,8 +1538,8 @@ const machineSlice = createSlice({
     unmountSpecial: {
       prepare: (params: UnmountSpecialParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "unmount_special",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1557,13 +1561,13 @@ const machineSlice = createSlice({
         scripts: ScriptResult[]
       ) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "set_script_result_unsuppressed",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
-            system_id: machineID,
             script_result_ids: scripts.map((script) => script.id),
+            system_id: machineID,
           },
         },
       }),
@@ -1574,8 +1578,8 @@ const machineSlice = createSlice({
     [NodeActions.UNTAG]: {
       prepare: (params: UntagParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "action",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: {
@@ -1597,8 +1601,8 @@ const machineSlice = createSlice({
     updateDisk: {
       prepare: (params: UpdateDiskParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "update_disk",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
@@ -1619,8 +1623,8 @@ const machineSlice = createSlice({
     updateFilesystem: {
       prepare: (params: UpdateFilesystemParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "update_filesystem",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {
@@ -1646,8 +1650,8 @@ const machineSlice = createSlice({
         params: UpdateInterfaceParams
       ) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "update_interface",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -1663,8 +1667,8 @@ const machineSlice = createSlice({
     updateVmfsDatastore: {
       prepare: (params: UpdateVmfsDatastoreParams) => ({
         meta: {
-          model: MachineMeta.MODEL,
           method: "update_vmfs_datastore",
+          model: MachineMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params, {

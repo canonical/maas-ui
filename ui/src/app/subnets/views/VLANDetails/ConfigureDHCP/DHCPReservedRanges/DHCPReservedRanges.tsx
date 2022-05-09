@@ -68,8 +68,8 @@ const generateIPRangeRows = (ipRanges: IPRange[], subnets: Subnet[]) =>
         comment,
         endIP: ipRange.end_ip,
         gatewayIP,
-        subnet: subnet?.cidr || "",
         startIP: ipRange.start_ip,
+        subnet: subnet?.cidr || "",
       },
     };
   });

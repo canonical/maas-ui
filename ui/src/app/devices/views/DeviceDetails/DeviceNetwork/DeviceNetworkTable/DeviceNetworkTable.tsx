@@ -237,8 +237,8 @@ const DeviceNetworkTable = ({
     NetworkRow,
     SortKey
   >(getSortValue, {
-    key: "mac_address",
     direction: SortDirection.DESCENDING,
+    key: "mac_address",
   });
 
   useEffect(() => {
@@ -313,8 +313,8 @@ const DeviceNetworkTable = ({
           ),
         },
         {
-          content: "Actions",
           className: "u-align--right",
+          content: "Actions",
         },
       ]}
       rows={sortedRows}

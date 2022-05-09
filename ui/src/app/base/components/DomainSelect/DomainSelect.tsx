@@ -37,7 +37,7 @@ export const DomainSelect = ({
       label={label}
       name={name}
       options={[
-        { label: "Select domain", value: "", disabled: true },
+        { disabled: true, label: "Select domain", value: "" },
         ...domains.map((domain) => ({
           key: `domain-${domain.id}`,
           label: domain.name,

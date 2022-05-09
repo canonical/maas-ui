@@ -97,11 +97,12 @@ export const UserForm = ({
     }
   }
   const initialValues: UserValues = {
-    isSuperuser: user ? user.is_superuser : false,
     email: user ? user.email : "",
     // first_name is not exposed by the websocket, so only last_name is used.
     // https://bugs.launchpad.net/maas/+bug/1853579
     fullName: user ? user.last_name : "",
+
+    isSuperuser: user ? user.is_superuser : false,
     password: "",
     passwordConfirm: "",
     username: user ? user.username : "",

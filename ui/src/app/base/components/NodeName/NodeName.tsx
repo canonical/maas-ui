@@ -34,8 +34,8 @@ export type FormValues = {
 };
 
 const Schema = Yup.object().shape({
-  hostname: hostnameValidation.required(),
   domain: Yup.string(),
+  hostname: hostnameValidation.required(),
 });
 
 const NodeName = ({

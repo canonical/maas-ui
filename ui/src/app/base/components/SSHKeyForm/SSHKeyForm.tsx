@@ -13,7 +13,6 @@ import { actions as sshkeyActions } from "app/store/sshkey";
 import sshkeySelectors from "app/store/sshkey/selectors";
 
 const SSHKeySchema = Yup.object().shape({
-  protocol: Yup.string().required("Source is required"),
   auth_id: Yup.string().when("protocol", {
     is: (val: string) => val && val !== "upload",
     then: Yup.string().required("ID is required"),
@@ -22,6 +21,7 @@ const SSHKeySchema = Yup.object().shape({
     is: (val: string) => val === "upload",
     then: Yup.string().required("Key is required"),
   }),
+  protocol: Yup.string().required("Source is required"),
 });
 
 type Props = {
@@ -46,7 +46,7 @@ export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
     <FormikForm<SSHKeyFormValues>
       cleanup={sshkeyActions.cleanup}
       errors={errors}
-      initialValues={{ auth_id: "", protocol: "", key: "" }}
+      initialValues={{ auth_id: "", key: "", protocol: "" }}
       onSubmit={(values) => {
         setAdding(true);
         if (values.key && values.key !== "") {

@@ -54,14 +54,14 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
       // Request the files for this
       dispatch(
         machineActions.getSummaryXml({
-          systemId,
           fileId: getSummaryXmlKey.current,
+          systemId,
         })
       );
       dispatch(
         machineActions.getSummaryYaml({
-          systemId,
           fileId: getSummaryYamlKey.current,
+          systemId,
         })
       );
     }

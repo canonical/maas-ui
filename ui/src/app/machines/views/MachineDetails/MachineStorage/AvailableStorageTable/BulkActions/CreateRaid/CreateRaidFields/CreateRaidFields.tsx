@@ -145,8 +145,8 @@ export const CreateRaidFields = ({
               );
             }}
             options={availableRaidModes.map((raidMode) => ({
-              label: raidMode.label,
               key: raidMode.level,
+              label: raidMode.label,
               value: raidMode.level,
             }))}
           />

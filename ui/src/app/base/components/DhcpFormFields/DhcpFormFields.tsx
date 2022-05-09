@@ -34,19 +34,19 @@ const generateOptions = (
   !!models
     ? [
         {
-          value: "",
           label: `Choose ${type}`,
+          value: "",
         },
       ].concat(
         models.map((model) => ({
-          value:
-            type === "subnet"
-              ? model.id.toString()
-              : ("system_id" in model && model.system_id) || "",
           label:
             type === "subnet"
               ? ("name" in model && model.name) || ""
               : ("fqdn" in model && model.fqdn) || "",
+          value:
+            type === "subnet"
+              ? model.id.toString()
+              : ("system_id" in model && model.system_id) || "",
         }))
       )
     : null;
@@ -117,11 +117,11 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
           formikProps.setFieldTouched("entity", false, false);
         }}
         options={[
-          { value: "", label: "Global" },
-          { value: "subnet", label: "Subnet" },
-          { value: "controller", label: "Controller" },
-          { value: "machine", label: "Machine" },
-          { value: "device", label: "Device" },
+          { label: "Global", value: "" },
+          { label: "Subnet", value: "subnet" },
+          { label: "Controller", value: "controller" },
+          { label: "Machine", value: "machine" },
+          { label: "Device", value: "device" },
         ]}
       />
       {type &&

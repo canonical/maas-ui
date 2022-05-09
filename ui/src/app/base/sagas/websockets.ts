@@ -187,8 +187,8 @@ export function* handleNotifyMessage({
   name,
 }: WebSocketResponseNotify): SagaGenerator<void> {
   yield* put({
-    type: `${name}/${action}Notify`,
     payload: data,
+    type: `${name}/${action}Notify`,
   });
 }
 
@@ -376,8 +376,8 @@ export function* pollAction(action: WebSocketAction): SagaGenerator<void> {
   } finally {
     if (yield* cancelled()) {
       yield* put({
-        type: `${action.type}PollingStopped`,
         meta: { pollId: action.meta?.pollId },
+        type: `${action.type}PollingStopped`,
       });
       pollingRequests.delete(id);
     }
@@ -394,8 +394,8 @@ export function* handlePolling(action: WebSocketAction): SagaGenerator<void> {
   let poll = true;
   while (poll) {
     yield* put({
-      type: `${action.type}PollingStarted`,
       meta: { pollId: action.meta?.pollId },
+      type: `${action.type}PollingStarted`,
     });
     // Start polling the action.
     const pollingTask = yield* fork(pollAction, action);
@@ -481,16 +481,16 @@ export function* handleMessage(
         // can be 0 when requesting a model with an id of 0.
         if (error || error === 0) {
           yield* put({
-            meta: { item },
-            type: `${action.type}Error`,
             error: true,
+            meta: { item },
             payload: error,
+            type: `${action.type}Error`,
           });
         } else {
           yield* put({
             meta: { item },
-            type: `${action.type}Success`,
             payload: result,
+            type: `${action.type}Success`,
           });
           // Handle batching, if required.
           yield* call(handleBatch, response);
@@ -624,10 +624,10 @@ export function* sendMessage(
     yield* call(storeFileContextActions, action, requestIDs);
   } catch (error) {
     yield* put({
-      meta: { item: params || payload },
-      type: `${type}Error`,
       error: true,
+      meta: { item: params || payload },
       payload: error,
+      type: `${type}Error`,
     });
   }
 }
@@ -652,6 +652,7 @@ export function* setupWebSocket({
     const socketChannel = yield* call(watchMessages, socketClient);
     while (true) {
       const { cancel } = yield* race({
+        cancel: take("status/websocketDisconnect"),
         task: all(
           [
             call(handleMessage, socketChannel, socketClient),
@@ -674,7 +675,6 @@ export function* setupWebSocket({
             )
           )
         ),
-        cancel: take("status/websocketDisconnect"),
       });
       if (cancel) {
         socketChannel.close();
@@ -683,9 +683,9 @@ export function* setupWebSocket({
     }
   } catch (error) {
     yield* put({
-      type: "status/websocketError",
       error: true,
       payload: error instanceof Error ? error.message : error,
+      type: "status/websocketError",
     });
   }
 }
@@ -700,7 +700,7 @@ export function* watchWebSockets(
   messageHandlers?: MessageHandler[]
 ): SagaGenerator<void> {
   yield* takeLatest("status/websocketConnect", setupWebSocket, {
-    websocketClient,
     messageHandlers,
+    websocketClient,
   });
 }

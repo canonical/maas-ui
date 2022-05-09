@@ -53,7 +53,6 @@ const MachineTestsTable = ({
     const isSuppressible = canBeSuppressed(result);
 
     rows.push({
-      expanded: isExpanded,
       className: isExpanded ? "p-table__row is-active" : null,
       columns: [
         ...(containsTesting
@@ -139,6 +138,7 @@ const MachineTestsTable = ({
           ),
         },
       ],
+      expanded: isExpanded,
       expandedContent: isExpanded ? (
         <div className="u-flex--grow">
           {expanded?.content === ScriptResultAction.VIEW_METRICS && (
@@ -151,8 +151,8 @@ const MachineTestsTable = ({
       ) : null,
       key: result.id,
       sortData: {
-        name: result.name,
         date: result.updated,
+        name: result.name,
       },
     });
   });

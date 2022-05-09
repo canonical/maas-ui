@@ -167,20 +167,20 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
             }}
             options={[
               {
-                value: "25",
                 label: "25",
+                value: "25",
               },
               {
-                value: "50",
                 label: "50",
+                value: "50",
               },
               {
-                value: "100",
                 label: "100",
+                value: "100",
               },
               {
-                value: "200",
                 label: "200",
+                value: "200",
               },
             ]}
             wrapperClassName="u-display--inline-block u-nudge-right"
@@ -203,9 +203,9 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
           onClick={(evt: React.MouseEvent<HTMLAnchorElement>) => {
             evt.preventDefault();
             window.scrollTo({
-              top: 0,
-              left: 0,
               behavior: "smooth",
+              left: 0,
+              top: 0,
             });
           }}
           top

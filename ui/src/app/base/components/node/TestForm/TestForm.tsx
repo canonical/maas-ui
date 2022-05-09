@@ -22,9 +22,9 @@ const TestFormSchema = Yup.object().shape({
   scripts: Yup.array()
     .of(
       Yup.object().shape({
-        name: Yup.string().required(),
-        displayName: Yup.string(),
         description: Yup.string(),
+        displayName: Yup.string(),
+        name: Yup.string().required(),
       })
     )
     .min(1, "You must select at least one script.")
@@ -123,8 +123,8 @@ export const TestForm = <E,>({
       errors={errors}
       initialValues={{
         enableSSH: false,
-        scripts: preselected,
         scriptInputs: initialScriptInputs,
+        scripts: preselected,
       }}
       loaded={scriptsLoaded}
       modelName={modelName}
@@ -141,10 +141,10 @@ export const TestForm = <E,>({
         const { enableSSH, scripts, scriptInputs } = values;
         nodes.forEach((node) => {
           onTest({
-            systemId: node.system_id,
-            scripts,
             enableSSH,
             scriptInputs,
+            scripts,
+            systemId: node.system_id,
           });
         });
       }}

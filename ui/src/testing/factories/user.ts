@@ -14,11 +14,11 @@ export const user = extend<Model, User>(model, {
   global_permissions: globalPermissions,
   is_local: true,
   is_superuser: true,
-  last_name: "Full Name jr.",
   last_login: "Fri, 23 Oct. 2020 00:00:00",
+  last_name: "Full Name jr.",
+  machines_count: 1,
   sshkeys_count: 3,
   username: (i: number) => `user${i}`,
-  machines_count: 1,
 });
 
 export const userEventError = define<UserEventError>({

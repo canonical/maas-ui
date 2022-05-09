@@ -33,10 +33,10 @@ const generateRows = (
           role: "rowheader",
         },
         {
+          className: "u-align--right",
           content: (
             <TableActions copyValue={key} onDelete={() => setExpandedId(id)} />
           ),
-          className: "u-align--right",
         },
       ],
       "data-testid": "sslkey-row",
@@ -99,8 +99,8 @@ const SSLKeyList = (): JSX.Element => {
             sortKey: "key",
           },
           {
-            content: "Actions",
             className: "u-align--right",
+            content: "Actions",
           },
         ]}
         loaded={sslkeyLoaded}

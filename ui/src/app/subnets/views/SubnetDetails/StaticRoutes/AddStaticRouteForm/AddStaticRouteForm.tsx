@@ -32,8 +32,8 @@ export enum AddStaticRouteFormLabels {
 }
 
 const addStaticRouteSchema = Yup.object().shape({
-  gateway_ip: Yup.string().required("Gateway IP is required"),
   destination: Yup.string().required("Destination is required"),
+  gateway_ip: Yup.string().required("Gateway IP is required"),
   metric: Yup.number().required("Metric is required"),
 });
 
@@ -70,10 +70,10 @@ const AddStaticRouteForm = ({
       cleanup={staticRouteActions.cleanup}
       errors={staticRouteErrors}
       initialValues={{
-        source: subnetId,
-        gateway_ip: "",
         destination: "",
+        gateway_ip: "",
         metric: "0",
+        source: subnetId,
       }}
       onSaveAnalytics={{
         action: AddStaticRouteFormLabels.Save,
@@ -84,10 +84,10 @@ const AddStaticRouteForm = ({
         dispatch(staticRouteActions.cleanup());
         dispatch(
           staticRouteActions.create({
-            source: subnetId,
-            gateway_ip,
             destination: toFormikNumber(destination) as number,
+            gateway_ip,
             metric: toFormikNumber(metric),
+            source: subnetId,
           })
         );
       }}
@@ -108,9 +108,9 @@ const AddStaticRouteForm = ({
         <Col size={4}>
           <SubnetSelect
             defaultOption={{
+              disabled: true,
               label: "Select destination",
               value: "",
-              disabled: true,
             }}
             filterFunction={(destination) =>
               getIsDestinationForSource(destination, source)

@@ -31,8 +31,8 @@ const DhcpSchema = Yup.object()
       ),
     }),
     name: Yup.string().required("Snippet name is required"),
-    value: Yup.string().required("DHCP snippet is required"),
     type: Yup.string(),
+    value: Yup.string().required("DHCP snippet is required"),
   })
   .defined();
 

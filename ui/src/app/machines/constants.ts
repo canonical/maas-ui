@@ -12,12 +12,12 @@ export const MachineActionHeaderViews = {
   LOCK_MACHINE: ["machineActionForm", NodeActions.LOCK],
   MARK_BROKEN_MACHINE: ["machineActionForm", NodeActions.MARK_BROKEN],
   MARK_FIXED_MACHINE: ["machineActionForm", NodeActions.MARK_FIXED],
-  POWER_OFF_MACHINE: ["machineActionForm", NodeActions.OFF],
-  POWER_ON_MACHINE: ["machineActionForm", NodeActions.ON],
   OVERRIDE_FAILED_TESTING_MACHINE: [
     "machineActionForm",
     NodeActions.OVERRIDE_FAILED_TESTING,
   ],
+  POWER_OFF_MACHINE: ["machineActionForm", NodeActions.OFF],
+  POWER_ON_MACHINE: ["machineActionForm", NodeActions.ON],
   RELEASE_MACHINE: ["machineActionForm", NodeActions.RELEASE],
   SET_POOL_MACHINE: ["machineActionForm", NodeActions.SET_POOL],
   SET_ZONE_MACHINE: ["machineActionForm", NodeActions.SET_ZONE],
@@ -65,15 +65,15 @@ export enum MachineColumns {
 }
 
 export const columnLabels: Record<MachineColumns, string> = {
+  cpu: "Cores",
+  disks: "Disks",
+  fabric: "Fabric",
   fqdn: "FQDN",
-  power: "Power",
-  status: "Status",
+  memory: "RAM",
   owner: "Owner",
   pool: "Pool",
-  zone: "Zone",
-  fabric: "Fabric",
-  cpu: "Cores",
-  memory: "RAM",
-  disks: "Disks",
+  power: "Power",
+  status: "Status",
   storage: "Storage",
+  zone: "Zone",
 };

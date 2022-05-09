@@ -31,8 +31,8 @@ exports[`NodeName can display the form 1`] = `
       "_blacklistError": undefined,
       "_excludedEdges": Array [],
       "_nodes": Array [
-        "domain",
         "hostname",
+        "domain",
       ],
       "_sortErrors": [Function],
       "_typeError": [Function],
@@ -147,8 +147,8 @@ exports[`NodeName can display the form 1`] = `
         "_blacklistError": undefined,
         "_excludedEdges": Array [],
         "_nodes": Array [
-          "domain",
           "hostname",
+          "domain",
         ],
         "_sortErrors": [Function],
         "_typeError": [Function],

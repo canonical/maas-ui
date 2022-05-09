@@ -78,7 +78,6 @@ const generateRows = (
   clusterHosts.map((host) => {
     const pool = pools.find((pool) => pool.id === host.pool);
     return {
-      key: `cluster-host-${host.id}`,
       columns: [
         {
           className: "name-col",
@@ -139,8 +138,8 @@ const generateRows = (
                 data-testid="vm-host-compose"
                 onClick={() =>
                   setHeaderContent({
-                    view: KVMHeaderViews.COMPOSE_VM,
                     extras: { hostId: host.id },
+                    view: KVMHeaderViews.COMPOSE_VM,
                   })
                 }
               >
@@ -165,6 +164,7 @@ const generateRows = (
           ),
         },
       ],
+      key: `cluster-host-${host.id}`,
     };
   });
 
@@ -186,8 +186,8 @@ const LXDClusterHostsTable = ({
     SortKey,
     ResourcePool[]
   >(getSortValue, {
-    key: "name",
     direction: SortDirection.DESCENDING,
+    key: "name",
   });
   const sortedClusterHosts = sortRows(hosts, pools);
   const paginatedClusterHosts = sortedClusterHosts.slice(

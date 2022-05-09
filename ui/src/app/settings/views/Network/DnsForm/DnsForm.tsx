@@ -11,11 +11,12 @@ import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
 const DnsSchema = Yup.object().shape({
+  dns_trusted_acl: Yup.string(),
+
+  dnssec_validation: Yup.string().required(),
   // TODO: Client-side IP validation, or display error from server
   // https://github.com/canonical-web-and-design/maas-ui/issues/39
   upstream_dns: Yup.string(),
-  dnssec_validation: Yup.string().required(),
-  dns_trusted_acl: Yup.string(),
 });
 
 const DnsForm = (): JSX.Element => {
@@ -49,8 +50,8 @@ const DnsForm = (): JSX.Element => {
             buttonsAlign="left"
             buttonsBordered={false}
             initialValues={{
-              dnssec_validation: dnssecValidation || "",
               dns_trusted_acl: dnsTrustedAcl || "",
+              dnssec_validation: dnssecValidation || "",
               upstream_dns: upstreamDns || "",
             }}
             onSaveAnalytics={{

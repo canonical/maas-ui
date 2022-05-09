@@ -28,8 +28,8 @@ type CreateRecordValues = {
 const CreateRecordSchema: SchemaOf<CreateRecordValues> = Yup.object()
   .shape({
     name: Yup.string().required("Name is required."),
-    rrtype: Yup.string().required("Record type is required."),
     rrdata: Yup.string().required("Record data is required."),
+    rrtype: Yup.string().required("Record type is required."),
     ttl: Yup.number().min(
       MIN_TTL,
       "Ensure this value is greater than or equal to 1."
@@ -51,8 +51,8 @@ const AddRecordForm = ({ closeForm, id }: Props): JSX.Element => {
       errors={errors}
       initialValues={{
         name: "",
-        rrtype: RecordType.A,
         rrdata: "",
+        rrtype: RecordType.A,
         ttl: "",
       }}
       onCancel={closeForm}

@@ -8,16 +8,16 @@ import type { TimestampedModel } from "app/store/types/model";
 export const packageRepository = extend<TimestampedModel, PackageRepository>(
   timestampedModel,
   {
+    arches: () => [],
+    components: () => [],
+    default: false,
+    disable_sources: false,
+    disabled_components: () => [],
+    disabled_pockets: () => [],
+    distributions: () => [],
+    enabled: false,
+    key: "",
     name: "test repo",
     url: "test url",
-    distributions: () => [],
-    disabled_pockets: () => [],
-    disabled_components: () => [],
-    disable_sources: false,
-    components: () => [],
-    arches: () => [],
-    key: "",
-    default: false,
-    enabled: false,
   }
 );

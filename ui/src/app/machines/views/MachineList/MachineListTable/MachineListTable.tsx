@@ -164,7 +164,6 @@ const generateRows = ({
     const columns = [
       {
         "aria-label": columnLabels[MachineColumns.FQDN],
-        key: MachineColumns.FQDN,
         className: "fqdn-col",
         content: (
           <NameColumn
@@ -179,10 +178,10 @@ const generateRows = ({
             systemId={row.system_id}
           />
         ),
+        key: MachineColumns.FQDN,
       },
       {
         "aria-label": columnLabels[MachineColumns.POWER],
-        key: MachineColumns.POWER,
         className: "power-col",
         content: (
           <PowerColumn
@@ -191,10 +190,10 @@ const generateRows = ({
             systemId={row.system_id}
           />
         ),
+        key: MachineColumns.POWER,
       },
       {
         "aria-label": columnLabels[MachineColumns.STATUS],
-        key: MachineColumns.STATUS,
         className: "status-col",
         content: (
           <StatusColumn
@@ -203,10 +202,10 @@ const generateRows = ({
             systemId={row.system_id}
           />
         ),
+        key: MachineColumns.STATUS,
       },
       {
         "aria-label": columnLabels[MachineColumns.OWNER],
-        key: MachineColumns.OWNER,
         className: "owner-col",
         content: (
           <OwnerColumn
@@ -215,10 +214,10 @@ const generateRows = ({
             systemId={row.system_id}
           />
         ),
+        key: MachineColumns.OWNER,
       },
       {
         "aria-label": columnLabels[MachineColumns.POOL],
-        key: MachineColumns.POOL,
         className: "pool-col",
         content: (
           <PoolColumn
@@ -227,10 +226,10 @@ const generateRows = ({
             systemId={row.system_id}
           />
         ),
+        key: MachineColumns.POOL,
       },
       {
         "aria-label": columnLabels[MachineColumns.ZONE],
-        key: MachineColumns.ZONE,
         className: "zone-col",
         content: (
           <ZoneColumn
@@ -239,42 +238,42 @@ const generateRows = ({
             systemId={row.system_id}
           />
         ),
+        key: MachineColumns.ZONE,
       },
       {
         "aria-label": columnLabels[MachineColumns.FABRIC],
-        key: MachineColumns.FABRIC,
         className: "fabric-col",
         content: (
           <FabricColumn data-testid="fabric-column" systemId={row.system_id} />
         ),
+        key: MachineColumns.FABRIC,
       },
       {
         "aria-label": columnLabels[MachineColumns.CPU],
-        key: MachineColumns.CPU,
         className: "cores-col",
         content: (
           <CoresColumn data-testid="cpu-column" systemId={row.system_id} />
         ),
+        key: MachineColumns.CPU,
       },
       {
         "aria-label": columnLabels[MachineColumns.MEMORY],
-        key: MachineColumns.MEMORY,
         className: "ram-col",
         content: (
           <RamColumn data-testid="memory-column" systemId={row.system_id} />
         ),
+        key: MachineColumns.MEMORY,
       },
       {
         "aria-label": columnLabels[MachineColumns.DISKS],
-        key: MachineColumns.DISKS,
         className: "disks-col",
         content: (
           <DisksColumn data-testid="disks-column" systemId={row.system_id} />
         ),
+        key: MachineColumns.DISKS,
       },
       {
         "aria-label": columnLabels[MachineColumns.STORAGE],
-        key: MachineColumns.STORAGE,
         className: "storage-col",
         content: (
           <StorageColumn
@@ -282,16 +281,17 @@ const generateRows = ({
             systemId={row.system_id}
           />
         ),
+        key: MachineColumns.STORAGE,
       },
     ];
 
     return {
-      key: row.system_id,
       className: classNames("machine-list__machine", {
         "machine-list__machine--active": isActive,
         "truncated-border": showActions,
       }),
       columns: filterColumns(columns, hiddenColumns, showActions),
+      key: row.system_id,
     };
   });
 };
@@ -518,10 +518,10 @@ const generateGroupRows = ({
       rows = rows.concat(
         generateRows({
           ...rowProps,
+          hiddenColumns,
           machines: visibleMachines,
           selectedIDs,
           showActions,
-          hiddenColumns,
         })
       );
     });
@@ -547,8 +547,8 @@ export const MachineListTable = ({
   const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
     getSortValue,
     {
-      key: MachineColumns.FQDN,
       direction: SortDirection.DESCENDING,
+      key: MachineColumns.FQDN,
     }
   );
 
@@ -619,7 +619,6 @@ export const MachineListTable = ({
   const headers = [
     {
       "aria-label": columnLabels[MachineColumns.FQDN],
-      key: MachineColumns.FQDN,
       className: "fqdn-col",
       content: (
         <div className="u-flex">
@@ -659,10 +658,10 @@ export const MachineListTable = ({
           </div>
         </div>
       ),
+      key: MachineColumns.FQDN,
     },
     {
       "aria-label": columnLabels[MachineColumns.POWER],
-      key: MachineColumns.POWER,
       className: "power-col",
       content: (
         <TableHeader
@@ -675,10 +674,10 @@ export const MachineListTable = ({
           {columnLabels[MachineColumns.POWER]}
         </TableHeader>
       ),
+      key: MachineColumns.POWER,
     },
     {
       "aria-label": columnLabels[MachineColumns.STATUS],
-      key: MachineColumns.STATUS,
       className: "status-col",
       content: (
         <TableHeader
@@ -691,10 +690,10 @@ export const MachineListTable = ({
           {columnLabels[MachineColumns.STATUS]}
         </TableHeader>
       ),
+      key: MachineColumns.STATUS,
     },
     {
       "aria-label": columnLabels[MachineColumns.OWNER],
-      key: MachineColumns.OWNER,
       className: "owner-col",
       content: (
         <>
@@ -709,10 +708,10 @@ export const MachineListTable = ({
           <TableHeader>Tags</TableHeader>
         </>
       ),
+      key: MachineColumns.OWNER,
     },
     {
       "aria-label": columnLabels[MachineColumns.POOL],
-      key: MachineColumns.POOL,
       className: "pool-col",
       content: (
         <>
@@ -727,10 +726,10 @@ export const MachineListTable = ({
           <TableHeader>Note</TableHeader>
         </>
       ),
+      key: MachineColumns.POOL,
     },
     {
       "aria-label": columnLabels[MachineColumns.ZONE],
-      key: MachineColumns.ZONE,
       className: "zone-col",
       content: (
         <>
@@ -745,10 +744,10 @@ export const MachineListTable = ({
           <TableHeader>Spaces</TableHeader>
         </>
       ),
+      key: MachineColumns.ZONE,
     },
     {
       "aria-label": columnLabels[MachineColumns.FABRIC],
-      key: MachineColumns.FABRIC,
       className: "fabric-col",
       content: (
         <>
@@ -763,10 +762,10 @@ export const MachineListTable = ({
           <TableHeader>VLAN</TableHeader>
         </>
       ),
+      key: MachineColumns.FABRIC,
     },
     {
       "aria-label": columnLabels[MachineColumns.CPU],
-      key: MachineColumns.CPU,
       className: "cores-col u-align--right",
       content: (
         <>
@@ -781,10 +780,10 @@ export const MachineListTable = ({
           <TableHeader>Arch</TableHeader>
         </>
       ),
+      key: MachineColumns.CPU,
     },
     {
       "aria-label": columnLabels[MachineColumns.MEMORY],
-      key: MachineColumns.MEMORY,
       className: "ram-col u-align--right",
       content: (
         <TableHeader
@@ -796,10 +795,10 @@ export const MachineListTable = ({
           {columnLabels[MachineColumns.MEMORY]}
         </TableHeader>
       ),
+      key: MachineColumns.MEMORY,
     },
     {
       "aria-label": columnLabels[MachineColumns.DISKS],
-      key: MachineColumns.DISKS,
       className: "disks-col u-align--right",
       content: (
         <TableHeader
@@ -811,10 +810,10 @@ export const MachineListTable = ({
           {columnLabels[MachineColumns.DISKS]}
         </TableHeader>
       ),
+      key: MachineColumns.DISKS,
     },
     {
       "aria-label": columnLabels[MachineColumns.STORAGE],
-      key: MachineColumns.STORAGE,
       className: "storage-col u-align--right",
       content: (
         <TableHeader
@@ -826,6 +825,7 @@ export const MachineListTable = ({
           {columnLabels[MachineColumns.STORAGE]}
         </TableHeader>
       ),
+      key: MachineColumns.STORAGE,
     },
   ];
 
@@ -833,19 +833,19 @@ export const MachineListTable = ({
 
   if (grouping === "none") {
     rows = generateRows({
+      hiddenColumns,
       machines,
       selectedIDs,
-      hiddenColumns,
       ...rowProps,
     });
   } else if (groups) {
     rows = generateGroupRows({
       groups,
       handleGroupCheckbox,
+      hiddenColumns,
       hiddenGroups,
       selectedIDs,
       setHiddenGroups,
-      hiddenColumns,
       ...rowProps,
     });
   }

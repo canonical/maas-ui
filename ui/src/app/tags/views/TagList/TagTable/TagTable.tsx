@@ -65,7 +65,6 @@ const generateRows = (
 ) =>
   tags.map((tag) => {
     return {
-      key: `tag-row-${tag.id}`,
       columns: [
         {
           "aria-label": Label.Name,
@@ -93,6 +92,7 @@ const generateRows = (
         },
         {
           "aria-label": Label.Actions,
+          className: "u-align--right",
           content: (
             <TableActions
               onDelete={() => {
@@ -106,9 +106,9 @@ const generateRows = (
               }
             />
           ),
-          className: "u-align--right",
         },
       ],
+      key: `tag-row-${tag.id}`,
       sortData: {
         name: tag.name,
         updated: tag.updated,
@@ -165,8 +165,8 @@ const TagTable = ({
   const { currentSort, sortRows, updateSort } = useTableSort<Tag, SortKey>(
     getSortValue,
     {
-      key: "name",
       direction: SortDirection.DESCENDING,
+      key: "name",
     }
   );
   const sortedTags = sortRows(tags);
@@ -246,8 +246,8 @@ const TagTable = ({
             content: Label.Options,
           },
           {
-            content: Label.Actions,
             className: "u-align--right",
+            content: Label.Actions,
           },
         ]}
         rows={generateRows(paginatedTags, onDelete, history)}

@@ -60,24 +60,24 @@ const NetworkTableActions = ({
     actions = [
       {
         inMenu: !nic.link_connected && isPhysical,
-        state: ExpandedState.MARK_CONNECTED,
         label: "Mark as connected",
+        state: ExpandedState.MARK_CONNECTED,
       },
       {
         inMenu: nic.link_connected && isPhysical,
-        state: ExpandedState.MARK_DISCONNECTED,
         label: "Mark as disconnected",
+        state: ExpandedState.MARK_DISCONNECTED,
       },
       {
         disabled: !itCanAddAlias,
         inMenu:
           !isAllNetworkingDisabled &&
           !hasInterfaceType([NetworkInterfaceTypes.ALIAS], machine, nic, link),
+        label: "Add alias",
+        state: ExpandedState.ADD_ALIAS,
         tooltip: itCanAddAlias
           ? null
           : "IP mode needs to be configured for this interface.",
-        state: ExpandedState.ADD_ALIAS,
-        label: "Add alias",
       },
       {
         disabled: !canAddVLAN,
@@ -89,24 +89,24 @@ const NetworkTableActions = ({
             nic,
             link
           ),
+        label: "Add VLAN",
         state: ExpandedState.ADD_VLAN,
         tooltip: canAddVLAN
           ? null
           : "There are no unused VLANS for this interface.",
-        label: "Add VLAN",
       },
       {
         inMenu: true,
+        label: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
         state:
           isPhysical && !nic?.link_connected
             ? ExpandedState.DISCONNECTED_WARNING
             : ExpandedState.EDIT,
-        label: `Edit ${getInterfaceTypeText(machine, nic, link)}`,
       },
       {
         inMenu: !isAllNetworkingDisabled,
-        state: ExpandedState.REMOVE,
         label: `Remove ${getInterfaceTypeText(machine, nic, link)}...`,
+        state: ExpandedState.REMOVE,
       },
     ].reduce<TableMenuProps["links"]>((items, item) => {
       if (item.inMenu && item.state) {

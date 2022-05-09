@@ -56,9 +56,9 @@ export const FilesystemFields = ({ systemId }: Props): JSX.Element | null => {
           }}
           options={[
             {
+              disabled: true,
               label: "Select filesystem type",
               value: "",
-              disabled: true,
             },
             {
               label: "Unformatted",

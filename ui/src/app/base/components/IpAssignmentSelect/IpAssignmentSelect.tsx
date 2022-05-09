@@ -19,7 +19,7 @@ export const IpAssignmentSelect = ({
       component={Select}
       label={label}
       options={[
-        { label: "Select IP assignment", value: "", disabled: true },
+        { disabled: true, label: "Select IP assignment", value: "" },
         {
           label: getIpAssignmentDisplay(DeviceIpAssignment.DYNAMIC),
           value: DeviceIpAssignment.DYNAMIC,

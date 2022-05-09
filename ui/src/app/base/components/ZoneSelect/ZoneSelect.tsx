@@ -42,7 +42,7 @@ export const DomainSelect = ({
       label={label}
       name={name}
       options={[
-        { label: "Select zone", value: "", disabled: true },
+        { disabled: true, label: "Select zone", value: "" },
         ...zones.map((zone) => ({
           key: `zone-${zone.id}`,
           label: zone.name,

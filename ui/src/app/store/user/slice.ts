@@ -26,8 +26,8 @@ export const initialState = {
 };
 
 const userSlice = createSlice({
-  name: UserMeta.MODEL,
   initialState: initialState as UserState,
+  name: UserMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       UserState,
@@ -41,8 +41,8 @@ const userSlice = createSlice({
     markIntroComplete: {
       prepare: () => ({
         meta: {
-          model: UserMeta.MODEL,
           method: "mark_intro_complete",
+          model: UserMeta.MODEL,
         },
         payload: null,
       }),

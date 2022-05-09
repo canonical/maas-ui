@@ -15,8 +15,8 @@ import {
 } from "app/store/utils/slice";
 
 const licenseKeysSlice = createSlice({
-  name: LicenseKeysMeta.MODEL,
   initialState: genericInitialState as LicenseKeysState,
+  name: LicenseKeysMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       LicenseKeysState,
@@ -40,17 +40,6 @@ const licenseKeysSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    dismissStart: (state: LicenseKeysState) => {
-      state.saved = false;
-      state.saving = true;
-    },
-    dismissError: (
-      state: LicenseKeysState,
-      action: PayloadAction<LicenseKeysState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state.saving = false;
-    },
     deleteSuccess: (state: LicenseKeysState, action) => {
       state.errors = null;
       state.saved = true;
@@ -61,6 +50,17 @@ const licenseKeysSlice = createSlice({
           item.distro_series === action.payload.distro_series
       );
       state.items.splice(deleteIndex, 1);
+    },
+    dismissError: (
+      state: LicenseKeysState,
+      action: PayloadAction<LicenseKeysState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state.saving = false;
+    },
+    dismissStart: (state: LicenseKeysState) => {
+      state.saved = false;
+      state.saving = true;
     },
     fetch: {
       prepare: () => ({

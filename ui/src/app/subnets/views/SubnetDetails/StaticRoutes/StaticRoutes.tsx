@@ -120,6 +120,7 @@ const generateRows = (
         },
         {
           "aria-label": Labels.Actions,
+          className: "u-align--right",
           content: (
             <TableActions
               onDelete={() => {
@@ -140,7 +141,6 @@ const generateRows = (
               }}
             />
           ),
-          className: "u-align--right",
         },
       ],
       expanded: isExpanded,
@@ -217,8 +217,8 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
             sortKey: "metric",
           },
           {
-            content: Labels.Actions,
             className: "u-align--right",
+            content: Labels.Actions,
           },
         ]}
         rows={generateRows(

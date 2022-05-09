@@ -128,6 +128,7 @@ const generateRows = (
         { content: enabled },
         { content: updated },
         {
+          className: "u-align--right",
           content: (
             <TableActions
               editPath={settingsURLs.dhcp.edit({ id: dhcpsnippet.id })}
@@ -137,7 +138,6 @@ const generateRows = (
               }}
             />
           ),
-          className: "u-align--right",
         },
       ],
       "data-testid": "dhcp-row",
@@ -165,9 +165,9 @@ const generateRows = (
         )),
       key: dhcpsnippet.id,
       sortData: {
-        name: dhcpsnippet.name,
-        enabled,
         description: dhcpsnippet.description,
+        enabled,
+        name: dhcpsnippet.name,
         target: getTargetName(
           controllers,
           devices,
@@ -258,8 +258,8 @@ const DhcpList = (): JSX.Element => {
           sortKey: "updated",
         },
         {
-          content: "Actions",
           className: "u-align--right",
+          content: "Actions",
         },
       ]}
       helpLabel="About DHCP"

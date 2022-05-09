@@ -16,11 +16,11 @@ export const splitCertificateName = (
   }
   const split = certificateName.split("@");
   if (split.length < 2) {
-    return { name: certificateName, host: "" };
+    return { host: "", name: certificateName };
   }
   // Assume it's possible to have multiple "@"s in a CN, in which the last item
   // is the host name. e.g. the host for "machine@address@host" is "host".
   const host = split[split.length - 1];
   const name = split.slice(0, split.length - 1).join("@");
-  return { name, host };
+  return { host, name };
 };

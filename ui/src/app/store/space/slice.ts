@@ -10,11 +10,11 @@ import {
 } from "app/store/utils/slice";
 
 const spaceSlice = createSlice({
-  name: SpaceMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
   } as SpaceState,
+  name: SpaceMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       SpaceState,
@@ -25,8 +25,8 @@ const spaceSlice = createSlice({
     get: {
       prepare: (id: Space[SpaceMeta.PK]) => ({
         meta: {
-          model: SpaceMeta.MODEL,
           method: "get",
+          model: SpaceMeta.MODEL,
         },
         payload: {
           params: { [SpaceMeta.PK]: id },
@@ -64,8 +64,8 @@ const spaceSlice = createSlice({
     setActive: {
       prepare: (id: Space[SpaceMeta.PK] | null) => ({
         meta: {
-          model: SpaceMeta.MODEL,
           method: "set_active",
+          model: SpaceMeta.MODEL,
         },
         payload: {
           // Server unsets active item if primary key is not sent.

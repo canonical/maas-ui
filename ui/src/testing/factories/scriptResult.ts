@@ -11,11 +11,11 @@ import type {
 import type { Model } from "app/store/types/model";
 
 export const scriptResultResult = define<ScriptResultResult>({
-  name: (i: number) => `test result ${i}`,
-  title: (i: number) => `test result ${i} title`,
   description: "test description",
-  value: "test value",
+  name: (i: number) => `test result ${i}`,
   surfaced: false,
+  title: (i: number) => `test result ${i} title`,
+  value: "test value",
 });
 
 export const partialScriptResult = extend<Model, PartialScriptResult>(model, {
@@ -55,7 +55,7 @@ export const scriptResult = extend<Model, ScriptResult>(model, {
 
 export const scriptResultData = define<ScriptResultData>({
   combined: "combined content",
-  stdout: "stdout content",
-  stderr: "",
   result: "yaml result",
+  stderr: "",
+  stdout: "stdout content",
 });

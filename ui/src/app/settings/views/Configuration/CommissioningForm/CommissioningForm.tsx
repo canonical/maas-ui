@@ -11,6 +11,7 @@ import { AutoIpmiPrivilegeLevel } from "app/store/config/types";
 const CommissioningSchema = Yup.object().shape({
   commissioning_distro_series: Yup.string(),
   default_min_hwe_kernel: Yup.string(),
+  maas_auto_ipmi_k_g_bmc_key: Yup.string(),
   maas_auto_ipmi_user: Yup.string()
     .required(
       'The username cannot be left blank. The username is "maas" by default.'
@@ -18,7 +19,6 @@ const CommissioningSchema = Yup.object().shape({
     .min(3, "The username must be 3 characters or more")
     .max(16, "The username must be 16 characters or less.")
     .matches(/^\S*$/, "The username may not contain spaces"),
-  maas_auto_ipmi_k_g_bmc_key: Yup.string(),
   maas_auto_ipmi_user_privilege_level: Yup.string().matches(
     /(ADMIN|OPERATOR|USER)/
   ),
@@ -55,8 +55,8 @@ const CommissioningForm = (): JSX.Element => {
       initialValues={{
         commissioning_distro_series: commissioningDistroSeries || "",
         default_min_hwe_kernel: defaultMinKernelVersion || "",
-        maas_auto_ipmi_user: ipmiUser || "maas",
         maas_auto_ipmi_k_g_bmc_key: bmcKey || "",
+        maas_auto_ipmi_user: ipmiUser || "maas",
         maas_auto_ipmi_user_privilege_level:
           ipmiPrivilegeLevel || AutoIpmiPrivilegeLevel.ADMIN,
       }}

@@ -9,8 +9,8 @@ import {
 } from "app/store/utils/slice";
 
 const tagSlice = createSlice({
-  name: TagMeta.MODEL,
   initialState: genericInitialState as TagState,
+  name: TagMeta.MODEL,
   reducers: generateCommonReducers<
     TagState,
     TagMeta.PK,

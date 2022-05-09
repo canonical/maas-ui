@@ -27,8 +27,8 @@ export type EditRecordValues = {
 const EditRecordSchema: SchemaOf<EditRecordValues> = Yup.object()
   .shape({
     name: Yup.string().required("Name is required."),
-    rrtype: Yup.string().required("Record type is required."),
     rrdata: Yup.string().required("Record data is required."),
+    rrtype: Yup.string().required("Record type is required."),
     ttl: Yup.number().min(MIN_TTL, "TTL must be greater than 1."),
   })
   .defined();
@@ -47,8 +47,8 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
       errors={errors}
       initialValues={{
         name: resource.name || "",
-        rrtype: resource.rrtype,
         rrdata: resource.rrdata || "",
+        rrtype: resource.rrtype,
         ttl: resource.ttl || "",
       }}
       onCancel={closeForm}
@@ -57,8 +57,8 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
         const params = {
           domain: id,
           name: values.name,
-          rrset: resource,
           rrdata: values.rrdata,
+          rrset: resource,
           ttl: Number(values.ttl) || null,
         };
         dispatch(domainActions.updateRecord(params));

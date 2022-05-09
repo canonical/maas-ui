@@ -30,10 +30,10 @@ export const SSHKeyFormFields = ({
             name="protocol"
             label="Source"
             options={[
-              { value: "", label: "Select source" },
-              { value: "lp", label: "Launchpad" },
-              { value: "gh", label: "GitHub" },
-              { value: "upload", label: "Upload" },
+              { label: "Select source", value: "" },
+              { label: "Launchpad", value: "lp" },
+              { label: "GitHub", value: "gh" },
+              { label: "Upload", value: "upload" },
             ]}
           />
           {protocol && !uploadSelected && (

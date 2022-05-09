@@ -10,8 +10,8 @@ import configSelectors from "app/store/config/selectors";
 import { timeSpanToMinutes } from "app/utils";
 
 const DeploySchema = Yup.object().shape({
-  default_osystem: Yup.string(),
   commissioning_distro_series: Yup.string(),
+  default_osystem: Yup.string(),
   hardware_sync_interval: Yup.number().min(
     1,
     "Hardware sync interval must be at least 1 minute"
@@ -38,8 +38,8 @@ const DeployForm = (): JSX.Element => {
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
-        default_osystem: defaultOSystem || "",
         default_distro_series: defaultDistroSeries || "",
+        default_osystem: defaultOSystem || "",
         hardware_sync_interval: `${hardwareSyncIntervalMinutes}` || "",
       }}
       onSaveAnalytics={{

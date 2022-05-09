@@ -154,7 +154,7 @@ const EditBondForm = ({
   // When editing the bond members then display all valid nics, otherwise just
   // show the selected nics.
   const rows = editingMembers
-    ? validNics.map(({ id, links }) => ({ nicId: id, linkId: links[0]?.id }))
+    ? validNics.map(({ id, links }) => ({ linkId: links[0]?.id, nicId: id }))
     : selected;
   const ipAddress = getInterfaceIPAddress(machine, fabrics, vlans, nic, link);
   const linkMonitoring =
@@ -182,8 +182,8 @@ const EditBondForm = ({
         ip_address: ipAddress || "",
         linkMonitoring,
         mac_address: macAddress,
-        macSource: MacSource.MANUAL,
         macNic: macAddress,
+        macSource: MacSource.MANUAL,
         mode: getLinkMode(link),
         name: nic.name,
         subnet: subnet ? subnet.id : "",

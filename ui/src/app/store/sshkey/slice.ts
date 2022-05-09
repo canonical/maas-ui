@@ -10,8 +10,8 @@ import {
 } from "app/store/utils/slice";
 
 const sshKeySlice = createSlice({
-  name: SSHKeyMeta.MODEL,
   initialState: genericInitialState as SSHKeyState,
+  name: SSHKeyMeta.MODEL,
   reducers: {
     ...generateCommonReducers<SSHKeyState, SSHKeyMeta.PK, CreateParams, void>(
       SSHKeyMeta.MODEL,
@@ -20,8 +20,8 @@ const sshKeySlice = createSlice({
     import: {
       prepare: (params: ImportParams) => ({
         meta: {
-          model: SSHKeyMeta.MODEL,
           method: "import_keys",
+          model: SSHKeyMeta.MODEL,
         },
         payload: {
           params,
@@ -31,16 +31,16 @@ const sshKeySlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    importStart: (state: SSHKeyState, _action: PayloadAction<void>) => {
-      state.saved = false;
-      state.saving = true;
-    },
     importError: (
       state: SSHKeyState,
       action: PayloadAction<SSHKeyState["errors"]>
     ) => {
       state.errors = action.payload;
       state.saving = false;
+    },
+    importStart: (state: SSHKeyState, _action: PayloadAction<void>) => {
+      state.saved = false;
+      state.saving = true;
     },
     importSuccess: (state: SSHKeyState, _action: PayloadAction<void>) => {
       state.errors = null;

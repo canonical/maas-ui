@@ -11,13 +11,13 @@ import { RecordType } from "app/store/domain/types";
 import type { TimestampedModel } from "app/store/types/model";
 
 export const domain = extend<TimestampedModel, Domain>(timestampedModel, {
-  name: "test name",
   authoritative: false,
-  ttl: null,
-  hosts: random,
-  resource_count: random,
   displayname: "test display",
+  hosts: random,
   is_default: false,
+  name: "test name",
+  resource_count: random,
+  ttl: null,
 });
 
 export const domainDetails = extend<Domain, DomainDetails>(domain, {

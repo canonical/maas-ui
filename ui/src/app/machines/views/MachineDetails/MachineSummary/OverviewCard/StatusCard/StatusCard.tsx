@@ -47,8 +47,8 @@ const showFailedTestsWarning = (machine: MachineDetails) => {
 const formatSyncInterval = (syncInterval: Seconds) =>
   formatDuration(
     intervalToDuration({
-      start: 0,
       end: syncInterval * 1000,
+      start: 0,
     })
   );
 

@@ -73,6 +73,7 @@ const generateRows = (
         },
         { content: <span data-testid="upload-date">{uploadedOn}</span> },
         {
+          className: "u-align--right",
           content: (
             <TableActions
               deleteDisabled={script.default}
@@ -85,7 +86,6 @@ const generateRows = (
               }}
             />
           ),
-          className: "u-align--right",
         },
       ],
       "data-testid": "script-row",
@@ -109,8 +109,8 @@ const generateRows = (
         )),
       key: script.id,
       sortData: {
-        name: script.name,
         description: script.description,
+        name: script.name,
         uploaded_on: uploadedOn,
       },
     };
@@ -186,8 +186,8 @@ const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
           sortKey: "uploaded_on",
         },
         {
-          content: "Actions",
           className: "u-align--right",
+          content: "Actions",
         },
       ]}
       loaded={scriptsLoaded}

@@ -6,20 +6,20 @@ export const Nav = (): JSX.Element => (
     closeToggleText="Close preferences menu"
     items={[
       {
-        path: prefsURLs.details,
         label: "Details",
+        path: prefsURLs.details,
       },
       {
-        path: prefsURLs.apiKeys.index,
         label: "API keys",
+        path: prefsURLs.apiKeys.index,
       },
       {
-        path: prefsURLs.sshKeys.index,
         label: "SSH keys",
+        path: prefsURLs.sshKeys.index,
       },
       {
-        path: prefsURLs.sslKeys.index,
         label: "SSL keys",
+        path: prefsURLs.sslKeys.index,
       },
     ]}
     openToggleText="Preferences menu"

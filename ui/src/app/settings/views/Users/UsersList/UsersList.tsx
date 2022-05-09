@@ -52,18 +52,19 @@ const generateUserRows = (
           content: displayUsername ? user.username : fullName || <>&mdash;</>,
           role: "rowheader",
         },
-        { content: user.email, className: "u-break-word" },
-        { content: user.machines_count, className: "u-align--right" },
+        { className: "u-break-word", content: user.email },
+        { className: "u-align--right", content: user.machines_count },
         { content: user.is_local && "Local" },
         { content: last_login || "Never" },
         {
           content: user.is_superuser ? "Admin" : "User",
         },
         {
-          content: user.sshkeys_count,
           className: "u-align--right",
+          content: user.sshkeys_count,
         },
         {
+          className: "u-align--right",
           content: (
             <TableActions
               deleteDisabled={isAuthUser}
@@ -78,7 +79,6 @@ const generateUserRows = (
               onDelete={() => setExpandedId(user.id)}
             />
           ),
-          className: "u-align--right",
         },
       ],
       "data-testid": "user-row",
@@ -98,14 +98,14 @@ const generateUserRows = (
       ),
       key: user.username,
       sortData: {
-        username: user.username,
-        fullName: fullName,
         email: user.email,
-        machines: user.machines_count,
-        type: user.is_local && "local",
+        fullName: fullName,
         "last-seen": last_login,
-        role: user.is_superuser ? "admin" : "user",
         "maas-keys": user.sshkeys_count,
+        machines: user.machines_count,
+        role: user.is_superuser ? "admin" : "user",
+        type: user.is_local && "local",
+        username: user.username,
       },
     };
   });
@@ -134,8 +134,8 @@ const UsersList = (): JSX.Element => {
   const { currentSort, sortRows, updateSort } = useTableSort<User, SortKey>(
     getSortValue,
     {
-      key: "username",
       direction: SortDirection.DESCENDING,
+      key: "username",
     }
   );
 
@@ -215,6 +215,7 @@ const UsersList = (): JSX.Element => {
           ),
         },
         {
+          className: "u-align--right u-no-wrap",
           content: (
             <TableHeader
               currentSort={currentSort}
@@ -225,7 +226,6 @@ const UsersList = (): JSX.Element => {
               Machines
             </TableHeader>
           ),
-          className: "u-align--right u-no-wrap",
         },
         {
           content: "Type",
@@ -237,12 +237,12 @@ const UsersList = (): JSX.Element => {
           content: "Role",
         },
         {
-          content: "MAAS keys",
           className: "u-align--right u-no-wrap",
+          content: "MAAS keys",
         },
         {
-          content: "Actions",
           className: "u-align--right",
+          content: "Actions",
         },
       ]}
       loaded={loaded}

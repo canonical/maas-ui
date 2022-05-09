@@ -22,24 +22,24 @@ const PodDetailsActionMenu = ({
           children: "Compose",
           onClick: () =>
             setHeaderContent({
-              view: KVMHeaderViews.COMPOSE_VM,
               extras: { hostId },
+              view: KVMHeaderViews.COMPOSE_VM,
             }),
         },
         {
           children: "Refresh",
           onClick: () =>
             setHeaderContent({
-              view: KVMHeaderViews.REFRESH_KVM,
               extras: { hostIds: [hostId] },
+              view: KVMHeaderViews.REFRESH_KVM,
             }),
         },
         {
           children: "Delete",
           onClick: () =>
             setHeaderContent({
-              view: KVMHeaderViews.DELETE_KVM,
               extras: { hostId },
+              view: KVMHeaderViews.DELETE_KVM,
             }),
         },
       ]}

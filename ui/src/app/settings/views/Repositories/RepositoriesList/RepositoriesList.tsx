@@ -46,6 +46,7 @@ const generateRepositoryRows = (
           content: repo.enabled ? "Yes" : "No",
         },
         {
+          className: "u-align--right",
           content: (
             <TableActions
               deleteDisabled={repo.default}
@@ -56,7 +57,6 @@ const generateRepositoryRows = (
               onDelete={() => setExpandedId(repo.id)}
             />
           ),
-          className: "u-align--right",
         },
       ],
       "data-testid": "repository-row",
@@ -76,9 +76,9 @@ const generateRepositoryRows = (
       ),
       key: repo.id,
       sortData: {
+        enabled: repo.enabled,
         name: repo.name,
         url: repo.url,
-        enabled: repo.enabled,
       },
     };
   });
@@ -136,7 +136,7 @@ export const RepositoriesList = (): JSX.Element => {
         { content: "Name", sortKey: "name" },
         { content: "URL", sortKey: "url" },
         { content: "Enabled", sortKey: "enabled" },
-        { content: "Actions", className: "u-align--right" },
+        { className: "u-align--right", content: "Actions" },
       ]}
       loaded={loaded}
       loading={loading}

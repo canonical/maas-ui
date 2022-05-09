@@ -133,8 +133,8 @@ const DeviceListTable = ({
   const { currentSort, sortRows, updateSort } = useTableSort<Device, SortKey>(
     getSortValue,
     {
-      key: "fqdn",
       direction: SortDirection.DESCENDING,
+      key: "fqdn",
     }
   );
   const sortedDevices = sortRows(devices);

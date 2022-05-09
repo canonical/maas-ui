@@ -48,8 +48,8 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
           dispatch(cleanup());
           dispatch(
             zoneActions.update({
-              id: id,
               description: values.description,
+              id: id,
               name: values.name,
             })
           );

@@ -54,8 +54,8 @@ const LXDClusterHostVMs = ({
       onRefreshClick={() => {
         if (cluster.hosts.length) {
           setHeaderContent({
-            view: KVMHeaderViews.REFRESH_KVM,
             extras: { hostIds: cluster.hosts.map((host) => host.id) },
+            view: KVMHeaderViews.REFRESH_KVM,
           });
         }
       }}

@@ -36,8 +36,8 @@ export const MinimumKernelSelect = ({
       name={name}
       options={[
         {
-          label: "Select minimum kernel",
           disabled: true,
+          label: "Select minimum kernel",
         },
         { label: "No minimum kernel", value: "" },
         ...hweKernels.map((kernel) => ({

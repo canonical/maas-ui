@@ -95,9 +95,9 @@ export const AddSpecialFilesystem = ({
                 name="fstype"
                 options={[
                   {
+                    disabled: true,
                     label: "Select filesystem type",
                     value: "",
-                    disabled: true,
                   },
                   ...fsOptions,
                 ]}

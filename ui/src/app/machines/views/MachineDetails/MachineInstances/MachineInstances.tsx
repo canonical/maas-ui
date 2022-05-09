@@ -26,12 +26,12 @@ const formatRowData = (
   ipAddress: NetworkLink["ip_address"]
 ): InterfaceRow => {
   return {
-    key: name + macAddress + ipAddress,
     columns: [
       { content: <span data-testid="name">{name}</span> },
       { content: <span data-testid="mac">{macAddress}</span> },
       { content: <span data-testid="ip">{ipAddress}</span> },
     ],
+    key: name + macAddress + ipAddress,
   };
 };
 

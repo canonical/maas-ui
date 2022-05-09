@@ -100,11 +100,11 @@ const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
 const addSubnetSchema = Yup.object()
   .shape({
     cidr: Yup.string().required("CIDR is required"),
-    name: Yup.string(),
-    fabric: Yup.number(),
-    vlan: Yup.number(),
     dns_servers: Yup.string(),
+    fabric: Yup.number(),
     gateway_ip: Yup.string(),
+    name: Yup.string(),
+    vlan: Yup.number(),
   })
   .defined();
 
@@ -123,12 +123,12 @@ const AddSubnet = ({
       validationSchema={addSubnetSchema}
       buttonsBordered={false}
       initialValues={{
-        vlan: "",
-        name: "",
         cidr: "",
-        gateway_ip: "",
         dns_servers: "",
         fabric: "",
+        gateway_ip: "",
+        name: "",
+        vlan: "",
       }}
       onSaveAnalytics={{
         action: "Add Subnet",
@@ -142,11 +142,11 @@ const AddSubnet = ({
         dispatch(
           subnetActions.create({
             cidr,
-            name,
-            fabric: toFormikNumber(fabric),
-            vlan: toFormikNumber(vlan),
             dns_servers,
+            fabric: toFormikNumber(fabric),
             gateway_ip,
+            name,
+            vlan: toFormikNumber(vlan),
           })
         );
       }}

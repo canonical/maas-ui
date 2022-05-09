@@ -27,11 +27,11 @@ import {
 } from "app/store/utils/slice";
 
 const domainSlice = createSlice({
-  name: DomainMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
   } as DomainState,
+  name: DomainMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       DomainState,
@@ -39,11 +39,170 @@ const domainSlice = createSlice({
       CreateParams,
       UpdateParams
     >(DomainMeta.MODEL, DomainMeta.PK),
+    createAddressRecord: {
+      prepare: (params: CreateAddressRecordParams) => ({
+        meta: {
+          method: "create_address_record",
+          model: DomainMeta.MODEL,
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createAddressRecordError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    createAddressRecordStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    createAddressRecordSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    createDNSData: {
+      prepare: (params: CreateDNSDataParams) => ({
+        meta: {
+          method: "create_dnsdata",
+          model: DomainMeta.MODEL,
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    createDNSDataError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    createDNSDataStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    createDNSDataSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    deleteAddressRecord: {
+      prepare: (params: DeleteAddressRecordParams) => {
+        return {
+          meta: {
+            method: "delete_address_record",
+            model: DomainMeta.MODEL,
+          },
+          payload: {
+            params: params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteAddressRecordError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    deleteAddressRecordStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    deleteAddressRecordSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    deleteDNSData: {
+      prepare: (params: DeleteDNSDataParams) => {
+        return {
+          meta: {
+            method: "delete_dnsdata",
+            model: DomainMeta.MODEL,
+          },
+          payload: {
+            params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteDNSDataError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
+      state.saving = false;
+      state.errors = action.payload;
+    },
+    deleteDNSDataStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    deleteDNSDataSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
+    deleteDNSResource: {
+      prepare: (params: DeleteDNSResourceParams) => {
+        return {
+          meta: {
+            method: "delete_dnsresource",
+            model: DomainMeta.MODEL,
+          },
+          payload: {
+            params: params,
+          },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteDNSResourceError: (
+      state: DomainState,
+      action: PayloadAction<APIError>
+    ) => {
+      state.errors = action.payload;
+    },
+    deleteDNSResourceSuccess: (state: DomainState) => {
+      state.errors = null;
+    },
+    deleteRecord: {
+      prepare: (params: DeleteRecordParams) => ({
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
     get: {
       prepare: (id: Domain[DomainMeta.PK]) => ({
         meta: {
-          model: DomainMeta.MODEL,
           method: "get",
+          model: DomainMeta.MODEL,
         },
         payload: {
           params: { id },
@@ -52,9 +211,6 @@ const domainSlice = createSlice({
       reducer: () => {
         // No state changes need to be handled for this action.
       },
-    },
-    getStart: (state: DomainState) => {
-      state.loading = true;
     },
     getError: (
       state: DomainState,
@@ -74,6 +230,9 @@ const domainSlice = createSlice({
       state.loading = false;
       state.saving = false;
     },
+    getStart: (state: DomainState) => {
+      state.loading = true;
+    },
     getSuccess: (state: DomainState, action: PayloadAction<Domain>) => {
       const domain = action.payload;
       // If the item already exists, update it, otherwise
@@ -88,59 +247,11 @@ const domainSlice = createSlice({
       }
       state.loading = false;
     },
-    setDefault: {
-      prepare: (id: Domain[DomainMeta.PK]) => ({
-        meta: {
-          model: DomainMeta.MODEL,
-          method: "set_default",
-        },
-        payload: {
-          params: { domain: id },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    setDefaultStart: (state: DomainState) => {
-      state.saving = true;
-      state.saved = false;
-    },
-    setDefaultError: (
-      state: DomainState,
-      action: PayloadAction<SetDefaultErrors>
-    ) => {
-      state.saving = false;
-      // API seems to return the domain id in payload.error not an error message
-      // when the domain can't be found. This override can be removed when the
-      // bug is fixed: https://bugs.launchpad.net/maas/+bug/1931654.
-      if (!isNaN(Number(action.payload))) {
-        // returned error string is a number (id of the domain)
-        state.errors = "There was an error when setting default domain.";
-      } else {
-        // returned error string is an error message
-        state.errors = action.payload;
-      }
-    },
-    setDefaultSuccess: (state: DomainState, action: PayloadAction<Domain>) => {
-      state.saving = false;
-      state.saved = true;
-      state.errors = null;
-
-      // update the default domain in the redux store
-      state.items.forEach((domain) => {
-        if (domain.id === action.payload.id) {
-          domain.is_default = true;
-        } else {
-          domain.is_default = false;
-        }
-      });
-    },
     setActive: {
       prepare: (id: Domain[DomainMeta.PK] | null) => ({
         meta: {
-          model: DomainMeta.MODEL,
           method: "set_active",
+          model: DomainMeta.MODEL,
         },
         payload: {
           // Server unsets active domain if primary key (id) is not sent.
@@ -173,171 +284,60 @@ const domainSlice = createSlice({
     ) => {
       state.active = action.payload?.id || null;
     },
-    createAddressRecord: {
-      prepare: (params: CreateAddressRecordParams) => ({
+    setDefault: {
+      prepare: (id: Domain[DomainMeta.PK]) => ({
         meta: {
+          method: "set_default",
           model: DomainMeta.MODEL,
-          method: "create_address_record",
         },
         payload: {
-          params,
+          params: { domain: id },
         },
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
       },
     },
-    createAddressRecordStart: (state: DomainState) => {
+    setDefaultError: (
+      state: DomainState,
+      action: PayloadAction<SetDefaultErrors>
+    ) => {
+      state.saving = false;
+      // API seems to return the domain id in payload.error not an error message
+      // when the domain can't be found. This override can be removed when the
+      // bug is fixed: https://bugs.launchpad.net/maas/+bug/1931654.
+      if (!isNaN(Number(action.payload))) {
+        // returned error string is a number (id of the domain)
+        state.errors = "There was an error when setting default domain.";
+      } else {
+        // returned error string is an error message
+        state.errors = action.payload;
+      }
+    },
+    setDefaultStart: (state: DomainState) => {
       state.saving = true;
       state.saved = false;
     },
-    createAddressRecordError: (
-      state: DomainState,
-      action: PayloadAction<APIError>
-    ) => {
-      state.saving = false;
-      state.errors = action.payload;
-    },
-    createAddressRecordSuccess: (state: DomainState) => {
+    setDefaultSuccess: (state: DomainState, action: PayloadAction<Domain>) => {
       state.saving = false;
       state.saved = true;
       state.errors = null;
-    },
-    createDNSData: {
-      prepare: (params: CreateDNSDataParams) => ({
-        meta: {
-          model: DomainMeta.MODEL,
-          method: "create_dnsdata",
-        },
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    createDNSDataStart: (state: DomainState) => {
-      state.saving = true;
-      state.saved = false;
-    },
-    createDNSDataError: (
-      state: DomainState,
-      action: PayloadAction<APIError>
-    ) => {
-      state.saving = false;
-      state.errors = action.payload;
-    },
-    createDNSDataSuccess: (state: DomainState) => {
-      state.saving = false;
-      state.saved = true;
-      state.errors = null;
-    },
-    deleteAddressRecord: {
-      prepare: (params: DeleteAddressRecordParams) => {
-        return {
-          meta: {
-            model: DomainMeta.MODEL,
-            method: "delete_address_record",
-          },
-          payload: {
-            params: params,
-          },
-        };
-      },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    deleteAddressRecordStart: (state: DomainState) => {
-      state.saving = true;
-      state.saved = false;
-    },
-    deleteAddressRecordError: (
-      state: DomainState,
-      action: PayloadAction<APIError>
-    ) => {
-      state.saving = false;
-      state.errors = action.payload;
-    },
-    deleteAddressRecordSuccess: (state: DomainState) => {
-      state.saving = false;
-      state.saved = true;
-      state.errors = null;
-    },
-    deleteDNSData: {
-      prepare: (params: DeleteDNSDataParams) => {
-        return {
-          meta: {
-            model: DomainMeta.MODEL,
-            method: "delete_dnsdata",
-          },
-          payload: {
-            params,
-          },
-        };
-      },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    deleteDNSDataStart: (state: DomainState) => {
-      state.saving = true;
-      state.saved = false;
-    },
-    deleteDNSDataError: (
-      state: DomainState,
-      action: PayloadAction<APIError>
-    ) => {
-      state.saving = false;
-      state.errors = action.payload;
-    },
-    deleteDNSDataSuccess: (state: DomainState) => {
-      state.saving = false;
-      state.saved = true;
-      state.errors = null;
-    },
-    deleteDNSResource: {
-      prepare: (params: DeleteDNSResourceParams) => {
-        return {
-          meta: {
-            model: DomainMeta.MODEL,
-            method: "delete_dnsresource",
-          },
-          payload: {
-            params: params,
-          },
-        };
-      },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    deleteDNSResourceError: (
-      state: DomainState,
-      action: PayloadAction<APIError>
-    ) => {
-      state.errors = action.payload;
-    },
-    deleteDNSResourceSuccess: (state: DomainState) => {
-      state.errors = null;
-    },
-    deleteRecord: {
-      prepare: (params: DeleteRecordParams) => ({
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
+
+      // update the default domain in the redux store
+      state.items.forEach((domain) => {
+        if (domain.id === action.payload.id) {
+          domain.is_default = true;
+        } else {
+          domain.is_default = false;
+        }
+      });
     },
     updateAddressRecord: {
       prepare: (params: UpdateAddressRecordParams) => {
         return {
           meta: {
-            model: DomainMeta.MODEL,
             method: "update_address_record",
+            model: DomainMeta.MODEL,
           },
           payload: {
             params,
@@ -347,10 +347,6 @@ const domainSlice = createSlice({
       reducer: () => {
         // No state changes need to be handled for this action.
       },
-    },
-    updateAddressRecordStart: (state: DomainState) => {
-      state.saving = true;
-      state.saved = false;
     },
     updateAddressRecordError: (
       state: DomainState,
@@ -358,6 +354,10 @@ const domainSlice = createSlice({
     ) => {
       state.saving = false;
       state.errors = action.payload;
+    },
+    updateAddressRecordStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
     },
     updateAddressRecordSuccess: (state: DomainState) => {
       state.saving = false;
@@ -368,8 +368,8 @@ const domainSlice = createSlice({
       prepare: (params: UpdateDNSDataParams) => {
         return {
           meta: {
-            model: DomainMeta.MODEL,
             method: "update_dnsdata",
+            model: DomainMeta.MODEL,
           },
           payload: {
             params,
@@ -380,16 +380,16 @@ const domainSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    updateDNSDataStart: (state: DomainState) => {
-      state.saving = true;
-      state.saved = false;
-    },
     updateDNSDataError: (
       state: DomainState,
       action: PayloadAction<APIError>
     ) => {
       state.saving = false;
       state.errors = action.payload;
+    },
+    updateDNSDataStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
     },
     updateDNSDataSuccess: (state: DomainState) => {
       state.saving = false;
@@ -400,8 +400,8 @@ const domainSlice = createSlice({
       prepare: (params: UpdateDNSResourceParams) => {
         return {
           meta: {
-            model: DomainMeta.MODEL,
             method: "update_dnsresource",
+            model: DomainMeta.MODEL,
           },
           payload: {
             params: params,

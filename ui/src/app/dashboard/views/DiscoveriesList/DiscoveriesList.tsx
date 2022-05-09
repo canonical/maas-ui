@@ -83,7 +83,6 @@ const generateRows = (
       );
     }
     return {
-      key: discovery[DiscoveryMeta.PK],
       className: classNames("p-table__row", {
         "is-active": isExpanded,
       }),
@@ -120,6 +119,7 @@ const generateRows = (
           content: <div className="u-truncate">{discovery.last_seen}</div>,
         },
         {
+          className: "u-align--right",
           content: (
             <ContextualMenu
               data-testid="row-menu"
@@ -151,9 +151,11 @@ const generateRows = (
               toggleDisabled={isExpanded}
             />
           ),
-          className: "u-align--right",
         },
       ],
+      expanded: isExpanded,
+      expandedContent,
+      key: discovery[DiscoveryMeta.PK],
       sortData: {
         hostname: discovery.hostname,
         ip: discovery.ip,
@@ -161,8 +163,6 @@ const generateRows = (
         macAddress: discovery.mac_address,
         rack: discovery.observer_hostname,
       },
-      expanded: isExpanded,
-      expandedContent,
     };
   });
 
@@ -210,8 +210,8 @@ const DiscoveriesList = (): JSX.Element => {
       sortKey: "lastSeen",
     },
     {
-      content: "Action",
       className: "u-align--right",
+      content: "Action",
     },
   ];
 

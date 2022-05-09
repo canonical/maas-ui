@@ -36,9 +36,9 @@ export const ArchitectureSelect = ({
       name={name}
       options={[
         {
+          disabled: true,
           label: "Select architecture",
           value: "",
-          disabled: true,
         },
         ...architectures.map((architecture) => ({
           key: architecture,

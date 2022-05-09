@@ -73,7 +73,7 @@ export const ComposeFormFields = ({
           label="Architecture"
           name="architecture"
           options={[
-            { label: "Select architecture", value: "", disabled: true },
+            { disabled: true, label: "Select architecture", value: "" },
             ...architectures.map((architecture) => ({
               key: architecture,
               label: architecture,

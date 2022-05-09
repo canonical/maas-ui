@@ -34,7 +34,6 @@ type Props = {
 
 const actionGroups: ActionGroup[] = [
   {
-    name: "lifecycle",
     actions: [
       NodeActions.COMMISSION,
       NodeActions.ACQUIRE,
@@ -43,13 +42,13 @@ const actionGroups: ActionGroup[] = [
       NodeActions.ABORT,
       NodeActions.CLONE,
     ],
+    name: "lifecycle",
   },
   {
-    name: "power",
     actions: [NodeActions.ON, NodeActions.OFF],
+    name: "power",
   },
   {
-    name: "testing",
     actions: [
       NodeActions.TEST,
       NodeActions.RESCUE_MODE,
@@ -58,13 +57,13 @@ const actionGroups: ActionGroup[] = [
       NodeActions.MARK_BROKEN,
       NodeActions.OVERRIDE_FAILED_TESTING,
     ],
+    name: "testing",
   },
   {
-    name: "lock",
     actions: [NodeActions.LOCK, NodeActions.UNLOCK],
+    name: "lock",
   },
   {
-    name: "misc",
     actions: [
       NodeActions.TAG,
       NodeActions.SET_ZONE,
@@ -72,6 +71,7 @@ const actionGroups: ActionGroup[] = [
       NodeActions.IMPORT_IMAGES,
       NodeActions.DELETE,
     ],
+    name: "misc",
   },
 ];
 

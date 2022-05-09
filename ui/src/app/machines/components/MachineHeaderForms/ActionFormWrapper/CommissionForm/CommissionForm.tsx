@@ -27,19 +27,19 @@ const formatScripts = (scripts: Script[]): FormattedScript[] =>
   }));
 
 const CommissionFormSchema = Yup.object().shape({
-  enableSSH: Yup.boolean(),
   commissioningScripts: Yup.array().of(
     Yup.object().shape({
-      name: Yup.string().required(),
-      displayName: Yup.string(),
       description: Yup.string(),
+      displayName: Yup.string(),
+      name: Yup.string().required(),
     })
   ),
+  enableSSH: Yup.boolean(),
   testingScripts: Yup.array().of(
     Yup.object().shape({
-      name: Yup.string().required(),
-      displayName: Yup.string(),
       description: Yup.string(),
+      displayName: Yup.string(),
+      name: Yup.string().required(),
     })
   ),
 });
@@ -101,15 +101,15 @@ export const CommissionForm = ({
       cleanup={machineActions.cleanup}
       errors={errors}
       initialValues={{
+        commissioningScripts: preselectedCommissioningSorted,
+        configureHBA: false,
         enableSSH: false,
+        scriptInputs: initialScriptInputs,
         skipBMCConfig: false,
         skipNetworking: false,
         skipStorage: false,
-        updateFirmware: false,
-        configureHBA: false,
-        commissioningScripts: preselectedCommissioningSorted,
         testingScripts: preselectedTestingScripts,
-        scriptInputs: initialScriptInputs,
+        updateFirmware: false,
       }}
       loaded={scriptsLoaded}
       modelName="machine"

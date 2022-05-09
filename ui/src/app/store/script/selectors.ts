@@ -117,11 +117,11 @@ const search = createSelector(
 const scripts = {
   ...defaultSelectors,
   commissioning,
-  preselectedCommissioning,
+  defaultTesting,
   hasErrors,
+  preselectedCommissioning,
   search,
   testing,
-  defaultTesting,
   testingWithUrl,
 };
 

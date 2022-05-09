@@ -80,9 +80,9 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
                 architecture: values.architecture,
                 description: values.description,
                 extra_macs: machine.extra_macs,
-                pxe_mac: machine.pxe_mac,
                 min_hwe_kernel: values.minHweKernel,
                 pool: { name: values.pool },
+                pxe_mac: machine.pxe_mac,
                 system_id: machine.system_id,
                 zone: { name: values.zone },
               };

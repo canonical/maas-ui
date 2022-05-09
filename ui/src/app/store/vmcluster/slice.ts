@@ -15,7 +15,6 @@ import {
 } from "app/store/utils/slice";
 
 const vmClusterSlice = createSlice({
-  name: VMClusterMeta.MODEL,
   initialState: {
     ...genericInitialState,
     eventErrors: [],
@@ -25,6 +24,7 @@ const vmClusterSlice = createSlice({
       getting: false,
     },
   } as VMClusterState,
+  name: VMClusterMeta.MODEL,
   reducers: {
     ...generateCommonReducers<VMClusterState, VMClusterMeta.PK, void, void>(
       VMClusterMeta.MODEL,
@@ -39,8 +39,8 @@ const vmClusterSlice = createSlice({
     delete: {
       prepare: (params: DeleteParams) => ({
         meta: {
-          model: VMClusterMeta.MODEL,
           method: "delete",
+          model: VMClusterMeta.MODEL,
         },
         payload: {
           params,
@@ -61,12 +61,6 @@ const vmClusterSlice = createSlice({
         event: "delete",
       });
     },
-    deleteStart: (state: VMClusterState) => {
-      state.statuses.deleting = true;
-    },
-    deleteSuccess: (state: VMClusterState) => {
-      state.statuses.deleting = false;
-    },
     deleteNotify: (
       state: VMClusterState,
       action: PayloadAction<VMCluster[VMClusterMeta.PK]>
@@ -76,12 +70,18 @@ const vmClusterSlice = createSlice({
       );
       state.items.splice(index, 1);
     },
+    deleteStart: (state: VMClusterState) => {
+      state.statuses.deleting = true;
+    },
+    deleteSuccess: (state: VMClusterState) => {
+      state.statuses.deleting = false;
+    },
     fetch: {
       prepare: () => ({
         meta: {
           cache: true,
-          model: VMClusterMeta.MODEL,
           method: "list_by_physical_cluster",
+          model: VMClusterMeta.MODEL,
         },
         payload: null,
       }),
@@ -122,8 +122,8 @@ const vmClusterSlice = createSlice({
     get: {
       prepare: (id: VMCluster["id"]) => ({
         meta: {
-          model: VMClusterMeta.MODEL,
           method: "get",
+          model: VMClusterMeta.MODEL,
         },
         payload: {
           params: { id },

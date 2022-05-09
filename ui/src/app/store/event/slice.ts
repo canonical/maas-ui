@@ -10,8 +10,8 @@ import {
 } from "app/store/utils/slice";
 
 const eventSlice = createSlice({
-  name: EventMeta.MODEL,
   initialState: genericInitialState as EventState,
+  name: EventMeta.MODEL,
   reducers: {
     ...generateCommonReducers<EventState, EventMeta.PK, void, void>(
       EventMeta.MODEL,
@@ -25,8 +25,8 @@ const eventSlice = createSlice({
         maxDays?: number | null
       ) => ({
         meta: {
-          model: EventMeta.MODEL,
           method: "list",
+          model: EventMeta.MODEL,
           // This list method fetches events by node ID, so don't prevent
           // fetching multiple times.
           nocache: true,

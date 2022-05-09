@@ -62,8 +62,8 @@ export const UpdateDatastoreFields = ({
           label="Datastore"
           name="datastore"
           options={datastores.map((datastore) => ({
-            label: datastore.name,
             key: datastore.id,
+            label: datastore.name,
             value: datastore.id,
           }))}
         />

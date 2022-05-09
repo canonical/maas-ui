@@ -79,6 +79,7 @@ const generateRows = (
         { content: enabled },
         { content: dhcpsnippet.description },
         {
+          className: "u-align--right",
           content: (
             <TableActions
               onEdit={() => {
@@ -88,7 +89,6 @@ const generateRows = (
               }}
             />
           ),
-          className: "u-align--right",
         },
       ],
       expanded: isExpanded,
@@ -102,9 +102,9 @@ const generateRows = (
       ),
       key: dhcpsnippet.id,
       sortData: {
-        name: dhcpsnippet.name,
         description: dhcpsnippet.description,
         enabled,
+        name: dhcpsnippet.name,
         target: appliesTo,
         type: typeLabel,
       },
@@ -171,8 +171,8 @@ const DHCPTable = ({
                 sortKey: "description",
               },
               {
-                content: "Actions",
                 className: "u-align--right",
+                content: "Actions",
               },
             ]}
             rows={generateRows(

@@ -30,8 +30,8 @@ export enum EditStaticRouteFormLabels {
 }
 
 const editStaticRouteSchema = Yup.object().shape({
-  gateway_ip: Yup.string().required("Gateway IP is required"),
   destination: Yup.string().required("Destination is required"),
+  gateway_ip: Yup.string().required("Gateway IP is required"),
   metric: Yup.number().required("Metric is required"),
 });
 
@@ -74,10 +74,10 @@ const EditStaticRouteForm = ({
       cleanup={staticRouteActions.cleanup}
       errors={staticRouteErrors}
       initialValues={{
-        source: staticRoute.source,
-        gateway_ip: staticRoute.gateway_ip,
         destination: staticRoute.destination,
+        gateway_ip: staticRoute.gateway_ip,
         metric: staticRoute.metric,
+        source: staticRoute.source,
       }}
       onSaveAnalytics={{
         action: EditStaticRouteFormLabels.Save,
@@ -88,11 +88,11 @@ const EditStaticRouteForm = ({
         dispatch(staticRouteActions.cleanup());
         dispatch(
           staticRouteActions.update({
-            id: staticRouteId,
-            source: staticRoute.source,
-            gateway_ip,
             destination: toFormikNumber(destination) as number,
+            gateway_ip,
+            id: staticRouteId,
             metric: toFormikNumber(metric),
+            source: staticRoute.source,
           })
         );
       }}
@@ -118,9 +118,9 @@ const EditStaticRouteForm = ({
               getIsDestinationForSource(destination, source)
             }
             defaultOption={{
+              disabled: true,
               label: "Select destination",
               value: "",
-              disabled: true,
             }}
           />
         </Col>

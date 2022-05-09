@@ -10,12 +10,12 @@ import { user } from "testing/factories/user";
 export const notification = extend<TimestampedModel, Notification>(
   timestampedModel,
   {
-    ident: "default",
-    user,
-    users: true,
     admins: true,
-    message: "Testing notification",
     category: NotificationCategory.WARNING,
     dismissable: true,
+    ident: "default",
+    message: "Testing notification",
+    user,
+    users: true,
   }
 );

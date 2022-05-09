@@ -220,40 +220,40 @@ const ReservedRanges = ({
 
   const headers = [
     {
-      content: Labels.StartIP,
       className: "start-ip-col",
+      content: Labels.StartIP,
       sortKey: "start_ip",
     },
     {
-      content: Labels.EndIp,
       className: "end-ip-col",
+      content: Labels.EndIp,
       sortKey: "end_ip",
     },
     {
-      content: Labels.Owner,
       className: "owner-col",
+      content: Labels.Owner,
       sortKey: "owner",
     },
     {
-      content: Labels.Type,
       className: "type-col",
+      content: Labels.Type,
       sortKey: "type",
     },
     {
-      content: Labels.Comment,
       className: "comment-col",
+      content: Labels.Comment,
       sortKey: "comment",
     },
     {
-      content: Labels.Actions,
       className: "actions-col u-align--right",
+      content: Labels.Actions,
     },
   ];
 
   if (showSubnetColumn) {
     headers.unshift({
-      content: Labels.Subnet,
       className: "subnet-col",
+      content: Labels.Subnet,
       sortKey: "subnet",
     });
   }

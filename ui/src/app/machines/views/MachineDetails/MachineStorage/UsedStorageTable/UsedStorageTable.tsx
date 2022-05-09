@@ -27,15 +27,16 @@ type Props = { systemId: Machine["system_id"] };
 const normaliseColumns = (storageDevice: Disk | Partition) => {
   return [
     {
+      "aria-label": "Name & serial",
       content: (
         <DoubleRow
           primary={storageDevice.name}
           secondary={"serial" in storageDevice && storageDevice.serial}
         />
       ),
-      "aria-label": "Name & serial",
     },
     {
+      "aria-label": "Model & firmware",
       content: (
         <DoubleRow
           primary={"model" in storageDevice ? storageDevice.model : "—"}
@@ -45,9 +46,9 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           }
         />
       ),
-      "aria-label": "Model & firmware",
     },
     {
+      "aria-label": "Boot",
       content: (
         <DoubleRow
           primary={
@@ -59,13 +60,13 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           }
         />
       ),
-      "aria-label": "Boot",
     },
     {
-      content: <DoubleRow primary={formatSize(storageDevice.size)} />,
       "aria-label": "Size",
+      content: <DoubleRow primary={formatSize(storageDevice.size)} />,
     },
     {
+      "aria-label": "Type & NUMA node",
       content: (
         <DoubleRow
           data-testid="type"
@@ -77,9 +78,9 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           }
         />
       ),
-      "aria-label": "Type & NUMA node",
     },
     {
+      "aria-label": "Health & Tags",
       content: (
         <DoubleRow
           data-testid="health"
@@ -103,7 +104,6 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           }
         />
       ),
-      "aria-label": "Health & Tags",
     },
     {
       "aria-label": "Used for",

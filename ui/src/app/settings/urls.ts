@@ -5,7 +5,6 @@ import type { User } from "app/store/user/types";
 import { argPath } from "app/utils";
 
 const urls = {
-  index: "/settings",
   configuration: {
     commissioning: "/settings/configuration/commissioning",
     deploy: "/settings/configuration/deploy",
@@ -24,6 +23,7 @@ const urls = {
     vmware: "/settings/images/vmware",
     windows: "/settings/images/windows",
   },
+  index: "/settings",
   licenseKeys: {
     add: "/settings/license-keys/add",
     edit: argPath<{
@@ -41,13 +41,13 @@ const urls = {
     syslog: "/settings/network/syslog",
   },
   repositories: {
-    index: "/settings/repositories",
     add: argPath<{ type: "repository" | "ppa" }>(
       "/settings/repositories/add/:type"
     ),
     edit: argPath<{ id: PackageRepository["id"]; type: "repository" | "ppa" }>(
       "/settings/repositories/edit/:type/:id"
     ),
+    index: "/settings/repositories",
   },
   scripts: {
     commissioning: {

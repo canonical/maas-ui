@@ -15,7 +15,6 @@ import type {
 import { BootResourceAction, BootResourceMeta } from "./types";
 
 const bootResourceSlice = createSlice({
-  name: BootResourceMeta.MODEL,
   initialState: {
     connectionError: false,
     eventErrors: [],
@@ -29,13 +28,14 @@ const bootResourceSlice = createSlice({
       fetching: false,
       polling: false,
       savingOther: false,
-      savingUbuntuCore: false,
       savingUbuntu: false,
+      savingUbuntuCore: false,
       stoppingImport: false,
     },
     ubuntu: null,
     ubuntuCoreImages: [],
   } as BootResourceState,
+  name: BootResourceMeta.MODEL,
   reducers: {
     cleanup: (state: BootResourceState) => {
       state.eventErrors = [];
@@ -46,8 +46,8 @@ const bootResourceSlice = createSlice({
     deleteImage: {
       prepare: (params: DeleteImageParams) => ({
         meta: {
-          model: BootResourceMeta.MODEL,
           method: "delete_image",
+          model: BootResourceMeta.MODEL,
         },
         payload: {
           params,
@@ -76,8 +76,8 @@ const bootResourceSlice = createSlice({
     fetch: {
       prepare: (params: FetchParams) => ({
         meta: {
-          model: BootResourceMeta.MODEL,
           method: "fetch",
+          model: BootResourceMeta.MODEL,
         },
         payload: {
           params,
@@ -110,8 +110,8 @@ const bootResourceSlice = createSlice({
     poll: {
       prepare: ({ continuous = true }) => ({
         meta: {
-          model: BootResourceMeta.MODEL,
           method: "poll",
+          model: BootResourceMeta.MODEL,
           poll: continuous,
         },
         payload: null,
@@ -163,8 +163,8 @@ const bootResourceSlice = createSlice({
     saveOther: {
       prepare: (params: SaveOtherParams) => ({
         meta: {
-          model: BootResourceMeta.MODEL,
           method: "save_other",
+          model: BootResourceMeta.MODEL,
         },
         payload: {
           params,
@@ -194,8 +194,8 @@ const bootResourceSlice = createSlice({
     saveUbuntu: {
       prepare: (params: SaveUbuntuParams) => ({
         meta: {
-          model: BootResourceMeta.MODEL,
           method: "save_ubuntu",
+          model: BootResourceMeta.MODEL,
         },
         payload: {
           params,
@@ -205,27 +205,11 @@ const bootResourceSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    saveUbuntuError: (
-      state: BootResourceState,
-      action: PayloadAction<BootResourceEventError["error"]>
-    ) => {
-      state.statuses.savingUbuntu = false;
-      state.eventErrors.push({
-        error: action.payload,
-        event: BootResourceAction.SAVE_UBUNTU,
-      });
-    },
-    saveUbuntuStart: (state: BootResourceState) => {
-      state.statuses.savingUbuntu = true;
-    },
-    saveUbuntuSuccess: (state: BootResourceState) => {
-      state.statuses.savingUbuntu = false;
-    },
     saveUbuntuCore: {
       prepare: (params: SaveUbuntuCoreParams) => ({
         meta: {
-          model: BootResourceMeta.MODEL,
           method: "save_ubuntu_core",
+          model: BootResourceMeta.MODEL,
         },
         payload: {
           params,
@@ -251,11 +235,27 @@ const bootResourceSlice = createSlice({
     saveUbuntuCoreSuccess: (state: BootResourceState) => {
       state.statuses.savingUbuntuCore = false;
     },
+    saveUbuntuError: (
+      state: BootResourceState,
+      action: PayloadAction<BootResourceEventError["error"]>
+    ) => {
+      state.statuses.savingUbuntu = false;
+      state.eventErrors.push({
+        error: action.payload,
+        event: BootResourceAction.SAVE_UBUNTU,
+      });
+    },
+    saveUbuntuStart: (state: BootResourceState) => {
+      state.statuses.savingUbuntu = true;
+    },
+    saveUbuntuSuccess: (state: BootResourceState) => {
+      state.statuses.savingUbuntu = false;
+    },
     stopImport: {
       prepare: () => ({
         meta: {
-          model: BootResourceMeta.MODEL,
           method: "stop_import",
+          model: BootResourceMeta.MODEL,
         },
         payload: null,
       }),

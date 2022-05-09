@@ -178,8 +178,8 @@ const eventErrorsForVLANs = createSelector(
       ids: VLAN[VLANMeta.PK] | VLAN[VLANMeta.PK][] | null | undefined,
       event?: string | null
     ) => ({
-      ids,
       event,
+      ids,
     }),
   ],
   (errors: VLANState["eventErrors"][0][], { ids, event }) => {

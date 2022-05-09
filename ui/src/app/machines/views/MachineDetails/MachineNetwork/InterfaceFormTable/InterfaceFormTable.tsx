@@ -47,7 +47,7 @@ const generateRow = (
   const nic = getInterfaceById(machine, nicId, linkId);
   const link = getLinkFromNic(nic, linkId);
   const isSelected = checkSelected
-    ? checkSelected({ nicId, linkId }, selected)
+    ? checkSelected({ linkId, nicId }, selected)
     : false;
   return {
     className: isSelected || !selectedEditable ? null : "p-table__row--muted",
@@ -66,10 +66,10 @@ const generateRow = (
         ),
       },
       {
+        className: "u-align--center",
         content: (
           <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
-        className: "u-align--center",
       },
       {
         content: (

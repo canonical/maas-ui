@@ -9,8 +9,8 @@ import {
 } from "app/store/utils/slice";
 
 const tokenSlice = createSlice({
-  name: TokenMeta.MODEL,
   initialState: genericInitialState as TokenState,
+  name: TokenMeta.MODEL,
   reducers: generateCommonReducers<
     TokenState,
     TokenMeta.PK,

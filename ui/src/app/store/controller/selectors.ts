@@ -148,8 +148,8 @@ const eventErrorsForControllers = createSelector(
         | null,
       event?: string | null
     ) => ({
-      ids,
       event,
+      ids,
     }),
   ],
   (errors: ControllerState["eventErrors"][0][], { ids, event }) => {
@@ -244,8 +244,8 @@ const search = createSelector(
       terms: string | null,
       selectedIDs: Controller[ControllerMeta.PK][]
     ) => ({
-      terms,
       selectedIDs,
+      terms,
     }),
   ],
   (items: Controller[], tags, { selectedIDs, terms }) => {
@@ -379,9 +379,10 @@ const selectors = {
   activeID,
   deleting,
   eventErrorsForControllers,
+  getByFabricId,
   getByIDs,
-  getStatuses,
   getStatusForController,
+  getStatuses,
   imageSyncStatuses,
   imageSyncStatusesForController,
   processing,
@@ -389,7 +390,6 @@ const selectors = {
   selected,
   selectedIDs,
   servicesForController,
-  getByFabricId,
   statuses,
 };
 

@@ -19,8 +19,8 @@ declare global {
 }
 
 const GeneralSchema = Yup.object().shape({
-  maas_name: Yup.string().required(),
   enable_analytics: Yup.boolean(),
+  maas_name: Yup.string().required(),
   release_notifications: Yup.boolean(),
 });
 
@@ -59,8 +59,8 @@ const GeneralForm = (): JSX.Element => {
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
-        maas_name: maasName || "",
         enable_analytics: analyticsEnabled || false,
+        maas_name: maasName || "",
         release_notifications: releaseNotifications || false,
       }}
       onSaveAnalytics={{

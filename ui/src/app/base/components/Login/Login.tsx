@@ -19,8 +19,8 @@ import { actions as statusActions } from "app/store/status";
 import statusSelectors from "app/store/status/selectors";
 
 const LoginSchema = Yup.object().shape({
-  username: Yup.string().required("Username is required"),
   password: Yup.string().required("Password is required"),
+  username: Yup.string().required("Username is required"),
 });
 
 export type LoginValues = {

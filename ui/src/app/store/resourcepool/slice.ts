@@ -14,8 +14,8 @@ import {
 } from "app/store/utils/slice";
 
 const resourcePoolSlice = createSlice({
-  name: ResourcePoolMeta.MODEL,
   initialState: genericInitialState as ResourcePoolState,
+  name: ResourcePoolMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       ResourcePoolState,

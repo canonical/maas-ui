@@ -124,8 +124,8 @@ const search = createSelector(
       terms: string | null | undefined,
       filter: TagSearchFilter | null | undefined
     ) => ({
-      terms,
       filter,
+      terms,
     }),
   ],
   (tags: Tag[], { terms, filter }) => {
@@ -143,10 +143,10 @@ const search = createSelector(
 
 const selectors = {
   ...defaultSelectors,
-  getByIDs,
-  getByName,
   getAutomatic,
   getAutomaticByIDs,
+  getByIDs,
+  getByName,
   getManual,
   getManualByIDs,
   search,

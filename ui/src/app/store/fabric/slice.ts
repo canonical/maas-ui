@@ -10,11 +10,11 @@ import {
 } from "app/store/utils/slice";
 
 const fabricSlice = createSlice({
-  name: FabricMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
   } as FabricState,
+  name: FabricMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       FabricState,
@@ -25,8 +25,8 @@ const fabricSlice = createSlice({
     get: {
       prepare: (id: Fabric[FabricMeta.PK]) => ({
         meta: {
-          model: FabricMeta.MODEL,
           method: "get",
+          model: FabricMeta.MODEL,
         },
         payload: {
           params: { [FabricMeta.PK]: id },
@@ -65,8 +65,8 @@ const fabricSlice = createSlice({
     setActive: {
       prepare: (id: Fabric[FabricMeta.PK] | null) => ({
         meta: {
-          model: FabricMeta.MODEL,
           method: "set_active",
+          model: FabricMeta.MODEL,
         },
         payload: {
           // Server unsets active item if primary key is not sent.

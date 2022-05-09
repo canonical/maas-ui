@@ -95,9 +95,9 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
     isDragAccept,
     isDragReject,
   } = useDropzone({
-    onDrop,
     maxSize: MAX_SIZE_BYTES,
     multiple: false,
+    onDrop,
   });
 
   useEffect(() => {
@@ -126,8 +126,8 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
         <div
           {...getRootProps()}
           className={classNames("scripts-upload", {
-            "scripts-upload--active": isDragActive,
             "scripts-upload--accept": isDragAccept,
+            "scripts-upload--active": isDragActive,
             "scripts-upload--reject": isDragReject,
           })}
         >

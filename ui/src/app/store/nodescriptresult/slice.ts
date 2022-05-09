@@ -12,11 +12,6 @@ type ItemMeta = {
 };
 
 const nodeScriptResultSlice = createSlice({
-  name: NodeScriptResultMeta.MODEL,
-  initialState: {
-    items: {},
-  },
-  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
       scriptResultActions.getByNodeIdSuccess,
@@ -30,6 +25,11 @@ const nodeScriptResultSlice = createSlice({
       }
     );
   },
+  initialState: {
+    items: {},
+  },
+  name: NodeScriptResultMeta.MODEL,
+  reducers: {},
 });
 
 export const { actions } = nodeScriptResultSlice;

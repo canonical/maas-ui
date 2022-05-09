@@ -159,20 +159,20 @@ const NodeDevices = ({
       [
         {
           hardwareTypes: [HardwareType.Network],
+          items: [],
           label: "Network",
           pathname: "network",
-          items: [],
         },
         {
           hardwareTypes: [HardwareType.Storage],
+          items: [],
           label: "Storage",
           pathname: "storage",
-          items: [],
         },
         {
           hardwareTypes: [HardwareType.GPU],
-          label: "GPU",
           items: [],
+          label: "GPU",
         },
         {
           hardwareTypes: [
@@ -180,8 +180,8 @@ const NodeDevices = ({
             HardwareType.Memory,
             HardwareType.Node,
           ],
-          label: "Generic",
           items: [],
+          label: "Generic",
         },
       ]
     )

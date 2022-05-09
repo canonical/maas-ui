@@ -68,12 +68,12 @@ const EventLogsTable = ({ events, systemId }: Props): JSX.Element => {
       className="event-logs-table"
       headers={[
         {
-          content: "Time",
           className: "time-col",
+          content: "Time",
         },
         {
-          content: "Event",
           className: "event-col",
+          content: "Event",
         },
       ]}
       rows={rows}

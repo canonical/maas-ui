@@ -9,8 +9,8 @@ import {
 } from "app/store/utils/slice";
 
 const zoneSlice = createSlice({
-  name: ZoneMeta.MODEL,
   initialState: genericInitialState as ZoneState,
+  name: ZoneMeta.MODEL,
   reducers: generateCommonReducers<
     ZoneState,
     ZoneMeta.PK,

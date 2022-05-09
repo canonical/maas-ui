@@ -18,8 +18,8 @@ const zeroPad = (time?: number) => `0${time || "0"}`.slice(-2);
 
 const getElapsedTime = (starttime: ScriptResult["starttime"]) => {
   const { days, hours, minutes, seconds } = intervalToDuration({
-    start: starttime ? fromUnixTime(starttime) : Date.now(),
     end: Date.now(),
+    start: starttime ? fromUnixTime(starttime) : Date.now(),
   });
   const elapsed = [];
   // Show the elapsed days if more than a day has elapsed.

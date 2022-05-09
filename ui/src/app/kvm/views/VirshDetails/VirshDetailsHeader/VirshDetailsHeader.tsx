@@ -91,16 +91,16 @@ const VirshDetailsHeader = ({
         pod
           ? [
               {
-                title: "Power address:",
                 subtitle: pod.power_parameters.power_address,
+                title: "Power address:",
               },
               {
-                title: "VMs:",
                 subtitle: `${pod.resources.vm_count.tracked} available`,
+                title: "VMs:",
               },
               {
-                title: "AZ:",
                 subtitle: zone?.name || <Spinner />,
+                title: "AZ:",
               },
             ]
           : []

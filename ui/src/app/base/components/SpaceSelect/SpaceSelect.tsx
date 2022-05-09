@@ -14,7 +14,7 @@ type Props = {
 } & FormikFieldProps;
 
 export const SpaceSelect = ({
-  defaultOption = { label: "Select space", value: "", disabled: true },
+  defaultOption = { disabled: true, label: "Select space", value: "" },
   name,
   label = "Space",
   disabled,

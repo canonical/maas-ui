@@ -53,10 +53,10 @@ const groupInterfaces = (interfaces: NetworkInterface[]): InterfaceGroup[] => {
         existingGroup.interfaces.push(iface);
       } else {
         groups.push({
-          interfaces: [iface],
-          vendor,
-          product,
           firmwareVersion,
+          interfaces: [iface],
+          product,
+          vendor,
         });
       }
       return groups;

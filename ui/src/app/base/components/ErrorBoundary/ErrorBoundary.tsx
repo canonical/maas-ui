@@ -22,7 +22,7 @@ type State = {
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
-    this.state = { hasError: false, eventId: null };
+    this.state = { eventId: null, hasError: false };
   }
 
   static getDerivedStateFromError() {

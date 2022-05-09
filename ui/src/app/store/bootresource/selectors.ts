@@ -242,8 +242,8 @@ const fetchedImages = createSelector(
 const selectors = {
   deletingImage,
   eventErrors,
-  fetchedImages,
   fetchError,
+  fetchedImages,
   fetching,
   generatedResources,
   otherImages,

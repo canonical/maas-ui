@@ -239,8 +239,8 @@ const eventErrorsForSubnets = createSelector(
       ids: Subnet[SubnetMeta.PK] | Subnet[SubnetMeta.PK][] | null,
       event?: string | null
     ) => ({
-      ids,
       event,
+      ids,
     }),
   ],
   (errors: SubnetState["eventErrors"][0][], { ids, event }) => {

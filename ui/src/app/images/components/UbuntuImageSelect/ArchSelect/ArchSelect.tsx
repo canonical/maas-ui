@@ -91,9 +91,9 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
       });
       newImages = images.concat({
         arch: arch.name,
+        os: "ubuntu",
         release: release.name,
         resourceId: existingResource?.id,
-        os: "ubuntu",
         title: release.title,
       });
     }

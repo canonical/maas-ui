@@ -57,8 +57,8 @@ const headers = [
     content: "Mount options",
   },
   {
-    content: "Actions",
     className: "u-align--right",
+    content: "Actions",
   },
 ];
 

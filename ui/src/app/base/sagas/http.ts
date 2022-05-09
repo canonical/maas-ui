@@ -32,8 +32,8 @@ const LOGOUT_API = "/MAAS/accounts/logout/";
 const MACHINES_API = `${ROOT_API}machines/`;
 
 const DEFAULT_HEADERS = {
-  "Content-Type": "application/json",
   Accept: "application/json",
+  "Content-Type": "application/json",
 };
 
 const handleErrors = (response: Response) => {
@@ -66,8 +66,8 @@ const scriptresultsDownload = (
     ...(filters ? { filters } : {}),
   }).toString();
   return fetch(`${ROOT_API}nodes/${systemId}/results/${scriptSetId}/?${args}`, {
-    method: "GET",
     headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken || "" },
+    method: "GET",
   })
     .then(handleErrors)
     .then<string | Blob>((response) => {
@@ -113,20 +113,20 @@ export const api = {
     },
     login: (credentials: LoginCredentials): Promise<void> => {
       const params = {
-        username: credentials.username,
         password: credentials.password,
+        username: credentials.username,
       };
 
       return fetch(LOGIN_API, {
-        method: "POST",
-        mode: "no-cors",
+        body: new URLSearchParams(Object.entries(params)),
         credentials: "include",
         headers: new Headers({
           Accept: "application/json",
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           "X-Requested-With": "XMLHttpRequest",
         }),
-        body: new URLSearchParams(Object.entries(params)),
+        method: "POST",
+        mode: "no-cors",
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -153,27 +153,9 @@ export const api = {
     ): Promise<Response["body"]> => {
       const { osystem, distro_series, license_key } = key;
       return fetch(`${LICENSE_KEYS_API}`, {
+        body: JSON.stringify({ distro_series, license_key, osystem }),
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "POST",
-        body: JSON.stringify({ osystem, distro_series, license_key }),
-      })
-        .then(handlePromise)
-        .then(([responseOk, body]) => {
-          if (!responseOk) {
-            throw body;
-          }
-          return body;
-        });
-    },
-    update: (
-      key: LicenseKeys,
-      csrftoken: CSRFToken
-    ): Promise<Response["body"]> => {
-      const { osystem, distro_series, license_key } = key;
-      return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
-        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
-        method: "PUT",
-        body: JSON.stringify({ license_key }),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -200,6 +182,24 @@ export const api = {
         .then(handleErrors)
         .then((response) => response.json());
     },
+    update: (
+      key: LicenseKeys,
+      csrftoken: CSRFToken
+    ): Promise<Response["body"]> => {
+      const { osystem, distro_series, license_key } = key;
+      return fetch(`${LICENSE_KEY_API}${osystem}/${distro_series}`, {
+        body: JSON.stringify({ license_key }),
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+        method: "PUT",
+      })
+        .then(handlePromise)
+        .then(([responseOk, body]) => {
+          if (!responseOk) {
+            throw body;
+          }
+          return body;
+        });
+    },
   },
   machines: {
     addChassis: (
@@ -207,13 +207,13 @@ export const api = {
       csrftoken: CSRFToken
     ): Promise<Response["body"] | void> => {
       return fetch(`${MACHINES_API}?op=add_chassis`, {
+        body: new URLSearchParams(Object.entries(params)),
         headers: new Headers({
           "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
           "X-CSRFToken": csrftoken,
           "X-Requested-With": "XMLHttpRequest",
         }),
         method: "POST",
-        body: new URLSearchParams(Object.entries(params)),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -235,13 +235,6 @@ export const api = {
       ),
   },
   scripts: {
-    fetch: (csrftoken: CSRFToken): Promise<Response["json"]> => {
-      return fetch(`${SCRIPTS_API}?include_script=true`, {
-        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
-      })
-        .then(handleErrors)
-        .then((response) => response.json());
-    },
     delete: (
       name: Script["name"],
       csrftoken: CSRFToken
@@ -251,15 +244,22 @@ export const api = {
         method: "DELETE",
       }).then(handleErrors);
     },
+    fetch: (csrftoken: CSRFToken): Promise<Response["json"]> => {
+      return fetch(`${SCRIPTS_API}?include_script=true`, {
+        headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
+      })
+        .then(handleErrors)
+        .then((response) => response.json());
+    },
     upload: (
       script: UploadScript,
       csrftoken: CSRFToken
     ): Promise<Response["body"] | void> => {
       const { name, type, contents } = script;
       return fetch(`${SCRIPTS_API}`, {
+        body: JSON.stringify({ name, script: contents, type }),
         headers: { ...DEFAULT_HEADERS, "X-CSRFToken": csrftoken },
         method: "POST",
-        body: JSON.stringify({ name, type, script: contents }),
       })
         .then(handlePromise)
         .then(([responseOk, body]) => {
@@ -361,8 +361,8 @@ export function* fetchLicenseKeysSaga(): SagaGenerator<void> {
     yield* put({ type: "licensekeys/fetchStart" });
     response = yield* call(api.licenseKeys.fetch, csrftoken);
     yield* put({
-      type: "licensekeys/fetchSuccess",
       payload: response,
+      type: "licensekeys/fetchSuccess",
     });
   } catch (error) {
     yield* put({
@@ -392,8 +392,8 @@ export function* deleteLicenseKeySaga(
       csrftoken
     );
     yield* put({
-      type: "licensekeys/deleteSuccess",
       payload: action.payload,
+      type: "licensekeys/deleteSuccess",
     });
   } catch (error) {
     yield* put({
@@ -417,8 +417,8 @@ export function* createLicenseKeySaga(
     yield* put({ type: "licensekeys/createStart" });
     response = yield* call(api.licenseKeys.create, key, csrftoken);
     yield* put({
-      type: "licensekeys/createSuccess",
       payload: response,
+      type: "licensekeys/createSuccess",
     });
   } catch (errors) {
     let error = errors;
@@ -446,8 +446,8 @@ export function* updateLicenseKeySaga(
     yield* put({ type: "licensekeys/updateStart" });
     response = yield* call(api.licenseKeys.update, key, csrftoken);
     yield* put({
-      type: "licensekeys/updateSuccess",
       payload: response,
+      type: "licensekeys/updateSuccess",
     });
   } catch (errors) {
     let error = errors;
@@ -475,8 +475,8 @@ export function* uploadScriptSaga(
     yield* put({ type: "script/uploadStart" });
     response = yield* call(api.scripts.upload, script, csrftoken);
     yield* put({
-      type: "script/uploadSuccess",
       payload: response,
+      type: "script/uploadSuccess",
     });
   } catch (errors) {
     let error = errors;
@@ -504,13 +504,13 @@ export function* addMachineChassisSaga(
     yield* put({ type: "machine/addChassisStart" });
     response = yield* call(api.machines.addChassis, params, csrftoken);
     yield* put({
-      type: "machine/addChassisSuccess",
       payload: response,
+      type: "machine/addChassisSuccess",
     });
   } catch (err) {
     yield* put({
-      type: "machine/addChassisError",
       payload: err,
+      type: "machine/addChassisError",
     });
   }
 }

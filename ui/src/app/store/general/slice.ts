@@ -17,8 +17,8 @@ const generatePrepareReducer = (method: string) => ({
   prepare: () => ({
     meta: {
       cache: true,
-      model: GeneralMeta.MODEL,
       method,
+      model: GeneralMeta.MODEL,
     },
     payload: null,
   }),
@@ -54,7 +54,6 @@ const generateSuccessReducer =
   };
 
 const generalSlice = createSlice({
-  name: GeneralMeta.MODEL,
   initialState: {
     architectures: generateInitialState([]),
     bondOptions: generateInitialState(null),
@@ -71,6 +70,7 @@ const generalSlice = createSlice({
     tlsCertificate: generateInitialState(null),
     version: generateInitialState(""),
   } as GeneralState,
+  name: GeneralMeta.MODEL,
   reducers: {
     cleanupGeneratedCertificateErrors: (state) => {
       state.generatedCertificate.errors = null;
@@ -82,75 +82,75 @@ const generalSlice = createSlice({
       state.generatedCertificate.loading = false;
     },
     fetchArchitectures: generatePrepareReducer("architectures"),
-    fetchArchitecturesStart: generateStartReducer("architectures"),
     fetchArchitecturesError: generateErrorReducer("architectures"),
+    fetchArchitecturesStart: generateStartReducer("architectures"),
     fetchArchitecturesSuccess: generateSuccessReducer("architectures"),
     fetchBondOptions: generatePrepareReducer("bond_options"),
-    fetchBondOptionsStart: generateStartReducer("bondOptions"),
     fetchBondOptionsError: generateErrorReducer("bondOptions"),
+    fetchBondOptionsStart: generateStartReducer("bondOptions"),
     fetchBondOptionsSuccess: generateSuccessReducer("bondOptions"),
     fetchComponentsToDisable: generatePrepareReducer("components_to_disable"),
-    fetchComponentsToDisableStart: generateStartReducer("componentsToDisable"),
     fetchComponentsToDisableError: generateErrorReducer("componentsToDisable"),
+    fetchComponentsToDisableStart: generateStartReducer("componentsToDisable"),
     fetchComponentsToDisableSuccess: generateSuccessReducer(
       "componentsToDisable"
     ),
     fetchDefaultMinHweKernel: generatePrepareReducer("default_min_hwe_kernel"),
-    fetchDefaultMinHweKernelStart: generateStartReducer("defaultMinHweKernel"),
     fetchDefaultMinHweKernelError: generateErrorReducer("defaultMinHweKernel"),
+    fetchDefaultMinHweKernelStart: generateStartReducer("defaultMinHweKernel"),
     fetchDefaultMinHweKernelSuccess: generateSuccessReducer(
       "defaultMinHweKernel"
     ),
     fetchHweKernels: generatePrepareReducer("hwe_kernels"),
-    fetchHweKernelsStart: generateStartReducer("hweKernels"),
     fetchHweKernelsError: generateErrorReducer("hweKernels"),
+    fetchHweKernelsStart: generateStartReducer("hweKernels"),
     fetchHweKernelsSuccess: generateSuccessReducer("hweKernels"),
     fetchKnownArchitectures: generatePrepareReducer("known_architectures"),
-    fetchKnownArchitecturesStart: generateStartReducer("knownArchitectures"),
     fetchKnownArchitecturesError: generateErrorReducer("knownArchitectures"),
+    fetchKnownArchitecturesStart: generateStartReducer("knownArchitectures"),
     fetchKnownArchitecturesSuccess:
       generateSuccessReducer("knownArchitectures"),
     fetchKnownBootArchitectures: generatePrepareReducer(
       "known_boot_architectures"
     ),
-    fetchKnownBootArchitecturesStart: generateStartReducer(
+    fetchKnownBootArchitecturesError: generateErrorReducer(
       "knownBootArchitectures"
     ),
-    fetchKnownBootArchitecturesError: generateErrorReducer(
+    fetchKnownBootArchitecturesStart: generateStartReducer(
       "knownBootArchitectures"
     ),
     fetchKnownBootArchitecturesSuccess: generateSuccessReducer(
       "knownBootArchitectures"
     ),
     fetchMachineActions: generatePrepareReducer("machine_actions"),
-    fetchMachineActionsStart: generateStartReducer("machineActions"),
     fetchMachineActionsError: generateErrorReducer("machineActions"),
+    fetchMachineActionsStart: generateStartReducer("machineActions"),
     fetchMachineActionsSuccess: generateSuccessReducer("machineActions"),
     fetchOsInfo: generatePrepareReducer("osinfo"),
-    fetchOsInfoStart: generateStartReducer("osInfo"),
     fetchOsInfoError: generateErrorReducer("osInfo"),
+    fetchOsInfoStart: generateStartReducer("osInfo"),
     fetchOsInfoSuccess: generateSuccessReducer("osInfo"),
     fetchPocketsToDisable: generatePrepareReducer("pockets_to_disable"),
-    fetchPocketsToDisableStart: generateStartReducer("pocketsToDisable"),
     fetchPocketsToDisableError: generateErrorReducer("pocketsToDisable"),
+    fetchPocketsToDisableStart: generateStartReducer("pocketsToDisable"),
     fetchPocketsToDisableSuccess: generateSuccessReducer("pocketsToDisable"),
     fetchPowerTypes: generatePrepareReducer("power_types"),
-    fetchPowerTypesStart: generateStartReducer("powerTypes"),
     fetchPowerTypesError: generateErrorReducer("powerTypes"),
+    fetchPowerTypesStart: generateStartReducer("powerTypes"),
     fetchPowerTypesSuccess: generateSuccessReducer("powerTypes"),
     fetchTlsCertificate: generatePrepareReducer("tls_certificate"),
-    fetchTlsCertificateStart: generateStartReducer("tlsCertificate"),
     fetchTlsCertificateError: generateErrorReducer("tlsCertificate"),
+    fetchTlsCertificateStart: generateStartReducer("tlsCertificate"),
     fetchTlsCertificateSuccess: generateSuccessReducer("tlsCertificate"),
     fetchVersion: generatePrepareReducer("version"),
-    fetchVersionStart: generateStartReducer("version"),
     fetchVersionError: generateErrorReducer("version"),
+    fetchVersionStart: generateStartReducer("version"),
     fetchVersionSuccess: generateSuccessReducer("version"),
     generateCertificate: {
       prepare: (params: GenerateCertificateParams) => ({
         meta: {
-          model: GeneralMeta.MODEL,
           method: "generate_client_certificate",
+          model: GeneralMeta.MODEL,
         },
         payload: {
           params,
@@ -160,8 +160,8 @@ const generalSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    generateCertificateStart: generateStartReducer("generatedCertificate"),
     generateCertificateError: generateErrorReducer("generatedCertificate"),
+    generateCertificateStart: generateStartReducer("generatedCertificate"),
     generateCertificateSuccess: generateSuccessReducer("generatedCertificate"),
   },
 });

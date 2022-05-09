@@ -123,8 +123,8 @@ const ControllerListTable = ({
     Controller,
     SortKey
   >(getSortValue, {
-    key: "fqdn",
     direction: SortDirection.DESCENDING,
+    key: "fqdn",
   });
   const sortedControllers = sortRows(controllers);
   const { handleGroupCheckbox, handleRowCheckbox } =

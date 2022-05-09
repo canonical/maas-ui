@@ -17,8 +17,8 @@ type ItemMeta = {
 };
 
 const nodeDeviceSlice = createSlice({
-  name: NodeDeviceMeta.MODEL,
   initialState: genericInitialState as NodeDeviceState,
+  name: NodeDeviceMeta.MODEL,
   reducers: {
     ...generateCommonReducers<NodeDeviceState, NodeDeviceMeta.PK, void, void>(
       NodeDeviceMeta.MODEL,
@@ -27,8 +27,8 @@ const nodeDeviceSlice = createSlice({
     getByMachineId: {
       prepare: (machineID: Machine[MachineMeta.PK]) => ({
         meta: {
-          model: NodeDeviceMeta.MODEL,
           method: "list",
+          model: NodeDeviceMeta.MODEL,
           nocache: true,
         },
         payload: {
@@ -41,12 +41,6 @@ const nodeDeviceSlice = createSlice({
         // no state changes needed
       },
     },
-    getByMachineIdStart: (
-      state: NodeDeviceState,
-      _action: PayloadAction<null>
-    ) => {
-      state.loading = true;
-    },
     getByMachineIdError: (
       state: NodeDeviceState,
       action: PayloadAction<NodeDeviceState["errors"]>
@@ -54,6 +48,12 @@ const nodeDeviceSlice = createSlice({
       state.errors = action.payload;
       state.loading = false;
       state.saving = false;
+    },
+    getByMachineIdStart: (
+      state: NodeDeviceState,
+      _action: PayloadAction<null>
+    ) => {
+      state.loading = true;
     },
     getByMachineIdSuccess: {
       prepare: (

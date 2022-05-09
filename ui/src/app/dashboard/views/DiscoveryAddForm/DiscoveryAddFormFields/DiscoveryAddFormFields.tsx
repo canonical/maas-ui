@@ -68,7 +68,7 @@ const DiscoveryAddFormFields = ({
               setDevice(null);
             }}
             options={[
-              { label: "Choose type", value: "", disabled: true },
+              { disabled: true, label: "Choose type", value: "" },
               { label: "Device", value: DeviceType.DEVICE },
               { label: "Interface", value: DeviceType.INTERFACE },
             ]}
@@ -85,7 +85,7 @@ const DiscoveryAddFormFields = ({
               label="Domain"
               name="domain"
               options={[
-                { label: "Choose domain", value: "", disabled: true },
+                { disabled: true, label: "Choose domain", value: "" },
                 ...domains.map((domain) => ({
                   label: domain.name,
                   value: domain.name,
@@ -109,7 +109,7 @@ const DiscoveryAddFormFields = ({
                 setDevice(evt.target.value as Device[DeviceMeta.PK]);
               }}
               options={[
-                { label: "Select device name", value: "", disabled: true },
+                { disabled: true, label: "Select device name", value: "" },
                 ...devices.map((device) => ({
                   label: device.fqdn,
                   value: device[DeviceMeta.PK],

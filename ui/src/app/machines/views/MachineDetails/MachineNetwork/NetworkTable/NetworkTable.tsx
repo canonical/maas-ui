@@ -140,8 +140,8 @@ const generateRow = (
     : null;
   return {
     className: classNames("p-table__row", {
-      "truncated-border": isABondOrBridgeParent,
       "is-active": isExpanded,
+      "truncated-border": isABondOrBridgeParent,
     }),
     columns: [
       {
@@ -159,10 +159,10 @@ const generateRow = (
         ),
       },
       {
+        className: "u-align--center",
         content: !isABondOrBridgeParent && (
           <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
         ),
-        className: "u-align--center",
       },
       {
         content: (
@@ -407,8 +407,8 @@ const NetworkTable = ({
   >(
     getSortValue,
     {
-      key: "name",
       direction: SortDirection.DESCENDING,
+      key: "name",
     },
     rowSort
   );
@@ -581,8 +581,8 @@ const NetworkTable = ({
           ),
         },
         {
-          content: "Actions",
           className: "u-align--right",
+          content: "Actions",
         },
       ]}
       rows={sortedRows}

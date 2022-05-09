@@ -9,8 +9,8 @@ import {
 } from "app/store/utils/slice";
 
 const serviceSlice = createSlice({
-  name: ServiceMeta.MODEL,
   initialState: genericInitialState as ServiceState,
+  name: ServiceMeta.MODEL,
   reducers: generateCommonReducers<ServiceState, ServiceMeta.PK, void, void>(
     ServiceMeta.MODEL,
     ServiceMeta.PK

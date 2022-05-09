@@ -5,19 +5,19 @@ import { StatusMeta } from "./types";
 import type { StatusState } from "./types";
 
 const statusSlice = createSlice({
-  name: StatusMeta.MODEL,
   initialState: {
+    authenticated: false,
     // Default to authenticating so that the login screen doesn't flash.
     authenticating: true,
-    authenticated: false,
     authenticationError: null,
-    externalAuthURL: null,
-    externalLoginURL: null,
     connected: false,
     connecting: false,
-    noUsers: false,
     error: null,
+    externalAuthURL: null,
+    externalLoginURL: null,
+    noUsers: false,
   } as StatusState,
+  name: StatusMeta.MODEL,
   reducers: {
     checkAuthenticated: {
       prepare: () => ({
@@ -26,6 +26,14 @@ const statusSlice = createSlice({
       reducer: () => {
         // No state changes need to be handled for this action.
       },
+    },
+    checkAuthenticatedError: (
+      state: StatusState,
+      action: PayloadAction<StatusState["error"]>
+    ) => {
+      state.authenticating = false;
+      state.authenticated = false;
+      state.error = action.payload;
     },
     checkAuthenticatedStart: (state: StatusState) => {
       state.authenticating = true;
@@ -43,30 +51,6 @@ const statusSlice = createSlice({
       state.externalAuthURL = action.payload.external_auth_url;
       state.noUsers = action.payload.no_users;
     },
-    login: {
-      prepare: (params: { password: string; username: string }) => ({
-        payload: params,
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    loginStart: (state: StatusState) => {
-      state.authenticating = true;
-    },
-    loginError: (
-      state: StatusState,
-      action: PayloadAction<StatusState["authenticationError"]>
-    ) => {
-      state.authenticationError = action.payload;
-      state.authenticating = false;
-    },
-    loginSuccess: (state: StatusState) => {
-      state.authenticated = true;
-      state.authenticating = false;
-      state.authenticationError = null;
-      state.error = null;
-    },
     externalLogin: {
       prepare: () => ({
         payload: null,
@@ -75,18 +59,50 @@ const statusSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    externalLoginSuccess: (state: StatusState) => {
-      state.authenticated = true;
-      state.authenticating = false;
-      state.authenticationError = null;
-      state.error = null;
-    },
     externalLoginError: (
       state: StatusState,
       action: PayloadAction<StatusState["authenticationError"]>
     ) => {
       state.authenticationError = action.payload;
       state.authenticating = false;
+    },
+    externalLoginSuccess: (state: StatusState) => {
+      state.authenticated = true;
+      state.authenticating = false;
+      state.authenticationError = null;
+      state.error = null;
+    },
+    externalLoginURL: (
+      state: StatusState,
+      action: PayloadAction<{
+        url: StatusState["externalLoginURL"];
+      }>
+    ) => {
+      state.externalLoginURL = action.payload.url;
+    },
+    login: {
+      prepare: (params: { password: string; username: string }) => ({
+        payload: params,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    loginError: (
+      state: StatusState,
+      action: PayloadAction<StatusState["authenticationError"]>
+    ) => {
+      state.authenticationError = action.payload;
+      state.authenticating = false;
+    },
+    loginStart: (state: StatusState) => {
+      state.authenticating = true;
+    },
+    loginSuccess: (state: StatusState) => {
+      state.authenticated = true;
+      state.authenticating = false;
+      state.authenticationError = null;
+      state.error = null;
     },
     logout: {
       prepare: () => ({
@@ -98,14 +114,6 @@ const statusSlice = createSlice({
     },
     logoutSuccess: (state: StatusState) => {
       state.authenticated = false;
-    },
-    checkAuthenticatedError: (
-      state: StatusState,
-      action: PayloadAction<StatusState["error"]>
-    ) => {
-      state.authenticating = false;
-      state.authenticated = false;
-      state.error = action.payload;
     },
     websocketConnect: (state: StatusState) => {
       state.connected = false;
@@ -135,14 +143,6 @@ const statusSlice = createSlice({
       state.error = action.payload;
       state.connected = false;
       state.connecting = false;
-    },
-    externalLoginURL: (
-      state: StatusState,
-      action: PayloadAction<{
-        url: StatusState["externalLoginURL"];
-      }>
-    ) => {
-      state.externalLoginURL = action.payload.url;
     },
   },
 });

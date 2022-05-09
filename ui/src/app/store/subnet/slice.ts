@@ -46,13 +46,13 @@ const statusHandlers = generateStatusHandlers<
 );
 
 const subnetSlice = createSlice({
-  name: SubnetMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
     eventErrors: [],
     statuses: {},
   } as SubnetState,
+  name: SubnetMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       SubnetState,
@@ -95,8 +95,8 @@ const subnetSlice = createSlice({
     get: {
       prepare: (id: Subnet[SubnetMeta.PK]) => ({
         meta: {
-          model: SubnetMeta.MODEL,
           method: "get",
+          model: SubnetMeta.MODEL,
         },
         payload: {
           params: { [SubnetMeta.PK]: id },
@@ -136,8 +136,8 @@ const subnetSlice = createSlice({
     scan: {
       prepare: (id: Subnet[SubnetMeta.PK]) => ({
         meta: {
-          model: SubnetMeta.MODEL,
           method: "scan",
+          model: SubnetMeta.MODEL,
         },
         payload: {
           params: { [SubnetMeta.PK]: id },
@@ -173,9 +173,9 @@ const subnetSlice = createSlice({
         if (scan_started_on.length === 0) {
           state.errors = result;
           state.eventErrors.push({
-            id: subnetId,
             error: result,
             event: "scan",
+            id: subnetId,
           });
         }
       },
@@ -183,8 +183,8 @@ const subnetSlice = createSlice({
     setActive: {
       prepare: (id: Subnet[SubnetMeta.PK] | null) => ({
         meta: {
-          model: SubnetMeta.MODEL,
           method: "set_active",
+          model: SubnetMeta.MODEL,
         },
         payload: {
           // Server unsets active item if primary key is not sent.

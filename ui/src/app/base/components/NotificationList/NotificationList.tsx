@@ -32,21 +32,21 @@ const NotificationList = (): JSX.Element => {
   const messages = useSelector(messageSelectors.all);
 
   const notifications = {
-    warnings: {
-      items: useSelector(notificationSelectors.warnings),
-      severity: NotificationSeverity.CAUTION,
-    },
     errors: {
       items: useSelector(notificationSelectors.errors),
       severity: NotificationSeverity.NEGATIVE,
+    },
+    info: {
+      items: useSelector(notificationSelectors.info),
+      severity: NotificationSeverity.INFORMATION,
     },
     success: {
       items: useSelector(notificationSelectors.success),
       severity: NotificationSeverity.POSITIVE,
     },
-    info: {
-      items: useSelector(notificationSelectors.info),
-      severity: NotificationSeverity.INFORMATION,
+    warnings: {
+      items: useSelector(notificationSelectors.warnings),
+      severity: NotificationSeverity.CAUTION,
     },
   };
 

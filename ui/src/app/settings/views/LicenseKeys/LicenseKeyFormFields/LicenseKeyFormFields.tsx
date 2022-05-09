@@ -29,7 +29,7 @@ export const LicenseKeyFormFields = ({
         required={true}
         options={osystems.map((osystem) => {
           const [os, label] = osystem;
-          return { value: os, label };
+          return { label, value: os };
         })}
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);

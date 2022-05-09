@@ -138,8 +138,8 @@ const generateRows = (
       ),
       key: id,
       sortData: {
-        source: group.source,
         id: group.id,
+        source: group.source,
       },
     };
   });

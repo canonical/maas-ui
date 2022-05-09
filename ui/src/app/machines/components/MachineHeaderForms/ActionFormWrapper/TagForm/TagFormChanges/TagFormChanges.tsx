@@ -75,13 +75,23 @@ const generateRows = (
   removeLabel?: ReactNode
 ) => {
   return tags.map((tag, i) => ({
+    action: (
+      <Button
+        appearance="base"
+        className="is-dense u-no-margin u-no-padding"
+        onClick={() => onRemove?.(tag)}
+        type="button"
+      >
+        {removeLabel}
+      </Button>
+    ),
     label: {
       children: i === 0 ? label : null,
-      rowSpan: i === 0 ? tags.length : null,
       row: {
         "aria-label": tag.name,
         "data-testid": rowType,
       },
+      rowSpan: i === 0 ? tags.length : null,
     },
     name: (
       <TagChip
@@ -98,16 +108,6 @@ const generateRows = (
       />
     ),
     options: tag.kernel_opts ? <Icon name="tick" /> : null,
-    action: (
-      <Button
-        appearance="base"
-        className="is-dense u-no-margin u-no-padding"
-        onClick={() => onRemove?.(tag)}
-        type="button"
-      >
-        {removeLabel}
-      </Button>
-    ),
   }));
 };
 
@@ -145,27 +145,28 @@ export const TagFormChanges = ({
   const columns = useMemo(
     () => [
       {
-        accessor: Column.Label,
         // The data for this column is supplied inside a children prop so that
         // the data can also return the appropriate rowspan (used in getCellProps).
         Cell: ({ value }: { value: LabelCol }) => value.children || null,
-        className: "label-col",
+
         Header: "Tag changes",
+        accessor: Column.Label,
+        className: "label-col",
       },
       {
+        Header: "Tag name",
         accessor: Column.Name,
         className: "name-col",
-        Header: "Tag name",
       },
       {
+        Header: "Kernel options",
         accessor: Column.Options,
         className: "options-col u-align-text--right",
-        Header: "Kernel options",
       },
       {
+        Header: "Action",
         accessor: Column.Action,
         className: "action-col u-align-text--right u-no-padding--right",
-        Header: "Action",
       },
     ],
     []

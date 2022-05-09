@@ -13,8 +13,8 @@ import {
 } from "app/store/utils/slice";
 
 const packageRepositorySlice = createSlice({
-  name: PackageRepositoryMeta.MODEL,
   initialState: genericInitialState as PackageRepositoryState,
+  name: PackageRepositoryMeta.MODEL,
   reducers: generateCommonReducers<
     PackageRepositoryState,
     PackageRepositoryMeta.PK,

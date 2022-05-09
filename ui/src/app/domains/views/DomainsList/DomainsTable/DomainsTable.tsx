@@ -21,36 +21,34 @@ const DomainsTable = (): JSX.Element => {
   const headers = [
     {
       content: "Domain",
-      sortKey: "name",
       "data-testid": "domain-name-header",
+      sortKey: "name",
     },
     {
       content: "Authoritative",
       sortKey: "authoritative",
     },
     {
+      className: "u-align--right",
       content: "Hosts",
       sortKey: "hosts",
-      className: "u-align--right",
     },
     {
+      className: "u-align--right",
       content: "Total records",
       sortKey: "records",
-      className: "u-align--right",
     },
     {
-      content: "Actions",
       className: "u-align--right",
+      content: "Actions",
     },
   ];
 
   const rows = domains.map((domain) => {
     const isActive = expandedID === domain.id;
     return {
-      // making sure we don't pass id directly as a key because of
-      // https://github.com/canonical-web-and-design/react-components/issues/476
-      key: `domain-row-${domain.id}`,
       className: classNames("p-table__row", { "is-active": isActive }),
+
       columns: [
         {
           content: (
@@ -64,14 +62,15 @@ const DomainsTable = (): JSX.Element => {
           content: domain.authoritative ? "Yes" : "No",
         },
         {
+          className: "u-align--right",
           content: domain.hosts,
-          className: "u-align--right",
         },
         {
+          className: "u-align--right",
           content: domain.resource_count,
-          className: "u-align--right",
         },
         {
+          className: "u-align--right",
           content: (
             <ContextualMenu
               hasToggleIcon={true}
@@ -89,10 +88,11 @@ const DomainsTable = (): JSX.Element => {
               ]}
             />
           ),
-          className: "u-align--right",
         },
       ],
+
       expanded: isActive,
+
       expandedContent: (
         <TableConfirm
           confirmAppearance="positive"
@@ -118,10 +118,13 @@ const DomainsTable = (): JSX.Element => {
           sidebar={false}
         />
       ),
+      // making sure we don't pass id directly as a key because of
+      // https://github.com/canonical-web-and-design/react-components/issues/476
+      key: `domain-row-${domain.id}`,
       sortData: {
-        name: domain.name,
         authoritative: domain.authoritative,
         hosts: domain.hosts,
+        name: domain.name,
         records: domain.resource_count,
       },
     };

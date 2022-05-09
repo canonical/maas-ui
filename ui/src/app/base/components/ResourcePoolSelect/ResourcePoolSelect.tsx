@@ -37,7 +37,7 @@ export const ResourcePoolSelect = ({
       label={label}
       name={name}
       options={[
-        { label: "Select resource pool", value: "", disabled: true },
+        { disabled: true, label: "Select resource pool", value: "" },
         ...resourcePools.map((resourcePool) => ({
           key: `resource-pool-${resourcePool.id}`,
           label: resourcePool.name,

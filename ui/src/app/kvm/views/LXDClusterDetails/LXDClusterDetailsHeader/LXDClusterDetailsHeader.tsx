@@ -98,29 +98,29 @@ const LXDClusterDetailsHeader = ({
         cluster
           ? [
               {
+                subtitle: (
+                  <span className="u-nudge-right--large" data-testid="members">
+                    {pluralize("member", cluster.hosts.length, true)}
+                  </span>
+                ),
                 title: (
                   <>
                     <Icon name="cluster" />
                     <span className="u-nudge-right--small">Cluster:</span>
                   </>
                 ),
-                subtitle: (
-                  <span className="u-nudge-right--large" data-testid="members">
-                    {pluralize("member", cluster.hosts.length, true)}
-                  </span>
-                ),
               },
               {
-                title: "VMs:",
                 subtitle: `${cluster.virtual_machines.length} available`,
+                title: "VMs:",
               },
               {
-                title: "AZ:",
                 subtitle: zone?.name || <Spinner />,
+                title: "AZ:",
               },
               {
-                title: "LXD project:",
                 subtitle: cluster.project,
+                title: "LXD project:",
               },
             ]
           : []

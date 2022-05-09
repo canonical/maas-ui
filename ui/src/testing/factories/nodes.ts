@@ -67,11 +67,11 @@ import {
 } from "app/store/types/node";
 
 export const testStatus = define<TestStatus>({
-  status: 0,
+  failed: 0,
+  passed: 0,
   pending: 0,
   running: 0,
-  passed: 0,
-  failed: 0,
+  status: 0,
 });
 
 const actions = () => [];
@@ -96,8 +96,8 @@ const tags = () => [];
 
 const simpleNode = extend<Model, SimpleNode>(model, {
   domain: modelRef,
-  hostname: (i: number) => `test-machine-${i}`,
   fqdn: "test.maas",
+  hostname: (i: number) => `test-machine-${i}`,
   permissions,
   system_id: () => random().toString(),
   tags,
@@ -175,10 +175,10 @@ export const deviceDetails = extend<Device, DeviceDetails>(device, {
 
 const node = extend<SimpleNode, BaseNode>(simpleNode, {
   architecture: "amd64/generic",
-  description: "a test node",
   cpu_count: 1,
   cpu_speed: 0,
   cpu_test_status: testStatus,
+  description: "a test node",
   distro_series: "",
   interface_test_status: testStatus,
   locked: false,
@@ -189,8 +189,8 @@ const node = extend<SimpleNode, BaseNode>(simpleNode, {
   other_test_status: testStatus,
   pool: modelRef,
   status: NodeStatus.ALLOCATED,
-  status_message: "",
   status_code: 10,
+  status_message: "",
   storage_test_status: testStatus,
 });
 
@@ -211,16 +211,16 @@ export const machine = extend<BaseNode, Machine>(node, {
   pod: modelRef,
   power_state: PowerState.ON,
   power_type: "manual",
-  pxe_mac_vendor: "Unknown vendor",
   pxe_mac: "de:ad:be:ef:aa:b1",
+  pxe_mac_vendor: "Unknown vendor",
   spaces,
   sriov_support: false,
-  storage_tags,
   storage: 8,
+  storage_tags,
   subnets,
   testing_status: testStatus,
-  workload_annotations: () => ({}),
   vlan: null,
+  workload_annotations: () => ({}),
   zone: modelRef,
 });
 
@@ -256,35 +256,35 @@ export const machinePartition = extend<Model, Partition>(model, {
   filesystem: null,
   name: "sda-part1",
   path: "/dev/disk/by-dname/sda-part1",
-  size_human: "100 GB",
   size: 100000000000,
+  size_human: "100 GB",
   tags: () => [],
   type: "partition",
   used_for: "fat32 formatted filesystem mounted at /boot/efi",
 });
 
 export const machineDisk = extend<Model, Disk>(model, {
-  is_boot: true,
-  name: "sda",
-  tags: () => [],
-  type: DiskTypes.PHYSICAL,
-  path: "/dev/disk/by-dname/sda",
-  size: 100000000000,
-  size_human: "100 GB",
-  used_size: 40000000000,
-  used_size_human: "40 GB",
   available_size: 60000000000,
   available_size_human: "600 GB",
   block_size: 512,
-  model: "QEMU HARDDISK",
-  serial: "lxd_root",
-  firmware_version: "2.5+",
-  partition_table_type: "GPT",
-  used_for: "GPT partitioned with 2 partitions",
   filesystem: null,
-  partitions: () => [],
+  firmware_version: "2.5+",
+  is_boot: true,
+  model: "QEMU HARDDISK",
+  name: "sda",
   numa_node: 0,
+  partition_table_type: "GPT",
+  partitions: () => [],
+  path: "/dev/disk/by-dname/sda",
+  serial: "lxd_root",
+  size: 100000000000,
+  size_human: "100 GB",
+  tags: () => [],
   test_status: 0,
+  type: DiskTypes.PHYSICAL,
+  used_for: "GPT partitioned with 2 partitions",
+  used_size: 40000000000,
+  used_size_human: "40 GB",
 });
 
 export const machineInterface = networkInterface;
@@ -314,8 +314,8 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   dhcp_on: false,
   disks: () => [],
   enable_hw_sync: true,
-  error_description: "",
   error: "",
+  error_description: "",
   events: () => [],
   grouped_storages: () => [],
   hardware_uuid: "F5BB1CC9-45B2-46EA-B96A-7D528A902F4B",
@@ -325,19 +325,19 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   interfaces: () => [],
   license_key: "",
   metadata: () => ({
-    cpu_model: "Intel(R) Xeon(R) CPU E5620",
-    system_vendor: "QEMU",
-    system_product: "Standard PC (Q35 + ICH9, 2009)",
-    system_version: "pc-q35-5.1",
-    mainboard_vendor: "Canonical Ltd.",
-    mainboard_product: "LXD",
-    mainboard_version: "pc-q35-5.1",
-    mainboard_firmware_vendor: "EFI Development Kit II / OVMF",
-    mainboard_firmware_date: "02/06/2015",
-    mainboard_firmware_version: "0.0.0",
-    chassis_vendor: "QEMU",
     chassis_type: "Other",
+    chassis_vendor: "QEMU",
     chassis_version: "pc-q35-5.1",
+    cpu_model: "Intel(R) Xeon(R) CPU E5620",
+    mainboard_firmware_date: "02/06/2015",
+    mainboard_firmware_vendor: "EFI Development Kit II / OVMF",
+    mainboard_firmware_version: "0.0.0",
+    mainboard_product: "LXD",
+    mainboard_vendor: "Canonical Ltd.",
+    mainboard_version: "pc-q35-5.1",
+    system_product: "Standard PC (Q35 + ICH9, 2009)",
+    system_vendor: "QEMU",
+    system_version: "pc-q35-5.1",
   }),
   min_hwe_kernel: "",
   node_type: 0,
@@ -345,9 +345,9 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   on_network: false,
   power_bmc_node_count: 3,
   power_parameters: () => ({
+    instance_name: "test",
     password: "",
     power_address: "192.168.1.1:8000",
-    instance_name: "test",
   }),
   show_os_info: false,
   special_filesystems: () => [],
@@ -363,8 +363,8 @@ export const controller = extend<BaseNode, Controller>(node, {
   description: "a test controller",
   last_image_sync: "Thu, 02 Jul. 2020 22:55:00",
   link_type: NodeLinkType.CONTROLLER,
-  node_type_display: NodeTypeDisplay.REGION_AND_RACK_CONTROLLER,
   node_type: 4,
+  node_type_display: NodeTypeDisplay.REGION_AND_RACK_CONTROLLER,
   service_ids,
   versions: null,
 });
@@ -390,8 +390,8 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     disks: () => [],
     dynamic: false,
     ephemeral_deploy: false,
-    error_description: "",
     error: "",
+    error_description: "",
     events: () => [],
     grouped_storages: () => [],
     hardware_uuid: "F5BB1CC9-45B2-46EA-B96A-7D528A902F4B",
@@ -406,19 +406,19 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     last_applied_storage_layout: StorageLayout.FLAT,
     license_key: "",
     metadata: () => ({
-      cpu_model: "Intel(R) Xeon(R) CPU E5620",
-      system_vendor: "QEMU",
-      system_product: "Standard PC (Q35 + ICH9, 2009)",
-      system_version: "pc-q35-5.1",
-      mainboard_vendor: "Canonical Ltd.",
-      mainboard_product: "LXD",
-      mainboard_version: "pc-q35-5.1",
-      mainboard_firmware_vendor: "EFI Development Kit II / OVMF",
-      mainboard_firmware_date: "02/06/2015",
-      mainboard_firmware_version: "0.0.0",
-      chassis_vendor: "QEMU",
       chassis_type: "Other",
+      chassis_vendor: "QEMU",
       chassis_version: "pc-q35-5.1",
+      cpu_model: "Intel(R) Xeon(R) CPU E5620",
+      mainboard_firmware_date: "02/06/2015",
+      mainboard_firmware_vendor: "EFI Development Kit II / OVMF",
+      mainboard_firmware_version: "0.0.0",
+      mainboard_product: "LXD",
+      mainboard_vendor: "Canonical Ltd.",
+      mainboard_version: "pc-q35-5.1",
+      system_product: "Standard PC (Q35 + ICH9, 2009)",
+      system_vendor: "QEMU",
+      system_version: "pc-q35-5.1",
     }),
     min_hwe_kernel: "",
     node_type: 0,
@@ -428,21 +428,21 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     physical_disk_count: 1,
     power_bmc_node_count: 3,
     power_parameters: () => ({
+      instance_name: "test",
       password: "",
       power_address: "192.168.1.1:8000",
-      instance_name: "test",
     }),
     power_state: PowerState.ON,
     power_type: "manual",
     previous_status: NodeStatus.DEPLOYING,
-    pxe_mac_vendor: "Unknown vendor",
     pxe_mac: "de:ad:be:ef:aa:b1",
+    pxe_mac_vendor: "Unknown vendor",
     register_vmhost: false,
     show_os_info: false,
     special_filesystems: () => [],
+    storage: 8,
     storage_layout_issues: () => [],
     storage_tags,
-    storage: 8,
     supported_filesystems: () => [],
     swap_size: null,
     testing_start_time: "Thu, 15 Oct. 2020 07:25:10",
@@ -461,14 +461,14 @@ export const controllerVersionInfo = define<ControllerVersionInfo>({
 
 export const controllerVersions = define<ControllerVersions>({
   current: controllerVersionInfo,
+  issues: () => [],
   origin: "latest/edge",
   up_to_date: true,
-  issues: () => [],
 });
 
 export const controllerVlansHA = define<ControllerVlansHA>({
-  true: 1,
   false: 1,
+  true: 1,
 });
 
 export const podStoragePool = define<PodStoragePool>({
@@ -529,15 +529,15 @@ export const podNumaMemory = define<PodNumaMemory>({
 
 export const podNuma = define<PodNuma>({
   cores: podNumaCores,
+  interfaces: () => [0, 1],
   memory: podNumaMemory,
   node_id: sequence,
-  interfaces: () => [0, 1],
   vms: () => [0, 1],
 });
 
 export const podVmCount = define<PodVmCount>({
-  tracked: 2,
   other: 1,
+  tracked: 2,
 });
 
 export const podStoragePoolResource = define<PodStoragePoolResource>({

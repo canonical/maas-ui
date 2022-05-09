@@ -183,40 +183,19 @@ export const generateCommonReducers = <
   ) => S
 ) => {
   return {
-    fetch: {
-      // Slices that need to pass params to the payload should overwrite this
-      // action and reducer.
-      prepare: () => ({
-        meta: {
-          model: name,
-          method: "list",
-        },
-        payload: null,
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    fetchStart: (state: S) => {
-      state.loading = true;
-    },
-    fetchError: (state: S, action: PayloadAction<S["errors"]>) => {
-      state.errors = action.payload;
+    cleanup(state: S, _action: PayloadAction<undefined>) {
+      state.errors = null;
       if (setErrors) {
-        state = setErrors(state, action, "fetch");
+        state = setErrors(state, null, null);
       }
-      state.loading = false;
-    },
-    fetchSuccess: (state: S, action: PayloadAction<S["items"]>) => {
-      state.loading = false;
-      state.loaded = true;
-      state.items = action.payload;
+      state.saved = false;
+      state.saving = false;
     },
     create: {
       prepare: (params: CreateParams) => ({
         meta: {
-          model: name,
           method: "create",
+          model: name,
         },
         payload: {
           params,
@@ -226,20 +205,11 @@ export const generateCommonReducers = <
         // No state changes need to be handled for this action.
       },
     },
-    createStart: (state: S) => {
-      state.saved = false;
-      state.saving = true;
-    },
     createError: (state: S, action: PayloadAction<S["errors"]>) => {
       state.errors = action.payload;
       if (setErrors) {
         state = setErrors(state, action, "create");
       }
-      state.saving = false;
-    },
-    createSuccess: (state: S) => {
-      state.errors = null;
-      state.saved = true;
       state.saving = false;
     },
     createNotify: (state: S, action: PayloadAction<S["items"][0]>) => {
@@ -263,50 +233,22 @@ export const generateCommonReducers = <
         state.items[state.items.length] = action.payload;
       }
     },
-    update: {
-      prepare: (params: UpdateParams) => ({
-        meta: {
-          model: name,
-          method: "update",
-        },
-        payload: {
-          params,
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    updateStart: (state: S) => {
+    createStart: (state: S) => {
       state.saved = false;
       state.saving = true;
     },
-    updateError: (state: S, action: PayloadAction<S["errors"]>) => {
-      state.errors = action.payload;
-      if (setErrors) {
-        state = setErrors(state, action, "update");
-      }
-      state.saving = false;
-    },
-    updateSuccess: (state: S) => {
+    createSuccess: (state: S) => {
       state.errors = null;
       state.saved = true;
       state.saving = false;
-    },
-    updateNotify: (state: S, action: PayloadAction<S["items"][0]>) => {
-      state.items.forEach((item: S["items"][0], i: number) => {
-        if (item[indexKey] === action.payload[indexKey]) {
-          state.items[i] = action.payload;
-        }
-      });
     },
     delete: {
       // Slices that use a different key e.g. system_id should overwrite this
       // action and reducer.
       prepare: (id: S["items"][0][K]) => ({
         meta: {
-          model: name,
           method: "delete",
+          model: name,
         },
         payload: {
           params: {
@@ -318,20 +260,11 @@ export const generateCommonReducers = <
         // No state changes need to be handled for this action.
       },
     },
-    deleteStart: (state: S) => {
-      state.saved = false;
-      state.saving = true;
-    },
     deleteError: (state: S, action: PayloadAction<S["errors"]>) => {
       state.errors = action.payload;
       if (setErrors) {
         state = setErrors(state, action, "delete");
       }
-      state.saving = false;
-    },
-    deleteSuccess: (state: S) => {
-      state.errors = null;
-      state.saved = true;
       state.saving = false;
     },
     deleteNotify: (state: S, action: PayloadAction<S["items"][0][K]>) => {
@@ -340,12 +273,79 @@ export const generateCommonReducers = <
       );
       state.items.splice(index, 1);
     },
-    cleanup(state: S, _action: PayloadAction<undefined>) {
-      state.errors = null;
-      if (setErrors) {
-        state = setErrors(state, null, null);
-      }
+    deleteStart: (state: S) => {
       state.saved = false;
+      state.saving = true;
+    },
+    deleteSuccess: (state: S) => {
+      state.errors = null;
+      state.saved = true;
+      state.saving = false;
+    },
+    fetch: {
+      // Slices that need to pass params to the payload should overwrite this
+      // action and reducer.
+      prepare: () => ({
+        meta: {
+          method: "list",
+          model: name,
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    fetchError: (state: S, action: PayloadAction<S["errors"]>) => {
+      state.errors = action.payload;
+      if (setErrors) {
+        state = setErrors(state, action, "fetch");
+      }
+      state.loading = false;
+    },
+    fetchStart: (state: S) => {
+      state.loading = true;
+    },
+    fetchSuccess: (state: S, action: PayloadAction<S["items"]>) => {
+      state.loading = false;
+      state.loaded = true;
+      state.items = action.payload;
+    },
+    update: {
+      prepare: (params: UpdateParams) => ({
+        meta: {
+          method: "update",
+          model: name,
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    updateError: (state: S, action: PayloadAction<S["errors"]>) => {
+      state.errors = action.payload;
+      if (setErrors) {
+        state = setErrors(state, action, "update");
+      }
+      state.saving = false;
+    },
+    updateNotify: (state: S, action: PayloadAction<S["items"][0]>) => {
+      state.items.forEach((item: S["items"][0], i: number) => {
+        if (item[indexKey] === action.payload[indexKey]) {
+          state.items[i] = action.payload;
+        }
+      });
+    },
+    updateStart: (state: S) => {
+      state.saved = false;
+      state.saving = true;
+    },
+    updateSuccess: (state: S) => {
+      state.errors = null;
+      state.saved = true;
       state.saving = false;
     },
   };
@@ -404,6 +404,33 @@ export const generateStatusHandlers = <
   handlers.reduce<{ [x: string]: SliceCaseReducers<S> }>(
     (collection, status) => {
       collection[status.status] = {
+        // The handler for when there is an error.
+        error: {
+          prepare: ({ item, payload }) => ({
+            meta: {
+              item,
+            },
+            payload,
+          }),
+          reducer: (
+            state: Draft<S>,
+            action: PayloadAction<S["errors"], string, GenericItemMeta<I>>
+          ) => {
+            // Call the reducer handler if supplied.
+            status.error && status.error(state, action);
+            state.errors = action.payload;
+            if (setErrors) {
+              state = setErrors(state, action, status.status);
+            }
+            const statusItem =
+              state.statuses[String(action.meta.item[indexKey])];
+            const statusKey = status.statusKey;
+            if (objectHasKey(statusKey as string, statusItem)) {
+              statusItem[statusKey] = false;
+            }
+          },
+        },
+
         // The handler for when the action has started.
         start: {
           prepare: ({ item, payload }) => ({
@@ -426,6 +453,7 @@ export const generateStatusHandlers = <
             }
           },
         },
+
         // The handler for when the action has successfully completed.
         success: {
           prepare: ({ item, payload }) => ({
@@ -445,32 +473,6 @@ export const generateStatusHandlers = <
             // Sometimes the server will respond with "machine/deleteNotify"
             // before "machine/deleteSuccess", which removes the machine
             // system_id from statuses so check the item exists, to be safe.
-            const statusKey = status.statusKey;
-            if (objectHasKey(statusKey as string, statusItem)) {
-              statusItem[statusKey] = false;
-            }
-          },
-        },
-        // The handler for when there is an error.
-        error: {
-          prepare: ({ item, payload }) => ({
-            meta: {
-              item,
-            },
-            payload,
-          }),
-          reducer: (
-            state: Draft<S>,
-            action: PayloadAction<S["errors"], string, GenericItemMeta<I>>
-          ) => {
-            // Call the reducer handler if supplied.
-            status.error && status.error(state, action);
-            state.errors = action.payload;
-            if (setErrors) {
-              state = setErrors(state, action, status.status);
-            }
-            const statusItem =
-              state.statuses[String(action.meta.item[indexKey])];
             const statusKey = status.statusKey;
             if (objectHasKey(statusKey as string, statusItem)) {
               statusItem[statusKey] = false;

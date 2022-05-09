@@ -42,6 +42,7 @@ const generateRows = (
           content: licenseKey.distro_series,
         },
         {
+          className: "u-align--right",
           content: (
             <TableActions
               editPath={settingsURLs.licenseKeys.edit({
@@ -51,7 +52,6 @@ const generateRows = (
               onDelete={() => setExpandedId(licenseKey.license_key)}
             />
           ),
-          className: "u-align--right",
         },
       ],
       expanded: expanded,
@@ -135,10 +135,10 @@ const LicenseKeyList = (): JSX.Element => {
     <SettingsTable
       buttons={[
         {
-          label: "Add license key",
-          url: settingsURLs.licenseKeys.add,
           disabled: addBtnDisabled,
+          label: "Add license key",
           tooltip,
+          url: settingsURLs.licenseKeys.add,
         },
       ]}
       headers={[
@@ -151,8 +151,8 @@ const LicenseKeyList = (): JSX.Element => {
           sortKey: "distro_series",
         },
         {
-          content: "Actions",
           className: "u-align--right",
+          content: "Actions",
         },
       ]}
       loaded={licenseKeysLoaded}

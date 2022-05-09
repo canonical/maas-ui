@@ -15,11 +15,11 @@ import type {
 } from "app/store/vmcluster/types";
 
 export const vmHost = extend<Model, VMHost>(model, {
+  availability_zone: "default",
   name: "podA",
   project: "my-project",
-  tags: () => [],
   resource_pool: "default",
-  availability_zone: "default",
+  tags: () => [],
 });
 
 export const virtualMachine = define<VirtualMachine>({
@@ -49,8 +49,8 @@ export const vmClusterResource = define<VMClusterResource>({
 });
 
 export const vmClusterResourcesMemory = define<VMClusterResourcesMemory>({
-  hugepages: vmClusterResource,
   general: vmClusterResource,
+  hugepages: vmClusterResource,
 });
 
 export const vmClusterResources = define<VMClusterResources>({
@@ -64,14 +64,14 @@ export const vmClusterResources = define<VMClusterResources>({
 export const vmCluster = extend<Model, VMCluster>(model, {
   availability_zone: random,
   created_at: "Thu, 15 Aug. 2019 06:21:39",
+  hosts: () => [],
   name: "clusterA",
   project: "my-project",
-  hosts: () => [],
   resource_pool: "",
   total_resources: vmClusterResources,
+  updated_at: "Fri, 16 Aug. 2019 11:21:39",
   version: "",
   virtual_machines: () => [],
-  updated_at: "Fri, 16 Aug. 2019 11:21:39",
 });
 
 export const vmClusterEventError = define<VMClusterEventError>({

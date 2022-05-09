@@ -6,14 +6,14 @@ import type { SubnetsUrlParams } from "app/subnets/types";
 import { argPath, isId } from "app/utils";
 
 const urls = {
+  fabric: {
+    index: argPath<{ id: Fabric[FabricMeta.PK] }>("/fabric/:id"),
+  },
   index: "/networks",
   indexWithParams: (options: SubnetsUrlParams): string => {
     const defaults = { by: "fabric", q: "" };
     const { by, q } = { ...defaults, ...options };
     return `/networks?by=${by}&q=${q}`;
-  },
-  fabric: {
-    index: argPath<{ id: Fabric[FabricMeta.PK] }>("/fabric/:id"),
   },
   space: {
     index: argPath<{ id: Space[SpaceMeta.PK] }>("/space/:id"),

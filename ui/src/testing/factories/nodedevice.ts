@@ -10,8 +10,8 @@ import type { TimestampedModel } from "app/store/types/model";
 export const nodeDevice = extend<TimestampedModel, NodeDevice>(
   timestampedModel,
   {
-    bus_number: 0,
     bus: NodeDeviceBus.PCIE,
+    bus_number: 0,
     commissioning_driver: "pcieport",
     device_number: 1,
     hardware_type: HardwareType.Node,

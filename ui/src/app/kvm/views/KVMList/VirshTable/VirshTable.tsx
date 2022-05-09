@@ -47,7 +47,6 @@ const getSortValue = (sortKey: SortKey, kvm: Pod, pools?: ResourcePool[]) => {
 
 const generateRows = (kvms: Pod[]) =>
   kvms.map((kvm) => ({
-    key: kvm.id,
     columns: [
       {
         className: "name-col",
@@ -99,6 +98,7 @@ const generateRows = (kvms: Pod[]) =>
         ),
       },
     ],
+    key: kvm.id,
   }));
 
 const VirshTable = (): JSX.Element => {
@@ -109,8 +109,8 @@ const VirshTable = (): JSX.Element => {
     SortKey,
     ResourcePool[]
   >(getSortValue, {
-    key: "name",
     direction: SortDirection.DESCENDING,
+    key: "name",
   });
   const sortedKVMs = sortRows(virshKvms, pools);
 

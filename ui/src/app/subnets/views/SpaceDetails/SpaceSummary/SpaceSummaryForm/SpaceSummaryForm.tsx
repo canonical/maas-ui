@@ -10,8 +10,8 @@ import type { Space } from "app/store/space/types";
 
 export type SpaceSummaryValues = Pick<Space, "name" | "description">;
 const spaceSummaryFormSchema = Yup.object().shape({
-  name: Yup.string(),
   description: Yup.string(),
+  name: Yup.string(),
 });
 
 const SpaceSummaryForm = ({
@@ -32,8 +32,8 @@ const SpaceSummaryForm = ({
       cleanup={spaceActions.cleanup}
       errors={spaceErrors}
       initialValues={{
-        name: space.name,
         description: space.description,
+        name: space.name,
       }}
       onCancel={handleDismiss}
       onSaveAnalytics={{
@@ -42,7 +42,7 @@ const SpaceSummaryForm = ({
         label: "Space summary form",
       }}
       onSubmit={({ name, description }) => {
-        dispatch(spaceActions.update({ id: space.id, name, description }));
+        dispatch(spaceActions.update({ description, id: space.id, name }));
       }}
       onSuccess={() => {
         handleDismiss();

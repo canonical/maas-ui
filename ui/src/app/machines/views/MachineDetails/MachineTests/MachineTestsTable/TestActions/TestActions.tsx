@@ -40,8 +40,8 @@ const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
     "data-testid": "view-previous-tests",
     onClick: () => {
       setExpanded({
-        id: scriptResult.id,
         content: ScriptResultAction.VIEW_PREVIOUS_TESTS,
+        id: scriptResult.id,
       });
       sendAnalytics(
         "Machine testing",
@@ -57,8 +57,8 @@ const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
       "data-testid": "view-metrics",
       onClick: () => {
         setExpanded({
-          id: scriptResult.id,
           content: ScriptResultAction.VIEW_METRICS,
+          id: scriptResult.id,
         });
         sendAnalytics(
           "Machine testing",

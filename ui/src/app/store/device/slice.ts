@@ -36,9 +36,9 @@ export const DEFAULT_STATUSES = {
   deleting: false,
   deletingInterface: false,
   linkingSubnet: false,
+  settingZone: false,
   unlinkingSubnet: false,
   updatingInterface: false,
-  settingZone: false,
 };
 
 const setErrors = (
@@ -92,7 +92,6 @@ const statusHandlers = generateStatusHandlers<
 );
 
 const deviceSlice = createSlice({
-  name: DeviceMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
@@ -100,6 +99,7 @@ const deviceSlice = createSlice({
     selected: [],
     statuses: {},
   } as DeviceState,
+  name: DeviceMeta.MODEL,
   reducers: {
     ...generateCommonReducers<
       DeviceState,
@@ -110,8 +110,8 @@ const deviceSlice = createSlice({
     createInterface: {
       prepare: (params: CreateInterfaceParams) => ({
         meta: {
-          model: DeviceMeta.MODEL,
           method: "create_interface",
+          model: DeviceMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -141,8 +141,8 @@ const deviceSlice = createSlice({
     createPhysical: {
       prepare: (params: CreatePhysicalParams) => ({
         meta: {
-          model: DeviceMeta.MODEL,
           method: "create_physical",
+          model: DeviceMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -155,6 +155,58 @@ const deviceSlice = createSlice({
     createPhysicalError: statusHandlers.createPhysical.error,
     createPhysicalStart: statusHandlers.createPhysical.start,
     createPhysicalSuccess: statusHandlers.createPhysical.success,
+    delete: {
+      prepare: (params: BaseNodeActionParams) => ({
+        meta: {
+          method: "action",
+          model: DeviceMeta.MODEL,
+        },
+        payload: {
+          params: {
+            action: NodeActions.DELETE,
+            extra: {},
+            system_id: params.system_id,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteError: statusHandlers.delete.error,
+    deleteInterface: {
+      prepare: (params: DeleteInterfaceParams) => ({
+        meta: {
+          method: "delete_interface",
+          model: DeviceMeta.MODEL,
+        },
+        payload: {
+          params: preparePayloadParams(params),
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    deleteInterfaceError: statusHandlers.deleteInterface.error,
+    deleteInterfaceStart: statusHandlers.deleteInterface.start,
+    deleteInterfaceSuccess: statusHandlers.deleteInterface.success,
+    deleteNotify: (
+      state: DeviceState,
+      action: PayloadAction<Device[DeviceMeta.PK]>
+    ) => {
+      const index = state.items.findIndex(
+        (item: Device) => item.system_id === action.payload
+      );
+      state.items.splice(index, 1);
+      state.selected = state.selected.filter(
+        (deviceId: Device[DeviceMeta.PK]) => deviceId !== action.payload
+      );
+      // Clean up the statuses for model.
+      delete state.statuses[action.payload];
+    },
+    deleteStart: statusHandlers.delete.start,
+    deleteSuccess: statusHandlers.delete.success,
     fetchSuccess: (state: DeviceState, action: PayloadAction<Device[]>) => {
       action.payload.forEach((newItem: Device) => {
         // Add items that don't already exist in the store. Existing items
@@ -173,63 +225,11 @@ const deviceSlice = createSlice({
       state.loading = false;
       state.loaded = true;
     },
-    delete: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: DeviceMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DELETE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    deleteError: statusHandlers.delete.error,
-    deleteNotify: (
-      state: DeviceState,
-      action: PayloadAction<Device[DeviceMeta.PK]>
-    ) => {
-      const index = state.items.findIndex(
-        (item: Device) => item.system_id === action.payload
-      );
-      state.items.splice(index, 1);
-      state.selected = state.selected.filter(
-        (deviceId: Device[DeviceMeta.PK]) => deviceId !== action.payload
-      );
-      // Clean up the statuses for model.
-      delete state.statuses[action.payload];
-    },
-    deleteStart: statusHandlers.delete.start,
-    deleteSuccess: statusHandlers.delete.success,
-    deleteInterface: {
-      prepare: (params: DeleteInterfaceParams) => ({
-        meta: {
-          model: DeviceMeta.MODEL,
-          method: "delete_interface",
-        },
-        payload: {
-          params: preparePayloadParams(params),
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    deleteInterfaceError: statusHandlers.deleteInterface.error,
-    deleteInterfaceStart: statusHandlers.deleteInterface.start,
-    deleteInterfaceSuccess: statusHandlers.deleteInterface.success,
     get: {
       prepare: (id: Device[DeviceMeta.PK]) => ({
         meta: {
-          model: DeviceMeta.MODEL,
           method: "get",
+          model: DeviceMeta.MODEL,
         },
         payload: {
           params: { [DeviceMeta.PK]: id },
@@ -271,8 +271,8 @@ const deviceSlice = createSlice({
     linkSubnet: {
       prepare: (params: LinkSubnetParams) => ({
         meta: {
-          model: DeviceMeta.MODEL,
           method: "link_subnet",
+          model: DeviceMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -288,8 +288,8 @@ const deviceSlice = createSlice({
     setActive: {
       prepare: (system_id: Device[DeviceMeta.PK] | null) => ({
         meta: {
-          model: DeviceMeta.MODEL,
           method: "set_active",
+          model: DeviceMeta.MODEL,
         },
         payload: {
           // Server unsets active item if primary key (system_id) is not sent.
@@ -323,8 +323,8 @@ const deviceSlice = createSlice({
     setZone: {
       prepare: (params: SetZoneParams) => ({
         meta: {
-          model: DeviceMeta.MODEL,
           method: "action",
+          model: DeviceMeta.MODEL,
         },
         payload: {
           params: {
@@ -346,8 +346,8 @@ const deviceSlice = createSlice({
     unlinkSubnet: {
       prepare: (params: UnlinkSubnetParams) => ({
         meta: {
-          model: DeviceMeta.MODEL,
           method: "unlink_subnet",
+          model: DeviceMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),
@@ -367,8 +367,8 @@ const deviceSlice = createSlice({
         params: UpdateInterfaceParams
       ) => ({
         meta: {
-          model: DeviceMeta.MODEL,
           method: "update_interface",
+          model: DeviceMeta.MODEL,
         },
         payload: {
           params: preparePayloadParams(params),

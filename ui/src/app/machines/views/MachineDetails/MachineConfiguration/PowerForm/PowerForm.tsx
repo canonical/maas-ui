@@ -94,8 +94,8 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             editable={editing}
             errors={errors}
             initialValues={{
-              powerType: machine.power_type,
               powerParameters: initialPowerParameters,
+              powerType: machine.power_type,
             }}
             onSaveAnalytics={{
               action: "Configure power",

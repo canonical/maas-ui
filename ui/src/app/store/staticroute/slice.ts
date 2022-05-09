@@ -9,8 +9,8 @@ import {
 } from "app/store/utils/slice";
 
 const staticRouteSlice = createSlice({
-  name: StaticRouteMeta.MODEL,
   initialState: genericInitialState as StaticRouteState,
+  name: StaticRouteMeta.MODEL,
   reducers: generateCommonReducers<
     StaticRouteState,
     StaticRouteMeta.PK,

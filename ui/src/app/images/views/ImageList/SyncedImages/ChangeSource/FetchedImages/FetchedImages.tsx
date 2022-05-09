@@ -93,8 +93,8 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
           images: [
             {
               arch: defaultArch?.name || arches[0].name,
-              release: commissioningRelease?.name || releases[0].name,
               os: "ubuntu",
+              release: commissioningRelease?.name || releases[0].name,
               title: commissioningRelease?.title || releases[0].title,
             },
           ],
