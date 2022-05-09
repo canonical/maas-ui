@@ -1,14 +1,9 @@
-import {
-  Card,
-  Icon,
-  Link,
-  Spinner,
-  Tooltip,
-} from "@canonical/react-components";
+import { Card, Link, Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { Link as RouterLink } from "react-router-dom";
 
 import LabelledList from "app/base/components/LabelledList";
+import TooltipButton from "app/base/components/TooltipButton";
 import { useSendAnalytics } from "app/base/hooks";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
@@ -81,12 +76,11 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
           <div className="u-sv1">
             <strong className="p-muted-heading">Workload annotations</strong>
             <span className="u-nudge-right--small">
-              <Tooltip
+              <TooltipButton
+                iconName="help"
                 message="MAAS removes workload annotations when the machine is released."
                 position="top-center"
-              >
-                <Icon name="help" />
-              </Tooltip>
+              />
             </span>
           </div>
           <Link

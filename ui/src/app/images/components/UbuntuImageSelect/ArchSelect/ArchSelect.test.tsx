@@ -111,9 +111,9 @@ describe("ArchSelect", () => {
         .findWhere((n) => n.name() === "Input" && n.prop("id") === "arch-i386")
         .prop("disabled")
     ).toBe(true);
-    expect(
-      wrapper.find("[data-testid='disabled-arch-tooltip']").prop("message")
-    ).toBe("i386 is not available on 20.04 LTS.");
+    expect(wrapper.find("[role='tooltip']").text()).toBe(
+      "i386 is not available on 20.04 LTS."
+    );
   });
 
   it(`disables a checkbox if it's the last checked arch for the default
@@ -149,9 +149,10 @@ describe("ArchSelect", () => {
     expect(archCheckbox.prop("checked")).toBe(true);
     expect(archCheckbox.prop("disabled")).toBe(true);
     expect(
-      archCheckbox.find("[data-testid='disabled-arch-tooltip']").prop("message")
-    ).toBe(
-      "At least one architecture must be selected for the default commissioning release."
-    );
+      archCheckbox
+        .find("[role='tooltip']")
+        .text()
+        .match(/At least one architecture must be selected/)
+    ).toBeTruthy();
   });
 });

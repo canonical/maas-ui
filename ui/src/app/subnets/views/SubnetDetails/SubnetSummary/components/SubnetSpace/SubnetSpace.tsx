@@ -15,7 +15,7 @@ const SubnetSpace = ({ spaceId }: Props): JSX.Element | null => {
         <SpaceLink id={spaceId} />{" "}
         {isId(spaceId) ? null : (
           <TooltipButton
-            iconProps={{ name: "warning" }}
+            iconName="warning"
             message={`This subnet does not belong to a space. MAAS integrations
             require a space in order to determine the purpose of a network.`}
             position="btm-right"

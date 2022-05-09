@@ -1,4 +1,4 @@
-import { Col, Icon, Row, Select, Tooltip } from "@canonical/react-components";
+import { Col, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
@@ -8,6 +8,7 @@ import { DeviceType } from "../types";
 
 import FormikField from "app/base/components/FormikField";
 import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
+import TooltipButton from "app/base/components/TooltipButton";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import { DeviceMeta } from "app/store/device/types";
@@ -99,9 +100,7 @@ const DiscoveryAddFormFields = ({
               label={
                 <>
                   Device name{" "}
-                  <Tooltip message="Create as an interface on the selected device.">
-                    <Icon name="information" />
-                  </Tooltip>
+                  <TooltipButton message="Create as an interface on the selected device." />
                 </>
               }
               name={DeviceMeta.PK}
@@ -124,9 +123,7 @@ const DiscoveryAddFormFields = ({
               label={
                 <>
                   Parent{" "}
-                  <Tooltip message="Assign this device as a child of the parent machine.">
-                    <Icon name="information" />
-                  </Tooltip>
+                  <TooltipButton message="Assign this device as a child of the parent machine." />
                 </>
               }
               name="parent"

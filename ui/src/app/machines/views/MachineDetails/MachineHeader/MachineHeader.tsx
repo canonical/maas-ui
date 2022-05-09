@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Icon, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 
@@ -11,6 +10,7 @@ import PowerIcon from "app/base/components/PowerIcon";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
+import TooltipButton from "app/base/components/TooltipButton";
 import { useMachineActions } from "app/base/hooks";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
@@ -110,13 +110,12 @@ const MachineHeader = ({
           <div className="u-flex--wrap">
             <div className="u-nudge-left">
               {machine.locked ? (
-                <Tooltip
+                <TooltipButton
                   className="u-nudge-left--small"
+                  iconName="locked"
                   message="This machine is locked. You have to unlock it to perform any actions."
                   position="btm-left"
-                >
-                  <Icon name="locked" />
-                </Tooltip>
+                />
               ) : null}
               {machine.status}
             </div>

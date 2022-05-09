@@ -1,8 +1,9 @@
 import { useEffect } from "react";
 
-import { Icon, Tooltip } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import TooltipButton from "app/base/components/TooltipButton";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
@@ -54,11 +55,11 @@ export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
   } else {
     icon = "power-unknown";
   }
-  return (
-    <Tooltip message={message}>
-      <Icon name={icon} />
-    </Tooltip>
-  );
+
+  if (message) {
+    return <TooltipButton iconName={icon} message={message} />;
+  }
+  return <Icon name={icon} />;
 };
 
 export default ControllerStatus;

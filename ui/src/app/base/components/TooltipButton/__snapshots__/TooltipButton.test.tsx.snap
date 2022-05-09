@@ -47,7 +47,7 @@ exports[`renders with default options correctly 1`] = `
 exports[`renders with default options correctly 2`] = `
 <button
   aria-describedby="mock-nanoid-1"
-  class="p-button--base has-icon is-small u-display--block u-no-border u-no-margin"
+  class="p-button--base has-icon is-small u-no-border u-no-line-height u-no-margin"
   type="button"
 >
   <i

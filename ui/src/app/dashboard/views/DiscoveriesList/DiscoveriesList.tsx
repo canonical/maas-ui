@@ -5,8 +5,6 @@ import {
   Col,
   ContextualMenu,
   MainTable,
-  Tooltip,
-  Icon,
   Row,
   SearchBox,
   Spinner,
@@ -21,6 +19,7 @@ import DiscoveriesFilterAccordion from "./DiscoveriesFilterAccordion";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
+import TooltipButton from "app/base/components/TooltipButton";
 import { useWindowTitle } from "app/base/hooks";
 import { actions as discoveryActions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
@@ -94,13 +93,11 @@ const generateRows = (
             <>
               {name}
               {discovery.is_external_dhcp ? (
-                <Tooltip
+                <TooltipButton
+                  className="u-nudge-right--x-small"
                   message="This device is providing DHCP"
-                  className="u-nudge-right"
                   position="top-center"
-                >
-                  <Icon name="information" />
-                </Tooltip>
+                />
               ) : null}
             </>
           ),

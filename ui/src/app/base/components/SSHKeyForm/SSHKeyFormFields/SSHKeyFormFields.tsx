@@ -1,17 +1,11 @@
-import {
-  Col,
-  Link,
-  Row,
-  Select,
-  Textarea,
-  Tooltip,
-} from "@canonical/react-components";
+import { Col, Link, Row, Select, Textarea } from "@canonical/react-components";
 import type { ColSize } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { SSHKeyFormValues } from "../types";
 
 import FormikField from "app/base/components/FormikField";
+import TooltipButton from "app/base/components/TooltipButton";
 import { COL_SIZES } from "app/base/constants";
 import docsUrls from "app/base/docsUrls";
 
@@ -58,12 +52,13 @@ export const SSHKeyFormFields = ({
               label={
                 <>
                   Public key{" "}
-                  <Tooltip
+                  <TooltipButton
+                    iconName="help"
                     position="btm-left"
-                    message={`Begins with 'ssh-rsa', 'ssh-dss', 'ssh-ed25519',\n 'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or\n 'ecdsa-sha2-nistp521`}
-                  >
-                    <i className="p-icon--help"></i>
-                  </Tooltip>
+                    message={`Begins with 'ssh-rsa', 'ssh-dss', 'ssh-ed25519',
+                    'ecdsa-sha2-nistp256', 'ecdsa-sha2-nistp384', or
+                    'ecdsa-sha2-nistp521`}
+                  />
                 </>
               }
               style={{ minHeight: "10rem" }}

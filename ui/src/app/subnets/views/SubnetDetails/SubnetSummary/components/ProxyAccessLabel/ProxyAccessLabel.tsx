@@ -9,7 +9,7 @@ const ProxyAccessLabel = ({ allowProxy }: Props): JSX.Element => (
   <>
     Proxy access{" "}
     <TooltipButton
-      buttonProps={{ "aria-label": "More about proxy access" }}
+      aria-label="More about proxy access"
       message={`MAAS will ${
         allowProxy ? "" : "not"
       } allow clients from this subnet to access the MAAS proxy.`}

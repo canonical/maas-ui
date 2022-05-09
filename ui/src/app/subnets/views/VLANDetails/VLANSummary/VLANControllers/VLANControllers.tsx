@@ -1,13 +1,13 @@
-import { Icon, Spinner, Tooltip } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import ControllerLink from "app/base/components/ControllerLink";
 import Definition from "app/base/components/Definition";
+import TooltipButton from "app/base/components/TooltipButton";
 import controllerSelectors from "app/store/controller/selectors";
 import type { RootState } from "app/store/root/types";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
-import { breakLines } from "app/utils";
 
 type Props = {
   id: VLAN[VLANMeta.PK] | null;
@@ -42,14 +42,11 @@ const VLANControllers = ({ id }: Props): JSX.Element | null => {
       label={
         <>
           Rack controllers
-          <Tooltip
+          <TooltipButton
             className="u-nudge-right--small"
-            message={breakLines(
-              "A rack controller controls hosts and images and runs network services like DHCP for connected VLANs."
-            )}
-          >
-            <Icon name="information" />
-          </Tooltip>
+            message={`A rack controller controls hosts and images and runs
+            network services like DHCP for connected VLANs.`}
+          />
         </>
       }
     >

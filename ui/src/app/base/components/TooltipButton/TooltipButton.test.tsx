@@ -20,7 +20,8 @@ it("can override default props", () => {
     <TooltipButton
       buttonProps={{ appearance: "negative", className: "button-class" }}
       data-testid="tooltip-portal"
-      iconProps={{ className: "icon-class", name: "warning" }}
+      iconName="warning"
+      iconProps={{ className: "icon-class" }}
       message="Tooltip"
       tooltipClassName="tooltip-class"
     />

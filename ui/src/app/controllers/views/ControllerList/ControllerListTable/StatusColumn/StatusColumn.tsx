@@ -1,6 +1,7 @@
-import { Icon, Tooltip } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import TooltipButton from "app/base/components/TooltipButton";
 import ControllerStatus from "app/controllers/components/ControllerStatus";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
@@ -29,13 +30,13 @@ export const StatusColumn = ({ systemId }: Props): JSX.Element | null => {
   return issue ? (
     <span data-testid="version-error">
       <Icon name="error" />{" "}
-      <Tooltip
-        className="status-icon--negative-space"
+      <TooltipButton
         message={
           <>
             {issue}
             <br />
             <a
+              className="is-on-dark"
               href="https://discourse.maas.io/t/4555"
               rel="noreferrer noopener"
               target="_blank"
@@ -45,9 +46,7 @@ export const StatusColumn = ({ systemId }: Props): JSX.Element | null => {
           </>
         }
         position="top-center"
-      >
-        <Icon name="information" />
-      </Tooltip>
+      />
     </span>
   ) : (
     <ControllerStatus systemId={systemId} />

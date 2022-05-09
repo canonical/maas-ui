@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { mount, shallow } from "enzyme";
 
 import MachineTestStatus from "./MachineTestStatus";
 
@@ -24,7 +24,7 @@ describe("MachineTestStatus", () => {
   });
 
   it("shows a failed icon with tooltip if tests have failed", () => {
-    const wrapper = shallow(
+    const wrapper = mount(
       <MachineTestStatus status={TestStatusStatus.FAILED}>
         Tests have failed
       </MachineTestStatus>

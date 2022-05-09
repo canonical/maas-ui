@@ -1,16 +1,16 @@
 import { useEffect } from "react";
 
-import { Icon, Spinner, Tooltip } from "@canonical/react-components";
+import { Icon, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import SwitchField from "app/base/components/SwitchField";
+import TooltipButton from "app/base/components/TooltipButton";
 import { useCycled } from "app/base/hooks";
 import bootResourceSelectors from "app/store/bootresource/selectors";
 import type { BootResourceState } from "app/store/bootresource/types";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
-import { breakLines, unindentString } from "app/utils";
 
 const generateImportStatus = (
   rackImportRunning: BootResourceState["rackImportRunning"],
@@ -71,20 +71,15 @@ const ImageListHeader = (): JSX.Element => {
                   label={
                     <span>
                       <span>Automatically sync images</span>
-                      <Tooltip
+                      <TooltipButton
                         className="u-nudge-right--small"
-                        message={breakLines(
-                          unindentString(
-                            `Enables automatic image updates (sync). The region
-                      controller will check for new images every hour and
-                      automatically sync them, if available, from the stream
-                      configured below. Syncing at the rack controller level
-                      occurs every 5 minutes and cannot be disabled.`
-                          )
-                        )}
-                      >
-                        <Icon name="help"></Icon>
-                      </Tooltip>
+                        iconName="help"
+                        message={`Enables automatic image updates (sync). The
+                        region controller will check for new images every hour
+                        and automatically sync them, if available, from the
+                        stream configured below. Syncing at the rack controller
+                        level occurs every 5 minutes and cannot be disabled.`}
+                      />
                     </span>
                   }
                   onChange={() => {

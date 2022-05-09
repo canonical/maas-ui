@@ -10,15 +10,19 @@ import { Button, Icon, Tooltip } from "@canonical/react-components";
 
 import { breakLines, unindentString } from "app/utils";
 
-type Props = Omit<TooltipProps, "children"> & {
-  buttonProps?: SubComponentProps<ButtonProps>;
+type Props = Omit<TooltipProps, "aria-label" | "children"> & {
+  "aria-label"?: ButtonProps["aria-label"];
+  buttonProps?: SubComponentProps<Omit<ButtonProps, "aria-label">>;
   children?: ReactNode;
-  iconProps?: SubComponentProps<IconProps>;
+  iconName?: IconProps["name"];
+  iconProps?: SubComponentProps<Omit<IconProps, "name">>;
 };
 
 const TooltipButton = ({
+  "aria-label": ariaLabel,
   buttonProps,
   children,
+  iconName = "information",
   iconProps,
   message,
   ...tooltipProps
@@ -34,13 +38,15 @@ const TooltipButton = ({
     >
       <Button
         appearance="base"
-        className="u-display--block u-no-border u-no-margin"
+        aria-label={ariaLabel}
+        className="u-no-border u-no-line-height u-no-margin"
         hasIcon
         small
         type="button"
         {...buttonProps}
       >
-        {children || <Icon name="information" {...iconProps} />}
+        {children}
+        {iconName ? <Icon name={iconName} {...iconProps} /> : null}
       </Button>
     </Tooltip>
   );

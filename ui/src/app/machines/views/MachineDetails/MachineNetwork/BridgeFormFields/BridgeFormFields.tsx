@@ -1,4 +1,4 @@
-import { Col, Icon, Row, Select, Tooltip } from "@canonical/react-components";
+import { Col, Row, Select } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { BridgeFormValues } from "../AddBridgeForm/types";
@@ -8,6 +8,7 @@ import FormikField from "app/base/components/FormikField";
 import MacAddressField from "app/base/components/MacAddressField";
 import SwitchField from "app/base/components/SwitchField";
 import TagNameField from "app/base/components/TagNameField";
+import TooltipButton from "app/base/components/TooltipButton";
 import { BridgeType, NetworkInterfaceTypes } from "app/store/types/enum";
 
 type Props = {
@@ -41,12 +42,11 @@ const BridgeFormFields = ({ typeDisabled }: Props): JSX.Element | null => {
           label={
             <>
               STP{" "}
-              <Tooltip
+              <TooltipButton
+                iconName="help"
                 message="Controls the participation of this bridge in the spanning tree protocol."
                 position="top-left"
-              >
-                <Icon name="help" />
-              </Tooltip>
+              />
             </>
           }
           name="bridge_stp"
