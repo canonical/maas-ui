@@ -7,6 +7,7 @@ module.exports = {
     "@typescript-eslint",
     "prettier",
     "eslint-plugin-import",
+    "sort-keys-fix",
   ],
   extends: [
     "react-app", // Use the recommended rules from CRA.
@@ -56,6 +57,7 @@ module.exports = {
         sourceType: "module",
       },
       rules: {
+        "sort-keys-fix/sort-keys-fix": ["error", "asc", { natural: true }],
         "prettier/prettier": "error",
         "@typescript-eslint/no-unused-vars": [
           "error",
@@ -114,6 +116,7 @@ module.exports = {
       rules: {
         "testing-library/prefer-find-by": "off",
         "testing-library/prefer-explicit-assert": "error",
+        "sort-keys-fix/sort-keys-fix": "off",
       },
     },
   ],
