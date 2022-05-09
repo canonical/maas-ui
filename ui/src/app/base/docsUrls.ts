@@ -16,7 +16,8 @@ const docsUrls = {
   dhcp: "https://maas.io/docs/how-to-manage-dhcp",
   images: "https://maas.io/docs/about-images",
   ipmi: "https://maas.io/docs/power-management-reference#heading--ipmi",
-  ipRanges: "https://maas.io/docs/how-to-manage-ip-ranges",
+  ipRanges:
+    "https://maas.io/docs/how-to-manage-ip-addresses#heading--how-to-manage-ip-ranges",
   kvmIntroduction: "https://maas.io/docs/about-vm-hosting",
   networkDiscovery:
     "https://maas.io/docs/about-networking#heading--about-network-discovery",
