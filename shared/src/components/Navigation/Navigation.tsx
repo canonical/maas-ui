@@ -81,7 +81,15 @@ const isLogoProps = (logo: Props["logo"]): logo is LogoProps =>
  */
 const generateLogo = (logo: Props["logo"], generateLink: GenerateLink) => {
   if (isLogoProps(logo)) {
-    const { url, src, title, icon, ...logoProps } = logo;
+    const {
+      url,
+      src,
+      title,
+      icon,
+      "aria-current": ariaCurrent,
+      "aria-label": ariaLabel,
+      ...logoProps
+    } = logo;
     const content = (
       <>
         <div className="p-navigation__logo-tag">
@@ -92,17 +100,14 @@ const generateLogo = (logo: Props["logo"], generateLink: GenerateLink) => {
     );
     return (
       <div className="p-navigation__tagged-logo" {...logoProps}>
-        {generateLink ? (
-          generateLink({
-            className: "p-navigation__link",
-            label: content,
-            url,
-          })
-        ) : (
-          <a className="p-navigation__link" href={url}>
-            {content}
-          </a>
-        )}
+        <NavigationLink
+          className="p-navigation__link"
+          url={url}
+          label={content}
+          aria-label={ariaLabel}
+          generateLink={generateLink}
+          isSelected={!!ariaCurrent}
+        />
       </div>
     );
   }
