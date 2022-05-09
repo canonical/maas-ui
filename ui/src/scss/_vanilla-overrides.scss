@@ -30,3 +30,11 @@ button.p-navigation__link {
     width: 100%;
   }
 }
+
+// 09-05-2022 Caleb: Side nav sets background to white on full-screen
+// https://github.com/canonical-web-and-design/vanilla-framework/issues/4458
+.p-side-navigation .p-side-navigation__drawer {
+  @media screen and (min-width: $breakpoint-large) {
+    background-color: transparent;
+  }
+}

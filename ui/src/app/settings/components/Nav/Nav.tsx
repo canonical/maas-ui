@@ -3,6 +3,7 @@ import settingsURLs from "app/settings/urls";
 
 export const Nav = (): JSX.Element => (
   <SideNav
+    closeToggleText="Close settings menu"
     items={[
       {
         label: "Configuration",
@@ -78,6 +79,7 @@ export const Nav = (): JSX.Element => (
         label: "Package repos",
       },
     ]}
+    openToggleText="Settings menu"
   />
 );
 

@@ -3,6 +3,7 @@ import prefsURLs from "app/preferences/urls";
 
 export const Nav = (): JSX.Element => (
   <SideNav
+    closeToggleText="Close preferences menu"
     items={[
       {
         path: prefsURLs.details,
@@ -21,6 +22,7 @@ export const Nav = (): JSX.Element => (
         label: "SSL keys",
       },
     ]}
+    openToggleText="Preferences menu"
   />
 );
 
