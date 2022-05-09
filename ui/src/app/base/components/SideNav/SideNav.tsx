@@ -1,6 +1,11 @@
+import type { ReactNode } from "react";
+import { useCallback, useEffect, useState } from "react";
+
 import classNames from "classnames";
 import type { Location } from "history";
 import { Link, useLocation } from "react-router-dom";
+
+import { useCycled } from "app/base/hooks";
 
 export type SubNav = {
   label: string;
@@ -14,10 +19,16 @@ export type NavItem = {
 };
 
 type Props = {
+  closeToggleText?: ReactNode;
   items: NavItem[];
+  openToggleText?: ReactNode;
 };
 
-const _generateSection = (section: NavItem, location: Location) => {
+const _generateSection = (
+  section: NavItem,
+  location: Location,
+  closeDrawer: () => void
+) => {
   let subNav = null;
 
   if (section.subNav && section.subNav.length) {
@@ -31,6 +42,7 @@ const _generateSection = (section: NavItem, location: Location) => {
             className={classNames("p-side-navigation__link", {
               "is-active": isActive,
             })}
+            onClick={closeDrawer}
           >
             {subsection.label}
           </Link>
@@ -55,6 +67,7 @@ const _generateSection = (section: NavItem, location: Location) => {
           className={classNames("p-side-navigation__link", {
             "is-active": isActive,
           })}
+          onClick={closeDrawer}
         >
           {section.label}
         </Link>
@@ -73,12 +86,69 @@ const _generateSection = (section: NavItem, location: Location) => {
   );
 };
 
-export const SideNav = ({ items }: Props): JSX.Element => {
+export const SideNav = ({
+  closeToggleText = "Toggle side navigation",
+  items,
+  openToggleText = "Toggle side navigation",
+}: Props): JSX.Element => {
+  const [isDrawerExpanded, setIsDrawerExpanded] = useState(false);
+  const [hasExpanded] = useCycled(!isDrawerExpanded);
   const location = useLocation();
-  const sections = items.map((item) => _generateSection(item, location));
+  const handleEscapeKey = useCallback((e) => {
+    if (e.key === "Escape") {
+      setIsDrawerExpanded(false);
+    }
+  }, []);
+  const sections = items.map((item) =>
+    _generateSection(item, location, () => setIsDrawerExpanded(false))
+  );
+
+  useEffect(() => {
+    document.addEventListener("keydown", handleEscapeKey, false);
+
+    return () => {
+      document.removeEventListener("keydown", handleEscapeKey, false);
+    };
+  }, [handleEscapeKey]);
+
   return (
-    <nav className="p-side-navigation">
-      <ul className="p-side-navigation__list">{sections}</ul>
+    <nav
+      className={classNames("p-side-navigation", {
+        // We only set the collapsed class if the sidenav has expanded at least
+        // once, otherwise the closing animation plays on load.
+        "is-collapsed": !isDrawerExpanded && hasExpanded,
+        "is-expanded": isDrawerExpanded,
+      })}
+    >
+      <button
+        aria-controls="side-navigation-drawer"
+        aria-expanded={isDrawerExpanded}
+        className="p-side-navigation__toggle"
+        data-testid="sidenav-toggle-open"
+        onClick={() => setIsDrawerExpanded(true)}
+      >
+        {openToggleText}
+      </button>
+      <div
+        aria-controls="side-navigation-drawer"
+        aria-expanded={isDrawerExpanded}
+        className="p-side-navigation__overlay"
+        onClick={() => setIsDrawerExpanded(false)}
+      />
+      <div className="p-side-navigation__drawer">
+        <div className="p-navigation__drawer-header">
+          <button
+            aria-controls="side-navigation-drawer"
+            aria-expanded={isDrawerExpanded}
+            className="p-side-navigation__toggle--in-drawer"
+            data-testid="sidenav-toggle-close"
+            onClick={() => setIsDrawerExpanded(false)}
+          >
+            {closeToggleText}
+          </button>
+        </div>
+        <ul className="p-side-navigation__list">{sections}</ul>
+      </div>
     </nav>
   );
 };

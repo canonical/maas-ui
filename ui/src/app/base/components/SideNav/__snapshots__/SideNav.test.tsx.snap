@@ -1,219 +1,104 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`SideNav renders 1`] = `
-<SideNav
-  history={
-    Object {
-      "action": "POP",
-      "block": [Function],
-      "canGo": [Function],
-      "createHref": [Function],
-      "entries": Array [
-        Object {
-          "hash": "",
-          "key": "testKey",
-          "pathname": "/settings",
-          "search": "",
-        },
-      ],
-      "go": [Function],
-      "goBack": [Function],
-      "goForward": [Function],
-      "index": 0,
-      "length": 1,
-      "listen": [Function],
-      "location": Object {
-        "hash": "",
-        "key": "testKey",
-        "pathname": "/settings",
-        "search": "",
-      },
-      "push": [Function],
-      "replace": [Function],
-    }
-  }
-  items={
-    Array [
-      Object {
-        "label": "Configuration",
-        "subNav": Array [
-          Object {
-            "label": "General",
-            "path": "/settings/configuration/general",
-          },
-          Object {
-            "label": "Commissioning",
-            "path": "/settings/configuration/commissioning",
-          },
-          Object {
-            "label": "Deploy",
-            "path": "/settings/configuration/deploy",
-          },
-          Object {
-            "label": "Kernel parameters",
-            "path": "/settings/configuration/kernel-parameters",
-          },
-        ],
-      },
-      Object {
-        "label": "Users",
-        "path": "/settings/users",
-      },
-    ]
-  }
-  location={
-    Object {
-      "hash": "",
-      "key": "testKey",
-      "pathname": "/settings",
-      "search": "",
-    }
-  }
-  match={
-    Object {
-      "isExact": true,
-      "params": Object {},
-      "path": "/settings",
-      "url": "/settings",
-    }
-  }
+exports[`matches the snapshot 1`] = `
+<nav
+  class="p-side-navigation"
 >
-  <nav
-    className="p-side-navigation"
+  <button
+    aria-controls="side-navigation-drawer"
+    aria-expanded="false"
+    class="p-side-navigation__toggle"
+    data-testid="sidenav-toggle-open"
   >
+    Toggle side navigation
+  </button>
+  <div
+    aria-controls="side-navigation-drawer"
+    aria-expanded="false"
+    class="p-side-navigation__overlay"
+  />
+  <div
+    class="p-side-navigation__drawer"
+  >
+    <div
+      class="p-navigation__drawer-header"
+    >
+      <button
+        aria-controls="side-navigation-drawer"
+        aria-expanded="false"
+        class="p-side-navigation__toggle--in-drawer"
+        data-testid="sidenav-toggle-close"
+      >
+        Toggle side navigation
+      </button>
+    </div>
     <ul
-      className="p-side-navigation__list"
+      class="p-side-navigation__list"
     >
       <li
-        className="p-side-navigation__item"
-        key="Configuration"
+        class="p-side-navigation__item"
       >
         <span
-          className="p-side-navigation__text p-side-navigation__item--title"
+          class="p-side-navigation__text p-side-navigation__item--title"
         >
           Configuration
         </span>
         <ul
-          className="p-side-navigation__list"
+          class="p-side-navigation__list"
         >
           <li
-            className="p-side-navigation__item"
-            key="/settings/configuration/general"
+            class="p-side-navigation__item"
           >
-            <Link
-              className="p-side-navigation__link"
-              to="/settings/configuration/general"
+            <a
+              class="p-side-navigation__link"
+              href="/settings/configuration/general"
             >
-              <LinkAnchor
-                className="p-side-navigation__link"
-                href="/settings/configuration/general"
-                navigate={[Function]}
-              >
-                <a
-                  className="p-side-navigation__link"
-                  href="/settings/configuration/general"
-                  onClick={[Function]}
-                >
-                  General
-                </a>
-              </LinkAnchor>
-            </Link>
+              General
+            </a>
           </li>
           <li
-            className="p-side-navigation__item"
-            key="/settings/configuration/commissioning"
+            class="p-side-navigation__item"
           >
-            <Link
-              className="p-side-navigation__link"
-              to="/settings/configuration/commissioning"
+            <a
+              class="p-side-navigation__link"
+              href="/settings/configuration/commissioning"
             >
-              <LinkAnchor
-                className="p-side-navigation__link"
-                href="/settings/configuration/commissioning"
-                navigate={[Function]}
-              >
-                <a
-                  className="p-side-navigation__link"
-                  href="/settings/configuration/commissioning"
-                  onClick={[Function]}
-                >
-                  Commissioning
-                </a>
-              </LinkAnchor>
-            </Link>
+              Commissioning
+            </a>
           </li>
           <li
-            className="p-side-navigation__item"
-            key="/settings/configuration/deploy"
+            class="p-side-navigation__item"
           >
-            <Link
-              className="p-side-navigation__link"
-              to="/settings/configuration/deploy"
+            <a
+              class="p-side-navigation__link"
+              href="/settings/configuration/deploy"
             >
-              <LinkAnchor
-                className="p-side-navigation__link"
-                href="/settings/configuration/deploy"
-                navigate={[Function]}
-              >
-                <a
-                  className="p-side-navigation__link"
-                  href="/settings/configuration/deploy"
-                  onClick={[Function]}
-                >
-                  Deploy
-                </a>
-              </LinkAnchor>
-            </Link>
+              Deploy
+            </a>
           </li>
           <li
-            className="p-side-navigation__item"
-            key="/settings/configuration/kernel-parameters"
+            class="p-side-navigation__item"
           >
-            <Link
-              className="p-side-navigation__link"
-              to="/settings/configuration/kernel-parameters"
+            <a
+              class="p-side-navigation__link"
+              href="/settings/configuration/kernel-parameters"
             >
-              <LinkAnchor
-                className="p-side-navigation__link"
-                href="/settings/configuration/kernel-parameters"
-                navigate={[Function]}
-              >
-                <a
-                  className="p-side-navigation__link"
-                  href="/settings/configuration/kernel-parameters"
-                  onClick={[Function]}
-                >
-                  Kernel parameters
-                </a>
-              </LinkAnchor>
-            </Link>
+              Kernel parameters
+            </a>
           </li>
         </ul>
       </li>
       <li
-        className="p-side-navigation__item--title"
-        key="/settings/users"
+        class="p-side-navigation__item--title"
       >
-        <Link
-          className="p-side-navigation__link"
-          to="/settings/users"
+        <a
+          class="p-side-navigation__link"
+          href="/settings/users"
         >
-          <LinkAnchor
-            className="p-side-navigation__link"
-            href="/settings/users"
-            navigate={[Function]}
-          >
-            <a
-              className="p-side-navigation__link"
-              href="/settings/users"
-              onClick={[Function]}
-            >
-              Users
-            </a>
-          </LinkAnchor>
-        </Link>
+          Users
+        </a>
       </li>
     </ul>
-  </nav>
-</SideNav>
+  </div>
+</nav>
 `;
