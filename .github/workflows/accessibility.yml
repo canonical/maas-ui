@@ -1,5 +1,11 @@
 name: accessibility
-on: [push]
+on:
+  push:
+    branches:
+      - 3.2
+  pull_request:
+    branches:
+      - 3.2
 jobs:
   cypress-axe:
     name: cypress-axe
@@ -13,8 +19,8 @@ jobs:
       - name: Install MAAS
         run: |
           sudo systemctl enable snapd
-          sudo snap install maas --channel=latest/edge
-          sudo snap install maas-test-db --channel=latest/edge
+          sudo snap install maas --channel=3.2/edge
+          sudo snap install maas-test-db --channel=3.2/edge
       - name: Initialise MAAS
         run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
       - name: Install Cypress

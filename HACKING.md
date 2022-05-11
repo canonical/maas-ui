@@ -29,7 +29,6 @@ If your branch touches an existing js module in `ui`, it should be converted to 
 
 There are cases where determining a type for a particular object can be difficult. We provide an "escape hatch" type called `TSFixMe` (aliased to `any`) which you can use, but please make a best effort to avoid this and determine the correct types where possible.
 
-
 # Development setup
 
 **Note: You will need access to a running instance of MAAS in order to run maas-ui.**
