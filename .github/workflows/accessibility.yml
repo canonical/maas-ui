@@ -1,11 +1,8 @@
-name: Cypress
-on:
-  push:
-    branches:
-      - 3.1
+name: accessibility
+on: [push]
 jobs:
-  cypress:
-    name: Cypress
+  cypress-axe:
+    name: cypress-axe
     runs-on: ubuntu-20.04
     env:
       MAAS_URL: http://localhost:5240
@@ -28,28 +25,16 @@ jobs:
         run: |
           sudo apt install yarn
           yarn build-shared
-      - name: Run Cypress tests without a user
+      - name: Create MAAS admin
+        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+      - name: Run cypress-axe accessibility tests
         uses: cypress-io/github-action@master
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: "**/no-users/*.spec.ts"
+          spec: "**/accessibility/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
           working-directory: integration
-      - name: Create MAAS admin
-        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
-      - name: Run Cypress tests with a user
-        uses: cypress-io/github-action@master
-        with:
-          config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000,ignoreTestFiles="**/no-users/*"
-          install: false
-          wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
-          working-directory: integration
-      - uses: actions/upload-artifact@v2
-        if: failure()
-        with:
-          name: cypress-screenshots
-          path: integration/cypress/screenshots
       - name: Create issue on failure
         if: failure()
         uses: JasonEtco/create-an-issue@v2
@@ -58,5 +43,5 @@ jobs:
           REPO: ${{ github.repository }}
           RUN_ID: ${{ github.run_id }}
         with:
-          filename: .github/ISSUE_TEMPLATE/cypress-failure.md
+          filename: .github/ISSUE_TEMPLATE/accessibility-failure.md
           update_existing: true
