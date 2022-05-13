@@ -83,10 +83,10 @@ it("correctly dispatches actions to tag machines", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
-  userEvent.click(screen.getByRole("option", { name: "tag1" }));
-  userEvent.click(screen.getByRole("option", { name: "tag2" }));
-  userEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
+  await userEvent.click(screen.getByRole("option", { name: "tag1" }));
+  await userEvent.click(screen.getByRole("option", { name: "tag2" }));
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {
     const expectedActions = [
@@ -124,9 +124,9 @@ it("correctly dispatches actions to untag machines", async () => {
   const deleteButtons = screen.getAllByRole("button", {
     name: TagFormChangesLabel.Remove,
   });
-  userEvent.click(deleteButtons[0]);
-  userEvent.click(deleteButtons[1]);
-  userEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.click(deleteButtons[0]);
+  await userEvent.click(deleteButtons[1]);
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {
     const expectedActions = [
@@ -158,12 +158,12 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
-  userEvent.click(screen.getByRole("option", { name: "tag2" }));
-  userEvent.click(
+  await userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
+  await userEvent.click(screen.getByRole("option", { name: "tag2" }));
+  await userEvent.click(
     screen.getByRole("button", { name: TagFormChangesLabel.Remove })
   );
-  userEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {
     const expectedActions = [
@@ -248,16 +248,16 @@ it("shows a notification on success", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
-  userEvent.click(screen.getByRole("option", { name: "tag2" }));
-  userEvent.click(
-    screen.getByRole("button", { name: TagFormChangesLabel.Remove })
-  );
-  userEvent.click(screen.getByRole("button", { name: "Save" }));
   // Mock state.tag.saved transitioning from "false" to "true"
   jest
     .spyOn(baseHooks, "useCycled")
     .mockImplementation(() => [true, () => null]);
+  await userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
+  await userEvent.click(screen.getByRole("option", { name: "tag2" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: TagFormChangesLabel.Remove })
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {
     const action = store

@@ -92,7 +92,7 @@ it("renders correct details", () => {
   );
 });
 
-it("can display the edit form", () => {
+it("can display the edit form", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -107,7 +107,7 @@ it("can display the edit form", () => {
   expect(
     screen.queryByRole("form", { name: formName })
   ).not.toBeInTheDocument();
-  userEvent.click(button);
+  await userEvent.click(button);
   expect(
     screen.queryByRole("button", { name: "Edit" })
   ).not.toBeInTheDocument();

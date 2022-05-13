@@ -41,11 +41,11 @@ it("dispatches an update action on submit", async () => {
   const spaceSummaryForm = screen.getByRole("form", {
     name: "Edit space summary",
   });
-  userEvent.clear(screen.getByLabelText("Name"));
-  userEvent.clear(screen.getByLabelText("Description"));
-  userEvent.type(screen.getByLabelText("Name"), "new name");
-  userEvent.type(screen.getByLabelText("Description"), "new description");
-  userEvent.click(
+  await userEvent.clear(screen.getByLabelText("Name"));
+  await userEvent.clear(screen.getByLabelText("Description"));
+  await userEvent.type(screen.getByLabelText("Name"), "new name");
+  await userEvent.type(screen.getByLabelText("Description"), "new description");
+  await userEvent.click(
     within(spaceSummaryForm).getByRole("button", { name: "Save" })
   );
 

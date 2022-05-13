@@ -83,7 +83,7 @@ it("can be given different toggle texts", () => {
   );
 });
 
-it("can open and close the navigation drawer by clicking the toggles", () => {
+it("can open and close the navigation drawer by clicking the toggles", async () => {
   render(
     <MemoryRouter>
       <SideNav items={items} />
@@ -96,18 +96,18 @@ it("can open and close the navigation drawer by clicking the toggles", () => {
   expect(nav).not.toHaveClass("is-collapsed");
   expect(nav).not.toHaveClass("is-expanded");
 
-  userEvent.click(screen.getByTestId("sidenav-toggle-open"));
+  await userEvent.click(screen.getByTestId("sidenav-toggle-open"));
 
   expect(nav).not.toHaveClass("is-collapsed");
   expect(nav).toHaveClass("is-expanded");
 
-  userEvent.click(screen.getByTestId("sidenav-toggle-close"));
+  await userEvent.click(screen.getByTestId("sidenav-toggle-close"));
 
   expect(nav).toHaveClass("is-collapsed");
   expect(nav).not.toHaveClass("is-expanded");
 });
 
-it("can close the navigation drawer by pressing the esc key", () => {
+it("can close the navigation drawer by pressing the esc key", async () => {
   render(
     <MemoryRouter>
       <SideNav items={items} />
@@ -115,12 +115,12 @@ it("can close the navigation drawer by pressing the esc key", () => {
   );
   const nav = screen.getByRole("navigation");
 
-  userEvent.click(screen.getByTestId("sidenav-toggle-open"));
+  await userEvent.click(screen.getByTestId("sidenav-toggle-open"));
 
   expect(nav).not.toHaveClass("is-collapsed");
   expect(nav).toHaveClass("is-expanded");
 
-  userEvent.keyboard("{esc}");
+  await userEvent.keyboard("{Escape}");
 
   expect(nav).toHaveClass("is-collapsed");
   expect(nav).not.toHaveClass("is-expanded");

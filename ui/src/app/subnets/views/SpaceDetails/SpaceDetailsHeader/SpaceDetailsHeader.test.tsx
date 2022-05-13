@@ -65,12 +65,12 @@ it("displays a delete confirmation before delete", async () => {
       description: "space 1 description",
     })
   );
-  userEvent.click(screen.getByRole("button", { name: "Delete space" }));
+  await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
   expect(
     screen.getByText("Are you sure you want to delete this space?")
   ).toBeInTheDocument();
 
-  userEvent.click(screen.getByRole("button", { name: "Delete space" }));
+  await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
 
   const expectedActions = [spaceActions.cleanup(), spaceActions.delete(1)];
 
@@ -86,7 +86,7 @@ it("displays a delete confirmation before delete", async () => {
   });
 });
 
-it("displays an error if there are any subnets on the space.", () => {
+it("displays an error if there are any subnets on the space.", async () => {
   renderTestCase(
     spaceFactory({
       id: 1,
@@ -95,9 +95,9 @@ it("displays an error if there are any subnets on the space.", () => {
       subnet_ids: [1],
     })
   );
-  userEvent.click(screen.getByRole("button", { name: "Delete space" }));
+  await userEvent.click(screen.getByRole("button", { name: "Delete space" }));
   expect(screen.getByText(/Space cannot be deleted/)).toBeInTheDocument();
-  userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
   expect(screen.queryByText(/Space cannot be deleted/)).not.toBeInTheDocument();
 });

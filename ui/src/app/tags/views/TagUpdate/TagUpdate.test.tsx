@@ -105,16 +105,16 @@ it("can update the tag", async () => {
     </Provider>
   );
   const nameInput = screen.getByRole("textbox", { name: Label.Name });
-  userEvent.clear(nameInput);
-  userEvent.type(nameInput, "name1");
+  await userEvent.clear(nameInput);
+  await userEvent.type(nameInput, "name1");
   const commentInput = screen.getByRole("textbox", { name: Label.Comment });
-  userEvent.clear(commentInput);
-  userEvent.type(commentInput, "comment1");
+  await userEvent.clear(commentInput);
+  await userEvent.type(commentInput, "comment1");
   const optionsInput = screen.getByRole("textbox", {
     name: KernelOptionsLabel.KernelOptions,
   });
-  userEvent.clear(optionsInput);
-  userEvent.type(optionsInput, "options1");
+  await userEvent.clear(optionsInput);
+  await userEvent.type(optionsInput, "options1");
   fireEvent.submit(screen.getByRole("form"));
   const expected = tagActions.update({
     id: 1,
@@ -151,7 +151,10 @@ it("can return to the previous page on save", async () => {
     </Provider>
   );
   expect(history.location.pathname).toBe(tagURLs.tag.update({ id: 1 }));
-  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "tag1");
+  await userEvent.type(
+    screen.getByRole("textbox", { name: Label.Name }),
+    "tag1"
+  );
   // Simulate the state.tag.saved state going from `save: false` to `saved:
   // true` which happens when the tag is successfully saved. This in turn will
   // mean that the form `onSuccess` prop will get called so that the component
@@ -186,7 +189,10 @@ it("goes to the tag details page if it can't go back", async () => {
     </Provider>
   );
   expect(history.location.pathname).toBe(tagURLs.tag.update({ id: 1 }));
-  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "tag1");
+  await userEvent.type(
+    screen.getByRole("textbox", { name: Label.Name }),
+    "tag1"
+  );
   // Simulate the state.tag.saved state going from `save: false` to `saved:
   // true` which happens when the tag is successfully saved. This in turn will
   // mean that the form `onSuccess` prop will get called so that the component
@@ -215,8 +221,8 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   const definitionInput = screen.getByRole("textbox", {
     name: Label.Definition,
   });
-  userEvent.clear(definitionInput);
-  userEvent.type(definitionInput, "def");
+  await userEvent.clear(definitionInput);
+  await userEvent.type(definitionInput, "def");
   fireEvent.submit(screen.getByRole("form"));
   // Mock state.tag.saved transitioning from "false" to "true"
   jest

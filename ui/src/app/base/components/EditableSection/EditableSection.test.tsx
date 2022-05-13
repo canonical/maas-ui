@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 
 import EditableSection, { Labels } from "./EditableSection";
 
-it("can toggle showing content depending on editing state", () => {
+it("can toggle showing content depending on editing state", async () => {
   render(
     <EditableSection
       canEdit
@@ -17,7 +17,9 @@ it("can toggle showing content depending on editing state", () => {
   ).toBeInTheDocument();
   expect(screen.queryByText("Is editing")).not.toBeInTheDocument();
 
-  userEvent.click(screen.getByRole("button", { name: Labels.EditButton }));
+  await userEvent.click(
+    screen.getByRole("button", { name: Labels.EditButton })
+  );
 
   expect(
     screen.queryByRole("button", { name: Labels.EditButton })

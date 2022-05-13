@@ -101,7 +101,7 @@ it("deletes the fabric when confirmed", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByRole("button", { name: "Delete fabric" }));
+  await userEvent.click(screen.getByRole("button", { name: "Delete fabric" }));
 
   const expectedActions = [fabricActions.delete(fabric.id)];
   const actualActions = store.getActions();

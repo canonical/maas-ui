@@ -221,7 +221,7 @@ describe("DeployFormFields", () => {
     expect(
       screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
     ).toBeDisabled();
-    userEvent.selectOptions(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Release" }),
       'Ubuntu 18.04 LTS "Bionic Beaver"'
     );
@@ -254,19 +254,19 @@ describe("DeployFormFields", () => {
     );
     // Initial selection is Ubuntu 18.04. Switch to CentOS 6 to CentOS 7 back to
     // Ubuntu 18.04 and checkbox should be enabled.
-    userEvent.selectOptions(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "OS" }),
       "CentOS"
     );
-    userEvent.selectOptions(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Release" }),
       "CentOS 7"
     );
-    userEvent.selectOptions(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "OS" }),
       "Ubuntu"
     );
-    userEvent.selectOptions(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Release" }),
       "bionic"
     );
@@ -303,7 +303,7 @@ describe("DeployFormFields", () => {
       screen.queryByRole("radio", { name: /libvirt/ })
     ).not.toBeInTheDocument();
 
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole("checkbox", { name: /Register as MAAS KVM host/ })
     );
     await waitFor(() =>
@@ -385,7 +385,7 @@ describe("DeployFormFields", () => {
     expect(
       screen.queryByPlaceholderText(/Paste or drop script here/)
     ).not.toBeInTheDocument();
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole("checkbox", { name: /Cloud-init user-data/ })
     );
     await waitFor(() =>
@@ -415,12 +415,12 @@ describe("DeployFormFields", () => {
       </Provider>
     );
     // Default release is Ubuntu 18.04. Change kernel to non-default.
-    userEvent.selectOptions(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Kernel" }),
       "ga-18.04"
     );
     // Change release to Ubuntu 20.04.
-    userEvent.selectOptions(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Release" }),
       'Ubuntu 20.04 LTS "Focal Fossa"'
     );
@@ -503,7 +503,7 @@ describe("DeployFormFields", () => {
     expect(
       screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
     ).not.toBeChecked();
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole("button", { name: /Start deployment for machine/ })
     );
 
@@ -534,10 +534,10 @@ describe("DeployFormFields", () => {
       </Provider>
     );
 
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole("checkbox", { name: /Periodically sync hardware/ })
     );
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole("button", { name: /Start deployment for machine/ })
     );
     await waitFor(() =>

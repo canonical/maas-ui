@@ -76,7 +76,7 @@ describe("DeviceConfiguration", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("can switch to showing the device configuration form", () => {
+  it("can switch to showing the device configuration form", async () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -86,7 +86,7 @@ describe("DeviceConfiguration", () => {
       </Provider>
     );
 
-    userEvent.click(
+    await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
       })[0]
@@ -105,7 +105,7 @@ describe("DeviceConfiguration", () => {
         </MemoryRouter>
       </Provider>
     );
-    userEvent.click(
+    await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
       })[0]
@@ -113,16 +113,16 @@ describe("DeviceConfiguration", () => {
     const deviceNote = screen.getByRole("textbox", {
       name: DeviceConfigurationFieldsLabel.Note,
     });
-    userEvent.clear(deviceNote);
-    userEvent.type(deviceNote, "it's a device");
-    userEvent.selectOptions(
+    await userEvent.clear(deviceNote);
+    await userEvent.type(deviceNote, "it's a device");
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: ZoneSelectLabel.Zone }),
       "twilight"
     );
     // Open the tag selector dropdown.
     screen.getByRole("textbox", { name: TagFieldLabel.Input }).focus();
-    userEvent.click(screen.getByRole("option", { name: "tag1" }));
-    userEvent.click(screen.getByRole("option", { name: "tag2" }));
+    await userEvent.click(screen.getByRole("option", { name: "tag1" }));
+    await userEvent.click(screen.getByRole("option", { name: "tag2" }));
     fireEvent.submit(screen.getByRole("form", { name: Label.Form }));
     const expectedAction = deviceActions.update({
       description: "it's a device",

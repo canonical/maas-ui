@@ -3,10 +3,10 @@ import userEvent from "@testing-library/user-event";
 
 import ActiveDiscoveryLabel from "./ActiveDiscoveryLabel";
 
-it("shows a tooltip when the subnet is managed", () => {
+it("shows a tooltip when the subnet is managed", async () => {
   render(<ActiveDiscoveryLabel managed />);
 
-  userEvent.click(screen.getByRole("button"));
+  await userEvent.click(screen.getByRole("button"));
 
   expect(
     screen.getByRole("tooltip", {

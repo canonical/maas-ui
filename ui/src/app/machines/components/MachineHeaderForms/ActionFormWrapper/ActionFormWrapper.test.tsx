@@ -18,7 +18,7 @@ import {
 
 const mockStore = configureStore();
 
-it("can set selected machines to those that can perform action", () => {
+it("can set selected machines to those that can perform action", async () => {
   const state = rootStateFactory();
   const machines = [
     machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
@@ -40,7 +40,7 @@ it("can set selected machines to those that can perform action", () => {
     </Provider>
   );
 
-  userEvent.click(
+  await userEvent.click(
     screen.getByRole("button", { name: /update your selection/ })
   );
 

@@ -121,17 +121,17 @@ describe("DeployFormFields", () => {
       </Provider>
     );
 
-    userEvent.clear(
+    await userEvent.clear(
       screen.getByRole("textbox", { name: /Default hardware sync interval/ })
     );
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole("textbox", {
         name: /Default hardware sync interval/,
       }),
       "30"
     );
 
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole("button", {
         name: /Save/,
       })
@@ -163,9 +163,9 @@ describe("DeployFormFields", () => {
     const hardwareSyncInput = screen.getByRole("textbox", {
       name: /Default hardware sync interval/,
     });
-    userEvent.clear(hardwareSyncInput);
-    userEvent.type(hardwareSyncInput, "0");
-    userEvent.tab();
+    await userEvent.clear(hardwareSyncInput);
+    await userEvent.type(hardwareSyncInput, "0");
+    await userEvent.tab();
     await waitFor(() =>
       expect(hardwareSyncInput).toHaveErrorMessage(
         /Hardware sync interval must be at least 1 minute/

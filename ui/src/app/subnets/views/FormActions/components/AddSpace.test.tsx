@@ -26,8 +26,8 @@ test("correctly dispatches space cleanup and create actions on form submit", asy
 
   const name = "Space name";
 
-  userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
-  userEvent.click(screen.getByRole("button", { name: /Add Space/ }));
+  await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
+  await userEvent.click(screen.getByRole("button", { name: /Add Space/ }));
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([

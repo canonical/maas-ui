@@ -30,22 +30,22 @@ it("displays validation messages for VID", async () => {
   const submitButton = screen.getByRole("button", { name: "Add VLAN" });
   const errorMessage = /must be a numeric value/;
 
-  userEvent.type(VidTextBox, "abc");
-  userEvent.click(submitButton);
+  await userEvent.type(VidTextBox, "abc");
+  await userEvent.click(submitButton);
 
   await waitFor(() =>
     expect(screen.getByText(errorMessage)).toBeInTheDocument()
   );
 
-  userEvent.clear(VidTextBox);
-  userEvent.type(VidTextBox, "123");
+  await userEvent.clear(VidTextBox);
+  await userEvent.type(VidTextBox, "123");
 
   await waitFor(() =>
     expect(screen.queryByText(errorMessage)).not.toBeInTheDocument()
   );
 
-  userEvent.clear(VidTextBox);
-  userEvent.type(VidTextBox, "99999");
+  await userEvent.clear(VidTextBox);
+  await userEvent.type(VidTextBox, "99999");
 
   await waitFor(() =>
     expect(screen.getByText(errorMessage)).toBeInTheDocument()
@@ -78,18 +78,21 @@ it("correctly dispatches VLAN cleanup and create actions on form submit", async 
     </Provider>
   );
 
-  userEvent.type(screen.getByRole("textbox", { name: /VID/ }), `${vid}`);
-  userEvent.type(screen.getByRole("textbox", { name: /Name/ }), `${name}`);
-  userEvent.selectOptions(
+  await userEvent.type(screen.getByRole("textbox", { name: /VID/ }), `${vid}`);
+  await userEvent.type(
+    screen.getByRole("textbox", { name: /Name/ }),
+    `${name}`
+  );
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Fabric" }),
     fabric.name
   );
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Space" }),
     space.name
   );
 
-  userEvent.click(screen.getByRole("button", { name: "Add VLAN" }));
+  await userEvent.click(screen.getByRole("button", { name: "Add VLAN" }));
 
   const expectedActions = [
     vlanActions.cleanup(),

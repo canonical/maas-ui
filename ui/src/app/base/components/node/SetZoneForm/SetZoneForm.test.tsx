@@ -90,8 +90,11 @@ it("correctly runs function to set zones of given nodes", async () => {
     </Provider>
   );
 
-  userEvent.selectOptions(screen.getByRole("combobox", { name: "Zone" }), "1");
-  userEvent.click(screen.getByRole("button", { name: /Set zone/ }));
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Zone" }),
+    "1"
+  );
+  await userEvent.click(screen.getByRole("button", { name: /Set zone/ }));
 
   await waitFor(() => {
     expect(onSubmit).toHaveBeenCalledWith("1");

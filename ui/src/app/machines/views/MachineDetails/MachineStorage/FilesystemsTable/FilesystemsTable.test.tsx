@@ -141,7 +141,7 @@ describe("FilesystemsTable", () => {
     ).toHaveTextContent("/special-fs/path");
   });
 
-  it("can show an add special filesystem form if storage can be edited", () => {
+  it("can show an add special filesystem form if storage can be edited", async () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machineDetailsFactory({ system_id: "abc123" })],
@@ -157,14 +157,14 @@ describe("FilesystemsTable", () => {
       </Provider>
     );
 
-    userEvent.click(screen.getByTestId("add-special-fs-button"));
+    await userEvent.click(screen.getByTestId("add-special-fs-button"));
 
     expect(
       screen.getByRole("form", { name: "Add special filesystem" })
     ).toBeInTheDocument();
   });
 
-  it("can remove a disk's filesystem", () => {
+  it("can remove a disk's filesystem", async () => {
     const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
     const disk = diskFactory({ filesystem, partitions: [] });
     const state = rootStateFactory({
@@ -187,11 +187,11 @@ describe("FilesystemsTable", () => {
       </Provider>
     );
 
-    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    userEvent.click(
+    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    await userEvent.click(
       screen.getByRole("button", { name: "Remove filesystem..." })
     );
-    userEvent.click(screen.getByRole("button", { name: "Remove" }));
+    await userEvent.click(screen.getByRole("button", { name: "Remove" }));
 
     expect(
       screen.getByText("Are you sure you want to remove this filesystem?")
@@ -216,7 +216,7 @@ describe("FilesystemsTable", () => {
     });
   });
 
-  it("can remove a partition's filesystem", () => {
+  it("can remove a partition's filesystem", async () => {
     const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
     const partition = partitionFactory({ filesystem });
     const disk = diskFactory({ filesystem: null, partitions: [partition] });
@@ -240,11 +240,11 @@ describe("FilesystemsTable", () => {
       </Provider>
     );
 
-    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    userEvent.click(
+    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    await userEvent.click(
       screen.getByRole("button", { name: "Remove filesystem..." })
     );
-    userEvent.click(screen.getByRole("button", { name: "Remove" }));
+    await userEvent.click(screen.getByRole("button", { name: "Remove" }));
 
     expect(
       screen.getByText("Are you sure you want to remove this filesystem?")
@@ -268,7 +268,7 @@ describe("FilesystemsTable", () => {
     });
   });
 
-  it("can remove a special filesystem", () => {
+  it("can remove a special filesystem", async () => {
     const filesystem = fsFactory({
       fstype: "tmpfs",
       mount_point: "/disk-fs/path",
@@ -294,11 +294,11 @@ describe("FilesystemsTable", () => {
       </Provider>
     );
 
-    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    userEvent.click(
+    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    await userEvent.click(
       screen.getByRole("button", { name: "Remove filesystem..." })
     );
-    userEvent.click(screen.getByRole("button", { name: "Remove" }));
+    await userEvent.click(screen.getByRole("button", { name: "Remove" }));
 
     expect(
       screen.getByText(
@@ -324,7 +324,7 @@ describe("FilesystemsTable", () => {
     });
   });
 
-  it("can unmount a disk's filesystem", () => {
+  it("can unmount a disk's filesystem", async () => {
     const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
     const disk = diskFactory({ filesystem, partitions: [] });
     const state = rootStateFactory({
@@ -347,11 +347,11 @@ describe("FilesystemsTable", () => {
       </Provider>
     );
 
-    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    userEvent.click(
+    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    await userEvent.click(
       screen.getByRole("button", { name: "Unmount filesystem..." })
     );
-    userEvent.click(screen.getByRole("button", { name: "Unmount" }));
+    await userEvent.click(screen.getByRole("button", { name: "Unmount" }));
 
     expect(
       screen.getByText("Are you sure you want to unmount this filesystem?")
@@ -377,7 +377,7 @@ describe("FilesystemsTable", () => {
     });
   });
 
-  it("can unmount a partition's filesystem", () => {
+  it("can unmount a partition's filesystem", async () => {
     const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
     const partition = partitionFactory({ filesystem });
     const disk = diskFactory({ filesystem: null, partitions: [partition] });
@@ -401,11 +401,11 @@ describe("FilesystemsTable", () => {
       </Provider>
     );
 
-    userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    userEvent.click(
+    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+    await userEvent.click(
       screen.getByRole("button", { name: "Unmount filesystem..." })
     );
-    userEvent.click(screen.getByRole("button", { name: "Unmount" }));
+    await userEvent.click(screen.getByRole("button", { name: "Unmount" }));
 
     expect(
       screen.getByText("Are you sure you want to unmount this filesystem?")

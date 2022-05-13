@@ -73,7 +73,7 @@ it("displays a deployed machines message when updating a tag", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: Label.KernelOptions }),
     "options2"
   );
@@ -101,7 +101,7 @@ it("displays a deployed machines message when passed machines", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: Label.KernelOptions }),
     "options2"
   );
@@ -132,7 +132,7 @@ it("can display a provided deployed machines message", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: Label.KernelOptions }),
     "options2"
   );

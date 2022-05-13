@@ -33,7 +33,7 @@ it("displays loading text", async () => {
   });
 
   expect(screen.getAllByRole("table")).toHaveLength(1);
-  userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
+  await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
   await waitFor(() =>
     expect(screen.getByText(/Loading.../)).toBeInTheDocument()
   );
@@ -49,7 +49,7 @@ it("displays correct text when there are no results for the search criteria", as
   expect(screen.getAllByRole("table")).toHaveLength(1);
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
-  userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
+  await userEvent.type(screen.getByRole("searchbox"), "non-existent-fabric");
 
   await waitFor(() =>
     expect(within(tableBody).getByText(/No results/)).toBeInTheDocument()
@@ -86,7 +86,7 @@ it("updates the URL on search", async () => {
 
   expect(getUrlParam("q")).toEqual("");
 
-  userEvent.type(screen.getByRole("searchbox"), "test-fabric");
+  await userEvent.type(screen.getByRole("searchbox"), "test-fabric");
 
   await waitFor(() => expect(getUrlParam("q")).toEqual("test-fabric"));
 });
@@ -100,7 +100,7 @@ it("updates the URL 'by' param once a new group by option is selected", async ()
 
   expect(getUrlParam("by")).toEqual("fabric");
 
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Group by" }),
     "Group by space"
   );

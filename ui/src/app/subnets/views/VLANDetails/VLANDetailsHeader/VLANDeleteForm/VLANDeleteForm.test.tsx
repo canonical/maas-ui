@@ -101,7 +101,7 @@ it("deletes the VLAN when confirmed", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByRole("button", { name: "Delete VLAN" }));
+  await userEvent.click(screen.getByRole("button", { name: "Delete VLAN" }));
 
   const expectedActions = [vlanActions.delete(vlan.id)];
   const actualActions = store.getActions();

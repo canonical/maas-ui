@@ -52,7 +52,7 @@ it("can open and close the Edit space summary form", async () => {
     </Provider>
   );
   const spaceSummary = screen.getByRole("region", { name: "Space summary" });
-  userEvent.click(
+  await userEvent.click(
     within(spaceSummary).getAllByRole("button", { name: "Edit" })[0]
   );
   await waitFor(() =>
@@ -61,7 +61,9 @@ it("can open and close the Edit space summary form", async () => {
     ).toBeInTheDocument()
   );
 
-  userEvent.click(within(spaceSummary).getByRole("button", { name: "Cancel" }));
+  await userEvent.click(
+    within(spaceSummary).getByRole("button", { name: "Cancel" })
+  );
 
   await waitFor(() =>
     expect(

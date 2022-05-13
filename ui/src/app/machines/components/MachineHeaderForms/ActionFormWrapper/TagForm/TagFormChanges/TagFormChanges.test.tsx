@@ -138,13 +138,15 @@ it("discards added tags", async () => {
   );
   const row = screen.getByRole("row", { name: "tag1" });
   expect(row).toHaveAttribute("data-testid", RowType.Added);
-  userEvent.click(within(row).getByRole("button", { name: Label.Discard }));
+  await userEvent.click(
+    within(row).getByRole("button", { name: Label.Discard })
+  );
   await waitFor(() => {
     expect(screen.queryByRole("row", { name: "tag1" })).not.toBeInTheDocument();
   });
 });
 
-it("displays a tag details modal when chips are clicked", () => {
+it("displays a tag details modal when chips are clicked", async () => {
   state.tag.items[0].name = "tag1";
   const store = mockStore(state);
   render(
@@ -156,7 +158,7 @@ it("displays a tag details modal when chips are clicked", () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.click(screen.getByRole("button", { name: "tag1 (2/2)" }));
+  await userEvent.click(screen.getByRole("button", { name: "tag1 (2/2)" }));
   expect(screen.getByRole("dialog", { name: "tag1" })).toBeInTheDocument();
 });
 
@@ -174,7 +176,7 @@ it("can remove manual tags", async () => {
   const tagName = "tag1";
   const manualRow = screen.getByRole("row", { name: tagName });
   expect(manualRow).toHaveAttribute("data-testid", RowType.Manual);
-  userEvent.click(
+  await userEvent.click(
     within(manualRow).getByRole("button", { name: Label.Remove })
   );
   // Get the tag's new row.
@@ -232,7 +234,9 @@ it("discards removed tags", async () => {
   );
   const row = screen.getByRole("row", { name: "tag1" });
   expect(row).toHaveAttribute("data-testid", RowType.Removed);
-  userEvent.click(within(row).getByRole("button", { name: Label.Discard }));
+  await userEvent.click(
+    within(row).getByRole("button", { name: Label.Discard })
+  );
   await waitFor(() => {
     expect(screen.queryByRole("row", { name: "tag1" })).toHaveAttribute(
       "data-testid",
