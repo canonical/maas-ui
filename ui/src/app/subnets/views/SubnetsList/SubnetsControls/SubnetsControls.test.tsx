@@ -3,8 +3,6 @@ import userEvent from "@testing-library/user-event";
 
 import SubnetsControls from "./SubnetsControls";
 
-import { DEFAULT_DEBOUNCE_INTERVAL } from "app/base/components/DebounceSearchBox/DebounceSearchBox";
-
 it("renders select element correctly", () => {
   render(
     <SubnetsControls
@@ -39,7 +37,7 @@ it("calls handleSearch with a correct value on user input", async () => {
   // the original timer functions, userEvent waits indefinitely. We overwrite
   // this default delay behaviour by setting it to null during setup.
   jest.useFakeTimers();
-  const user = userEvent.setup({ delay: null });
+  const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   const handleSearch = jest.fn();
   render(
     <SubnetsControls
@@ -49,11 +47,8 @@ it("calls handleSearch with a correct value on user input", async () => {
     />
   );
   await user.type(screen.getByRole("searchbox", { name: "Search" }), "test");
-  await waitFor(() => {
-    jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
-  });
 
-  expect(handleSearch).toHaveBeenCalledTimes(1);
+  await waitFor(() => expect(handleSearch).toHaveBeenCalledTimes(1));
   expect(handleSearch).toHaveBeenCalledWith("test");
   jest.useRealTimers();
 });
