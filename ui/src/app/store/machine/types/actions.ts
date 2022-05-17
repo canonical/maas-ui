@@ -32,15 +32,15 @@ export type CloneParams = {
 
 export type CommissionParams = {
   systemId: Machine[MachineMeta.PK];
-  enableSSH: boolean;
-  skipBMCConfig: boolean;
-  skipNetworking: boolean;
-  skipStorage: boolean;
-  updateFirmware: boolean;
-  configureHBA: boolean;
-  commissioningScripts: Script[];
-  testingScripts: Script[];
-  scriptInputs: ScriptInput;
+  enableSSH?: boolean;
+  skipBMCConfig?: boolean;
+  skipNetworking?: boolean;
+  skipStorage?: boolean;
+  updateFirmware?: boolean;
+  configureHBA?: boolean;
+  commissioningScripts?: Script[];
+  testingScripts?: Script[];
+  scriptInputs?: ScriptInput;
 };
 
 export type CreateBcacheParams = {
@@ -249,7 +249,7 @@ export type LinkSubnetParams = {
 
 export type MarkBrokenParams = {
   systemId: Machine[MachineMeta.PK];
-  message: string;
+  message?: string;
 };
 
 export type MountSpecialParams = {
@@ -267,7 +267,7 @@ export type OptionalFilesystemParams = {
 
 export type ReleaseParams = {
   systemId: Machine[MachineMeta.PK];
-  extra: {
+  extra?: {
     erase?: boolean;
     quick_erase?: boolean;
     secure_erase?: boolean;
@@ -301,8 +301,8 @@ export type TagParams = {
 export type TestParams = {
   systemId: Machine[MachineMeta.PK];
   scripts?: Script[];
-  enableSSH: boolean;
-  scriptInputs: ScriptInput;
+  enableSSH?: boolean;
+  scriptInputs?: ScriptInput;
 };
 
 export type UnlinkSubnetParams = {
