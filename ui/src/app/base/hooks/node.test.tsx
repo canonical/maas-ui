@@ -1,22 +1,22 @@
 import type { ReactNode } from "react";
 
 import { render, screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { renderHook } from "@testing-library/react-hooks";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
+import type { MachineMenuAction } from "./node";
 import {
-  MachineMenuAction,
   useCanEdit,
   useIsRackControllerConnected,
   useMachineActions,
 } from "./node";
 
+import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import { actions as machineActions } from "app/store/machine";
 import { NodeActions } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
