@@ -15,7 +15,7 @@ jobs:
           sudo snap install maas-test-db --channel=latest/edge
       - name: Set up database dump
         run: |
-          sudo cp .github/test_data/maasdb-20.04-3.1-10.dump /var/snap/maas-test-db/common/maasdb.dump
+          sudo cp sitespeed.io/test_data/maasdb-20.04-master-100.dump /var/snap/maas-test-db/common/maasdb.dump
           sudo snap run --shell maas-test-db.psql -c 'db-dump restore $SNAP_COMMON/maasdb.dump maassampledata'
       - name: Initialise MAAS
         run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
