@@ -99,7 +99,7 @@ it("is editable if machine has edit permission", () => {
   ).not.toBe(0);
 });
 
-it("renders read-only text fields until edit button is pressed", () => {
+it("renders read-only text fields until edit button is pressed", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -111,7 +111,7 @@ it("renders read-only text fields until edit button is pressed", () => {
     screen.queryByRole("combobox", { name: "Power type" })
   ).not.toBeInTheDocument();
 
-  userEvent.click(
+  await userEvent.click(
     screen.getAllByRole("button", { name: Labels.EditButton })[0]
   );
 
@@ -134,7 +134,7 @@ it("correctly dispatches an action to update a machine's power", async () => {
     </Provider>
   );
 
-  userEvent.click(
+  await userEvent.click(
     screen.getAllByRole("button", { name: Labels.EditButton })[0]
   );
   fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
@@ -145,9 +145,12 @@ it("correctly dispatches an action to update a machine's power", async () => {
       screen.getByRole("textbox", { name: "APC field" })
     ).toBeInTheDocument();
   });
-  userEvent.clear(screen.getByRole("textbox", { name: "APC field" }));
-  userEvent.type(screen.getByRole("textbox", { name: "APC field" }), "abcde");
-  userEvent.click(screen.getByRole("button", { name: "Save changes" }));
+  await userEvent.clear(screen.getByRole("textbox", { name: "APC field" }));
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "APC field" }),
+    "abcde"
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
   const expectedAction = machineActions.update({
     extra_macs: machine.extra_macs,

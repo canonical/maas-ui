@@ -9,7 +9,7 @@ import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
-it("shows a warning tooltip if the subnet is not in a space", () => {
+it("shows a warning tooltip if the subnet is not in a space", async () => {
   const state = rootStateFactory();
   const store = mockStore(state);
   render(
@@ -18,7 +18,7 @@ it("shows a warning tooltip if the subnet is not in a space", () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByRole("button"));
+  await userEvent.click(screen.getByRole("button"));
 
   expect(
     screen.getByRole("tooltip", {
@@ -27,7 +27,7 @@ it("shows a warning tooltip if the subnet is not in a space", () => {
   ).toBeInTheDocument();
 });
 
-it("does not show a warning tooltip if the subnet is in a space", () => {
+it("does not show a warning tooltip if the subnet is in a space", async () => {
   const state = rootStateFactory();
   const store = mockStore(state);
   render(

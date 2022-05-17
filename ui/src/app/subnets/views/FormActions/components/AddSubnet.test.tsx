@@ -54,23 +54,23 @@ it("correctly dispatches subnet cleanup and create actions on form submit", asyn
   const cidr = "192.168.0.1";
   const name = "Subnet name";
 
-  userEvent.type(screen.getByRole("textbox", { name: /CIDR/ }), cidr);
-  userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
+  await userEvent.type(screen.getByRole("textbox", { name: /CIDR/ }), cidr);
+  await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
 
   await waitFor(() =>
     expect(screen.getByRole("combobox", { name: "VLAN" })).toBeInTheDocument()
   );
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Fabric" }),
     fabric.name
   );
 
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "VLAN" }),
     `${vlan2.vid}`
   );
 
-  userEvent.click(screen.getByRole("button", { name: /Add Subnet/ }));
+  await userEvent.click(screen.getByRole("button", { name: /Add Subnet/ }));
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([

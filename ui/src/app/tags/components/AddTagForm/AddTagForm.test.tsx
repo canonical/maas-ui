@@ -43,11 +43,11 @@ it("dispatches an action to create a tag", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: Label.Comment }),
     "comment1"
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: KernelOptionsLabel.KernelOptions }),
     "options1"
   );

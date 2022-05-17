@@ -13,7 +13,7 @@ it("can display a cancel button", () => {
   expect(screen.getByRole("button", { name: "Cancel" })).toBeInTheDocument();
 });
 
-it("can perform a secondary submit action if function and label provided", () => {
+it("can perform a secondary submit action if function and label provided", async () => {
   const secondarySubmit = jest.fn();
   render(
     <Formik initialValues={{}} onSubmit={jest.fn()}>
@@ -27,11 +27,13 @@ it("can perform a secondary submit action if function and label provided", () =>
   expect(screen.getByTestId("secondary-submit")).toHaveTextContent(
     "Save and add another"
   );
-  userEvent.click(screen.getByRole("button", { name: "Save and add another" }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Save and add another" })
+  );
   expect(secondarySubmit).toHaveBeenCalled();
 });
 
-it("can generate a secondary submit label via a function", () => {
+it("can generate a secondary submit label via a function", async () => {
   const secondarySubmit = jest.fn();
   render(
     <Formik initialValues={{ name: "Koala" }} onSubmit={jest.fn()}>
@@ -45,7 +47,7 @@ it("can generate a secondary submit label via a function", () => {
   expect(screen.getByTestId("secondary-submit")).toHaveTextContent(
     "Kool Koala"
   );
-  userEvent.click(screen.getByRole("button", { name: "Kool Koala" }));
+  await userEvent.click(screen.getByRole("button", { name: "Kool Koala" }));
   expect(secondarySubmit).toHaveBeenCalled();
 });
 
@@ -98,14 +100,14 @@ it("displays help text if provided", () => {
   expect(screen.getByTestId("buttons-help")).toHaveTextContent("Help!");
 });
 
-it("can fire custom onCancel function", () => {
+it("can fire custom onCancel function", async () => {
   const onCancel = jest.fn();
   render(
     <Formik initialValues={{}} onSubmit={jest.fn()}>
       <FormikFormButtons onCancel={onCancel} submitLabel="Save" />
     </Formik>
   );
-  userEvent.click(screen.getByTestId("cancel-action"));
+  await userEvent.click(screen.getByTestId("cancel-action"));
   expect(onCancel).toHaveBeenCalled();
 });
 

@@ -154,7 +154,7 @@ describe("NetworkFields", () => {
         target: { value: NetworkLinkMode.STATIC },
       }
     );
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );
@@ -211,7 +211,7 @@ describe("NetworkFields", () => {
         target: { value: NetworkLinkMode.STATIC },
       }
     );
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );
@@ -269,7 +269,7 @@ describe("NetworkFields", () => {
         target: { value: NetworkLinkMode.STATIC },
       }
     );
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );

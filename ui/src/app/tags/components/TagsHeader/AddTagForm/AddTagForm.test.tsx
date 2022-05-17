@@ -47,16 +47,19 @@ it("dispatches an action to create a tag", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "name1");
-  userEvent.type(
+  await userEvent.type(
+    screen.getByRole("textbox", { name: Label.Name }),
+    "name1"
+  );
+  await userEvent.type(
     screen.getByRole("textbox", { name: DefinitionLabel.Definition }),
     "definition1"
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: Label.Comment }),
     "comment1"
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: KernelOptionsLabel.KernelOptions }),
     "options1"
   );
@@ -93,7 +96,10 @@ it("redirects to the newly created tag on save", async () => {
   );
   render(<TagForm />);
   expect(history.location.pathname).toBe(tagsURLs.tags.index);
-  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "tag1");
+  await userEvent.type(
+    screen.getByRole("textbox", { name: Label.Name }),
+    "tag1"
+  );
   // Simulate the state.tag.saved state going from `save: false` to `saved:
   // true` which happens when the tag is successfully saved. This in turn will
   // mean that the form `onSuccess` prop will get called so that the component
@@ -125,7 +131,10 @@ it("sends analytics when there is a definition", async () => {
     </Provider>
   );
   render(<TagForm />);
-  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "tag1");
+  await userEvent.type(
+    screen.getByRole("textbox", { name: Label.Name }),
+    "tag1"
+  );
   // Simulate the state.tag.saved state going from `save: false` to `saved:
   // true` which happens when the tag is successfully saved. This in turn will
   // mean that the form `onSuccess` prop will get called so that the component
@@ -163,7 +172,10 @@ it("sends analytics when there is no definition", async () => {
     </Provider>
   );
   render(<TagForm />);
-  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "tag1");
+  await userEvent.type(
+    screen.getByRole("textbox", { name: Label.Name }),
+    "tag1"
+  );
   // Simulate the state.tag.saved state going from `save: false` to `saved:
   // true` which happens when the tag is successfully saved. This in turn will
   // mean that the form `onSuccess` prop will get called so that the component
@@ -196,8 +208,11 @@ it("shows a confirmation when an automatic tag is added", async () => {
     </Provider>
   );
 
-  userEvent.type(screen.getByRole("textbox", { name: Label.Name }), "name1");
-  userEvent.type(
+  await userEvent.type(
+    screen.getByRole("textbox", { name: Label.Name }),
+    "name1"
+  );
+  await userEvent.type(
     screen.getByRole("textbox", {
       name: DefinitionLabel.Definition,
     }),
@@ -229,8 +244,8 @@ it("shows an error if tag name is invalid", async () => {
   );
 
   const nameInput = screen.getByRole("textbox", { name: Label.Name });
-  userEvent.type(nameInput, "invalid name");
-  userEvent.tab();
+  await userEvent.type(nameInput, "invalid name");
+  await userEvent.tab();
 
   await waitFor(() =>
     expect(nameInput).toHaveErrorMessage(`Error: ${Label.NameValidation}`)

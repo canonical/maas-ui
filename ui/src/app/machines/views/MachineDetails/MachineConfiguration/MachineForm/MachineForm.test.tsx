@@ -72,7 +72,7 @@ describe("MachineForm", () => {
     ).not.toBe(0);
   });
 
-  it("renders read-only text fields until edit button is pressed", () => {
+  it("renders read-only text fields until edit button is pressed", async () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -82,7 +82,7 @@ describe("MachineForm", () => {
 
     expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
 
-    userEvent.click(
+    await userEvent.click(
       screen.getAllByRole("button", { name: Labels.EditButton })[0]
     );
 
@@ -103,13 +103,13 @@ describe("MachineForm", () => {
       </Provider>
     );
 
-    userEvent.click(
+    await userEvent.click(
       screen.getAllByRole("button", { name: Labels.EditButton })[0]
     );
     const noteField = screen.getByRole("textbox", { name: "Note" });
-    userEvent.clear(noteField);
-    userEvent.type(noteField, "New note");
-    userEvent.click(screen.getByRole("button", { name: "Save changes" }));
+    await userEvent.clear(noteField);
+    await userEvent.type(noteField, "New note");
+    await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
     const expectedAction = machineActions.update({
       architecture: machine.architecture,

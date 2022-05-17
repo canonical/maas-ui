@@ -83,7 +83,7 @@ describe("TagForm", () => {
     ).not.toBe(0);
   });
 
-  it("renders list of tag links until edit button is pressed", () => {
+  it("renders list of tag links until edit button is pressed", async () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -107,7 +107,7 @@ describe("TagForm", () => {
       })}`
     );
 
-    userEvent.click(
+    await userEvent.click(
       screen.getAllByRole("button", {
         name: EditableSectionLabels.EditButton,
       })[0]

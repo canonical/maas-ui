@@ -145,7 +145,7 @@ describe("StatusCard", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("displays a sync status and link to docs for deployed machines with hardware sync enabled", () => {
+  it("displays a sync status and link to docs for deployed machines with hardware sync enabled", async () => {
     const machine = machineDetailsFactory({
       enable_hw_sync: true,
       status: NodeStatus.DEPLOYED,
@@ -166,7 +166,7 @@ describe("StatusCard", () => {
     expect(
       screen.getByText("Periodic hardware sync enabled")
     ).toBeInTheDocument();
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole("button", {
         name: "more about periodic hardware sync",
       })
@@ -181,7 +181,7 @@ describe("StatusCard", () => {
     );
   });
 
-  it("displays deployed hardware sync interval in a correct format", () => {
+  it("displays deployed hardware sync interval in a correct format", async () => {
     const machine = machineDetailsFactory({
       enable_hw_sync: true,
       status: NodeStatus.DEPLOYED,
@@ -200,7 +200,7 @@ describe("StatusCard", () => {
       </Provider>
     );
 
-    userEvent.click(
+    await userEvent.click(
       screen.getByRole("button", { name: "more about periodic hardware sync" })
     );
     expect(

@@ -77,7 +77,7 @@ it("displays a warning when changing the definition", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: Label.Definition }),
     "def2"
   );

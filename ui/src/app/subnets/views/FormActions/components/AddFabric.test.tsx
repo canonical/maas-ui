@@ -39,7 +39,7 @@ test("correctly dispatches fabric cleanup and create actions on submit with name
   const { store } = renderTestCase();
 
   expect(screen.getByRole("button", { name: "Cancel" })).toBeVisible();
-  userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
+  await userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([
@@ -53,8 +53,8 @@ test("correctly dispatches fabric cleanup and create actions on submit with name
   const { store } = renderTestCase();
 
   const name = "Fabric name";
-  userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
-  userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
+  await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
+  await userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([
@@ -72,12 +72,12 @@ test("correctly dispatches fabric cleanup and create actions on submit with all 
   const name = "Fabric name";
   const description = "Description";
 
-  userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
-  userEvent.type(
+  await userEvent.type(screen.getByRole("textbox", { name: /Name/ }), name);
+  await userEvent.type(
     screen.getByRole("textbox", { name: /Description/ }),
     description
   );
-  userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
+  await userEvent.click(screen.getByRole("button", { name: /Add Fabric/ }));
 
   await waitFor(() =>
     expect(store.getActions()).toStrictEqual([

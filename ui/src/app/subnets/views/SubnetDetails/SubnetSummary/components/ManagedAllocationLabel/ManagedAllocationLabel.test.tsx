@@ -3,10 +3,10 @@ import userEvent from "@testing-library/user-event";
 
 import ManagedAllocationLabel from "./ManagedAllocationLabel";
 
-it("shows a tooltip when the subnet is not managed", () => {
+it("shows a tooltip when the subnet is not managed", async () => {
   render(<ManagedAllocationLabel managed={false} />);
 
-  userEvent.click(screen.getByRole("button"));
+  await userEvent.click(screen.getByRole("button"));
 
   expect(
     screen.getByRole("tooltip", {

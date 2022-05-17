@@ -102,7 +102,7 @@ it("can open and close the add static route form", async () => {
       })
     ).toBeInTheDocument()
   );
-  userEvent.click(
+  await userEvent.click(
     screen.getByRole("button", {
       name: AddStaticRouteFormLabels.AddStaticRoute,
     })
@@ -115,7 +115,7 @@ it("can open and close the add static route form", async () => {
     )
   );
 
-  userEvent.click(
+  await userEvent.click(
     within(
       screen.getByRole("form", {
         name: AddStaticRouteFormLabels.AddStaticRoute,
@@ -157,7 +157,7 @@ it("can open and close the edit static route form", async () => {
     </Provider>
   );
 
-  userEvent.click(
+  await userEvent.click(
     screen.getByRole("button", {
       name: "Edit",
     })
@@ -171,7 +171,7 @@ it("can open and close the edit static route form", async () => {
     ).toBeInTheDocument()
   );
 
-  userEvent.click(
+  await userEvent.click(
     within(
       screen.getByRole("form", {
         name: EditStaticRouteFormLabels.EditStaticRoute,

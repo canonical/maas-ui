@@ -88,7 +88,7 @@ describe("Header", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("can handle logging out", () => {
+  it("can handle logging out", async () => {
     const logout = jest.fn();
     render(
       <Header
@@ -108,7 +108,7 @@ describe("Header", () => {
         logout={logout}
       />
     );
-    userEvent.click(screen.getByRole("button", { name: "Log out" }));
+    await userEvent.click(screen.getByRole("button", { name: "Log out" }));
     expect(logout).toHaveBeenCalled();
   });
 

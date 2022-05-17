@@ -96,20 +96,20 @@ it("dispatches a correct action on edit static route form submit", async () => {
     })
   ).toHaveValue(`${destinationSubnet.id}`);
 
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByLabelText(Labels.Destination),
     `${newDestinationSubnet.id}`
   );
 
-  userEvent.clear(screen.getByLabelText(Labels.GatewayIp));
-  userEvent.type(screen.getByLabelText(Labels.GatewayIp), newGatewayIp);
-  userEvent.clear(screen.getByLabelText(Labels.Metric));
-  userEvent.type(screen.getByLabelText(Labels.Metric), `${newMetric}`);
-  userEvent.selectOptions(
+  await userEvent.clear(screen.getByLabelText(Labels.GatewayIp));
+  await userEvent.type(screen.getByLabelText(Labels.GatewayIp), newGatewayIp);
+  await userEvent.clear(screen.getByLabelText(Labels.Metric));
+  await userEvent.type(screen.getByLabelText(Labels.Metric), `${newMetric}`);
+  await userEvent.selectOptions(
     screen.getByLabelText(Labels.Destination),
     `${newDestinationSubnet.id}`
   );
-  await userEvent.click(
+  await await userEvent.click(
     screen.getByRole("button", {
       name: "Save",
     })

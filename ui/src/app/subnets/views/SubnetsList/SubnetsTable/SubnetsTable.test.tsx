@@ -171,7 +171,7 @@ it("updates the list of items correctly when navigating to another page", async 
     expect(within(tableBody).getAllByRole("row")).toHaveLength(25)
   );
 
-  userEvent.click(
+  await userEvent.click(
     within(screen.getByRole("navigation")).getByRole("button", {
       name: "2",
     })
@@ -261,7 +261,7 @@ it("displays correctly paginated rows", async () => {
       );
     });
 
-  userEvent.click(
+  await userEvent.click(
     screen.getByRole("button", {
       name: "Next page",
     })
@@ -311,7 +311,7 @@ it("displays the last available page once the currently active has no items", as
   );
   const tableBody = screen.getAllByRole("rowgroup")[1];
 
-  userEvent.click(
+  await userEvent.click(
     within(screen.getByRole("navigation", { name: "pagination" })).getByRole(
       "button",
       {
@@ -382,7 +382,7 @@ it("remains on the same page once the data is updated and page is still availabl
   );
 
   const pagination = screen.getByRole("navigation", { name: "pagination" });
-  userEvent.click(
+  await userEvent.click(
     within(pagination).getByRole("button", {
       name: "2",
     })

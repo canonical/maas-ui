@@ -35,7 +35,7 @@ it("does not show a spinner subtitle if the subnet is detailed", () => {
   expect(screen.queryByTestId("section-header-subtitle-spinner")).toBeNull();
 });
 
-it("displays available actions", () => {
+it("displays available actions", async () => {
   const subnet = subnetDetailsFactory({ id: 1, name: "subnet-1" });
   render(<SubnetDetailsHeader subnet={subnet} />);
 
@@ -43,7 +43,7 @@ it("displays available actions", () => {
     expect(screen.queryByRole("button", { name })).not.toBeInTheDocument();
   });
 
-  userEvent.click(screen.getByRole("button", { name: "Take action" }));
+  await userEvent.click(screen.getByRole("button", { name: "Take action" }));
 
   Object.values(subnetActionLabels).forEach((name) => {
     expect(screen.getByRole("button", { name })).toBeInTheDocument();

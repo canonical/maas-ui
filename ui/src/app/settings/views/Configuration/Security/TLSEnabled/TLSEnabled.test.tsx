@@ -104,7 +104,7 @@ it("disables the interval field if notification is not enabled", async () => {
   const slider = screen.getByRole("slider", { name: Labels.Interval });
   expect(slider).toBeDisabled();
 
-  userEvent.click(
+  await userEvent.click(
     screen.getByRole("checkbox", { name: Labels.NotificationCheckbox })
   );
 
@@ -142,13 +142,13 @@ it("dispatches an action to update TLS notification config", async () => {
     </Provider>
   );
 
-  userEvent.click(
+  await userEvent.click(
     screen.getByRole("checkbox", { name: Labels.NotificationCheckbox })
   );
   fireEvent.change(screen.getByRole("slider", { name: Labels.Interval }), {
     target: { value: 45 },
   });
-  userEvent.click(screen.getByRole("button", { name: /Save/ }));
+  await userEvent.click(screen.getByRole("button", { name: /Save/ }));
 
   await waitFor(() => {
     const actualActions = store.getActions();

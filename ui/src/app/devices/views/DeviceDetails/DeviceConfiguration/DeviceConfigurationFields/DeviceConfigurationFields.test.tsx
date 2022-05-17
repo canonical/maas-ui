@@ -62,7 +62,7 @@ it("can open a create tag form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: TagFieldLabel.Input }),
     "name1{enter}"
   );
@@ -88,7 +88,7 @@ it("updates the new tags after creating a tag", async () => {
   expect(
     screen.queryByRole("button", { name: /new-tag/i })
   ).not.toBeInTheDocument();
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: TagFieldLabel.Input }),
     "new-tag{enter}"
   );

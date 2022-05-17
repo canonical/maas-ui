@@ -490,7 +490,7 @@ it("returns to the first page if the filter changes", () => {
   expect(setCurrentPage).toHaveBeenCalledWith(1);
 });
 
-it("can go to the tag edit page", () => {
+it("can go to the tag edit page", async () => {
   const path = tagsURLs.tag.machines({ id: 1 });
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
@@ -516,7 +516,7 @@ it("can go to the tag edit page", () => {
       </Router>
     </Provider>
   );
-  userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
+  await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
   expect(history.location.pathname).toBe(tagsURLs.tag.update({ id: 2 }));
   expect(history.location.state).toStrictEqual({ canGoBack: true });
 });

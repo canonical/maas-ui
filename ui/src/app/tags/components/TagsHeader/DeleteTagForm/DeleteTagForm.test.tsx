@@ -158,7 +158,7 @@ it("can return to the list on cancel", async () => {
       </Router>
     </Provider>
   );
-  userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
   expect(history.location.pathname).toBe(tagsURLs.tags.index);
   expect(onClose).toBeCalled();
 });
@@ -191,10 +191,10 @@ it("can return to the details on cancel", async () => {
       </Router>
     </Provider>
   );
-  userEvent.click(
+  await userEvent.click(
     screen.getByRole("link", { name: "Show the deployed machine" })
   );
-  userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+  await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
   expect(history.location.pathname).toBe(tagsURLs.tag.index({ id: 1 }));
   expect(onClose).toBeCalled();
 });

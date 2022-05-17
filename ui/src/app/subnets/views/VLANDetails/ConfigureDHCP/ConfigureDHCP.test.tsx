@@ -196,11 +196,11 @@ it(`shows an error if the subnet selected for reserving a dynamic range has no
     </Provider>
   );
 
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Subnet" }),
     subnet.id.toString()
   );
-  userEvent.tab();
+  await userEvent.tab();
 
   await waitFor(() => {
     expect(
@@ -230,7 +230,9 @@ it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByRole("checkbox", { name: "MAAS provides DHCP" }));
+  await userEvent.click(
+    screen.getByRole("checkbox", { name: "MAAS provides DHCP" })
+  );
 
   expect(
     screen.getByText(
@@ -264,15 +266,15 @@ it("can configure DHCP with rack controllers", async () => {
     </Provider>
   );
 
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Primary rack" }),
     primary.system_id
   );
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Secondary rack" }),
     secondary.system_id
   );
-  userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
+  await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
 
   const expectedAction = vlanActions.configureDHCP({
     controllers: [primary.system_id, secondary.system_id],
@@ -309,12 +311,14 @@ it("can configure relayed DHCP", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByRole("radio", { name: "Relay to another VLAN" }));
-  userEvent.selectOptions(
+  await userEvent.click(
+    screen.getByRole("radio", { name: "Relay to another VLAN" })
+  );
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "VLAN" }),
     relay.name
   );
-  userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
+  await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
 
   const expectedAction = vlanActions.configureDHCP({
     controllers: [],
@@ -354,12 +358,14 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
     </Provider>
   );
 
-  userEvent.click(screen.getByRole("radio", { name: "Relay to another VLAN" }));
-  userEvent.selectOptions(
+  await userEvent.click(
+    screen.getByRole("radio", { name: "Relay to another VLAN" })
+  );
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "VLAN" }),
     relay.name
   );
-  userEvent.selectOptions(
+  await userEvent.selectOptions(
     screen.getByRole("combobox", { name: "Subnet" }),
     getSubnetDisplay(subnet)
   );
@@ -369,18 +375,22 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
       screen.getByRole("textbox", { name: "Start IP address" })
     ).toBeInTheDocument()
   );
-  userEvent.clear(screen.getByRole("textbox", { name: "Start IP address" }));
-  userEvent.type(
+  await userEvent.clear(
+    screen.getByRole("textbox", { name: "Start IP address" })
+  );
+  await userEvent.type(
     screen.getByRole("textbox", { name: "Start IP address" }),
     "192.168.1.1"
   );
-  userEvent.clear(screen.getByRole("textbox", { name: "End IP address" }));
-  userEvent.type(
+  await userEvent.clear(
+    screen.getByRole("textbox", { name: "End IP address" })
+  );
+  await userEvent.type(
     screen.getByRole("textbox", { name: "End IP address" }),
     "192.168.1.5"
   );
-  userEvent.clear(screen.getByRole("textbox", { name: "Gateway IP" }));
-  userEvent.type(
+  await userEvent.clear(screen.getByRole("textbox", { name: "Gateway IP" }));
+  await userEvent.type(
     screen.getByRole("textbox", { name: "Gateway IP" }),
     "192.168.1.6"
   );
@@ -389,7 +399,7 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
       screen.getByRole("button", { name: "Configure DHCP" })
     ).not.toBeDisabled()
   );
-  userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
+  await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
 
   const expectedAction = vlanActions.configureDHCP({
     controllers: [],

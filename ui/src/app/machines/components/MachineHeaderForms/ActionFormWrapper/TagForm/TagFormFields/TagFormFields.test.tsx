@@ -81,13 +81,13 @@ it("displays available tags in the dropdown", async () => {
     name: "tag3",
   });
   // Set a tag to be removed.
-  userEvent.click(
+  await userEvent.click(
     within(tagRow).getByRole("button", { name: TagFormChangesLabel.Remove })
   );
   // Open the tag selector dropdown.
   screen.getByRole("textbox", { name: Label.TagInput }).focus();
   // Set a tag to be added.
-  userEvent.click(
+  await userEvent.click(
     screen.getByRole("option", {
       name: "tag1",
     })
@@ -138,7 +138,7 @@ it("can open a create tag form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: Label.TagInput }),
     "name1{enter}"
   );
@@ -172,7 +172,7 @@ it("updates the new tags after creating a tag", async () => {
   expect(
     screen.queryByRole("button", { name: /new-tag/i })
   ).not.toBeInTheDocument();
-  userEvent.type(
+  await userEvent.type(
     screen.getByRole("textbox", { name: Label.TagInput }),
     "new-tag{enter}"
   );

@@ -139,7 +139,7 @@ it("can display the edit form", () => {
   expect(screen.getByRole("form", { name: Label.Form })).toBeInTheDocument();
 });
 
-it("can go to the tag edit page", () => {
+it("can go to the tag edit page", async () => {
   const path = tagURLs.tag.index({ id: 1 });
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
@@ -156,7 +156,7 @@ it("can go to the tag edit page", () => {
       </Router>
     </Provider>
   );
-  userEvent.click(screen.getByRole("link", { name: "Edit" }));
+  await userEvent.click(screen.getByRole("link", { name: "Edit" }));
   expect(history.location.pathname).toBe(tagURLs.tag.update({ id: 1 }));
   expect(history.location.state).toStrictEqual({ canGoBack: true });
 });

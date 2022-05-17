@@ -7,7 +7,7 @@ import HiddenColumnsSelect from "./HiddenColumnsSelect";
 
 import { rootState as rootStateFactory } from "testing/factories";
 
-it("calls toggleHiddenColumn correctly on click of a checkbox", () => {
+it("calls toggleHiddenColumn correctly on click of a checkbox", async () => {
   const mockStore = configureStore();
   const hiddenColumns: Array<""> = [];
   const store = mockStore(rootStateFactory());
@@ -21,7 +21,7 @@ it("calls toggleHiddenColumn correctly on click of a checkbox", () => {
       />
     </Provider>
   );
-  userEvent.click(screen.getByRole("button", { name: "Hidden columns" }));
-  userEvent.click(screen.getByRole("checkbox", { name: "RAM" }));
+  await userEvent.click(screen.getByRole("button", { name: "Hidden columns" }));
+  await userEvent.click(screen.getByRole("checkbox", { name: "RAM" }));
   expect(toggleHiddenColumn).toHaveBeenCalledWith("memory");
 });

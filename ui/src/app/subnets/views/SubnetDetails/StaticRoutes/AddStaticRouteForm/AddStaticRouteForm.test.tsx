@@ -61,17 +61,22 @@ it("dispatches a correct action on add static route form submit", async () => {
   });
 
   const gatewayIp = "11.1.1.2";
-  userEvent.type(
+  await userEvent.type(
     within(addStaticRouteForm).getByLabelText(Labels.GatewayIp),
     gatewayIp
   );
-  userEvent.clear(within(addStaticRouteForm).getByLabelText(Labels.Metric));
-  userEvent.type(within(addStaticRouteForm).getByLabelText(Labels.Metric), "1");
-  userEvent.selectOptions(
+  await userEvent.clear(
+    within(addStaticRouteForm).getByLabelText(Labels.Metric)
+  );
+  await userEvent.type(
+    within(addStaticRouteForm).getByLabelText(Labels.Metric),
+    "1"
+  );
+  await userEvent.selectOptions(
     within(addStaticRouteForm).getByLabelText(Labels.Destination),
     `${destinationSubnet.id}`
   );
-  userEvent.click(
+  await userEvent.click(
     within(addStaticRouteForm).getByRole("button", {
       name: "Save",
     })

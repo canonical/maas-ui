@@ -124,15 +124,15 @@ describe("ReservedRangeForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole("textbox", { name: Labels.StartIp }),
       "1.1.1.1"
     );
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole("textbox", { name: Labels.EndIp }),
       "1.1.1.2"
     );
-    userEvent.type(
+    await userEvent.type(
       screen.getByRole("textbox", { name: Labels.Comment }),
       "reserved"
     );

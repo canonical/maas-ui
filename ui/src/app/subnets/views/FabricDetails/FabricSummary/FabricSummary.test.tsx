@@ -70,7 +70,7 @@ it("can open and close the Edit fabric summary form", async () => {
     </Provider>
   );
   const fabricSummary = screen.getByRole("region", { name: "Fabric summary" });
-  userEvent.click(
+  await userEvent.click(
     within(fabricSummary).getAllByRole("button", { name: "Edit" })[0]
   );
   await waitFor(() =>
@@ -79,7 +79,7 @@ it("can open and close the Edit fabric summary form", async () => {
     ).toBeInTheDocument()
   );
 
-  userEvent.click(
+  await userEvent.click(
     within(fabricSummary).getByRole("button", { name: "Cancel" })
   );
   await waitFor(() =>
