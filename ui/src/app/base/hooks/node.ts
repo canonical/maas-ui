@@ -10,13 +10,23 @@ import {
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineActions } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import type { Node } from "app/store/types/node";
+import type { Node, NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
 
+// These actions can be performed from menus using just the machine id and
+// without needing the user to provide any additional information.
+export type MachineMenuAction = Exclude<
+  MachineActions,
+  | NodeActions.CLONE
+  | NodeActions.SET_POOL
+  | NodeActions.SET_ZONE
+  | NodeActions.TAG
+>;
+
 /**
- * Generate menu items for the available actins on a machine.
+ * Generate menu items for the available actions on a machine.
  * @param systemId - The system id for a machine.
  * @param actions - The actions to generate menu items for.
  * @param noneMessage - The message to display if there are no items.
@@ -24,7 +34,7 @@ import { kebabToCamelCase } from "app/utils";
  */
 export const useMachineActions = (
   systemId: Machine["system_id"],
-  actions: Machine["actions"],
+  actions: MachineMenuAction[],
   noneMessage?: string | null,
   onClick?: () => void
 ): ButtonProps[] => {
