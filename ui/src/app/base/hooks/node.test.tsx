@@ -169,7 +169,7 @@ describe("node hooks", () => {
       );
     };
 
-    const dispatchAction = (
+    const dispatchAction = async (
       action: MachineMenuAction,
       expectedType: string
     ) => {
@@ -181,7 +181,7 @@ describe("node hooks", () => {
           <HookWrapper action={action} />
         </Provider>
       );
-      userEvent.click(screen.getByRole("button"));
+      await userEvent.click(screen.getByRole("button"));
       return store.getActions().find((action) => action.type === expectedType);
     };
 
@@ -203,117 +203,117 @@ describe("node hooks", () => {
       });
     });
 
-    it("can dispatch an abort action", () => {
+    it("can dispatch an abort action", async () => {
       const action = NodeActions.ABORT;
       const expected = machineActions.abort({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch an acquire action", () => {
+    it("can dispatch an acquire action", async () => {
       const action = NodeActions.ACQUIRE;
       const expected = machineActions.acquire({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a commission action", () => {
+    it("can dispatch a commission action", async () => {
       const action = NodeActions.COMMISSION;
       const expected = machineActions.commission({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a delete action", () => {
+    it("can dispatch a delete action", async () => {
       const action = NodeActions.DELETE;
       const expected = machineActions.delete({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a deploy action", () => {
+    it("can dispatch a deploy action", async () => {
       const action = NodeActions.DEPLOY;
       const expected = machineActions.deploy({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch an exit-rescue-mode action", () => {
+    it("can dispatch an exit-rescue-mode action", async () => {
       const action = NodeActions.EXIT_RESCUE_MODE;
       const expected = machineActions.exitRescueMode({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a lock action", () => {
+    it("can dispatch a lock action", async () => {
       const action = NodeActions.LOCK;
       const expected = machineActions.lock({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a mark-broken action", () => {
+    it("can dispatch a mark-broken action", async () => {
       const action = NodeActions.MARK_BROKEN;
       const expected = machineActions.markBroken({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a mark-fixed action", () => {
+    it("can dispatch a mark-fixed action", async () => {
       const action = NodeActions.MARK_FIXED;
       const expected = machineActions.markFixed({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch an off action", () => {
+    it("can dispatch an off action", async () => {
       const action = NodeActions.OFF;
       const expected = machineActions.off({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch an on action", () => {
+    it("can dispatch an on action", async () => {
       const action = NodeActions.ON;
       const expected = machineActions.on({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch an override-failed-testing action", () => {
+    it("can dispatch an override-failed-testing action", async () => {
       const action = NodeActions.OVERRIDE_FAILED_TESTING;
       const expected = machineActions.overrideFailedTesting({
         system_id: "abc123",
       });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a release action", () => {
+    it("can dispatch a release action", async () => {
       const action = NodeActions.RELEASE;
       const expected = machineActions.release({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a rescue-mode action", () => {
+    it("can dispatch a rescue-mode action", async () => {
       const action = NodeActions.RESCUE_MODE;
       const expected = machineActions.rescueMode({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch a test action", () => {
+    it("can dispatch a test action", async () => {
       const action = NodeActions.TEST;
       const expected = machineActions.test({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
 
-    it("can dispatch an unlock action", () => {
+    it("can dispatch an unlock action", async () => {
       const action = NodeActions.UNLOCK;
       const expected = machineActions.unlock({ system_id: "abc123" });
-      const dispatched = dispatchAction(action, expected.type);
+      const dispatched = await dispatchAction(action, expected.type);
       expect(dispatched).toStrictEqual(expected);
     });
   });
