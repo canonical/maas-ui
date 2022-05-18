@@ -1,20 +1,31 @@
 import { renderHook } from "@testing-library/react-hooks";
+import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import TestRenderer from "react-test-renderer";
 import configureStore from "redux-mock-store";
 
+import type { MachineMenuAction } from "./hooks";
 import {
   useCompletedIntro,
   useCompletedUserIntro,
   useCycled,
+  useMachineActions,
   useScrollOnRender,
 } from "./hooks";
 
+import { actions as machineActions } from "app/store/machine";
+import type { RootState } from "app/store/root/types";
+import { NodeActions } from "app/store/types/node";
 import { getCookie } from "app/utils";
 import {
   authState as authStateFactory,
   config as configFactory,
   configState as configStateFactory,
+  generalState as generalStateFactory,
+  machine as machineFactory,
+  machineAction as machineActionFactory,
+  machineActionsState as machineActionsStateFactory,
+  machineState as machineStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
@@ -259,6 +270,166 @@ describe("hooks", () => {
       });
       expect(result.current).toBe(true);
       getCookieMock.mockReset();
+    });
+  });
+
+  describe("useMachineActions", () => {
+    let state: RootState;
+    const HookWrapper = ({ action }: { action: MachineMenuAction }) => {
+      const actions = useMachineActions("abc123", [action]);
+      return (
+        <>
+          {actions.map((buttonProps, i) => (
+            <button {...buttonProps} key={i} />
+          ))}
+        </>
+      );
+    };
+
+    const dispatchAction = (
+      action: MachineMenuAction,
+      expectedType: string
+    ) => {
+      state.general.machineActions.data[0].name = action;
+      state.machine.items[0].actions = [action];
+      const store = mockStore(state);
+      const wrapper = mount(
+        <Provider store={store}>
+          <HookWrapper action={action} />
+        </Provider>
+      );
+      wrapper.find("button").simulate("click");
+      return store.getActions().find((action) => action.type === expectedType);
+    };
+
+    beforeEach(() => {
+      state = rootStateFactory({
+        general: generalStateFactory({
+          machineActions: machineActionsStateFactory({
+            data: [machineActionFactory()],
+          }),
+        }),
+        machine: machineStateFactory({
+          items: [
+            machineFactory({
+              system_id: "abc123",
+              actions: [],
+            }),
+          ],
+        }),
+      });
+    });
+
+    it("can dispatch an abort action", () => {
+      const action = NodeActions.ABORT;
+      const expected = machineActions.abort("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch an acquire action", () => {
+      const action = NodeActions.ACQUIRE;
+      const expected = machineActions.acquire("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a commission action", () => {
+      const action = NodeActions.COMMISSION;
+      const expected = machineActions.commission({ systemId: "abc123" });
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a delete action", () => {
+      const action = NodeActions.DELETE;
+      const expected = machineActions.delete("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a deploy action", () => {
+      const action = NodeActions.DEPLOY;
+      const expected = machineActions.deploy({ systemId: "abc123" });
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch an exit-rescue-mode action", () => {
+      const action = NodeActions.EXIT_RESCUE_MODE;
+      const expected = machineActions.exitRescueMode("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a lock action", () => {
+      const action = NodeActions.LOCK;
+      const expected = machineActions.lock("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a mark-broken action", () => {
+      const action = NodeActions.MARK_BROKEN;
+      const expected = machineActions.markBroken({ systemId: "abc123" });
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a mark-fixed action", () => {
+      const action = NodeActions.MARK_FIXED;
+      const expected = machineActions.markFixed("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch an off action", () => {
+      const action = NodeActions.OFF;
+      const expected = machineActions.off("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch an on action", () => {
+      const action = NodeActions.ON;
+      const expected = machineActions.on("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch an override-failed-testing action", () => {
+      const action = NodeActions.OVERRIDE_FAILED_TESTING;
+      const expected = machineActions.overrideFailedTesting("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a release action", () => {
+      const action = NodeActions.RELEASE;
+      const expected = machineActions.release({ systemId: "abc123" });
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a rescue-mode action", () => {
+      const action = NodeActions.RESCUE_MODE;
+      const expected = machineActions.rescueMode("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch a test action", () => {
+      const action = NodeActions.TEST;
+      const expected = machineActions.test({ systemId: "abc123" });
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
+    });
+
+    it("can dispatch an unlock action", () => {
+      const action = NodeActions.UNLOCK;
+      const expected = machineActions.unlock("abc123");
+      const dispatched = dispatchAction(action, expected.type);
+      expect(dispatched).toStrictEqual(expected);
     });
   });
 });
