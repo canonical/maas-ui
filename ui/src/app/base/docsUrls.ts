@@ -13,7 +13,7 @@ const docsUrls = {
     "https://maas.io/docs/how-to-install-maas#heading--configure-maas",
   customisingDeployedMachines:
     "https://maas.io/docs/about-customising-machines#heading--about-customising-deployed-machines",
-  dhcp: "https://maas.io/docs/how-to-manage-dhcp",
+  dhcp: "https://maas.io/docs/how-to-manage-ip-addresses#heading--how-to-manage-maas-dhcp",
   images: "https://maas.io/docs/about-images",
   ipmi: "https://maas.io/docs/power-management-reference#heading--ipmi",
   ipRanges:
