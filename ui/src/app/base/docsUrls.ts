@@ -13,7 +13,7 @@ const docsUrls = {
     "https://maas.io/docs/how-to-install-maas#heading--configure-maas",
   customisingDeployedMachines:
     "https://maas.io/docs/about-customising-machines#heading--about-customising-deployed-machines",
-  dhcp: "https://maas.io/docs/how-to-manage-dhcp",
+  dhcp: "https://maas.io/docs/how-to-manage-ip-addresses#heading--how-to-manage-maas-dhcp",
   images: "https://maas.io/docs/about-images",
   ipmi: "https://maas.io/docs/power-management-reference#heading--ipmi",
   ipRanges:
@@ -21,7 +21,7 @@ const docsUrls = {
   kvmIntroduction: "https://maas.io/docs/about-vm-hosting",
   networkDiscovery:
     "https://maas.io/docs/about-networking#heading--about-network-discovery",
-  rackController: "https://maas.io/docs/how-to-manage-racks",
+  rackController: "https://maas.io/docs/how-to-manage-controllers",
   sshKeys: "https://maas.io/docs/how-to-manage-user-accounts#heading--ssh-keys",
   tagsAutomatic:
     "https://maas.io/docs/how-to-work-with-tags#heading--automatic-tags",
