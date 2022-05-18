@@ -279,8 +279,8 @@ describe("hooks", () => {
       const actions = useMachineActions("abc123", [action]);
       return (
         <>
-          {actions.map((action, i) => (
-            <button {...action} key={i} />
+          {actions.map((buttonProps, i) => (
+            <button {...buttonProps} key={i} />
           ))}
         </>
       );
