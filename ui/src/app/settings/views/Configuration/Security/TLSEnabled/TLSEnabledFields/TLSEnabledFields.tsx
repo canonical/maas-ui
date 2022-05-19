@@ -33,7 +33,7 @@ const TLSEnabledFields = (): JSX.Element => {
           min={TLSExpiryNotificationInterval.MIN}
           name="notificationInterval"
           onChange={(e) =>
-            setFieldValue("notificationInterval", Number(e.currentTarget.value))
+            setFieldValue("notificationInterval", e.target.value)
           }
           showInput
           step={1}
