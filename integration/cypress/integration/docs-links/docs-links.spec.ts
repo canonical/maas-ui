@@ -21,16 +21,8 @@ context("docs resource exists", () => {
 context("docs resources have no redirects", () => {
   urls.forEach((url) => {
     it(url, () => {
-      cy.request({
-        url: url,
-        followRedirect: false,
-      }).then((resp) => {
-        Cypress.log({
-          name: `UNEXPECTED REDIRECT TO:`,
-          message: resp.redirectedToUrl,
-        });
-        expect(resp.redirectedToUrl).to.eq(undefined);
-      });
+      cy.visit(url);
+      cy.url().should("equal", url);
     });
   });
 });
