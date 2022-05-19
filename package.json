@@ -20,6 +20,8 @@
     "commit": "git-cz",
     "release": "cd ui && yarn run release",
     "serve": "cd proxy && yarn start",
+    "serve-proxy": "cd proxy && yarn serve-proxy",
+    "serve-static-demo": "cd proxy && yarn serve-static-demo",
     "start": "yarn serve",
     "clean": "yarn clean-all",
     "clean-all": "rm -rf build && yarn clean-monorepo && yarn clean-proxy && yarn clean-shared && yarn clean-legacy && yarn clean-ui && yarn clean-root",

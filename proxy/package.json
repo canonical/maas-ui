@@ -12,6 +12,7 @@
     "serve-base": "concurrently \"yarn serve-root\" \"yarn serve-proxy\"",
     "serve-base-wait": "wait-on http://0.0.0.0:8401 && wait-on http://0.0.0.0:8402 && yarn serve-base",
     "serve-proxy": "nodemon ./index.js",
+    "serve-static-demo": "STATIC_DEMO=true PROXY_PORT=80 nodemon ./index.js",
     "serve-legacy": "cd ../legacy && yarn run start",
     "serve-root": "cd ../root && yarn start",
     "serve-ui": "cd ../ui && BROWSER=none PORT=8401 yarn run start",

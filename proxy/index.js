@@ -6,13 +6,17 @@ const { BASENAME, REACT_BASENAME } = require("@maas-ui/maas-ui-shared");
 
 var app = express();
 
-const PROXY_PORT = 8400;
+const PROXY_PORT = process.env.PROXY_PORT || 8400;
 const UI_PORT = 8401;
 const LEGACY_PORT = 8402;
 const ROOT_PORT = 8404;
 
 app.get(BASENAME, (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
 app.get("/", (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
+if (process.env.STATIC_DEMO === "true") {
+  app.use(`${BASENAME}${REACT_BASENAME}`, express.static('../build'));
+}
+
 app.get(`${BASENAME}/`, (req, res) =>
   res.redirect(`${BASENAME}${REACT_BASENAME}`)
 );
@@ -69,11 +73,14 @@ app.use(
 );
 
 // Proxy to the single-spa root app.
-app.use(
-  createProxyMiddleware("/", {
-    target: `http://localhost:${ROOT_PORT}/`,
-  })
-);
+if (process.env.STATIC_DEMO !== "true") {
+  app.use(
+    createProxyMiddleware("/", {
+      target: `http://localhost:${ROOT_PORT}/`,
+    })
+  );
+} 
+
 
 app.listen(PROXY_PORT);
 
