@@ -8,7 +8,7 @@ version should be created.
 ### Note
 
 No new dependencies (unless in the case of a CVE), or features should land in
-the release branch once created. Bugfixes should be made on master and backported to release branches where needed.
+the release branch once created. Bugfixes should be made on main and backported to release branches where needed.
 
 ## Creating a release
 
@@ -20,7 +20,7 @@ Please try to adhere to semantic versioning when creating a release. Although re
 
 #### Create the branch
 
-Create a new branch from master using the MAAS version as the name (e.g. `git checkout -b 3.2 master`).
+Create a new branch from main using the MAAS version as the name (e.g. `git checkout -b 3.2 main`).
 
 Push the branch to the repo at `canonical-web-and-design/maas-ui`.
 
@@ -53,9 +53,9 @@ Propose this against the appropriate version branch and merge once approved.
 Email the MAAS & Design list with a link to the new branch in GitHub and include
 the latest hash to include for ui Git submodule.
 
-#### Update master version
+#### Update main version
 
-Create a new branch of master and update the version in all package.jsons to the next expected version.
+Create a new branch of main and update the version in all package.jsons to the next expected version.
 
 #### Add branch protection
 
