@@ -1,3 +1,6 @@
+import stringify from "json-stable-stringify";
+
+import type { AnyObject } from "app/base/types";
 import { PowerFieldScope } from "app/store/general/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
@@ -71,3 +74,8 @@ export const getHasSyncFailed = (machine?: Machine | null): boolean => {
   }
   return machine.is_sync_healthy === false;
 };
+
+export const generateQueryKey = (
+  method: "get" | "list",
+  params: AnyObject = {}
+): string => stringify({ method, ...params });

@@ -186,13 +186,31 @@ export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
 export type MachineEventErrors = CloneError;
 
+export type QueryParams = {
+  search_hostname?: string;
+  page: number;
+  pageSize: number;
+};
+
+export type MachineQuery = {
+  count: number;
+  error: APIError | null;
+  items: Machine[MachineMeta.PK][];
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type MachineState = {
   active: Machine[MachineMeta.PK] | null;
+  count: number;
+  countLoaded: boolean;
+  countLoading: boolean;
   eventErrors: EventError<
     Machine,
     APIError<MachineEventErrors>,
     MachineMeta.PK
   >[];
+  queries: Record<string, MachineQuery>;
   selected: Machine[MachineMeta.PK][];
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;

@@ -42,10 +42,12 @@ export type {
 
 export type {
   BaseMachine,
+  QueryParams,
   Machine,
   MachineActions,
   MachineDetails,
   MachineEventErrors,
+  MachineQuery,
   MachineState,
   MachineStatus,
   MachineStatuses,

@@ -249,7 +249,12 @@ export const machineEventError = define<
 export const machineState = define<MachineState>({
   ...defaultState,
   active: null,
+  count: 0,
+  countLoaded: false,
+  countLoading: false,
+  errors: null,
   eventErrors: () => [],
+  queries: () => ({}),
   selected: () => [],
   statuses: () => ({}),
 });

@@ -6,12 +6,17 @@ import type { Tag, TagMeta } from "../tag/types";
 import { ACTIONS } from "app/store/machine/slice";
 import { MachineMeta } from "app/store/machine/types";
 import type {
+  QueryParams,
   Machine,
   MachineState,
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
+import {
+  FilterMachines,
+  generateQueryKey,
+  isMachineDetails,
+} from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { NetworkInterface } from "app/store/types/node";
@@ -315,6 +320,49 @@ const getDeployedWithTag = createSelector(
   }
 );
 
+const count = (state: RootState): number => state.machine.count;
+
+const countLoaded = (state: RootState): boolean => state.machine.countLoaded;
+
+const countLoading = (state: RootState): boolean => state.machine.countLoading;
+
+const queries = (state: RootState): MachineState["queries"] =>
+  state.machine.queries;
+
+const getQuery = createSelector(
+  [
+    queries,
+    (_state: RootState, method: "get" | "list", params: QueryParams) => ({
+      method,
+      params,
+    }),
+  ],
+  (queries, { method, params }) => {
+    const queryKey = generateQueryKey(method, params);
+    return queries[queryKey] || null;
+  }
+);
+
+const getByQueryParams = createSelector(
+  [
+    defaultSelectors.all,
+    (state: RootState, method: "get" | "list", params: QueryParams) =>
+      getQuery(state, method, params),
+  ],
+  (machines, query) => {
+    if (query) {
+      return query.items.reduce<Machine[]>((acc, machineID) => {
+        const machine = machines.find((mac) => mac.system_id === machineID);
+        if (machine) {
+          acc.push(machine);
+        }
+        return acc;
+      }, []);
+    }
+    return [];
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -324,6 +372,9 @@ const selectors = {
   checkingPower: statusSelectors["checkingPower"],
   cloning: statusSelectors["cloning"],
   commissioning: statusSelectors["commissioning"],
+  count,
+  countLoaded,
+  countLoading,
   creatingPhysical: statusSelectors["creatingPhysical"],
   creatingVlan: statusSelectors["creatingVlan"],
   deleting: statusSelectors["deleting"],
@@ -336,6 +387,8 @@ const selectors = {
   getByStatusCode,
   getDeployedWithTag,
   getInterfaceById,
+  getByQueryParams,
+  getQuery,
   getStatuses,
   getStatusForMachine,
   linkingSubnet: statusSelectors["linkingSubnet"],
@@ -344,6 +397,7 @@ const selectors = {
   markingFixed: statusSelectors["markingFixed"],
   overridingFailedTesting: statusSelectors["overridingFailedTesting"],
   processing,
+  queries,
   releasing: statusSelectors["releasing"],
   search,
   selected,
