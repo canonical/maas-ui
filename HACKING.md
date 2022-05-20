@@ -29,7 +29,6 @@ If your branch touches an existing js module in `ui`, it should be converted to 
 
 There are cases where determining a type for a particular object can be difficult. We provide an "escape hatch" type called `TSFixMe` (aliased to `any`) which you can use, but please make a best effort to avoid this and determine the correct types where possible.
 
-
 # Development setup
 
 **Note: You will need access to a running instance of MAAS in order to run maas-ui.**
@@ -126,7 +125,7 @@ Once everything has built you can access the site using the hostname:
 To run a branch from a PR you can find and click on the link "command line instructions" and copy the command from "Step 1". It should look something like:
 
 ```shell
-git checkout -b username-branch-name master
+git checkout -b username-branch-name main
 git pull https://github.com/username/maas-ui.git branch-name
 ```
 
@@ -159,7 +158,7 @@ Once connected to the VPN you can connect to one of the following MAAS deploymen
 
 ### Bolla
 
-[bolla.internal](http://bolla.internal:5240/MAAS) (master)
+[bolla.internal](http://bolla.internal:5240/MAAS) (main)
 
 ## Local deployments
 
@@ -239,7 +238,7 @@ multipass shell dev-maas
 lxc exec dev-maas bash -- su ubuntu
 ```
 
-You'll need to fetch the current MAAS master:
+You'll need to fetch the current MAAS main:
 
 ```shell
 git clone http://git.launchpad.net/maas
@@ -289,7 +288,7 @@ lxc exec dev-maas -- su ubuntu
 
 If MAAS is currently running then [stop it](#stopping-a-development-maas).
 
-Now fetch the latest master, clean and rebuild your MAAS.
+Now fetch the latest main, clean and rebuild your MAAS.
 
 _Note: this will clear all your MAAS data and is more reliable, but you can attempt to run `make clean` instead of `make clean+db` to preserve your current data._
 
@@ -322,7 +321,7 @@ git submodule sync
 git submodule update --init --recursive --remote
 ```
 
-Optional: if you want to restore to maas-ui master then run:
+Optional: if you want to restore to maas-ui main then run:
 
 ```shell
 git checkout .gitmodules
@@ -557,7 +556,7 @@ maas $PROFILE maas set-config name=completed_intro value=false
 
 ## Integration tests
 
-Integration tests currently run against the maas edge snap (master) [on github actions](https://github.com/canonical-web-and-design/maas-ui/actions?query=workflow%3ACypress) with [Cypress](https://cypress.io).
+Integration tests currently run against the maas edge snap (main) [on github actions](https://github.com/canonical-web-and-design/maas-ui/actions?query=workflow%3ACypress) with [Cypress](https://cypress.io).
 
 For details on developing integration tests, see the integration testing [README](integration/README.md).
 
