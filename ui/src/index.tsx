@@ -6,6 +6,7 @@ import { createBrowserHistory } from "history";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import { createReduxHistoryContext } from "redux-first-history";
 import createSagaMiddleware from "redux-saga";
 
@@ -52,9 +53,11 @@ const Root = (): JSX.Element => {
   return (
     <Provider store={store}>
       <Router history={history}>
-        <StrictMode>
-          <App />
-        </StrictMode>
+        <CompatRouter>
+          <StrictMode>
+            <App />
+          </StrictMode>
+        </CompatRouter>
       </Router>
     </Provider>
   );

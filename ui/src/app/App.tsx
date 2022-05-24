@@ -7,8 +7,8 @@ import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useHistory, useLocation } from "react-router-dom";
+import { useRoutes } from "react-router-dom-v5-compat";
 
-import Routes from "app/Routes";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -16,6 +16,7 @@ import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
 import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
 import introURLs from "app/intro/urls";
+import routes from "app/routes";
 import { actions as authActions } from "app/store/auth";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
@@ -50,6 +51,8 @@ export const App = (): JSX.Element => {
   const completedIntro = useCompletedIntro();
   const completedUserIntro = useCompletedUserIntro();
   const debug = process.env.NODE_ENV === "development";
+
+  const appRoutes = useRoutes(routes);
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -115,7 +118,7 @@ export const App = (): JSX.Element => {
   } else if (connected) {
     content = (
       <FileContext.Provider value={fileContextStore}>
-        <Routes />
+        {appRoutes}
       </FileContext.Provider>
     );
   }
