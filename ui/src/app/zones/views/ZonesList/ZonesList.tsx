@@ -9,75 +9,76 @@ import {
   Spinner,
   Strip,
 } from "@canonical/react-components";
+import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 
-let id = 0;
-
 const MachineTable = ({
   clearTable,
-  hostnameFilter,
-  pageSize,
+  id,
 }: {
   clearTable: () => void;
-  hostnameFilter: string;
-  pageSize: number;
+  id: string;
 }): JSX.Element | null => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [hostnameFilter, setHostnameFilter] = useState("");
   const query = useSelector((state: RootState) =>
-    machineSelectors.getQuery(state, "list", {
-      page,
-      pageSize,
-      search_hostname: hostnameFilter,
-    })
+    machineSelectors.getQuery(state, id)
   );
   const machines = useSelector((state: RootState) =>
-    machineSelectors.getByQueryParams(state, "list", {
-      page,
-      pageSize,
-      search_hostname: hostnameFilter,
-    })
+    machineSelectors.getByQueryParams(state, id)
   );
 
   useEffect(() => {
-    dispatch(
-      machineActions.queryList({
-        page,
-        pageSize,
-        search_hostname: hostnameFilter,
-      })
-    );
+    dispatch(machineActions.query({ id, filter: "", page: 1, pageSize: 10 }));
+  }, [dispatch, id]);
 
-    return () => {
-      dispatch(
-        machineActions.clearQuery({
-          method: "list",
-          params: {
-            page,
-            pageSize,
-            search_hostname: hostnameFilter,
-          },
-        })
-      );
-    };
-  }, [dispatch, hostnameFilter, page, pageSize]);
+  if (!query) {
+    return null;
+  }
 
+  const { count, loaded, params } = query;
   return (
     <>
-      <span>
-        Page size: {pageSize}, Hostname filter: "{hostnameFilter}"
-        {query?.loaded && (
+      <Input
+        label="Page size"
+        onChange={(e) => setPageSize(Number(e.target.value))}
+        type="text"
+        value={pageSize}
+      />
+      <Input
+        label="Filter by hostname"
+        onChange={(e) => setHostnameFilter(e.target.value)}
+        type="text"
+        value={hostnameFilter}
+      />
+      <Button
+        appearance="positive"
+        onClick={() =>
+          dispatch(
+            machineActions.query({ id, filter: hostnameFilter, page, pageSize })
+          )
+        }
+        type="button"
+      >
+        Update list
+      </Button>
+      <p>
+        Showing{" "}
+        {loaded ? (
           <>
-            <br />
-            Showing {(page - 1) * pageSize + 1} -{" "}
-            {Math.min(query.count, page * pageSize)} of {query.count}
+            {(params.page - 1) * params.pageSize + 1} -{" "}
+            {Math.min(count, params.page * params.pageSize)} of {count}
           </>
+        ) : (
+          "..."
         )}
-      </span>
+      </p>
       <table>
         <thead>
           <tr>
@@ -88,7 +89,17 @@ const MachineTable = ({
         <tbody>
           {machines.map((machine) => (
             <tr key={machine.system_id}>
-              <td>{machine.system_id}</td>
+              <td>
+                <Button
+                  appearance="link"
+                  className="u-no-margin--bottom"
+                  onClick={() =>
+                    dispatch(machineActions.setActive(machine.system_id))
+                  }
+                >
+                  {machine.system_id}
+                </Button>
+              </td>
               <td>{machine.hostname}</td>
             </tr>
           ))}
@@ -101,22 +112,20 @@ const MachineTable = ({
             currentPage={page}
             itemsPerPage={pageSize}
             paginate={(page) => {
+              setPage(page);
               dispatch(
-                machineActions.clearQuery({
-                  method: "list",
-                  params: {
-                    page,
-                    pageSize,
-                    search_hostname: hostnameFilter,
-                  },
+                machineActions.query({
+                  id,
+                  filter: hostnameFilter,
+                  page,
+                  pageSize,
                 })
               );
-              setPage(page);
             }}
-            totalItems={query.count}
+            totalItems={count}
           />
           <Button appearance="negative" onClick={clearTable}>
-            Clear table
+            Remove machine list
           </Button>
         </>
       ) : (
@@ -126,71 +135,102 @@ const MachineTable = ({
   );
 };
 
+const ActiveMachine = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const activeMachine = useSelector(machineSelectors.active);
+
+  return (
+    <>
+      <h4>Active machine</h4>
+      {activeMachine ? (
+        <>
+          <table>
+            <thead>
+              <tr>
+                <th>System ID</th>
+                <th>Hostname</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{activeMachine.system_id}</td>
+                <td>{activeMachine.hostname}</td>
+              </tr>
+            </tbody>
+          </table>
+          <Button
+            appearance="negative"
+            onClick={() => dispatch(machineActions.setActive(null))}
+          >
+            Clear active machine
+          </Button>
+        </>
+      ) : (
+        <p>No active machine set</p>
+      )}
+    </>
+  );
+};
+
 const QueryMachines = (): JSX.Element => {
   const dispatch = useDispatch();
-  const [tables, setTables] = useState<
-    {
-      id: number;
-      hostnameFilter: string;
-      pageSize: number;
-    }[]
-  >([]);
-  const [pageSize, setPageSize] = useState(10);
-  const [hostnameFilter, setHostnameFilter] = useState("");
-  const queryExists = tables.some(
-    (table) =>
-      table.hostnameFilter === hostnameFilter && table.pageSize === pageSize
-  );
+  const [queryIds, setQueryIds] = useState<string[]>([nanoid()]);
+  const count = useSelector(machineSelectors.count);
+  const countLoading = useSelector(machineSelectors.countLoading);
 
   useEffect(() => {
+    dispatch(machineActions.count());
+
     return () => {
+      dispatch(machineActions.setActive(null));
       dispatch(machineActions.clearAllQueries());
     };
   }, [dispatch]);
 
   return (
-    <Strip>
-      <Row>
-        <Col size={6}>
-          <h4>Add query</h4>
-          <Input
-            label="Page size"
-            onChange={(e) => setPageSize(Number(e.target.value))}
-            type="text"
-            value={pageSize}
-          />
-          <Input
-            label="Filter by hostname"
-            onChange={(e) => setHostnameFilter(e.target.value)}
-            type="text"
-            value={hostnameFilter}
-          />
-          <Button
-            disabled={queryExists}
-            onClick={() => {
-              setTables([...tables, { hostnameFilter, id, pageSize }]);
-              id++;
-            }}
-          >
-            Add query
-          </Button>
-          {queryExists && <span>This query already exists.</span>}
-        </Col>
-      </Row>
-      <Row>
-        {Object.entries(tables).map(([, params]) => (
-          <Col key={params.id} size={6}>
-            <MachineTable
-              clearTable={() =>
-                setTables(tables.filter((table) => table.id !== params.id))
-              }
-              hostnameFilter={params.hostnameFilter}
-              pageSize={params.pageSize}
-            />
+    <>
+      <Strip shallow>
+        <Row>
+          <Col size={12}>
+            <h4>
+              This MAAS has {countLoading ? <Spinner /> : `${count} machines`}
+            </h4>
           </Col>
-        ))}
-      </Row>
-    </Strip>
+        </Row>
+        <Row>
+          <Col size={6}>
+            <Button
+              appearance="positive"
+              onClick={() => {
+                setQueryIds([...queryIds, nanoid()]);
+              }}
+            >
+              Add machine list
+            </Button>
+          </Col>
+        </Row>
+        <Row>
+          {queryIds.map((queryId) => (
+            <Col key={queryId} size={6}>
+              <MachineTable
+                clearTable={() => {
+                  setQueryIds(queryIds.filter((id) => id !== queryId));
+                  dispatch(machineActions.clearQuery(queryId));
+                }}
+                id={queryId}
+              />
+            </Col>
+          ))}
+        </Row>
+      </Strip>
+      <Strip shallow>
+        <Row>
+          <Col size={6}>
+            <ActiveMachine />
+          </Col>
+        </Row>
+      </Strip>
+    </>
   );
 };
 

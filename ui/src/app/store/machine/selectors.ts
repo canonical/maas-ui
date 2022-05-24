@@ -6,17 +6,12 @@ import type { Tag, TagMeta } from "../tag/types";
 import { ACTIONS } from "app/store/machine/slice";
 import { MachineMeta } from "app/store/machine/types";
 import type {
-  QueryParams,
   Machine,
   MachineState,
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import {
-  FilterMachines,
-  generateQueryKey,
-  isMachineDetails,
-} from "app/store/machine/utils";
+import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { NetworkInterface } from "app/store/types/node";
@@ -330,24 +325,14 @@ const queries = (state: RootState): MachineState["queries"] =>
   state.machine.queries;
 
 const getQuery = createSelector(
-  [
-    queries,
-    (_state: RootState, method: "get" | "list", params: QueryParams) => ({
-      method,
-      params,
-    }),
-  ],
-  (queries, { method, params }) => {
-    const queryKey = generateQueryKey(method, params);
-    return queries[queryKey] || null;
-  }
+  [queries, (_state: RootState, queryId: string) => queryId],
+  (queries, queryId) => queries[queryId] || null
 );
 
 const getByQueryParams = createSelector(
   [
     defaultSelectors.all,
-    (state: RootState, method: "get" | "list", params: QueryParams) =>
-      getQuery(state, method, params),
+    (state: RootState, queryId: string) => getQuery(state, queryId),
   ],
   (machines, query) => {
     if (query) {

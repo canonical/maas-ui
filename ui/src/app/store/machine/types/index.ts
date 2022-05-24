@@ -27,6 +27,7 @@ export type {
   LinkSubnetParams,
   MarkBrokenParams,
   MountSpecialParams,
+  QueryParams,
   ReleaseParams,
   SetBootDiskParams,
   SetPoolParams,
@@ -42,7 +43,6 @@ export type {
 
 export type {
   BaseMachine,
-  QueryParams,
   Machine,
   MachineActions,
   MachineDetails,

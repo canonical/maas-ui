@@ -26,14 +26,15 @@ import type {
   DeletePartitionParams,
   DeleteVolumeGroupParams,
   DeployParams,
-  QueryParams,
   GetSummaryXmlParams,
   GetSummaryYamlParams,
   LinkSubnetParams,
   Machine,
+  MachineDetails,
   MachineState,
   MarkBrokenParams,
   MountSpecialParams,
+  QueryParams,
   ReleaseParams,
   SetBootDiskParams,
   SetPoolParams,
@@ -46,7 +47,6 @@ import type {
   UpdateParams,
   UpdateVmfsDatastoreParams,
 } from "./types";
-import { generateQueryKey } from "./utils";
 
 import type { APIError } from "app/base/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -1347,9 +1347,41 @@ const machineSlice = createSlice({
     },
     setActiveSuccess: (
       state: MachineState,
-      action: PayloadAction<Machine | null>
+      action: PayloadAction<MachineDetails | null>
     ) => {
-      state.active = action.payload?.system_id || null;
+      const currentActive = `${state.active}`;
+      const newActive = action.payload;
+      if (newActive) {
+        state.active = newActive.system_id;
+        state.statuses[newActive.system_id] = DEFAULT_STATUSES;
+        const machineInState = state.items.find(
+          (machine) => machine.system_id === newActive.system_id
+        );
+        if (machineInState) {
+          state.items = [
+            ...state.items.filter(
+              (machine) => machine.system_id !== newActive.system_id
+            ),
+            newActive,
+          ];
+        } else {
+          state.items.push(newActive);
+        }
+      } else {
+        state.active = null;
+        const inOtherQuery = Object.entries(state.queries).some(([, query]) =>
+          query.items.includes(currentActive)
+        );
+        if (!inOtherQuery) {
+          state.items = state.items.filter(
+            (machine) => machine.system_id !== currentActive
+          );
+          state.selected = state.selected.filter(
+            (machineID) => machineID !== currentActive
+          );
+          delete state.statuses[currentActive];
+        }
+      }
     },
     setBootDisk: {
       prepare: (params: SetBootDiskParams) => ({
@@ -1689,8 +1721,34 @@ const machineSlice = createSlice({
     updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
-    queryList: {
-      prepare: (params: QueryParams) => ({
+    count: {
+      prepare: () => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "list",
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    countStart: (state) => {
+      state.countLoading = true;
+    },
+    countSuccess: (state, action: PayloadAction<Machine[]>) => {
+      state.count = action.payload.length;
+      state.countLoading = false;
+      state.countLoaded = true;
+    },
+    countError: (state, action: PayloadAction<APIError>) => {
+      state.errors = action.payload;
+      state = setErrors(state, action, "count");
+      state.countLoading = false;
+      state.countLoaded = false;
+    },
+    query: {
+      prepare: (params: QueryParams & { id: string }) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "list",
@@ -1704,157 +1762,102 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    queryListStart: {
+    queryStart: {
       prepare: (action) => action,
       reducer: (
         state,
-        action: PayloadAction<null, string, { item: QueryParams }>
+        action: PayloadAction<
+          null,
+          string,
+          { item: QueryParams & { id: string } }
+        >
       ) => {
-        const queryKey = generateQueryKey("list", action.meta.item);
-        state.queries[queryKey] = {
+        const {
+          meta: { item },
+        } = action;
+        state.queries[item.id] = {
           count: 0,
           error: null,
           items: [],
           loaded: false,
           loading: true,
+          params: item,
         };
       },
     },
-    queryListSuccess: {
+    querySuccess: {
       prepare: (action) => action,
       reducer: (
         state,
-        action: PayloadAction<Machine[], string, { item: QueryParams }>
+        action: PayloadAction<
+          Machine[],
+          string,
+          { item: QueryParams & { id: string } }
+        >
       ) => {
-        const { item } = action.meta;
-        const { page, pageSize } = item;
-        const queryKey = generateQueryKey("list", item);
-        const query = state.queries[queryKey];
-        if (query) {
-          // Simulate a filtered and paginated result
-          query.count = action.payload.length;
-          const queryItems: string[] = [];
-          action.payload.forEach((machine, i) => {
-            const minIndex = (page - 1) * pageSize;
-            const maxIndex = minIndex + pageSize;
-            if (i >= minIndex && i < maxIndex) {
-              queryItems.push(machine.system_id);
-              if (
-                !state.items.some(
-                  (existingMachine) =>
-                    existingMachine.system_id === machine.system_id
-                )
-              ) {
-                state.items.push(machine);
-                state.statuses[machine.system_id] = DEFAULT_STATUSES;
-              }
-            }
-          });
-          query.items = queryItems;
-          query.loaded = true;
-          query.loading = false;
-        }
-      },
-    },
-    queryListError: {
-      prepare: (action) => action,
-      reducer: (
-        state,
-        action: PayloadAction<APIError, string, { item: QueryParams }>
-      ) => {
-        const queryKey = generateQueryKey("list", action.meta.item);
-        const query = state.queries[queryKey];
-        if (query) {
-          query.error = action.payload;
-        }
-      },
-    },
-    queryGet: {
-      prepare: (machineID: Machine[MachineMeta.PK]) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "get",
-        },
-        payload: {
-          params: { system_id: machineID },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    queryGetStart: {
-      prepare: (action) => action,
-      reducer: (
-        state,
-        action: PayloadAction<null, string, { item: { system_id: string } }>
-      ) => {
-        const queryKey = generateQueryKey("get", action.meta.item);
-        state.queries[queryKey] = {
-          count: 0,
-          error: null,
-          items: [],
-          loaded: false,
-          loading: true,
-        };
-      },
-    },
-    queryGetSuccess: {
-      prepare: (action) => action,
-      reducer: (
-        state,
-        action: PayloadAction<Machine, string, { item: { system_id: string } }>
-      ) => {
-        const machine = action.payload;
-        // If the item already exists, update it, otherwise
-        // add it to the store.
-        const i = state.items.findIndex(
-          (draftItem: Machine) => draftItem.system_id === machine.system_id
+        const {
+          meta: { item },
+          payload,
+        } = action;
+        const { filter, id, page, pageSize } = item;
+        // Query actually returns all machines, so we simulate a filtered and
+        // paginated result
+        const filtered = payload.filter((machine) =>
+          machine.hostname.includes(filter)
         );
-        if (i !== -1) {
-          state.items[i] = machine;
-        } else {
-          state.items.push(machine);
-          // Set up the statuses for this machine.
-          state.statuses[machine.system_id] = DEFAULT_STATUSES;
-        }
-        const queryKey = generateQueryKey("get", action.meta.item);
-        const query = state.queries[queryKey];
+        const items: string[] = [];
+        filtered.forEach((machine, i) => {
+          const minIndex = (page - 1) * pageSize;
+          const maxIndex = minIndex + pageSize;
+          if (i >= minIndex && i < maxIndex) {
+            items.push(machine.system_id);
+            if (
+              !state.items.some(
+                (existingMachine) =>
+                  existingMachine.system_id === machine.system_id
+              )
+            ) {
+              state.items.push(machine);
+              state.statuses[machine.system_id] = DEFAULT_STATUSES;
+            }
+          }
+        });
+        const query = state.queries[id];
         if (query) {
-          query.count = 1;
-          query.items = [machine.system_id];
+          query.count = filtered.length;
+          query.error = null;
+          query.items = items;
           query.loaded = true;
           query.loading = false;
         }
       },
     },
-    queryGetError: {
+    queryError: {
       prepare: (action) => action,
       reducer: (
         state,
-        action: PayloadAction<APIError, string, { item: { system_id: string } }>
+        action: PayloadAction<
+          APIError,
+          string,
+          { item: QueryParams & { id: string } }
+        >
       ) => {
-        state = setErrors(state, action, "get");
-        const queryKey = generateQueryKey("get", action.meta.item);
-        const query = state.queries[queryKey];
+        const {
+          meta: { item },
+        } = action;
+        const query = state.queries[item.id];
         if (query) {
           query.error = action.payload;
-          query.loading = false;
           query.loaded = false;
+          query.loading = false;
         }
       },
     },
-    clearQuery: (
-      state,
-      action: PayloadAction<{ method: "get" | "list"; params: QueryParams }>
-    ) => {
-      const queryKey = generateQueryKey(
-        action.payload.method,
-        action.payload.params
-      );
-      const query = state.queries[queryKey];
+    clearQuery: (state, action: PayloadAction<string>) => {
+      const id = action.payload;
+      const query = state.queries[id];
       if (query) {
-        delete state.queries[queryKey];
+        delete state.queries[id];
         const machinesToRemove = state.items.filter((machine) => {
           const isActive = state.active === machine.system_id;
           const inOtherQuery = Object.entries(state.queries).some(([, query]) =>
@@ -1874,9 +1877,17 @@ const machineSlice = createSlice({
       }
     },
     clearAllQueries: (state) => {
-      state.items = [];
       state.queries = {};
-      state.statuses = {};
+      state.selected = [];
+      if (state.active) {
+        state.items = state.items.filter(
+          (machine) => machine.system_id === state.active
+        );
+        state.statuses = { [state.active]: state.statuses[state.active] };
+      } else {
+        state.items = [];
+        state.statuses = {};
+      }
     },
   },
 });

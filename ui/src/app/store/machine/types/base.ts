@@ -1,3 +1,4 @@
+import type { QueryParams } from "./actions";
 import type { MachineMeta } from "./enum";
 
 import type { APIError, Seconds } from "app/base/types";
@@ -186,18 +187,13 @@ export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
 export type MachineEventErrors = CloneError;
 
-export type QueryParams = {
-  search_hostname?: string;
-  page: number;
-  pageSize: number;
-};
-
 export type MachineQuery = {
   count: number;
-  error: APIError | null;
+  error: APIError;
   items: Machine[MachineMeta.PK][];
   loaded: boolean;
   loading: boolean;
+  params: QueryParams;
 };
 
 export type MachineState = {

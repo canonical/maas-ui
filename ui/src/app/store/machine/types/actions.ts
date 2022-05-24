@@ -267,6 +267,12 @@ export type OptionalFilesystemParams = {
   mountPoint?: string;
 };
 
+export type QueryParams = {
+  filter: string;
+  page: number;
+  pageSize: number;
+};
+
 export type ReleaseParams = BaseNodeActionParams & {
   erase?: boolean;
   quick_erase?: boolean;
