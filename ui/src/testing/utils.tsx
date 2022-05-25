@@ -7,12 +7,12 @@ import type { FormikHelpers } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FormikForm from "app/base/components/FormikForm";
 import type { AnyObject } from "app/base/types";
 import type { RootState } from "app/store/root/types";
-import { CompatRouter } from "react-router-dom-v5-compat";
 
 /**
  * Assert that some JSX from Enzyme is equal to some provided JSX.
