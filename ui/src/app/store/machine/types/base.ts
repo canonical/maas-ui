@@ -187,10 +187,16 @@ export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
 export type MachineEventErrors = CloneError;
 
+export type MachineQueryGroup = {
+  count: number;
+  items: Machine[MachineMeta.PK][];
+  name: string | null;
+};
+
 export type MachineQuery = {
   count: number;
   error: APIError;
-  items: Machine[MachineMeta.PK][];
+  groups: MachineQueryGroup[];
   loaded: boolean;
   loading: boolean;
   params: QueryParams;

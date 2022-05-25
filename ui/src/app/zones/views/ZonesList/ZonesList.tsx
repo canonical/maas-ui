@@ -6,6 +6,7 @@ import {
   Input,
   Pagination,
   Row,
+  Select,
   Spinner,
   Strip,
 } from "@canonical/react-components";
@@ -17,25 +18,43 @@ import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 
 const MachineTable = ({
-  clearTable,
   id,
+  queryIds,
+  setQueryIds,
 }: {
-  clearTable: () => void;
   id: string;
+  queryIds: string[];
+  setQueryIds: (ids: string[]) => void;
 }): JSX.Element | null => {
   const dispatch = useDispatch();
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(10);
   const [hostnameFilter, setHostnameFilter] = useState("");
+  const [groupBy, setGroupBy] = useState("");
   const query = useSelector((state: RootState) =>
     machineSelectors.getQuery(state, id)
   );
-  const machines = useSelector((state: RootState) =>
-    machineSelectors.getByQueryParams(state, id)
+  const machineGroups = useSelector((state: RootState) =>
+    machineSelectors.getGroupsByQuery(state, id)
+  );
+  const unsubscribeIds = useSelector((state: RootState) =>
+    machineSelectors.getForUnsubscribe(state, id)
   );
 
   useEffect(() => {
-    dispatch(machineActions.query({ id, filter: "", page: 1, pageSize: 10 }));
+    dispatch(
+      machineActions.query({
+        id,
+        filter: "",
+        groupBy: "",
+        page: 1,
+        pageSize: 10,
+      })
+    );
+
+    return () => {
+      dispatch(machineActions.clearQuery(id));
+    };
   }, [dispatch, id]);
 
   if (!query) {
@@ -57,13 +76,29 @@ const MachineTable = ({
         type="text"
         value={hostnameFilter}
       />
+      <Select
+        label="Group by"
+        onChange={(e) => setGroupBy(e.target.value)}
+        options={[
+          { label: "None", value: "" },
+          { label: "Owner", value: "owner" },
+        ]}
+      />
       <Button
         appearance="positive"
-        onClick={() =>
+        onClick={() => {
+          setPage(1);
           dispatch(
-            machineActions.query({ id, filter: hostnameFilter, page, pageSize })
-          )
-        }
+            machineActions.query({
+              id,
+              filter: hostnameFilter,
+              groupBy,
+              page: 1,
+              pageSize,
+            })
+          );
+          dispatch(machineActions.unsubscribe(unsubscribeIds));
+        }}
         type="button"
       >
         Update list
@@ -87,27 +122,38 @@ const MachineTable = ({
           </tr>
         </thead>
         <tbody>
-          {machines.map((machine) => (
-            <tr key={machine.system_id}>
-              <td>
-                <Button
-                  appearance="link"
-                  className="u-no-margin--bottom"
-                  onClick={() =>
-                    dispatch(machineActions.setActive(machine.system_id))
-                  }
-                >
-                  {machine.system_id}
-                </Button>
-              </td>
-              <td>{machine.hostname}</td>
-            </tr>
+          {machineGroups.map((group) => (
+            <>
+              {group.name !== null && (
+                <tr key={`${group.name}`}>
+                  <td colSpan={2}>
+                    {group.name || "No owner"} ({group.count})
+                  </td>
+                </tr>
+              )}
+              {group.items.map((machine) => (
+                <tr key={machine.system_id}>
+                  <td>
+                    <Button
+                      appearance="link"
+                      className="u-no-margin--bottom"
+                      onClick={() => {
+                        dispatch(machineActions.setActive(machine.system_id));
+                      }}
+                    >
+                      {machine.system_id}
+                    </Button>
+                  </td>
+                  <td>{machine.hostname}</td>
+                </tr>
+              ))}
+            </>
           ))}
         </tbody>
       </table>
       {query?.loaded ? (
         <>
-          {machines.length === 0 && <p>No machines match this query</p>}
+          {query.count === 0 && <p>No machines match this query</p>}
           <Pagination
             currentPage={page}
             itemsPerPage={pageSize}
@@ -117,14 +163,22 @@ const MachineTable = ({
                 machineActions.query({
                   id,
                   filter: hostnameFilter,
+                  groupBy,
                   page,
                   pageSize,
                 })
               );
+              dispatch(machineActions.unsubscribe(unsubscribeIds));
             }}
             totalItems={count}
           />
-          <Button appearance="negative" onClick={clearTable}>
+          <Button
+            appearance="negative"
+            onClick={() => {
+              setQueryIds(queryIds.filter((queryId) => queryId !== id));
+              dispatch(machineActions.unsubscribe(unsubscribeIds));
+            }}
+          >
             Remove machine list
           </Button>
         </>
@@ -182,8 +236,8 @@ const QueryMachines = (): JSX.Element => {
     dispatch(machineActions.count());
 
     return () => {
-      dispatch(machineActions.setActive(null));
       dispatch(machineActions.clearAllQueries());
+      dispatch(machineActions.unsubscribeAll());
     };
   }, [dispatch]);
 
@@ -213,11 +267,9 @@ const QueryMachines = (): JSX.Element => {
           {queryIds.map((queryId) => (
             <Col key={queryId} size={6}>
               <MachineTable
-                clearTable={() => {
-                  setQueryIds(queryIds.filter((id) => id !== queryId));
-                  dispatch(machineActions.clearQuery(queryId));
-                }}
                 id={queryId}
+                queryIds={queryIds}
+                setQueryIds={setQueryIds}
               />
             </Col>
           ))}

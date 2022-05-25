@@ -329,22 +329,60 @@ const getQuery = createSelector(
   (queries, queryId) => queries[queryId] || null
 );
 
-const getByQueryParams = createSelector(
+const getGroupsByQuery = createSelector(
   [
     defaultSelectors.all,
     (state: RootState, queryId: string) => getQuery(state, queryId),
   ],
   (machines, query) => {
-    if (query) {
-      return query.items.reduce<Machine[]>((acc, machineID) => {
-        const machine = machines.find((mac) => mac.system_id === machineID);
+    if (!query) {
+      return [];
+    }
+    return query.groups.reduce<
+      { count: number; items: Machine[]; name: string | null }[]
+    >((acc, group) => {
+      const macs = group.items.reduce<Machine[]>((acc, item) => {
+        const machine = machines.find((m) => m.system_id === item);
         if (machine) {
           acc.push(machine);
         }
         return acc;
       }, []);
+      acc.push({
+        count: group.count,
+        items: macs,
+        name: group.name,
+      });
+      return acc;
+    }, []);
+  }
+);
+
+const getForUnsubscribe = createSelector(
+  [
+    activeID,
+    queries,
+    (state: RootState, queryId: string) => getQuery(state, queryId),
+  ],
+  (activeId, queries, thisQuery) => {
+    if (!thisQuery) {
+      return [];
     }
-    return [];
+    const canUnsub: Machine[MachineMeta.PK][] = [];
+    thisQuery.groups.forEach((group) => {
+      group.items.forEach((item) => {
+        const isActive = activeId === item;
+        const inOtherQuery = Object.entries(queries).some(
+          ([, query]) =>
+            thisQuery !== query &&
+            query.groups.some((group) => group.items.includes(item))
+        );
+        if (!isActive && !inOtherQuery) {
+          canUnsub.push(item);
+        }
+      });
+    });
+    return canUnsub;
   }
 );
 
@@ -371,8 +409,9 @@ const selectors = {
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   getByStatusCode,
   getDeployedWithTag,
+  getForUnsubscribe,
+  getGroupsByQuery,
   getInterfaceById,
-  getByQueryParams,
   getQuery,
   getStatuses,
   getStatusForMachine,

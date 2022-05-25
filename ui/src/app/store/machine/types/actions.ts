@@ -269,6 +269,7 @@ export type OptionalFilesystemParams = {
 
 export type QueryParams = {
   filter: string;
+  groupBy?: string | null;
   page: number;
   pageSize: number;
 };

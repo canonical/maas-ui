@@ -63,7 +63,11 @@ import {
   genericInitialState,
 } from "app/store/utils/slice";
 import type { StatusHandlers } from "app/store/utils/slice";
-import { preparePayloadParams, kebabToCamelCase } from "app/utils";
+import {
+  preparePayloadParams,
+  kebabToCamelCase,
+  simpleSortByKey,
+} from "app/utils";
 
 export const ACTIONS: Action[] = [
   {
@@ -357,6 +361,45 @@ const statusHandlers = generateStatusHandlers<
   }),
   setErrors
 );
+
+const generateGroups = ({
+  groupBy = null,
+  machines,
+  page,
+  pageSize,
+}: QueryParams & {
+  machines: Machine[];
+}) => {
+  if (groupBy === "owner") {
+    const sorted = [...machines].sort(simpleSortByKey("owner"));
+    const sliced = sorted.slice((page - 1) * pageSize, page * pageSize);
+    return sliced.reduce<
+      { count: number; items: Machine[]; name: string | null }[]
+    >((acc, machine) => {
+      const existing = acc.find((group) => group.name === machine.owner);
+      if (existing) {
+        existing.items.push(machine);
+      } else {
+        acc.push({
+          count: sorted.reduce(
+            (a, m) => (m.owner === machine.owner ? a + 1 : a),
+            0
+          ),
+          name: machine.owner,
+          items: [machine],
+        });
+      }
+      return acc;
+    }, []);
+  }
+  return [
+    {
+      count: machines.length,
+      items: machines.slice((page - 1) * pageSize, page * pageSize),
+      name: null,
+    },
+  ];
+};
 
 const machineSlice = createSlice({
   name: MachineMeta.MODEL,
@@ -1370,7 +1413,7 @@ const machineSlice = createSlice({
       } else {
         state.active = null;
         const inOtherQuery = Object.entries(state.queries).some(([, query]) =>
-          query.items.includes(currentActive)
+          query.groups.some((group) => group.items.includes(currentActive))
         );
         if (!inOtherQuery) {
           state.items = state.items.filter(
@@ -1778,7 +1821,7 @@ const machineSlice = createSlice({
         state.queries[item.id] = {
           count: 0,
           error: null,
-          items: [],
+          groups: [],
           loaded: false,
           loading: true,
           params: item,
@@ -1799,18 +1842,31 @@ const machineSlice = createSlice({
           meta: { item },
           payload,
         } = action;
-        const { filter, id, page, pageSize } = item;
-        // Query actually returns all machines, so we simulate a filtered and
-        // paginated result
+        const { filter = "", groupBy = null, id, page, pageSize } = item;
+        const query = state.queries[id];
+
+        if (!query) {
+          return;
+        }
+
         const filtered = payload.filter((machine) =>
           machine.hostname.includes(filter)
         );
-        const items: string[] = [];
-        filtered.forEach((machine, i) => {
-          const minIndex = (page - 1) * pageSize;
-          const maxIndex = minIndex + pageSize;
-          if (i >= minIndex && i < maxIndex) {
-            items.push(machine.system_id);
+        const groups = generateGroups({
+          filter,
+          groupBy,
+          machines: filtered,
+          page,
+          pageSize,
+        });
+        groups.forEach((group, i) => {
+          query.groups[i] = {
+            count: group.count,
+            items: [],
+            name: group.name,
+          };
+          group.items.forEach((machine) => {
+            query.groups[i].items.push(machine.system_id);
             if (
               !state.items.some(
                 (existingMachine) =>
@@ -1820,16 +1876,12 @@ const machineSlice = createSlice({
               state.items.push(machine);
               state.statuses[machine.system_id] = DEFAULT_STATUSES;
             }
-          }
+          });
         });
-        const query = state.queries[id];
-        if (query) {
-          query.count = filtered.length;
-          query.error = null;
-          query.items = items;
-          query.loaded = true;
-          query.loading = false;
-        }
+        query.count = filtered.length;
+        query.error = null;
+        query.loaded = true;
+        query.loading = false;
       },
     },
     queryError: {
@@ -1858,36 +1910,24 @@ const machineSlice = createSlice({
       const query = state.queries[id];
       if (query) {
         delete state.queries[id];
-        const machinesToRemove = state.items.filter((machine) => {
-          const isActive = state.active === machine.system_id;
-          const inOtherQuery = Object.entries(state.queries).some(([, query]) =>
-            query.items.includes(machine.system_id)
-          );
-          return !isActive && !inOtherQuery;
-        });
-        state.items = state.items.filter(
-          (machine) =>
-            !machinesToRemove.some(
-              (toRemove) => machine.system_id === toRemove.system_id
-            )
-        );
-        machinesToRemove.forEach((machine) => {
-          delete state.statuses[machine.system_id];
-        });
       }
     },
     clearAllQueries: (state) => {
       state.queries = {};
-      state.selected = [];
-      if (state.active) {
-        state.items = state.items.filter(
-          (machine) => machine.system_id === state.active
-        );
-        state.statuses = { [state.active]: state.statuses[state.active] };
-      } else {
-        state.items = [];
-        state.statuses = {};
-      }
+    },
+    unsubscribe: (state, action: PayloadAction<Machine[MachineMeta.PK][]>) => {
+      const unsubIds = action.payload;
+      state.items = state.items.filter(
+        (machine) => !unsubIds.includes(machine.system_id)
+      );
+      unsubIds.forEach((unsubId) => {
+        delete state.statuses[unsubId];
+      });
+    },
+    unsubscribeAll: (state) => {
+      state.active = null;
+      state.items = [];
+      state.statuses = {};
     },
   },
 });
