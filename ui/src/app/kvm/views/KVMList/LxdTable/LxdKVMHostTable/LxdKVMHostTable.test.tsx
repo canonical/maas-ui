@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { generateClusterRows, generateSingleHostRows } from "../LxdTable";
@@ -54,7 +55,9 @@ describe("LxdKVMHostTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
+          <CompatRouter>
+            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -115,7 +118,9 @@ describe("LxdKVMHostTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
+          <CompatRouter>
+            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -154,7 +159,9 @@ describe("LxdKVMHostTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
+          <CompatRouter>
+            <LxdKVMHostTable rows={generateSingleHostRows(state.pod.items)} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -178,7 +185,11 @@ describe("LxdKVMHostTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <LxdKVMHostTable rows={generateClusterRows(state.vmcluster.items)} />
+          <CompatRouter>
+            <LxdKVMHostTable
+              rows={generateClusterRows(state.vmcluster.items)}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

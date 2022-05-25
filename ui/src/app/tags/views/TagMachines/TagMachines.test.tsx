@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagMachines, { Label } from "./TagMachines";
@@ -54,11 +55,13 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagMachines />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagMachines />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -86,11 +89,13 @@ it("displays a message if the tag does not exist", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagMachines />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagMachines />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -110,11 +115,13 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagMachines />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagMachines />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -128,11 +135,13 @@ it("displays the machine list", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagMachines />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagMachines />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

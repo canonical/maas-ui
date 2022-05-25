@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MapSubnet from "./MapSubnet";
@@ -20,7 +21,9 @@ it("shows a spinner while subnet is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <MapSubnet id={1} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <MapSubnet id={1} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -37,7 +40,9 @@ it("shows an error if the subnet is IPv6", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <MapSubnet id={subnet.id} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <MapSubnet id={subnet.id} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -57,7 +62,9 @@ it("can map an IPv4 subnet", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <MapSubnet id={subnet.id} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <MapSubnet id={subnet.id} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

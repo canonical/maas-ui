@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NameColumn from "./NameColumn";
@@ -26,7 +27,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <CompatRouter>
+            <NameColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -46,7 +49,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <NameColumn systemId="abc123" />
+          <CompatRouter>
+            <NameColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

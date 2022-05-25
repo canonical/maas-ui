@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import deviceURLs from "app/devices/urls";
 import { actions as deviceActions } from "app/store/device";

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { MachineListTable } from "./MachineListTable";
@@ -220,14 +221,16 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter=""
-            grouping="status"
-            hiddenGroups={[]}
-            machines={machines}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              grouping="status"
+              hiddenGroups={[]}
+              machines={machines}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -247,14 +250,16 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter=""
-            grouping="status"
-            hiddenGroups={[]}
-            machines={machines}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              grouping="status"
+              hiddenGroups={[]}
+              machines={machines}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -282,14 +287,16 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter=""
-            grouping="none"
-            hiddenGroups={[]}
-            machines={machines}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              grouping="none"
+              hiddenGroups={[]}
+              machines={machines}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -327,14 +334,16 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter=""
-            grouping="none"
-            hiddenGroups={[]}
-            machines={machines}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              grouping="none"
+              hiddenGroups={[]}
+              machines={machines}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -388,15 +397,17 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter=""
-            grouping="status"
-            hiddenGroups={[]}
-            machines={machines}
-            selectedIDs={[machines[0].system_id]}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              grouping="status"
+              hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={[machines[0].system_id]}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -416,15 +427,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={["abc123"]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -441,15 +454,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123", "ghi789"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={["abc123", "ghi789"]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -472,15 +487,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123", "def456", "ghi789"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={["abc123", "def456", "ghi789"]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -503,14 +520,16 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -538,15 +557,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={["abc123"]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -574,15 +595,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={[]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={[]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -610,15 +633,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123", "def456", "ghi789"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={["abc123", "def456", "ghi789"]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -646,15 +671,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={["abc123"]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -673,15 +700,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={[]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={[]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -709,15 +738,17 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123", "def456", "ghi789"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={machines}
+                selectedIDs={["abc123", "def456", "ghi789"]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -745,14 +776,16 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={[]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
+            <CompatRouter>
+              <MachineListTable
+                filter=""
+                grouping="status"
+                hiddenGroups={[]}
+                machines={[]}
+                setHiddenGroups={jest.fn()}
+                setSearchFilter={jest.fn()}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -776,15 +809,17 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter=""
-            grouping="status"
-            hiddenGroups={[]}
-            machines={machines}
-            selectedIDs={["abc123"]}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              grouping="status"
+              hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123"]}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -804,15 +839,17 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter="in:selected"
-            grouping="status"
-            hiddenGroups={[]}
-            machines={machines}
-            selectedIDs={["abc123"]}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={setSearchFilter}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter="in:selected"
+              grouping="status"
+              hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123"]}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={setSearchFilter}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -833,15 +870,17 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter="in:selected"
-            grouping="status"
-            hiddenGroups={[]}
-            machines={machines}
-            selectedIDs={["abc123"]}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={setSearchFilter}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter="in:selected"
+              grouping="status"
+              hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123"]}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={setSearchFilter}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -862,15 +901,17 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable
-            filter="in:selected"
-            grouping="status"
-            hiddenGroups={[]}
-            machines={machines}
-            selectedIDs={["abc123", "def456", "ghi789"]}
-            setHiddenGroups={jest.fn()}
-            setSearchFilter={setSearchFilter}
-          />
+          <CompatRouter>
+            <MachineListTable
+              filter="in:selected"
+              grouping="status"
+              hiddenGroups={[]}
+              machines={machines}
+              selectedIDs={["abc123", "def456", "ghi789"]}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={setSearchFilter}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -890,7 +931,9 @@ describe("MachineListTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListTable machines={machines} showActions={false} />
+          <CompatRouter>
+            <MachineListTable machines={machines} showActions={false} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -913,10 +956,12 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              hiddenColumns={["power", "zone"]}
-              machines={machines}
-            />
+            <CompatRouter>
+              <MachineListTable
+                hiddenColumns={["power", "zone"]}
+                machines={machines}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -936,11 +981,13 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              hiddenColumns={["fqdn"]}
-              machines={machines}
-              showActions
-            />
+            <CompatRouter>
+              <MachineListTable
+                hiddenColumns={["fqdn"]}
+                machines={machines}
+                showActions
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -956,11 +1003,13 @@ describe("MachineListTable", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <MachineListTable
-              hiddenColumns={["fqdn"]}
-              machines={machines}
-              showActions={false}
-            />
+            <CompatRouter>
+              <MachineListTable
+                hiddenColumns={["fqdn"]}
+                machines={machines}
+                showActions={false}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );

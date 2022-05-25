@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import DeviceName from "./DeviceName";
 

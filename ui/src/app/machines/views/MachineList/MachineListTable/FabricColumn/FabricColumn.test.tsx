@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { FabricColumn } from "./FabricColumn";
@@ -46,7 +47,9 @@ describe("FabricColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FabricColumn systemId="abc123" />
+          <CompatRouter>
+            <FabricColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -73,7 +76,9 @@ describe("FabricColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FabricColumn systemId="abc123" />
+          <CompatRouter>
+            <FabricColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -95,7 +100,9 @@ describe("FabricColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FabricColumn systemId="abc123" />
+          <CompatRouter>
+            <FabricColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -122,7 +129,9 @@ describe("FabricColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FabricColumn systemId="abc123" />
+          <CompatRouter>
+            <FabricColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

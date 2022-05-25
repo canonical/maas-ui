@@ -6,7 +6,8 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory, useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import Routes from "app/Routes";
 import Login from "app/base/components/Login";

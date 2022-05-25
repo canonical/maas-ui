@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { VMS_PER_PAGE } from "../LXDVMsTable";
@@ -40,12 +41,14 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            getResources={getResources}
-            searchFilter=""
-            vms={[]}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              getResources={getResources}
+              searchFilter=""
+              vms={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -70,12 +73,14 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            getResources={getResources}
-            searchFilter=""
-            vms={vms}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              getResources={getResources}
+              searchFilter=""
+              vms={vms}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -121,12 +126,14 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            getResources={getResources}
-            searchFilter=""
-            vms={vms}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              getResources={getResources}
+              searchFilter=""
+              vms={vms}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -163,12 +170,14 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            getResources={getResources}
-            searchFilter=""
-            vms={vms}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              getResources={getResources}
+              searchFilter=""
+              vms={vms}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -202,12 +211,14 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={currentPage}
-            getResources={getResources}
-            searchFilter=""
-            vms={vms}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={currentPage}
+              getResources={getResources}
+              searchFilter=""
+              vms={vms}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -231,12 +242,14 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            getResources={getResources}
-            searchFilter="system_id:(=ghi789)"
-            vms={[]}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              getResources={getResources}
+              searchFilter="system_id:(=ghi789)"
+              vms={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -259,13 +272,15 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            displayForCluster
-            getResources={getResources}
-            searchFilter="system_id:(=ghi789)"
-            vms={[]}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              displayForCluster
+              getResources={getResources}
+              searchFilter="system_id:(=ghi789)"
+              vms={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -284,13 +299,15 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            getHostColumn={jest.fn()}
-            getResources={getResources}
-            searchFilter=""
-            vms={[]}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              getHostColumn={jest.fn()}
+              getResources={getResources}
+              searchFilter=""
+              vms={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -306,13 +323,15 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            getHostColumn={undefined}
-            getResources={getResources}
-            searchFilter=""
-            vms={[]}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              getHostColumn={undefined}
+              getResources={getResources}
+              searchFilter=""
+              vms={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -339,12 +358,14 @@ describe("VMsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <VMsTable
-            currentPage={1}
-            getResources={getResources}
-            searchFilter=""
-            vms={vms}
-          />
+          <CompatRouter>
+            <VMsTable
+              currentPage={1}
+              getResources={getResources}
+              searchFilter=""
+              vms={vms}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

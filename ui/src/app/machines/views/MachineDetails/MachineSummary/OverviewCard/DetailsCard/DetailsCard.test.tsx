@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DetailsCard from "./DetailsCard";
@@ -49,7 +50,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -67,7 +70,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -95,7 +100,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -126,7 +133,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -150,7 +159,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -172,7 +183,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -196,7 +209,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -222,7 +237,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -256,7 +273,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -281,7 +300,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -311,7 +332,9 @@ describe("DetailsCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DetailsCard machine={machine} />
+          <CompatRouter>
+            <DetailsCard machine={machine} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

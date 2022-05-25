@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VLANDeleteForm from "./VLANDeleteForm";
@@ -36,7 +37,9 @@ it("does not allow deletion if the VLAN is the default VLAN in its fabric", () =
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+        <CompatRouter>
+          <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -67,7 +70,9 @@ it("displays a delete confirmation if the VLAN is not the default for its fabric
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+        <CompatRouter>
+          <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -96,7 +101,9 @@ it("deletes the VLAN when confirmed", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+        <CompatRouter>
+          <VLANDeleteForm closeForm={jest.fn()} id={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

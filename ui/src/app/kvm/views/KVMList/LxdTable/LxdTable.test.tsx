@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LxdTable from "./LxdTable";
@@ -25,7 +26,9 @@ describe("LxdTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <LxdTable />
+          <CompatRouter>
+            <LxdTable />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -50,7 +53,9 @@ describe("LxdTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <LxdTable />
+          <CompatRouter>
+            <LxdTable />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

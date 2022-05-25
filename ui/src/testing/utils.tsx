@@ -12,6 +12,7 @@ import configureStore from "redux-mock-store";
 import FormikForm from "app/base/components/FormikForm";
 import type { AnyObject } from "app/base/types";
 import type { RootState } from "app/store/root/types";
+import { CompatRouter } from "react-router-dom-v5-compat";
 
 /**
  * Assert that some JSX from Enzyme is equal to some provided JSX.
@@ -113,7 +114,9 @@ const BrowserRouterWithProvider = ({
 
   return (
     <Provider store={getMockStore(state)}>
-      <BrowserRouter>{children}</BrowserRouter>
+      <BrowserRouter>
+        <CompatRouter>{children}</CompatRouter>
+      </BrowserRouter>
     </Provider>
   );
 };

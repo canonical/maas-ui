@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DashboardHeader from "./DashboardHeader";
@@ -41,7 +42,9 @@ describe("DashboardHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DashboardHeader />
+          <CompatRouter>
+            <DashboardHeader />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -58,7 +61,9 @@ describe("DashboardHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DashboardHeader />
+          <CompatRouter>
+            <DashboardHeader />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -72,7 +77,9 @@ describe("DashboardHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DashboardHeader />
+          <CompatRouter>
+            <DashboardHeader />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

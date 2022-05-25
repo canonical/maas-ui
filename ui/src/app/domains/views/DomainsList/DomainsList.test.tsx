@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainsList from "./DomainsList";
@@ -31,7 +32,9 @@ describe("DomainsList", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <DomainsList />
+            <CompatRouter>
+              <DomainsList />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -47,7 +50,9 @@ describe("DomainsList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <DomainsList />
+          <CompatRouter>
+            <DomainsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -72,7 +77,9 @@ describe("DomainsList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <DomainsList />
+          <CompatRouter>
+            <DomainsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

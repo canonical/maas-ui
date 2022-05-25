@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { StatusColumn } from "./StatusColumn";
@@ -73,7 +74,9 @@ describe("StatusColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -90,7 +93,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -109,7 +114,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -130,7 +137,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -151,7 +160,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -172,7 +183,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -194,7 +207,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -215,7 +230,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -234,7 +251,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -253,7 +272,9 @@ describe("StatusColumn", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machines", key: "testKey" }]}
           >
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            <CompatRouter>
+              <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -285,7 +306,9 @@ describe("StatusColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -301,7 +324,9 @@ describe("StatusColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <StatusColumn systemId="abc123" />
+          <CompatRouter>
+            <StatusColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

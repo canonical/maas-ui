@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import OverrideTestForm from "./OverrideTestForm";
@@ -83,12 +84,14 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <OverrideTestForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -112,12 +115,14 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <OverrideTestForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -139,12 +144,14 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <OverrideTestForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -164,12 +171,14 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <OverrideTestForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -186,12 +195,14 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <OverrideTestForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -246,12 +257,14 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <OverrideTestForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -270,12 +283,14 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <OverrideTestForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -302,12 +317,14 @@ describe("OverrideTestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <OverrideTestForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <OverrideTestForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

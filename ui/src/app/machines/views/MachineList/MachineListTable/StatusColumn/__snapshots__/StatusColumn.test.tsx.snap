@@ -184,13 +184,6 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
       element={
         Object {
           "$$typeof": Symbol(react.forward_ref),
-          "propTypes": Object {
-            "innerRef": [Function],
-            "onClick": [Function],
-            "replace": [Function],
-            "target": [Function],
-            "to": [Function],
-          },
           "render": [Function],
         }
       }
@@ -203,20 +196,13 @@ exports[`StatusColumn can show a menu with all possible options 1`] = `
         onClick={null}
         to="/machine/abc123/logs"
       >
-        <LinkAnchor
+        <a
           className="p-button p-contextual-menu__link"
           href="/machine/abc123/logs"
-          navigate={[Function]}
-          onClick={null}
+          onClick={[Function]}
         >
-          <a
-            className="p-button p-contextual-menu__link"
-            href="/machine/abc123/logs"
-            onClick={[Function]}
-          >
-            See logs
-          </a>
-        </LinkAnchor>
+          See logs
+        </a>
       </Link>
     </Button>
   </span>
@@ -239,13 +225,6 @@ exports[`StatusColumn renders 1`] = `
             "children": "See logs",
             "element": Object {
               "$$typeof": Symbol(react.forward_ref),
-              "propTypes": Object {
-                "innerRef": [Function],
-                "onClick": [Function],
-                "replace": [Function],
-                "target": [Function],
-                "to": [Function],
-              },
               "render": [Function],
             },
             "to": "/machine/abc123/logs",
@@ -314,13 +293,6 @@ exports[`StatusColumn renders 1`] = `
                     "children": "See logs",
                     "element": Object {
                       "$$typeof": Symbol(react.forward_ref),
-                      "propTypes": Object {
-                        "innerRef": [Function],
-                        "onClick": [Function],
-                        "replace": [Function],
-                        "target": [Function],
-                        "to": [Function],
-                      },
                       "render": [Function],
                     },
                     "to": "/machine/abc123/logs",
@@ -344,13 +316,6 @@ exports[`StatusColumn renders 1`] = `
                       "children": "See logs",
                       "element": Object {
                         "$$typeof": Symbol(react.forward_ref),
-                        "propTypes": Object {
-                          "innerRef": [Function],
-                          "onClick": [Function],
-                          "replace": [Function],
-                          "target": [Function],
-                          "to": [Function],
-                        },
                         "render": [Function],
                       },
                       "to": "/machine/abc123/logs",

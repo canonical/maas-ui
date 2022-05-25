@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { Spinner } from "@canonical/react-components";
 import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import { useCanEdit, useSendAnalytics } from "app/base/hooks";
 import kvmURLs from "app/kvm/urls";

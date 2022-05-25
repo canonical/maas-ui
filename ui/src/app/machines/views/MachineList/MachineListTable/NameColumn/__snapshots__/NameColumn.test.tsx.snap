@@ -181,27 +181,21 @@ exports[`NameColumn renders 1`] = `
                                 title="test.maas"
                                 to="/machine/abc123"
                               >
-                                <LinkAnchor
+                                <a
                                   href="/machine/abc123"
-                                  navigate={[Function]}
+                                  onClick={[Function]}
                                   title="test.maas"
                                 >
-                                  <a
-                                    href="/machine/abc123"
-                                    onClick={[Function]}
-                                    title="test.maas"
+                                  <strong
+                                    data-testid="hostname"
                                   >
-                                    <strong
-                                      data-testid="hostname"
-                                    >
-                                      koala
-                                    </strong>
-                                    <small>
-                                      .
-                                      example
-                                    </small>
-                                  </a>
-                                </LinkAnchor>
+                                    koala
+                                  </strong>
+                                  <small>
+                                    .
+                                    example
+                                  </small>
+                                </a>
                               </Link>
                             </span>
                           </label>

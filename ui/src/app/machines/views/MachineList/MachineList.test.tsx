@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
@@ -194,7 +195,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -211,7 +214,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -229,7 +234,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -254,7 +261,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -275,7 +284,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -293,7 +304,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -308,7 +321,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -323,7 +338,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -339,7 +356,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -357,7 +376,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -375,7 +396,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -392,10 +415,12 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList
-            searchFilter="this does not match anything"
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineList
+              searchFilter="this does not match anything"
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -411,7 +436,9 @@ describe("MachineList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineList setSearchFilter={jest.fn()} />
+          <CompatRouter>
+            <MachineList setSearchFilter={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

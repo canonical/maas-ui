@@ -9,7 +9,7 @@ import {
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import type { NewPodValues } from "../../types";
 

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ZonesList from "./ZonesList";
@@ -20,7 +21,9 @@ describe("ZonesList", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/zones", key: "testKey" }]}>
-          <ZonesList />
+          <CompatRouter>
+            <ZonesList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -43,7 +46,9 @@ describe("ZonesList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/zones", key: "testKey" }]}>
-          <ZonesList />
+          <CompatRouter>
+            <ZonesList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -2,7 +2,7 @@ import type { PropsWithChildren } from "react";
 import { useState } from "react";
 
 import { Button } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import type { SubnetsTableColumn } from "./types";
 

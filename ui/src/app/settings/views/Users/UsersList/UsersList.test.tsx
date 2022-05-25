@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UsersList from "./UsersList";
@@ -62,7 +63,9 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UsersList />
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -86,7 +89,9 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UsersList />
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -119,7 +124,9 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UsersList />
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -135,7 +142,9 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UsersList />
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -152,7 +161,9 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UsersList />
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -168,7 +179,9 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UsersList />
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -191,7 +204,9 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UsersList />
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -216,7 +231,9 @@ describe("UsersList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UsersList />
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

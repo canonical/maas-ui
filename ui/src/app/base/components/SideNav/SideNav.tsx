@@ -3,7 +3,8 @@ import { useCallback, useEffect, useState } from "react";
 
 import classNames from "classnames";
 import type { Location } from "history";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import { useCycled } from "app/base/hooks";
 

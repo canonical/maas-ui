@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { NameColumn } from "./NameColumn";
@@ -49,11 +50,13 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn
-            selected={[]}
-            handleCheckbox={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NameColumn
+              selected={[]}
+              handleCheckbox={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -68,7 +71,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -82,7 +87,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -97,7 +104,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -119,7 +128,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -138,7 +149,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -158,7 +171,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -176,7 +191,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} showMAC={true} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} showMAC={true} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -191,7 +208,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} showMAC={true} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} showMAC={true} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -214,7 +233,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -236,7 +257,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} showMAC={true} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} showMAC={true} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -250,12 +273,14 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn
-            handleCheckbox={jest.fn()}
-            selected={["abc123"]}
-            showMAC={true}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NameColumn
+              handleCheckbox={jest.fn()}
+              selected={["abc123"]}
+              showMAC={true}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -269,7 +294,9 @@ describe("NameColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <NameColumn selected={[]} systemId="abc123" />
+          <CompatRouter>
+            <NameColumn selected={[]} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

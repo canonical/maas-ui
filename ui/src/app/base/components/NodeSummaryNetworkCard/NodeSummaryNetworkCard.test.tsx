@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeSummaryNetworkCard from "./NodeSummaryNetworkCard";
@@ -30,7 +31,9 @@ describe("NodeSummaryNetworkCard", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NodeSummaryNetworkCard interfaces={[]} networkURL="url" />
+          <CompatRouter>
+            <NodeSummaryNetworkCard interfaces={[]} networkURL="url" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -45,7 +48,9 @@ describe("NodeSummaryNetworkCard", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NodeSummaryNetworkCard interfaces={null} networkURL="url" />
+          <CompatRouter>
+            <NodeSummaryNetworkCard interfaces={null} networkURL="url" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -72,7 +77,9 @@ describe("NodeSummaryNetworkCard", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NodeSummaryNetworkCard interfaces={interfaces} networkURL="url" />
+          <CompatRouter>
+            <NodeSummaryNetworkCard interfaces={interfaces} networkURL="url" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -124,7 +131,9 @@ describe("NodeSummaryNetworkCard", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NodeSummaryNetworkCard interfaces={interfaces} networkURL="url" />
+          <CompatRouter>
+            <NodeSummaryNetworkCard interfaces={interfaces} networkURL="url" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -140,9 +149,11 @@ describe("NodeSummaryNetworkCard", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NodeSummaryNetworkCard interfaces={[]} networkURL="url">
-            <span data-testid="child">Hi</span>
-          </NodeSummaryNetworkCard>
+          <CompatRouter>
+            <NodeSummaryNetworkCard interfaces={[]} networkURL="url">
+              <span data-testid="child">Hi</span>
+            </NodeSummaryNetworkCard>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

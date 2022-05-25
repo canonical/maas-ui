@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import { Spinner } from "@canonical/react-components";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import LegacyLink from "app/base/components/LegacyLink";
 import controllersURLs from "app/controllers/urls";

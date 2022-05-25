@@ -1,6 +1,7 @@
 import { Spinner, Tabs } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link, Route, useLocation } from "react-router-dom";
+import { Route, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import DownloadMenu from "./DownloadMenu";
 import EventLogs from "./EventLogs";

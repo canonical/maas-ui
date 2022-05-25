@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VirshDetailsHeader from "./VirshDetailsHeader";
@@ -53,11 +54,13 @@ describe("VirshDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <VirshDetailsHeader
-            id={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <VirshDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -74,11 +77,13 @@ describe("VirshDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <VirshDetailsHeader
-            id={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <VirshDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -97,11 +102,13 @@ describe("VirshDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <VirshDetailsHeader
-            id={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <VirshDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -119,11 +126,13 @@ describe("VirshDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <VirshDetailsHeader
-            id={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <VirshDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

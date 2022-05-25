@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDClusterVMs from "./LXDClusterVMs";
@@ -49,12 +50,14 @@ describe("LXDClusterVMs", () => {
             },
           ]}
         >
-          <LXDClusterVMs
-            clusterId={1}
-            searchFilter=""
-            setSearchFilter={jest.fn()}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterVMs
+              clusterId={1}
+              searchFilter=""
+              setSearchFilter={jest.fn()}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -100,12 +103,14 @@ describe("LXDClusterVMs", () => {
             },
           ]}
         >
-          <LXDClusterVMs
-            clusterId={1}
-            searchFilter=""
-            setSearchFilter={jest.fn()}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterVMs
+              clusterId={1}
+              searchFilter=""
+              setSearchFilter={jest.fn()}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SpaceLink from "./SpaceLink";
@@ -22,7 +23,9 @@ it("handles when spaces are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <SpaceLink id={1} />
+        <CompatRouter>
+          <SpaceLink id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -38,7 +41,9 @@ it("handles when a space does not exist", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <SpaceLink id={1} />
+        <CompatRouter>
+          <SpaceLink id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -56,7 +61,9 @@ it("renders a link if spaces have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <SpaceLink id={space.id} />
+        <CompatRouter>
+          <SpaceLink id={space.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

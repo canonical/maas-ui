@@ -19,17 +19,12 @@ exports[`TagLinks renders 1`] = `
       <Link
         to="www.tags.com/tag-1"
       >
-        <LinkAnchor
-          href="/machine/www.tags.com/tag-1"
-          navigate={[Function]}
+        <a
+          href="/www.tags.com/tag-1"
+          onClick={[Function]}
         >
-          <a
-            href="/machine/www.tags.com/tag-1"
-            onClick={[Function]}
-          >
-            tag-1
-          </a>
-        </LinkAnchor>
+          tag-1
+        </a>
       </Link>
       , 
     </span>
@@ -39,17 +34,12 @@ exports[`TagLinks renders 1`] = `
       <Link
         to="www.tags.com/tag-2"
       >
-        <LinkAnchor
-          href="/machine/www.tags.com/tag-2"
-          navigate={[Function]}
+        <a
+          href="/www.tags.com/tag-2"
+          onClick={[Function]}
         >
-          <a
-            href="/machine/www.tags.com/tag-2"
-            onClick={[Function]}
-          >
-            tag-2
-          </a>
-        </LinkAnchor>
+          tag-2
+        </a>
       </Link>
     </span>
   </span>

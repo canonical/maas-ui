@@ -2,6 +2,7 @@ import type { ReactWrapper } from "enzyme";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainsTable from "./DomainsTable";
@@ -56,7 +57,9 @@ describe("DomainsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <DomainsTable />
+          <CompatRouter>
+            <DomainsTable />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -93,7 +96,9 @@ describe("DomainsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <DomainsTable />
+          <CompatRouter>
+            <DomainsTable />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -109,7 +114,9 @@ describe("DomainsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <DomainsTable />
+          <CompatRouter>
+            <DomainsTable />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

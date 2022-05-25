@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineHeader from "./MachineHeader";
@@ -46,11 +47,13 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <MachineHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -65,11 +68,13 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <MachineHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,11 +88,13 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader
-            headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <MachineHeader
+              headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -104,11 +111,13 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <MachineHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -127,11 +136,13 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <MachineHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -151,11 +162,13 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <MachineHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -174,11 +187,13 @@ describe("MachineHeader", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <MachineHeader
+                headerContent={null}
+                setHeaderContent={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -204,11 +219,13 @@ describe("MachineHeader", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <MachineHeader
+                headerContent={null}
+                setHeaderContent={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -234,11 +251,13 @@ describe("MachineHeader", () => {
           <MemoryRouter
             initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
           >
-            <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <MachineHeader
+                headerContent={null}
+                setHeaderContent={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -270,11 +289,13 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <MachineHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -305,11 +326,13 @@ describe("MachineHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <MachineHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

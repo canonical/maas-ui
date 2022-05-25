@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeLink from "./NodeLink";
@@ -31,10 +32,12 @@ it("can render a controller link", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <NodeLink
-          nodeType={NodeType.RACK_CONTROLLER}
-          systemId={controller.system_id}
-        />
+        <CompatRouter>
+          <NodeLink
+            nodeType={NodeType.RACK_CONTROLLER}
+            systemId={controller.system_id}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -54,7 +57,9 @@ it("can render a device link", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <NodeLink nodeType={NodeType.DEVICE} systemId={device.system_id} />
+        <CompatRouter>
+          <NodeLink nodeType={NodeType.DEVICE} systemId={device.system_id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -74,7 +79,9 @@ it("can render a machine link", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <NodeLink nodeType={NodeType.MACHINE} systemId={machine.system_id} />
+        <CompatRouter>
+          <NodeLink nodeType={NodeType.MACHINE} systemId={machine.system_id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { ZoneColumn } from "./ZoneColumn";
@@ -57,7 +58,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -73,7 +76,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -89,7 +94,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -105,7 +112,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -121,7 +130,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -139,7 +150,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -158,7 +171,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -194,7 +209,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -215,7 +232,9 @@ describe("ZoneColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ZoneColumn systemId="abc123" />
+          <CompatRouter>
+            <ZoneColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

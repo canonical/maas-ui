@@ -2,6 +2,7 @@ import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import type { RouteProps } from "react-router-dom";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 
 import type { NavItem } from "./SideNav";
 import { SideNav } from "./SideNav";
@@ -38,10 +39,12 @@ it("matches the snapshot", () => {
       initialEntries={[{ pathname: "/settings", key: "testKey" }]}
       initialIndex={0}
     >
-      <Route
-        render={(props: RouteProps) => <SideNav {...props} items={items} />}
-        path="/settings"
-      />
+      <CompatRouter>
+        <Route
+          render={(props: RouteProps) => <SideNav {...props} items={items} />}
+          path="/settings"
+        />
+      </CompatRouter>
     </MemoryRouter>
   );
 
@@ -54,10 +57,12 @@ it("can set an active item", () => {
       initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
       initialIndex={0}
     >
-      <Route
-        render={(props: RouteProps) => <SideNav {...props} items={items} />}
-        path="/settings"
-      />
+      <CompatRouter>
+        <Route
+          render={(props: RouteProps) => <SideNav {...props} items={items} />}
+          path="/settings"
+        />
+      </CompatRouter>
     </MemoryRouter>
   );
 
@@ -67,11 +72,13 @@ it("can set an active item", () => {
 it("can be given different toggle texts", () => {
   render(
     <MemoryRouter>
-      <SideNav
-        closeToggleText="Get me out!"
-        items={items}
-        openToggleText="Let me in!"
-      />
+      <CompatRouter>
+        <SideNav
+          closeToggleText="Get me out!"
+          items={items}
+          openToggleText="Let me in!"
+        />
+      </CompatRouter>
     </MemoryRouter>
   );
 
@@ -86,7 +93,9 @@ it("can be given different toggle texts", () => {
 it("can open and close the navigation drawer by clicking the toggles", async () => {
   render(
     <MemoryRouter>
-      <SideNav items={items} />
+      <CompatRouter>
+        <SideNav items={items} />
+      </CompatRouter>
     </MemoryRouter>
   );
   const nav = screen.getByRole("navigation");
@@ -110,7 +119,9 @@ it("can open and close the navigation drawer by clicking the toggles", async () 
 it("can close the navigation drawer by pressing the esc key", async () => {
   render(
     <MemoryRouter>
-      <SideNav items={items} />
+      <CompatRouter>
+        <SideNav items={items} />
+      </CompatRouter>
     </MemoryRouter>
   );
   const nav = screen.getByRole("navigation");

@@ -2,7 +2,8 @@ import { useEffect } from "react";
 
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import SyncedImages from "app/images/views/ImageList/SyncedImages";
 import IntroCard from "app/intro/components/IntroCard";

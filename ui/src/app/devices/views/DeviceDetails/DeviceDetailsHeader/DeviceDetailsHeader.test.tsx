@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
@@ -33,11 +34,13 @@ describe("DeviceDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceDetailsHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceDetailsHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -54,11 +57,13 @@ describe("DeviceDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceDetailsHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceDetailsHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -75,11 +80,13 @@ describe("DeviceDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceDetailsHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceDetailsHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -93,11 +100,13 @@ describe("DeviceDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceDetailsHeader
-            headerContent={{ view: DeviceHeaderViews.DELETE_DEVICE }}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceDetailsHeader
+              headerContent={{ view: DeviceHeaderViews.DELETE_DEVICE }}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -111,11 +120,13 @@ describe("DeviceDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceDetailsHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceDetailsHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

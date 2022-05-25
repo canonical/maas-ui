@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainDetails from "./DomainDetails";
@@ -26,7 +27,9 @@ describe("DomainDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
         >
-          <Route exact path="/domain/:id" render={() => <DomainDetails />} />
+          <CompatRouter>
+            <Route exact path="/domain/:id" render={() => <DomainDetails />} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

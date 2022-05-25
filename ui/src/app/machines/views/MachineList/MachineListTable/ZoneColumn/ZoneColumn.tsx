@@ -2,7 +2,7 @@ import { memo, useEffect, useState } from "react";
 
 import { Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import { useToggleMenu } from "app/machines/hooks";

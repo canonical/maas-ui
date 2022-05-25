@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DashboardConfigurationSubnetForm from "./DashboardConfigurationSubnetForm";
@@ -28,7 +29,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DashboardConfigurationSubnetForm />
+          <CompatRouter>
+            <DashboardConfigurationSubnetForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -44,7 +47,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DashboardConfigurationSubnetForm />
+          <CompatRouter>
+            <DashboardConfigurationSubnetForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -61,7 +66,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DashboardConfigurationSubnetForm />
+          <CompatRouter>
+            <DashboardConfigurationSubnetForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +90,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DashboardConfigurationSubnetForm />
+          <CompatRouter>
+            <DashboardConfigurationSubnetForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -102,7 +111,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DashboardConfigurationSubnetForm />
+          <CompatRouter>
+            <DashboardConfigurationSubnetForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -130,7 +141,9 @@ describe("DashboardConfigurationSubnetForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DashboardConfigurationSubnetForm />
+          <CompatRouter>
+            <DashboardConfigurationSubnetForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CloneResults, { CloneErrorCodes } from "./CloneResults";
@@ -36,11 +37,13 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneResults
-            closeForm={jest.fn()}
-            destinations={["def456", "ghi789"]}
-            sourceMachine={machine}
-          />
+          <CompatRouter>
+            <CloneResults
+              closeForm={jest.fn()}
+              destinations={["def456", "ghi789"]}
+              sourceMachine={machine}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -66,11 +69,13 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneResults
-            closeForm={jest.fn()}
-            destinations={["def456", "ghi789"]}
-            sourceMachine={machine}
-          />
+          <CompatRouter>
+            <CloneResults
+              closeForm={jest.fn()}
+              destinations={["def456", "ghi789"]}
+              sourceMachine={machine}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -107,11 +112,13 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneResults
-            closeForm={jest.fn()}
-            destinations={["def456", "ghi789"]}
-            sourceMachine={machine}
-          />
+          <CompatRouter>
+            <CloneResults
+              closeForm={jest.fn()}
+              destinations={["def456", "ghi789"]}
+              sourceMachine={machine}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -145,11 +152,13 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneResults
-            closeForm={jest.fn()}
-            destinations={["def456", "ghi789"]}
-            sourceMachine={machine}
-          />
+          <CompatRouter>
+            <CloneResults
+              closeForm={jest.fn()}
+              destinations={["def456", "ghi789"]}
+              sourceMachine={machine}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -195,11 +204,13 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneResults
-            closeForm={jest.fn()}
-            destinations={["def456", "ghi789"]}
-            sourceMachine={machine}
-          />
+          <CompatRouter>
+            <CloneResults
+              closeForm={jest.fn()}
+              destinations={["def456", "ghi789"]}
+              sourceMachine={machine}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -237,12 +248,14 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneResults
-            closeForm={jest.fn()}
-            destinations={["def456", "ghi789"]}
-            setSearchFilter={setSearchFilter}
-            sourceMachine={machine}
-          />
+          <CompatRouter>
+            <CloneResults
+              closeForm={jest.fn()}
+              destinations={["def456", "ghi789"]}
+              setSearchFilter={setSearchFilter}
+              sourceMachine={machine}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -278,13 +291,15 @@ describe("CloneResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CloneResults
-            closeForm={jest.fn()}
-            destinations={["def456", "ghi789"]}
-            setSearchFilter={setSearchFilter}
-            sourceMachine={machine}
-            viewingDetails
-          />
+          <CompatRouter>
+            <CloneResults
+              closeForm={jest.fn()}
+              destinations={["def456", "ghi789"]}
+              setSearchFilter={setSearchFilter}
+              sourceMachine={machine}
+              viewingDetails
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

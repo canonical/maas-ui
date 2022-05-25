@@ -3,7 +3,7 @@ import { useEffect } from "react";
 
 import { Button, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom-v5-compat";
 
 import ScriptStatus from "app/base/components/ScriptStatus";
 import type { RootState } from "app/store/root/types";
@@ -19,6 +19,7 @@ type Props = {
 
 const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const location = useLocation();
   const history = useSelector((state: RootState) =>
     scriptResultSelectors.getHistoryById(state, scriptResult.id)
   );
@@ -56,9 +57,7 @@ const TestHistory = ({ close, scriptResult }: Props): JSX.Element => {
                       {historyResult.status_name}{" "}
                       <Link
                         data-testid="details-link"
-                        to={(location) =>
-                          `${location.pathname}/${historyResult.id}/details`
-                        }
+                        to={`${location.pathname}/${historyResult.id}/details`}
                       >
                         View log
                       </Link>

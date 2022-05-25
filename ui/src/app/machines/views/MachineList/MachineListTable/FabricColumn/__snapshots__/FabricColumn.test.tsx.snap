@@ -66,19 +66,13 @@ exports[`FabricColumn renders 1`] = `
                     className="p-link--soft"
                     to="/fabric/0"
                   >
-                    <LinkAnchor
+                    <a
                       className="p-link--soft"
                       href="/fabric/0"
-                      navigate={[Function]}
+                      onClick={[Function]}
                     >
-                      <a
-                        className="p-link--soft"
-                        href="/fabric/0"
-                        onClick={[Function]}
-                      >
-                        fabric-0
-                      </a>
-                    </LinkAnchor>
+                      fabric-0
+                    </a>
                   </Link>
                 </span>
               </ScriptStatus>

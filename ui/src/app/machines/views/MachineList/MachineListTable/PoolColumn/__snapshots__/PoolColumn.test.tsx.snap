@@ -63,19 +63,13 @@ exports[`PoolColumn renders 1`] = `
                 className="p-link--soft"
                 to="/pools"
               >
-                <LinkAnchor
+                <a
                   className="p-link--soft"
                   href="/pools"
-                  navigate={[Function]}
+                  onClick={[Function]}
                 >
-                  <a
-                    className="p-link--soft"
-                    href="/pools"
-                    onClick={[Function]}
-                  >
-                    default
-                  </a>
-                </LinkAnchor>
+                  default
+                </a>
               </Link>
             </span>
           </div>

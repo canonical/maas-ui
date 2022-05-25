@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import type { NewPodValues } from "../../types";
@@ -54,12 +55,14 @@ describe("SelectProjectFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <Formik
-            initialValues={{ existingProject: "", newProject: "" }}
-            onSubmit={jest.fn()}
-          >
-            <SelectProjectFormFields newPodValues={newPodValues} />
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={{ existingProject: "", newProject: "" }}
+              onSubmit={jest.fn()}
+            >
+              <SelectProjectFormFields newPodValues={newPodValues} />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -107,12 +110,14 @@ describe("SelectProjectFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <Formik
-            initialValues={{ existingProject: "", newProject: "" }}
-            onSubmit={jest.fn()}
-          >
-            <SelectProjectFormFields newPodValues={newPodValues} />
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={{ existingProject: "", newProject: "" }}
+              onSubmit={jest.fn()}
+            >
+              <SelectProjectFormFields newPodValues={newPodValues} />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -172,12 +177,14 @@ describe("SelectProjectFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <Formik
-            initialValues={{ existingProject: "", newProject: "" }}
-            onSubmit={jest.fn()}
-          >
-            <SelectProjectFormFields newPodValues={newPodValues} />
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={{ existingProject: "", newProject: "" }}
+              onSubmit={jest.fn()}
+            >
+              <SelectProjectFormFields newPodValues={newPodValues} />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -211,12 +218,14 @@ describe("SelectProjectFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <Formik
-            initialValues={{ existingProject: "", newProject: "" }}
-            onSubmit={jest.fn()}
-          >
-            <SelectProjectFormFields newPodValues={newPodValues} />
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={{ existingProject: "", newProject: "" }}
+              onSubmit={jest.fn()}
+            >
+              <SelectProjectFormFields newPodValues={newPodValues} />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VLANSubnets from "./VLANSubnets";
@@ -34,7 +35,9 @@ it("renders correct details", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANSubnets id={vlan.id} />
+        <CompatRouter>
+          <VLANSubnets id={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

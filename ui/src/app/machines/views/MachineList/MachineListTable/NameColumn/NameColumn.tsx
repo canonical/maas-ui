@@ -2,7 +2,7 @@ import { memo } from "react";
 
 import { Tooltip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import NonBreakingSpace from "app/base/components/NonBreakingSpace";

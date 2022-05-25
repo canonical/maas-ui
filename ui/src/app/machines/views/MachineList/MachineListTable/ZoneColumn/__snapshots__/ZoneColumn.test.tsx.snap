@@ -59,19 +59,13 @@ exports[`ZoneColumn renders 1`] = `
                 className="p-link--soft"
                 to="/zone/0"
               >
-                <LinkAnchor
+                <a
                   className="p-link--soft"
                   href="/zone/0"
-                  navigate={[Function]}
+                  onClick={[Function]}
                 >
-                  <a
-                    className="p-link--soft"
-                    href="/zone/0"
-                    onClick={[Function]}
-                  >
-                    zone-north
-                  </a>
-                </LinkAnchor>
+                  zone-north
+                </a>
               </Link>
             </span>
           </div>

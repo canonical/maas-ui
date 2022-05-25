@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TestResults from "./TestResults";
@@ -37,11 +38,13 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            machine={machine}
-            hardwareType={HardwareType.CPU}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.CPU}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -65,11 +68,13 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            machine={machine}
-            hardwareType={HardwareType.Memory}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.Memory}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -92,11 +97,13 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            machine={machine}
-            hardwareType={HardwareType.Storage}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.Storage}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -119,11 +126,13 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            machine={machine}
-            hardwareType={HardwareType.CPU}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.CPU}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -144,11 +153,13 @@ describe("TestResults", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestResults
-            machine={machine}
-            hardwareType={HardwareType.Network}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.Network}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

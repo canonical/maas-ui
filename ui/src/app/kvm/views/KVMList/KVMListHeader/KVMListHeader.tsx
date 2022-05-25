@@ -3,7 +3,8 @@ import { useEffect } from "react";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";

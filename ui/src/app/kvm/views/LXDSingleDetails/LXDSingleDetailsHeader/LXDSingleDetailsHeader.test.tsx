@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
@@ -53,12 +54,14 @@ describe("LXDSingleDetailsHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDSingleDetailsHeader
-            id={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDSingleDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -75,12 +78,14 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <LXDSingleDetailsHeader
-            id={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDSingleDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -99,12 +104,14 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <LXDSingleDetailsHeader
-            id={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDSingleDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -122,12 +129,14 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
         >
-          <LXDSingleDetailsHeader
-            id={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDSingleDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

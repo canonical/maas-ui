@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ScriptsList from ".";
@@ -52,7 +53,9 @@ describe("ScriptsList", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
+          <CompatRouter>
+            <ScriptsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -69,7 +72,9 @@ describe("ScriptsList", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
+          <CompatRouter>
+            <ScriptsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -85,7 +90,9 @@ describe("ScriptsList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
+          <CompatRouter>
+            <ScriptsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -109,7 +116,9 @@ describe("ScriptsList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList type="testing" />
+          <CompatRouter>
+            <ScriptsList type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -141,7 +150,9 @@ describe("ScriptsList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
+          <CompatRouter>
+            <ScriptsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -175,7 +186,9 @@ describe("ScriptsList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList type="testing" />
+          <CompatRouter>
+            <ScriptsList type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -193,7 +206,9 @@ describe("ScriptsList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
+          <CompatRouter>
+            <ScriptsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -228,7 +243,9 @@ describe("ScriptsList", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
+          <CompatRouter>
+            <ScriptsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -245,7 +262,9 @@ describe("ScriptsList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList />
+          <CompatRouter>
+            <ScriptsList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -278,7 +297,9 @@ describe("ScriptsList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList type="testing" />
+          <CompatRouter>
+            <ScriptsList type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -304,7 +325,9 @@ describe("ScriptsList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsList type="testing" />
+          <CompatRouter>
+            <ScriptsList type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

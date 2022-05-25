@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";

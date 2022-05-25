@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { LinkMonitoring } from "../BondForm/types";
@@ -81,12 +82,14 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
-            close={jest.fn()}
-            selected={[{ nicId: 9 }, { nicId: 10 }]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <AddBondForm
+              close={jest.fn()}
+              selected={[{ nicId: 9 }, { nicId: 10 }]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -119,12 +122,14 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
-            close={jest.fn()}
-            selected={selected}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <AddBondForm
+              close={jest.fn()}
+              selected={selected}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -182,15 +187,17 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
-            close={jest.fn()}
-            selected={[
-              { nicId: interfaces[0].id },
-              { nicId: interfaces[1].id },
-            ]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <AddBondForm
+              close={jest.fn()}
+              selected={[
+                { nicId: interfaces[0].id },
+                { nicId: interfaces[1].id },
+              ]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -234,16 +241,18 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
-            close={jest.fn()}
-            selected={[
-              { nicId: interfaces[0].id },
-              { nicId: interfaces[1].id },
-            ]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-            {...props}
-          />
+          <CompatRouter>
+            <AddBondForm
+              close={jest.fn()}
+              selected={[
+                { nicId: interfaces[0].id },
+                { nicId: interfaces[1].id },
+              ]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+              {...props}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -262,12 +271,14 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
-            close={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <AddBondForm
+              close={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -287,12 +298,14 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
-            close={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <AddBondForm
+              close={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -312,12 +325,14 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
-            close={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <AddBondForm
+              close={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -351,12 +366,14 @@ describe("AddBondForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddBondForm
-            close={jest.fn()}
-            selected={[{ nicId: 9 }, { nicId: 10 }]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <AddBondForm
+              close={jest.fn()}
+              selected={[{ nicId: 9 }, { nicId: 10 }]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import Dashboard from "./Dashboard";
@@ -50,7 +51,9 @@ describe("Dashboard", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Dashboard />
+            <CompatRouter>
+              <Dashboard />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -66,7 +69,9 @@ describe("Dashboard", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/dashboard" }]}>
-          <Dashboard />
+          <CompatRouter>
+            <Dashboard />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +88,9 @@ describe("Dashboard", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/dashboard" }]}>
-          <Dashboard />
+          <CompatRouter>
+            <Dashboard />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -102,7 +109,9 @@ describe("Dashboard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings", key: "testKey" }]}
         >
-          <Dashboard />
+          <CompatRouter>
+            <Dashboard />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

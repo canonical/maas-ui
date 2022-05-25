@@ -3,7 +3,7 @@ import { useState } from "react";
 import { MainTable, ContextualMenu } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import TableConfirm from "app/base/components/TableConfirm";
 import domainURLs from "app/domains/urls";

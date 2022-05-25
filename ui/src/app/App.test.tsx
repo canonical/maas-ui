@@ -2,6 +2,7 @@ import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { App } from "./App";
@@ -38,7 +39,9 @@ describe("App", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -52,7 +55,9 @@ describe("App", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -67,7 +72,9 @@ describe("App", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -80,7 +87,9 @@ describe("App", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -93,7 +102,9 @@ describe("App", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -106,7 +117,9 @@ describe("App", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -124,7 +137,9 @@ describe("App", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -140,7 +155,9 @@ describe("App", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -152,7 +169,9 @@ describe("App", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -175,7 +194,9 @@ describe("App", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <App />
+          <CompatRouter>
+            <App />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

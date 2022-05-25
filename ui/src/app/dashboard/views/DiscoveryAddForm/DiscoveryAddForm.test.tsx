@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DiscoveryAddForm from "./DiscoveryAddForm";
@@ -56,7 +57,9 @@ describe("DiscoveryAddForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          <CompatRouter>
+            <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -86,7 +89,9 @@ describe("DiscoveryAddForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          <CompatRouter>
+            <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -101,7 +106,9 @@ describe("DiscoveryAddForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          <CompatRouter>
+            <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -117,7 +124,9 @@ describe("DiscoveryAddForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          <CompatRouter>
+            <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -158,7 +167,9 @@ describe("DiscoveryAddForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          <CompatRouter>
+            <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -195,7 +206,9 @@ describe("DiscoveryAddForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          <CompatRouter>
+            <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -218,7 +231,9 @@ describe("DiscoveryAddForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          <CompatRouter>
+            <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -240,7 +255,9 @@ describe("DiscoveryAddForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          <CompatRouter>
+            <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

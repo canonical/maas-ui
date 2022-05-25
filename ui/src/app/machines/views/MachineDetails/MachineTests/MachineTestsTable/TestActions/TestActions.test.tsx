@@ -1,6 +1,7 @@
 import type { ReactWrapper } from "enzyme";
 import { mount } from "enzyme";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 
 import TestActions from "./TestActions";
 
@@ -40,7 +41,9 @@ describe("TestActions", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123/commissioning" }]}
       >
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     );
 
@@ -60,7 +63,9 @@ describe("TestActions", () => {
     });
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: "/machine/abc123/testing" }]}>
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     );
 
@@ -79,7 +84,9 @@ describe("TestActions", () => {
     });
     const wrapper = mount(
       <MemoryRouter>
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     );
 
@@ -91,7 +98,9 @@ describe("TestActions", () => {
     const scriptResult = scriptResultFactory();
     const wrapper = mount(
       <MemoryRouter>
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     );
 
@@ -110,7 +119,9 @@ describe("TestActions", () => {
     const scriptResult = scriptResultFactory();
     const wrapper = mount(
       <MemoryRouter>
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     );
 

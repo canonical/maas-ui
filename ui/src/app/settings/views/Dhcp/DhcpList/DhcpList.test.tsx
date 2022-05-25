@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DhcpList from "./DhcpList";
@@ -75,7 +76,9 @@ describe("DhcpList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
+          <CompatRouter>
+            <DhcpList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -92,7 +95,9 @@ describe("DhcpList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
+          <CompatRouter>
+            <DhcpList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -130,7 +135,9 @@ describe("DhcpList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
+          <CompatRouter>
+            <DhcpList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -159,7 +166,9 @@ describe("DhcpList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
+          <CompatRouter>
+            <DhcpList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -176,7 +185,9 @@ describe("DhcpList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpList />
+          <CompatRouter>
+            <DhcpList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

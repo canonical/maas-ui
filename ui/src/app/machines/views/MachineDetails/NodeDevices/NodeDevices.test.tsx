@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeDevices from "./NodeDevices";
@@ -167,11 +168,13 @@ describe("NodeDevices", () => {
             { pathname: "/machine/abc123/pci-devices", key: "testKey" },
           ]}
         >
-          <NodeDevices
-            bus={NodeDeviceBus.PCIE}
-            machine={machine}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <NodeDevices
+              bus={NodeDeviceBus.PCIE}
+              machine={machine}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -231,11 +234,13 @@ describe("NodeDevices", () => {
             { pathname: "/machine/abc123/pci-devices", key: "testKey" },
           ]}
         >
-          <NodeDevices
-            bus={NodeDeviceBus.PCIE}
-            machine={machine}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <NodeDevices
+              bus={NodeDeviceBus.PCIE}
+              machine={machine}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -273,11 +278,13 @@ describe("NodeDevices", () => {
             { pathname: "/machine/abc123/pci-devices", key: "testKey" },
           ]}
         >
-          <NodeDevices
-            bus={NodeDeviceBus.PCIE}
-            machine={machine}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <NodeDevices
+              bus={NodeDeviceBus.PCIE}
+              machine={machine}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

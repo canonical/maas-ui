@@ -2,6 +2,7 @@ import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SubnetsTable from "./SubnetsTable";
@@ -44,12 +45,14 @@ it("renders a single table variant at a time", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -65,12 +68,14 @@ it("renders Subnets by Fabric table when grouping by Fabric", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -87,12 +92,14 @@ it("renders Subnets by Space table when grouping by Space", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="space"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="space"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -109,12 +116,14 @@ it("displays a correct number of pages", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -146,12 +155,14 @@ it("updates the list of items correctly when navigating to another page", async 
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -204,12 +215,14 @@ it("doesn't display pagination if rows are within items per page limit", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -238,12 +251,14 @@ it("displays correctly paginated rows", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -300,12 +315,14 @@ it("displays the last available page once the currently active has no items", as
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -337,12 +354,14 @@ it("displays the last available page once the currently active has no items", as
   rerender(
     <Provider store={updatedStore}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -371,12 +390,14 @@ it("remains on the same page once the data is updated and page is still availabl
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -405,12 +426,14 @@ it("remains on the same page once the data is updated and page is still availabl
   rerender(
     <Provider store={updatedStore}>
       <MemoryRouter initialEntries={[{ pathname: urls.index }]}>
-        <SubnetsTable
-          groupBy="fabric"
-          setGroupBy={jest.fn()}
-          searchText=""
-          setSearchText={jest.fn()}
-        />
+        <CompatRouter>
+          <SubnetsTable
+            groupBy="fabric"
+            setGroupBy={jest.fn()}
+            searchText=""
+            setSearchText={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

@@ -1,5 +1,6 @@
 import { mount } from "enzyme";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 
 import { Nav } from "./Nav";
 
@@ -10,7 +11,9 @@ describe("Nav", () => {
         initialEntries={[{ pathname: "/prefs", key: "testKey" }]}
         initialIndex={0}
       >
-        <Route render={() => <Nav />} path="/prefs" />
+        <CompatRouter>
+          <Route render={() => <Nav />} path="/prefs" />
+        </CompatRouter>
       </MemoryRouter>
     );
     expect(wrapper.find("SideNav").exists()).toBe(true);

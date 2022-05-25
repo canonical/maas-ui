@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import Pools from "./Pools";
@@ -34,7 +35,9 @@ describe("Pools", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Pools />
+            <CompatRouter>
+              <Pools />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );

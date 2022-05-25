@@ -3,6 +3,7 @@ import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VLANSummary from "./VLANSummary";
@@ -71,7 +72,9 @@ it("renders correct details", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANSummary id={vlan.id} />
+        <CompatRouter>
+          <VLANSummary id={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -97,7 +100,9 @@ it("can display the edit form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANSummary id={vlan.id} />
+        <CompatRouter>
+          <VLANSummary id={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
