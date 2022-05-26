@@ -81,6 +81,7 @@ const TLSEnabled = (): JSX.Element | null => {
         value={tlsCertificate.certificate}
       />
       <FormikForm<TLSEnabledValues>
+        allowUnchanged
         buttonsAlign="left"
         buttonsBordered={false}
         cleanup={configActions.cleanup}
@@ -95,7 +96,7 @@ const TLSEnabled = (): JSX.Element | null => {
           category: "Security settings",
           label: "Security form",
         }}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={(values) => {
           const { notificationEnabled, notificationInterval } = values;
           dispatch(configActions.cleanup());
           dispatch(
@@ -109,7 +110,6 @@ const TLSEnabled = (): JSX.Element | null => {
                 : {}),
             })
           );
-          resetForm({ values });
         }}
         saving={saving}
         saved={saved}
