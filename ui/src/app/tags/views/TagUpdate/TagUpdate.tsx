@@ -2,7 +2,8 @@ import { useEffect } from "react";
 
 import { NotificationSeverity, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import TagUpdateFormFields from "./TagUpdateFormFields";
@@ -41,7 +42,7 @@ const UpdateAutoTagFormSchema = Yup.object().shape({
 
 const TagUpdate = ({ id }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation<{ canGoBack?: boolean }>();
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
@@ -61,11 +62,14 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
   const isAuto = !!tag.definition;
   const onClose = () => {
     if (location.state?.canGoBack) {
-      history.goBack();
+      navigate(-1);
     } else {
-      history.replace({
-        pathname: tagURLs.tag.index({ id }),
-      });
+      navigate(
+        {
+          pathname: tagURLs.tag.index({ id }),
+        },
+        { replace: true }
+      );
     }
   };
 

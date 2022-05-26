@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { DhcpForm } from "./DhcpForm";
@@ -45,7 +46,9 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm />
+          <CompatRouter>
+            <DhcpForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -58,7 +61,9 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm />
+          <CompatRouter>
+            <DhcpForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -70,7 +75,9 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
+          <CompatRouter>
+            <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

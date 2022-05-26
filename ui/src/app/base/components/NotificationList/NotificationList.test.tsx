@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NotificationList from "./NotificationList";
@@ -55,7 +56,9 @@ describe("NotificationList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <NotificationList />
+          <CompatRouter>
+            <NotificationList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -67,7 +70,9 @@ describe("NotificationList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <NotificationList />
+          <CompatRouter>
+            <NotificationList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -89,7 +94,9 @@ describe("NotificationList", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <NotificationList />
+          <CompatRouter>
+            <NotificationList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -108,7 +115,9 @@ describe("NotificationList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <NotificationList />
+          <CompatRouter>
+            <NotificationList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -138,7 +147,9 @@ describe("NotificationList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/machines" }]}>
-          <NotificationList />
+          <CompatRouter>
+            <NotificationList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -175,7 +186,9 @@ describe("NotificationList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings/general" }]}>
-          <NotificationList />
+          <CompatRouter>
+            <NotificationList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -204,7 +217,9 @@ describe("NotificationList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm" }]}>
-          <NotificationList />
+          <CompatRouter>
+            <NotificationList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

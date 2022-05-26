@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { APIKeyEdit } from "./APIKeyEdit";
@@ -42,7 +43,9 @@ describe("APIKeyEdit", () => {
             { pathname: "/account/prefs/api-keys/1", key: "testKey" },
           ]}
         >
-          <APIKeyEdit />
+          <CompatRouter>
+            <APIKeyEdit />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -59,7 +62,9 @@ describe("APIKeyEdit", () => {
             { pathname: "/account/prefs/api-keys/1", key: "testKey" },
           ]}
         >
-          <APIKeyEdit />
+          <CompatRouter>
+            <APIKeyEdit />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -75,11 +80,13 @@ describe("APIKeyEdit", () => {
             { pathname: "/account/prefs/api-keys/1/edit", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/account/prefs/api-keys/:id/edit"
-            render={() => <APIKeyEdit />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/account/prefs/api-keys/:id/edit"
+              render={() => <APIKeyEdit />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

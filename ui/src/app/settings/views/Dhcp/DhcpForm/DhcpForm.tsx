@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import BaseDhcpForm from "app/base/components/DhcpForm";
 import type { DHCPFormValues } from "app/base/components/DhcpForm/types";
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const DhcpForm = ({ dhcpSnippet }: Props): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const [name, setName] = useState<DHCPFormValues["name"]>();
   const editing = !!dhcpSnippet;
   const title = editing ? `Editing \`${name}\`` : "Add DHCP snippet";
@@ -26,7 +26,7 @@ export const DhcpForm = ({ dhcpSnippet }: Props): JSX.Element => {
       <BaseDhcpForm
         analyticsCategory="DHCP snippet settings"
         id={dhcpSnippet?.id}
-        onCancel={() => history.push({ pathname: settingsURLs.dhcp.index })}
+        onCancel={() => navigate({ pathname: settingsURLs.dhcp.index })}
         onValuesChanged={(values) => {
           setName(values.name);
         }}

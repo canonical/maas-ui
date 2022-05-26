@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MaasIntro from "./MaasIntro";
@@ -62,7 +63,11 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MaasIntro />
+        <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
+          <CompatRouter>
+            <MaasIntro />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
@@ -72,7 +77,11 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MaasIntro />
+        <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
+          <CompatRouter>
+            <MaasIntro />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -104,7 +113,11 @@ describe("MaasIntro", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MaasIntro />
+        <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
+          <CompatRouter>
+            <MaasIntro />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -138,7 +151,9 @@ describe("MaasIntro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-          <MaasIntro />
+          <CompatRouter>
+            <MaasIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

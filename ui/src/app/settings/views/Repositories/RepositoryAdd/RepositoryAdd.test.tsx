@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import RepositoryAdd from "./RepositoryAdd";
@@ -33,11 +34,13 @@ describe("RepositoryAdd", () => {
             { pathname: "/settings/repositories/add/ppa", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/settings/repositories/add/:type"
-            render={() => <RepositoryAdd />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/settings/repositories/add/:type"
+              render={() => <RepositoryAdd />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -58,11 +61,13 @@ describe("RepositoryAdd", () => {
             },
           ]}
         >
-          <Route
-            exact
-            path="/settings/repositories/add/:type"
-            render={() => <RepositoryAdd />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/settings/repositories/add/:type"
+              render={() => <RepositoryAdd />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

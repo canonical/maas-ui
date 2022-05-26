@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { DhcpEdit } from "./DhcpEdit";
@@ -44,7 +45,9 @@ describe("DhcpEdit", () => {
             { pathname: "/settings/dhcp/1/edit", key: "testKey" },
           ]}
         >
-          <DhcpEdit />
+          <CompatRouter>
+            <DhcpEdit />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -60,7 +63,9 @@ describe("DhcpEdit", () => {
             { pathname: "/settings/dhcp/99999/edit", key: "testKey" },
           ]}
         >
-          <DhcpEdit />
+          <CompatRouter>
+            <DhcpEdit />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -76,11 +81,13 @@ describe("DhcpEdit", () => {
             { pathname: "/settings/dhcp/1/edit", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/settings/dhcp/:id/edit"
-            render={() => <DhcpEdit />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/settings/dhcp/:id/edit"
+              render={() => <DhcpEdit />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

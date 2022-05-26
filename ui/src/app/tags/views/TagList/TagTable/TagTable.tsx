@@ -6,10 +6,9 @@ import type {
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Icon, MainTable, Strip } from "@canonical/react-components";
-import type { History } from "history";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import type { NavigateFunction } from "react-router-dom-v5-compat";
+import { useNavigate, Link } from "react-router-dom-v5-compat";
 
 import { TAGS_PER_PAGE } from "../constants";
 
@@ -62,7 +61,7 @@ const getSortValue = (sortKey: SortKey, tag: Tag) => {
 const generateRows = (
   tags: Tag[],
   onDelete: Props["onDelete"],
-  history: History
+  navigate: NavigateFunction
 ) =>
   tags.map((tag) => {
     return {
@@ -100,8 +99,7 @@ const generateRows = (
                 onDelete(tag[TagMeta.PK]);
               }}
               onEdit={() =>
-                history.push({
-                  pathname: tagURLs.tag.update({ id: tag.id }),
+                navigate(tagURLs.tag.update({ id: tag.id }), {
                   state: { canGoBack: true },
                 })
               }
@@ -162,7 +160,7 @@ const TagTable = ({
   ...tableProps
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const { currentSort, sortRows, updateSort } = useTableSort<Tag, SortKey>(
     getSortValue,
     {
@@ -251,7 +249,7 @@ const TagTable = ({
             className: "u-align--right",
           },
         ]}
-        rows={generateRows(paginatedTags, onDelete, history)}
+        rows={generateRows(paginatedTags, onDelete, navigate)}
       />
       {generateNoTagsMessage(tags.length === 0, filter, searchText)}
     </>

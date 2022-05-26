@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import RepositoryEdit from "./RepositoryEdit";
@@ -42,7 +43,9 @@ describe("RepositoryEdit", () => {
             { pathname: "/settings/repositories/1/edit", key: "testKey" },
           ]}
         >
-          <RepositoryEdit />
+          <CompatRouter>
+            <RepositoryEdit />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -58,7 +61,9 @@ describe("RepositoryEdit", () => {
             { pathname: "/settings/repositories/100/edit", key: "testKey" },
           ]}
         >
-          <RepositoryEdit />
+          <CompatRouter>
+            <RepositoryEdit />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -77,11 +82,13 @@ describe("RepositoryEdit", () => {
             },
           ]}
         >
-          <Route
-            exact
-            path="/settings/repositories/edit/:type/:id"
-            render={() => <RepositoryEdit />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/settings/repositories/edit/:type/:id"
+              render={() => <RepositoryEdit />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

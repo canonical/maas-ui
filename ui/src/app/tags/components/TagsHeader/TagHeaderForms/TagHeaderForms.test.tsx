@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagHeaderForms from "./TagHeaderForms";
@@ -30,10 +31,12 @@ it("can display the add tag form", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <TagHeaderForms
-          headerContent={{ view: TagHeaderViews.AddTag }}
-          setHeaderContent={jest.fn()}
-        />
+        <CompatRouter>
+          <TagHeaderForms
+            headerContent={{ view: TagHeaderViews.AddTag }}
+            setHeaderContent={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -55,10 +58,15 @@ it("can display the delete tag form", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <TagHeaderForms
-          headerContent={{ view: TagHeaderViews.DeleteTag, extras: { id: 1 } }}
-          setHeaderContent={jest.fn()}
-        />
+        <CompatRouter>
+          <TagHeaderForms
+            headerContent={{
+              view: TagHeaderViews.DeleteTag,
+              extras: { id: 1 },
+            }}
+            setHeaderContent={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

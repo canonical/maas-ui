@@ -1,7 +1,7 @@
 import React, { useEffect, useCallback } from "react";
 
 import { ContextualMenu } from "@canonical/react-components";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import SubnetsTable from "./SubnetsTable";
 import type { GroupByKey } from "./SubnetsTable/types";
@@ -18,24 +18,30 @@ const SubnetsList = (): JSX.Element => {
   useWindowTitle("Subnets");
   const [activeForm, setActiveForm] = React.useState<SubnetForm | null>(null);
   const query = useQuery();
-  const history = useHistory();
+  const navigate = useNavigate();
   const groupBy = query.get(SubnetsUrlParams.By);
   const searchText = query.get(SubnetsUrlParams.Q) || "";
   const setGroupBy = useCallback(
     (group: GroupByKey) =>
-      history.replace({
-        pathname: "/networks",
-        search: `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`,
-      }),
-    [history, searchText]
+      navigate(
+        {
+          pathname: "/networks",
+          search: `?${SubnetsUrlParams.By}=${group}&${SubnetsUrlParams.Q}=${searchText}`,
+        },
+        { replace: true }
+      ),
+    [navigate, searchText]
   );
   const setSearchText = useCallback(
     (searchText) =>
-      history.replace({
-        pathname: "/networks",
-        search: `?${SubnetsUrlParams.By}=${groupBy}&${SubnetsUrlParams.Q}=${searchText}`,
-      }),
-    [history, groupBy]
+      navigate(
+        {
+          pathname: "/networks",
+          search: `?${SubnetsUrlParams.By}=${groupBy}&${SubnetsUrlParams.Q}=${searchText}`,
+        },
+        { replace: true }
+      ),
+    [navigate, groupBy]
   );
 
   const hasValidGroupBy = groupBy && ["fabric", "space"].includes(groupBy);

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { UserEdit } from "./UserEdit";
@@ -58,7 +59,9 @@ describe("UserEdit", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
         >
-          <UserEdit />
+          <CompatRouter>
+            <UserEdit />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -73,7 +76,9 @@ describe("UserEdit", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
         >
-          <UserEdit />
+          <CompatRouter>
+            <UserEdit />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -89,11 +94,13 @@ describe("UserEdit", () => {
             { pathname: "/settings/users/1/edit", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/settings/users/:id/edit"
-            render={() => <UserEdit />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/settings/users/:id/edit"
+              render={() => <UserEdit />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

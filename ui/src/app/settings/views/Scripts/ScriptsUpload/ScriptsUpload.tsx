@@ -6,7 +6,7 @@ import type { FileRejection, FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect } from "react-router";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import type { ReadScriptResponse } from "./readScript";
 import readScript from "./readScript";
@@ -32,7 +32,7 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
   const [savedScript, setSavedScript] = useState<string | null>(null);
   const [script, setScript] = useState<ReadScriptResponse | null>(null);
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const title = `Upload ${type} script`;
   const listLocation = `/settings/scripts/${type}`;
 
@@ -145,7 +145,7 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
       <Row>
         <FormikForm
           initialValues={{}}
-          onCancel={() => history.push({ pathname: listLocation })}
+          onCancel={() => navigate({ pathname: listLocation })}
           onSubmit={() => {
             dispatch(scriptActions.cleanup());
             if (script?.script) {

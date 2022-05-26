@@ -7,7 +7,7 @@ import {
   Strip,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import ActionForm from "app/base/components/ActionForm";
@@ -44,7 +44,7 @@ const DeleteForm = ({
   hostId,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
@@ -118,7 +118,7 @@ const DeleteForm = ({
             NotificationSeverity.INFORMATION
           )
         );
-        history.push({ pathname: kvmURLs.kvm });
+        navigate({ pathname: kvmURLs.kvm });
         clearHeaderContent();
       }}
       processingCount={deletingCount}

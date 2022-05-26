@@ -1,7 +1,7 @@
 import { Col, Row, Textarea } from "@canonical/react-components";
 import type { TextareaProps } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
@@ -24,7 +24,7 @@ const SSLKeySchema = Yup.object().shape({
 
 export const AddSSLKey = (): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const saving = useSelector(sslkeySelectors.saving);
   const saved = useSelector(sslkeySelectors.saved);
   const errors = useSelector(sslkeySelectors.errors);
@@ -39,7 +39,7 @@ export const AddSSLKey = (): JSX.Element => {
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}
-        onCancel={() => history.push({ pathname: prefsURLs.sslKeys.index })}
+        onCancel={() => navigate({ pathname: prefsURLs.sslKeys.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "SSL keys preferences",

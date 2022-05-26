@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NotificationGroupNotification from "./Notification";
@@ -47,10 +48,14 @@ describe("NotificationGroupNotification", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroupNotification
-          id={notification.id}
-          severity="negative"
-        />
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <CompatRouter>
+            <NotificationGroupNotification
+              id={notification.id}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("NotificationGroupNotification")).toMatchSnapshot();
@@ -67,10 +72,14 @@ describe("NotificationGroupNotification", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroupNotification
-          id={notification.id}
-          severity="negative"
-        />
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <CompatRouter>
+            <NotificationGroupNotification
+              id={notification.id}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper
@@ -91,10 +100,14 @@ describe("NotificationGroupNotification", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroupNotification
-          id={notification.id}
-          severity="negative"
-        />
+        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+          <CompatRouter>
+            <NotificationGroupNotification
+              id={notification.id}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(
@@ -118,10 +131,12 @@ describe("NotificationGroupNotification", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <NotificationGroupNotification
-            id={notification.id}
-            severity="negative"
-          />
+          <CompatRouter>
+            <NotificationGroupNotification
+              id={notification.id}
+              severity="negative"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -148,10 +163,12 @@ describe("NotificationGroupNotification", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <NotificationGroupNotification
-            id={notification.id}
-            severity="negative"
-          />
+          <CompatRouter>
+            <NotificationGroupNotification
+              id={notification.id}
+              severity="negative"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -181,10 +198,12 @@ describe("NotificationGroupNotification", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
-          <NotificationGroupNotification
-            id={notification.id}
-            severity="negative"
-          />
+          <CompatRouter>
+            <NotificationGroupNotification
+              id={notification.id}
+              severity="negative"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

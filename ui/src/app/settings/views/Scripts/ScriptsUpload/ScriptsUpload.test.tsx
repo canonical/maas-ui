@@ -3,6 +3,7 @@ import { act } from "react-dom/test-utils";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, useLocation } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import type { Dispatch } from "redux";
 import configureStore from "redux-mock-store";
 
@@ -55,7 +56,9 @@ describe("ScriptsUpload", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
+          <CompatRouter>
+            <ScriptsUpload type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -78,7 +81,9 @@ describe("ScriptsUpload", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
+          <CompatRouter>
+            <ScriptsUpload type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -106,7 +111,9 @@ describe("ScriptsUpload", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
+          <CompatRouter>
+            <ScriptsUpload type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -148,7 +155,9 @@ describe("ScriptsUpload", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
+          <CompatRouter>
+            <ScriptsUpload type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -197,7 +206,9 @@ describe("ScriptsUpload", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptsUpload type="testing" />
+          <CompatRouter>
+            <ScriptsUpload type="testing" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -237,8 +248,10 @@ describe("ScriptsUpload", () => {
             { pathname: "/settings/scripts/commissioning/upload" },
           ]}
         >
-          <ScriptsUpload type="commissioning" />
-          <Route path="*" render={() => <FetchRoute />} />
+          <CompatRouter>
+            <ScriptsUpload type="commissioning" />
+            <Route path="*" render={() => <FetchRoute />} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -258,8 +271,10 @@ describe("ScriptsUpload", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/scripts/testing/upload" }]}
         >
-          <ScriptsUpload type="testing" />
-          <Route path="*" render={() => <FetchRoute />} />
+          <CompatRouter>
+            <ScriptsUpload type="testing" />
+            <Route path="*" render={() => <FetchRoute />} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

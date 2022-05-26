@@ -1,13 +1,8 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Redirect,
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 import LXDClusterHostSettings from "./LXDClusterHostSettings";
@@ -36,7 +31,7 @@ import { isId } from "app/utils";
 
 const LXDClusterDetails = (): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const clusterId = useGetURLId(VMClusterMeta.PK, "clusterId");
   const hostId = useGetURLId(PodMeta.PK, "hostId");
@@ -63,11 +58,14 @@ const LXDClusterDetails = (): JSX.Element => {
     FilterMachines.filtersToString(currentFilters)
   );
 
-  const setSearchFilter: SetSearchFilter = (searchFilter: string) => {
-    setFilter(searchFilter);
-    const filters = FilterMachines.getCurrentFilters(searchFilter);
-    history.push({ search: FilterMachines.filtersToQueryString(filters) });
-  };
+  const setSearchFilter: SetSearchFilter = useCallback(
+    (searchFilter: string) => {
+      setFilter(searchFilter);
+      const filters = FilterMachines.getCurrentFilters(searchFilter);
+      navigate({ search: FilterMachines.filtersToQueryString(filters) });
+    },
+    [setFilter, navigate]
+  );
 
   useEffect(() => {
     dispatch(podActions.fetch());

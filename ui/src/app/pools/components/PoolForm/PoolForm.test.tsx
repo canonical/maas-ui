@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { PoolForm } from "./PoolForm";
@@ -37,7 +38,9 @@ describe("PoolForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <PoolForm />
+          <CompatRouter>
+            <PoolForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -51,7 +54,9 @@ describe("PoolForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <PoolForm />
+          <CompatRouter>
+            <PoolForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -70,7 +75,9 @@ describe("PoolForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/pool/add"]}>
-          <PoolForm />
+          <CompatRouter>
+            <PoolForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -85,7 +92,9 @@ describe("PoolForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/pools/add"]}>
-          <PoolForm />
+          <CompatRouter>
+            <PoolForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -103,7 +112,9 @@ describe("PoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/pools/", key: "testKey" }]}
         >
-          <PoolForm pool={pool} />
+          <CompatRouter>
+            <PoolForm pool={pool} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -127,7 +138,9 @@ describe("PoolForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <PoolForm />
+          <CompatRouter>
+            <PoolForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

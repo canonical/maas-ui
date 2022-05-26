@@ -325,7 +325,6 @@ Header.propTypes = {
   logout: PropTypes.func.isRequired,
   rootScope: PropTypes.object,
   showRSD: PropTypes.bool,
-  urlChange: PropTypes.func,
   uuid: PropTypes.string,
   version: PropTypes.string,
 };
