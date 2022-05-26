@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { MainTable } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import controllersURLs from "app/controllers/urls";
 import deviceURLs from "app/devices/urls";

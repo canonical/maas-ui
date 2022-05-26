@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SubnetColumn from "./SubnetColumn";
@@ -56,7 +57,9 @@ describe("SubnetColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
+          <CompatRouter>
+            <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -88,7 +91,9 @@ describe("SubnetColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <SubnetColumn link={link} nic={nic} node={state.device.items[0]} />
+          <CompatRouter>
+            <SubnetColumn link={link} nic={nic} node={state.device.items[0]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -118,7 +123,9 @@ describe("SubnetColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
+          <CompatRouter>
+            <SubnetColumn link={link} nic={nic} node={state.machine.items[0]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -149,7 +156,9 @@ describe("SubnetColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <SubnetColumn nic={nic} node={state.machine.items[0]} />
+          <CompatRouter>
+            <SubnetColumn nic={nic} node={state.machine.items[0]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

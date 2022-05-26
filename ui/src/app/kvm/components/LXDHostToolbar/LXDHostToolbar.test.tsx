@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDHostToolbar from "./LXDHostToolbar";
@@ -55,12 +56,14 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar
-            hostId={1}
-            setHeaderContent={jest.fn()}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
+          <CompatRouter>
+            <LXDHostToolbar
+              hostId={1}
+              setHeaderContent={jest.fn()}
+              setViewByNuma={jest.fn()}
+              viewByNuma={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -79,12 +82,14 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar
-            hostId={1}
-            setHeaderContent={jest.fn()}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
+          <CompatRouter>
+            <LXDHostToolbar
+              hostId={1}
+              setHeaderContent={jest.fn()}
+              setViewByNuma={jest.fn()}
+              viewByNuma={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -107,13 +112,15 @@ describe("LXDHostToolbar", () => {
             },
           ]}
         >
-          <LXDHostToolbar
-            clusterId={2}
-            hostId={1}
-            setHeaderContent={jest.fn()}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
+          <CompatRouter>
+            <LXDHostToolbar
+              clusterId={2}
+              hostId={1}
+              setHeaderContent={jest.fn()}
+              setViewByNuma={jest.fn()}
+              viewByNuma={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -122,12 +129,14 @@ describe("LXDHostToolbar", () => {
       wrapper.find("Link[data-testid='settings-link']").prop("to")
     ).toStrictEqual({
       pathname: kvmURLs.lxd.cluster.host.edit({ clusterId: 2, hostId: 1 }),
-      state: {
-        from: kvmURLs.lxd.cluster.vms.host({
-          clusterId: 2,
-          hostId: 1,
-        }),
-      },
+    });
+    expect(
+      wrapper.find("Link[data-testid='settings-link']").prop("state")
+    ).toStrictEqual({
+      from: kvmURLs.lxd.cluster.vms.host({
+        clusterId: 2,
+        hostId: 1,
+      }),
     });
   });
 
@@ -140,12 +149,14 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar
-            hostId={1}
-            setHeaderContent={jest.fn()}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
+          <CompatRouter>
+            <LXDHostToolbar
+              hostId={1}
+              setHeaderContent={jest.fn()}
+              setViewByNuma={jest.fn()}
+              viewByNuma={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -162,12 +173,14 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar
-            hostId={1}
-            setHeaderContent={jest.fn()}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
+          <CompatRouter>
+            <LXDHostToolbar
+              hostId={1}
+              setHeaderContent={jest.fn()}
+              setViewByNuma={jest.fn()}
+              viewByNuma={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -185,12 +198,14 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar
-            hostId={1}
-            setHeaderContent={setHeaderContent}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
+          <CompatRouter>
+            <LXDHostToolbar
+              hostId={1}
+              setHeaderContent={setHeaderContent}
+              setViewByNuma={jest.fn()}
+              viewByNuma={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -213,12 +228,14 @@ describe("LXDHostToolbar", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDHostToolbar
-            hostId={1}
-            setHeaderContent={jest.fn()}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
+          <CompatRouter>
+            <LXDHostToolbar
+              hostId={1}
+              setHeaderContent={jest.fn()}
+              setViewByNuma={jest.fn()}
+              viewByNuma={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -251,12 +268,14 @@ describe("LXDHostToolbar", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDHostToolbar
-            hostId={1}
-            setHeaderContent={jest.fn()}
-            setViewByNuma={jest.fn()}
-            viewByNuma={false}
-          />
+          <CompatRouter>
+            <LXDHostToolbar
+              hostId={1}
+              setHeaderContent={jest.fn()}
+              setViewByNuma={jest.fn()}
+              viewByNuma={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -278,7 +297,9 @@ describe("LXDHostToolbar", () => {
             { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
-          <LXDHostToolbar hostId={1} showBasic />
+          <CompatRouter>
+            <LXDHostToolbar hostId={1} showBasic />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

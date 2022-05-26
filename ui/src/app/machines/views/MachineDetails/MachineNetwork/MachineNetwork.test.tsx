@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineNetwork from "./MachineNetwork";
@@ -26,7 +27,9 @@ describe("MachineNetwork", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -46,7 +49,9 @@ describe("MachineNetwork", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -2,6 +2,7 @@ import type { ReactWrapper } from "enzyme";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceListTable from "./DeviceListTable";
@@ -47,11 +48,13 @@ describe("DeviceListTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceListTable
-            devices={[device]}
-            onSelectedChange={jest.fn()}
-            selectedIDs={[]}
-          />
+          <CompatRouter>
+            <DeviceListTable
+              devices={[device]}
+              onSelectedChange={jest.fn()}
+              selectedIDs={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -68,11 +71,13 @@ describe("DeviceListTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceListTable
-            devices={[device]}
-            onSelectedChange={jest.fn()}
-            selectedIDs={[]}
-          />
+          <CompatRouter>
+            <DeviceListTable
+              devices={[device]}
+              onSelectedChange={jest.fn()}
+              selectedIDs={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -88,11 +93,13 @@ describe("DeviceListTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceListTable
-            devices={[device]}
-            onSelectedChange={jest.fn()}
-            selectedIDs={[]}
-          />
+          <CompatRouter>
+            <DeviceListTable
+              devices={[device]}
+              onSelectedChange={jest.fn()}
+              selectedIDs={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -116,11 +123,13 @@ describe("DeviceListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <DeviceListTable
-              devices={devices}
-              onSelectedChange={jest.fn()}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <DeviceListTable
+                devices={devices}
+                onSelectedChange={jest.fn()}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -156,11 +165,13 @@ describe("DeviceListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <DeviceListTable
-              devices={devices}
-              onSelectedChange={jest.fn()}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <DeviceListTable
+                devices={devices}
+                onSelectedChange={jest.fn()}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -188,11 +199,13 @@ describe("DeviceListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <DeviceListTable
-              devices={devices}
-              onSelectedChange={jest.fn()}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <DeviceListTable
+                devices={devices}
+                onSelectedChange={jest.fn()}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -220,11 +233,13 @@ describe("DeviceListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <DeviceListTable
-              devices={devices}
-              onSelectedChange={jest.fn()}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <DeviceListTable
+                devices={devices}
+                onSelectedChange={jest.fn()}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -251,11 +266,13 @@ describe("DeviceListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <DeviceListTable
-              devices={devices}
-              onSelectedChange={onSelectedChange}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <DeviceListTable
+                devices={devices}
+                onSelectedChange={onSelectedChange}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -275,11 +292,13 @@ describe("DeviceListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <DeviceListTable
-              devices={devices}
-              onSelectedChange={onSelectedChange}
-              selectedIDs={["abc123"]}
-            />
+            <CompatRouter>
+              <DeviceListTable
+                devices={devices}
+                onSelectedChange={onSelectedChange}
+                selectedIDs={["abc123"]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -302,11 +321,13 @@ describe("DeviceListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <DeviceListTable
-              devices={devices}
-              onSelectedChange={onSelectedChange}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <DeviceListTable
+                devices={devices}
+                onSelectedChange={onSelectedChange}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -328,11 +349,13 @@ describe("DeviceListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <DeviceListTable
-              devices={devices}
-              onSelectedChange={onSelectedChange}
-              selectedIDs={["abc123", "def456"]}
-            />
+            <CompatRouter>
+              <DeviceListTable
+                devices={devices}
+                onSelectedChange={onSelectedChange}
+                selectedIDs={["abc123", "def456"]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );

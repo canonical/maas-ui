@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 
 import NodesTagsLink from "./NodesTagsLink";
 
@@ -13,7 +14,13 @@ import { MachineMeta } from "app/store/machine/types";
 it("create a link to machines", () => {
   render(
     <MemoryRouter>
-      <NodesTagsLink count={1} nodeType={MachineMeta.MODEL} tags={["a-tag"]} />
+      <CompatRouter>
+        <NodesTagsLink
+          count={1}
+          nodeType={MachineMeta.MODEL}
+          tags={["a-tag"]}
+        />
+      </CompatRouter>
     </MemoryRouter>
   );
   const machineLink = screen.getByRole("link", {
@@ -29,11 +36,13 @@ it("create a link to machines", () => {
 it("create a link to controllers", () => {
   render(
     <MemoryRouter>
-      <NodesTagsLink
-        count={3}
-        nodeType={ControllerMeta.MODEL}
-        tags={["a-tag"]}
-      />
+      <CompatRouter>
+        <NodesTagsLink
+          count={3}
+          nodeType={ControllerMeta.MODEL}
+          tags={["a-tag"]}
+        />
+      </CompatRouter>
     </MemoryRouter>
   );
   const controllerLink = screen.getByRole("link", {
@@ -49,7 +58,9 @@ it("create a link to controllers", () => {
 it("create a link to devices", () => {
   render(
     <MemoryRouter>
-      <NodesTagsLink count={2} nodeType={DeviceMeta.MODEL} tags={["a-tag"]} />
+      <CompatRouter>
+        <NodesTagsLink count={2} nodeType={DeviceMeta.MODEL} tags={["a-tag"]} />
+      </CompatRouter>
     </MemoryRouter>
   );
   const deviceLink = screen.getByRole("link", {

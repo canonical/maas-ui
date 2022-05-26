@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineLink from "./MachineLink";
@@ -22,7 +23,9 @@ it("handles when machines are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <MachineLink systemId="abc123" />
+        <CompatRouter>
+          <MachineLink systemId="abc123" />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -38,7 +41,9 @@ it("handles when a machine does not exist", () => {
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <MachineLink systemId="abc123" />
+        <CompatRouter>
+          <MachineLink systemId="abc123" />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -55,7 +60,9 @@ it("renders a link if machines have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <MachineLink systemId={machine.system_id} />
+        <CompatRouter>
+          <MachineLink systemId={machine.system_id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

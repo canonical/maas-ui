@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KVMList from "./KVMList";
@@ -25,7 +26,9 @@ describe("KVMList", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMList />
+          <CompatRouter>
+            <KVMList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -55,7 +58,9 @@ describe("KVMList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
         >
-          <KVMList />
+          <CompatRouter>
+            <KVMList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -75,7 +80,9 @@ describe("KVMList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
         >
-          <KVMList />
+          <CompatRouter>
+            <KVMList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -94,7 +101,9 @@ describe("KVMList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
         >
-          <KVMList />
+          <CompatRouter>
+            <KVMList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -114,7 +123,9 @@ describe("KVMList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.kvm, key: "testKey" }]}
         >
-          <KVMList />
+          <CompatRouter>
+            <KVMList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -135,7 +146,9 @@ describe("KVMList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
         >
-          <KVMList />
+          <CompatRouter>
+            <KVMList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -161,7 +174,9 @@ describe("KVMList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
         >
-          <KVMList />
+          <CompatRouter>
+            <KVMList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -187,7 +202,9 @@ describe("KVMList", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.kvm, key: "testKey" }]}
         >
-          <KVMList />
+          <CompatRouter>
+            <KVMList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

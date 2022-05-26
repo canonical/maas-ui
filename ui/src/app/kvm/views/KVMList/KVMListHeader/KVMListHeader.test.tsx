@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KVMListHeader from "./KVMListHeader";
@@ -38,7 +39,9 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -51,7 +54,9 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -67,7 +72,9 @@ describe("KVMListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
         >
-          <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +90,9 @@ describe("KVMListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
         >
-          <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -100,10 +109,12 @@ describe("KVMListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
         >
-          <KVMListHeader
-            headerContent={null}
-            setHeaderContent={setHeaderContent}
-          />
+          <CompatRouter>
+            <KVMListHeader
+              headerContent={null}
+              setHeaderContent={setHeaderContent}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -124,10 +135,12 @@ describe("KVMListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
         >
-          <KVMListHeader
-            headerContent={null}
-            setHeaderContent={setHeaderContent}
-          />
+          <CompatRouter>
+            <KVMListHeader
+              headerContent={null}
+              setHeaderContent={setHeaderContent}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

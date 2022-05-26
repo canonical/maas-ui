@@ -135,7 +135,16 @@ const MachineTestsTable = ({
         {
           className: "actions-col u-align--right",
           content: (
-            <TestActions scriptResult={result} setExpanded={setExpanded} />
+            <TestActions
+              machineId={machineId}
+              resultType={
+                containsTesting
+                  ? ScriptResultType.TESTING
+                  : ScriptResultType.COMMISSIONING
+              }
+              scriptResult={result}
+              setExpanded={setExpanded}
+            />
           ),
         },
       ],

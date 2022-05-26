@@ -1,6 +1,6 @@
 import type { ContextualMenuProps } from "@canonical/react-components";
 import type { LinkProps } from "react-router-dom";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import type { SetExpanded } from "../MachineTestsTable";
 import { ScriptResultAction } from "../MachineTestsTable";
@@ -8,30 +8,44 @@ import { ScriptResultAction } from "../MachineTestsTable";
 import TableMenu from "app/base/components/TableMenu";
 import { useSendAnalytics } from "app/base/hooks";
 import type { DataTestElement } from "app/base/types";
+import machineURLs from "app/machines/urls";
+import type { Machine } from "app/store/machine/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
+import { ScriptResultType } from "app/store/scriptresult/types";
 import { scriptResultInProgress } from "app/store/scriptresult/utils";
 
 type Props = {
+  machineId: Machine["system_id"];
+  resultType: ScriptResultType.TESTING | ScriptResultType.COMMISSIONING;
   scriptResult: ScriptResult;
   setExpanded: SetExpanded;
 };
 
 type LinkWithDataTest = DataTestElement<LinkProps>;
 
-const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
+const TestActions = ({
+  machineId,
+  resultType,
+  scriptResult,
+  setExpanded,
+}: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
-  const location = useLocation();
   const canViewDetails = !scriptResultInProgress(scriptResult.status);
   const hasMetrics = scriptResult.results.length > 0;
   const links: ContextualMenuProps<LinkWithDataTest>["links"] = [];
+  const isTesting = resultType === ScriptResultType.TESTING;
 
   if (canViewDetails) {
-    const urlStem = location?.pathname?.split("/")?.[3] || "testing";
     links.push({
       children: "View details...",
       "data-testid": "view-details",
       element: Link,
-      to: `${urlStem}/${scriptResult.id}/details`,
+      to: machineURLs.machine[
+        isTesting ? "testing" : "commissioning"
+      ].scriptResult({
+        id: machineId,
+        scriptResultId: scriptResult.id,
+      }),
     });
   }
 
@@ -44,7 +58,7 @@ const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
         content: ScriptResultAction.VIEW_PREVIOUS_TESTS,
       });
       sendAnalytics(
-        "Machine testing",
+        `Machine ${isTesting ? "testing" : "commissioning"}`,
         "View testing script history",
         "View previous tests"
       );
@@ -61,7 +75,11 @@ const TestActions = ({ scriptResult, setExpanded }: Props): JSX.Element => {
           content: ScriptResultAction.VIEW_METRICS,
         });
         sendAnalytics(
-          "Machine testing",
+          `Machine ${
+            resultType === ScriptResultType.TESTING
+              ? "testing"
+              : "commissioning"
+          }`,
           "View testing script metrics",
           "View metrics"
         );

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NameColumn from "./NameColumn";
@@ -31,11 +32,13 @@ describe("NameColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn
-            name={pod.name}
-            secondary={pod.power_parameters.project}
-            url={kvmURLs.virsh.details.index({ id: 1 })}
-          />
+          <CompatRouter>
+            <NameColumn
+              name={pod.name}
+              secondary={pod.power_parameters.project}
+              url={kvmURLs.virsh.details.index({ id: 1 })}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -54,11 +57,13 @@ describe("NameColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn
-            name={pod.name}
-            secondary={pod.power_parameters.project}
-            url={kvmURLs.lxd.single.index({ id: 1 })}
-          />
+          <CompatRouter>
+            <NameColumn
+              name={pod.name}
+              secondary={pod.power_parameters.project}
+              url={kvmURLs.lxd.single.index({ id: 1 })}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -84,11 +89,13 @@ describe("NameColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <NameColumn
-            name={pod.name}
-            secondary={pod.power_parameters.project}
-            url={kvmURLs.virsh.details.index({ id: 1 })}
-          />
+          <CompatRouter>
+            <NameColumn
+              name={pod.name}
+              secondary={pod.power_parameters.project}
+              url={kvmURLs.virsh.details.index({ id: 1 })}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

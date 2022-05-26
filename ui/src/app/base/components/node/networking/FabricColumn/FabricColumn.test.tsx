@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricColumn from "./FabricColumn";
@@ -49,7 +50,9 @@ describe("FabricColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <FabricColumn nic={nic} node={state.machine.items[0]} />
+          <CompatRouter>
+            <FabricColumn nic={nic} node={state.machine.items[0]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -74,7 +77,9 @@ describe("FabricColumn", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <FabricColumn nic={nic} node={state.machine.items[0]} />
+          <CompatRouter>
+            <FabricColumn nic={nic} node={state.machine.items[0]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

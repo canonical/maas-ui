@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DhcpTarget from "./DhcpTarget";
@@ -80,7 +81,9 @@ describe("DhcpTarget", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpTarget subnetId={808} />
+          <CompatRouter>
+            <DhcpTarget subnetId={808} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -92,7 +95,9 @@ describe("DhcpTarget", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpTarget subnetId={1} />
+          <CompatRouter>
+            <DhcpTarget subnetId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -106,7 +111,9 @@ describe("DhcpTarget", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <DhcpTarget nodeId="xyz" />
+          <CompatRouter>
+            <DhcpTarget nodeId="xyz" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SSLKeyList from "./SSLKeyList";
@@ -55,7 +56,9 @@ describe("SSLKeyList", () => {
             { pathname: "/account/prefs/ssl-keys", key: "testKey" },
           ]}
         >
-          <SSLKeyList />
+          <CompatRouter>
+            <SSLKeyList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -72,7 +75,9 @@ describe("SSLKeyList", () => {
             { pathname: "/account/prefs/ssl-keys", key: "testKey" },
           ]}
         >
-          <SSLKeyList />
+          <CompatRouter>
+            <SSLKeyList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -90,7 +95,9 @@ describe("SSLKeyList", () => {
             { pathname: "/account/prefs/ssl-keys", key: "testKey" },
           ]}
         >
-          <SSLKeyList />
+          <CompatRouter>
+            <SSLKeyList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -106,7 +113,9 @@ describe("SSLKeyList", () => {
             { pathname: "/account/prefs/ssl-keys", key: "testKey" },
           ]}
         >
-          <SSLKeyList />
+          <CompatRouter>
+            <SSLKeyList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -127,7 +136,9 @@ describe("SSLKeyList", () => {
             { pathname: "/account/prefs/ssl-keys", key: "testKey" },
           ]}
         >
-          <SSLKeyList />
+          <CompatRouter>
+            <SSLKeyList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -169,7 +180,9 @@ describe("SSLKeyList", () => {
             { pathname: "/account/prefs/ssl-keys", key: "testKey" },
           ]}
         >
-          <SSLKeyList />
+          <CompatRouter>
+            <SSLKeyList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

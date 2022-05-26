@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachinesHeader from "./MachinesHeader";
@@ -60,7 +61,9 @@ describe("MachinesHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachinesHeader />
+          <CompatRouter>
+            <MachinesHeader />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

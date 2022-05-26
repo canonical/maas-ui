@@ -8,7 +8,8 @@ import type {
 import { Icon, MainTable, Strip } from "@canonical/react-components";
 import type { History } from "history";
 import { useDispatch } from "react-redux";
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import { TAGS_PER_PAGE } from "../constants";
 

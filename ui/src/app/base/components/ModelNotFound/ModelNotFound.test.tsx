@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ModelNotFound from "./ModelNotFound";
@@ -16,7 +17,9 @@ describe("ModelNotFound", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
+          <CompatRouter>
+            <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -32,7 +35,9 @@ describe("ModelNotFound", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
+          <CompatRouter>
+            <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -47,12 +52,14 @@ describe("ModelNotFound", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <ModelNotFound
-            id={1}
-            linkText="Click here to win $500"
-            linkURL="www.url.com"
-            modelName="model"
-          />
+          <CompatRouter>
+            <ModelNotFound
+              id={1}
+              linkText="Click here to win $500"
+              linkURL="www.url.com"
+              modelName="model"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

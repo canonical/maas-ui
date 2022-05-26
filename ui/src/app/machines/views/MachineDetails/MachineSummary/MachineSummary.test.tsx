@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineSummary from "./MachineSummary";
@@ -33,7 +34,9 @@ describe("MachineSummary", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineSummary setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <MachineSummary setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -47,7 +50,9 @@ describe("MachineSummary", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineSummary setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <MachineSummary setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -69,11 +74,13 @@ describe("MachineSummary", () => {
             { pathname: "/machine/abc123/summary", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/summary"
-            render={() => <MachineSummary setHeaderContent={jest.fn()} />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/summary"
+              render={() => <MachineSummary setHeaderContent={jest.fn()} />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -95,11 +102,13 @@ describe("MachineSummary", () => {
             { pathname: "/machine/abc123/summary", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/summary"
-            render={() => <MachineSummary setHeaderContent={jest.fn()} />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/summary"
+              render={() => <MachineSummary setHeaderContent={jest.fn()} />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -118,11 +127,13 @@ describe("MachineSummary", () => {
             { pathname: "/machine/abc123/summary", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/summary"
-            render={() => <MachineSummary setHeaderContent={jest.fn()} />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/summary"
+              render={() => <MachineSummary setHeaderContent={jest.fn()} />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

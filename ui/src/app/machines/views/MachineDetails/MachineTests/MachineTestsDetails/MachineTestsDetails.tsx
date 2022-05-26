@@ -2,7 +2,8 @@ import { useEffect, useState } from "react";
 
 import { Col, Row, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
 

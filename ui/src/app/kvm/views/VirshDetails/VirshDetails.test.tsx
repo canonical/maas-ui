@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VirshDetails from "./VirshDetails";
@@ -43,7 +44,9 @@ describe("VirshDetails", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Route path="*/:id/*" render={() => <VirshDetails />} />
+            <CompatRouter>
+              <Route path="*/:id/*" render={() => <VirshDetails />} />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );

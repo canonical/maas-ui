@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MaasIntroSuccess from "./MaasIntroSuccess";
@@ -46,7 +47,9 @@ describe("MaasIntroSuccess", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/success", key: "testKey" }]}
         >
-          <MaasIntroSuccess />
+          <CompatRouter>
+            <MaasIntroSuccess />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -65,7 +68,9 @@ describe("MaasIntroSuccess", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/success", key: "testKey" }]}
         >
-          <MaasIntroSuccess />
+          <CompatRouter>
+            <MaasIntroSuccess />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -84,7 +89,9 @@ describe("MaasIntroSuccess", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/success", key: "testKey" }]}
         >
-          <MaasIntroSuccess />
+          <CompatRouter>
+            <MaasIntroSuccess />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -100,7 +107,9 @@ describe("MaasIntroSuccess", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/success", key: "testKey" }]}
         >
-          <MaasIntroSuccess />
+          <CompatRouter>
+            <MaasIntroSuccess />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagFormChanges, { Label, RowType } from "./TagFormChanges";
@@ -41,9 +42,14 @@ it("displays manual tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} newTags={[]} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges machines={state.machine.items} newTags={[]} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -67,9 +73,14 @@ it("displays automatic tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} newTags={[]} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges machines={state.machine.items} newTags={[]} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -95,15 +106,17 @@ it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
-          onSubmit={jest.fn()}
-        >
-          <TagFormChanges
-            machines={[state.machine.items[0]]}
-            newTags={[tags[1].id]}
-          />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges
+              machines={[state.machine.items[0]]}
+              newTags={[tags[1].id]}
+            />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -127,12 +140,14 @@ it("discards added tags", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
-          onSubmit={jest.fn()}
-        >
-          <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -152,9 +167,14 @@ it("displays a tag details modal when chips are clicked", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} newTags={[]} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges machines={state.machine.items} newTags={[]} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -167,9 +187,14 @@ it("can remove manual tags", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} newTags={[]} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges machines={state.machine.items} newTags={[]} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -193,12 +218,14 @@ it("displays removed tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
-          onSubmit={jest.fn()}
-        >
-          <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -223,12 +250,14 @@ it("discards removed tags", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
-          onSubmit={jest.fn()}
-        >
-          <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -262,9 +291,14 @@ it("shows a message if no tags are assigned to the selected machines", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormChanges machines={state.machine.items} newTags={[]} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormChanges machines={state.machine.items} newTags={[]} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

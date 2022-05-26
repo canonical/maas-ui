@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";

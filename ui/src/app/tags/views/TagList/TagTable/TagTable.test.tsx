@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagTable, { Label, TestId } from "./TagTable";
@@ -58,14 +59,16 @@ it("displays tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -82,14 +85,16 @@ it("displays the tags in order", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -105,14 +110,16 @@ it("can change the sort order", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -149,14 +156,16 @@ it("displays the tags for the current page", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={2}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={2}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -174,14 +183,16 @@ it("shows an icon for automatic tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -198,14 +209,16 @@ it("does not show an icon for manual tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -222,14 +235,16 @@ it("shows an icon for kernel options", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -246,14 +261,16 @@ it("does not show an icon for tags without kernel options", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -278,14 +295,16 @@ it("can link to nodes", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={tags}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={tags}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -324,14 +343,16 @@ it("does not display a message if there are tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -343,14 +364,16 @@ it("displays a message if there are no automatic tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.Auto}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.Auto}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -364,14 +387,16 @@ it("displays a message if there are no manual tags", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.Manual}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={jest.fn()}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.Manual}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={jest.fn()}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -385,14 +410,16 @@ it("displays a message if none match the search terms", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText="nothing"
-          setCurrentPage={jest.fn()}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText="nothing"
+            setCurrentPage={jest.fn()}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -406,14 +433,16 @@ it("displays a message if none match the filter and search terms", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.Auto}
-          onDelete={jest.fn()}
-          searchText="nothing"
-          setCurrentPage={jest.fn()}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.Auto}
+            onDelete={jest.fn()}
+            searchText="nothing"
+            setCurrentPage={jest.fn()}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -428,28 +457,32 @@ it("returns to the first page if the search changes", () => {
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.Auto}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={setCurrentPage}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.Auto}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={setCurrentPage}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
   rerender(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.Auto}
-          onDelete={jest.fn()}
-          searchText="new"
-          setCurrentPage={setCurrentPage}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.Auto}
+            onDelete={jest.fn()}
+            searchText="new"
+            setCurrentPage={setCurrentPage}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -462,28 +495,32 @@ it("returns to the first page if the filter changes", () => {
   const { rerender } = render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.All}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={setCurrentPage}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.All}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={setCurrentPage}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
   rerender(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagTable
-          currentPage={1}
-          filter={TagSearchFilter.Manual}
-          onDelete={jest.fn()}
-          searchText=""
-          setCurrentPage={setCurrentPage}
-          tags={[]}
-        />
+        <CompatRouter>
+          <TagTable
+            currentPage={1}
+            filter={TagSearchFilter.Manual}
+            onDelete={jest.fn()}
+            searchText=""
+            setCurrentPage={setCurrentPage}
+            tags={[]}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -499,20 +536,22 @@ it("can go to the tag edit page", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          exact
-          path={path}
-          component={() => (
-            <TagTable
-              currentPage={1}
-              filter={TagSearchFilter.All}
-              onDelete={jest.fn()}
-              searchText=""
-              setCurrentPage={jest.fn()}
-              tags={tags}
-            />
-          )}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={path}
+            component={() => (
+              <TagTable
+                currentPage={1}
+                filter={TagSearchFilter.All}
+                onDelete={jest.fn()}
+                searchText=""
+                setCurrentPage={jest.fn()}
+                tags={tags}
+              />
+            )}
+          />
+        </CompatRouter>
       </Router>
     </Provider>
   );

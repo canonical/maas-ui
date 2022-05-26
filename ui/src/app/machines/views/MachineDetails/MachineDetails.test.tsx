@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { Link, MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter, Link } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineDetails from "./MachineDetails";
@@ -120,10 +121,12 @@ describe("MachineDetails", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Route
-              path={route || "*/:id/*"}
-              render={() => <MachineDetails />}
-            />
+            <CompatRouter>
+              <Route
+                path={route || "*/:id/*"}
+                render={() => <MachineDetails />}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -138,7 +141,13 @@ describe("MachineDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route exact path="/machine/:id" render={() => <MachineDetails />} />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id"
+              render={() => <MachineDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -169,7 +178,9 @@ describe("MachineDetails", () => {
             { pathname: "/machine/not-valid-id", key: "testKey" },
           ]}
         >
-          <MachineDetails />
+          <CompatRouter>
+            <MachineDetails />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -183,7 +194,13 @@ describe("MachineDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route exact path="/machine/:id" render={() => <MachineDetails />} />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id"
+              render={() => <MachineDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -200,8 +217,10 @@ describe("MachineDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Link to="/machine/abc123/commissioning" />
-          <Route path="/machine/:id" render={() => <MachineDetails />} />
+          <CompatRouter>
+            <Link to="/machine/abc123/commissioning" />
+            <Route path="/machine/:id" render={() => <MachineDetails />} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

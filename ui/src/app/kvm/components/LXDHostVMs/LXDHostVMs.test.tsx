@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDHostToolbar from "../LXDHostToolbar";
@@ -36,13 +37,15 @@ describe("LXDHostVMs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <LXDHostVMs
-            hostId={1}
-            onRefreshClick={jest.fn()}
-            searchFilter=""
-            setSearchFilter={jest.fn()}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDHostVMs
+              hostId={1}
+              onRefreshClick={jest.fn()}
+              searchFilter=""
+              setSearchFilter={jest.fn()}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -78,13 +81,15 @@ describe("LXDHostVMs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
-          <LXDHostVMs
-            hostId={1}
-            onRefreshClick={jest.fn()}
-            searchFilter=""
-            setSearchFilter={jest.fn()}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDHostVMs
+              hostId={1}
+              onRefreshClick={jest.fn()}
+              searchFilter=""
+              setSearchFilter={jest.fn()}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -115,13 +120,15 @@ describe("LXDHostVMs", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDHostVMs
-            hostId={1}
-            onRefreshClick={jest.fn()}
-            searchFilter=""
-            setSearchFilter={jest.fn()}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDHostVMs
+              hostId={1}
+              onRefreshClick={jest.fn()}
+              searchFilter=""
+              setSearchFilter={jest.fn()}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -151,14 +158,16 @@ describe("LXDHostVMs", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDHostVMs
-            clusterId={2}
-            hostId={1}
-            onRefreshClick={jest.fn()}
-            searchFilter=""
-            setSearchFilter={jest.fn()}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDHostVMs
+              clusterId={2}
+              hostId={1}
+              onRefreshClick={jest.fn()}
+              searchFilter=""
+              setSearchFilter={jest.fn()}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -177,13 +186,15 @@ describe("LXDHostVMs", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <LXDHostVMs
-            hostId={1}
-            onRefreshClick={jest.fn()}
-            searchFilter=""
-            setSearchFilter={jest.fn()}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDHostVMs
+              hostId={1}
+              onRefreshClick={jest.fn()}
+              searchFilter=""
+              setSearchFilter={jest.fn()}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

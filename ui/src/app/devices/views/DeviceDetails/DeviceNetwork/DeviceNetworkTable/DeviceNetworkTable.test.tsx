@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
@@ -54,11 +55,13 @@ describe("DeviceNetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceNetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceNetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -70,11 +73,13 @@ describe("DeviceNetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceNetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceNetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -108,11 +113,13 @@ describe("DeviceNetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceNetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceNetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -151,11 +158,13 @@ describe("DeviceNetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceNetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceNetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -181,11 +190,13 @@ describe("DeviceNetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceNetworkTable
-            expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceNetworkTable
+              expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -214,11 +225,13 @@ describe("DeviceNetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceNetworkTable
-            expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <DeviceNetworkTable
+              expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

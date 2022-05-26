@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
@@ -65,13 +66,15 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable
-            clusterId={1}
-            currentPage={1}
-            hosts={state.pod.items}
-            searchFilter=""
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterHostsTable
+              clusterId={1}
+              currentPage={1}
+              hosts={state.pod.items}
+              searchFilter=""
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -90,13 +93,15 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable
-            clusterId={1}
-            currentPage={1}
-            hosts={state.pod.items}
-            searchFilter=""
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterHostsTable
+              clusterId={1}
+              currentPage={1}
+              hosts={state.pod.items}
+              searchFilter=""
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -117,13 +122,15 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable
-            clusterId={1}
-            currentPage={1}
-            hosts={state.pod.items}
-            searchFilter=""
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterHostsTable
+              clusterId={1}
+              currentPage={1}
+              hosts={state.pod.items}
+              searchFilter=""
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -145,13 +152,15 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable
-            clusterId={1}
-            currentPage={1}
-            hosts={state.pod.items}
-            searchFilter=""
-            setHeaderContent={setHeaderContent}
-          />
+          <CompatRouter>
+            <LXDClusterHostsTable
+              clusterId={1}
+              currentPage={1}
+              hosts={state.pod.items}
+              searchFilter=""
+              setHeaderContent={setHeaderContent}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -174,13 +183,15 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable
-            clusterId={1}
-            currentPage={1}
-            hosts={state.pod.items}
-            searchFilter=""
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterHostsTable
+              clusterId={1}
+              currentPage={1}
+              hosts={state.pod.items}
+              searchFilter=""
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -188,9 +199,11 @@ describe("LXDClusterHostsTable", () => {
       wrapper.find("Link[data-testid='vm-host-settings']").prop("to")
     ).toStrictEqual({
       pathname: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 22 }),
-      state: {
-        from: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
-      },
+    });
+    expect(
+      wrapper.find("Link[data-testid='vm-host-settings']").prop("state")
+    ).toStrictEqual({
+      from: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
     });
   });
 
@@ -206,13 +219,15 @@ describe("LXDClusterHostsTable", () => {
             },
           ]}
         >
-          <LXDClusterHostsTable
-            clusterId={1}
-            currentPage={1}
-            hosts={[]}
-            searchFilter="nothing"
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterHostsTable
+              clusterId={1}
+              currentPage={1}
+              hosts={[]}
+              searchFilter="nothing"
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

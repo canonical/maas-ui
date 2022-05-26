@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import Routes from "./Routes";
@@ -141,7 +142,9 @@ describe("Routes", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Routes />
+            <CompatRouter>
+              <Routes />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );

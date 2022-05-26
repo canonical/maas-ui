@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SpaceDetails from "./SpaceDetails";
@@ -23,11 +24,13 @@ it("dispatches actions to get and set space as active on mount", () => {
       <MemoryRouter
         initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={subnetsURLs.space.index(null, true)}
-          component={() => <SpaceDetails />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.space.index(null, true)}
+            component={() => <SpaceDetails />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -51,11 +54,13 @@ it("dispatches actions to unset active space and clean up on unmount", () => {
       <MemoryRouter
         initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={subnetsURLs.space.index(null, true)}
-          component={() => <SpaceDetails />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.space.index(null, true)}
+            component={() => <SpaceDetails />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -92,11 +97,13 @@ it("displays a message if the space does not exist", () => {
       <MemoryRouter
         initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={subnetsURLs.space.index(null, true)}
-          component={() => <SpaceDetails />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.space.index(null, true)}
+            component={() => <SpaceDetails />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -117,11 +124,13 @@ it("shows a spinner if the space has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={subnetsURLs.space.index(null, true)}
-          component={() => <SpaceDetails />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.space.index(null, true)}
+            component={() => <SpaceDetails />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -149,11 +158,13 @@ it("displays space details", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={subnetsURLs.space.index(null, true)}
-          component={() => <SpaceDetails />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.space.index(null, true)}
+            component={() => <SpaceDetails />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

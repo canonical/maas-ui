@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDSingleDetails from "./LXDSingleDetails";
@@ -47,10 +48,12 @@ describe("LXDSingleDetails", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Route
-              path={kvmURLs.lxd.single.index(null, true)}
-              render={() => <LXDSingleDetails />}
-            />
+            <CompatRouter>
+              <Route
+                path={kvmURLs.lxd.single.index(null, true)}
+                render={() => <LXDSingleDetails />}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );

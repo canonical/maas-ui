@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NetworkTable from "./NetworkTable";
@@ -54,13 +55,15 @@ describe("NetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -72,13 +75,15 @@ describe("NetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -112,13 +117,15 @@ describe("NetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -159,13 +166,15 @@ describe("NetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -210,13 +219,15 @@ describe("NetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NetworkTable
-            expanded={null}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NetworkTable
+              expanded={null}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -246,13 +257,15 @@ describe("NetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NetworkTable
-            expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NetworkTable
+              expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -281,13 +294,15 @@ describe("NetworkTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <NetworkTable
-            expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-            setExpanded={jest.fn()}
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <NetworkTable
+              expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
+              setExpanded={jest.fn()}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -325,13 +340,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -344,13 +361,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -364,13 +383,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -382,13 +403,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -400,13 +423,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -418,13 +443,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -436,13 +463,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -454,13 +483,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -521,13 +552,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -554,13 +587,15 @@ describe("NetworkTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <NetworkTable
-              expanded={null}
-              setExpanded={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
+            <CompatRouter>
+              <NetworkTable
+                expanded={null}
+                setExpanded={jest.fn()}
+                selected={[]}
+                setSelected={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );

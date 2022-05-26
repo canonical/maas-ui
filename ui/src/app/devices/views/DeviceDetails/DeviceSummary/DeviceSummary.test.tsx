@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceSummary from "./DeviceSummary";
@@ -22,7 +23,9 @@ describe("DeviceSummary", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceSummary systemId="abc123" />
+          <CompatRouter>
+            <DeviceSummary systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -41,7 +44,9 @@ describe("DeviceSummary", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeviceSummary systemId="abc123" />
+          <CompatRouter>
+            <DeviceSummary systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -2,6 +2,7 @@ import { ContextualMenu } from "@canonical/react-components";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineListHeader from "./MachineListHeader";
@@ -49,11 +50,13 @@ describe("MachineListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -68,11 +71,13 @@ describe("MachineListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -91,11 +96,13 @@ describe("MachineListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={setSearchFilter}
-          />
+          <CompatRouter>
+            <MachineListHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={setSearchFilter}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -117,11 +124,13 @@ describe("MachineListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -138,11 +147,13 @@ describe("MachineListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -161,11 +172,13 @@ describe("MachineListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListHeader
-            headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListHeader
+              headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -187,11 +200,13 @@ describe("MachineListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -222,11 +237,13 @@ describe("MachineListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <MachineListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineListHeader
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

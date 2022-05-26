@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagForm from "./TagForm";
@@ -56,7 +57,9 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <TagForm systemId="abc123" />
+          <CompatRouter>
+            <TagForm systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -72,7 +75,9 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <TagForm systemId="abc123" />
+          <CompatRouter>
+            <TagForm systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -88,7 +93,9 @@ describe("TagForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter>
-          <TagForm systemId="abc123" />
+          <CompatRouter>
+            <TagForm systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

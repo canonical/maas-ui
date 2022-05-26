@@ -55,13 +55,59 @@ exports[`MachineTestDetails renders 1`] = `
         }
       }
     >
-      <MachineTestsDetails>
-        <h4
-          data-testid="not-found"
+      <CompatRouter>
+        <Router
+          location={
+            Object {
+              "hash": "",
+              "key": "testKey",
+              "pathname": "/machine/abc123",
+              "search": "",
+            }
+          }
+          navigationType="POP"
+          navigator={
+            Object {
+              "action": "POP",
+              "block": [Function],
+              "canGo": [Function],
+              "createHref": [Function],
+              "entries": Array [
+                Object {
+                  "hash": "",
+                  "key": "testKey",
+                  "pathname": "/machine/abc123",
+                  "search": "",
+                },
+              ],
+              "go": [Function],
+              "goBack": [Function],
+              "goForward": [Function],
+              "index": 0,
+              "length": 1,
+              "listen": [Function],
+              "location": Object {
+                "hash": "",
+                "key": "testKey",
+                "pathname": "/machine/abc123",
+                "search": "",
+              },
+              "push": [Function],
+              "replace": [Function],
+            }
+          }
         >
-          Script result could not be found.
-        </h4>
-      </MachineTestsDetails>
+          <Routes>
+            <MachineTestsDetails>
+              <h4
+                data-testid="not-found"
+              >
+                Script result could not be found.
+              </h4>
+            </MachineTestsDetails>
+          </Routes>
+        </Router>
+      </CompatRouter>
     </Router>
   </MemoryRouter>
 </Provider>

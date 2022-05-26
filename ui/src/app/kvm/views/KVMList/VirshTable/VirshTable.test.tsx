@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VirshTable from "./VirshTable";
@@ -52,7 +53,9 @@ describe("VirshTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <VirshTable />
+          <CompatRouter>
+            <VirshTable />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -73,7 +76,9 @@ describe("VirshTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <VirshTable />
+          <CompatRouter>
+            <VirshTable />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -139,7 +144,9 @@ describe("VirshTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <VirshTable />
+          <CompatRouter>
+            <VirshTable />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

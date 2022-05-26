@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
@@ -53,12 +54,14 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <LXDClusterDetailsHeader
-            clusterId={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterDetailsHeader
+              clusterId={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -78,12 +81,14 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <LXDClusterDetailsHeader
-            clusterId={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterDetailsHeader
+              clusterId={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -109,12 +114,14 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <LXDClusterDetailsHeader
-            clusterId={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterDetailsHeader
+              clusterId={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -135,12 +142,14 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <LXDClusterDetailsHeader
-            clusterId={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterDetailsHeader
+              clusterId={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -161,12 +170,14 @@ describe("LXDClusterDetailsHeader", () => {
             },
           ]}
         >
-          <LXDClusterDetailsHeader
-            clusterId={1}
-            headerContent={null}
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterDetailsHeader
+              clusterId={1}
+              headerContent={null}
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

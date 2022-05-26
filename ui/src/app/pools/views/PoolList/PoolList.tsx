@@ -8,7 +8,7 @@ import {
   Row,
 } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 import type { Dispatch } from "redux";
 
 import TableActions from "app/base/components/TableActions";

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditInterfaceTable from "./EditInterfaceTable";
@@ -57,7 +58,9 @@ describe("EditInterfaceTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+          <CompatRouter>
+            <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -69,7 +72,9 @@ describe("EditInterfaceTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+          <CompatRouter>
+            <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -102,7 +107,9 @@ describe("EditInterfaceTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+          <CompatRouter>
+            <EditInterfaceTable nicId={nic.id} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

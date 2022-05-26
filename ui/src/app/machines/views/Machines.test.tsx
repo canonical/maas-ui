@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, useLocation } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
@@ -79,7 +80,9 @@ describe("Machines", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <Machines />
+            <CompatRouter>
+              <Machines />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -96,7 +99,9 @@ describe("Machines", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <Machines />
+          <CompatRouter>
+            <Machines />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -120,8 +125,10 @@ describe("Machines", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <Machines />
-          <Route path="*" render={() => <FetchRoute />} />
+          <CompatRouter>
+            <Machines />
+            <Route path="*" render={() => <FetchRoute />} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -139,7 +146,9 @@ describe("Machines", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <Machines />
+          <CompatRouter>
+            <Machines />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -163,7 +172,9 @@ describe("Machines", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <Machines />
+          <CompatRouter>
+            <Machines />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

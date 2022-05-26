@@ -4,6 +4,7 @@ import { Formik } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { DeviceType } from "../types";
@@ -44,16 +45,18 @@ describe("DiscoveryAddFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <Formik
-            initialValues={{ type: DeviceType.DEVICE }}
-            onSubmit={jest.fn()}
-          >
-            <DiscoveryAddFormFields
-              discovery={discovery}
-              setDevice={jest.fn()}
-              setDeviceType={jest.fn()}
-            />
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={{ type: DeviceType.DEVICE }}
+              onSubmit={jest.fn()}
+            >
+              <DiscoveryAddFormFields
+                discovery={discovery}
+                setDevice={jest.fn()}
+                setDeviceType={jest.fn()}
+              />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -69,16 +72,18 @@ describe("DiscoveryAddFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <Formik
-            initialValues={{ type: DeviceType.INTERFACE }}
-            onSubmit={jest.fn()}
-          >
-            <DiscoveryAddFormFields
-              discovery={discovery}
-              setDevice={jest.fn()}
-              setDeviceType={jest.fn()}
-            />
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={{ type: DeviceType.INTERFACE }}
+              onSubmit={jest.fn()}
+            >
+              <DiscoveryAddFormFields
+                discovery={discovery}
+                setDevice={jest.fn()}
+                setDeviceType={jest.fn()}
+              />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -95,13 +100,15 @@ describe("DiscoveryAddFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <DiscoveryAddFormFields
-              discovery={discovery}
-              setDevice={jest.fn()}
-              setDeviceType={jest.fn()}
-            />
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <DiscoveryAddFormFields
+                discovery={discovery}
+                setDevice={jest.fn()}
+                setDeviceType={jest.fn()}
+              />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -122,13 +129,15 @@ describe("DiscoveryAddFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <DiscoveryAddFormFields
-              discovery={discovery}
-              setDevice={jest.fn()}
-              setDeviceType={jest.fn()}
-            />
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <DiscoveryAddFormFields
+                discovery={discovery}
+                setDevice={jest.fn()}
+                setDeviceType={jest.fn()}
+              />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -156,16 +165,18 @@ describe("DiscoveryAddFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <Formik
-            initialValues={{ type: DeviceType.INTERFACE }}
-            onSubmit={jest.fn()}
-          >
-            <DiscoveryAddFormFields
-              discovery={discovery}
-              setDevice={setDevice}
-              setDeviceType={setDeviceType}
-            />
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={{ type: DeviceType.INTERFACE }}
+              onSubmit={jest.fn()}
+            >
+              <DiscoveryAddFormFields
+                discovery={discovery}
+                setDevice={setDevice}
+                setDeviceType={setDeviceType}
+              />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -196,16 +207,18 @@ describe("DiscoveryAddFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <Formik
-            initialValues={{ type: DeviceType.INTERFACE }}
-            onSubmit={jest.fn()}
-          >
-            <DiscoveryAddFormFields
-              discovery={discovery}
-              setDevice={setDevice}
-              setDeviceType={jest.fn()}
-            />
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={{ type: DeviceType.INTERFACE }}
+              onSubmit={jest.fn()}
+            >
+              <DiscoveryAddFormFields
+                discovery={discovery}
+                setDevice={setDevice}
+                setDeviceType={jest.fn()}
+              />
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

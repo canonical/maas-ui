@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceLink from "./DeviceLink";
@@ -22,7 +23,9 @@ it("handles when devices are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DeviceLink systemId="abc123" />
+        <CompatRouter>
+          <DeviceLink systemId="abc123" />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -38,7 +41,9 @@ it("handles when a device does not exist", () => {
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <DeviceLink systemId="abc123" />
+        <CompatRouter>
+          <DeviceLink systemId="abc123" />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -55,7 +60,9 @@ it("renders a link if devices have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <DeviceLink systemId={device.system_id} />
+        <CompatRouter>
+          <DeviceLink systemId={device.system_id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

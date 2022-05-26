@@ -1,6 +1,7 @@
 import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricVLANs from "./FabricVLANs";
@@ -39,11 +40,13 @@ it("renders correct details", () => {
       <MemoryRouter
         initialEntries={[{ pathname: subnetsURLs.fabric.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={subnetsURLs.fabric.index({ id: fabric.id })}
-          component={() => <FabricVLANs fabric={fabric} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.fabric.index({ id: fabric.id })}
+            component={() => <FabricVLANs fabric={fabric} />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -116,7 +119,9 @@ it("handles a VLAN without any subnets", () => {
           { pathname: subnetsURLs.fabric.index({ id: fabric.id }) },
         ]}
       >
-        <FabricVLANs fabric={fabric} />
+        <CompatRouter>
+          <FabricVLANs fabric={fabric} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -163,7 +168,9 @@ it("handles a VLAN with multiple subnets", () => {
           { pathname: subnetsURLs.fabric.index({ id: fabric.id }) },
         ]}
       >
-        <FabricVLANs fabric={fabric} />
+        <CompatRouter>
+          <FabricVLANs fabric={fabric} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

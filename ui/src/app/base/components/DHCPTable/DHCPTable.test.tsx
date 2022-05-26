@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DHCPTable from "./DHCPTable";
@@ -57,10 +58,12 @@ describe("DHCPTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DHCPTable
-            node={state.machine.items[0]}
-            modelName={MachineMeta.MODEL}
-          />
+          <CompatRouter>
+            <DHCPTable
+              node={state.machine.items[0]}
+              modelName={MachineMeta.MODEL}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -82,10 +85,12 @@ describe("DHCPTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DHCPTable
-            node={state.machine.items[0]}
-            modelName={MachineMeta.MODEL}
-          />
+          <CompatRouter>
+            <DHCPTable
+              node={state.machine.items[0]}
+              modelName={MachineMeta.MODEL}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -108,7 +113,9 @@ describe("DHCPTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DHCPTable subnets={subnets} modelName={MachineMeta.MODEL} />
+          <CompatRouter>
+            <DHCPTable subnets={subnets} modelName={MachineMeta.MODEL} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -138,10 +145,12 @@ describe("DHCPTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <DHCPTable
-            node={state.machine.items[0]}
-            modelName={MachineMeta.MODEL}
-          />
+          <CompatRouter>
+            <DHCPTable
+              node={state.machine.items[0]}
+              modelName={MachineMeta.MODEL}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

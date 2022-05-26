@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { PoolColumn } from "./PoolColumn";
@@ -58,7 +59,9 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -74,7 +77,9 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -90,7 +95,9 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -113,7 +120,9 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -133,7 +142,9 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -152,7 +163,9 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -188,7 +201,9 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          <CompatRouter>
+            <PoolColumn onToggleMenu={jest.fn()} systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -209,7 +224,9 @@ describe("PoolColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <PoolColumn systemId="abc123" />
+          <CompatRouter>
+            <PoolColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

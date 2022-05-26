@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceNetwork from "./DeviceNetwork";
@@ -26,7 +27,9 @@ describe("DeviceNetwork", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/device/abc123", key: "testKey" }]}
         >
-          <DeviceNetwork systemId="abc123" />
+          <CompatRouter>
+            <DeviceNetwork systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -46,7 +49,9 @@ describe("DeviceNetwork", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/device/abc123", key: "testKey" }]}
         >
-          <DeviceNetwork systemId="abc123" />
+          <CompatRouter>
+            <DeviceNetwork systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

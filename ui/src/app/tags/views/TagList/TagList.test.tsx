@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagList from "./TagList";
@@ -35,7 +36,9 @@ it("renders", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <TagList onDelete={jest.fn()} />
+        <CompatRouter>
+          <TagList onDelete={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

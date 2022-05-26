@@ -2,7 +2,8 @@ import { useEffect } from "react";
 
 import { Button, Icon, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import Switch from "app/base/components/Switch";
 import { useSendAnalytics } from "app/base/hooks";
@@ -74,12 +75,12 @@ const LXDHostToolbar = ({
           <div className="u-nudge-up--x-small u-truncate">
             <Link
               data-testid="settings-link"
+              state={{ from: location.pathname }}
               to={{
                 pathname: kvmURLs.lxd.cluster.host.edit({
                   clusterId,
                   hostId,
                 }),
-                state: { from: location.pathname },
               }}
             >
               <Icon name="settings" />

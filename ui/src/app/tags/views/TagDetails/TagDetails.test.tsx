@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Label } from "../TagUpdate/TagUpdate";
@@ -46,11 +47,13 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagDetails onDelete={jest.fn()} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagDetails onDelete={jest.fn()} />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -79,11 +82,13 @@ it("displays a message if the tag does not exist", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagDetails onDelete={jest.fn()} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagDetails onDelete={jest.fn()} />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -104,11 +109,13 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagDetails onDelete={jest.fn()} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagDetails onDelete={jest.fn()} />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -123,16 +130,18 @@ it("can display the edit form", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.update({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.update(null, true)}
-          component={() => (
-            <TagDetails
-              tagViewState={TagViewState.Updating}
-              onDelete={jest.fn()}
-            />
-          )}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.update(null, true)}
+            component={() => (
+              <TagDetails
+                tagViewState={TagViewState.Updating}
+                onDelete={jest.fn()}
+              />
+            )}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -148,11 +157,13 @@ it("can go to the tag edit page", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagDetails onDelete={jest.fn()} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagDetails onDelete={jest.fn()} />}
+          />
+        </CompatRouter>
       </Router>
     </Provider>
   );

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TestHistory from "./TestHistory";
@@ -47,7 +48,9 @@ describe("TestHistory", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          <CompatRouter>
+            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -80,7 +83,9 @@ describe("TestHistory", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          <CompatRouter>
+            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -100,7 +105,9 @@ describe("TestHistory", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          <CompatRouter>
+            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -120,7 +127,9 @@ describe("TestHistory", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          <CompatRouter>
+            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -140,7 +149,9 @@ describe("TestHistory", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          <CompatRouter>
+            <TestHistory close={jest.fn()} scriptResult={scriptResult} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineLogs from "./MachineLogs";
@@ -38,7 +39,9 @@ describe("MachineLogs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineLogs systemId="abc123" />
+          <CompatRouter>
+            <MachineLogs systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -64,7 +67,9 @@ describe("MachineLogs", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <MachineLogs systemId="abc123" />
+            <CompatRouter>
+              <MachineLogs systemId="abc123" />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -81,7 +86,9 @@ describe("MachineLogs", () => {
             { pathname: "/machine/abc123/logs/events", key: "testKey" },
           ]}
         >
-          <MachineLogs systemId="abc123" />
+          <CompatRouter>
+            <MachineLogs systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CpuCard from "./CpuCard";
@@ -35,7 +36,9 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -55,7 +58,9 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -78,7 +83,9 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -102,7 +109,9 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -125,7 +134,9 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -148,7 +159,9 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -169,7 +182,9 @@ describe("CpuCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <CpuCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

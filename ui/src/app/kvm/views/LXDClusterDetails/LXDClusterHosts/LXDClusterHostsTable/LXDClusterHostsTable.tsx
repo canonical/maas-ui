@@ -11,7 +11,8 @@ import {
 } from "@canonical/react-components";
 import type { Location } from "history";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
@@ -150,12 +151,12 @@ const generateRows = (
                 <Link
                   className="p-button no-background has-icon u-no-margin"
                   data-testid="vm-host-settings"
+                  state={{ from: location.pathname }}
                   to={{
                     pathname: kvmURLs.lxd.cluster.host.edit({
                       clusterId,
                       hostId: host.id,
                     }),
-                    state: { from: location.pathname },
                   }}
                 >
                   <Icon name="settings" />

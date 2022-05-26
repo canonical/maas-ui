@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import { useCanEdit, useIsRackControllerConnected } from "app/base/hooks";
 import imagesURLs from "app/images/urls";

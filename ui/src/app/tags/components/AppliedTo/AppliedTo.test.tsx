@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AppliedTo from "./AppliedTo";
@@ -47,7 +48,9 @@ it("links to nodes", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <AppliedTo id={1} />
+        <CompatRouter>
+          <AppliedTo id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -93,7 +96,9 @@ it("displays a message if there are no nodes", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <AppliedTo id={1} />
+        <CompatRouter>
+          <AppliedTo id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

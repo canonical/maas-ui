@@ -1,11 +1,15 @@
 import type { ReactWrapper } from "enzyme";
 import { mount } from "enzyme";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 
 import TestActions from "./TestActions";
 
 import * as hooks from "app/base/hooks/analytics";
-import { ScriptResultStatus } from "app/store/scriptresult/types";
+import {
+  ScriptResultStatus,
+  ScriptResultType,
+} from "app/store/scriptresult/types";
 import {
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
@@ -40,7 +44,14 @@ describe("TestActions", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123/commissioning" }]}
       >
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions
+            machineId="abc123"
+            resultType={ScriptResultType.COMMISSIONING}
+            scriptResult={scriptResult}
+            setExpanded={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     );
 
@@ -49,7 +60,7 @@ describe("TestActions", () => {
       true
     );
     expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
-      "commissioning/1/details"
+      "/machine/abc123/commissioning/1/details"
     );
   });
 
@@ -60,7 +71,14 @@ describe("TestActions", () => {
     });
     const wrapper = mount(
       <MemoryRouter initialEntries={[{ pathname: "/machine/abc123/testing" }]}>
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions
+            machineId="abc123"
+            resultType={ScriptResultType.TESTING}
+            scriptResult={scriptResult}
+            setExpanded={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     );
 
@@ -69,7 +87,7 @@ describe("TestActions", () => {
       true
     );
     expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
-      "testing/1/details"
+      "/machine/abc123/testing/1/details"
     );
   });
 
@@ -79,7 +97,14 @@ describe("TestActions", () => {
     });
     const wrapper = mount(
       <MemoryRouter>
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions
+            machineId="abc123"
+            resultType={ScriptResultType.TESTING}
+            scriptResult={scriptResult}
+            setExpanded={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     );
 
@@ -91,7 +116,14 @@ describe("TestActions", () => {
     const scriptResult = scriptResultFactory();
     const wrapper = mount(
       <MemoryRouter>
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions
+            machineId="abc123"
+            resultType={ScriptResultType.TESTING}
+            scriptResult={scriptResult}
+            setExpanded={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     );
 
@@ -110,7 +142,14 @@ describe("TestActions", () => {
     const scriptResult = scriptResultFactory();
     const wrapper = mount(
       <MemoryRouter>
-        <TestActions scriptResult={scriptResult} setExpanded={jest.fn()} />
+        <CompatRouter>
+          <TestActions
+            machineId="abc123"
+            resultType={ScriptResultType.TESTING}
+            scriptResult={scriptResult}
+            setExpanded={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     );
 

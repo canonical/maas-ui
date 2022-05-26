@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import StorageCard from "./StorageCard";
@@ -36,7 +37,9 @@ describe("StorageCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -60,7 +63,9 @@ describe("StorageCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +88,9 @@ describe("StorageCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -106,7 +113,9 @@ describe("StorageCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -127,7 +136,9 @@ describe("StorageCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <StorageCard machine={machine} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

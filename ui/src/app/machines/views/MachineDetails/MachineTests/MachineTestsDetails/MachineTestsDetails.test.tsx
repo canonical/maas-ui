@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineTestsDetails from ".";
@@ -45,7 +46,9 @@ describe("MachineTestDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineTestsDetails />
+          <CompatRouter>
+            <MachineTestsDetails />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -59,10 +62,12 @@ describe("MachineTestDetails", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
-          <Route
-            path="/machine/:id/testing/:scriptResultId/details"
-            render={() => <MachineTestsDetails />}
-          />
+          <CompatRouter>
+            <Route
+              path="/machine/:id/testing/:scriptResultId/details"
+              render={() => <MachineTestsDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -75,10 +80,12 @@ describe("MachineTestDetails", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
-          <Route
-            path="/machine/:id/testing/:scriptResultId/details"
-            render={() => <MachineTestsDetails />}
-          />
+          <CompatRouter>
+            <Route
+              path="/machine/:id/testing/:scriptResultId/details"
+              render={() => <MachineTestsDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -94,10 +101,12 @@ describe("MachineTestDetails", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
-          <Route
-            path="/machine/:id/testing/:scriptResultId/details"
-            render={() => <MachineTestsDetails />}
-          />
+          <CompatRouter>
+            <Route
+              path="/machine/:id/testing/:scriptResultId/details"
+              render={() => <MachineTestsDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -126,10 +135,12 @@ describe("MachineTestDetails", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
-          <Route
-            path="/machine/:id/testing/:scriptResultId/details"
-            render={() => <MachineTestsDetails />}
-          />
+          <CompatRouter>
+            <Route
+              path="/machine/:id/testing/:scriptResultId/details"
+              render={() => <MachineTestsDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -155,10 +166,12 @@ describe("MachineTestDetails", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
-          <Route
-            path="/machine/:id/testing/:scriptResultId/details"
-            render={() => <MachineTestsDetails />}
-          />
+          <CompatRouter>
+            <Route
+              path="/machine/:id/testing/:scriptResultId/details"
+              render={() => <MachineTestsDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -183,10 +196,12 @@ describe("MachineTestDetails", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
-          <Route
-            path="/machine/:id/testing/:scriptResultId/details"
-            render={() => <MachineTestsDetails />}
-          />
+          <CompatRouter>
+            <Route
+              path="/machine/:id/testing/:scriptResultId/details"
+              render={() => <MachineTestsDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -223,10 +238,12 @@ describe("MachineTestDetails", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
-          <Route
-            path="/machine/:id/testing/:scriptResultId/details"
-            render={() => <MachineTestsDetails />}
-          />
+          <CompatRouter>
+            <Route
+              path="/machine/:id/testing/:scriptResultId/details"
+              render={() => <MachineTestsDetails />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

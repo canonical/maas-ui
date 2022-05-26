@@ -1,5 +1,6 @@
 import { Button } from "@canonical/react-components";
-import { Link, Route, Switch } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import PoolList from "./PoolList";
 

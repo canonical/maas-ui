@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useSelector, useDispatch } from "react-redux";
-import { Link, useLocation } from "react-router-dom";
+import { useLocation } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import ClearAllForm from "./ClearAllForm";
 

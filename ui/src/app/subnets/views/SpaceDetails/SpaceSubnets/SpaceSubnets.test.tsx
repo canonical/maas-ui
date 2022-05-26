@@ -1,6 +1,7 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SpaceSubnets from "./SpaceSubnets";
@@ -54,11 +55,13 @@ it("displays a message when there are no subnets", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={subnetsURLs.space.index({ id: space.id })}
-          component={() => <SpaceSubnets space={space} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.space.index({ id: space.id })}
+            component={() => <SpaceSubnets space={space} />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -90,11 +93,13 @@ it("displays subnet details correctly", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={subnetsURLs.space.index({ id: space.id })}
-          component={() => <SpaceSubnets space={space} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.space.index({ id: space.id })}
+            component={() => <SpaceSubnets space={space} />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

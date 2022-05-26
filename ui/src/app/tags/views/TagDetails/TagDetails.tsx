@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Button, Col, Icon, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Link } from "react-router-dom";
+import { Link } from "react-router-dom-v5-compat";
 
 import TagUpdate from "../TagUpdate";
 
@@ -84,9 +84,9 @@ const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
               <Button
                 element={Link}
                 hasIcon
+                state={{ canGoBack: true }}
                 to={{
                   pathname: tagURLs.tag.update({ id: tag.id }),
-                  state: { canGoBack: true },
                 }}
               >
                 <Icon className="is-light" name="edit" />{" "}

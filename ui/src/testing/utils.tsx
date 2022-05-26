@@ -7,6 +7,7 @@ import type { FormikHelpers } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FormikForm from "app/base/components/FormikForm";
@@ -113,7 +114,9 @@ const BrowserRouterWithProvider = ({
 
   return (
     <Provider store={getMockStore(state)}>
-      <BrowserRouter>{children}</BrowserRouter>
+      <BrowserRouter>
+        <CompatRouter>{children}</CompatRouter>
+      </BrowserRouter>
     </Provider>
   );
 };
