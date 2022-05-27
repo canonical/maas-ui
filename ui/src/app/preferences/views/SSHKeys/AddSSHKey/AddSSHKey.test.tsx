@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { AddSSHKey } from "./AddSSHKey";
@@ -31,7 +32,9 @@ describe("AddSSHKey", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <AddSSHKey />
+          <CompatRouter>
+            <AddSSHKey />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -44,7 +47,9 @@ describe("AddSSHKey", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <AddSSHKey />
+          <CompatRouter>
+            <AddSSHKey />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagUpdate from "./TagUpdate";
@@ -50,11 +51,13 @@ it("dispatches actions to fetch necessary data", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagUpdate id={1} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagUpdate id={1} />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -83,11 +86,13 @@ it("shows a spinner if the tag has not loaded yet", () => {
       <MemoryRouter
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
-        <Route
-          exact
-          path={tagURLs.tag.index(null, true)}
-          component={() => <TagUpdate id={1} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.index(null, true)}
+            component={() => <TagUpdate id={1} />}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -100,7 +105,9 @@ it("can update the tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <TagUpdate id={1} />
+        <CompatRouter>
+          <TagUpdate id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -142,11 +149,13 @@ it("can return to the previous page on save", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          exact
-          path={tagURLs.tag.update(null, true)}
-          component={() => <TagUpdate id={1} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.update(null, true)}
+            component={() => <TagUpdate id={1} />}
+          />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -180,11 +189,13 @@ it("goes to the tag details page if it can't go back", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          exact
-          path={tagURLs.tag.update(null, true)}
-          component={() => <TagUpdate id={1} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagURLs.tag.update(null, true)}
+            component={() => <TagUpdate id={1} />}
+          />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -213,7 +224,9 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <TagUpdate id={1} />
+        <CompatRouter>
+          <TagUpdate id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

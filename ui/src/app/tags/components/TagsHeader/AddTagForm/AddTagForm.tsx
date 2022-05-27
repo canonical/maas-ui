@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
@@ -40,7 +40,7 @@ const AddTagFormSchema = Yup.object().shape({
 
 export const AddTagForm = ({ onClose }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [savedName, setSavedName] = useState<Tag["name"] | null>(null);
   const saved = useSelector(tagSelectors.saved);
   const saving = useSelector(tagSelectors.saving);
@@ -54,7 +54,7 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
 
   useEffect(() => {
     if (tag) {
-      history.push({ pathname: tagsURLs.tag.index({ id: tag.id }) });
+      navigate({ pathname: tagsURLs.tag.index({ id: tag.id }) });
       if (tag.definition) {
         sendAnalytics("XPath tagging", "Valid XPath", "Save");
       } else {
@@ -62,7 +62,7 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
       }
       onClose();
     }
-  }, [history, onClose, tag, sendAnalytics]);
+  }, [navigate, onClose, tag, sendAnalytics]);
 
   return (
     <FormikForm<CreateParams>

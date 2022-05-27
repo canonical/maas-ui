@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
@@ -43,7 +44,9 @@ it("dispatches an action to create a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <AddTagForm onClose={jest.fn()} />
+        <CompatRouter>
+          <AddTagForm onClose={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -86,11 +89,13 @@ it("redirects to the newly created tag on save", async () => {
   const TagForm = () => (
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          exact
-          path={tagsURLs.tags.index}
-          component={() => <AddTagForm onClose={onClose} />}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagsURLs.tags.index}
+            component={() => <AddTagForm onClose={onClose} />}
+          />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -126,7 +131,9 @@ it("sends analytics when there is a definition", async () => {
   const TagForm = () => (
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <AddTagForm onClose={onClose} />
+        <CompatRouter>
+          <AddTagForm onClose={onClose} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -167,7 +174,9 @@ it("sends analytics when there is no definition", async () => {
   const TagForm = () => (
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <AddTagForm onClose={onClose} />
+        <CompatRouter>
+          <AddTagForm onClose={onClose} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -203,7 +212,9 @@ it("shows a confirmation when an automatic tag is added", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <AddTagForm onClose={jest.fn()} />
+        <CompatRouter>
+          <AddTagForm onClose={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -238,7 +249,9 @@ it("shows an error if tag name is invalid", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <AddTagForm onClose={jest.fn()} />
+        <CompatRouter>
+          <AddTagForm onClose={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

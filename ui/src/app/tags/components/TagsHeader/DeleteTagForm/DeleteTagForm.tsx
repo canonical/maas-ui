@@ -2,7 +2,7 @@ import { useState } from "react";
 
 import { Col, NotificationSeverity, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
@@ -27,7 +27,7 @@ export const DeleteTagForm = ({
   onClose,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const saved = useSelector(tagSelectors.saved);
   const saving = useSelector(tagSelectors.saving);
   const errors = useSelector(tagSelectors.errors);
@@ -50,9 +50,9 @@ export const DeleteTagForm = ({
     if (fromDetails) {
       // Explicitly return to the page they user came from in case they have opened
       // the list of machines.
-      history.push({ pathname: tagsURLs.tag.index({ id: id }) });
+      navigate({ pathname: tagsURLs.tag.index({ id: id }) });
     } else {
-      history.push({ pathname: tagsURLs.tags.index });
+      navigate({ pathname: tagsURLs.tags.index });
     }
   };
   if (!tag) {

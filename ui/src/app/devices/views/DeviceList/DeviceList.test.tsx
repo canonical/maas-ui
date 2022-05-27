@@ -3,6 +3,7 @@ import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { useLocation } from "react-router";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceList from "./DeviceList";
@@ -28,7 +29,9 @@ describe("DeviceList", () => {
             { pathname: "/devices", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <DeviceList />
+          <CompatRouter>
+            <DeviceList />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -51,8 +54,10 @@ describe("DeviceList", () => {
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <DeviceList />
-          <Route path="*" render={() => <FetchRoute />} />
+          <CompatRouter>
+            <DeviceList />
+            <Route path="*" render={() => <FetchRoute />} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

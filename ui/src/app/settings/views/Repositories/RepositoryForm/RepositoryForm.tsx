@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import RepositoryFormFields from "../RepositoryFormFields";
@@ -48,7 +48,7 @@ const RepositorySchema = Yup.object().shape({
 
 export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [savedRepo, setSavedRepo] = useState<string | null>(null);
   const componentsToDisableLoaded = useSelector(
     componentsToDisableSelectors.loaded
@@ -132,7 +132,7 @@ export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
             errors={errors}
             initialValues={initialValues}
             onCancel={() =>
-              history.push({ pathname: settingsURLs.repositories.index })
+              navigate({ pathname: settingsURLs.repositories.index })
             }
             onSaveAnalytics={{
               action: "Saved",

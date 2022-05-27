@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Button } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import DeleteConfirm from "./DeleteConfirm";
 
@@ -25,7 +25,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
     zoneSelectors.getById(state, Number(id))
   );
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(zoneActions.fetch());
@@ -34,9 +34,9 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   useEffect(() => {
     if (zonesSaved) {
       dispatch(zoneActions.cleanup());
-      history.push({ pathname: zonesURLs.index });
+      navigate({ pathname: zonesURLs.index });
     }
-  }, [dispatch, zonesSaved, history]);
+  }, [dispatch, zonesSaved, navigate]);
 
   const isAdmin = useSelector(authSelectors.isAdmin);
   const isDefaultZone = id === 1;

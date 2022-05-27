@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Card, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import ConnectivityCard from "./ConnectivityCard";
@@ -36,7 +36,7 @@ export const MaasIntroSchema = Yup.object()
 
 const MaasIntro = (): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const authLoading = useSelector(authSelectors.loading);
   const authUser = useSelector(authSelectors.get);
   const httpProxy = useSelector(configSelectors.httpProxy);
@@ -147,9 +147,9 @@ const MaasIntro = (): JSX.Element => {
               onConfirm={() => {
                 dispatch(configActions.update({ completed_intro: true }));
                 if (!authUser?.completed_intro) {
-                  history.push({ pathname: introURLs.user });
+                  navigate({ pathname: introURLs.user });
                 } else {
-                  history.push({
+                  navigate({
                     pathname: exitURL,
                   });
                 }

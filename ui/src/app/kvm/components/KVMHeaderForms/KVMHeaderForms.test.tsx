@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KVMHeaderForms from "./KVMHeaderForms";
@@ -40,7 +41,9 @@ describe("KVMHeaderForms", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMHeaderForms headerContent={null} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <KVMHeaderForms headerContent={null} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -54,10 +57,12 @@ describe("KVMHeaderForms", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMHeaderForms
-            headerContent={{ view: KVMHeaderViews.ADD_LXD_HOST }}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <KVMHeaderForms
+              headerContent={{ view: KVMHeaderViews.ADD_LXD_HOST }}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -70,10 +75,12 @@ describe("KVMHeaderForms", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMHeaderForms
-            headerContent={{ view: KVMHeaderViews.ADD_VIRSH_HOST }}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <KVMHeaderForms
+              headerContent={{ view: KVMHeaderViews.ADD_VIRSH_HOST }}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -86,13 +93,15 @@ describe("KVMHeaderForms", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMHeaderForms
-            headerContent={{
-              view: KVMHeaderViews.COMPOSE_VM,
-              extras: { hostId: 1 },
-            }}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <KVMHeaderForms
+              headerContent={{
+                view: KVMHeaderViews.COMPOSE_VM,
+                extras: { hostId: 1 },
+              }}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -104,13 +113,15 @@ describe("KVMHeaderForms", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMHeaderForms
-            headerContent={{
-              view: KVMHeaderViews.DELETE_KVM,
-              extras: { hostId: 1 },
-            }}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <KVMHeaderForms
+              headerContent={{
+                view: KVMHeaderViews.DELETE_KVM,
+                extras: { hostId: 1 },
+              }}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -122,13 +133,15 @@ describe("KVMHeaderForms", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMHeaderForms
-            headerContent={{
-              view: KVMHeaderViews.DELETE_KVM,
-              extras: { clusterId: 1 },
-            }}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <KVMHeaderForms
+              headerContent={{
+                view: KVMHeaderViews.DELETE_KVM,
+                extras: { clusterId: 1 },
+              }}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -140,13 +153,15 @@ describe("KVMHeaderForms", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMHeaderForms
-            headerContent={{
-              view: KVMHeaderViews.REFRESH_KVM,
-              extras: { hostIds: [1] },
-            }}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <KVMHeaderForms
+              headerContent={{
+                view: KVMHeaderViews.REFRESH_KVM,
+                extras: { hostIds: [1] },
+              }}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -158,10 +173,12 @@ describe("KVMHeaderForms", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <KVMHeaderForms
-            headerContent={{ view: MachineHeaderViews.COMMISSION_MACHINE }}
-            setHeaderContent={jest.fn()}
-          />
+          <CompatRouter>
+            <KVMHeaderForms
+              headerContent={{ view: MachineHeaderViews.COMMISSION_MACHINE }}
+              setHeaderContent={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

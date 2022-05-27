@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDClusterHosts from "./LXDClusterHosts";
@@ -53,7 +54,9 @@ describe("LXDClusterHosts", () => {
             { pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }) },
           ]}
         >
-          <LXDClusterHosts clusterId={1} setHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <LXDClusterHosts clusterId={1} setHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

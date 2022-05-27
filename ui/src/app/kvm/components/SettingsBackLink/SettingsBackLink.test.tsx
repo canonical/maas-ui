@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 
 import SettingsBackLink from "./SettingsBackLink";
 
@@ -9,7 +10,9 @@ describe("SettingsBackLink", () => {
     const history = createMemoryHistory();
     const wrapper = mount(
       <Router history={history}>
-        <SettingsBackLink />
+        <CompatRouter>
+          <SettingsBackLink />
+        </CompatRouter>
       </Router>
     );
 
@@ -24,7 +27,9 @@ describe("SettingsBackLink", () => {
 
     const wrapper = mount(
       <Router history={history}>
-        <SettingsBackLink />
+        <CompatRouter>
+          <SettingsBackLink />
+        </CompatRouter>
       </Router>
     );
 

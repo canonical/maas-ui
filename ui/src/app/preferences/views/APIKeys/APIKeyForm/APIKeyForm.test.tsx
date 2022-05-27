@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { APIKeyForm } from "./APIKeyForm";
@@ -40,7 +41,9 @@ describe("APIKeyForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <APIKeyForm />
+          <CompatRouter>
+            <APIKeyForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -52,7 +55,9 @@ describe("APIKeyForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <APIKeyForm />
+          <CompatRouter>
+            <APIKeyForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -82,7 +87,9 @@ describe("APIKeyForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <APIKeyForm token={state.token.items[0]} />
+          <CompatRouter>
+            <APIKeyForm token={state.token.items[0]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

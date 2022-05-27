@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NotificationGroup from "./NotificationGroup";
@@ -24,7 +26,14 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} severity="negative" />
+        <MemoryRouter>
+          <CompatRouter>
+            <NotificationGroup
+              notifications={notifications}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -42,7 +51,14 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} severity="negative" />
+        <MemoryRouter>
+          <CompatRouter>
+            <NotificationGroup
+              notifications={notifications}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -62,7 +78,14 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} severity="negative" />
+        <MemoryRouter>
+          <CompatRouter>
+            <NotificationGroup
+              notifications={notifications}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -84,7 +107,14 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} severity="negative" />
+        <MemoryRouter>
+          <CompatRouter>
+            <NotificationGroup
+              notifications={notifications}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -109,7 +139,14 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} severity="negative" />
+        <MemoryRouter>
+          <CompatRouter>
+            <NotificationGroup
+              notifications={notifications}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -134,7 +171,14 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} severity="caution" />
+        <MemoryRouter>
+          <CompatRouter>
+            <NotificationGroup
+              notifications={notifications}
+              severity="caution"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -159,7 +203,14 @@ describe("NotificationGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NotificationGroup notifications={notifications} severity="negative" />
+        <MemoryRouter>
+          <CompatRouter>
+            <NotificationGroup
+              notifications={notifications}
+              severity="negative"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

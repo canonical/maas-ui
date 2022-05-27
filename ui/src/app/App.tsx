@@ -6,8 +6,8 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { useLocation } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom-v5-compat";
 
 import Routes from "app/Routes";
 import Login from "app/base/components/Login";
@@ -34,7 +34,7 @@ declare global {
 
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
@@ -85,9 +85,9 @@ export const App = (): JSX.Element => {
   useEffect(() => {
     if (configLoaded) {
       if (!completedIntro) {
-        history.push({ pathname: introURLs.index });
+        navigate({ pathname: introURLs.index }, { replace: true });
       } else if (!!authUser && !completedUserIntro) {
-        history.push({ pathname: introURLs.user });
+        navigate({ pathname: introURLs.user }, { replace: true });
       }
     }
   }, [
@@ -96,7 +96,7 @@ export const App = (): JSX.Element => {
     completedIntro,
     completedUserIntro,
     configLoaded,
-    history,
+    navigate,
   ]);
 
   let content: ReactNode = null;
@@ -153,7 +153,6 @@ export const App = (): JSX.Element => {
             window.legacyWS.close();
           }
         }}
-        urlChange={history.listen}
         uuid={uuid as string}
         version={version}
       />

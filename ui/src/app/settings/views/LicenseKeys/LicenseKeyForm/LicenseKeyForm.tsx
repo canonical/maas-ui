@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import LicenseKeyFormFields from "../LicenseKeyFormFields";
@@ -32,7 +32,7 @@ const LicenseKeySchema = Yup.object().shape({
 
 export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const [savingLicenseKey, setSaving] = useState<string | null>(null);
   const saving = useSelector(licenseKeysSelectors.saving);
   const saved = useSelector(licenseKeysSelectors.saved);
@@ -81,7 +81,7 @@ export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
             license_key: licenseKey ? licenseKey.license_key : "",
           }}
           onCancel={() =>
-            history.push({ pathname: settingsURLs.licenseKeys.index })
+            navigate({ pathname: settingsURLs.licenseKeys.index })
           }
           onSaveAnalytics={{
             action: "Saved",

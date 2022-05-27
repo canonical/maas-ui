@@ -1,7 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { Route, Switch, useHistory, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
 
@@ -13,7 +14,7 @@ import MachineList from "app/machines/views/MachineList";
 import { FilterMachines } from "app/store/machine/utils";
 
 const Machines = (): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
   // The filter state is initialised from the URL.
@@ -29,9 +30,9 @@ const Machines = (): JSX.Element => {
     (searchText) => {
       setFilter(searchText);
       const filters = FilterMachines.getCurrentFilters(searchText);
-      history.push({ search: FilterMachines.filtersToQueryString(filters) });
+      navigate({ search: FilterMachines.filtersToQueryString(filters) });
     },
-    [history, setFilter]
+    [navigate, setFilter]
   );
 
   useEffect(() => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
@@ -29,7 +29,7 @@ const PoolSchema = Yup.object().shape({
 
 export const PoolForm = ({ pool }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const saved = useSelector(poolSelectors.saved);
   const saving = useSelector(poolSelectors.saving);
   const errors = useSelector(poolSelectors.errors);
@@ -66,7 +66,7 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
         cleanup={poolActions.cleanup}
         errors={errors}
         initialValues={initialValues}
-        onCancel={() => history.push({ pathname: poolsURLs.pools })}
+        onCancel={() => navigate({ pathname: poolsURLs.pools })}
         onSaveAnalytics={{
           action: "Saved",
           category: "Resource pool",

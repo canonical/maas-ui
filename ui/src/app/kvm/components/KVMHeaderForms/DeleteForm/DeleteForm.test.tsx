@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteForm from "./DeleteForm";
@@ -43,7 +44,9 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -69,7 +72,9 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -95,7 +100,9 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -117,7 +124,9 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -139,7 +148,9 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -161,7 +172,9 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -199,7 +212,9 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -237,7 +252,9 @@ describe("DeleteForm", () => {
     const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -270,7 +287,9 @@ describe("DeleteForm", () => {
     const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -303,7 +322,9 @@ describe("DeleteForm", () => {
     const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -342,7 +363,9 @@ describe("DeleteForm", () => {
     const Proxy = () => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

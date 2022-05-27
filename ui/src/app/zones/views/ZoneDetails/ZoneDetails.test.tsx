@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ZoneDetails from "./ZoneDetails";
@@ -52,7 +53,9 @@ describe("ZoneDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <Route exact path="/zone/:id" render={() => <ZoneDetails />} />
+          <CompatRouter>
+            <Route exact path="/zone/:id" render={() => <ZoneDetails />} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -81,7 +84,9 @@ describe("ZoneDetails", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
         >
-          <Route exact path="/zone/:id" render={() => <ZoneDetails />} />
+          <CompatRouter>
+            <Route exact path="/zone/:id" render={() => <ZoneDetails />} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

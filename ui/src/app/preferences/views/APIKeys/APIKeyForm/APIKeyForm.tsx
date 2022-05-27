@@ -1,6 +1,6 @@
 import { Col, Row } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 import * as Yup from "yup";
 
 import FormCard from "app/base/components/FormCard";
@@ -27,7 +27,7 @@ const APIKeyEditSchema = Yup.object().shape({
 export const APIKeyForm = ({ token }: Props): JSX.Element => {
   const editing = !!token;
   const dispatch = useDispatch();
-  const history = useHistory();
+  const navigate = useNavigate();
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
@@ -49,7 +49,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
         initialValues={{
           name: token ? token.consumer.name : "",
         }}
-        onCancel={() => history.push({ pathname: prefsURLs.apiKeys.index })}
+        onCancel={() => navigate({ pathname: prefsURLs.apiKeys.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "API keys preferences",

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import Intro from "./Intro";
@@ -39,7 +40,9 @@ describe("Intro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/intro" }]}>
-          <Intro />
+          <CompatRouter>
+            <Intro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -56,7 +59,9 @@ describe("Intro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/intro" }]}>
-          <Intro />
+          <CompatRouter>
+            <Intro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -76,7 +81,9 @@ describe("Intro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: introURLs.index }]}>
-          <Intro />
+          <CompatRouter>
+            <Intro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -88,7 +95,9 @@ describe("Intro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: introURLs.user }]}>
-          <Intro />
+          <CompatRouter>
+            <Intro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -105,7 +114,9 @@ describe("Intro", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: introURLs.index }]}>
-          <Intro />
+          <CompatRouter>
+            <Intro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

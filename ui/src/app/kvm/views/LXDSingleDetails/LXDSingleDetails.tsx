@@ -1,13 +1,8 @@
-import { useState } from "react";
+import { useCallback, useState } from "react";
 
 import { useSelector } from "react-redux";
-import {
-  Redirect,
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-} from "react-router-dom";
+import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 import LXDSingleResources from "./LXDSingleResources";
@@ -28,7 +23,7 @@ import type { RootState } from "app/store/root/types";
 import { isId } from "app/utils";
 
 const LXDSingleDetails = (): JSX.Element => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const location = useLocation();
   const id = useGetURLId(PodMeta.PK);
   const pod = useSelector((state: RootState) =>
@@ -46,11 +41,14 @@ const LXDSingleDetails = (): JSX.Element => {
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 
-  const setSearchFilter: SetSearchFilter = (searchFilter: string) => {
-    setFilter(searchFilter);
-    const filters = FilterMachines.getCurrentFilters(searchFilter);
-    history.push({ search: FilterMachines.filtersToQueryString(filters) });
-  };
+  const setSearchFilter: SetSearchFilter = useCallback(
+    (searchFilter: string) => {
+      setFilter(searchFilter);
+      const filters = FilterMachines.getCurrentFilters(searchFilter);
+      navigate({ search: FilterMachines.filtersToQueryString(filters) });
+    },
+    [setFilter, navigate]
+  );
 
   if (redirectURL) {
     return <Redirect to={redirectURL} />;

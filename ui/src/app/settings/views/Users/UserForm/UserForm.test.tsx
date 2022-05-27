@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { UserForm } from "./UserForm";
@@ -31,7 +32,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
+          <CompatRouter>
+            <UserForm user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -45,7 +48,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
+          <CompatRouter>
+            <UserForm user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -67,7 +72,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
+          <CompatRouter>
+            <UserForm user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -81,7 +88,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
+          <CompatRouter>
+            <UserForm user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -118,7 +127,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
+          <CompatRouter>
+            <UserForm user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -175,7 +186,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm />
+          <CompatRouter>
+            <UserForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -216,7 +229,9 @@ describe("UserForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
+          <CompatRouter>
+            <UserForm user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -232,7 +247,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm user={user} />
+          <CompatRouter>
+            <UserForm user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
