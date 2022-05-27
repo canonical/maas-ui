@@ -57,14 +57,20 @@ const Routes = (): JSX.Element => (
         </ErrorBoundary>
       )}
     />
-    <Route
-      path={controllersURLs.controllers.index}
-      render={() => (
-        <ErrorBoundary>
-          <Controllers />
-        </ErrorBoundary>
-      )}
-    />
+    {[
+      controllersURLs.controllers.index,
+      controllersURLs.controller.index(null, true),
+    ].map((path) => (
+      <Route
+        key={path}
+        path={path}
+        render={() => (
+          <ErrorBoundary>
+            <Controllers />
+          </ErrorBoundary>
+        )}
+      />
+    ))}
     {[devicesURLs.devices.index, devicesURLs.device.index(null, true)].map(
       (path) => (
         <Route
