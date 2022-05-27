@@ -9,8 +9,8 @@ import TagNameField from "app/base/components/TagNameField";
 import { RAID_MODES } from "app/store/machine/constants";
 import type { RaidMode } from "app/store/machine/constants";
 import type { Machine } from "app/store/machine/types";
-import { formatSize, formatType, isDisk } from "app/store/machine/utils";
 import type { Disk, Partition } from "app/store/types/node";
+import { formatSize, formatType, isDisk } from "app/store/utils";
 
 type Props = {
   storageDevices: (Disk | Partition)[];

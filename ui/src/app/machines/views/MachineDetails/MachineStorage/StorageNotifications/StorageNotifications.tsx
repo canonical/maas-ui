@@ -5,13 +5,13 @@ import { useCanEdit } from "app/base/hooks";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
 import {
   canOsSupportBcacheZFS,
   canOsSupportStorageConfig,
-  isMachineDetails,
-  isMachineStorageConfigurable,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+  isNodeStorageConfigurable,
+} from "app/store/utils";
 
 type Props = {
   id: Machine["system_id"];
@@ -22,7 +22,7 @@ const StorageNotifications = ({ id }: Props): JSX.Element | null => {
     machineSelectors.getById(state, id)
   );
   const canEdit = useCanEdit(machine, true);
-  const machineStorageConfigurable = isMachineStorageConfigurable(machine);
+  const machineStorageConfigurable = isNodeStorageConfigurable(machine);
   const osSupportsStorageConfig = canOsSupportStorageConfig(machine);
   const osSupportsBcacheZFS = canOsSupportBcacheZFS(machine);
 

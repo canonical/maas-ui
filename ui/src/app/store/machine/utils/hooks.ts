@@ -2,8 +2,6 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import { isMachineStorageConfigurable } from "./storage";
-
 import { useCanEdit } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
 import {
@@ -16,7 +14,11 @@ import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { Host } from "app/store/types/host";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
-import { getLinkInterface, hasInterfaceType } from "app/store/utils";
+import {
+  getLinkInterface,
+  hasInterfaceType,
+  isNodeStorageConfigurable,
+} from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 
 /**
@@ -27,7 +29,7 @@ import vlanSelectors from "app/store/vlan/selectors";
  */
 export const useCanEditStorage = (machine: Machine | null): boolean => {
   const canEdit = useCanEdit(machine);
-  const machineStorageConfigurable = isMachineStorageConfigurable(machine);
+  const machineStorageConfigurable = isNodeStorageConfigurable(machine);
   return canEdit && machineStorageConfigurable;
 };
 

@@ -7,10 +7,10 @@ import EditDisk from "./EditDisk";
 import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";

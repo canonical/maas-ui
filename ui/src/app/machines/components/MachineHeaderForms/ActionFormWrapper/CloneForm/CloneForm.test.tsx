@@ -11,11 +11,11 @@ import { actions as machineActions } from "app/store/machine";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
   machineInterface as nicFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import { submitFormikForm, waitForComponentToPaint } from "testing/utils";

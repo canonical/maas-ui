@@ -6,8 +6,8 @@ import FormikField from "app/base/components/FormikField";
 import TagNameField from "app/base/components/TagNameField";
 import type { Machine } from "app/store/machine/types";
 import { BcacheModes } from "app/store/machine/types";
-import { formatSize } from "app/store/machine/utils";
 import type { Disk, Partition } from "app/store/types/node";
+import { formatSize } from "app/store/utils";
 
 type Props = {
   cacheSets: Disk[];

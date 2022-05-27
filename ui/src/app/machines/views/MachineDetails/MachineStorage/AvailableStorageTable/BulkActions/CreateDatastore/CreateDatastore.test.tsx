@@ -8,12 +8,12 @@ import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
-  machineFilesystem as fsFactory,
-  machinePartition as partitionFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeDisk as diskFactory,
+  nodeFilesystem as fsFactory,
+  nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";

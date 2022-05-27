@@ -4,8 +4,8 @@ import FilesystemFields from "../../FilesystemFields";
 
 import TagNameField from "app/base/components/TagNameField";
 import type { Machine } from "app/store/machine/types";
-import { formatSize, formatType } from "app/store/machine/utils";
 import type { Disk } from "app/store/types/node";
+import { formatSize, formatType } from "app/store/utils";
 
 type Props = {
   disk: Disk;

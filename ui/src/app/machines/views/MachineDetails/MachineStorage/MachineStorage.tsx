@@ -15,13 +15,9 @@ import { useGetURLId } from "app/base/hooks/urls";
 import settingsURLs from "app/settings/urls";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
-import {
-  isCacheSet,
-  isMachineDetails,
-  isVMWareLayout,
-  useCanEditStorage,
-} from "app/store/machine/utils";
+import { isMachineDetails, useCanEditStorage } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { isCacheSet, isVMWareLayout } from "app/store/utils";
 import { isId } from "app/utils";
 
 const MachineStorage = (): JSX.Element => {

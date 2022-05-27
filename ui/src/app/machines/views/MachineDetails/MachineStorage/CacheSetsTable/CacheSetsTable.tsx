@@ -10,12 +10,9 @@ import TableActionsDropdown from "app/base/components/TableActionsDropdown";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import {
-  formatSize,
-  isCacheSet,
-  isMachineDetails,
-} from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { formatSize, isCacheSet } from "app/store/utils";
 
 export enum CacheSetAction {
   DELETE = "deleteCacheSet",

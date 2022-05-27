@@ -7,12 +7,12 @@ import FilesystemsTable from "./FilesystemsTable";
 
 import {
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
-  machineFilesystem as fsFactory,
-  machinePartition as partitionFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeDisk as diskFactory,
+  nodeFilesystem as fsFactory,
+  nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 

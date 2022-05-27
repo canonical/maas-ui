@@ -3,7 +3,7 @@ import { mount } from "enzyme";
 import BootStatus from "./BootStatus";
 
 import { DiskTypes } from "app/store/types/enum";
-import { machineDisk as diskFactory } from "testing/factories";
+import { nodeDisk as diskFactory } from "testing/factories";
 
 describe("BootStatus", () => {
   it("shows boot status for boot disks", () => {

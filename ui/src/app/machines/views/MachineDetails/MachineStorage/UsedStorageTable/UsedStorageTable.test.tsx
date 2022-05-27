@@ -8,8 +8,8 @@ import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
   machineState as machineStateFactory,
+  nodeDisk as diskFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 

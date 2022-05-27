@@ -10,8 +10,9 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import { isMachineDetails, usesStorage } from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
+import { usesStorage } from "app/store/utils";
 
 const AddSpecialFilesystemSchema = Yup.object().shape({
   fstype: Yup.string().required(),

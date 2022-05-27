@@ -12,11 +12,11 @@ import { DiskTypes, StorageLayout } from "app/store/types/enum";
 import {
   generalState as generalStateFactory,
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
-  machineFilesystem as fsFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeDisk as diskFactory,
+  nodeFilesystem as fsFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
