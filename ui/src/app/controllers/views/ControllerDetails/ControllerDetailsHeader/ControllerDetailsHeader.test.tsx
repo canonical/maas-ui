@@ -1,0 +1,84 @@
+import { render, screen } from "@testing-library/react";
+import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
+import configureStore from "redux-mock-store";
+
+import ControllerDetailsHeader from "./ControllerDetailsHeader";
+
+import {
+  controller as controllerFactory,
+  controllerDetails as controllerDetailsFactory,
+  controllerState as controllerStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+
+const mockStore = configureStore();
+
+it("displays a spinner as the title if controller has not loaded yet", () => {
+  const state = rootStateFactory({
+    controller: controllerStateFactory({
+      items: [],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <ControllerDetailsHeader systemId="abc123" />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(
+    screen.getByTestId("section-header-title-spinner")
+  ).toBeInTheDocument();
+});
+
+it("displays a spinner as the subtitle if loaded controller is not the detailed type", () => {
+  const controller = controllerFactory();
+  const state = rootStateFactory({
+    controller: controllerStateFactory({
+      items: [controller],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <ControllerDetailsHeader systemId={controller.system_id} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(
+    screen.getByTestId("section-header-subtitle-spinner")
+  ).toBeInTheDocument();
+});
+
+it("displays the controller's FQDN once loaded and detailed type", () => {
+  const controllerDetails = controllerDetailsFactory();
+  const state = rootStateFactory({
+    controller: controllerStateFactory({
+      items: [controllerDetails],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <ControllerDetailsHeader systemId={controllerDetails.system_id} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(
+    screen.getByRole("heading", { name: controllerDetails.fqdn })
+  ).toBeInTheDocument();
+});
