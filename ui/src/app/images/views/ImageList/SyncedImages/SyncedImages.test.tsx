@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SyncedImages from "./SyncedImages";
@@ -29,7 +31,11 @@ describe("SyncedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SyncedImages formInCard />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyncedImages formInCard />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper
@@ -47,7 +53,11 @@ describe("SyncedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SyncedImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyncedImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("ChangeSource").exists()).toBe(true);
@@ -67,7 +77,11 @@ describe("SyncedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SyncedImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyncedImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
@@ -91,7 +105,11 @@ describe("SyncedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SyncedImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyncedImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
@@ -108,7 +126,11 @@ describe("SyncedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SyncedImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyncedImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
@@ -126,7 +148,11 @@ describe("SyncedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SyncedImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyncedImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(

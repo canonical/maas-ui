@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteDomainForm from "./DeleteDomainForm";
@@ -24,7 +26,11 @@ describe("DeleteDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeleteDomainForm id={1} closeForm={closeForm} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DeleteDomainForm id={1} closeForm={closeForm} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("button[data-testid='cancel-action']").simulate("click");
@@ -47,7 +53,11 @@ describe("DeleteDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeleteDomainForm id={1} closeForm={closeForm} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DeleteDomainForm id={1} closeForm={closeForm} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -89,7 +99,11 @@ describe("DeleteDomainForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeleteDomainForm id={1} closeForm={closeForm} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DeleteDomainForm id={1} closeForm={closeForm} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

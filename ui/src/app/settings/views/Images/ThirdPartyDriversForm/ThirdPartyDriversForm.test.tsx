@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ThirdPartyDriversForm from "./ThirdPartyDriversForm";
@@ -33,7 +35,11 @@ describe("ThirdPartyDriversForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <ThirdPartyDriversForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <ThirdPartyDriversForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(

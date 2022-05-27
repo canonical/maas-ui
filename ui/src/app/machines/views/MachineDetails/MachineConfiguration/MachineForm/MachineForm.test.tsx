@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineForm from "./MachineForm";
@@ -49,7 +51,11 @@ describe("MachineForm", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <MachineForm systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <MachineForm systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -63,7 +69,11 @@ describe("MachineForm", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <MachineForm systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <MachineForm systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -76,7 +86,11 @@ describe("MachineForm", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <MachineForm systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <MachineForm systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -99,7 +113,11 @@ describe("MachineForm", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <MachineForm systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <MachineForm systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

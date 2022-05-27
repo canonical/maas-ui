@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 
 import { Notification, Spinner } from "@canonical/react-components";
-import { Redirect } from "react-router";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import Section from "app/base/components/Section";
 import type { Props as SectionProps } from "app/base/components/Section/Section";
@@ -30,14 +31,17 @@ const IntroSection = ({
   windowTitle,
   ...props
 }: Props): JSX.Element => {
+  const navigate = useNavigate();
   const errorMessage = formatErrors(errors);
   const exitURL = useExitURL();
 
   useWindowTitle(windowTitle ? `Welcome - ${windowTitle}` : "Welcome");
 
-  if (shouldExitIntro) {
-    return <Redirect to={exitURL} />;
-  }
+  useEffect(() => {
+    if (shouldExitIntro) {
+      navigate(exitURL, { replace: true });
+    }
+  }, [navigate, exitURL, shouldExitIntro]);
 
   return (
     <Section {...props}>

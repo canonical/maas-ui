@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditInterface from "./EditInterface";
@@ -59,7 +61,15 @@ describe("EditInterface", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditInterface nicId={nic.id} systemId="abc123" closeForm={jest.fn()} />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditInterface
+              nicId={nic.id}
+              systemId="abc123"
+              closeForm={jest.fn()}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(
@@ -71,7 +81,15 @@ describe("EditInterface", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditInterface nicId={nic.id} closeForm={jest.fn()} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditInterface
+              nicId={nic.id}
+              closeForm={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const formValues = {
@@ -100,11 +118,15 @@ describe("EditInterface", () => {
     const store = mockStore(state);
     const Proxy = ({ systemId = "abc123" }) => (
       <Provider store={store}>
-        <EditInterface
-          nicId={nic.id}
-          closeForm={closeForm}
-          systemId={systemId}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditInterface
+              nicId={nic.id}
+              closeForm={closeForm}
+              systemId={systemId}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);
@@ -135,11 +157,15 @@ describe("EditInterface", () => {
     const store = mockStore(state);
     const Proxy = ({ systemId = "abc123" }) => (
       <Provider store={store}>
-        <EditInterface
-          nicId={nic.id}
-          closeForm={closeForm}
-          systemId={systemId}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditInterface
+              nicId={nic.id}
+              closeForm={closeForm}
+              systemId={systemId}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);
@@ -176,11 +202,15 @@ describe("EditInterface", () => {
     const store = mockStore(state);
     const Proxy = ({ systemId = "abc123" }) => (
       <Provider store={store}>
-        <EditInterface
-          nicId={nic.id}
-          closeForm={closeForm}
-          systemId={systemId}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditInterface
+              nicId={nic.id}
+              closeForm={closeForm}
+              systemId={systemId}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);

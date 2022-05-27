@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { SSHKeyForm } from "./SSHKeyForm";
@@ -33,7 +34,9 @@ describe("SSHKeyForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <SSHKeyForm />
+          <CompatRouter>
+            <SSHKeyForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -45,7 +48,9 @@ describe("SSHKeyForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <SSHKeyForm />
+          <CompatRouter>
+            <SSHKeyForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -64,7 +69,9 @@ describe("SSHKeyForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <SSHKeyForm />
+          <CompatRouter>
+            <SSHKeyForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -94,7 +101,9 @@ describe("SSHKeyForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <SSHKeyForm />
+          <CompatRouter>
+            <SSHKeyForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -127,7 +136,9 @@ describe("SSHKeyForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <SSHKeyForm />
+          <CompatRouter>
+            <SSHKeyForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

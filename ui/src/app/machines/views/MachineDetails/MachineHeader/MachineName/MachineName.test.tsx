@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineName from "./MachineName";
@@ -55,11 +56,13 @@ describe("MachineName", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <MachineName
-            editingName={true}
-            id="abc123"
-            setEditingName={jest.fn()}
-          />
+          <CompatRouter>
+            <MachineName
+              editingName={true}
+              id="abc123"
+              setEditingName={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

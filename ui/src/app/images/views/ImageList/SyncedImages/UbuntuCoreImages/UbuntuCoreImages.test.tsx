@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UbuntuCoreImages from "./UbuntuCoreImages";
@@ -23,7 +25,11 @@ describe("UbuntuCoreImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuCoreImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuCoreImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("ImagesTable").exists()).toBe(false);
@@ -62,7 +68,11 @@ describe("UbuntuCoreImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuCoreImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuCoreImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
@@ -88,7 +98,11 @@ describe("UbuntuCoreImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuCoreImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuCoreImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -126,7 +140,11 @@ describe("UbuntuCoreImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuCoreImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuCoreImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -148,7 +166,11 @@ describe("UbuntuCoreImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuCoreImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuCoreImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("button[data-testid='secondary-submit']").simulate("click");

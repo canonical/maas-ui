@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ProxyForm from "./ProxyForm";
@@ -45,7 +46,11 @@ describe("ProxyForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <ProxyForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <ProxyForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -65,7 +70,9 @@ describe("ProxyForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
         >
-          <ProxyForm />
+          <CompatRouter>
+            <ProxyForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -78,7 +85,11 @@ describe("ProxyForm", () => {
 
     mount(
       <Provider store={store}>
-        <ProxyForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <ProxyForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

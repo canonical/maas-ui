@@ -1,6 +1,8 @@
+import { useEffect } from "react";
+
 import { Spinner, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import { useWindowTitle } from "app/base/hooks";
 import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
@@ -20,6 +22,7 @@ type Props = {
 };
 
 const LXDClusterHostSettings = ({ clusterId, hostId }: Props): JSX.Element => {
+  const navigate = useNavigate();
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
@@ -33,9 +36,12 @@ const LXDClusterHostSettings = ({ clusterId, hostId }: Props): JSX.Element => {
     `${pod?.name || "Host"} in ${cluster?.name || "cluster"} settings`
   );
 
-  if (redirectURL) {
-    return <Redirect to={redirectURL} />;
-  }
+  useEffect(() => {
+    if (redirectURL) {
+      navigate(redirectURL, { replace: true });
+    }
+  }, [navigate, redirectURL]);
+
   if (loading || !isPodDetails(pod)) {
     return <Spinner text="Loading..." />;
   }

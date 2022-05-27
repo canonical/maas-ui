@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CreateRaid from "../CreateRaid";
@@ -43,7 +45,15 @@ describe("CreateRaidFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateRaid
+              closeForm={jest.fn()}
+              selected={disks}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -76,7 +86,15 @@ describe("CreateRaidFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateRaid
+              closeForm={jest.fn()}
+              selected={disks}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -112,7 +130,15 @@ describe("CreateRaidFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateRaid
+              closeForm={jest.fn()}
+              selected={disks}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -149,7 +175,15 @@ describe("CreateRaidFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateRaid
+              closeForm={jest.fn()}
+              selected={disks}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -185,7 +219,15 @@ describe("CreateRaidFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateRaid closeForm={jest.fn()} selected={disks} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateRaid
+              closeForm={jest.fn()}
+              selected={disks}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -224,11 +266,15 @@ describe("CreateRaidFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateRaid
-          closeForm={jest.fn()}
-          selected={[disks[0], disks[1], ...partitions]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateRaid
+              closeForm={jest.fn()}
+              selected={[disks[0], disks[1], ...partitions]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const isActive = (i: number) =>
@@ -313,11 +359,15 @@ describe("CreateRaidFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateRaid
-          closeForm={jest.fn()}
-          selected={[disks[0], disks[1], ...partitions]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateRaid
+              closeForm={jest.fn()}
+              selected={[disks[0], disks[1], ...partitions]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const isActive = (i: number) =>

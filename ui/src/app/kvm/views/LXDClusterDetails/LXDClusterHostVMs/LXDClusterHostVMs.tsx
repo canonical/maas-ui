@@ -1,6 +1,8 @@
+import { useEffect } from "react";
+
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
@@ -29,6 +31,7 @@ const LXDClusterHostVMs = ({
   setHeaderContent,
   setSearchFilter,
 }: Props): JSX.Element => {
+  const navigate = useNavigate();
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
@@ -41,9 +44,12 @@ const LXDClusterHostVMs = ({
   useActivePod(hostId);
   const redirectURL = useKVMDetailsRedirect(hostId);
 
-  if (redirectURL) {
-    return <Redirect to={redirectURL} />;
-  }
+  useEffect(() => {
+    if (redirectURL) {
+      navigate(redirectURL, { replace: true });
+    }
+  }, [navigate, redirectURL]);
+
   if (!cluster) {
     return <Spinner text="Loading..." />;
   }

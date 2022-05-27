@@ -1,6 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FormikForm from "./FormikForm";
@@ -28,13 +29,15 @@ describe("FormikForm", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <FormikForm
-            initialValues={{}}
-            onSubmit={jest.fn()}
-            aria-label="example"
-          >
-            Content
-          </FormikForm>
+          <CompatRouter>
+            <FormikForm
+              initialValues={{}}
+              onSubmit={jest.fn()}
+              aria-label="example"
+            >
+              Content
+            </FormikForm>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -3,6 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router, Route } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
@@ -38,11 +39,13 @@ const renderTestCase = (
     ...render(
       <Provider store={store}>
         <Router history={history}>
-          <Route
-            exact
-            path={subnetsURLs.space.index({ id: space.id })}
-            component={() => <SpaceDetailsHeader space={space} />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path={subnetsURLs.space.index({ id: space.id })}
+              component={() => <SpaceDetailsHeader space={space} />}
+            />
+          </CompatRouter>
         </Router>
       </Provider>
     ),

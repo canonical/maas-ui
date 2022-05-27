@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddInterface from "./AddInterface";
@@ -54,7 +56,11 @@ describe("AddInterface", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddInterface systemId="abc123" closeForm={jest.fn()} />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddInterface systemId="abc123" closeForm={jest.fn()} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -67,7 +73,11 @@ describe("AddInterface", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddInterface closeForm={jest.fn()} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddInterface closeForm={jest.fn()} systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const formValues = {
@@ -97,7 +107,11 @@ describe("AddInterface", () => {
     const store = mockStore(state);
     const Proxy = ({ systemId = "abc123" }) => (
       <Provider store={store}>
-        <AddInterface closeForm={closeForm} systemId={systemId} />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddInterface closeForm={closeForm} systemId={systemId} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);
@@ -128,7 +142,11 @@ describe("AddInterface", () => {
     const store = mockStore(state);
     const Proxy = ({ systemId = "abc123" }) => (
       <Provider store={store}>
-        <AddInterface closeForm={closeForm} systemId={systemId} />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddInterface closeForm={closeForm} systemId={systemId} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);
@@ -165,7 +183,11 @@ describe("AddInterface", () => {
     const store = mockStore(state);
     const Proxy = ({ systemId = "abc123" }) => (
       <Provider store={store}>
-        <AddInterface closeForm={closeForm} systemId={systemId} />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddInterface closeForm={closeForm} systemId={systemId} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);

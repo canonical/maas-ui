@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Login } from "./Login";
@@ -30,7 +31,9 @@ describe("Login", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Login />
+          <CompatRouter>
+            <Login />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -43,7 +46,9 @@ describe("Login", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Login />
+          <CompatRouter>
+            <Login />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -56,7 +61,9 @@ describe("Login", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Login />
+          <CompatRouter>
+            <Login />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -68,7 +75,9 @@ describe("Login", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Login />
+          <CompatRouter>
+            <Login />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -93,7 +102,9 @@ describe("Login", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Login />
+          <CompatRouter>
+            <Login />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

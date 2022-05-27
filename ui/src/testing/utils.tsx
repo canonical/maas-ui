@@ -136,7 +136,7 @@ export const renderWithBrowserRouter = (
   ui: React.ReactElement,
   options: RenderOptions & {
     wrapperProps: WrapperProps;
-    route: string;
+    route?: string;
   }
 ): RenderResult => {
   window.history.pushState({}, "", options.route);

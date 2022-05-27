@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ZonesListHeader from "./ZonesListHeader";
@@ -19,7 +21,11 @@ describe("ZonesListHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ZonesListHeader />
+        <MemoryRouter>
+          <CompatRouter>
+            <ZonesListHeader />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("ZonesListForm").exists()).toBe(false);

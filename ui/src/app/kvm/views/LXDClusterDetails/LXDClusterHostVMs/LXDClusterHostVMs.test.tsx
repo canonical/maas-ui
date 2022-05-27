@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDClusterHostVMs from "./LXDClusterHostVMs";
@@ -25,13 +26,15 @@ describe("LXDClusterHostVMs", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <LXDClusterHostVMs
-            clusterId={1}
-            hostId={2}
-            searchFilter=""
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterHostVMs
+              clusterId={1}
+              hostId={2}
+              searchFilter=""
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -48,13 +51,15 @@ describe("LXDClusterHostVMs", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <LXDClusterHostVMs
-            clusterId={1}
-            hostId={2}
-            searchFilter=""
-            setHeaderContent={jest.fn()}
-            setSearchFilter={jest.fn()}
-          />
+          <CompatRouter>
+            <LXDClusterHostVMs
+              clusterId={1}
+              hostId={2}
+              searchFilter=""
+              setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

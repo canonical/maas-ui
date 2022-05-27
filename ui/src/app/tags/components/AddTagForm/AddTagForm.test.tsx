@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
@@ -39,7 +40,9 @@ it("dispatches an action to create a tag", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <AddTagForm name="new-tag" onTagCreated={jest.fn()} />
+        <CompatRouter>
+          <AddTagForm name="new-tag" onTagCreated={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -70,13 +73,15 @@ it("returns the newly created tag on save", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
-        <Route
-          exact
-          path={tagsURLs.tags.index}
-          component={() => (
-            <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
-          )}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={tagsURLs.tags.index}
+            component={() => (
+              <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
+            )}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

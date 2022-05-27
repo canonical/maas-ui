@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddVirsh from "../AddVirsh";
@@ -76,7 +77,9 @@ describe("AddVirshFields", () => {
             { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
-          <AddVirsh clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddVirsh clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

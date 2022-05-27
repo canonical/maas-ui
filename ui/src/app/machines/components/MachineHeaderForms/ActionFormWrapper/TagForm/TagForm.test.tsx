@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagForm, { Label } from "./TagForm";
@@ -47,12 +48,14 @@ it("dispatches action to fetch tags on load", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <TagForm
-          clearHeaderContent={jest.fn()}
-          machines={[]}
-          processingCount={0}
-          viewingDetails={false}
-        />
+        <CompatRouter>
+          <TagForm
+            clearHeaderContent={jest.fn()}
+            machines={[]}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -73,12 +76,14 @@ it("correctly dispatches actions to tag machines", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <TagForm
-          clearHeaderContent={jest.fn()}
-          machines={machines}
-          processingCount={0}
-          viewingDetails={false}
-        />
+        <CompatRouter>
+          <TagForm
+            clearHeaderContent={jest.fn()}
+            machines={machines}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -111,12 +116,14 @@ it("correctly dispatches actions to untag machines", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <TagForm
-          clearHeaderContent={jest.fn()}
-          machines={machines}
-          processingCount={0}
-          viewingDetails={false}
-        />
+        <CompatRouter>
+          <TagForm
+            clearHeaderContent={jest.fn()}
+            machines={machines}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -148,12 +155,14 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <TagForm
-          clearHeaderContent={jest.fn()}
-          machines={machines}
-          processingCount={0}
-          viewingDetails={false}
-        />
+        <CompatRouter>
+          <TagForm
+            clearHeaderContent={jest.fn()}
+            machines={machines}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -192,13 +201,15 @@ it("shows saving label if not viewing from machine config page", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <TagForm
-          clearHeaderContent={jest.fn()}
-          machines={machines}
-          processingCount={1}
-          viewingDetails={false}
-          viewingMachineConfig={false}
-        />
+        <CompatRouter>
+          <TagForm
+            clearHeaderContent={jest.fn()}
+            machines={machines}
+            processingCount={1}
+            viewingDetails={false}
+            viewingMachineConfig={false}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -217,13 +228,15 @@ it("does not show saving label if viewing from machine config page", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <TagForm
-          clearHeaderContent={jest.fn()}
-          machines={machines}
-          processingCount={1}
-          viewingDetails
-          viewingMachineConfig
-        />
+        <CompatRouter>
+          <TagForm
+            clearHeaderContent={jest.fn()}
+            machines={machines}
+            processingCount={1}
+            viewingDetails
+            viewingMachineConfig
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -239,12 +252,14 @@ it("shows a notification on success", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <TagForm
-          clearHeaderContent={jest.fn()}
-          machines={machines}
-          processingCount={0}
-          viewingDetails={false}
-        />
+        <CompatRouter>
+          <TagForm
+            clearHeaderContent={jest.fn()}
+            machines={machines}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

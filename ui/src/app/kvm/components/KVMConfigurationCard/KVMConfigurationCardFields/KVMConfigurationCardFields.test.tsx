@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KVMConfigurationCard from "../KVMConfigurationCard";
@@ -41,7 +42,9 @@ describe("KVMConfigurationCardFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <KVMConfigurationCard pod={pod} />
+          <CompatRouter>
+            <KVMConfigurationCard pod={pod} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -80,7 +83,9 @@ describe("KVMConfigurationCardFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <KVMConfigurationCard pod={pod} />
+          <CompatRouter>
+            <KVMConfigurationCard pod={pod} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -117,7 +122,9 @@ describe("KVMConfigurationCardFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <KVMConfigurationCard pod={pod} zoneDisabled />
+          <CompatRouter>
+            <KVMConfigurationCard pod={pod} zoneDisabled />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

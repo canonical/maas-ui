@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ConfigureDHCP from "./ConfigureDHCP";
@@ -32,7 +33,9 @@ it("shows a spinner while data is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -60,7 +63,9 @@ it("correctly initialises data if the VLAN has DHCP from rack controllers", asyn
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -105,7 +110,9 @@ it("correctly initialises data if the VLAN has relayed DHCP", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -149,7 +156,9 @@ it("shows an error if no rack controllers are connected to the VLAN", async () =
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -191,7 +200,9 @@ it(`shows an error if the subnet selected for reserving a dynamic range has no
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -225,7 +236,9 @@ it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -261,7 +274,9 @@ it("can configure DHCP with rack controllers", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -306,7 +321,9 @@ it("can configure relayed DHCP", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -353,7 +370,9 @@ it("can configure DHCP while also defining a dynamic IP range", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

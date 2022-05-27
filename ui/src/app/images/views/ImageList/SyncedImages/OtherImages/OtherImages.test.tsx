@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import OtherImages from "./OtherImages";
@@ -23,7 +25,11 @@ describe("OtherImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <OtherImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <OtherImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("ImagesTable").exists()).toBe(false);
@@ -62,7 +68,11 @@ describe("OtherImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <OtherImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <OtherImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
@@ -88,7 +98,11 @@ describe("OtherImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <OtherImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <OtherImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -125,7 +139,11 @@ describe("OtherImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <OtherImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <OtherImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -147,7 +165,11 @@ describe("OtherImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <OtherImages />
+        <MemoryRouter>
+          <CompatRouter>
+            <OtherImages />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("button[data-testid='secondary-submit']").simulate("click");

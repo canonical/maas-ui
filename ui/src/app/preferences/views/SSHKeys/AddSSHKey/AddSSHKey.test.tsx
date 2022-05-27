@@ -1,11 +1,12 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { AddSSHKey } from "./AddSSHKey";
 
+import prefsURLs from "app/preferences/urls";
 import type { RootState } from "app/store/root/types";
 import {
   sshKeyState as sshKeyStateFactory,
@@ -53,6 +54,8 @@ describe("AddSSHKey", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      prefsURLs.sshKeys.index
+    );
   });
 });

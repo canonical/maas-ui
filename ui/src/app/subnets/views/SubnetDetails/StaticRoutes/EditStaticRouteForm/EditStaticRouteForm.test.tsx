@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels } from "../StaticRoutes";
@@ -35,7 +36,9 @@ it("displays loading text on load", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <EditStaticRouteForm staticRouteId={1} handleDismiss={jest.fn()} />
+        <CompatRouter>
+          <EditStaticRouteForm staticRouteId={1} handleDismiss={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -76,10 +79,12 @@ it("dispatches a correct action on edit static route form submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <EditStaticRouteForm
-          staticRouteId={staticRoute.id}
-          handleDismiss={jest.fn()}
-        />
+        <CompatRouter>
+          <EditStaticRouteForm
+            staticRouteId={staticRoute.id}
+            handleDismiss={jest.fn()}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

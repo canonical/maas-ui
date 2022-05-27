@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Details } from "./Details";
@@ -43,7 +44,9 @@ describe("Details", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Details />
+          <CompatRouter>
+            <Details />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -55,7 +58,9 @@ describe("Details", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Details />
+          <CompatRouter>
+            <Details />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -74,7 +79,9 @@ describe("Details", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Details />
+          <CompatRouter>
+            <Details />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -111,7 +118,9 @@ describe("Details", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Details />
+          <CompatRouter>
+            <Details />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -150,7 +159,9 @@ describe("Details", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Details />
+          <CompatRouter>
+            <Details />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -164,7 +175,9 @@ describe("Details", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <Details />
+          <CompatRouter>
+            <Details />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddInterface from "./AddInterface";
@@ -61,7 +62,9 @@ describe("AddInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <CompatRouter>
+            <AddInterface systemId="abc123" close={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +86,9 @@ describe("AddInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <CompatRouter>
+            <AddInterface systemId="abc123" close={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -99,7 +104,9 @@ describe("AddInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddInterface systemId="abc123" close={jest.fn()} />
+          <CompatRouter>
+            <AddInterface systemId="abc123" close={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

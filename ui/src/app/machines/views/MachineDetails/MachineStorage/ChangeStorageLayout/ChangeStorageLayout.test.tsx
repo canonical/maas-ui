@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ChangeStorageLayout from "./ChangeStorageLayout";
@@ -30,7 +32,11 @@ describe("ChangeStorageLayout", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ChangeStorageLayout systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <ChangeStorageLayout systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -69,7 +75,11 @@ describe("ChangeStorageLayout", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ChangeStorageLayout systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <ChangeStorageLayout systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -101,7 +111,11 @@ describe("ChangeStorageLayout", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ChangeStorageLayout systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <ChangeStorageLayout systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

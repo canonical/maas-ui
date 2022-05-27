@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ThirdPartyDrivers from "./ThirdPartyDrivers";
@@ -32,7 +34,11 @@ describe("ThirdPartyDrivers", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <ThirdPartyDrivers />
+        <MemoryRouter>
+          <CompatRouter>
+            <ThirdPartyDrivers />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -45,7 +51,11 @@ describe("ThirdPartyDrivers", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <ThirdPartyDrivers />
+        <MemoryRouter>
+          <CompatRouter>
+            <ThirdPartyDrivers />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

@@ -1,6 +1,8 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TLSEnabled, { Labels } from "./TLSEnabled";
@@ -26,7 +28,11 @@ it("displays a spinner while loading config", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <TLSEnabled />
+      <MemoryRouter>
+        <CompatRouter>
+          <TLSEnabled />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
 
@@ -44,7 +50,11 @@ it("displays a spinner while loading the certificate", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <TLSEnabled />
+      <MemoryRouter>
+        <CompatRouter>
+          <TLSEnabled />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
 
@@ -64,7 +74,11 @@ it("renders certificate content", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <TLSEnabled />
+      <MemoryRouter>
+        <CompatRouter>
+          <TLSEnabled />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
 
@@ -98,7 +112,11 @@ it("disables the interval field if notification is not enabled", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <TLSEnabled />
+      <MemoryRouter>
+        <CompatRouter>
+          <TLSEnabled />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
   const slider = screen.getByRole("slider", { name: Labels.Interval });
@@ -138,7 +156,11 @@ it("shows an error if TLS notification is enabled but interval is invalid", asyn
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <TLSEnabled />
+      <MemoryRouter>
+        <CompatRouter>
+          <TLSEnabled />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
   const intervalInput = screen.getByRole("spinbutton", {
@@ -180,7 +202,11 @@ it("dispatches an action to update TLS notification config with notification ena
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <TLSEnabled />
+      <MemoryRouter>
+        <CompatRouter>
+          <TLSEnabled />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
 
@@ -229,7 +255,11 @@ it("dispatches an action to update TLS notification config with notification dis
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <TLSEnabled />
+      <MemoryRouter>
+        <CompatRouter>
+          <TLSEnabled />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
   const notificationCheckbox = screen.getByRole("checkbox", {

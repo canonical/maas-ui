@@ -1,12 +1,13 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { PoolForm } from "./PoolForm";
 
+import poolsURLs from "app/pools/urls";
 import { actions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
 import {
@@ -81,8 +82,9 @@ describe("PoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      poolsURLs.pools
+    );
   });
 
   it("can create a resource pool", () => {

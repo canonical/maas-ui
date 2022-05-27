@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricDeleteForm from "./FabricDeleteForm";
@@ -28,7 +29,9 @@ it("does not allow deletion if the fabric is the default fabric", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+        <CompatRouter>
+          <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -55,7 +58,9 @@ it("does not allow deletion if the fabric has subnets attached", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+        <CompatRouter>
+          <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -77,7 +82,9 @@ it(`displays a delete confirmation if the fabric is not the default and has no
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+        <CompatRouter>
+          <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -96,7 +103,9 @@ it("deletes the fabric when confirmed", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+        <CompatRouter>
+          <FabricDeleteForm closeForm={jest.fn()} id={fabric.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

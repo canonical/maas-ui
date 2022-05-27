@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VirshSettings from "./VirshSettings";
@@ -43,7 +44,9 @@ describe("VirshSettings", () => {
     mount(
       <MemoryRouter>
         <Provider store={store}>
-          <VirshSettings id={1} />
+          <CompatRouter>
+            <VirshSettings id={1} />
+          </CompatRouter>
         </Provider>
       </MemoryRouter>
     );
@@ -67,7 +70,11 @@ describe("VirshSettings", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <VirshSettings id={1} />
+        <MemoryRouter>
+          <CompatRouter>
+            <VirshSettings id={1} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").length).toBe(1);

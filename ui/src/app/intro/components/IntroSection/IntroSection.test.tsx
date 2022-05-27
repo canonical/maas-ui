@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import IntroSection from "./IntroSection";
@@ -37,7 +38,9 @@ describe("IntroSection", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <IntroSection loading={true}>Intro content</IntroSection>
+          <CompatRouter>
+            <IntroSection loading={true}>Intro content</IntroSection>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -56,11 +59,15 @@ describe("IntroSection", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
+          <CompatRouter>
+            <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      dashboardURLs.index
+    );
   });
 
   it("redirects to the dashboard for admins", () => {
@@ -75,11 +82,15 @@ describe("IntroSection", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
+          <CompatRouter>
+            <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").prop("to")).toBe(dashboardURLs.index);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      dashboardURLs.index
+    );
   });
 
   it("redirects to the machine list for non-admins", () => {
@@ -94,11 +105,13 @@ describe("IntroSection", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
+          <CompatRouter>
+            <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").prop("to")).toBe(
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
       machineURLs.machines.index
     );
   });
@@ -113,7 +126,9 @@ describe("IntroSection", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <IntroSection errors="Uh oh!">Intro content</IntroSection>
+          <CompatRouter>
+            <IntroSection errors="Uh oh!">Intro content</IntroSection>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

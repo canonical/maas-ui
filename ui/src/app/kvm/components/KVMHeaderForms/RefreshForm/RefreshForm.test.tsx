@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import RefreshForm from "./RefreshForm";
@@ -31,7 +32,9 @@ describe("RefreshForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <RefreshForm clearHeaderContent={jest.fn()} hostIds={[1]} />
+          <CompatRouter>
+            <RefreshForm clearHeaderContent={jest.fn()} hostIds={[1]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -57,7 +60,9 @@ describe("RefreshForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <RefreshForm clearHeaderContent={jest.fn()} hostIds={[1, 2]} />
+          <CompatRouter>
+            <RefreshForm clearHeaderContent={jest.fn()} hostIds={[1, 2]} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

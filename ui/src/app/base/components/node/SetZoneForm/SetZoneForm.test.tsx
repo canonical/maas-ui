@@ -1,6 +1,8 @@
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SetZoneForm from "./SetZoneForm";
@@ -34,14 +36,18 @@ it("initialises zone value if exactly one node provided", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <SetZoneForm
-        clearHeaderContent={jest.fn()}
-        modelName="machine"
-        nodes={nodes}
-        onSubmit={jest.fn()}
-        processingCount={0}
-        viewingDetails={false}
-      />
+      <MemoryRouter>
+        <CompatRouter>
+          <SetZoneForm
+            clearHeaderContent={jest.fn()}
+            modelName="machine"
+            nodes={nodes}
+            onSubmit={jest.fn()}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
 
@@ -56,14 +62,18 @@ it("does not initialise zone value if more than one node provided", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <SetZoneForm
-        clearHeaderContent={jest.fn()}
-        modelName="machine"
-        nodes={nodes}
-        onSubmit={jest.fn()}
-        processingCount={0}
-        viewingDetails={false}
-      />
+      <MemoryRouter>
+        <CompatRouter>
+          <SetZoneForm
+            clearHeaderContent={jest.fn()}
+            modelName="machine"
+            nodes={nodes}
+            onSubmit={jest.fn()}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
 
@@ -79,14 +89,18 @@ it("correctly runs function to set zones of given nodes", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <SetZoneForm
-        clearHeaderContent={jest.fn()}
-        modelName="machine"
-        nodes={nodes}
-        onSubmit={onSubmit}
-        processingCount={0}
-        viewingDetails={false}
-      />
+      <MemoryRouter>
+        <CompatRouter>
+          <SetZoneForm
+            clearHeaderContent={jest.fn()}
+            modelName="machine"
+            nodes={nodes}
+            onSubmit={onSubmit}
+            processingCount={0}
+            viewingDetails={false}
+          />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
 

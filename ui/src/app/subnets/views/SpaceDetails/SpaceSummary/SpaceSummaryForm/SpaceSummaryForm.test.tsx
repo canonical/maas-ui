@@ -1,6 +1,8 @@
 import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SpaceSummaryForm from "./SpaceSummaryForm";
@@ -35,7 +37,11 @@ it("dispatches an update action on submit", async () => {
   const store = configureStore()(state);
   render(
     <Provider store={store}>
-      <SpaceSummaryForm space={space} handleDismiss={jest.fn()} />
+      <MemoryRouter>
+        <CompatRouter>
+          <SpaceSummaryForm space={space} handleDismiss={jest.fn()} />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
   const spaceSummaryForm = screen.getByRole("form", {

@@ -1,5 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SubnetSummaryForm from "./SubnetSummaryForm";
@@ -45,7 +47,11 @@ it("can dispatch an action to update the subnet", async () => {
   const store = configureStore()(state);
   render(
     <Provider store={store}>
-      <SubnetSummaryForm id={subnet.id} handleDismiss={jest.fn()} />
+      <MemoryRouter>
+        <CompatRouter>
+          <SubnetSummaryForm id={subnet.id} handleDismiss={jest.fn()} />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
 

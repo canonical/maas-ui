@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ZonesListForm from "./ZonesListForm";
@@ -22,7 +24,11 @@ describe("ZonesListForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ZonesListForm closeForm={closeForm} />
+        <MemoryRouter>
+          <CompatRouter>
+            <ZonesListForm closeForm={closeForm} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -34,7 +40,11 @@ describe("ZonesListForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ZonesListForm closeForm={jest.fn()} />
+        <MemoryRouter>
+          <CompatRouter>
+            <ZonesListForm closeForm={jest.fn()} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     act(() =>

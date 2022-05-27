@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditPhysicalForm from "./EditPhysicalForm";
@@ -66,7 +67,9 @@ describe("EditPhysicalForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+          <CompatRouter>
+            <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -87,7 +90,9 @@ describe("EditPhysicalForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+          <CompatRouter>
+            <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -101,7 +106,9 @@ describe("EditPhysicalForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+          <CompatRouter>
+            <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

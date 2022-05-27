@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditRecordForm from "./EditRecordForm";
@@ -54,7 +56,11 @@ describe("EditRecordForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <EditRecordForm id={1} resource={resourceA} closeForm={closeForm} />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditRecordForm id={1} resource={resourceA} closeForm={closeForm} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -67,7 +73,11 @@ describe("EditRecordForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceA} />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditRecordForm closeForm={jest.fn()} id={1} resource={resourceA} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {

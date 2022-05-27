@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ClearAllForm from "./ClearAllForm";
@@ -50,7 +51,9 @@ describe("ClearAllForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <ClearAllForm closeForm={jest.fn()} />
+          <CompatRouter>
+            <ClearAllForm closeForm={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -67,7 +70,9 @@ describe("ClearAllForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <ClearAllForm closeForm={jest.fn()} />
+          <CompatRouter>
+            <ClearAllForm closeForm={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,7 +88,9 @@ describe("ClearAllForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <ClearAllForm closeForm={jest.fn()} />
+          <CompatRouter>
+            <ClearAllForm closeForm={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -100,7 +107,9 @@ describe("ClearAllForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
         >
-          <ClearAllForm closeForm={jest.fn()} />
+          <CompatRouter>
+            <ClearAllForm closeForm={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

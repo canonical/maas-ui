@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels as ReservedRangeFormLabels } from "../ReservedRangeForm/ReservedRangeForm";
@@ -64,7 +65,9 @@ it("renders for a subnet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -101,7 +104,9 @@ it("renders for a vlan", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
+        <CompatRouter>
+          <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -132,7 +137,9 @@ it("displays an empty message for a subnet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -147,7 +154,9 @@ it("displays an empty message for a vlan", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
+        <CompatRouter>
+          <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -162,7 +171,9 @@ it("displays a message if there are no subnets in a VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} hasVLANSubnets={false} />
+        <CompatRouter>
+          <ReservedRanges vlanId={vlan.id} hasVLANSubnets={false} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -178,7 +189,9 @@ it("displays content when it is dynamic", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -206,7 +219,9 @@ it("displays content when it is reserved", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -232,7 +247,9 @@ it("displays an edit form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -250,7 +267,9 @@ it("displays confirm delete message", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -270,7 +289,9 @@ it("dispatches an action to delete a reserved range", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -294,7 +315,9 @@ it("displays an add button when it is reserved", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -312,7 +335,9 @@ it("displays an add button when it is dynamic", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -339,7 +364,9 @@ it("disables the add button if there are no subnets in a VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges vlanId={vlan.id} />
+        <CompatRouter>
+          <ReservedRanges vlanId={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -353,7 +380,9 @@ it("can display an add form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -381,7 +410,9 @@ it("displays the subnet column when the table is for a VLAN", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
+        <CompatRouter>
+          <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -397,7 +428,9 @@ it("does not display the subnet column when the table is for a subnet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <ReservedRanges subnetId={subnet.id} />
+        <CompatRouter>
+          <ReservedRanges subnetId={subnet.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

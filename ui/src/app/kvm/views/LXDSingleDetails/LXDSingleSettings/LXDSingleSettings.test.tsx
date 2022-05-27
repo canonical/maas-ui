@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDSingleSettings from "./LXDSingleSettings";
@@ -43,7 +44,11 @@ describe("LXDSingleSettings", () => {
     mount(
       <MemoryRouter>
         <Provider store={store}>
-          <LXDSingleSettings id={1} setHeaderContent={jest.fn()} />
+          <MemoryRouter>
+            <CompatRouter>
+              <LXDSingleSettings id={1} setHeaderContent={jest.fn()} />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       </MemoryRouter>
     );
@@ -67,7 +72,11 @@ describe("LXDSingleSettings", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <LXDSingleSettings id={1} setHeaderContent={jest.fn()} />
+        <MemoryRouter>
+          <CompatRouter>
+            <LXDSingleSettings id={1} setHeaderContent={jest.fn()} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Spinner").length).toBe(1);

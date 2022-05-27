@@ -152,7 +152,9 @@ describe("KVMList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(false);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      kvmURLs.lxd.index
+    );
     expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(true);
     expect(
       wrapper.find("[data-testid='no-hosts'] h4").text().includes("LXD")
@@ -180,7 +182,9 @@ describe("KVMList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(false);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      kvmURLs.virsh.index
+    );
     expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(true);
     expect(
       wrapper.find("[data-testid='no-hosts'] h4").text().includes("Virsh")
@@ -208,7 +212,9 @@ describe("KVMList", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(false);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      kvmURLs.lxd.index
+    );
     expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(false);
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });

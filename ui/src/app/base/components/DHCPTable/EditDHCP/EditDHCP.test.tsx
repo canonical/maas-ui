@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditDHCP from "./EditDHCP";
@@ -17,7 +18,9 @@ describe("EditDHCP", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <EditDHCP close={jest.fn()} id={1} />
+          <CompatRouter>
+            <EditDHCP close={jest.fn()} id={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

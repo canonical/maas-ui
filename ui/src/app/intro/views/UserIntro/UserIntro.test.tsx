@@ -1,11 +1,13 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UserIntro from "./UserIntro";
 
 import * as baseHooks from "app/base/hooks/base";
+import dashboardURLs from "app/dashboard/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as userActions } from "app/store/user";
 import {
@@ -46,7 +48,9 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -61,7 +65,9 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -80,11 +86,15 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      dashboardURLs.index
+    );
   });
 
   it("disables the continue button if there are no ssh keys", () => {
@@ -95,7 +105,9 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -114,7 +126,9 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -128,7 +142,9 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -142,7 +158,9 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -166,7 +184,9 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -184,11 +204,15 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      dashboardURLs.index
+    );
   });
 
   it("can skip the user setup", () => {
@@ -198,7 +222,9 @@ describe("UserIntro", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
         >
-          <UserIntro />
+          <CompatRouter>
+            <UserIntro />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

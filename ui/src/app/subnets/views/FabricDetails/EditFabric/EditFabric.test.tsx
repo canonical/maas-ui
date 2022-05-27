@@ -1,6 +1,8 @@
 import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditFabric from "./EditFabric";
@@ -35,7 +37,11 @@ it("dispatches an update action on submit", async () => {
   const store = configureStore()(state);
   render(
     <Provider store={store}>
-      <EditFabric id={fabric.id} close={jest.fn()} />
+      <MemoryRouter>
+        <CompatRouter>
+          <EditFabric id={fabric.id} close={jest.fn()} />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
   const EditSummaryForm = screen.getByRole("form", {

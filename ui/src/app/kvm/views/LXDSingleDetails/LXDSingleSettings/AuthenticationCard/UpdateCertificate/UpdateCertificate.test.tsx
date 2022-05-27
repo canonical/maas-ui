@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UpdateCertificate from "./UpdateCertificate";
@@ -47,11 +48,13 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate
-            closeForm={jest.fn()}
-            hasCertificateData
-            pod={pod}
-          />
+          <CompatRouter>
+            <UpdateCertificate
+              closeForm={jest.fn()}
+              hasCertificateData
+              pod={pod}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -75,12 +78,14 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate
-            closeForm={jest.fn()}
-            hasCertificateData
-            objectName="custom-name"
-            pod={pod}
-          />
+          <CompatRouter>
+            <UpdateCertificate
+              closeForm={jest.fn()}
+              hasCertificateData
+              objectName="custom-name"
+              pod={pod}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -109,11 +114,13 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate
-            closeForm={jest.fn()}
-            hasCertificateData
-            pod={pod}
-          />
+          <CompatRouter>
+            <UpdateCertificate
+              closeForm={jest.fn()}
+              hasCertificateData
+              pod={pod}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -142,11 +149,13 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate
-            closeForm={jest.fn()}
-            hasCertificateData
-            pod={pod}
-          />
+          <CompatRouter>
+            <UpdateCertificate
+              closeForm={jest.fn()}
+              hasCertificateData
+              pod={pod}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -178,11 +187,13 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate
-            closeForm={closeForm}
-            hasCertificateData
-            pod={pod}
-          />
+          <CompatRouter>
+            <UpdateCertificate
+              closeForm={closeForm}
+              hasCertificateData
+              pod={pod}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -201,11 +212,13 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate
-            closeForm={closeForm}
-            hasCertificateData={false}
-            pod={pod}
-          />
+          <CompatRouter>
+            <UpdateCertificate
+              closeForm={closeForm}
+              hasCertificateData={false}
+              pod={pod}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -228,11 +241,13 @@ describe("UpdateCertificate", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/edit", key: "testKey" }]}
         >
-          <UpdateCertificate
-            closeForm={jest.fn()}
-            hasCertificateData={false}
-            pod={pod}
-          />
+          <CompatRouter>
+            <UpdateCertificate
+              closeForm={jest.fn()}
+              hasCertificateData={false}
+              pod={pod}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

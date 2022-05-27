@@ -1,6 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddMachineForm from "./AddMachineForm";
@@ -104,7 +105,9 @@ it("fetches the necessary data on load if not already loaded", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <AddMachineForm clearHeaderContent={jest.fn()} />
+        <CompatRouter>
+          <AddMachineForm clearHeaderContent={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -131,7 +134,9 @@ it("displays a spinner if data has not loaded", () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <AddMachineForm clearHeaderContent={jest.fn()} />
+        <CompatRouter>
+          <AddMachineForm clearHeaderContent={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -146,7 +151,9 @@ it("enables submit when a power type with no fields is chosen", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <AddMachineForm clearHeaderContent={jest.fn()} />
+        <CompatRouter>
+          <AddMachineForm clearHeaderContent={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -171,7 +178,9 @@ it("can handle saving a machine", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <AddMachineForm clearHeaderContent={jest.fn()} />
+        <CompatRouter>
+          <AddMachineForm clearHeaderContent={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -231,7 +240,9 @@ it("correctly trims power parameters before dispatching action", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <AddMachineForm clearHeaderContent={jest.fn()} />
+        <CompatRouter>
+          <AddMachineForm clearHeaderContent={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -287,7 +298,9 @@ it("correctly filters empty extra mac fields", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
-        <AddMachineForm clearHeaderContent={jest.fn()} />
+        <CompatRouter>
+          <AddMachineForm clearHeaderContent={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

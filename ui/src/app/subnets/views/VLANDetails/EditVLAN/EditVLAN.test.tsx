@@ -7,6 +7,7 @@ import {
 } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditVLAN from "./EditVLAN";
@@ -56,7 +57,9 @@ describe("EditVLAN", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditVLAN close={jest.fn()} id={vlan.id} />
+          <CompatRouter>
+            <EditVLAN close={jest.fn()} id={vlan.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -70,7 +73,9 @@ describe("EditVLAN", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditVLAN close={jest.fn()} id={vlan.id} />
+          <CompatRouter>
+            <EditVLAN close={jest.fn()} id={vlan.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -110,7 +115,9 @@ describe("EditVLAN", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditVLAN close={jest.fn()} id={vlan.id} />
+          <CompatRouter>
+            <EditVLAN close={jest.fn()} id={vlan.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -138,7 +145,9 @@ describe("EditVLAN", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditVLAN close={jest.fn()} id={vlan.id} />
+          <CompatRouter>
+            <EditVLAN close={jest.fn()} id={vlan.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

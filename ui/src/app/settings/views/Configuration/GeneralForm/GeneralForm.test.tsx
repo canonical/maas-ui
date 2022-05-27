@@ -1,5 +1,7 @@
 import { shallow, mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import GeneralForm from "./GeneralForm";
@@ -33,7 +35,11 @@ describe("GeneralForm", () => {
 
     const wrapper = shallow(
       <Provider store={store}>
-        <GeneralForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <GeneralForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("GeneralForm").exists()).toBe(true);
@@ -44,7 +50,11 @@ describe("GeneralForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <GeneralForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <GeneralForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("input[name='maas_name']").props().value).toBe(
@@ -57,7 +67,11 @@ describe("GeneralForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <GeneralForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <GeneralForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("input[name='enable_analytics']").props().value).toBe(
@@ -70,7 +84,11 @@ describe("GeneralForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <GeneralForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <GeneralForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(
@@ -83,7 +101,11 @@ describe("GeneralForm", () => {
     window.usabilla_live = jest.fn();
     const wrapper = mount(
       <Provider store={store}>
-        <GeneralForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <GeneralForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {

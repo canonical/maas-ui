@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineInstances from "./MachineInstances";
@@ -56,11 +57,13 @@ describe("MachineInstances", () => {
             { pathname: "/machine/fake123/instances", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/instances"
-            render={() => <MachineInstances />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/instances"
+              render={() => <MachineInstances />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -78,11 +81,13 @@ describe("MachineInstances", () => {
             { pathname: "/machine/abc123/instances", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/instances"
-            render={() => <MachineInstances />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/instances"
+              render={() => <MachineInstances />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -120,11 +125,13 @@ describe("MachineInstances", () => {
             { pathname: "/machine/abc123/instances", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/instances"
-            render={() => <MachineInstances />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/instances"
+              render={() => <MachineInstances />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -161,11 +168,13 @@ describe("MachineInstances", () => {
             { pathname: "/machine/abc123/instances", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/instances"
-            render={() => <MachineInstances />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/instances"
+              render={() => <MachineInstances />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -218,11 +227,13 @@ describe("MachineInstances", () => {
             { pathname: "/machine/abc123/instances", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/instances"
-            render={() => <MachineInstances />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/instances"
+              render={() => <MachineInstances />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -258,11 +269,13 @@ describe("MachineInstances", () => {
             { pathname: "/machine/abc123/instances", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/instances"
-            render={() => <MachineInstances />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/instances"
+              render={() => <MachineInstances />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -313,11 +326,13 @@ describe("MachineInstances", () => {
             { pathname: "/machine/abc123/instances", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/instances"
-            render={() => <MachineInstances />}
-          />
+          <CompatRouter>
+            <Route
+              exact
+              path="/machine/:id/instances"
+              render={() => <MachineInstances />}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

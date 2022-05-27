@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import StorageForm from "../StorageForm";
@@ -53,7 +55,11 @@ describe("StorageFormFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <StorageForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <StorageForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("select[name='default_storage_layout']").simulate("change", {
@@ -69,7 +75,11 @@ describe("StorageFormFields", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <StorageForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <StorageForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("select[name='default_storage_layout']").simulate("change", {

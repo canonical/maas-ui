@@ -2,6 +2,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddSpace from "./AddSpace";
@@ -17,7 +18,9 @@ test("correctly dispatches space cleanup and create actions on form submit", asy
       <MemoryRouter
         initialEntries={[{ pathname: "/networks", key: "testKey" }]}
       >
-        <AddSpace activeForm="Space" setActiveForm={() => undefined} />
+        <CompatRouter>
+          <AddSpace activeForm="Space" setActiveForm={() => undefined} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

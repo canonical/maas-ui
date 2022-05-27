@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddMachineForm from "../AddMachineForm";
@@ -80,7 +81,9 @@ describe("AddMachineFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddMachineForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -96,7 +99,9 @@ describe("AddMachineFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddMachineForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -123,7 +128,9 @@ describe("AddMachineFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddMachineForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -146,7 +153,9 @@ describe("AddMachineFormFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddMachineForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

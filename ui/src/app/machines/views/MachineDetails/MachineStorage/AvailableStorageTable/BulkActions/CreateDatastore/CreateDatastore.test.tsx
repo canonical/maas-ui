@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CreateDatastore from "./CreateDatastore";
@@ -52,11 +54,15 @@ describe("CreateDatastore", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateDatastore
-          closeForm={jest.fn()}
-          selected={[newDatastore]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateDatastore
+              closeForm={jest.fn()}
+              selected={[newDatastore]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -94,11 +100,15 @@ describe("CreateDatastore", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateDatastore
-          closeForm={jest.fn()}
-          selected={[selectedDisk, selectedPartition]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateDatastore
+              closeForm={jest.fn()}
+              selected={[selectedDisk, selectedPartition]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -132,11 +142,15 @@ describe("CreateDatastore", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateDatastore
-          closeForm={jest.fn()}
-          selected={[selectedDisk, selectedPartition]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateDatastore
+              closeForm={jest.fn()}
+              selected={[selectedDisk, selectedPartition]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -169,11 +183,15 @@ describe("CreateDatastore", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateDatastore
-          closeForm={jest.fn()}
-          selected={[selectedDisk, selectedPartition]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateDatastore
+              closeForm={jest.fn()}
+              selected={[selectedDisk, selectedPartition]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

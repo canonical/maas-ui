@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { AddLxdSteps } from "../AddLxd";
@@ -71,13 +72,15 @@ describe("CredentialsForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <CredentialsForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={setNewPodValues}
-            setStep={jest.fn()}
-            setSubmissionErrors={jest.fn()}
-          />
+          <CompatRouter>
+            <CredentialsForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={setNewPodValues}
+              setStep={jest.fn()}
+              setSubmissionErrors={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -124,13 +127,15 @@ describe("CredentialsForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <CredentialsForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={setNewPodValues}
-            setStep={jest.fn()}
-            setSubmissionErrors={jest.fn()}
-          />
+          <CompatRouter>
+            <CredentialsForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={setNewPodValues}
+              setStep={jest.fn()}
+              setSubmissionErrors={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -183,21 +188,23 @@ describe("CredentialsForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <CredentialsForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={{
-              certificate: "",
-              key: "",
-              name: "my-favourite-kvm",
-              password: "",
-              pool: "0",
-              power_address: "192.168.1.1",
-              zone: "0",
-            }}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-            setSubmissionErrors={jest.fn()}
-          />
+          <CompatRouter>
+            <CredentialsForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={{
+                certificate: "",
+                key: "",
+                name: "my-favourite-kvm",
+                password: "",
+                pool: "0",
+                power_address: "192.168.1.1",
+                zone: "0",
+              }}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+              setSubmissionErrors={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -218,21 +225,23 @@ describe("CredentialsForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <CredentialsForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={{
-              certificate: "",
-              key: "",
-              name: "my-favourite-kvm",
-              password: "",
-              pool: "0",
-              power_address: "192.168.1.1",
-              zone: "0",
-            }}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-            setSubmissionErrors={jest.fn()}
-          />
+          <CompatRouter>
+            <CredentialsForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={{
+                certificate: "",
+                key: "",
+                name: "my-favourite-kvm",
+                password: "",
+                pool: "0",
+                power_address: "192.168.1.1",
+                zone: "0",
+              }}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+              setSubmissionErrors={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -251,21 +260,23 @@ describe("CredentialsForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <CredentialsForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={{
-              certificate: "certificate",
-              key: "key",
-              name: "my-favourite-kvm",
-              password: "",
-              pool: "0",
-              power_address: "192.168.1.1",
-              zone: "0",
-            }}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-            setSubmissionErrors={jest.fn()}
-          />
+          <CompatRouter>
+            <CredentialsForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={{
+                certificate: "certificate",
+                key: "key",
+                name: "my-favourite-kvm",
+                password: "",
+                pool: "0",
+                power_address: "192.168.1.1",
+                zone: "0",
+              }}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+              setSubmissionErrors={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -286,21 +297,23 @@ describe("CredentialsForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <CredentialsForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={{
-              certificate: "certificate",
-              key: "key",
-              name: "my-favourite-kvm",
-              password: "",
-              pool: "0",
-              power_address: "192.168.1.1",
-              zone: "0",
-            }}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-            setSubmissionErrors={jest.fn()}
-          />
+          <CompatRouter>
+            <CredentialsForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={{
+                certificate: "certificate",
+                key: "key",
+                name: "my-favourite-kvm",
+                password: "",
+                pool: "0",
+                power_address: "192.168.1.1",
+                zone: "0",
+              }}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+              setSubmissionErrors={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -327,21 +340,23 @@ describe("CredentialsForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <CredentialsForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={{
-              certificate: "certificate",
-              key: "key",
-              name: "my-favourite-kvm",
-              password: "",
-              pool: "0",
-              power_address: "192.168.1.1",
-              zone: "0",
-            }}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-            setSubmissionErrors={jest.fn()}
-          />
+          <CompatRouter>
+            <CredentialsForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={{
+                certificate: "certificate",
+                key: "key",
+                name: "my-favourite-kvm",
+                password: "",
+                pool: "0",
+                power_address: "192.168.1.1",
+                zone: "0",
+              }}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+              setSubmissionErrors={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -361,21 +376,23 @@ describe("CredentialsForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <CredentialsForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={{
-              certificate: "certificate",
-              key: "key",
-              name: "my-favourite-kvm",
-              password: "",
-              pool: "0",
-              power_address: "192.168.1.1",
-              zone: "0",
-            }}
-            setNewPodValues={jest.fn()}
-            setStep={jest.fn()}
-            setSubmissionErrors={setSubmissionErrors}
-          />
+          <CompatRouter>
+            <CredentialsForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={{
+                certificate: "certificate",
+                key: "key",
+                name: "my-favourite-kvm",
+                password: "",
+                pool: "0",
+                power_address: "192.168.1.1",
+                zone: "0",
+              }}
+              setNewPodValues={jest.fn()}
+              setStep={jest.fn()}
+              setSubmissionErrors={setSubmissionErrors}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

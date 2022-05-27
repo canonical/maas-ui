@@ -5,7 +5,6 @@ import classNames from "classnames";
 import type { FileRejection, FileWithPath } from "react-dropzone";
 import { useDropzone } from "react-dropzone";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect } from "react-router";
 import { useNavigate } from "react-router-dom-v5-compat";
 
 import type { ReadScriptResponse } from "./readScript";
@@ -113,10 +112,12 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
     }
   }, [dispatch, saved, savedScript]);
 
-  if (saved) {
-    // The script was successfully uploaded so redirect to the scripts list.
-    return <Redirect to={listLocation} />;
-  }
+  useEffect(() => {
+    if (saved) {
+      // The script was successfully uploaded so redirect to the scripts list.
+      navigate(listLocation, { replace: true });
+    }
+  }, [navigate, listLocation, saved]);
 
   const uploadedFile: FileWithPath = acceptedFiles[0];
 

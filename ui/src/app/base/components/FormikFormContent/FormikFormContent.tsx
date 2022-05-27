@@ -5,7 +5,7 @@ import { Form, Notification } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { withFormikDevtools } from "formik-devtools-extension";
 import { useDispatch } from "react-redux";
-import { Redirect } from "react-router";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import type { FormikFormButtonsProps } from "app/base/components/FormikFormButtons";
 import FormikFormButtons from "app/base/components/FormikFormButtons";
@@ -98,6 +98,7 @@ const FormikFormContent = <V, E = null>({
     withFormikDevtools(formikContext);
   }
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const onSuccessCalled = useRef(false);
   const { handleSubmit, initialValues, resetForm, values } = formikContext;
   const formDisabled = useFormikFormDisabled<V>({
@@ -156,9 +157,11 @@ const FormikFormContent = <V, E = null>({
     };
   }, [cleanup, dispatch]);
 
-  if (savedRedirect && saved) {
-    return <Redirect to={savedRedirect} />;
-  }
+  useEffect(() => {
+    if (savedRedirect && saved) {
+      navigate(savedRedirect, { replace: true });
+    }
+  }, [navigate, savedRedirect, saved]);
 
   return (
     <Form

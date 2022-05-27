@@ -2,6 +2,7 @@ import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels } from "../StaticRoutes";
@@ -45,7 +46,9 @@ it("dispatches a correct action on add static route form submit", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-        <AddStaticRouteForm subnetId={subnet.id} handleDismiss={jest.fn()} />
+        <CompatRouter>
+          <AddStaticRouteForm subnetId={subnet.id} handleDismiss={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

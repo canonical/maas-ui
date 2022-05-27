@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ActionForm from "./ActionForm";
@@ -20,15 +22,19 @@ describe("ActionForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ActionForm
-          actionName="action"
-          initialValues={{}}
-          loaded={false}
-          modelName="machine"
-          onSubmit={jest.fn()}
-          processingCount={0}
-          selectedCount={1}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <ActionForm
+              actionName="action"
+              initialValues={{}}
+              loaded={false}
+              modelName="machine"
+              onSubmit={jest.fn()}
+              processingCount={0}
+              selectedCount={1}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -39,14 +45,18 @@ describe("ActionForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ActionForm
-          actionName="action"
-          initialValues={{}}
-          modelName="machine"
-          onSubmit={jest.fn()}
-          processingCount={0}
-          selectedCount={1}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <ActionForm
+              actionName="action"
+              initialValues={{}}
+              modelName="machine"
+              onSubmit={jest.fn()}
+              processingCount={0}
+              selectedCount={1}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -57,15 +67,19 @@ describe("ActionForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ActionForm
-          actionName="action"
-          initialValues={{}}
-          modelName="machine"
-          onSubmit={jest.fn()}
-          processingCount={0}
-          selectedCount={1}
-          submitLabel="Special save"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <ActionForm
+              actionName="action"
+              initialValues={{}}
+              modelName="machine"
+              onSubmit={jest.fn()}
+              processingCount={0}
+              selectedCount={1}
+              submitLabel="Special save"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -76,14 +90,18 @@ describe("ActionForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ActionForm
-          actionName="action"
-          initialValues={{}}
-          modelName="machine"
-          onSubmit={jest.fn()}
-          processingCount={1}
-          selectedCount={2}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <ActionForm
+              actionName="action"
+              initialValues={{}}
+              modelName="machine"
+              onSubmit={jest.fn()}
+              processingCount={1}
+              selectedCount={2}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper);
@@ -100,14 +118,18 @@ describe("ActionForm", () => {
     const store = mockStore(state);
     const Proxy = ({ selectedCount }: { selectedCount: number }) => (
       <Provider store={store}>
-        <ActionForm
-          actionName="action"
-          initialValues={{}}
-          modelName="machine"
-          onSubmit={jest.fn()}
-          processingCount={2}
-          selectedCount={selectedCount}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <ActionForm
+              actionName="action"
+              initialValues={{}}
+              modelName="machine"
+              onSubmit={jest.fn()}
+              processingCount={2}
+              selectedCount={selectedCount}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy selectedCount={2} />);
@@ -131,15 +153,19 @@ describe("ActionForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <ActionForm
-          actionName="action"
-          initialValues={{}}
-          modelName="machine"
-          onSubmit={jest.fn()}
-          processingCount={1}
-          selectedCount={2}
-          showProcessingCount={false}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <ActionForm
+              actionName="action"
+              initialValues={{}}
+              modelName="machine"
+              onSubmit={jest.fn()}
+              processingCount={1}
+              selectedCount={2}
+              showProcessingCount={false}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper);

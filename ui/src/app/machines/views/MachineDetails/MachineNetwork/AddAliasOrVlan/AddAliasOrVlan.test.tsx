@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddAliasOrVlan from "./AddAliasOrVlan";
@@ -53,11 +54,13 @@ describe("AddAliasOrVlan", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddAliasOrVlan
-            interfaceType={NetworkInterfaceTypes.VLAN}
-            systemId="abc123"
-            close={jest.fn()}
-          />
+          <CompatRouter>
+            <AddAliasOrVlan
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              systemId="abc123"
+              close={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -71,12 +74,14 @@ describe("AddAliasOrVlan", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddAliasOrVlan
-            interfaceType={NetworkInterfaceTypes.ALIAS}
-            nic={nic}
-            systemId="abc123"
-            close={jest.fn()}
-          />
+          <CompatRouter>
+            <AddAliasOrVlan
+              interfaceType={NetworkInterfaceTypes.ALIAS}
+              nic={nic}
+              systemId="abc123"
+              close={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -109,12 +114,14 @@ describe("AddAliasOrVlan", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddAliasOrVlan
-            interfaceType={NetworkInterfaceTypes.VLAN}
-            nic={nic}
-            systemId="abc123"
-            close={jest.fn()}
-          />
+          <CompatRouter>
+            <AddAliasOrVlan
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              nic={nic}
+              systemId="abc123"
+              close={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -134,12 +141,14 @@ describe("AddAliasOrVlan", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddAliasOrVlan
-            nic={nic}
-            interfaceType={NetworkInterfaceTypes.VLAN}
-            systemId="abc123"
-            close={jest.fn()}
-          />
+          <CompatRouter>
+            <AddAliasOrVlan
+              nic={nic}
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              systemId="abc123"
+              close={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -183,12 +192,14 @@ describe("AddAliasOrVlan", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddAliasOrVlan
-            interfaceType={NetworkInterfaceTypes.ALIAS}
-            nic={nic}
-            systemId="abc123"
-            close={jest.fn()}
-          />
+          <CompatRouter>
+            <AddAliasOrVlan
+              interfaceType={NetworkInterfaceTypes.ALIAS}
+              nic={nic}
+              systemId="abc123"
+              close={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -223,12 +234,14 @@ describe("AddAliasOrVlan", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddAliasOrVlan
-            interfaceType={NetworkInterfaceTypes.VLAN}
-            nic={nic}
-            systemId="abc123"
-            close={jest.fn()}
-          />
+          <CompatRouter>
+            <AddAliasOrVlan
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              nic={nic}
+              systemId="abc123"
+              close={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -269,12 +282,14 @@ describe("AddAliasOrVlan", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <AddAliasOrVlan
-            interfaceType={NetworkInterfaceTypes.ALIAS}
-            nic={nic}
-            systemId="abc123"
-            close={jest.fn()}
-          />
+          <CompatRouter>
+            <AddAliasOrVlan
+              interfaceType={NetworkInterfaceTypes.ALIAS}
+              nic={nic}
+              systemId="abc123"
+              close={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

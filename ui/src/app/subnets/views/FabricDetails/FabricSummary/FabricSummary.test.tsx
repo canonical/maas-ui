@@ -2,6 +2,7 @@ import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricSummary from "./FabricSummary";
@@ -41,7 +42,9 @@ it("renders correct details", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <FabricSummary fabric={fabric} />
+        <CompatRouter>
+          <FabricSummary fabric={fabric} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -66,7 +69,11 @@ it("can open and close the Edit fabric summary form", async () => {
   const store = configureStore()(state);
   render(
     <Provider store={store}>
-      <FabricSummary fabric={fabric} />
+      <MemoryRouter>
+        <CompatRouter>
+          <FabricSummary fabric={fabric} />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
   const fabricSummary = screen.getByRole("region", { name: "Fabric summary" });

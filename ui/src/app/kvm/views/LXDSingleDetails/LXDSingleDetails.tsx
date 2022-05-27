@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
 import { Redirect, Route, Switch, useLocation } from "react-router-dom";
@@ -50,9 +50,12 @@ const LXDSingleDetails = (): JSX.Element => {
     [setFilter, navigate]
   );
 
-  if (redirectURL) {
-    return <Redirect to={redirectURL} />;
-  }
+  useEffect(() => {
+    if (redirectURL) {
+      navigate(redirectURL, { replace: true });
+    }
+  }, [navigate, redirectURL]);
+
   if (!isId(id) || (!loading && !pod)) {
     return (
       <ModelNotFound id={id} linkURL={kvmURLs.lxd.index} modelName="LXD host" />

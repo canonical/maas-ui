@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AvailableStorageTable, { uniqueId } from "./AvailableStorageTable";
@@ -34,7 +36,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -71,7 +77,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -100,7 +110,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -139,7 +153,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -174,7 +192,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage={false} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage={false} systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -205,7 +227,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -232,7 +258,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -258,7 +288,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -286,7 +320,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -315,7 +353,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -352,7 +394,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -397,7 +443,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -447,7 +497,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -504,7 +558,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -546,7 +604,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -591,7 +653,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -645,7 +711,11 @@ describe("AvailableStorageTable", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AvailableStorageTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AvailableStorageTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

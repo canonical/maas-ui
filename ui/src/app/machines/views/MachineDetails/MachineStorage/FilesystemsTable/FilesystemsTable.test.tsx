@@ -1,6 +1,8 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FilesystemsTable from "./FilesystemsTable";
@@ -38,7 +40,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -64,7 +70,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -98,7 +108,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -129,7 +143,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -153,7 +171,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -183,7 +205,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -236,7 +262,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -290,7 +320,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -343,7 +377,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -397,7 +435,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -451,7 +493,11 @@ describe("FilesystemsTable", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <FilesystemsTable canEditStorage={false} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <FilesystemsTable canEditStorage={false} systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(screen.getByRole("button", { name: /Take action/ })).toBeDisabled();

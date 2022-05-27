@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainListHeaderForm from "./DomainListHeaderForm";
@@ -22,7 +24,11 @@ describe("DomainListHeaderForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DomainListHeaderForm closeForm={closeForm} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DomainListHeaderForm closeForm={closeForm} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -34,7 +40,11 @@ describe("DomainListHeaderForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DomainListHeaderForm closeForm={jest.fn()} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DomainListHeaderForm closeForm={jest.fn()} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     act(() =>
