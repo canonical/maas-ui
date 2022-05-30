@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddChassisForm from "../AddChassisForm";
@@ -47,7 +48,9 @@ describe("AddChassisFormFields", () => {
             { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
-          <AddChassisForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddChassisForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -99,7 +102,9 @@ describe("AddChassisFormFields", () => {
             { pathname: "/machines/chassis/add", key: "testKey" },
           ]}
         >
-          <AddChassisForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddChassisForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

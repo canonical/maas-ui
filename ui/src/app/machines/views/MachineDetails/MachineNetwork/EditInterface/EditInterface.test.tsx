@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditInterface from "./EditInterface";
@@ -44,12 +45,14 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-            close={jest.fn()}
-          />
+          <CompatRouter>
+            <EditInterface
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+              close={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -72,13 +75,15 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-            close={jest.fn()}
-            nicId={nic.id}
-          />
+          <CompatRouter>
+            <EditInterface
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+              close={jest.fn()}
+              nicId={nic.id}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -104,14 +109,16 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-            close={jest.fn()}
-            linkId={link.id}
-            nicId={nic.id}
-          />
+          <CompatRouter>
+            <EditInterface
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+              close={jest.fn()}
+              linkId={link.id}
+              nicId={nic.id}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -135,13 +142,15 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-            close={jest.fn()}
-            nicId={nic.id}
-          />
+          <CompatRouter>
+            <EditInterface
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+              close={jest.fn()}
+              nicId={nic.id}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -165,13 +174,15 @@ describe("EditInterface", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditInterface
-            selected={[]}
-            setSelected={jest.fn()}
-            systemId="abc123"
-            close={jest.fn()}
-            nicId={nic.id}
-          />
+          <CompatRouter>
+            <EditInterface
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
+              close={jest.fn()}
+              nicId={nic.id}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

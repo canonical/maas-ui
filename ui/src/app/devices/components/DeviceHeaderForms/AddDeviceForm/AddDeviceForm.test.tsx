@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddDeviceForm from "./AddDeviceForm";
@@ -49,7 +50,9 @@ describe("AddDeviceForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter>
-          <AddDeviceForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddDeviceForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -75,7 +78,9 @@ describe("AddDeviceForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <AddDeviceForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddDeviceForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -87,7 +92,9 @@ describe("AddDeviceForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <AddDeviceForm clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddDeviceForm clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

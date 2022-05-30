@@ -9,6 +9,7 @@ import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Label as TagFormChangesLabel } from "../TagFormChanges/TagFormChanges";
@@ -64,13 +65,18 @@ it("displays available tags in the dropdown", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormFields
-            machines={state.machine.items}
-            newTags={[]}
-            setNewTags={jest.fn()}
-          />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormFields
+              machines={state.machine.items}
+              newTags={[]}
+              setNewTags={jest.fn()}
+            />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -103,16 +109,18 @@ it("displays the tags to be added", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
-          onSubmit={jest.fn()}
-        >
-          <TagFormFields
-            machines={state.machine.items}
-            newTags={[]}
-            setNewTags={jest.fn()}
-          />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [tags[0].id, tags[2].id], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormFields
+              machines={state.machine.items}
+              newTags={[]}
+              setNewTags={jest.fn()}
+            />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -132,9 +140,14 @@ it("can open a create tag form", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <Formik initialValues={{ added: [], removed: [] }} onSubmit={jest.fn()}>
-          <TagFormFields machines={[]} newTags={[]} setNewTags={jest.fn()} />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: [], removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormFields machines={[]} newTags={[]} setNewTags={jest.fn()} />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -155,16 +168,18 @@ it("updates the new tags after creating a tag", async () => {
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
     <Provider store={store}>
       <MemoryRouter>
-        <Formik
-          initialValues={{ added: tags, removed: [] }}
-          onSubmit={jest.fn()}
-        >
-          <TagFormFields
-            machines={state.machine.items}
-            newTags={[]}
-            setNewTags={setNewTags}
-          />
-        </Formik>
+        <CompatRouter>
+          <Formik
+            initialValues={{ added: tags, removed: [] }}
+            onSubmit={jest.fn()}
+          >
+            <TagFormFields
+              machines={state.machine.items}
+              newTags={[]}
+              setNewTags={setNewTags}
+            />
+          </Formik>
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

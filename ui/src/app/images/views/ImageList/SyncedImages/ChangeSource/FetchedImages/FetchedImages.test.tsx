@@ -1,6 +1,8 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FetchedImages from "./FetchedImages";
@@ -75,7 +77,11 @@ describe("FetchedImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <FetchedImages closeForm={jest.fn()} source={source} />
+        <MemoryRouter>
+          <CompatRouter>
+            <FetchedImages closeForm={jest.fn()} source={source} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -127,7 +133,11 @@ describe("FetchedImages", () => {
     const store = mockStore(state);
     const Proxy = () => (
       <Provider store={store}>
-        <FetchedImages closeForm={closeForm} source={source} />
+        <MemoryRouter>
+          <CompatRouter>
+            <FetchedImages closeForm={closeForm} source={source} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     const wrapper = mount(<Proxy />);

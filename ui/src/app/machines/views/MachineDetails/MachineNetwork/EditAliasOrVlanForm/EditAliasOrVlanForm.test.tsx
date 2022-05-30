@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditAliasOrVlanForm from "./EditAliasOrVlanForm";
@@ -69,12 +70,14 @@ describe("EditAliasOrVlanForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditAliasOrVlanForm
-            close={jest.fn()}
-            interfaceType={NetworkInterfaceTypes.VLAN}
-            nic={nic}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <EditAliasOrVlanForm
+              close={jest.fn()}
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              nic={nic}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -96,12 +99,14 @@ describe("EditAliasOrVlanForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditAliasOrVlanForm
-            close={jest.fn()}
-            interfaceType={NetworkInterfaceTypes.VLAN}
-            nic={nic}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <EditAliasOrVlanForm
+              close={jest.fn()}
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              nic={nic}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -115,12 +120,14 @@ describe("EditAliasOrVlanForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditAliasOrVlanForm
-            close={jest.fn()}
-            interfaceType={NetworkInterfaceTypes.VLAN}
-            nic={nic}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <EditAliasOrVlanForm
+              close={jest.fn()}
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              nic={nic}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -136,13 +143,15 @@ describe("EditAliasOrVlanForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditAliasOrVlanForm
-            close={jest.fn()}
-            interfaceType={NetworkInterfaceTypes.ALIAS}
-            link={link}
-            nic={nic}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <EditAliasOrVlanForm
+              close={jest.fn()}
+              interfaceType={NetworkInterfaceTypes.ALIAS}
+              link={link}
+              nic={nic}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -189,13 +198,15 @@ describe("EditAliasOrVlanForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <EditAliasOrVlanForm
-            close={jest.fn()}
-            interfaceType={NetworkInterfaceTypes.VLAN}
-            link={link}
-            nic={nic}
-            systemId="abc123"
-          />
+          <CompatRouter>
+            <EditAliasOrVlanForm
+              close={jest.fn()}
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              link={link}
+              nic={nic}
+              systemId="abc123"
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

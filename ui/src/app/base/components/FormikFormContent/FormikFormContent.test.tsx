@@ -2,7 +2,8 @@ import { mount } from "enzyme";
 import { Field, Formik } from "formik";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 import * as Yup from "yup";
 
@@ -34,9 +35,11 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent>Content</FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent>Content</FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -48,11 +51,13 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent onCancel={jest.fn()} saving>
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent onCancel={jest.fn()} saving>
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -66,15 +71,17 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent
-              cancelDisabled={false}
-              onCancel={jest.fn()}
-              saving
-            >
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent
+                cancelDisabled={false}
+                onCancel={jest.fn()}
+                saving
+              >
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -88,9 +95,11 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -102,11 +111,13 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent errors={{ __all__: ["Uh oh!"] }}>
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent errors={{ __all__: ["Uh oh!"] }}>
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -118,11 +129,13 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent errors={{ username: "Wrong username" }}>
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent errors={{ username: "Wrong username" }}>
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -134,11 +147,13 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{ username: "" }} onSubmit={jest.fn()}>
-            <FormikFormContent errors={{ username: "Wrong username" }}>
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{ username: "" }} onSubmit={jest.fn()}>
+              <FormikFormContent errors={{ username: "Wrong username" }}>
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -150,15 +165,17 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent
-              errors={{
-                username: ["Wrong username", "Username must be provided"],
-              }}
-            >
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent
+                errors={{
+                  username: ["Wrong username", "Username must be provided"],
+                }}
+              >
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -172,9 +189,11 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent inline>Content</FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent inline>Content</FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -186,9 +205,11 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent editable={false}>Content</FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent editable={false}>Content</FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -200,15 +221,19 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent saved={true} savedRedirect="/success">
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent saved={true} savedRedirect="/success">
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      "/success"
+    );
   });
 
   it("can clean up when unmounted", async () => {
@@ -219,9 +244,11 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent cleanup={cleanup}>Content</FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent cleanup={cleanup}>Content</FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -244,15 +271,17 @@ describe("FormikFormContent", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent
-              onSaveAnalytics={eventData}
-              saved={true}
-              savedRedirect="/success"
-            >
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent
+                onSaveAnalytics={eventData}
+                saved={true}
+                savedRedirect="/success"
+              >
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -277,15 +306,17 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={jest.fn()}
-            validationSchema={Schema}
-          >
-            <FormikFormContent resetOnSave saved={saved}>
-              <Field name="val1" />
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={initialValues}
+              onSubmit={jest.fn()}
+              validationSchema={Schema}
+            >
+              <FormikFormContent resetOnSave saved={saved}>
+                <Field name="val1" />
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -319,15 +350,17 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik
-            initialValues={initialValues}
-            onSubmit={jest.fn()}
-            validationSchema={Schema}
-          >
-            <FormikFormContent resetOnSave saved={saved}>
-              <Field name="val1" />
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik
+              initialValues={initialValues}
+              onSubmit={jest.fn()}
+              validationSchema={Schema}
+            >
+              <FormikFormContent resetOnSave saved={saved}>
+                <Field name="val1" />
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -355,11 +388,13 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved }: { saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent onSuccess={onSuccess} saved={saved}>
-              <Field name="val1" />
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent onSuccess={onSuccess} saved={saved}>
+                <Field name="val1" />
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -378,11 +413,17 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent errors={null} onSuccess={onSuccess} saved={true}>
-              <Field name="val1" />
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent
+                errors={null}
+                onSuccess={onSuccess}
+                saved={true}
+              >
+                <Field name="val1" />
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -397,15 +438,17 @@ describe("FormikFormContent", () => {
     const Proxy = ({ errors, saved }: { errors?: string; saved: boolean }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent
-              errors={errors}
-              onSuccess={onSuccess}
-              saved={saved}
-            >
-              <Field name="val1" />
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent
+                errors={errors}
+                onSuccess={onSuccess}
+                saved={saved}
+              >
+                <Field name="val1" />
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -424,15 +467,17 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved, errors }: { saved: boolean; errors?: string }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent
-              errors={errors}
-              onSuccess={onSuccess}
-              saved={saved}
-            >
-              <Field name="val1" />
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent
+                errors={errors}
+                onSuccess={onSuccess}
+                saved={saved}
+              >
+                <Field name="val1" />
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -453,16 +498,18 @@ describe("FormikFormContent", () => {
     const Proxy = ({ saved, errors }: { saved: boolean; errors?: string }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent
-              errors={errors}
-              onSuccess={onSuccess}
-              resetOnSave
-              saved={saved}
-            >
-              <Field name="val1" />
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent
+                errors={errors}
+                onSuccess={onSuccess}
+                resetOnSave
+                saved={saved}
+              >
+                <Field name="val1" />
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -482,14 +529,16 @@ describe("FormikFormContent", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <FormikFormContent
-              onCancel={jest.fn()}
-              footer={<div data-testid="footer"></div>}
-            >
-              Content
-            </FormikFormContent>
-          </Formik>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={jest.fn()}>
+              <FormikFormContent
+                onCancel={jest.fn()}
+                footer={<div data-testid="footer"></div>}
+              >
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

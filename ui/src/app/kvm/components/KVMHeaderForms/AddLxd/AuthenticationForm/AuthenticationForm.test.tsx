@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { AddLxdSteps } from "../AddLxd";
@@ -74,12 +75,14 @@ describe("AuthenticationForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AuthenticationForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={jest.fn()}
-            setStep={jest.fn()}
-          />
+          <CompatRouter>
+            <AuthenticationForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={jest.fn()}
+              setStep={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -108,12 +111,14 @@ describe("AuthenticationForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AuthenticationForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={setNewPodValues}
-            setStep={jest.fn()}
-          />
+          <CompatRouter>
+            <AuthenticationForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={setNewPodValues}
+              setStep={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -148,12 +153,14 @@ describe("AuthenticationForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AuthenticationForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={setNewPodValues}
-            setStep={jest.fn()}
-          />
+          <CompatRouter>
+            <AuthenticationForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={setNewPodValues}
+              setStep={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -191,12 +198,14 @@ describe("AuthenticationForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AuthenticationForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-          />
+          <CompatRouter>
+            <AuthenticationForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -219,12 +228,14 @@ describe("AuthenticationForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AuthenticationForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-          />
+          <CompatRouter>
+            <AuthenticationForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -244,12 +255,14 @@ describe("AuthenticationForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AuthenticationForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-          />
+          <CompatRouter>
+            <AuthenticationForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -271,12 +284,14 @@ describe("AuthenticationForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AuthenticationForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={jest.fn()}
-            setStep={setStep}
-          />
+          <CompatRouter>
+            <AuthenticationForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={jest.fn()}
+              setStep={setStep}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -291,12 +306,14 @@ describe("AuthenticationForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AuthenticationForm
-            clearHeaderContent={jest.fn()}
-            newPodValues={newPodValues}
-            setNewPodValues={jest.fn()}
-            setStep={jest.fn()}
-          />
+          <CompatRouter>
+            <AuthenticationForm
+              clearHeaderContent={jest.fn()}
+              newPodValues={newPodValues}
+              setNewPodValues={jest.fn()}
+              setStep={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

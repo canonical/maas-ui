@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KernelParameters from "./KernelParameters";
@@ -35,7 +37,11 @@ describe("KernelParameters", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <KernelParameters />
+        <MemoryRouter>
+          <CompatRouter>
+            <KernelParameters />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -49,7 +55,11 @@ describe("KernelParameters", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <KernelParameters />
+        <MemoryRouter>
+          <CompatRouter>
+            <KernelParameters />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -63,7 +73,11 @@ describe("KernelParameters", () => {
 
     mount(
       <Provider store={store}>
-        <KernelParameters />
+        <MemoryRouter>
+          <CompatRouter>
+            <KernelParameters />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

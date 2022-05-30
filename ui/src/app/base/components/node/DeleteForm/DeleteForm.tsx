@@ -1,4 +1,6 @@
-import { Redirect } from "react-router-dom";
+import { useEffect } from "react";
+
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import NodeActionConfirmationText from "../../NodeActionConfirmationText";
 import type { NodeActionFormProps } from "../types";
@@ -25,13 +27,17 @@ export const DeleteForm = <E,>({
   redirectURL,
   viewingDetails,
 }: Props<E>): JSX.Element => {
+  const navigate = useNavigate();
   const deleteComplete = useProcessing({
     hasErrors: !!errors,
     processingCount,
   });
-  if (deleteComplete && viewingDetails) {
-    return <Redirect data-testid="delete-redirect" to={redirectURL} />;
-  }
+
+  useEffect(() => {
+    if (deleteComplete && viewingDetails) {
+      navigate(redirectURL, { replace: true });
+    }
+  }, [navigate, deleteComplete, redirectURL, viewingDetails]);
 
   return (
     <ActionForm<EmptyObject, E>

@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NetworkTableConfirmation from "./NetworkTableConfirmation";
@@ -44,12 +46,16 @@ describe("NetworkTableConfirmation", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTableConfirmation
-          expanded={null}
-          nic={nic}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <NetworkTableConfirmation
+              expanded={null}
+              nic={nic}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("ActionConfirm").exists()).toBe(false);
@@ -60,14 +66,18 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.REMOVE,
-            }}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.REMOVE,
+                }}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       const confirmation = wrapper.find("ActionConfirm");
@@ -82,14 +92,18 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.REMOVE,
-            }}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.REMOVE,
+                }}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       wrapper.find("ActionConfirm ActionButton").simulate("click");
@@ -130,15 +144,19 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.REMOVE,
-            }}
-            link={link}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.REMOVE,
+                }}
+                link={link}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       const confirmation = wrapper.find("ActionConfirm");
@@ -167,15 +185,19 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.REMOVE,
-            }}
-            link={link}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.REMOVE,
+                }}
+                link={link}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       wrapper.find("ActionConfirm ActionButton").simulate("click");
@@ -205,14 +227,18 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.MARK_CONNECTED,
-            }}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.MARK_CONNECTED,
+                }}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       const confirmation = wrapper.find("ActionConfirm");
@@ -226,14 +252,18 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.MARK_DISCONNECTED,
-            }}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.MARK_DISCONNECTED,
+                }}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       const confirmation = wrapper.find("ActionConfirm");
@@ -247,14 +277,18 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.DISCONNECTED_WARNING,
-            }}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.DISCONNECTED_WARNING,
+                }}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       const confirmation = wrapper.find("ActionConfirm");
@@ -268,14 +302,18 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.MARK_CONNECTED,
-            }}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.MARK_CONNECTED,
+                }}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       wrapper.find("ActionConfirm ActionButton").simulate("click");
@@ -303,14 +341,18 @@ describe("NetworkTableConfirmation", () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
-          <NetworkTableConfirmation
-            expanded={{
-              content: ExpandedState.MARK_DISCONNECTED,
-            }}
-            nic={nic}
-            setExpanded={jest.fn()}
-            systemId="abc123"
-          />
+          <MemoryRouter>
+            <CompatRouter>
+              <NetworkTableConfirmation
+                expanded={{
+                  content: ExpandedState.MARK_DISCONNECTED,
+                }}
+                nic={nic}
+                setExpanded={jest.fn()}
+                systemId="abc123"
+              />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
       wrapper.find("ActionConfirm ActionButton").simulate("click");
@@ -339,14 +381,18 @@ describe("NetworkTableConfirmation", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTableConfirmation
-          expanded={{
-            content: ExpandedState.ADD_ALIAS,
-          }}
-          nic={nic}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <NetworkTableConfirmation
+              expanded={{
+                content: ExpandedState.ADD_ALIAS,
+              }}
+              nic={nic}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("AddAliasOrVlan").exists()).toBe(true);
@@ -359,14 +405,18 @@ describe("NetworkTableConfirmation", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkTableConfirmation
-          expanded={{
-            content: ExpandedState.ADD_VLAN,
-          }}
-          nic={nic}
-          setExpanded={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <NetworkTableConfirmation
+              expanded={{
+                content: ExpandedState.ADD_VLAN,
+              }}
+              nic={nic}
+              setExpanded={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("AddAliasOrVlan").exists()).toBe(true);

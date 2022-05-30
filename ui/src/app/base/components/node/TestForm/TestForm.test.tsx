@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TestForm from "./TestForm";
@@ -79,15 +80,17 @@ describe("TestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TestForm
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={state.machine.items}
-            onTest={onTest}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <TestForm
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={state.machine.items}
+              onTest={onTest}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -146,16 +149,18 @@ describe("TestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TestForm
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            hardwareType={HardwareType.Network}
-            modelName="machine"
-            nodes={state.machine.items}
-            onTest={jest.fn()}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <TestForm
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              hardwareType={HardwareType.Network}
+              modelName="machine"
+              nodes={state.machine.items}
+              onTest={jest.fn()}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -194,16 +199,18 @@ describe("TestForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <TestForm
-            cleanup={machineActions.cleanup}
-            applyConfiguredNetworking={true}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={state.machine.items}
-            onTest={jest.fn()}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <TestForm
+              cleanup={machineActions.cleanup}
+              applyConfiguredNetworking={true}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={state.machine.items}
+              onTest={jest.fn()}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

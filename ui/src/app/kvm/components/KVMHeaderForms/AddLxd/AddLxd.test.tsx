@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddLxd from "./AddLxd";
@@ -75,7 +76,9 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddLxd clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -97,7 +100,9 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddLxd clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -126,7 +131,9 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddLxd clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -152,7 +159,9 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddLxd clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -176,7 +185,9 @@ describe("AddLxd", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddLxd clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddLxd clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

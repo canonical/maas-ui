@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CloneForm from "./CloneForm";
@@ -53,12 +54,14 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm
-            clearHeaderContent={jest.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <CloneForm
+              clearHeaderContent={jest.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -99,12 +102,14 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm
-            clearHeaderContent={jest.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <CloneForm
+              clearHeaderContent={jest.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -143,12 +148,14 @@ describe("CloneForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <CloneForm
-            clearHeaderContent={jest.fn()}
-            machines={[machines[0], machines[1]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <CloneForm
+              clearHeaderContent={jest.fn()}
+              machines={[machines[0], machines[1]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

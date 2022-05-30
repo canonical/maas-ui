@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { BulkAction } from "../AvailableStorageTable";
@@ -44,12 +46,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={null}
-          selected={selected}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={null}
+              selected={selected}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -81,12 +87,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={null}
-          selected={selected}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={null}
+              selected={selected}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -112,12 +122,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={null}
-          selected={[]}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={null}
+              selected={[]}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -145,12 +159,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={null}
-          selected={selected}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={null}
+              selected={selected}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -182,12 +200,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={null}
-          selected={[selected]}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={null}
+              selected={[selected]}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -212,12 +234,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={BulkAction.CREATE_DATASTORE}
-          selected={[]}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={BulkAction.CREATE_DATASTORE}
+              selected={[]}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -240,12 +266,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={BulkAction.CREATE_RAID}
-          selected={[]}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={BulkAction.CREATE_RAID}
+              selected={[]}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -268,12 +298,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={BulkAction.CREATE_VOLUME_GROUP}
-          selected={[]}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={BulkAction.CREATE_VOLUME_GROUP}
+              selected={[]}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -296,12 +330,16 @@ describe("BulkActions", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <BulkActions
-          bulkAction={BulkAction.UPDATE_DATASTORE}
-          selected={[]}
-          setBulkAction={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <BulkActions
+              bulkAction={BulkAction.UPDATE_DATASTORE}
+              selected={[]}
+              setBulkAction={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

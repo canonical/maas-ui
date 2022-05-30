@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NtpForm from "./NtpForm";
@@ -37,7 +39,11 @@ describe("NtpForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <NtpForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <NtpForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -48,7 +54,11 @@ describe("NtpForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NtpForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <NtpForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -82,7 +92,11 @@ describe("NtpForm", () => {
 
     mount(
       <Provider store={store}>
-        <NtpForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <NtpForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

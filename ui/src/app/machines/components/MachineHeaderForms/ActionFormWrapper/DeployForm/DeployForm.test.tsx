@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeployForm from "./DeployForm";
@@ -108,12 +109,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -143,12 +146,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -166,12 +171,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -209,12 +216,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -248,12 +257,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -287,12 +298,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -327,12 +340,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -369,12 +384,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -406,12 +423,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -437,12 +456,14 @@ describe("DeployForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <DeployForm
-            clearHeaderContent={jest.fn()}
-            machines={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

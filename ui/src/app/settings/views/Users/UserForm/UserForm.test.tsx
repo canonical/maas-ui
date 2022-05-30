@@ -1,13 +1,14 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { UserForm } from "./UserForm";
 
 import BaseUserForm from "app/base/components/UserForm";
+import settingsURLs from "app/settings/urls";
 import type { RootState } from "app/store/root/types";
 import type { User } from "app/store/user/types";
 import {
@@ -78,8 +79,9 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      settingsURLs.users.index
+    );
   });
 
   it("can update a user", () => {

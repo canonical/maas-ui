@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import LXDClusterHostSettings from "./LXDClusterHostSettings";
@@ -33,7 +34,9 @@ describe("LXDClusterHostSettings", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <LXDClusterHostSettings clusterId={2} hostId={1} />
+          <CompatRouter>
+            <LXDClusterHostSettings clusterId={2} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -45,7 +48,9 @@ describe("LXDClusterHostSettings", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <LXDClusterHostSettings clusterId={2} hostId={1} />
+          <CompatRouter>
+            <LXDClusterHostSettings clusterId={2} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

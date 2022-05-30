@@ -1,11 +1,12 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { DhcpForm } from "./DhcpForm";
 
+import settingsURLs from "app/settings/urls";
 import type { RootState } from "app/store/root/types";
 import {
   dhcpSnippet as dhcpSnippetFactory,
@@ -67,7 +68,9 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      settingsURLs.dhcp.index
+    );
   });
 
   it("shows the snippet name in the title when editing", () => {

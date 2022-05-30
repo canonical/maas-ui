@@ -7,6 +7,7 @@ import {
 } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Headers } from "./BootArchitecturesTable";
@@ -36,7 +37,9 @@ it("shows a spinner while data is loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditBootArchitectures id={1} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <EditBootArchitectures id={1} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -65,7 +68,9 @@ it("initialises form data correctly", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -97,7 +102,9 @@ it("can update the arches to disable", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -133,7 +140,9 @@ it("can dispatch an action to update subnet's disabled boot architectures", asyn
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <EditBootArchitectures id={subnet.id} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeName from "./NodeName";
@@ -59,12 +60,14 @@ describe("NodeName", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeName
-            editingName={false}
-            node={null}
-            onSubmit={jest.fn()}
-            setEditingName={jest.fn()}
-          />
+          <CompatRouter>
+            <NodeName
+              editingName={false}
+              node={null}
+              onSubmit={jest.fn()}
+              setEditingName={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -79,12 +82,14 @@ describe("NodeName", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeName
-            editingName={false}
-            node={machine}
-            onSubmit={jest.fn()}
-            setEditingName={jest.fn()}
-          />
+          <CompatRouter>
+            <NodeName
+              editingName={false}
+              node={machine}
+              onSubmit={jest.fn()}
+              setEditingName={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -98,12 +103,14 @@ describe("NodeName", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeName
-            editingName={false}
-            node={machine}
-            onSubmit={jest.fn()}
-            setEditingName={jest.fn()}
-          />
+          <CompatRouter>
+            <NodeName
+              editingName={false}
+              node={machine}
+              onSubmit={jest.fn()}
+              setEditingName={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -118,12 +125,14 @@ describe("NodeName", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeName
-            editingName={false}
-            node={machine}
-            onSubmit={jest.fn()}
-            setEditingName={setEditingName}
-          />
+          <CompatRouter>
+            <NodeName
+              editingName={false}
+              node={machine}
+              onSubmit={jest.fn()}
+              setEditingName={setEditingName}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -138,12 +147,14 @@ describe("NodeName", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeName
-            editingName={true}
-            node={machine}
-            onSubmit={jest.fn()}
-            setEditingName={jest.fn()}
-          />
+          <CompatRouter>
+            <NodeName
+              editingName={true}
+              node={machine}
+              onSubmit={jest.fn()}
+              setEditingName={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -159,7 +170,9 @@ describe("NodeName", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeName {...props} />
+          <CompatRouter>
+            <NodeName {...props} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -187,12 +200,14 @@ describe("NodeName", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeName
-            editingName={true}
-            node={machine}
-            onSubmit={jest.fn()}
-            setEditingName={jest.fn()}
-          />
+          <CompatRouter>
+            <NodeName
+              editingName={true}
+              node={machine}
+              onSubmit={jest.fn()}
+              setEditingName={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

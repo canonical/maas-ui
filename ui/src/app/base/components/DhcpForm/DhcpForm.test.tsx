@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { DhcpForm } from "./DhcpForm";
@@ -52,7 +53,9 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm analyticsCategory="settings" />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -64,7 +67,9 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm analyticsCategory="settings" />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,10 +88,12 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm
-            analyticsCategory="settings"
-            id={state.dhcpsnippet.items[0].id}
-          />
+          <CompatRouter>
+            <DhcpForm
+              analyticsCategory="settings"
+              id={state.dhcpsnippet.items[0].id}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -121,7 +128,9 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm analyticsCategory="settings" />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -156,7 +165,9 @@ describe("DhcpForm", () => {
     const Proxy = ({ analyticsCategory }: { analyticsCategory: string }) => (
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm analyticsCategory={analyticsCategory} onSave={onSave} />
+          <CompatRouter>
+            <DhcpForm analyticsCategory={analyticsCategory} onSave={onSave} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -178,7 +189,9 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm analyticsCategory="settings" onSave={onSave} />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" onSave={onSave} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -196,7 +209,9 @@ describe("DhcpForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm analyticsCategory="settings" />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -212,10 +227,12 @@ describe("DhcpForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm
-            analyticsCategory="settings"
-            id={state.dhcpsnippet.items[0].id}
-          />
+          <CompatRouter>
+            <DhcpForm
+              analyticsCategory="settings"
+              id={state.dhcpsnippet.items[0].id}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -244,10 +261,12 @@ describe("DhcpForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <DhcpForm
-            analyticsCategory="settings"
-            id={state.dhcpsnippet.items[0].id}
-          />
+          <CompatRouter>
+            <DhcpForm
+              analyticsCategory="settings"
+              id={state.dhcpsnippet.items[0].id}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

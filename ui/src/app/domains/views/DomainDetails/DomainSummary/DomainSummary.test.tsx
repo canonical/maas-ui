@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainSummary from "./DomainSummary";
@@ -26,7 +28,11 @@ describe("DomainSummary", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <DomainSummary id={1} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DomainSummary id={1} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -43,7 +49,11 @@ describe("DomainSummary", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <DomainSummary id={1} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DomainSummary id={1} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -67,7 +77,11 @@ describe("DomainSummary", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DomainSummary id={1} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DomainSummary id={1} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -107,7 +121,11 @@ describe("DomainSummary", () => {
 
       const wrapper = mount(
         <Provider store={store}>
-          <DomainSummary id={1} />
+          <MemoryRouter>
+            <CompatRouter>
+              <DomainSummary id={1} />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
 
@@ -126,7 +144,11 @@ describe("DomainSummary", () => {
 
       const wrapper = mount(
         <Provider store={store}>
-          <DomainSummary id={1} />
+          <MemoryRouter>
+            <CompatRouter>
+              <DomainSummary id={1} />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
 
@@ -151,7 +173,11 @@ describe("DomainSummary", () => {
 
       const wrapper = mount(
         <Provider store={store}>
-          <DomainSummary id={1} />
+          <MemoryRouter>
+            <CompatRouter>
+              <DomainSummary id={1} />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
 
@@ -177,7 +203,11 @@ describe("DomainSummary", () => {
 
       const wrapper = mount(
         <Provider store={store}>
-          <DomainSummary id={1} />
+          <MemoryRouter>
+            <CompatRouter>
+              <DomainSummary id={1} />
+            </CompatRouter>
+          </MemoryRouter>
         </Provider>
       );
 

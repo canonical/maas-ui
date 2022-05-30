@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import KernelParametersForm from "./KernelParametersForm";
@@ -34,7 +36,11 @@ describe("KernelParametersForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <KernelParametersForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <KernelParametersForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(

@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import Intro from "./Intro";
 
+import dashboardURLs from "app/dashboard/urls";
 import introURLs from "app/intro/urls";
 import type { RootState } from "app/store/root/types";
 import {
@@ -87,7 +88,9 @@ describe("Intro", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      dashboardURLs.index
+    );
   });
 
   it("returns to the start when loading the user intro and the main intro is incomplete", () => {

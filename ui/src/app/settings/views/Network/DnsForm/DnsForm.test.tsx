@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DnsForm from "./DnsForm";
@@ -46,7 +48,11 @@ describe("DnsForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <DnsForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <DnsForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -57,7 +63,11 @@ describe("DnsForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DnsForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <DnsForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -90,7 +100,11 @@ describe("DnsForm", () => {
 
     mount(
       <Provider store={store}>
-        <DnsForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <DnsForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

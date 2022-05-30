@@ -1,8 +1,10 @@
 import type { ReactNode } from "react";
+import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import { useExitURL } from "../hooks";
 
@@ -20,6 +22,7 @@ import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 
 const Intro = (): JSX.Element => {
+  const navigate = useNavigate();
   const location = useLocation();
   const authLoading = useSelector(authSelectors.loading);
   const isAdmin = useSelector(authSelectors.isAdmin);
@@ -36,18 +39,34 @@ const Intro = (): JSX.Element => {
     // Prevent the user from reaching any of the intro urls if they are not an
     // admin.
     content = <IncompleteCard />;
-  } else if (completedIntro && completedUserIntro) {
-    // If both intros have been completed then exit the flow.
-    return <Redirect to={exitURL} />;
-  } else if (viewingUserIntro && !completedIntro) {
-    // If the user is viewing the user intro but hasn't yet completed the maas
-    // intro then send them back to the start.
-    return <Redirect to={introURLs.index} />;
-  } else if (!viewingUserIntro && completedIntro) {
-    // If the user is viewing the maas intro but has already completed it then
-    // send them to the user intro.
-    return <Redirect to={introURLs.user} />;
   }
+
+  useEffect(() => {
+    if (!authLoading && !configLoading && !(!completedIntro && !isAdmin)) {
+      if (completedIntro && completedUserIntro) {
+        // If both intros have been completed then exit the flow.
+        navigate(exitURL, { replace: true });
+      } else if (viewingUserIntro && !completedIntro) {
+        // If the user is viewing the user intro but hasn't yet completed the maas
+        // intro then send them back to the start.
+        navigate(introURLs.index, { replace: true });
+      } else if (!viewingUserIntro && completedIntro) {
+        // If the user is viewing the maas intro but has already completed it then
+        // send them to the user intro.
+        navigate(introURLs.user, { replace: true });
+      }
+    }
+  }, [
+    navigate,
+    authLoading,
+    configLoading,
+    completedIntro,
+    isAdmin,
+    completedUserIntro,
+    viewingUserIntro,
+    exitURL,
+  ]);
+
   if (content) {
     return <Section>{content}</Section>;
   }

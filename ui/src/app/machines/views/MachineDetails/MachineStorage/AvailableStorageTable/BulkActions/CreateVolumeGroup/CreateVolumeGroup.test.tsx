@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CreateVolumeGroup from "./CreateVolumeGroup";
@@ -44,11 +46,15 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateVolumeGroup
-          closeForm={jest.fn()}
-          selected={[physicalDisk]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateVolumeGroup
+              closeForm={jest.fn()}
+              selected={[physicalDisk]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -80,11 +86,15 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateVolumeGroup
-          closeForm={jest.fn()}
-          selected={[selectedDisk, selectedPartition]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateVolumeGroup
+              closeForm={jest.fn()}
+              selected={[selectedDisk, selectedPartition]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -117,11 +127,15 @@ describe("CreateVolumeGroup", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateVolumeGroup
-          closeForm={jest.fn()}
-          selected={[selectedDisk, selectedPartition]}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateVolumeGroup
+              closeForm={jest.fn()}
+              selected={[selectedDisk, selectedPartition]}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ActionFormWrapper from "./ActionFormWrapper";
@@ -30,12 +31,14 @@ it("can set selected machines to those that can perform action", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <ActionFormWrapper
-          action={NodeActions.ABORT}
-          clearHeaderContent={jest.fn()}
-          machines={machines}
-          viewingDetails={false}
-        />
+        <CompatRouter>
+          <ActionFormWrapper
+            action={NodeActions.ABORT}
+            clearHeaderContent={jest.fn()}
+            machines={machines}
+            viewingDetails={false}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -78,12 +81,14 @@ it("can show untag errors when the tag form is open", async () => {
       <MemoryRouter
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
-        <ActionFormWrapper
-          action={NodeActions.TAG}
-          clearHeaderContent={jest.fn()}
-          machines={machines}
-          viewingDetails={false}
-        />
+        <CompatRouter>
+          <ActionFormWrapper
+            action={NodeActions.TAG}
+            clearHeaderContent={jest.fn()}
+            machines={machines}
+            viewingDetails={false}
+          />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );

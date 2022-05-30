@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SetPoolForm from "./SetPoolForm";
@@ -60,12 +61,14 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm
-            clearHeaderContent={jest.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <SetPoolForm
+              clearHeaderContent={jest.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -82,12 +85,14 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <SetPoolForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -144,12 +149,14 @@ describe("SetPoolForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <SetPoolForm
-            clearHeaderContent={jest.fn()}
-            machines={state.machine.items}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <SetPoolForm
+              clearHeaderContent={jest.fn()}
+              machines={state.machine.items}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

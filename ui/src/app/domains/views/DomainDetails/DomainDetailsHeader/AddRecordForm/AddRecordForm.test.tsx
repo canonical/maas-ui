@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddRecordForm from "./AddRecordForm";
@@ -26,7 +28,11 @@ describe("AddRecordForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddRecordForm id={1} closeForm={closeForm} />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddRecordForm id={1} closeForm={closeForm} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("button[data-testid='cancel-action']").simulate("click");
@@ -49,7 +55,11 @@ describe("AddRecordForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddRecordForm id={1} closeForm={closeForm} />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddRecordForm id={1} closeForm={closeForm} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

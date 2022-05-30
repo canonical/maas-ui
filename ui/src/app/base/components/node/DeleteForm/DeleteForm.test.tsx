@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteForm from "./DeleteForm";
@@ -31,15 +32,17 @@ describe("DeleteForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <DeleteForm
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={nodes}
-            onSubmit={onSubmit}
-            processingCount={0}
-            redirectURL="www.url.com"
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <DeleteForm
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={nodes}
+              onSubmit={onSubmit}
+              processingCount={0}
+              redirectURL="/redirect"
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -55,15 +58,17 @@ describe("DeleteForm", () => {
     const Proxy = ({ processingCount }: { processingCount: number }) => (
       <Provider store={store}>
         <MemoryRouter>
-          <DeleteForm
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={nodes}
-            onSubmit={jest.fn()}
-            processingCount={processingCount}
-            redirectURL="www.url.com"
-            viewingDetails
-          />
+          <CompatRouter>
+            <DeleteForm
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={nodes}
+              onSubmit={jest.fn()}
+              processingCount={processingCount}
+              redirectURL="/redirect"
+              viewingDetails
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -71,10 +76,8 @@ describe("DeleteForm", () => {
 
     wrapper.setProps({ processingCount: 0 });
     wrapper.update();
-
-    expect(wrapper.find("[data-testid='delete-redirect']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='delete-redirect']").prop("to")).toBe(
-      "www.url.com"
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      "/redirect"
     );
   });
 
@@ -89,17 +92,19 @@ describe("DeleteForm", () => {
       processingCount: number;
     }) => (
       <Provider store={store}>
-        <MemoryRouter>
-          <DeleteForm
-            clearHeaderContent={jest.fn()}
-            errors={errors}
-            modelName="machine"
-            nodes={nodes}
-            onSubmit={jest.fn()}
-            processingCount={processingCount}
-            redirectURL="www.url.com"
-            viewingDetails
-          />
+        <MemoryRouter initialEntries={["/"]}>
+          <CompatRouter>
+            <DeleteForm
+              clearHeaderContent={jest.fn()}
+              errors={errors}
+              modelName="machine"
+              nodes={nodes}
+              onSubmit={jest.fn()}
+              processingCount={processingCount}
+              redirectURL="/redirect"
+              viewingDetails
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -107,9 +112,6 @@ describe("DeleteForm", () => {
 
     wrapper.setProps({ errors: "It didn't work", processingCount: 0 });
     wrapper.update();
-
-    expect(wrapper.find("[data-testid='delete-redirect']").exists()).toBe(
-      false
-    );
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe("/");
   });
 });

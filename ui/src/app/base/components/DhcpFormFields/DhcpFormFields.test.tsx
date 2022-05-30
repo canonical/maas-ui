@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DhcpForm from "app/base/components/DhcpForm";
@@ -70,7 +71,9 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm analyticsCategory="settings" />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -82,10 +85,12 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm
-            analyticsCategory="settings"
-            id={state.dhcpsnippet.items[0].id}
-          />
+          <CompatRouter>
+            <DhcpForm
+              analyticsCategory="settings"
+              id={state.dhcpsnippet.items[0].id}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -105,7 +110,9 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm analyticsCategory="settings" />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -129,7 +136,9 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm analyticsCategory="settings" />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -153,7 +162,9 @@ describe("DhcpFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DhcpForm analyticsCategory="settings" />
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

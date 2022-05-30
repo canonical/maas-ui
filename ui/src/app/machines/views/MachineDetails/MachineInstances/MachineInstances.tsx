@@ -1,6 +1,8 @@
+import { useEffect } from "react";
+
 import { Spinner, Row, Col, MainTable } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Redirect } from "react-router";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
@@ -82,6 +84,7 @@ const generateRows = (devices: NodeDeviceRef[]) => {
 };
 
 const MachineInstances = (): JSX.Element => {
+  const navigate = useNavigate();
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -89,14 +92,19 @@ const MachineInstances = (): JSX.Element => {
 
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} instances`);
 
-  if (!machine) {
-    return <Spinner text="Loading..." />;
-  }
+  useEffect(() => {
+    if (
+      machine &&
+      (!isMachineDetails(machine) || machine.devices.length === 0)
+    ) {
+      navigate(machineURLs.machine.summary({ id: machine.system_id }), {
+        replace: true,
+      });
+    }
+  }, [navigate, machine]);
 
-  if (!isMachineDetails(machine) || machine.devices.length === 0) {
-    return (
-      <Redirect to={machineURLs.machine.summary({ id: machine.system_id })} />
-    );
+  if (!machine || !isMachineDetails(machine)) {
+    return <Spinner text="Loading..." />;
   }
 
   return (

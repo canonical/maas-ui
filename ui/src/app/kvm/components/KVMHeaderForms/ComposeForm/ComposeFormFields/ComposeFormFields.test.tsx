@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
@@ -91,7 +92,9 @@ describe("ComposeFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -126,7 +129,9 @@ describe("ComposeFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -178,7 +183,9 @@ describe("ComposeFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -389,7 +396,9 @@ describe("ComposeFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -425,7 +434,9 @@ describe("ComposeFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -453,7 +464,9 @@ describe("ComposeFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -501,7 +514,9 @@ describe("ComposeFormFields", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

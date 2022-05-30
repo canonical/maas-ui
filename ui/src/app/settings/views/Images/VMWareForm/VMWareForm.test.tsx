@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VMWareForm from "./VMWareForm";
@@ -45,7 +47,11 @@ describe("VMWareForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <VMWareForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <VMWareForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("input[name='vcenter_server']").props().value).toBe(
@@ -58,7 +64,11 @@ describe("VMWareForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <VMWareForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <VMWareForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("input[name='vcenter_username']").props().value).toBe(
@@ -71,7 +81,11 @@ describe("VMWareForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <VMWareForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <VMWareForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("input[name='vcenter_password']").props().value).toBe(
@@ -84,7 +98,11 @@ describe("VMWareForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <VMWareForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <VMWareForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("input[name='vcenter_datacenter']").props().value).toBe(

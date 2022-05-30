@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CommissionForm from "../CommissionForm";
@@ -74,12 +75,14 @@ describe("CommissionForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
-          <CommissionForm
-            clearHeaderContent={jest.fn()}
-            machines={[]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <CommissionForm
+              clearHeaderContent={jest.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

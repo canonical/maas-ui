@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ComposeForm, {
@@ -76,7 +77,9 @@ describe("ComposeForm", () => {
     mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -103,7 +106,9 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -127,7 +132,9 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -214,7 +221,9 @@ describe("ComposeForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          <CompatRouter>
+            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

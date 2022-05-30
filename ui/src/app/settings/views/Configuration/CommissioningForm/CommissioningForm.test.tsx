@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CommissioningForm from "./CommissioningForm";
@@ -67,7 +69,11 @@ describe("CommissioningForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CommissioningForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <CommissioningForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {

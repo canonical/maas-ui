@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import EditPartition from "./EditPartition";
@@ -40,12 +42,16 @@ describe("EditPartition", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditPartition
-          closeExpanded={jest.fn()}
-          disk={disk}
-          partition={partition}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditPartition
+              closeExpanded={jest.fn()}
+              disk={disk}
+              partition={partition}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -68,12 +74,16 @@ describe("EditPartition", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <EditPartition
-          closeExpanded={jest.fn()}
-          disk={disk}
-          partition={partition}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <EditPartition
+              closeExpanded={jest.fn()}
+              disk={disk}
+              partition={partition}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

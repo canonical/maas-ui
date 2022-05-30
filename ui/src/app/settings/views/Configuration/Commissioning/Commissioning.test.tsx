@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import Commissioning from "./Commissioning";
@@ -47,7 +49,11 @@ describe("Commissioning", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Commissioning />
+        <MemoryRouter>
+          <CompatRouter>
+            <Commissioning />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -60,7 +66,11 @@ describe("Commissioning", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <Commissioning />
+        <MemoryRouter>
+          <CompatRouter>
+            <Commissioning />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -74,7 +84,11 @@ describe("Commissioning", () => {
 
     mount(
       <Provider store={store}>
-        <Commissioning />
+        <MemoryRouter>
+          <CompatRouter>
+            <Commissioning />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

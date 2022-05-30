@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
@@ -37,7 +39,11 @@ describe("AddSpecialFilesystem", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -68,7 +74,11 @@ describe("AddSpecialFilesystem", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -89,7 +99,11 @@ describe("AddSpecialFilesystem", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddSpecialFilesystem closeForm={jest.fn()} systemId="abc123" />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

@@ -2,6 +2,7 @@ import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeployForm from "./DeployForm";
@@ -67,7 +68,9 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DeployForm />
+          <CompatRouter>
+            <DeployForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -103,7 +106,9 @@ describe("DeployFormFields", () => {
     render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <DeployForm />
+          <CompatRouter>
+            <DeployForm />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -117,7 +122,11 @@ describe("DeployFormFields", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <DeployForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <DeployForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -156,7 +165,11 @@ describe("DeployFormFields", () => {
     const store = mockStore(state);
     render(
       <Provider store={store}>
-        <DeployForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <DeployForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

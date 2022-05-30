@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeNameFields from "./NodeNameFields";
@@ -44,15 +45,17 @@ describe("NodeNameFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <FormikForm
-            initialValues={{
-              domain: "",
-              hostname: "",
-            }}
-            onSubmit={jest.fn()}
-          >
-            <NodeNameFields setHostnameError={jest.fn()} />
-          </FormikForm>
+          <CompatRouter>
+            <FormikForm
+              initialValues={{
+                domain: "",
+                hostname: "",
+              }}
+              onSubmit={jest.fn()}
+            >
+              <NodeNameFields setHostnameError={jest.fn()} />
+            </FormikForm>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -66,15 +69,17 @@ describe("NodeNameFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <FormikForm
-            initialValues={{
-              domain: "",
-              hostname: "",
-            }}
-            onSubmit={jest.fn()}
-          >
-            <NodeNameFields setHostnameError={jest.fn()} />
-          </FormikForm>
+          <CompatRouter>
+            <FormikForm
+              initialValues={{
+                domain: "",
+                hostname: "",
+              }}
+              onSubmit={jest.fn()}
+            >
+              <NodeNameFields setHostnameError={jest.fn()} />
+            </FormikForm>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -88,15 +93,17 @@ describe("NodeNameFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <FormikForm
-            initialValues={{
-              domain: "",
-              hostname: "",
-            }}
-            onSubmit={jest.fn()}
-          >
-            <NodeNameFields saving setHostnameError={jest.fn()} />
-          </FormikForm>
+          <CompatRouter>
+            <FormikForm
+              initialValues={{
+                domain: "",
+                hostname: "",
+              }}
+              onSubmit={jest.fn()}
+            >
+              <NodeNameFields saving setHostnameError={jest.fn()} />
+            </FormikForm>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -113,16 +120,18 @@ describe("NodeNameFields", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <FormikForm
-            initialErrors={{ hostname: "Uh oh!" }}
-            initialValues={{
-              domain: "",
-              hostname: "",
-            }}
-            onSubmit={jest.fn()}
-          >
-            <NodeNameFields saving setHostnameError={setHostnameError} />
-          </FormikForm>
+          <CompatRouter>
+            <FormikForm
+              initialErrors={{ hostname: "Uh oh!" }}
+              initialValues={{
+                domain: "",
+                hostname: "",
+              }}
+              onSubmit={jest.fn()}
+            >
+              <NodeNameFields saving setHostnameError={setHostnameError} />
+            </FormikForm>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

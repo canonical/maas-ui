@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddPartition from "./AddPartition";
@@ -36,7 +38,15 @@ describe("AddPartition", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddPartition
+              closeExpanded={jest.fn()}
+              disk={disk}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -63,7 +73,15 @@ describe("AddPartition", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddPartition
+              closeExpanded={jest.fn()}
+              disk={disk}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Input[name='partitionSize']").prop("value")).toBe(8);
@@ -84,7 +102,15 @@ describe("AddPartition", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddPartition
+              closeExpanded={jest.fn()}
+              disk={disk}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -126,7 +152,15 @@ describe("AddPartition", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddPartition
+              closeExpanded={jest.fn()}
+              disk={disk}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -159,7 +193,15 @@ describe("AddPartition", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddPartition closeExpanded={jest.fn()} disk={disk} systemId="abc123" />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddPartition
+              closeExpanded={jest.fn()}
+              disk={disk}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

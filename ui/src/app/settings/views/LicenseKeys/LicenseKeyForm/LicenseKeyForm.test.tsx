@@ -1,12 +1,13 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { LicenseKeyForm } from "./LicenseKeyForm";
 
+import settingsURLs from "app/settings/urls";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -131,8 +132,9 @@ describe("LicenseKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(wrapper.find("Redirect").exists()).toBe(true);
+    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
+      settingsURLs.licenseKeys.index
+    );
   });
 
   it("can add a key", () => {

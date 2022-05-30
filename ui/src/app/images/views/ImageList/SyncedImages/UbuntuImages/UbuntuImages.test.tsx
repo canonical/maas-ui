@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import UbuntuImages from "./UbuntuImages";
@@ -73,7 +75,11 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages sources={[source]} />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuImages sources={[source]} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
@@ -118,7 +124,11 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages sources={[source]} />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuImages sources={[source]} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -168,7 +178,11 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages sources={[source]} />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuImages sources={[source]} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -191,7 +205,11 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages sources={[source]} />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuImages sources={[source]} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("button[data-testid='secondary-submit']").simulate("click");
@@ -216,7 +234,11 @@ describe("UbuntuImages", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <UbuntuImages sources={sources} />
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuImages sources={sources} />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("[data-testid='too-many-sources']").exists()).toBe(

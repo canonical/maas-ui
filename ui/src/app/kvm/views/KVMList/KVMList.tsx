@@ -3,7 +3,8 @@ import { useEffect, useState } from "react";
 
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, useLocation } from "react-router";
+import { useLocation } from "react-router";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import KVMListHeader from "./KVMListHeader";
 import LxdTable from "./LxdTable";
@@ -22,6 +23,7 @@ import { actions as zoneActions } from "app/store/zone";
 
 const KVMList = (): JSX.Element => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const podsLoading = useSelector(podSelectors.loading);
   const lxdKvms = useSelector(podSelectors.lxd);
@@ -45,9 +47,11 @@ const KVMList = (): JSX.Element => {
   }, [dispatch]);
 
   // Redirect to the appropriate tab when arriving at /kvm.
-  if (!showingLXD && !showingVirsh) {
-    return <Redirect to={kvmURLs.lxd.index} />;
-  }
+  useEffect(() => {
+    if (!showingLXD && !showingVirsh) {
+      navigate(kvmURLs.lxd.index, { replace: true });
+    }
+  }, [navigate, showingLXD, showingVirsh]);
 
   let content: ReactNode = null;
   if (podsLoading || vmclustersLoading) {

@@ -2,6 +2,7 @@ import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddVirsh from "./AddVirsh";
@@ -71,7 +72,9 @@ describe("AddVirsh", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddVirsh clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddVirsh clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -98,7 +101,9 @@ describe("AddVirsh", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddVirsh clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddVirsh clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -114,7 +119,9 @@ describe("AddVirsh", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddVirsh clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddVirsh clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -130,7 +137,9 @@ describe("AddVirsh", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
-          <AddVirsh clearHeaderContent={jest.fn()} />
+          <CompatRouter>
+            <AddVirsh clearHeaderContent={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

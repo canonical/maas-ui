@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import CreateBcache from "./CreateBcache";
@@ -58,11 +60,15 @@ describe("CreateBcache", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateBcache
-          closeExpanded={jest.fn()}
-          storageDevice={diskFactory()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateBcache
+              closeExpanded={jest.fn()}
+              storageDevice={diskFactory()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -92,11 +98,15 @@ describe("CreateBcache", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <CreateBcache
-          closeExpanded={jest.fn()}
-          storageDevice={backingDevice}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <CreateBcache
+              closeExpanded={jest.fn()}
+              storageDevice={backingDevice}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

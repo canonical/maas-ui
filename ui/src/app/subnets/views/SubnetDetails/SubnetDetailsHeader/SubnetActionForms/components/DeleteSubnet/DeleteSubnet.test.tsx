@@ -3,6 +3,7 @@ import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
 import { Route } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteSubnet from "./DeleteSubnet";
@@ -62,7 +63,9 @@ it("displays a correct error message for a subnet with IPs obtained through DHCP
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -87,7 +90,9 @@ it("displays a message if DHCP is disabled on the VLAN", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -112,7 +117,9 @@ it("does not display a message if DHCP is enabled on the VLAN", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -138,7 +145,9 @@ it("dispatches an action to load vlans and subnets if not loaded", () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -163,7 +172,9 @@ it("dispatches a delete action on submit", async () => {
   render(
     <Provider store={store}>
       <Router history={history}>
-        <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        <CompatRouter>
+          <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -192,13 +203,15 @@ it("redirects on save", async () => {
   const { rerender } = render(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          exact
-          path={subnetsURLs.subnet.index({ id: subnetId })}
-          component={() => (
-            <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
-          )}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.subnet.index({ id: subnetId })}
+            component={() => (
+              <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+            )}
+          />
+        </CompatRouter>
       </Router>
     </Provider>
   );
@@ -212,13 +225,15 @@ it("redirects on save", async () => {
   rerender(
     <Provider store={store}>
       <Router history={history}>
-        <Route
-          exact
-          path={subnetsURLs.subnet.index({ id: subnetId })}
-          component={() => (
-            <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
-          )}
-        />
+        <CompatRouter>
+          <Route
+            exact
+            path={subnetsURLs.subnet.index({ id: subnetId })}
+            component={() => (
+              <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
+            )}
+          />
+        </CompatRouter>
       </Router>
     </Provider>
   );

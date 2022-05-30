@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { UserForm } from "./UserForm";
@@ -36,7 +37,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm onSave={jest.fn()} />
+          <CompatRouter>
+            <UserForm onSave={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -50,7 +53,9 @@ describe("UserForm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
-          <UserForm onSave={onSave} user={user} />
+          <CompatRouter>
+            <UserForm onSave={onSave} user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -84,7 +89,9 @@ describe("UserForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UserForm onSave={jest.fn()} user={user} />
+          <CompatRouter>
+            <UserForm onSave={jest.fn()} user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -105,7 +112,9 @@ describe("UserForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UserForm onSave={jest.fn()} user={user} />
+          <CompatRouter>
+            <UserForm onSave={jest.fn()} user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -129,7 +138,9 @@ describe("UserForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
+          <CompatRouter>
+            <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -154,7 +165,9 @@ describe("UserForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
+          <CompatRouter>
+            <UserForm includeCurrentPassword onSave={jest.fn()} user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -172,7 +185,9 @@ describe("UserForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UserForm onSave={jest.fn()} />
+          <CompatRouter>
+            <UserForm onSave={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -189,7 +204,9 @@ describe("UserForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UserForm onSave={onSave} user={user} />
+          <CompatRouter>
+            <UserForm onSave={onSave} user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -220,7 +237,9 @@ describe("UserForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
         >
-          <UserForm onSave={onSave} user={user} />
+          <CompatRouter>
+            <UserForm onSave={onSave} user={user} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

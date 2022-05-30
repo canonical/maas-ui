@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SyslogForm from "./SyslogForm";
@@ -36,7 +38,11 @@ describe("SyslogForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <SyslogForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyslogForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -47,7 +53,11 @@ describe("SyslogForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <SyslogForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyslogForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -79,7 +89,11 @@ describe("SyslogForm", () => {
 
     mount(
       <Provider store={store}>
-        <SyslogForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <SyslogForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

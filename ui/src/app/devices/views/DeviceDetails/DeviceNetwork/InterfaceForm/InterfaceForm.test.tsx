@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import InterfaceForm from "./InterfaceForm";
@@ -59,12 +61,16 @@ describe("InterfaceForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <InterfaceForm
-          nicId={nic.id}
-          onSubmit={jest.fn()}
-          systemId="abc123"
-          closeForm={jest.fn()}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <InterfaceForm
+              nicId={nic.id}
+              onSubmit={jest.fn()}
+              systemId="abc123"
+              closeForm={jest.fn()}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -104,13 +110,17 @@ describe("InterfaceForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <InterfaceForm
-          nicId={nic.id}
-          linkId={link.id}
-          onSubmit={jest.fn()}
-          closeForm={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <InterfaceForm
+              nicId={nic.id}
+              linkId={link.id}
+              onSubmit={jest.fn()}
+              closeForm={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find(FormikForm).prop("initialValues")).toStrictEqual({
@@ -127,11 +137,15 @@ describe("InterfaceForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <InterfaceForm
-          onSubmit={jest.fn()}
-          closeForm={jest.fn()}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <InterfaceForm
+              onSubmit={jest.fn()}
+              closeForm={jest.fn()}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find(FormikForm).prop("initialValues")).toStrictEqual({

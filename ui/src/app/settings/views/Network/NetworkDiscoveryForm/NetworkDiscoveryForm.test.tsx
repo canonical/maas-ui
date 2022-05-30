@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NetworkDiscoveryForm from "./NetworkDiscoveryForm";
@@ -55,7 +57,11 @@ describe("NetworkDiscoveryForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkDiscoveryForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <NetworkDiscoveryForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -66,7 +72,11 @@ describe("NetworkDiscoveryForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <NetworkDiscoveryForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <NetworkDiscoveryForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     submitFormikForm(wrapper, {
@@ -103,7 +113,11 @@ describe("NetworkDiscoveryForm", () => {
 
     mount(
       <Provider store={store}>
-        <NetworkDiscoveryForm />
+        <MemoryRouter>
+          <CompatRouter>
+            <NetworkDiscoveryForm />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

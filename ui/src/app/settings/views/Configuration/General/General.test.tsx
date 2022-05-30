@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import General from "./General";
@@ -42,7 +44,11 @@ describe("General", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <General />
+        <MemoryRouter>
+          <CompatRouter>
+            <General />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -55,7 +61,11 @@ describe("General", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <General />
+        <MemoryRouter>
+          <CompatRouter>
+            <General />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -68,7 +78,11 @@ describe("General", () => {
 
     mount(
       <Provider store={store}>
-        <General />
+        <MemoryRouter>
+          <CompatRouter>
+            <General />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

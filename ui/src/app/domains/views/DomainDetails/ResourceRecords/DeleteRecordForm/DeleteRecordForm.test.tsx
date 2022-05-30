@@ -1,5 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteRecordForm from "./DeleteRecordForm";
@@ -29,11 +31,15 @@ describe("DeleteRecordForm", () => {
 
     const wrapper = mount(
       <Provider store={store}>
-        <DeleteRecordForm
-          closeForm={closeForm}
-          id={domain.id}
-          resource={resource}
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <DeleteRecordForm
+              closeForm={closeForm}
+              id={domain.id}
+              resource={resource}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -56,7 +62,15 @@ describe("DeleteRecordForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeleteRecordForm closeForm={jest.fn()} id={1} resource={resource} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DeleteRecordForm
+              closeForm={jest.fn()}
+              id={1}
+              resource={resource}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("form").simulate("submit");
@@ -84,7 +98,15 @@ describe("DeleteRecordForm", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DeleteRecordForm closeForm={jest.fn()} id={1} resource={resource} />
+        <MemoryRouter>
+          <CompatRouter>
+            <DeleteRecordForm
+              closeForm={jest.fn()}
+              id={1}
+              resource={resource}
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     wrapper.find("form").simulate("submit");

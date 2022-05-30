@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ReservedRangeForm, { Labels } from "./ReservedRangeForm";
@@ -44,7 +45,9 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          <CompatRouter>
+            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -58,7 +61,9 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm onClose={jest.fn()} />
+          <CompatRouter>
+            <ReservedRangeForm onClose={jest.fn()} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -72,7 +77,9 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          <CompatRouter>
+            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -97,7 +104,9 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          <CompatRouter>
+            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -116,11 +125,13 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
-            createType={IPRangeType.Reserved}
-            onClose={jest.fn()}
-            subnetId={1}
-          />
+          <CompatRouter>
+            <ReservedRangeForm
+              createType={IPRangeType.Reserved}
+              onClose={jest.fn()}
+              subnetId={1}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -158,7 +169,9 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          <CompatRouter>
+            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -185,7 +198,9 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          <CompatRouter>
+            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -213,10 +228,12 @@ describe("ReservedRangeForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <ReservedRangeForm
-            createType={IPRangeType.Dynamic}
-            onClose={jest.fn()}
-          />
+          <CompatRouter>
+            <ReservedRangeForm
+              createType={IPRangeType.Dynamic}
+              onClose={jest.fn()}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

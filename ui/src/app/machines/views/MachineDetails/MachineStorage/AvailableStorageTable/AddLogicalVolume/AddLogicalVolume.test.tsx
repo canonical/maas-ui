@@ -1,6 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddLogicalVolume from "./AddLogicalVolume";
@@ -62,11 +64,15 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddLogicalVolume
-          closeExpanded={jest.fn()}
-          disk={volumeGroup}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddLogicalVolume
+              closeExpanded={jest.fn()}
+              disk={volumeGroup}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -116,11 +122,15 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddLogicalVolume
-          closeExpanded={jest.fn()}
-          disk={volumeGroup}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddLogicalVolume
+              closeExpanded={jest.fn()}
+              disk={volumeGroup}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("Input[name='size']").prop("value")).toBe(8);
@@ -143,11 +153,15 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddLogicalVolume
-          closeExpanded={jest.fn()}
-          disk={disk}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddLogicalVolume
+              closeExpanded={jest.fn()}
+              disk={disk}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -190,11 +204,15 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddLogicalVolume
-          closeExpanded={jest.fn()}
-          disk={disk}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddLogicalVolume
+              closeExpanded={jest.fn()}
+              disk={disk}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 
@@ -231,11 +249,15 @@ describe("AddLogicalVolume", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <AddLogicalVolume
-          closeExpanded={jest.fn()}
-          disk={disk}
-          systemId="abc123"
-        />
+        <MemoryRouter>
+          <CompatRouter>
+            <AddLogicalVolume
+              closeExpanded={jest.fn()}
+              disk={disk}
+              systemId="abc123"
+            />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

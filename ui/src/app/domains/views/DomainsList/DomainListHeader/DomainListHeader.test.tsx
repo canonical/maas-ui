@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DomainListHeader from "./DomainListHeader";
@@ -39,7 +40,9 @@ describe("DomainListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <DomainListHeader />
+          <CompatRouter>
+            <DomainListHeader />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -55,7 +58,9 @@ describe("DomainListHeader", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
         >
-          <DomainListHeader />
+          <CompatRouter>
+            <DomainListHeader />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -69,7 +74,13 @@ describe("DomainListHeader", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <DomainListHeader />
+        <MemoryRouter
+          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <DomainListHeader />
+          </CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
     expect(wrapper.find("DomainListHeaderForm").exists()).toBe(false);

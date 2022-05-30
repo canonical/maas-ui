@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FieldlessForm from "./FieldlessForm";
@@ -58,16 +59,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.ON}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={clearHeaderContent}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.ON}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={clearHeaderContent}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -83,16 +86,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.ABORT}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.ABORT}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -125,16 +130,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.ACQUIRE}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.ACQUIRE}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -167,16 +174,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.EXIT_RESCUE_MODE}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.EXIT_RESCUE_MODE}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -209,16 +218,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.LOCK}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.LOCK}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -251,16 +262,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.MARK_FIXED}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.MARK_FIXED}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -293,16 +306,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.OFF}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.OFF}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -335,16 +350,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.ON}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.ON}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -377,16 +394,18 @@ describe("FieldlessForm", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <FieldlessForm
-            action={NodeActions.UNLOCK}
-            actions={machineActions}
-            cleanup={machineActions.cleanup}
-            clearHeaderContent={jest.fn()}
-            modelName="machine"
-            nodes={[state.machine.items[0]]}
-            processingCount={0}
-            viewingDetails={false}
-          />
+          <CompatRouter>
+            <FieldlessForm
+              action={NodeActions.UNLOCK}
+              actions={machineActions}
+              cleanup={machineActions.cleanup}
+              clearHeaderContent={jest.fn()}
+              modelName="machine"
+              nodes={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

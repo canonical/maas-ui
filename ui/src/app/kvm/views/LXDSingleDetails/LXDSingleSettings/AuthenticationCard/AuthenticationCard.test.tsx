@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AuthenticationCard from "./AuthenticationCard";
@@ -45,7 +46,9 @@ describe("AuthenticationCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <AuthenticationCard hostId={pod.id} />
+          <CompatRouter>
+            <AuthenticationCard hostId={pod.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -59,7 +62,9 @@ describe("AuthenticationCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <AuthenticationCard hostId={pod.id} />
+          <CompatRouter>
+            <AuthenticationCard hostId={pod.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -81,7 +86,9 @@ describe("AuthenticationCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/edit", key: "testKey" }]}
         >
-          <AuthenticationCard hostId={pod.id} />
+          <CompatRouter>
+            <AuthenticationCard hostId={pod.id} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

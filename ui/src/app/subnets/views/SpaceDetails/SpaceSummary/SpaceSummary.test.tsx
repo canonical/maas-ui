@@ -1,6 +1,8 @@
 import { render, screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import SpaceSummary from "./SpaceSummary";
@@ -48,7 +50,11 @@ it("can open and close the Edit space summary form", async () => {
   const store = configureStore()(state);
   render(
     <Provider store={store}>
-      <SpaceSummary space={state.space.items[0]} />
+      <MemoryRouter>
+        <CompatRouter>
+          <SpaceSummary space={state.space.items[0]} />
+        </CompatRouter>
+      </MemoryRouter>
     </Provider>
   );
   const spaceSummary = screen.getByRole("region", { name: "Space summary" });
