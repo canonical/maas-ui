@@ -171,6 +171,8 @@
 @import "~app/kvm/views/KVMList/VirshTable";
 @import "~app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHostsTable";
 @import "~app/kvm/views/LXDClusterDetails/LXDClusterSummaryCard";
+@import "~app/controllers/views/ControllerDetails/ControllerVLANs/ControllerVLANsTable";
+@include ControllerVLANsTable;
 @include CoreResources;
 @include CPUPopover;
 @include KVMComposeInterfacesTable;
