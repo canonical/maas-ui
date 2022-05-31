@@ -1,8 +1,11 @@
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import StorageTables from "app/base/components/node/StorageTables";
 import { useWindowTitle } from "app/base/hooks";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
+import { isControllerDetails } from "app/store/controller/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -15,7 +18,10 @@ const ControllerStorage = ({ systemId }: Props): JSX.Element => {
   );
   useWindowTitle(`${`${controller?.hostname}` || "Controller"} storage`);
 
-  return <h4>Controller storage</h4>;
+  if (isControllerDetails(controller)) {
+    return <StorageTables canEditStorage={false} node={controller} />;
+  }
+  return <Spinner aria-label="Loading controller" text="Loading..." />;
 };
 
 export default ControllerStorage;

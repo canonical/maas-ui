@@ -51,10 +51,7 @@ const StorageTables = ({ canEditStorage, node }: Props): JSX.Element => {
       {showCacheSets && (
         <Strip shallow>
           <h4 className="u-sv-1">{Labels.CacheSets}</h4>
-          <CacheSetsTable
-            canEditStorage={canEditStorage}
-            systemId={node.system_id}
-          />
+          <CacheSetsTable canEditStorage={canEditStorage} node={node} />
         </Strip>
       )}
       <Strip shallow>

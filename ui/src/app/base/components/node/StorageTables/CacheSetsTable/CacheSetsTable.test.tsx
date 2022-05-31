@@ -1,11 +1,15 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import CacheSetsTable from "./CacheSetsTable";
 
+import { actions as machineActions } from "app/store/machine";
 import { DiskTypes } from "app/store/types/enum";
 import {
+  controllerDetails as controllerDetailsFactory,
+  controllerState as controllerStateFactory,
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
@@ -16,86 +20,129 @@ import {
 
 const mockStore = configureStore();
 
-describe("CacheSetsTable", () => {
-  it("only shows disks that are cache sets", () => {
-    const [cacheSet, notCacheSet] = [
+it("only shows disks that are cache sets", () => {
+  const [cacheSet, notCacheSet] = [
+    diskFactory({
+      name: "quiche",
+      type: DiskTypes.CACHE_SET,
+    }),
+    diskFactory({
+      name: "frittata",
+      type: DiskTypes.PHYSICAL,
+    }),
+  ];
+  const machine = machineDetailsFactory({
+    disks: [cacheSet, notCacheSet],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <CacheSetsTable canEditStorage node={machine} />
+    </Provider>
+  );
+
+  expect(screen.getAllByRole("gridcell", { name: "Name" })).toHaveLength(1);
+  expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
+    cacheSet.name
+  );
+});
+
+it("does not show an action column if node is a controller", () => {
+  const controller = controllerDetailsFactory({
+    disks: [
       diskFactory({
         name: "quiche",
         type: DiskTypes.CACHE_SET,
       }),
+    ],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    controller: controllerStateFactory({
+      items: [controller],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <CacheSetsTable canEditStorage={false} node={controller} />
+    </Provider>
+  );
+
+  expect(
+    screen.queryByRole("columnheader", { name: "Actions" })
+  ).not.toBeInTheDocument();
+});
+
+it("shows an action column if node is a machine", () => {
+  const machine = machineDetailsFactory({
+    disks: [
       diskFactory({
-        name: "frittata",
-        type: DiskTypes.PHYSICAL,
+        name: "quiche",
+        type: DiskTypes.CACHE_SET,
       }),
-    ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [cacheSet, notCacheSet],
-            system_id: "abc123",
-          }),
-        ],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CacheSetsTable canEditStorage systemId="abc123" />
-      </Provider>
-    );
-
-    expect(wrapper.find("tbody TableRow").length).toBe(1);
-    expect(wrapper.find("TableCell").at(0).text()).toBe(cacheSet.name);
+    ],
+    system_id: "abc123",
   });
-
-  it("can delete a cache set", () => {
-    const disk = diskFactory({
-      type: DiskTypes.CACHE_SET,
-    });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ disks: [disk], system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CacheSetsTable canEditStorage systemId="abc123" />
-      </Provider>
-    );
-
-    wrapper.find("TableMenu button").at(0).simulate("click");
-    wrapper
-      .findWhere(
-        (button) =>
-          button.name() === "button" && button.text().includes("Remove")
-      )
-      .simulate("click");
-    wrapper.find("ActionButton").simulate("click");
-
-    expect(wrapper.find("ActionConfirm").prop("message")).toBe(
-      "Are you sure you want to remove this cache set?"
-    );
-    expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/deleteCacheSet")
-    ).toStrictEqual({
-      meta: {
-        method: "delete_cache_set",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          cache_set_id: disk.id,
-          system_id: "abc123",
-        },
-      },
-      type: "machine/deleteCacheSet",
-    });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <CacheSetsTable canEditStorage node={machine} />
+    </Provider>
+  );
+
+  expect(
+    screen.getByRole("columnheader", { name: "Actions" })
+  ).toBeInTheDocument();
+});
+
+it("can delete a cache set if node is a machine", async () => {
+  const disk = diskFactory({
+    type: DiskTypes.CACHE_SET,
+  });
+  const machine = machineDetailsFactory({ disks: [disk], system_id: "abc123" });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
+      }),
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <CacheSetsTable canEditStorage node={machine} />
+    </Provider>
+  );
+
+  await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Remove cache set..." })
+  );
+  await userEvent.click(
+    screen.getByRole("button", { name: "Remove cache set" })
+  );
+
+  const expectedAction = machineActions.deleteCacheSet({
+    cacheSetId: disk.id,
+    systemId: machine.system_id,
+  });
+  expect(
+    screen.getByText("Are you sure you want to remove this cache set?")
+  ).toBeInTheDocument();
+  expect(
+    store.getActions().find((action) => action.type === expectedAction.type)
+  ).toStrictEqual(expectedAction);
 });
