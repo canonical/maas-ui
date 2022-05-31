@@ -4,11 +4,6 @@ import { MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useDispatch, useSelector } from "react-redux";
 
-import ActionConfirm from "../../ActionConfirm";
-import BootStatus from "../BootStatus";
-import NumaNodes from "../NumaNodes";
-import TestStatus from "../TestStatus";
-
 import AddLogicalVolume from "./AddLogicalVolume";
 import AddPartition from "./AddPartition";
 import BulkActions from "./BulkActions";
@@ -21,6 +16,10 @@ import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import TagLinks from "app/base/components/TagLinks";
+import ActionConfirm from "app/base/components/node/ActionConfirm";
+import DiskBootStatus from "app/base/components/node/DiskBootStatus";
+import DiskNumaNodes from "app/base/components/node/DiskNumaNodes";
+import DiskTestStatus from "app/base/components/node/DiskTestStatus";
 import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -185,7 +184,7 @@ const normaliseRowData = (
           <DoubleRow
             primary={
               "is_boot" in storageDevice ? (
-                <BootStatus disk={storageDevice} />
+                <DiskBootStatus disk={storageDevice} />
               ) : (
                 "—"
               )
@@ -213,7 +212,7 @@ const normaliseRowData = (
             secondary={
               ("numa_node" in storageDevice ||
                 "numa_nodes" in storageDevice) && (
-                <NumaNodes disk={storageDevice} />
+                <DiskNumaNodes disk={storageDevice} />
               )
             }
           />
@@ -225,7 +224,7 @@ const normaliseRowData = (
           <DoubleRow
             primary={
               "test_status" in storageDevice ? (
-                <TestStatus testStatus={storageDevice.test_status} />
+                <DiskTestStatus testStatus={storageDevice.test_status} />
               ) : (
                 "—"
               )

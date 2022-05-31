@@ -2,12 +2,11 @@ import { MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useSelector } from "react-redux";
 
-import BootStatus from "../BootStatus";
-import NumaNodes from "../NumaNodes";
-import TestStatus from "../TestStatus";
-
 import DoubleRow from "app/base/components/DoubleRow";
 import TagLinks from "app/base/components/TagLinks";
+import DiskBootStatus from "app/base/components/node/DiskBootStatus";
+import DiskNumaNodes from "app/base/components/node/DiskNumaNodes";
+import DiskTestStatus from "app/base/components/node/DiskTestStatus";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -51,7 +50,7 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
         <DoubleRow
           primary={
             "is_boot" in storageDevice ? (
-              <BootStatus disk={storageDevice} />
+              <DiskBootStatus disk={storageDevice} />
             ) : (
               "—"
             )
@@ -71,7 +70,7 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           primary={formatType(storageDevice)}
           secondary={
             ("numa_node" in storageDevice || "numa_nodes" in storageDevice) && (
-              <NumaNodes disk={storageDevice} />
+              <DiskNumaNodes disk={storageDevice} />
             )
           }
         />
@@ -84,7 +83,7 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           data-testid="health"
           primary={
             "test_status" in storageDevice ? (
-              <TestStatus testStatus={storageDevice.test_status} />
+              <DiskTestStatus testStatus={storageDevice.test_status} />
             ) : (
               "—"
             )

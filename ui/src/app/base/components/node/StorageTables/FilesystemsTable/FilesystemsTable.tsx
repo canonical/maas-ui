@@ -4,11 +4,10 @@ import { Button, MainTable, Tooltip } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useDispatch, useSelector } from "react-redux";
 
-import ActionConfirm from "../../ActionConfirm";
-
 import AddSpecialFilesystem from "./AddSpecialFilesystem";
 
 import TableActionsDropdown from "app/base/components/TableActionsDropdown";
+import ActionConfirm from "app/base/components/node/ActionConfirm";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
