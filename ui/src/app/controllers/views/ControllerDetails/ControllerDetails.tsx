@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Redirect, Route, Switch } from "react-router-dom";
@@ -17,6 +17,7 @@ import ControllerVLANs from "./ControllerVLANs";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useGetURLId } from "app/base/hooks/urls";
+import type { ControllerHeaderContent } from "app/controllers/types";
 import controllerURLs from "app/controllers/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
@@ -31,6 +32,8 @@ const ControllerDetails = (): JSX.Element => {
     controllerSelectors.getById(state, id)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
+  const [headerContent, setHeaderContent] =
+    useState<ControllerHeaderContent | null>(null);
 
   useEffect(() => {
     if (isId(id)) {
@@ -57,7 +60,15 @@ const ControllerDetails = (): JSX.Element => {
   }
 
   return (
-    <Section header={<ControllerDetailsHeader systemId={id} />}>
+    <Section
+      header={
+        <ControllerDetailsHeader
+          systemId={id}
+          headerContent={headerContent}
+          setHeaderContent={setHeaderContent}
+        />
+      }
+    >
       {controller && (
         <Switch>
           <Route

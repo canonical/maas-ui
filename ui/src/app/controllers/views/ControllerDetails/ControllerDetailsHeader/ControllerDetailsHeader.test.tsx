@@ -1,4 +1,5 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -6,6 +7,9 @@ import configureStore from "redux-mock-store";
 
 import ControllerDetailsHeader from "./ControllerDetailsHeader";
 
+import type { ControllerActions } from "app/store/controller/types";
+import { NodeActions } from "app/store/types/node";
+import { getNodeActionTitle } from "app/store/utils";
 import {
   controller as controllerFactory,
   controllerDetails as controllerDetailsFactory,
@@ -26,7 +30,11 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <ControllerDetailsHeader systemId="abc123" />
+          <ControllerDetailsHeader
+            systemId="abc123"
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+          />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -49,7 +57,11 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <ControllerDetailsHeader systemId={controller.system_id} />
+          <ControllerDetailsHeader
+            systemId={controller.system_id}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+          />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -72,7 +84,11 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <ControllerDetailsHeader systemId={controllerDetails.system_id} />
+          <ControllerDetailsHeader
+            systemId={controllerDetails.system_id}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+          />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -81,4 +97,50 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
   expect(
     screen.getByRole("heading", { name: controllerDetails.fqdn })
   ).toBeInTheDocument();
+});
+
+it("displays actions in take action menu", async () => {
+  const actions: ControllerActions[] = [
+    NodeActions.SET_ZONE,
+    NodeActions.IMPORT_IMAGES,
+    NodeActions.DELETE,
+  ];
+  const controllerDetails = controllerDetailsFactory({
+    actions,
+  });
+  const state = rootStateFactory({
+    controller: controllerStateFactory({
+      items: [controllerDetails],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <ControllerDetailsHeader
+            systemId={controllerDetails.system_id}
+            headerContent={null}
+            setHeaderContent={jest.fn()}
+          />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  const actionLabels = actions.map(getNodeActionTitle);
+
+  actionLabels.forEach((name) => {
+    expect(
+      screen.queryByRole("button", { name: new RegExp(name) })
+    ).not.toBeInTheDocument();
+  });
+
+  await userEvent.click(screen.getByRole("button", { name: "Take action" }));
+
+  actionLabels.forEach((name) => {
+    expect(
+      screen.getByRole("button", { name: new RegExp(name) })
+    ).toBeInTheDocument();
+  });
 });

@@ -22,9 +22,11 @@ context("Controller listing", () => {
     const tagName = "new-tag";
 
     // displays the controller details page on click of the controller name
-    cy.findByRole("gridcell", { name: "Name" }).within(() => {
-      cy.findByRole("link").click();
-    });
+    cy.findAllByRole("gridcell", { name: "Name" })
+      .first()
+      .within(() => {
+        cy.findByRole("link").click();
+      });
 
     cy.findByText(/Controller summary/).should("exist");
 
@@ -57,5 +59,30 @@ context("Controller listing", () => {
     cy.findByRole("grid", { name: "controllers list" }).within(() => {
       cy.get("tbody tr").should("have.length", 1);
     });
+  });
+
+  it("lists valid actions on the controller details page", () => {
+    cy.findAllByRole("gridcell", { name: "Name" })
+      .first()
+      .within(() => {
+        cy.findByRole("link").click();
+      });
+
+    cy.findByText(/Take action/).click();
+
+    [/Import images/i, /Delete/i].forEach((name) =>
+      cy
+        .findByRole("button", {
+          name,
+        })
+        .should("exist")
+    );
+    [/Set zone/i].forEach((name) =>
+      cy
+        .findByRole("button", {
+          name,
+        })
+        .should("not.exist")
+    );
   });
 });
