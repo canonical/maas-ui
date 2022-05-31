@@ -2,8 +2,16 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom-v5-compat";
 
+import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
+import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
+import { ControllerHeaderViews } from "app/controllers/constants";
+import type {
+  ControllerHeaderContent,
+  ControllerSetHeaderContent,
+} from "app/controllers/types";
 import controllerURLs from "app/controllers/urls";
+import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
@@ -11,9 +19,15 @@ import type { RootState } from "app/store/root/types";
 
 type Props = {
   systemId: Controller["system_id"];
+  headerContent: ControllerHeaderContent | null;
+  setHeaderContent: ControllerSetHeaderContent;
 };
 
-const ControllerDetailsHeader = ({ systemId }: Props): JSX.Element => {
+const ControllerDetailsHeader = ({
+  systemId,
+  headerContent,
+  setHeaderContent,
+}: Props): JSX.Element => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
   );
@@ -26,6 +40,21 @@ const ControllerDetailsHeader = ({ systemId }: Props): JSX.Element => {
   return (
     <SectionHeader
       subtitleLoading={!isControllerDetails(controller)}
+      buttons={[
+        <NodeActionMenu
+          key="action-dropdown"
+          nodeDisplay="controller"
+          nodes={[controller]}
+          onActionClick={(action) => {
+            const view = Object.values(ControllerHeaderViews).find(
+              ([, actionName]) => actionName === action
+            );
+            if (view) {
+              setHeaderContent({ view });
+            }
+          }}
+        />,
+      ]}
       tabLinks={[
         {
           label: "Summary",
@@ -69,7 +98,17 @@ const ControllerDetailsHeader = ({ systemId }: Props): JSX.Element => {
         label: link.label,
         to: link.url,
       }))}
-      title={controller.fqdn}
+      title={getHeaderTitle(controller.fqdn, headerContent)}
+      headerContent={
+        headerContent ? (
+          <ControllerHeaderForms
+            controllers={[controller]}
+            headerContent={headerContent}
+            setHeaderContent={setHeaderContent}
+            viewingDetails
+          />
+        ) : null
+      }
     />
   );
 };
