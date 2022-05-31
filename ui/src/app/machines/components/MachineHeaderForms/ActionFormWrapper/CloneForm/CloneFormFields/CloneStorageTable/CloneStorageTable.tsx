@@ -6,7 +6,7 @@ import classNames from "classnames";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
-import NumaNodes from "app/machines/views/MachineDetails/MachineStorage/NumaNodes";
+import DiskNumaNodes from "app/base/components/node/DiskNumaNodes";
 import type { MachineDetails } from "app/store/machine/types";
 import {
   diskAvailable,
@@ -93,7 +93,7 @@ export const CloneStorageTable = ({
             <DoubleRow
               primary={formatType(disk)}
               primaryTitle={formatType(disk)}
-              secondary={<NumaNodes disk={disk} />}
+              secondary={<DiskNumaNodes disk={disk} />}
             />
           ),
         }),
@@ -116,7 +116,7 @@ export const CloneStorageTable = ({
                 <DoubleRow
                   primary={formatType(partition)}
                   primaryTitle={formatType(partition)}
-                  secondary={<NumaNodes disk={disk} />}
+                  secondary={<DiskNumaNodes disk={disk} />}
                 />
               ),
             }),

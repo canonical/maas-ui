@@ -3,7 +3,7 @@ import type { Disk } from "app/store/types/node";
 
 type Props = { disk: Disk };
 
-const NumaNodes = ({ disk }: Props): JSX.Element => {
+const DiskNumaNodes = ({ disk }: Props): JSX.Element => {
   let numaNodes: number[] = [];
   if ("numa_nodes" in disk && disk.numa_nodes !== undefined) {
     numaNodes = disk.numa_nodes;
@@ -27,4 +27,4 @@ const NumaNodes = ({ disk }: Props): JSX.Element => {
   );
 };
 
-export default NumaNodes;
+export default DiskNumaNodes;
