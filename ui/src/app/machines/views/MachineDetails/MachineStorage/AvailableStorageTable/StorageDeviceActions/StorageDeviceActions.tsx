@@ -6,6 +6,9 @@ import TableActionsDropdown from "app/base/components/TableActionsDropdown";
 import type { TableAction } from "app/base/components/TableActionsDropdown";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
+import type { Disk, Partition } from "app/store/types/node";
 import {
   canBeDeleted,
   canBePartitioned,
@@ -15,12 +18,9 @@ import {
   canSetBootDisk,
   formatType,
   isDisk,
-  isMachineDetails,
   isPartition,
   isVolumeGroup,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { Disk, Partition } from "app/store/types/node";
+} from "app/store/utils";
 
 type Props = {
   disabled: boolean;

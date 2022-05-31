@@ -11,11 +11,11 @@ import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { DiskTypes, StorageLayout } from "app/store/types/enum";
 import {
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
-  machinePartition as partitionFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeDisk as diskFactory,
+  nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 

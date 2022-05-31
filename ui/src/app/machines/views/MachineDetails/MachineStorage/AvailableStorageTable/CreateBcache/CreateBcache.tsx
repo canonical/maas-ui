@@ -10,14 +10,10 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { BcacheModes } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import {
-  isBcache,
-  isCacheSet,
-  isDisk,
-  isMachineDetails,
-} from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { Disk, Partition } from "app/store/types/node";
+import { isBcache, isCacheSet, isDisk } from "app/store/utils";
 
 export type CreateBcacheValues = {
   cacheMode: BcacheModes;

@@ -10,13 +10,10 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import {
-  isDatastore,
-  isMachineDetails,
-  splitDiskPartitionIds,
-} from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { Disk, Partition } from "app/store/types/node";
+import { isDatastore, splitDiskPartitionIds } from "app/store/utils";
 
 export type UpdateDatastoreValues = {
   datastore: number;

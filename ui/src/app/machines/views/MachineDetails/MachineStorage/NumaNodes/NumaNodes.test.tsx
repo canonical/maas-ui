@@ -2,7 +2,7 @@ import { mount } from "enzyme";
 
 import NumaNodes from "./NumaNodes";
 
-import { machineDisk as diskFactory } from "testing/factories";
+import { nodeDisk as diskFactory } from "testing/factories";
 
 describe("NumaNodes", () => {
   it("can show a single numa node", () => {

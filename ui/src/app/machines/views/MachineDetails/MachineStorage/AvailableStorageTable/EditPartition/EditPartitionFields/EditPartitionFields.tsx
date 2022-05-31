@@ -3,8 +3,8 @@ import { Col, Input, Row } from "@canonical/react-components";
 import FilesystemFields from "../../FilesystemFields";
 
 import type { Machine } from "app/store/machine/types";
-import { formatSize, formatType } from "app/store/machine/utils";
 import type { Partition } from "app/store/types/node";
+import { formatSize, formatType } from "app/store/utils";
 
 type Props = {
   partition: Partition;

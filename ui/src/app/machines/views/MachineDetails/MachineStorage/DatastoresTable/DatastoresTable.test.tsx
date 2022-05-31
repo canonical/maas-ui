@@ -6,11 +6,11 @@ import DatastoresTable from "./DatastoresTable";
 
 import {
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
-  machineFilesystem as fsFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeDisk as diskFactory,
+  nodeFilesystem as fsFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 

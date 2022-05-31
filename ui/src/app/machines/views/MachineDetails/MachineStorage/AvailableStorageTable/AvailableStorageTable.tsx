@@ -25,9 +25,11 @@ import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
+import type { RootState } from "app/store/root/types";
+import type { Disk, Partition } from "app/store/types/node";
 import {
   diskAvailable,
-  FilterMachines,
   formatSize,
   formatType,
   getDiskById,
@@ -35,11 +37,8 @@ import {
   isDatastore,
   isDisk,
   isPartition,
-  isMachineDetails,
   partitionAvailable,
-} from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
-import type { Disk, Partition } from "app/store/types/node";
+} from "app/store/utils";
 
 // Actions that are performed on multiple devices at once
 export enum BulkAction {

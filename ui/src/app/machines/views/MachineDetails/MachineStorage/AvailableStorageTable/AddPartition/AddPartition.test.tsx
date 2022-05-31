@@ -9,11 +9,11 @@ import AddPartition from "./AddPartition";
 
 import {
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
-  machinePartition as partitionFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  nodeDisk as diskFactory,
+  nodePartition as partitionFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";

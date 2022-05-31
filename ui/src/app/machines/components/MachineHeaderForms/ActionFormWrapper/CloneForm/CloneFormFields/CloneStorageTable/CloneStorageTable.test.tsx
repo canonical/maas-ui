@@ -4,9 +4,9 @@ import CloneStorageTable from "./CloneStorageTable";
 
 import {
   machineDetails as machineDetailsFactory,
-  machineDisk as diskFactory,
-  machineFilesystem as fsFactory,
-  machinePartition as partitionFactory,
+  nodeDisk as diskFactory,
+  nodeFilesystem as fsFactory,
+  nodePartition as partitionFactory,
 } from "testing/factories";
 
 describe("CloneStorageTable", () => {

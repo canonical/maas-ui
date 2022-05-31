@@ -1,8 +1,10 @@
+import type { Controller } from "app/store/controller/types";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import type { Machine } from "app/store/machine/types";
 import { StorageLayout, DiskTypes } from "app/store/types/enum";
 import type { Disk, Filesystem, Partition } from "app/store/types/node";
 import { NodeStatusCode } from "app/store/types/node";
+import { nodeIsMachine } from "app/store/utils/node/base";
 import { formatBytes, getNextName } from "app/utils";
 
 /**
@@ -51,15 +53,15 @@ export const canBePartitioned = (disk: Disk | null): boolean => {
 
 /**
  * Returns whether a storage device can create a bcache.
- * @param machineDisks - all of the machine's disks.
+ * @param disks - a list of disks from which to check.
  * @param storageDevice - the storage device to check.
  * @returns whether the storage device can create a bcache.
  */
 export const canCreateBcache = (
-  machineDisks: Disk[],
+  disks: Disk[],
   storageDevice: Disk | Partition | null
 ): boolean => {
-  if (!storageDevice || !machineDisks.some((disk) => isCacheSet(disk))) {
+  if (!storageDevice || !disks.some((disk) => isCacheSet(disk))) {
     return false;
   }
 
@@ -196,26 +198,28 @@ export const canCreateVolumeGroup = (
 };
 
 /**
- * Check whether a machine's OS supports bcache and ZFS.
- * @param machine - A machine object.
- * @returns Whether the machine's OS supports bcache and ZFS.
+ * Check whether a node's OS supports bcache and ZFS.
+ * @param node - A node object.
+ * @returns Whether the node's OS supports bcache and ZFS.
  */
-export const canOsSupportBcacheZFS = (machine?: Machine | null): boolean =>
-  !!machine && machine.osystem === "ubuntu";
+export const canOsSupportBcacheZFS = (
+  node?: Controller | Machine | null
+): boolean => !!node && node.osystem === "ubuntu";
 
 /**
- * Check whether a machine's OS allows storage configuration.
- * @param machine - A machine object.
- * @returns Whether the machine's OS allows storage configuration.
+ * Check whether a node's OS allows storage configuration.
+ * @param node - A node object.
+ * @returns Whether the node's OS allows storage configuration.
  */
-export const canOsSupportStorageConfig = (machine?: Machine | null): boolean =>
-  !!machine && ["centos", "rhel", "ubuntu"].includes(machine.osystem);
+export const canOsSupportStorageConfig = (
+  node?: Controller | Machine | null
+): boolean => !!node && ["centos", "rhel", "ubuntu"].includes(node.osystem);
 
 /**
- * Returns whether a disk can be set as the machine's boot disk.
- * @param storageLayout - the machine's detected storage layout.
+ * Returns whether a disk can be set as the node's boot disk.
+ * @param storageLayout - the node's detected storage layout.
  * @param disk - the disk to check.
- * @returns whether the disk can be set as the machine's boot disk.
+ * @returns whether the disk can be set as the node's boot disk.
  */
 export const canSetBootDisk = (
   storageLayout: StorageLayout,
@@ -387,19 +391,6 @@ export const isLogicalVolume = (disk: Disk | null): boolean =>
   (isVirtual(disk) && disk?.parent?.type === DiskTypes.VOLUME_GROUP) || false;
 
 /**
- * Check whether a machine's status allows storage configuration.
- * @param machine - A machine object.
- * @returns Whether the machine's status allows storage configuration.
- */
-export const isMachineStorageConfigurable = (
-  machine?: Machine | null
-): boolean =>
-  !!machine &&
-  [NodeStatusCode.READY, NodeStatusCode.ALLOCATED].includes(
-    machine.status_code
-  );
-
-/**
  * Returns whether a filesystem is mounted.
  * @param fs - the filesystem to check.
  * @returns whether the filesystem is mounted
@@ -414,6 +405,17 @@ export const isMounted = (fs: Filesystem | null): fs is Filesystem => {
   // these partitions are in use.
   return Boolean(fs.mount_point) && fs.mount_point !== "RESERVED";
 };
+
+/**
+ * Check whether a node's status allows storage configuration.
+ * @param node - A node object.
+ * @returns Whether the node's status allows storage configuration.
+ */
+export const isNodeStorageConfigurable = (
+  node?: Controller | Machine | null
+): boolean =>
+  nodeIsMachine(node) &&
+  [NodeStatusCode.READY, NodeStatusCode.ALLOCATED].includes(node.status_code);
 
 /**
  * Returns whether a storage device is a partition.
@@ -498,7 +500,7 @@ export const splitDiskPartitionIds = (
 
 /**
  * Returns whether a filesystem type uses storage.
- * @param fs - the filesystem type to check.
+ * @param fstype - the filesystem type to check.
  * @returns whether the filesystem type uses storage
  */
 export const usesStorage = (fstype: Filesystem["fstype"] | null): boolean => {
@@ -510,10 +512,8 @@ export const usesStorage = (fstype: Filesystem["fstype"] | null): boolean => {
 
 /**
  * Find the next available name for a storage device.
- * @param disks - A machine's disks.
- * @param prefix - A network interface type.
- * @param nic - A network interface.
- * @param vlan - A VLAN.
+ * @param disks - A list of disks.
+ * @param prefix - The prefix of the storage type.
  * @return An available name.
  */
 export const getNextStorageName = (

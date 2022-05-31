@@ -11,16 +11,15 @@ import TagLinks from "app/base/components/TagLinks";
 import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import {
-  diskAvailable,
-  FilterMachines,
-  formatType,
-  formatSize,
-  isMachineDetails,
-  partitionAvailable,
-} from "app/store/machine/utils";
+import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { Disk, Partition } from "app/store/types/node";
+import {
+  diskAvailable,
+  formatType,
+  formatSize,
+  partitionAvailable,
+} from "app/store/utils";
 
 type Props = { systemId: Machine["system_id"] };
 

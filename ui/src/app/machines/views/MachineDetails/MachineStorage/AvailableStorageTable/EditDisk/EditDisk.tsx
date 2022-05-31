@@ -8,8 +8,8 @@ import { useMachineDetailsForm } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import { formatType } from "app/store/machine/utils";
 import type { Disk } from "app/store/types/node";
+import { formatType } from "app/store/utils";
 
 export type EditDiskValues = {
   fstype?: string;

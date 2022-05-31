@@ -10,14 +10,11 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { MachineEventErrors } from "app/store/machine/types/base";
-import {
-  isMachineDetails,
-  isRaid,
-  splitDiskPartitionIds,
-} from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { DiskTypes } from "app/store/types/enum";
 import type { Disk, Partition } from "app/store/types/node";
+import { isRaid, splitDiskPartitionIds } from "app/store/utils";
 
 export type CreateRaidValues = {
   blockDeviceIds: number[];

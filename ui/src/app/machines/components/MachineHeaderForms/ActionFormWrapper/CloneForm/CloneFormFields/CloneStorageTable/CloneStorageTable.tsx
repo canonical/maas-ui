@@ -13,7 +13,7 @@ import {
   formatSize,
   formatType,
   partitionAvailable,
-} from "app/store/machine/utils";
+} from "app/store/utils";
 
 type Props = {
   loadingMachineDetails?: boolean;
