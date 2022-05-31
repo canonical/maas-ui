@@ -1,28 +1,34 @@
 import { MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
-import { useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import TagLinks from "app/base/components/TagLinks";
 import DiskBootStatus from "app/base/components/node/DiskBootStatus";
 import DiskNumaNodes from "app/base/components/node/DiskNumaNodes";
 import DiskTestStatus from "app/base/components/node/DiskTestStatus";
+import controllerURLs from "app/controllers/urls";
 import machineURLs from "app/machines/urls";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+import type { ControllerDetails } from "app/store/controller/types";
+import { FilterControllers } from "app/store/controller/utils";
+import type { MachineDetails } from "app/store/machine/types";
+import { FilterMachines } from "app/store/machine/utils";
 import type { Disk, Partition } from "app/store/types/node";
 import {
   diskAvailable,
   formatType,
   formatSize,
   partitionAvailable,
+  nodeIsMachine,
 } from "app/store/utils";
 
-type Props = { systemId: Machine["system_id"] };
+type Props = {
+  node: ControllerDetails | MachineDetails;
+};
 
-const normaliseColumns = (storageDevice: Disk | Partition) => {
+const normaliseColumns = (
+  storageDevice: Disk | Partition,
+  node: Props["node"]
+) => {
   return [
     {
       content: (
@@ -91,10 +97,16 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
           secondary={
             <TagLinks
               getLinkURL={(tag) => {
-                const filter = FilterMachines.filtersToQueryString({
+                if (nodeIsMachine(node)) {
+                  const filter = FilterMachines.filtersToQueryString({
+                    storage_tags: [`=${tag}`],
+                  });
+                  return `${machineURLs.machines.index}${filter}`;
+                }
+                const filter = FilterControllers.filtersToQueryString({
                   storage_tags: [`=${tag}`],
                 });
-                return `${machineURLs.machines.index}${filter}`;
+                return `${controllerURLs.controllers.index}${filter}`;
               }}
               tags={storageDevice.tags}
             />
@@ -111,93 +123,86 @@ const normaliseColumns = (storageDevice: Disk | Partition) => {
   ];
 };
 
-const UsedStorageTable = ({ systemId }: Props): JSX.Element | null => {
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
+const UsedStorageTable = ({ node }: Props): JSX.Element | null => {
+  const rows: MainTableRow[] = [];
+
+  node.disks.forEach((disk) => {
+    if (!diskAvailable(disk)) {
+      const rowId = `${disk.type}-${disk.id}`;
+      rows.push({
+        columns: normaliseColumns(disk, node),
+        key: rowId,
+      });
+    }
+
+    if (disk.partitions) {
+      disk.partitions.forEach((partition) => {
+        if (!partitionAvailable(partition)) {
+          const rowId = `${partition.type}-${partition.id}`;
+          rows.push({
+            columns: normaliseColumns(partition, node),
+            key: rowId,
+          });
+        }
+      });
+    }
+  });
+
+  return (
+    <>
+      <MainTable
+        className="p-table-expanding--light"
+        responsive
+        headers={[
+          {
+            content: (
+              <>
+                <div>Name</div>
+                <div>Serial</div>
+              </>
+            ),
+          },
+          {
+            content: (
+              <>
+                <div>Model</div>
+                <div>Firmware</div>
+              </>
+            ),
+          },
+          {
+            content: <div>Boot</div>,
+          },
+          { content: <div>Size</div> },
+          {
+            content: (
+              <>
+                <div>Type</div>
+                <div>NUMA node</div>
+              </>
+            ),
+          },
+          {
+            content: (
+              <>
+                <div>Health</div>
+                <div>Tags</div>
+              </>
+            ),
+          },
+          {
+            content: "Used for",
+          },
+        ]}
+        rows={rows}
+      />
+      {rows.length === 0 && (
+        <div className="u-nudge-right--small" data-testid="no-used">
+          No disk or partition has been fully utilised.
+        </div>
+      )}
+    </>
   );
-
-  if (isMachineDetails(machine)) {
-    const rows: MainTableRow[] = [];
-
-    machine.disks.forEach((disk) => {
-      if (!diskAvailable(disk)) {
-        const rowId = `${disk.type}-${disk.id}`;
-        rows.push({
-          columns: normaliseColumns(disk),
-          key: rowId,
-        });
-      }
-
-      if (disk.partitions) {
-        disk.partitions.forEach((partition) => {
-          if (!partitionAvailable(partition)) {
-            const rowId = `${partition.type}-${partition.id}`;
-            rows.push({
-              columns: normaliseColumns(partition),
-              key: rowId,
-            });
-          }
-        });
-      }
-    });
-
-    return (
-      <>
-        <MainTable
-          className="p-table-expanding--light"
-          responsive
-          headers={[
-            {
-              content: (
-                <>
-                  <div>Name</div>
-                  <div>Serial</div>
-                </>
-              ),
-            },
-            {
-              content: (
-                <>
-                  <div>Model</div>
-                  <div>Firmware</div>
-                </>
-              ),
-            },
-            {
-              content: <div>Boot</div>,
-            },
-            { content: <div>Size</div> },
-            {
-              content: (
-                <>
-                  <div>Type</div>
-                  <div>NUMA node</div>
-                </>
-              ),
-            },
-            {
-              content: (
-                <>
-                  <div>Health</div>
-                  <div>Tags</div>
-                </>
-              ),
-            },
-            {
-              content: "Used for",
-            },
-          ]}
-          rows={rows}
-        />
-        {rows.length === 0 && (
-          <div className="u-nudge-right--small" data-testid="no-used">
-            No disk or partition has been fully utilised.
-          </div>
-        )}
-      </>
-    );
-  }
-  return null;
 };
 
 export default UsedStorageTable;

@@ -66,7 +66,7 @@ const StorageTables = ({ canEditStorage, node }: Props): JSX.Element => {
       </Strip>
       <Strip shallow>
         <h4 className="u-sv-1">{Labels.UsedStorage}</h4>
-        <UsedStorageTable systemId={node.system_id} />
+        <UsedStorageTable node={node} />
       </Strip>
     </>
   );
