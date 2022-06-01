@@ -1,8 +1,12 @@
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import HardwareCard from "app/base/components/node/HardwareCard";
+import OverviewCard from "app/base/components/node/OverviewCard";
 import { useWindowTitle } from "app/base/hooks";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
+import { isControllerDetails } from "app/store/controller/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -15,7 +19,19 @@ const ControllerSummary = ({ systemId }: Props): JSX.Element => {
   );
   useWindowTitle(`${`${controller?.hostname}` || "Controller"} summary`);
 
-  return <h4>Controller summary</h4>;
+  if (!isControllerDetails(controller)) {
+    return <Spinner text="Loading..." />;
+  }
+  return (
+    <div className="controller-summary">
+      <div className="controller-summary__overview-card">
+        <OverviewCard node={controller} />
+      </div>
+      <div className="controller-summary__hardware-card">
+        <HardwareCard node={controller} />
+      </div>
+    </div>
+  );
 };
 
 export default ControllerSummary;

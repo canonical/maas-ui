@@ -52,7 +52,7 @@ const formatSyncInterval = (syncInterval: Seconds) =>
     })
   );
 
-const StatusCard = ({ machine }: Props): JSX.Element => {
+const MachineStatusCard = ({ machine }: Props): JSX.Element => {
   const formattedOS = useFormattedOS(machine);
   const machineTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, machine.tags)
@@ -60,7 +60,7 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
 
   return (
     <>
-      <div className="overview-card__status">
+      <div className="overview-card__status" data-testid="machine-status">
         <strong className="p-muted-heading">
           {isVM(machine, machineTags)
             ? "Virtual Machine Status"
@@ -145,4 +145,4 @@ const StatusCard = ({ machine }: Props): JSX.Element => {
   );
 };
 
-export default StatusCard;
+export default MachineStatusCard;

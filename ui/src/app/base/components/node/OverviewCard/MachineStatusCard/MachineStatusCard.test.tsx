@@ -4,7 +4,7 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import StatusCard from "./StatusCard";
+import MachineStatusCard from "./MachineStatusCard";
 
 import docsUrls from "app/base/docsUrls";
 import type { RootState } from "app/store/root/types";
@@ -20,7 +20,7 @@ import {
 
 const mockStore = configureStore();
 
-describe("StatusCard", () => {
+describe("MachineStatusCard", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -46,7 +46,7 @@ describe("StatusCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StatusCard machine={machine} />
+          <MachineStatusCard machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -69,7 +69,7 @@ describe("StatusCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StatusCard machine={machine} />
+          <MachineStatusCard machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -90,7 +90,7 @@ describe("StatusCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <StatusCard machine={machine} />
+          <MachineStatusCard machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -113,7 +113,7 @@ describe("StatusCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <StatusCard machine={machine} />
+          <MachineStatusCard machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -135,7 +135,7 @@ describe("StatusCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <StatusCard machine={machine} />
+          <MachineStatusCard machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -158,7 +158,7 @@ describe("StatusCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <StatusCard machine={machine} />
+          <MachineStatusCard machine={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -195,7 +195,7 @@ describe("StatusCard", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
-          <StatusCard machine={machine} />
+          <MachineStatusCard machine={machine} />
         </MemoryRouter>
       </Provider>
     );

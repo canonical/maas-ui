@@ -88,6 +88,7 @@
 @import "~app/base/components/Meter";
 @import "~app/base/components/node/networking/NetworkTable";
 @import "~app/base/components/node/NodeDevices";
+@import "~app/base/components/node/OverviewCard";
 @import "~app/base/components/NodeName";
 @import "~app/base/components/NodeSummaryNetworkCard/NetworkCardTable";
 @import "~app/base/components/NotificationGroup";
@@ -117,6 +118,7 @@
 @include NodeDevices;
 @include NodeName;
 @include NotificationGroup;
+@include OverviewCard;
 @include Placeholder;
 @include Popover;
 @include Section;
@@ -128,7 +130,9 @@
 
 // controllers
 @import "~app/controllers/views/ControllerList/ControllerListTable";
+@import "~app/controllers/views/ControllerDetails/ControllerSummary";
 @include ControllerListTable;
+@include ControllerSummary;
 
 // devices
 @import "~app/devices/components/DeviceHeaderForms/AddDeviceForm/AddDeviceInterfaces";
@@ -218,7 +222,6 @@
 @import "~app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogsTable";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
-@import "~app/machines/views/MachineDetails/MachineSummary/OverviewCard";
 @import "~app/machines/views/MachineDetails/MachineTests/MachineTestsTable";
 @import "~app/machines/views/MachineList";
 @include CloneFormFields;
@@ -230,7 +233,6 @@
 @include MachineTestsTable;
 @include MarkBrokenFormFields;
 @include NumaCard;
-@include OverviewCard;
 @include SourceMachineSelect;
 @include TagForm;
 

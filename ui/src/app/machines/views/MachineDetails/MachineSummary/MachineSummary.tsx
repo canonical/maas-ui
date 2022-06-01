@@ -5,12 +5,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import NumaCard from "./NumaCard";
-import OverviewCard from "./OverviewCard";
 import TestResults from "./TestResults";
 import WorkloadCard from "./WorkloadCard";
 
 import NodeSummaryNetworkCard from "app/base/components/NodeSummaryNetworkCard";
 import HardwareCard from "app/base/components/node/HardwareCard";
+import OverviewCard from "app/base/components/node/OverviewCard";
 import { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
@@ -55,7 +55,9 @@ const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
 
   return (
     <div className="machine-summary__cards">
-      <OverviewCard id={id} setHeaderContent={setHeaderContent} />
+      <div className="machine-summary__overview-card">
+        <OverviewCard node={machine} setHeaderContent={setHeaderContent} />
+      </div>
       <div className="machine-summary__hardware-card">
         <HardwareCard node={machine} />
       </div>
