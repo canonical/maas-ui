@@ -10,15 +10,17 @@ import NodeNameFields from "./NodeNameFields";
 import FormikForm from "app/base/components/FormikForm";
 import { useCanEdit } from "app/base/hooks";
 import { hostnameValidation } from "app/base/validation";
+import type { Controller } from "app/store/controller/types";
 import type { Device } from "app/store/device/types";
 import type { Domain, DomainMeta } from "app/store/domain/types";
 import type { Machine } from "app/store/machine/types";
 import type { SimpleNode } from "app/store/types/node";
+import { nodeIsController } from "app/store/utils";
 
 export type Props = {
   editingName: boolean;
   // Machines and devices can edit their name, but no controllers.
-  node: Machine | Device | null;
+  node: Machine | Device | Controller | null;
   onSubmit: (
     hostname: SimpleNode["hostname"],
     domain: Domain[DomainMeta.PK]
@@ -51,6 +53,7 @@ const NodeName = ({
   >(null);
   const canEdit = useCanEdit(node);
   const previousSaving = usePrevious(saving);
+  const canEditHostname = !nodeIsController(node);
 
   useEffect(() => {
     // The node has transitioned from saving to saved so close the form.
@@ -108,7 +111,11 @@ const NodeName = ({
       saved={saved}
       validationSchema={Schema}
     >
-      <NodeNameFields saving={saving} setHostnameError={setHostnameError} />
+      <NodeNameFields
+        canEditHostname={canEditHostname}
+        saving={saving}
+        setHostnameError={setHostnameError}
+      />
     </FormikForm>
   );
 };

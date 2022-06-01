@@ -271,105 +271,113 @@ exports[`NodeName can display the form 1`] = `
           onSubmit={[Function]}
         >
           <NodeNameFields
+            canEditHostname={true}
             setHostnameError={[Function]}
           >
-            <div
-              className="node-name__hostname-wrapper u-no-margin--right"
+            <NodeHostnameField
+              canEditHostname={true}
+              setHostnameError={[Function]}
             >
               <div
-                aria-hidden="true"
-                className="node-name__hostname-spacer"
+                className="node-name__hostname-wrapper u-no-margin--right"
               >
-                test-machine-5
-              </div>
-              <FormikField
-                className="node-name__hostname"
-                displayError={false}
-                label="Hostname"
-                name="hostname"
-                takeFocus={true}
-                type="text"
-                wrapperClassName="u-no-margin--right"
-              >
-                <Input
-                  aria-label="Hostname"
+                <div
+                  aria-hidden="true"
+                  className="node-name__hostname-spacer"
+                >
+                  test-machine-5
+                </div>
+                <FormikField
                   className="node-name__hostname"
-                  error={null}
-                  id="mock-redux-js-nanoid-1"
+                  displayError={false}
                   label="Hostname"
                   name="hostname"
-                  onBlur={[Function]}
-                  onChange={[Function]}
                   takeFocus={true}
                   type="text"
-                  value="test-machine-5"
                   wrapperClassName="u-no-margin--right"
                 >
-                  <Field
-                    className="u-no-margin--right"
+                  <Input
+                    aria-label="Hostname"
+                    className="node-name__hostname"
                     error={null}
-                    forId="mock-redux-js-nanoid-1"
-                    helpId="mock-nanoid-2"
-                    isTickElement={false}
+                    id="mock-redux-js-nanoid-1"
                     label="Hostname"
-                    validationId="mock-nanoid-1"
+                    name="hostname"
+                    onBlur={[Function]}
+                    onChange={[Function]}
+                    takeFocus={true}
+                    type="text"
+                    value="test-machine-5"
+                    wrapperClassName="u-no-margin--right"
                   >
-                    <div
-                      className="p-form__group p-form-validation u-no-margin--right"
+                    <Field
+                      className="u-no-margin--right"
+                      error={null}
+                      forId="mock-redux-js-nanoid-1"
+                      helpId="mock-nanoid-2"
+                      isTickElement={false}
+                      label="Hostname"
+                      validationId="mock-nanoid-1"
                     >
-                      <Label
-                        forId="mock-redux-js-nanoid-1"
-                      >
-                        <label
-                          className="p-form__label"
-                          htmlFor="mock-redux-js-nanoid-1"
-                        >
-                          Hostname
-                        </label>
-                      </Label>
                       <div
-                        className="p-form__control u-clearfix"
+                        className="p-form__group p-form-validation u-no-margin--right"
                       >
-                        <input
-                          aria-describedby={null}
-                          aria-errormessage={null}
-                          aria-invalid={false}
-                          aria-label="Hostname"
-                          className="p-form-validation__input node-name__hostname"
-                          id="mock-redux-js-nanoid-1"
-                          label="Hostname"
-                          name="hostname"
-                          onBlur={[Function]}
-                          onChange={[Function]}
-                          type="text"
-                          value="test-machine-5"
-                        />
+                        <Label
+                          forId="mock-redux-js-nanoid-1"
+                        >
+                          <label
+                            className="p-form__label"
+                            htmlFor="mock-redux-js-nanoid-1"
+                          >
+                            Hostname
+                          </label>
+                        </Label>
+                        <div
+                          className="p-form__control u-clearfix"
+                        >
+                          <input
+                            aria-describedby={null}
+                            aria-errormessage={null}
+                            aria-invalid={false}
+                            aria-label="Hostname"
+                            className="p-form-validation__input node-name__hostname"
+                            id="mock-redux-js-nanoid-1"
+                            label="Hostname"
+                            name="hostname"
+                            onBlur={[Function]}
+                            onChange={[Function]}
+                            type="text"
+                            value="test-machine-5"
+                          />
+                        </div>
                       </div>
-                    </div>
-                  </Field>
-                </Input>
-              </FormikField>
-            </div>
+                    </Field>
+                  </Input>
+                </FormikField>
+              </div>
+            </NodeHostnameField>
             <span
               className="node-name__dot u-nudge-right--small u-nudge-left--small u-no-margin--right"
             >
               .
             </span>
-            <Spinner
-              className="u-width--auto"
-            >
-              <span
-                aria-live="polite"
-                className="u-width--auto p-text--default"
-                role="alert"
+            <NodeDomainField>
+              <Spinner
+                className="u-width--auto"
               >
-                <i
-                  className="p-icon--spinner u-animation--spin"
+                <span
+                  aria-live="polite"
+                  className="u-width--auto p-text--default"
+                  role="alert"
                 >
-                  Loading
-                </i>
-              </span>
-            </Spinner>
+                  <i
+                    className="p-icon--spinner u-animation--spin"
+                  >
+                    Loading
+                  </i>
+                </span>
+              </Spinner>
+            </NodeDomainField>
           </NodeNameFields>
           <FormikFormButtons
             buttonsAlign="right"

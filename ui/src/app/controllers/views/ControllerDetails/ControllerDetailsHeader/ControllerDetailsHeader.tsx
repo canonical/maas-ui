@@ -1,6 +1,10 @@
+import { useState } from "react";
+
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { Link } from "react-router-dom-v5-compat";
+
+import ControllerName from "./ControllerName";
 
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -11,7 +15,6 @@ import type {
   ControllerSetHeaderContent,
 } from "app/controllers/types";
 import controllerURLs from "app/controllers/urls";
-import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
@@ -32,6 +35,7 @@ const ControllerDetailsHeader = ({
     controllerSelectors.getById(state, systemId)
   );
   const { pathname } = useLocation();
+  const [isEditing, setIsEditing] = useState(false);
 
   if (!controller) {
     return <SectionHeader loading />;
@@ -98,7 +102,14 @@ const ControllerDetailsHeader = ({
         label: link.label,
         to: link.url,
       }))}
-      title={getHeaderTitle(controller.fqdn, headerContent)}
+      title={
+        <ControllerName
+          id={controller.system_id}
+          isEditing={isEditing}
+          setIsEditing={setIsEditing}
+        />
+      }
+      titleElement={isEditing ? "div" : "h1"}
       headerContent={
         headerContent ? (
           <ControllerHeaderForms
