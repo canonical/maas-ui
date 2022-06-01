@@ -41,10 +41,7 @@ const StorageTables = ({ canEditStorage, node }: Props): JSX.Element => {
         ) : (
           <>
             <h4 className="u-sv-1">{Labels.Filesystems}</h4>
-            <FilesystemsTable
-              canEditStorage={canEditStorage}
-              systemId={node.system_id}
-            />
+            <FilesystemsTable canEditStorage={canEditStorage} node={node} />
           </>
         )}
       </Strip>

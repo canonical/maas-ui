@@ -7,7 +7,10 @@ import configureStore from "redux-mock-store";
 
 import FilesystemsTable from "./FilesystemsTable";
 
+import { actions as machineActions } from "app/store/machine";
 import {
+  controllerDetails as controllerDetailsFactory,
+  controllerState as controllerStateFactory,
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
@@ -20,486 +23,478 @@ import {
 
 const mockStore = configureStore();
 
-describe("FilesystemsTable", () => {
-  it("can show an empty message", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [
-              diskFactory({
-                filesystem: null,
-                partitions: [partitionFactory({ filesystem: null })],
-              }),
-            ],
-            system_id: "abc123",
-          }),
-        ],
+it("can show an empty message", () => {
+  const machine = machineDetailsFactory({
+    disks: [
+      diskFactory({
+        filesystem: null,
+        partitions: [partitionFactory({ filesystem: null })],
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(screen.getByTestId("no-filesystems")).toHaveTextContent(
-      "No filesystems defined."
-    );
+    ],
+    system_id: "abc123",
   });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can show filesystems associated with disks", () => {
-    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [
-              diskFactory({ filesystem, name: "disk-fs", partitions: [] }),
-            ],
-            system_id: "abc123",
-          }),
-        ],
+  expect(screen.getByTestId("no-filesystems")).toHaveTextContent(
+    "No filesystems defined."
+  );
+});
+
+it("can show filesystems associated with disks", () => {
+  const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+  const machine = machineDetailsFactory({
+    disks: [diskFactory({ filesystem, name: "disk-fs", partitions: [] })],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
+    "disk-fs"
+  );
+  expect(
+    screen.getByRole("gridcell", { name: "Mount point" })
+  ).toHaveTextContent("/disk-fs/path");
+});
+
+it("can show filesystems associated with partitions", () => {
+  const filesystem = fsFactory({ mount_point: "/partition-fs/path" });
+  const machine = machineDetailsFactory({
+    disks: [
+      diskFactory({
+        filesystem: null,
+        partitions: [partitionFactory({ filesystem, name: "partition-fs" })],
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
-      "disk-fs"
-    );
-    expect(
-      screen.getByRole("gridcell", { name: "Mount point" })
-    ).toHaveTextContent("/disk-fs/path");
+    ],
+    system_id: "abc123",
   });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can show filesystems associated with partitions", () => {
-    const filesystem = fsFactory({ mount_point: "/partition-fs/path" });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [
-              diskFactory({
-                filesystem: null,
-                partitions: [
-                  partitionFactory({ filesystem, name: "partition-fs" }),
-                ],
-              }),
-            ],
-            system_id: "abc123",
-          }),
-        ],
+  expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
+    "partition-fs"
+  );
+  expect(
+    screen.getByRole("gridcell", { name: "Mount point" })
+  ).toHaveTextContent("/partition-fs/path");
+});
+
+it("can show special filesystems", () => {
+  const specialFilesystem = fsFactory({
+    mount_point: "/special-fs/path",
+    fstype: "tmpfs",
+  });
+  const machine = machineDetailsFactory({
+    disks: [diskFactory()],
+    special_filesystems: [specialFilesystem],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent("—");
+  expect(
+    screen.getByRole("gridcell", { name: "Mount point" })
+  ).toHaveTextContent("/special-fs/path");
+});
+
+it("does not show action column if node is a controller", () => {
+  const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+  const partition = partitionFactory({ filesystem });
+  const disk = diskFactory({ filesystem: null, partitions: [partition] });
+  const controller = controllerDetailsFactory({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    controller: controllerStateFactory({
+      items: [controller],
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={controller} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(
+    screen.queryByRole("columnheader", { name: "Actions" })
+  ).not.toBeInTheDocument();
+});
+
+it("shows an action column if node is a machine", () => {
+  const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+  const partition = partitionFactory({ filesystem });
+  const disk = diskFactory({ filesystem: null, partitions: [partition] });
+  const machine = machineDetailsFactory({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
-      "partition-fs"
-    );
-    expect(
-      screen.getByRole("gridcell", { name: "Mount point" })
-    ).toHaveTextContent("/partition-fs/path");
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can show special filesystems", () => {
-    const specialFilesystem = fsFactory({
-      mount_point: "/special-fs/path",
-      fstype: "tmpfs",
-    });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [diskFactory()],
-            special_filesystems: [specialFilesystem],
-            system_id: "abc123",
-          }),
-        ],
+  expect(
+    screen.getByRole("columnheader", { name: "Actions" })
+  ).toBeInTheDocument();
+});
+
+it("disables the action menu if node is a machine and storage can't be edited", () => {
+  const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+  const partition = partitionFactory({ filesystem });
+  const disk = diskFactory({ filesystem: null, partitions: [partition] });
+  const machine = machineDetailsFactory({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(screen.getByRole("gridcell", { name: "Name" })).toHaveTextContent(
-      "—"
-    );
-    expect(
-      screen.getByRole("gridcell", { name: "Mount point" })
-    ).toHaveTextContent("/special-fs/path");
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage={false} node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(screen.getByRole("button", { name: /Take action/ })).toBeDisabled();
+});
 
-  it("can show an add special filesystem form if storage can be edited", async () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
+it("can show an add special filesystem form if node is a machine", async () => {
+  const machine = machineDetailsFactory({ system_id: "abc123" });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByTestId("add-special-fs-button"));
-
-    expect(
-      screen.getByRole("form", { name: "Add special filesystem" })
-    ).toBeInTheDocument();
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can remove a disk's filesystem", async () => {
-    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
-    const disk = diskFactory({ filesystem, partitions: [] });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [disk],
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
+  await userEvent.click(screen.getByTestId("add-special-fs-button"));
+
+  expect(
+    screen.getByRole("form", { name: "Add special filesystem" })
+  ).toBeInTheDocument();
+});
+
+it("can remove a disk's filesystem if node is a machine", async () => {
+  const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+  const disk = diskFactory({ filesystem, partitions: [] });
+  const machine = machineDetailsFactory({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    await userEvent.click(
-      screen.getByRole("button", { name: "Remove filesystem..." })
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Remove" }));
-
-    expect(
-      screen.getByText("Are you sure you want to remove this filesystem?")
-    ).toBeInTheDocument();
-    expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/deleteFilesystem")
-    ).toStrictEqual({
-      meta: {
-        method: "delete_filesystem",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          blockdevice_id: disk.id,
-          filesystem_id: filesystem.id,
-          system_id: "abc123",
-        },
-      },
-      type: "machine/deleteFilesystem",
-    });
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can remove a partition's filesystem", async () => {
-    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
-    const partition = partitionFactory({ filesystem });
-    const disk = diskFactory({ filesystem: null, partitions: [partition] });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [disk],
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
+  await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Remove filesystem..." })
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Remove" }));
+
+  const expectedAction = machineActions.deleteFilesystem({
+    blockDeviceId: disk.id,
+    filesystemId: filesystem.id,
+    systemId: machine.system_id,
+  });
+  expect(
+    screen.getByText("Are you sure you want to remove this filesystem?")
+  ).toBeInTheDocument();
+  expect(
+    store.getActions().find((action) => action.type === expectedAction.type)
+  ).toStrictEqual(expectedAction);
+});
+
+it("can remove a partition's filesystem if node is a machine", async () => {
+  const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+  const partition = partitionFactory({ filesystem });
+  const disk = diskFactory({ filesystem: null, partitions: [partition] });
+  const machine = machineDetailsFactory({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    await userEvent.click(
-      screen.getByRole("button", { name: "Remove filesystem..." })
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Remove" }));
-
-    expect(
-      screen.getByText("Are you sure you want to remove this filesystem?")
-    ).toBeInTheDocument();
-    expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/deletePartition")
-    ).toStrictEqual({
-      meta: {
-        method: "delete_partition",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          partition_id: partition.id,
-          system_id: "abc123",
-        },
-      },
-      type: "machine/deletePartition",
-    });
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can remove a special filesystem", async () => {
-    const filesystem = fsFactory({
-      fstype: "tmpfs",
-      mount_point: "/disk-fs/path",
-    });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [],
-            special_filesystems: [filesystem],
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
+  await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Remove filesystem..." })
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Remove" }));
+
+  const expectedAction = machineActions.deletePartition({
+    partitionId: partition.id,
+    systemId: machine.system_id,
+  });
+  expect(
+    screen.getByText("Are you sure you want to remove this filesystem?")
+  ).toBeInTheDocument();
+  expect(
+    store.getActions().find((action) => action.type === expectedAction.type)
+  ).toStrictEqual(expectedAction);
+});
+
+it("can remove a special filesystem if node is a machine", async () => {
+  const filesystem = fsFactory({
+    fstype: "tmpfs",
+    mount_point: "/disk-fs/path",
+  });
+  const machine = machineDetailsFactory({
+    disks: [],
+    special_filesystems: [filesystem],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    await userEvent.click(
-      screen.getByRole("button", { name: "Remove filesystem..." })
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Remove" }));
-
-    expect(
-      screen.getByText(
-        "Are you sure you want to remove this special filesystem?"
-      )
-    ).toBeInTheDocument();
-    expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/unmountSpecial")
-    ).toStrictEqual({
-      meta: {
-        method: "unmount_special",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          mount_point: filesystem.mount_point,
-          system_id: "abc123",
-        },
-      },
-      type: "machine/unmountSpecial",
-    });
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can unmount a disk's filesystem", async () => {
-    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
-    const disk = diskFactory({ filesystem, partitions: [] });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [disk],
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
+  await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Remove filesystem..." })
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Remove" }));
+
+  const expectedAction = machineActions.unmountSpecial({
+    mountPoint: filesystem.mount_point,
+    systemId: machine.system_id,
+  });
+  expect(
+    screen.getByText("Are you sure you want to remove this special filesystem?")
+  ).toBeInTheDocument();
+  expect(
+    store.getActions().find((action) => action.type === expectedAction.type)
+  ).toStrictEqual(expectedAction);
+});
+
+it("can unmount a disk's filesystem if node is a machine", async () => {
+  const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+  const disk = diskFactory({ filesystem, partitions: [] });
+  const machine = machineDetailsFactory({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    await userEvent.click(
-      screen.getByRole("button", { name: "Unmount filesystem..." })
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Unmount" }));
-
-    expect(
-      screen.getByText("Are you sure you want to unmount this filesystem?")
-    ).toBeInTheDocument();
-    expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/updateFilesystem")
-    ).toStrictEqual({
-      meta: {
-        method: "update_filesystem",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          block_id: disk.id,
-          mount_options: "",
-          mount_point: "",
-          system_id: "abc123",
-        },
-      },
-      type: "machine/updateFilesystem",
-    });
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("can unmount a partition's filesystem", async () => {
-    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
-    const partition = partitionFactory({ filesystem });
-    const disk = diskFactory({ filesystem: null, partitions: [partition] });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [disk],
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
+  await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Unmount filesystem..." })
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Unmount" }));
+
+  const expectedAction = machineActions.updateFilesystem({
+    blockId: disk.id,
+    mountOptions: "",
+    mountPoint: "",
+    systemId: machine.system_id,
+  });
+  expect(
+    screen.getByText("Are you sure you want to unmount this filesystem?")
+  ).toBeInTheDocument();
+  expect(
+    store.getActions().find((action) => action.type === expectedAction.type)
+  ).toStrictEqual(expectedAction);
+});
+
+it("can unmount a partition's filesystem if node is a machine", async () => {
+  const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
+  const partition = partitionFactory({ filesystem });
+  const disk = diskFactory({ filesystem: null, partitions: [partition] });
+  const machine = machineDetailsFactory({
+    disks: [disk],
+    system_id: "abc123",
+  });
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machine],
+      statuses: machineStatusesFactory({
+        abc123: machineStatusFactory(),
       }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
-    await userEvent.click(
-      screen.getByRole("button", { name: "Unmount filesystem..." })
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Unmount" }));
-
-    expect(
-      screen.getByText("Are you sure you want to unmount this filesystem?")
-    ).toBeInTheDocument();
-    expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/updateFilesystem")
-    ).toStrictEqual({
-      meta: {
-        method: "update_filesystem",
-        model: "machine",
-      },
-      payload: {
-        params: {
-          mount_options: "",
-          mount_point: "",
-          partition_id: partition.id,
-          system_id: "abc123",
-        },
-      },
-      type: "machine/updateFilesystem",
-    });
+    }),
   });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <FilesystemsTable canEditStorage node={machine} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
 
-  it("disables the action menu when storage can't be edited", () => {
-    const filesystem = fsFactory({ mount_point: "/disk-fs/path" });
-    const partition = partitionFactory({ filesystem });
-    const disk = diskFactory({ filesystem: null, partitions: [partition] });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            disks: [disk],
-            system_id: "abc123",
-          }),
-        ],
-        statuses: machineStatusesFactory({
-          abc123: machineStatusFactory(),
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <FilesystemsTable canEditStorage={false} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(screen.getByRole("button", { name: /Take action/ })).toBeDisabled();
+  await userEvent.click(screen.getByRole("button", { name: /Take action/ }));
+  await userEvent.click(
+    screen.getByRole("button", { name: "Unmount filesystem..." })
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Unmount" }));
+
+  const expectedAction = machineActions.updateFilesystem({
+    mountOptions: "",
+    mountPoint: "",
+    partitionId: partition.id,
+    systemId: machine.system_id,
   });
+  expect(
+    screen.getByText("Are you sure you want to unmount this filesystem?")
+  ).toBeInTheDocument();
+  expect(
+    store.getActions().find((action) => action.type === expectedAction.type)
+  ).toStrictEqual(expectedAction);
 });
