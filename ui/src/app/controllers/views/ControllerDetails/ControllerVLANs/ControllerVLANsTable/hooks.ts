@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
+import type { ControllerTableData } from "./types";
+
 import controllerSelectors from "app/store/controller/selectors";
 import type {
   Controller,
@@ -17,22 +19,16 @@ import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
 import { getSubnetsInVLAN } from "app/store/subnet/utils";
-import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
+import { getBondOrBridgeChild } from "app/store/utils/node/networking";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN } from "app/store/vlan/types";
-import { getVlanById, getVLANDisplay } from "app/store/vlan/utils";
+import {
+  getDHCPStatus,
+  getVlanById,
+  getVLANDisplay,
+} from "app/store/vlan/utils";
 import { simpleSortByKey } from "app/utils";
-
-type ControllerTableData = {
-  fabric?: Fabric | null;
-  vlan?: VLAN | null;
-  subnet?: Subnet[];
-  primary_rack?: Controller[ControllerMeta.PK] | null;
-  secondary_rack?: Controller[ControllerMeta.PK] | null;
-  sortKey?: string;
-};
 
 const getTableData = (
   data: {
@@ -42,41 +38,22 @@ const getTableData = (
   },
   controller: ControllerDetails
 ): ControllerTableData[] => {
-  const rows: ControllerTableData[] = [];
-  // Keep track of VLAN IDs we've processed
-  const addedVlans: Record<number, boolean> = {};
-
-  const originalInterfaces: Record<number, NetworkInterface> = {};
-  controller.interfaces.forEach((nic) => {
-    originalInterfaces[nic.id] = nic;
-  });
-
-  controller.interfaces.forEach((nic) => {
-    // When a interface has a child that is a bond or bridge.
-    // Then that interface is not included in the interface list.
-    // Parent interface with a bond or bridge child can only have
-    // one child.
-    if (nic.children.length === 1) {
-      const child = originalInterfaces[nic.children[0]];
-      if (
-        child.type === NetworkInterfaceTypes.BOND ||
-        child.type === NetworkInterfaceTypes.BRIDGE
-      ) {
-        return;
-      }
-    }
-
+  const rows: ControllerTableData[] = controller.interfaces.reduce<
+    ControllerTableData[]
+  >((rows, nic) => {
+    const rowExists = rows.some((row) => row.vlan?.id === nic.vlan_id);
+    const hasBondOrBridgeChild = !!getBondOrBridgeChild(controller, nic);
     const controllerVlan = getVlanById(data.vlans, nic.vlan_id);
-    const controllerFabric = controllerVlan
-      ? getFabricById(data.fabrics, controllerVlan.fabric)
-      : undefined;
 
-    // Skip duplicate VLANs (by id, they can share names).
-    if (!addedVlans[nic.vlan_id] && controllerFabric) {
-      addedVlans[nic.vlan_id] = true;
+    if (!rowExists && !hasBondOrBridgeChild && controllerVlan) {
+      const controllerFabric = getFabricById(
+        data.fabrics,
+        controllerVlan.fabric
+      );
       rows.push({
         fabric: controllerFabric,
         vlan: controllerVlan,
+        dhcp: getDHCPStatus(controllerVlan, data.vlans, data.fabrics),
         subnet: getSubnetsInVLAN(data.subnets, nic.vlan_id),
         sortKey: controllerFabric
           ? controllerFabric.name + "|" + getVLANDisplay(controllerVlan)
@@ -89,7 +66,8 @@ const getTableData = (
           : null,
       });
     }
-  });
+    return rows;
+  }, []);
 
   return rows.sort(
     simpleSortByKey("sortKey", {

@@ -204,7 +204,7 @@ it("displays correct text within each cell", () => {
   const expectedColumnContent = {
     [ControllerVLANsColumns.FABRIC]: net.fabric0.name,
     [ControllerVLANsColumns.VLAN]: net.vlan0.name,
-    [ControllerVLANsColumns.DHCP]: "Disabled",
+    [ControllerVLANsColumns.DHCP]: "No DHCP",
   };
 
   const row = screen.getByRole("row", {
