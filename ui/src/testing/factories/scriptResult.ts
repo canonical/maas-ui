@@ -36,7 +36,7 @@ export const scriptResult = extend<Model, ScriptResult>(model, {
   exit_status: 0,
   hardware_type: 3,
   interface: null,
-  name: "test name",
+  name: (i: number) => `test scriptResult ${i}`,
   parameters: () => ({}),
   physical_blockdevice: 2451,
   result_type: 1,

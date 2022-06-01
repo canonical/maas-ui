@@ -14,7 +14,7 @@ export const script = extend<TimestampedModel, Script>(timestampedModel, {
   for_hardware: () => [],
   hardware_type: random,
   may_reboot: false,
-  name: "test name",
+  name: (i: number) => `test name ${i}`,
   packages: () => ({}),
   parallel: random,
   parameters: () => ({}),

@@ -37,7 +37,7 @@ it("renders correct details", () => {
     }),
   });
   const store = mockStore(state);
-  const fabric = fabricFactory({ id: 1 });
+  const fabric = fabricFactory({ id: 1, name: "test-fabric" });
 
   render(
     <Provider store={store}>

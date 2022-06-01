@@ -9,6 +9,6 @@ export const fabric = extend<TimestampedModel, Fabric>(timestampedModel, {
   class_type: "10g",
   default_vlan_id: random,
   description: "a fabric",
-  name: "test-fabric",
+  name: (i: number) => `test-fabric-${i}`,
   vlan_ids: () => [],
 });

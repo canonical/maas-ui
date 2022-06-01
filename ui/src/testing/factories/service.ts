@@ -7,7 +7,7 @@ import type { Service } from "app/store/service/types";
 import type { Model } from "app/store/types/model";
 
 export const service = extend<Model, Service>(model, {
-  name: "test name",
+  name: (i: number) => `test service ${i}`,
   status: ServiceStatus.RUNNING,
   status_info: "test info",
 });

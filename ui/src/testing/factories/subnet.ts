@@ -98,7 +98,7 @@ export const subnet = extend<TimestampedModel, BaseSubnet>(timestampedModel, {
   dns_servers: "fd89:8724:81f1:5512:557f:99c3:6967:8d63",
   gateway_ip: null,
   managed: false,
-  name: "test-name",
+  name: (i: number) => `test subnet ${i}`,
   rdns_mode: random,
   space: null,
   statistics: subnetStatistics,

@@ -15,7 +15,7 @@ import type {
 } from "app/store/vmcluster/types";
 
 export const vmHost = extend<Model, VMHost>(model, {
-  name: "podA",
+  name: (i: number) => `vmHost-${i}`,
   project: "my-project",
   tags: () => [],
   resource_pool: "default",

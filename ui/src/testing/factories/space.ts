@@ -7,7 +7,7 @@ import type { TimestampedModel } from "app/store/types/model";
 
 export const space = extend<TimestampedModel, Space>(timestampedModel, {
   description: "a space",
-  name: "test-space",
+  name: (i: number) => `test space ${i}`,
   subnet_ids: () => [],
   vlan_ids: () => [],
 });

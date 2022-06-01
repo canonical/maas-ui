@@ -11,7 +11,7 @@ export const keySource = define<KeySource>({
 });
 
 export const sshKey = extend<TimestampedModel, SSHKey>(timestampedModel, {
-  display: "display key",
+  display: (i: number) => `display key ${i}`,
   key: "test key",
   user: random,
 });

@@ -6,7 +6,7 @@ import type { SSLKey } from "app/store/sslkey/types";
 import type { TimestampedModel } from "app/store/types/model";
 
 export const sslKey = extend<TimestampedModel, SSLKey>(timestampedModel, {
-  display: "test key display",
-  key: "test key",
+  display: (i: number) => `test key display ${i}`,
+  key: (i: number) => `test key ${i}`,
   user: random,
 });
