@@ -43,6 +43,7 @@ exports[`CoresColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            data-testid="primary"
           >
             <MachineTestStatus
               data-testid="cores"
@@ -70,6 +71,7 @@ exports[`CoresColumn renders 1`] = `
         <div
           aria-label="Architecture"
           className="p-double-row__secondary-row u-truncate"
+          data-testid="secondary"
         >
           <Tooltip
             message="amd64/generic"

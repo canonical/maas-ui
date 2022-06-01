@@ -34,6 +34,7 @@ exports[`StorageColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            data-testid="primary"
           >
             <span
               data-testid="storage-value"

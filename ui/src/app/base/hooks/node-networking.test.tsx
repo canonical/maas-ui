@@ -113,7 +113,7 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      expect(result.current).toBe(false);
+      expect(result.current).toBe(true);
     });
   });
 });

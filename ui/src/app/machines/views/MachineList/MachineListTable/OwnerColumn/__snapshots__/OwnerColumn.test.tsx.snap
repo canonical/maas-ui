@@ -47,6 +47,7 @@ exports[`OwnerColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            data-testid="primary"
             title="admin"
           >
             <span
@@ -134,6 +135,7 @@ exports[`OwnerColumn renders 1`] = `
         </div>
         <div
           className="p-double-row__secondary-row u-truncate"
+          data-testid="secondary"
           title="-"
         >
           <span

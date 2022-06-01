@@ -276,6 +276,7 @@ exports[`StatusColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            data-testid="primary"
           >
             <span
               data-testid="status-text"
@@ -377,6 +378,7 @@ exports[`StatusColumn renders 1`] = `
         </div>
         <div
           className="p-double-row__secondary-row u-truncate"
+          data-testid="secondary"
         >
           <span
             data-testid="progress-text"

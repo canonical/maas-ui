@@ -27,6 +27,7 @@ exports[`DisksColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            data-testid="primary"
           >
             <MachineTestStatus
               data-testid="disks"
