@@ -3,9 +3,9 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import type { ControllerDetails } from "app/store/controller/types";
 import fabricSelectors from "app/store/fabric/selectors";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
@@ -47,45 +47,38 @@ const getNetworkTestingStatus = (
 type Props = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
-  systemId: Machine["system_id"];
+  node: MachineDetails | ControllerDetails;
 };
 
-const IPColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
+const IPColumn = ({ link, nic, node }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const [scriptResultsRequested, setScriptResultsRequested] = useState(false);
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
   const fabrics = useSelector(fabricSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
   const failedNetworkResults = useSelector((state: RootState) =>
     scriptResultsSelectors.getNetworkTestingByNodeId(
       state,
-      machine?.system_id,
+      node.system_id,
       true
     )
   );
-  if (link && !nic && machine) {
-    [nic] = getLinkInterface(machine, link);
+  if (link && !nic) {
+    [nic] = getLinkInterface(node, link);
   }
 
   useEffect(() => {
     if (!scriptResultsRequested) {
-      dispatch(scriptResultActions.getByNodeId(systemId));
+      dispatch(scriptResultActions.getByNodeId(node.system_id));
       setScriptResultsRequested(true);
     }
-  }, [dispatch, systemId, scriptResultsRequested]);
+  }, [dispatch, node, scriptResultsRequested]);
 
-  if (!machine) {
-    return null;
-  }
-
-  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
-  const discovered = getInterfaceDiscovered(machine, nic, link);
+  const fabric = getInterfaceFabric(node, fabrics, vlans, nic, link);
+  const discovered = getInterfaceDiscovered(node, nic, link);
 
   return (
     <DoubleRow
-      primary={getInterfaceIPAddressOrMode(machine, fabrics, vlans, nic, link)}
+      primary={getInterfaceIPAddressOrMode(node, fabrics, vlans, nic, link)}
       secondary={
         fabric && !discovered?.ip_address
           ? getNetworkTestingStatus(nic, failedNetworkResults)

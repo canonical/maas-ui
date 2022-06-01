@@ -1,13 +1,11 @@
 import { useEffect } from "react";
 
-import { MainTable, Spinner } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
 import IPColumn from "./IPColumn";
-import NetworkTableActions from "./NetworkTableActions";
-import NetworkTableConfirmation from "./NetworkTableConfirmation";
 import PXEColumn from "./PXEColumn";
 import SpeedColumn from "./SpeedColumn";
 
@@ -29,13 +27,13 @@ import type {
 import { useIsAllNetworkingDisabled, useTableSort } from "app/base/hooks";
 import type { Sort } from "app/base/types";
 import { SortDirection } from "app/base/types";
+import NetworkTableActions from "app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions";
+import NetworkTableConfirmation from "app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableConfirmation";
+import type { ControllerDetails } from "app/store/controller/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import { isMachineDetails } from "app/store/machine/utils";
-import type { RootState } from "app/store/root/types";
+import type { MachineDetails } from "app/store/machine/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
@@ -51,6 +49,7 @@ import {
   isBondOrBridgeChild,
   isBondOrBridgeParent,
   isBootInterface,
+  nodeIsMachine,
 } from "app/store/utils";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -58,6 +57,24 @@ import type { VLAN } from "app/store/vlan/types";
 import { getDHCPStatus } from "app/store/vlan/utils";
 import { generateCheckboxHandlers, isComparable } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
+
+export enum Label {
+  Actions = "Actions",
+  ActionsMenu = "Interface actions",
+  DHCP = "DHCP",
+  Fabric = "Fabric",
+  IP = "IP Address",
+  MAC = "MAC",
+  Name = "Name",
+  NUMA = "NUMA node",
+  PXE = "PXE",
+  Speed = "Link/interface speed",
+  Status = "Status",
+  Subnet = "Subnet",
+  SubnetName = "Name",
+  Type = "Type",
+  VLAN = "VLAN",
+}
 
 type NetworkRowSortData = {
   bondOrBridge: NetworkInterface["id"] | null;
@@ -74,6 +91,7 @@ type NetworkRowSortData = {
 };
 
 type NetworkRow = Omit<MainTableRow, "sortData"> & {
+  "data-testid"?: string;
   select: Selected | null;
   sortData: NetworkRowSortData;
 };
@@ -93,7 +111,7 @@ const generateRow = (
   handleRowCheckbox: CheckboxHandlers<Selected>["handleRowCheckbox"],
   isAllNetworkingDisabled: boolean,
   link: NetworkLink | null,
-  machine: Machine,
+  node: MachineDetails | ControllerDetails,
   nic: NetworkInterface | null,
   selected: Props["selected"],
   setExpanded: SetExpanded,
@@ -102,24 +120,24 @@ const generateRow = (
   vlansLoaded: boolean
 ): NetworkRow | null => {
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
   }
-  const isABondOrBridgeParent = isBondOrBridgeParent(machine, nic, link);
-  const isABondOrBridgeChild = isBondOrBridgeChild(machine, nic, link);
-  const isBoot = isBootInterface(machine, nic, link);
+  const isABondOrBridgeParent = isBondOrBridgeParent(node, nic, link);
+  const isABondOrBridgeChild = isBondOrBridgeChild(node, nic, link);
+  const isBoot = isBootInterface(node, nic, link);
   const vlan = vlans.find(({ id }) => id === nic?.vlan_id);
-  const fabric = getInterfaceFabric(machine, fabrics, vlans, nic, link);
-  const name = getInterfaceName(machine, nic, link);
-  const interfaceTypeDisplay = getInterfaceTypeText(machine, nic, link, true);
+  const fabric = getInterfaceFabric(node, fabrics, vlans, nic, link);
+  const name = getInterfaceName(node, nic, link);
+  const interfaceTypeDisplay = getInterfaceTypeText(node, nic, link, true);
   const shouldShowDHCP = !isABondOrBridgeParent && fabricsLoaded && vlansLoaded;
   const fabricContent = !isABondOrBridgeParent
     ? fabric?.name || "Disconnected"
     : null;
   const subnet = getInterfaceSubnet(
-    machine,
+    node,
     subnets,
     fabrics,
     vlans,
@@ -145,6 +163,7 @@ const generateRow = (
     }),
     columns: [
       {
+        "aria-label": Label.Name,
         content: (
           <NameColumn
             checkboxSpace={!showCheckbox}
@@ -152,66 +171,75 @@ const generateRow = (
             handleRowCheckbox={handleRowCheckbox}
             link={link}
             nic={nic}
-            node={machine}
+            node={node}
             selected={selected}
             showCheckbox={showCheckbox}
           />
         ),
       },
       {
+        "aria-label": Label.PXE,
         content: !isABondOrBridgeParent && (
-          <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
+          <PXEColumn link={link} nic={nic} node={node} />
         ),
         className: "u-align--center",
       },
       {
-        content: (
-          <SpeedColumn link={link} nic={nic} systemId={machine.system_id} />
-        ),
+        "aria-label": Label.Speed,
+        content: <SpeedColumn link={link} nic={nic} node={node} />,
       },
       {
-        content: <TypeColumn link={link} nic={nic} node={machine} />,
+        "aria-label": Label.Type,
+        content: <TypeColumn link={link} nic={nic} node={node} />,
       },
       {
+        "aria-label": Label.Fabric,
         content: !isABondOrBridgeParent && (
-          <FabricColumn link={link} nic={nic} node={machine} />
+          <FabricColumn link={link} nic={nic} node={node} />
         ),
       },
       {
+        "aria-label": Label.Subnet,
         content: !isABondOrBridgeParent && (
-          <SubnetColumn link={link} nic={nic} node={machine} />
+          <SubnetColumn link={link} nic={nic} node={node} />
         ),
       },
       {
+        "aria-label": Label.IP,
         content: !isABondOrBridgeParent && (
-          <IPColumn link={link} nic={nic} systemId={machine.system_id} />
+          <IPColumn link={link} nic={nic} node={node} />
         ),
       },
       {
+        "aria-label": Label.DHCP,
         content: !isABondOrBridgeParent && <DHCPColumn nic={nic} />,
       },
       {
+        "aria-label": Label.Actions,
         className: "u-align--right",
-        content: !isABondOrBridgeParent && (
+        content: !isABondOrBridgeParent && nodeIsMachine(node) && (
           <NetworkTableActions
+            aria-label={Label.ActionsMenu}
             link={link}
             nic={nic}
             setExpanded={setExpanded}
-            systemId={machine.system_id}
+            systemId={node.system_id}
           />
         ),
       },
     ],
+    "data-testid": name,
     expanded: isExpanded,
-    expandedContent: isExpanded ? (
-      <NetworkTableConfirmation
-        expanded={expanded}
-        link={link}
-        nic={nic}
-        setExpanded={setExpanded}
-        systemId={machine.system_id}
-      />
-    ) : null,
+    expandedContent:
+      isExpanded && nodeIsMachine(node) ? (
+        <NetworkTableConfirmation
+          expanded={expanded}
+          link={link}
+          nic={nic}
+          setExpanded={setExpanded}
+          systemId={node.system_id}
+        />
+      ) : null,
     key: name,
     select,
     sortData: {
@@ -221,8 +249,7 @@ const generateRow = (
         null,
       dhcp: shouldShowDHCP ? getDHCPStatus(vlan, vlans, fabrics) : null,
       fabric: fabricContent,
-      ip:
-        getInterfaceIPAddressOrMode(machine, fabrics, vlans, nic, link) || null,
+      ip: getInterfaceIPAddressOrMode(node, fabrics, vlans, nic, link) || null,
       isABondOrBridgeChild,
       isABondOrBridgeParent,
       name: name,
@@ -241,19 +268,16 @@ const generateRows = (
   fabricsLoaded: boolean,
   handleRowCheckbox: CheckboxHandlers<Selected>["handleRowCheckbox"],
   isAllNetworkingDisabled: boolean,
-  machine: Machine,
+  node: MachineDetails | ControllerDetails,
   selected: Props["selected"],
   setExpanded: (expanded: Expanded | null) => void,
   subnets: Subnet[],
   vlans: VLAN[],
   vlansLoaded: boolean
 ): NetworkRow[] => {
-  if (!isMachineDetails(machine)) {
-    return [];
-  }
   const rows: NetworkRow[] = [];
   // Create a list of interfaces and aliases to use to generate the table rows.
-  machine.interfaces.forEach((nic: NetworkInterface) => {
+  node.interfaces.forEach((nic: NetworkInterface) => {
     const createRow = (
       link: NetworkLink | null,
       nic: NetworkInterface | null
@@ -266,7 +290,7 @@ const generateRows = (
         handleRowCheckbox,
         isAllNetworkingDisabled,
         link,
-        machine,
+        node,
         nic,
         selected,
         setExpanded,
@@ -378,29 +402,26 @@ export const generateUniqueId = ({ linkId, nicId }: Selected): string =>
 
 type Props = {
   expanded: Expanded | null;
+  node: MachineDetails | ControllerDetails;
   selected: Selected[];
   setExpanded: SetExpanded;
   setSelected: SetSelected;
-  systemId: Machine["system_id"];
 };
 
 const NetworkTable = ({
   expanded,
+  node,
   selected,
   setExpanded,
   setSelected,
-  systemId,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
   const fabrics = useSelector(fabricSelectors.all);
   const subnets = useSelector(subnetSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const vlansLoaded = useSelector(vlanSelectors.loaded);
-  const isAllNetworkingDisabled = useIsAllNetworkingDisabled(machine);
+  const isAllNetworkingDisabled = useIsAllNetworkingDisabled(node);
   const { currentSort, sortRows, updateSort } = useTableSort<
     NetworkRow,
     SortKey
@@ -425,10 +446,6 @@ const NetworkTable = ({
     dispatch(vlanActions.fetch());
   }, [dispatch]);
 
-  if (!isMachineDetails(machine)) {
-    return <Spinner text="Loading..." />;
-  }
-
   const rows = generateRows(
     checkSelected,
     expanded,
@@ -436,7 +453,7 @@ const NetworkTable = ({
     fabricsLoaded,
     handleRowCheckbox,
     isAllNetworkingDisabled,
-    machine,
+    node,
     selected,
     setExpanded,
     subnets,
@@ -453,12 +470,13 @@ const NetworkTable = ({
   }, []);
   return (
     <MainTable
-      className="p-table-expanding--light machine-network-table"
+      className="p-table-expanding--light network-table"
       defaultSort="name"
       defaultSortDirection="descending"
       expanding
       headers={[
         {
+          "aria-label": Label.Name,
           content: (
             <div className="u-flex">
               <GroupCheckbox
@@ -475,9 +493,9 @@ const NetworkTable = ({
                   onClick={() => updateSort("name")}
                   sortKey="name"
                 >
-                  Name
+                  {Label.Name}
                 </TableHeader>
-                <TableHeader>MAC</TableHeader>
+                <TableHeader>{Label.MAC}</TableHeader>
               </div>
             </div>
           ),
@@ -492,7 +510,7 @@ const NetworkTable = ({
                 onClick={() => updateSort("pxe")}
                 sortKey="pxe"
               >
-                PXE
+                {Label.PXE}
               </TableHeader>
             </>
           ),
@@ -505,11 +523,12 @@ const NetworkTable = ({
               onClick={() => updateSort("speed")}
               sortKey="speed"
             >
-              Link/interface speed
+              {Label.Speed}
             </TableHeader>
           ),
         },
         {
+          "aria-label": Label.Type,
           content: (
             <div>
               <TableHeader
@@ -518,15 +537,16 @@ const NetworkTable = ({
                 onClick={() => updateSort("type")}
                 sortKey="type"
               >
-                Type
+                {Label.Type}
               </TableHeader>
               <TableHeader className="p-double-row__header-spacer">
-                NUMA node
+                {Label.NUMA}
               </TableHeader>
             </div>
           ),
         },
         {
+          "aria-label": Label.Fabric,
           content: (
             <div>
               <TableHeader
@@ -534,13 +554,14 @@ const NetworkTable = ({
                 onClick={() => updateSort("fabric")}
                 sortKey="fabric"
               >
-                Fabric
+                {Label.Fabric}
               </TableHeader>
-              <TableHeader>VLAN</TableHeader>
+              <TableHeader>{Label.VLAN}</TableHeader>
             </div>
           ),
         },
         {
+          "aria-label": Label.Subnet,
           content: (
             <div>
               <TableHeader
@@ -548,13 +569,14 @@ const NetworkTable = ({
                 onClick={() => updateSort("subnet")}
                 sortKey="subnet"
               >
-                Subnet
+                {Label.Subnet}
               </TableHeader>
-              <TableHeader>Name</TableHeader>
+              <TableHeader>{Label.SubnetName}</TableHeader>
             </div>
           ),
         },
         {
+          "aria-label": Label.IP,
           content: (
             <div>
               <TableHeader
@@ -562,9 +584,9 @@ const NetworkTable = ({
                 onClick={() => updateSort("ip")}
                 sortKey="ip"
               >
-                IP Address
+                {Label.IP}
               </TableHeader>
-              <TableHeader>Status</TableHeader>
+              <TableHeader>{Label.Status}</TableHeader>
             </div>
           ),
         },
@@ -576,12 +598,12 @@ const NetworkTable = ({
               onClick={() => updateSort("dhcp")}
               sortKey="dhcp"
             >
-              DHCP
+              {Label.DHCP}
             </TableHeader>
           ),
         },
         {
-          content: "Actions",
+          content: Label.Actions,
           className: "u-align--right",
         },
       ]}

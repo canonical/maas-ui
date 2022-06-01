@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
-
 import PXEColumn from "./PXEColumn";
 
 import type { RootState } from "app/store/root/types";
@@ -13,8 +9,7 @@ import {
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("PXEColumn", () => {
   let state: RootState;
@@ -35,19 +30,14 @@ describe("PXEColumn", () => {
       is_boot: true,
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PXEColumn nic={nic} systemId="abc123" />
-      </Provider>
-    );
-    expect(wrapper.find("Icon").exists()).toBe(true);
+    const machine = machineDetailsFactory({
+      interfaces: [nic],
+      system_id: "abc123",
+    });
+    state.machine.items = [machine];
+    renderWithMockStore(<PXEColumn nic={nic} node={machine} />, { state });
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(document.querySelector(".p-icon--tick")).toBeInTheDocument();
   });
 
   it("does not display an icon if it is not a boot interface", () => {
@@ -55,18 +45,13 @@ describe("PXEColumn", () => {
       is_boot: false,
       type: NetworkInterfaceTypes.PHYSICAL,
     });
-    state.machine.items = [
-      machineDetailsFactory({
-        interfaces: [nic],
-        system_id: "abc123",
-      }),
-    ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <PXEColumn nic={nic} systemId="abc123" />
-      </Provider>
-    );
-    expect(wrapper.find("Icon").exists()).toBe(false);
+    const machine = machineDetailsFactory({
+      interfaces: [nic],
+      system_id: "abc123",
+    });
+    state.machine.items = [machine];
+    renderWithMockStore(<PXEColumn nic={nic} node={machine} />, { state });
+    // eslint-disable-next-line testing-library/no-node-access
+    expect(document.querySelector(".p-icon--tick")).not.toBeInTheDocument();
   });
 });

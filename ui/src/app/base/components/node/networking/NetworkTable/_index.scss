@@ -1,5 +1,5 @@
-@mixin MachineNetworkTable {
-  .machine-network-table {
+@mixin NetworkTable {
+  .network-table {
     @include truncated-border(
       $width: #{2 * map-get($icon-sizes, default) + $sph--small}
     );

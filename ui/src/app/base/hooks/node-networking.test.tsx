@@ -11,6 +11,7 @@ import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
+  controller as controllerFactory,
   device as deviceFactory,
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -93,10 +94,21 @@ describe("machine hook utils", () => {
       expect(result.current).toBe(false);
     });
 
-    it("is enabled if the node is not a machine", () => {
+    it("is enabled if the node is a device", () => {
       const store = mockStore(state);
       const { result } = renderHook(
         () => useIsAllNetworkingDisabled(deviceFactory()),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      expect(result.current).toBe(false);
+    });
+
+    it("is disabled if the node is a controller", () => {
+      const store = mockStore(state);
+      const { result } = renderHook(
+        () => useIsAllNetworkingDisabled(controllerFactory()),
         {
           wrapper: generateWrapper(store),
         }
