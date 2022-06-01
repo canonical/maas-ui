@@ -17,9 +17,20 @@ yarn-error.log*
 # build
 /build
 
-# local configuratinon
+# local configuration
 .env.*.local
 .env.local
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# WebStorm
+.idea
 
 # junk
 *.DS_Store

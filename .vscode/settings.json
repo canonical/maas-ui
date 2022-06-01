@@ -9,7 +9,4 @@
         "lifecycles",
         "unmount"
     ],
-    "betterer.configPath": "./ui/.betterer.ts",
-    "betterer.resultsPath": "./ui/.betterer.results",
-    "betterer.tsconfigPath": "./ui/tsconfig.json"
 }
