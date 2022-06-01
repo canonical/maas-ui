@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import MachineNetwork from "./MachineNetwork";
 
@@ -11,51 +7,32 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
-
-describe("MachineNetwork", () => {
-  it("displays a spinner if machine is loading", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.find("NodeNetworkTab").exists()).toBe(false);
+it("displays a spinner if machine is loading", () => {
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [],
+    }),
   });
+  renderWithBrowserRouter(
+    <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />,
+    { wrapperProps: { state } }
+  );
+  expect(screen.getByLabelText("Loading machine")).toBeInTheDocument();
+  expect(screen.queryByLabelText("Machine network")).not.toBeInTheDocument();
+});
 
-  it("displays the network tab when loaded", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NodeNetworkTab").exists()).toBe(true);
-    expect(wrapper.find("Spinner").exists()).toBe(false);
+it("displays the network tab when loaded", () => {
+  const state = rootStateFactory({
+    machine: machineStateFactory({
+      items: [machineDetailsFactory({ system_id: "abc123" })],
+    }),
   });
+  renderWithBrowserRouter(
+    <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />,
+    { wrapperProps: { state } }
+  );
+  expect(screen.queryByLabelText("Loading machine")).not.toBeInTheDocument();
+  expect(screen.getByLabelText("Machine network")).toBeInTheDocument();
 });

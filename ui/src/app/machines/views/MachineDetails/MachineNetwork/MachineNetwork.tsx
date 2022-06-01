@@ -35,80 +35,79 @@ const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
   useWindowTitle(`${machine?.fqdn ? `${machine?.fqdn} ` : "Machine"} network`);
 
   if (!machine) {
-    return <Spinner text="Loading..." />;
+    return <Spinner aria-label="Loading machine" text="Loading..." />;
   }
 
   return (
-    <>
-      <NodeNetworkTab
-        actions={(expanded, setExpanded) => (
-          <MachineNetworkActions
-            expanded={expanded}
-            selected={selected}
-            setExpanded={setExpanded}
-            setHeaderContent={setHeaderContent}
-            systemId={id}
-          />
-        )}
-        addInterface={(_, setExpanded) => (
-          <AddInterface close={() => setExpanded(null)} systemId={id} />
-        )}
-        dhcpTable={() => (
-          <DHCPTable
-            className="u-no-padding--top"
-            node={machine}
-            modelName={MachineMeta.MODEL}
-          />
-        )}
-        expandedForm={(expanded, setExpanded) => {
-          if (expanded?.content === ExpandedState.EDIT) {
-            return (
-              <EditInterface
-                close={() => setExpanded(null)}
-                linkId={expanded?.linkId}
-                nicId={expanded?.nicId}
-                selected={selected}
-                setSelected={setSelected}
-                systemId={id}
-              />
-            );
-          } else if (expanded?.content === ExpandedState.ADD_BOND) {
-            return (
-              <AddBondForm
-                close={() => {
-                  setExpanded(null);
-                  setSelected([]);
-                }}
-                selected={selected}
-                setSelected={setSelected}
-                systemId={id}
-              />
-            );
-          } else if (expanded?.content === ExpandedState.ADD_BRIDGE) {
-            return (
-              <AddBridgeForm
-                close={() => {
-                  setExpanded(null);
-                  setSelected([]);
-                }}
-                selected={selected}
-                systemId={id}
-              />
-            );
-          }
-          return null;
-        }}
-        interfaceTable={(expanded, setExpanded) => (
-          <NetworkTable
-            expanded={expanded}
-            selected={selected}
-            setExpanded={setExpanded}
-            setSelected={setSelected}
-            systemId={id}
-          />
-        )}
-      />
-    </>
+    <NodeNetworkTab
+      aria-label="Machine network"
+      actions={(expanded, setExpanded) => (
+        <MachineNetworkActions
+          expanded={expanded}
+          selected={selected}
+          setExpanded={setExpanded}
+          setHeaderContent={setHeaderContent}
+          systemId={id}
+        />
+      )}
+      addInterface={(_, setExpanded) => (
+        <AddInterface close={() => setExpanded(null)} systemId={id} />
+      )}
+      dhcpTable={() => (
+        <DHCPTable
+          className="u-no-padding--top"
+          node={machine}
+          modelName={MachineMeta.MODEL}
+        />
+      )}
+      expandedForm={(expanded, setExpanded) => {
+        if (expanded?.content === ExpandedState.EDIT) {
+          return (
+            <EditInterface
+              close={() => setExpanded(null)}
+              linkId={expanded?.linkId}
+              nicId={expanded?.nicId}
+              selected={selected}
+              setSelected={setSelected}
+              systemId={id}
+            />
+          );
+        } else if (expanded?.content === ExpandedState.ADD_BOND) {
+          return (
+            <AddBondForm
+              close={() => {
+                setExpanded(null);
+                setSelected([]);
+              }}
+              selected={selected}
+              setSelected={setSelected}
+              systemId={id}
+            />
+          );
+        } else if (expanded?.content === ExpandedState.ADD_BRIDGE) {
+          return (
+            <AddBridgeForm
+              close={() => {
+                setExpanded(null);
+                setSelected([]);
+              }}
+              selected={selected}
+              systemId={id}
+            />
+          );
+        }
+        return null;
+      }}
+      interfaceTable={(expanded, setExpanded) => (
+        <NetworkTable
+          expanded={expanded}
+          selected={selected}
+          setExpanded={setExpanded}
+          setSelected={setSelected}
+          systemId={id}
+        />
+      )}
+    />
   );
 };
 

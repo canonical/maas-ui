@@ -1,8 +1,12 @@
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import DHCPTable from "app/base/components/DHCPTable";
+import NodeNetworkTab from "app/base/components/NodeNetworkTab";
 import { useWindowTitle } from "app/base/hooks";
 import controllerSelectors from "app/store/controller/selectors";
-import type { Controller, ControllerMeta } from "app/store/controller/types";
+import { ControllerMeta } from "app/store/controller/types";
+import type { Controller } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -15,7 +19,26 @@ const ControllerNetwork = ({ systemId }: Props): JSX.Element => {
   );
   useWindowTitle(`${`${controller?.hostname}` || "Controller"} network`);
 
-  return <h4>Controller network</h4>;
+  if (!controller) {
+    return <Spinner aria-label="Loading controller" text="Loading..." />;
+  }
+
+  return (
+    <NodeNetworkTab
+      aria-label="Controller network"
+      dhcpTable={() => (
+        <DHCPTable
+          className="u-no-padding--top"
+          node={controller}
+          modelName={ControllerMeta.MODEL}
+        />
+      )}
+      interfaceTable={
+        // TODO: implement the interfaces table.
+        () => <></>
+      }
+    />
+  );
 };
 
 export default ControllerNetwork;
