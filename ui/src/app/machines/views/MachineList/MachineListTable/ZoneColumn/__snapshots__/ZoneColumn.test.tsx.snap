@@ -50,6 +50,7 @@ exports[`ZoneColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            data-testid="primary"
             title="zone-north"
           >
             <span
@@ -150,6 +151,7 @@ exports[`ZoneColumn renders 1`] = `
         </div>
         <div
           className="p-double-row__secondary-row u-truncate"
+          data-testid="secondary"
         >
           <span
             data-testid="spaces"

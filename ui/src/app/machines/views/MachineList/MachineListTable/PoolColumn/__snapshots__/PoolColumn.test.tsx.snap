@@ -54,6 +54,7 @@ exports[`PoolColumn renders 1`] = `
         >
           <div
             className="p-double-row__primary-row-text u-truncate"
+            data-testid="primary"
             title="default"
           >
             <span
@@ -155,6 +156,7 @@ exports[`PoolColumn renders 1`] = `
         <div
           aria-label="Note"
           className="p-double-row__secondary-row u-truncate"
+          data-testid="secondary"
           title="Firmware old"
         >
           <span

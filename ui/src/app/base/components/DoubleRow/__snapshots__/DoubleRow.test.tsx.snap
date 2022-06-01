@@ -12,12 +12,14 @@ exports[`DoubleRow  renders 1`] = `
     >
       <div
         className="p-double-row__primary-row-text u-truncate"
+        data-testid="primary"
       >
         Top row
       </div>
     </div>
     <div
       className="p-double-row__secondary-row u-truncate"
+      data-testid="secondary"
     >
       Bottom row
     </div>

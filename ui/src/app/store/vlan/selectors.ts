@@ -1,12 +1,11 @@
 import { createSelector } from "@reduxjs/toolkit";
 
 import type { Fabric, FabricMeta } from "app/store/fabric/types";
-import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
-import type { NetworkInterface } from "app/store/types/node";
-import { generateBaseSelectors } from "app/store/utils";
+import type { NetworkInterface, Node } from "app/store/types/node";
+import { generateBaseSelectors, nodeIsMachine } from "app/store/utils";
 import { VLANMeta, VlanVid } from "app/store/vlan/types";
 import type { VLAN, VLANState, VLANStatus } from "app/store/vlan/types";
 import { isId } from "app/utils";
@@ -57,15 +56,15 @@ const getUnusedForInterface = createSelector(
       _state: RootState,
       // Accept `undefined` instead of making these optional params otherwise
       // `createSelector` returns the wrong type for this selector.
-      machine: Machine | null | undefined,
+      node: Node | null | undefined,
       nic: NetworkInterface | null | undefined
     ) => ({
-      machine,
+      node,
       nic,
     }),
   ],
-  (vlans, { machine, nic }) => {
-    if (!nic || !isMachineDetails(machine)) {
+  (vlans, { node, nic }) => {
+    if (!nic || !nodeIsMachine(node) || !isMachineDetails(node)) {
       return [];
     }
     const currentVLAN = vlans.find(({ id }) => id === nic.vlan_id);
@@ -77,7 +76,7 @@ const getUnusedForInterface = createSelector(
     );
     const usedVLANs: VLAN[VLANMeta.PK][] = [];
     // Find VLANS that are used by children of this nic.
-    machine.interfaces.forEach((networkInterface: NetworkInterface) => {
+    node.interfaces.forEach((networkInterface: NetworkInterface) => {
       if (
         networkInterface.type === NetworkInterfaceTypes.VLAN &&
         networkInterface.parents[0] === nic.id

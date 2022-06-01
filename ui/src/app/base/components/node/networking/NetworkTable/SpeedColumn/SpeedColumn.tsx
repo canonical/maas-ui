@@ -1,12 +1,9 @@
 import type { ReactNode } from "react";
 
-import { useSelector } from "react-redux";
-
 import DoubleRow from "app/base/components/DoubleRow";
 import TooltipButton from "app/base/components/TooltipButton";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import type { ControllerDetails } from "app/store/controller/types";
+import type { MachineDetails } from "app/store/machine/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
 import {
@@ -19,23 +16,17 @@ import { formatSpeedUnits } from "app/utils";
 type Props = {
   link?: NetworkLink | null;
   nic?: NetworkInterface | null;
-  systemId: Machine["system_id"];
+  node: MachineDetails | ControllerDetails;
 };
 
-const SpeedColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
-  if (!machine) {
-    return null;
-  }
+const SpeedColumn = ({ link, nic, node }: Props): JSX.Element | null => {
   if (link && !nic) {
-    [nic] = getLinkInterface(machine, link);
+    [nic] = getLinkInterface(node, link);
   }
   if (!nic) {
     return null;
   }
-  const isConnected = isInterfaceConnected(machine, nic, link);
+  const isConnected = isInterfaceConnected(node, nic, link);
   let icon: ReactNode = null;
 
   if (!isConnected) {
@@ -63,7 +54,7 @@ const SpeedColumn = ({ link, nic, systemId }: Props): JSX.Element | null => {
       NetworkInterfaceTypes.BRIDGE,
       NetworkInterfaceTypes.VLAN,
     ],
-    machine,
+    node,
     nic,
     link
   ) ? null : (

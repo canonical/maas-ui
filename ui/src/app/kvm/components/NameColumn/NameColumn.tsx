@@ -16,7 +16,7 @@ const NameColumn = ({ name, secondary, url }: Props): JSX.Element | null => {
           <strong data-testid="name">{name}</strong>
         </Link>
       }
-      secondary={<span data-testid="secondary">{secondary}</span>}
+      secondary={secondary}
     />
   );
 };

@@ -68,6 +68,7 @@ const DoubleRow = <L,>({
           ref={parent}
         >
           <div
+            data-testid="primary"
             className={classNames(
               "p-double-row__primary-row-text u-truncate",
               primaryTextClassName
@@ -88,6 +89,7 @@ const DoubleRow = <L,>({
         </div>
         {secondary ? (
           <div
+            data-testid="secondary"
             className={classNames(
               "p-double-row__secondary-row",
               "u-truncate",

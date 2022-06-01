@@ -2,15 +2,14 @@ import { MainTable, Spinner } from "@canonical/react-components";
 import type { MainTableRow } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import { useSelector } from "react-redux";
 
-import IPColumn from "../NetworkTable/IPColumn";
-import { generateUniqueId } from "../NetworkTable/NetworkTable";
-import PXEColumn from "../NetworkTable/PXEColumn";
-import SpeedColumn from "../NetworkTable/SpeedColumn";
-
 import TableHeader from "app/base/components/TableHeader";
 import DHCPColumn from "app/base/components/node/networking/DHCPColumn";
 import FabricColumn from "app/base/components/node/networking/FabricColumn";
 import NameColumn from "app/base/components/node/networking/NameColumn";
+import IPColumn from "app/base/components/node/networking/NetworkTable/IPColumn";
+import { generateUniqueId } from "app/base/components/node/networking/NetworkTable/NetworkTable";
+import PXEColumn from "app/base/components/node/networking/NetworkTable/PXEColumn";
+import SpeedColumn from "app/base/components/node/networking/NetworkTable/SpeedColumn";
 import SubnetColumn from "app/base/components/node/networking/SubnetColumn";
 import TypeColumn from "app/base/components/node/networking/TypeColumn";
 import type {
@@ -66,15 +65,11 @@ const generateRow = (
         ),
       },
       {
-        content: (
-          <PXEColumn link={link} nic={nic} systemId={machine.system_id} />
-        ),
+        content: <PXEColumn link={link} nic={nic} node={machine} />,
         className: "u-align--center",
       },
       {
-        content: (
-          <SpeedColumn link={link} nic={nic} systemId={machine.system_id} />
-        ),
+        content: <SpeedColumn link={link} nic={nic} node={machine} />,
       },
       {
         content: <TypeColumn link={link} nic={nic} node={machine} />,
@@ -86,9 +81,7 @@ const generateRow = (
         content: <SubnetColumn link={link} nic={nic} node={machine} />,
       },
       {
-        content: (
-          <IPColumn link={link} nic={nic} systemId={machine.system_id} />
-        ),
+        content: <IPColumn link={link} nic={nic} node={machine} />,
       },
       {
         content: <DHCPColumn nic={nic} />,

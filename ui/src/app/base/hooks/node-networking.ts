@@ -2,7 +2,7 @@ import { useCanEdit } from "./node";
 
 import type { Node } from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
-import { nodeIsMachine } from "app/store/utils";
+import { nodeIsController, nodeIsDevice } from "app/store/utils";
 
 /**
  * Check if the networking information can be edited.
@@ -13,9 +13,12 @@ export const useIsAllNetworkingDisabled = (node?: Node | null): boolean => {
   if (!node) {
     return true;
   }
-  if (!nodeIsMachine(node)) {
-    // Never disable the full networking panel when its a
-    // Controller or Device.
+  if (nodeIsController(node)) {
+    // Networking is read only for controllers.
+    return true;
+  }
+  if (nodeIsDevice(node)) {
+    // Never disable the full networking panel when its a Device.
     return false;
   }
   return (
