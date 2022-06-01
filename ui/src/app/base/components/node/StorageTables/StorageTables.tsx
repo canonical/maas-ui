@@ -53,10 +53,7 @@ const StorageTables = ({ canEditStorage, node }: Props): JSX.Element => {
       )}
       <Strip shallow>
         <h4 className="u-sv-1">{Labels.AvailableStorage}</h4>
-        <AvailableStorageTable
-          canEditStorage={canEditStorage}
-          systemId={node.system_id}
-        />
+        <AvailableStorageTable canEditStorage={canEditStorage} node={node} />
       </Strip>
       <Strip shallow>
         <h4 className="u-sv-1">{Labels.UsedStorage}</h4>

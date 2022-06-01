@@ -49,6 +49,7 @@ export const EditDisk = ({
 
   return (
     <FormikForm<EditDiskValues, MachineEventErrors>
+      aria-label="Edit disk form"
       cleanup={machineActions.cleanup}
       errors={errors}
       initialValues={{

@@ -106,6 +106,7 @@ export const AddLogicalVolume = ({
     return (
       <FormikForm<AddLogicalVolumeValues, MachineEventErrors>
         allowUnchanged
+        aria-label="Add logical volume form"
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{

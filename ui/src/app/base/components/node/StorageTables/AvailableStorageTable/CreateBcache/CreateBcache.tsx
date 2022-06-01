@@ -84,6 +84,7 @@ export const CreateBcache = ({
     return (
       <FormikForm<CreateBcacheValues, MachineEventErrors>
         allowUnchanged
+        aria-label="Create bcache form"
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{
