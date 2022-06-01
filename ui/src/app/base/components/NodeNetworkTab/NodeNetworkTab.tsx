@@ -32,10 +32,10 @@ type GetComponent = (
 ) => ReactNode;
 
 type Props = {
-  actions: GetComponent;
+  actions?: GetComponent;
   addInterface?: GetComponent;
   dhcpTable: GetComponent;
-  expandedForm: GetComponent;
+  expandedForm?: GetComponent;
   interfaceTable: GetComponent;
 };
 
@@ -45,17 +45,18 @@ const NodeNetworkTab = ({
   dhcpTable,
   expandedForm,
   interfaceTable,
+  ...props
 }: Props): JSX.Element => {
   const [expanded, setExpanded] = useState<Expanded | null>(null);
-  if (expanded) {
+  if (expanded && expandedForm) {
     const form = expandedForm(expanded, setExpanded);
     if (form) {
       return <>{form}</>;
     }
   }
   return (
-    <>
-      {actions(expanded, setExpanded)}
+    <div {...props}>
+      {actions?.(expanded, setExpanded)}
       <Strip shallow>
         {interfaceTable(expanded, setExpanded)}
         {addInterface && expanded?.content === ExpandedState.ADD_PHYSICAL
@@ -63,7 +64,7 @@ const NodeNetworkTab = ({
           : null}
       </Strip>
       {dhcpTable(expanded, setExpanded)}
-    </>
+    </div>
   );
 };
 
