@@ -1,5 +1,7 @@
 import { useSelector } from "react-redux";
 
+import ControllerVLANsTable from "./ControllerVLANsTable";
+
 import { useWindowTitle } from "app/base/hooks";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
@@ -15,7 +17,7 @@ const ControllerVLANs = ({ systemId }: Props): JSX.Element => {
   );
   useWindowTitle(`${`${controller?.hostname}` || "Controller"} VLANs`);
 
-  return <h4>Controller VLANs</h4>;
+  return <ControllerVLANsTable systemId={systemId} />;
 };
 
 export default ControllerVLANs;
