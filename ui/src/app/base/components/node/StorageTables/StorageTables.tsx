@@ -33,10 +33,7 @@ const StorageTables = ({ canEditStorage, node }: Props): JSX.Element => {
         {showDatastores ? (
           <>
             <h4 className="u-sv-1">{Labels.Datastores}</h4>
-            <DatastoresTable
-              canEditStorage={canEditStorage}
-              systemId={node.system_id}
-            />
+            <DatastoresTable canEditStorage={canEditStorage} node={node} />
           </>
         ) : (
           <>
