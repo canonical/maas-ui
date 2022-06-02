@@ -9,7 +9,7 @@ import MachineSummary from "./MachineSummary";
 import type { RootState } from "app/store/root/types";
 import { NodeStatusCode } from "app/store/types/node";
 import {
-  machine as machineFactory,
+  machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -21,7 +21,7 @@ describe("MachineSummary", () => {
   beforeEach(() => {
     state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineFactory({ system_id: "abc123" })],
+        items: [machineDetailsFactory({ system_id: "abc123" })],
       }),
     });
   });
@@ -61,7 +61,7 @@ describe("MachineSummary", () => {
 
   it("shows workload annotations for deployed machines", () => {
     state.machine.items = [
-      machineFactory({
+      machineDetailsFactory({
         status_code: NodeStatusCode.DEPLOYED,
         system_id: "abc123",
       }),
@@ -89,7 +89,7 @@ describe("MachineSummary", () => {
 
   it("shows workload annotations for allocated machines", () => {
     state.machine.items = [
-      machineFactory({
+      machineDetailsFactory({
         status_code: NodeStatusCode.ALLOCATED,
         system_id: "abc123",
       }),
@@ -117,7 +117,10 @@ describe("MachineSummary", () => {
 
   it("does not show workload annotations for machines that are neither deployed nor allocated", () => {
     state.machine.items = [
-      machineFactory({ status_code: NodeStatusCode.NEW, system_id: "abc123" }),
+      machineDetailsFactory({
+        status_code: NodeStatusCode.NEW,
+        system_id: "abc123",
+      }),
     ];
     const store = mockStore(state);
     const wrapper = mount(
