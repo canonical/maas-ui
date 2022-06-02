@@ -5,10 +5,12 @@ import StatusBar from "./StatusBar";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
 import {
-  machineDetails as machineDetailsFactory,
   config as configFactory,
   configState as configStateFactory,
+  controllerDetails as controllerDetailsFactory,
+  controllerState as controllerStateFactory,
   generalState as generalStateFactory,
+  machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   versionState as versionStateFactory,
@@ -23,6 +25,9 @@ beforeEach(() => {
   state = rootStateFactory({
     config: configStateFactory({
       items: [configFactory({ name: "maas_name", value: "bolla" })],
+    }),
+    controller: controllerStateFactory({
+      items: [],
     }),
     general: generalStateFactory({
       version: versionStateFactory({ data: "2.10.0" }),
@@ -187,5 +192,19 @@ it("displays correct text for machines with hardware sync enabled and no last_sy
   );
   expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
     /Next sync: Never/
+  );
+});
+
+it("displays last image sync timestamp for a controller", () => {
+  const controller = controllerDetailsFactory({
+    last_image_sync: "Thu, 02 Jun. 2022 00:48:41",
+  });
+  state.controller.active = controller.system_id;
+  state.controller.items = [controller];
+
+  renderWithMockStore(<StatusBar />, { state });
+
+  expect(screen.getByTestId("status-bar-status")).toHaveTextContent(
+    `Last image sync: ${controller.last_image_sync}`
   );
 });
