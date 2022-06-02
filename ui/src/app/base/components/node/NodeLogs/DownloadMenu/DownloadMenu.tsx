@@ -22,7 +22,18 @@ import type { RootState } from "app/store/root/types";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import { ScriptResultNames } from "app/store/scriptresult/types";
 import { NodeStatus } from "app/store/types/node";
+
 type Props = { systemId: Machine["system_id"] };
+
+export enum Label {
+  CurtinLogs = "curtin-logs.tar",
+  InstallationOutput = "Installation output",
+  MachineOutputYAML = "Machine output (YAML)",
+  MachineOutputXML = "Machine output (XML)",
+  Title = "Download menu",
+  Toggle = "Download",
+}
+
 export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
@@ -111,20 +122,21 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
   if (!machine) {
     return null;
   }
+
   return (
-    <div className="download-menu">
+    <div aria-label={Label.Title} className="download-menu">
       <ContextualMenu
         hasToggleIcon
         links={[
           ...generateItem(
-            "Machine output (YAML)",
+            Label.MachineOutputYAML,
             "machine-output",
             "yaml",
             "machine-output-yaml",
             summaryYAML
           ),
           ...generateItem(
-            "Machine output (XML)",
+            Label.MachineOutputXML,
             "machine-output",
             "xml",
             "machine-output-xml",
@@ -133,7 +145,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
           ...(showCurtinLog
             ? [
                 {
-                  children: "curtin-logs.tar",
+                  children: Label.CurtinLogs,
                   "data-testid": "curtin-logs",
                   onClick: () => {
                     api.scriptresults
@@ -155,14 +167,14 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
                     sendAnalytics(
                       "Machine details logs",
                       "Download menu",
-                      `Download curtin-logs.tar`
+                      "Download curtin-logs.tar"
                     );
                   },
                 },
               ]
             : []),
           ...generateItem(
-            "Installation output",
+            Label.InstallationOutput,
             "installation-output",
             "log",
             "installation-output",
@@ -171,7 +183,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
         ]}
         position="right"
         toggleDisabled={toggleDisabled}
-        toggleLabel="Download"
+        toggleLabel={Label.Toggle}
       />
     </div>
   );

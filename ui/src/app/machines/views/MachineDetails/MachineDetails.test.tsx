@@ -100,7 +100,7 @@ describe("MachineDetails", () => {
       }),
     },
     {
-      component: "MachineLogs",
+      component: "NodeLogs",
       route: machineURLs.machine.logs.index(null, true),
       path: machineURLs.machine.logs.index({ id: "abc123" }),
     },
