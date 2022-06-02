@@ -7,8 +7,12 @@ import configureStore from "redux-mock-store";
 import NodeDevices from "./NodeDevices";
 
 import { HardwareType } from "app/base/enum";
+import controllerURLs from "app/controllers/urls";
+import machineURLs from "app/machines/urls";
+import { actions as nodeDeviceActions } from "app/store/nodedevice";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import {
+  controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   machineNumaNode as numaNodeFactory,
   nodeDevice as nodeDeviceFactory,
@@ -19,7 +23,7 @@ import {
 const mockStore = configureStore();
 
 describe("NodeDevices", () => {
-  it("fetches node devices by machine id if not already loaded", () => {
+  it("fetches node devices by node id if not already loaded", () => {
     const machine = machineDetailsFactory();
     const state = rootStateFactory({
       nodedevice: nodeDeviceStateFactory({
@@ -31,29 +35,16 @@ describe("NodeDevices", () => {
       <Provider store={store}>
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
-          machine={machine}
+          node={machine}
           setHeaderContent={jest.fn()}
         />
       </Provider>
     );
 
+    const expectedAction = nodeDeviceActions.getByNodeId(machine.system_id);
     expect(
-      store
-        .getActions()
-        .find((action) => action.type === "nodedevice/getByMachineId")
-    ).toStrictEqual({
-      meta: {
-        model: "nodedevice",
-        method: "list",
-        nocache: true,
-      },
-      payload: {
-        params: {
-          system_id: machine.system_id,
-        },
-      },
-      type: "nodedevice/getByMachineId",
-    });
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 
   it("does not fetch node devices if already loaded", () => {
@@ -68,16 +59,15 @@ describe("NodeDevices", () => {
       <Provider store={store}>
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
-          machine={machine}
+          node={machine}
           setHeaderContent={jest.fn()}
         />
       </Provider>
     );
 
+    const expectedAction = nodeDeviceActions.getByNodeId(machine.system_id);
     expect(
-      store
-        .getActions()
-        .find((action) => action.type === "nodedevice/getByMachineId")
+      store.getActions().find((action) => action.type === expectedAction.type)
     ).toEqual(undefined);
   });
 
@@ -93,7 +83,7 @@ describe("NodeDevices", () => {
       <Provider store={store}>
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
-          machine={machine}
+          node={machine}
           setHeaderContent={jest.fn()}
         />
       </Provider>
@@ -110,7 +100,7 @@ describe("NodeDevices", () => {
       <Provider store={store}>
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
-          machine={machine}
+          node={machine}
           setHeaderContent={jest.fn()}
         />
       </Provider>
@@ -127,7 +117,7 @@ describe("NodeDevices", () => {
       <Provider store={store}>
         <NodeDevices
           bus={NodeDeviceBus.USB}
-          machine={machine}
+          node={machine}
           setHeaderContent={jest.fn()}
         />
       </Provider>
@@ -171,7 +161,7 @@ describe("NodeDevices", () => {
           <CompatRouter>
             <NodeDevices
               bus={NodeDeviceBus.PCIE}
-              machine={machine}
+              node={machine}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -209,7 +199,7 @@ describe("NodeDevices", () => {
     ).toBe("3 devices");
   });
 
-  it("can link to the network and storage tabs", () => {
+  it("can link to the machine network and storage tabs", () => {
     const machine = machineDetailsFactory({ system_id: "abc123" });
     const networkDevice = nodeDeviceFactory({
       bus: NodeDeviceBus.PCIE,
@@ -237,7 +227,7 @@ describe("NodeDevices", () => {
           <CompatRouter>
             <NodeDevices
               bus={NodeDeviceBus.PCIE}
-              machine={machine}
+              node={machine}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -247,10 +237,50 @@ describe("NodeDevices", () => {
 
     expect(
       wrapper.find("[data-testid='group-label']").at(0).find("Link").prop("to")
-    ).toBe("/machine/abc123/network");
+    ).toBe(machineURLs.machine.network({ id: machine.system_id }));
     expect(
       wrapper.find("[data-testid='group-label']").at(1).find("Link").prop("to")
-    ).toBe("/machine/abc123/storage");
+    ).toBe(machineURLs.machine.storage({ id: machine.system_id }));
+  });
+
+  it("can link to the controller network and storage tabs", () => {
+    const controller = controllerDetailsFactory({ system_id: "abc123" });
+    const networkDevice = nodeDeviceFactory({
+      bus: NodeDeviceBus.PCIE,
+      hardware_type: HardwareType.Network,
+      node_id: controller.id,
+    });
+    const storageDevice = nodeDeviceFactory({
+      bus: NodeDeviceBus.PCIE,
+      hardware_type: HardwareType.Storage,
+      node_id: controller.id,
+    });
+    const state = rootStateFactory({
+      nodedevice: nodeDeviceStateFactory({
+        items: [networkDevice, storageDevice],
+      }),
+    });
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/controller/abc123/pci-devices", key: "testKey" },
+          ]}
+        >
+          <CompatRouter>
+            <NodeDevices bus={NodeDeviceBus.PCIE} node={controller} />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      wrapper.find("[data-testid='group-label']").at(0).find("Link").prop("to")
+    ).toBe(controllerURLs.controller.network({ id: controller.system_id }));
+    expect(
+      wrapper.find("[data-testid='group-label']").at(1).find("Link").prop("to")
+    ).toBe(controllerURLs.controller.storage({ id: controller.system_id }));
   });
 
   it("displays the NUMA node index of a node device", () => {
@@ -281,7 +311,7 @@ describe("NodeDevices", () => {
           <CompatRouter>
             <NodeDevices
               bus={NodeDeviceBus.PCIE}
-              machine={machine}
+              node={machine}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>

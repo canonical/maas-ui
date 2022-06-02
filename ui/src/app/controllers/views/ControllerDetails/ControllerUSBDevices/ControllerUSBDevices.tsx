@@ -1,8 +1,12 @@
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import NodeDevices from "app/base/components/node/NodeDevices";
 import { useWindowTitle } from "app/base/hooks";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
+import { isControllerDetails } from "app/store/controller/utils";
+import { NodeDeviceBus } from "app/store/nodedevice/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -15,7 +19,10 @@ const ControllerUSBDevices = ({ systemId }: Props): JSX.Element => {
   );
   useWindowTitle(`${`${controller?.hostname}` || "Controller"} USB devices`);
 
-  return <h4>Controller USB devices</h4>;
+  if (isControllerDetails(controller)) {
+    return <NodeDevices bus={NodeDeviceBus.USB} node={controller} />;
+  }
+  return <Spinner aria-label="Loading controller" text="Loading..." />;
 };
 
 export default ControllerUSBDevices;

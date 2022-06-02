@@ -1,19 +1,19 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { Machine, MachineMeta } from "../machine/types";
 import type { GenericItemMeta } from "../utils";
 
 import { NodeDeviceMeta } from "./types";
 import type { NodeDevice, NodeDeviceState } from "./types";
 
+import type { Node } from "app/store/types/node";
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
 
 type ItemMeta = {
-  system_id: string;
+  system_id: Node["system_id"];
 };
 
 const nodeDeviceSlice = createSlice({
@@ -24,8 +24,8 @@ const nodeDeviceSlice = createSlice({
       NodeDeviceMeta.MODEL,
       NodeDeviceMeta.PK
     ),
-    getByMachineId: {
-      prepare: (machineID: Machine[MachineMeta.PK]) => ({
+    getByNodeId: {
+      prepare: (nodeID: Node["system_id"]) => ({
         meta: {
           model: NodeDeviceMeta.MODEL,
           method: "list",
@@ -33,7 +33,7 @@ const nodeDeviceSlice = createSlice({
         },
         payload: {
           params: {
-            system_id: machineID,
+            system_id: nodeID,
           },
         },
       }),
@@ -41,13 +41,13 @@ const nodeDeviceSlice = createSlice({
         // no state changes needed
       },
     },
-    getByMachineIdStart: (
+    getByNodeIdStart: (
       state: NodeDeviceState,
       _action: PayloadAction<null>
     ) => {
       state.loading = true;
     },
-    getByMachineIdError: (
+    getByNodeIdError: (
       state: NodeDeviceState,
       action: PayloadAction<NodeDeviceState["errors"]>
     ) => {
@@ -55,14 +55,11 @@ const nodeDeviceSlice = createSlice({
       state.loading = false;
       state.saving = false;
     },
-    getByMachineIdSuccess: {
-      prepare: (
-        machineID: Machine[MachineMeta.PK],
-        nodeDevices: NodeDevice[]
-      ) => ({
+    getByNodeIdSuccess: {
+      prepare: (nodeID: Node["system_id"], nodeDevices: NodeDevice[]) => ({
         meta: {
           item: {
-            system_id: machineID,
+            system_id: nodeID,
           },
         },
         payload: nodeDevices,

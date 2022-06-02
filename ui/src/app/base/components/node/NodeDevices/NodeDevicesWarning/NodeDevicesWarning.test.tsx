@@ -6,11 +6,12 @@ import { MachineHeaderViews } from "app/machines/constants";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
+  controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   nodeDevice as nodeDeviceFactory,
 } from "testing/factories";
 
-describe("NodeDevicesWarning", () => {
+describe("node is machine", () => {
   it(`prompts user to commission machine if no devices found and machine can be
     commissioned`, () => {
     const setHeaderContent = jest.fn();
@@ -20,13 +21,13 @@ describe("NodeDevicesWarning", () => {
     const wrapper = mount(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
-        machine={machine}
+        node={machine}
         nodeDevices={[]}
         setHeaderContent={setHeaderContent}
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
       "Try commissioning this machine to load PCI and USB device information."
     );
 
@@ -42,13 +43,13 @@ describe("NodeDevicesWarning", () => {
     const wrapper = mount(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
-        machine={machine}
+        node={machine}
         nodeDevices={[]}
         setHeaderContent={jest.fn()}
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
       "The machine is locked. Unlock and release this machine before commissioning to load PCI and USB device information."
     );
   });
@@ -60,13 +61,13 @@ describe("NodeDevicesWarning", () => {
     const wrapper = mount(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
-        machine={machine}
+        node={machine}
         nodeDevices={[]}
         setHeaderContent={jest.fn()}
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
       "Override failed testing before commissioning to load PCI and USB device information."
     );
   });
@@ -78,13 +79,13 @@ describe("NodeDevicesWarning", () => {
     const wrapper = mount(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
-        machine={machine}
+        node={machine}
         nodeDevices={[]}
         setHeaderContent={jest.fn()}
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
       "Release this machine before commissioning to load PCI and USB device information."
     );
   });
@@ -97,13 +98,13 @@ describe("NodeDevicesWarning", () => {
     const wrapper = mount(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
-        machine={machine}
+        node={machine}
         nodeDevices={[]}
         setHeaderContent={jest.fn()}
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
       "Commissioning is currently in progress..."
     );
   });
@@ -117,13 +118,13 @@ describe("NodeDevicesWarning", () => {
     const wrapper = mount(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
-        machine={machine}
+        node={machine}
         nodeDevices={[]}
         setHeaderContent={jest.fn()}
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices']").text()).toBe(
+    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
       "Commissioning cannot be run at this time."
     );
   });
@@ -133,7 +134,7 @@ describe("NodeDevicesWarning", () => {
     const wrapper = mount(
       <NodeDevicesWarning
         bus={NodeDeviceBus.USB}
-        machine={machine}
+        node={machine}
         nodeDevices={[
           nodeDeviceFactory({ bus: NodeDeviceBus.PCIE, node_id: machine.id }),
         ]}
@@ -141,6 +142,24 @@ describe("NodeDevicesWarning", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-usb']").exists()).toBe(true);
+    expect(wrapper.find("[data-testid='no-usb-warning']").exists()).toBe(true);
+  });
+});
+
+describe("node is controller", () => {
+  it("only shows the header without additional commissioning information", () => {
+    const controller = controllerDetailsFactory();
+    const wrapper = mount(
+      <NodeDevicesWarning
+        bus={NodeDeviceBus.USB}
+        node={controller}
+        nodeDevices={[]}
+        setHeaderContent={jest.fn()}
+      />
+    );
+
+    expect(wrapper.find("[data-testid='no-devices-warning']").exists()).toBe(
+      false
+    );
   });
 });
