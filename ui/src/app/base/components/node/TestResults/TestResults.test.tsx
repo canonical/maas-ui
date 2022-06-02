@@ -4,8 +4,9 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import MemoryCard from "./MemoryCard";
+import TestResults from "./TestResults";
 
+import { HardwareType } from "app/base/enum";
 import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
@@ -16,19 +17,17 @@ import {
 
 const mockStore = configureStore();
 
-describe("MemoryCard", () => {
+describe("TestResults", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [],
-      }),
+      machine: machineStateFactory(),
     });
   });
 
-  it("renders a link with a count of passed tests", () => {
+  it("renders a link with a count of passed cpu tests", () => {
     const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory({
+    machine.cpu_test_status = testStatusFactory({
       passed: 2,
     });
     state.machine.items = [machine];
@@ -40,7 +39,11 @@ describe("MemoryCard", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.CPU}
+              setHeaderContent={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -51,7 +54,7 @@ describe("MemoryCard", () => {
     ).toEqual("2");
   });
 
-  it("renders a link with a count of pending and running tests", () => {
+  it("renders a link with a count of pending and running memory tests", () => {
     const machine = machineDetailsFactory();
     machine.memory_test_status = testStatusFactory({
       running: 1,
@@ -66,7 +69,11 @@ describe("MemoryCard", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.Memory}
+              setHeaderContent={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -77,9 +84,9 @@ describe("MemoryCard", () => {
     ).toEqual("3");
   });
 
-  it("renders a link with a count of failed tests", () => {
+  it("renders a link with a count of failed storage tests", () => {
     const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory({
+    machine.storage_test_status = testStatusFactory({
       failed: 5,
     });
     state.machine.items = [machine];
@@ -91,7 +98,11 @@ describe("MemoryCard", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.Storage}
+              setHeaderContent={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -104,7 +115,7 @@ describe("MemoryCard", () => {
 
   it("renders a results link", () => {
     const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory({
+    machine.cpu_test_status = testStatusFactory({
       failed: 5,
     });
     state.machine.items = [machine];
@@ -116,7 +127,11 @@ describe("MemoryCard", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.CPU}
+              setHeaderContent={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -127,9 +142,9 @@ describe("MemoryCard", () => {
     ).toContain("View results");
   });
 
-  it("renders a test cpu link if no tests run", () => {
+  it("renders a test network link if no tests run", () => {
     const machine = machineDetailsFactory();
-    machine.memory_test_status = testStatusFactory();
+    machine.network_test_status = testStatusFactory();
     state.machine.items = [machine];
 
     const store = mockStore(state);
@@ -139,7 +154,11 @@ describe("MemoryCard", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MemoryCard machine={machine} setHeaderContent={jest.fn()} />
+            <TestResults
+              machine={machine}
+              hardwareType={HardwareType.Network}
+              setHeaderContent={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -147,6 +166,6 @@ describe("MemoryCard", () => {
 
     expect(
       wrapper.find("[data-testid='tests']").childAt(0).find("Button").text()
-    ).toContain("Test memory");
+    ).toContain("Test network");
   });
 });

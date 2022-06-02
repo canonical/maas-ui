@@ -75,9 +75,19 @@
       @include pseudo-border(top);
       display: grid;
       grid-area: details;
-      grid-template-columns: repeat(7, minmax(0, 1fr));
       grid-template-rows: auto;
       padding: $spv--large $sph--large;
+
+      &.for-controller {
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
+            0,
+            4fr
+          );
+      }
+
+      &.for-machine {
+        grid-template-columns: repeat(7, minmax(0, 1fr));
+      }
 
       > * {
         padding-right: $sph--large;
@@ -146,7 +156,10 @@
       }
 
       .overview-card__details {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        &.for-controller,
+        &.for-machine {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
 
         > * {
           padding-bottom: $spv--small;
@@ -200,7 +213,10 @@
       }
 
       .overview-card__details {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        &.for-controller,
+        &.for-machine {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
 
         > *:last-child {
           grid-column-end: 3;
