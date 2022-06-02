@@ -6,11 +6,11 @@ import { Link } from "react-router-dom-v5-compat";
 
 import NumaCard from "./NumaCard";
 import OverviewCard from "./OverviewCard";
-import SystemCard from "./SystemCard";
 import TestResults from "./TestResults";
 import WorkloadCard from "./WorkloadCard";
 
 import NodeSummaryNetworkCard from "app/base/components/NodeSummaryNetworkCard";
+import HardwareCard from "app/base/components/node/HardwareCard";
 import { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
@@ -43,21 +43,22 @@ const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
     }
   }, [dispatch, id]);
 
-  if (!isId(id) || !machine) {
+  if (!isId(id) || !isMachineDetails(machine)) {
     return <Spinner text="Loading" />;
   }
 
   const networkURL = machineURLs.machine.network({ id });
-  const showWorkloadCard =
-    "workload_annotations" in machine &&
-    [NodeStatusCode.ALLOCATED, NodeStatusCode.DEPLOYED].includes(
-      machine.status_code
-    );
+  const showWorkloadCard = [
+    NodeStatusCode.ALLOCATED,
+    NodeStatusCode.DEPLOYED,
+  ].includes(machine.status_code);
 
   return (
     <div className="machine-summary__cards">
       <OverviewCard id={id} setHeaderContent={setHeaderContent} />
-      <SystemCard id={id} />
+      <div className="machine-summary__hardware-card">
+        <HardwareCard node={machine} />
+      </div>
       <NumaCard id={id} />
       <div className="machine-summary__network-card">
         <NodeSummaryNetworkCard
