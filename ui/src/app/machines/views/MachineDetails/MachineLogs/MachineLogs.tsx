@@ -1,77 +1,29 @@
-import { Spinner, Tabs } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Route, useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
 
-import DownloadMenu from "./DownloadMenu";
-import EventLogs from "./EventLogs";
-import InstallationOutput from "./InstallationOutput";
-
+import NodeLogs from "app/base/components/node/NodeLogs";
 import { useWindowTitle } from "app/base/hooks";
-import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = { systemId: Machine["system_id"] };
 
+export enum Label {
+  Loading = "Loading logs",
+}
+
 const MachineLogs = ({ systemId }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const { pathname } = useLocation();
 
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} logs`);
 
   if (!machine) {
-    return <Spinner text="Loading..." />;
+    return <Spinner aria-label={Label.Loading} text="Loading..." />;
   }
-
-  const showingOutput = pathname.startsWith(
-    machineURLs.machine.logs.installationOutput({ id: systemId })
-  );
-  return (
-    <>
-      <div className="u-position--relative">
-        <Tabs
-          links={[
-            {
-              active:
-                pathname.startsWith(
-                  machineURLs.machine.logs.events({ id: systemId })
-                ) || !showingOutput,
-              component: Link,
-              label: "Event log",
-              to: machineURLs.machine.logs.events({ id: systemId }),
-            },
-            {
-              active: showingOutput,
-              component: Link,
-              label: "Installation output",
-              to: machineURLs.machine.logs.installationOutput({ id: systemId }),
-            },
-          ]}
-        />
-        <DownloadMenu systemId={systemId} />
-      </div>
-      <Route
-        exact
-        path={machineURLs.machine.logs.installationOutput(null, true)}
-        render={() => <InstallationOutput systemId={systemId} />}
-      />
-      {[
-        machineURLs.machine.logs.index(null, true),
-        machineURLs.machine.logs.events(null, true),
-      ].map((path) => (
-        <Route
-          exact
-          key={path}
-          path={path}
-          render={() => <EventLogs systemId={systemId} />}
-        />
-      ))}
-    </>
-  );
+  return <NodeLogs node={machine} />;
 };
 
 export default MachineLogs;

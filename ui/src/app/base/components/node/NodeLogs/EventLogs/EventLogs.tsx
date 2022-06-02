@@ -23,6 +23,12 @@ import type { RootState } from "app/store/root/types";
 
 type Props = { systemId: Machine["system_id"] };
 
+export enum Label {
+  BackToTop = "Back to top",
+  Loading = "Loading event logs",
+  Title = "Event logs",
+}
+
 // The amount of events to preload. This is 1 more than would fit on a page so
 // that the next page arrow appears.
 const PRELOAD_COUNT = 201;
@@ -143,11 +149,11 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
   ]);
 
   if (!machine) {
-    return <Spinner text="Loading..." />;
+    return <Spinner aria-label={Label.Loading} text="Loading..." />;
   }
 
   return (
-    <>
+    <div aria-label={Label.Title}>
       <Row className="u-nudge-down--small">
         <Col size={6}>
           <SearchBox
@@ -210,10 +216,10 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
           }}
           top
         >
-          Back to top
+          {Label.BackToTop}
         </Link>
       )}
-    </>
+    </div>
   );
 };
 

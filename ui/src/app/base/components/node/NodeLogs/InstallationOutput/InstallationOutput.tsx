@@ -17,36 +17,49 @@ import { PowerState } from "app/store/types/enum";
 
 type Props = { systemId: Machine["system_id"] };
 
+export enum Label {
+  Aborted = "Installation was aborted.",
+  Begun = "Installation has begun!",
+  Booting = "System is booting...",
+  Loading = "Loading installation output",
+  None = "No installation result found.",
+  SucceededNoOutput = "Installation has succeeded but no output was given.",
+  FailedNoOutput = "Installation has failed and no output was given.",
+  Off = "System is off.",
+  Title = "Installation output",
+  Timeout = "Installation failed after 40 minutes.",
+}
+
 const generateOutput = (
   machine: Machine,
   log: ScriptResultData["combined"] | null,
   result: ScriptResult | null
 ) => {
   if (!result) {
-    return "No installation result found.";
+    return Label.None;
   }
   switch (result.status) {
     case ScriptResultStatus.PENDING:
       if (machine.power_state === PowerState.OFF) {
-        return "System is off.";
+        return Label.Off;
       }
-      return "System is booting...";
+      return Label.Booting;
     case ScriptResultStatus.RUNNING:
-      return "Installation has begun!";
+      return Label.Begun;
     case ScriptResultStatus.PASSED:
       if (!log) {
-        return "Installation has succeeded but no output was given.";
+        return Label.SucceededNoOutput;
       }
       return log;
     case ScriptResultStatus.FAILED:
       if (!log) {
-        return "Installation has failed and no output was given.";
+        return Label.FailedNoOutput;
       }
       return log;
     case ScriptResultStatus.TIMEDOUT:
-      return "Installation failed after 40 minutes.";
+      return Label.Timeout;
     case ScriptResultStatus.ABORTED:
-      return "Installation was aborted.";
+      return Label.Aborted;
     default:
       return `Unknown log status ${result.status}`;
   }
@@ -62,11 +75,12 @@ const InstallationOutput = ({ systemId }: Props): JSX.Element => {
   const installationOutput = useGetInstallationOutput(systemId);
 
   if (!machine || loading) {
-    return <Spinner text="Loading..." />;
+    return <Spinner aria-label={Label.Loading} text="Loading..." />;
   }
 
   return (
     <CodeSnippet
+      aria-label={Label.Title}
       blocks={[
         {
           appearance: CodeSnippetBlockAppearance.NUMBERED,

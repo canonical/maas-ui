@@ -19,6 +19,11 @@ type EventRow = {
   key: EventRecord["id"];
 };
 
+export enum Label {
+  Loading = "Loading event logs table",
+  Title = "Event logs table",
+}
+
 const generateRow = (event: EventRecord): EventRow => {
   let icon: string = event.type.level;
   switch (icon) {
@@ -45,7 +50,7 @@ const generateRow = (event: EventRecord): EventRow => {
       },
       {
         className: "event-col",
-        content: [event.type?.description, event.description]
+        content: [event.type.description, event.description]
           .filter(Boolean)
           .join(" - "),
       },
@@ -59,12 +64,13 @@ const EventLogsTable = ({ events, systemId }: Props): JSX.Element => {
     machineSelectors.getById(state, systemId)
   );
   if (!machine) {
-    return <Spinner text="Loading..." />;
+    return <Spinner aria-label={Label.Loading} text="Loading..." />;
   }
   const rows = events?.map((event) => generateRow(event));
 
   return (
     <MainTable
+      aria-label={Label.Title}
       className="event-logs-table"
       headers={[
         {

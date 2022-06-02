@@ -89,6 +89,8 @@
 @import "~app/base/components/node/networking/NetworkTable";
 @import "~app/base/components/node/NodeDevices";
 @import "~app/base/components/node/OverviewCard";
+@import "~app/base/components/node/NodeLogs/DownloadMenu";
+@import "~app/base/components/node/NodeLogs/EventLogs/EventLogsTable";
 @import "~app/base/components/NodeName";
 @import "~app/base/components/NodeSummaryNetworkCard/NetworkCardTable";
 @import "~app/base/components/NotificationGroup";
@@ -107,6 +109,8 @@
 @include DebounceSearchBox;
 @include DHCPTable;
 @include DoughnutChart;
+@include DownloadMenu;
+@include EventLogsTable;
 @include FilterAccordion;
 @include FormCard;
 @include FormikFormButtons;
@@ -218,16 +222,12 @@
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults";
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm";
-@import "~app/machines/views/MachineDetails/MachineLogs/DownloadMenu";
-@import "~app/machines/views/MachineDetails/MachineLogs/EventLogs/EventLogsTable";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineDetails/MachineTests/MachineTestsTable";
 @import "~app/machines/views/MachineList";
 @include CloneFormFields;
 @include CloneResults;
-@include DownloadMenu;
-@include EventLogsTable;
 @include MachineList;
 @include MachineSummary;
 @include MachineTestsTable;
