@@ -100,6 +100,7 @@ export const AddPartition = ({
     return (
       <FormikForm<AddPartitionValues, MachineEventErrors>
         allowUnchanged
+        aria-label="Add partition form"
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{

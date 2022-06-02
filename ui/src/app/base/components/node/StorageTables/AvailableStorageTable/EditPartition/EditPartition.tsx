@@ -57,6 +57,7 @@ export const EditPartition = ({
 
     return (
       <FormikForm<EditPartitionValues, MachineEventErrors>
+        aria-label="Edit partition form"
         cleanup={machineActions.cleanup}
         errors={errors}
         initialValues={{
