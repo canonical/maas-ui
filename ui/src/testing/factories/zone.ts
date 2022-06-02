@@ -10,5 +10,5 @@ export const zone = extend<TimestampedModel, Zone>(timestampedModel, {
   description: "test description",
   devices_count: random,
   machines_count: random,
-  name: "test name",
+  name: (i: number) => `zone-${i}`,
 });

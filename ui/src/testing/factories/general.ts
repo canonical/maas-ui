@@ -103,8 +103,8 @@ export const powerField = define<PowerField>({
   choices: () => [],
   default: "auto",
   field_type: PowerFieldType.STRING,
-  label: "test label",
-  name: "test name",
+  label: (i: number) => `test-powerfield-label-${i}`,
+  name: (i: number) => `test-powerfield-name-${i}`,
   required: false,
   scope: PowerFieldScope.BMC,
 });

@@ -22,7 +22,7 @@ test("getTableData generates correct sortData for fabric", () => {
   ).toEqual({
     cidr: "172.16.1.0/24",
     fabricId: 1,
-    fabricName: "test-fabric",
+    fabricName: fabrics[0].name,
     spaceName: "no space",
     vlanId: 1,
   });
@@ -75,19 +75,19 @@ test("groupRowsByFabricAndVlan returns grouped fabrics in a correct format", () 
   expect(groupRowsByFabricAndVlan(tableData)[0].fabric).toStrictEqual({
     href: "/fabric/1",
     isVisuallyHidden: false,
-    label: "test-fabric",
+    label: fabrics[0].name,
   });
 
   expect(groupRowsByFabricAndVlan(tableData)[1].fabric).toStrictEqual({
     href: "/fabric/1",
     isVisuallyHidden: true,
-    label: "test-fabric",
+    label: fabrics[0].name,
   });
 
   expect(groupRowsByFabricAndVlan(tableData)[2].fabric).toStrictEqual({
     href: "/fabric/2",
     isVisuallyHidden: false,
-    label: "test-fabric",
+    label: fabrics[1].name,
   });
 });
 

@@ -11,12 +11,12 @@ import { RecordType } from "app/store/domain/types";
 import type { TimestampedModel } from "app/store/types/model";
 
 export const domain = extend<TimestampedModel, Domain>(timestampedModel, {
-  name: "test name",
+  name: (i: number) => `test name ${i}`,
   authoritative: false,
   ttl: null,
   hosts: random,
   resource_count: random,
-  displayname: "test display",
+  displayname: (i: number) => `test display ${i}`,
   is_default: false,
 });
 
@@ -27,7 +27,7 @@ export const domainDetails = extend<Domain, DomainDetails>(domain, {
 export const domainResource = define<DomainResource>({
   dnsdata_id: null,
   dnsresource_id: null,
-  name: "test-resource",
+  name: (i: number) => `test-resource-${i}`,
   node_type: null,
   rrdata: "test-data",
   rrtype: RecordType.TXT,

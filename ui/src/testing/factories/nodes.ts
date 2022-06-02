@@ -97,7 +97,7 @@ const tags = () => [];
 const simpleNode = extend<Model, SimpleNode>(model, {
   domain: modelRef,
   hostname: (i: number) => `test-machine-${i}`,
-  fqdn: "test.maas",
+  fqdn: (i: number) => `test-machine-${i}.maas`,
   permissions,
   system_id: () => random().toString(),
   tags,

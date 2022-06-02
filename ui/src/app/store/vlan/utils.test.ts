@@ -90,7 +90,7 @@ describe("vlan utils", () => {
       const fabrics = [fabricFactory({ id: 1, name: "fabric-1" })];
       const vlans = [
         vlanFactory({ id: 2, relay_vlan: 3, vid: 99 }),
-        vlanFactory({ fabric: 1, id: 3, vid: 101 }),
+        vlanFactory({ fabric: 1, id: 3, vid: 101, name: "test-vlan" }),
       ];
       expect(getDHCPStatus(vlans[0], vlans, fabrics, true)).toEqual(
         "Relayed via fabric-1.101 (test-vlan)"

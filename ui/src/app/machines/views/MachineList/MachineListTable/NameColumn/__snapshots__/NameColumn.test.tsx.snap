@@ -13,7 +13,7 @@ exports[`NameColumn renders 1`] = `
         handleRowCheckbox={[MockFunction]}
         inputLabel={
           <Link
-            title="test.maas"
+            title="test-machine-1.maas"
             to="/machine/abc123"
           >
             <strong
@@ -51,7 +51,7 @@ exports[`NameColumn renders 1`] = `
               handleRowCheckbox={[MockFunction]}
               inputLabel={
                 <Link
-                  title="test.maas"
+                  title="test-machine-1.maas"
                   to="/machine/abc123"
                 >
                   <strong
@@ -74,7 +74,7 @@ exports[`NameColumn renders 1`] = `
                 id="mock-redux-js-nanoid-1"
                 label={
                   <Link
-                    title="test.maas"
+                    title="test-machine-1.maas"
                     to="/machine/abc123"
                   >
                     <strong
@@ -116,7 +116,7 @@ exports[`NameColumn renders 1`] = `
                         id="mock-redux-js-nanoid-1"
                         label={
                           <Link
-                            title="test.maas"
+                            title="test-machine-1.maas"
                             to="/machine/abc123"
                           >
                             <strong
@@ -143,7 +143,7 @@ exports[`NameColumn renders 1`] = `
                           inputType="checkbox"
                           label={
                             <Link
-                              title="test.maas"
+                              title="test-machine-1.maas"
                               to="/machine/abc123"
                             >
                               <strong
@@ -179,13 +179,13 @@ exports[`NameColumn renders 1`] = `
                               id="mock-nanoid-3"
                             >
                               <Link
-                                title="test.maas"
+                                title="test-machine-1.maas"
                                 to="/machine/abc123"
                               >
                                 <a
                                   href="/machine/abc123"
                                   onClick={[Function]}
-                                  title="test.maas"
+                                  title="test-machine-1.maas"
                                 >
                                   <strong
                                     data-testid="hostname"

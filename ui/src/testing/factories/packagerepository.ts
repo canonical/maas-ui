@@ -8,7 +8,7 @@ import type { TimestampedModel } from "app/store/types/model";
 export const packageRepository = extend<TimestampedModel, PackageRepository>(
   timestampedModel,
   {
-    name: "test repo",
+    name: (i: number) => `test-repo-${i}`,
     url: "test url",
     distributions: () => [],
     disabled_pockets: () => [],

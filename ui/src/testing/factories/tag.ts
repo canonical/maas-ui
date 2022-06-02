@@ -12,5 +12,5 @@ export const tag = extend<TimestampedModel, Tag>(timestampedModel, {
   device_count: 0,
   kernel_opts: null,
   machine_count: 0,
-  name: "test name",
+  name: (i: number) => `test tag ${i}`,
 });

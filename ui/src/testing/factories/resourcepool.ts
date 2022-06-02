@@ -12,7 +12,7 @@ export const resourcePool = extend<TimestampedModel, ResourcePool>(
     is_default: false,
     machine_ready_count: random,
     machine_total_count: random,
-    name: "test name",
+    name: (i: number) => `test name ${i}`,
     permissions: () => [],
   }
 );

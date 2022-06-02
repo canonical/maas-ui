@@ -11,7 +11,7 @@ export const vlan = extend<TimestampedModel, BaseVLAN>(timestampedModel, {
   external_dhcp: null,
   fabric: random,
   mtu: random,
-  name: "test-vlan",
+  name: (i: number) => `test-vlan-${i}`,
   primary_rack: null,
   rack_sids: () => [],
   relay_vlan: null,
