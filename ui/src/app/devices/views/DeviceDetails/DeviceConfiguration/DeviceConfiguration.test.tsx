@@ -6,9 +6,9 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceConfiguration, { Label } from "./DeviceConfiguration";
-import { Label as DeviceConfigurationFieldsLabel } from "./DeviceConfigurationFields/DeviceConfigurationFields";
 
 import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
+import { Label as DeviceConfigurationFieldsLabel } from "app/base/components/NodeConfigurationFields/NodeConfigurationFields";
 import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
 import { Label as ZoneSelectLabel } from "app/base/components/ZoneSelect/ZoneSelect";
 import { actions as deviceActions } from "app/store/device";

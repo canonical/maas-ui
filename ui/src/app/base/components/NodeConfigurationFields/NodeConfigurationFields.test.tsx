@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DeviceConfigurationFields, { Label } from "./DeviceConfigurationFields";
+import NodeConfigurationFields, { Label } from "./NodeConfigurationFields";
 
 import { Label as TagFieldLabel } from "app/base/components/TagField/TagField";
 import * as baseHooks from "app/base/hooks/base";
@@ -59,7 +59,7 @@ it("can open a create tag form", async () => {
       <MemoryRouter>
         <CompatRouter>
           <Formik initialValues={{ tags: [] }} onSubmit={jest.fn()}>
-            <DeviceConfigurationFields />
+            <NodeConfigurationFields />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -83,7 +83,7 @@ it("updates the new tags after creating a tag", async () => {
       <MemoryRouter>
         <CompatRouter>
           <Formik initialValues={{ tags: tags }} onSubmit={jest.fn()}>
-            <DeviceConfigurationFields />
+            <NodeConfigurationFields />
           </Formik>
         </CompatRouter>
       </MemoryRouter>

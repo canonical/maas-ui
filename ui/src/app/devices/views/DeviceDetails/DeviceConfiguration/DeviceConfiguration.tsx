@@ -2,14 +2,14 @@ import { useEffect } from "react";
 
 import { Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import * as Yup from "yup";
-
-import DeviceConfigurationFields from "./DeviceConfigurationFields";
-import type { DeviceConfigurationValues } from "./types";
 
 import Definition from "app/base/components/Definition";
 import EditableSection from "app/base/components/EditableSection";
 import FormikForm from "app/base/components/FormikForm";
+import NodeConfigurationFields, {
+  NodeConfigurationSchema,
+} from "app/base/components/NodeConfigurationFields";
+import type { NodeConfigurationValues } from "app/base/components/NodeConfigurationFields/types";
 import TagLinks from "app/base/components/TagLinks";
 import { useWindowTitle } from "app/base/hooks";
 import deviceURLs from "app/devices/urls";
@@ -29,12 +29,6 @@ type Props = {
 export enum Label {
   Form = "Device configuration",
 }
-
-const DeviceConfigurationSchema = Yup.object().shape({
-  description: Yup.string(),
-  tags: Yup.array().of(Yup.number()),
-  zone: Yup.string(),
-});
 
 const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -70,7 +64,7 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
       hasSidebarTitle
       renderContent={(editing, setEditing) =>
         editing ? (
-          <FormikForm<DeviceConfigurationValues>
+          <FormikForm<NodeConfigurationValues>
             aria-label={Label.Form}
             cleanup={deviceActions.cleanup}
             data-testid="device-config-form"
@@ -100,9 +94,9 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
             saved={deviceSaved}
             saving={deviceSaving}
             submitLabel="Save changes"
-            validationSchema={DeviceConfigurationSchema}
+            validationSchema={NodeConfigurationSchema}
           >
-            <DeviceConfigurationFields />
+            <NodeConfigurationFields />
           </FormikForm>
         ) : (
           <div data-testid="device-details">

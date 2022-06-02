@@ -4,8 +4,10 @@ import { Col, Modal, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import usePortal from "react-useportal";
+import * as Yup from "yup";
+import type { SchemaOf } from "yup";
 
-import type { DeviceConfigurationValues } from "../types";
+import type { NodeConfigurationValues } from "./types";
 
 import FormikField from "app/base/components/FormikField";
 import TagIdField from "app/base/components/TagIdField";
@@ -20,9 +22,17 @@ export enum Label {
   Note = "Note",
 }
 
-const DeviceConfigurationFields = (): JSX.Element => {
-  const { setFieldValue, values } =
-    useFormikContext<DeviceConfigurationValues>();
+export const NodeConfigurationSchema: SchemaOf<NodeConfigurationValues> =
+  Yup.object()
+    .shape({
+      description: Yup.string(),
+      tags: Yup.array().of(Yup.number()),
+      zone: Yup.string(),
+    })
+    .defined();
+
+const NodeConfigurationFields = (): JSX.Element => {
+  const { setFieldValue, values } = useFormikContext<NodeConfigurationValues>();
   const selectedTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, values.tags)
   );
@@ -63,7 +73,7 @@ const DeviceConfigurationFields = (): JSX.Element => {
               name={newTagName}
               onSaveAnalytics={{
                 action: "Manual tag created",
-                category: "Device configuration create tag form",
+                category: "Node configuration create tag form",
                 label: "Save",
               }}
               onTagCreated={(tag) => {
@@ -79,4 +89,4 @@ const DeviceConfigurationFields = (): JSX.Element => {
   );
 };
 
-export default DeviceConfigurationFields;
+export default NodeConfigurationFields;
