@@ -1,6 +1,8 @@
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import ServicesCard from "./ServicesCard";
+
 import HardwareCard from "app/base/components/node/HardwareCard";
 import OverviewCard from "app/base/components/node/OverviewCard";
 import { useWindowTitle } from "app/base/hooks";
@@ -26,6 +28,9 @@ const ControllerSummary = ({ systemId }: Props): JSX.Element => {
     <div className="controller-summary">
       <div className="controller-summary__overview-card">
         <OverviewCard node={controller} />
+      </div>
+      <div className="controller-summary__services-card">
+        <ServicesCard controller={controller} />
       </div>
       <div className="controller-summary__hardware-card">
         <HardwareCard node={controller} />
