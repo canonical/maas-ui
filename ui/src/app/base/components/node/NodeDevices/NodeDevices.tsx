@@ -11,19 +11,22 @@ import NodeDevicesWarning from "./NodeDevicesWarning";
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import { HardwareType } from "app/base/enum";
+import controllerURLs from "app/controllers/urls";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
+import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
 import nodeDeviceSelectors from "app/store/nodedevice/selectors";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import type { NodeDevice } from "app/store/nodedevice/types";
 import type { RootState } from "app/store/root/types";
+import { nodeIsMachine } from "app/store/utils";
 
 type Props = {
   bus: NodeDeviceBus;
-  machine: MachineDetails;
-  setHeaderContent: MachineSetHeaderContent;
+  node: ControllerDetails | MachineDetails;
+  setHeaderContent?: MachineSetHeaderContent;
 };
 type NodeDeviceGroup = {
   hardwareTypes: HardwareType[];
@@ -35,9 +38,17 @@ type NodeDeviceGroup = {
 const generateGroup = (
   bus: NodeDeviceBus,
   group: NodeDeviceGroup,
-  machine: MachineDetails
-) =>
-  group.items.map((nodeDevice, i) => {
+  node: Props["node"]
+) => {
+  const isMachine = nodeIsMachine(node);
+  const storageURL = isMachine
+    ? machineURLs.machine.storage({ id: node.system_id })
+    : controllerURLs.controller.storage({ id: node.system_id });
+  const networkURL = isMachine
+    ? machineURLs.machine.network({ id: node.system_id })
+    : controllerURLs.controller.network({ id: node.system_id });
+
+  return group.items.map((nodeDevice, i) => {
     const {
       bus_number,
       commissioning_driver,
@@ -50,25 +61,15 @@ const generateGroup = (
       vendor_id,
       vendor_name,
     } = nodeDevice;
-    const numaNode = machine.numa_nodes.find(
-      (numa) => numa.id === numa_node_id
-    );
+    const numaNode = node.numa_nodes.find((numa) => numa.id === numa_node_id);
 
     const showGroupLabel = i === 0;
     let groupLabel: ReactNode;
     if (showGroupLabel) {
       if (group.pathname === "storage") {
-        groupLabel = (
-          <Link to={machineURLs.machine.storage({ id: machine.system_id })}>
-            {group.label}
-          </Link>
-        );
+        groupLabel = <Link to={storageURL}>{group.label}</Link>;
       } else if (group.pathname === "network") {
-        groupLabel = (
-          <Link to={machineURLs.machine.network({ id: machine.system_id })}>
-            {group.label}
-          </Link>
-        );
+        groupLabel = <Link to={networkURL}>{group.label}</Link>;
       } else {
         groupLabel = group.label;
       }
@@ -124,26 +125,23 @@ const generateGroup = (
       </tr>
     );
   });
+};
 
-const NodeDevices = ({
-  bus,
-  machine,
-  setHeaderContent,
-}: Props): JSX.Element => {
+const NodeDevices = ({ bus, node, setHeaderContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const nodeDevices = useSelector((state: RootState) =>
-    nodeDeviceSelectors.getByMachineId(state, machine.id)
+    nodeDeviceSelectors.getByNodeId(state, node.id)
   );
   const nodeDevicesLoading = useSelector(nodeDeviceSelectors.loading);
   const loaded = nodeDevices.some(
-    (nodeDevice) => nodeDevice.node_id === machine.id
+    (nodeDevice) => nodeDevice.node_id === node.id
   );
 
   useEffect(() => {
     if (!loaded) {
-      dispatch(nodeDeviceActions.getByMachineId(machine.system_id));
+      dispatch(nodeDeviceActions.getByNodeId(node.system_id));
     }
-  }, [dispatch, loaded, machine.system_id]);
+  }, [dispatch, loaded, node.system_id]);
 
   const groupedDevices = nodeDevices
     .reduce<NodeDeviceGroup[]>(
@@ -281,14 +279,14 @@ const NodeDevices = ({
               ))}
             </>
           ) : (
-            groupedDevices.map((group) => generateGroup(bus, group, machine))
+            groupedDevices.map((group) => generateGroup(bus, group, node))
           )}
         </tbody>
       </table>
       {!nodeDevicesLoading && (
         <NodeDevicesWarning
           bus={bus}
-          machine={machine}
+          node={node}
           nodeDevices={nodeDevices}
           setHeaderContent={setHeaderContent}
         />

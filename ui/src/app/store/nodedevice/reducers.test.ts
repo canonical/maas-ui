@@ -17,17 +17,17 @@ describe("node device reducer", () => {
     });
   });
 
-  it("reduces getByMachineIdStart", () => {
+  it("reduces getByNodeIdStart", () => {
     const state = nodeDeviceStateFactory({
       loading: false,
     });
 
-    expect(reducers(state, actions.getByMachineIdStart(null))).toEqual(
+    expect(reducers(state, actions.getByNodeIdStart(null))).toEqual(
       nodeDeviceStateFactory({ loading: true })
     );
   });
 
-  it("reduces getByMachineIdSuccess", () => {
+  it("reduces getByNodeIdSuccess", () => {
     const existingNodeDevice = nodeDeviceFactory();
     const newNodeDevice = nodeDeviceFactory();
     const newNodeDevice2 = nodeDeviceFactory();
@@ -40,7 +40,7 @@ describe("node device reducer", () => {
     expect(
       reducers(
         nodeDeviceState,
-        actions.getByMachineIdSuccess("abc123", [newNodeDevice, newNodeDevice2])
+        actions.getByNodeIdSuccess("abc123", [newNodeDevice, newNodeDevice2])
       )
     ).toEqual(
       nodeDeviceStateFactory({
@@ -51,13 +51,13 @@ describe("node device reducer", () => {
     );
   });
 
-  it("reduces getByMachineIdError", () => {
+  it("reduces getByNodeIdError", () => {
     const nodeDeviceState = nodeDeviceStateFactory({ loading: true });
 
     expect(
       reducers(
         nodeDeviceState,
-        actions.getByMachineIdError("Could not get node device")
+        actions.getByNodeIdError("Could not get node device")
       )
     ).toEqual(
       nodeDeviceStateFactory({

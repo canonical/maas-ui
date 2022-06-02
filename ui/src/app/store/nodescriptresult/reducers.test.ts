@@ -8,7 +8,7 @@ import {
 } from "testing/factories";
 
 describe("nodescriptresult reducer", () => {
-  it("reduces getByMachineIdSuccess", () => {
+  it("reduces getByNodeIdSuccess", () => {
     const nodeScriptResultState = nodeScriptResultStateFactory();
 
     const scriptResults = [

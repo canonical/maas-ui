@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 
-import NodeDevices from "../NodeDevices";
-
+import NodeDevices from "app/base/components/node/NodeDevices";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { MachineSetHeaderContent } from "app/machines/types";
@@ -24,7 +23,7 @@ const MachineUSBDevices = ({ setHeaderContent }: Props): JSX.Element | null => {
     return (
       <NodeDevices
         bus={NodeDeviceBus.USB}
-        machine={machine}
+        node={machine}
         setHeaderContent={setHeaderContent}
       />
     );

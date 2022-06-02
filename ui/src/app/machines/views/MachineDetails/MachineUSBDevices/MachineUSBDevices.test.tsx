@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import MachineUSBDevices from "./MachineUSBDevices";
 
+import { actions as nodeDeviceActions } from "app/store/nodedevice";
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
@@ -41,22 +42,9 @@ describe("MachineUSBDevices", () => {
       </Provider>
     );
 
+    const expectedAction = nodeDeviceActions.getByNodeId("abc123");
     expect(
-      store
-        .getActions()
-        .find((action) => action.type === "nodedevice/getByMachineId")
-    ).toStrictEqual({
-      type: "nodedevice/getByMachineId",
-      meta: {
-        method: "list",
-        model: "nodedevice",
-        nocache: true,
-      },
-      payload: {
-        params: {
-          system_id: "abc123",
-        },
-      },
-    });
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 });

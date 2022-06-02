@@ -90,7 +90,7 @@ describe("nodeDevice selectors", () => {
         items,
       }),
     });
-    expect(selectors.getByMachineId(state, machine.id)).toStrictEqual(
+    expect(selectors.getByNodeId(state, machine.id)).toStrictEqual(
       machineNodeDevices
     );
   });
