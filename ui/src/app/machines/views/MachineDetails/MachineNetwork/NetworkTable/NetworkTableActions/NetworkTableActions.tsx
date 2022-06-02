@@ -30,6 +30,10 @@ type Props = {
   systemId: Machine["system_id"];
 };
 
+export enum Label {
+  Title = "Take action:",
+}
+
 const NetworkTableActions = ({
   link,
   nic,
@@ -144,7 +148,7 @@ const NetworkTableActions = ({
       disabled={isAllNetworkingDisabled && !isLimitedEditingAllowed}
       links={actions}
       position="right"
-      title="Take action:"
+      title={Label.Title}
     />
   );
 };

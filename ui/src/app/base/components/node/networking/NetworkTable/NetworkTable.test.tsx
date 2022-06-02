@@ -5,10 +5,12 @@ import NetworkTable, { Label } from "./NetworkTable";
 
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
 import { Label as PXEColumnLabel } from "app/base/components/node/networking/NetworkTable/PXEColumn/PXEColumn";
+import { Label as NetworkTableActionsLabel } from "app/machines/views/MachineDetails/MachineNetwork/NetworkTable/NetworkTableActions/NetworkTableActions";
 import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
+  controllerDetails as controllerDetailsFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
@@ -242,6 +244,111 @@ describe("NetworkTable", () => {
     expect(alias.className.includes("is-active")).toBe(true);
   });
 
+  it("displays actions", () => {
+    machine = machineDetailsFactory({
+      interfaces: [
+        machineInterfaceFactory({
+          id: 100,
+          is_boot: false,
+          name: "bond0",
+          parents: [101],
+          type: NetworkInterfaceTypes.BOND,
+        }),
+        machineInterfaceFactory({
+          id: 101,
+          children: [100],
+          is_boot: true,
+          name: "eth0",
+          type: NetworkInterfaceTypes.PHYSICAL,
+        }),
+        machineInterfaceFactory({
+          id: 102,
+          name: "eth1",
+          type: NetworkInterfaceTypes.PHYSICAL,
+        }),
+      ],
+      system_id: "abc123",
+    });
+    state.machine.items = [machine];
+    renderWithBrowserRouter(
+      <NetworkTable
+        expanded={null}
+        setExpanded={jest.fn()}
+        selected={[]}
+        setSelected={jest.fn()}
+        node={machine}
+      />,
+      { wrapperProps: { state } }
+    );
+    expect(
+      screen.getByRole("grid").className.includes("network-table--has-actions")
+    ).toBe(true);
+    // The check-all checkbox should be in the header.
+    expect(
+      within(screen.getByRole("columnheader", { name: Label.Name })).getByRole(
+        "checkbox"
+      )
+    ).toBeInTheDocument();
+    // There should be a checkbox for the child interface.
+    expect(
+      within(screen.getByTestId("bond0")).getByRole("checkbox")
+    ).toBeInTheDocument();
+    // There should be a checkbox for the physical nic.
+    const nic = screen.getByTestId("eth1");
+    expect(within(nic).getByRole("checkbox")).toBeInTheDocument();
+    // There should be an actions menu for the physical nic.
+    expect(
+      within(nic).getByLabelText(NetworkTableActionsLabel.Title)
+    ).toBeInTheDocument();
+  });
+
+  it("can display without actions", () => {
+    const controller = controllerDetailsFactory({
+      interfaces: [
+        machineInterfaceFactory({
+          id: 100,
+          is_boot: false,
+          name: "bond0",
+          parents: [101],
+          type: NetworkInterfaceTypes.BOND,
+        }),
+        machineInterfaceFactory({
+          id: 101,
+          children: [100],
+          is_boot: true,
+          name: "eth0",
+          type: NetworkInterfaceTypes.PHYSICAL,
+        }),
+        machineInterfaceFactory({
+          id: 102,
+          name: "eth1",
+          type: NetworkInterfaceTypes.PHYSICAL,
+        }),
+      ],
+      system_id: "abc123",
+    });
+    state.controller.items = [controller];
+    renderWithBrowserRouter(<NetworkTable node={controller} />, {
+      wrapperProps: { state },
+    });
+    expect(
+      screen.getByRole("grid").className.includes("network-table--has-actions")
+    ).toBe(false);
+    // The check-all checkbox should not be in the header.
+    const header = screen.getByRole("columnheader", { name: Label.Name });
+    expect(within(header).queryByRole("checkbox")).not.toBeInTheDocument();
+    // There should not be a checkbox for the child interface.
+    const bond = screen.getByTestId("bond0");
+    expect(within(bond).queryByRole("checkbox")).not.toBeInTheDocument();
+    // There should not be a checkbox for the physical nic.
+    const nic = screen.getByTestId("eth1");
+    expect(within(nic).queryByRole("checkbox")).not.toBeInTheDocument();
+    // There should not be an actions menu for the physical nic.
+    expect(
+      within(nic).queryByLabelText(NetworkTableActionsLabel.Title)
+    ).not.toBeInTheDocument();
+  });
+
   describe("bond and bridge interfaces", () => {
     beforeEach(() => {
       machine = machineDetailsFactory({
@@ -413,7 +520,7 @@ describe("NetworkTable", () => {
       );
       const row = screen.getByTestId("eth0");
       expect(
-        within(row).queryByLabelText(Label.ActionsMenu)
+        within(row).queryByLabelText(NetworkTableActionsLabel.Title)
       ).not.toBeInTheDocument();
     });
   });

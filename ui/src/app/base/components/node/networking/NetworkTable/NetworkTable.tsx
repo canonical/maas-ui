@@ -104,20 +104,20 @@ const getSortValue = (sortKey: SortKey, row: NetworkRow) => {
 };
 
 const generateRow = (
-  checkSelected: CheckboxHandlers<Selected>["checkSelected"],
-  expanded: Expanded | null,
+  checkboxHandler: CheckboxHandlers<Selected> | null,
   fabrics: Fabric[],
   fabricsLoaded: boolean,
-  handleRowCheckbox: CheckboxHandlers<Selected>["handleRowCheckbox"],
   isAllNetworkingDisabled: boolean,
   link: NetworkLink | null,
   node: MachineDetails | ControllerDetails,
   nic: NetworkInterface | null,
   selected: Props["selected"],
-  setExpanded: SetExpanded,
   subnets: Subnet[],
   vlans: VLAN[],
-  vlansLoaded: boolean
+  vlansLoaded: boolean,
+  hasActions: boolean,
+  setExpanded?: SetExpanded,
+  expanded?: Expanded | null
 ): NetworkRow | null => {
   if (link && !nic) {
     [nic] = getLinkInterface(node, link);
@@ -149,7 +149,7 @@ const generateRow = (
     !!expanded &&
     ((link && expanded.linkId === link.id) ||
       (!link && expanded.nicId === nic?.id));
-  const showCheckbox = !isABondOrBridgeParent;
+  const showCheckbox = !isABondOrBridgeParent && hasActions;
   const select = showCheckbox
     ? {
         linkId: link?.id,
@@ -166,9 +166,13 @@ const generateRow = (
         "aria-label": Label.Name,
         content: (
           <NameColumn
-            checkboxSpace={!showCheckbox}
-            checkSelected={checkSelected}
-            handleRowCheckbox={handleRowCheckbox}
+            checkboxSpace={
+              // When interfaces can't be selected then we still need to add space so
+              // the parent rows appear nested under the bond or bridge.
+              (!showCheckbox && hasActions) || isABondOrBridgeParent
+            }
+            checkSelected={checkboxHandler?.checkSelected}
+            handleRowCheckbox={checkboxHandler?.handleRowCheckbox}
             link={link}
             nic={nic}
             node={node}
@@ -214,24 +218,28 @@ const generateRow = (
         "aria-label": Label.DHCP,
         content: !isABondOrBridgeParent && <DHCPColumn nic={nic} />,
       },
-      {
-        "aria-label": Label.Actions,
-        className: "u-align--right",
-        content: !isABondOrBridgeParent && nodeIsMachine(node) && (
-          <NetworkTableActions
-            aria-label={Label.ActionsMenu}
-            link={link}
-            nic={nic}
-            setExpanded={setExpanded}
-            systemId={node.system_id}
-          />
-        ),
-      },
+      ...(hasActions
+        ? [
+            {
+              "aria-label": Label.Actions,
+              className: "u-align--right",
+              content:
+                !isABondOrBridgeParent && nodeIsMachine(node) && setExpanded ? (
+                  <NetworkTableActions
+                    link={link}
+                    nic={nic}
+                    setExpanded={setExpanded}
+                    systemId={node.system_id}
+                  />
+                ) : null,
+            },
+          ]
+        : []),
     ],
     "data-testid": name,
     expanded: isExpanded,
     expandedContent:
-      isExpanded && nodeIsMachine(node) ? (
+      hasActions && isExpanded && nodeIsMachine(node) && setExpanded ? (
         <NetworkTableConfirmation
           expanded={expanded}
           link={link}
@@ -262,18 +270,18 @@ const generateRow = (
 };
 
 const generateRows = (
-  checkSelected: CheckboxHandlers<Selected>["checkSelected"],
-  expanded: Expanded | null,
+  checkboxHandler: CheckboxHandlers<Selected> | null,
   fabrics: Fabric[],
   fabricsLoaded: boolean,
-  handleRowCheckbox: CheckboxHandlers<Selected>["handleRowCheckbox"],
   isAllNetworkingDisabled: boolean,
   node: MachineDetails | ControllerDetails,
   selected: Props["selected"],
-  setExpanded: (expanded: Expanded | null) => void,
   subnets: Subnet[],
   vlans: VLAN[],
-  vlansLoaded: boolean
+  vlansLoaded: boolean,
+  hasActions: boolean,
+  setExpanded?: (expanded: Expanded | null) => void,
+  expanded?: Expanded | null
 ): NetworkRow[] => {
   const rows: NetworkRow[] = [];
   // Create a list of interfaces and aliases to use to generate the table rows.
@@ -283,20 +291,20 @@ const generateRows = (
       nic: NetworkInterface | null
     ) =>
       generateRow(
-        checkSelected,
-        expanded,
+        checkboxHandler,
         fabrics,
         fabricsLoaded,
-        handleRowCheckbox,
         isAllNetworkingDisabled,
         link,
         node,
         nic,
         selected,
-        setExpanded,
         subnets,
         vlans,
-        vlansLoaded
+        vlansLoaded,
+        hasActions,
+        setExpanded,
+        expanded
       );
     if (nic.links.length === 0) {
       const row = createRow(null, nic);
@@ -400,13 +408,25 @@ const rowSort = (
 export const generateUniqueId = ({ linkId, nicId }: Selected): string =>
   `${nicId || ""}-${linkId || ""}`;
 
-type Props = {
-  expanded: Expanded | null;
+type BaseProps = {
   node: MachineDetails | ControllerDetails;
-  selected: Selected[];
-  setExpanded: SetExpanded;
-  setSelected: SetSelected;
 };
+
+type ActionProps = BaseProps & {
+  expanded?: Expanded | null;
+  selected?: Selected[];
+  setExpanded?: SetExpanded;
+  setSelected?: SetSelected;
+};
+
+type WithoutActionProps = BaseProps & {
+  expanded?: never;
+  selected?: never;
+  setExpanded?: never;
+  setSelected?: never;
+};
+
+type Props = ActionProps | WithoutActionProps;
 
 const NetworkTable = ({
   expanded,
@@ -433,12 +453,10 @@ const NetworkTable = ({
     },
     rowSort
   );
-  const {
-    checkAllSelected,
-    checkSelected,
-    handleGroupCheckbox,
-    handleRowCheckbox,
-  } = generateCheckboxHandlers<Selected>(setSelected, generateUniqueId);
+  const checkboxHandler = setSelected
+    ? generateCheckboxHandlers<Selected>(setSelected, generateUniqueId)
+    : null;
+  const hasActions = !!setExpanded;
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
@@ -447,18 +465,18 @@ const NetworkTable = ({
   }, [dispatch]);
 
   const rows = generateRows(
-    checkSelected,
-    expanded,
+    checkboxHandler,
     fabrics,
     fabricsLoaded,
-    handleRowCheckbox,
     isAllNetworkingDisabled,
     node,
     selected,
-    setExpanded,
     subnets,
     vlans,
-    vlansLoaded
+    vlansLoaded,
+    hasActions,
+    setExpanded,
+    expanded
   );
   const sortedRows = sortRows(rows);
   // Generate a list of ids for interfaces that have checkboxes.
@@ -470,7 +488,9 @@ const NetworkTable = ({
   }, []);
   return (
     <MainTable
-      className="p-table-expanding--light network-table"
+      className={classNames("p-table-expanding--light", "network-table", {
+        "network-table--has-actions": hasActions,
+      })}
       defaultSort="name"
       defaultSortDirection="descending"
       expanding
@@ -479,14 +499,16 @@ const NetworkTable = ({
           "aria-label": Label.Name,
           content: (
             <div className="u-flex">
-              <GroupCheckbox
-                checkAllSelected={checkAllSelected}
-                checkSelected={checkSelected}
-                disabled={isAllNetworkingDisabled}
-                items={selectableIDs}
-                selectedItems={selected}
-                handleGroupCheckbox={handleGroupCheckbox}
-              />
+              {hasActions && checkboxHandler && selected ? (
+                <GroupCheckbox
+                  checkAllSelected={checkboxHandler.checkAllSelected}
+                  checkSelected={checkboxHandler.checkSelected}
+                  disabled={isAllNetworkingDisabled}
+                  items={selectableIDs}
+                  selectedItems={selected}
+                  handleGroupCheckbox={checkboxHandler.handleGroupCheckbox}
+                />
+              ) : null}
               <div>
                 <TableHeader
                   currentSort={currentSort}
@@ -602,10 +624,14 @@ const NetworkTable = ({
             </TableHeader>
           ),
         },
-        {
-          content: Label.Actions,
-          className: "u-align--right",
-        },
+        ...(hasActions
+          ? [
+              {
+                content: Label.Actions,
+                className: "u-align--right",
+              },
+            ]
+          : []),
       ]}
       rows={sortedRows}
     />
