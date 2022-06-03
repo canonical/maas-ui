@@ -558,7 +558,7 @@ maas $PROFILE maas set-config name=completed_intro value=false
 
 Integration tests currently run against the maas edge snap (main) [on github actions](https://github.com/canonical-web-and-design/maas-ui/actions?query=workflow%3ACypress) with [Cypress](https://cypress.io).
 
-For details on developing integration tests, see the integration testing [README](integration/README.md).
+For details on developing integration tests, see the integration testing [README](/docs/INTEGRATION.md).
 
 ## Unit tests
 

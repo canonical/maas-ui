@@ -34,7 +34,7 @@ jobs:
           install: false
           spec: "**/accessibility/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
-          working-directory: integration
+          working-directory: cypress
       - name: Create issue on failure
         if: failure()
         uses: JasonEtco/create-an-issue@v2

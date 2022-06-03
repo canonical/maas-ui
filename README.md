@@ -41,7 +41,7 @@ Community contributions are most welcome, and there are a number of ways to part
 
 When submitting a PR, please take note that MAAS UI uses the [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) format. To help you conform to this, you can run `yarn commit` instead of `git commit` for an interactive prompt.
 
-Please see [HACKING](HACKING.md) for details on setting up a MAAS UI development environment.
+Please see [HACKING](/docs/HACKING.md) for details on setting up a MAAS UI development environment.
 
 ## Feedback
 

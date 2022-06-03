@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "strict": true,
-    "baseUrl": "../node_modules",
+    "baseUrl": "../ui/node_modules",
     "target": "es6",
     "lib": ["es2017", "dom"],
     "types": ["cypress", "cypress-axe", "@testing-library/cypress", "@percy/cypress"],

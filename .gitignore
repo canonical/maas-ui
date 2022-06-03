@@ -17,6 +17,11 @@ yarn-error.log*
 # build
 /build
 
+# cypress
+cypress/screenshots
+cypress/videos
+cypress.env.json
+
 # local configuration
 .env.*.local
 .env.local
