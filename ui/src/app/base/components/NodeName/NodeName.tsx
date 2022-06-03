@@ -17,7 +17,7 @@ import { nodeIsController } from "app/store/utils";
 export type Props = {
   editingName: boolean;
   // Machines and devices can edit their name, but no controllers.
-  node: Node;
+  node: Node | null;
   onSubmit: (
     hostname: SimpleNode["hostname"],
     domain: Domain[DomainMeta.PK]
