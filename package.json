@@ -11,8 +11,12 @@
     "build-legacy": "cd legacy && yarn install && yarn build",
     "build-root": "cd root && yarn install && yarn build",
     "build-ui": "cd ui && yarn install && yarn build",
-    "cypress-open": "yarn --cwd integration cypress-open",
-    "cypress-run": "yarn --cwd integration cypress-run",
+    "serve-frontends": "yarn --cwd proxy serve-frontends",
+    "serve-base": "yarn --cwd proxy serve-base",
+    "cypress-run": "yarn cypress run",
+    "cypress-run-a11y": "yarn cypress run --config integrationFolder=cypress/integration/accessibility",
+    "cypress-open": "yarn cypress open",
+    "percy": "./cypress/percy.sh",
     "copy-build": "mkdir -p build && yarn copy-root && yarn copy-legacy-assets && yarn copy-ui-css",
     "copy-legacy-assets": "cp -R legacy/dist/assets build/",
     "copy-root": "cp -R root/dist/* build/",
@@ -35,9 +39,9 @@
     "lint-ui": "cd ui && yarn run lint",
     "lint-shared": "cd shared && yarn run lint",
     "lint-root": "cd root && yarn run lint",
-    "lint-cypress": "cd integration && yarn run lint",
+    "lint-cypress": "eslint -c cypress/.eslintrc.js \"cypress/**/*.{ts,tsx}\"",
     "lint": "yarn build-shared && yarn lint-legacy && yarn lint-ui && yarn lint-shared && yarn lint-root && yarn lint-cypress",
-    "test-cypress": "yarn --cwd integration run cypress-test",
+    "test-cypress": "yarn --cwd shared build && start-server-and-test serve-frontends '8401|8402' serve-base 'tcp:8400|8404' cypress-run",
     "test-legacy": "cd legacy && yarn run test",
     "test-ui": "cd ui && yarn run test --watchAll=false",
     "test-shared": "cd shared && yarn run test",
@@ -46,7 +50,6 @@
   },
   "workspaces": {
     "packages": [
-      "integration",
       "legacy",
       "proxy",
       "shared",
@@ -63,7 +66,24 @@
     ]
   },
   "devDependencies": {
-    "cz-conventional-changelog": "3.3.0"
+    "@maas-ui/maas-ui-shared": "3.3.0",
+    "@percy/cli": "1.1.4",
+    "@percy/cypress": "3.1.1",
+    "@testing-library/cypress": "8.0.2",
+    "@typescript-eslint/eslint-plugin": "5.23.0",
+    "@typescript-eslint/parser": "5.23.0",
+    "concurrently": "7.1.0",
+    "cypress": "9.6.1",
+    "cypress-axe": "0.14.0",
+    "cypress-wait-until": "1.7.2",
+    "cz-conventional-changelog": "3.3.0",
+    "dotenv-flow": "3.2.0",
+    "eslint-plugin-cypress": "2.12.1",
+    "eslint-plugin-import": "2.26.0",
+    "eslint-plugin-no-only-tests": "2.6.0",
+    "nanoid": "3.3.4",
+    "npm-package-json-lint": "6.3.0",
+    "start-server-and-test": "1.14.0"
   },
   "config": {
     "commitizen": {
