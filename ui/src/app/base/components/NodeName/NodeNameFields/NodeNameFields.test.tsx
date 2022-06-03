@@ -77,7 +77,7 @@ describe("NodeNameFields", () => {
               }}
               onSubmit={jest.fn()}
             >
-              <NodeNameFields setHostnameError={jest.fn()} />
+              <NodeNameFields canEditHostname setHostnameError={jest.fn()} />
             </FormikForm>
           </CompatRouter>
         </MemoryRouter>
@@ -101,7 +101,11 @@ describe("NodeNameFields", () => {
               }}
               onSubmit={jest.fn()}
             >
-              <NodeNameFields saving setHostnameError={jest.fn()} />
+              <NodeNameFields
+                canEditHostname
+                saving
+                setHostnameError={jest.fn()}
+              />
             </FormikForm>
           </CompatRouter>
         </MemoryRouter>
@@ -129,7 +133,11 @@ describe("NodeNameFields", () => {
               }}
               onSubmit={jest.fn()}
             >
-              <NodeNameFields saving setHostnameError={setHostnameError} />
+              <NodeNameFields
+                canEditHostname
+                saving
+                setHostnameError={setHostnameError}
+              />
             </FormikForm>
           </CompatRouter>
         </MemoryRouter>

@@ -45,6 +45,16 @@
     white-space: pre;
   }
 
+  .node-name__hostname--no-edit {
+    @extend %vf-heading-4;
+
+    @media only screen and (min-width: $breakpoint-large) {
+      padding: $sp-xx-small 0 calc(#{$sp-xx-small} + 1px) calc(#{$spv--large} + 1px);
+      margin-right: 0;
+      margin-bottom: 0;
+    }
+  }
+
   [type="text"].node-name__hostname {
     @extend %vf-heading-4;
 
