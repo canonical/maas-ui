@@ -108,7 +108,17 @@ const ControllerDetails = (): JSX.Element => {
           />
           <Route
             exact
-            path={controllerURLs.controller.logs(null, true)}
+            path={controllerURLs.controller.logs.index(null, true)}
+            render={() => <ControllerLogs systemId={id} />}
+          />
+          <Route
+            exact
+            path={controllerURLs.controller.logs.events(null, true)}
+            render={() => <ControllerLogs systemId={id} />}
+          />
+          <Route
+            exact
+            path={controllerURLs.controller.logs.installationOutput(null, true)}
             render={() => <ControllerLogs systemId={id} />}
           />
           <Route

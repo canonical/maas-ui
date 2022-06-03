@@ -29,20 +29,10 @@ describe("EventLogsTable", () => {
     });
   });
 
-  it("displays a spinner if machine is loading", () => {
-    state.machine.items = [];
-    renderWithMockStore(
-      <EventLogsTable events={state.event.items} systemId="abc123" />,
-      { state }
-    );
-    expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
-  });
-
   it("can display a table", () => {
-    renderWithMockStore(
-      <EventLogsTable events={state.event.items} systemId="abc123" />,
-      { state }
-    );
+    renderWithMockStore(<EventLogsTable events={state.event.items} />, {
+      state,
+    });
     expect(screen.getByLabelText(Label.Title)).toBeInTheDocument();
   });
 });

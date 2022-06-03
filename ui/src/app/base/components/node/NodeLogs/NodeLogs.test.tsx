@@ -5,6 +5,7 @@ import { Label as InstallationOutputLabel } from "./InstallationOutput/Installat
 import NodeLogs from "./NodeLogs";
 
 import machineURLs from "app/machines/urls";
+import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
@@ -15,11 +16,13 @@ import { renderWithBrowserRouter } from "testing/utils";
 
 describe("NodeLogs", () => {
   let state: RootState;
+  let machine: MachineDetails;
 
   beforeEach(() => {
+    machine = machineDetailsFactory({ system_id: "abc123" });
     state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+        items: [machine],
       }),
     });
   });
@@ -39,10 +42,20 @@ describe("NodeLogs", () => {
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<NodeLogs node={state.machine.items[0]} />, {
-        route: path,
-        wrapperProps: { state },
-      });
+      renderWithBrowserRouter(
+        <NodeLogs
+          node={machine}
+          urls={{
+            events: machineURLs.machine.logs.events,
+            index: machineURLs.machine.logs.index,
+            installationOutput: machineURLs.machine.logs.installationOutput,
+          }}
+        />,
+        {
+          route: path,
+          wrapperProps: { state },
+        }
+      );
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });

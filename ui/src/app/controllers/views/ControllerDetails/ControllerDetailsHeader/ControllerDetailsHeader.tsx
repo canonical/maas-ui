@@ -86,7 +86,7 @@ const ControllerDetailsHeader = ({
         },
         {
           label: "Logs",
-          url: controllerURLs.controller.logs({ id: systemId }),
+          url: controllerURLs.controller.logs.index({ id: systemId }),
         },
         {
           label: "Configuration",

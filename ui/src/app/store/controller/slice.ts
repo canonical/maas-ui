@@ -10,6 +10,10 @@ import type {
   UpdateParams,
 } from "./types";
 import { ControllerMeta } from "./types";
+import type {
+  GetSummaryXmlParams,
+  GetSummaryYamlParams,
+} from "./types/actions";
 import type { ImageSyncStatuses } from "./types/base";
 
 import type {
@@ -35,6 +39,14 @@ export const ACTIONS: Action[] = [
   {
     name: NodeActions.DELETE,
     status: "deleting",
+  },
+  {
+    name: "get-summary-xml",
+    status: "gettingSummaryXml",
+  },
+  {
+    name: "get-summary-yaml",
+    status: "gettingSummaryYaml",
   },
   {
     name: NodeActions.IMPORT_IMAGES,
@@ -65,6 +77,8 @@ export const ACTIONS: Action[] = [
 export const DEFAULT_STATUSES: ControllerStatus = {
   checkingImages: false,
   deleting: false,
+  gettingSummaryXml: false,
+  gettingSummaryYaml: false,
   importingImages: false,
   overridingFailedTesting: false,
   settingZone: false,
@@ -318,6 +332,50 @@ const controllerSlice = createSlice({
       }
       state.loading = false;
     },
+    getSummaryXml: {
+      prepare: (params: GetSummaryXmlParams) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "get_summary_xml",
+          // This request needs to store the results in the file context.
+          fileContextKey: params.fileId,
+          useFileContext: true,
+        },
+        payload: {
+          params: {
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getSummaryXmlError: statusHandlers.getSummaryXml.error,
+    getSummaryXmlStart: statusHandlers.getSummaryXml.start,
+    getSummaryXmlSuccess: statusHandlers.getSummaryXml.success,
+    getSummaryYaml: {
+      prepare: (params: GetSummaryYamlParams) => ({
+        meta: {
+          model: ControllerMeta.MODEL,
+          method: "get_summary_yaml",
+          // This request needs to store the results in the file context.
+          fileContextKey: params.fileId,
+          useFileContext: true,
+        },
+        payload: {
+          params: {
+            system_id: params.systemId,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getSummaryYamlError: statusHandlers.getSummaryYaml.error,
+    getSummaryYamlStart: statusHandlers.getSummaryYaml.start,
+    getSummaryYamlSuccess: statusHandlers.getSummaryYaml.success,
     importImages: {
       prepare: (params: BaseNodeActionParams) => ({
         meta: {

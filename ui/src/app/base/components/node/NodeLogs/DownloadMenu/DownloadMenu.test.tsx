@@ -7,6 +7,8 @@ import DownloadMenu, { Label } from "./DownloadMenu";
 
 import FileContext, { fileContextStore } from "app/base/file-context";
 import { api } from "app/base/sagas/http";
+import type { ControllerDetails } from "app/store/controller/types";
+import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   ScriptResultStatus,
@@ -15,6 +17,8 @@ import {
 } from "app/store/scriptresult/types";
 import { NodeStatus } from "app/store/types/node";
 import {
+  controllerState as controllerStateFactory,
+  controllerDetails as controllerDetailsFactory,
   machineState as machineStateFactory,
   machineDetails as machineDetailsFactory,
   rootState as rootStateFactory,
@@ -30,6 +34,8 @@ jest.mock("js-file-download", () => jest.fn());
 describe("DownloadMenu", () => {
   let state: RootState;
   let userEvt: UserEvent;
+  let machine: MachineDetails;
+  let controller: ControllerDetails;
 
   beforeEach(() => {
     jest
@@ -37,14 +43,20 @@ describe("DownloadMenu", () => {
       .setSystemTime(new Date("2021-03-25").getTime());
     // Work around for RTL async events with fake timers.
     userEvt = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    machine = machineDetailsFactory({
+      fqdn: "hungry-wombat.aus",
+      system_id: "abc123",
+    });
+    controller = controllerDetailsFactory({
+      fqdn: "hungry-wombat.aus",
+      system_id: "abc123",
+    });
     state = rootStateFactory({
+      controller: controllerStateFactory({
+        items: [controller],
+      }),
       machine: machineStateFactory({
-        items: [
-          machineDetailsFactory({
-            fqdn: "hungry-wombat.aus",
-            system_id: "abc123",
-          }),
-        ],
+        items: [machine],
       }),
       nodescriptresult: nodeScriptResultStateFactory({
         items: { abc123: [1] },
@@ -78,20 +90,20 @@ describe("DownloadMenu", () => {
 
   it("is disabled if there are no downloads", () => {
     state.scriptresult.logs = {};
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     expect(screen.getByRole("button", { name: Label.Toggle })).toBeDisabled();
   });
 
   it("does not display a YAML output item when it does not exist", async () => {
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
     await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
-      screen.queryByRole("button", { name: Label.MachineOutputYAML })
+      screen.queryByRole("button", { name: "Machine output (YAML)" })
     ).not.toBeInTheDocument();
   });
 
@@ -99,7 +111,7 @@ describe("DownloadMenu", () => {
     jest.spyOn(fileContextStore, "get").mockReturnValue("test yaml file");
     renderWithMockStore(
       <FileContext.Provider value={fileContextStore}>
-        <DownloadMenu systemId="abc123" />
+        <DownloadMenu node={machine} />
       </FileContext.Provider>,
       {
         state,
@@ -108,7 +120,7 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
-      screen.getByRole("button", { name: Label.MachineOutputYAML })
+      screen.getByRole("button", { name: "Machine output (YAML)" })
     ).toBeInTheDocument();
   });
 
@@ -118,13 +130,13 @@ describe("DownloadMenu", () => {
       .useFakeTimers("modern")
       .setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = jest.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
     await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
     await userEvt.click(
-      screen.getByRole("button", { name: Label.MachineOutputYAML })
+      screen.getByRole("button", { name: "Machine output (YAML)" })
     );
     expect(downloadSpy).toHaveBeenCalledWith(
       "test yaml file",
@@ -133,13 +145,13 @@ describe("DownloadMenu", () => {
   });
 
   it("does not display a XML output item when it does not exist", async () => {
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
     await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
-      screen.queryByRole("button", { name: Label.MachineOutputXML })
+      screen.queryByRole("button", { name: "Machine output (XML)" })
     ).not.toBeInTheDocument();
   });
 
@@ -147,7 +159,7 @@ describe("DownloadMenu", () => {
     jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
     renderWithMockStore(
       <FileContext.Provider value={fileContextStore}>
-        <DownloadMenu systemId="abc123" />
+        <DownloadMenu node={machine} />
       </FileContext.Provider>,
       {
         state,
@@ -156,23 +168,43 @@ describe("DownloadMenu", () => {
     // Open the menu:
     await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
     expect(
-      screen.getByRole("button", { name: Label.MachineOutputXML })
+      screen.getByRole("button", { name: "Machine output (XML)" })
     ).toBeInTheDocument();
   });
 
-  it("generates a download when the installation item is clicked", async () => {
+  it("generates a download when the installation item is clicked for a machine", async () => {
     jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
     jest
       .useFakeTimers("modern")
       .setSystemTime(new Date("2021-03-25").getTime());
     const downloadSpy = jest.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
     await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
     await userEvt.click(
-      screen.getByRole("button", { name: Label.MachineOutputXML })
+      screen.getByRole("button", { name: "Machine output (XML)" })
+    );
+    expect(downloadSpy).toHaveBeenCalledWith(
+      "test xml file",
+      "hungry-wombat.aus-machine-output-2021-03-25.xml"
+    );
+  });
+
+  it("generates a download when the installation item is clicked for a controller", async () => {
+    jest.spyOn(fileContextStore, "get").mockReturnValue("test xml file");
+    jest
+      .useFakeTimers("modern")
+      .setSystemTime(new Date("2021-03-25").getTime());
+    const downloadSpy = jest.spyOn(fileDownload, "default");
+    renderWithMockStore(<DownloadMenu node={machine} />, {
+      state,
+    });
+    // Open the menu:
+    await userEvt.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvt.click(
+      screen.getByRole("button", { name: "Machine output (XML)" })
     );
     expect(downloadSpy).toHaveBeenCalledWith(
       "test xml file",
@@ -182,7 +214,7 @@ describe("DownloadMenu", () => {
 
   it("does not display an installation output item when there is no log", async () => {
     state.scriptresult.logs = {};
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
@@ -193,7 +225,7 @@ describe("DownloadMenu", () => {
   });
 
   it("can display an installation output item", async () => {
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
@@ -205,7 +237,7 @@ describe("DownloadMenu", () => {
 
   it("generates a download when the installation item is clicked", async () => {
     const downloadSpy = jest.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
@@ -220,7 +252,7 @@ describe("DownloadMenu", () => {
   });
 
   it("does not display curtin logs item when there is no file", async () => {
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
@@ -241,7 +273,7 @@ describe("DownloadMenu", () => {
         status: ScriptResultStatus.PASSED,
       })
     );
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
@@ -262,7 +294,7 @@ describe("DownloadMenu", () => {
         status: ScriptResultStatus.PASSED,
       })
     );
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:
@@ -287,7 +319,7 @@ describe("DownloadMenu", () => {
       .spyOn(api.scriptresults, "getCurtinLogsTar")
       .mockResolvedValue("curtin-logs-blob");
     const downloadSpy = jest.spyOn(fileDownload, "default");
-    renderWithMockStore(<DownloadMenu systemId="abc123" />, {
+    renderWithMockStore(<DownloadMenu node={machine} />, {
       state,
     });
     // Open the menu:

@@ -256,4 +256,42 @@ describe("controller actions", () => {
       },
     });
   });
+
+  it("can handle getting a summary XML file", () => {
+    expect(
+      actions.getSummaryXml({ systemId: "abc123", fileId: "file1" })
+    ).toEqual({
+      type: "controller/getSummaryXml",
+      meta: {
+        fileContextKey: "file1",
+        model: "controller",
+        method: "get_summary_xml",
+        useFileContext: true,
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle getting a summary YAML file", () => {
+    expect(
+      actions.getSummaryYaml({ systemId: "abc123", fileId: "file1" })
+    ).toEqual({
+      type: "controller/getSummaryYaml",
+      meta: {
+        fileContextKey: "file1",
+        model: "controller",
+        method: "get_summary_yaml",
+        useFileContext: true,
+      },
+      payload: {
+        params: {
+          system_id: "abc123",
+        },
+      },
+    });
+  });
 });

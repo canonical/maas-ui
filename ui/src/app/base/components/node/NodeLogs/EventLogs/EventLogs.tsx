@@ -14,18 +14,19 @@ import { useStorageState } from "react-storage-hooks";
 import EventLogsTable from "./EventLogsTable";
 
 import ArrowPagination from "app/base/components/ArrowPagination";
+import type { ControllerDetails } from "app/store/controller/types";
 import { actions as eventActions } from "app/store/event";
 import eventSelectors from "app/store/event/selectors";
 import type { EventRecord } from "app/store/event/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
-type Props = { systemId: Machine["system_id"] };
+type Props = {
+  node: MachineDetails | ControllerDetails;
+};
 
 export enum Label {
   BackToTop = "Back to top",
-  Loading = "Loading event logs",
   Title = "Event logs",
 }
 
@@ -57,18 +58,15 @@ const getPageEvents = (
     .slice(startIndex, startIndex + pageSize);
 };
 
-const EventLogs = ({ systemId }: Props): JSX.Element => {
+const EventLogs = ({ node }: Props): JSX.Element => {
   const [searchText, setSearchText] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const [requestedDay, setRequestedDay] = useState(false);
   const [requestedCount, setRequestedCount] = useState(false);
   const [lastRequested, setLastRequested] = useState<number | null>(null);
   const dispatch = useDispatch();
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
   const events = useSelector((state: RootState) =>
-    eventSelectors.getByNodeId(state, machine?.id)
+    eventSelectors.getByNodeId(state, node.id)
   );
   const loading = useSelector(eventSelectors.loading);
   const [pageSize, setPageSize] = useStorageState(
@@ -95,28 +93,28 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
   useEffect(() => {
     // If the events haven't been requested yet then get all the events for the
     // last day.
-    if (machine && !requestedDay) {
-      dispatch(eventActions.fetch(machine.id, null, null, 1));
+    if (node && !requestedDay) {
+      dispatch(eventActions.fetch(node.id, null, null, 1));
       setRequestedDay(true);
     }
-  }, [dispatch, machine, requestedDay, setRequestedDay]);
+  }, [dispatch, node, requestedDay, setRequestedDay]);
 
   useEffect(() => {
     // If the events have been requested but less than the preload amount were
     // returned then request the preload number of events.
     if (
-      machine &&
+      node &&
       requestedDay &&
       !requestedCount &&
       events.length < PRELOAD_COUNT
     ) {
-      dispatch(eventActions.fetch(machine.id, PRELOAD_COUNT));
+      dispatch(eventActions.fetch(node.id, PRELOAD_COUNT));
       setRequestedCount(true);
     }
   }, [
     dispatch,
     events,
-    machine,
+    node,
     requestedCount,
     requestedDay,
     setRequestedCount,
@@ -134,23 +132,19 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
     const initialEventsLoaded = events.length >= PRELOAD_COUNT;
 
     // Once the last page is reached then fetch more events.
-    if (machine && initialEventsLoaded && onLastPage && !alreadyRequested) {
-      dispatch(eventActions.fetch(machine.id, PRELOAD_COUNT, lastItem.id));
+    if (node && initialEventsLoaded && onLastPage && !alreadyRequested) {
+      dispatch(eventActions.fetch(node.id, PRELOAD_COUNT, lastItem.id));
       setLastRequested(lastItem.id);
     }
   }, [
     dispatch,
-    machine,
+    node,
     currentPage,
     events,
     lastRequested,
     pageSize,
     setLastRequested,
   ]);
-
-  if (!machine) {
-    return <Spinner aria-label={Label.Loading} text="Loading..." />;
-  }
 
   return (
     <div aria-label={Label.Title}>
@@ -201,7 +195,7 @@ const EventLogs = ({ systemId }: Props): JSX.Element => {
         </Col>
       </Row>
       <hr />
-      <EventLogsTable events={paginatedEvents} systemId={systemId} />
+      <EventLogsTable events={paginatedEvents} />
       {loading && <Spinner text="Loading..." />}
       {showBackToTop && (
         <Link

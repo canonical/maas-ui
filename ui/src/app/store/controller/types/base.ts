@@ -146,6 +146,8 @@ export type Controller = BaseController | ControllerDetails;
 export type ControllerStatus = {
   checkingImages: boolean;
   deleting: boolean;
+  gettingSummaryXml: boolean;
+  gettingSummaryYaml: boolean;
   importingImages: boolean;
   turningOff: boolean;
   turningOn: boolean;
