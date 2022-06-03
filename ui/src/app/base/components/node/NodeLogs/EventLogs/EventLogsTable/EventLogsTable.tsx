@@ -1,16 +1,11 @@
 import type { ReactNode } from "react";
 
-import { Icon, MainTable, Spinner } from "@canonical/react-components";
-import { useSelector } from "react-redux";
+import { Icon, MainTable } from "@canonical/react-components";
 
 import type { EventRecord } from "app/store/event/types";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 
 type Props = {
   events: EventRecord[];
-  systemId: Machine["system_id"];
 };
 
 type EventRow = {
@@ -20,7 +15,6 @@ type EventRow = {
 };
 
 export enum Label {
-  Loading = "Loading event logs table",
   Title = "Event logs table",
 }
 
@@ -59,13 +53,7 @@ const generateRow = (event: EventRecord): EventRow => {
   };
 };
 
-const EventLogsTable = ({ events, systemId }: Props): JSX.Element => {
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
-  if (!machine) {
-    return <Spinner aria-label={Label.Loading} text="Loading..." />;
-  }
+const EventLogsTable = ({ events }: Props): JSX.Element => {
   const rows = events?.map((event) => generateRow(event));
 
   return (

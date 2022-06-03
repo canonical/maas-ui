@@ -2,7 +2,6 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
@@ -15,14 +14,15 @@ import type {
   ScriptResult,
   ScriptResultData,
 } from "app/store/scriptresult/types";
+import type { Node } from "app/store/types/node";
 
 /**
- * Fetch the installation log for a machine.
- * @param systemId - The machine id.
+ * Fetch the installation log for a node.
+ * @param systemId - The node id.
  * @returns The toggle callback.
  */
 export const useGetInstallationOutput = (
-  systemId: Machine["system_id"]
+  systemId: Node["system_id"]
 ): {
   log: ScriptResultData["combined"] | null;
   result: ScriptResult | null;
@@ -45,7 +45,7 @@ export const useGetInstallationOutput = (
   );
 
   useEffect(() => {
-    // If the script results for this machine haven't been loaded yet then
+    // If the script results for this node haven't been loaded yet then
     // request them.
     if (!scriptResults?.length && !loading) {
       dispatch(scriptResultActions.getByNodeId(systemId));

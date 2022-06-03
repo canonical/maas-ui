@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 
 import InstallationOutput, { Label } from "./InstallationOutput";
 
+import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import {
@@ -23,11 +24,13 @@ import { renderWithMockStore } from "testing/utils";
 
 describe("InstallationOutput", () => {
   let state: RootState;
+  let machine: MachineDetails;
 
   beforeEach(() => {
+    machine = machineDetailsFactory({ system_id: "abc123" });
     state = rootStateFactory({
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+        items: [machine],
       }),
       nodescriptresult: nodeScriptResultStateFactory({
         items: { abc123: [1] },
@@ -50,8 +53,8 @@ describe("InstallationOutput", () => {
   });
 
   it("displays a spinner when the logs are loading", () => {
-    state.machine.items = [];
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    state.scriptresult.loading = true;
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -59,7 +62,7 @@ describe("InstallationOutput", () => {
 
   it("displays the state when there is no result", () => {
     state.scriptresult.items = [];
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText(Label.None)).toBeInTheDocument();
@@ -68,7 +71,7 @@ describe("InstallationOutput", () => {
   it("displays the state when the machine is off", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.PENDING;
     state.machine.items[0].power_state = PowerState.OFF;
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText(Label.Off)).toBeInTheDocument();
@@ -76,7 +79,7 @@ describe("InstallationOutput", () => {
 
   it("displays the state when the machine is booting", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.PENDING;
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText(Label.Booting)).toBeInTheDocument();
@@ -84,7 +87,7 @@ describe("InstallationOutput", () => {
 
   it("displays the state when the machine is installing", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.RUNNING;
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText(Label.Begun)).toBeInTheDocument();
@@ -97,7 +100,7 @@ describe("InstallationOutput", () => {
         combined: undefined,
       }),
     };
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText(Label.SucceededNoOutput)).toBeInTheDocument();
@@ -105,7 +108,7 @@ describe("InstallationOutput", () => {
 
   it("can display the installation log", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.PASSED;
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText("script result")).toBeInTheDocument();
@@ -118,7 +121,7 @@ describe("InstallationOutput", () => {
         combined: undefined,
       }),
     };
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText(Label.FailedNoOutput)).toBeInTheDocument();
@@ -126,7 +129,7 @@ describe("InstallationOutput", () => {
 
   it("displays the log when the installation failed", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.FAILED;
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText("script result")).toBeInTheDocument();
@@ -134,7 +137,7 @@ describe("InstallationOutput", () => {
 
   it("displays the state when the installation timed out", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.TIMEDOUT;
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText(Label.Timeout)).toBeInTheDocument();
@@ -142,7 +145,7 @@ describe("InstallationOutput", () => {
 
   it("displays the state when the installation was aborted", () => {
     state.scriptresult.items[0].status = ScriptResultStatus.ABORTED;
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText(Label.Aborted)).toBeInTheDocument();
@@ -157,7 +160,7 @@ describe("InstallationOutput", () => {
         status: "huh???",
       } as Partial<ScriptResult> & { status: string }),
     ];
-    renderWithMockStore(<InstallationOutput systemId="abc123" />, {
+    renderWithMockStore(<InstallationOutput node={machine} />, {
       state,
     });
     expect(screen.getByText("Unknown log status huh???")).toBeInTheDocument();

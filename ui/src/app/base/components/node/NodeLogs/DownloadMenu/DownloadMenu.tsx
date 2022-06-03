@@ -14,42 +14,42 @@ import { useGetInstallationOutput } from "../hooks";
 import FileContext from "app/base/file-context";
 import { useSendAnalytics } from "app/base/hooks";
 import { api } from "app/base/sagas/http";
+import { actions as controllerActions } from "app/store/controller";
+import type { ControllerDetails } from "app/store/controller/types";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { MachineDetails } from "app/store/machine/types";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import { ScriptResultNames } from "app/store/scriptresult/types";
 import { NodeStatus } from "app/store/types/node";
+import { nodeIsMachine } from "app/store/utils";
+import { capitaliseFirst } from "app/utils";
 
-type Props = { systemId: Machine["system_id"] };
+type Props = {
+  node: MachineDetails | ControllerDetails;
+};
 
 export enum Label {
   CurtinLogs = "curtin-logs.tar",
   InstallationOutput = "Installation output",
-  MachineOutputYAML = "Machine output (YAML)",
-  MachineOutputXML = "Machine output (XML)",
   Title = "Download menu",
   Toggle = "Download",
 }
 
-export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
+export const DownloadMenu = ({ node }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
   const installationResults = useSelector((state: RootState) =>
-    scriptResultSelectors.getInstallationByNodeId(state, systemId)
+    scriptResultSelectors.getInstallationByNodeId(state, node.system_id)
   );
   // Only show the curtin log if the deployment has failed and there is a curtin
   // result.
   const showCurtinLog =
-    machine?.status === NodeStatus.FAILED_DEPLOYMENT &&
+    node?.status === NodeStatus.FAILED_DEPLOYMENT &&
     installationResults?.some(
       ({ name }) => name === ScriptResultNames.CURTIN_LOG
     );
-  const installationOutput = useGetInstallationOutput(systemId);
+  const installationOutput = useGetInstallationOutput(node.system_id);
   const getSummaryXmlKey = useRef(nanoid());
   const getSummaryYamlKey = useRef(nanoid());
   const fileContext = useContext(FileContext);
@@ -59,24 +59,40 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
   const today = format(new Date(), "yyyy-MM-dd");
   const toggleDisabled =
     !installationOutput?.log && !summaryYAML && !summaryXML;
+  const isMachine = nodeIsMachine(node);
+  const nodeLabel = isMachine ? "machine" : "controller";
 
   useEffect(() => {
-    if (machine) {
-      // Request the files for this
+    if (isMachine) {
+      // Request the files for this machine.
       dispatch(
         machineActions.getSummaryXml({
-          systemId,
+          systemId: node.system_id,
           fileId: getSummaryXmlKey.current,
         })
       );
       dispatch(
         machineActions.getSummaryYaml({
-          systemId,
+          systemId: node.system_id,
+          fileId: getSummaryYamlKey.current,
+        })
+      );
+    } else {
+      // Request the files for this controller.
+      dispatch(
+        controllerActions.getSummaryXml({
+          systemId: node.system_id,
+          fileId: getSummaryXmlKey.current,
+        })
+      );
+      dispatch(
+        controllerActions.getSummaryYaml({
+          systemId: node.system_id,
           fileId: getSummaryYamlKey.current,
         })
       );
     }
-  }, [dispatch, systemId, machine]);
+  }, [dispatch, isMachine, node]);
 
   // Clean up the requested files when the component unmounts.
   useEffect(
@@ -103,13 +119,13 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
         children: title,
         "data-testid": testKey,
         onClick: () => {
-          if (fileContent && machine) {
+          if (fileContent && node) {
             fileDownload(
               fileContent,
-              `${machine.fqdn}-${filename}-${today}.${extension}`
+              `${node.fqdn}-${filename}-${today}.${extension}`
             );
             sendAnalytics(
-              "Machine details logs",
+              `${nodeLabel} details logs`,
               "Download menu",
               `Download ${filename}.${extension}`
             );
@@ -119,27 +135,23 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
     ];
   };
 
-  if (!machine) {
-    return null;
-  }
-
   return (
     <div aria-label={Label.Title} className="download-menu">
       <ContextualMenu
         hasToggleIcon
         links={[
           ...generateItem(
-            Label.MachineOutputYAML,
-            "machine-output",
+            `${capitaliseFirst(nodeLabel)} output (YAML)`,
+            `${nodeLabel}-output`,
             "yaml",
-            "machine-output-yaml",
+            `${nodeLabel}-output-yaml`,
             summaryYAML
           ),
           ...generateItem(
-            Label.MachineOutputXML,
-            "machine-output",
+            `${capitaliseFirst(nodeLabel)} output (XML)`,
+            `${nodeLabel}-output`,
             "xml",
-            "machine-output-xml",
+            `${nodeLabel}-output-xml`,
             summaryXML
           ),
           ...(showCurtinLog
@@ -149,11 +161,11 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
                   "data-testid": "curtin-logs",
                   onClick: () => {
                     api.scriptresults
-                      .getCurtinLogsTar(machine.system_id)
+                      .getCurtinLogsTar(node.system_id)
                       .then((response) => {
                         fileDownload(
                           response,
-                          `${machine.fqdn}-curtin-${today}.tar`
+                          `${node.fqdn}-curtin-${today}.tar`
                         );
                       })
                       .catch((error) => {
@@ -165,7 +177,7 @@ export const DownloadMenu = ({ systemId }: Props): JSX.Element | null => {
                         );
                       });
                     sendAnalytics(
-                      "Machine details logs",
+                      `${nodeLabel} details logs`,
                       "Download menu",
                       "Download curtin-logs.tar"
                     );

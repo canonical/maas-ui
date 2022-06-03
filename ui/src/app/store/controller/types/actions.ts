@@ -14,6 +14,16 @@ export type CreateParams = {
   zone?: Zone[ZoneMeta.PK];
 };
 
+export type GetSummaryXmlParams = {
+  systemId: Controller[ControllerMeta.PK];
+  fileId: string;
+};
+
+export type GetSummaryYamlParams = {
+  systemId: Controller[ControllerMeta.PK];
+  fileId: string;
+};
+
 export type UpdateParams = CreateParams & {
   [ControllerMeta.PK]: Controller[ControllerMeta.PK];
 };

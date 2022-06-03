@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 
 import { useGetInstallationOutput } from "../hooks";
 
-import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { ControllerDetails } from "app/store/controller/types";
+import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
@@ -15,7 +15,9 @@ import type {
 } from "app/store/scriptresult/types";
 import { PowerState } from "app/store/types/enum";
 
-type Props = { systemId: Machine["system_id"] };
+type Props = {
+  node: MachineDetails | ControllerDetails;
+};
 
 export enum Label {
   Aborted = "Installation was aborted.",
@@ -31,7 +33,7 @@ export enum Label {
 }
 
 const generateOutput = (
-  machine: Machine,
+  node: Props["node"],
   log: ScriptResultData["combined"] | null,
   result: ScriptResult | null
 ) => {
@@ -40,7 +42,7 @@ const generateOutput = (
   }
   switch (result.status) {
     case ScriptResultStatus.PENDING:
-      if (machine.power_state === PowerState.OFF) {
+      if (node.power_state === PowerState.OFF) {
         return Label.Off;
       }
       return Label.Booting;
@@ -65,16 +67,13 @@ const generateOutput = (
   }
 };
 
-const InstallationOutput = ({ systemId }: Props): JSX.Element => {
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
+const InstallationOutput = ({ node }: Props): JSX.Element => {
   const loading = useSelector((state: RootState) =>
     scriptResultSelectors.loading(state)
   );
-  const installationOutput = useGetInstallationOutput(systemId);
+  const installationOutput = useGetInstallationOutput(node.system_id);
 
-  if (!machine || loading) {
+  if (loading) {
     return <Spinner aria-label={Label.Loading} text="Loading..." />;
   }
 
@@ -85,7 +84,7 @@ const InstallationOutput = ({ systemId }: Props): JSX.Element => {
         {
           appearance: CodeSnippetBlockAppearance.NUMBERED,
           code: generateOutput(
-            machine,
+            node,
             installationOutput.log,
             installationOutput.result
           ),

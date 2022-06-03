@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import EventLogs, { Label } from "./EventLogs";
 
+import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   eventRecord as eventRecordFactory,
@@ -22,10 +23,12 @@ const mockStore = configureStore();
 describe("EventLogs", () => {
   let state: RootState;
   let scrollToSpy: jest.Mock;
+  let machine: MachineDetails;
 
   beforeEach(() => {
     scrollToSpy = jest.fn();
     global.scrollTo = scrollToSpy;
+    machine = machineDetailsFactory({ id: 1, system_id: "abc123" });
     state = rootStateFactory({
       event: eventStateFactory({
         items: [
@@ -34,7 +37,7 @@ describe("EventLogs", () => {
         ],
       }),
       machine: machineStateFactory({
-        items: [machineDetailsFactory({ id: 1, system_id: "abc123" })],
+        items: [machine],
       }),
     });
   });
@@ -43,16 +46,8 @@ describe("EventLogs", () => {
     localStorage.clear();
   });
 
-  it("displays a spinner if machine is loading", () => {
-    state.machine.items = [];
-    renderWithMockStore(<EventLogs systemId="abc123" />, {
-      state,
-    });
-    expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
-  });
-
   it("can display the table", () => {
-    renderWithMockStore(<EventLogs systemId="abc123" />, {
+    renderWithMockStore(<EventLogs node={machine} />, {
       state,
     });
     expect(screen.getByLabelText(Label.Title)).toBeInTheDocument();
@@ -74,7 +69,7 @@ describe("EventLogs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <EventLogs systemId="abc123" />
+          <EventLogs node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -97,7 +92,7 @@ describe("EventLogs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <EventLogs systemId="abc123" />
+          <EventLogs node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -130,7 +125,7 @@ describe("EventLogs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <EventLogs systemId="abc123" />
+          <EventLogs node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -165,7 +160,7 @@ describe("EventLogs", () => {
       eventRecordFactory({ created: "Tue, 16 Mar. 2021 03:04:00", node_id: 1 }),
       eventRecordFactory({ created: "Tue, 17 Mar. 2021 03:04:00", node_id: 1 }),
     ];
-    renderWithMockStore(<EventLogs systemId="abc123" />, {
+    renderWithMockStore(<EventLogs node={machine} />, {
       state,
     });
     const rows = screen.getAllByRole("row");
@@ -199,7 +194,7 @@ describe("EventLogs", () => {
         type: eventTypeFactory({ description: undefined }),
       }),
     ];
-    renderWithMockStore(<EventLogs systemId="abc123" />, {
+    renderWithMockStore(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.type(screen.getByRole("searchbox"), "failed");
@@ -226,7 +221,7 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithMockStore(<EventLogs systemId="abc123" />, {
+    renderWithMockStore(<EventLogs node={machine} />, {
       state,
     });
     const rows = screen.getAllByRole("row");
@@ -250,7 +245,7 @@ describe("EventLogs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <EventLogs systemId="abc123" />
+          <EventLogs node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -261,7 +256,7 @@ describe("EventLogs", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <EventLogs systemId="abc123" />
+          <EventLogs node={machine} />
         </MemoryRouter>
       </Provider>
     );
@@ -278,7 +273,7 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithMockStore(<EventLogs systemId="abc123" />, {
+    renderWithMockStore(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.selectOptions(screen.getByRole("combobox"), "50");
@@ -297,7 +292,7 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithMockStore(<EventLogs systemId="abc123" />, {
+    renderWithMockStore(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.selectOptions(screen.getByRole("combobox"), "50");
@@ -316,7 +311,7 @@ describe("EventLogs", () => {
         })
       );
     }
-    renderWithMockStore(<EventLogs systemId="abc123" />, {
+    renderWithMockStore(<EventLogs node={machine} />, {
       state,
     });
     await userEvent.selectOptions(screen.getByRole("combobox"), "50");

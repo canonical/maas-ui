@@ -6,21 +6,29 @@ import DownloadMenu from "./DownloadMenu";
 import EventLogs from "./EventLogs";
 import InstallationOutput from "./InstallationOutput";
 
-import machineURLs from "app/machines/urls";
-import type { Controller } from "app/store/controller/types";
-import type { Machine } from "app/store/machine/types";
+import type { ControllerDetails } from "app/store/controller/types";
+import type { MachineDetails } from "app/store/machine/types";
+import type { Node } from "app/store/types/node";
 
-type Props = { node: Machine | Controller };
+type GenerateURL = (
+  args: { id: Node["system_id"] } | null,
+  unmodified?: boolean
+) => string;
 
-export enum Label {
-  Loading = "Loading logs",
-}
+type Props = {
+  node: MachineDetails | ControllerDetails;
+  urls: {
+    events: GenerateURL;
+    index: GenerateURL;
+    installationOutput: GenerateURL;
+  };
+};
 
-const NodeLogs = ({ node }: Props): JSX.Element => {
+const NodeLogs = ({ node, urls }: Props): JSX.Element => {
   const { pathname } = useLocation();
 
   const showingOutput = pathname.startsWith(
-    machineURLs.machine.logs.installationOutput({ id: node.system_id })
+    urls.installationOutput({ id: node.system_id })
   );
   return (
     <>
@@ -29,39 +37,33 @@ const NodeLogs = ({ node }: Props): JSX.Element => {
           links={[
             {
               active:
-                pathname.startsWith(
-                  machineURLs.machine.logs.events({ id: node.system_id })
-                ) || !showingOutput,
+                pathname.startsWith(urls.events({ id: node.system_id })) ||
+                !showingOutput,
               component: Link,
               label: "Event log",
-              to: machineURLs.machine.logs.events({ id: node.system_id }),
+              to: urls.events({ id: node.system_id }),
             },
             {
               active: showingOutput,
               component: Link,
               label: "Installation output",
-              to: machineURLs.machine.logs.installationOutput({
-                id: node.system_id,
-              }),
+              to: urls.installationOutput({ id: node.system_id }),
             },
           ]}
         />
-        <DownloadMenu systemId={node.system_id} />
+        <DownloadMenu node={node} />
       </div>
       <Route
         exact
-        path={machineURLs.machine.logs.installationOutput(null, true)}
-        render={() => <InstallationOutput systemId={node.system_id} />}
+        path={urls.installationOutput(null, true)}
+        render={() => <InstallationOutput node={node} />}
       />
-      {[
-        machineURLs.machine.logs.index(null, true),
-        machineURLs.machine.logs.events(null, true),
-      ].map((path) => (
+      {[urls.index(null, true), urls.events(null, true)].map((path) => (
         <Route
           exact
           key={path}
           path={path}
-          render={() => <EventLogs systemId={node.system_id} />}
+          render={() => <EventLogs node={node} />}
         />
       ))}
     </>

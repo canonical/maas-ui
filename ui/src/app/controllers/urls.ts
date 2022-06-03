@@ -13,9 +13,17 @@ const urls = {
       "/controller/:id/configuration"
     ),
     index: argPath<{ id: Controller[ControllerMeta.PK] }>("/controller/:id"),
-    logs: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/logs"
-    ),
+    logs: {
+      events: argPath<{ id: Controller[ControllerMeta.PK] }>(
+        "/controller/:id/logs/events"
+      ),
+      index: argPath<{ id: Controller[ControllerMeta.PK] }>(
+        "/controller/:id/logs"
+      ),
+      installationOutput: argPath<{ id: Controller[ControllerMeta.PK] }>(
+        "/controller/:id/logs/installation-output"
+      ),
+    },
     network: argPath<{ id: Controller[ControllerMeta.PK] }>(
       "/controller/:id/network"
     ),
