@@ -95,7 +95,7 @@ By default maas-ui will connect to `bolla.internal` which requires Canonical VPN
 If you wish to develop against a different MAAS then you can create a local env:
 
 ```shell
-touch proxy/.env.local
+touch .env.local
 ```
 
 Update the contents of that file to point to a MAAS. [See the section on MAAS deployments](#maas-deployments).
