@@ -28,12 +28,7 @@ const Controllers = (): JSX.Element => {
         controllersURLs.controller.usbDevices(null, true),
         controllersURLs.controller.vlans(null, true),
       ].map((path) => (
-        <Route
-          exact
-          key={path}
-          path={path}
-          render={() => <ControllerDetails />}
-        />
+        <Route exact path={path} render={() => <ControllerDetails />} />
       ))}
       <Route path="*" render={() => <NotFound />} />
     </Switch>

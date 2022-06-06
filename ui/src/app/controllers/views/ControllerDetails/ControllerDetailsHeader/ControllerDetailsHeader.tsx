@@ -9,7 +9,10 @@ import ControllerName from "./ControllerName";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
 import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
-import { ControllerHeaderViews } from "app/controllers/constants";
+import {
+  ControllerDetailsTabLabels,
+  ControllerHeaderViews,
+} from "app/controllers/constants";
 import type {
   ControllerHeaderContent,
   ControllerSetHeaderContent,
@@ -61,39 +64,39 @@ const ControllerDetailsHeader = ({
       ]}
       tabLinks={[
         {
-          label: "Summary",
+          label: ControllerDetailsTabLabels.summary,
           url: controllerURLs.controller.summary({ id: systemId }),
         },
         {
-          label: "VLANs",
+          label: ControllerDetailsTabLabels.vlans,
           url: controllerURLs.controller.vlans({ id: systemId }),
         },
         {
-          label: "Network",
+          label: ControllerDetailsTabLabels.network,
           url: controllerURLs.controller.network({ id: systemId }),
         },
         {
-          label: "Storage",
+          label: ControllerDetailsTabLabels.storage,
           url: controllerURLs.controller.storage({ id: systemId }),
         },
         {
-          label: "PCI devices",
+          label: ControllerDetailsTabLabels.pciDevices,
           url: controllerURLs.controller.pciDevices({ id: systemId }),
         },
         {
-          label: "USB",
+          label: ControllerDetailsTabLabels.usbDevices,
           url: controllerURLs.controller.usbDevices({ id: systemId }),
         },
         {
-          label: "Commissioning",
+          label: ControllerDetailsTabLabels.commissioning,
           url: controllerURLs.controller.commissioning({ id: systemId }),
         },
         {
-          label: "Logs",
+          label: ControllerDetailsTabLabels.logs,
           url: controllerURLs.controller.logs.index({ id: systemId }),
         },
         {
-          label: "Configuration",
+          label: ControllerDetailsTabLabels.configuration,
           url: controllerURLs.controller.configuration({ id: systemId }),
         },
       ].map((link) => ({

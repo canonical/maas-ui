@@ -1,3 +1,5 @@
+import type urls from "./urls";
+
 import { NodeActions } from "app/store/types/node";
 
 export const ControllerActionHeaderViews = {
@@ -21,3 +23,18 @@ export const ControllerHeaderViews = {
   ...ControllerActionHeaderViews,
   ...ControllerNonActionHeaderViews,
 } as const;
+
+export const ControllerDetailsTabLabels: Record<
+  Exclude<keyof typeof urls.controller, "index">,
+  string
+> = {
+  summary: "Summary",
+  vlans: "VLANs",
+  network: "Network",
+  storage: "Storage",
+  pciDevices: "PCI devices",
+  usbDevices: "USB",
+  commissioning: "Commissioning",
+  logs: "Logs",
+  configuration: "Configuration",
+};
