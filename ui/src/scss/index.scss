@@ -45,6 +45,7 @@
 @import "./patterns_grids";
 @import "./patterns_icons";
 @import "./patterns_links";
+@import "./patterns_list-trees";
 @import "./patterns_navigation";
 @import "./patterns_status-bar";
 @import "./patterns_switches";
@@ -62,6 +63,7 @@
 @include maas-grids;
 @include maas-icons;
 @include maas-links;
+@include maas-list-trees;
 @include maas-navigation;
 @include maas-status-bar;
 @include maas-switches;
