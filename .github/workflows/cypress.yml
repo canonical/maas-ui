@@ -46,7 +46,6 @@ jobs:
           install: false
           spec: "cypress/integration/with-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
-          working-directory: cypress
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -79,7 +78,6 @@ jobs:
           browser: chrome
           config: baseUrl=http://maas.io/docs
           spec: "cypress/integration/docs-links/**/*.spec.ts"
-          working-directory: cypress
       - name: Create issue on failure
         if: failure()
         uses: JasonEtco/create-an-issue@v2
