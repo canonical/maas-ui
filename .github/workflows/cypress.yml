@@ -30,9 +30,8 @@ jobs:
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: "**/no-users/**/*.spec.ts"
+          spec: "cypress/integration/no-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
-          working-directory: cypress
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Create MAAS non-admin user
@@ -45,9 +44,8 @@ jobs:
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: "**/with-users/**/*.spec.ts"
+          spec: "cypress/integration/with-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
-          working-directory: cypress
       - uses: actions/upload-artifact@v3
         if: failure()
         with:
@@ -79,8 +77,7 @@ jobs:
         with:
           browser: chrome
           config: baseUrl=http://maas.io/docs
-          spec: "**/docs-links/**/*.spec.ts"
-          working-directory: cypress
+          spec: "cypress/integration/docs-links/**/*.spec.ts"
       - name: Create issue on failure
         if: failure()
         uses: JasonEtco/create-an-issue@v2
