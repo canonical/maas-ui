@@ -15,7 +15,6 @@ declare global {
         shouldSkipIntro?: boolean;
         shouldSkipSetupIntro?: boolean;
       }): void;
-      generateMAASURL(route?: string): string;
       loginNonAdmin(): void;
       testA11y(pageContext: A11yPageContext): void;
       waitForPageToLoad(): void;
