@@ -6,11 +6,15 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import TestActions from "./TestActions";
 
 import * as hooks from "app/base/hooks/analytics";
+import controllerURLs from "app/controllers/urls";
+import machineURLs from "app/machines/urls";
 import {
   ScriptResultStatus,
   ScriptResultType,
 } from "app/store/scriptresult/types";
 import {
+  controllerDetails as controllerDetailsFactory,
+  machineDetails as machineDetailsFactory,
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
 } from "testing/factories";
@@ -35,18 +39,16 @@ describe("TestActions", () => {
     mockUseSendAnalytics.mockRestore();
   });
 
-  it("can display an action to view commissioning script details", () => {
+  it("can display an action to view machine commissioning script details", () => {
+    const machine = machineDetailsFactory();
     const scriptResult = scriptResultFactory({
-      id: 1,
       status: ScriptResultStatus.PASSED,
     });
     const wrapper = mount(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123/commissioning" }]}
-      >
+      <MemoryRouter>
         <CompatRouter>
           <TestActions
-            machineId="abc123"
+            node={machine}
             resultType={ScriptResultType.COMMISSIONING}
             scriptResult={scriptResult}
             setExpanded={jest.fn()}
@@ -60,20 +62,53 @@ describe("TestActions", () => {
       true
     );
     expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
-      "/machine/abc123/commissioning/1/details"
+      machineURLs.machine.commissioning.scriptResult({
+        id: machine.system_id,
+        scriptResultId: scriptResult.id,
+      })
     );
   });
 
-  it("can display an action to view testing script details", () => {
+  it("can display an action to view controller commissioning script details", () => {
+    const controller = controllerDetailsFactory();
     const scriptResult = scriptResultFactory({
-      id: 1,
       status: ScriptResultStatus.PASSED,
     });
     const wrapper = mount(
-      <MemoryRouter initialEntries={[{ pathname: "/machine/abc123/testing" }]}>
+      <MemoryRouter>
         <CompatRouter>
           <TestActions
-            machineId="abc123"
+            node={controller}
+            resultType={ScriptResultType.COMMISSIONING}
+            scriptResult={scriptResult}
+            setExpanded={jest.fn()}
+          />
+        </CompatRouter>
+      </MemoryRouter>
+    );
+
+    openMenu(wrapper);
+    expect(wrapper.find("Link[data-testid='view-details']").exists()).toBe(
+      true
+    );
+    expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
+      controllerURLs.controller.commissioning.scriptResult({
+        id: controller.system_id,
+        scriptResultId: scriptResult.id,
+      })
+    );
+  });
+
+  it("can display an action to view machine testing script details", () => {
+    const machine = machineDetailsFactory();
+    const scriptResult = scriptResultFactory({
+      status: ScriptResultStatus.PASSED,
+    });
+    const wrapper = mount(
+      <MemoryRouter>
+        <CompatRouter>
+          <TestActions
+            node={machine}
             resultType={ScriptResultType.TESTING}
             scriptResult={scriptResult}
             setExpanded={jest.fn()}
@@ -87,11 +122,15 @@ describe("TestActions", () => {
       true
     );
     expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
-      "/machine/abc123/testing/1/details"
+      machineURLs.machine.testing.scriptResult({
+        id: machine.system_id,
+        scriptResultId: scriptResult.id,
+      })
     );
   });
 
   it("displays an action to view metrics if the test has its own results", () => {
+    const machine = machineDetailsFactory();
     const scriptResult = scriptResultFactory({
       results: [scriptResultResultFactory()],
     });
@@ -99,7 +138,7 @@ describe("TestActions", () => {
       <MemoryRouter>
         <CompatRouter>
           <TestActions
-            machineId="abc123"
+            node={machine}
             resultType={ScriptResultType.TESTING}
             scriptResult={scriptResult}
             setExpanded={jest.fn()}
@@ -113,12 +152,13 @@ describe("TestActions", () => {
   });
 
   it("sends an analytics event when clicking the 'View previous tests' button", () => {
+    const machine = machineDetailsFactory();
     const scriptResult = scriptResultFactory();
     const wrapper = mount(
       <MemoryRouter>
         <CompatRouter>
           <TestActions
-            machineId="abc123"
+            node={machine}
             resultType={ScriptResultType.TESTING}
             scriptResult={scriptResult}
             setExpanded={jest.fn()}
@@ -139,12 +179,13 @@ describe("TestActions", () => {
   });
 
   it("sends an analytics event when clicking the 'View metrics' button", () => {
+    const machine = machineDetailsFactory();
     const scriptResult = scriptResultFactory();
     const wrapper = mount(
       <MemoryRouter>
         <CompatRouter>
           <TestActions
-            machineId="abc123"
+            node={machine}
             resultType={ScriptResultType.TESTING}
             scriptResult={scriptResult}
             setExpanded={jest.fn()}

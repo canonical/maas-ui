@@ -4,8 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 
-import MachineTestsTable from "../MachineTests/MachineTestsTable";
-
+import NodeTestsTable from "app/base/components/node/NodeTestsTable";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import machineSelectors from "app/store/machine/selectors";
@@ -63,14 +62,11 @@ const MachineCommissioning = (): JSX.Element => {
     isDetails,
   ]);
 
-  if (isId(id) && scriptResults?.length) {
+  if (isId(id) && isDetails && scriptResults?.length) {
     return (
       <div>
         {commissioningResults?.length && commissioningResults.length > 0 ? (
-          <MachineTestsTable
-            machineId={id}
-            scriptResults={commissioningResults}
-          />
+          <NodeTestsTable node={machine} scriptResults={commissioningResults} />
         ) : null}
       </div>
     );

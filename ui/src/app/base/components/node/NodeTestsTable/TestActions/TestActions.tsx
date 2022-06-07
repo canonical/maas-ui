@@ -2,20 +2,23 @@ import type { ContextualMenuProps } from "@canonical/react-components";
 import type { LinkProps } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import type { SetExpanded } from "../MachineTestsTable";
-import { ScriptResultAction } from "../MachineTestsTable";
+import type { SetExpanded } from "../NodeTestsTable";
+import { ScriptResultAction } from "../NodeTestsTable";
 
 import TableMenu from "app/base/components/TableMenu";
 import { useSendAnalytics } from "app/base/hooks";
 import type { DataTestElement } from "app/base/types";
+import controllerURLs from "app/controllers/urls";
 import machineURLs from "app/machines/urls";
-import type { Machine } from "app/store/machine/types";
+import type { ControllerDetails } from "app/store/controller/types";
+import type { MachineDetails } from "app/store/machine/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import { ScriptResultType } from "app/store/scriptresult/types";
 import { scriptResultInProgress } from "app/store/scriptresult/utils";
+import { nodeIsMachine } from "app/store/utils";
 
 type Props = {
-  machineId: Machine["system_id"];
+  node: ControllerDetails | MachineDetails;
   resultType: ScriptResultType.TESTING | ScriptResultType.COMMISSIONING;
   scriptResult: ScriptResult;
   setExpanded: SetExpanded;
@@ -24,7 +27,7 @@ type Props = {
 type LinkWithDataTest = DataTestElement<LinkProps>;
 
 const TestActions = ({
-  machineId,
+  node,
   resultType,
   scriptResult,
   setExpanded,
@@ -34,16 +37,20 @@ const TestActions = ({
   const hasMetrics = scriptResult.results.length > 0;
   const links: ContextualMenuProps<LinkWithDataTest>["links"] = [];
   const isTesting = resultType === ScriptResultType.TESTING;
+  const isMachine = nodeIsMachine(node);
+  const detailsURL = isMachine
+    ? isTesting
+      ? machineURLs.machine.testing.scriptResult
+      : machineURLs.machine.commissioning.scriptResult
+    : controllerURLs.controller.commissioning.scriptResult;
 
   if (canViewDetails) {
     links.push({
       children: "View details...",
       "data-testid": "view-details",
       element: Link,
-      to: machineURLs.machine[
-        isTesting ? "testing" : "commissioning"
-      ].scriptResult({
-        id: machineId,
+      to: detailsURL({
+        id: node.system_id,
         scriptResultId: scriptResult.id,
       }),
     });
@@ -58,7 +65,7 @@ const TestActions = ({
         content: ScriptResultAction.VIEW_PREVIOUS_TESTS,
       });
       sendAnalytics(
-        `Machine ${isTesting ? "testing" : "commissioning"}`,
+        `${node.node_type_display} ${isTesting ? "testing" : "commissioning"}`,
         "View testing script history",
         "View previous tests"
       );
@@ -75,7 +82,7 @@ const TestActions = ({
           content: ScriptResultAction.VIEW_METRICS,
         });
         sendAnalytics(
-          `Machine ${
+          `${node.node_type_display} ${
             resultType === ScriptResultType.TESTING
               ? "testing"
               : "commissioning"

@@ -1,4 +1,8 @@
 import type { Controller, ControllerMeta } from "app/store/controller/types";
+import type {
+  ScriptResult,
+  ScriptResultMeta,
+} from "app/store/scriptresult/types";
 import { argPath } from "app/utils";
 
 const urls = {
@@ -6,9 +10,15 @@ const urls = {
     index: "/controllers",
   },
   controller: {
-    commissioning: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/commissioning"
-    ),
+    commissioning: {
+      index: argPath<{ id: Controller[ControllerMeta.PK] }>(
+        "/controller/:id/commissioning"
+      ),
+      scriptResult: argPath<{
+        id: Controller[ControllerMeta.PK];
+        scriptResultId: ScriptResult[ScriptResultMeta.PK];
+      }>("/controller/:id/commissioning/:scriptResultId/details"),
+    },
     configuration: argPath<{ id: Controller[ControllerMeta.PK] }>(
       "/controller/:id/configuration"
     ),

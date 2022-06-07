@@ -18,7 +18,7 @@ const Controllers = (): JSX.Element => {
         render={() => <ControllerList />}
       />
       {[
-        controllersURLs.controller.commissioning(null, true),
+        controllersURLs.controller.commissioning.index(null, true),
         controllersURLs.controller.configuration(null, true),
         controllersURLs.controller.index(null, true),
         controllersURLs.controller.logs.index(null, true),

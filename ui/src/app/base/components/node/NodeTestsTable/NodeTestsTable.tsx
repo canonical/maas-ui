@@ -12,11 +12,13 @@ import TestMetrics from "./TestMetrics";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";
+import type { ControllerDetails } from "app/store/controller/types";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine } from "app/store/machine/types";
+import type { MachineDetails } from "app/store/machine/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import { ScriptResultType } from "app/store/scriptresult/types";
 import { canBeSuppressed } from "app/store/scriptresult/utils";
+import { nodeIsMachine } from "app/store/utils";
 
 export enum ScriptResultAction {
   VIEW_METRICS = "viewMetrics",
@@ -31,14 +33,11 @@ export type Expanded = {
 export type SetExpanded = (expanded: Expanded) => void;
 
 type Props = {
-  machineId: Machine["system_id"];
+  node: ControllerDetails | MachineDetails;
   scriptResults: ScriptResult[];
 };
 
-const MachineTestsTable = ({
-  machineId,
-  scriptResults,
-}: Props): JSX.Element => {
+const NodeTestsTable = ({ node, scriptResults }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
   const [expanded, setExpanded] = useState<Expanded | null>(null);
@@ -46,6 +45,8 @@ const MachineTestsTable = ({
   const containsTesting = scriptResults.some(
     (result) => result.result_type === ScriptResultType.TESTING
   );
+  const isMachine = nodeIsMachine(node);
+  const showSuppressCol = containsTesting && isMachine;
   const rows: MainTableRow[] = [];
 
   scriptResults.forEach((result) => {
@@ -56,7 +57,7 @@ const MachineTestsTable = ({
       expanded: isExpanded,
       className: isExpanded ? "p-table__row is-active" : null,
       columns: [
-        ...(containsTesting
+        ...(showSuppressCol
           ? [
               {
                 className: "suppress-col",
@@ -77,28 +78,32 @@ const MachineTestsTable = ({
                       label=" "
                       labelClassName="p-checkbox--inline u-no-padding--left"
                       onChange={() => {
-                        if (result.suppressed) {
-                          dispatch(
-                            machineActions.unsuppressScriptResults(machineId, [
-                              result,
-                            ])
-                          );
-                          sendAnalytics(
-                            "Machine testing",
-                            "Unsuppress script result failure",
-                            "Unsuppress"
-                          );
-                        } else {
-                          dispatch(
-                            machineActions.suppressScriptResults(machineId, [
-                              result,
-                            ])
-                          );
-                          sendAnalytics(
-                            "Machine testing",
-                            "Suppress script result failure",
-                            "Suppress"
-                          );
+                        if (showSuppressCol) {
+                          if (result.suppressed) {
+                            dispatch(
+                              machineActions.unsuppressScriptResults(
+                                node.system_id,
+                                [result]
+                              )
+                            );
+                            sendAnalytics(
+                              "Machine testing",
+                              "Unsuppress script result failure",
+                              "Unsuppress"
+                            );
+                          } else {
+                            dispatch(
+                              machineActions.suppressScriptResults(
+                                node.system_id,
+                                [result]
+                              )
+                            );
+                            sendAnalytics(
+                              "Machine testing",
+                              "Suppress script result failure",
+                              "Suppress"
+                            );
+                          }
                         }
                       }}
                       type="checkbox"
@@ -136,7 +141,7 @@ const MachineTestsTable = ({
           className: "actions-col u-align--right",
           content: (
             <TestActions
-              machineId={machineId}
+              node={node}
               resultType={
                 containsTesting
                   ? ScriptResultType.TESTING
@@ -170,9 +175,9 @@ const MachineTestsTable = ({
     <>
       <MainTable
         expanding
-        className="p-table-expanding--light p-table--machine-tests-table"
+        className="node-tests-table p-table-expanding--light"
         headers={[
-          ...(containsTesting
+          ...(showSuppressCol
             ? [
                 {
                   className: "suppress-col",
@@ -215,4 +220,4 @@ const MachineTestsTable = ({
   );
 };
 
-export default MachineTestsTable;
+export default NodeTestsTable;
