@@ -1,6 +1,6 @@
 import "@testing-library/cypress/add-commands";
-import { BASENAME } from "@maas-ui/maas-ui-shared";
 import type { Result } from "axe-core";
+import { generateMAASURL } from "../integration/utils";
 import type { A11yPageContext } from "./index";
 
 Cypress.Commands.add("login", (options) => {
@@ -20,7 +20,7 @@ Cypress.Commands.add("login", (options) => {
 
   cy.request({
     method: "POST",
-    url: `${BASENAME}/accounts/login/`,
+    url: `${Cypress.env("BASENAME")}/accounts/login/`,
     form: true,
     body: {
       username,

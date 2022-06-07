@@ -1,9 +1,13 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { Button, Input, useId } from "@canonical/react-components";
+import {
+  Button,
+  Input,
+  useClickOutside,
+  useId,
+} from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
-import { useClickOutside } from "@maas-ui/maas-ui-shared";
 import classNames from "classnames";
 
 export type Tag = {

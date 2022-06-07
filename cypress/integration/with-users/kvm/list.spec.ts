@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../utils";
 
 context("KVM listing", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/kvm"));
+    cy.visit(generateMAASURL("/kvm"));
   });
 
   it("renders the correct heading", () => {
@@ -14,7 +14,7 @@ context("KVM listing", () => {
     cy.get(".p-navigation__item.is-selected a").should(
       "have.attr",
       "href",
-      generateNewURL("/kvm")
+      generateMAASURL("/kvm")
     );
   });
 });

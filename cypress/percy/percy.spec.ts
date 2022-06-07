@@ -1,5 +1,5 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
 import { pages } from "../constants";
+import { generateMAASURL } from "../integration/utils";
 
 pages.forEach(({ heading, url }) => {
   it(`"Loads the ${heading}" page`, () => {
@@ -8,7 +8,7 @@ pages.forEach(({ heading, url }) => {
     } else if (url !== "/accounts/login") {
       cy.login();
     }
-    const pageUrl = generateNewURL(url);
+    const pageUrl = generateMAASURL(url);
     cy.visit(pageUrl);
     cy.waitForPageToLoad();
     cy.percySnapshot(heading);

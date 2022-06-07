@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../../utils";
 
 context("Controller listing", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/controllers"));
+    cy.visit(generateMAASURL("/controllers"));
   });
 
   it("renders the correct heading", () => {
@@ -14,7 +14,7 @@ context("Controller listing", () => {
     cy.get(".p-navigation__item.is-selected a").should(
       "have.attr",
       "href",
-      generateNewURL("/controllers")
+      generateMAASURL("/controllers")
     );
   });
 

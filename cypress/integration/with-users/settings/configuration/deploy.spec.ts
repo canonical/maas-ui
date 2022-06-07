@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../../utils";
 
 context("Settings Deploy configuration", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/settings/configuration/deploy"));
+    cy.visit(generateMAASURL("/settings/configuration/deploy"));
   });
 
   it("displays a correct default value for hardware sync interval", () => {

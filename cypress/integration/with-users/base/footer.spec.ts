@@ -1,4 +1,4 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../../utils";
 
 declare global {
   interface Window {
@@ -10,7 +10,7 @@ declare global {
 context("Footer", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/"));
+    cy.visit(generateMAASURL("/"));
   });
 
   it("navigates to the local documentation", () => {

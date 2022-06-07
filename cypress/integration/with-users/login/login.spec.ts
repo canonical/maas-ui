@@ -1,8 +1,8 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../utils";
 
 context("Login page", () => {
   beforeEach(() => {
-    cy.visit(generateNewURL("/"));
+    cy.visit(generateMAASURL("/"));
   });
 
   it("is disabled by default", () => {
@@ -39,7 +39,7 @@ context("Login page", () => {
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
-    cy.location("pathname").should("eq", generateNewURL("/intro"));
+    cy.location("pathname").should("eq", generateMAASURL("/intro"));
   });
 
   it("logs in and redirects to the user intro if setup intro complete", () => {
@@ -47,7 +47,7 @@ context("Login page", () => {
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
-    cy.location("pathname").should("eq", generateNewURL("/intro"));
+    cy.location("pathname").should("eq", generateMAASURL("/intro"));
 
     // Log out.
     cy.get(".p-navigation__link:contains(Log out)").click();
@@ -59,7 +59,7 @@ context("Login page", () => {
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
-    cy.location("pathname").should("eq", generateNewURL("/intro/user"));
+    cy.location("pathname").should("eq", generateMAASURL("/intro/user"));
   });
 
   it("logs in and redirects to the machine list", () => {
@@ -69,6 +69,6 @@ context("Login page", () => {
     cy.get("input[name='username']").type(Cypress.env("username"));
     cy.get("input[name='password']").type(Cypress.env("password"));
     cy.get("button[type='submit']").click();
-    cy.location("pathname").should("eq", generateNewURL("/machines"));
+    cy.location("pathname").should("eq", generateMAASURL("/machines"));
   });
 });

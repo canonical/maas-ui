@@ -1,7 +1,6 @@
 import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
-import { extractPowerType } from "@maas-ui/maas-ui-shared";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
@@ -20,6 +19,7 @@ import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { getTagsDisplay } from "app/store/tag/utils";
 import { nodeIsMachine } from "app/store/utils";
+import { extractPowerType } from "app/utils";
 
 type Props = {
   node: ControllerDetails | MachineDetails;

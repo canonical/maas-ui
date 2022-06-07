@@ -1,4 +1,3 @@
-import { BASENAME } from "@maas-ui/maas-ui-shared";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import ReconnectingWebSocket from "reconnecting-websocket";
 
@@ -121,7 +120,7 @@ export class WebSocketClient {
     }
     const { hostname, port } = window.location;
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    return `${protocol}//${hostname}:${port}${BASENAME}/ws?csrftoken=${csrftoken}`;
+    return `${protocol}//${hostname}:${port}${process.env.REACT_APP_BASENAME}/ws?csrftoken=${csrftoken}`;
   }
 
   /**

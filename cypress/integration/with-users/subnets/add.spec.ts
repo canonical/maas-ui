@@ -1,10 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
-import { generateId, generateVid } from "../../utils";
+import { generateId, generateMAASURL, generateVid } from "../../utils";
 
 context("Subnets - Add", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/networks?by=fabric"));
+    cy.visit(generateMAASURL("/networks?by=fabric"));
     cy.viewport("macbook-11");
   });
 
@@ -62,7 +61,7 @@ context("Subnets - Add", () => {
       );
     });
 
-    cy.url().should("include", generateNewURL("/fabric"));
+    cy.url().should("include", generateMAASURL("/fabric"));
 
     cy.findByRole("button", { name: "Delete fabric" }).click();
 
@@ -72,7 +71,7 @@ context("Subnets - Add", () => {
 
     cy.findByRole("button", { name: "Delete fabric" }).click();
 
-    cy.url().should("include", generateNewURL("/networks?by=fabric"));
+    cy.url().should("include", generateMAASURL("/networks?by=fabric"));
 
     cy.findByRole("table", { name: /Subnets/ }).within(() => {
       cy.findByRole("row", { name }).within(() =>
@@ -82,14 +81,14 @@ context("Subnets - Add", () => {
   });
 
   it("can add and delete a new space", () => {
-    cy.visit(generateNewURL("/networks?by=space"));
+    cy.visit(generateMAASURL("/networks?by=space"));
     const name = `cypress-${generateId()}`;
     completeForm("Space", name);
     cy.findByRole("table", { name: /Subnets/ }).within(() => {
       cy.findByRole("link", { name }).click();
     });
 
-    cy.url().should("include", generateNewURL("/space"));
+    cy.url().should("include", generateMAASURL("/space"));
 
     cy.findByRole("button", { name: "Delete space" }).click();
 
@@ -99,7 +98,7 @@ context("Subnets - Add", () => {
 
     cy.findByRole("button", { name: "Delete space" }).click();
 
-    cy.url().should("include", generateNewURL("/networks?by=fabric"));
+    cy.url().should("include", generateMAASURL("/networks?by=fabric"));
     cy.findByRole("table", { name: /Subnets/ }).within(() => {
       cy.findByRole("link", { name }).should("not.exist");
     });
@@ -151,7 +150,7 @@ context("Subnets - Add", () => {
     );
     cy.findByRole("button", { name: "Delete" }).click();
 
-    cy.url().should("include", generateNewURL("/networks?by=fabric"));
+    cy.url().should("include", generateMAASURL("/networks?by=fabric"));
     cy.findByRole("link", { name: new RegExp(subnetName) }).should("not.exist");
   });
 

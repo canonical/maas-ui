@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../../utils";
 
 context("Settings - User list", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/settings/users"));
+    cy.visit(generateMAASURL("/settings/users"));
   });
 
   it("the side nav highlights correctly", () => {

@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../utils";
 
 context("Pools list", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/pools"));
+    cy.visit(generateMAASURL("/pools"));
   });
 
   it("renders a heading", () => {
