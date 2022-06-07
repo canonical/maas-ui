@@ -3,10 +3,13 @@ import { Route, Switch } from "react-router-dom";
 import ControllerDetails from "./ControllerDetails";
 import ControllerList from "./ControllerList";
 
+import { useScrollToTop } from "app/base/hooks";
 import NotFound from "app/base/views/NotFound";
 import controllersURLs from "app/controllers/urls";
 
 const Controllers = (): JSX.Element => {
+  useScrollToTop();
+
   return (
     <Switch>
       <Route
