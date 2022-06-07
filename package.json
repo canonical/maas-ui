@@ -76,7 +76,6 @@
     ]
   },
   "devDependencies": {
-    "@maas-ui/maas-ui-shared": "3.3.0",
     "@percy/cli": "1.1.4",
     "@percy/cypress": "3.1.1",
     "@testing-library/cypress": "8.0.2",
