@@ -221,3 +221,30 @@ it("correctly dispatches an action to update a controller", async () => {
     ).toStrictEqual(expectedAction)
   );
 });
+
+it("displays an alert on edit when controller manages more than 1 node", async () => {
+  const store = mockStore(state);
+  state.controller.items = [{ ...controller, power_bmc_node_count: 3 }];
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <ControllerConfiguration systemId="abc123" />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+  await userEvent.click(
+    screen.getAllByRole("button", {
+      name: EditableSectionLabels.EditButton,
+    })[2]
+  );
+  await expect(
+    screen.getByText(/This power controller manages 2 other nodes/)
+  ).toBeInTheDocument();
+  await expect(
+    screen.getByText(
+      /Changing the IP address or outlet delay will affect all these nodes./
+    )
+  ).toBeInTheDocument();
+});

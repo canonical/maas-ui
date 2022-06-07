@@ -88,6 +88,11 @@ const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
 
+  const otherNodesCount =
+    controller.power_bmc_node_count > 1
+      ? controller?.power_bmc_node_count - 1
+      : 0;
+
   return (
     <EditableSection
       canEdit={canEdit}
@@ -135,13 +140,11 @@ const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
             submitLabel="Save changes"
             validationSchema={PowerFormSchema}
           >
-            {controller.power_bmc_node_count > 1 ? (
+            {otherNodesCount > 0 ? (
               <Notification severity="information">
-                This power controller manages{" "}
-                {controller?.power_bmc_node_count - 1}
-                other {controller.power_bmc_node_count > 3 ? "nodes" : "node"}
-                .Changing the IP address or outlet delay will affect all these
-                nodes.
+                This power controller manages {otherNodesCount} other{" "}
+                {otherNodesCount > 1 ? "nodes" : "node"}. Changing the IP
+                address or outlet delay will affect all these nodes.
               </Notification>
             ) : null}
             <PowerTypeFields
