@@ -1,14 +1,13 @@
 import React, { useEffect, useRef } from "react";
 
+import type { GenerateLink } from "@canonical/react-components";
+import { Theme, Navigation } from "@canonical/react-components";
 import classNames from "classnames";
 import type { Location as HistoryLocation } from "history";
 import PropTypes from "prop-types";
 
 import type { TSFixMe } from "../../types";
 import { generateLegacyURL, generateNewURL } from "../../utils";
-import Navigation, { Theme } from "../Navigation";
-
-import type { GenerateLink } from "components/Navigation/types";
 
 type Props = {
   appendNewBase?: boolean;

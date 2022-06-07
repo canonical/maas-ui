@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Notification, isNavigationButton } from "@canonical/react-components";
+import type { NavLink } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
@@ -31,6 +32,25 @@ declare global {
     legacyWS: WebSocket;
   }
 }
+
+const generateLink = (props: NavLink) => {
+  if (props.url) {
+    const { isSelected: _, label, url, ...linkProps } = props;
+    return (
+      <Link {...linkProps} to={url}>
+        {label}
+      </Link>
+    );
+  } else if (isNavigationButton(props)) {
+    const { isSelected: _, label, url, ...linkProps } = props;
+    return (
+      // Handle elements that don't need to navigate using react-router
+      // e.g. the logout link.
+      <button {...linkProps}>{label}</button>
+    );
+  }
+  return null;
+};
 
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -135,17 +155,7 @@ export const App = (): JSX.Element => {
         completedIntro={completedIntro && completedUserIntro}
         debug={debug}
         enableAnalytics={analyticsEnabled as boolean}
-        generateNewLink={({ label, url, isSelected, ...props }) =>
-          url ? (
-            <Link {...props} to={url}>
-              {label}
-            </Link>
-          ) : (
-            // Handle elements that don't need to navigate using react-router
-            // e.g. the logout link.
-            <button {...props}>{label}</button>
-          )
-        }
+        generateNewLink={generateLink}
         location={location}
         logout={() => {
           dispatch(statusActions.logout());
