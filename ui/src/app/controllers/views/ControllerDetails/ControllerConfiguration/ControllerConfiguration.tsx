@@ -1,4 +1,8 @@
+import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
+
+import ControllerConfigurationForm from "./ControllerConfigurationForm";
+import ControllerPowerConfiguration from "./ControllerPowerConfiguration";
 
 import { useWindowTitle } from "app/base/hooks";
 import controllerSelectors from "app/store/controller/selectors";
@@ -15,7 +19,16 @@ const ControllerConfiguration = ({ systemId }: Props): JSX.Element => {
   );
   useWindowTitle(`${`${controller?.hostname}` || "Controller"} configuration`);
 
-  return <h4>Controller configuration</h4>;
+  if (!controller) {
+    return <Spinner aria-label="loading controller configuration" />;
+  }
+
+  return (
+    <>
+      <ControllerConfigurationForm systemId={systemId} />
+      <ControllerPowerConfiguration systemId={systemId} />
+    </>
+  );
 };
 
 export default ControllerConfiguration;

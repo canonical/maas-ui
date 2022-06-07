@@ -1,7 +1,8 @@
-import type { Controller, ControllerStatus } from "./base";
+import type { Controller, ControllerDetails, ControllerStatus } from "./base";
 import type { ControllerMeta } from "./enum";
 
-import type { Zone, ZoneMeta } from "app/store/zone/types";
+import type { PowerParameters } from "app/store/types/node";
+import type { Zone } from "app/store/zone/types";
 
 export type Action = {
   name: string;
@@ -11,7 +12,7 @@ export type Action = {
 export type CreateParams = {
   description?: Controller["description"];
   domain?: Controller["domain"];
-  zone?: Zone[ZoneMeta.PK];
+  zone?: { name: Zone["name"] };
 };
 
 export type GetSummaryXmlParams = {
@@ -26,4 +27,8 @@ export type GetSummaryYamlParams = {
 
 export type UpdateParams = CreateParams & {
   [ControllerMeta.PK]: Controller[ControllerMeta.PK];
+  power_parameters?: PowerParameters;
+  power_type?: ControllerDetails["power_type"];
+  power_parameters_skip_check?: boolean;
+  tags?: Controller["tags"];
 };

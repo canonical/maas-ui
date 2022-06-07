@@ -6,10 +6,10 @@ import type { SchemaOf } from "yup";
 import * as Yup from "yup";
 
 import PowerFormFields from "./PowerFormFields";
-import PowerParameters from "./PowerParameters";
 
 import EditableSection from "app/base/components/EditableSection";
 import FormikForm from "app/base/components/FormikForm";
+import NodePowerParameters from "app/base/components/node/NodePowerParameters";
 import { useCanEdit } from "app/base/hooks";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import type { PowerType } from "app/store/general/types";
@@ -133,7 +133,7 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
             <PowerFormFields machine={machine} />
           </FormikForm>
         ) : (
-          <PowerParameters machine={machine} />
+          <NodePowerParameters node={machine} />
         )
       }
       title="Power configuration"

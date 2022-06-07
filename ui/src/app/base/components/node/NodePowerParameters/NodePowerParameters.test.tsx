@@ -2,7 +2,7 @@ import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import PowerParameters from "./PowerParameters";
+import NodePowerParameters from "./NodePowerParameters";
 
 import { PowerTypeNames } from "app/store/general/constants";
 import { PowerFieldScope } from "app/store/general/types";
@@ -10,6 +10,7 @@ import type { RootState } from "app/store/root/types";
 import {
   certificateMetadata as certificateMetadataFactory,
   generalState as generalStateFactory,
+  controllerDetails as controllerDetailsFactory,
   machineDetails as machineDetailsFactory,
   modelRef as modelRefFactory,
   powerField as powerFieldFactory,
@@ -38,7 +39,7 @@ it("shows an error if no rack controller is connected", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <PowerParameters machine={machine} />
+      <NodePowerParameters node={machine} />
     </Provider>
   );
 
@@ -55,7 +56,7 @@ it("shows an error if a power type has not been set", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <PowerParameters machine={machine} />
+      <NodePowerParameters node={machine} />
     </Provider>
   );
 
@@ -72,7 +73,7 @@ it("shows a warning if the power type is set to manual", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <PowerParameters machine={machine} />
+      <NodePowerParameters node={machine} />
     </Provider>
   );
 
@@ -98,13 +99,18 @@ it("shows an error if the power type is missing packages", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <PowerParameters machine={machine} />
+      <NodePowerParameters node={machine} />
     </Provider>
   );
 
   expect(
     screen.getByText(
-      /Power control software for AMT is missing from the rack controller/
+      /Power control software for AMT is missing from the rack controller. /
+    )
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(
+      /To proceed, install the following packages on the rack controller: package1, package2/
     )
   ).toBeInTheDocument();
 });
@@ -131,7 +137,7 @@ it("renders power parameters for all scopes if machine is not in a pod", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <PowerParameters machine={machine} />
+      <NodePowerParameters node={machine} />
     </Provider>
   );
 
@@ -161,7 +167,7 @@ it("renders power parameters only for node scope if machine is in a pod", () => 
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <PowerParameters machine={machine} />
+      <NodePowerParameters node={machine} />
     </Provider>
   );
 
@@ -188,7 +194,7 @@ it("renders certificate power parameters with metadata", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <PowerParameters machine={machine} />
+      <NodePowerParameters node={machine} />
     </Provider>
   );
 
@@ -196,4 +202,33 @@ it("renders certificate power parameters with metadata", () => {
   expect(screen.getByText(certificateMetadata.expiration)).toBeInTheDocument();
   expect(screen.getByText(certificateMetadata.fingerprint)).toBeInTheDocument();
   expect(screen.getByRole("textbox")).toHaveValue("abc");
+});
+
+it("renders power parameters for a controller", () => {
+  state.general.powerTypes.data = [
+    powerTypeFactory({
+      fields: [
+        powerFieldFactory({ name: "node-field", scope: PowerFieldScope.NODE }),
+        powerFieldFactory({ name: "bmc-field", scope: PowerFieldScope.BMC }),
+      ],
+      name: PowerTypeNames.LXD,
+    }),
+  ];
+  const controller = controllerDetailsFactory({
+    power_parameters: {
+      "node-field": "node field",
+      "bmc-field": "bmc field",
+    },
+    power_type: PowerTypeNames.LXD,
+    system_id: "abc123",
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <NodePowerParameters node={controller} />
+    </Provider>
+  );
+
+  expect(screen.getByText("node field")).toBeInTheDocument();
+  expect(screen.getByText("bmc field")).toBeInTheDocument();
 });

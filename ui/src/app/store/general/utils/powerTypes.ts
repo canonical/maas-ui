@@ -83,7 +83,7 @@ export const generatePowerParametersSchema = (
  */
 export const getFieldsInScope = (
   powerType: PowerType | null,
-  fieldScopes: PowerFieldScope[]
+  fieldScopes: PowerFieldScope[] = [PowerFieldScope.BMC, PowerFieldScope.NODE]
 ): PowerField[] =>
   powerType?.fields.filter((field) => fieldScopes.includes(field.scope)) || [];
 
