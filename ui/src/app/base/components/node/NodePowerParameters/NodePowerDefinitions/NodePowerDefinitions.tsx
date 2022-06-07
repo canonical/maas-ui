@@ -15,11 +15,11 @@ import type { MachineDetails } from "app/store/machine/types";
 import { getMachineFieldScopes } from "app/store/machine/utils";
 import { nodeIsMachine } from "app/store/utils";
 
-const generateBasePowerParameters = (
+const generatePowerParameters = (
   node: MachineDetails | ControllerDetails,
   fields: PowerField[]
 ) => {
-  const { power_parameters } = node;
+  const { certificate, power_parameters } = node;
   const baseParameters = fields.reduce<React.ReactNode[]>(
     (parameters, field) => {
       if (field.name in power_parameters) {
@@ -36,21 +36,17 @@ const generateBasePowerParameters = (
     },
     []
   );
-  return <>{baseParameters}</>;
-};
-
-const generateAllPowerParameters = (
-  machine: MachineDetails,
-  fields: PowerField[]
-) => {
-  const { certificate, power_parameters } = machine;
   return (
     <>
-      {generateBasePowerParameters(machine, fields)}
+      {baseParameters}
       {certificate ? (
         <CertificateDetails
           certificate={power_parameters.certificate as string}
-          eventCategory="Machine configuration"
+          eventCategory={
+            nodeIsMachine(node)
+              ? "Machine configuration"
+              : "Controller configuration"
+          }
           metadata={certificate}
         />
       ) : null}
@@ -74,9 +70,7 @@ const NodePowerDefinitions = ({
       <Definition label="Power type">
         {powerType?.description || "None"}
       </Definition>
-      {nodeIsMachine(node)
-        ? generateAllPowerParameters(node, fieldsInScope)
-        : generateBasePowerParameters(node, fieldsInScope)}
+      {generatePowerParameters(node, fieldsInScope)}
     </>
   );
 };

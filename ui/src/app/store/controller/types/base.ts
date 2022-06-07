@@ -6,7 +6,7 @@ import type {
 } from "./enum";
 
 import type { APIError } from "app/base/types";
-import type { PowerType } from "app/store/general/types";
+import type { CertificateMetadata, PowerType } from "app/store/general/types";
 import type { PowerState, StorageLayout } from "app/store/types/enum";
 import type { ModelRef, TimestampFields } from "app/store/types/model";
 import type {
@@ -85,6 +85,7 @@ export type ControllerDetails = BaseController &
     bios_boot_method: string;
     bmc: number;
     boot_disk: Disk | null;
+    certificate?: CertificateMetadata;
     commissioning_start_time: string;
     commissioning_status: TestStatus;
     current_commissioning_script_set: number;
