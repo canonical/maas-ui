@@ -28,7 +28,14 @@ const Controllers = (): JSX.Element => {
         controllersURLs.controller.usbDevices(null, true),
         controllersURLs.controller.vlans(null, true),
       ].map((path) => (
-        <Route exact path={path} render={() => <ControllerDetails />} />
+        <Route
+          // using a single key as a workaround for Controller details pages
+          // calling "get" and "setActive" on every route change
+          key="controller-details"
+          exact
+          path={path}
+          render={() => <ControllerDetails />}
+        />
       ))}
       <Route path="*" render={() => <NotFound />} />
     </Switch>
