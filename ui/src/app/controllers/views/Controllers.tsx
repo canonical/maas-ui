@@ -29,8 +29,10 @@ const Controllers = (): JSX.Element => {
         controllersURLs.controller.vlans(null, true),
       ].map((path) => (
         <Route
+          // using a single key as a workaround for Controller details pages
+          // calling "get" and "setActive" on every route change
+          key="controller-details"
           exact
-          key={path}
           path={path}
           render={() => <ControllerDetails />}
         />
