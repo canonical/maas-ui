@@ -10,6 +10,8 @@ import * as serviceWorker from "./serviceWorker";
 
 import { history, store } from "redux-store";
 
+import "./scss/index.scss";
+
 const Root = (): JSX.Element => {
   return (
     <Provider store={store}>
@@ -25,8 +27,6 @@ const Root = (): JSX.Element => {
 };
 
 ReactDOM.render(<Root />, document.getElementById("root"));
-
-require("./scss/index.scss");
 
 export default Root;
 
