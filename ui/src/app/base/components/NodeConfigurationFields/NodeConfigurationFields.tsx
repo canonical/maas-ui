@@ -38,7 +38,7 @@ const NodeConfigurationFields = (): JSX.Element => {
   );
   const { openPortal, closePortal, isOpen, Portal } = usePortal();
   const [newTagName, setNewTagName] = useState<string | null>(null);
-  const allTags = useSelector(tagSelectors.all);
+  const manualTags = useSelector(tagSelectors.getManual);
 
   return (
     <>
@@ -54,7 +54,7 @@ const NodeConfigurationFields = (): JSX.Element => {
             externalSelectedTags={selectedTags}
             name="tags"
             placeholder="Create or remove tags"
-            tagList={allTags}
+            tagList={manualTags}
             onAddNewTag={(name) => {
               setNewTagName(name);
               openPortal(NULL_EVENT);

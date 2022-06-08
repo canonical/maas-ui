@@ -76,6 +76,39 @@ it("can open a create tag form", async () => {
   );
 });
 
+it("does not display automatic tags on the list", async () => {
+  const manualTag = tagFactory({ id: 1, name: "tag1" });
+  const automaticTag = tagFactory({
+    id: 4,
+    name: "automatic-tag",
+    definition: `//node[@class="system"]/vendor = "QEMU"`,
+  });
+  state.tag.items = [manualTag, automaticTag];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <Formik initialValues={{ tags: [] }} onSubmit={jest.fn()}>
+            <NodeConfigurationFields />
+          </Formik>
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+  await userEvent.click(
+    screen.getByRole("textbox", { name: TagFieldLabel.Input })
+  );
+  expect(
+    screen.getByRole("option", { name: manualTag.name })
+  ).toBeInTheDocument();
+  expect(
+    screen.queryByRole("option", {
+      name: automaticTag.name,
+    })
+  ).not.toBeInTheDocument();
+});
+
 it("updates the new tags after creating a tag", async () => {
   const store = mockStore(state);
   const Form = ({ tags }: { tags: Tag[TagMeta.PK][] }) => (
