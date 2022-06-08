@@ -9,9 +9,7 @@ const REACT_BASENAME = process.env.REACT_BASENAME;
 var app = express();
 
 const PROXY_PORT = 8400;
-const UI_PORT = 8401;
-const LEGACY_PORT = 8402;
-const ROOT_PORT = 8404;
+const REACT_PORT = 8401;
 
 app.get(BASENAME, (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
 app.get("/", (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
@@ -42,38 +40,18 @@ app.use(
   })
 );
 
-// Proxy the legacy assets to the Angular client.
-app.use(
-  createProxyMiddleware(`${BASENAME}/assets`, {
-    target: `http://localhost:${LEGACY_PORT}/`,
-  })
-);
-
-// Stop the React HMR from timing out.
+// Proxy the HMR endpoint to the React client.
 app.use(
   createProxyMiddleware("/sockjs-node", {
-    target: `http://localhost:${UI_PORT}/`,
-    ws: true,
-    onProxyReq: (proxyReq, req, res) => {
-      // Return a 404 instead of letting the browser time out or receive
-      // invalid data.
-      res.status(404).send();
-    },
-  })
-);
-
-// Proxy the HMR endpoint to the Angular client.
-app.use(
-  createProxyMiddleware("/sockjs-legacy", {
-    target: `http://localhost:${LEGACY_PORT}/`,
+    target: `http://localhost:${REACT_PORT}/`,
     ws: true,
   })
 );
 
-// Proxy to the single-spa root app.
+// Proxy to the React client.
 app.use(
   createProxyMiddleware("/", {
-    target: `http://localhost:${ROOT_PORT}/`,
+    target: `http://localhost:${REACT_PORT}/`,
   })
 );
 

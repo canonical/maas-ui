@@ -62,10 +62,7 @@ const Root = (): JSX.Element => {
   );
 };
 
-if (process.env.REACT_APP_STANDALONE === "true") {
-  require("@maas-ui/maas-ui-root/dist/assets/css/root-application.css");
-  ReactDOM.render(<Root />, document.getElementById("root"));
-}
+ReactDOM.render(<Root />, document.getElementById("root"));
 
 require("./scss/index.scss");
 
