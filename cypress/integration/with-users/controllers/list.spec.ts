@@ -1,4 +1,4 @@
-import { generateMAASURL } from "../../../utils";
+import { generateMAASURL } from "../../utils";
 
 context("Controller listing", () => {
   beforeEach(() => {
