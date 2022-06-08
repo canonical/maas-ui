@@ -68,3 +68,11 @@ export type CommonActionFormProps<E = null> = {
   processingCount: number;
   viewingDetails: boolean;
 };
+
+type UsabillaConfig =
+  | string
+  | {
+      [x: string]: unknown;
+    };
+
+export type UsabillaLive = (type: string, config?: UsabillaConfig) => void;
