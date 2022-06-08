@@ -587,9 +587,9 @@ dotrun test-ui --watchAll=true
 You can run tests against a single file:
 
 ```shell
-dotrun test-ui MachineTestsTable.test.tsx
-dotrun test-ui MachineTestsTable
-dotrun test-ui --watchAll=true MachineTestsTable
+dotrun test-ui NodeTestsTable.test.tsx
+dotrun test-ui NodeTestsTable
+dotrun test-ui --watchAll=true NodeTestsTable
 ```
 
 To run a single test you can add `.only` to the test case or block.

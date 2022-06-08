@@ -89,7 +89,7 @@ const ControllerDetailsHeader = ({
         },
         {
           label: ControllerDetailsTabLabels.commissioning,
-          url: controllerURLs.controller.commissioning({ id: systemId }),
+          url: controllerURLs.controller.commissioning.index({ id: systemId }),
         },
         {
           label: ControllerDetailsTabLabels.logs,

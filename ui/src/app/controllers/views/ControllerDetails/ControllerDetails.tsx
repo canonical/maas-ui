@@ -103,7 +103,7 @@ const ControllerDetails = (): JSX.Element => {
           />
           <Route
             exact
-            path={controllerURLs.controller.commissioning(null, true)}
+            path={controllerURLs.controller.commissioning.index(null, true)}
             render={() => <ControllerCommissioning systemId={id} />}
           />
           <Route

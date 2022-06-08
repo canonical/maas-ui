@@ -4,13 +4,13 @@ import { Spinner } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 
-import MachineTestsTable from "./MachineTestsTable";
-
+import NodeTestsTable from "app/base/components/node/NodeTestsTable";
 import { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
@@ -41,25 +41,21 @@ const MachineTests = (): JSX.Element => {
     machine?.testing_status.status,
     true
   );
-  useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
-
   const scriptResults = useSelector((state: RootState) =>
     scriptResultSelectors.getByNodeId(state, id)
   );
-
   const hardwareResults = useSelector((state: RootState) =>
     scriptResultSelectors.getHardwareTestingByNodeId(state, id)
   );
-
   const storageResults = useSelector((state: RootState) =>
     scriptResultSelectors.getStorageTestingByNodeId(state, id)
   );
-
   const otherResults = useSelector((state: RootState) =>
     scriptResultSelectors.getOtherTestingByNodeId(state, id)
   );
-
   const loading = useSelector(scriptResultSelectors.loading);
+  useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
+  const isDetails = isMachineDetails(machine);
 
   useEffect(() => {
     if (
@@ -76,7 +72,7 @@ const MachineTests = (): JSX.Element => {
     }
   }, [dispatch, previousTestingStatus, scriptResults, loading, machine, id]);
 
-  if (isId(id) && scriptResults?.length) {
+  if (isId(id) && isDetails && scriptResults?.length) {
     return (
       <div>
         {hardwareResults?.length && hardwareResults.length > 0
@@ -100,8 +96,8 @@ const MachineTests = (): JSX.Element => {
                     {title && (
                       <h5 data-testid="hardware-device-heading">{title}</h5>
                     )}
-                    <MachineTestsTable
-                      machineId={id}
+                    <NodeTestsTable
+                      node={machine}
                       scriptResults={scriptResults}
                     />
                   </div>
@@ -131,8 +127,8 @@ const MachineTests = (): JSX.Element => {
                 return (
                   <div key={physical_blockdevice}>
                     {title && <h5 data-testid="storage-heading">{title}</h5>}
-                    <MachineTestsTable
-                      machineId={id}
+                    <NodeTestsTable
+                      node={machine}
                       scriptResults={scriptResults}
                     />
                   </div>
@@ -148,8 +144,8 @@ const MachineTests = (): JSX.Element => {
               ([hardware_type, scriptResults]: [string, ScriptResult[]]) => {
                 return (
                   <div key={hardware_type}>
-                    <MachineTestsTable
-                      machineId={id}
+                    <NodeTestsTable
+                      node={machine}
                       scriptResults={scriptResults}
                     />
                   </div>

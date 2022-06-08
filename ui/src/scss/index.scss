@@ -90,9 +90,10 @@
 @import "~app/base/components/Meter";
 @import "~app/base/components/node/networking/NetworkTable";
 @import "~app/base/components/node/NodeDevices";
-@import "~app/base/components/node/OverviewCard";
 @import "~app/base/components/node/NodeLogs/DownloadMenu";
 @import "~app/base/components/node/NodeLogs/EventLogs/EventLogsTable";
+@import "~app/base/components/node/NodeTestsTable";
+@import "~app/base/components/node/OverviewCard";
 @import "~app/base/components/NodeName";
 @import "~app/base/components/NodeSummaryNetworkCard/NetworkCardTable";
 @import "~app/base/components/NotificationGroup";
@@ -123,6 +124,7 @@
 @include NetworkTable;
 @include NodeDevices;
 @include NodeName;
+@include NodeTestsTable;
 @include NotificationGroup;
 @include OverviewCard;
 @include Placeholder;
@@ -226,13 +228,11 @@
 @import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
-@import "~app/machines/views/MachineDetails/MachineTests/MachineTestsTable";
 @import "~app/machines/views/MachineList";
 @include CloneFormFields;
 @include CloneResults;
 @include MachineList;
 @include MachineSummary;
-@include MachineTestsTable;
 @include MarkBrokenFormFields;
 @include NumaCard;
 @include SourceMachineSelect;

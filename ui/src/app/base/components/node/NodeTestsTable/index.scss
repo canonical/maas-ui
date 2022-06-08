@@ -1,5 +1,5 @@
-@mixin MachineTestsTable {
-  .p-table--machine-tests-table {
+@mixin NodeTestsTable {
+  .node-tests-table {
     .suppress-col {
       flex: 0 0 5rem;
     }
