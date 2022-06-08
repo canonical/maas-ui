@@ -1,4 +1,4 @@
-import { generateMac } from "../../utils";
+import { generateMAASURL, generateMac } from "../../utils";
 
 context("Device listing", () => {
   beforeEach(() => {

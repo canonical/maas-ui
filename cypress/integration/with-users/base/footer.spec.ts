@@ -1,4 +1,4 @@
-import { generateMAASURL } from "../../../utils";
+import { generateMAASURL } from "../../utils";
 
 declare global {
   interface Window {
