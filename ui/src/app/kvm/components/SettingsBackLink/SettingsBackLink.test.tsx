@@ -23,7 +23,7 @@ describe("SettingsBackLink", () => {
     const expectedReturnURL = "/kvm/lxd/cluster/20/hosts";
     const locationState = { from: expectedReturnURL };
     const history = createMemoryHistory();
-    history.push(`/MAAS/r${expectedReturnURL}`, locationState);
+    history.push(`/MAAS/${expectedReturnURL}`, locationState);
 
     const wrapper = mount(
       <Router history={history}>

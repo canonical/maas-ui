@@ -40,15 +40,15 @@ describe("utils", () => {
 
   describe("generateNewURL", () => {
     it("can generate react urls", () => {
-      expect(generateNewURL("/machines")).toBe("/MAAS/r/machines");
+      expect(generateNewURL("/machines")).toBe("/MAAS/machines");
     });
 
     it("can generate base react urls", () => {
-      expect(generateNewURL()).toBe("/MAAS/r");
+      expect(generateNewURL()).toBe("/MAAS");
     });
 
     it("can generate react urls without a base", () => {
-      expect(generateNewURL("/machines", false)).toBe("/r/machines");
+      expect(generateNewURL("/machines", false)).toBe("/machines");
     });
   });
 
@@ -62,12 +62,12 @@ describe("utils", () => {
   describe("navigateToNew", () => {
     it("can navigate to react routes", () => {
       navigateToNew("/machines");
-      expect(pushState).toHaveBeenCalledWith(null, null, "/MAAS/r/machines");
+      expect(pushState).toHaveBeenCalledWith(null, null, "/MAAS/machines");
     });
 
     it("can navigate to react routes", () => {
       navigateToNew("/machines");
-      expect(pushState).toHaveBeenCalledWith(null, null, "/MAAS/r/machines");
+      expect(pushState).toHaveBeenCalledWith(null, null, "/MAAS/machines");
     });
 
     it("prevents default if this is a normal click", () => {
@@ -75,7 +75,7 @@ describe("utils", () => {
       const mouseEvent = new MouseEvent("click", { button: 0 });
       mouseEvent.preventDefault = preventDefault;
       navigateToNew("/machines", mouseEvent);
-      expect(pushState).toHaveBeenCalledWith(null, null, "/MAAS/r/machines");
+      expect(pushState).toHaveBeenCalledWith(null, null, "/MAAS/machines");
       expect(preventDefault).toHaveBeenCalled();
     });
 

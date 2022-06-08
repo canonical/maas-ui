@@ -11,7 +11,7 @@ exports[`NotFound  can render 1`] = `
       Error: Page not found.
     </h2>
     <p>
-      The requested URL /MAAS/r was not found on this server.
+      The requested URL /MAAS/ was not found on this server.
     </p>
   </div>
 </NotFound>

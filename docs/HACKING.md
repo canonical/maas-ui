@@ -512,7 +512,7 @@ dd if=/dev/zero of=windows-dd bs=512 count=10000
 
 You will need to log in to the CLI (if you haven't before).
 
-You will be prompted for you API key which you can get from `<your-maas-url>:5240/MAAS/r/account/prefs/api-keys`.
+You will be prompted for you API key which you can get from `<your-maas-url>:5240/MAAS/account/prefs/api-keys`.
 
 #### Development MAAS
 

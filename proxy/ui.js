@@ -11,10 +11,9 @@ var app = express();
 const PROXY_PORT = 8400;
 const UI_PORT = 8401;
 
-app.get(BASENAME, (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
-app.get("/", (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
-app.get(`${BASENAME}/`, (req, res) =>
-  res.redirect(`${BASENAME}${REACT_BASENAME}`)
+app.get("/", (req, res) => res.redirect(`${BASENAME}`));
+app.get(`${BASENAME}${REACT_BASENAME}`, (req, res) =>
+  res.redirect(`${BASENAME}`)
 );
 
 // Proxy API endpoints to the MAAS.

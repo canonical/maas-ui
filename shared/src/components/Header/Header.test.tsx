@@ -153,7 +153,7 @@ describe("Header", () => {
         generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/settings",
+            pathname: "/MAAS/settings",
           } as Location
         }
         logout={jest.fn()}
@@ -176,7 +176,7 @@ describe("Header", () => {
         generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/machines",
+            pathname: "/MAAS/machines",
           } as Location
         }
         logout={jest.fn()}
@@ -199,7 +199,7 @@ describe("Header", () => {
         generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/pools",
+            pathname: "/MAAS/pools",
           } as Location
         }
         logout={jest.fn()}
@@ -222,7 +222,7 @@ describe("Header", () => {
         generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/tags",
+            pathname: "/MAAS/tags",
           } as Location
         }
         logout={jest.fn()}
@@ -245,7 +245,7 @@ describe("Header", () => {
         generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/tag/1",
+            pathname: "/MAAS/tag/1",
           } as Location
         }
         logout={jest.fn()}

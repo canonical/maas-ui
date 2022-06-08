@@ -30,7 +30,7 @@ module.exports = merge(common, {
     },
     historyApiFallback: true,
     host: "0.0.0.0",
-    open: ["http://0.0.0.0:8400/MAAS/r/machines"],
+    open: ["http://0.0.0.0:8400/MAAS/machines"],
     port: 8404,
   },
 });

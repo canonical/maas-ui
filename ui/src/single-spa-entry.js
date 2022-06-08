@@ -31,7 +31,7 @@ export const mount = (props) => {
   // The app should never reach this entrypoint without the basename and react
   // path set, but to prevent possible future problems this sets the path if
   // there isn't one already.
-  const baseURL = `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`;
+  const baseURL = `${process.env.REACT_APP_BASENAME}`;
   let currentURL = location.startsWith(baseURL) ? location : baseURL;
   // When the app is mounted there needs to be a history change so that
   // react-router updates with the new url. This is re-queried when navigating

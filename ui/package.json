@@ -65,7 +65,7 @@
     "serve": "yarn run start",
     "build": "REACT_APP_STANDALONE=false react-app-rewired build && rm -rf dist && mv build dist",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
-    "test": "TZ=UTC react-scripts test --testURL http://example.com/MAAS/r",
+    "test": "TZ=UTC react-scripts test --testURL http://example.com/MAAS/",
     "eject": "react-scripts eject",
     "lint": "yarn lint-package-json && yarn lint-js",
     "lint-js": "eslint src",

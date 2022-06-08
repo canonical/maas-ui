@@ -6,7 +6,7 @@ const { merge } = require("webpack-merge");
 
 const common = require("./webpack.common.js");
 
-const publicPath = "/MAAS/r/";
+const publicPath = "/MAAS/";
 
 const getStylesheet = (dir) => {
   const outputPath = path.resolve(process.cwd(), dir);

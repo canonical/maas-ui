@@ -13,7 +13,7 @@ export const generateLegacyURL = (route?: Route): string =>
   `${BASENAME}${LEGACY_BASENAME}${route || ""}`;
 
 export const generateNewURL = (route?: Route, appendBase = true): string =>
-  `${appendBase ? BASENAME : ""}${REACT_BASENAME}${route || ""}`;
+  `${appendBase ? BASENAME : ""}${route || ""}`;
 
 export const generateBaseURL = (route?: Route): string =>
   `${BASENAME}${route || ""}`;

@@ -18,7 +18,7 @@ import WebSocketClient from "./websocket-client";
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
     history: createBrowserHistory({
-      basename: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`,
+      basename: `${process.env.REACT_APP_BASENAME}`,
     }),
   });
 
