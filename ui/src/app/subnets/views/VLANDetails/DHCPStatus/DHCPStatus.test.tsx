@@ -1,4 +1,3 @@
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -219,9 +218,8 @@ it("renders correctly when a VLAN has MAAS-configured DHCP without high availabi
     within(dhcpStatus).getByRole("link", { name: /primary-rack/i })
   ).toHaveAttribute(
     "href",
-    generateLegacyURL(
-      controllersURLs.controller.index({ id: controller.system_id })
-    )
+
+    controllersURLs.controller.index({ id: controller.system_id })
   );
 });
 
@@ -267,16 +265,14 @@ it("renders correctly when a VLAN has MAAS-configured DHCP with high availabilit
     within(dhcpStatus).getByRole("link", { name: /primary-rack/i })
   ).toHaveAttribute(
     "href",
-    generateLegacyURL(
-      controllersURLs.controller.index({ id: primaryRack.system_id })
-    )
+
+    controllersURLs.controller.index({ id: primaryRack.system_id })
   );
   expect(
     within(dhcpStatus).getByRole("link", { name: /secondary-rack/i })
   ).toHaveAttribute(
     "href",
-    generateLegacyURL(
-      controllersURLs.controller.index({ id: secondaryRack.system_id })
-    )
+
+    controllersURLs.controller.index({ id: secondaryRack.system_id })
   );
 });

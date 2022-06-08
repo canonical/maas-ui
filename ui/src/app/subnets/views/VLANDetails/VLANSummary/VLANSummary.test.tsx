@@ -1,4 +1,3 @@
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
@@ -89,9 +88,7 @@ it("renders correct details", () => {
     within(vlanSummary).getByRole("link", { name: /controller-abc/i })
   ).toHaveAttribute(
     "href",
-    generateLegacyURL(
-      controllersURLs.controller.index({ id: controller.system_id })
-    )
+    controllersURLs.controller.index({ id: controller.system_id })
   );
 });
 

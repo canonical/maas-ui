@@ -1,7 +1,7 @@
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerLink from "./ControllerLink";
@@ -24,7 +24,9 @@ it("handles when controllers are loading", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ControllerLink systemId="abc123" />
+        <CompatRouter>
+          <ControllerLink systemId="abc123" />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -40,7 +42,9 @@ it("handles when a controller does not exist", () => {
   const { container } = render(
     <Provider store={store}>
       <MemoryRouter>
-        <ControllerLink systemId="abc123" />
+        <CompatRouter>
+          <ControllerLink systemId="abc123" />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -60,7 +64,9 @@ it("renders a link if controllers have loaded and it exists", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <ControllerLink systemId={controller.system_id} />
+        <CompatRouter>
+          <ControllerLink systemId={controller.system_id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -69,8 +75,6 @@ it("renders a link if controllers have loaded and it exists", () => {
   expect(link).toHaveTextContent("bolla.maas");
   expect(link).toHaveAttribute(
     "href",
-    generateLegacyURL(
-      controllersURLs.controller.index({ id: controller.system_id })
-    )
+    controllersURLs.controller.index({ id: controller.system_id })
   );
 });

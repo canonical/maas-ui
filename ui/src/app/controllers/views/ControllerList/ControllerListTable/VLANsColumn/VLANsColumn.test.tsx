@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { VLANsColumn } from "./VLANsColumn";
@@ -41,7 +42,9 @@ describe("VLANsColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
         >
-          <VLANsColumn systemId="abc123" />
+          <CompatRouter>
+            <VLANsColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -55,7 +58,9 @@ describe("VLANsColumn", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
         >
-          <VLANsColumn systemId="abc123" />
+          <CompatRouter>
+            <VLANsColumn systemId="abc123" />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

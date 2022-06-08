@@ -1,7 +1,7 @@
-import { generateLegacyURL } from "@maas-ui/maas-ui-shared";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VLANControllers from "./VLANControllers";
@@ -54,7 +54,9 @@ it("displays a spinner when loading controllers", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANControllers id={vlan.id} />
+        <CompatRouter>
+          <VLANControllers id={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
@@ -66,16 +68,18 @@ it("renders correct details", () => {
   render(
     <Provider store={store}>
       <MemoryRouter>
-        <VLANControllers id={vlan.id} />
+        <CompatRouter>
+          <VLANControllers id={vlan.id} />
+        </CompatRouter>
       </MemoryRouter>
     </Provider>
   );
   expect(screen.getByRole("link", { name: /controller-abc/i })).toHaveAttribute(
     "href",
-    generateLegacyURL(controllersURLs.controller.index({ id: "abc123" }))
+    controllersURLs.controller.index({ id: "abc123" })
   );
   expect(screen.getByRole("link", { name: /controller-def/i })).toHaveAttribute(
     "href",
-    generateLegacyURL(controllersURLs.controller.index({ id: "def456" }))
+    controllersURLs.controller.index({ id: "def456" })
   );
 });

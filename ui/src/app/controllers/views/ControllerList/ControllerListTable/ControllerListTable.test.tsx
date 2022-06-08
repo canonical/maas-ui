@@ -2,6 +2,7 @@ import type { ReactWrapper } from "enzyme";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerListTable from "./ControllerListTable";
@@ -37,16 +38,18 @@ describe("ControllerListTable", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
-          <ControllerListTable
-            controllers={[controller]}
-            onSelectedChange={jest.fn()}
-            selectedIDs={[]}
-          />
+          <CompatRouter>
+            <ControllerListTable
+              controllers={[controller]}
+              onSelectedChange={jest.fn()}
+              selectedIDs={[]}
+            />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
 
-    expect(wrapper.find("LegacyLink").at(0).prop("route")).toBe(
+    expect(wrapper.find("Link").at(0).prop("to")).toBe(
       controllersURLs.controller.index({ id: controller.system_id })
     );
   });
@@ -65,11 +68,13 @@ describe("ControllerListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <ControllerListTable
-              controllers={controllers}
-              onSelectedChange={jest.fn()}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <ControllerListTable
+                controllers={controllers}
+                onSelectedChange={jest.fn()}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -105,11 +110,13 @@ describe("ControllerListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <ControllerListTable
-              controllers={controllers}
-              onSelectedChange={jest.fn()}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <ControllerListTable
+                controllers={controllers}
+                onSelectedChange={jest.fn()}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -136,11 +143,13 @@ describe("ControllerListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <ControllerListTable
-              controllers={controllers}
-              onSelectedChange={onSelectedChange}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <ControllerListTable
+                controllers={controllers}
+                onSelectedChange={onSelectedChange}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -160,11 +169,13 @@ describe("ControllerListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <ControllerListTable
-              controllers={controllers}
-              onSelectedChange={onSelectedChange}
-              selectedIDs={["abc123"]}
-            />
+            <CompatRouter>
+              <ControllerListTable
+                controllers={controllers}
+                onSelectedChange={onSelectedChange}
+                selectedIDs={["abc123"]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -187,11 +198,13 @@ describe("ControllerListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <ControllerListTable
-              controllers={controllers}
-              onSelectedChange={onSelectedChange}
-              selectedIDs={[]}
-            />
+            <CompatRouter>
+              <ControllerListTable
+                controllers={controllers}
+                onSelectedChange={onSelectedChange}
+                selectedIDs={[]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
@@ -213,11 +226,13 @@ describe("ControllerListTable", () => {
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter>
-            <ControllerListTable
-              controllers={controllers}
-              onSelectedChange={onSelectedChange}
-              selectedIDs={["abc123", "def456"]}
-            />
+            <CompatRouter>
+              <ControllerListTable
+                controllers={controllers}
+                onSelectedChange={onSelectedChange}
+                selectedIDs={["abc123", "def456"]}
+              />
+            </CompatRouter>
           </MemoryRouter>
         </Provider>
       );
