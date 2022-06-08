@@ -2,8 +2,8 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom-v5-compat";
 
-import LegacyLink from "app/base/components/LegacyLink";
 import controllerURLs from "app/controllers/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
@@ -32,12 +32,10 @@ const ControllerLink = ({ systemId }: Props): JSX.Element | null => {
     return null;
   }
   return (
-    <LegacyLink
-      route={controllerURLs.controller.index({ id: controller.system_id })}
-    >
+    <Link to={controllerURLs.controller.index({ id: controller.system_id })}>
       <strong>{controller.hostname}</strong>
       <span>.{controller.domain.name}</span>
-    </LegacyLink>
+    </Link>
   );
 };
 

@@ -15,7 +15,6 @@ import { Link } from "react-router-dom-v5-compat";
 import DeleteRecordForm from "./DeleteRecordForm";
 import EditRecordForm from "./EditRecordForm";
 
-import LegacyLink from "app/base/components/LegacyLink";
 import controllersURLs from "app/controllers/urls";
 import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
@@ -116,13 +115,13 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
         case NodeType.REGION_CONTROLLER:
         case NodeType.REGION_AND_RACK_CONTROLLER:
           nameCell = (
-            <LegacyLink
-              route={controllersURLs.controller.index({
+            <Link
+              to={controllersURLs.controller.index({
                 id: resource.system_id,
               })}
             >
               {resource.name}
-            </LegacyLink>
+            </Link>
           );
           break;
       }

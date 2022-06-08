@@ -10,6 +10,7 @@ import type {
   ControllerDetails,
   ControllerMeta,
 } from "app/store/controller/types";
+import { isControllerDetails } from "app/store/controller/utils";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
@@ -84,7 +85,7 @@ export const useControllerVLANsTable = ({
   const dispatch = useDispatch();
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
-  ) as ControllerDetails;
+  );
   const fabrics = useSelector(fabricSelectors.all);
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
   const vlans = useSelector(vlanSelectors.all);
@@ -108,7 +109,7 @@ export const useControllerVLANsTable = ({
   }, [dispatch, fabricsLoaded, vlansLoaded, subnetsLoaded]);
 
   useEffect(() => {
-    if (controller && loaded) {
+    if (isControllerDetails(controller) && loaded) {
       setState({
         data: getTableData({ fabrics, vlans, subnets }, controller),
         loaded: true,

@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 import { Spinner } from "@canonical/react-components";
 import { Link } from "react-router-dom-v5-compat";
 
-import LegacyLink from "app/base/components/LegacyLink";
 import controllersURLs from "app/controllers/urls";
 import deviceURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
@@ -44,9 +43,7 @@ const DhcpTarget = ({ nodeId, subnetId }: Props): JSX.Element | null => {
     route = machineURLs.machine.index({ id: nodeId });
   } else if (type === "controller" && nodeId) {
     return (
-      <LegacyLink route={controllersURLs.controller.index({ id: nodeId })}>
-        {name}
-      </LegacyLink>
+      <Link to={controllersURLs.controller.index({ id: nodeId })}>{name}</Link>
     );
   } else if (type === "device" && nodeId) {
     route = deviceURLs.device.index({ id: nodeId });
