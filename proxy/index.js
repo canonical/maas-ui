@@ -2,7 +2,9 @@ require("dotenv-flow").config();
 const path = require("path");
 var express = require("express");
 var { createProxyMiddleware } = require("http-proxy-middleware");
-const { BASENAME, REACT_BASENAME } = require("@maas-ui/maas-ui-shared");
+
+const BASENAME = process.env.BASENAME;
+const REACT_BASENAME = process.env.REACT_BASENAME;
 
 var app = express();
 
