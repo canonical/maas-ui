@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-import { StatusBar as SharedStatusBar } from "@maas-ui/maas-ui-shared";
 import { formatDistance, parse } from "date-fns";
 import { useSelector } from "react-redux";
 
@@ -93,7 +92,23 @@ export const StatusBar = (): JSX.Element | null => {
   }
 
   return (
-    <SharedStatusBar maasName={maasName} status={status} version={version} />
+    <aside className="p-status-bar" aria-label="status bar">
+      <div className="p-status-bar__row u-flex">
+        <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
+          <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>
+          :&nbsp;
+          <span data-testid="status-bar-version">{version}</span>
+        </div>
+        {status && (
+          <div
+            className="p-status-bar__secondary u-flex--grow u-flex--wrap"
+            data-testid="status-bar-status"
+          >
+            {status}
+          </div>
+        )}
+      </div>
+    </aside>
   );
 };
 

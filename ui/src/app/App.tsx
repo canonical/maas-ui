@@ -4,13 +4,14 @@ import { useEffect } from "react";
 import { Notification, isNavigationButton } from "@canonical/react-components";
 import type { NavLink } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { Footer, Header } from "@maas-ui/maas-ui-shared";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useNavigate, Link } from "react-router-dom-v5-compat";
 
 import Routes from "app/Routes";
+import Footer from "app/base/components/Footer";
+import Header from "app/base/components/Header";
 import Login from "app/base/components/Login";
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -154,7 +155,7 @@ export const App = (): JSX.Element => {
         authUser={authUser}
         completedIntro={completedIntro && completedUserIntro}
         debug={debug}
-        enableAnalytics={analyticsEnabled as boolean}
+        enableAnalytics={analyticsEnabled}
         generateNewLink={generateLink}
         location={location}
         logout={() => {
@@ -163,14 +164,14 @@ export const App = (): JSX.Element => {
             window.legacyWS.close();
           }
         }}
-        uuid={uuid as string}
+        uuid={uuid}
         version={version}
       />
       <main id="main-content">{content}</main>
       {version && (
         <Footer
           debug={debug}
-          enableAnalytics={analyticsEnabled as boolean}
+          enableAnalytics={analyticsEnabled}
           version={version}
         />
       )}
