@@ -26,7 +26,11 @@ const Root = (): JSX.Element => {
   );
 };
 
-ReactDOM.render(<Root />, document.getElementById("root"));
+const rootNode = document.getElementById("root");
+
+if (rootNode) {
+  ReactDOM.render(<Root />, rootNode);
+}
 
 export default Root;
 
