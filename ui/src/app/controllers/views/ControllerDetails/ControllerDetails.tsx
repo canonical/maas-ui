@@ -16,6 +16,7 @@ import ControllerVLANs from "./ControllerVLANs";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
+import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { ControllerHeaderContent } from "app/controllers/types";
 import controllerURLs from "app/controllers/urls";
@@ -105,6 +106,20 @@ const ControllerDetails = (): JSX.Element => {
             exact
             path={controllerURLs.controller.commissioning.index(null, true)}
             render={() => <ControllerCommissioning systemId={id} />}
+          />
+          <Route
+            exact
+            path={controllerURLs.controller.commissioning.scriptResult(
+              null,
+              true
+            )}
+            render={() => (
+              <NodeTestDetails
+                getReturnPath={(id) =>
+                  controllerURLs.controller.commissioning.index({ id })
+                }
+              />
+            )}
           />
           <Route
             exact

@@ -9,7 +9,7 @@ type Props = {
   log: ScriptResultData;
 };
 
-const MachineTestsDetailsLogs = ({ log }: Props): JSX.Element => {
+const NodeTestDetailsLogs = ({ log }: Props): JSX.Element => {
   const [activeTab, setActiveTab] =
     useState<keyof ScriptResultData>("combined");
 
@@ -40,4 +40,4 @@ const MachineTestsDetailsLogs = ({ log }: Props): JSX.Element => {
   );
 };
 
-export default MachineTestsDetailsLogs;
+export default NodeTestDetailsLogs;

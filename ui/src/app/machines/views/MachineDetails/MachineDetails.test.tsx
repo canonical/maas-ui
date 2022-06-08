@@ -79,7 +79,7 @@ describe("MachineDetails", () => {
       path: machineURLs.machine.commissioning.index({ id: "abc123" }),
     },
     {
-      component: "MachineTestsDetails",
+      component: "NodeTestDetails",
       route: machineURLs.machine.commissioning.scriptResult(null, true),
       path: machineURLs.machine.commissioning.scriptResult({
         id: "abc123",
@@ -92,7 +92,7 @@ describe("MachineDetails", () => {
       path: machineURLs.machine.testing.index({ id: "abc123" }),
     },
     {
-      component: "MachineTestsDetails",
+      component: "NodeTestDetails",
       route: machineURLs.machine.testing.scriptResult(null, true),
       path: machineURLs.machine.testing.scriptResult({
         id: "abc123",

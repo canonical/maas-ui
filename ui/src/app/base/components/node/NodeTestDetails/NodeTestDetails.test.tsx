@@ -4,7 +4,7 @@ import { MemoryRouter, Route } from "react-router";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import MachineTestsDetails from ".";
+import NodeTestDetails from "./NodeTestDetails";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -17,8 +17,9 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
+const getReturnPath = (id: string) => `/some/url/${id}`;
 
-describe("MachineTestDetails", () => {
+describe("NodeTestDetails", () => {
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -39,23 +40,6 @@ describe("MachineTestDetails", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineTestsDetails />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("displays a spinner when loading", () => {
     state.scriptresult.loading = true;
     const store = mockStore(state);
@@ -65,7 +49,7 @@ describe("MachineTestDetails", () => {
           <CompatRouter>
             <Route
               path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <MachineTestsDetails />}
+              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -83,7 +67,7 @@ describe("MachineTestDetails", () => {
           <CompatRouter>
             <Route
               path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <MachineTestsDetails />}
+              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -104,7 +88,7 @@ describe("MachineTestDetails", () => {
           <CompatRouter>
             <Route
               path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <MachineTestsDetails />}
+              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -138,7 +122,7 @@ describe("MachineTestDetails", () => {
           <CompatRouter>
             <Route
               path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <MachineTestsDetails />}
+              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -169,7 +153,7 @@ describe("MachineTestDetails", () => {
           <CompatRouter>
             <Route
               path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <MachineTestsDetails />}
+              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -199,7 +183,7 @@ describe("MachineTestDetails", () => {
           <CompatRouter>
             <Route
               path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <MachineTestsDetails />}
+              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -241,7 +225,7 @@ describe("MachineTestDetails", () => {
           <CompatRouter>
             <Route
               path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <MachineTestsDetails />}
+              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -254,5 +238,30 @@ describe("MachineTestDetails", () => {
     expect(actions[1].payload.params.data_type).toEqual("stdout");
     expect(actions[2].payload.params.data_type).toEqual("stderr");
     expect(actions[3].payload.params.data_type).toEqual("result");
+  });
+
+  it("renders a return link", () => {
+    const scriptResult = scriptResultFactory({ id: 1 });
+    state.scriptresult.items = [scriptResult];
+    state.nodescriptresult.items = { abc123: [scriptResult.id] };
+
+    const store = mockStore(state);
+
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
+          <CompatRouter>
+            <Route
+              path="/machine/:id/testing/:scriptResultId/details"
+              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("a[data-testid='return-link']").prop("href")).toBe(
+      getReturnPath("abc123")
+    );
   });
 });
