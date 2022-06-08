@@ -15,6 +15,8 @@ import rootSaga from "./root-saga";
 import * as serviceWorker from "./serviceWorker";
 import WebSocketClient from "./websocket-client";
 
+import "./scss/index.scss";
+
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
     history: createBrowserHistory({
@@ -63,8 +65,6 @@ const Root = (): JSX.Element => {
 };
 
 ReactDOM.render(<Root />, document.getElementById("root"));
-
-require("./scss/index.scss");
 
 export default Root;
 
