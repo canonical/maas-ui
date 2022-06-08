@@ -4,7 +4,6 @@ import singleSpaReact from "single-spa-react";
 
 import packageJson from "../package.json";
 import rootComponent from "./index";
-import { BASENAME, REACT_BASENAME } from "@maas-ui/maas-ui-shared";
 
 const reactLifecycles = singleSpaReact({
   React,
@@ -32,7 +31,7 @@ export const mount = (props) => {
   // The app should never reach this entrypoint without the basename and react
   // path set, but to prevent possible future problems this sets the path if
   // there isn't one already.
-  const baseURL = `${BASENAME}${REACT_BASENAME}`;
+  const baseURL = `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`;
   let currentURL = location.startsWith(baseURL) ? location : baseURL;
   // When the app is mounted there needs to be a history change so that
   // react-router updates with the new url. This is re-queried when navigating

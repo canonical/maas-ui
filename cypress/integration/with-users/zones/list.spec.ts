@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../utils";
 
 context("Zones", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/zones"));
+    cy.visit(generateMAASURL("/zones"));
   });
 
   it("renders the correct heading", () => {
@@ -16,7 +16,7 @@ context("Zones", () => {
     cy.get(".p-navigation__item.is-selected a").should(
       "have.attr",
       "href",
-      generateNewURL("/zones")
+      generateMAASURL("/zones")
     );
   });
 });

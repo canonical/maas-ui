@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../utils";
 
 context("Images list", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/images"));
+    cy.visit(generateMAASURL("/images"));
   });
 
   it("renders the correct heading", () => {
@@ -14,7 +14,7 @@ context("Images list", () => {
     cy.get(".p-navigation__item.is-selected a").should(
       "have.attr",
       "href",
-      generateNewURL("/images")
+      generateMAASURL("/images")
     );
   });
 });

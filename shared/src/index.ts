@@ -11,7 +11,6 @@ export {
   navigateToLegacy,
   navigateToNew,
   REACT_BASENAME,
-  useClickOutside,
 } from "./utils";
 export type { Route } from "./utils";
 export type { UsabillaLive } from "./types";

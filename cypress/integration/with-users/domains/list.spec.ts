@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../utils";
 
 context("DNS", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/domains"));
+    cy.visit(generateMAASURL("/domains"));
   });
 
   it("renders the correct heading", () => {
@@ -14,7 +14,7 @@ context("DNS", () => {
     cy.get(".p-navigation__item.is-selected a").should(
       "have.attr",
       "href",
-      generateNewURL("/domains")
+      generateMAASURL("/domains")
     );
   });
 });

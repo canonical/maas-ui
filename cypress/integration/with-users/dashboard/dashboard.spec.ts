@@ -1,9 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
+import { generateMAASURL } from "../../utils";
 
 context("Dashboard", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/dashboard"));
+    cy.visit(generateMAASURL("/dashboard"));
   });
 
   it("renders the correct heading", () => {

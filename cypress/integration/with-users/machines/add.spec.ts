@@ -1,14 +1,13 @@
 import { customAlphabet } from "nanoid";
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
 
-import { generateMac } from "../../utils";
+import { generateMAASURL, generateMac } from "../../utils";
 
 const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
 context("Machine add", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/machines"));
+    cy.visit(generateMAASURL("/machines"));
     cy.get("[data-testid='add-hardware-dropdown'] button").click();
     cy.get(".p-contextual-menu__link").contains("Machine").click();
   });

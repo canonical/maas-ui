@@ -1,6 +1,5 @@
 import { StrictMode } from "react";
 
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
 import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
 import { createBrowserHistory } from "history";
 import ReactDOM from "react-dom";
@@ -19,7 +18,7 @@ import WebSocketClient from "./websocket-client";
 const { createReduxHistory, routerMiddleware, routerReducer } =
   createReduxHistoryContext({
     history: createBrowserHistory({
-      basename: generateNewURL(),
+      basename: `${process.env.REACT_APP_BASENAME}${process.env.REACT_APP_REACT_BASENAME}`,
     }),
   });
 

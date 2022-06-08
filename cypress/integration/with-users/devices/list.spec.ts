@@ -1,10 +1,9 @@
-import { generateNewURL } from "@maas-ui/maas-ui-shared";
 import { generateMac } from "../../utils";
 
 context("Device listing", () => {
   beforeEach(() => {
     cy.login();
-    cy.visit(generateNewURL("/devices"));
+    cy.visit(generateMAASURL("/devices"));
   });
 
   it("renders the correct heading", () => {
@@ -15,7 +14,7 @@ context("Device listing", () => {
     cy.get(".p-navigation__item.is-selected a").should(
       "have.attr",
       "href",
-      generateNewURL("/devices")
+      generateMAASURL("/devices")
     );
   });
 
