@@ -4,22 +4,14 @@
   "private": true,
   "license": "AGPL-3.0",
   "scripts": {
-    "build": "yarn build-shared",
-    "cleanbuild": "yarn clean-all && yarn build-all",
-    "build-all": "CYPRESS_INSTALL_BINARY=0 yarn build-shared && yarn build-legacy && yarn build-ui && yarn build-root && yarn copy-build",
-    "build-root-css": "cd root && [ -f dist/assets/css/root-application.css ] || { yarn install; sass --load-path=../node_modules src/scss/base.scss dist/assets/css/root-application.css; }",
-    "build-shared": "cd shared && yarn install && yarn build",
-    "build-legacy": "cd legacy && yarn install && yarn build",
-    "build-root": "cd root && yarn install && yarn build",
-    "build-ui": "cd ui && yarn install && yarn build",
+    "build": "CYPRESS_INSTALL_BINARY=0 yarn --cwd ui install && yarn --cwd ui build && yarn copy-build",
+    "build-all": "yarn build",
+    "cleanbuild": "yarn clean-all && yarn build",
     "cypress-run": "yarn cypress run",
     "cypress-run-a11y": "yarn cypress run --config integrationFolder=cypress/integration/accessibility",
     "cypress-open": "yarn cypress open",
     "percy": "./cypress/percy.sh",
-    "copy-build": "mkdir -p build && yarn copy-root && yarn copy-legacy-assets && yarn copy-ui-css",
-    "copy-legacy-assets": "cp -R legacy/dist/assets build/",
-    "copy-root": "cp -R root/dist/* build/",
-    "copy-ui-css": "cp ui/dist/static/css/* build/assets/css/",
+    "copy-build": "cp -r ui/build ./build",
     "commit": "git-cz",
     "release": "cd ui && yarn run release",
     "serve": "yarn start",
@@ -37,7 +29,7 @@
     "lint-shared": "cd shared && yarn run lint",
     "lint-root": "cd root && yarn run lint",
     "lint-cypress": "eslint -c cypress/.eslintrc.js \"cypress/**/*.{ts,tsx}\"",
-    "lint": "yarn build-shared && yarn lint-legacy && yarn lint-ui && yarn lint-shared && yarn lint-root && yarn lint-cypress",
+    "lint": "yarn lint-legacy && yarn lint-ui && yarn lint-shared && yarn lint-root && yarn lint-cypress",
     "serve-proxy": "nodemon ./scripts/proxy.js",
     "serve-react": "BROWSER=none PORT=8401 yarn --cwd ui start",
     "show-ready": "wait-on http-get://0.0.0.0:8401 && nodemon ./scripts/proxy-ready.js",
@@ -46,7 +38,7 @@
     "test-legacy": "cd legacy && yarn run test",
     "test-ui": "cd ui && yarn run test --watchAll=false",
     "test-shared": "cd shared && yarn run test",
-    "test": "yarn build-shared && yarn test-legacy && yarn test-ui && yarn test-shared"
+    "test": "yarn test-legacy && yarn test-ui && yarn test-shared"
   },
   "workspaces": {
     "packages": [
@@ -59,7 +51,6 @@
       "**/babel**",
       "**/mini-css-extract-plugin**",
       "**/react-scripts**",
-      "**/react-app-rewired**",
       "**/jest",
       "**/webpack**"
     ]

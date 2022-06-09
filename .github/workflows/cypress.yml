@@ -21,10 +21,8 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           runTests: false
-      - name: Build shared
-        run: |
-          sudo apt install yarn
-          yarn build-shared
+      - name: Install Yarn
+        run: sudo apt install yarn
       - name: Run Cypress tests without a user
         uses: cypress-io/github-action@v2
         with:
@@ -68,10 +66,8 @@ jobs:
       - uses: actions/checkout@main
       - name: Get branch name
         uses: nelonoel/branch-name@v1.0.1
-      - name: Build shared
-        run: |
-          sudo apt install yarn
-          yarn build-shared
+      - name: Install Yarn
+        run: sudo apt install yarn
       - name: Run Cypress docs tests
         uses: cypress-io/github-action@v2
         with:
