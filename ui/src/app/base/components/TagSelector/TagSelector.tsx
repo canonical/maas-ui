@@ -287,7 +287,7 @@ export const TagSelector = ({
                 }
               }
             }}
-            placeholder={selectedTags.length !== tags.length ? placeholder : ""}
+            placeholder={placeholder}
             required={required}
             type="text"
             value={filter}
