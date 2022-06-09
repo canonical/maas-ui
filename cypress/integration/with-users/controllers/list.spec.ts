@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { generateMAASURL } from "../../utils";
 
 context("Controller listing", () => {
@@ -44,12 +45,15 @@ context("Controller listing", () => {
       `${tagName}{enter}`
     );
     cy.findByRole("button", { name: /Create and add to tag changes/ }).click();
+    cy.findByRole("button", { name: /Save changes/ }).click();
 
     cy.findByRole("link", { name: /Summary/ }).click();
-    cy.findByRole("link", { name: tagName }).should("exist");
+    cy.findByTestId("machine-tags").contains(tagName);
 
     // displays the controller listing page filtered by tag on click of the tag name
-    cy.findByRole("link", { name: tagName }).click();
+    cy.findByRole("link", {
+      name: /Controllers/,
+    }).click();
 
     // displays the correct tag in the searchbox
     cy.findByRole("searchbox", { name: /Search/ }).should(
