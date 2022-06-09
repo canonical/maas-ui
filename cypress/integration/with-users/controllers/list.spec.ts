@@ -28,7 +28,7 @@ context("Controller listing", () => {
         cy.findByRole("link").click();
       });
 
-    cy.findByText(/Controller summary/).should("exist");
+    cy.findByText(/Summary/).should("exist");
 
     // can add a tag to the controller
     cy.findByRole("tab", {
@@ -77,7 +77,7 @@ context("Controller listing", () => {
         })
         .should("exist")
     );
-    [/Set zone/i].forEach((name) =>
+    [/Deploy/i].forEach((name) =>
       cy
         .findByRole("button", {
           name,
