@@ -5,7 +5,11 @@ import { useSelector } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
 import controllerSelectors from "app/store/controller/selectors";
-import { isControllerDetails } from "app/store/controller/utils";
+import {
+  isControllerDetails,
+  isRack,
+  isRegionAndRack,
+} from "app/store/controller/utils";
 import { version as versionSelectors } from "app/store/general/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
@@ -87,7 +91,10 @@ export const StatusBar = (): JSX.Element | null => {
         ))}
       </ul>
     );
-  } else if (isControllerDetails(activeController)) {
+  } else if (
+    isControllerDetails(activeController) &&
+    (isRack(activeController) || isRegionAndRack(activeController))
+  ) {
     status = `Last image sync: ${activeController.last_image_sync}`;
   }
 
