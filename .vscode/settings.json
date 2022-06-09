@@ -1,4 +1,4 @@
 {
-  "eslint.workingDirectories": ["ui", "legacy", "shared"],
+  "eslint.workingDirectories": ["ui", "legacy"],
   "cSpell.words": ["lifecycles", "unmount"]
 }
