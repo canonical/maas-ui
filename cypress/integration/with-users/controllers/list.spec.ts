@@ -31,7 +31,7 @@ context("Controller listing", () => {
     cy.findByText(/Summary/).should("exist");
 
     // can add a tag to the controller
-    cy.findByRole("tab", {
+    cy.findByRole("link", {
       name: /Configuration/,
     }).click();
     cy.findAllByRole("button", {
@@ -40,10 +40,12 @@ context("Controller listing", () => {
       .first()
       .click();
 
-    cy.get("input[placeholder='Add a tag']").type(`${tagName}{enter}{esc}`);
-    cy.findByRole("button", { name: /Save changes/ }).click();
+    cy.get("input[placeholder='Create or remove tags']").type(
+      `${tagName}{enter}`
+    );
+    cy.findByRole("button", { name: /Create and add to tag changes/ }).click();
 
-    cy.findByRole("tab", { name: /Controller summary/ }).click();
+    cy.findByRole("link", { name: /Summary/ }).click();
     cy.findByRole("link", { name: tagName }).should("exist");
 
     // displays the controller listing page filtered by tag on click of the tag name
