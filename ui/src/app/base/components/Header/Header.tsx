@@ -1,13 +1,17 @@
+import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
 
-import type { GenerateLink } from "@canonical/react-components";
-import { Theme, Navigation } from "@canonical/react-components";
-import { generateLegacyURL, generateNewURL } from "@maas-ui/maas-ui-shared";
+import type { NavLink } from "@canonical/react-components";
+import {
+  isNavigationButton,
+  Theme,
+  Navigation,
+} from "@canonical/react-components";
 import classNames from "classnames";
 import type { Location as HistoryLocation } from "history";
+import { Link } from "react-router-dom-v5-compat";
 
 type Props = {
-  appendNewBase?: boolean;
   authUser?: {
     id: number;
     is_superuser?: boolean;
@@ -16,7 +20,6 @@ type Props = {
   completedIntro?: boolean;
   debug?: boolean;
   enableAnalytics?: boolean | null;
-  generateNewLink: GenerateLink;
   location: Location | HistoryLocation;
   logout: () => void;
   uuid?: string | null;
@@ -82,20 +85,26 @@ const navLinks: NavItem[] = [
   },
 ];
 
-const generateURL = (
-  url: NavItem["url"],
-  isLegacy: boolean,
-  appendNewBase: boolean
-) => {
-  if (isLegacy) {
-    return generateLegacyURL(url);
-  } else if (appendNewBase) {
-    return generateNewURL(url, appendNewBase);
+const generateLink = (props: NavLink): ReactNode => {
+  if (props.url) {
+    const { isSelected: _, label, url, ...linkProps } = props;
+    return (
+      <Link {...linkProps} to={url}>
+        {label}
+      </Link>
+    );
+  } else if (isNavigationButton(props)) {
+    const { isSelected: _, label, url, ...linkProps } = props;
+    return (
+      // Handle elements that don't need to navigate using react-router
+      // e.g. the logout link.
+      <button {...linkProps}>{label}</button>
+    );
   }
-  return url;
+  return null;
 };
 
-const isSelected = (path: string, link: NavItem, appendNewBase: boolean) => {
+const isSelected = (path: string, link: NavItem) => {
   // Use the provided highlight(s) or just use the url.
   let highlights = link.highlight || link.url;
   // If the provided highlights aren't an array then make them one so that we
@@ -104,19 +113,16 @@ const isSelected = (path: string, link: NavItem, appendNewBase: boolean) => {
     highlights = [highlights];
   }
   // Check if one of the highlight urls matches the current path.
-  return highlights.some(
-    (start) =>
-      // Check the full path, for both legacy/new clients as sometimes the lists
-      // are in one client and the details in the other.
-      path.startsWith(generateURL(start, true, appendNewBase)) ||
-      path.startsWith(generateURL(start, false, appendNewBase))
+  return highlights.some((start) =>
+    // Check the full path, for both legacy/new clients as sometimes the lists
+    // are in one client and the details in the other.
+    path.startsWith(start)
   );
 };
 
 const generateItems = (
   links: NavItem[],
   location: Props["location"],
-  appendNewBase: boolean,
   forHardwareMenu: boolean
 ) => {
   if (forHardwareMenu) {
@@ -131,7 +137,7 @@ const generateItems = (
       "u-hide--hardware-menu-threshold":
         link.inHardwareMenu && !forHardwareMenu,
     }),
-    isSelected: isSelected(path, link, appendNewBase),
+    isSelected: isSelected(path, link),
     key: link.url,
     label: link.label,
     url: link.url,
@@ -139,12 +145,10 @@ const generateItems = (
 };
 
 export const Header = ({
-  appendNewBase = true,
   authUser,
   completedIntro,
   debug,
   enableAnalytics,
-  generateNewLink,
   location,
   logout,
   uuid,
@@ -231,16 +235,16 @@ export const Header = ({
         Skip to main content
       </a>
       <Navigation
-        generateLink={generateNewLink}
+        generateLink={generateLink}
         items={
           showLinks
             ? [
                 {
                   className: "p-navigation__hardware-menu",
-                  items: generateItems(links, location, appendNewBase, true),
+                  items: generateItems(links, location, true),
                   label: "Hardware",
                 },
-                ...generateItems(links, location, appendNewBase, false),
+                ...generateItems(links, location, false),
               ]
             : null
         }
@@ -250,9 +254,8 @@ export const Header = ({
                 ...(showLinks
                   ? [
                       {
-                        isSelected: location.pathname.startsWith(
-                          generateURL("/account/prefs", false, appendNewBase)
-                        ),
+                        isSelected:
+                          location.pathname.startsWith("/account/prefs"),
                         label: authUser.username,
                         url: "/account/prefs",
                       },
@@ -271,9 +274,7 @@ export const Header = ({
         leftNavProps={{ "aria-label": "main" }}
         logo={{
           "aria-label": homepageLink.label,
-          "aria-current": isSelected(path, homepageLink, appendNewBase)
-            ? "page"
-            : undefined,
+          "aria-current": isSelected(path, homepageLink) ? "page" : undefined,
           icon: (
             <svg
               className="p-navigation__logo-icon"

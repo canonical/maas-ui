@@ -1,29 +1,18 @@
-import React from "react";
-
-import { render, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-
-import type { GenerateLink } from "../Navigation";
 
 import { Header } from "./Header";
 
+import { rootState as rootStateFactory } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
+
 describe("Header", () => {
-  let generateURL: GenerateLink;
-
-  beforeEach(() => {
-    generateURL = ({ url, label, isSelected, ...props }) => (
-      <a {...props} href={url}>
-        {label}
-      </a>
-    );
-  });
-
   afterEach(() => {
     jest.resetModules();
   });
 
   it("renders", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -31,14 +20,14 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
             pathname: "/",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/", wrapperProps: { state: rootStateFactory() } }
     );
 
     // header has a role of banner in this context
@@ -61,17 +50,17 @@ describe("Header", () => {
   });
 
   it("can handle a logged out user", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={null}
-        generateNewLink={generateURL}
         location={
           {
             pathname: "/",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/", wrapperProps: { state: rootStateFactory() } }
     );
     expect(screen.getByRole("banner")).toBeInTheDocument();
     const primaryNavigation = screen.getByRole("navigation", {
@@ -90,30 +79,28 @@ describe("Header", () => {
 
   it("can handle logging out", async () => {
     const logout = jest.fn();
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
           is_superuser: true,
           username: "koala",
         }}
-        generateNewLink={({ url, label, isSelected, ...props }) => (
-          <button {...props}>{label}</button>
-        )}
         location={
           {
             pathname: "/",
           } as Location
         }
         logout={logout}
-      />
+      />,
+      { route: "/", wrapperProps: { state: rootStateFactory() } }
     );
     await userEvent.click(screen.getByRole("button", { name: "Log out" }));
     expect(logout).toHaveBeenCalled();
   });
 
   it("hides nav links if not completed intro", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -121,20 +108,18 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={false}
-        generateNewLink={({ url, label, isSelected, ...props }) => (
-          <button {...props}>{label}</button>
-        )}
         location={
           {
             pathname: "/",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/", wrapperProps: { state: rootStateFactory() } }
     );
     const mainNav = screen.getByRole("list", { name: "main" });
     expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
-    const userNav = screen.queryByRole("list", { name: "user" });
+    const userNav = screen.getByRole("list", { name: "user" });
     expect(within(userNav).queryByRole("link")).not.toBeInTheDocument();
     expect(
       within(userNav).getByRole("button", { name: "Log out" })
@@ -142,7 +127,7 @@ describe("Header", () => {
   });
 
   it("can highlight active URL", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -150,14 +135,14 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/settings",
+            pathname: "/settings",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/settings", wrapperProps: { state: rootStateFactory() } }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -165,7 +150,7 @@ describe("Header", () => {
   });
 
   it("highlights machines when active", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -173,14 +158,14 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/machines",
+            pathname: "/machines",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/machines", wrapperProps: { state: rootStateFactory() } }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -188,7 +173,7 @@ describe("Header", () => {
   });
 
   it("highlights machines viewing pools", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -196,14 +181,14 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/pools",
+            pathname: "/pools",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/pools", wrapperProps: { state: rootStateFactory() } }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -211,7 +196,7 @@ describe("Header", () => {
   });
 
   it("highlights machines viewing tags", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -219,14 +204,14 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/tags",
+            pathname: "/tags",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/tags", wrapperProps: { state: rootStateFactory() } }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -234,7 +219,7 @@ describe("Header", () => {
   });
 
   it("highlights machines viewing a tag", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -242,14 +227,14 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/r/tag/1",
+            pathname: "/tag/1",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/tag/1", wrapperProps: { state: rootStateFactory() } }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -257,7 +242,7 @@ describe("Header", () => {
   });
 
   it("can highlight a url with a query param", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -265,15 +250,18 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
             search: "?by=fabric",
-            pathname: "/MAAS/l/networks",
+            pathname: "/networks",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      {
+        route: "/networks?by=fabric",
+        wrapperProps: { state: rootStateFactory() },
+      }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -281,7 +269,7 @@ describe("Header", () => {
   });
 
   it("highlights sub-urls", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -289,14 +277,17 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
-            pathname: "/MAAS/l/machine/abc123",
+            pathname: "/machine/abc123",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      {
+        route: "/machine/abc123",
+        wrapperProps: { state: rootStateFactory() },
+      }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -304,7 +295,7 @@ describe("Header", () => {
   });
 
   it("links from the logo to the dashboard for admins", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -312,14 +303,14 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
             pathname: "/dashboard",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/dashboard", wrapperProps: { state: rootStateFactory() } }
     );
     expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
       "href",
@@ -328,7 +319,7 @@ describe("Header", () => {
   });
 
   it("links from the logo to the machine list for non admins", () => {
-    render(
+    renderWithBrowserRouter(
       <Header
         authUser={{
           id: 99,
@@ -336,14 +327,14 @@ describe("Header", () => {
           username: "koala",
         }}
         completedIntro={true}
-        generateNewLink={generateURL}
         location={
           {
             pathname: "/",
           } as Location
         }
         logout={jest.fn()}
-      />
+      />,
+      { route: "/", wrapperProps: { state: rootStateFactory() } }
     );
     expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
       "href",
