@@ -24,7 +24,7 @@ const urls = {
   vlan: {
     index: argPath<{ id: VLAN[VLANMeta.PK] }>("/vlan/:id"),
   },
-};
+} as const;
 
 const getFabricLink = (id?: Fabric["id"]): string | null =>
   isId(id) ? urls.fabric.index({ id }) : null;

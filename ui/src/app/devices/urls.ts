@@ -13,6 +13,6 @@ const urls = {
     network: argPath<{ id: Device[DeviceMeta.PK] }>("/device/:id/network"),
     summary: argPath<{ id: Device[DeviceMeta.PK] }>("/device/:id/summary"),
   },
-};
+} as const;
 
 export default urls;

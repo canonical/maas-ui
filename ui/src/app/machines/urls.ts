@@ -46,6 +46,6 @@ const urls = {
       "/machine/:id/usb-devices"
     ),
   },
-};
+} as const;
 
 export default urls;
