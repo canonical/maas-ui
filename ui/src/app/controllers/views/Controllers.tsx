@@ -19,6 +19,7 @@ const Controllers = (): JSX.Element => {
       />
       {[
         controllersURLs.controller.commissioning.index(null, true),
+        controllersURLs.controller.commissioning.scriptResult(null, true),
         controllersURLs.controller.configuration(null, true),
         controllersURLs.controller.index(null, true),
         controllersURLs.controller.logs.index(null, true),

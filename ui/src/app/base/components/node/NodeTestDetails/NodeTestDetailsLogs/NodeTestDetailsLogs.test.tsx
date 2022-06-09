@@ -1,14 +1,14 @@
 import { mount } from "enzyme";
 
-import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
+import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
 
 import { scriptResultData as scriptResultDataFactory } from "testing/factories";
 
-describe("MachineTestsDetailsLogs", () => {
+describe("NodeTestDetailsLogs", () => {
   it("displays combined content by default", () => {
     const log = scriptResultDataFactory();
 
-    const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
+    const wrapper = mount(<NodeTestDetailsLogs log={log} />);
 
     expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
       "combined content"
@@ -18,7 +18,7 @@ describe("MachineTestsDetailsLogs", () => {
   it("displays other content on click", () => {
     const log = scriptResultDataFactory();
 
-    const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
+    const wrapper = mount(<NodeTestDetailsLogs log={log} />);
     wrapper.find("a[data-testid='tab-link-yaml']").simulate("click");
 
     expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
@@ -29,7 +29,7 @@ describe("MachineTestsDetailsLogs", () => {
   it("displays 'no data' for empty content", () => {
     const log = scriptResultDataFactory();
 
-    const wrapper = mount(<MachineTestsDetailsLogs log={log} />);
+    const wrapper = mount(<NodeTestDetailsLogs log={log} />);
     wrapper.find("a[data-testid='tab-link-stderr']").simulate("click");
 
     expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
