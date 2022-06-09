@@ -5,6 +5,7 @@
   "license": "AGPL-3.0",
   "scripts": {
     "build": "CYPRESS_INSTALL_BINARY=0 yarn --cwd ui install && yarn --cwd ui build && yarn copy-build",
+    "build-shared": "cd shared && yarn install && yarn build",
     "build-all": "yarn build",
     "cleanbuild": "yarn clean-all && yarn build",
     "cypress-run": "yarn cypress run",
@@ -29,7 +30,7 @@
     "lint-shared": "cd shared && yarn run lint",
     "lint-root": "cd root && yarn run lint",
     "lint-cypress": "eslint -c cypress/.eslintrc.js \"cypress/**/*.{ts,tsx}\"",
-    "lint": "yarn lint-legacy && yarn lint-ui && yarn lint-shared && yarn lint-root && yarn lint-cypress",
+    "lint": "yarn build-shared && yarn lint-legacy && yarn lint-ui && yarn lint-shared && yarn lint-root && yarn lint-cypress",
     "serve-proxy": "nodemon ./scripts/proxy.js",
     "serve-react": "BROWSER=none PORT=8401 yarn --cwd ui start",
     "show-ready": "wait-on http-get://0.0.0.0:8401 && nodemon ./scripts/proxy-ready.js",
@@ -38,7 +39,7 @@
     "test-legacy": "cd legacy && yarn run test",
     "test-ui": "cd ui && yarn run test --watchAll=false",
     "test-shared": "cd shared && yarn run test",
-    "test": "yarn test-legacy && yarn test-ui && yarn test-shared"
+    "test": "yarn build-shared && yarn test-legacy && yarn test-ui && yarn test-shared"
   },
   "workspaces": {
     "packages": [
