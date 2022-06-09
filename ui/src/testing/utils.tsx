@@ -13,6 +13,7 @@ import configureStore from "redux-mock-store";
 import FormikForm from "app/base/components/FormikForm";
 import type { AnyObject } from "app/base/types";
 import type { RootState } from "app/store/root/types";
+import { rootState as rootStateFactory } from "testing/factories";
 
 /**
  * Assert that some JSX from Enzyme is equal to some provided JSX.
@@ -101,7 +102,7 @@ export const submitFormikForm = (
   }
 };
 
-type WrapperProps = { state: RootState };
+type WrapperProps = { state?: RootState };
 
 const BrowserRouterWithProvider = ({
   children,
@@ -113,7 +114,7 @@ const BrowserRouterWithProvider = ({
   };
 
   return (
-    <Provider store={getMockStore(state)}>
+    <Provider store={getMockStore(state || rootStateFactory())}>
       <BrowserRouter>
         <CompatRouter>{children}</CompatRouter>
       </BrowserRouter>
@@ -129,13 +130,17 @@ const WithMockStoreProvider = ({
     const mockStore = configureStore();
     return mockStore(state);
   };
-  return <Provider store={getMockStore(state)}>{children}</Provider>;
+  return (
+    <Provider store={getMockStore(state || rootStateFactory())}>
+      {children}
+    </Provider>
+  );
 };
 
 export const renderWithBrowserRouter = (
   ui: React.ReactElement,
   options: RenderOptions & {
-    wrapperProps: WrapperProps;
+    wrapperProps?: WrapperProps;
     route?: string;
   }
 ): RenderResult => {
@@ -152,7 +157,7 @@ export const renderWithBrowserRouter = (
 export const renderWithMockStore = (
   ui: React.ReactElement,
   options: RenderOptions & {
-    state: RootState;
+    state?: RootState;
   }
 ): RenderResult => {
   const rendered = render(ui, {
