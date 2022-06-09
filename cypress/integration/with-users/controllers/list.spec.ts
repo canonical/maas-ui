@@ -41,6 +41,7 @@ context("Controller listing", () => {
       .first()
       .click();
 
+    cy.findByRole("form", { name: /Controller configuration/ }).should("exist");
     cy.get("input[placeholder='Create or remove tags']").type(
       `${tagName}{enter}`
     );
