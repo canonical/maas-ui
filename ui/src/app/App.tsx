@@ -1,13 +1,12 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Notification, isNavigationButton } from "@canonical/react-components";
-import type { NavLink } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { useNavigate, Link } from "react-router-dom-v5-compat";
+import { useNavigate } from "react-router-dom-v5-compat";
 
 import Routes from "app/Routes";
 import Footer from "app/base/components/Footer";
@@ -33,25 +32,6 @@ declare global {
     legacyWS: WebSocket;
   }
 }
-
-const generateLink = (props: NavLink) => {
-  if (props.url) {
-    const { isSelected: _, label, url, ...linkProps } = props;
-    return (
-      <Link {...linkProps} to={url}>
-        {label}
-      </Link>
-    );
-  } else if (isNavigationButton(props)) {
-    const { isSelected: _, label, url, ...linkProps } = props;
-    return (
-      // Handle elements that don't need to navigate using react-router
-      // e.g. the logout link.
-      <button {...linkProps}>{label}</button>
-    );
-  }
-  return null;
-};
 
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -151,12 +131,10 @@ export const App = (): JSX.Element => {
   return (
     <div id="maas-ui">
       <Header
-        appendNewBase={false}
         authUser={authUser}
         completedIntro={completedIntro && completedUserIntro}
         debug={debug}
         enableAnalytics={analyticsEnabled}
-        generateNewLink={generateLink}
         location={location}
         logout={() => {
           dispatch(statusActions.logout());
