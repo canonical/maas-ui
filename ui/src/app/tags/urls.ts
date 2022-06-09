@@ -11,6 +11,6 @@ const urls = {
     machines: argPath<{ id: Tag[TagMeta.PK] }>("/tag/:id/machines"),
     update: argPath<{ id: Tag[TagMeta.PK] }>("/tag/:id/edit"),
   },
-};
+} as const;
 
 export default urls;

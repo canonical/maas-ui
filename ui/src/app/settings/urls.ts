@@ -65,6 +65,6 @@ const urls = {
     edit: argPath<{ id: User["id"] }>("/settings/users/:id/edit"),
     index: "/settings/users",
   },
-};
+} as const;
 
 export default urls;

@@ -53,6 +53,6 @@ const urls = {
       "/controller/:id/vlans"
     ),
   },
-};
+} as const;
 
 export default urls;

@@ -51,6 +51,6 @@ const urls = {
       resources: argPath<{ id: BasePod["id"] }>("/kvm/virsh/:id/resources"),
     },
   },
-};
+} as const;
 
 export default urls;

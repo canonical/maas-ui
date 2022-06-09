@@ -11,6 +11,8 @@ import classNames from "classnames";
 import type { Location as HistoryLocation } from "history";
 import { Link } from "react-router-dom-v5-compat";
 
+import urls from "app/base/urls";
+
 type Props = {
   authUser?: {
     id: number;
@@ -39,49 +41,49 @@ const navLinks: NavItem[] = [
     highlight: ["/machine", "/pool", "/tag"],
     inHardwareMenu: true,
     label: "Machines",
-    url: "/machines",
+    url: urls.machines.machines.index,
   },
   {
     highlight: "/device",
     inHardwareMenu: true,
     label: "Devices",
-    url: "/devices",
+    url: urls.devices.devices.index,
   },
   {
     adminOnly: true,
     highlight: "/controller",
     inHardwareMenu: true,
     label: "Controllers",
-    url: "/controllers",
+    url: urls.controllers.controllers.index,
   },
   {
     inHardwareMenu: true,
     label: "KVM",
-    url: "/kvm",
+    url: urls.kvm.kvm,
   },
   {
     label: "Images",
-    url: "/images",
+    url: urls.images.index,
   },
   {
     highlight: "/domain",
     label: "DNS",
-    url: "/domains",
+    url: urls.domains.domains,
   },
   {
     highlight: "/zone",
     label: "AZs",
-    url: "/zones",
+    url: urls.zones.index,
   },
   {
     highlight: ["/networks", "/subnet", "/space", "/fabric", "/vlan"],
     label: "Subnets",
-    url: "/networks?by=fabric",
+    url: urls.subnets.index,
   },
   {
     adminOnly: true,
     label: "Settings",
-    url: "/settings",
+    url: urls.settings.index,
   },
 ];
 
