@@ -3,7 +3,6 @@ import userEvent from "@testing-library/user-event";
 
 import { Header } from "./Header";
 
-import { rootState as rootStateFactory } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
 describe("Header", () => {
@@ -27,7 +26,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/", wrapperProps: { state: rootStateFactory() } }
+      { route: "/" }
     );
 
     // header has a role of banner in this context
@@ -60,7 +59,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/", wrapperProps: { state: rootStateFactory() } }
+      { route: "/" }
     );
     expect(screen.getByRole("banner")).toBeInTheDocument();
     const primaryNavigation = screen.getByRole("navigation", {
@@ -93,7 +92,7 @@ describe("Header", () => {
         }
         logout={logout}
       />,
-      { route: "/", wrapperProps: { state: rootStateFactory() } }
+      { route: "/" }
     );
     await userEvent.click(screen.getByRole("button", { name: "Log out" }));
     expect(logout).toHaveBeenCalled();
@@ -115,7 +114,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/", wrapperProps: { state: rootStateFactory() } }
+      { route: "/" }
     );
     const mainNav = screen.getByRole("list", { name: "main" });
     expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
@@ -142,7 +141,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/settings", wrapperProps: { state: rootStateFactory() } }
+      { route: "/settings" }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -165,7 +164,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/machines", wrapperProps: { state: rootStateFactory() } }
+      { route: "/machines" }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -188,7 +187,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/pools", wrapperProps: { state: rootStateFactory() } }
+      { route: "/pools" }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -211,7 +210,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/tags", wrapperProps: { state: rootStateFactory() } }
+      { route: "/tags" }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -234,7 +233,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/tag/1", wrapperProps: { state: rootStateFactory() } }
+      { route: "/tag/1" }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
     expect(currentMenuItem).toBeInTheDocument();
@@ -260,7 +259,6 @@ describe("Header", () => {
       />,
       {
         route: "/networks?by=fabric",
-        wrapperProps: { state: rootStateFactory() },
       }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
@@ -286,7 +284,6 @@ describe("Header", () => {
       />,
       {
         route: "/machine/abc123",
-        wrapperProps: { state: rootStateFactory() },
       }
     );
     const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
@@ -310,7 +307,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/dashboard", wrapperProps: { state: rootStateFactory() } }
+      { route: "/dashboard" }
     );
     expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
       "href",
@@ -334,7 +331,7 @@ describe("Header", () => {
         }
         logout={jest.fn()}
       />,
-      { route: "/", wrapperProps: { state: rootStateFactory() } }
+      { route: "/" }
     );
     expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
       "href",
