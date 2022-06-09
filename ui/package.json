@@ -60,8 +60,7 @@
     "yup": "0.32.11"
   },
   "scripts": {
-    "standalone": "REACT_APP_STANDALONE=true react-scripts start",
-    "start": "REACT_APP_STANDALONE=false react-app-rewired start",
+    "start": "react-scripts start",
     "serve": "yarn run start",
     "build": "REACT_APP_STANDALONE=false react-app-rewired build && rm -rf dist && mv build dist",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",

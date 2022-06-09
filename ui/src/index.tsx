@@ -10,6 +10,8 @@ import * as serviceWorker from "./serviceWorker";
 
 import { history, store } from "redux-store";
 
+import "./scss/index.scss";
+
 const Root = (): JSX.Element => {
   return (
     <Provider store={store}>
@@ -24,12 +26,11 @@ const Root = (): JSX.Element => {
   );
 };
 
-if (process.env.REACT_APP_STANDALONE === "true") {
-  require("@maas-ui/maas-ui-root/dist/assets/css/root-application.css");
-  ReactDOM.render(<Root />, document.getElementById("root"));
-}
+const rootNode = document.getElementById("root");
 
-require("./scss/index.scss");
+if (rootNode) {
+  ReactDOM.render(<Root />, rootNode);
+}
 
 export default Root;
 
