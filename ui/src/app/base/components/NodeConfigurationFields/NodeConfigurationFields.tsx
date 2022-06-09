@@ -59,6 +59,9 @@ const NodeConfigurationFields = (): JSX.Element => {
               setNewTagName(name);
               openPortal(NULL_EVENT);
             }}
+            disabledTags={selectedTags.filter(
+              (tag) => tag.definition.length > 0
+            )}
           />
         </Col>
       </Row>
