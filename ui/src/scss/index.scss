@@ -8,10 +8,7 @@
 // component as it alters the class ordering in Vanilla and may cause
 // regressions.
 @import "vanilla-framework";
-@include vf-b-placeholders;
-@include vf-b-button;
-@include vf-b-grid-definitions;
-@include vf-p-icons-common;
+@include vanilla;
 @include vf-p-icon-back-to-top;
 @include vf-p-icon-begin-downloading;
 @include vf-p-icon-change-version;
@@ -25,9 +22,6 @@
 @include vf-p-icon-success-grey;
 @include vf-p-icon-task-outstanding;
 @include vf-p-icon-unit-running;
-@include vf-p-navigation;
-@include vf-p-lists;
-@include vf-u-baseline-grid;
 
 // Import MAAS overrides of Vanilla patterns
 @import "./vanilla-overrides";

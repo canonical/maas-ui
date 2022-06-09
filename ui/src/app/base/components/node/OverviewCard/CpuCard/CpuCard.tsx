@@ -34,7 +34,7 @@ const CpuCard = ({ node, setHeaderContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__cpu">
       <div className="u-flex--between">
-        <strong className="p-muted-heading">CPU</strong>
+        <strong className="p-muted-heading u-no-margin--bottom">CPU</strong>
         <span>{node.architecture}</span>
       </div>
       <h4 className="u-no-margin--bottom" data-testid="cpu-subtext">

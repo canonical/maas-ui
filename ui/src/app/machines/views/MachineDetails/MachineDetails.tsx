@@ -16,11 +16,11 @@ import StorageNotifications from "./MachineStorage/StorageNotifications";
 import MachineSummary from "./MachineSummary";
 import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
-import MachineTestsDetails from "./MachineTests/MachineTestsDetails/MachineTestsDetails";
 import MachineUSBDevices from "./MachineUSBDevices";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
+import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { MachineHeaderContent } from "app/machines/types";
 import machineURLs from "app/machines/urls";
@@ -140,7 +140,13 @@ const MachineDetails = (): JSX.Element => {
           <Route
             exact
             path={machineURLs.machine.commissioning.scriptResult(null, true)}
-            render={() => <MachineTestsDetails />}
+            render={() => (
+              <NodeTestDetails
+                getReturnPath={(id) =>
+                  machineURLs.machine.commissioning.index({ id })
+                }
+              />
+            )}
           />
           <Route
             exact
@@ -150,7 +156,13 @@ const MachineDetails = (): JSX.Element => {
           <Route
             exact
             path={machineURLs.machine.testing.scriptResult(null, true)}
-            render={() => <MachineTestsDetails />}
+            render={() => (
+              <NodeTestDetails
+                getReturnPath={(id) =>
+                  machineURLs.machine.testing.index({ id })
+                }
+              />
+            )}
           />
           <Route
             path={machineURLs.machine.logs.index(null, true)}

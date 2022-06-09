@@ -2,15 +2,12 @@ import { useEffect, useState } from "react";
 
 import { Col, Row, Spinner, Tooltip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import MachineTestsDetailsLogs from "./MachineTestsDetailsLogs";
+import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
 
 import ScriptStatus from "app/base/components/ScriptStatus";
 import { useGetURLId } from "app/base/hooks/urls";
-import machineURLs from "app/machines/urls";
-import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultSelectors from "app/store/scriptresult/selectors";
@@ -21,12 +18,15 @@ import {
 } from "app/store/scriptresult/types";
 import { isId } from "app/utils";
 
-const MachineTestsDetails = (): JSX.Element | null => {
+type Props = {
+  getReturnPath: (id: string) => string;
+};
+
+const NodeTestDetails = ({ getReturnPath }: Props): JSX.Element | null => {
   const [fetched, setFetched] = useState(false);
   const dispatch = useDispatch();
-  const id = useGetURLId(MachineMeta.PK);
+  const id = useGetURLId("system_id");
   const scriptResultId = useGetURLId(ScriptResultMeta.PK, "scriptResultId");
-  const returnPath = useLocation().pathname.split("/")?.[3];
   const result = useSelector((state: RootState) =>
     scriptResultSelectors.getById(state, scriptResultId)
   );
@@ -62,6 +62,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
 
   if (result) {
     const hasMetrics = result.results.length > 0;
+    const returnPath = getReturnPath(id);
     return (
       <>
         <Row className="u-sv2">
@@ -69,7 +70,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
             <h2 className="p-heading--4">{result.name} details</h2>
           </Col>
           <Col size={4} className="u-align--right">
-            <Link to={`${machineURLs.machine.index({ id })}/${returnPath}`}>
+            <Link data-testid="return-link" to={returnPath}>
               &lsaquo; Back to test results
             </Link>
           </Col>
@@ -133,7 +134,7 @@ const MachineTestsDetails = (): JSX.Element | null => {
           <Row>
             <Col size={12}>
               <h4>Output</h4>
-              <MachineTestsDetailsLogs log={log} />
+              <NodeTestDetailsLogs log={log} />
             </Col>
           </Row>
         ) : null}
@@ -143,4 +144,4 @@ const MachineTestsDetails = (): JSX.Element | null => {
   return null;
 };
 
-export default MachineTestsDetails;
+export default NodeTestDetails;

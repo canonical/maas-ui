@@ -89,8 +89,7 @@ const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
                   pathname: tagURLs.tag.update({ id: tag.id }),
                 }}
               >
-                <Icon className="is-light" name="edit" />{" "}
-                <span>{Label.EditButton}</span>
+                <Icon name="edit" /> <span>{Label.EditButton}</span>
               </Button>
               <Button
                 appearance="negative"

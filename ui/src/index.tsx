@@ -1,52 +1,16 @@
 import { StrictMode } from "react";
 
-import { configureStore, getDefaultMiddleware } from "@reduxjs/toolkit";
-import { createBrowserHistory } from "history";
 import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import { createReduxHistoryContext } from "redux-first-history";
-import createSagaMiddleware from "redux-saga";
 
 import App from "./app/App";
-import createRootReducer from "./root-reducer";
-import rootSaga from "./root-saga";
 import * as serviceWorker from "./serviceWorker";
-import WebSocketClient from "./websocket-client";
 
-const { createReduxHistory, routerMiddleware, routerReducer } =
-  createReduxHistoryContext({
-    history: createBrowserHistory({
-      basename: `${process.env.REACT_APP_BASENAME}`,
-    }),
-  });
+import { history, store } from "redux-store";
 
-const reducer = createRootReducer(routerReducer);
-
-const sagaMiddleware = createSagaMiddleware();
-const checkMiddleware = process.env.REACT_APP_CHECK_MIDDLEWARE === "true";
-const middleware = [
-  ...getDefaultMiddleware({
-    thunk: false,
-    immutableCheck: checkMiddleware,
-    serializableCheck: checkMiddleware,
-  }),
-  sagaMiddleware,
-  routerMiddleware,
-];
-
-export const store = configureStore({
-  reducer,
-  middleware,
-  devTools: process.env.NODE_ENV !== "production",
-});
-
-export const history = createReduxHistory(store);
-
-const websocketClient = new WebSocketClient();
-
-sagaMiddleware.run(rootSaga, websocketClient);
+import "./scss/index.scss";
 
 const Root = (): JSX.Element => {
   return (
@@ -62,12 +26,11 @@ const Root = (): JSX.Element => {
   );
 };
 
-if (process.env.REACT_APP_STANDALONE === "true") {
-  require("@maas-ui/maas-ui-root/dist/assets/css/root-application.css");
-  ReactDOM.render(<Root />, document.getElementById("root"));
-}
+const rootNode = document.getElementById("root");
 
-require("./scss/index.scss");
+if (rootNode) {
+  ReactDOM.render(<Root />, rootNode);
+}
 
 export default Root;
 

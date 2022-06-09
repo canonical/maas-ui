@@ -9,7 +9,7 @@ const REACT_BASENAME = process.env.REACT_BASENAME;
 var app = express();
 
 const PROXY_PORT = 8400;
-const UI_PORT = 8401;
+const REACT_PORT = 8401;
 
 app.get("/", (req, res) => res.redirect(`${BASENAME}`));
 app.get(`${BASENAME}${REACT_BASENAME}`, (req, res) =>
@@ -42,15 +42,15 @@ app.use(
 // Proxy the HMR endpoint to the React client.
 app.use(
   createProxyMiddleware("/sockjs-node", {
-    target: `http://localhost:${UI_PORT}/`,
+    target: `http://localhost:${REACT_PORT}/`,
     ws: true,
   })
 );
 
-// Proxy to the single-spa root app.
+// Proxy to the React client.
 app.use(
   createProxyMiddleware("/", {
-    target: `http://localhost:${UI_PORT}/`,
+    target: `http://localhost:${REACT_PORT}/`,
   })
 );
 

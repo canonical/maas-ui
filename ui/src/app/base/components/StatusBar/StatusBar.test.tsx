@@ -3,7 +3,7 @@ import { screen } from "@testing-library/react";
 import StatusBar from "./StatusBar";
 
 import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import { NodeStatus, NodeType } from "app/store/types/node";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -195,9 +195,10 @@ it("displays correct text for machines with hardware sync enabled and no last_sy
   );
 });
 
-it("displays last image sync timestamp for a controller", () => {
+it("displays last image sync timestamp for a rack or region+rack controller", () => {
   const controller = controllerDetailsFactory({
     last_image_sync: "Thu, 02 Jun. 2022 00:48:41",
+    node_type: NodeType.RACK_CONTROLLER,
   });
   state.controller.active = controller.system_id;
   state.controller.items = [controller];
