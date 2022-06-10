@@ -1,6 +1,5 @@
 import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
-import { generateMAASURL } from "../integration/utils";
 import type { A11yPageContext } from "./index";
 
 Cypress.Commands.add("login", (options) => {

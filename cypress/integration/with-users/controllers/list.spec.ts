@@ -1,4 +1,3 @@
-import { nanoid } from "nanoid";
 import { generateMAASURL } from "../../utils";
 
 context("Controller listing", () => {
