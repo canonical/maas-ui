@@ -20,7 +20,7 @@ context("Controller listing", () => {
   });
 
   it("can add a tag to the controller", () => {
-    const tagName = "new-tag";
+    const tagName = `new-tag-${nanoid}`;
 
     // displays the controller details page on click of the controller name
     cy.findAllByRole("gridcell", { name: "Name" })
