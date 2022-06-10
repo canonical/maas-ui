@@ -5880,11 +5880,6 @@ browserify-zlib@^0.2.0:
   dependencies:
     pako "~1.0.5"
 
-browserslist-config-single-spa@^1.0.1:
-  version "1.0.1"
-  resolved "https://registry.yarnpkg.com/browserslist-config-single-spa/-/browserslist-config-single-spa-1.0.1.tgz#965f1f1606ba44671e649f410d8b8f735a327301"
-  integrity sha512-nqOxTbatv6FcdgBvUTuH4MuojMZwvskspz5Y4dmpVcKd0uaQY8KEl3iALWus16+AwPVe3BIerBNEgELyaHZcQg==
-
 browserslist@4.14.2:
   version "4.14.2"
   resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.14.2.tgz#1b3cec458a1ba87588cc5e9be62f19b6d48813ce"
@@ -16679,18 +16674,6 @@ single-spa-angularjs@4.3.1:
   version "4.3.1"
   resolved "https://registry.yarnpkg.com/single-spa-angularjs/-/single-spa-angularjs-4.3.1.tgz#43d03f2c07db9d6da1366f7234294259af8e1f45"
   integrity sha512-YEEQO1wONnhKBtjZgZpDiOm9oAtJkuy8exl7nYGkM2NFhMpFMrW4+datAZTKn12s7Yis0cV8Zay2vtVsTAg13A==
-
-single-spa-react@4.6.1:
-  version "4.6.1"
-  resolved "https://registry.yarnpkg.com/single-spa-react/-/single-spa-react-4.6.1.tgz#1a1fe605c0ab56d3258d06fde787f1ddef7942f2"
-  integrity sha512-19Yr1f6u9ix/wTI+OVLzX/KJ258xCyfe1Zpw7NKoI02QWBLx5B9l9XmBx9gqVtkrgP5ARR0Wr3ztY7EN8V1DAA==
-  dependencies:
-    browserslist-config-single-spa "^1.0.1"
-
-single-spa@5.9.3:
-  version "5.9.3"
-  resolved "https://registry.yarnpkg.com/single-spa/-/single-spa-5.9.3.tgz#2d151cbb3b273629a5b27b30a3b8ca847dcba4c5"
-  integrity sha512-qMGraRzIBsodV6569Fob4cQ4/yQNrcZ5Achh3SAQDljmqUtjAZ7BAA7GAyO/l5eizb7GtTmVq9Di7ORyKw82CQ==
 
 sisteransi@^1.0.5:
   version "1.0.5"
