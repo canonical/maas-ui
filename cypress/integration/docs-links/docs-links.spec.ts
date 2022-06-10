@@ -1,4 +1,4 @@
-import docsUrls from "@maas-ui/maas-ui/src/app/base/docsUrls";
+import docsUrls from "../../../src/app/base/docsUrls";
 
 const urls = Object.values(docsUrls);
 

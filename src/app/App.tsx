@@ -27,12 +27,6 @@ import { version as versionSelectors } from "app/store/general/selectors";
 import { actions as statusActions } from "app/store/status";
 import status from "app/store/status/selectors";
 
-declare global {
-  interface Window {
-    legacyWS: WebSocket;
-  }
-}
-
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -138,9 +132,6 @@ export const App = (): JSX.Element => {
         location={location}
         logout={() => {
           dispatch(statusActions.logout());
-          if (window.legacyWS) {
-            window.legacyWS.close();
-          }
         }}
         uuid={uuid}
         version={version}
