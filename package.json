@@ -5,7 +5,6 @@
   "license": "AGPL-3.0",
   "scripts": {
     "build": "CYPRESS_INSTALL_BINARY=0 yarn --cwd ui install && yarn --cwd ui build && yarn copy-build",
-    "build-shared": "cd shared && yarn install && yarn build",
     "build-all": "yarn build",
     "cleanbuild": "yarn clean-all && yarn build",
     "cypress-run": "yarn cypress run",
@@ -17,32 +16,28 @@
     "release": "cd ui && yarn run release",
     "serve": "yarn start",
     "clean": "yarn clean-all",
-    "clean-all": "rm -rf build && yarn clean-monorepo && yarn clean-shared && yarn clean-legacy && yarn clean-ui",
+    "clean-all": "rm -rf build && yarn clean-monorepo && yarn clean-legacy && yarn clean-ui",
     "clean-monorepo": "rm -rf node_modules",
     "clean-legacy": "cd legacy && yarn run clean",
     "clean-ui": "cd ui && yarn run clean",
-    "clean-shared": "cd shared && yarn run clean",
     "link-components": "yarn link \"@canonical/react-components\" && yarn link \"react\" && yarn install",
     "unlink-components": "yarn unlink react && yarn unlink \"@canonical/react-components\"",
     "lint-legacy": "cd legacy && yarn run lint",
     "lint-ui": "cd ui && yarn run lint",
-    "lint-shared": "cd shared && yarn run lint",
     "lint-cypress": "eslint -c cypress/.eslintrc.js \"cypress/**/*.{ts,tsx}\"",
-    "lint": "yarn build-shared && yarn lint-legacy && yarn lint-ui && yarn lint-shared && yarn lint-cypress",
+    "lint": "yarn lint-legacy && yarn lint-ui && yarn lint-cypress",
     "serve-proxy": "nodemon ./scripts/proxy.js",
     "serve-react": "BROWSER=none PORT=8401 yarn --cwd ui start",
     "show-ready": "wait-on http-get://0.0.0.0:8401 && nodemon ./scripts/proxy-ready.js",
     "start": "concurrently \"yarn serve-proxy\" \"yarn serve-react\" \"yarn show-ready\"",
-    "test-cypress": "yarn --cwd shared build && start-server-and-test start '8401' serve-base 'tcp:8400' cypress-run",
+    "test-cypress": "start-server-and-test start '8401' serve-base 'tcp:8400' cypress-run",
     "test-legacy": "cd legacy && yarn run test",
     "test-ui": "cd ui && yarn run test --watchAll=false",
-    "test-shared": "cd shared && yarn run test",
-    "test": "yarn build-shared && yarn test-legacy && yarn test-ui && yarn test-shared"
+    "test": "yarn test-ui"
   },
   "workspaces": {
     "packages": [
       "legacy",
-      "shared",
       "ui"
     ],
     "nohoist": [

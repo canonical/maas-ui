@@ -21,10 +21,6 @@ jobs:
         uses: cypress-io/github-action@v2
         with:
           runTests: false
-      - name: Build shared
-        run: |
-          sudo apt install yarn
-          yarn build-shared
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Run cypress-axe accessibility tests

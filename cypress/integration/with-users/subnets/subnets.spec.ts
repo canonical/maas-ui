@@ -15,13 +15,13 @@ context("Subnets", () => {
     cy.get(".p-navigation__item.is-selected a").should(
       "have.attr",
       "href",
-      generateMAASURL("/networks?by=fabric")
+      generateMAASURL("/networks")
     );
     cy.findByRole("navigation", { name: "primary" }).within(() => {
       cy.findByRole("link", { current: "page" }).should(
         "have.attr",
         "href",
-        generateMAASURL("/networks?by=fabric")
+        generateMAASURL("/networks")
       );
     });
   });

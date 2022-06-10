@@ -76,7 +76,7 @@ context("Header - admin", () => {
   it("navigates to subnets", () => {
     cy.get(".p-navigation__link:contains(Subnets)").click();
     cy.location("pathname").should("eq", generateMAASURL("/networks"));
-    cy.location("search").should("eq", "?by=fabric");
+    cy.location("search").should("eq", "?by=fabric&q=");
     cy.get(".p-navigation__item.is-selected a").contains("Subnets");
   });
 
