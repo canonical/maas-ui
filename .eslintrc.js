@@ -1,17 +1,9 @@
 module.exports = {
-  parser: "babel-eslint",
-  plugins: [
-    "react",
-    "testing-library",
-    "no-only-tests",
-    "@typescript-eslint",
-    "prettier",
-    "eslint-plugin-import",
-  ],
+  root: true,
+  parser: "@typescript-eslint/parser",
+  plugins: ["@typescript-eslint", "prettier", "eslint-plugin-import"],
   extends: [
     "react-app", // Use the recommended rules from CRA.
-    "./eslint/common",
-    "./eslint/react",
     "plugin:prettier/recommended", // Ensure this is last in the list.
   ],
   parserOptions: {
@@ -36,11 +28,9 @@ module.exports = {
     {
       files: ["src/**/*.ts?(x)"],
       parser: "@typescript-eslint/parser",
-      plugins: ["react", "@typescript-eslint", "prettier"],
+      plugins: ["react", "@typescript-eslint", "prettier", "no-only-tests"],
       extends: [
         "react-app", // Uses the recommended rules from CRA.
-        "./eslint/common",
-        "./eslint/react",
         "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
         "prettier",
         "plugin:import/errors",
@@ -89,6 +79,29 @@ module.exports = {
             },
           },
         ],
+        "react/forbid-component-props": [
+          "error",
+          {
+            forbid: [
+              {
+                propName: "data-test",
+                message: "Use `data-testid` instead of `data-test` attribute",
+              },
+            ],
+          },
+        ],
+        "react/forbid-dom-props": [
+          "error",
+          {
+            forbid: [
+              {
+                propName: "data-test",
+                message: "Use `data-testid` instead of `data-test` attribute",
+              },
+            ],
+          },
+        ],
+        "no-only-tests/no-only-tests": "error",
       },
       settings: {
         "import/resolver": {
@@ -109,14 +122,29 @@ module.exports = {
       },
     },
     {
-      files: [
-        "src/**/__tests__/**/*.[jt]s?(x)",
-        "src/**/?(*.)+(spec|test).[jt]s?(x)",
-      ],
+      files: ["src/**/*.test.[jt]s?(x)"],
       extends: ["plugin:testing-library/react"],
       rules: {
         "testing-library/prefer-find-by": "off",
         "testing-library/prefer-explicit-assert": "error",
+      },
+    },
+    {
+      files: ["cypress/**/*.spec.[jt]s?(x)"],
+      extends: [
+        "plugin:@typescript-eslint/recommended",
+        "plugin:cypress/recommended",
+        "plugin:prettier/recommended",
+      ],
+      plugins: [
+        "cypress",
+        "@typescript-eslint",
+        "prettier",
+        "eslint-plugin-import",
+      ],
+      rules: {
+        "cypress/no-force": "warn",
+        "prettier/prettier": "error",
       },
     },
   ],
