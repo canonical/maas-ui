@@ -10,8 +10,8 @@ module.exports = {
   ],
   extends: [
     "react-app", // Use the recommended rules from CRA.
-    "../eslint/common",
-    "../eslint/react",
+    "./eslint/common",
+    "./eslint/react",
     "plugin:prettier/recommended", // Ensure this is last in the list.
   ],
   parserOptions: {
@@ -34,13 +34,13 @@ module.exports = {
   },
   overrides: [
     {
-      files: ["**/*.ts?(x)"],
+      files: ["src/**/*.ts?(x)"],
       parser: "@typescript-eslint/parser",
       plugins: ["react", "@typescript-eslint", "prettier"],
       extends: [
         "react-app", // Uses the recommended rules from CRA.
-        "../eslint/common",
-        "../eslint/react",
+        "./eslint/common",
+        "./eslint/react",
         "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
         "prettier",
         "plugin:import/errors",
@@ -103,13 +103,16 @@ module.exports = {
       },
     },
     {
-      files: ["**/*.js?(x)"],
+      files: ["src/**/*.js?(x)"],
       rules: {
         "no-unused-vars": 2,
       },
     },
     {
-      files: ["**/__tests__/**/*.[jt]s?(x)", "**/?(*.)+(spec|test).[jt]s?(x)"],
+      files: [
+        "src/**/__tests__/**/*.[jt]s?(x)",
+        "src/**/?(*.)+(spec|test).[jt]s?(x)",
+      ],
       extends: ["plugin:testing-library/react"],
       rules: {
         "testing-library/prefer-find-by": "off",
