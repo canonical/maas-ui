@@ -1,3 +1,4 @@
+import { nanoid } from "nanoid";
 import { generateMAASURL } from "../../utils";
 
 context("Controller listing", () => {
@@ -28,10 +29,10 @@ context("Controller listing", () => {
         cy.findByRole("link").click();
       });
 
-    cy.findByText(/Controller summary/).should("exist");
+    cy.findByText(/Summary/).should("exist");
 
     // can add a tag to the controller
-    cy.findByRole("tab", {
+    cy.findByRole("link", {
       name: /Configuration/,
     }).click();
     cy.findAllByRole("button", {
@@ -40,14 +41,20 @@ context("Controller listing", () => {
       .first()
       .click();
 
-    cy.get("input[placeholder='Add a tag']").type(`${tagName}{enter}{esc}`);
+    cy.findByRole("form", { name: /Controller configuration/ }).should("exist");
+    cy.get("input[placeholder='Create or remove tags']").type(
+      `${tagName}{enter}`
+    );
+    cy.findByRole("button", { name: /Create and add to tag changes/ }).click();
     cy.findByRole("button", { name: /Save changes/ }).click();
 
-    cy.findByRole("tab", { name: /Controller summary/ }).click();
-    cy.findByRole("link", { name: tagName }).should("exist");
+    cy.findByRole("link", { name: /Summary/ }).click();
+    cy.findByTestId("machine-tags").contains(tagName);
 
     // displays the controller listing page filtered by tag on click of the tag name
-    cy.findByRole("link", { name: tagName }).click();
+    cy.findByRole("link", {
+      name: /Controllers/,
+    }).click();
 
     // displays the correct tag in the searchbox
     cy.findByRole("searchbox", { name: /Search/ }).should(
@@ -77,7 +84,7 @@ context("Controller listing", () => {
         })
         .should("exist")
     );
-    [/Set zone/i].forEach((name) =>
+    [/Deploy/i].forEach((name) =>
       cy
         .findByRole("button", {
           name,
