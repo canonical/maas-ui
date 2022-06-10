@@ -85,7 +85,7 @@
     "@testing-library/jest-dom": "5.16.4",
     "@testing-library/react": "12.1.5",
     "@testing-library/react-hooks": "8.0.0",
-    "@testing-library/user-event": "^14.2.0",
+    "@testing-library/user-event": "14.2.0",
     "@types/clone-deep": "4.0.1",
     "@types/path-parse": "1.0.19",
     "@typescript-eslint/eslint-plugin": "5.23.0",
