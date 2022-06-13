@@ -9,6 +9,7 @@ import LXDVMsTable from "../LXDVMsTable";
 
 import LXDHostVMs from "./LXDHostVMs";
 
+import { KVMHeaderViews } from "app/kvm/constants";
 import { PodType } from "app/store/pod/constants";
 import {
   machine as machineFactory,
@@ -40,7 +41,6 @@ describe("LXDHostVMs", () => {
           <CompatRouter>
             <LXDHostVMs
               hostId={1}
-              onRefreshClick={jest.fn()}
               searchFilter=""
               setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
@@ -84,7 +84,6 @@ describe("LXDHostVMs", () => {
           <CompatRouter>
             <LXDHostVMs
               hostId={1}
-              onRefreshClick={jest.fn()}
               searchFilter=""
               setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
@@ -123,7 +122,6 @@ describe("LXDHostVMs", () => {
           <CompatRouter>
             <LXDHostVMs
               hostId={1}
-              onRefreshClick={jest.fn()}
               searchFilter=""
               setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
@@ -162,7 +160,6 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               clusterId={2}
               hostId={1}
-              onRefreshClick={jest.fn()}
               searchFilter=""
               setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
@@ -189,7 +186,6 @@ describe("LXDHostVMs", () => {
           <CompatRouter>
             <LXDHostVMs
               hostId={1}
-              onRefreshClick={jest.fn()}
               searchFilter=""
               setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
@@ -200,5 +196,39 @@ describe("LXDHostVMs", () => {
     );
     const title = wrapper.find(LXDHostToolbar).prop("title");
     expect(title && title.includes(pod.name)).toBe(false);
+  });
+
+  it("can open the compose VM form", () => {
+    const pod = podFactory({ id: 1 });
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [pod],
+      }),
+    });
+    const setHeaderContent = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
+          <CompatRouter>
+            <LXDHostVMs
+              hostId={1}
+              searchFilter=""
+              setHeaderContent={setHeaderContent}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    wrapper.find("button[data-testid='add-vm']").simulate("click");
+
+    expect(setHeaderContent).toHaveBeenCalledWith({
+      view: KVMHeaderViews.COMPOSE_VM,
+      extras: {
+        hostId: 1,
+      },
+    });
   });
 });

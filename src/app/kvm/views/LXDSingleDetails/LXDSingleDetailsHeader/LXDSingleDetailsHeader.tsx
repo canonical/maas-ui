@@ -1,13 +1,14 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Icon, Spinner } from "@canonical/react-components";
+import { Button, Icon, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import type { SetSearchFilter } from "app/base/types";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
+import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { getFormTitle } from "app/kvm/utils";
@@ -56,6 +57,22 @@ const LXDSingleDetailsHeader = ({
 
   return (
     <KVMDetailsHeader
+      buttons={[
+        <Button
+          appearance="positive"
+          disabled={!pod}
+          hasIcon
+          onClick={() => {
+            setHeaderContent({
+              view: KVMHeaderViews.REFRESH_KVM,
+              extras: { hostIds: [id] },
+            });
+          }}
+        >
+          <Icon light name="restart" />
+          <span>Refresh host</span>
+        </Button>,
+      ]}
       className="has-icon"
       headerContent={headerContent}
       loading={!pod}

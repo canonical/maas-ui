@@ -13,7 +13,7 @@ import { NodeActions } from "app/store/types/node";
 
 type Props = {
   currentPage: number;
-  onRefreshClick: () => void;
+  onAddVMClick?: () => void;
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
@@ -23,7 +23,7 @@ type Props = {
 
 const VMsActionBar = ({
   currentPage,
-  onRefreshClick,
+  onAddVMClick,
   searchFilter,
   setCurrentPage,
   setSearchFilter,
@@ -56,19 +56,19 @@ const VMsActionBar = ({
             }}
             toggleClassName="u-no-margin--bottom"
           />
-          <span className="u-nudge-right">
-            <Button
-              className="u-rotate-right"
-              appearance="base"
-              data-testid="refresh-kvm"
-              dense
-              hasIcon
-              onClick={onRefreshClick}
-              small
-            >
-              <Icon name="restart" />
-            </Button>
-          </span>
+          {onAddVMClick && (
+            <span className="u-nudge-right">
+              <Button
+                className="u-no-margin--bottom"
+                data-testid="add-vm"
+                hasIcon
+                onClick={onAddVMClick}
+              >
+                <Icon name="plus" />
+                <span>Add VM</span>
+              </Button>
+            </span>
+          )}
           <Tooltip
             className="u-nudge-right"
             message={
@@ -78,17 +78,16 @@ const VMsActionBar = ({
             }
           >
             <Button
-              appearance="base"
+              className="u-no-margin--bottom"
               data-testid="delete-vm"
-              dense
               disabled={vmActionsDisabled}
               hasIcon
               onClick={() =>
                 setHeaderContent({ view: MachineHeaderViews.DELETE_MACHINE })
               }
-              small
             >
               <Icon name="delete" />
+              <span>Delete VM</span>
             </Button>
           </Tooltip>
         </>

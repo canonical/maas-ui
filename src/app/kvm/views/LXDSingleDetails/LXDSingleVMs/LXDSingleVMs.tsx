@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import LXDHostVMs from "app/kvm/components/LXDHostVMs";
-import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -30,12 +29,6 @@ const LXDSingleVMs = ({
   return (
     <LXDHostVMs
       hostId={id}
-      onRefreshClick={() =>
-        setHeaderContent({
-          view: KVMHeaderViews.REFRESH_KVM,
-          extras: { hostIds: [id] },
-        })
-      }
       searchFilter={searchFilter}
       setSearchFilter={setSearchFilter}
       setHeaderContent={setHeaderContent}

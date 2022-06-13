@@ -15,7 +15,7 @@ type Props = {
   displayForCluster?: boolean;
   getHostColumn?: GetHostColumn;
   getResources: GetResources;
-  onRefreshClick: () => void;
+  onAddVMClick?: () => void;
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
   setHeaderContent: KVMSetHeaderContent;
@@ -28,7 +28,7 @@ const LXDVMsTable = ({
   displayForCluster,
   getHostColumn,
   getResources,
-  onRefreshClick,
+  onAddVMClick,
   searchFilter,
   setSearchFilter,
   setHeaderContent,
@@ -50,7 +50,7 @@ const LXDVMsTable = ({
     <>
       <VMsActionBar
         currentPage={currentPage}
-        onRefreshClick={onRefreshClick}
+        onAddVMClick={onAddVMClick}
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setSearchFilter={setSearchFilter}

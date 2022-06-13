@@ -70,7 +70,6 @@ const LXDClusterHosts = ({
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setSearchFilter={setSearchFilter}
-        setHeaderContent={setHeaderContent}
       />
       <LXDClusterHostsTable
         clusterId={clusterId}

@@ -6,7 +6,7 @@ import { SearchBox } from "@canonical/react-components";
 import ArrowPagination from "app/base/components/ArrowPagination";
 
 type Props = {
-  actions: ReactNode;
+  actions?: ReactNode;
   currentPage: number;
   loading?: boolean;
   itemCount: number;
@@ -29,7 +29,7 @@ const ActionBar = ({
 }: Props): JSX.Element | null => {
   return (
     <div className="action-bar" {...props}>
-      <div className="action-bar__actions">{actions}</div>
+      {actions && <div className="action-bar__actions">{actions}</div>}
       <div className="action-bar__search">
         <SearchBox
           className="u-no-margin--bottom"

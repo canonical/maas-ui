@@ -43,8 +43,12 @@
       grid-template-columns: max-content 1fr max-content;
       grid-template-rows: min-content;
 
+      .action-bar__actions {
+        margin-right: $sph--large;
+      }
+
       .action-bar__search {
-        margin: 0 $sph--large;
+        margin: 0 $sph--large 0 0;
         max-width: 50rem;
       }
     }
