@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -13,15 +14,15 @@ import {
 const mockStore = configureStore();
 
 describe("VMsActionBar", () => {
-  it("executes onRefreshClick on refresh button click", () => {
-    const onRefreshClick = jest.fn();
+  it("executes onAddVMClick on add VM button click", async () => {
+    const onAddVMClick = jest.fn();
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
-          onRefreshClick={onRefreshClick}
+          onAddVMClick={onAddVMClick}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
@@ -31,9 +32,9 @@ describe("VMsActionBar", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-testid='refresh-kvm']").simulate("click");
+    await userEvent.click(screen.getByTestId("add-vm"));
 
-    expect(onRefreshClick).toHaveBeenCalled();
+    expect(onAddVMClick).toHaveBeenCalled();
   });
 
   it("disables VM actions if none are selected", () => {
@@ -43,11 +44,11 @@ describe("VMsActionBar", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
-          onRefreshClick={jest.fn()}
+          onAddVMClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
@@ -58,11 +59,9 @@ describe("VMsActionBar", () => {
     );
 
     expect(
-      wrapper.find("[data-testid='vm-actions'] button").prop("disabled")
-    ).toBe(true);
-    expect(
-      wrapper.find("button[data-testid='delete-vm']").prop("disabled")
-    ).toBe(true);
+      within(screen.getByTestId("take-action-dropdown")).getByRole("button")
+    ).toBeDisabled();
+    expect(screen.getByTestId("delete-vm")).toBeDisabled();
   });
 
   it("enables VM actions if at least one is selected", () => {
@@ -74,11 +73,11 @@ describe("VMsActionBar", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
-          onRefreshClick={jest.fn()}
+          onAddVMClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setSearchFilter={jest.fn()}
@@ -89,10 +88,8 @@ describe("VMsActionBar", () => {
     );
 
     expect(
-      wrapper.find("[data-testid='vm-actions'] button").prop("disabled")
-    ).toBe(false);
-    expect(
-      wrapper.find("button[data-testid='delete-vm']").prop("disabled")
-    ).toBe(false);
+      within(screen.getByTestId("take-action-dropdown")).getByRole("button")
+    ).not.toBeDisabled();
+    expect(screen.getByTestId("delete-vm")).not.toBeDisabled();
   });
 });

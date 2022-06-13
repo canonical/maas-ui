@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 
-import { Button, Icon, Spinner } from "@canonical/react-components";
+import { Icon, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import Switch from "app/base/components/Switch";
 import { useSendAnalytics } from "app/base/hooks";
-import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
@@ -115,21 +114,6 @@ const LXDHostToolbar = ({
             >
               {tags}
             </p>
-          </div>
-          <div className="lxd-host-toolbar__block u-nudge-down--x-small">
-            <Button
-              data-testid="add-virtual-machine"
-              hasIcon
-              onClick={() =>
-                setHeaderContent({
-                  view: KVMHeaderViews.COMPOSE_VM,
-                  extras: { hostId },
-                })
-              }
-            >
-              <Icon name="plus" />
-              <span>Add virtual machine</span>
-            </Button>
           </div>
         </>
       ) : null}

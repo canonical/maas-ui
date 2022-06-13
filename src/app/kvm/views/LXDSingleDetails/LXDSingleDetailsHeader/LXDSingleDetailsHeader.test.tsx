@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -6,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 
+import { KVMHeaderViews } from "app/kvm/constants";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -51,7 +53,7 @@ describe("LXDSingleDetailsHeader", () => {
   it("displays a spinner if pod hasn't loaded", () => {
     state.pod.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
@@ -65,7 +67,8 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays the LXD project", () => {
@@ -73,7 +76,7 @@ describe("LXDSingleDetailsHeader", () => {
       project: "Manhattan",
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
@@ -89,7 +92,8 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(3).text()).toBe(
+
+    expect(screen.getAllByTestId("block-subtitle")[3]).toHaveTextContent(
       "Manhattan"
     );
   });
@@ -99,7 +103,7 @@ describe("LXDSingleDetailsHeader", () => {
       vm_count: podVmCountFactory({ tracked: 5 }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
@@ -115,7 +119,8 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(1).text()).toBe(
+
+    expect(screen.getAllByTestId("block-subtitle")[1]).toHaveTextContent(
       "5 available"
     );
   });
@@ -124,7 +129,7 @@ describe("LXDSingleDetailsHeader", () => {
     state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
@@ -140,8 +145,39 @@ describe("LXDSingleDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='block-subtitle']").at(2).text()).toBe(
+
+    expect(screen.getAllByTestId("block-subtitle")[2]).toHaveTextContent(
       "danger"
     );
+  });
+
+  it("can open the refresh host form", async () => {
+    state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
+    state.pod.items[0].zone = 101;
+    const setHeaderContent = jest.fn();
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/resources", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <LXDSingleDetailsHeader
+              id={1}
+              headerContent={null}
+              setHeaderContent={setHeaderContent}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
+
+    expect(setHeaderContent).toHaveBeenCalledWith({
+      view: KVMHeaderViews.REFRESH_KVM,
+      extras: { hostIds: [1] },
+    });
   });
 });

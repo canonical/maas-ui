@@ -53,7 +53,7 @@
 
   @media only screen and (min-width: $breakpoint-large) {
     .lxd-host-toolbar {
-      grid-template-columns: repeat(5, minmax(auto, max-content)) minmax(
+      grid-template-columns: repeat(4, minmax(auto, max-content)) minmax(
           max-content,
           auto
         );

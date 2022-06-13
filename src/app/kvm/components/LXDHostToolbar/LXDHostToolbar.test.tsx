@@ -7,7 +7,6 @@ import configureStore from "redux-mock-store";
 import LXDHostToolbar from "./LXDHostToolbar";
 
 import * as hooks from "app/base/hooks/analytics";
-import { KVMHeaderViews } from "app/kvm/constants";
 import kvmURLs from "app/kvm/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
@@ -186,38 +185,6 @@ describe("LXDHostToolbar", () => {
     );
 
     expect(wrapper.find("[data-testid='pod-tags']").exists()).toBe(true);
-  });
-
-  it("can open the compose VM form", () => {
-    const setHeaderContent = jest.fn();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <LXDHostToolbar
-              hostId={1}
-              setHeaderContent={setHeaderContent}
-              setViewByNuma={jest.fn()}
-              viewByNuma={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    wrapper.find("button[data-testid='add-virtual-machine']").simulate("click");
-
-    expect(setHeaderContent).toHaveBeenCalledWith({
-      view: KVMHeaderViews.COMPOSE_VM,
-      extras: {
-        hostId: 1,
-      },
-    });
   });
 
   it("shows NUMA view switch if LXD host includes data on at least one NUMA node", async () => {

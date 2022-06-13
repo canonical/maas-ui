@@ -1,12 +1,12 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import LXDVMsTable from "./LXDVMsTable";
 
+import { actions as machineActions } from "app/store/machine";
 import { rootState as rootStateFactory } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -14,14 +14,13 @@ describe("LXDVMsTable", () => {
   it("fetches machines on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
           <LXDVMsTable
             getResources={jest.fn()}
-            onRefreshClick={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
@@ -31,22 +30,22 @@ describe("LXDVMsTable", () => {
       </Provider>
     );
 
+    const expectedAction = machineActions.fetch();
     expect(
-      store.getActions().some((action) => action.type === "machine/fetch")
-    );
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 
   it("clears machine selected state on unmount", async () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
         >
           <LXDVMsTable
             getResources={jest.fn()}
-            onRefreshClick={jest.fn()}
             searchFilter=""
             setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
@@ -55,11 +54,59 @@ describe("LXDVMsTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
-    await waitForComponentToPaint(wrapper);
+
+    unmount();
+
+    const expectedAction = machineActions.setSelected([]);
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
+
+  it("shows an add VM button if function provided", () => {
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <LXDVMsTable
+            getResources={jest.fn()}
+            onAddVMClick={jest.fn()}
+            searchFilter=""
+            setSearchFilter={jest.fn()}
+            setHeaderContent={jest.fn()}
+            vms={[]}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(screen.getByRole("button", { name: "Add VM" })).toBeInTheDocument();
+  });
+
+  it("does not show an add VM button if no function provided", () => {
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <LXDVMsTable
+            getResources={jest.fn()}
+            searchFilter=""
+            setSearchFilter={jest.fn()}
+            setHeaderContent={jest.fn()}
+            vms={[]}
+          />
+        </MemoryRouter>
+      </Provider>
+    );
 
     expect(
-      store.getActions().find((action) => action.type === "machine/setSelected")
-    ).toStrictEqual({ type: "machine/setSelected", payload: [] });
+      screen.queryByRole("button", { name: "Add VM" })
+    ).not.toBeInTheDocument();
   });
 });

@@ -7,7 +7,6 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import LXDHostVMs from "app/kvm/components/LXDHostVMs";
-import { KVMHeaderViews } from "app/kvm/constants";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
@@ -57,14 +56,6 @@ const LXDClusterHostVMs = ({
     <LXDHostVMs
       clusterId={clusterId}
       hostId={hostId}
-      onRefreshClick={() => {
-        if (cluster.hosts.length) {
-          setHeaderContent({
-            view: KVMHeaderViews.REFRESH_KVM,
-            extras: { hostIds: cluster.hosts.map((host) => host.id) },
-          });
-        }
-      }}
       searchFilter={searchFilter}
       setSearchFilter={setSearchFilter}
       setHeaderContent={setHeaderContent}

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect } from "react";
 
-import { Icon, Spinner } from "@canonical/react-components";
+import { Button, Icon, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -9,6 +9,7 @@ import { Link } from "react-router-dom-v5-compat";
 
 import type { SetSearchFilter } from "app/base/types";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
+import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import kvmURLs from "app/kvm/urls";
 import { getFormTitle } from "app/kvm/utils";
@@ -39,6 +40,7 @@ const LXDClusterDetailsHeader = ({
     zoneSelectors.getById(state, cluster?.availability_zone)
   );
   const location = useLocation();
+  const canRefresh = !!cluster?.hosts.length;
 
   useEffect(() => {
     dispatch(zoneActions.fetch());
@@ -55,6 +57,24 @@ const LXDClusterDetailsHeader = ({
 
   return (
     <KVMDetailsHeader
+      buttons={[
+        <Button
+          appearance="positive"
+          disabled={!canRefresh}
+          hasIcon
+          onClick={() => {
+            if (canRefresh) {
+              setHeaderContent({
+                view: KVMHeaderViews.REFRESH_KVM,
+                extras: { hostIds: cluster.hosts.map((host) => host.id) },
+              });
+            }
+          }}
+        >
+          <Icon light name="restart" />
+          <span>Refresh cluster</span>
+        </Button>,
+      ]}
       className="has-icon"
       headerContent={headerContent}
       loading={!cluster}
