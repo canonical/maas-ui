@@ -76,7 +76,7 @@ export function* createPoolWithMachines(
     machineIDs
   );
   // Send the initial action via the websocket.
-  yield* call<SendMessage<ResourcePool>>(
+  yield* call(
     sendMessage,
     socketClient,
     resourcePoolActions.create(pool),
@@ -141,12 +141,7 @@ export function* updateDomainRecord(
     generateNextUpdateRecordAction,
     payload.params
   );
-  yield* call<SendMessage>(
-    sendMessage,
-    socketClient,
-    initialAction,
-    nextAction
-  );
+  yield* call(sendMessage, socketClient, initialAction, nextAction);
 }
 
 /**
@@ -200,12 +195,7 @@ export function* deleteDomainRecord(
     generateNextDeleteRecordAction,
     payload.params
   );
-  yield* call<SendMessage>(
-    sendMessage,
-    socketClient,
-    initialAction,
-    nextAction
-  );
+  yield* call(sendMessage, socketClient, initialAction, nextAction);
 }
 
 const deleteRecordHandler: MessageHandler<DeleteRecordParams> = {
