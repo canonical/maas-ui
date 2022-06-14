@@ -3,7 +3,6 @@ import * as React from "react";
 
 import { useListener } from "@canonical/react-components/dist/hooks";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
 import { COLOURS } from "app/base/constants";
 
@@ -139,24 +138,6 @@ const Meter = ({
       )}
     </div>
   );
-};
-
-Meter.propTypes = {
-  className: PropTypes.string,
-  data: PropTypes.arrayOf(
-    PropTypes.shape({
-      color: PropTypes.string,
-      value: PropTypes.number,
-    })
-  ).isRequired,
-  emptyColor: PropTypes.string,
-  label: PropTypes.node,
-  labelClassName: PropTypes.string,
-  max: PropTypes.number,
-  overColor: PropTypes.string,
-  segmented: PropTypes.bool,
-  separatorColor: PropTypes.string,
-  small: PropTypes.bool,
 };
 
 export default Meter;

@@ -5,7 +5,6 @@ import {
   Textarea,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 
 import type { DHCPFormValues } from "app/base/components/DhcpForm/types";
@@ -149,10 +148,6 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
       />
     </>
   );
-};
-
-DhcpFormFields.propTypes = {
-  editing: PropTypes.bool,
 };
 
 export default DhcpFormFields;

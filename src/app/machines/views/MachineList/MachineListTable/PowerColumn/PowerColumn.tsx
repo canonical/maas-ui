@@ -1,7 +1,6 @@
 import { memo, useEffect, useState } from "react";
 
 import { Tooltip } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 
 import DoubleRow from "app/base/components/DoubleRow";
@@ -127,11 +126,6 @@ export const PowerColumn = ({
       secondaryTitle={machine.power_type}
     />
   );
-};
-
-PowerColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired,
 };
 
 export default memo(PowerColumn);

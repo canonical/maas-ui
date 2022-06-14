@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import { format, parse } from "date-fns";
-import PropTypes from "prop-types";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -210,10 +209,6 @@ const ScriptsList = ({ type = "commissioning" }: Props): JSX.Element => {
       tableClassName="scripts-list"
     />
   );
-};
-
-ScriptsList.propTypes = {
-  type: PropTypes.string,
 };
 
 export default ScriptsList;

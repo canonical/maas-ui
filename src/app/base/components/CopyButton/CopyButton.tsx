@@ -1,7 +1,6 @@
 import { useRef } from "react";
 
 import { Button } from "@canonical/react-components";
-import PropTypes from "prop-types";
 
 type Props = {
   value: string;
@@ -37,10 +36,6 @@ const CopyButton = ({ value }: Props): JSX.Element => {
       <input type="hidden" ref={input} value={value} />
     </>
   );
-};
-
-CopyButton.propTypes = {
-  value: PropTypes.string,
 };
 
 export default CopyButton;
