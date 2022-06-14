@@ -16,7 +16,7 @@
     "cleanbuild": "yarn clean-all && yarn build",
     "commit": "git-cz",
     "cypress-open": "yarn cypress open",
-    "cypress-run-a11y": "yarn cypress run --config integrationFolder=cypress/integration/accessibility",
+    "cypress-run-a11y": "yarn cypress run --config specPattern=cypress/e2e/accessibility/**/*.ts",
     "cypress-run": "yarn cypress run",
     "lint": "npmPkgJsonLint . && eslint src cypress",
     "link-components": "yarn link \"@canonical/react-components\" && yarn link \"react\" && yarn install",
