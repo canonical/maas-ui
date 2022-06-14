@@ -18,11 +18,11 @@ jobs:
       - name: Initialise MAAS
         run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
       - name: Install Cypress
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           runTests: false
       - name: Run Cypress tests without a user
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
@@ -36,7 +36,7 @@ jobs:
           maas login admin http://localhost:5240/MAAS $API_KEY
           maas admin users create username=user password=test email=fake-user@example.org is_superuser=0
       - name: Run Cypress tests with a user
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
@@ -65,7 +65,7 @@ jobs:
       - name: Get branch name
         uses: nelonoel/branch-name@v1.0.1
       - name: Run Cypress docs tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           browser: chrome
           config: baseUrl=http://maas.io/docs
