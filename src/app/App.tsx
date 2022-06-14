@@ -24,13 +24,13 @@ import status from "app/store/status/selectors";
 
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
+  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
   const authLoading = useSelector(authSelectors.loading);
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
-  const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const previousAuthenticated = usePrevious(authenticated, false);
 
   useEffect(() => {

@@ -9,8 +9,12 @@ import {
 } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
-import { Link, useNavigate } from "react-router-dom-v5-compat";
+import {
+  Link,
+  useNavigate,
+  useLocation,
+  matchPath,
+} from "react-router-dom-v5-compat";
 
 import {
   useCompletedIntro,
@@ -32,20 +36,32 @@ type NavItem = {
 
 const navLinks: NavItem[] = [
   {
-    highlight: ["/machine", "/pool", "/tag"],
+    highlight: [
+      urls.machines.machines.index,
+      urls.machines.machine.index(null, true),
+      urls.pools.pools,
+      urls.tags.tags.index,
+      urls.tags.tag.index(null, true),
+    ],
     inHardwareMenu: true,
     label: "Machines",
     url: urls.machines.machines.index,
   },
   {
-    highlight: "/device",
+    highlight: [
+      urls.devices.devices.index,
+      urls.devices.device.index(null, true),
+    ],
     inHardwareMenu: true,
     label: "Devices",
     url: urls.devices.devices.index,
   },
   {
     adminOnly: true,
-    highlight: "/controller",
+    highlight: [
+      urls.controllers.controllers.index,
+      urls.controllers.controller.index(null, true),
+    ],
     inHardwareMenu: true,
     label: "Controllers",
     url: urls.controllers.controllers.index,
@@ -60,17 +76,23 @@ const navLinks: NavItem[] = [
     url: urls.images.index,
   },
   {
-    highlight: "/domain",
+    highlight: [urls.domains.domains, urls.domains.details(null, true)],
     label: "DNS",
     url: urls.domains.domains,
   },
   {
-    highlight: "/zone",
+    highlight: [urls.zones.index, urls.zones.details(null, true)],
     label: "AZs",
     url: urls.zones.index,
   },
   {
-    highlight: ["/networks", "/subnet", "/space", "/fabric", "/vlan"],
+    highlight: [
+      urls.subnets.index,
+      urls.subnets.subnet.index(null, true),
+      urls.subnets.space.index(null, true),
+      urls.subnets.fabric.index(null, true),
+      urls.subnets.vlan.index(null, true),
+    ],
     label: "Subnets",
     url: urls.subnets.index,
   },
@@ -109,10 +131,10 @@ const isSelected = (path: string, link: NavItem) => {
     highlights = [highlights];
   }
   // Check if one of the highlight urls matches the current path.
-  return highlights.some((start) =>
+  return highlights.some((highlight) =>
     // Check the full path, for both legacy/new clients as sometimes the lists
     // are in one client and the details in the other.
-    path.startsWith(start)
+    matchPath({ path: highlight, end: false }, path)
   );
 };
 
@@ -175,8 +197,8 @@ export const Header = (): JSX.Element => {
     // Remove the admin only items if the user is not an admin.
     .filter(({ adminOnly }) => !adminOnly || isAdmin);
   const homepageLink = isAdmin
-    ? { url: "/dashboard", label: "Homepage" }
-    : { url: "/machines", label: "Homepage" };
+    ? { url: urls.dashboard.index, label: "Homepage" }
+    : { url: urls.machines.machines.index, label: "Homepage" };
   const path = location.pathname + location.search;
 
   return (
@@ -204,10 +226,12 @@ export const Header = (): JSX.Element => {
                 ...(showLinks
                   ? [
                       {
-                        isSelected:
-                          location.pathname.startsWith("/account/prefs"),
+                        isSelected: !!matchPath(
+                          { path: urls.preferences.prefs, end: false },
+                          location.pathname
+                        ),
                         label: authUser.username,
-                        url: "/account/prefs",
+                        url: urls.preferences.prefs,
                       },
                     ]
                   : []),
