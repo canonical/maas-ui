@@ -12,7 +12,7 @@ To run headless Cypress tests, enter the following command from the root of the 
 yarn test-cypress
 ```
 
-This will automatically start legacy, ui and proxy servers and run the Cypress tests, in which results are logged to the console. After running the tests, the servers and process will close.
+This will automatically start the React and proxy servers and run the Cypress tests, in which results are logged to the console. After running the tests, the servers and process will close.
 
 ## Edit local configuration
 

@@ -12,18 +12,16 @@
   - [Building a production bundle](#building)
   - [Creating a fake windows image](#creating-a-fake-windows-image)
   - [Show intro](#show-intro)
+  - [Sample data](#sample-data)
 - Testing
   - [Integration tests](#integration-tests)
   - [Unit tests](#unit-tests)
-- [Adding a new yarn workspace](#adding-a-new-yarn-workspace)
 
 # Project conventions
 
 ## TypeScript
 
-maas-ui is in the process of migrating `ui` to TypeScript. Any new modules in `ui` should be written in [TypeScript](https://www.typescriptlang.org/), however `legacy` is exempt.
-
-If your branch touches an existing js module in `ui`, it should be converted to TypeScript. The maas-ui maintainers are happy to help with any issues you might encounter.
+maas-ui built with TypeScript in strict mode. Any new modules in should be written in [TypeScript](https://www.typescriptlang.org/).
 
 ### Dealing with problems
 
@@ -244,35 +242,34 @@ You'll need to fetch the current MAAS main:
 git clone http://git.launchpad.net/maas
 ```
 
-And then build MAAS and set up some sampledata:
+And then build and install a MAAS snap:
 
 ```shell
 cd maas
+sudo snap install maas-test-db
+sudo apt install make
 make install-dependencies
-make
-make syncdb
-make sampledata
+git config --file=.gitmodules submodule.src/maasui/src.branch main
+git submodule sync
+git submodule update --init --recursive --remote
+make snap-prime
+sudo snap try build/dev-snap/prime
+utilities/connect-snap-interfaces
+sudo maas init region+rack --maas-url=http://localhost:5240/MAAS --database-uri maas-test-db:///
 ```
 
-Now you should be ready to start the MAAS, you'll need to do this each time you start the Multipass instance.
+You'll also need to create a user:
 
 ```shell
-make start
+sudo maas createadmin
 ```
 
 At this point you can [configure maas-ui](#edit-local-config) to use this maas with the default credentials (admin/test). If you wish to view the ui from that MAAS deployment you'll need to [build the UI](#running-maas-ui-from-a-development-maas).
 
-#### Stopping a development MAAS
-
-If you need to stop the MAAS you can run:
-
-```shell
-ps -ef | grep 'regiond' | grep -v grep | awk '{print $2}' | xargs -r kill -9
-```
-
 #### Updating a development MAAS
 
-Enter the shell for your MAAS instance:
+To see any changes you've made inside the maas folder you'll need to run the
+following:
 
 #### Multipass
 
@@ -286,21 +283,10 @@ multipass shell dev-maas
 lxc exec dev-maas -- su ubuntu
 ```
 
-If MAAS is currently running then [stop it](#stopping-a-development-maas).
-
-Now fetch the latest main, clean and rebuild your MAAS.
-
-_Note: this will clear all your MAAS data and is more reliable, but you can attempt to run `make clean` instead of `make clean+db` to preserve your current data._
-
 ```shell
 cd ~/maas
-make clean+db
-git pull
-make install-dependencies
-make
-make syncdb
-make sampledata
-make start
+make sync-dev-snap
+sudo service snap.maas.supervisor restart
 ```
 
 #### Running maas-ui from a development maas
@@ -335,10 +321,12 @@ Now you can make the UI
 make ui
 ```
 
-If that fails you can try:
+Now you need to sync your changes and restart MAAS:
 
 ```shell
-SKIP_PREFLIGHT_CHECK=true make ui
+cd ~/maas
+make sync-dev-snap
+sudo service snap.maas.supervisor restart
 ```
 
 You should now be able to access the MAAS in your browser:
@@ -475,7 +463,7 @@ Ensure both node (current LTS) and yarn are installed.
 From the root of the MAAS UI project run:
 
 ```shell
-yarn build-all
+yarn build
 ```
 
 An optimised production bundle will be built, and output to `./build`.
@@ -552,6 +540,24 @@ Then you reset the config to display the intro.
 maas $PROFILE maas set-config name=completed_intro value=false
 ```
 
+# Sample data
+
+To use sample data with MAAS you'll first need to set up a [local MAAS](#local-deployments).
+
+Next you'll need to get some sample data. The easiest way is to get a database dump [from CI](http://maas-ci.internal:8080/view/maas-sampledata-dumper/). Or alternatively you can [create a dump](https://github.com/maas/maas/blob/master/HACKING.rst#creating-sample-data).
+
+Put the database dump onto your container and then run the following commands inside that container:
+
+```shell
+sudo cp path/to.dump /var/snap/maas-test-db/common/maasdb.dump
+sudo snap run --shell maas-test-db.psql -c 'db-dump restore /var/snap/maas-test-db/common/maasdb.dump maassampledata'
+sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
+sudo sed -i "s/database_name: maasdb/database_name: maassampledata/" /var/snap/maas/current/regiond.conf
+sudo snap restart maas
+```
+
+Once MAAS has restarted you should be able to access the MAAS and see the data.
+
 # Testing
 
 ## Integration tests
@@ -562,34 +568,28 @@ For details on developing integration tests, see the integration testing [README
 
 ## Unit tests
 
-Integration tests are run for each workspace and use [Jest](https://jestjs.io/) and [Enzyme](https://enzymejs.github.io/enzyme/).
+Unit/integration tests use [Jest](https://jestjs.io/) and [React Testing
+Library](https://testing-library.com/), though many of our tests are still
+written with [Enzyme](https://enzymejs.github.io/enzyme/).
 
-All test suites can be run with:
+Tests can be run with:
 
 ```shell
 dotrun test
 ```
 
-Tests suites can be run for each workspace:
-
-```shell
-dotrun test-ui
-dotrun test-legacy
-dotrun test-shared
-```
-
 To run tests and watch for changes you can pass `--watchAll=true` e.g.:
 
 ```shell
-dotrun test-ui --watchAll=true
+dotrun test --watchAll=true
 ```
 
 You can run tests against a single file:
 
 ```shell
-dotrun test-ui NodeTestsTable.test.tsx
-dotrun test-ui NodeTestsTable
-dotrun test-ui --watchAll=true NodeTestsTable
+dotrun test NodeTestsTable.test.tsx
+dotrun test NodeTestsTable
+dotrun test --watchAll=true NodeTestsTable
 ```
 
 To run a single test you can add `.only` to the test case or block.
@@ -600,9 +600,3 @@ _Note: this only limits the tests in a single file. You will also need to make s
 describe.only("NetworkTable", () => {
 it.only("displays a spinner when loading", () => {
 ```
-
-# Adding a new yarn workspace
-
-To add a new yarn workspace, edit `package.json` and add the project's directory name to the `workspaces` array.
-
-To import modules from existing projects in your new project, add the dependant projects to your projects dependencies in `package.json`.
