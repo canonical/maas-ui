@@ -258,7 +258,7 @@ utilities/connect-snap-interfaces
 sudo maas init region+rack --maas-url=http://localhost:5240/MAAS --database-uri maas-test-db:///
 ```
 
-You'lll also need to create a user:
+You'll also need to create a user:
 
 ```shell
 sudo maas createadmin
