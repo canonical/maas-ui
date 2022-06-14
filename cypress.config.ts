@@ -24,6 +24,8 @@ export default defineConfig({
     specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
   },
   env: {
+    BASENAME: "/MAAS",
+    REACT_BASENAME: "/r",
     nonAdminPassword: "test",
     nonAdminUsername: "user",
     password: "test",
