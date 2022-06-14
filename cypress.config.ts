@@ -22,6 +22,8 @@ export default defineConfig({
     },
     baseUrl: "http://0.0.0.0:8400",
     specPattern: "cypress/e2e/**/*.{js,jsx,ts,tsx}",
+    viewportHeight: 1300,
+    viewportWidth: 1440,
   },
   env: {
     BASENAME: "/MAAS",
