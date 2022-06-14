@@ -101,7 +101,7 @@
     "concurrently": "7.2.1",
     "cooky-cutter": "1.5.4",
     "css-loader": "6.7.1",
-    "cypress": "9.7.0",
+    "cypress": "10.1.0",
     "cypress-axe": "0.14.0",
     "cypress-wait-until": "1.7.2",
     "cz-conventional-changelog": "3.3.0",
