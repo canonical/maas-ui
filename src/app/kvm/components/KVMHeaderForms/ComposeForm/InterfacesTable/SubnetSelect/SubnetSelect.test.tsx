@@ -30,6 +30,7 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { waitForComponentToPaint } from "testing/utils";
@@ -86,7 +87,7 @@ describe("SubnetSelect", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
       }),
     });
   });

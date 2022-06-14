@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 import ZoneDetailsForm from "./ZoneDetailsForm";
 
 import type { RootState } from "app/store/root/types";
+import { actions as zoneActions } from "app/store/zone";
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
@@ -24,9 +25,6 @@ describe("ZoneDetailsForm", () => {
   beforeEach(() => {
     initialState = rootStateFactory({
       zone: zoneStateFactory({
-        errors: {},
-        loading: false,
-        loaded: true,
         items: [testZone],
       }),
     });
@@ -68,21 +66,13 @@ describe("ZoneDetailsForm", () => {
       })
     );
 
-    expect(
-      store.getActions().find((action) => action.type === "zone/update")
-    ).toStrictEqual({
-      type: "zone/update",
-      meta: {
-        method: "update",
-        model: "zone",
-      },
-      payload: {
-        params: {
-          id: testZone.id,
-          description: testZone.description,
-          name: testZone.name,
-        },
-      },
+    const expectedAction = zoneActions.update({
+      id: testZone.id,
+      description: testZone.description,
+      name: testZone.name,
     });
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 });

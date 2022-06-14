@@ -26,6 +26,7 @@ import {
   spaceState as spaceStateFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { waitForComponentToPaint } from "testing/utils";
@@ -82,7 +83,7 @@ describe("StorageTable", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
       }),
     });
   });
