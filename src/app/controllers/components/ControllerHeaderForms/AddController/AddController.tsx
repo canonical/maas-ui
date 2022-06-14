@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import docsUrls from "app/base/docsUrls";
 import type { ClearHeaderContent } from "app/base/types";
 import configSelectors from "app/store/config/selectors";
+import { version as versionSelectors } from "app/store/general/selectors";
 
 type Props = {
   clearHeaderContent: ClearHeaderContent;
@@ -12,6 +13,7 @@ type Props = {
 export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
   const maasUrl = useSelector(configSelectors.maasUrl);
   const rpcSharedSecret = useSelector(configSelectors.rpcSharedSecret);
+  const minorVersion = useSelector(versionSelectors.minor);
 
   return (
     <>
@@ -22,6 +24,8 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
       </p>
       <CodeSnippet
         blocks={[
+          { code: `sudo apt-add-repository ppa:maas/${minorVersion}` },
+          { code: "sudo apt update" },
           {
             code: "sudo apt install maas-rack-controller",
           },
@@ -31,7 +35,7 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
       <CodeSnippet
         blocks={[
           {
-            code: "sudo snap install maas",
+            code: `sudo snap install maas --channel=${minorVersion}`,
           },
         ]}
       />
