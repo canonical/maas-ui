@@ -1,4 +1,4 @@
-import { generateMAASURL } from "../../utils";
+import { generateId, generateMAASURL } from "../../utils";
 
 context("Controller listing", () => {
   beforeEach(() => {
@@ -19,7 +19,7 @@ context("Controller listing", () => {
   });
 
   it("can add a tag to the controller", () => {
-    const tagName = "new-tag";
+    const tagName = `tag-${generateId()}`;
 
     // displays the controller details page on click of the controller name
     cy.findAllByRole("gridcell", { name: "Name" })
@@ -52,13 +52,16 @@ context("Controller listing", () => {
 
     // displays the controller listing page filtered by tag on click of the tag name
     cy.findByRole("link", {
-      name: /Controllers/,
+      name: /Configuration/,
+    }).click();
+    cy.findByRole("link", {
+      name: tagName,
     }).click();
 
     // displays the correct tag in the searchbox
     cy.findByRole("searchbox", { name: /Search/ }).should(
       "have.value",
-      `tags:(${tagName})`
+      `tags:(=${tagName})`
     );
 
     // displays the correct number of controllers

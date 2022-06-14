@@ -1,6 +1,6 @@
 import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
-import type { A11yPageContext } from "./index";
+import type { A11yPageContext } from "./e2e";
 
 Cypress.Commands.add("login", (options) => {
   const defaultOptions = {

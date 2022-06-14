@@ -18,17 +18,17 @@ jobs:
       - name: Initialise MAAS
         run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
       - name: Install Cypress
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           runTests: false
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Run cypress-axe accessibility tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: "cypress/integration/accessibility/**/*.spec.ts"
+          spec: "cypress/e2e/accessibility/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
       - name: Create issue on failure
         if: failure()

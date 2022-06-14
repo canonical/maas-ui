@@ -1,5 +1,5 @@
 import { pages } from "../constants";
-import { generateMAASURL } from "../integration/utils";
+import { generateMAASURL } from "../e2e/utils";
 
 pages.forEach(({ heading, url }) => {
   it(`"Loads the ${heading}" page`, () => {

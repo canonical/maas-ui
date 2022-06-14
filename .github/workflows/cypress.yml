@@ -18,15 +18,15 @@ jobs:
       - name: Initialise MAAS
         run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
       - name: Install Cypress
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           runTests: false
       - name: Run Cypress tests without a user
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: "cypress/integration/no-users/**/*.spec.ts"
+          spec: "cypress/e2e/no-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
@@ -36,11 +36,11 @@ jobs:
           maas login admin http://localhost:5240/MAAS $API_KEY
           maas admin users create username=user password=test email=fake-user@example.org is_superuser=0
       - name: Run Cypress tests with a user
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: "cypress/integration/with-users/**/*.spec.ts"
+          spec: "cypress/e2e/with-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
       - uses: actions/upload-artifact@v3
         if: failure()
@@ -65,11 +65,11 @@ jobs:
       - name: Get branch name
         uses: nelonoel/branch-name@v1.0.1
       - name: Run Cypress docs tests
-        uses: cypress-io/github-action@v2
+        uses: cypress-io/github-action@v4
         with:
           browser: chrome
           config: baseUrl=http://maas.io/docs
-          spec: "cypress/integration/docs-links/**/*.spec.ts"
+          spec: "cypress/e2e/docs-links/**/*.spec.ts"
       - name: Create issue on failure
         if: failure()
         uses: JasonEtco/create-an-issue@v2
