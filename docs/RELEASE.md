@@ -28,7 +28,7 @@ Push the branch to the repo at `canonical-web-and-design/maas-ui`.
 
 Create a new local branch e.g. release-0.1.2.
 
-Run `yarn release [version]` where version is in the form `0.1.2`. This will bump the version in `ui/package.json` and create a tag with a 'v' prefix. You will also need to manually update the root, shared and legacy `package.json` versions as well as the dependencies `@maas-ui/maas-ui` and `@maas-ui/maas-ui-legacy`.
+Run `yarn release [version]` where version is in the form `0.1.2`. This will bump the version in `package.json` and create a tag with a 'v' prefix.
 
 The workflows in `.github/workflows` need to be updated to only run against the version
 branch. This might look something like the following:

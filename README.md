@@ -22,14 +22,6 @@ MAAS is an open-source tool that lets you build a data centre from bare-metal se
 
 This repository contains the sourcecode for the [MAAS](https://maas.io) web app, maas-ui.
 
-It is comprised of the following [yarn workspaces](https://yarnpkg.com/lang/en/docs/workspaces/):
-
-- _ui_: the react maas client (all new work should be in this workspace).
-- _legacy_: the angularjs maas client.
-- _root_: a single-spa app, providing top-level routing between both _ui_ and _legacy_.
-- _shared_: code shared between both legacy and ui.
-- _proxy_: a proxying express project, used for serving both legacy and ui projects in development.
-
 ## Contributing
 
 Community contributions are most welcome, and there are a number of ways to participate:
@@ -63,9 +55,7 @@ MAAS server source and issue tracking [can be found on Launchpad](https://launch
 
 - [React](https://reactjs.org/)
 - [Redux](https://redux.js.org/)
-- [single-spa](https://single-spa.js.org/)
 - [TypeScript](https://www.typescriptlang.org/)
-- [Angularjs](https://angularjs.org/) (legacy)
 
 ## Team Members
 
