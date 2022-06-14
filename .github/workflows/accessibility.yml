@@ -28,7 +28,7 @@ jobs:
         with:
           config: baseUrl=${{env.MAAS_URL}},pageLoadTimeout=100000
           install: false
-          spec: "cypress/integration/accessibility/**/*.spec.ts"
+          spec: "cypress/e2e/accessibility/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
       - name: Create issue on failure
         if: failure()
