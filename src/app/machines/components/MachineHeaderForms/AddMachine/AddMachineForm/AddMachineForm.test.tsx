@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -160,15 +161,15 @@ it("enables submit when a power type with no fields is chosen", async () => {
 
   // Choose the "manual" power type which has no power fields, and fill in other
   // required fields.
-  fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
-    target: { value: "manual" },
-  });
-  fireEvent.change(screen.getByRole("textbox", { name: "MAC address" }), {
-    target: { value: "11:11:11:11:11:11" },
-  });
-  await waitFor(() => {
-    expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled();
-  });
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Power type" }),
+    "manual"
+  );
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "MAC address" }),
+    "11:11:11:11:11:11"
+  );
+  expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled();
 });
 
 it("can handle saving a machine", async () => {
@@ -185,34 +186,39 @@ it("can handle saving a machine", async () => {
     </Provider>
   );
 
-  fireEvent.change(screen.getByRole("textbox", { name: "Machine name" }), {
-    target: { value: "mean-bean" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Domain" }), {
-    target: { value: "maas" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Architecture" }), {
-    target: { value: "amd64/generic" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Minimum kernel" }), {
-    target: { value: "ga-16.04" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Zone" }), {
-    target: { value: "twilight" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Resource pool" }), {
-    target: { value: "swimming" },
-  });
-  fireEvent.change(screen.getByRole("textbox", { name: "MAC address" }), {
-    target: { value: "11:11:11:11:11:11" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
-    target: { value: "manual" },
-  });
-  await waitFor(() => {
-    expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled();
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Save machine" }));
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "Machine name" }),
+    "mean-bean"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Domain" }),
+    "maas"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Architecture" }),
+    "amd64/generic"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Minimum kernel" }),
+    "ga-16.04"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Zone" }),
+    "twilight"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Resource pool" }),
+    "swimming"
+  );
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "MAC address" }),
+    "11:11:11:11:11:11"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Power type" }),
+    "manual"
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Save machine" }));
 
   const expectedAction = machineActions.create({
     architecture: "amd64/generic",
@@ -248,25 +254,26 @@ it("correctly trims power parameters before dispatching action", async () => {
   );
 
   // Choose initial power type and fill in fields.
-  fireEvent.change(screen.getByRole("textbox", { name: "MAC address" }), {
-    target: { value: "11:11:11:11:11:11" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
-    target: { value: "amt" },
-  });
-  const amtField = await screen.findByRole("textbox", { name: "IP address" });
-  fireEvent.change(amtField, { target: { value: "192.168.1.1" } });
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "MAC address" }),
+    "11:11:11:11:11:11"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Power type" }),
+    "amt"
+  );
+  const amtField = screen.getByRole("textbox", { name: "IP address" });
+  await userEvent.type(amtField, "192.168.1.1");
 
   // Change power type and fill in new fields.
-  fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
-    target: { value: "apc" },
-  });
-  const apcField = await screen.findByRole("textbox", { name: "Power ID" });
-  fireEvent.change(apcField, { target: { value: "12345" } });
-  await waitFor(() => {
-    expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled();
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Save machine" }));
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Power type" }),
+    "apc"
+  );
+  const apcField = screen.getByRole("textbox", { name: "Power ID" });
+  await userEvent.clear(apcField);
+  await userEvent.type(apcField, "12345");
+  await userEvent.click(screen.getByRole("button", { name: "Save machine" }));
 
   const expectedAction = machineActions.create({
     architecture: "amd64/generic",
@@ -306,24 +313,26 @@ it("correctly filters empty extra mac fields", async () => {
   );
 
   // Submit the form with two extra macs, where one is an empty string
-  fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
-    target: { value: "manual" },
-  });
-  fireEvent.change(screen.getByRole("textbox", { name: "MAC address" }), {
-    target: { value: "11:11:11:11:11:11" },
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Add MAC address" }));
-  fireEvent.click(screen.getByRole("button", { name: "Add MAC address" }));
-  fireEvent.change(screen.getByLabelText("Extra MAC address 1"), {
-    target: { value: "22:22:22:22:22:22" },
-  });
-  fireEvent.change(screen.getByLabelText("Extra MAC address 2"), {
-    target: { value: "" },
-  });
-  await waitFor(() => {
-    expect(screen.getByRole("button", { name: "Save machine" })).toBeEnabled();
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Save machine" }));
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Power type" }),
+    "manual"
+  );
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "MAC address" }),
+    "11:11:11:11:11:11"
+  );
+  await userEvent.click(
+    screen.getByRole("button", { name: "Add MAC address" })
+  );
+  await userEvent.click(
+    screen.getByRole("button", { name: "Add MAC address" })
+  );
+  await userEvent.type(
+    screen.getByLabelText("Extra MAC address 1"),
+    "22:22:22:22:22:22"
+  );
+  await userEvent.clear(screen.getByLabelText("Extra MAC address 2"));
+  await userEvent.click(screen.getByRole("button", { name: "Save machine" }));
 
   const expectedAction = machineActions.create({
     architecture: "amd64/generic",

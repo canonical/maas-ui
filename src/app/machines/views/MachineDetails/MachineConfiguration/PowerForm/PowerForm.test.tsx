@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -137,6 +137,7 @@ it("renders read-only text fields until edit button is pressed", async () => {
 it("correctly dispatches an action to update a machine's power", async () => {
   const machine = machineDetailsFactory({
     permissions: ["edit"],
+    pod: undefined,
     power_type: PowerTypeNames.AMT,
     system_id: "abc123",
   });
@@ -155,14 +156,10 @@ it("correctly dispatches an action to update a machine's power", async () => {
   await userEvent.click(
     screen.getAllByRole("button", { name: Labels.EditButton })[0]
   );
-  fireEvent.change(screen.getByRole("combobox", { name: "Power type" }), {
-    target: { value: PowerTypeNames.APC },
-  });
-  await waitFor(() => {
-    expect(
-      screen.getByRole("textbox", { name: "APC field" })
-    ).toBeInTheDocument();
-  });
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Power type" }),
+    PowerTypeNames.APC
+  );
   await userEvent.clear(screen.getByRole("textbox", { name: "APC field" }));
   await userEvent.type(
     screen.getByRole("textbox", { name: "APC field" }),

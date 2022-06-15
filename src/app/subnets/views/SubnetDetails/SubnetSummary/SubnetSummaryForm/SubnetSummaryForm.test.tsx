@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -54,36 +55,42 @@ it("can dispatch an action to update the subnet", async () => {
       </MemoryRouter>
     </Provider>
   );
+  const cidrField = screen.getByRole("textbox", { name: "CIDR" });
+  const nameField = screen.getByRole("textbox", { name: "Name" });
+  const descriptionField = screen.getByRole("textbox", { name: "Description" });
+  const gatewayIpField = screen.getByRole("textbox", { name: "Gateway IP" });
+  const dnsField = screen.getByRole("textbox", { name: "DNS" });
 
-  fireEvent.input(screen.getByRole("textbox", { name: "CIDR" }), {
-    target: { value: "192.168.2.0/24" },
-  });
-  fireEvent.input(screen.getByRole("textbox", { name: "Name" }), {
-    target: { value: "New Name" },
-  });
-  fireEvent.input(screen.getByRole("textbox", { name: "Description" }), {
-    target: { value: "I'm a supernet" },
-  });
-  fireEvent.input(screen.getByRole("textbox", { name: "Gateway IP" }), {
-    target: { value: "192.168.2.1" },
-  });
-  fireEvent.input(screen.getByRole("textbox", { name: "DNS" }), {
-    target: { value: "fghij" },
-  });
-  fireEvent.click(screen.getByRole("checkbox", { name: "Managed allocation" }));
-  fireEvent.click(screen.getByRole("checkbox", { name: "Active discovery" }));
-  fireEvent.click(
+  await userEvent.clear(cidrField);
+  await userEvent.type(cidrField, "192.168.2.0/24");
+  await userEvent.clear(nameField);
+  await userEvent.type(nameField, "New Name");
+  await userEvent.clear(descriptionField);
+  await userEvent.type(descriptionField, "I'm a supernet");
+  await userEvent.clear(gatewayIpField);
+  await userEvent.type(gatewayIpField, "192.168.2.1");
+  await userEvent.clear(dnsField);
+  await userEvent.type(dnsField, "fghij");
+  await userEvent.click(
+    screen.getByRole("checkbox", { name: "Managed allocation" })
+  );
+  await userEvent.click(
+    screen.getByRole("checkbox", { name: "Active discovery" })
+  );
+  await userEvent.click(
     screen.getByRole("checkbox", { name: "Allow DNS resolution" })
   );
-  fireEvent.click(screen.getByRole("checkbox", { name: "Proxy access" }));
-  fireEvent.change(screen.getByRole("combobox", { name: "Fabric" }), {
-    target: { value: fabrics[1].id.toString() },
-  });
+  await userEvent.click(screen.getByRole("checkbox", { name: "Proxy access" }));
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Fabric" }),
+    fabrics[1].id.toString()
+  );
 
-  fireEvent.change(screen.getByRole("combobox", { name: "VLAN" }), {
-    target: { value: vlans[1].id.toString() },
-  });
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "VLAN" }),
+    vlans[1].id.toString()
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   const expectedAction = subnetActions.update({
     active_discovery: true,

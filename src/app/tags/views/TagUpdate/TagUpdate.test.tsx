@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
@@ -122,7 +122,7 @@ it("can update the tag", async () => {
   });
   await userEvent.clear(optionsInput);
   await userEvent.type(optionsInput, "options1");
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
   const expected = tagActions.update({
     id: 1,
     comment: "comment1",
@@ -171,7 +171,7 @@ it("can return to the previous page on save", async () => {
   jest
     .spyOn(baseHooks, "useCycled")
     .mockImplementation(() => [true, () => null]);
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
   await waitFor(() =>
     expect(history.location.pathname).toBe(tagURLs.tags.index)
   );
@@ -211,7 +211,7 @@ it("goes to the tag details page if it can't go back", async () => {
   jest
     .spyOn(baseHooks, "useCycled")
     .mockImplementation(() => [true, () => null]);
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
   await waitFor(() =>
     expect(history.location.pathname).toBe(tagURLs.tag.index({ id: 1 }))
   );
@@ -236,17 +236,17 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   });
   await userEvent.clear(definitionInput);
   await userEvent.type(definitionInput, "def");
-  fireEvent.submit(screen.getByRole("form"));
   // Mock state.tag.saved transitioning from "false" to "true"
   jest
     .spyOn(baseHooks, "useCycled")
     .mockImplementation(() => [true, () => null]);
+  await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
   await waitFor(() => {
     const action = store
       .getActions()
       .find((action) => action.type === "message/add");
-    const strippedMessage = action.payload.message.replace(/\s+/g, " ").trim();
+    const strippedMessage = action.payload?.message.replace(/\s+/g, " ").trim();
     expect(strippedMessage).toBe(`Updated baggage. ${NewDefinitionMessage}`);
   });
 });

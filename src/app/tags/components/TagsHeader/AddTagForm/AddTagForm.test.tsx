@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
@@ -66,7 +66,7 @@ it("dispatches an action to create a tag", async () => {
     screen.getByRole("textbox", { name: KernelOptionsLabel.KernelOptions }),
     "options1"
   );
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
   const expected = tagActions.create({
     comment: "comment1",
     definition: "definition1",
@@ -116,7 +116,7 @@ it("redirects to the newly created tag on save", async () => {
     items: [tagFactory({ id: 8, name: "tag1" })],
     saved: true,
   });
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
   expect(history.location.pathname).toBe(tagsURLs.tag.index({ id: 8 }));
   expect(onClose).toBeCalled();
 });
@@ -153,7 +153,7 @@ it("sends analytics when there is a definition", async () => {
     items: [tagFactory({ id: 8, name: "tag1", definition: "def1" })],
     saved: true,
   });
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
   await waitFor(() => {
     expect(mockSendAnalytics).toHaveBeenCalled();
   });
@@ -196,7 +196,7 @@ it("sends analytics when there is no definition", async () => {
     items: [tagFactory({ id: 8, name: "tag1" })],
     saved: true,
   });
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
   await waitFor(() => {
     expect(mockSendAnalytics).toHaveBeenCalled();
   });
@@ -229,11 +229,11 @@ it("shows a confirmation when an automatic tag is added", async () => {
     }),
     "definition"
   );
-  fireEvent.submit(screen.getByRole("form"));
   // Mock state.tag.saved transitioning from "false" to "true"
   jest
     .spyOn(baseHooks, "useCycled")
     .mockImplementation(() => [true, () => null]);
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   await waitFor(() => {
     const action = store

@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -38,9 +39,10 @@ it("updates to use the fabric's default VLAN on fabric change", async () => {
 
   expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue("3");
 
-  fireEvent.change(screen.getByRole("combobox", { name: "Fabric" }), {
-    target: { value: fabrics[1].id.toString() },
-  });
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Fabric" }),
+    fabrics[1].id.toString()
+  );
 
   await waitFor(() =>
     expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue("5")

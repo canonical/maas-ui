@@ -1,10 +1,5 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -121,13 +116,16 @@ describe("EditVLAN", () => {
         </MemoryRouter>
       </Provider>
     );
-    fireEvent.submit(screen.getByRole("form"));
+    const nameField = screen.getByRole("textbox", { name: "Name" });
+    await userEvent.clear(nameField);
+    await userEvent.type(nameField, "new-name");
+    await userEvent.click(screen.getByRole("button", { name: "Save summary" }));
     const expected = vlanActions.update({
       description: vlan.description,
       fabric: vlan.fabric,
       id: vlan.id,
       mtu: vlan.mtu,
-      name: vlan.name,
+      name: "new-name",
       space: vlan.space,
       vid: vlan.vid,
     });
@@ -152,14 +150,15 @@ describe("EditVLAN", () => {
       </Provider>
     );
 
-    fireEvent.change(screen.getByRole("combobox", { name: "Space" }), {
-      target: { value: null },
-    });
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Space" }),
+      ""
+    );
     await waitFor(() =>
       expect(
         within(screen.getByRole("combobox", { name: "Space" })).getByRole(
           "option",
-          { name: "No space", selected: true }
+          { name: "No space" }
         )
       ).toBeInTheDocument()
     );

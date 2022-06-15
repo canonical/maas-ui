@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -147,7 +147,7 @@ describe("ReservedRangeForm", () => {
       screen.getByRole("textbox", { name: Labels.Comment }),
       "reserved"
     );
-    fireEvent.submit(screen.getByRole("form"));
+    await userEvent.click(screen.getByRole("button", { name: "Reserve" }));
     const expected = ipRangeActions.create({
       comment: "reserved",
       end_ip: "1.1.1.2",
@@ -175,12 +175,15 @@ describe("ReservedRangeForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    fireEvent.submit(screen.getByRole("form"));
+    const startIpField = screen.getByRole("textbox", { name: Labels.StartIp });
+    await userEvent.clear(startIpField);
+    await userEvent.type(startIpField, "1.2.3.4");
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     const expected = ipRangeActions.update({
       comment: ipRange.comment,
       end_ip: ipRange.end_ip,
       id: ipRange.id,
-      start_ip: ipRange.start_ip,
+      start_ip: "1.2.3.4",
     });
     await waitFor(() =>
       expect(
@@ -204,12 +207,15 @@ describe("ReservedRangeForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    fireEvent.submit(screen.getByRole("form"));
+    const startIpField = screen.getByRole("textbox", { name: Labels.StartIp });
+    await userEvent.clear(startIpField);
+    await userEvent.type(startIpField, "1.2.3.4");
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     const expected = ipRangeActions.update({
       comment: ipRange.comment,
       end_ip: ipRange.end_ip,
       id: ipRange.id,
-      start_ip: ipRange.start_ip,
+      start_ip: "1.2.3.4",
     });
     await waitFor(() => {
       const actual = store

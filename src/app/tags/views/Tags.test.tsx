@@ -1,4 +1,5 @@
-import { fireEvent, screen, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import { Label as TagsHeaderLabel } from "../components/TagsHeader/TagsHeader";
 
@@ -84,14 +85,14 @@ describe("Tags", () => {
     ).toBeInTheDocument();
   });
 
-  it("hides buttons when deleting tags", () => {
+  it("hides buttons when deleting tags", async () => {
     renderWithBrowserRouter(<Tags />, {
       wrapperProps: { state },
       route: tagURLs.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
     const details = screen.getByLabelText(TagDetailsLabel.Title);
-    fireEvent.click(
+    await userEvent.click(
       within(details).getByRole("button", {
         name: TagDetailsLabel.DeleteButton,
       })
@@ -133,14 +134,14 @@ describe("Tags", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("hides buttons when creating tags", () => {
+  it("hides buttons when creating tags", async () => {
     renderWithBrowserRouter(<Tags />, {
       wrapperProps: { state },
       route: tagURLs.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
     const details = screen.getByLabelText(TagDetailsLabel.Title);
-    fireEvent.click(
+    await userEvent.click(
       within(header).getByRole("button", { name: TagsHeaderLabel.CreateButton })
     );
     expect(

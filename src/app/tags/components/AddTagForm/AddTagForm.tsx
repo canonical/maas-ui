@@ -26,9 +26,10 @@ type Props = PropsWithSpread<
 >;
 
 export enum Label {
-  Form = "Create tag",
   Comment = "Comment",
+  Form = "Create tag",
   Name = "Tag name",
+  Submit = "Create and add to tag changes",
 }
 
 const AddTagFormSchema = Yup.object().shape({
@@ -84,7 +85,7 @@ export const AddTagForm = ({
       saved={saved}
       saving={saving}
       submitAppearance="neutral"
-      submitLabel="Create and add to tag changes"
+      submitLabel={Label.Submit}
       validationSchema={AddTagFormSchema}
       {...props}
     >
