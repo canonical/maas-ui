@@ -5,7 +5,7 @@
  * @return The formatted power type or the original power type key.
  */
 export const extractPowerType = (
-  description: string,
+  description: string | null,
   powerType: string
 ): string | null => {
   if (!powerType) {

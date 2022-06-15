@@ -1,5 +1,4 @@
-import { renderHook } from "@testing-library/react-hooks";
-import TestRenderer from "react-test-renderer";
+import { act, renderHook } from "@testing-library/react-hooks";
 
 import {
   useCycled,
@@ -19,8 +18,6 @@ jest.mock("react-router-dom", () => ({
   ...jest.requireActual("react-router-dom"),
   useLocation: () => mockUseLocationValue,
 }));
-
-const { act } = TestRenderer;
 
 describe("hooks", () => {
   describe("useScrollOnRender", () => {

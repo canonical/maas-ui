@@ -1,4 +1,5 @@
 import reducers, { actions } from "./slice";
+import { ServiceName } from "./types";
 
 import {
   service as serviceFactory,
@@ -129,7 +130,7 @@ describe("service reducer", () => {
       });
       const updatedService = serviceFactory({
         id: initialState.items[0].id,
-        name: "updated-reducers",
+        name: ServiceName.PROXY,
       });
 
       expect(

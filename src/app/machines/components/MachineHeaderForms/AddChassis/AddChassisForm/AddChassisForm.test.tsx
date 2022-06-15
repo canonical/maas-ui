@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import AddChassisForm from "./AddChassisForm";
 
+import { PowerTypeNames } from "app/store/general/constants";
 import {
   DriverType,
   PowerFieldScope,
@@ -48,7 +49,7 @@ describe("AddChassisForm", () => {
               can_probe: false,
             }),
             powerTypeFactory({
-              name: "dummy",
+              name: PowerTypeNames.WEDGE,
               description: "Dummy power type",
               fields: [
                 powerFieldFactory({
