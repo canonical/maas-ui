@@ -20,6 +20,7 @@ describe("DeviceHeaderForms", () => {
           <DeviceHeaderForms
             headerContent={{ view: DeviceHeaderViews.ADD_DEVICE }}
             setHeaderContent={jest.fn()}
+            devices={[]}
           />
         </MemoryRouter>
       </Provider>

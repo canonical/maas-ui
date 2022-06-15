@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import IPColumn from "./IPColumn";
 
-import type { MachineIpAddress } from "app/store/machine/types";
+import type { NodeIpAddress } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineIpAddress as ipAddressFactory,
@@ -16,7 +16,7 @@ import {
 const mockStore = configureStore();
 
 describe("IPColumn", () => {
-  let ipAddresses: MachineIpAddress[] = [];
+  let ipAddresses: NodeIpAddress[] = [];
 
   beforeEach(() => {
     ipAddresses = [

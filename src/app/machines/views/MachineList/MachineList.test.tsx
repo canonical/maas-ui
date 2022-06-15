@@ -196,7 +196,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -215,7 +215,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -235,7 +235,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -262,7 +262,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -285,7 +285,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -305,7 +305,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -322,7 +322,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -339,7 +339,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -357,7 +357,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -377,7 +377,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -397,7 +397,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -437,7 +437,7 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList setSearchFilter={jest.fn()} />
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
