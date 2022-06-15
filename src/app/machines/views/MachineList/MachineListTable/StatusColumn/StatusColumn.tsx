@@ -1,7 +1,6 @@
 import * as React from "react";
 
 import { Spinner, Tooltip } from "@canonical/react-components";
-import PropTypes from "prop-types";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
@@ -138,11 +137,6 @@ export const StatusColumn = ({
     );
   }
   return null;
-};
-
-StatusColumn.propTypes = {
-  onToggleMenu: PropTypes.func,
-  systemId: PropTypes.string.isRequired,
 };
 
 export default React.memo(StatusColumn);

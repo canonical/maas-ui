@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
 export type Props = {
   className?: string;
@@ -17,17 +16,6 @@ const Switch = ({ className, label, ...inputProps }: Props): JSX.Element => {
       <div className="p-switch__slider"></div>
     </label>
   );
-};
-
-Switch.propTypes = {
-  /**
-   * Optional classes applied to the parent element.
-   */
-  className: PropTypes.string,
-  /**
-   * Label for switch.
-   */
-  label: PropTypes.node,
 };
 
 export default Switch;

@@ -2,7 +2,6 @@ import type { ReactNode } from "react";
 
 import { Field } from "@canonical/react-components";
 import classNames from "classnames";
-import PropTypes from "prop-types";
 
 import type { SwitchProps } from "../Switch";
 import Switch from "../Switch";
@@ -56,20 +55,6 @@ const SwitchField = ({
       />
     </Field>
   );
-};
-
-SwitchField.propTypes = {
-  caution: PropTypes.node,
-  className: PropTypes.string,
-  error: PropTypes.node,
-  help: PropTypes.node,
-  id: PropTypes.string,
-  label: PropTypes.node,
-  labelClassName: PropTypes.string,
-  required: PropTypes.bool,
-  stacked: PropTypes.bool,
-  success: PropTypes.node,
-  wrapperClassName: PropTypes.string,
 };
 
 export default SwitchField;
