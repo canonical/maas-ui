@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 
-import { useParams, useLocation } from "react-router";
+import { useLocation, useParams } from "react-router-dom-v5-compat";
 
 import { parseNumberId } from "app/utils";
 
@@ -22,8 +22,7 @@ export function useGetURLId<P extends RouteParams, K extends keyof P>(
   pk: "id" | "system_id",
   key?: K
 ): string | number | null {
-  const params = useParams<P>();
-  const id = params[key || "id"];
+  const { [key || "id"]: id } = useParams<P>();
   if (pk === "system_id") {
     return id || null;
   }

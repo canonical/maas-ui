@@ -1,4 +1,5 @@
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
 import Pools from "./pools/views/Pools";
 import Tags from "./tags/views/Tags";
@@ -11,7 +12,8 @@ import Controllers from "app/controllers/views/Controllers";
 import dashboardURLs from "app/dashboard/urls";
 import Dashboard from "app/dashboard/views/Dashboard";
 import devicesURLs from "app/devices/urls";
-import Devices from "app/devices/views/Devices";
+import DeviceDetails from "app/devices/views/DeviceDetails";
+import DeviceList from "app/devices/views/DeviceList";
 import domainsURLs from "app/domains/urls";
 import Domains from "app/domains/views/Domains";
 import imagesURLs from "app/images/urls";
@@ -35,27 +37,26 @@ import zonesURLs from "app/zones/urls";
 import Zones from "app/zones/views/Zones";
 
 const Routes = (): JSX.Element => (
-  <Switch>
+  <ReactRouterRoutes>
     <Route
-      exact
       path={baseURLs.index}
-      render={() => <Redirect to={machineURLs.machines.index} />}
+      element={<Redirect to={machineURLs.machines.index} />}
     />
     <Route
-      path={introURLs.index}
-      render={() => (
+      path={`${introURLs.index}/*}`}
+      element={
         <ErrorBoundary>
           <Intro />
         </ErrorBoundary>
-      )}
+      }
     />
     <Route
       path={prefsURLs.prefs}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Preferences />
         </ErrorBoundary>
-      )}
+      }
     />
     {[
       controllersURLs.controllers.index,
@@ -64,101 +65,103 @@ const Routes = (): JSX.Element => (
       <Route
         key={path}
         path={path}
-        render={() => (
+        element={
           <ErrorBoundary>
             <Controllers />
           </ErrorBoundary>
-        )}
+        }
       />
     ))}
-    {[devicesURLs.devices.index, devicesURLs.device.index(null, true)].map(
-      (path) => (
-        <Route
-          key={path}
-          path={path}
-          render={() => (
-            <ErrorBoundary>
-              <Devices />
-            </ErrorBoundary>
-          )}
-        />
-      )
-    )}
+    <Route
+      path={devicesURLs.devices.index}
+      element={
+        <ErrorBoundary>
+          <DeviceList />
+        </ErrorBoundary>
+      }
+    />
+    <Route
+      path={`${devicesURLs.device.index(null, true)}/*`}
+      element={
+        <ErrorBoundary>
+          <DeviceDetails />
+        </ErrorBoundary>
+      }
+    />
     {[domainsURLs.domains, domainsURLs.details(null, true)].map((path) => (
       <Route
-        exact
         key={path}
         path={path}
-        render={() => (
+        element={
           <ErrorBoundary>
             <Domains />
           </ErrorBoundary>
-        )}
+        }
       />
     ))}
     <Route
       path={imagesURLs.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Images />
         </ErrorBoundary>
-      )}
+      }
     />
     <Route
       path={kvmURLs.kvm}
-      render={() => (
+      element={
         <ErrorBoundary>
           <KVM />
         </ErrorBoundary>
-      )}
+      }
     />
     <Route
       path={machineURLs.machines.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Machines />
         </ErrorBoundary>
-      )}
+      }
     />
     <Route
       path={machineURLs.machine.index(null, true)}
-      render={() => (
+      element={
         <ErrorBoundary>
           <MachineDetails />
         </ErrorBoundary>
-      )}
+      }
     />
     <Route
       path={poolsURLs.pools}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Pools />
         </ErrorBoundary>
-      )}
+      }
     />
     <Route
       path={tagURLs.tags.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Tags />
         </ErrorBoundary>
-      )}
+      }
     />
     <Route
       path={tagURLs.tag.index(null, true)}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Tags />
         </ErrorBoundary>
-      )}
+      }
     />
     <Route
       path={settingsURLs.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Settings />
         </ErrorBoundary>
-      )}
+      }
     />
     {[
       subnetsURLs.index,
@@ -168,38 +171,36 @@ const Routes = (): JSX.Element => (
       subnetsURLs.vlan.index(null, true),
     ].map((path) => (
       <Route
-        exact
         key={path}
         path={path}
-        render={() => (
+        element={
           <ErrorBoundary>
             <Subnets />
           </ErrorBoundary>
-        )}
+        }
       />
     ))}
     {[zonesURLs.index, zonesURLs.details(null, true)].map((path) => (
       <Route
-        exact
         key={path}
         path={path}
-        render={() => (
+        element={
           <ErrorBoundary>
             <Zones />
           </ErrorBoundary>
-        )}
+        }
       />
     ))}
     <Route
       path={dashboardURLs.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Dashboard />
         </ErrorBoundary>
-      )}
+      }
     />
-    <Route path="*" render={() => <NotFound includeSection />} />
-  </Switch>
+    <Route path="*" element={<NotFound includeSection />} />
+  </ReactRouterRoutes>
 );
 
 export default Routes;
