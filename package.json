@@ -51,7 +51,7 @@
     "react-redux": "7.2.8",
     "react-router-dom": "5.3.3",
     "react-router-dom-v5-compat": "6.3.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "react-storage-hooks": "4.0.1",
     "react-useportal": "1.0.16",
     "reconnecting-websocket": "4.4.0",
