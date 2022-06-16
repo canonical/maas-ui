@@ -1,5 +1,4 @@
 import { NotificationSeverity } from "@canonical/react-components";
-import pathParse from "path-parse";
 import type { FileWithPath } from "react-dropzone";
 import type { Dispatch } from "redux";
 
@@ -32,7 +31,7 @@ export const readScript = (
   dispatch: Dispatch,
   callback: (script: ReadScriptResponse | null) => void
 ): void => {
-  const scriptName = file.path ? pathParse(file.path).name : null;
+  const scriptName = file.path ? file.name : null;
 
   const reader = new FileReader();
 
