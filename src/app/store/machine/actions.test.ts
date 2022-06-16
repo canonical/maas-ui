@@ -334,14 +334,14 @@ describe("machine actions", () => {
   it("can handle commissioning a machine", () => {
     expect(
       actions.commission({
-        commissioning_scripts: [0, 2, "update_firmware", "configure_hba"],
+        commissioning_scripts: ["update_firmware", "configure_hba"],
         enable_ssh: true,
         script_input: { testingScript0: { url: "www.url.com" } },
         skip_bmc_config: false,
         skip_networking: false,
         skip_storage: false,
         system_id: "abc123",
-        testing_scripts: [0, 2],
+        testing_scripts: ["test0", "test2"],
       })
     ).toEqual({
       meta: {
@@ -352,13 +352,13 @@ describe("machine actions", () => {
         params: {
           action: NodeActions.COMMISSION,
           extra: {
-            commissioning_scripts: [0, 2, "update_firmware", "configure_hba"],
+            commissioning_scripts: ["update_firmware", "configure_hba"],
             enable_ssh: true,
             script_input: { testingScript0: { url: "www.url.com" } },
             skip_bmc_config: false,
             skip_networking: false,
             skip_storage: false,
-            testing_scripts: [0, 2],
+            testing_scripts: ["test0", "test2"],
           },
           system_id: "abc123",
         },
@@ -373,7 +373,7 @@ describe("machine actions", () => {
         enable_ssh: true,
         script_input: { "test-0": { url: "www.url.com" } },
         system_id: "abc123",
-        testing_scripts: [0, 2],
+        testing_scripts: ["test1", "test2"],
       })
     ).toEqual({
       type: "machine/test",
@@ -387,7 +387,7 @@ describe("machine actions", () => {
           extra: {
             enable_ssh: true,
             script_input: { "test-0": { url: "www.url.com" } },
-            testing_scripts: [0, 2],
+            testing_scripts: ["test1", "test2"],
           },
           system_id: "abc123",
         },

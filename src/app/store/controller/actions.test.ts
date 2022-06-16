@@ -201,7 +201,7 @@ describe("controller actions", () => {
         enable_ssh: true,
         script_input: { "test-0": { url: "www.url.com" } },
         system_id: "abc123",
-        testing_scripts: [0, 2],
+        testing_scripts: ["test0", "test2"],
       })
     ).toEqual({
       type: "controller/test",
@@ -215,7 +215,7 @@ describe("controller actions", () => {
           extra: {
             enable_ssh: true,
             script_input: { "test-0": { url: "www.url.com" } },
-            testing_scripts: [0, 2],
+            testing_scripts: ["test0", "test2"],
           },
           system_id: "abc123",
         },

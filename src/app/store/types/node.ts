@@ -21,7 +21,7 @@ import type {
   MachineDetails,
   MachineMeta,
 } from "app/store/machine/types";
-import type { Script, ScriptMeta } from "app/store/script/types";
+import type { Script } from "app/store/script/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import type { Model, ModelRef, TimestampedModel } from "app/store/types/model";
@@ -417,7 +417,7 @@ export type SetZoneParams = BaseNodeActionParams & {
 export type TestParams = BaseNodeActionParams & {
   enable_ssh?: boolean;
   script_input?: ScriptInputParam;
-  testing_scripts?: (Script[ScriptMeta.PK] | Script["name"])[];
+  testing_scripts?: Script["name"][];
 };
 
 // On the API backend the update is processed by a form that handles all node
