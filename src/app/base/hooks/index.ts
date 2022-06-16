@@ -1,4 +1,9 @@
-export { useSendAnalytics, useSendAnalyticsWhen } from "./analytics";
+export {
+  useGoogleAnalytics,
+  useSendAnalytics,
+  useSendAnalyticsWhen,
+  useUsabilla,
+} from "./analytics";
 export {
   useAddMessage,
   useCycled,
