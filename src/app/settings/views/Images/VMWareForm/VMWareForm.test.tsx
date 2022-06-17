@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import VMWareForm from "./VMWareForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -22,19 +23,19 @@ describe("VMWareForm", () => {
       config: configStateFactory({
         items: [
           {
-            name: "vcenter_server",
+            name: ConfigNames.VCENTER_SERVER,
             value: "my server",
           },
           {
-            name: "vcenter_username",
+            name: ConfigNames.VCENTER_USERNAME,
             value: "admin",
           },
           {
-            name: "vcenter_password",
+            name: ConfigNames.VCENTER_PASSWORD,
             value: "passwd",
           },
           {
-            name: "vcenter_datacenter",
+            name: ConfigNames.VCENTER_DATACENTER,
             value: "my datacenter",
           },
         ],

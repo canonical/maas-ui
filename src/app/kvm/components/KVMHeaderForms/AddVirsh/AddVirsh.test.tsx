@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import AddVirsh from "./AddVirsh";
 
+import { ConfigNames } from "app/store/config/types";
 import { actions as generalActions } from "app/store/general";
 import { PodType } from "app/store/pod/constants";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -35,7 +36,7 @@ describe("AddVirsh", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [{ name: "maas_name", value: "MAAS" }],
+        items: [{ name: ConfigNames.MAAS_NAME, value: "MAAS" }],
       }),
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({

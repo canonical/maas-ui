@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import AddVirsh from "../AddVirsh";
 
+import { ConfigNames } from "app/store/config/types";
 import { PowerTypeNames } from "app/store/general/constants";
 import { PowerFieldScope } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
@@ -31,7 +32,7 @@ describe("AddVirshFields", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [{ name: "maas_name", value: "MAAS" }],
+        items: [{ name: ConfigNames.MAAS_NAME, value: "MAAS" }],
       }),
       general: generalStateFactory({
         powerTypes: powerTypesStateFactory({

@@ -10,6 +10,7 @@ import * as Yup from "yup";
 import FormikFormContent from "./FormikFormContent";
 
 import * as hooks from "app/base/hooks/analytics";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
@@ -25,7 +26,9 @@ describe("FormikFormContent", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "analytics_enabled", value: false })],
+        items: [
+          configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
+        ],
       }),
     });
   });

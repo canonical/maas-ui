@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import GeneralForm from "./GeneralForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
@@ -22,9 +23,12 @@ describe("GeneralForm", () => {
     state = rootStateFactory({
       config: configStateFactory({
         items: [
-          configFactory({ name: "maas_name", value: "bionic-maas" }),
-          configFactory({ name: "enable_analytics", value: true }),
-          configFactory({ name: "release_notifications", value: true }),
+          configFactory({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
+          configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+          configFactory({
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
+            value: true,
+          }),
         ],
       }),
     });

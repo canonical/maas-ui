@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import { useCompletedIntro, useCompletedUserIntro } from "./intro";
 
+import { ConfigNames } from "app/store/config/types";
 import { getCookie } from "app/utils";
 import {
   authState as authStateFactory,
@@ -26,7 +27,9 @@ describe("intro hooks", () => {
     it("gets whether the intro has been completed", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "completed_intro", value: true })],
+          items: [
+            configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+          ],
         }),
       });
       const store = mockStore(state);
@@ -43,7 +46,9 @@ describe("intro hooks", () => {
       getCookieMock.mockImplementation(() => "true");
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "completed_intro", value: false })],
+          items: [
+            configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+          ],
         }),
       });
       const store = mockStore(state);

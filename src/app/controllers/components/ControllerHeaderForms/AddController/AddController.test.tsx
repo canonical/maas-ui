@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import AddController from "./AddController";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -20,8 +21,8 @@ describe("AddController", () => {
     state = rootStateFactory({
       config: configStateFactory({
         items: [
-          { name: "maas_url", value: "http://1.2.3.4/MAAS" },
-          { name: "rpc_shared_secret", value: "veryverysecret" },
+          { name: ConfigNames.MAAS_URL, value: "http://1.2.3.4/MAAS" },
+          { name: ConfigNames.RPC_SHARED_SECRET, value: "veryverysecret" },
         ],
       }),
     });

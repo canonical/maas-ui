@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import MaasIntro from "./MaasIntro";
 
 import { actions as configActions } from "app/store/config";
+import { ConfigNames } from "app/store/config/types";
 import { actions as repoActions } from "app/store/packagerepository";
 import type { RootState } from "app/store/root/types";
 import {
@@ -40,10 +41,13 @@ describe("MaasIntro", () => {
     state = rootStateFactory({
       config: configStateFactory({
         items: [
-          configFactory({ name: "completed_intro", value: false }),
-          configFactory({ name: "maas_name", value: "bionic-maas" }),
-          configFactory({ name: "http_proxy", value: "http://www.site.com" }),
-          configFactory({ name: "upstream_dns", value: "8.8.8.8" }),
+          configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+          configFactory({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
+          configFactory({
+            name: ConfigNames.HTTP_PROXY,
+            value: "http://www.site.com",
+          }),
+          configFactory({ name: ConfigNames.UPSTREAM_DNS, value: "8.8.8.8" }),
         ],
       }),
       packagerepository: repoStateFactory({

@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import Commissioning from "./Commissioning";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -24,12 +25,12 @@ describe("Commissioning", () => {
       config: configStateFactory({
         items: [
           {
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "bionic",
             choices: [],
           },
           {
-            name: "default_min_hwe_kernel",
+            name: ConfigNames.DEFAULT_MIN_HWE_KERNEL,
             value: "ga-16.04-lowlatency",
             choices: [],
           },

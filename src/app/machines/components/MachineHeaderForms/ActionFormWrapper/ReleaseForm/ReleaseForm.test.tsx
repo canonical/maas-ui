@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import ReleaseForm from "./ReleaseForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -29,11 +30,17 @@ describe("ReleaseForm", () => {
         loaded: true,
         items: [
           configFactory({
-            name: "enable_disk_erasing_on_release",
+            name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
             value: false,
           }),
-          configFactory({ name: "disk_erase_with_secure_erase", value: false }),
-          configFactory({ name: "disk_erase_with_quick_erase", value: false }),
+          configFactory({
+            name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
+            value: false,
+          }),
+          configFactory({
+            name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
+            value: false,
+          }),
         ],
       }),
       machine: machineStateFactory({
@@ -53,9 +60,18 @@ describe("ReleaseForm", () => {
     const store = mockStore(state);
     state.machine.selected = ["abc123", "def456"];
     state.config.items = [
-      configFactory({ name: "enable_disk_erasing_on_release", value: true }),
-      configFactory({ name: "disk_erase_with_secure_erase", value: false }),
-      configFactory({ name: "disk_erase_with_quick_erase", value: true }),
+      configFactory({
+        name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
+        value: true,
+      }),
+      configFactory({
+        name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
+        value: false,
+      }),
+      configFactory({
+        name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
+        value: true,
+      }),
     ];
     const wrapper = mount(
       <Provider store={store}>

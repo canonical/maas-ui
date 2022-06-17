@@ -2,6 +2,7 @@ import { screen } from "@testing-library/react";
 
 import StatusBar from "./StatusBar";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus, NodeType } from "app/store/types/node";
 import {
@@ -24,7 +25,7 @@ beforeEach(() => {
   jest.setSystemTime(new Date(Date.UTC(2020, 11, 31, 23, 0, 0)));
   state = rootStateFactory({
     config: configStateFactory({
-      items: [configFactory({ name: "maas_name", value: "bolla" })],
+      items: [configFactory({ name: ConfigNames.MAAS_NAME, value: "bolla" })],
     }),
     controller: controllerStateFactory({
       items: [],

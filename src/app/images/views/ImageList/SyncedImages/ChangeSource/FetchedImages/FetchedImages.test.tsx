@@ -9,6 +9,7 @@ import FetchedImages from "./FetchedImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import { BootResourceSourceType } from "app/store/bootresource/types";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   bootResourceFetchedArch as fetchedArchFactory,
@@ -37,7 +38,7 @@ describe("FetchedImages", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
         ],

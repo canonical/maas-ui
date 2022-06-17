@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import ThirdPartyDriversForm from "./ThirdPartyDriversForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -22,7 +23,7 @@ describe("ThirdPartyDriversForm", () => {
       config: configStateFactory({
         items: [
           {
-            name: "enable_third_party_drivers",
+            name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS,
             value: true,
           },
         ],

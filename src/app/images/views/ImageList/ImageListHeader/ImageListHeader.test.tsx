@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 import ImageListHeader from "./ImageListHeader";
 
 import { actions as configActions } from "app/store/config";
+import { ConfigNames } from "app/store/config/types";
 import {
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
@@ -68,7 +69,10 @@ describe("ImageListHeader", () => {
     const state = rootStateFactory({
       config: configStateFactory({
         items: [
-          configFactory({ name: "boot_images_auto_import", value: true }),
+          configFactory({
+            name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
+            value: true,
+          }),
         ],
         loaded: true,
       }),

@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ErrorBoundary from "./ErrorBoundary";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -55,7 +56,7 @@ describe("ErrorBoundary", () => {
 
     state.config.items = [
       {
-        name: "enable_analytics",
+        name: ConfigNames.ENABLE_ANALYTICS,
         value: false,
       },
     ];
@@ -82,7 +83,7 @@ describe("ErrorBoundary", () => {
 
     state.config.items = [
       {
-        name: "enable_analytics",
+        name: ConfigNames.ENABLE_ANALYTICS,
         value: true,
       },
     ];

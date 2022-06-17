@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 import TLSEnabled, { Labels } from "./TLSEnabled";
 
 import { actions as configActions } from "app/store/config";
+import { ConfigNames } from "app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -93,11 +94,11 @@ it("disables the interval field if notification is not enabled", async () => {
     config: configStateFactory({
       items: [
         configFactory({
-          name: "tls_cert_expiration_notification_enabled",
+          name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
           value: false,
         }),
         configFactory({
-          name: "tls_cert_expiration_notification_interval",
+          name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
           value: 45,
         }),
       ],
@@ -137,11 +138,11 @@ it("shows an error if TLS notification is enabled but interval is invalid", asyn
     config: configStateFactory({
       items: [
         configFactory({
-          name: "tls_cert_expiration_notification_enabled",
+          name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
           value: true,
         }),
         configFactory({
-          name: "tls_cert_expiration_notification_interval",
+          name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
           value: 45,
         }),
       ],
@@ -183,11 +184,11 @@ it("dispatches an action to update TLS notification config with notification ena
     config: configStateFactory({
       items: [
         configFactory({
-          name: "tls_cert_expiration_notification_enabled",
+          name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
           value: false,
         }),
         configFactory({
-          name: "tls_cert_expiration_notification_interval",
+          name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
           value: 60,
         }),
       ],
@@ -236,11 +237,11 @@ it("dispatches an action to update TLS notification config with notification dis
     config: configStateFactory({
       items: [
         configFactory({
-          name: "tls_cert_expiration_notification_enabled",
+          name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
           value: true,
         }),
         configFactory({
-          name: "tls_cert_expiration_notification_interval",
+          name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
           value: 45,
         }),
       ],

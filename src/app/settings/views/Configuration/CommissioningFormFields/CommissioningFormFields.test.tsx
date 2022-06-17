@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import CommissioningForm from "../CommissioningForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -26,7 +27,7 @@ describe("CommissioningFormFields", () => {
         loaded: true,
         items: [
           {
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "bionic",
             choices: [
               ["precise", 'Ubuntu 12.04 LTS "Precise Pangolin"'],
@@ -36,15 +37,15 @@ describe("CommissioningFormFields", () => {
             ],
           },
           {
-            name: "default_min_hwe_kernel",
+            name: ConfigNames.DEFAULT_MIN_HWE_KERNEL,
             value: "ga-16.04-lowlatency",
           },
           {
-            name: "maas_auto_ipmi_user",
+            name: ConfigNames.MAAS_AUTO_IPMI_USER,
             value: "maas",
           },
           {
-            name: "maas_auto_ipmi_user_privilege_level",
+            name: ConfigNames.MAAS_AUTO_IPMI_USER_PRIVILEGE_LEVEL,
             value: "OPERATOR",
           },
         ],

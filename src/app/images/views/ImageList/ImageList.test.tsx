@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import ImageList from "./ImageList";
 
+import { ConfigNames } from "app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -19,7 +20,10 @@ describe("ImageList", () => {
     const state = rootStateFactory({
       config: configStateFactory({
         items: [
-          configFactory({ name: "boot_images_auto_import", value: false }),
+          configFactory({
+            name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
+            value: false,
+          }),
         ],
         loaded: true,
       }),
@@ -48,7 +52,10 @@ describe("ImageList", () => {
     const state = rootStateFactory({
       config: configStateFactory({
         items: [
-          configFactory({ name: "boot_images_auto_import", value: false }),
+          configFactory({
+            name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
+            value: false,
+          }),
         ],
         loaded: true,
       }),

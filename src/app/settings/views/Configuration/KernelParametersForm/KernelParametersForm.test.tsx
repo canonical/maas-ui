@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import KernelParametersForm from "./KernelParametersForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -22,7 +23,7 @@ describe("KernelParametersForm", () => {
       config: configStateFactory({
         items: [
           {
-            name: "kernel_opts",
+            name: ConfigNames.KERNEL_OPTS,
             value: "foo",
           },
         ],

@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import VMWare from "./VMWare";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
@@ -22,10 +23,10 @@ describe("VMWare", () => {
     state = rootStateFactory({
       config: configStateFactory({
         items: [
-          configFactory({ name: "vcenter_server", value: "" }),
-          configFactory({ name: "vcenter_username", value: "" }),
-          configFactory({ name: "vcenter_password", value: "" }),
-          configFactory({ name: "vcenter_datacenter", value: "" }),
+          configFactory({ name: ConfigNames.VCENTER_SERVER, value: "" }),
+          configFactory({ name: ConfigNames.VCENTER_USERNAME, value: "" }),
+          configFactory({ name: ConfigNames.VCENTER_PASSWORD, value: "" }),
+          configFactory({ name: ConfigNames.VCENTER_DATACENTER, value: "" }),
         ],
       }),
     });

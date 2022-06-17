@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import NtpForm from "./NtpForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -24,10 +25,10 @@ describe("NtpForm", () => {
         loaded: true,
         items: [
           {
-            name: "ntp_external_only",
+            name: ConfigNames.NTP_EXTERNAL_ONLY,
             value: false,
           },
-          { name: "ntp_servers", value: "" },
+          { name: ConfigNames.NTP_SERVERS, value: "" },
         ],
       }),
     });

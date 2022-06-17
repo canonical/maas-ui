@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DnsForm from "./DnsForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -24,7 +25,7 @@ describe("DnsForm", () => {
         loaded: true,
         items: [
           {
-            name: "dnssec_validation",
+            name: ConfigNames.DNSSEC_VALIDATION,
             value: "auto",
             choices: [
               ["auto", "Automatic (use default root key)"],
@@ -35,8 +36,8 @@ describe("DnsForm", () => {
               ],
             ],
           },
-          { name: "dns_trusted_acl", value: "" },
-          { name: "upstream_dns", value: "" },
+          { name: ConfigNames.DNS_TRUSTED_ACL, value: "" },
+          { name: ConfigNames.UPSTREAM_DNS, value: "" },
         ],
       }),
     });
