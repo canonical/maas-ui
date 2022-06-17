@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect, useRef } from "react";
+import { useEffect } from "react";
 
 import type { NavLink } from "@canonical/react-components";
 import {
@@ -8,25 +8,19 @@ import {
   Navigation,
 } from "@canonical/react-components";
 import classNames from "classnames";
-import type { Location as HistoryLocation } from "history";
-import { Link } from "react-router-dom-v5-compat";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom-v5-compat";
 
+import {
+  useCompletedIntro,
+  useCompletedUserIntro,
+  useGoogleAnalytics,
+} from "app/base/hooks";
 import urls from "app/base/urls";
-
-type Props = {
-  authUser?: {
-    id: number;
-    is_superuser?: boolean;
-    username: string;
-  } | null;
-  completedIntro?: boolean;
-  debug?: boolean;
-  enableAnalytics?: boolean | null;
-  location: Location | HistoryLocation;
-  logout: () => void;
-  uuid?: string | null;
-  version?: string;
-};
+import authSelectors from "app/store/auth/selectors";
+import configSelectors from "app/store/config/selectors";
+import { actions as statusActions } from "app/store/status";
 
 type NavItem = {
   adminOnly?: boolean;
@@ -124,14 +118,13 @@ const isSelected = (path: string, link: NavItem) => {
 
 const generateItems = (
   links: NavItem[],
-  location: Props["location"],
+  path: string,
   forHardwareMenu: boolean
 ) => {
   if (forHardwareMenu) {
     // Only include the items for the hardware menu.
     links = links.filter((link) => link.inHardwareMenu);
   }
-  const path = location.pathname + location.search;
   return links.map((link) => ({
     className: classNames("p-navigation__item", {
       // Items that are also displayed in the hardware menu need to be hidden
@@ -146,87 +139,42 @@ const generateItems = (
   }));
 };
 
-export const Header = ({
-  authUser,
-  completedIntro,
-  debug,
-  enableAnalytics,
-  location,
-  logout,
-  uuid,
-  version,
-}: Props): JSX.Element => {
-  const sendPageview = useRef<(() => void) | null>(null);
-  const previousURL = useRef<string>();
+export const Header = (): JSX.Element => {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const authUser = useSelector(authSelectors.get);
+  const isAdmin = useSelector(authSelectors.isAdmin);
+  const configLoaded = useSelector(configSelectors.loaded);
+  const location = useLocation();
+  const completedIntro = useCompletedIntro();
+  const completedUserIntro = useCompletedUserIntro();
+  useGoogleAnalytics();
   const isAuthenticated = !!authUser;
+
+  // Redirect to the intro pages if not completed.
+  useEffect(() => {
+    if (configLoaded) {
+      if (!completedIntro) {
+        navigate({ pathname: urls.intro.index }, { replace: true });
+      } else if (isAuthenticated && !completedUserIntro) {
+        navigate({ pathname: urls.intro.user }, { replace: true });
+      }
+    }
+  }, [
+    completedIntro,
+    completedUserIntro,
+    configLoaded,
+    isAuthenticated,
+    navigate,
+  ]);
+
   // Hide the navigation items when the user is not authenticated or hasn't been
   // through the intro process.
-  const showLinks = isAuthenticated && completedIntro;
-
-  useEffect(() => {
-    if (!debug && enableAnalytics && uuid && version && authUser) {
-      (function (w, d, s, l, i) {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        w[l] = w[l] || [];
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        w[l].push({ "gtm.start": new Date().getTime(), event: "gtm.js" });
-        const f = d.getElementsByTagName(s)[0],
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          j = d.createElement(s),
-          dl = l !== "dataLayer" ? "&l=" + l : "";
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        j.async = true;
-        const src = "https://www.googletagmanager.com/gtm.js?id=" + i + dl;
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        j.src = src;
-        if (document.querySelectorAll(`script[src="${src}"]`).length === 0) {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          f.parentNode.insertBefore(j, f);
-        }
-      })(window, document, "script", "dataLayer", "GTM-P4TGJR9");
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.ga =
-        window.ga ||
-        function () {
-          // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-          // @ts-ignore
-          // eslint-disable-next-line prefer-rest-params
-          (window.ga.q = window.ga.q || []).push(arguments);
-          return window.ga;
-        };
-      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-      // @ts-ignore
-      window.ga.l = +new Date();
-      window.ga("create", "UA-1018242-63", "auto", {
-        userId: `${uuid}-${authUser.id}`,
-      });
-      window.ga("set", "dimension1", version);
-      window.ga("set", "dimension2", uuid);
-
-      sendPageview.current = () => {
-        const path = window.location.pathname + window.location.search;
-        if (path !== previousURL.current) {
-          window.ga("send", "pageview", path);
-          previousURL.current = path;
-        }
-      };
-    }
-  }, [debug, enableAnalytics, uuid, version, authUser]);
-
+  const showLinks = isAuthenticated && completedIntro && completedUserIntro;
   const links = navLinks
     // Remove the admin only items if the user is not an admin.
-    .filter(
-      ({ adminOnly }) => !adminOnly || (authUser && authUser.is_superuser)
-    );
-
-  const homepageLink = authUser?.is_superuser
+    .filter(({ adminOnly }) => !adminOnly || isAdmin);
+  const homepageLink = isAdmin
     ? { url: "/dashboard", label: "Homepage" }
     : { url: "/machines", label: "Homepage" };
   const path = location.pathname + location.search;
@@ -243,10 +191,10 @@ export const Header = ({
             ? [
                 {
                   className: "p-navigation__hardware-menu",
-                  items: generateItems(links, location, true),
+                  items: generateItems(links, path, true),
                   label: "Hardware",
                 },
-                ...generateItems(links, location, false),
+                ...generateItems(links, path, false),
               ]
             : null
         }
@@ -267,7 +215,7 @@ export const Header = ({
                   label: "Log out",
                   onClick: () => {
                     localStorage.removeItem("maas-config");
-                    logout();
+                    dispatch(statusActions.logout());
                   },
                 },
               ]

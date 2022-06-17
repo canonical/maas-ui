@@ -1,35 +1,65 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import MockDate from "mockdate";
 
-import { Footer } from "./Footer";
+import Footer from "./Footer";
 
-describe("Footer", () => {
-  beforeEach(() => {
-    MockDate.set("2020-01-01");
-  });
+import {
+  config as configFactory,
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
-  afterEach(() => {
-    MockDate.reset();
-  });
+const originalEnv = process.env;
 
-  it("displays the feedback link when analytics enabled", () => {
-    render(<Footer debug={false} enableAnalytics={true} version="2.7.0" />);
-    expect(
-      screen.getByRole("link", { name: "Give feedback" })
-    ).toBeInTheDocument();
-  });
+beforeEach(() => {
+  jest.resetModules();
+  MockDate.set("2020-01-01");
+});
 
-  it("hides the feedback link when analytics disabled", () => {
-    render(<Footer debug={false} enableAnalytics={false} version="2.7.0" />);
-    expect(
-      screen.queryByRole("link", { name: "Give feedback" })
-    ).not.toBeInTheDocument();
-  });
+afterEach(() => {
+  process.env = originalEnv;
+  MockDate.reset();
+});
 
-  it("hides the feedback link in debug mode", () => {
-    render(<Footer debug={true} enableAnalytics={true} version="2.7.0" />);
-    expect(
-      screen.queryByRole("link", { name: "Give feedback" })
-    ).not.toBeInTheDocument();
+it("displays the feedback link when analytics enabled and not in development environment", () => {
+  process.env = { ...originalEnv, NODE_ENV: "production" };
+  const state = rootStateFactory({
+    config: configStateFactory({
+      items: [configFactory({ name: "enable_analytics", value: true })],
+    }),
   });
+  renderWithMockStore(<Footer />, { state });
+
+  expect(
+    screen.getByRole("button", { name: "Give feedback" })
+  ).toBeInTheDocument();
+});
+
+it("hides the feedback link when analytics disabled", () => {
+  process.env = { ...originalEnv, NODE_ENV: "production" };
+  const state = rootStateFactory({
+    config: configStateFactory({
+      items: [configFactory({ name: "enable_analytics", value: false })],
+    }),
+  });
+  renderWithMockStore(<Footer />, { state });
+
+  expect(
+    screen.queryByRole("button", { name: "Give feedback" })
+  ).not.toBeInTheDocument();
+});
+
+it("hides the feedback link in development environment", () => {
+  process.env = { ...originalEnv, NODE_ENV: "development" };
+  const state = rootStateFactory({
+    config: configStateFactory({
+      items: [configFactory({ name: "enable_analytics", value: true })],
+    }),
+  });
+  renderWithMockStore(<Footer />, { state });
+
+  expect(
+    screen.queryByRole("button", { name: "Give feedback" })
+  ).not.toBeInTheDocument();
 });

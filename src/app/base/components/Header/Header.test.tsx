@@ -1,341 +1,266 @@
-import { screen, within } from "@testing-library/react";
+import { screen, render, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
+import { BrowserRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
+import configureStore from "redux-mock-store";
 
 import { Header } from "./Header";
 
+import urls from "app/base/urls";
+import type { RootState } from "app/store/root/types";
+import { actions as statusActions } from "app/store/status";
+import {
+  authState as authStateFactory,
+  config as configFactory,
+  configState as configStateFactory,
+  rootState as rootStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+} from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-describe("Header", () => {
-  afterEach(() => {
-    jest.resetModules();
-  });
+const mockUseNavigate = jest.fn();
+jest.mock("react-router-dom-v5-compat", () => ({
+  ...jest.requireActual("react-router-dom-v5-compat"),
+  useNavigate: () => mockUseNavigate,
+}));
 
-  it("renders", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
+let state: RootState;
+
+beforeEach(() => {
+  state = rootStateFactory({
+    config: configStateFactory({
+      items: [configFactory({ name: "completed_intro", value: true })],
+      loaded: true,
+    }),
+    user: userStateFactory({
+      auth: authStateFactory({
+        user: userFactory({
           id: 99,
           is_superuser: true,
+          completed_intro: true,
           username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/" }
-    );
+        }),
+      }),
+    }),
+  });
+});
 
-    // header has a role of banner in this context
-    // https://www.w3.org/TR/html-aria/#el-header
-    expect(screen.getByRole("banner")).toBeInTheDocument();
-    const primaryNavigation = screen.getByRole("navigation", {
-      name: "primary",
-    });
-    expect(primaryNavigation).toBeInTheDocument();
-    expect(
-      within(primaryNavigation).getByRole("list", {
-        name: "main",
-      })
-    ).toBeInTheDocument();
-    expect(
-      within(primaryNavigation).getByRole("list", {
-        name: "user",
-      })
-    ).toBeInTheDocument();
+afterEach(() => {
+  jest.resetModules();
+  jest.resetAllMocks();
+});
+
+it("renders", () => {
+  renderWithBrowserRouter(<Header />, {
+    route: "/",
+    wrapperProps: { state },
   });
 
-  it("can handle a logged out user", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={null}
-        location={
-          {
-            pathname: "/",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/" }
-    );
-    expect(screen.getByRole("banner")).toBeInTheDocument();
-    const primaryNavigation = screen.getByRole("navigation", {
-      name: "primary",
-    });
-    const mainNav = screen.getByRole("list", {
+  // header has a role of banner in this context
+  // https://www.w3.org/TR/html-aria/#el-header
+  expect(screen.getByRole("banner")).toBeInTheDocument();
+  const primaryNavigation = screen.getByRole("navigation", {
+    name: "primary",
+  });
+  expect(primaryNavigation).toBeInTheDocument();
+  expect(
+    within(primaryNavigation).getByRole("list", {
       name: "main",
-    });
-    expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
+    })
+  ).toBeInTheDocument();
+  expect(
+    within(primaryNavigation).getByRole("list", {
+      name: "user",
+    })
+  ).toBeInTheDocument();
+});
+
+it("can handle a logged out user", () => {
+  state.user.auth.user = null;
+  renderWithBrowserRouter(<Header />, {
+    route: "/",
+    wrapperProps: { state },
+  });
+
+  expect(screen.getByRole("banner")).toBeInTheDocument();
+  const primaryNavigation = screen.getByRole("navigation", {
+    name: "primary",
+  });
+  const mainNav = screen.getByRole("list", {
+    name: "main",
+  });
+  expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
+  expect(
+    within(primaryNavigation).queryByRole("list", {
+      name: "user",
+    })
+  ).not.toBeInTheDocument();
+});
+
+it("can dispatch an action to log out", async () => {
+  const store = configureStore()(state);
+  render(
+    <Provider store={store}>
+      <BrowserRouter>
+        <CompatRouter>
+          <Header />
+        </CompatRouter>
+      </BrowserRouter>
+    </Provider>
+  );
+
+  await userEvent.click(screen.getByRole("button", { name: "Log out" }));
+
+  const expectedAction = statusActions.logout();
+  await waitFor(() => {
     expect(
-      within(primaryNavigation).queryByRole("list", {
-        name: "user",
-      })
-    ).not.toBeInTheDocument();
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
+});
+
+it("hides nav links if not completed intro", () => {
+  state.user.auth.user = userFactory({ completed_intro: false });
+  renderWithBrowserRouter(<Header />, {
+    route: "/",
+    wrapperProps: { state },
   });
 
-  it("can handle logging out", async () => {
-    const logout = jest.fn();
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        location={
-          {
-            pathname: "/",
-          } as Location
-        }
-        logout={logout}
-      />,
-      { route: "/" }
-    );
-    await userEvent.click(screen.getByRole("button", { name: "Log out" }));
-    expect(logout).toHaveBeenCalled();
+  const mainNav = screen.getByRole("list", { name: "main" });
+  expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
+  const userNav = screen.getByRole("list", { name: "user" });
+  expect(within(userNav).queryByRole("link")).not.toBeInTheDocument();
+  expect(
+    within(userNav).getByRole("button", { name: "Log out" })
+  ).toBeInTheDocument();
+});
+
+it("can highlight active URL", () => {
+  renderWithBrowserRouter(<Header />, {
+    route: "/settings",
+    wrapperProps: { state },
   });
 
-  it("hides nav links if not completed intro", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={false}
-        location={
-          {
-            pathname: "/",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/" }
-    );
-    const mainNav = screen.getByRole("list", { name: "main" });
-    expect(within(mainNav).queryByRole("link")).not.toBeInTheDocument();
-    const userNav = screen.getByRole("list", { name: "user" });
-    expect(within(userNav).queryByRole("link")).not.toBeInTheDocument();
-    expect(
-      within(userNav).getByRole("button", { name: "Log out" })
-    ).toBeInTheDocument();
+  const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
+  expect(currentMenuItem).toBeInTheDocument();
+  expect(currentMenuItem).toHaveTextContent("Settings");
+});
+
+it("highlights machines when active", () => {
+  renderWithBrowserRouter(<Header />, {
+    route: "/machines",
+    wrapperProps: { state },
   });
 
-  it("can highlight active URL", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/settings",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/settings" }
-    );
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
-    expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Settings");
+  const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
+  expect(currentMenuItem).toBeInTheDocument();
+  expect(currentMenuItem).toHaveTextContent("Machines");
+});
+
+it("highlights machines viewing pools", () => {
+  renderWithBrowserRouter(<Header />, {
+    route: "/pools",
+    wrapperProps: { state },
   });
 
-  it("highlights machines when active", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/machines",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/machines" }
-    );
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
-    expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Machines");
+  const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
+  expect(currentMenuItem).toBeInTheDocument();
+  expect(currentMenuItem).toHaveTextContent("Machines");
+});
+
+it("highlights machines viewing tags", () => {
+  renderWithBrowserRouter(<Header />, {
+    route: "/tags",
+    wrapperProps: { state },
   });
 
-  it("highlights machines viewing pools", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/pools",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/pools" }
-    );
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
-    expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Machines");
+  const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
+  expect(currentMenuItem).toBeInTheDocument();
+  expect(currentMenuItem).toHaveTextContent("Machines");
+});
+
+it("highlights machines viewing a tag", () => {
+  renderWithBrowserRouter(<Header />, {
+    route: "/tag/1",
+    wrapperProps: { state },
   });
 
-  it("highlights machines viewing tags", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/tags",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/tags" }
-    );
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
-    expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Machines");
+  const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
+  expect(currentMenuItem).toBeInTheDocument();
+  expect(currentMenuItem).toHaveTextContent("Machines");
+});
+
+it("can highlight a url with a query param", () => {
+  renderWithBrowserRouter(<Header />, {
+    route: "/networks?by=fabric",
+    wrapperProps: { state },
   });
 
-  it("highlights machines viewing a tag", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/tag/1",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/tag/1" }
-    );
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
-    expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Machines");
+  const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
+  expect(currentMenuItem).toBeInTheDocument();
+  expect(currentMenuItem).toHaveTextContent("Subnets");
+});
+
+it("highlights sub-urls", () => {
+  renderWithBrowserRouter(<Header />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
+  const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
+  expect(currentMenuItem).toBeInTheDocument();
+  expect(currentMenuItem).toHaveTextContent("Machines");
+});
+
+it("links from the logo to the dashboard for admins", () => {
+  state.user.auth.user = userFactory({ is_superuser: true });
+  renderWithBrowserRouter(<Header />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
   });
 
-  it("can highlight a url with a query param", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            search: "?by=fabric",
-            pathname: "/networks",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      {
-        route: "/networks?by=fabric",
-      }
-    );
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
-    expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Subnets");
+  expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
+    "href",
+    "/dashboard"
+  );
+});
+
+it("links from the logo to the machine list for non admins", () => {
+  state.user.auth.user = userFactory({ is_superuser: false });
+  renderWithBrowserRouter(<Header />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
   });
 
-  it("highlights sub-urls", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/machine/abc123",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      {
-        route: "/machine/abc123",
-      }
-    );
-    const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
-    expect(currentMenuItem).toBeInTheDocument();
-    expect(currentMenuItem).toHaveTextContent("Machines");
+  expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
+    "href",
+    "/machines"
+  );
+});
+
+it("redirects to the intro page if intro not completed", () => {
+  state.config.items = [
+    configFactory({ name: "completed_intro", value: false }),
+  ];
+  state.user.auth.user = userFactory({ completed_intro: true });
+  renderWithBrowserRouter(<Header />, {
+    route: "/machines",
+    wrapperProps: { state },
   });
 
-  it("links from the logo to the dashboard for admins", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: true,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/dashboard",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/dashboard" }
-    );
-    expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
-      "href",
-      "/dashboard"
-    );
+  expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.index);
+});
+
+it("redirects to the user intro page if user intro not completed", () => {
+  state.config.items = [
+    configFactory({ name: "completed_intro", value: true }),
+  ];
+  state.user.auth.user = userFactory({ completed_intro: false });
+  renderWithBrowserRouter(<Header />, {
+    route: "/machines",
+    wrapperProps: { state },
   });
 
-  it("links from the logo to the machine list for non admins", () => {
-    renderWithBrowserRouter(
-      <Header
-        authUser={{
-          id: 99,
-          is_superuser: false,
-          username: "koala",
-        }}
-        completedIntro={true}
-        location={
-          {
-            pathname: "/",
-          } as Location
-        }
-        logout={jest.fn()}
-      />,
-      { route: "/" }
-    );
-    expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
-      "href",
-      "/machines"
-    );
-  });
+  expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user);
 });
