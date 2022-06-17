@@ -33,7 +33,7 @@
     "unlink-components": "yarn unlink react && yarn unlink \"@canonical/react-components\""
   },
   "dependencies": {
-    "@canonical/macaroon-bakery": "1.1.0",
+    "@canonical/macaroon-bakery": "1.2.0",
     "@canonical/react-components": "0.37.1",
     "@reduxjs/toolkit": "1.8.2",
     "@sentry/browser": "6.19.7",
@@ -51,7 +51,7 @@
     "react-redux": "7.2.8",
     "react-router-dom": "5.3.3",
     "react-router-dom-v5-compat": "6.3.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.1",
     "react-storage-hooks": "4.0.1",
     "react-useportal": "1.0.16",
     "reconnecting-websocket": "4.4.0",
@@ -120,9 +120,11 @@
     "nanoid": "3.3.4",
     "nodemon": "2.0.16",
     "npm-package-json-lint": "6.3.0",
+    "postcss-normalize": "10.0.1",
     "prettier": "2.7.1",
     "redux-mock-store": "1.5.4",
     "redux-saga-test-plan": "4.0.5",
+    "sass": "1.52.3",
     "start-server-and-test": "1.14.0",
     "wait-on": "6.0.1"
   },
