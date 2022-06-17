@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import UbuntuImageSelect from "./UbuntuImageSelect";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
@@ -23,7 +24,7 @@ describe("UbuntuImageSelect", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
         ],

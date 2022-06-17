@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import StorageForm from "../StorageForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -24,7 +25,7 @@ describe("StorageFormFields", () => {
         loaded: true,
         items: [
           {
-            name: "default_storage_layout",
+            name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
             value: "bcache",
             choices: [
               ["bcache", "Bcache layout"],
@@ -35,15 +36,15 @@ describe("StorageFormFields", () => {
             ],
           },
           {
-            name: "enable_disk_erasing_on_release",
+            name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
             value: false,
           },
           {
-            name: "disk_erase_with_secure_erase",
+            name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
             value: false,
           },
           {
-            name: "disk_erase_with_quick_erase",
+            name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
             value: false,
           },
         ],

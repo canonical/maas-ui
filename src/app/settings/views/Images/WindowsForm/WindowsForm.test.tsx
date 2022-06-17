@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import WindowsForm from "./WindowsForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -24,7 +25,7 @@ describe("WindowsForm", () => {
         loaded: true,
         items: [
           {
-            name: "windows_kms_host",
+            name: ConfigNames.WINDOWS_KMS_HOST,
             value: "127.0.0.1",
           },
         ],

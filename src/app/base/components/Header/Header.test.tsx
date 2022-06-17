@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 import { Header } from "./Header";
 
 import urls from "app/base/urls";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 import {
@@ -31,7 +32,9 @@ let state: RootState;
 beforeEach(() => {
   state = rootStateFactory({
     config: configStateFactory({
-      items: [configFactory({ name: "completed_intro", value: true })],
+      items: [
+        configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+      ],
       loaded: true,
     }),
     user: userStateFactory({
@@ -241,7 +244,7 @@ it("links from the logo to the machine list for non admins", () => {
 
 it("redirects to the intro page if intro not completed", () => {
   state.config.items = [
-    configFactory({ name: "completed_intro", value: false }),
+    configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
   ];
   state.user.auth.user = userFactory({ completed_intro: true });
   renderWithBrowserRouter(<Header />, {
@@ -254,7 +257,7 @@ it("redirects to the intro page if intro not completed", () => {
 
 it("redirects to the user intro page if user intro not completed", () => {
   state.config.items = [
-    configFactory({ name: "completed_intro", value: true }),
+    configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
   ];
   state.user.auth.user = userFactory({ completed_intro: false });
   renderWithBrowserRouter(<Header />, {

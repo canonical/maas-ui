@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "./DeployForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -28,7 +29,7 @@ describe("DeployFormFields", () => {
         loaded: true,
         items: [
           {
-            name: "default_osystem",
+            name: ConfigNames.DEFAULT_OSYSTEM,
             value: "ubuntu",
             choices: [
               ["centos", "CentOS"],
@@ -36,7 +37,7 @@ describe("DeployFormFields", () => {
             ],
           },
           {
-            name: "default_distro_series",
+            name: ConfigNames.DEFAULT_DISTRO_SERIES,
             value: "bionic",
             choices: [
               ["precise", 'Ubuntu 12.04 LTS "Precise Pangolin"'],
@@ -99,7 +100,7 @@ describe("DeployFormFields", () => {
     const syncIntervalValue = "15m";
     // TODO: Investigate mutating state in integration tests https://github.com/canonical-web-and-design/app-tribe/issues/794
     state.config.items.push({
-      name: "hardware_sync_interval",
+      name: ConfigNames.HARDWARE_SYNC_INTERVAL,
       value: syncIntervalValue,
     });
     const store = mockStore(state);

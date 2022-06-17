@@ -8,6 +8,7 @@ import Intro from "./Intro";
 
 import dashboardURLs from "app/dashboard/urls";
 import introURLs from "app/intro/urls";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -25,7 +26,7 @@ describe("Intro", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [{ name: "completed_intro", value: false }],
+        items: [{ name: ConfigNames.COMPLETED_INTRO, value: false }],
       }),
       user: userStateFactory({
         auth: authStateFactory({
@@ -71,7 +72,7 @@ describe("Intro", () => {
 
   it("exits the intro if both intros have been completed", () => {
     state.config = configStateFactory({
-      items: [{ name: "completed_intro", value: true }],
+      items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
     state.user = userStateFactory({
       auth: authStateFactory({
@@ -111,7 +112,7 @@ describe("Intro", () => {
 
   it("skips to the user intro when loading the main intro when it is complete", () => {
     state.config = configStateFactory({
-      items: [{ name: "completed_intro", value: true }],
+      items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
     const store = mockStore(state);
     const wrapper = mount(

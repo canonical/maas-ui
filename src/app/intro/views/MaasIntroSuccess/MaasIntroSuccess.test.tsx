@@ -10,6 +10,7 @@ import dashboardURLs from "app/dashboard/urls";
 import introURLs from "app/intro/urls";
 import machineURLs from "app/machines/urls";
 import { actions as configActions } from "app/store/config";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -27,7 +28,9 @@ describe("MaasIntroSuccess", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "completed_intro", value: false })],
+        items: [
+          configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+        ],
       }),
       user: userStateFactory({
         auth: authStateFactory({

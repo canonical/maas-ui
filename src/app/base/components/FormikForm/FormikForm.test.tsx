@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import FormikForm from "./FormikForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
@@ -20,7 +21,9 @@ describe("FormikForm", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "analytics_enabled", value: false })],
+        items: [
+          configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
+        ],
       }),
     });
   });

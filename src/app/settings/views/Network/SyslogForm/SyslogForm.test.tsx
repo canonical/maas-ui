@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import SyslogForm from "./SyslogForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -24,7 +25,7 @@ describe("SyslogForm", () => {
         loaded: true,
         items: [
           {
-            name: "remote_syslog",
+            name: ConfigNames.REMOTE_SYSLOG,
             value: "",
           },
         ],

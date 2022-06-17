@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import NotificationList from "./NotificationList";
 
+import { ConfigNames } from "app/store/config/types";
 import type { Notification } from "app/store/notification/types";
 import {
   NotificationCategory,
@@ -40,7 +41,12 @@ describe("NotificationList", () => {
     ];
     state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "release_notifications", value: false })],
+        items: [
+          configFactory({
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
+            value: false,
+          }),
+        ],
       }),
       message: messageStateFactory({
         items: [messageFactory({ id: 1, message: "User deleted" })],
@@ -166,7 +172,12 @@ describe("NotificationList", () => {
   it("can display a release notification", () => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "release_notifications", value: true })],
+        items: [
+          configFactory({
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
+            value: true,
+          }),
+        ],
       }),
       notification: notificationStateFactory({
         items: [
@@ -198,7 +209,12 @@ describe("NotificationList", () => {
   it("does not display a release notification for some urls", () => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "release_notifications", value: true })],
+        items: [
+          configFactory({
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
+            value: true,
+          }),
+        ],
       }),
       notification: notificationStateFactory({
         items: [

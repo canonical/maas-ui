@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import ArchSelect from "./ArchSelect";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   bootResourceUbuntuArch as bootResourceUbuntuArchFactory,
@@ -23,7 +24,7 @@ describe("ArchSelect", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "bionic",
           }),
         ],
@@ -119,7 +120,10 @@ describe("ArchSelect", () => {
   it(`disables a checkbox if it's the last checked arch for the default
     commissioning release`, () => {
     state.config.items = [
-      configFactory({ name: "commissioning_distro_series", value: "focal" }),
+      configFactory({
+        name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
+        value: "focal",
+      }),
     ];
     const release = bootResourceUbuntuReleaseFactory({
       name: "focal",

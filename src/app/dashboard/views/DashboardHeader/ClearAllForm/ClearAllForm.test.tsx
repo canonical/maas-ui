@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 import ClearAllForm from "./ClearAllForm";
 
 import FormikForm from "app/base/components/FormikForm";
-import { NetworkDiscovery } from "app/store/config/types";
+import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -25,7 +25,12 @@ describe("ClearAllForm", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [{ name: "network_discovery", value: NetworkDiscovery.ENABLED }],
+        items: [
+          {
+            name: ConfigNames.NETWORK_DISCOVERY,
+            value: NetworkDiscovery.ENABLED,
+          },
+        ],
       }),
       discovery: discoveryStateFactory({
         loaded: true,
@@ -43,7 +48,12 @@ describe("ClearAllForm", () => {
 
   it("displays a message when discovery is enabled", () => {
     state.config = configStateFactory({
-      items: [{ name: "network_discovery", value: NetworkDiscovery.ENABLED }],
+      items: [
+        {
+          name: ConfigNames.NETWORK_DISCOVERY,
+          value: NetworkDiscovery.ENABLED,
+        },
+      ],
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -62,7 +72,12 @@ describe("ClearAllForm", () => {
 
   it("displays a message when discovery is enabled", () => {
     state.config = configStateFactory({
-      items: [{ name: "network_discovery", value: NetworkDiscovery.DISABLED }],
+      items: [
+        {
+          name: ConfigNames.NETWORK_DISCOVERY,
+          value: NetworkDiscovery.DISABLED,
+        },
+      ],
     });
     const store = mockStore(state);
     const wrapper = mount(

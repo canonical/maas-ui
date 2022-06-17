@@ -3,6 +3,7 @@ import MockDate from "mockdate";
 
 import Footer from "./Footer";
 
+import { ConfigNames } from "app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -26,7 +27,9 @@ it("displays the feedback link when analytics enabled and not in development env
   process.env = { ...originalEnv, NODE_ENV: "production" };
   const state = rootStateFactory({
     config: configStateFactory({
-      items: [configFactory({ name: "enable_analytics", value: true })],
+      items: [
+        configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+      ],
     }),
   });
   renderWithMockStore(<Footer />, { state });
@@ -40,7 +43,9 @@ it("hides the feedback link when analytics disabled", () => {
   process.env = { ...originalEnv, NODE_ENV: "production" };
   const state = rootStateFactory({
     config: configStateFactory({
-      items: [configFactory({ name: "enable_analytics", value: false })],
+      items: [
+        configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: false }),
+      ],
     }),
   });
   renderWithMockStore(<Footer />, { state });
@@ -54,7 +59,9 @@ it("hides the feedback link in development environment", () => {
   process.env = { ...originalEnv, NODE_ENV: "development" };
   const state = rootStateFactory({
     config: configStateFactory({
-      items: [configFactory({ name: "enable_analytics", value: true })],
+      items: [
+        configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+      ],
     }),
   });
   renderWithMockStore(<Footer />, { state });

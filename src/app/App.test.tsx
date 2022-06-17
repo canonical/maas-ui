@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import { App } from "./App";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 import {
@@ -27,7 +28,7 @@ describe("App", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [{ name: "completed_intro", value: true }],
+        items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
       }),
     });
   });

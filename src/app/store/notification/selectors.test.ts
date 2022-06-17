@@ -1,5 +1,6 @@
 import notification from "./selectors";
 
+import { ConfigNames } from "app/store/config/types";
 import { NotificationIdent } from "app/store/notification/types";
 import {
   config as configFactory,
@@ -26,7 +27,12 @@ describe("notification selectors", () => {
   it("can get all enabled items", () => {
     const state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "release_notifications", value: false })],
+        items: [
+          configFactory({
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
+            value: false,
+          }),
+        ],
       }),
       notification: notificationStateFactory({
         items: [
@@ -48,7 +54,12 @@ describe("notification selectors", () => {
   it("does not include release notifications if the config is off", () => {
     const state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "release_notifications", value: false })],
+        items: [
+          configFactory({
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
+            value: false,
+          }),
+        ],
       }),
       notification: notificationStateFactory({
         items: [
@@ -70,7 +81,12 @@ describe("notification selectors", () => {
   it("does not include release notifications for some paths", () => {
     const state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "release_notifications", value: true })],
+        items: [
+          configFactory({
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
+            value: true,
+          }),
+        ],
       }),
       notification: notificationStateFactory({
         items: [
@@ -96,7 +112,12 @@ describe("notification selectors", () => {
     ];
     const state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "release_notifications", value: true })],
+        items: [
+          configFactory({
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
+            value: true,
+          }),
+        ],
       }),
       notification: notificationStateFactory({
         items: notifications,

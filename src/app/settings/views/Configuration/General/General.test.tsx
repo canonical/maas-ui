@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import General from "./General";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -22,15 +23,15 @@ describe("General", () => {
       config: configStateFactory({
         items: [
           {
-            name: "maas_name",
+            name: ConfigNames.MAAS_NAME,
             value: "bionic",
           },
           {
-            name: "enable_analytics",
+            name: ConfigNames.ENABLE_ANALYTICS,
             value: true,
           },
           {
-            name: "release_notifications",
+            name: ConfigNames.RELEASE_NOTIFICATIONS,
             value: true,
           },
         ],

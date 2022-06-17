@@ -1,5 +1,6 @@
 import reducers from "./slice";
 
+import { ConfigNames } from "app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -47,9 +48,12 @@ describe("config reducer", () => {
         {
           type: "config/fetchSuccess",
           payload: [
-            configFactory({ name: "default_storage_layout", value: "bcache" }),
             configFactory({
-              name: "enable_disk_erasing_on_release",
+              name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
+              value: "bcache",
+            }),
+            configFactory({
+              name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
               value: "foo",
             }),
           ],
@@ -61,9 +65,12 @@ describe("config reducer", () => {
         loaded: true,
         saving: false,
         items: [
-          configFactory({ name: "default_storage_layout", value: "bcache" }),
           configFactory({
-            name: "enable_disk_erasing_on_release",
+            name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
+            value: "bcache",
+          }),
+          configFactory({
+            name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
             value: "foo",
           }),
         ],
@@ -105,12 +112,15 @@ describe("config reducer", () => {
           saving: true,
           saved: false,
           items: [
-            configFactory({ name: "default_storage_layout", value: "bcache" }),
+            configFactory({
+              name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
+              value: "bcache",
+            }),
           ],
         }),
         {
           type: "config/updateSuccess",
-          payload: { name: "default_storage_layout", value: "flat" },
+          payload: { name: ConfigNames.DEFAULT_STORAGE_LAYOUT, value: "flat" },
         }
       )
     ).toEqual(
@@ -120,7 +130,10 @@ describe("config reducer", () => {
         saving: false,
         saved: true,
         items: [
-          configFactory({ name: "default_storage_layout", value: "bcache" }),
+          configFactory({
+            name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
+            value: "bcache",
+          }),
         ],
       })
     );
@@ -135,13 +148,16 @@ describe("config reducer", () => {
           saving: false,
           saved: true,
           items: [
-            { name: "maas_name", value: "my-maas" },
-            configFactory({ name: "default_storage_layout", value: "bcache" }),
+            configFactory({ name: ConfigNames.MAAS_NAME, value: "my-maas" }),
+            configFactory({
+              name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
+              value: "bcache",
+            }),
           ],
         }),
         {
           type: "config/updateNotify",
-          payload: { name: "default_storage_layout", value: "flat" },
+          payload: { name: ConfigNames.DEFAULT_STORAGE_LAYOUT, value: "flat" },
         }
       )
     ).toEqual(
@@ -151,8 +167,8 @@ describe("config reducer", () => {
         saving: false,
         saved: true,
         items: [
-          { name: "maas_name", value: "my-maas" },
-          { name: "default_storage_layout", value: "flat" },
+          { name: ConfigNames.MAAS_NAME, value: "my-maas" },
+          { name: ConfigNames.DEFAULT_STORAGE_LAYOUT, value: "flat" },
         ],
       })
     );

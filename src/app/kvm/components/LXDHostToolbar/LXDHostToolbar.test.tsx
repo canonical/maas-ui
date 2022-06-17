@@ -8,6 +8,7 @@ import LXDHostToolbar from "./LXDHostToolbar";
 
 import * as hooks from "app/base/hooks/analytics";
 import kvmURLs from "app/kvm/urls";
+import { ConfigNames } from "app/store/config/types";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -216,7 +217,7 @@ describe("LXDHostToolbar", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "enable_analytics",
+            name: ConfigNames.ENABLE_ANALYTICS,
             value: true,
           }),
         ],

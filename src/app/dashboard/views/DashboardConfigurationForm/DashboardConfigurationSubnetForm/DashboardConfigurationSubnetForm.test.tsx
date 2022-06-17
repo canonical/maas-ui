@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DashboardConfigurationSubnetForm from "./DashboardConfigurationSubnetForm";
 
-import { NetworkDiscovery } from "app/store/config/types";
+import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
 import { actions as subnetActions } from "app/store/subnet";
 import {
   configState as configStateFactory,
@@ -80,7 +80,10 @@ describe("DashboardConfigurationSubnetForm", () => {
     const state = rootStateFactory({
       config: configStateFactory({
         items: [
-          { name: "network_discovery", value: NetworkDiscovery.DISABLED },
+          {
+            name: ConfigNames.NETWORK_DISCOVERY,
+            value: NetworkDiscovery.DISABLED,
+          },
         ],
       }),
       fabric: fabricStateFactory({ loaded: true }),

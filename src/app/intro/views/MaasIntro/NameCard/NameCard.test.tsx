@@ -7,6 +7,7 @@ import { MaasIntroSchema } from "../MaasIntro";
 
 import NameCard from "./NameCard";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -26,8 +27,8 @@ describe("NameCard", () => {
     state = rootStateFactory({
       config: configStateFactory({
         items: [
-          configFactory({ name: "completed_intro", value: false }),
-          configFactory({ name: "maas_name", value: "bionic-maas" }),
+          configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+          configFactory({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
         ],
       }),
       user: userStateFactory({

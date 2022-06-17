@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 import CertificateDetails from "./CertificateDetails";
 
 import * as hooks from "app/base/hooks/analytics";
+import { ConfigNames } from "app/store/config/types";
 import {
   certificateMetadata as metadataFactory,
   config as configFactory,
@@ -23,7 +24,9 @@ describe("CertificateDetails", () => {
       .mockImplementation(() => mockSendAnalytics);
     const state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory({ name: "analytics_enabled", value: true })],
+        items: [
+          configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+        ],
       }),
     });
     const store = mockStore(state);

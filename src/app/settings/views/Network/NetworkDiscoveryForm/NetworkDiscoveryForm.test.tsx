@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import NetworkDiscoveryForm from "./NetworkDiscoveryForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -24,7 +25,7 @@ describe("NetworkDiscoveryForm", () => {
         loaded: true,
         items: [
           {
-            name: "active_discovery_interval",
+            name: ConfigNames.ACTIVE_DISCOVERY_INTERVAL,
             value: "0",
             choices: [
               [0, "Never (disabled)"],
@@ -39,7 +40,7 @@ describe("NetworkDiscoveryForm", () => {
             ],
           },
           {
-            name: "network_discovery",
+            name: ConfigNames.NETWORK_DISCOVERY,
             value: "enabled",
             choices: [
               ["enabled", "Enabled"],

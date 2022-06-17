@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import DeployForm from "../DeployForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -30,7 +31,7 @@ describe("DeployFormFields", () => {
       config: configStateFactory({
         items: [
           {
-            name: "default_osystem",
+            name: ConfigNames.DEFAULT_OSYSTEM,
             value: "ubuntu",
             choices: [
               ["centos", "CentOS"],
@@ -453,7 +454,7 @@ describe("DeployFormFields", () => {
 
   it("displays 'periodically sync hardware' checkbox with global setting and additional tooltip information", async () => {
     state.config.items.push({
-      name: "hardware_sync_interval",
+      name: ConfigNames.HARDWARE_SYNC_INTERVAL,
       value: "15m",
     });
     const store = mockStore(state);
@@ -485,7 +486,10 @@ describe("DeployFormFields", () => {
   });
 
   it("displays a correct description text for an invalid sync interval", () => {
-    state.config.items.push({ name: "hardware_sync_interval", value: "" });
+    state.config.items.push({
+      name: ConfigNames.HARDWARE_SYNC_INTERVAL,
+      value: "",
+    });
     const store = mockStore(state);
     render(
       <Provider store={store}>

@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import ProxyForm from "./ProxyForm";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
@@ -24,15 +25,15 @@ describe("ProxyForm", () => {
         loaded: true,
         items: [
           {
-            name: "http_proxy",
+            name: ConfigNames.HTTP_PROXY,
             value: "http://www.url.com",
           },
           {
-            name: "enable_http_proxy",
+            name: ConfigNames.ENABLE_HTTP_PROXY,
             value: false,
           },
           {
-            name: "use_peer_proxy",
+            name: ConfigNames.USE_PEER_PROXY,
             value: false,
           },
         ],
@@ -61,7 +62,7 @@ describe("ProxyForm", () => {
     state.config.items = reduceInitialState(
       state.config.items,
       "name",
-      "enable_http_proxy",
+      ConfigNames.ENABLE_HTTP_PROXY,
       { value: true }
     );
     const store = mockStore(state);

@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 import DeployForm from "./DeployForm";
 
 import * as hooks from "app/base/hooks/analytics";
+import { ConfigNames } from "app/store/config/types";
 import { actions as machineActions } from "app/store/machine";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
@@ -34,7 +35,7 @@ describe("DeployForm", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "default_osystem",
+            name: ConfigNames.DEFAULT_OSYSTEM,
             value: "ubuntu",
             choices: [
               ["centos", "CentOS"],
@@ -42,7 +43,7 @@ describe("DeployForm", () => {
             ],
           }),
           configFactory({
-            name: "enable_analytics",
+            name: ConfigNames.ENABLE_ANALYTICS,
             value: true,
           }),
         ],

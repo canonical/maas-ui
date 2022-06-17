@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import ImagesTable from "./ImagesTable";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   bootResource as resourceFactory,
@@ -27,7 +28,7 @@ describe("ImagesTable", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
         ],
@@ -175,7 +176,7 @@ describe("ImagesTable", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
         ],
@@ -222,7 +223,7 @@ describe("ImagesTable", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
         ],

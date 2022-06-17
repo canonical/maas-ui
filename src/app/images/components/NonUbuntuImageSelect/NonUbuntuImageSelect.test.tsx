@@ -5,6 +5,7 @@ import configureStore from "redux-mock-store";
 
 import NonUbuntuImageSelect from "./NonUbuntuImageSelect";
 
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   bootResource as bootResourceFactory,
@@ -29,7 +30,7 @@ describe("NonUbuntuImageSelect", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "commissioning_distro_series",
+            name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
             value: "focal",
           }),
         ],

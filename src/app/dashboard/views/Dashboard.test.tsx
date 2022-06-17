@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import Dashboard from "./Dashboard";
 
 import dashboardURLs from "app/dashboard/urls";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -24,7 +25,7 @@ describe("Dashboard", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [{ name: "network_discovery", value: "enabled" }],
+        items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "enabled" }],
       }),
       user: userStateFactory({
         auth: authStateFactory({ user: userFactory({ is_superuser: true }) }),
@@ -63,7 +64,7 @@ describe("Dashboard", () => {
 
   it("displays a notification when discovery is disabled", () => {
     state.config = configStateFactory({
-      items: [{ name: "network_discovery", value: "disabled" }],
+      items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "disabled" }],
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -82,7 +83,7 @@ describe("Dashboard", () => {
 
   it("does not display a notification when discovery is enabled", () => {
     state.config = configStateFactory({
-      items: [{ name: "network_discovery", value: "enabled" }],
+      items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "enabled" }],
     });
     const store = mockStore(state);
     const wrapper = mount(

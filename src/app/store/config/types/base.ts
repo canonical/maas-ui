@@ -1,3 +1,5 @@
+import type { ConfigNames } from "./enum";
+
 import type { APIError } from "app/base/types";
 import type { GenericState } from "app/store/types/state";
 
@@ -6,7 +8,7 @@ export type ConfigChoice = [string | number, string];
 export type ConfigValues = boolean | null | number | string;
 
 export type Config<V> = {
-  name: string;
+  name: ConfigNames;
   value: V;
   choices?: ConfigChoice[];
 };

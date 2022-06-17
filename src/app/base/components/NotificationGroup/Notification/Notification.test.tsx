@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import NotificationGroupNotification from "./Notification";
 
 import type { ConfigState } from "app/store/config/types";
+import { ConfigNames } from "app/store/config/types";
 import { NotificationIdent } from "app/store/notification/types";
 import type { UserState } from "app/store/user/types";
 import {
@@ -28,7 +29,9 @@ describe("NotificationGroupNotification", () => {
 
   beforeEach(() => {
     config = configStateFactory({
-      items: [configFactory({ name: "release_notifications", value: true })],
+      items: [
+        configFactory({ name: ConfigNames.RELEASE_NOTIFICATIONS, value: true }),
+      ],
     });
     user = userStateFactory({
       auth: authStateFactory({

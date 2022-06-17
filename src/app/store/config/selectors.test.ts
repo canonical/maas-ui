@@ -1,5 +1,6 @@
 import config from "./selectors";
 
+import { ConfigNames } from "app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -68,7 +69,10 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "default_storage_layout", value: "bcache" }),
+            configFactory({
+              name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
+              value: "bcache",
+            }),
           ],
         }),
       });
@@ -82,7 +86,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "default_storage_layout",
+              name: ConfigNames.DEFAULT_STORAGE_LAYOUT,
               value: "bcache",
               choices: [
                 ["bcache", "Bcache layout"],
@@ -111,7 +115,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "enable_disk_erasing_on_release",
+              name: ConfigNames.ENABLE_DISK_ERASING_ON_RELEASE,
               value: "foo",
             }),
           ],
@@ -127,7 +131,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "disk_erase_with_secure_erase",
+              name: ConfigNames.DISK_ERASE_WITH_SECURE_ERASE,
               value: "bar",
             }),
           ],
@@ -143,7 +147,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "disk_erase_with_quick_erase",
+              name: ConfigNames.DISK_ERASE_WITH_QUICK_ERASE,
               value: "baz",
             }),
           ],
@@ -157,7 +161,9 @@ describe("config selectors", () => {
     it("returns MAAS config for http proxy", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "http_proxy", value: "foo" })],
+          items: [
+            configFactory({ name: ConfigNames.HTTP_PROXY, value: "foo" }),
+          ],
         }),
       });
       expect(config.httpProxy(state)).toBe("foo");
@@ -168,7 +174,12 @@ describe("config selectors", () => {
     it("returns MAAS config for enabling httpProxy", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "enable_http_proxy", value: "bar" })],
+          items: [
+            configFactory({
+              name: ConfigNames.ENABLE_HTTP_PROXY,
+              value: "bar",
+            }),
+          ],
         }),
       });
       expect(config.enableHttpProxy(state)).toBe("bar");
@@ -179,7 +190,9 @@ describe("config selectors", () => {
     it("returns MAAS config for enabling peer proxy", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "use_peer_proxy", value: "baz" })],
+          items: [
+            configFactory({ name: ConfigNames.USE_PEER_PROXY, value: "baz" }),
+          ],
         }),
       });
       expect(config.usePeerProxy(state)).toBe("baz");
@@ -190,7 +203,12 @@ describe("config selectors", () => {
     it("returns 'noProxy' if enable_http_proxy is false", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "enable_http_proxy", value: false })],
+          items: [
+            configFactory({
+              name: ConfigNames.ENABLE_HTTP_PROXY,
+              value: false,
+            }),
+          ],
         }),
       });
       expect(config.proxyType(state)).toBe("noProxy");
@@ -200,8 +218,8 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "enable_http_proxy", value: true }),
-            configFactory({ name: "http_proxy", value: "" }),
+            configFactory({ name: ConfigNames.ENABLE_HTTP_PROXY, value: true }),
+            configFactory({ name: ConfigNames.HTTP_PROXY, value: "" }),
           ],
         }),
       });
@@ -212,8 +230,11 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "enable_http_proxy", value: true }),
-            configFactory({ name: "http_proxy", value: "http://www.url.com" }),
+            configFactory({ name: ConfigNames.ENABLE_HTTP_PROXY, value: true }),
+            configFactory({
+              name: ConfigNames.HTTP_PROXY,
+              value: "http://www.url.com",
+            }),
           ],
         }),
       });
@@ -224,9 +245,12 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "enable_http_proxy", value: true }),
-            configFactory({ name: "http_proxy", value: "http://www.url.com" }),
-            configFactory({ name: "use_peer_proxy", value: true }),
+            configFactory({ name: ConfigNames.ENABLE_HTTP_PROXY, value: true }),
+            configFactory({
+              name: ConfigNames.HTTP_PROXY,
+              value: "http://www.url.com",
+            }),
+            configFactory({ name: ConfigNames.USE_PEER_PROXY, value: true }),
           ],
         }),
       });
@@ -238,7 +262,12 @@ describe("config selectors", () => {
     it("returns MAAS config for maas name", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "maas_name", value: "bionic-maas" })],
+          items: [
+            configFactory({
+              name: ConfigNames.MAAS_NAME,
+              value: "bionic-maas",
+            }),
+          ],
         }),
       });
       expect(config.maasName(state)).toBe("bionic-maas");
@@ -249,7 +278,9 @@ describe("config selectors", () => {
     it("returns MAAS config for enable analytics", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "enable_analytics", value: true })],
+          items: [
+            configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
+          ],
         }),
       });
       expect(config.analyticsEnabled(state)).toBe(true);
@@ -257,12 +288,12 @@ describe("config selectors", () => {
   });
 
   describe("commissioningDistroSeries", () => {
-    it("returns MAAS config for default distro series", () => {
+    it("returns MAAS config for commissioning distro series", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
             configFactory({
-              name: "commissioning_distro_series",
+              name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
               value: "bionic",
             }),
           ],
@@ -278,7 +309,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "commissioning_distro_series",
+              name: ConfigNames.COMMISSIONING_DISTRO_SERIES,
               value: "bionic",
               choices: [["bionic", "Ubuntu 18.04 LTS 'Bionic-Beaver'"]],
             }),
@@ -298,7 +329,12 @@ describe("config selectors", () => {
     it("returns MAAS config for default kernel version", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "default_min_hwe_kernel", value: "" })],
+          items: [
+            configFactory({
+              name: ConfigNames.DEFAULT_MIN_HWE_KERNEL,
+              value: "",
+            }),
+          ],
         }),
       });
       expect(config.defaultMinKernelVersion(state)).toBe("");
@@ -309,7 +345,9 @@ describe("config selectors", () => {
     it("returns MAAS config for kernel parameters", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "kernel_opts", value: "foo" })],
+          items: [
+            configFactory({ name: ConfigNames.KERNEL_OPTS, value: "foo" }),
+          ],
         }),
       });
       expect(config.kernelParams(state)).toBe("foo");
@@ -321,7 +359,10 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "windows_kms_host", value: "127.0.0.1" }),
+            configFactory({
+              name: ConfigNames.WINDOWS_KMS_HOST,
+              value: "127.0.0.1",
+            }),
           ],
         }),
       });
@@ -334,7 +375,10 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "vcenter_server", value: "my server" }),
+            configFactory({
+              name: ConfigNames.VCENTER_SERVER,
+              value: "my server",
+            }),
           ],
         }),
       });
@@ -346,7 +390,12 @@ describe("config selectors", () => {
     it("returns vCenter username", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "vcenter_username", value: "admin" })],
+          items: [
+            configFactory({
+              name: ConfigNames.VCENTER_USERNAME,
+              value: "admin",
+            }),
+          ],
         }),
       });
       expect(config.vCenterUsername(state)).toBe("admin");
@@ -357,7 +406,12 @@ describe("config selectors", () => {
     it("returns vCenter password", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "vcenter_password", value: "passwd" })],
+          items: [
+            configFactory({
+              name: ConfigNames.VCENTER_PASSWORD,
+              value: "passwd",
+            }),
+          ],
         }),
       });
       expect(config.vCenterPassword(state)).toBe("passwd");
@@ -370,7 +424,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "vcenter_datacenter",
+              name: ConfigNames.VCENTER_DATACENTER,
               value: "my datacenter",
             }),
           ],
@@ -385,7 +439,10 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "enable_third_party_drivers", value: true }),
+            configFactory({
+              name: ConfigNames.ENABLE_THIRD_PARTY_DRIVERS,
+              value: true,
+            }),
           ],
         }),
       });
@@ -397,7 +454,12 @@ describe("config selectors", () => {
     it("returns MAAS config for default OS", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "default_osystem", value: "bionic" })],
+          items: [
+            configFactory({
+              name: ConfigNames.DEFAULT_OSYSTEM,
+              value: "bionic",
+            }),
+          ],
         }),
       });
       expect(config.defaultOSystem(state)).toBe("bionic");
@@ -410,7 +472,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "default_osystem",
+              name: ConfigNames.DEFAULT_OSYSTEM,
               value: "ubuntu",
               choices: [
                 ["centos", "CentOS"],
@@ -438,7 +500,10 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "default_distro_series", value: "bionic" }),
+            configFactory({
+              name: ConfigNames.DEFAULT_DISTRO_SERIES,
+              value: "bionic",
+            }),
           ],
         }),
       });
@@ -450,7 +515,9 @@ describe("config selectors", () => {
     it("returns MAAS config for completed intro", () => {
       const state = rootStateFactory({
         config: configStateFactory({
-          items: [configFactory({ name: "completed_intro", value: true })],
+          items: [
+            configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
+          ],
         }),
       });
       expect(config.completedIntro(state)).toBe(true);
@@ -458,11 +525,14 @@ describe("config selectors", () => {
   });
 
   describe("releaseNotifications", () => {
-    it("returns MAAS config for completed intro", () => {
+    it("returns MAAS config for release notifications", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "release_notifications", value: true }),
+            configFactory({
+              name: ConfigNames.RELEASE_NOTIFICATIONS,
+              value: true,
+            }),
           ],
         }),
       });
@@ -475,7 +545,10 @@ describe("config selectors", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
-            configFactory({ name: "boot_images_auto_import", value: true }),
+            configFactory({
+              name: ConfigNames.BOOT_IMAGES_AUTO_IMPORT,
+              value: true,
+            }),
           ],
         }),
       });
@@ -484,12 +557,12 @@ describe("config selectors", () => {
   });
 
   describe("maasUrl", () => {
-    it("returns MAAS config for boot images auto import", () => {
+    it("returns MAAS config for MAAS URL", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
             configFactory({
-              name: "maas_url",
+              name: ConfigNames.MAAS_URL,
               value: "http://1.2.3.4/MAAS",
             }),
           ],
@@ -500,12 +573,12 @@ describe("config selectors", () => {
   });
 
   describe("rpcSharedSecret", () => {
-    it("returns MAAS config for boot images auto import", () => {
+    it("returns MAAS config for RPC shared secret", () => {
       const state = rootStateFactory({
         config: configStateFactory({
           items: [
             configFactory({
-              name: "rpc_shared_secret",
+              name: ConfigNames.RPC_SHARED_SECRET,
               value: "veryverysecret",
             }),
           ],
@@ -521,7 +594,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "tls_cert_expiration_notification_enabled",
+              name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED,
               value: true,
             }),
           ],
@@ -537,7 +610,7 @@ describe("config selectors", () => {
         config: configStateFactory({
           items: [
             configFactory({
-              name: "tls_cert_expiration_notification_interval",
+              name: ConfigNames.TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL,
               value: 45,
             }),
           ],

@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import AddLxd from "./AddLxd";
 import CredentialsForm from "./CredentialsForm";
 
+import { ConfigNames } from "app/store/config/types";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
@@ -36,7 +37,7 @@ describe("AddLxd", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [{ name: "maas_name", value: "MAAS" }],
+        items: [{ name: ConfigNames.MAAS_NAME, value: "MAAS" }],
       }),
       general: generalStateFactory({
         generatedCertificate: generatedCertificateStateFactory({

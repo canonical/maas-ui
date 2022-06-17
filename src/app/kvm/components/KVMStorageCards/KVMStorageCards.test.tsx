@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import KVMStorageCards, { TRUNCATION_POINT } from "./KVMStorageCards";
 
 import * as hooks from "app/base/hooks/analytics";
+import { ConfigNames } from "app/store/config/types";
 import {
   config as configFactory,
   configState as configStateFactory,
@@ -106,7 +107,7 @@ describe("KVMStorageCards", () => {
       config: configStateFactory({
         items: [
           configFactory({
-            name: "enable_analytics",
+            name: ConfigNames.ENABLE_ANALYTICS,
             value: false,
           }),
         ],
