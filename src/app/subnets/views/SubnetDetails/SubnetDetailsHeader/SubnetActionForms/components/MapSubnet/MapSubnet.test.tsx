@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -69,7 +70,7 @@ it("can map an IPv4 subnet", async () => {
     </Provider>
   );
 
-  fireEvent.click(screen.getByRole("button", { name: "Map subnet" }));
+  await userEvent.click(screen.getByRole("button", { name: "Map subnet" }));
 
   await waitFor(() => {
     const expectedAction = subnetActions.scan(subnet.id);

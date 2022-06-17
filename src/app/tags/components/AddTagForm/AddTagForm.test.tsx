@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
@@ -54,7 +54,7 @@ it("dispatches an action to create a tag", async () => {
     screen.getByRole("textbox", { name: KernelOptionsLabel.KernelOptions }),
     "options1"
   );
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: Label.Submit }));
   const expected = tagActions.create({
     comment: "comment1",
     kernel_opts: "options1",
@@ -97,6 +97,6 @@ it("returns the newly created tag on save", async () => {
     items: [newTag],
     saved: true,
   });
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: Label.Submit }));
   await waitFor(() => expect(onTagCreated).toHaveBeenCalledWith(newTag));
 });

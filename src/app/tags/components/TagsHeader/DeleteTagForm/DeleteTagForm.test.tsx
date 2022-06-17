@@ -1,5 +1,5 @@
 import { NotificationSeverity } from "@canonical/react-components";
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
@@ -61,7 +61,7 @@ it("dispatches an action to delete a tag", async () => {
       </MemoryRouter>
     </Provider>
   );
-  fireEvent.submit(screen.getByRole("form"));
+  await userEvent.click(screen.getByRole("button", { name: "Delete" }));
   const expected = tagActions.delete(1);
   await waitFor(() =>
     expect(

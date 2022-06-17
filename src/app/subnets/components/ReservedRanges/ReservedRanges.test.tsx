@@ -1,4 +1,5 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -253,7 +254,7 @@ it("displays an edit form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  fireEvent.click(screen.getByRole("button", { name: "Edit" }));
+  await userEvent.click(screen.getByRole("button", { name: "Edit" }));
 
   await waitFor(() =>
     expect(
@@ -273,7 +274,7 @@ it("displays confirm delete message", async () => {
       </MemoryRouter>
     </Provider>
   );
-  fireEvent.click(screen.getByRole("button", { name: "Delete" }));
+  await userEvent.click(screen.getByRole("button", { name: "Delete" }));
 
   await waitFor(() => {
     expect(
@@ -295,8 +296,8 @@ it("dispatches an action to delete a reserved range", async () => {
       </MemoryRouter>
     </Provider>
   );
-  fireEvent.click(screen.getByTestId("table-actions-delete"));
-  fireEvent.click(screen.getByTestId("action-confirm"));
+  await userEvent.click(screen.getByTestId("table-actions-delete"));
+  await userEvent.click(screen.getByTestId("action-confirm"));
 
   const expectedAction = ipRangeActions.delete(ipRange.id);
 
@@ -341,12 +342,12 @@ it("displays an add button when it is dynamic", async () => {
       </MemoryRouter>
     </Provider>
   );
-  fireEvent.click(
+  await userEvent.click(
     screen.queryAllByRole("button", {
       name: Labels.ReserveRange,
     })[0]
   );
-  fireEvent.click(screen.getByTestId("reserve-dynamic-range-menu-item"));
+  await userEvent.click(screen.getByTestId("reserve-dynamic-range-menu-item"));
 
   await waitFor(() => {
     expect(
@@ -386,12 +387,12 @@ it("can display an add form", async () => {
       </MemoryRouter>
     </Provider>
   );
-  fireEvent.click(
+  await userEvent.click(
     screen.queryAllByRole("button", {
       name: Labels.ReserveRange,
     })[0]
   );
-  fireEvent.click(screen.getByTestId("reserve-range-menu-item"));
+  await userEvent.click(screen.getByTestId("reserve-range-menu-item"));
 
   await waitFor(() => {
     expect(

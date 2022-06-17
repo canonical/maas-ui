@@ -1,10 +1,5 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -178,9 +173,10 @@ it(`renders a subnet select field and prepopulated fields for a reserved range
     </Provider>
   );
 
-  fireEvent.change(screen.getByRole("combobox", { name: "Subnet" }), {
-    target: { value: subnet.id },
-  });
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Subnet" }),
+    subnet.id.toString()
+  );
 
   await waitFor(() =>
     expect(

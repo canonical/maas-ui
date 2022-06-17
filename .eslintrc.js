@@ -127,6 +127,14 @@ module.exports = {
       rules: {
         "testing-library/prefer-find-by": "off",
         "testing-library/prefer-explicit-assert": "error",
+        "testing-library/prefer-user-event": [
+          "error",
+          {
+            // Remove once sliders can be updated with user-event
+            // https://github.com/testing-library/user-event/issues/871
+            allowedMethods: ["change"],
+          },
+        ],
       },
     },
     {

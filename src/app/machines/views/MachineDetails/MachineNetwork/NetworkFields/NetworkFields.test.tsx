@@ -1,10 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -107,11 +101,9 @@ describe("NetworkFields", () => {
         within(vlanSelect).getByRole("option", { selected: true })
       ).toHaveAttribute("value", state.vlan.items[0].id.toString())
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: FabricSelectLabel.Select }),
-      {
-        target: { value: fabric.id.toString() },
-      }
+      fabric.id.toString()
     );
     await waitFor(() =>
       expect(
@@ -145,25 +137,22 @@ describe("NetworkFields", () => {
       ).toHaveAttribute("value", "")
     );
     // Set the values of the fields so they're all visible and have values.
-    fireEvent.change(subnetSelect, {
-      target: { value: state.subnet.items[1].id.toString() },
-    });
-    fireEvent.change(
+    await userEvent.selectOptions(
+      subnetSelect,
+      state.subnet.items[1].id.toString()
+    );
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
-      {
-        target: { value: NetworkLinkMode.STATIC },
-      }
+      NetworkLinkMode.STATIC
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );
     // Change the fabric and the other fields should reset.
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: FabricSelectLabel.Select }),
-      {
-        target: { value: state.fabric.items[1].id.toString() },
-      }
+      state.fabric.items[1].id.toString()
     );
     await waitFor(() =>
       expect(
@@ -199,28 +188,22 @@ describe("NetworkFields", () => {
       </Provider>
     );
     // Set the values of the fields so they're all visible and have values.
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: state.subnet.items[1].id.toString() },
-      }
+      state.subnet.items[1].id.toString()
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
-      {
-        target: { value: NetworkLinkMode.STATIC },
-      }
+      NetworkLinkMode.STATIC
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );
     // Change the VLAN and the other fields should reset.
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: VLANSelectLabel.Select }),
-      {
-        target: { value: state.subnet.items[1].id.toString() },
-      }
+      state.vlan.items[1].id.toString()
     );
     const subnetSelect = screen.getByRole("combobox", {
       name: SubnetSelectLabel.Select,
@@ -257,28 +240,22 @@ describe("NetworkFields", () => {
       </Provider>
     );
     // Set the values of the fields so they're all visible and have values.
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: state.subnet.items[1].id.toString() },
-      }
+      state.subnet.items[1].id.toString()
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
-      {
-        target: { value: NetworkLinkMode.STATIC },
-      }
+      NetworkLinkMode.STATIC
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: NetworkFieldsLabel.IPAddress }),
       "1.2.3.4"
     );
     // Change the subnet and the other fields should reset.
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: "" },
-      }
+      ""
     );
     expect(
       screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
@@ -315,17 +292,13 @@ describe("NetworkFields", () => {
       </Provider>
     );
     // Set the values of the fields so they're all visible and have values.
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: state.subnet.items[2].id },
-      }
+      state.subnet.items[2].id.toString()
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
-      {
-        target: { value: NetworkLinkMode.STATIC },
-      }
+      NetworkLinkMode.STATIC
     );
     await waitFor(() =>
       expect(
@@ -376,11 +349,9 @@ describe("NetworkFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: state.subnet.items[1].id.toString() },
-      }
+      state.subnet.items[1].id.toString()
     );
     expect(
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select })
@@ -414,11 +385,9 @@ describe("NetworkFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: state.subnet.items[1].id.toString() },
-      }
+      state.subnet.items[1].id.toString()
     );
     expect(
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select })
@@ -454,6 +423,7 @@ describe("NetworkFields", () => {
                   interfaceType={NetworkInterfaceTypes.PHYSICAL}
                   editing
                 />
+                <button type="submit">Save</button>
               </form>
             )}
           </Formik>
@@ -461,16 +431,14 @@ describe("NetworkFields", () => {
       </Provider>
     );
     // Remove the subnet.
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: "" },
-      }
+      ""
     );
     expect(
       screen.queryByRole("combobox", { name: LinkModeSelectLabel.Select })
     ).not.toBeInTheDocument();
-    fireEvent.submit(screen.getByRole("form", { name: "test form" }));
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
     await waitFor(() =>
       expect(onSubmit.mock.calls[0][0].mode).toBe(NetworkLinkMode.LINK_UP)
     );
@@ -515,17 +483,13 @@ describe("NetworkFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: state.subnet.items[1].id.toString() },
-      }
+      state.subnet.items[1].id.toString()
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
-      {
-        target: { value: NetworkLinkMode.AUTO },
-      }
+      NetworkLinkMode.AUTO
     );
     await waitFor(() =>
       expect(
@@ -550,17 +514,13 @@ describe("NetworkFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: SubnetSelectLabel.Select }),
-      {
-        target: { value: state.subnet.items[1].id.toString() },
-      }
+      state.subnet.items[1].id.toString()
     );
-    fireEvent.change(
+    await userEvent.selectOptions(
       screen.getByRole("combobox", { name: LinkModeSelectLabel.Select }),
-      {
-        target: { value: NetworkLinkMode.STATIC },
-      }
+      NetworkLinkMode.STATIC
     );
     await waitFor(() =>
       expect(

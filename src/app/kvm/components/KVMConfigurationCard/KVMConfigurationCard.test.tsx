@@ -1,4 +1,5 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -58,12 +59,14 @@ it("can handle updating a lxd KVM", async () => {
     </Provider>
   );
 
-  fireEvent.change(screen.getByRole("combobox", { name: "Zone" }), {
-    target: { value: "3" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Resource pool" }), {
-    target: { value: "2" },
-  });
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Zone" }),
+    "3"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Resource pool" }),
+    "2"
+  );
   fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
     target: { value: "5" },
   });
@@ -73,7 +76,7 @@ it("can handle updating a lxd KVM", async () => {
   await waitFor(() => {
     expect(screen.getByRole("button", { name: "Save changes" })).toBeEnabled();
   });
-  fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
+  await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
   const expectedAction = podActions.update({
     cpu_over_commit_ratio: 5,
@@ -111,15 +114,18 @@ it("can handle updating a virsh KVM", async () => {
     </Provider>
   );
 
-  fireEvent.change(screen.getByRole("combobox", { name: "Zone" }), {
-    target: { value: "3" },
-  });
-  fireEvent.change(screen.getByRole("combobox", { name: "Resource pool" }), {
-    target: { value: "2" },
-  });
-  fireEvent.change(screen.getByLabelText("Password (optional)"), {
-    target: { value: "password" },
-  });
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Zone" }),
+    "3"
+  );
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Resource pool" }),
+    "2"
+  );
+  await userEvent.type(
+    screen.getByLabelText("Password (optional)"),
+    "password"
+  );
   fireEvent.change(screen.getByRole("slider", { name: "CPU overcommit" }), {
     target: { value: "5" },
   });
@@ -129,7 +135,7 @@ it("can handle updating a virsh KVM", async () => {
   await waitFor(() => {
     expect(screen.getByRole("button", { name: "Save changes" })).toBeEnabled();
   });
-  fireEvent.click(screen.getByRole("button", { name: "Save changes" }));
+  await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
   const expectedAction = podActions.update({
     cpu_over_commit_ratio: 5,

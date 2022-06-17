@@ -28,6 +28,7 @@ type Props = {
 
 export enum Label {
   Form = "Device configuration",
+  Submit = "Save changed",
 }
 
 const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
@@ -93,7 +94,7 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
             onSuccess={() => setEditing(false)}
             saved={deviceSaved}
             saving={deviceSaving}
-            submitLabel="Save changes"
+            submitLabel={Label.Submit}
             validationSchema={NodeConfigurationSchema}
           >
             <NodeConfigurationFields />

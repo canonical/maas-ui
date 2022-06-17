@@ -1,10 +1,5 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -110,8 +105,8 @@ it("can update the arches to disable", async () => {
   );
   const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
 
-  fireEvent.click(within(nameCells[0]).getByRole("checkbox"));
-  fireEvent.click(within(nameCells[1]).getByRole("checkbox"));
+  await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
+  await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
 
   await waitFor(() =>
     expect(within(nameCells[0]).getByRole("checkbox")).toBeChecked()
@@ -148,10 +143,10 @@ it("can dispatch an action to update subnet's disabled boot architectures", asyn
   );
   const nameCells = screen.getAllByRole("gridcell", { name: Headers.Name });
 
-  fireEvent.click(within(nameCells[0]).getByRole("checkbox"));
-  fireEvent.click(within(nameCells[1]).getByRole("checkbox"));
+  await userEvent.click(within(nameCells[0]).getByRole("checkbox"));
+  await userEvent.click(within(nameCells[1]).getByRole("checkbox"));
 
-  fireEvent.click(screen.getByRole("button", { name: "Save" }));
+  await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
   const expectedAction = subnetActions.update({
     id: subnet.id,

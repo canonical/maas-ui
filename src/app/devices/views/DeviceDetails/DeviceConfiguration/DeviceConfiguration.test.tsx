@@ -1,4 +1,4 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -132,7 +132,7 @@ describe("DeviceConfiguration", () => {
     screen.getByRole("textbox", { name: TagFieldLabel.Input }).focus();
     await userEvent.click(screen.getByRole("option", { name: "tag1" }));
     await userEvent.click(screen.getByRole("option", { name: "tag2" }));
-    fireEvent.submit(screen.getByRole("form", { name: Label.Form }));
+    await userEvent.click(screen.getByRole("button", { name: Label.Submit }));
     const expectedAction = deviceActions.update({
       description: "it's a device",
       tags: [1, 2],

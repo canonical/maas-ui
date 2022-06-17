@@ -1,10 +1,4 @@
-import {
-  fireEvent,
-  render,
-  screen,
-  waitFor,
-  within,
-} from "@testing-library/react";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -201,7 +195,9 @@ it("updates the new tags after creating a tag", async () => {
   const newTag = tagFactory({ id: 8, name: "new-tag" });
   state.tag.saved = true;
   state.tag.items.push(newTag);
-  fireEvent.submit(screen.getByRole("form", { name: AddTagFormLabel.Form }));
+  await userEvent.click(
+    screen.getByRole("button", { name: AddTagFormLabel.Submit })
+  );
   rerender(<Form tags={[newTag.id]} />);
   const changes = screen.getByRole("table", {
     name: TagFormChangesLabel.Table,
