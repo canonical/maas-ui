@@ -33,7 +33,7 @@
     "unlink-components": "yarn unlink react && yarn unlink \"@canonical/react-components\""
   },
   "dependencies": {
-    "@canonical/macaroon-bakery": "1.1.0",
+    "@canonical/macaroon-bakery": "1.2.0",
     "@canonical/react-components": "0.37.1",
     "@reduxjs/toolkit": "1.8.2",
     "@sentry/browser": "6.19.7",
