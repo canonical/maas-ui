@@ -7,7 +7,7 @@ import type {
   ResourcePool,
   ResourcePoolMeta,
 } from "app/store/resourcepool/types";
-import type { Script, ScriptMeta } from "app/store/script/types";
+import type { Script, ScriptName } from "app/store/script/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import type {
@@ -43,13 +43,13 @@ export type CloneParams = BaseNodeActionParams & {
 };
 
 export type CommissionParams = BaseNodeActionParams & {
-  commissioning_scripts?: (Script[ScriptMeta.PK] | Script["name"])[];
+  commissioning_scripts?: Script["name"][];
   enable_ssh?: boolean;
   script_input?: ScriptInputParam;
   skip_bmc_config?: boolean;
   skip_networking?: boolean;
   skip_storage?: boolean;
-  testing_scripts?: (Script[ScriptMeta.PK] | Script["name"])[];
+  testing_scripts?: Script["name"][] | [ScriptName.NONE];
 };
 
 export type CreateBcacheParams = {

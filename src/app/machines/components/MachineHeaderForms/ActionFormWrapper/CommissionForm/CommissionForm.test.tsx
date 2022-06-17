@@ -9,7 +9,7 @@ import CommissionForm from "./CommissionForm";
 
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import { ScriptName, ScriptType } from "app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -133,11 +133,11 @@ describe("CommissionForm", () => {
         skip_networking: true,
         skip_storage: true,
         commissioning_scripts: [
-          state.script.items[1].id,
-          "update_firmware",
-          "configure_hba",
+          state.script.items[1].name,
+          ScriptName.UPDATE_FIRMWARE,
+          ScriptName.CONFIGURE_HBA,
         ],
-        testing_scripts: [state.script.items[0].id],
+        testing_scripts: [state.script.items[0].name],
         script_input: { testingScript0: { url: "www.url.com" } },
       }),
       machineActions.commission({
@@ -147,13 +147,52 @@ describe("CommissionForm", () => {
         skip_networking: true,
         skip_storage: true,
         commissioning_scripts: [
-          state.script.items[1].id,
-          "update_firmware",
-          "configure_hba",
+          state.script.items[1].name,
+          ScriptName.UPDATE_FIRMWARE,
+          ScriptName.CONFIGURE_HBA,
         ],
-        testing_scripts: [state.script.items[0].id],
+        testing_scripts: [state.script.items[0].name],
         script_input: { testingScript0: { url: "www.url.com" } },
       }),
     ]);
+  });
+
+  it("correctly dispatches an action to commission a machine without tests", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <CommissionForm
+              clearHeaderContent={jest.fn()}
+              machines={[state.machine.items[0]]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    act(() =>
+      submitFormikForm(wrapper, {
+        enableSSH: true,
+        skipBMCConfig: true,
+        skipNetworking: true,
+        skipStorage: true,
+        updateFirmware: true,
+        configureHBA: true,
+        testingScripts: [],
+        commissioningScripts: [state.script.items[1]],
+        scriptInputs: { testingScript0: { url: "www.url.com" } },
+      })
+    );
+
+    expect(
+      store.getActions().find((action) => action.type === "machine/commission")
+        ?.payload.params.extra.testing_scripts
+    ).toStrictEqual([ScriptName.NONE]);
   });
 });

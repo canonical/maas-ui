@@ -181,7 +181,7 @@ export const ActionFormWrapper = ({
                   enable_ssh: args.enableSSH,
                   script_input: args.scriptInputs,
                   system_id: args.systemId,
-                  testing_scripts: args.scripts.map((script) => script.id),
+                  testing_scripts: args.scripts.map((script) => script.name),
                 })
               );
             }}

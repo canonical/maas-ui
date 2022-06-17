@@ -6,4 +6,4 @@ export type {
   ScriptsResults,
 } from "./base";
 
-export { ScriptMeta, ScriptType } from "./enum";
+export { ScriptMeta, ScriptName, ScriptType } from "./enum";

@@ -9,13 +9,11 @@ import type { CommissionFormValues, FormattedScript } from "./types";
 import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import type {
-  CommissionParams,
-  MachineEventErrors,
-} from "app/store/machine/types";
+import type { MachineEventErrors } from "app/store/machine/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
+import { ScriptName } from "app/store/script/types";
 import { getObjectString } from "app/store/script/utils";
 import { NodeActions } from "app/store/types/node";
 import { simpleSortByKey } from "app/utils";
@@ -132,15 +130,18 @@ export const CommissionForm = ({
           testingScripts,
           scriptInputs,
         } = values;
-        const commissioningScriptsParam: CommissionParams["commissioning_scripts"] =
-          commissioningScripts.map((script) => script.id);
+        const commissioningScriptsParam = commissioningScripts.map(
+          (script) => script.name
+        );
         if (updateFirmware) {
-          commissioningScriptsParam.push("update_firmware");
+          commissioningScriptsParam.push(ScriptName.UPDATE_FIRMWARE);
         }
         if (configureHBA) {
-          commissioningScriptsParam.push("configure_hba");
+          commissioningScriptsParam.push(ScriptName.CONFIGURE_HBA);
         }
-        const testingScriptsParam = testingScripts.map((script) => script.id);
+        const testingScriptsParam = testingScripts.length
+          ? testingScripts.map((script) => script.name)
+          : [ScriptName.NONE];
         machines.forEach((machine) => {
           dispatch(
             machineActions.commission({
