@@ -7,3 +7,9 @@ export enum ScriptType {
   COMMISSIONING = 0,
   TESTING = 2,
 }
+
+export enum ScriptName {
+  CONFIGURE_HBA = "configure_hba",
+  NONE = "none",
+  UPDATE_FIRMWARE = "update_firmware",
+}

@@ -9,7 +9,7 @@ import CommissionForm from "./CommissionForm";
 
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
-import { ScriptType } from "app/store/script/types";
+import { ScriptName, ScriptType } from "app/store/script/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -134,8 +134,8 @@ describe("CommissionForm", () => {
         skip_storage: true,
         commissioning_scripts: [
           state.script.items[1].name,
-          "update_firmware",
-          "configure_hba",
+          ScriptName.UPDATE_FIRMWARE,
+          ScriptName.CONFIGURE_HBA,
         ],
         testing_scripts: [state.script.items[0].name],
         script_input: { testingScript0: { url: "www.url.com" } },
@@ -148,8 +148,8 @@ describe("CommissionForm", () => {
         skip_storage: true,
         commissioning_scripts: [
           state.script.items[1].name,
-          "update_firmware",
-          "configure_hba",
+          ScriptName.UPDATE_FIRMWARE,
+          ScriptName.CONFIGURE_HBA,
         ],
         testing_scripts: [state.script.items[0].name],
         script_input: { testingScript0: { url: "www.url.com" } },
@@ -193,6 +193,6 @@ describe("CommissionForm", () => {
     expect(
       store.getActions().find((action) => action.type === "machine/commission")
         ?.payload.params.extra.testing_scripts
-    ).toStrictEqual(["none"]);
+    ).toStrictEqual([ScriptName.NONE]);
   });
 });

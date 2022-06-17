@@ -6,6 +6,7 @@ import {
   BondMode,
   BondXmitHashPolicy,
 } from "app/store/general/types";
+import { ScriptName } from "app/store/script/types";
 import {
   BridgeType,
   DiskTypes,
@@ -334,7 +335,10 @@ describe("machine actions", () => {
   it("can handle commissioning a machine", () => {
     expect(
       actions.commission({
-        commissioning_scripts: ["update_firmware", "configure_hba"],
+        commissioning_scripts: [
+          ScriptName.UPDATE_FIRMWARE,
+          ScriptName.CONFIGURE_HBA,
+        ],
         enable_ssh: true,
         script_input: { testingScript0: { url: "www.url.com" } },
         skip_bmc_config: false,
@@ -352,7 +356,10 @@ describe("machine actions", () => {
         params: {
           action: NodeActions.COMMISSION,
           extra: {
-            commissioning_scripts: ["update_firmware", "configure_hba"],
+            commissioning_scripts: [
+              ScriptName.UPDATE_FIRMWARE,
+              ScriptName.CONFIGURE_HBA,
+            ],
             enable_ssh: true,
             script_input: { testingScript0: { url: "www.url.com" } },
             skip_bmc_config: false,
