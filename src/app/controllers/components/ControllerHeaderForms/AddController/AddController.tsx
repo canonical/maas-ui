@@ -1,3 +1,6 @@
+import type { ChangeEvent } from "react";
+import { useState } from "react";
+
 import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
@@ -14,51 +17,81 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
   const maasUrl = useSelector(configSelectors.maasUrl);
   const rpcSharedSecret = useSelector(configSelectors.rpcSharedSecret);
   const minorVersion = useSelector(versionSelectors.minor);
+  const [variant, setVariant] = useState("Snap");
+
+  const variantDropdown = {
+    value: variant,
+    onChange: (e: ChangeEvent<HTMLSelectElement>) => {
+      setVariant(e.target.value);
+    },
+    options: [
+      {
+        label: `v${minorVersion} Snap`,
+        value: "snap",
+      },
+      {
+        label: `v${minorVersion} Packages`,
+        value: "packages",
+      },
+    ],
+  };
+  const dropdowns = [variantDropdown];
 
   return (
     <>
       <p>
-        To add a new rack controller, SSH into the rack controller. Install the
-        maas-rack-controller package. Confirm that the MAAS version is the same
-        as the main rack controller.
+        To add a new rack controller, SSH into the rack controller and run the
+        commands below. Confirm that the MAAS version is the same as the main
+        rack controller.
       </p>
-      <CodeSnippet
-        blocks={[
-          { code: `sudo add-apt-repository ppa:maas/${minorVersion}` },
-          {
-            code: "sudo apt install maas-rack-controller",
-          },
-        ]}
-      />
-      <p>Or if you use snap</p>
-      <CodeSnippet
-        blocks={[
-          {
-            code: `sudo snap install maas --channel=${minorVersion}`,
-          },
-        ]}
-      />
+      {variant === "packages" ? (
+        <CodeSnippet
+          blocks={[
+            {
+              dropdowns,
+              code: `sudo apt-add-repository ppa:maas/${minorVersion}`,
+            },
+            {
+              code: "sudo apt install maas-rack-controller",
+            },
+          ]}
+        />
+      ) : (
+        <CodeSnippet
+          blocks={[
+            {
+              dropdowns,
+              code: `sudo snap install maas --channel=${minorVersion}`,
+            },
+          ]}
+        />
+      )}
       <p>
         Register the rack controller with this MAAS. If the rack controller (and
         machines) don't have access to the URL, use a different IP address to
         allow connection.
       </p>
-      <CodeSnippet
-        blocks={[
-          {
-            code: `sudo maas-rack register --url ${maasUrl} --secret ${rpcSharedSecret}`,
-          },
-        ]}
-        data-testid="register-snippet"
-      />
-      <p>Or if you use snap</p>
-      <CodeSnippet
-        blocks={[
-          {
-            code: `sudo maas init rack --maas-url ${maasUrl} --secret ${rpcSharedSecret}`,
-          },
-        ]}
-      />
+      {variant === "packages" ? (
+        <CodeSnippet
+          blocks={[
+            {
+              dropdowns,
+              code: `sudo maas-rack register --url ${maasUrl} --secret ${rpcSharedSecret}`,
+            },
+          ]}
+          data-testid="register-snippet"
+        />
+      ) : (
+        <CodeSnippet
+          blocks={[
+            {
+              dropdowns,
+              code: `sudo maas init rack --maas-url ${maasUrl} --secret ${rpcSharedSecret}`,
+            },
+          ]}
+        />
+      )}
+
       <Row>
         <Col size={6}>
           <a
