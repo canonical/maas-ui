@@ -201,8 +201,8 @@ describe("TestForm", () => {
         >
           <CompatRouter>
             <TestForm
-              cleanup={machineActions.cleanup}
               applyConfiguredNetworking={true}
+              cleanup={machineActions.cleanup}
               clearHeaderContent={jest.fn()}
               modelName="machine"
               nodes={state.machine.items}

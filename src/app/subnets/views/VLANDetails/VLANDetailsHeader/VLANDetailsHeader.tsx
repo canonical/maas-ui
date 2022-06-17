@@ -77,8 +77,6 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      subtitleLoading={!isVLANDetails(vlan)}
-      title={generateTitle(vlan, fabric)}
       headerContent={
         formOpen === null ? null : (
           <>
@@ -88,6 +86,8 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
           </>
         )
       }
+      subtitleLoading={!isVLANDetails(vlan)}
+      title={generateTitle(vlan, fabric)}
     />
   );
 };

@@ -47,11 +47,6 @@ export const Details = (): JSX.Element => {
             cleanup={cleanup}
             includeCurrentPassword
             includeUserType={false}
-            onSaveAnalytics={{
-              action: "Saved",
-              category: "Details preferences",
-              label: "Details form",
-            }}
             onSave={(values) => {
               if (authUser) {
                 dispatch(
@@ -78,6 +73,11 @@ export const Details = (): JSX.Element => {
                 );
               }
               setPasswordChanged(passwordChanged);
+            }}
+            onSaveAnalytics={{
+              action: "Saved",
+              category: "Details preferences",
+              label: "Details form",
             }}
             user={authUser}
           />

@@ -11,9 +11,9 @@ const EditDHCP = ({ close, id }: Props): JSX.Element | null => {
     <div className="u-flex--grow">
       <DhcpForm
         analyticsCategory="DHCP snippet table"
-        onSave={close}
         id={id}
         onCancel={close}
+        onSave={close}
       />
     </div>
   );

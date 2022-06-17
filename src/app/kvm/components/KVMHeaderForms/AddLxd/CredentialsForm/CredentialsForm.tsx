@@ -110,9 +110,9 @@ export const CredentialsForm = ({
   return (
     <FormikForm<CredentialsFormValues>
       allowUnchanged={!!newPodValues.power_address}
+      cleanup={cleanup}
       enableReinitialize
       errors={errors}
-      cleanup={cleanup}
       initialValues={{
         certificate: newPodValues.certificate,
         key: newPodValues.key,

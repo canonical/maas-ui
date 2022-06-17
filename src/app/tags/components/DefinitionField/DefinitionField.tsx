@@ -76,16 +76,16 @@ export const DefinitionField = ({ id }: Props): JSX.Element => {
       <FormikField
         aria-errormessage={!!definitionError ? definitionErrorId : undefined}
         aria-invalid={!!definitionError}
-        className="p-text--code"
-        error={definitionError}
-        label={Label.Definition}
-        name="definition"
         caution={
           hasChangedDefinition
             ? "This tag will be unassigned from previous machines that no longer match this definition."
             : null
         }
+        className="p-text--code"
         component={Textarea}
+        error={definitionError}
+        label={Label.Definition}
+        name="definition"
         placeholder={`//node[@class="system"]/vendor = "QEMU" and
 //node[@class="processor"]/vendor[starts-with(.,"Advanced Micro Devices")] and not
 //node[@id="firmware"]/capabilities/capability/@id = "uefi"`}

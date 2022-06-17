@@ -47,10 +47,10 @@ describe("EditInterface", () => {
         >
           <CompatRouter>
             <EditInterface
+              close={jest.fn()}
               selected={[]}
               setSelected={jest.fn()}
               systemId="abc123"
-              close={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -77,11 +77,11 @@ describe("EditInterface", () => {
         >
           <CompatRouter>
             <EditInterface
+              close={jest.fn()}
+              nicId={nic.id}
               selected={[]}
               setSelected={jest.fn()}
               systemId="abc123"
-              close={jest.fn()}
-              nicId={nic.id}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -111,12 +111,12 @@ describe("EditInterface", () => {
         >
           <CompatRouter>
             <EditInterface
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
               close={jest.fn()}
               linkId={link.id}
               nicId={nic.id}
+              selected={[]}
+              setSelected={jest.fn()}
+              systemId="abc123"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -144,11 +144,11 @@ describe("EditInterface", () => {
         >
           <CompatRouter>
             <EditInterface
+              close={jest.fn()}
+              nicId={nic.id}
               selected={[]}
               setSelected={jest.fn()}
               systemId="abc123"
-              close={jest.fn()}
-              nicId={nic.id}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -176,11 +176,11 @@ describe("EditInterface", () => {
         >
           <CompatRouter>
             <EditInterface
+              close={jest.fn()}
+              nicId={nic.id}
               selected={[]}
               setSelected={jest.fn()}
               systemId="abc123"
-              close={jest.fn()}
-              nicId={nic.id}
             />
           </CompatRouter>
         </MemoryRouter>

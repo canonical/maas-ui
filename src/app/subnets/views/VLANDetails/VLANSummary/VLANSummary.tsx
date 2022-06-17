@@ -37,10 +37,10 @@ const VLANSummary = ({ id }: Props): JSX.Element | null => {
         ) : (
           <Row>
             <Col size={6}>
-              <Definition label="VID" description={`${vlan.vid}`} />
-              <Definition label="Name" description={vlan.name} />
-              <Definition label="MTU" description={`${vlan.mtu}`} />
-              <Definition label="Description" description={vlan.description} />
+              <Definition description={`${vlan.vid}`} label="VID" />
+              <Definition description={vlan.name} label="Name" />
+              <Definition description={`${vlan.mtu}`} label="MTU" />
+              <Definition description={vlan.description} label="Description" />
             </Col>
             <Col size={6}>
               <Definition label="Space">

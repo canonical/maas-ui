@@ -6,9 +6,9 @@ describe("GroupCheckbox", () => {
   it("renders", () => {
     const wrapper = shallow(
       <GroupCheckbox
+        handleGroupCheckbox={jest.fn()}
         items={[]}
         selectedItems={[]}
-        handleGroupCheckbox={jest.fn()}
       />
     );
     expect(wrapper).toMatchSnapshot();
@@ -17,9 +17,9 @@ describe("GroupCheckbox", () => {
   it("shows as mixed when some items are checked", () => {
     const wrapper = shallow(
       <GroupCheckbox
+        handleGroupCheckbox={jest.fn()}
         items={[1, 2, 3]}
         selectedItems={[2]}
-        handleGroupCheckbox={jest.fn()}
       />
     );
     expect(wrapper.prop("checked")).toBe(true);
@@ -29,10 +29,10 @@ describe("GroupCheckbox", () => {
   it("can show a label", () => {
     const wrapper = shallow(
       <GroupCheckbox
-        items={[]}
-        inputLabel="Check all"
-        selectedItems={[]}
         handleGroupCheckbox={jest.fn()}
+        inputLabel="Check all"
+        items={[]}
+        selectedItems={[]}
       />
     );
     expect(wrapper.prop("label")).toBe("Check all");
@@ -42,10 +42,10 @@ describe("GroupCheckbox", () => {
     const wrapper = shallow(
       <GroupCheckbox
         disabled
-        items={[1, 2, 3]}
-        inputLabel="Check all"
-        selectedItems={[2]}
         handleGroupCheckbox={jest.fn()}
+        inputLabel="Check all"
+        items={[1, 2, 3]}
+        selectedItems={[2]}
       />
     );
     expect(wrapper.prop("disabled")).toBe(true);
@@ -55,9 +55,9 @@ describe("GroupCheckbox", () => {
     const wrapper = shallow(
       <GroupCheckbox
         checkSelected={() => true}
+        handleGroupCheckbox={jest.fn()}
         items={[]}
         selectedItems={[]}
-        handleGroupCheckbox={jest.fn()}
       />
     );
     expect(wrapper.prop("checked")).toBe(true);
@@ -67,9 +67,9 @@ describe("GroupCheckbox", () => {
     const wrapper = shallow(
       <GroupCheckbox
         checkAllSelected={() => false}
+        handleGroupCheckbox={jest.fn()}
         items={[1, 2, 3]}
         selectedItems={[2]}
-        handleGroupCheckbox={jest.fn()}
       />
     );
     expect(wrapper.prop("checked")).toBe(true);

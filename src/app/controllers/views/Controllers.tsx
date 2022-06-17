@@ -35,8 +35,8 @@ const Controllers = (): JSX.Element => {
         <Route
           // using a single key as a workaround for Controller details pages
           // calling "get" and "setActive" on every route change
-          key="controller-details"
           exact
+          key="controller-details"
           path={path}
           render={() => <ControllerDetails />}
         />

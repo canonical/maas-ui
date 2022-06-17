@@ -17,11 +17,11 @@ const StorageFormFields = (): JSX.Element => {
   return (
     <>
       <FormikField
-        label="Default storage layout"
         component={Select}
-        options={storageLayoutOptions}
         help="Storage layout that is applied to a node when it is commissioned."
+        label="Default storage layout"
         name="default_storage_layout"
+        options={storageLayoutOptions}
       />
       {values.default_storage_layout === StorageLayout.BLANK && (
         <p className="p-form-validation__message">
@@ -40,22 +40,22 @@ const StorageFormFields = (): JSX.Element => {
         </p>
       )}
       <FormikField
-        label="Erase nodes' disks prior to releasing"
-        type="checkbox"
         help="Forces users to always erase disks when releasing."
+        label="Erase nodes' disks prior to releasing"
         name="enable_disk_erasing_on_release"
+        type="checkbox"
       />
       <FormikField
-        label="Use secure erase by default when erasing disks"
-        type="checkbox"
         help="Will only be used on devices that support secure erase. Other devices will fall back to full wipe or quick erase depending on the selected options."
+        label="Use secure erase by default when erasing disks"
         name="disk_erase_with_secure_erase"
+        type="checkbox"
       />
       <FormikField
-        label="Use quick erase by default when erasing disks"
-        type="checkbox"
         help="This is not a secure erase; it wipes only the beginning and end of each disk."
+        label="Use quick erase by default when erasing disks"
         name="disk_erase_with_quick_erase"
+        type="checkbox"
       />
     </>
   );

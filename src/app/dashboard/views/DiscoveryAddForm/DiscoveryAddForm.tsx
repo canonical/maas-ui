@@ -175,6 +175,10 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
 
   return (
     <FormikForm<DiscoveryAddValues>
+      allowUnchanged
+      className="u-width--full"
+      cleanup={discoveryActions.cleanup}
+      errors={errors}
       initialValues={{
         [DeviceMeta.PK]: "",
         domain: (domainByName || defaultDomain)?.name || "",
@@ -183,16 +187,12 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
         parent: "",
         type: initialDeviceType,
       }}
-      allowUnchanged
-      className="u-width--full"
-      cleanup={discoveryActions.cleanup}
-      errors={errors}
+      onCancel={onClose}
       onSaveAnalytics={{
         action: "Add discovery",
         category: "Dashboard",
         label: "Add discovery form",
       }}
-      onCancel={onClose}
       onSubmit={(values) => {
         // The normal submit button should not redirect anywhere.
         setRedirect(null);
@@ -220,8 +220,8 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
           );
         }
       }}
-      savedRedirect={redirect}
       saved={processed}
+      savedRedirect={redirect}
       saving={processing}
       secondarySubmit={(values) => {
         // The secondary submit should redirect to the device/devices.

@@ -58,8 +58,8 @@ export const FormCard = ({
   );
   return (
     <Card
-      highlighted={highlighted}
       className={classNames("form-card", className)}
+      highlighted={highlighted}
     >
       {content}
     </Card>

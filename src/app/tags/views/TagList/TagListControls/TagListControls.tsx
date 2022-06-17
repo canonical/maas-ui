@@ -40,6 +40,7 @@ const TagListControls = ({
       actions={
         <SegmentedControl
           aria-label="tag filter"
+          onSelect={setFilter}
           options={[
             {
               title: Label.All,
@@ -55,7 +56,6 @@ const TagListControls = ({
             },
           ]}
           selected={filter}
-          onSelect={setFilter}
         />
       }
       currentPage={currentPage}

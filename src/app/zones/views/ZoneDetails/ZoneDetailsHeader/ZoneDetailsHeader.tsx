@@ -72,10 +72,10 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
       <>
         <hr />
         <DeleteConfirm
-          confirmLabel="Delete AZ"
-          onConfirm={deleteZone}
           closeExpanded={closeExpanded}
+          confirmLabel="Delete AZ"
           message="Are you sure you want to delete this AZ?"
+          onConfirm={deleteZone}
         />
       </>
     );

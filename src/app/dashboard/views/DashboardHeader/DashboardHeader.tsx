@@ -49,7 +49,6 @@ const DashboardHeader = (): JSX.Element => {
     <SectionHeader
       buttons={buttons}
       headerContent={headerContent}
-      title="Network discovery"
       tabLinks={[
         {
           active: location.pathname === dashboardURLs.index,
@@ -64,6 +63,7 @@ const DashboardHeader = (): JSX.Element => {
           to: dashboardURLs.configuration,
         },
       ]}
+      title="Network discovery"
     />
   );
 };

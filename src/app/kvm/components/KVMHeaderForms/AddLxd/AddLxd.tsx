@@ -53,12 +53,12 @@ export const AddLxd = ({ clearHeaderContent }: Props): JSX.Element => {
   return (
     <>
       <Stepper
+        currentStep={step}
         items={[
           { step: AddLxdSteps.CREDENTIALS, title: "Credentials" },
           { step: AddLxdSteps.AUTHENTICATION, title: "Authentication" },
           { step: AddLxdSteps.SELECT_PROJECT, title: "Project selection" },
         ]}
-        currentStep={step}
       />
       <hr />
       {submissionErrors ? (

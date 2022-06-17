@@ -165,10 +165,10 @@ const FormikFormContent = <V, E = null>({
 
   return (
     <Form
+      aria-label={ariaLabel}
       className={className}
       inline={inline}
       onSubmit={handleSubmit}
-      aria-label={ariaLabel}
     >
       {!!nonFieldError && (
         <Notification severity="negative" title="Error:">

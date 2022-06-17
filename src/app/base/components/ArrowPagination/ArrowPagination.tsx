@@ -47,10 +47,10 @@ const ArrowPagination = ({
         aria-label={onFirstPage ? "" : `Page ${currentPage - 1}`}
         className="u-no-margin--right u-no-margin--bottom"
         disabled={onFirstPage}
+        hasIcon
         onClick={() => {
           setCurrentPage(currentPage - 1);
         }}
-        hasIcon
       >
         <Icon className="u-rotate-right" name="chevron-down" />
       </Button>
@@ -59,10 +59,10 @@ const ArrowPagination = ({
         aria-label={onLastPage ? "" : `Page ${currentPage + 1}`}
         className="u-no-margin--bottom"
         disabled={onLastPage}
+        hasIcon
         onClick={() => {
           setCurrentPage(currentPage + 1);
         }}
-        hasIcon
       >
         <Icon className="u-rotate-left" name="chevron-down" />
       </Button>

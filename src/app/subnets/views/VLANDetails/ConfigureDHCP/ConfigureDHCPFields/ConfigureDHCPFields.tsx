@@ -135,8 +135,8 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
                 }
                 label="VLAN"
                 name="relayVLAN"
-                wrapperClassName="u-nudge-right--x-large"
                 vlans={vlansWithDHCP}
+                wrapperClassName="u-nudge-right--x-large"
               />
             )}
           </>

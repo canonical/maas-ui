@@ -23,9 +23,9 @@ const SubnetsTable = ({
     <>
       <SubnetsControls
         groupBy={groupBy}
-        setGroupBy={setGroupBy}
-        searchText={searchText}
         handleSearch={setSearchText}
+        searchText={searchText}
+        setGroupBy={setGroupBy}
       />
 
       {groupBy === "fabric" ? (

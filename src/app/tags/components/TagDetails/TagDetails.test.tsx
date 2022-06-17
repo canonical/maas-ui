@@ -44,9 +44,9 @@ it("dispatches actions to fetch necessary data", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagDetails id={1} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails id={1} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -79,9 +79,9 @@ it("displays a message if the tag does not exist", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagDetails id={1} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails id={1} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -106,9 +106,9 @@ it("shows a spinner if the tag has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagDetails id={1} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails id={1} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -127,9 +127,9 @@ it("displays the tag name when not narrow", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagDetails id={1} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails id={1} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -147,9 +147,9 @@ it("does not display the tag name when narrow", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagDetails id={1} narrow />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails id={1} narrow />}
           />
         </CompatRouter>
       </MemoryRouter>

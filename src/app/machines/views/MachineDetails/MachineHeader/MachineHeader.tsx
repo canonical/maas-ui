@@ -68,18 +68,6 @@ const MachineHeader = ({
 
   return (
     <SectionHeader
-      title={
-        headerContent ? (
-          getHeaderTitle(machine.hostname, headerContent)
-        ) : (
-          <MachineName
-            editingName={editingName}
-            id={systemId}
-            setEditingName={setEditingName}
-          />
-        )
-      }
-      titleElement={editingName ? "div" : "h1"}
       buttons={[
         <NodeActionMenu
           alwaysShowLifecycle
@@ -235,6 +223,18 @@ const MachineHeader = ({
           to: `${urlBase}/configuration`,
         },
       ]}
+      title={
+        headerContent ? (
+          getHeaderTitle(machine.hostname, headerContent)
+        ) : (
+          <MachineName
+            editingName={editingName}
+            id={systemId}
+            setEditingName={setEditingName}
+          />
+        )
+      }
+      titleElement={editingName ? "div" : "h1"}
     />
   );
 };

@@ -79,8 +79,8 @@ const MachinesFilterAccordion = ({
       disabled={!machinesLoaded}
       filterNames={filterNames}
       filterOrder={filterOrder}
-      filtersToString={FilterMachines.filtersToString}
       filterString={searchText}
+      filtersToString={FilterMachines.filtersToString}
       getCurrentFilters={FilterMachines.getCurrentFilters}
       getValue={(machine, filter) => getMachineValue(machine, filter, { tags })}
       getValueDisplay={getValueDisplay}

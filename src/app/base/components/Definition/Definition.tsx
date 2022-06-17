@@ -33,7 +33,7 @@ const Definition = ({ label, children, description }: Props): JSX.Element => {
           children,
           (child, i) =>
             child && (
-              <p key={i} aria-labelledby={id}>
+              <p aria-labelledby={id} key={i}>
                 {child}
               </p>
             )

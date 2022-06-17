@@ -57,13 +57,9 @@ const SubnetsList = (): JSX.Element => {
       header={
         <>
           <SectionHeader
-            title={activeForm ? `Add ${activeForm}` : "Subnets"}
             buttons={[
               <ContextualMenu
-                toggleLabel="Add"
-                toggleAppearance="positive"
                 hasToggleIcon
-                position="right"
                 links={[
                   SubnetForms.Fabric,
                   SubnetForms.VLAN,
@@ -73,6 +69,9 @@ const SubnetsList = (): JSX.Element => {
                   children,
                   onClick: () => setActiveForm(children),
                 }))}
+                position="right"
+                toggleAppearance="positive"
+                toggleLabel="Add"
               />,
             ]}
             headerContent={
@@ -83,6 +82,7 @@ const SubnetsList = (): JSX.Element => {
                 />
               ) : null
             }
+            title={activeForm ? `Add ${activeForm}` : "Subnets"}
           />
         </>
       }
@@ -90,8 +90,8 @@ const SubnetsList = (): JSX.Element => {
       {hasValidGroupBy ? (
         <SubnetsTable
           groupBy={groupBy as GroupByKey}
-          setGroupBy={setGroupBy}
           searchText={searchText}
+          setGroupBy={setGroupBy}
           setSearchText={setSearchText}
         />
       ) : null}

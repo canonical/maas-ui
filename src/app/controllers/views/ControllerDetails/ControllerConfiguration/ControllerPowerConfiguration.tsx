@@ -100,9 +100,9 @@ const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
       renderContent={(editing, setEditing) =>
         editing ? (
           <FormikForm
-            aria-label={Label.Title}
             allowAllEmpty
             allowUnchanged
+            aria-label={Label.Title}
             cleanup={cleanup}
             editable={editing}
             errors={errors}
@@ -110,12 +110,12 @@ const ControllerPowerConfiguration = ({ systemId }: Props): JSX.Element => {
               powerType: controller.power_type,
               powerParameters: initialPowerParameters,
             }}
+            onCancel={() => setEditing(false)}
             onSaveAnalytics={{
               action: "Configure power",
               category: "Controller details",
               label: "Save changes",
             }}
-            onCancel={() => setEditing(false)}
             onSubmit={(values) => {
               const params = {
                 power_parameters: formatPowerParameters(

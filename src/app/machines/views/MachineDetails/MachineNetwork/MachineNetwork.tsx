@@ -41,7 +41,6 @@ const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
 
   return (
     <NodeNetworkTab
-      aria-label="Machine network"
       actions={(expanded, setExpanded) => (
         <MachineNetworkActions
           expanded={expanded}
@@ -54,11 +53,12 @@ const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
       addInterface={(_, setExpanded) => (
         <AddInterface close={() => setExpanded(null)} systemId={id} />
       )}
+      aria-label="Machine network"
       dhcpTable={() => (
         <DHCPTable
           className="u-no-padding--top"
-          node={machine}
           modelName={MachineMeta.MODEL}
+          node={machine}
         />
       )}
       expandedForm={(expanded, setExpanded) => {
@@ -102,10 +102,10 @@ const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
       interfaceTable={(expanded, setExpanded) => (
         <NetworkTable
           expanded={expanded}
+          node={machine}
           selected={selected}
           setExpanded={setExpanded}
           setSelected={setSelected}
-          node={machine}
         />
       )}
     />

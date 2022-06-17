@@ -54,12 +54,12 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
         name: fabric.name,
         description: fabric.description,
       }}
+      onCancel={close}
       onSaveAnalytics={{
         action: "Save fabric",
         category: "Fabric details",
         label: "Edit fabric form",
       }}
-      onCancel={close}
       onSubmit={({ name, description }) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());

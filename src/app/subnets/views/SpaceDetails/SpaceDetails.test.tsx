@@ -26,9 +26,9 @@ it("dispatches actions to get and set space as active on mount", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SpaceDetails />}
             exact
             path={subnetsURLs.space.index(null, true)}
-            component={() => <SpaceDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -56,9 +56,9 @@ it("dispatches actions to unset active space and clean up on unmount", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SpaceDetails />}
             exact
             path={subnetsURLs.space.index(null, true)}
-            component={() => <SpaceDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -99,9 +99,9 @@ it("displays a message if the space does not exist", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SpaceDetails />}
             exact
             path={subnetsURLs.space.index(null, true)}
-            component={() => <SpaceDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -126,9 +126,9 @@ it("shows a spinner if the space has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SpaceDetails />}
             exact
             path={subnetsURLs.space.index(null, true)}
-            component={() => <SpaceDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -160,9 +160,9 @@ it("displays space details", async () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SpaceDetails />}
             exact
             path={subnetsURLs.space.index(null, true)}
-            component={() => <SpaceDetails />}
           />
         </CompatRouter>
       </MemoryRouter>

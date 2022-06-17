@@ -53,8 +53,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -70,8 +70,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="ppa"
               repository={state.packagerepository.items[0]}
+              type="ppa"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -94,8 +94,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -111,8 +111,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -138,8 +138,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -155,8 +155,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -176,8 +176,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -198,8 +198,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -220,8 +220,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -242,8 +242,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -266,8 +266,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -291,8 +291,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -318,8 +318,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -350,8 +350,8 @@ describe("RepositoryFormFields", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>

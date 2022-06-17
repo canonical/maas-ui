@@ -65,8 +65,8 @@ const LXDSingleDetails = (): JSX.Element => {
     <Section
       header={
         <LXDSingleDetailsHeader
-          id={id}
           headerContent={headerContent}
+          id={id}
           setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
         />
@@ -81,8 +81,8 @@ const LXDSingleDetails = (): JSX.Element => {
               <LXDSingleVMs
                 id={id}
                 searchFilter={searchFilter}
-                setSearchFilter={setSearchFilter}
                 setHeaderContent={setHeaderContent}
+                setSearchFilter={setSearchFilter}
               />
             )}
           />

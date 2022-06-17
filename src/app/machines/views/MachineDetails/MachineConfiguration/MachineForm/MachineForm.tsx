@@ -69,12 +69,12 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
               pool: machine.pool?.name || "",
               zone: machine.zone?.name || "",
             }}
+            onCancel={() => setEditing(false)}
             onSaveAnalytics={{
               action: "Configure machine",
               category: "Machine details",
               label: "Save changes",
             }}
-            onCancel={() => setEditing(false)}
             onSubmit={(values) => {
               const params = {
                 architecture: values.architecture,
@@ -99,16 +99,16 @@ const MachineForm = ({ systemId }: Props): JSX.Element | null => {
         ) : (
           <div data-testid="machine-details">
             <Definition
-              label="Architecture"
               description={machine.architecture}
+              label="Architecture"
             />
             <Definition
-              label="Minimum kernel"
               description={machine.min_hwe_kernel}
+              label="Minimum kernel"
             />
-            <Definition label="Zone" description={machine.zone.name} />
-            <Definition label="Resource pool" description={machine.pool.name} />
-            <Definition label="Note" description={machine.description} />
+            <Definition description={machine.zone.name} label="Zone" />
+            <Definition description={machine.pool.name} label="Resource pool" />
+            <Definition description={machine.description} label="Note" />
           </div>
         )
       }

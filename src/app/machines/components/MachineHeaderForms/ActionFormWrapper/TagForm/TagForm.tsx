@@ -100,9 +100,9 @@ export const TagForm = ({
         );
       }}
       processingCount={processingCount}
+      selectedCount={machines.length}
       showProcessingCount={!viewingMachineConfig}
       submitLabel="Save"
-      selectedCount={machines.length}
       validationSchema={TagFormSchema}
     >
       <TagFormFields

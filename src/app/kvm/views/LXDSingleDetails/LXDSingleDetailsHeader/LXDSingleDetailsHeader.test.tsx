@@ -58,8 +58,8 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
             <LXDSingleDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -83,8 +83,8 @@ describe("LXDSingleDetailsHeader", () => {
         >
           <CompatRouter>
             <LXDSingleDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -110,8 +110,8 @@ describe("LXDSingleDetailsHeader", () => {
         >
           <CompatRouter>
             <LXDSingleDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -136,8 +136,8 @@ describe("LXDSingleDetailsHeader", () => {
         >
           <CompatRouter>
             <LXDSingleDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -163,8 +163,8 @@ describe("LXDSingleDetailsHeader", () => {
         >
           <CompatRouter>
             <LXDSingleDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={setHeaderContent}
               setSearchFilter={jest.fn()}
             />

@@ -27,32 +27,32 @@ const AddSpace = ({
       aria-label="Add space"
       buttonsBordered={false}
       cleanup={spaceActions.cleanup}
+      errors={errors}
       initialValues={{ name: "" }}
+      onCancel={() => setActiveForm(null)}
       onSaveAnalytics={{
         action: "Add space",
         category: "Subnets form actions",
         label: "Add space",
       }}
-      submitLabel={`Add ${activeForm}`}
       onSubmit={({ name }) => {
         dispatch(spaceActions.cleanup());
         dispatch(spaceActions.create({ name }));
       }}
-      onCancel={() => setActiveForm(null)}
       onSuccess={() => setActiveForm(null)}
-      saving={isSaving}
       saved={isSaved}
-      errors={errors}
+      saving={isSaving}
+      submitLabel={`Add ${activeForm}`}
     >
       <Row>
         <Col size={6}>
           <FormikField
-            takeFocus
-            type="text"
-            name="name"
             component={Input}
             disabled={isSaving}
             label="Name (optional)"
+            name="name"
+            takeFocus
+            type="text"
           />
         </Col>
       </Row>

@@ -75,7 +75,7 @@ describe("VLANSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect name="vlan" defaultOption={defaultOption} />
+          <VLANSelect defaultOption={defaultOption} name="vlan" />
         </Formik>
       </Provider>
     );
@@ -90,7 +90,7 @@ describe("VLANSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect name="vlan" defaultOption={null} />
+          <VLANSelect defaultOption={null} name="vlan" />
         </Formik>
       </Provider>
     );
@@ -102,7 +102,7 @@ describe("VLANSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ vlan: "" }} onSubmit={jest.fn()}>
-          <VLANSelect name="vlan" fabric={3} />
+          <VLANSelect fabric={3} name="vlan" />
         </Formik>
       </Provider>
     );

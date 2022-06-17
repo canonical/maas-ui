@@ -63,16 +63,16 @@ const DoubleRow = <L,>({
       ) : null}
       <div className="p-double-row__rows-container">
         <div
-          className={classNames("p-double-row__primary-row", primaryClassName)}
           aria-label={primaryAriaLabel || undefined}
+          className={classNames("p-double-row__primary-row", primaryClassName)}
           ref={parent}
         >
           <div
-            data-testid="primary"
             className={classNames(
               "p-double-row__primary-row-text u-truncate",
               primaryTextClassName
             )}
+            data-testid="primary"
             title={primaryTitle || undefined}
           >
             {primary}
@@ -81,21 +81,21 @@ const DoubleRow = <L,>({
             <TableMenu
               className={menuClassName}
               links={menuLinks}
-              title={menuTitle}
               onToggleMenu={onToggleMenu}
               positionNode={parent.current}
+              title={menuTitle}
             />
           ) : null}
         </div>
         {secondary ? (
           <div
-            data-testid="secondary"
+            aria-label={secondaryAriaLabel || undefined}
             className={classNames(
               "p-double-row__secondary-row",
               "u-truncate",
               secondaryClassName
             )}
-            aria-label={secondaryAriaLabel || undefined}
+            data-testid="secondary"
             title={secondaryTitle || undefined}
           >
             {secondary}

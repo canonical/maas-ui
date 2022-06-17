@@ -69,10 +69,10 @@ const RecordFields = ({ editing }: Props): JSX.Element => {
       <Col size={6}>
         <FormikField
           label="Name"
-          type="text"
           name="name"
           placeholder="Name"
           required
+          type="text"
         />
         <FormikField
           component={Select}
@@ -85,17 +85,17 @@ const RecordFields = ({ editing }: Props): JSX.Element => {
         <FormikField
           help={getRecordDataHelp(values.rrtype)}
           label="Data"
-          placeholder={getRecordDataPlaceholder(values.rrtype)}
-          type="text"
           name="rrdata"
+          placeholder={getRecordDataPlaceholder(values.rrtype)}
           required
+          type="text"
         />
         <FormikField
           label="TTL"
-          type="number"
           min={MIN_TTL}
           name="ttl"
           placeholder="TTL in seconds (optional)"
+          type="number"
         />
       </Col>
     </Row>

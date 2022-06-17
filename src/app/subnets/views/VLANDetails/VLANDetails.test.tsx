@@ -30,9 +30,9 @@ it("dispatches actions to fetch necessary data and set vlan as active on mount",
       >
         <CompatRouter>
           <Route
+            component={() => <VLANDetails />}
             exact
             path={subnetsURLs.vlan.index(null, true)}
-            component={() => <VLANDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -60,9 +60,9 @@ it("dispatches actions to unset active vlan and clean up on unmount", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <VLANDetails />}
             exact
             path={subnetsURLs.vlan.index(null, true)}
-            component={() => <VLANDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -100,9 +100,9 @@ it("displays a message if the vlan does not exist", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <VLANDetails />}
             exact
             path={subnetsURLs.vlan.index(null, true)}
-            component={() => <VLANDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -127,9 +127,9 @@ it("shows a spinner if the vlan has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <VLANDetails />}
             exact
             path={subnetsURLs.vlan.index(null, true)}
-            component={() => <VLANDetails />}
           />
         </CompatRouter>
       </MemoryRouter>

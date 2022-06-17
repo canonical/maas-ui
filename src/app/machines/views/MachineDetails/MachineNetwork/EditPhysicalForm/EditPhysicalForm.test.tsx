@@ -68,7 +68,7 @@ describe("EditPhysicalForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+            <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -91,7 +91,7 @@ describe("EditPhysicalForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+            <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -107,7 +107,7 @@ describe("EditPhysicalForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <EditPhysicalForm nicId={1} systemId="abc123" close={jest.fn()} />
+            <EditPhysicalForm close={jest.fn()} nicId={1} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

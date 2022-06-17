@@ -49,19 +49,19 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
 
           return (
             <TableRow key={iface.id}>
-              <TableCell data-heading="Name" className="name">
+              <TableCell className="name" data-heading="Name">
                 {iface.name}
               </TableCell>
-              <TableCell data-heading="MAC" className="mac">
+              <TableCell className="mac" data-heading="MAC">
                 {iface.mac_address}
               </TableCell>
-              <TableCell data-heading="Link speed" className="speed">
+              <TableCell className="speed" data-heading="Link speed">
                 {formatSpeedUnits(iface.link_speed)}
               </TableCell>
-              <TableCell data-heading="Fabric" className="fabric">
+              <TableCell className="fabric" data-heading="Fabric">
                 {getFabricDisplay(fabric) || "Unknown"}
               </TableCell>
-              <TableCell data-heading="DHCP" className="dhcp">
+              <TableCell className="dhcp" data-heading="DHCP">
                 {dhcpStatus}
                 {dhcpStatus === "Relayed" && (
                   <TooltipButton
@@ -71,7 +71,7 @@ const NetworkCardInterface = ({ interfaces }: Props): JSX.Element => {
                   />
                 )}
               </TableCell>
-              <TableCell data-heading="SR-IOV" className="sriov">
+              <TableCell className="sriov" data-heading="SR-IOV">
                 {iface.sriov_max_vf > 0 ? "Yes" : "No"}
               </TableCell>
             </TableRow>

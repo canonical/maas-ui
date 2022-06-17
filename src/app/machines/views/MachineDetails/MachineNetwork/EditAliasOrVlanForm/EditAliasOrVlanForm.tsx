@@ -117,12 +117,12 @@ const EditAliasOrVlanForm = ({
         vlan: nic.vlan_id,
         ...(isVLAN ? { tags: nic.tags } : {}),
       }}
+      onCancel={close}
       onSaveAnalytics={{
         action: `Save ${interfaceType}`,
         category: "Machine details networking",
         label: `Edit ${interfaceType} form`,
       }}
-      onCancel={close}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());
@@ -151,8 +151,8 @@ const EditAliasOrVlanForm = ({
           <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
           <NetworkFields
             fabricDisabled={true}
-            includeUnconfiguredSubnet={isVLAN}
             includeDefaultVlan={!isVLAN}
+            includeUnconfiguredSubnet={isVLAN}
             interfaceType={interfaceType}
             vlanDisabled={isAlias}
           />

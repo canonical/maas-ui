@@ -48,7 +48,7 @@ export const Login = (): JSX.Element => {
   return (
     <Strip>
       <Row>
-        <Col size={6} emptyLarge={4}>
+        <Col emptyLarge={4} size={6}>
           {externalAuthURL && error && (
             <Notification severity="negative" title="Error:">
               {error}
@@ -98,21 +98,21 @@ export const Login = (): JSX.Element => {
                   onSubmit={(values) => {
                     dispatch(statusActions.login(values));
                   }}
-                  saving={authenticating}
                   saved={authenticated}
+                  saving={authenticating}
                   submitLabel="Login"
                   validationSchema={LoginSchema}
                 >
                   <FormikField
-                    name="username"
                     label="Username"
+                    name="username"
                     required={true}
                     takeFocus
                     type="text"
                   />
                   <FormikField
-                    name="password"
                     label="Password"
+                    name="password"
                     required={true}
                     type="password"
                   />

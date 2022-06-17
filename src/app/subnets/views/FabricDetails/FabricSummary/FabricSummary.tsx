@@ -18,10 +18,10 @@ const FabricSummary = ({ fabric }: { fabric: Fabric }): JSX.Element => {
         ) : (
           <Row>
             <Col size={6}>
-              <Definition label="Name" description={fabric.name} />
+              <Definition description={fabric.name} label="Name" />
               <Definition
-                label="Description"
                 description={fabric.description}
+                label="Description"
               />
               <FabricController id={fabric.id} />
             </Col>

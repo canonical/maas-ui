@@ -68,7 +68,7 @@ const ActionConfirm = ({
           </p>
         )}
       </Col>
-      <Col size={4} className="u-align--right">
+      <Col className="u-align--right" size={4}>
         <Button className="u-no-margin--bottom" onClick={closeExpanded}>
           Cancel
         </Button>

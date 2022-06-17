@@ -25,13 +25,10 @@ const generateCheckboxGroup = (
 ) => {
   const checkboxes = fields.map((field) => (
     <FormikField
-      wrapperClassName="u-no-margin--bottom"
+      checked={values.includes(field)}
       key={field}
       label={field}
-      type="checkbox"
       name={key}
-      value={field}
-      checked={values.includes(field)}
       onChange={() => {
         let newFields = [];
         if (values.includes(field)) {
@@ -44,10 +41,13 @@ const generateCheckboxGroup = (
         setFieldValue(key, newFields);
         setFieldTouched(key, true);
       }}
+      type="checkbox"
+      value={field}
+      wrapperClassName="u-no-margin--bottom"
     />
   ));
 
-  return <List items={checkboxes} className="is-split--small" />;
+  return <List className="is-split--small" items={checkboxes} />;
 };
 
 const RepositoryFormFields = ({ type }: Props): JSX.Element => {
@@ -61,39 +61,39 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
     <Row>
       <Col size={4}>
         <FormikField
-          label="Name"
-          type="text"
-          name="name"
           disabled={values.default}
+          label="Name"
+          name="name"
           required
+          type="text"
         />
-        <FormikField label="URL" type="text" name="url" required />
+        <FormikField label="URL" name="url" required type="text" />
         <List
+          className="is-split--small u-hide--medium u-hide--large"
           items={[
             <FormikField
-              wrapperClassName="u-no-margin--bottom"
-              label="Enable repository"
-              type="checkbox"
-              name="enabled"
               checked={values.enabled}
               disabled={values.default}
+              label="Enable repository"
+              name="enabled"
+              type="checkbox"
+              wrapperClassName="u-no-margin--bottom"
             />,
             <FormikField
-              wrapperClassName="u-no-margin--bottom"
-              label="Enable sources"
-              type="checkbox"
-              name="disable_sources"
               checked={!values.disable_sources}
+              label="Enable sources"
+              name="disable_sources"
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources);
               }}
+              type="checkbox"
+              wrapperClassName="u-no-margin--bottom"
             />,
           ]}
-          className="is-split--small u-hide--medium u-hide--large"
         />
         <FormikField
-          label="Key"
           component={Textarea}
+          label="Key"
           name="key"
           style={{ height: "10rem", maxWidth: "100%" }}
         />
@@ -101,36 +101,36 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
           <>
             <FormikField
               label="Distributions"
-              type="text"
               name="distributions"
+              type="text"
             />
-            <FormikField label="Components" type="text" name="components" />
+            <FormikField label="Components" name="components" type="text" />
           </>
         )}
       </Col>
-      <Col size={3} emptyLarge={6}>
+      <Col emptyLarge={6} size={3}>
         <List
+          className="is-split--small u-hide--small"
           items={[
             <FormikField
-              wrapperClassName="u-no-margin--bottom"
-              label="Enable repository"
-              type="checkbox"
-              name="enabled"
               checked={values.enabled}
               disabled={values.default}
+              label="Enable repository"
+              name="enabled"
+              type="checkbox"
+              wrapperClassName="u-no-margin--bottom"
             />,
             <FormikField
-              wrapperClassName="u-no-margin--bottom"
-              label="Enable sources"
-              type="checkbox"
-              name="disable_sources"
               checked={!values.disable_sources}
+              label="Enable sources"
+              name="disable_sources"
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources);
               }}
+              type="checkbox"
+              wrapperClassName="u-no-margin--bottom"
             />,
           ]}
-          className="is-split--small u-hide--small"
         />
         <p className="u-no-margin--bottom">Architectures</p>
         {generateCheckboxGroup(

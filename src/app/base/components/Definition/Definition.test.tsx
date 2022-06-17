@@ -3,7 +3,7 @@ import { render, screen } from "@testing-library/react";
 import Definition from "./Definition";
 
 it("renders term and description correctly", () => {
-  render(<Definition label="Term" description="description text" />);
+  render(<Definition description="description text" label="Term" />);
   expect(screen.getByText("description text")).toBeInTheDocument();
   expect(screen.getByText("Term")).toBeInTheDocument();
 });

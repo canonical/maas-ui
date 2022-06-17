@@ -59,13 +59,13 @@ const DeleteRecordForm = ({
       onSuccess={() => {
         closeForm();
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       submitAppearance="negative"
       submitLabel="Delete record"
     >
       <p className="u-no-margin--bottom u-no-max-width">
-        <Icon name="error" className="is-inline" />
+        <Icon className="is-inline" name="error" />
         Are you sure you want to delete this record?
       </p>
     </FormikForm>

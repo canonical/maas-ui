@@ -39,7 +39,7 @@ it("dispatches an update action on submit", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <EditFabric id={fabric.id} close={jest.fn()} />
+          <EditFabric close={jest.fn()} id={fabric.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

@@ -56,8 +56,8 @@ describe("VirshDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
             <VirshDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -79,8 +79,8 @@ describe("VirshDetailsHeader", () => {
         >
           <CompatRouter>
             <VirshDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -104,8 +104,8 @@ describe("VirshDetailsHeader", () => {
         >
           <CompatRouter>
             <VirshDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -128,8 +128,8 @@ describe("VirshDetailsHeader", () => {
         >
           <CompatRouter>
             <VirshDetailsHeader
-              id={1}
               headerContent={null}
+              id={1}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>

@@ -9,10 +9,10 @@ describe("FormikField", () => {
     const wrapper = mount(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <FormikField
-          name="username"
           help="Required."
           id="username"
           label="Username"
+          name="username"
           required={true}
           type="text"
         />
@@ -34,8 +34,8 @@ describe("FormikField", () => {
     const wrapper = mount(
       <Formik
         initialErrors={{ username: "Uh oh!" }}
-        initialValues={{ username: "" }}
         initialTouched={{ username: true }}
+        initialValues={{ username: "" }}
         onSubmit={jest.fn()}
       >
         <FormikField name="username" />
@@ -48,8 +48,8 @@ describe("FormikField", () => {
     const wrapper = mount(
       <Formik
         initialErrors={{ username: "Uh oh!" }}
-        initialValues={{ username: "" }}
         initialTouched={{ username: true }}
+        initialValues={{ username: "" }}
         onSubmit={jest.fn()}
       >
         <FormikField displayError={false} name="username" />

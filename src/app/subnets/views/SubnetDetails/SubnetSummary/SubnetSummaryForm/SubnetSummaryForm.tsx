@@ -75,6 +75,7 @@ const SubnetSummaryForm = ({
         name: subnet.name,
         vlan: subnet.vlan.toString(),
       }}
+      onCancel={handleDismiss}
       onSaveAnalytics={{
         action: "Save",
         category: "Subnet",
@@ -102,10 +103,9 @@ const SubnetSummaryForm = ({
         handleDismiss();
       }}
       resetOnSave
-      saving={saving}
       saved={saved}
+      saving={saving}
       submitLabel="Save"
-      onCancel={handleDismiss}
       validationSchema={subnetSummaryFormSchema}
     >
       <SubnetSummaryFormFields />

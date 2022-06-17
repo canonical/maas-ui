@@ -108,9 +108,9 @@ export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
             }
             setSaving(`${params.osystem} (${params.distro_series})`);
           }}
-          saving={saving}
           saved={saved}
           savedRedirect={settingsURLs.licenseKeys.index}
+          saving={saving}
           submitLabel={editing ? "Update license key" : "Add license key"}
           validationSchema={LicenseKeySchema}
         >

@@ -29,9 +29,9 @@ const FormikField = <C extends ElementType | ComponentType = typeof Input>({
   const [field, meta] = useField({ name, type: props.type, value });
   return (
     <Component
+      aria-label={label}
       error={meta.touched && displayError ? meta.error : null}
       id={id}
-      aria-label={label}
       label={label}
       {...field}
       {...props}

@@ -66,8 +66,8 @@ const BridgeFormFields = ({ typeDisabled }: Props): JSX.Element | null => {
         {values.bridge_stp ? (
           <FormikField
             label="Forward delay (ms)"
-            type="text"
             name="bridge_fd"
+            type="text"
           />
         ) : null}
       </Col>

@@ -21,8 +21,8 @@ describe("NodeActionFormWrapper", () => {
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearHeaderContent={jest.fn()}
-        nodes={nodes}
         nodeType="node"
+        nodes={nodes}
         onUpdateSelected={jest.fn()}
         processingCount={0}
         viewingDetails={false}
@@ -46,8 +46,8 @@ describe("NodeActionFormWrapper", () => {
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearHeaderContent={jest.fn()}
-        nodes={nodes}
         nodeType="node"
+        nodes={nodes}
         onUpdateSelected={jest.fn()}
         processingCount={0}
         viewingDetails={false}
@@ -76,8 +76,8 @@ describe("NodeActionFormWrapper", () => {
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearHeaderContent={jest.fn()}
-        nodes={nodes}
         nodeType="node"
+        nodes={nodes}
         onUpdateSelected={jest.fn()}
         processingCount={0}
         viewingDetails={false}
@@ -102,8 +102,8 @@ describe("NodeActionFormWrapper", () => {
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearHeaderContent={jest.fn()}
-        nodes={nodes}
         nodeType="node"
+        nodes={nodes}
         onUpdateSelected={onUpdateSelected}
         processingCount={0}
         viewingDetails={false}
@@ -123,8 +123,8 @@ describe("NodeActionFormWrapper", () => {
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
         clearHeaderContent={clearHeaderContent}
-        nodes={nodes}
         nodeType="node"
+        nodes={nodes}
         onUpdateSelected={jest.fn()}
         processingCount={0}
         viewingDetails={false}

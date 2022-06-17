@@ -42,8 +42,8 @@ const DeviceListHeader = ({
           Add device
         </Button>,
         <NodeActionMenu
-          nodes={selectedDevices}
           nodeDisplay="device"
+          nodes={selectedDevices}
           onActionClick={(action) => {
             const view = Object.values(DeviceHeaderViews).find(
               ([, actionName]) => actionName === action

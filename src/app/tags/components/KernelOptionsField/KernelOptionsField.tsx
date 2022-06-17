@@ -52,14 +52,12 @@ export const KernelOptionsField = ({
 
   return (
     <FormikField
-      className="p-text--code"
-      label={Label.KernelOptions}
-      name="kernel_opts"
       caution={
         deployedCount > 0 && hasChangedOptions
           ? generateDeployedMessage(deployedCount)
           : null
       }
+      className="p-text--code"
       component={Textarea}
       help={
         <>
@@ -75,6 +73,8 @@ export const KernelOptionsField = ({
           .
         </>
       }
+      label={Label.KernelOptions}
+      name="kernel_opts"
       placeholder="e.g. nomodeset console=tty0 console=ttys0,115200n8 amd_iommu=on kvm-amd.nested=1"
     />
   );

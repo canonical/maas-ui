@@ -104,8 +104,8 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
             label={Label.Name}
             name="name"
             placeholder="Enter a name for the tag."
-            type="text"
             required
+            type="text"
           />
           <FormikField
             label={Label.Comment}

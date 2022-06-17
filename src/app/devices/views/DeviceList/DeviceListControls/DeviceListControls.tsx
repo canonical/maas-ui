@@ -30,8 +30,8 @@ const DeviceListControls = ({ filter, setFilter }: Props): JSX.Element => {
       </Col>
       <Col size={9}>
         <DebounceSearchBox
-          searchText={searchText}
           onDebounced={(debouncedText) => setFilter(debouncedText)}
+          searchText={searchText}
           setSearchText={setSearchText}
         />
       </Col>

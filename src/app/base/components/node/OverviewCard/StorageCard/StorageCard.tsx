@@ -29,8 +29,8 @@ const StorageCard = ({ node, setHeaderContent }: Props): JSX.Element => (
     </div>
     {nodeIsMachine(node) && setHeaderContent ? (
       <TestResults
-        machine={node}
         hardwareType={HardwareType.Storage}
+        machine={node}
         setHeaderContent={setHeaderContent}
       />
     ) : (

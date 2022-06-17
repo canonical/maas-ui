@@ -161,9 +161,9 @@ it("can return to the list on cancel", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
+            component={() => <DeleteTagForm id={1} onClose={onClose} />}
             exact
             path={path}
-            component={() => <DeleteTagForm id={1} onClose={onClose} />}
           />
         </CompatRouter>
       </Router>
@@ -194,11 +194,11 @@ it("can return to the details on cancel", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
-            exact
-            path={path}
             component={() => (
               <DeleteTagForm fromDetails id={1} onClose={onClose} />
             )}
+            exact
+            path={path}
           />
         </CompatRouter>
       </Router>

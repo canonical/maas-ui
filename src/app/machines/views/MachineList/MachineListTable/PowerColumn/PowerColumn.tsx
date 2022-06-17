@@ -117,8 +117,8 @@ export const PowerColumn = ({
       secondary={
         <div
           className="u-upper-case--first"
-          title={machine.power_type}
           data-testid="power_type"
+          title={machine.power_type}
         >
           {machine.power_type}
         </div>

@@ -64,9 +64,9 @@ describe("EditInterface", () => {
         <MemoryRouter>
           <CompatRouter>
             <EditInterface
+              closeForm={jest.fn()}
               nicId={nic.id}
               systemId="abc123"
-              closeForm={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -84,8 +84,8 @@ describe("EditInterface", () => {
         <MemoryRouter>
           <CompatRouter>
             <EditInterface
-              nicId={nic.id}
               closeForm={jest.fn()}
+              nicId={nic.id}
               systemId="abc123"
             />
           </CompatRouter>
@@ -121,8 +121,8 @@ describe("EditInterface", () => {
         <MemoryRouter>
           <CompatRouter>
             <EditInterface
-              nicId={nic.id}
               closeForm={closeForm}
+              nicId={nic.id}
               systemId={systemId}
             />
           </CompatRouter>
@@ -160,8 +160,8 @@ describe("EditInterface", () => {
         <MemoryRouter>
           <CompatRouter>
             <EditInterface
-              nicId={nic.id}
               closeForm={closeForm}
+              nicId={nic.id}
               systemId={systemId}
             />
           </CompatRouter>
@@ -205,8 +205,8 @@ describe("EditInterface", () => {
         <MemoryRouter>
           <CompatRouter>
             <EditInterface
-              nicId={nic.id}
               closeForm={closeForm}
+              nicId={nic.id}
               systemId={systemId}
             />
           </CompatRouter>

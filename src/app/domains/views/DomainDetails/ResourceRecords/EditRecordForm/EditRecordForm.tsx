@@ -66,10 +66,10 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
       onSuccess={() => {
         closeForm();
       }}
-      saving={saving}
       saved={saved}
-      submitLabel="Save record"
+      saving={saving}
       submitDisabled={false}
+      submitLabel="Save record"
       validationSchema={EditRecordSchema}
     >
       <RecordFields editing />

@@ -184,12 +184,12 @@ const AddBondForm = ({
           tags: [],
           vlan: bondVLAN || "",
         }}
+        onCancel={close}
         onSaveAnalytics={{
           action: "Create bond",
           category: "Machine details networking",
           label: "Create bond form",
         }}
-        onCancel={close}
         onSubmit={(values) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());

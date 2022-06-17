@@ -29,13 +29,13 @@ const DeleteConfirm = ({
           </p>
         )}
       </Col>
-      <Col size={4} className="u-align--right">
+      <Col className="u-align--right" size={4}>
         <Button data-testid="close-confirm-delete" onClick={closeExpanded}>
           Cancel
         </Button>
         <ActionButton
-          data-testid="delete-az"
           appearance={submitAppearance}
+          data-testid="delete-az"
           onClick={onConfirm}
         >
           {confirmLabel}

@@ -110,12 +110,12 @@ const AddBridgeForm = ({
           // Prefill the vlan from the parent interface.
           vlan: nic.vlan_id,
         }}
+        onCancel={close}
         onSaveAnalytics={{
           action: "Create bridge",
           category: "Machine details networking",
           label: "Create bridge form",
         }}
-        onCancel={close}
         onSubmit={(values) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());

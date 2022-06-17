@@ -32,13 +32,8 @@ const CommissioningFormFields = (): JSX.Element => {
     <>
       <h5 className="u-sv1">Machine settings</h5>
       <FormikField
-        label="Default Ubuntu release used for commissioning"
         component={Select}
-        options={
-          // This won't need to pass the empty array once this issue is fixed:
-          // https://github.com/canonical-web-and-design/react-components/issues/570
-          distroSeriesOptions || []
-        }
+        label="Default Ubuntu release used for commissioning"
         name="commissioning_distro_series"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           const kernelValue =
@@ -54,13 +49,18 @@ const CommissioningFormFields = (): JSX.Element => {
           formikProps.setFieldValue("default_min_hwe_kernel", kernelValue);
           formikProps.setFieldTouched("default_min_hwe_kernel", true, true);
         }}
+        options={
+          // This won't need to pass the empty array once this issue is fixed:
+          // https://github.com/canonical-web-and-design/react-components/issues/570
+          distroSeriesOptions || []
+        }
       />
       <FormikField
-        label="Default minimum kernel version"
         component={Select}
-        options={ubuntuKernelOptions}
         help="The default minimum kernel version used on all new and commissioned nodes"
+        label="Default minimum kernel version"
         name="default_min_hwe_kernel"
+        options={ubuntuKernelOptions}
       />
       <h5 className="u-sv1">IPMI settings</h5>
       <FormikField
@@ -99,22 +99,22 @@ const CommissioningFormFields = (): JSX.Element => {
       />
       <p className="u-sv1">MAAS generated IPMI user privilege level</p>
       <FormikField
-        name="maas_auto_ipmi_user_privilege_level"
-        value="ADMIN"
         label="Admin"
+        name="maas_auto_ipmi_user_privilege_level"
         type="radio"
+        value="ADMIN"
       />
       <FormikField
-        name="maas_auto_ipmi_user_privilege_level"
-        value="OPERATOR"
         label="Operator"
+        name="maas_auto_ipmi_user_privilege_level"
         type="radio"
+        value="OPERATOR"
       />
       <FormikField
-        name="maas_auto_ipmi_user_privilege_level"
-        value="USER"
         label="User"
+        name="maas_auto_ipmi_user_privilege_level"
         type="radio"
+        value="USER"
       />
     </>
   );

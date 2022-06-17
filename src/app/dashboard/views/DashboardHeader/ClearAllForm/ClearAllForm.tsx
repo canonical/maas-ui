@@ -86,10 +86,10 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
         );
         closeForm();
       }}
-      saving={saving}
       saved={saved}
-      submitLabel="Clear all discoveries"
+      saving={saving}
       secondarySubmitLabel="Save and add another"
+      submitLabel="Clear all discoveries"
     >
       <Notification severity={NotificationSeverity.CAUTION} title="Warning:">
         Clearing all discoveries will remove all items from the list below.

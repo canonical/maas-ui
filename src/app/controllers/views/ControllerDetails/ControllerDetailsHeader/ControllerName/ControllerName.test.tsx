@@ -61,8 +61,8 @@ it("can update a controller with the new domain", async () => {
       >
         <CompatRouter>
           <ControllerName
-            isEditing={true}
             id={controller.system_id}
+            isEditing={true}
             setIsEditing={jest.fn()}
           />
         </CompatRouter>

@@ -161,8 +161,8 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
         setSecondarySubmit(false);
       }}
       resetOnSave
-      saving={devicesSaving}
       saved={devicesSaved}
+      saving={devicesSaving}
       secondarySubmit={(_, { submitForm }) => {
         setSecondarySubmit(true);
         submitForm();

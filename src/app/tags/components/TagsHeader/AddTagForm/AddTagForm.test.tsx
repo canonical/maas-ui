@@ -91,9 +91,9 @@ it("redirects to the newly created tag on save", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
+            component={() => <AddTagForm onClose={onClose} />}
             exact
             path={tagsURLs.tags.index}
-            component={() => <AddTagForm onClose={onClose} />}
           />
         </CompatRouter>
       </Router>

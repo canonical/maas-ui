@@ -27,7 +27,6 @@ const TableMenu = <L,>({
   links = links || [];
   return (
     <ContextualMenu
-      toggleProps={{ "aria-label": ariaLabel || title || undefined }}
       className={classNames("p-table-menu", className)}
       hasToggleIcon
       links={[
@@ -36,12 +35,13 @@ const TableMenu = <L,>({
       ]}
       onToggleMenu={onToggleMenu || undefined}
       position={position}
+      positionNode={positionNode || undefined}
       // This shouldn't need to pass `undefined` once ContextualMenu supports null
       // See: https://github.com/canonical-web-and-design/react-components/issues/377
-      positionNode={positionNode || undefined}
       toggleAppearance="base"
       toggleClassName="u-no-margin--bottom p-table-menu__toggle"
       toggleDisabled={disabled || false}
+      toggleProps={{ "aria-label": ariaLabel || title || undefined }}
     />
   );
 };

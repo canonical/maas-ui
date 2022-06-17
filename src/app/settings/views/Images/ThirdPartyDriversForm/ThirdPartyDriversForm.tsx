@@ -37,14 +37,14 @@ const ThirdPartyDriversForm = (): JSX.Element => {
         dispatch(updateConfig(values));
         resetForm({ values });
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       validationSchema={ThirdPartyDriversSchema}
     >
       <FormikField
         label="Enable the installation of proprietary drivers (i.e. HPVSA)"
-        type="checkbox"
         name="enable_third_party_drivers"
+        type="checkbox"
       />
     </FormikForm>
   );

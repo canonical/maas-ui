@@ -121,8 +121,6 @@ export const UserForm = ({
         onSave(values);
         resetForm({ values });
       }}
-      saving={saving}
-      saved={saved}
       onSuccess={() => {
         setPasswordVisible(false);
       }}
@@ -130,6 +128,8 @@ export const UserForm = ({
         onUpdateFields && onUpdateFields(values);
       }}
       resetOnSave
+      saved={saved}
+      saving={saving}
       validationSchema={
         editing && !passwordVisible ? NoPasswordUserSchema : fullSchema
       }
@@ -138,30 +138,30 @@ export const UserForm = ({
       <FormikField
         autoComplete="username"
         disabled={formDisabled}
-        name="username"
         help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
         label="Username"
+        name="username"
         required={true}
         type="text"
       />
       <FormikField
         disabled={formDisabled}
-        name="fullName"
         label="Full name (optional)"
+        name="fullName"
         type="text"
       />
       <FormikField
         disabled={formDisabled}
-        name="email"
         label="Email address"
+        name="email"
         required={true}
         type="email"
       />
       {includeUserType && (
         <FormikField
           disabled={formDisabled}
-          name="isSuperuser"
           label="MAAS administrator"
+          name="isSuperuser"
           type="checkbox"
         />
       )}
@@ -183,8 +183,8 @@ export const UserForm = ({
             <FormikField
               autoComplete="current-password"
               disabled={formDisabled}
-              name="old_password"
               label="Current password"
+              name="old_password"
               required={true}
               type="password"
             />
@@ -192,21 +192,21 @@ export const UserForm = ({
           <FormikField
             autoComplete="new-password"
             disabled={formDisabled}
-            name="password"
             label={includeCurrentPassword ? "New password" : "Password"}
+            name="password"
             required={true}
             type="password"
           />
           <FormikField
             autoComplete="new-password"
             disabled={formDisabled}
-            name="passwordConfirm"
             help="Enter the same password as before, for verification"
             label={
               includeCurrentPassword
                 ? "New password (again)"
                 : "Password (again)"
             }
+            name="passwordConfirm"
             required={true}
             type="password"
           />

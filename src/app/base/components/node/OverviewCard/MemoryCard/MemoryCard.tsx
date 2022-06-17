@@ -18,8 +18,8 @@ const MemoryCard = ({ node, setHeaderContent }: Props): JSX.Element => (
     </div>
     {nodeIsMachine(node) && setHeaderContent ? (
       <TestResults
-        machine={node}
         hardwareType={HardwareType.Memory}
+        machine={node}
         setHeaderContent={setHeaderContent}
       />
     ) : (

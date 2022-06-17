@@ -158,7 +158,7 @@ describe("Meter", () => {
     Element.prototype.getBoundingClientRect = mockClientRect({
       width: 128,
     });
-    const wrapper = mount(<Meter data={[{ value: 10 }]} segmented max={100} />);
+    const wrapper = mount(<Meter data={[{ value: 10 }]} max={100} segmented />);
 
     const backgroundStyle = wrapper.find(".p-meter__separators").props().style
       ?.background as string;

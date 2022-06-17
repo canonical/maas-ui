@@ -24,7 +24,7 @@ const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
     values.ip_assignment === DeviceIpAssignment.STATIC ||
     values.ip_assignment === DeviceIpAssignment.EXTERNAL;
 
-  const nameField = <FormikField label="Name" type="text" name="name" />;
+  const nameField = <FormikField label="Name" name="name" type="text" />;
 
   return (
     <>
@@ -52,9 +52,9 @@ const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
           <Input
             disabled
             label="Type"
-            value="Physical"
-            type="text"
             name="type"
+            type="text"
+            value="Physical"
           />
           <MacAddressField label="MAC address" name="mac_address" />
           <TagNameField name="tags" />

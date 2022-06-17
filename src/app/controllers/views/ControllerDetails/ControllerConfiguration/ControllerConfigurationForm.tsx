@@ -71,12 +71,12 @@ const ControllerConfigurationForm = ({
               tags: node.tags,
               zone: node.zone?.name || "",
             }}
+            onCancel={() => setEditing(false)}
             onSaveAnalytics={{
               action: "Configure controller",
               category: "Controller details",
               label: "Save changes",
             }}
-            onCancel={() => setEditing(false)}
             onSubmit={(values) => {
               const params = {
                 description: values.description,
@@ -96,8 +96,8 @@ const ControllerConfigurationForm = ({
           </FormikForm>
         ) : (
           <div data-testid="non-editable-controller-details">
-            <Definition label="Zone" description={node.zone.name} />
-            <Definition label="Note" description={node.description} />
+            <Definition description={node.zone.name} label="Zone" />
+            <Definition description={node.description} label="Note" />
             <Definition label="Tags">
               {node.tags.length ? (
                 <TagLinks

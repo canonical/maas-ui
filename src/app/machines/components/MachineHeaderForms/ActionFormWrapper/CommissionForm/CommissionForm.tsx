@@ -163,9 +163,9 @@ export const CommissionForm = ({
       validationSchema={CommissionFormSchema}
     >
       <CommissionFormFields
-        preselectedTesting={formatScripts(preselectedTestingScripts)}
-        preselectedCommissioning={formatScripts(preselectedCommissioningSorted)}
         commissioningScripts={formatScripts(commissioningScripts)}
+        preselectedCommissioning={formatScripts(preselectedCommissioningSorted)}
+        preselectedTesting={formatScripts(preselectedTestingScripts)}
         testingScripts={formatScripts(testingScripts)}
       />
     </ActionForm>

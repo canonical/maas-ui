@@ -99,7 +99,7 @@ export const StatusBar = (): JSX.Element | null => {
   }
 
   return (
-    <aside className="p-status-bar" aria-label="status bar">
+    <aside aria-label="status bar" className="p-status-bar">
       <div className="p-status-bar__row u-flex">
         <div className="p-status-bar__primary u-flex--no-shrink u-flex--wrap">
           <strong data-testid="status-bar-maas-name">{maasName} MAAS</strong>

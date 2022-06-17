@@ -119,8 +119,8 @@ const UpdateCertificate = ({
     >
       <UpdateCertificateFields
         generatedCertificate={generatedCertificate}
-        shouldGenerateCert={shouldGenerateCert}
         setShouldGenerateCert={setShouldGenerateCert}
+        shouldGenerateCert={shouldGenerateCert}
       />
     </FormikForm>
   );

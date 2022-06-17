@@ -378,8 +378,8 @@ describe("NetworkFields", () => {
             onSubmit={jest.fn()}
           >
             <NetworkFields
-              interfaceType={NetworkInterfaceTypes.PHYSICAL}
               editing
+              interfaceType={NetworkInterfaceTypes.PHYSICAL}
             />
           </Formik>
         </MemoryRouter>
@@ -418,10 +418,10 @@ describe("NetworkFields", () => {
             onSubmit={onSubmit}
           >
             {({ handleSubmit }) => (
-              <form onSubmit={handleSubmit} aria-label="test form">
+              <form aria-label="test form" onSubmit={handleSubmit}>
                 <NetworkFields
-                  interfaceType={NetworkInterfaceTypes.PHYSICAL}
                   editing
+                  interfaceType={NetworkInterfaceTypes.PHYSICAL}
                 />
                 <button type="submit">Save</button>
               </form>

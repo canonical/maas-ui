@@ -33,8 +33,8 @@ const VmResources = ({ loading = false, vms }: Props): JSX.Element => {
                 "storage",
               ]}
               machines={vms}
-              showActions={false}
               paginateLimit={5}
+              showActions={false}
             />
           </ContextualMenu>
         )}

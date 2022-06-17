@@ -25,8 +25,8 @@ const SubnetsControls = ({
     <Row>
       <Col size={9}>
         <DebounceSearchBox
-          searchText={searchText}
           onDebounced={handleSearch}
+          searchText={searchText}
           setSearchText={setSearchText}
         />
       </Col>
@@ -35,7 +35,6 @@ const SubnetsControls = ({
           <Select
             aria-label="Group by"
             name="groupBy"
-            value={groupBy}
             onChange={(event) => {
               setGroupBy(event.target.value as GroupByKey);
             }}
@@ -49,12 +48,13 @@ const SubnetsControls = ({
                 value: SubnetsColumns.SPACE,
               },
             ]}
+            value={groupBy}
             wrapperClassName="u-flex--grow"
           />
           <div className="u-nudge-right">
             <Button
-              aria-label="more about group by"
               appearance="base"
+              aria-label="more about group by"
               dense
               hasIcon
               onClick={() => setIsInfoOpen(!isInfoOpen)}

@@ -79,7 +79,7 @@ describe("LACPRateSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LACPRateSelect name="lacp_rate" defaultOption={defaultOption} />
+          <LACPRateSelect defaultOption={defaultOption} name="lacp_rate" />
         </Formik>
       </Provider>
     );
@@ -97,7 +97,7 @@ describe("LACPRateSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LACPRateSelect name="lacp_rate" defaultOption={null} />
+          <LACPRateSelect defaultOption={null} name="lacp_rate" />
         </Formik>
       </Provider>
     );

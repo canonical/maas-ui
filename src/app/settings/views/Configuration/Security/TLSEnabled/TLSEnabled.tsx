@@ -111,8 +111,8 @@ const TLSEnabled = (): JSX.Element | null => {
             })
           );
         }}
-        saving={saving}
         saved={saved}
+        saving={saving}
         validationSchema={TLSEnabledSchema}
       >
         <TLSEnabledFields />

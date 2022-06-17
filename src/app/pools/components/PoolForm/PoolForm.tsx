@@ -92,8 +92,8 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
         submitLabel="Save pool"
         validationSchema={PoolSchema}
       >
-        <FormikField type="text" name="name" label="Name (required)" />
-        <FormikField type="text" name="description" label="Description" />
+        <FormikField label="Name (required)" name="name" type="text" />
+        <FormikField label="Description" name="description" type="text" />
       </FormikForm>
     </FormCard>
   );

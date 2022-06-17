@@ -14,7 +14,7 @@ const NotFound = ({ includeSection = false }: Props): JSX.Element => {
   const message = `The requested URL ${window.location.pathname} was not found on this server.`;
   if (includeSection) {
     return (
-      <Section header={Label.Title} aria-label={Label.Title}>
+      <Section aria-label={Label.Title} header={Label.Title}>
         <h2 className="p-heading--4">{message}</h2>
       </Section>
     );

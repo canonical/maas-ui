@@ -84,7 +84,7 @@ describe("SubnetSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
-          <SubnetSelect name="subnet" defaultOption={defaultOption} />
+          <SubnetSelect defaultOption={defaultOption} name="subnet" />
         </Formik>
       </Provider>
     );
@@ -99,7 +99,7 @@ describe("SubnetSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ subnet: "" }} onSubmit={jest.fn()}>
-          <SubnetSelect name="subnet" defaultOption={null} />
+          <SubnetSelect defaultOption={null} name="subnet" />
         </Formik>
       </Provider>
     );

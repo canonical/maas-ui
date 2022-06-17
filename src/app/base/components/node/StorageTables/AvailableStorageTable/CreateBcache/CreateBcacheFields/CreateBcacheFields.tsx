@@ -27,8 +27,8 @@ export const CreateBcacheFields = ({
         <Input
           disabled
           label="Size"
-          value={formatSize(storageDevice.size)}
           type="text"
+          value={formatSize(storageDevice.size)}
         />
         <FormikField
           component={Select}

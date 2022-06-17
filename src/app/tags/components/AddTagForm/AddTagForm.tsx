@@ -64,8 +64,8 @@ export const AddTagForm = ({
 
   return (
     <FormikForm<CreateParams>
-      aria-label={Label.Form}
       allowUnchanged
+      aria-label={Label.Form}
       buttonsAlign="left"
       buttonsBordered={false}
       cleanup={tagActions.cleanup}
@@ -95,8 +95,8 @@ export const AddTagForm = ({
             label={Label.Name}
             name="name"
             placeholder="Enter a name for the tag."
-            type="text"
             required
+            type="text"
           />
           <FormikField
             label={Label.Comment}
@@ -105,8 +105,8 @@ export const AddTagForm = ({
             type="text"
           />
           <KernelOptionsField
-            generateDeployedMessage={generateDeployedMessage}
             deployedMachines={deployedMachines}
+            generateDeployedMessage={generateDeployedMessage}
           />
         </Col>
       </Row>

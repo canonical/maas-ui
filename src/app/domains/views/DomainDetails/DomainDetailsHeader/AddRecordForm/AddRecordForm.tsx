@@ -80,8 +80,8 @@ const AddRecordForm = ({ closeForm, id }: Props): JSX.Element => {
       onSuccess={() => {
         closeForm();
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       submitLabel="Add record"
       validationSchema={CreateRecordSchema}
     >

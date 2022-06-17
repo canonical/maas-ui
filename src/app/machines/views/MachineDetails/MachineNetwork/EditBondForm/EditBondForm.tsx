@@ -190,12 +190,12 @@ const EditBondForm = ({
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
+      onCancel={closeForm}
       onSaveAnalytics={{
         action: "Save bond",
         category: "Machine details networking",
         label: "Edit bond form",
       }}
-      onCancel={closeForm}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());

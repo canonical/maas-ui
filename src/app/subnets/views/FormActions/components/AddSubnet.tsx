@@ -30,66 +30,66 @@ const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
       <Row>
         <Col size={6}>
           <FormikField
-            takeFocus
-            type="text"
-            name="cidr"
-            required
             component={Input}
             disabled={isSaving}
-            label="CIDR"
             help="Use IPv4 or IPv6 format"
+            label="CIDR"
+            name="cidr"
+            required
+            takeFocus
+            type="text"
           />
         </Col>
         <Col size={6}>
           <FormikField
-            type="text"
-            name="name"
             component={Input}
             disabled={isSaving}
             label="Name"
+            name="name"
+            type="text"
           />
         </Col>
       </Row>
       <Row>
         <Col size={6}>
           <FabricSelect
-            name="fabric"
             defaultOption={null}
-            required
             disabled={isSaving}
+            name="fabric"
+            required
           />
         </Col>
         <Col size={6}>
           <VLANSelect
+            defaultOption={null}
+            disabled={isSaving}
+            fabric={toFormikNumber(values?.fabric)}
+            includeDefaultVlan={true}
             name="vlan"
             required
             setDefaultValueFromFabric
-            defaultOption={null}
-            fabric={toFormikNumber(values?.fabric)}
-            includeDefaultVlan={true}
-            disabled={isSaving}
           />
         </Col>
       </Row>
       <Row>
         <Col size={6}>
           <FormikField
-            type="text"
-            name="dns_servers"
             component={Input}
             disabled={isSaving}
-            label="DNS servers"
             help="Use IPv4 or IPv6 format"
+            label="DNS servers"
+            name="dns_servers"
+            type="text"
           />
         </Col>
         <Col size={6}>
           <FormikField
-            type="text"
-            name="gateway_ip"
             component={Input}
             disabled={isSaving}
-            label="Gateway IP"
             help="Use IPv4 or IPv6 format"
+            label="Gateway IP"
+            name="gateway_ip"
+            type="text"
           />
         </Col>
       </Row>
@@ -120,8 +120,9 @@ const AddSubnet = ({
   return (
     <FormikForm<AddSubnetValues>
       aria-label="Add subnet"
-      validationSchema={addSubnetSchema}
       buttonsBordered={false}
+      cleanup={subnetActions.cleanup}
+      errors={errors}
       initialValues={{
         vlan: "",
         name: "",
@@ -130,13 +131,12 @@ const AddSubnet = ({
         dns_servers: "",
         fabric: "",
       }}
+      onCancel={() => setActiveForm(null)}
       onSaveAnalytics={{
         action: "Add Subnet",
         category: "Subnets form actions",
         label: "Add Subnet",
       }}
-      cleanup={subnetActions.cleanup}
-      submitLabel={`Add ${activeForm}`}
       onSubmit={({ cidr, name, fabric, vlan, dns_servers, gateway_ip }) => {
         dispatch(subnetActions.cleanup());
         dispatch(
@@ -150,11 +150,11 @@ const AddSubnet = ({
           })
         );
       }}
-      onCancel={() => setActiveForm(null)}
       onSuccess={() => setActiveForm(null)}
-      saving={isSaving}
       saved={isSaved}
-      errors={errors}
+      saving={isSaving}
+      submitLabel={`Add ${activeForm}`}
+      validationSchema={addSubnetSchema}
     >
       <AddSubnetFields isSaving={isSaving} />
     </FormikForm>

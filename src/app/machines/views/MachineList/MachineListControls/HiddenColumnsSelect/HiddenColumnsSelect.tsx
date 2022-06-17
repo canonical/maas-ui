@@ -18,10 +18,10 @@ const HiddenColumnsSelect = ({
     <ContextualMenu
       className="filter-accordion"
       constrainPanelWidth
+      dropdownProps={{ "aria-label": "hidden columns menu" }}
       hasToggleIcon
       position="left"
       toggleClassName="filter-accordion__toggle"
-      dropdownProps={{ "aria-label": "hidden columns menu" }}
       toggleLabel={`Hidden columns ${
         hiddenColumns.length > 0 ? `(${hiddenColumns.length})` : ""
       }`}
@@ -29,11 +29,11 @@ const HiddenColumnsSelect = ({
       <div className="machines-list-hidden-columns-select">
         {columns.map((column) => (
           <CheckboxInput
-            key={column}
-            disabled={column === "fqdn"}
             aria-label={column}
-            label={columnLabels[column]}
             checked={hiddenColumns.includes(column)}
+            disabled={column === "fqdn"}
+            key={column}
+            label={columnLabels[column]}
             onChange={() => {
               sendAnalytics(
                 "MachineListControls",

@@ -35,8 +35,8 @@ export const SpaceDelete = ({
         dispatch(spaceActions.cleanup());
         dispatch(spaceActions.delete(space.id));
       }}
-      savedRedirect={urls.indexWithParams({ by: "fabric" })}
       saved={saved}
+      savedRedirect={urls.indexWithParams({ by: "fabric" })}
       saving={saving}
       submitAppearance="negative"
       submitDisabled={!canBeDeleted}

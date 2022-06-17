@@ -90,8 +90,8 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
           }
           dispatch(podActions.update(params));
         }}
-        saving={podSaving}
         saved={podSaved}
+        saving={podSaving}
         submitLabel="Save changes"
         validationSchema={KVMConfigurationSchema}
       >

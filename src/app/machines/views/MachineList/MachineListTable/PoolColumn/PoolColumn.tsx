@@ -93,7 +93,7 @@ export const PoolColumn = ({
       primaryAriaLabel="Pool"
       primaryTitle={machine.pool.name}
       secondary={
-        <span title={machine.description} data-testid="note">
+        <span data-testid="note" title={machine.description}>
           {machine.description}
         </span>
       }

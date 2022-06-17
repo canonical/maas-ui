@@ -127,8 +127,8 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
           setSavingPod(values.name || "virsh KVM host");
         }
       }}
-      saving={podSaving}
       saved={podSaved}
+      saving={podSaving}
       submitDisabled={!virshPowerType}
       submitLabel="Save Virsh host"
       validationSchema={AddVirshSchema}

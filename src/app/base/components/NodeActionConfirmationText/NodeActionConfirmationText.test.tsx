@@ -8,9 +8,9 @@ import { machine as machineFactory } from "testing/factories";
 it("displays correct confirmation text for deleting a single node", () => {
   render(
     <NodeActionConfirmationText
+      action={NodeActions.DELETE}
       modelName="machine"
       nodes={[machineFactory({ fqdn: "test" })]}
-      action={NodeActions.DELETE}
     />
   );
   expect(
@@ -21,12 +21,12 @@ it("displays correct confirmation text for deleting a single node", () => {
 it("displays correct confirmation text for deleting multiple nodes", () => {
   render(
     <NodeActionConfirmationText
+      action={NodeActions.DELETE}
       modelName="machine"
       nodes={[
         machineFactory({ fqdn: "test" }),
         machineFactory({ fqdn: "test2" }),
       ]}
-      action={NodeActions.DELETE}
     />
   );
   expect(

@@ -15,8 +15,8 @@ export const MarkBrokenFormFields = ({ selectedCount }: Props): JSX.Element => (
           "machine",
           selectedCount
         )}`}
-        type="text"
         name="comment"
+        type="text"
       />
     </Col>
     <Col size={5}>

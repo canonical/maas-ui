@@ -83,12 +83,12 @@ const ReservedRangeForm = ({
         end_ip: ipRange?.end_ip ?? "",
         start_ip: ipRange?.start_ip ?? "",
       }}
+      onCancel={onClose}
       onSaveAnalytics={{
         action: "Save reserved range",
         category: "Reserved ranges table",
         label: `${isEditing ? "Edit" : "Create"} reserved range form`,
       }}
-      onCancel={onClose}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());

@@ -48,8 +48,8 @@ const SpaceSummaryForm = ({
         handleDismiss();
       }}
       resetOnSave
-      saving={saving}
       saved={saved}
+      saving={saving}
       submitLabel="Save"
       validationSchema={spaceSummaryFormSchema}
     >

@@ -172,8 +172,8 @@ const generateSelectedItems = (
           appearance="base"
           className="tag-selector__selected-button u-break-word"
           data-testid="selected-tag"
-          disabled={isDisabled}
           dense
+          disabled={isDisabled}
           hasIcon
           onClick={() =>
             updateTags(

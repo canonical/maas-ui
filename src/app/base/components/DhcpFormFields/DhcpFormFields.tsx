@@ -95,21 +95,21 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
         </Notification>
       )}
       <FormikField
-        name="name"
         label="Snippet name"
+        name="name"
         required={true}
         type="text"
       />
-      <FormikField name="enabled" label="Enabled" type="checkbox" />
+      <FormikField label="Enabled" name="enabled" type="checkbox" />
       <FormikField
         component={Textarea}
-        name="description"
         label="Description"
+        name="description"
       />
       <FormikField
         component={Select}
-        name="type"
         label="Type"
+        name="type"
         onChange={(e: React.FormEvent) => {
           formikProps.handleChange(e);
           formikProps.setFieldValue("entity", "");
@@ -129,8 +129,8 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
         ) : (
           <FormikField
             component={Select}
-            name="entity"
             label="Applies to"
+            name="entity"
             options={
               // This won't need to pass the empty array once this issue is fixed:
               // https://github.com/canonical-web-and-design/react-components/issues/570
@@ -140,9 +140,9 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
         ))}
       <FormikField
         component={Textarea}
-        name="value"
         grow
         label="DHCP snippet"
+        name="value"
         placeholder="Custom DHCP snippet"
         required
       />

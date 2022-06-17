@@ -62,7 +62,7 @@ export const OwnerColumn = ({ onToggleMenu, systemId }: Props): JSX.Element => {
       }
       primaryTitle={ownerDisplay}
       secondary={
-        <span title={tagsDisplay} data-testid="tags">
+        <span data-testid="tags" title={tagsDisplay}>
           {tagsDisplay}
         </span>
       }

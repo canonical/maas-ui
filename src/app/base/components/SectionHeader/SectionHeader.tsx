@@ -36,8 +36,8 @@ const generateSubtitle = (
     content = (
       <Spinner
         className="u-text--muted"
-        text="Loading..."
         data-testid="section-header-subtitle-spinner"
+        text="Loading..."
       />
     );
   } else if (typeof subtitle === "string") {
@@ -76,11 +76,11 @@ const SectionHeader = <P,>({
         <div className="section-header__titles u-flex--align-baseline u-flex--grow u-flex--wrap">
           {loading || !title ? (
             <h4
+              aria-label="loading"
               className="section-header__title"
               data-testid="section-header-title-spinner"
-              aria-label="loading"
             >
-              <Spinner text="Loading..." aria-hidden="true" />
+              <Spinner aria-hidden="true" text="Loading..." />
             </h4>
           ) : (
             <TitleElement

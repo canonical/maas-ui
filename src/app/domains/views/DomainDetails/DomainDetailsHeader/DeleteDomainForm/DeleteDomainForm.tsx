@@ -48,8 +48,8 @@ const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
         dispatch(cleanup());
         dispatch(domainActions.delete(id));
       }}
-      savedRedirect={domainsURLs.domains}
       saved={saved}
+      savedRedirect={domainsURLs.domains}
       saving={saving}
       submitAppearance="negative"
       submitDisabled={!canBeDeleted}
@@ -59,7 +59,7 @@ const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
         className="u-no-margin--bottom u-no-max-width"
         data-testid="delete-message"
       >
-        <Icon name="error" className="is-inline" />
+        <Icon className="is-inline" name="error" />
         {message}
       </p>
     </FormikForm>

@@ -48,22 +48,22 @@ export const AddSSLKey = (): JSX.Element => {
         onSubmit={(values) => {
           dispatch(sslkeyActions.create(values));
         }}
-        saving={saving}
         saved={saved}
         savedRedirect={prefsURLs.sslKeys.index}
+        saving={saving}
         submitLabel="Save SSL key"
         validationSchema={SSLKeySchema}
       >
         <Row>
           <Col size={5}>
             <FormikField
-              className="ssl-key-form-fields__key p-text--code"
-              component={ProxyTextarea}
-              name="key"
-              label="SSL key"
+              autoCapitalize="off"
               autoComplete="off"
               autoCorrect="off"
-              autoCapitalize="off"
+              className="ssl-key-form-fields__key p-text--code"
+              component={ProxyTextarea}
+              label="SSL key"
+              name="key"
               spellCheck="false"
             />
           </Col>

@@ -52,8 +52,8 @@ describe("NameColumn", () => {
         >
           <CompatRouter>
             <NameColumn
-              selected={[]}
               handleCheckbox={jest.fn()}
+              selected={[]}
               systemId="abc123"
             />
           </CompatRouter>

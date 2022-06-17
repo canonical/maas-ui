@@ -33,22 +33,22 @@ const TagList = ({ onDelete }: Props): JSX.Element => {
   return (
     <div aria-label={Label.Title}>
       <TagListControls
-        aria-label="tag list controls"
         aria-controls={tableId}
-        filter={filter}
+        aria-label="tag list controls"
         currentPage={currentPage}
-        setFilter={setFilter}
+        filter={filter}
         searchText={searchText}
         setCurrentPage={setCurrentPage}
+        setFilter={setFilter}
         setSearchText={setSearchText}
         tagCount={tags.length}
       />
       <TagTable
         aria-label="tags"
-        onDelete={onDelete}
         currentPage={currentPage}
         filter={filter}
         id={tableId}
+        onDelete={onDelete}
         searchText={searchText}
         setCurrentPage={setCurrentPage}
         tags={tags}

@@ -56,9 +56,9 @@ describe("AddAliasOrVlan", () => {
         >
           <CompatRouter>
             <AddAliasOrVlan
+              close={jest.fn()}
               interfaceType={NetworkInterfaceTypes.VLAN}
               systemId="abc123"
-              close={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -76,10 +76,10 @@ describe("AddAliasOrVlan", () => {
         >
           <CompatRouter>
             <AddAliasOrVlan
+              close={jest.fn()}
               interfaceType={NetworkInterfaceTypes.ALIAS}
               nic={nic}
               systemId="abc123"
-              close={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -116,10 +116,10 @@ describe("AddAliasOrVlan", () => {
         >
           <CompatRouter>
             <AddAliasOrVlan
+              close={jest.fn()}
               interfaceType={NetworkInterfaceTypes.VLAN}
               nic={nic}
               systemId="abc123"
-              close={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -143,10 +143,10 @@ describe("AddAliasOrVlan", () => {
         >
           <CompatRouter>
             <AddAliasOrVlan
-              nic={nic}
-              interfaceType={NetworkInterfaceTypes.VLAN}
-              systemId="abc123"
               close={jest.fn()}
+              interfaceType={NetworkInterfaceTypes.VLAN}
+              nic={nic}
+              systemId="abc123"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -194,10 +194,10 @@ describe("AddAliasOrVlan", () => {
         >
           <CompatRouter>
             <AddAliasOrVlan
+              close={jest.fn()}
               interfaceType={NetworkInterfaceTypes.ALIAS}
               nic={nic}
               systemId="abc123"
-              close={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -236,10 +236,10 @@ describe("AddAliasOrVlan", () => {
         >
           <CompatRouter>
             <AddAliasOrVlan
+              close={jest.fn()}
               interfaceType={NetworkInterfaceTypes.VLAN}
               nic={nic}
               systemId="abc123"
-              close={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -284,10 +284,10 @@ describe("AddAliasOrVlan", () => {
         >
           <CompatRouter>
             <AddAliasOrVlan
+              close={jest.fn()}
               interfaceType={NetworkInterfaceTypes.ALIAS}
               nic={nic}
               systemId="abc123"
-              close={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>

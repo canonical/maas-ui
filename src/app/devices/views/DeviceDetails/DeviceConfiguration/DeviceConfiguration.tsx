@@ -76,12 +76,12 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
               tags: device.tags,
               zone: device.zone?.name || "",
             }}
+            onCancel={() => setEditing(false)}
             onSaveAnalytics={{
               action: "Configure device",
               category: "Device details",
               label: "Save changes",
             }}
-            onCancel={() => setEditing(false)}
             onSubmit={(values) => {
               const params = {
                 description: values.description,
@@ -101,8 +101,8 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
           </FormikForm>
         ) : (
           <div data-testid="device-details">
-            <Definition label="Zone" description={device.zone.name} />
-            <Definition label="Note" description={device.description} />
+            <Definition description={device.zone.name} label="Zone" />
+            <Definition description={device.description} label="Note" />
             <Definition label="Tags">
               {device.tags.length ? (
                 <TagLinks

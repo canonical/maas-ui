@@ -57,8 +57,8 @@ const LXDClusterHostVMs = ({
       clusterId={clusterId}
       hostId={hostId}
       searchFilter={searchFilter}
-      setSearchFilter={setSearchFilter}
       setHeaderContent={setHeaderContent}
+      setSearchFilter={setSearchFilter}
     />
   );
 };

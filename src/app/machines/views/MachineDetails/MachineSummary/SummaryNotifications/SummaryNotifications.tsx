@@ -77,8 +77,8 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
             <>
               {formatEventText(machine.events[0])}.{" "}
               <Link
-                to={machineURLs.machine.logs.index({ id: machine.system_id })}
                 className="p-notification__action"
+                to={machineURLs.machine.logs.index({ id: machine.system_id })}
               >
                 See logs
               </Link>

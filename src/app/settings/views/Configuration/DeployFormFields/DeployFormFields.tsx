@@ -26,9 +26,8 @@ const DeployFormFields = (): JSX.Element => {
   return (
     <>
       <FormikField
-        label="Default operating system used for deployment"
         component={Select}
-        options={defaultOSystemOptions}
+        label="Default operating system used for deployment"
         name="default_osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
@@ -39,12 +38,13 @@ const DeployFormFields = (): JSX.Element => {
           );
           formikProps.setFieldTouched("default_distro_series", true, true);
         }}
+        options={defaultOSystemOptions}
       />
       <FormikField
-        label="Default OS release used for deployment"
         component={Select}
-        options={distroSeriesOptions}
+        label="Default OS release used for deployment"
         name="default_distro_series"
+        options={distroSeriesOptions}
       />
       <FormikField
         label="Default hardware sync interval (minutes)"

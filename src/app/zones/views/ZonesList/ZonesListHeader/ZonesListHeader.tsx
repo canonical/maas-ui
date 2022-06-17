@@ -39,10 +39,10 @@ const ZonesListHeader = (): JSX.Element => {
     buttons = null;
     headerContent = (
       <ZonesListForm
-        key="add-zone-form"
         closeForm={() => {
           setShowForm(false);
         }}
+        key="add-zone-form"
       />
     );
   }
@@ -50,10 +50,10 @@ const ZonesListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      title={<ZonesListTitle />}
+      headerContent={headerContent}
       subtitle={`${zonesCount} AZs available`}
       subtitleLoading={!zonesLoaded}
-      headerContent={headerContent}
+      title={<ZonesListTitle />}
     ></SectionHeader>
   );
 };

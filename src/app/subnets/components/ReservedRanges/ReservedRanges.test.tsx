@@ -106,7 +106,7 @@ it("renders for a vlan", () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
+          <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -156,7 +156,7 @@ it("displays an empty message for a vlan", () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <ReservedRanges vlanId={vlan.id} hasVLANSubnets />
+          <ReservedRanges hasVLANSubnets vlanId={vlan.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -173,7 +173,7 @@ it("displays a message if there are no subnets in a VLAN", () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <ReservedRanges vlanId={vlan.id} hasVLANSubnets={false} />
+          <ReservedRanges hasVLANSubnets={false} vlanId={vlan.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

@@ -26,21 +26,21 @@ export const AddTagForm = ({
   }
   return (
     <BaseAddTagForm
-      name={name}
-      onTagCreated={onTagCreated}
-      onSaveAnalytics={{
-        action: "Manual tag created",
-        category: `Machine ${location} create tag form`,
-        label: "Save",
-      }}
+      deployedMachines={machines.filter(
+        ({ status }) => status === NodeStatus.DEPLOYED
+      )}
       generateDeployedMessage={(count: number) =>
         count === 1
           ? `${count} selected machine is deployed. The new kernel options will not be applied to this machine until it is redeployed.`
           : `${count} selected machines are deployed. The new kernel options will not be applied to these machines until they are redeployed.`
       }
-      deployedMachines={machines.filter(
-        ({ status }) => status === NodeStatus.DEPLOYED
-      )}
+      name={name}
+      onSaveAnalytics={{
+        action: "Manual tag created",
+        category: `Machine ${location} create tag form`,
+        label: "Save",
+      }}
+      onTagCreated={onTagCreated}
     />
   );
 };

@@ -97,12 +97,12 @@ const PowerForm = ({ systemId }: Props): JSX.Element | null => {
               powerType: machine.power_type,
               powerParameters: initialPowerParameters,
             }}
+            onCancel={() => setEditing(false)}
             onSaveAnalytics={{
               action: "Configure power",
               category: "Machine details",
               label: "Save changes",
             }}
-            onCancel={() => setEditing(false)}
             onSubmit={(values) => {
               const params = {
                 extra_macs: machine.extra_macs,

@@ -40,8 +40,8 @@ describe("TestResults", () => {
         >
           <CompatRouter>
             <TestResults
-              machine={machine}
               hardwareType={HardwareType.CPU}
+              machine={machine}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -70,8 +70,8 @@ describe("TestResults", () => {
         >
           <CompatRouter>
             <TestResults
-              machine={machine}
               hardwareType={HardwareType.Memory}
+              machine={machine}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -99,8 +99,8 @@ describe("TestResults", () => {
         >
           <CompatRouter>
             <TestResults
-              machine={machine}
               hardwareType={HardwareType.Storage}
+              machine={machine}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -128,8 +128,8 @@ describe("TestResults", () => {
         >
           <CompatRouter>
             <TestResults
-              machine={machine}
               hardwareType={HardwareType.CPU}
+              machine={machine}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>
@@ -155,8 +155,8 @@ describe("TestResults", () => {
         >
           <CompatRouter>
             <TestResults
-              machine={machine}
               hardwareType={HardwareType.Network}
+              machine={machine}
               setHeaderContent={jest.fn()}
             />
           </CompatRouter>

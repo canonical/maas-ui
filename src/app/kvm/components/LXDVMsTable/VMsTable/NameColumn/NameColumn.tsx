@@ -39,13 +39,13 @@ const NameColumn = ({ systemId }: Props): JSX.Element => {
           handleRowCheckbox={() =>
             handleRowCheckbox(machine.system_id, selectedIDs)
           }
-          item={systemId}
-          items={[]}
           inputLabel={
             <Link to={machineURLs.machine.index({ id: machine.system_id })}>
               <strong>{machine.hostname}</strong>
             </Link>
           }
+          item={systemId}
+          items={[]}
         />
       }
       primaryTitle={machine.hostname}

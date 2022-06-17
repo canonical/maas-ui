@@ -71,8 +71,8 @@ const FabricDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
         dispatch(cleanup());
         dispatch(fabricActions.delete(id));
       }}
-      savedRedirect={subnetURLs.indexWithParams({ by: "fabric" })}
       saved={saved}
+      savedRedirect={subnetURLs.indexWithParams({ by: "fabric" })}
       saving={saving}
       submitAppearance="negative"
       submitDisabled={fabricIsDefault || hasSubnets}

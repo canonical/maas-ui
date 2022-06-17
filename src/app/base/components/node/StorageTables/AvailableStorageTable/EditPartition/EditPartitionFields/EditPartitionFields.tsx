@@ -18,18 +18,18 @@ export const EditPartitionFields = ({
   return (
     <Row>
       <Col size={5}>
-        <Input disabled label="Name" value={partition.name} type="text" />
+        <Input disabled label="Name" type="text" value={partition.name} />
         <Input
           disabled
           label="Type"
-          value={formatType(partition)}
           type="text"
+          value={formatType(partition)}
         />
         <Input
           disabled
           label="Size"
-          value={formatSize(partition.size)}
           type="text"
+          value={formatSize(partition.size)}
         />
       </Col>
       <Col emptyLarge={7} size={5}>

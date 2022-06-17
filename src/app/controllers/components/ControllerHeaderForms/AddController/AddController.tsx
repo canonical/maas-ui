@@ -41,12 +41,12 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
         allow connection.
       </p>
       <CodeSnippet
-        data-testid="register-snippet"
         blocks={[
           {
             code: `sudo maas-rack register --url ${maasUrl} --secret ${rpcSharedSecret}`,
           },
         ]}
+        data-testid="register-snippet"
       />
       <p>Or if you use snap</p>
       <CodeSnippet

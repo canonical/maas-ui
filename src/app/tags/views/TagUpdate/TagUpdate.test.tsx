@@ -53,9 +53,9 @@ it("dispatches actions to fetch necessary data", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagUpdate id={1} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagUpdate id={1} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -88,9 +88,9 @@ it("shows a spinner if the tag has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagUpdate id={1} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagUpdate id={1} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -151,9 +151,9 @@ it("can return to the previous page on save", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
+            component={() => <TagUpdate id={1} />}
             exact
             path={tagURLs.tag.update(null, true)}
-            component={() => <TagUpdate id={1} />}
           />
         </CompatRouter>
       </Router>
@@ -191,9 +191,9 @@ it("goes to the tag details page if it can't go back", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
+            component={() => <TagUpdate id={1} />}
             exact
             path={tagURLs.tag.update(null, true)}
-            component={() => <TagUpdate id={1} />}
           />
         </CompatRouter>
       </Router>

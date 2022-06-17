@@ -5,14 +5,14 @@ import SectionHeader from "./SectionHeader";
 describe("SectionHeader", () => {
   it("can render", () => {
     const wrapper = shallow(
-      <SectionHeader title="Title" subtitle="Subtitle" />
+      <SectionHeader subtitle="Subtitle" title="Title" />
     );
     expect(wrapper).toMatchSnapshot();
   });
 
   it("can render title and subtitle", () => {
     const wrapper = shallow(
-      <SectionHeader title="Title" subtitle="Subtitle" />
+      <SectionHeader subtitle="Subtitle" title="Title" />
     );
     expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
       "Title"
@@ -38,7 +38,7 @@ describe("SectionHeader", () => {
 
   it("shows a spinner instead of title if loading", () => {
     const wrapper = shallow(
-      <SectionHeader title="Title" subtitle="Subtitle" loading />
+      <SectionHeader loading subtitle="Subtitle" title="Title" />
     );
     expect(
       wrapper.find("[data-testid='section-header-title-spinner']").exists()
@@ -50,7 +50,7 @@ describe("SectionHeader", () => {
 
   it("shows a spinner instead of subtitle if subtitle loading", () => {
     const wrapper = shallow(
-      <SectionHeader title="Title" subtitle="Subtitle" subtitleLoading />
+      <SectionHeader subtitle="Subtitle" subtitleLoading title="Title" />
     );
     expect(
       wrapper.find("[data-testid='section-header-subtitle']").text()
@@ -65,7 +65,7 @@ describe("SectionHeader", () => {
       <button key="button-1">Button 1</button>,
       <button key="button-2">Button 2</button>,
     ];
-    const wrapper = shallow(<SectionHeader title="Title" buttons={buttons} />);
+    const wrapper = shallow(<SectionHeader buttons={buttons} title="Title" />);
     expect(
       wrapper.find("[data-testid='section-header-buttons']").exists()
     ).toBe(true);
@@ -85,7 +85,7 @@ describe("SectionHeader", () => {
       },
     ];
     const wrapper = shallow(
-      <SectionHeader title="Title" tabLinks={tabLinks} />
+      <SectionHeader tabLinks={tabLinks} title="Title" />
     );
     expect(wrapper.find("[data-testid='section-header-tabs']").exists()).toBe(
       true
@@ -94,7 +94,7 @@ describe("SectionHeader", () => {
 
   it("can render extra header content", () => {
     const wrapper = shallow(
-      <SectionHeader title="Title" headerContent={<div>Header content</div>} />
+      <SectionHeader headerContent={<div>Header content</div>} title="Title" />
     );
     expect(
       wrapper.find("[data-testid='section-header-content']").exists()

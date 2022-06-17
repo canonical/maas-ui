@@ -21,14 +21,9 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
 
   return (
     <SectionHeader
-      subtitleLoading={!isSubnetDetails(subnet)}
-      title={subnet.name}
       buttons={[
         <ContextualMenu
-          toggleLabel="Take action"
-          toggleAppearance="positive"
           hasToggleIcon
-          position="right"
           links={[
             SubnetActionTypes.MapSubnet,
             SubnetActionTypes.EditBootArchitectures,
@@ -37,17 +32,22 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
             children: subnetActionLabels[subnetActionForm],
             onClick: () => setActiveForm(subnetActionForm),
           }))}
+          position="right"
+          toggleAppearance="positive"
+          toggleLabel="Take action"
         />,
       ]}
       headerContent={
         activeForm ? (
           <SubnetActionForms
-            id={subnet.id}
             activeForm={activeForm}
+            id={subnet.id}
             setActiveForm={setActiveForm}
           />
         ) : null
       }
+      subtitleLoading={!isSubnetDetails(subnet)}
+      title={subnet.name}
     />
   );
 };

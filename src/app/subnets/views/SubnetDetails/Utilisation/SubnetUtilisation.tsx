@@ -14,16 +14,16 @@ const SubnetUtilisation = ({ statistics }: Props): JSX.Element => {
       <Row>
         <Col size={6}>
           <Definition
-            label="Subnet addresses"
             description={`${statistics.total_addresses}`}
+            label="Subnet addresses"
           />
           <Definition
-            label="Availability"
             description={`${statistics.num_available} (${statistics.available_string})`}
+            label="Availability"
           />
         </Col>
         <Col size={6}>
-          <Definition label="Used" description={statistics.usage_string} />
+          <Definition description={statistics.usage_string} label="Used" />
         </Col>
       </Row>
     </TitledSection>

@@ -44,8 +44,8 @@ export const DeleteSubnet = ({
         onSubmit={() => {
           dispatch(subnetActions.delete(id));
         }}
-        savedRedirect={subnetURLs.index}
         saved={saved}
+        savedRedirect={subnetURLs.index}
         saving={saving}
         submitAppearance="negative"
         submitDisabled={!canBeDeleted}

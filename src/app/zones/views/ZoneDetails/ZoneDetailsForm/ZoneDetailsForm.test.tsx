@@ -39,7 +39,7 @@ describe("ZoneDetailsForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <ZoneDetailsForm id={testZone.id} closeForm={closeForm} />
+            <ZoneDetailsForm closeForm={closeForm} id={testZone.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -55,7 +55,7 @@ describe("ZoneDetailsForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <ZoneDetailsForm id={testZone.id} closeForm={jest.fn()} />
+            <ZoneDetailsForm closeForm={jest.fn()} id={testZone.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

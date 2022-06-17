@@ -44,19 +44,19 @@ const NameColumn = ({
             checkSelected={checkSelected}
             disabled={isAllNetworkingDisabled}
             handleRowCheckbox={handleRowCheckbox}
+            inputLabel={<span data-testid="name">{name}</span>}
             item={{
               linkId: link?.id,
               nicId: nic.id,
             }}
             items={selected}
-            inputLabel={<span data-testid="name">{name}</span>}
           />
         ) : (
           <span data-testid="name">{name}</span>
         )
       }
-      secondary={nic.mac_address}
       primaryClassName={checkboxSpace ? "u-nudge--primary-row" : null}
+      secondary={nic.mac_address}
       secondaryClassName={
         checkboxSpace || showCheckbox ? "u-nudge--secondary-row" : null
       }

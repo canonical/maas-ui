@@ -99,7 +99,7 @@ export const CreateVolumeGroup = ({
           validationSchema={CreateVolumeGroupSchema}
         >
           <Row>
-            <Col small={4} medium={6} size={6}>
+            <Col medium={6} size={6} small={4}>
               <Table>
                 <thead>
                   <TableRow>
@@ -119,15 +119,15 @@ export const CreateVolumeGroup = ({
                 </tbody>
               </Table>
             </Col>
-            <Col small={4} medium={6} size={6}>
+            <Col medium={6} size={6} small={4}>
               <FormikField label="Name" name="name" required type="text" />
               <Input
                 disabled
                 label="Size"
-                value={`${formatSize(totalSize)}`}
                 type="text"
+                value={`${formatSize(totalSize)}`}
               />
-              <Input disabled label="Type" value="Volume group" type="text" />
+              <Input disabled label="Type" type="text" value="Volume group" />
             </Col>
           </Row>
         </FormikForm>

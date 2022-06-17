@@ -185,8 +185,8 @@ const FilterAccordion = <I, PK extends keyof I>({
       hasToggleIcon
       position="left"
       toggleClassName="filter-accordion__toggle"
-      toggleLabel="Filters"
       toggleDisabled={disabled}
+      toggleLabel="Filters"
     >
       <Accordion
         className="filter-accordion__dropdown"

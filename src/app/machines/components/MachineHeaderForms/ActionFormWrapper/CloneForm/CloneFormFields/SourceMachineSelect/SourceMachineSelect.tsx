@@ -162,7 +162,6 @@ export const SourceMachineSelect = ({
       <SearchBox
         data-testid="source-machine-searchbox"
         externallyControlled
-        placeholder="Search by hostname, system ID or tags"
         onChange={(searchText: string) => {
           setSearchText(searchText);
           // Unset the selected machine if the search input changes - assume
@@ -171,6 +170,7 @@ export const SourceMachineSelect = ({
             onMachineClick(null);
           }
         }}
+        placeholder="Search by hostname, system ID or tags"
         value={searchText}
       />
       {content}

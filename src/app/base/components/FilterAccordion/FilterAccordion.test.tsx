@@ -55,8 +55,8 @@ describe("FilterAccordion", () => {
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
-        filtersToString={FilterMachines.filtersToString}
         filterString="pool:(=pool1)"
+        filtersToString={FilterMachines.filtersToString}
         getCurrentFilters={FilterMachines.getCurrentFilters}
         getValue={getValue}
         isFilterActive={FilterMachines.isFilterActive}
@@ -78,8 +78,8 @@ describe("FilterAccordion", () => {
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
-        filtersToString={FilterMachines.filtersToString}
         filterString=""
+        filtersToString={FilterMachines.filtersToString}
         getCurrentFilters={FilterMachines.getCurrentFilters}
         getValue={getValue}
         isFilterActive={FilterMachines.isFilterActive}
@@ -100,8 +100,8 @@ describe("FilterAccordion", () => {
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
-        filtersToString={FilterMachines.filtersToString}
         filterString=""
+        filtersToString={FilterMachines.filtersToString}
         getCurrentFilters={FilterMachines.getCurrentFilters}
         getValue={getValue}
         isFilterActive={FilterMachines.isFilterActive}
@@ -121,8 +121,8 @@ describe("FilterAccordion", () => {
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
-        filtersToString={FilterMachines.filtersToString}
         filterString=""
+        filtersToString={FilterMachines.filtersToString}
         getCurrentFilters={FilterMachines.getCurrentFilters}
         getValue={getValue}
         isFilterActive={FilterMachines.isFilterActive}

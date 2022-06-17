@@ -76,8 +76,8 @@ const VLANDetails = (): JSX.Element => {
         </>
       )}
       <DHCPSnippets
-        subnetIds={subnets.map(({ id }) => id)}
         modelName={VLANMeta.MODEL}
+        subnetIds={subnets.map(({ id }) => id)}
       />
     </Section>
   );

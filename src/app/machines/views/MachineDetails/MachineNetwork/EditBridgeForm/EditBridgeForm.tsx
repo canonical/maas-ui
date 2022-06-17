@@ -94,12 +94,12 @@ const EditBridgeForm = ({
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
+      onCancel={close}
       onSaveAnalytics={{
         action: "Edit bridge",
         category: "Machine details networking",
         label: "Edit bridge form",
       }}
-      onCancel={close}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());

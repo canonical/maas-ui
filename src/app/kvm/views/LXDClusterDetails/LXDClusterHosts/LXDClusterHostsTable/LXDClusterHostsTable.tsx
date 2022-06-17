@@ -136,8 +136,8 @@ const generateRows = (
             <div className="u-flex--end">
               <Button
                 className="no-background u-no-margin"
-                hasIcon
                 data-testid="vm-host-compose"
+                hasIcon
                 onClick={() =>
                   setHeaderContent({
                     view: KVMHeaderViews.COMPOSE_VM,
@@ -246,8 +246,8 @@ const LXDClusterHostsTable = ({
                 className: "pool-col",
                 content: (
                   <TableHeader
-                    data-testid="pool-header"
                     currentSort={currentSort}
+                    data-testid="pool-header"
                     onClick={() => updateSort("pool")}
                     sortKey="pool"
                   >
@@ -259,8 +259,8 @@ const LXDClusterHostsTable = ({
                 className: "cpu-col",
                 content: (
                   <TableHeader
-                    data-testid="cpu-header"
                     currentSort={currentSort}
+                    data-testid="cpu-header"
                     onClick={() => updateSort("cpu")}
                     sortKey="cpu"
                   >
@@ -272,8 +272,8 @@ const LXDClusterHostsTable = ({
                 className: "ram-col",
                 content: (
                   <TableHeader
-                    data-testid="ram-header"
                     currentSort={currentSort}
+                    data-testid="ram-header"
                     onClick={() => updateSort("ram")}
                     sortKey="ram"
                   >
@@ -285,8 +285,8 @@ const LXDClusterHostsTable = ({
                 className: "storage-col",
                 content: (
                   <TableHeader
-                    data-testid="storage-header"
                     currentSort={currentSort}
+                    data-testid="storage-header"
                     onClick={() => updateSort("storage")}
                     sortKey="storage"
                   >
@@ -320,7 +320,7 @@ const LXDClusterHostsTable = ({
         </Col>
       </Row>
       {searchFilter && paginatedClusterHosts.length === 0 ? (
-        <Strip shallow rowClassName="u-align--center">
+        <Strip rowClassName="u-align--center" shallow>
           <span data-testid="no-hosts">
             No hosts in this cluster match the search criteria.
           </span>

@@ -97,8 +97,6 @@ const SubnetUsedIPs = ({ subnetId }: Props): JSX.Element => {
         className="used-ip-table p-table-expanding--light"
         defaultSort="ip"
         defaultSortDirection="ascending"
-        sortable
-        responsive
         emptyStateMsg={
           loading ? (
             <Spinner text="Loading..." />
@@ -135,7 +133,9 @@ const SubnetUsedIPs = ({ subnetId }: Props): JSX.Element => {
             content: Labels.LastSeen,
           },
         ]}
+        responsive
         rows={generateRows(subnet)}
+        sortable
       />
     </TitledSection>
   );

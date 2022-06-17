@@ -535,8 +535,8 @@ describe("FormikFormContent", () => {
           <CompatRouter>
             <Formik initialValues={{}} onSubmit={jest.fn()}>
               <FormikFormContent
-                onCancel={jest.fn()}
                 footer={<div data-testid="footer"></div>}
+                onCancel={jest.fn()}
               >
                 Content
               </FormikFormContent>

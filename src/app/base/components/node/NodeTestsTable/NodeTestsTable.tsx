@@ -174,8 +174,8 @@ const NodeTestsTable = ({ node, scriptResults }: Props): JSX.Element => {
   return (
     <>
       <MainTable
-        expanding
         className="node-tests-table p-table-expanding--light"
+        expanding
         headers={[
           ...(showSuppressCol
             ? [

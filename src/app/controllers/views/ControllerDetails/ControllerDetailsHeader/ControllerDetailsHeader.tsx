@@ -46,7 +46,6 @@ const ControllerDetailsHeader = ({
 
   return (
     <SectionHeader
-      subtitleLoading={!isControllerDetails(controller)}
       buttons={[
         <NodeActionMenu
           key="action-dropdown"
@@ -62,6 +61,17 @@ const ControllerDetailsHeader = ({
           }}
         />,
       ]}
+      headerContent={
+        headerContent ? (
+          <ControllerHeaderForms
+            controllers={[controller]}
+            headerContent={headerContent}
+            setHeaderContent={setHeaderContent}
+            viewingDetails
+          />
+        ) : null
+      }
+      subtitleLoading={!isControllerDetails(controller)}
       tabLinks={[
         {
           label: ControllerDetailsTabLabels.summary,
@@ -113,16 +123,6 @@ const ControllerDetailsHeader = ({
         />
       }
       titleElement={isEditing ? "div" : "h1"}
-      headerContent={
-        headerContent ? (
-          <ControllerHeaderForms
-            controllers={[controller]}
-            headerContent={headerContent}
-            setHeaderContent={setHeaderContent}
-            viewingDetails
-          />
-        ) : null
-      }
     />
   );
 };

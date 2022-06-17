@@ -496,8 +496,8 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
         }}
         processingCount={composingPods.length}
         selectedCount={1}
-        validationSchema={ComposeFormSchema}
         validateOnMount
+        validationSchema={ComposeFormSchema}
       >
         <Strip bordered className="u-no-padding--top" shallow>
           <ComposeFormFields

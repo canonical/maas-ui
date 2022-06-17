@@ -53,14 +53,14 @@ const SyslogForm = (): JSX.Element => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
-            saving={saving}
             saved={saved}
+            saving={saving}
             validationSchema={SyslogSchema}
           >
             <FormikField
-              name="remote_syslog"
-              label="Remote syslog server to forward machine logs"
               help="A remote syslog server that MAAS will set on enlisting, commissioning, testing, and deploying machines to send all log messages. Clearing this value will restore the default behaviour of forwarding syslog to MAAS."
+              label="Remote syslog server to forward machine logs"
+              name="remote_syslog"
               type="text"
             />
           </FormikForm>

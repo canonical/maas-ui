@@ -116,9 +116,9 @@ const MaasIntro = (): JSX.Element => {
               );
             }
           }}
-          saving={saving}
           saved={saved}
           savedRedirect={introURLs.images}
+          saving={saving}
           secondarySubmit={() => {
             setShowSkip(true);
           }}

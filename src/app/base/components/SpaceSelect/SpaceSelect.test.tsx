@@ -124,7 +124,7 @@ it("can hide the default option", () => {
   render(
     <Provider store={store}>
       <Formik initialValues={{ space: "" }} onSubmit={jest.fn()}>
-        <SpaceSelect name="space" defaultOption={null} />
+        <SpaceSelect defaultOption={null} name="space" />
       </Formik>
     </Provider>
   );

@@ -24,7 +24,7 @@ const getSpaces = (machine: Machine) => {
   if (machine.spaces.length > 1) {
     const sorted = [...machine.spaces].sort();
     return (
-      <Tooltip position="btm-left" message={sorted.join("\n")}>
+      <Tooltip message={sorted.join("\n")} position="btm-left">
         <span data-testid="spaces">{`${machine.spaces.length} spaces`}</span>
       </Tooltip>
     );

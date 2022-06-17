@@ -109,8 +109,8 @@ describe("TableConfirm", () => {
     const wrapper = mount(
       <TableConfirm
         confirmLabel="save"
-        errors={{ delete: ["It didn't work"] }}
         errorKey="delete"
+        errors={{ delete: ["It didn't work"] }}
         finished={false}
         inProgress={false}
         message="Are you sure"

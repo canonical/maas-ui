@@ -62,8 +62,8 @@ const NotificationGroupNotification = ({
       timestamp={showDate ? notification.created : null}
     >
       <span
-        data-testid="notification-message"
         dangerouslySetInnerHTML={{ __html: notification.message }}
+        data-testid="notification-message"
       ></span>
     </Notification>
   );

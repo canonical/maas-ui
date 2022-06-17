@@ -64,7 +64,7 @@ const TableConfirm = ({
       >
         <p className="u-no-margin--bottom u-no-max-width">{message}</p>
       </Col>
-      <Col size={TABLE_CONFIRM_BUTTONS} className="u-align--right">
+      <Col className="u-align--right" size={TABLE_CONFIRM_BUTTONS}>
         <Button
           className="u-no-margin--bottom"
           data-testid="action-cancel"

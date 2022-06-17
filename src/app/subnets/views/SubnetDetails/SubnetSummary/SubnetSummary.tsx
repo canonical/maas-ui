@@ -50,19 +50,19 @@ const SubnetSummary = ({ id }: Props): JSX.Element | null => {
       renderContent={(editing, setEditing) =>
         editing ? (
           <SubnetSummaryForm
-            id={subnet.id}
             handleDismiss={() => setEditing(false)}
+            id={subnet.id}
           />
         ) : (
           <Row>
             <Col size={6}>
-              <Definition label="Name" description={subnet.name} />
-              <Definition label="CIDR" description={subnet.cidr} />
+              <Definition description={subnet.name} label="Name" />
+              <Definition description={subnet.cidr} label="CIDR" />
               <Definition label="Gateway IP">{subnet.gateway_ip}</Definition>
-              <Definition label="DNS" description={subnet.dns_servers} />
+              <Definition description={subnet.dns_servers} label="DNS" />
               <Definition
-                label="Description"
                 description={subnet.description}
+                label="Description"
               />
               <Definition
                 label={<ManagedAllocationLabel managed={subnet.managed} />}

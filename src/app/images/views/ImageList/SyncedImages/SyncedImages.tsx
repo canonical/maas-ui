@@ -77,8 +77,8 @@ const SyncedImages = ({
                   Change source
                   {!canChangeSource && (
                     <Tooltip
-                      message="Cannot change source while images are downloading."
                       className="u-nudge-right--small"
+                      message="Cannot change source while images are downloading."
                       position="top-right"
                     >
                       <Icon name="information" />

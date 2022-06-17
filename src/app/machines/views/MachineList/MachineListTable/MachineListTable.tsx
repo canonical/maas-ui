@@ -470,11 +470,11 @@ const generateGroupRows = ({
                         checkSelected={(_, selectedIDs) =>
                           someInArray(selectedIDs, machineIDs)
                         }
+                        handleGroupCheckbox={handleGroupCheckbox}
                         inRow
+                        inputLabel={<strong>{label}</strong>}
                         items={machineIDs}
                         selectedItems={selectedIDs}
-                        handleGroupCheckbox={handleGroupCheckbox}
-                        inputLabel={<strong>{label}</strong>}
                       />
                     ) : (
                       <strong>{label}</strong>
@@ -856,19 +856,19 @@ export const MachineListTable = ({
         className={classNames("p-table-expanding--light", "machine-list", {
           "machine-list--grouped": grouping !== "none",
         })}
-        headers={filterColumns(headers, hiddenColumns, showActions)}
-        paginate={paginateLimit}
-        rows={
-          // Pass undefined if there are no rows as the MainTable prop doesn't
-          // allow null.
-          rows ? rows : undefined
-        }
         emptyStateMsg={
           !machinesLoaded ? (
             <Spinner text="Loading..." />
           ) : filter ? (
             "No machines match the search criteria."
           ) : null
+        }
+        headers={filterColumns(headers, hiddenColumns, showActions)}
+        paginate={paginateLimit}
+        rows={
+          // Pass undefined if there are no rows as the MainTable prop doesn't
+          // allow null.
+          rows ? rows : undefined
         }
         {...props}
       />

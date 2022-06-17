@@ -39,8 +39,8 @@ describe("DeleteConfirm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <DeleteConfirm
-          confirmLabel="Delete AZ"
           closeExpanded={closeExpanded}
+          confirmLabel="Delete AZ"
           onConfirm={onConfirm}
         />
       </Provider>
@@ -57,8 +57,8 @@ describe("DeleteConfirm", () => {
     const wrapper = mount(
       <Provider store={store}>
         <DeleteConfirm
-          confirmLabel="Delete AZ"
           closeExpanded={closeExpanded}
+          confirmLabel="Delete AZ"
           onConfirm={onConfirm}
         />
       </Provider>

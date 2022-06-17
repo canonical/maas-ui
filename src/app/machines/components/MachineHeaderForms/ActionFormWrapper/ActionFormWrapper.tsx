@@ -211,12 +211,12 @@ export const ActionFormWrapper = ({
     <NodeActionFormWrapper
       action={action}
       clearHeaderContent={clearHeaderContent}
-      nodes={machines}
       nodeType="machine"
-      processingCount={processingCount}
+      nodes={machines}
       onUpdateSelected={(machineIDs) =>
         dispatch(machineActions.setSelected(machineIDs))
       }
+      processingCount={processingCount}
       viewingDetails={viewingDetails}
     >
       {getFormComponent()}

@@ -65,8 +65,8 @@ const NetworkDiscoveryForm = (): JSX.Element => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
-            saving={saving}
             saved={saved}
+            saving={saving}
             validationSchema={NetworkDiscoverySchema}
           >
             <NetworkDiscoveryFormFields />

@@ -114,8 +114,8 @@ describe("InterfaceFormTable", () => {
       <Provider store={store}>
         <InterfaceFormTable
           interfaces={[{ nicId: nic.id }]}
-          selectedEditable
           selected={[]}
+          selectedEditable
           systemId="abc123"
         />
       </Provider>

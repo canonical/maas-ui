@@ -88,8 +88,8 @@ const LXDHostVMs = ({
               })
             }
             searchFilter={searchFilter}
-            setSearchFilter={setSearchFilter}
             setHeaderContent={setHeaderContent}
+            setSearchFilter={setSearchFilter}
             vms={vms}
           />
         </Strip>

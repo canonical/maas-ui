@@ -51,8 +51,8 @@ const DeviceFilterAccordion = ({
       disabled={!devicesLoaded}
       filterNames={filterNames}
       filterOrder={filterOrder}
-      filtersToString={FilterDevices.filtersToString}
       filterString={searchText}
+      filtersToString={FilterDevices.filtersToString}
       getCurrentFilters={FilterDevices.getCurrentFilters}
       getValue={(device, filter) => getDeviceValue(device, filter, { tags })}
       isFilterActive={FilterDevices.isFilterActive}

@@ -127,12 +127,12 @@ const EditPhysicalForm = ({
         tags: nic.tags,
         vlan: nic.vlan_id,
       }}
+      onCancel={close}
       onSaveAnalytics={{
         action: "Save physical interface",
         category: "Machine details networking",
         label: "Edit physical interface form",
       }}
-      onCancel={close}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());

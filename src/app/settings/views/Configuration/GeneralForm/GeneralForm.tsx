@@ -91,22 +91,19 @@ const GeneralForm = (): JSX.Element => {
         dispatch(configActions.update(values));
         resetForm({ values });
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       validationSchema={GeneralSchema}
     >
       <FormikField
         label="MAAS name"
-        type="text"
         name="maas_name"
         required={true}
+        type="text"
         wrapperClassName="u-sv2"
       />
       <h5>Data analytics</h5>
       <FormikField
-        label="Enable analytics to shape improvements to user experience"
-        type="checkbox"
-        name="enable_analytics"
         help={
           <>
             The analytics used in MAAS are Google Analytics, Usabilla and Sentry
@@ -120,14 +117,17 @@ const GeneralForm = (): JSX.Element => {
             </Link>
           </>
         }
+        label="Enable analytics to shape improvements to user experience"
+        name="enable_analytics"
+        type="checkbox"
         wrapperClassName="u-sv3"
       />
       <h5>Notifications</h5>
       <FormikField
-        label="Enable new release notifications"
-        type="checkbox"
-        name="release_notifications"
         help="This applies to all users of MAAS. "
+        label="Enable new release notifications"
+        name="release_notifications"
+        type="checkbox"
         wrapperClassName="u-sv3"
       />
     </FormikForm>

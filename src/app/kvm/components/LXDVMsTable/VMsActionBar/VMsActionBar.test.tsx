@@ -25,8 +25,8 @@ describe("VMsActionBar", () => {
           onAddVMClick={onAddVMClick}
           searchFilter=""
           setCurrentPage={jest.fn()}
-          setSearchFilter={jest.fn()}
           setHeaderContent={jest.fn()}
+          setSearchFilter={jest.fn()}
           vms={[]}
         />
       </Provider>
@@ -51,8 +51,8 @@ describe("VMsActionBar", () => {
           onAddVMClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
-          setSearchFilter={jest.fn()}
           setHeaderContent={jest.fn()}
+          setSearchFilter={jest.fn()}
           vms={[]}
         />
       </Provider>
@@ -80,8 +80,8 @@ describe("VMsActionBar", () => {
           onAddVMClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
-          setSearchFilter={jest.fn()}
           setHeaderContent={jest.fn()}
+          setSearchFilter={jest.fn()}
           vms={vms}
         />
       </Provider>

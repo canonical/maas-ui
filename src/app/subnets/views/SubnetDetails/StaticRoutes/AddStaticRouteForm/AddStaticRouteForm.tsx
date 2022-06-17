@@ -75,6 +75,7 @@ const AddStaticRouteForm = ({
         destination: "",
         metric: "0",
       }}
+      onCancel={handleDismiss}
       onSaveAnalytics={{
         action: AddStaticRouteFormLabels.Save,
         category: "Subnet",
@@ -95,10 +96,9 @@ const AddStaticRouteForm = ({
         handleDismiss();
       }}
       resetOnSave
-      saving={saving}
       saved={saved}
+      saving={saving}
       submitLabel={AddStaticRouteFormLabels.Save}
-      onCancel={handleDismiss}
       validationSchema={addStaticRouteSchema}
     >
       <Row>

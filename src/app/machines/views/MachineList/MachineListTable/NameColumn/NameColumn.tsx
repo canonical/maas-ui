@@ -20,7 +20,7 @@ type Props = {
 
 const generateFQDN = (machine: Machine, machineURL: string) => {
   return (
-    <Link to={machineURL} title={machine.fqdn}>
+    <Link title={machine.fqdn} to={machineURL}>
       <strong data-testid="hostname">
         {machine.locked ? (
           <span title="This machine is locked. You have to unlock it to perform any actions.">
@@ -65,7 +65,6 @@ const generateIPAddresses = (machine: Machine) => {
     }
     return (
       <Tooltip
-        position="btm-left"
         message={
           <>
             <strong>{ipAddresses.length} interfaces:</strong>
@@ -76,6 +75,7 @@ const generateIPAddresses = (machine: Machine) => {
             </ul>
           </>
         }
+        position="btm-left"
         positionElementClassName="p-double-row__tooltip-inner"
       >
         {ipAddressesLine}
@@ -88,7 +88,7 @@ const generateIPAddresses = (machine: Machine) => {
 const generateMAC = (machine: Machine, machineURL: string) => {
   return (
     <>
-      <Link to={machineURL} title={machine.pxe_mac_vendor}>
+      <Link title={machine.pxe_mac_vendor} to={machineURL}>
         {machine.pxe_mac}
       </Link>
       {machine.extra_macs && machine.extra_macs.length > 0 ? (
@@ -123,9 +123,9 @@ export const NameColumn = ({
         handleCheckbox ? (
           <RowCheckbox
             handleRowCheckbox={handleCheckbox}
+            inputLabel={primaryRow}
             item={systemId}
             items={selected}
-            inputLabel={primaryRow}
           />
         ) : (
           primaryRow
