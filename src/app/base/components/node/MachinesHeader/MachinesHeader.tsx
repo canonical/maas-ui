@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { matchPath, Link } from "react-router-dom-v5-compat";
 
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -37,21 +37,21 @@ export const MachinesHeader = (props: Props): JSX.Element => {
       {...props}
       tabLinks={[
         {
-          active: location.pathname.startsWith(machineURLs.machines.index),
+          active: !!matchPath(machineURLs.machines.index, location.pathname),
           component: Link,
           label: `${pluralize("Machine", machineCount, true)}`,
           to: machineURLs.machines.index,
         },
         {
-          active: location.pathname.startsWith(poolsURLs.pools),
+          active: !!matchPath(poolsURLs.pools, location.pathname),
           component: Link,
           label: `${pluralize("Resource pool", poolCount, true)}`,
           to: poolsURLs.pools,
         },
         {
           active:
-            location.pathname.startsWith(tagURLs.tags.index) ||
-            location.pathname.startsWith(tagURLs.tag.base),
+            !!matchPath(tagURLs.tags.index, location.pathname) ||
+            !!matchPath(tagURLs.tag.index(null, true), location.pathname),
           component: Link,
           label: `${pluralize("Tag", tagCount, true)}`,
           to: tagURLs.tags.index,
