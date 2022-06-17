@@ -24,8 +24,7 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
       </p>
       <CodeSnippet
         blocks={[
-          { code: `sudo apt-add-repository ppa:maas/${minorVersion}` },
-          { code: "sudo apt update" },
+          { code: `sudo add-apt-repository ppa:maas/${minorVersion}` },
           {
             code: "sudo apt install maas-rack-controller",
           },
