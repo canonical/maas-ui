@@ -20,6 +20,7 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
   const [variant, setVariant] = useState("Snap");
 
   const variantDropdown = {
+    "aria-label": "version",
     value: variant,
     onChange: (e: ChangeEvent<HTMLSelectElement>) => {
       setVariant(e.target.value);
@@ -83,6 +84,7 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
         />
       ) : (
         <CodeSnippet
+          data-testid="register-snippet"
           blocks={[
             {
               dropdowns,

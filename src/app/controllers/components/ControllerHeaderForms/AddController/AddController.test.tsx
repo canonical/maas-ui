@@ -1,7 +1,5 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import AddController from "./AddController";
 
@@ -9,10 +7,11 @@ import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
+  generalState as generalStateFactory,
   rootState as rootStateFactory,
+  versionState as versionStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("AddController", () => {
   let state: RootState;
@@ -25,38 +24,53 @@ describe("AddController", () => {
           { name: ConfigNames.RPC_SHARED_SECRET, value: "veryverysecret" },
         ],
       }),
+      general: generalStateFactory({
+        version: versionStateFactory({ data: "3.2.0" }),
+      }),
     });
   });
 
   it("includes the config in the instructions", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AddController clearHeaderContent={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
-    );
-    const instructions = wrapper
-      .find("div[data-testid='register-snippet']")
-      .text();
-    expect(instructions.includes("http://1.2.3.4/MAAS")).toBe(true);
-    expect(instructions.includes("veryverysecret")).toBe(true);
+    renderWithBrowserRouter(<AddController clearHeaderContent={jest.fn()} />, {
+      wrapperProps: { state },
+    });
+    const instructions = screen.getByTestId("register-snippet");
+    expect(
+      within(instructions).getByText(new RegExp("http://1.2.3.4/MAAS"))
+    ).toBeInTheDocument();
+    expect(
+      within(instructions).getByText(/veryverysecret/)
+    ).toBeInTheDocument();
   });
 
-  it("can close the instructions", () => {
-    const store = mockStore(state);
+  it("can close the instructions", async () => {
     const clearHeaderContent = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <AddController clearHeaderContent={clearHeaderContent} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddController clearHeaderContent={clearHeaderContent} />,
+      {
+        wrapperProps: { state },
+      }
     );
-    wrapper
-      .find("Button[data-testid='add-controller-close']")
-      .simulate("click");
-    expect(clearHeaderContent).toHaveBeenCalled();
+    userEvent.click(screen.getByRole("button", { name: "Close" }));
+    await waitFor(() => expect(clearHeaderContent).toHaveBeenCalled());
+  });
+
+  it("uses a fixed version in both snap and packages instructions", async () => {
+    renderWithBrowserRouter(<AddController clearHeaderContent={jest.fn()} />, {
+      wrapperProps: { state },
+    });
+    expect(
+      screen.getByText(/sudo snap install maas --channel=3.2/)
+    ).toBeInTheDocument();
+
+    userEvent.selectOptions(
+      screen.getAllByRole("combobox", { name: "version" })[0],
+      "v3.2 Packages"
+    );
+    await waitFor(() =>
+      expect(
+        screen.getByText(new RegExp("sudo apt-add-repository ppa:maas/3.2"))
+      ).toBeInTheDocument()
+    );
   });
 });
