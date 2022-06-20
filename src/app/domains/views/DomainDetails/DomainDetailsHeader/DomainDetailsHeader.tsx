@@ -75,16 +75,6 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
   return (
     <SectionHeader
       buttons={buttons}
-      loading={!domain}
-      subtitle={`${pluralizeString("host", hostsCount, "")}${
-        hostsCount > 1 ? "; " : ""
-      }${pluralizeString(
-        "resource record",
-        recordsCount,
-        "No resource records"
-      )}`}
-      subtitleLoading={!isDomainDetails(domain)}
-      title={domain?.name}
       headerContent={
         formOpen === null ? null : (
           <>
@@ -97,6 +87,16 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
           </>
         )
       }
+      loading={!domain}
+      subtitle={`${pluralizeString("host", hostsCount, "")}${
+        hostsCount > 1 ? "; " : ""
+      }${pluralizeString(
+        "resource record",
+        recordsCount,
+        "No resource records"
+      )}`}
+      subtitleLoading={!isDomainDetails(domain)}
+      title={domain?.name}
     />
   );
 };

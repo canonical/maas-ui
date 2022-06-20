@@ -53,8 +53,8 @@ const LXDVMsTable = ({
         onAddVMClick={onAddVMClick}
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
-        setSearchFilter={setSearchFilter}
         setHeaderContent={setHeaderContent}
+        setSearchFilter={setSearchFilter}
         vms={vms}
       />
       <VMsTable

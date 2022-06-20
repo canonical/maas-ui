@@ -80,8 +80,8 @@ const LXDClusterVMs = ({
           };
         }}
         searchFilter={searchFilter}
-        setSearchFilter={setSearchFilter}
         setHeaderContent={setHeaderContent}
+        setSearchFilter={setSearchFilter}
         vms={clusterVMs}
       />
     </>

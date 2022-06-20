@@ -38,12 +38,12 @@ it("can update the filter", () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <TagListControls
-          filter={TagSearchFilter.All}
-          setFilter={setFilter}
-          searchText={""}
-          setSearchText={jest.fn()}
           currentPage={0}
+          filter={TagSearchFilter.All}
+          searchText={""}
           setCurrentPage={jest.fn()}
+          setFilter={setFilter}
+          setSearchText={jest.fn()}
           tagCount={0}
         />
       </MemoryRouter>

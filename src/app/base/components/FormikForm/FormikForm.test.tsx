@@ -34,9 +34,9 @@ describe("FormikForm", () => {
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
             <FormikForm
+              aria-label="example"
               initialValues={{}}
               onSubmit={jest.fn()}
-              aria-label="example"
             >
               Content
             </FormikForm>

@@ -22,9 +22,8 @@ const ControllerVLANsTable = ({ systemId }: Props): JSX.Element => {
 
   return (
     <ModularTable
-      emptyMsg={loaded ? "No VLANs found" : "Loading..."}
-      className="controller-vlans-table"
       aria-label="Controller VLANs"
+      className="controller-vlans-table"
       columns={useMemo(
         () => [
           {
@@ -88,6 +87,7 @@ const ControllerVLANsTable = ({ systemId }: Props): JSX.Element => {
         []
       )}
       data={data}
+      emptyMsg={loaded ? "No VLANs found" : "Loading..."}
     />
   );
 };

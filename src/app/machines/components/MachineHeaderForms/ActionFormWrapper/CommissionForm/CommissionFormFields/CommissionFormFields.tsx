@@ -53,6 +53,9 @@ export const CommissionFormFields = ({
           disabled={
             values.commissioningScripts.length === commissioningScripts.length
           }
+          disabledTags={commissioningScripts.filter(
+            (script) => script.default === true
+          )}
           initialSelected={preselectedCommissioning}
           label="Commissioning scripts"
           name="commissioningScripts"
@@ -61,9 +64,6 @@ export const CommissionFormFields = ({
           }}
           placeholder="Select additional scripts"
           tags={commissioningScripts}
-          disabledTags={commissioningScripts.filter(
-            (script) => script.default === true
-          )}
         />
         <FormikField
           component={TagSelector}

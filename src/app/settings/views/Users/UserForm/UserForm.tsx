@@ -42,13 +42,7 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
         buttonsBordered
         cleanup={userActions.cleanup}
         includeUserType
-        submitLabel="Save user"
         onCancel={() => navigate(-1)}
-        onSaveAnalytics={{
-          action: "Saved",
-          category: "Users settings",
-          label: `${editing ? "Edit" : "Add"} user form`,
-        }}
         onSave={(values) => {
           const params = {
             email: values.email,
@@ -79,10 +73,16 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
           }
           setSaving(values.username);
         }}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "Users settings",
+          label: `${editing ? "Edit" : "Add"} user form`,
+        }}
         onUpdateFields={(values) => {
           setName(values.username);
         }}
         savedRedirect={settingsURLs.users.index}
+        submitLabel="Save user"
         user={user}
       />
     </FormCard>

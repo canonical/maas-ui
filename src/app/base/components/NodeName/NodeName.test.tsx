@@ -181,9 +181,9 @@ describe("NodeName", () => {
         editingName={true}
         node={machine}
         onSubmit={jest.fn()}
-        setEditingName={setEditingName}
         saved={false}
         saving={true}
+        setEditingName={setEditingName}
       />
     );
     wrapper.setProps({

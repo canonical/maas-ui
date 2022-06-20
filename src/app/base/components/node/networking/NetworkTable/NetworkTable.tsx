@@ -166,12 +166,12 @@ const generateRow = (
         "aria-label": Label.Name,
         content: (
           <NameColumn
+            checkSelected={checkboxHandler?.checkSelected}
             checkboxSpace={
               // When interfaces can't be selected then we still need to add space so
               // the parent rows appear nested under the bond or bridge.
               (!showCheckbox && hasActions) || isABondOrBridgeParent
             }
-            checkSelected={checkboxHandler?.checkSelected}
             handleRowCheckbox={checkboxHandler?.handleRowCheckbox}
             link={link}
             nic={nic}
@@ -504,9 +504,9 @@ const NetworkTable = ({
                   checkAllSelected={checkboxHandler.checkAllSelected}
                   checkSelected={checkboxHandler.checkSelected}
                   disabled={isAllNetworkingDisabled}
+                  handleGroupCheckbox={checkboxHandler.handleGroupCheckbox}
                   items={selectableIDs}
                   selectedItems={selected}
-                  handleGroupCheckbox={checkboxHandler.handleGroupCheckbox}
                 />
               ) : null}
               <div>

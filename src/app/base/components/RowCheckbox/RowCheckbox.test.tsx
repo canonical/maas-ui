@@ -5,7 +5,7 @@ import RowCheckbox from "./RowCheckbox";
 describe("RowCheckbox", () => {
   it("renders", () => {
     const wrapper = shallow(
-      <RowCheckbox items={[]} item={null} handleRowCheckbox={jest.fn()} />
+      <RowCheckbox handleRowCheckbox={jest.fn()} item={null} items={[]} />
     );
     expect(wrapper).toMatchSnapshot();
   });
@@ -13,10 +13,10 @@ describe("RowCheckbox", () => {
   it("can show a label", () => {
     const wrapper = shallow(
       <RowCheckbox
+        handleRowCheckbox={jest.fn()}
+        item={null}
         items={[]}
         label="Check row"
-        item={null}
-        handleRowCheckbox={jest.fn()}
       />
     );
     expect(wrapper.prop("label")).toBe("Check row");
@@ -26,10 +26,10 @@ describe("RowCheckbox", () => {
     const wrapper = shallow(
       <RowCheckbox
         checkSelected={() => true}
+        handleRowCheckbox={jest.fn()}
+        item={null}
         items={[]}
         label="Check row"
-        item={null}
-        handleRowCheckbox={jest.fn()}
       />
     );
     expect(wrapper.prop("checked")).toBe(true);

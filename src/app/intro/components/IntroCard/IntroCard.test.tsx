@@ -6,12 +6,12 @@ describe("IntroCard", () => {
   it("displays a title link if supplied", () => {
     const wrapper = mount(
       <IntroCard
+        title="Setup MAAS"
         titleLink={
-          <a href="#help" data-testid="help-link">
+          <a data-testid="help-link" href="#help">
             Help!
           </a>
         }
-        title="Setup MAAS"
       >
         Card content
       </IntroCard>
@@ -21,7 +21,7 @@ describe("IntroCard", () => {
 
   it("can display a green tick icon", () => {
     const wrapper = mount(
-      <IntroCard title="Setup MAAS" complete>
+      <IntroCard complete title="Setup MAAS">
         Card content
       </IntroCard>
     );
@@ -30,7 +30,7 @@ describe("IntroCard", () => {
 
   it("can display an error icon", () => {
     const wrapper = mount(
-      <IntroCard title="Setup MAAS" hasErrors>
+      <IntroCard hasErrors title="Setup MAAS">
         Card content
       </IntroCard>
     );

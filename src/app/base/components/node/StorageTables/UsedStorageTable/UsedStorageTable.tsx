@@ -152,7 +152,6 @@ const UsedStorageTable = ({ node }: Props): JSX.Element | null => {
     <>
       <MainTable
         className="p-table-expanding--light"
-        responsive
         headers={[
           {
             content: (
@@ -194,6 +193,7 @@ const UsedStorageTable = ({ node }: Props): JSX.Element | null => {
             content: "Used for",
           },
         ]}
+        responsive
         rows={rows}
       />
       {rows.length === 0 && (

@@ -83,12 +83,12 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
             name: nextName || "",
             tags: [],
           }}
+          onCancel={close}
           onSaveAnalytics={{
             action: "Add interface",
             category: "Machine details networking",
             label: "Add interface form",
           }}
-          onCancel={close}
           onSubmit={(values) => {
             // Clear the errors from the previous submission.
             dispatch(cleanup());
@@ -107,7 +107,7 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
         >
           <Row>
             <Col size={6}>
-              <FormikField label="Name" type="text" name="name" />
+              <FormikField label="Name" name="name" type="text" />
             </Col>
           </Row>
           <hr />
@@ -116,9 +116,9 @@ const AddInterface = ({ close, systemId }: Props): JSX.Element | null => {
               <Input
                 disabled
                 label="Type"
-                value="Physical"
-                type="text"
                 name="type"
+                type="text"
+                value="Physical"
               />
               <MacAddressField label="MAC address" name="mac_address" />
               <TagNameField />

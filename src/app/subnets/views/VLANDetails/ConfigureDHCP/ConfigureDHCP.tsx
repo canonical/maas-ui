@@ -142,13 +142,13 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
         ) : (
           <FormikForm<ConfigureDHCPValues>
             allowUnchanged
-            cleanup={cleanup}
-            errors={configureDHCPError}
             buttonsHelp={
               <a href={docsUrls.dhcp} rel="noreferrer noopener" target="_blank">
                 About DHCP
               </a>
             }
+            cleanup={cleanup}
+            errors={configureDHCPError}
             initialValues={{
               dhcpType: isId(vlan.relay_vlan)
                 ? DHCPType.RELAY
@@ -162,12 +162,12 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
               startIP: "",
               subnet: "",
             }}
+            onCancel={closeForm}
             onSaveAnalytics={{
               action: "Configure DHCP",
               category: "VLAN details",
               label: "Configure DHCP form",
             }}
-            onCancel={closeForm}
             onSubmit={(values) => {
               resetConfiguredDHCP();
               dispatch(cleanup());

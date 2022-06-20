@@ -174,9 +174,9 @@ export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
               }
               setSavedRepo(values.name);
             }}
-            saving={repositoriesSaving}
             saved={repositoriesSaved}
             savedRedirect={settingsURLs.repositories.index}
+            saving={repositoriesSaving}
             submitLabel={`Save ${typeString}`}
             validationSchema={RepositorySchema}
           >

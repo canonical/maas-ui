@@ -37,7 +37,7 @@ it("displays loading text on load", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <EditStaticRouteForm staticRouteId={1} handleDismiss={jest.fn()} />
+          <EditStaticRouteForm handleDismiss={jest.fn()} staticRouteId={1} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -81,8 +81,8 @@ it("dispatches a correct action on edit static route form submit", async () => {
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
           <EditStaticRouteForm
-            staticRouteId={staticRoute.id}
             handleDismiss={jest.fn()}
+            staticRouteId={staticRoute.id}
           />
         </CompatRouter>
       </MemoryRouter>

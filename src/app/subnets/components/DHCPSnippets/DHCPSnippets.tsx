@@ -23,7 +23,7 @@ const DHCPSnippets = ({ modelName, subnetIds }: Props): JSX.Element => {
     dispatch(subnetActions.fetch());
   }, [dispatch]);
 
-  return <DHCPTable subnets={subnets} modelName={modelName} />;
+  return <DHCPTable modelName={modelName} subnets={subnets} />;
 };
 
 export default DHCPSnippets;

@@ -57,8 +57,8 @@ const DeployForm = (): JSX.Element => {
         dispatch(updateConfig(configValues));
         resetForm({ values });
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       validationSchema={DeploySchema}
     >
       <DeployFormFields />

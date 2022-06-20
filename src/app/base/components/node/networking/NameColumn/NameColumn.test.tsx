@@ -48,9 +48,9 @@ describe("NameColumn", () => {
         <NameColumn
           handleRowCheckbox={jest.fn()}
           nic={nic}
+          node={state.machine.items[0]}
           selected={[]}
           showCheckbox={true}
-          node={state.machine.items[0]}
         />
       </Provider>
     );
@@ -74,9 +74,9 @@ describe("NameColumn", () => {
         <NameColumn
           handleRowCheckbox={jest.fn()}
           nic={nic}
+          node={state.machine.items[0]}
           selected={[]}
           showCheckbox={false}
-          node={state.machine.items[0]}
         />
       </Provider>
     );

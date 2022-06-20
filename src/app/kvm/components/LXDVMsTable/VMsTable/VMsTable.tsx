@@ -182,9 +182,9 @@ const VMsTable = ({
             content: (
               <div className="u-flex">
                 <GroupCheckbox
+                  handleGroupCheckbox={handleGroupCheckbox}
                   items={machineIDs}
                   selectedItems={selectedIDs}
-                  handleGroupCheckbox={handleGroupCheckbox}
                 />
                 <div>
                   <TableHeader
@@ -274,7 +274,7 @@ const VMsTable = ({
         rows={generateRows(paginatedVms, getResources, tags, getHostColumn)}
       />
       {searchFilter && vms.length === 0 ? (
-        <Strip shallow rowClassName="u-align--center">
+        <Strip rowClassName="u-align--center" shallow>
           <span data-testid="no-vms">
             No VMs in this {displayForCluster ? "cluster" : "KVM host"} match
             the search criteria.

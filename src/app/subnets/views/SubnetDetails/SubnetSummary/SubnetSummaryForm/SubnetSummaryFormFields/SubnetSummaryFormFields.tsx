@@ -65,9 +65,9 @@ const SubnetSummaryFormFields = (): JSX.Element => {
           type="text"
         />
         <FormikField
+          component={Textarea}
           label="Description"
           name="description"
-          component={Textarea}
           placeholder="Subnet description"
         />
       </Col>

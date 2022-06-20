@@ -69,17 +69,17 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
             dispatch(tokenActions.create(values));
           }
         }}
-        saving={saving}
         saved={saved}
         savedRedirect={prefsURLs.apiKeys.index}
+        saving={saving}
         submitLabel={editing ? "Save API key" : "Generate API key"}
         validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}
       >
         <Row>
           <Col size={4}>
             <FormikField
-              name="name"
               label={`API key name${editing ? "" : " (optional)"}`}
+              name="name"
               required={editing}
               type="text"
             />

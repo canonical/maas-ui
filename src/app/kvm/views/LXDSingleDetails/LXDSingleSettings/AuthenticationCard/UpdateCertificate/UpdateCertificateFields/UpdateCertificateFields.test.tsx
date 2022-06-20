@@ -14,8 +14,8 @@ describe("UpdateCertificateFields", () => {
       >
         <UpdateCertificateFields
           generatedCertificate={null}
-          shouldGenerateCert
           setShouldGenerateCert={jest.fn()}
+          shouldGenerateCert
         />
       </Formik>
     );
@@ -36,8 +36,8 @@ describe("UpdateCertificateFields", () => {
       >
         <UpdateCertificateFields
           generatedCertificate={generatedCertificate}
-          shouldGenerateCert
           setShouldGenerateCert={jest.fn()}
+          shouldGenerateCert
         />
       </Formik>
     );

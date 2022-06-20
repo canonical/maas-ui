@@ -26,9 +26,9 @@ it("dispatches actions to fetch necessary data and set fabric as active on mount
       >
         <CompatRouter>
           <Route
+            component={() => <FabricDetails />}
             exact
             path={subnetsURLs.fabric.index(null, true)}
-            component={() => <FabricDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -60,9 +60,9 @@ it("dispatches actions to unset active fabric and clean up on unmount", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <FabricDetails />}
             exact
             path={subnetsURLs.fabric.index(null, true)}
-            component={() => <FabricDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -103,9 +103,9 @@ it("displays a message if the fabric does not exist", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <FabricDetails />}
             exact
             path={subnetsURLs.fabric.index(null, true)}
-            component={() => <FabricDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -130,9 +130,9 @@ it("shows a spinner if the fabric has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <FabricDetails />}
             exact
             path={subnetsURLs.fabric.index(null, true)}
-            component={() => <FabricDetails />}
           />
         </CompatRouter>
       </MemoryRouter>

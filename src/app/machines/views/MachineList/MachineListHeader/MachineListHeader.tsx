@@ -110,7 +110,6 @@ export const MachineListHeader = ({
           />
         )
       }
-      subtitleLoading={!machinesLoaded}
       subtitle={
         <ModelListSubtitle
           available={machines.length}
@@ -119,6 +118,7 @@ export const MachineListHeader = ({
           selected={selectedMachines.length}
         />
       }
+      subtitleLoading={!machinesLoaded}
       title={getHeaderTitle("Machines", headerContent)}
     />
   );

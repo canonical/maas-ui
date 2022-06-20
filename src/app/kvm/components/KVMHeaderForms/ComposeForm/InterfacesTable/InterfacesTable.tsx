@@ -210,20 +210,20 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
                     />
                   </TableCell>
                   <TableCell
-                    data-heading="Fabric"
                     className="u-align-non-field"
+                    data-heading="Fabric"
                   >
                     {fabric?.name || ""}
                   </TableCell>
-                  <TableCell data-heading="VLAN" className="u-align-non-field">
+                  <TableCell className="u-align-non-field" data-heading="VLAN">
                     {vlan?.name || ""}
                   </TableCell>
-                  <TableCell data-heading="PXE" className="u-align-non-field">
+                  <TableCell className="u-align-non-field" data-heading="PXE">
                     <i className={getPxeIconClass(pod, vlan)}></i>
                   </TableCell>
                   <TableCell
-                    data-heading="Actions"
                     className="u-align--right u-no-padding--right u-align-non-field"
+                    data-heading="Actions"
                   >
                     <TableActions
                       deleteDisabled={!!composingPods.length}
@@ -240,7 +240,7 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
               <TableCell data-heading="Name">
                 <em>default</em>
               </TableCell>
-              <TableCell data-heading="IP address" colSpan={7}>
+              <TableCell colSpan={7} data-heading="IP address">
                 Created by hypervisor at compose time
               </TableCell>
             </TableRow>

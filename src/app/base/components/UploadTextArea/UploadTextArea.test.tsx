@@ -62,7 +62,7 @@ describe("UploadTextArea", () => {
     const files = [createFile("foo.sh", 2000000, "")];
     const wrapper = mount(
       <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
-        <UploadTextArea label="Upload" name="key" maxSize={1000000} />
+        <UploadTextArea label="Upload" maxSize={1000000} name="key" />
       </Formik>
     );
     wrapper.find("UploadTextArea input[type='file']").simulate("change", {
@@ -94,7 +94,7 @@ describe("UploadTextArea", () => {
     const files = [createFile("foo.sh", 2000000, "text/script")];
     const wrapper = mount(
       <Formik initialValues={{ key: "" }} onSubmit={jest.fn()}>
-        <UploadTextArea label="Upload" name="key" maxSize={1000000} />
+        <UploadTextArea label="Upload" maxSize={1000000} name="key" />
       </Formik>
     );
     // Create a max size error

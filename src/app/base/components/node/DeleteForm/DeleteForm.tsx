@@ -62,9 +62,9 @@ export const DeleteForm = <E,>({
       submitAppearance="negative"
     >
       <NodeActionConfirmationText
-        nodes={nodes}
         action={NodeActions.DELETE}
         modelName={modelName}
+        nodes={nodes}
       />
     </ActionForm>
   );

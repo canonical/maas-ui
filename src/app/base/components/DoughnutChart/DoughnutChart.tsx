@@ -87,18 +87,18 @@ export const DoughnutChart = ({
         cx={radius - segmentWidth / 2 - hoverIncrease}
         cy={radius + segmentWidth / 2 + hoverIncrease}
         key={i}
-        onMouseOver={
-          tooltip
-            ? () => {
-                setTooltipMessage(tooltip);
-              }
-            : undefined
-        }
         onMouseOut={
           tooltip
             ? () => {
                 // Hide the tooltip.
                 setTooltipMessage(null);
+              }
+            : undefined
+        }
+        onMouseOver={
+          tooltip
+            ? () => {
+                setTooltipMessage(tooltip);
               }
             : undefined
         }
@@ -149,28 +149,28 @@ export const DoughnutChart = ({
           <mask id="myMask">
             {/* Cover the canvas, this will be the visible area. */}
             <rect
+              fill="white"
+              height={canvasSize}
+              width={canvasSize}
               x="0"
               y="0"
-              width={canvasSize}
-              height={canvasSize}
-              fill="white"
             />
             {/* Cut out the center circle so that the hover state doesn't grow inwards. */}
             <circle
-              r={radius - segmentWidth / 2}
               cx={canvasSize / 2}
               cy={canvasSize / 2}
               fill="black"
+              r={radius - segmentWidth / 2}
             />
           </mask>
           <g mask="url(#myMask)">
             {/* Force the group to cover the full size of the canvas, otherwise it will only mask the children (in their non-hovered state) */}
             <rect
+              fill="transparent"
+              height={canvasSize}
+              width={canvasSize}
               x="0"
               y="0"
-              width={canvasSize}
-              height={canvasSize}
-              fill="transparent"
             />
             <g>{segmentNodes}</g>
           </g>

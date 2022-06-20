@@ -64,9 +64,9 @@ const ControllerDetails = (): JSX.Element => {
     <Section
       header={
         <ControllerDetailsHeader
-          systemId={id}
           headerContent={headerContent}
           setHeaderContent={setHeaderContent}
+          systemId={id}
         />
       }
     >

@@ -64,10 +64,10 @@ describe("InterfaceForm", () => {
         <MemoryRouter>
           <CompatRouter>
             <InterfaceForm
+              closeForm={jest.fn()}
               nicId={nic.id}
               onSubmit={jest.fn()}
               systemId="abc123"
-              closeForm={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -113,10 +113,10 @@ describe("InterfaceForm", () => {
         <MemoryRouter>
           <CompatRouter>
             <InterfaceForm
-              nicId={nic.id}
-              linkId={link.id}
-              onSubmit={jest.fn()}
               closeForm={jest.fn()}
+              linkId={link.id}
+              nicId={nic.id}
+              onSubmit={jest.fn()}
               systemId="abc123"
             />
           </CompatRouter>
@@ -140,8 +140,8 @@ describe("InterfaceForm", () => {
         <MemoryRouter>
           <CompatRouter>
             <InterfaceForm
-              onSubmit={jest.fn()}
               closeForm={jest.fn()}
+              onSubmit={jest.fn()}
               systemId="abc123"
             />
           </CompatRouter>

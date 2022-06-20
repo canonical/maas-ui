@@ -64,8 +64,8 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
           });
           resetForm({ values });
         }}
-        saving={saving}
         saved={saved}
+        saving={saving}
         submitDisabled={discoveryDisabled}
       >
         <ul className="p-list is-split">

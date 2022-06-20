@@ -79,6 +79,7 @@ const EditStaticRouteForm = ({
         destination: staticRoute.destination,
         metric: staticRoute.metric,
       }}
+      onCancel={handleDismiss}
       onSaveAnalytics={{
         action: EditStaticRouteFormLabels.Save,
         category: "Subnet",
@@ -100,10 +101,9 @@ const EditStaticRouteForm = ({
         handleDismiss();
       }}
       resetOnSave
-      saving={saving}
       saved={saved}
+      saving={saving}
       submitLabel={EditStaticRouteFormLabels.Save}
-      onCancel={handleDismiss}
       validationSchema={editStaticRouteSchema}
     >
       <Row>
@@ -112,16 +112,16 @@ const EditStaticRouteForm = ({
         </Col>
         <Col size={4}>
           <SubnetSelect
-            label={Labels.Destination}
-            name="destination"
-            filterFunction={(destination) =>
-              getIsDestinationForSource(destination, source)
-            }
             defaultOption={{
               label: "Select destination",
               value: "",
               disabled: true,
             }}
+            filterFunction={(destination) =>
+              getIsDestinationForSource(destination, source)
+            }
+            label={Labels.Destination}
+            name="destination"
           />
         </Col>
         <Col size={4}>

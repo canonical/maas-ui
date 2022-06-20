@@ -37,13 +37,13 @@ const NodeHostnameField = ({
         {values.hostname}
       </div>
       <FormikField
-        type="text"
         className="node-name__hostname"
         disabled={saving}
         displayError={false}
         label="Hostname"
         name="hostname"
         takeFocus
+        type="text"
         wrapperClassName="u-no-margin--right"
       />
     </div>

@@ -19,7 +19,6 @@ const FabricDetailsHeader = ({ fabric }: Props): JSX.Element => {
 
   return (
     <SectionHeader
-      title={fabric.name}
       buttons={
         isAdmin
           ? [
@@ -40,6 +39,7 @@ const FabricDetailsHeader = ({ fabric }: Props): JSX.Element => {
           />
         ) : null
       }
+      title={fabric.name}
     />
   );
 };

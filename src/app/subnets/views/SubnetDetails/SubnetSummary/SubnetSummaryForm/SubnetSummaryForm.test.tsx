@@ -50,7 +50,7 @@ it("can dispatch an action to update the subnet", async () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <SubnetSummaryForm id={subnet.id} handleDismiss={jest.fn()} />
+          <SubnetSummaryForm handleDismiss={jest.fn()} id={subnet.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

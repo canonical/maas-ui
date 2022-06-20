@@ -47,7 +47,7 @@ const ZoneDetails = (): JSX.Element => {
         hasSidebarTitle
         renderContent={(editing, setEditing) =>
           editing ? (
-            <ZoneDetailsForm id={zoneID} closeForm={() => setEditing(false)} />
+            <ZoneDetailsForm closeForm={() => setEditing(false)} id={zoneID} />
           ) : (
             <ZoneDetailsContent id={zoneID} />
           )

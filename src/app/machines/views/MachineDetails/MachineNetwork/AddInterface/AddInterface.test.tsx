@@ -63,7 +63,7 @@ describe("AddInterface", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddInterface systemId="abc123" close={jest.fn()} />
+            <AddInterface close={jest.fn()} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -87,7 +87,7 @@ describe("AddInterface", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddInterface systemId="abc123" close={jest.fn()} />
+            <AddInterface close={jest.fn()} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -105,7 +105,7 @@ describe("AddInterface", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddInterface systemId="abc123" close={jest.fn()} />
+            <AddInterface close={jest.fn()} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

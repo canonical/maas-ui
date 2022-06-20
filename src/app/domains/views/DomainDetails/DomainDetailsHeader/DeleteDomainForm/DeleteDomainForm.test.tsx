@@ -28,7 +28,7 @@ describe("DeleteDomainForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <DeleteDomainForm id={1} closeForm={closeForm} />
+            <DeleteDomainForm closeForm={closeForm} id={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -55,7 +55,7 @@ describe("DeleteDomainForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <DeleteDomainForm id={1} closeForm={closeForm} />
+            <DeleteDomainForm closeForm={closeForm} id={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -101,7 +101,7 @@ describe("DeleteDomainForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <DeleteDomainForm id={1} closeForm={closeForm} />
+            <DeleteDomainForm closeForm={closeForm} id={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

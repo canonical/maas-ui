@@ -136,8 +136,8 @@ describe("RepositoryForm", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="repository"
               repository={state.packagerepository.items[0]}
+              type="repository"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -152,8 +152,8 @@ describe("RepositoryForm", () => {
         >
           <CompatRouter>
             <RepositoryForm
-              type="ppa"
               repository={state.packagerepository.items[0]}
+              type="ppa"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -228,7 +228,7 @@ describe("RepositoryForm", () => {
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <RepositoryForm type="repository" repository={repository} />
+            <RepositoryForm repository={repository} type="repository" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

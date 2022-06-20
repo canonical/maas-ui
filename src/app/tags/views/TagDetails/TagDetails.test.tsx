@@ -49,9 +49,9 @@ it("dispatches actions to fetch necessary data", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagDetails onDelete={jest.fn()} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails onDelete={jest.fn()} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -84,9 +84,9 @@ it("displays a message if the tag does not exist", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagDetails onDelete={jest.fn()} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails onDelete={jest.fn()} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -111,9 +111,9 @@ it("shows a spinner if the tag has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagDetails onDelete={jest.fn()} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails onDelete={jest.fn()} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -132,14 +132,14 @@ it("can display the edit form", () => {
       >
         <CompatRouter>
           <Route
-            exact
-            path={tagURLs.tag.update(null, true)}
             component={() => (
               <TagDetails
-                tagViewState={TagViewState.Updating}
                 onDelete={jest.fn()}
+                tagViewState={TagViewState.Updating}
               />
             )}
+            exact
+            path={tagURLs.tag.update(null, true)}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -159,9 +159,9 @@ it("can go to the tag edit page", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
+            component={() => <TagDetails onDelete={jest.fn()} />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagDetails onDelete={jest.fn()} />}
           />
         </CompatRouter>
       </Router>

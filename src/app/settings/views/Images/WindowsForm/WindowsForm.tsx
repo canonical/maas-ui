@@ -35,15 +35,15 @@ const WindowsForm = (): JSX.Element => {
         dispatch(updateConfig(values));
         resetForm({ values });
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       validationSchema={WindowsSchema}
     >
       <FormikField
-        label="Windows KMS activation host"
-        type="text"
-        name="windows_kms_host"
         help="FQDN or IP address of the host that provides the KMS Windows activation service. (Only needed for Windows deployments using KMS activation.)"
+        label="Windows KMS activation host"
+        name="windows_kms_host"
+        type="text"
       />
     </FormikForm>
   );

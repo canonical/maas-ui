@@ -35,7 +35,6 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
         name: "",
       }}
       onCancel={closeForm}
-      onSuccess={closeForm}
       onSubmit={(values) => {
         dispatch(
           zoneActions.create({
@@ -44,6 +43,7 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
           })
         );
       }}
+      onSuccess={closeForm}
       resetOnSave={true}
       saved={saved}
       saving={saving}
@@ -53,10 +53,10 @@ const ZonesListForm = ({ closeForm }: Props): JSX.Element => {
         <Col size={6}>
           <FormikField
             label="Name"
-            placeholder="Name"
-            type="text"
             name="name"
+            placeholder="Name"
             required
+            type="text"
           />
           <FormikField
             component={Textarea}

@@ -41,8 +41,8 @@ it("matches the snapshot", () => {
     >
       <CompatRouter>
         <Route
-          render={(props: RouteProps) => <SideNav {...props} items={items} />}
           path="/settings"
+          render={(props: RouteProps) => <SideNav {...props} items={items} />}
         />
       </CompatRouter>
     </MemoryRouter>
@@ -59,8 +59,8 @@ it("can set an active item", () => {
     >
       <CompatRouter>
         <Route
-          render={(props: RouteProps) => <SideNav {...props} items={items} />}
           path="/settings"
+          render={(props: RouteProps) => <SideNav {...props} items={items} />}
         />
       </CompatRouter>
     </MemoryRouter>

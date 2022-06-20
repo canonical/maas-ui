@@ -36,7 +36,7 @@ export const UpdateDatastoreFields = ({
 
   return (
     <Row>
-      <Col small={4} medium={6} size={6}>
+      <Col medium={6} size={6} small={4}>
         <Table>
           <thead>
             <TableRow>
@@ -56,7 +56,7 @@ export const UpdateDatastoreFields = ({
           </tbody>
         </Table>
       </Col>
-      <Col small={4} medium={6} size={6}>
+      <Col medium={6} size={6} small={4}>
         <FormikField
           component={Select}
           label="Datastore"
@@ -71,15 +71,15 @@ export const UpdateDatastoreFields = ({
           data-testid="datastore-mount-point"
           disabled
           label="Mount point"
-          value={selectedDatastore?.filesystem?.mount_point || ""}
           type="text"
+          value={selectedDatastore?.filesystem?.mount_point || ""}
         />
         <Input
           data-testid="size-to-add"
           disabled
           label="Size to add"
-          value={`${formatSize(totalSize)}`}
           type="text"
+          value={`${formatSize(totalSize)}`}
         />
       </Col>
     </Row>

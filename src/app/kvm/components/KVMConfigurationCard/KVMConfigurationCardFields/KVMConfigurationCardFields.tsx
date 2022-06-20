@@ -31,8 +31,8 @@ const KVMConfigurationCardFields = ({
           disabled
           label="KVM host type"
           name="type"
-          value={formatHostType(values.type)}
           type="text"
+          value={formatHostType(values.type)}
         />
         <ZoneSelect
           disabled={zoneDisabled}

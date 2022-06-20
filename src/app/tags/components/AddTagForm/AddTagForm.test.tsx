@@ -75,11 +75,11 @@ it("returns the newly created tag on save", async () => {
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
           <Route
-            exact
-            path={tagsURLs.tags.index}
             component={() => (
               <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
             )}
+            exact
+            path={tagsURLs.tags.index}
           />
         </CompatRouter>
       </MemoryRouter>

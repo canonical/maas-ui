@@ -52,8 +52,8 @@ const VirshDetails = (): JSX.Element => {
     <Section
       header={
         <VirshDetailsHeader
-          id={id}
           headerContent={headerContent}
+          id={id}
           setHeaderContent={setHeaderContent}
         />
       }

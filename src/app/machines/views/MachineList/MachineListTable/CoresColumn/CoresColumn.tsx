@@ -36,7 +36,7 @@ export const CoresColumn = ({ systemId }: Props): JSX.Element | null => {
         primaryAriaLabel="Cores"
         primaryClassName="u-align--right"
         secondary={
-          <Tooltip position="btm-left" message={machine.architecture}>
+          <Tooltip message={machine.architecture} position="btm-left">
             <span data-testid="arch">
               {formatShortArch(machine.architecture)}
             </span>

@@ -83,12 +83,12 @@ const EditVLAN = ({ close, id, ...props }: Props): JSX.Element | null => {
       cleanup={cleanup}
       errors={errors}
       initialValues={initialValues}
+      onCancel={close}
       onSaveAnalytics={{
         action: "Save VLAN",
         category: "VLAN details",
         label: "Edit VLAN form",
       }}
-      onCancel={close}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
         dispatch(cleanup());

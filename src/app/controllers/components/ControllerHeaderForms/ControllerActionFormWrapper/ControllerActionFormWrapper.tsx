@@ -144,12 +144,12 @@ export const ControllerActionFormWrapper = ({
     <NodeActionFormWrapper
       action={action}
       clearHeaderContent={clearHeaderContent}
-      nodes={controllers}
       nodeType="controller"
-      processingCount={processingCount}
+      nodes={controllers}
       onUpdateSelected={(controllerIDs) =>
         dispatch(controllerActions.setSelected(controllerIDs))
       }
+      processingCount={processingCount}
       viewingDetails={viewingDetails}
     >
       {getFormComponent()}

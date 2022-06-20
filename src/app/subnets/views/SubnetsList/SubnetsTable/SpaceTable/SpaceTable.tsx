@@ -26,21 +26,8 @@ const SpaceTable = ({
   return (
     <>
       <ModularTable
-        emptyMsg={emptyMsg}
-        className="subnets-table"
         aria-label="Subnets by Space"
-        getCellProps={({ value, column }) => ({
-          className: `subnets-table__cell--${column.id}${
-            value.isVisuallyHidden ? " u-no-border--top" : ""
-          }`,
-          role: column.id === "space" ? "rowheader" : undefined,
-        })}
-        getHeaderProps={(header) => ({
-          className: `subnets-table__cell--${header.id}`,
-        })}
-        getRowProps={(row) => ({
-          "aria-label": row.values.space.label,
-        })}
+        className="subnets-table"
         columns={useMemo(
           () => [
             {
@@ -78,6 +65,19 @@ const SpaceTable = ({
           []
         )}
         data={groupRowsBySpace(pageData)}
+        emptyMsg={emptyMsg}
+        getCellProps={({ value, column }) => ({
+          className: `subnets-table__cell--${column.id}${
+            value.isVisuallyHidden ? " u-no-border--top" : ""
+          }`,
+          role: column.id === "space" ? "rowheader" : undefined,
+        })}
+        getHeaderProps={(header) => ({
+          className: `subnets-table__cell--${header.id}`,
+        })}
+        getRowProps={(row) => ({
+          "aria-label": row.values.space.label,
+        })}
       />
       <Pagination {...paginationProps} aria-label="pagination" />
     </>

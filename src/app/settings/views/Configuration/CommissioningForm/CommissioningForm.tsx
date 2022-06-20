@@ -69,8 +69,8 @@ const CommissioningForm = (): JSX.Element => {
         dispatch(configActions.update(values));
         resetForm({ values });
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       validationSchema={CommissioningSchema}
     >
       <Fields />

@@ -71,11 +71,6 @@ export const DeployFormFields = (): JSX.Element => {
               disabled={noImages}
               label="OS"
               name="oSystem"
-              options={
-                // This won't need to pass the empty array once this issue is fixed:
-                // https://github.com/canonical-web-and-design/react-components/issues/570
-                osOptions || []
-              }
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
                 const value = e.target.value;
@@ -90,6 +85,11 @@ export const DeployFormFields = (): JSX.Element => {
                   clearVmHostOptions();
                 }
               }}
+              options={
+                // This won't need to pass the empty array once this issue is fixed:
+                // https://github.com/canonical-web-and-design/react-components/issues/570
+                osOptions || []
+              }
             />
           </Col>
           <Col size={3}>
@@ -98,7 +98,6 @@ export const DeployFormFields = (): JSX.Element => {
               disabled={noImages}
               label="Release"
               name="release"
-              options={releaseOptions}
               onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
                 handleChange(e);
                 setFieldValue("kernel", "");
@@ -106,6 +105,7 @@ export const DeployFormFields = (): JSX.Element => {
                   clearVmHostOptions();
                 }
               }}
+              options={releaseOptions}
             />
           </Col>
           <Col size={3}>
@@ -130,6 +130,7 @@ export const DeployFormFields = (): JSX.Element => {
             <Input
               checked={deployVmHost}
               disabled={!canBeKVMHost || noImages}
+              help="Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported."
               id="deployVmHost"
               label={
                 <>
@@ -143,7 +144,6 @@ export const DeployFormFields = (): JSX.Element => {
                   </a>
                 </>
               }
-              help="Only Ubuntu 18.04 LTS and Ubuntu 20.04 LTS are officially supported."
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                 const { checked } = evt.target;
                 if (checked) {
@@ -188,11 +188,11 @@ export const DeployFormFields = (): JSX.Element => {
                 </>
               }
               name="includeUserData"
-              type="checkbox"
               onChange={(evt: React.ChangeEvent<HTMLInputElement>) => {
                 handleChange(evt);
                 setUserDataVisible(evt.target.checked);
               }}
+              type="checkbox"
               wrapperClassName={classNames({
                 "u-sv2": userDataVisible,
               })}
@@ -206,8 +206,15 @@ export const DeployFormFields = (): JSX.Element => {
               />
             )}
             <FormikField
-              type="checkbox"
-              name="enableHwSync"
+              help={
+                <>
+                  Hardware sync interval:{" "}
+                  {!hardwareSyncInterval
+                    ? "Invalid"
+                    : `${timeSpanToMinutes(hardwareSyncInterval)} minutes`}{" "}
+                  - Admins can change this in the global settings.
+                </>
+              }
               label={
                 <>
                   Periodically sync hardware{" "}
@@ -227,15 +234,8 @@ export const DeployFormFields = (): JSX.Element => {
                   </a>
                 </>
               }
-              help={
-                <>
-                  Hardware sync interval:{" "}
-                  {!hardwareSyncInterval
-                    ? "Invalid"
-                    : `${timeSpanToMinutes(hardwareSyncInterval)} minutes`}{" "}
-                  - Admins can change this in the global settings.
-                </>
-              }
+              name="enableHwSync"
+              type="checkbox"
             />
           </Col>
         </Row>

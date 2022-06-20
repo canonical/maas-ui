@@ -64,14 +64,14 @@ it("selects the correct subnets to display in the table", () => {
         initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
       >
         <Route
-          exact
-          path={subnetsURLs.subnet.index(null, true)}
           component={() => (
             <DHCPSnippets
               modelName="subnet"
               subnetIds={[subnets[0].id, subnets[2].id]}
             />
           )}
+          exact
+          path={subnetsURLs.subnet.index(null, true)}
         />
       </MemoryRouter>
     </Provider>

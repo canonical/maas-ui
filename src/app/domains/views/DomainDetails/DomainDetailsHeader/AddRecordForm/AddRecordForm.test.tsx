@@ -30,7 +30,7 @@ describe("AddRecordForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <AddRecordForm id={1} closeForm={closeForm} />
+            <AddRecordForm closeForm={closeForm} id={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -57,7 +57,7 @@ describe("AddRecordForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <AddRecordForm id={1} closeForm={closeForm} />
+            <AddRecordForm closeForm={closeForm} id={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

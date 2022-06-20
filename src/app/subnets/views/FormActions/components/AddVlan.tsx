@@ -60,21 +60,21 @@ const AddVlan = ({
   return (
     <FormikForm<AddVlanValues>
       aria-label="Add VLAN"
-      validationSchema={vlanSchema}
       buttonsBordered={false}
       cleanup={vlanActions.cleanup}
+      errors={errors}
       initialValues={{
         vid: "",
         name: "",
         fabric: "",
         space: "",
       }}
+      onCancel={() => setActiveForm(null)}
       onSaveAnalytics={{
         action: "Add VLAN",
         category: "Subnets form actions",
         label: "Add VLAN",
       }}
-      submitLabel={`Add ${activeForm}`}
       onSubmit={({ name, fabric, vid, space }) => {
         dispatch(vlanActions.cleanup());
         dispatch(
@@ -86,38 +86,38 @@ const AddVlan = ({
           })
         );
       }}
-      onCancel={() => setActiveForm(null)}
       onSuccess={() => setActiveForm(null)}
-      saving={isSaving}
       saved={isSaved}
-      errors={errors}
+      saving={isSaving}
+      submitLabel={`Add ${activeForm}`}
+      validationSchema={vlanSchema}
     >
       <Row>
         <Col size={6}>
           <FormikField
-            takeFocus
-            required
-            type="text"
-            name="vid"
             component={Input}
             disabled={isSaving}
-            label="VID"
             help={`Numeric value between ${VLANVidRange.Min} and ${VLANVidRange.Max}`}
+            label="VID"
+            name="vid"
+            required
+            takeFocus
+            type="text"
           />
         </Col>
         <Col size={6}>
           <FormikField
-            type="text"
-            name="name"
             component={Input}
             disabled={isSaving}
             label="Name"
+            name="name"
+            type="text"
           />
         </Col>
       </Row>
       <Row>
         <Col size={6}>
-          <FabricSelect required name="fabric" disabled={isSaving} />
+          <FabricSelect disabled={isSaving} name="fabric" required />
         </Col>
         <Col size={6}>
           <SpaceSelect

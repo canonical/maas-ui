@@ -31,8 +31,8 @@ const DHCPColumn = ({ nic }: Props): JSX.Element | null => {
       icon={
         vlan && vlan.relay_vlan ? (
           <TooltipButton
-            position="btm-right"
             message={getDHCPStatus(vlan, vlans, fabrics, true)}
+            position="btm-right"
           />
         ) : null
       }

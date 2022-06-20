@@ -76,10 +76,10 @@ describe("NetworkTable", () => {
     renderWithBrowserRouter(
       <NetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
-        selected={[]}
-        setSelected={jest.fn()}
         node={machine}
+        selected={[]}
+        setExpanded={jest.fn()}
+        setSelected={jest.fn()}
       />,
       { wrapperProps: { state } }
     );
@@ -118,10 +118,10 @@ describe("NetworkTable", () => {
     renderWithBrowserRouter(
       <NetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
-        selected={[]}
-        setSelected={jest.fn()}
         node={machine}
+        selected={[]}
+        setExpanded={jest.fn()}
+        setSelected={jest.fn()}
       />,
       { wrapperProps: { state } }
     );
@@ -169,10 +169,10 @@ describe("NetworkTable", () => {
     renderWithBrowserRouter(
       <NetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
-        selected={[]}
-        setSelected={jest.fn()}
         node={machine}
+        selected={[]}
+        setExpanded={jest.fn()}
+        setSelected={jest.fn()}
       />,
       { wrapperProps: { state } }
     );
@@ -205,10 +205,10 @@ describe("NetworkTable", () => {
     renderWithBrowserRouter(
       <NetworkTable
         expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-        setExpanded={jest.fn()}
-        selected={[]}
-        setSelected={jest.fn()}
         node={machine}
+        selected={[]}
+        setExpanded={jest.fn()}
+        setSelected={jest.fn()}
       />,
       { wrapperProps: { state } }
     );
@@ -233,10 +233,10 @@ describe("NetworkTable", () => {
     renderWithBrowserRouter(
       <NetworkTable
         expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-        setExpanded={jest.fn()}
-        selected={[]}
-        setSelected={jest.fn()}
         node={machine}
+        selected={[]}
+        setExpanded={jest.fn()}
+        setSelected={jest.fn()}
       />,
       { wrapperProps: { state } }
     );
@@ -273,10 +273,10 @@ describe("NetworkTable", () => {
     renderWithBrowserRouter(
       <NetworkTable
         expanded={null}
-        setExpanded={jest.fn()}
-        selected={[]}
-        setSelected={jest.fn()}
         node={machine}
+        selected={[]}
+        setExpanded={jest.fn()}
+        setSelected={jest.fn()}
       />,
       { wrapperProps: { state } }
     );
@@ -377,10 +377,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );
@@ -397,10 +397,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={setSelected}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={setSelected}
         />,
         { wrapperProps: { state } }
       );
@@ -418,10 +418,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );
@@ -435,10 +435,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );
@@ -454,10 +454,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );
@@ -473,10 +473,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );
@@ -492,10 +492,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );
@@ -511,10 +511,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );
@@ -576,10 +576,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );
@@ -607,10 +607,10 @@ describe("NetworkTable", () => {
       renderWithBrowserRouter(
         <NetworkTable
           expanded={null}
-          setExpanded={jest.fn()}
-          selected={[]}
-          setSelected={jest.fn()}
           node={machine}
+          selected={[]}
+          setExpanded={jest.fn()}
+          setSelected={jest.fn()}
         />,
         { wrapperProps: { state } }
       );

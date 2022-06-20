@@ -15,7 +15,6 @@ const SpaceDetailsHeader = ({ space }: Props): JSX.Element => {
   const [isDeleteOpen, setIsDeleteOpen] = useState(false);
   return (
     <SectionHeader
-      title={space.name}
       buttons={[
         <Button disabled={isDeleteOpen} onClick={() => setIsDeleteOpen(true)}>
           Delete space
@@ -24,11 +23,12 @@ const SpaceDetailsHeader = ({ space }: Props): JSX.Element => {
       headerContent={
         isDeleteOpen ? (
           <SpaceDelete
-            space={space}
             handleClose={() => setIsDeleteOpen(false)}
+            space={space}
           />
         ) : null
       }
+      title={space.name}
     />
   );
 };

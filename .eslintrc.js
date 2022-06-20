@@ -101,6 +101,7 @@ module.exports = {
             ],
           },
         ],
+        "react/jsx-sort-props": "error",
         "no-only-tests/no-only-tests": "error",
       },
       settings: {

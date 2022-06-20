@@ -141,8 +141,8 @@ export const DhcpForm = ({
         setSaving(params.name);
       }}
       onSuccess={() => onSave && onSave()}
-      saving={saving}
       saved={saved}
+      saving={saving}
       submitLabel="Save snippet"
       validationSchema={DhcpSchema}
       {...props}

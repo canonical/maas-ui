@@ -20,8 +20,8 @@ const TypeColumn = ({ link, nic, node }: Props): JSX.Element | null => {
         numaNodes && numaNodes.length > 1 ? (
           <TooltipButton
             iconName="warning"
-            position="top-left"
             message="This bond is spread over multiple NUMA nodes. This may lead to suboptimal performance."
+            position="top-left"
           />
         ) : null
       }

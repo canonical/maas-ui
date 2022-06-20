@@ -48,8 +48,8 @@ const VLANDeleteForm = ({ closeForm, id }: Props): JSX.Element | null => {
         dispatch(cleanup());
         dispatch(vlanActions.delete(id));
       }}
-      savedRedirect={subnetURLs.index}
       saved={saved}
+      savedRedirect={subnetURLs.index}
       saving={saving}
       submitAppearance="negative"
       submitDisabled={isDefaultVLAN}

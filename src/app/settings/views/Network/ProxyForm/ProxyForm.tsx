@@ -98,8 +98,8 @@ const ProxyForm = (): JSX.Element => {
               dispatch(updateConfig(formattedValues));
               resetForm({ values });
             }}
-            saving={saving}
             saved={saved}
+            saving={saving}
             validationSchema={ProxySchema}
           >
             <ProxyFormFields />

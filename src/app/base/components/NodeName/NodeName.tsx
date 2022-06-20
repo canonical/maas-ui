@@ -104,8 +104,8 @@ const NodeName = ({
       onSubmit={({ hostname, domain }) => {
         onSubmit(hostname, Number(domain));
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       validationSchema={Schema}
     >
       <NodeNameFields

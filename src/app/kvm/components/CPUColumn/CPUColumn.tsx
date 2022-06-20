@@ -15,8 +15,8 @@ const CPUColumn = ({ cores, overCommit = 1 }: Props): JSX.Element | null => {
     <CPUPopover cores={cores} overCommit={overCommit}>
       <KVMResourceMeter
         allocated={coresWithOver.allocated_tracked}
-        other={coresWithOver.allocated_other}
         free={coresWithOver.free}
+        other={coresWithOver.allocated_other}
         segmented
       />
     </CPUPopover>

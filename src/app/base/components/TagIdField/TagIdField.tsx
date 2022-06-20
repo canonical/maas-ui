@@ -37,8 +37,8 @@ const TagIdField = <V extends AnyObject = AnyObject>({
   return (
     <TagField
       initialSelected={generateTags(initial, tagList)}
-      storedValue="id"
       name={name}
+      storedValue="id"
       tags={tagList.map((tag) => ({ id: tag.id, name: tag.name }))}
       {...props}
     />

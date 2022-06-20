@@ -47,7 +47,7 @@ it("dispatches a correct action on add static route form submit", async () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
-          <AddStaticRouteForm subnetId={subnet.id} handleDismiss={jest.fn()} />
+          <AddStaticRouteForm handleDismiss={jest.fn()} subnetId={subnet.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

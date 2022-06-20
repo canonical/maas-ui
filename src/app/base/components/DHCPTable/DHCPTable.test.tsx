@@ -60,8 +60,8 @@ describe("DHCPTable", () => {
         >
           <CompatRouter>
             <DHCPTable
-              node={state.machine.items[0]}
               modelName={MachineMeta.MODEL}
+              node={state.machine.items[0]}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -87,8 +87,8 @@ describe("DHCPTable", () => {
         >
           <CompatRouter>
             <DHCPTable
-              node={state.machine.items[0]}
               modelName={MachineMeta.MODEL}
+              node={state.machine.items[0]}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -114,7 +114,7 @@ describe("DHCPTable", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <DHCPTable subnets={subnets} modelName={MachineMeta.MODEL} />
+            <DHCPTable modelName={MachineMeta.MODEL} subnets={subnets} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -147,8 +147,8 @@ describe("DHCPTable", () => {
         >
           <CompatRouter>
             <DHCPTable
-              node={state.machine.items[0]}
               modelName={MachineMeta.MODEL}
+              node={state.machine.items[0]}
             />
           </CompatRouter>
         </MemoryRouter>

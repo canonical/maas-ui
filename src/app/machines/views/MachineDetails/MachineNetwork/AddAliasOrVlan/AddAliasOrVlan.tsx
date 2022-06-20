@@ -91,12 +91,12 @@ const AddAliasOrVlan = ({
           fabric: nicVLAN?.fabric || "",
           vlan: nic.vlan_id,
         }}
+        onCancel={close}
         onSaveAnalytics={{
           action: `Add ${interfaceType}`,
           category: "Machine details networking",
           label: `Add ${interfaceType} form`,
         }}
-        onCancel={close}
         onSubmit={(values) => {
           // Clear the errors from the previous submission.
           dispatch(cleanup());
@@ -139,8 +139,8 @@ const AddAliasOrVlan = ({
         validationSchema={InterfaceSchema}
       >
         <AddAliasOrVlanFields
-          nic={nic}
           interfaceType={interfaceType}
+          nic={nic}
           systemId={systemId}
         />
       </FormikForm>

@@ -31,9 +31,9 @@ it("displays a spinner as the title if controller has not loaded yet", () => {
       <MemoryRouter>
         <CompatRouter>
           <ControllerDetailsHeader
-            systemId="abc123"
             headerContent={null}
             setHeaderContent={jest.fn()}
+            systemId="abc123"
           />
         </CompatRouter>
       </MemoryRouter>
@@ -58,9 +58,9 @@ it("displays a spinner as the subtitle if loaded controller is not the detailed 
       <MemoryRouter>
         <CompatRouter>
           <ControllerDetailsHeader
-            systemId={controller.system_id}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            systemId={controller.system_id}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -85,9 +85,9 @@ it("displays the controller's FQDN once loaded and detailed type", () => {
       <MemoryRouter>
         <CompatRouter>
           <ControllerDetailsHeader
-            systemId={controllerDetails.system_id}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            systemId={controllerDetails.system_id}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -119,9 +119,9 @@ it("displays actions in take action menu", async () => {
       <MemoryRouter>
         <CompatRouter>
           <ControllerDetailsHeader
-            systemId={controllerDetails.system_id}
             headerContent={null}
             setHeaderContent={jest.fn()}
+            systemId={controllerDetails.system_id}
           />
         </CompatRouter>
       </MemoryRouter>

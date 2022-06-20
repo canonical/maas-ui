@@ -73,8 +73,8 @@ const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
           </p>
           {isMachineDetails(machine) && (
             <TestResults
-              machine={machine}
               hardwareType={HardwareType.Network}
+              machine={machine}
               setHeaderContent={setHeaderContent}
             />
           )}

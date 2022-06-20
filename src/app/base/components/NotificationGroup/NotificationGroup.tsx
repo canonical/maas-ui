@@ -83,8 +83,8 @@ const NotificationGroup = ({ notifications, severity }: Props): JSX.Element => {
         notifications.map(({ id }) => (
           <NotificationGroupNotification
             className="p-notification-group__notification"
-            key={id}
             id={id}
+            key={id}
             severity={severity}
           />
         ))}

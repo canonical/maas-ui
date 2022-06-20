@@ -150,9 +150,9 @@ const normaliseRowData = (
                   data-testid={`checkbox-${rowId}`}
                   disabled={actionsDisabled}
                   handleRowCheckbox={handleRowCheckbox}
+                  inputLabel={storageDevice.name}
                   item={storageDevice}
                   items={selected}
-                  inputLabel={storageDevice.name}
                 />
               ) : (
                 storageDevice.name
@@ -583,7 +583,6 @@ const AvailableStorageTable = ({
     <>
       <MainTable
         className="p-table-expanding--light"
-        responsive
         expanding
         headers={[
           {
@@ -644,6 +643,7 @@ const AvailableStorageTable = ({
               ]
             : []),
         ]}
+        responsive
         rows={rows}
       />
       {rows.length === 0 && (

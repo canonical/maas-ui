@@ -538,8 +538,6 @@ it("can go to the tag edit page", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
-            exact
-            path={path}
             component={() => (
               <TagTable
                 currentPage={1}
@@ -550,6 +548,8 @@ it("can go to the tag edit page", async () => {
                 tags={tags}
               />
             )}
+            exact
+            path={path}
           />
         </CompatRouter>
       </Router>

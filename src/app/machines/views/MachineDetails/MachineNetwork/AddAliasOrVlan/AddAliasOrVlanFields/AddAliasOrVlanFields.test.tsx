@@ -27,8 +27,8 @@ describe("AddAliasOrVlanFields", () => {
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
             <AddAliasOrVlanFields
-              systemId="abc123"
               interfaceType={NetworkInterfaceTypes.VLAN}
+              systemId="abc123"
             />
           </Formik>
         </MemoryRouter>
@@ -46,8 +46,8 @@ describe("AddAliasOrVlanFields", () => {
         >
           <Formik initialValues={{}} onSubmit={jest.fn()}>
             <AddAliasOrVlanFields
-              systemId="abc123"
               interfaceType={NetworkInterfaceTypes.ALIAS}
+              systemId="abc123"
             />
           </Formik>
         </MemoryRouter>

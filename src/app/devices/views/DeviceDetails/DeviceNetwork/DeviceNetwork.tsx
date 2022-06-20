@@ -49,8 +49,8 @@ const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
         dhcpTable={() => (
           <DHCPTable
             className="u-no-padding--top"
-            node={device}
             modelName={DeviceMeta.MODEL}
+            node={device}
           />
         )}
         expandedForm={(expanded, setExpanded) => {

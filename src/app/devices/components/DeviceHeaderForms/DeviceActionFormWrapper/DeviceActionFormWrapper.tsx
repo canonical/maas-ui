@@ -53,12 +53,12 @@ export const ActionFormWrapper = ({
     <NodeActionFormWrapper
       action={action}
       clearHeaderContent={clearHeaderContent}
-      nodes={devices}
       nodeType="device"
-      processingCount={processingCount}
+      nodes={devices}
       onUpdateSelected={(deviceIDs) =>
         dispatch(deviceActions.setSelected(deviceIDs))
       }
+      processingCount={processingCount}
       viewingDetails={viewingDetails}
     >
       {action === NodeActions.DELETE ? (

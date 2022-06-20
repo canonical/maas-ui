@@ -43,8 +43,8 @@ const MachineStorage = (): JSX.Element => {
                   "Windows"
                 )
               }
-              target="_blank"
               rel="noopener noreferrer"
+              target="_blank"
             >
               Windows
             </a>

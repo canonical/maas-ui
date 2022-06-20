@@ -59,15 +59,15 @@ const VirshDetailsHeader = ({
         pod
           ? [
               <VirshDetailsActionMenu
-                key="action-dropdown"
                 hostId={pod.id}
+                key="action-dropdown"
                 setHeaderContent={setHeaderContent}
               />,
             ]
           : null
       }
-      loading={!pod}
       headerContent={headerContent}
+      loading={!pod}
       setHeaderContent={setHeaderContent}
       tabLinks={[
         {

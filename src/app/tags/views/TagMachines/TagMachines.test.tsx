@@ -57,9 +57,9 @@ it("dispatches actions to fetch necessary data", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagMachines />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagMachines />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -91,9 +91,9 @@ it("displays a message if the tag does not exist", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagMachines />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagMachines />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -117,9 +117,9 @@ it("shows a spinner if the tag has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagMachines />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagMachines />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -137,9 +137,9 @@ it("displays the machine list", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <TagMachines />}
             exact
             path={tagURLs.tag.index(null, true)}
-            component={() => <TagMachines />}
           />
         </CompatRouter>
       </MemoryRouter>

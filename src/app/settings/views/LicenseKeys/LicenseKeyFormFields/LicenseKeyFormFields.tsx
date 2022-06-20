@@ -24,13 +24,8 @@ export const LicenseKeyFormFields = ({
     <>
       <FormikField
         component={Select}
-        name="osystem"
         label="Operating System"
-        required={true}
-        options={osystems.map((osystem) => {
-          const [os, label] = osystem;
-          return { value: os, label };
-        })}
+        name="osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
           formikProps.setFieldTouched("distro_series", true, true);
@@ -39,23 +34,28 @@ export const LicenseKeyFormFields = ({
             releases[e.target.value][0]
           );
         }}
+        options={osystems.map((osystem) => {
+          const [os, label] = osystem;
+          return { value: os, label };
+        })}
+        required={true}
       />
       <FormikField
         component={Select}
-        name="distro_series"
         label="Release"
-        required={true}
-        options={distroSeriesOptions}
+        name="distro_series"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
           formikProps.setFieldTouched("osystem", true, true);
         }}
+        options={distroSeriesOptions}
+        required={true}
       />
       <FormikField
-        name="license_key"
         label="License key"
-        type="text"
+        name="license_key"
         required={true}
+        type="text"
       />
     </>
   );

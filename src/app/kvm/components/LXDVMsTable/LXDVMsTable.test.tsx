@@ -22,8 +22,8 @@ describe("LXDVMsTable", () => {
           <LXDVMsTable
             getResources={jest.fn()}
             searchFilter=""
-            setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
             vms={[]}
           />
         </MemoryRouter>
@@ -47,8 +47,8 @@ describe("LXDVMsTable", () => {
           <LXDVMsTable
             getResources={jest.fn()}
             searchFilter=""
-            setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
             vms={[]}
           />
         </MemoryRouter>
@@ -75,8 +75,8 @@ describe("LXDVMsTable", () => {
             getResources={jest.fn()}
             onAddVMClick={jest.fn()}
             searchFilter=""
-            setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
             vms={[]}
           />
         </MemoryRouter>
@@ -97,8 +97,8 @@ describe("LXDVMsTable", () => {
           <LXDVMsTable
             getResources={jest.fn()}
             searchFilter=""
-            setSearchFilter={jest.fn()}
             setHeaderContent={jest.fn()}
+            setSearchFilter={jest.fn()}
             vms={[]}
           />
         </MemoryRouter>

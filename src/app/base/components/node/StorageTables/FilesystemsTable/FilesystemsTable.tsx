@@ -337,8 +337,8 @@ const FilesystemsTable = ({
         defaultSort="name"
         defaultSortDirection="ascending"
         expanding
-        responsive
         headers={isMachine ? headers : headers.slice(0, -1)}
+        responsive
         rows={rows}
       />
       {rows.length === 0 && (

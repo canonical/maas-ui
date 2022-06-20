@@ -119,8 +119,8 @@ const DatastoresTable = ({ canEditStorage, node }: Props): JSX.Element => {
       <MainTable
         className="p-table-expanding--light"
         expanding
-        responsive
         headers={isMachine ? headers : headers.slice(0, -1)}
+        responsive
         rows={rows}
       />
       {rows.length === 0 && (

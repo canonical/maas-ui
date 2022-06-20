@@ -38,6 +38,7 @@ describe("NetworkActionRow", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <NetworkActionRow
+            expanded={null}
             extraActions={[
               {
                 disabled: [[false]],
@@ -45,9 +46,8 @@ describe("NetworkActionRow", () => {
                 state: ExpandedState.EDIT,
               },
             ]}
-            expanded={null}
-            setExpanded={jest.fn()}
             node={state.machine.items[0]}
+            setExpanded={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -66,8 +66,8 @@ describe("NetworkActionRow", () => {
           >
             <NetworkActionRow
               expanded={null}
-              setExpanded={setExpanded}
               node={state.machine.items[0]}
+              setExpanded={setExpanded}
             />
           </MemoryRouter>
         </Provider>
@@ -88,8 +88,8 @@ describe("NetworkActionRow", () => {
           >
             <NetworkActionRow
               expanded={null}
-              setExpanded={jest.fn()}
               node={state.machine.items[0]}
+              setExpanded={jest.fn()}
             />
           </MemoryRouter>
         </Provider>
@@ -112,8 +112,8 @@ describe("NetworkActionRow", () => {
           >
             <NetworkActionRow
               expanded={{ content: ExpandedState.ADD_PHYSICAL }}
-              setExpanded={jest.fn()}
               node={state.machine.items[0]}
+              setExpanded={jest.fn()}
             />
           </MemoryRouter>
         </Provider>

@@ -146,9 +146,6 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
           content: (
             <ContextualMenu
               hasToggleIcon={true}
-              toggleDisabled={!canEdit}
-              toggleAppearance="base"
-              toggleClassName="u-no-margin--bottom is-small is-dense"
               links={[
                 {
                   children: "Edit record...",
@@ -167,6 +164,9 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
                     }),
                 },
               ]}
+              toggleAppearance="base"
+              toggleClassName="u-no-margin--bottom is-small is-dense"
+              toggleDisabled={!canEdit}
             />
           ),
           className: "u-align--right",

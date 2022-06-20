@@ -166,8 +166,8 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
       <Col size={6}>
         <h3 className="p-heading--5 u-no-margin--bottom">Network</h3>
         <NetworkFields
-          interfaceType={NetworkInterfaceTypes.BOND}
           fabricDisabled
+          interfaceType={NetworkInterfaceTypes.BOND}
           vlanDisabled
         />
       </Col>

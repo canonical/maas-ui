@@ -76,7 +76,7 @@ describe("FabricSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
-          <FabricSelect name="fabric" defaultOption={defaultOption} />
+          <FabricSelect defaultOption={defaultOption} name="fabric" />
         </Formik>
       </Provider>
     );
@@ -91,7 +91,7 @@ describe("FabricSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
-          <FabricSelect name="fabric" defaultOption={null} />
+          <FabricSelect defaultOption={null} name="fabric" />
         </Formik>
       </Provider>
     );

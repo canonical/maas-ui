@@ -43,7 +43,6 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
           name: zone.name,
         }}
         onCancel={closeForm}
-        onSuccess={closeForm}
         onSubmit={(values) => {
           dispatch(cleanup());
           dispatch(
@@ -54,6 +53,7 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
             })
           );
         }}
+        onSuccess={closeForm}
         saved={saved}
         saving={saving}
         submitLabel="Update AZ"
@@ -62,9 +62,9 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
           <Col size={6}>
             <FormikField
               label="Name"
+              name="name"
               placeholder="Name"
               type="text"
-              name="name"
             />
             <FormikField
               component={Textarea}

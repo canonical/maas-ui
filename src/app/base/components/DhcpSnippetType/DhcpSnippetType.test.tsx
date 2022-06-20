@@ -87,7 +87,7 @@ it("displays a global type", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
-      <DhcpSnippetType subnetId={null} nodeId={null} />
+      <DhcpSnippetType nodeId={null} subnetId={null} />
     </Provider>
   );
   expect(screen.getByText("Global")).toBeInTheDocument();

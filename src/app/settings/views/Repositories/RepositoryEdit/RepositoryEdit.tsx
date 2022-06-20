@@ -33,7 +33,7 @@ export const RepositoryEdit = (): JSX.Element => {
   if (loaded && !repository) {
     return <h4>Repository not found</h4>;
   }
-  return <RepositoryForm type={type} repository={repository} />;
+  return <RepositoryForm repository={repository} type={type} />;
 };
 
 export default RepositoryEdit;

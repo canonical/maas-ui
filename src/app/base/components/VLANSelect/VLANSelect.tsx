@@ -108,10 +108,10 @@ export const VLANSelect = ({
 
   return (
     <DynamicSelect
+      disabled={!vlansLoaded || disabled}
       label="VLAN"
       name={name}
       options={vlanOptions}
-      disabled={!vlansLoaded || disabled}
       {...props}
     />
   );

@@ -56,20 +56,20 @@ const NtpForm = (): JSX.Element => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
-            saving={saving}
             saved={saved}
+            saving={saving}
             validationSchema={NtpSchema}
           >
             <FormikField
-              name="ntp_servers"
-              label="Addresses of NTP servers"
               help="NTP servers, specified as IP addresses or hostnames delimited by commas and/or spaces, to be used as time references for MAAS itself, the machines MAAS deploys, and devices that make use of MAAS's DHCP services."
+              label="Addresses of NTP servers"
+              name="ntp_servers"
               type="text"
             />
             <FormikField
-              name="ntp_external_only"
-              label="Use external NTP servers only"
               help="Configure all region controller hosts, rack controller hosts, and subsequently deployed machines to refer directly to the configured external NTP servers. Otherwise only region controller hosts will be configured to use those external NTP servers, rack contoller hosts will in turn refer to the regions' NTP servers, and deployed machines will refer to the racks' NTP servers."
+              label="Use external NTP servers only"
+              name="ntp_external_only"
               type="checkbox"
             />
           </FormikForm>

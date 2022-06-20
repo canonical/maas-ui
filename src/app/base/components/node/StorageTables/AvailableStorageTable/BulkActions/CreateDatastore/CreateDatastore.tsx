@@ -109,7 +109,7 @@ export const CreateDatastore = ({
           validationSchema={CreateDatastoreSchema}
         >
           <Row>
-            <Col small={4} medium={6} size={6}>
+            <Col medium={6} size={6} small={4}>
               <Table>
                 <thead>
                   <TableRow>
@@ -129,16 +129,16 @@ export const CreateDatastore = ({
                 </tbody>
               </Table>
             </Col>
-            <Col small={4} medium={6} size={6}>
+            <Col medium={6} size={6} small={4}>
               <FormikField label="Name" name="name" required type="text" />
               <Input
                 data-testid="datastore-size"
                 disabled
                 label="Size"
-                value={`${formatSize(totalSize)}`}
                 type="text"
+                value={`${formatSize(totalSize)}`}
               />
-              <Input disabled label="Filesystem" value="VMFS6" type="text" />
+              <Input disabled label="Filesystem" type="text" value="VMFS6" />
             </Col>
           </Row>
         </FormikForm>

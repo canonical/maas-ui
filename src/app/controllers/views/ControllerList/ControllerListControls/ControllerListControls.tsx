@@ -22,8 +22,8 @@ const ControllerListControls = ({ filter, setFilter }: Props): JSX.Element => {
     <Row>
       <Col size={12}>
         <DebounceSearchBox
-          searchText={searchText}
           onDebounced={(debouncedText) => setFilter(debouncedText)}
+          searchText={searchText}
           setSearchText={setSearchText}
         />
       </Col>

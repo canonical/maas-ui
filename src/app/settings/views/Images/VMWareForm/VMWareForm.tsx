@@ -44,33 +44,33 @@ const VMWareForm = (): JSX.Element => {
         dispatch(updateConfig(values));
         resetForm({ values });
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       validationSchema={VMWareSchema}
     >
       <FormikField
-        label="VMware vCenter server FQDN or IP address"
-        type="text"
-        name="vcenter_server"
         help="VMware vCenter server FQDN or IP address which is passed to a deployed VMware ESXi host."
+        label="VMware vCenter server FQDN or IP address"
+        name="vcenter_server"
+        type="text"
       />
       <FormikField
-        label="VMware vCenter username"
-        type="text"
-        name="vcenter_username"
         help="VMware vCenter server username which is passed to a deployed VMware ESXi host."
+        label="VMware vCenter username"
+        name="vcenter_username"
+        type="text"
       />
       <FormikField
-        label="VMware vCenter password"
-        type="text"
-        name="vcenter_password"
         help="VMware vCenter server password which is passed to a deployed VMware ESXi host."
+        label="VMware vCenter password"
+        name="vcenter_password"
+        type="text"
       />
       <FormikField
-        label="VMware vCenter datacenter"
-        type="text"
-        name="vcenter_datacenter"
         help="VMware vCenter datacenter which is passed to a deployed VMware ESXi host."
+        label="VMware vCenter datacenter"
+        name="vcenter_datacenter"
+        type="text"
       />
     </FormikForm>
   );

@@ -69,7 +69,7 @@ const NodeTestDetails = ({ getReturnPath }: Props): JSX.Element | null => {
           <Col size={8}>
             <h2 className="p-heading--4">{result.name} details</h2>
           </Col>
-          <Col size={4} className="u-align--right">
+          <Col className="u-align--right" size={4}>
             <Link data-testid="return-link" to={returnPath}>
               &lsaquo; Back to test results
             </Link>
@@ -113,10 +113,10 @@ const NodeTestDetails = ({ getReturnPath }: Props): JSX.Element | null => {
           <Row>
             <Col size={12}>
               <h4>Metrics</h4>
-              <table role="grid" data-testid="script-details-metrics">
+              <table data-testid="script-details-metrics" role="grid">
                 <tbody>
                   {result.results.map((item: ScriptResultResult) => (
-                    <tr role="row" key={`metric-${item.name}`}>
+                    <tr key={`metric-${item.name}`} role="row">
                       <td role="gridcell">
                         <Tooltip message={item.description}>
                           {item.title}

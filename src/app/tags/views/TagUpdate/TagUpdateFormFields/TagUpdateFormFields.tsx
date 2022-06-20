@@ -39,8 +39,8 @@ export const TagUpdateFormFields = ({ id }: Props): JSX.Element | null => {
             label={Label.Name}
             name="name"
             placeholder="Enter a name for the tag."
-            type="text"
             required
+            type="text"
           />
         </Col>
         <Col size={2}>

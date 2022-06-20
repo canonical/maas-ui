@@ -205,11 +205,11 @@ it("redirects on save", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
-            exact
-            path={subnetsURLs.subnet.index({ id: subnetId })}
             component={() => (
               <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
             )}
+            exact
+            path={subnetsURLs.subnet.index({ id: subnetId })}
           />
         </CompatRouter>
       </Router>
@@ -227,11 +227,11 @@ it("redirects on save", async () => {
       <Router history={history}>
         <CompatRouter>
           <Route
-            exact
-            path={subnetsURLs.subnet.index({ id: subnetId })}
             component={() => (
               <DeleteSubnet id={subnetId} setActiveForm={jest.fn()} />
             )}
+            exact
+            path={subnetsURLs.subnet.index({ id: subnetId })}
           />
         </CompatRouter>
       </Router>

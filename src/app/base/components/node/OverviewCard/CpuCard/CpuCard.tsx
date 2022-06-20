@@ -46,8 +46,8 @@ const CpuCard = ({ node, setHeaderContent }: Props): JSX.Element => (
     </div>
     {nodeIsMachine(node) && setHeaderContent ? (
       <TestResults
-        machine={node}
         hardwareType={HardwareType.CPU}
+        machine={node}
         setHeaderContent={setHeaderContent}
       />
     ) : (

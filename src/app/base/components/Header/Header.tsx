@@ -203,7 +203,7 @@ export const Header = (): JSX.Element => {
 
   return (
     <>
-      <a href="#main-content" className="p-link--skip">
+      <a className="p-link--skip" href="#main-content">
         Skip to main content
       </a>
       <Navigation

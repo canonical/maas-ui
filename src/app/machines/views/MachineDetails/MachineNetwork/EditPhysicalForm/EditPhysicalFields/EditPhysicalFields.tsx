@@ -28,21 +28,21 @@ const EditPhysicalFields = ({ nic }: Props): JSX.Element | null => {
     <Row>
       <Col size={6}>
         <h3 className="p-heading--5 u-no-margin--bottom">Physical details</h3>
-        <FormikField label="Name" type="text" name="name" />
+        <FormikField label="Name" name="name" type="text" />
         <MacAddressField label="MAC address" name="mac_address" />
         <TagNameField />
         <FormikField
           caution={generateCaution(values)}
-          label="Link speed (Gbps)"
-          type="text"
-          name="link_speed"
           disabled={!nic.link_connected}
+          label="Link speed (Gbps)"
+          name="link_speed"
+          type="text"
         />
         <FormikField
-          label="Interface speed (Gbps)"
-          type="text"
-          name="interface_speed"
           disabled={!nic.link_connected}
+          label="Interface speed (Gbps)"
+          name="interface_speed"
+          type="text"
         />
       </Col>
       <Col size={6}>

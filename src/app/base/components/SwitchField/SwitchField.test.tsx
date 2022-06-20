@@ -11,7 +11,7 @@ describe("SwitchField", () => {
 
   it("can add additional classes", () => {
     const wrapper = shallow(
-      <SwitchField type="text" className="extra-class" />
+      <SwitchField className="extra-class" type="text" />
     );
     const className = wrapper.find("Switch").prop("className") || "";
     expect(className.includes("p-form-validation__input")).toBe(true);

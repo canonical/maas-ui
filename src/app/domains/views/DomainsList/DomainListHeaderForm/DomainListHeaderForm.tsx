@@ -70,29 +70,29 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
         }
       }}
       resetOnSave={!shouldClose}
-      saving={saving}
       saved={saved}
-      submitLabel="Save domain"
-      validationSchema={CreateDomainSchema}
+      saving={saving}
       secondarySubmit={(values) => {
         createDomain(values);
         setShouldClose(false);
       }}
       secondarySubmitLabel="Save and add another"
+      submitLabel="Save domain"
+      validationSchema={CreateDomainSchema}
     >
       <Row>
         <Col size={6}>
           <FormikField
             label="Name"
-            type="text"
             name="name"
             placeholder="Domain name"
             required
+            type="text"
           />
           <FormikField
             label="Authoritative"
-            type="checkbox"
             name="authoritative"
+            type="checkbox"
           />
         </Col>
       </Row>

@@ -42,9 +42,9 @@ it("renders correct details", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <FabricVLANs fabric={fabric} />}
             exact
             path={subnetsURLs.fabric.index({ id: fabric.id })}
-            component={() => <FabricVLANs fabric={fabric} />}
           />
         </CompatRouter>
       </MemoryRouter>

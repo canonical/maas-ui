@@ -187,8 +187,8 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
             }
           }}
           resetOnSave
-          saving={machineSaving}
           saved={machineSaved}
+          saving={machineSaving}
           secondarySubmit={(_, { submitForm }) => {
             setSecondarySubmit(true);
             submitForm();

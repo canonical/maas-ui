@@ -114,10 +114,8 @@ const NetworkFields = ({
         required
       />
       <VLANSelect
-        required
         defaultOption={null}
         disabled={vlanDisabled}
-        showSpinnerOnLoad
         fabric={toFormikNumber(values.fabric)}
         includeDefaultVlan={includeDefaultVlan}
         name="vlan"
@@ -125,6 +123,8 @@ const NetworkFields = ({
           handleChange(evt);
           resetFollowingFields("vlan");
         }}
+        required
+        showSpinnerOnLoad
         vlans={vlans}
       />
       <SubnetSelect
@@ -167,7 +167,7 @@ const NetworkFields = ({
         />
       ) : null}
       {values.mode === NetworkLinkMode.STATIC ? (
-        <FormikField label={Label.IPAddress} type="text" name="ip_address" />
+        <FormikField label={Label.IPAddress} name="ip_address" type="text" />
       ) : null}
     </>
   );

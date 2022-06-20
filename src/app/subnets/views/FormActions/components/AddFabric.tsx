@@ -28,41 +28,41 @@ const AddFabric = ({
       aria-label="Add fabric"
       buttonsBordered={false}
       cleanup={fabricActions.cleanup}
+      errors={errors}
       initialValues={{ name: "", description: "" }}
+      onCancel={() => setActiveForm(null)}
       onSaveAnalytics={{
         action: "Add fabric",
         category: "Subnets form actions",
         label: "Add fabric",
       }}
-      submitLabel={`Add ${activeForm}`}
       onSubmit={({ name, description }) => {
         dispatch(fabricActions.cleanup());
         dispatch(fabricActions.create({ name, description }));
       }}
-      onCancel={() => setActiveForm(null)}
       onSuccess={() => setActiveForm(null)}
-      saving={isSaving}
       saved={isSaved}
-      errors={errors}
+      saving={isSaving}
+      submitLabel={`Add ${activeForm}`}
     >
       <Row>
         <Col size={6}>
           <FormikField
-            takeFocus
-            type="text"
-            name="name"
             component={Input}
             disabled={isSaving}
             label="Name (optional)"
+            name="name"
+            takeFocus
+            type="text"
           />
         </Col>
         <Col size={6}>
           <FormikField
-            type="text"
-            name="description"
             component={Input}
             disabled={isSaving}
             label="Description (optional)"
+            name="description"
+            type="text"
           />
         </Col>
       </Row>

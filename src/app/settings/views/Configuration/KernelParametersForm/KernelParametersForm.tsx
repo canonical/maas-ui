@@ -41,14 +41,14 @@ const KernelParametersForm = (): JSX.Element => {
         dispatch(updateConfig(values));
       }}
       resetOnSave
-      saving={saving}
       saved={saved}
+      saving={saving}
       validationSchema={KernelParametersSchema}
     >
       <FormikField
         label="Global boot parameters always passed to the kernel"
-        type="text"
         name="kernel_opts"
+        type="text"
       />
     </FormikForm>
   );

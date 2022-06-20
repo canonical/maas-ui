@@ -45,16 +45,16 @@ export const AddAliasOrVlanFields = ({
         <Input
           disabled
           label="Name"
-          value={nextNicName || ""}
-          type="text"
           name="name"
+          type="text"
+          value={nextNicName || ""}
         />
         <Input
           disabled
           label="Type"
-          value={INTERFACE_TYPE_DISPLAY[interfaceType]}
-          type="text"
           name="type"
+          type="text"
+          value={INTERFACE_TYPE_DISPLAY[interfaceType]}
         />
         {isVLAN ? <TagNameField /> : null}
       </Col>

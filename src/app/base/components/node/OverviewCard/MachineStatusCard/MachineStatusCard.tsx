@@ -106,7 +106,6 @@ const MachineStatusCard = ({ machine }: Props): JSX.Element => {
                 aria-label="more about periodic hardware sync"
                 className="u-nudge-right--small"
                 iconName="help"
-                position="right"
                 message={
                   <>
                     This machine hardware info is synced every{" "}
@@ -114,16 +113,17 @@ const MachineStatusCard = ({ machine }: Props): JSX.Element => {
                     You can check it at the bottom, in the status bar.{"\n"}
                     More about this in the{" "}
                     <a
+                      className="is-on-dark"
                       href={docsUrls.customisingDeployedMachines}
                       rel="noopener noreferrer"
                       target="_blank"
-                      className="is-on-dark"
                     >
                       Hardware sync docs
                     </a>
                     .
                   </>
                 }
+                position="right"
               />
             </p>
           </>

@@ -61,13 +61,13 @@ export const SettingsTable = ({
         )}
         {buttons?.map(({ label, url, disabled = false, tooltip }) =>
           tooltip ? (
-            <Tooltip key={url} position="left" message={tooltip}>
-              <Button element={Link} to={url} disabled={disabled}>
+            <Tooltip key={url} message={tooltip} position="left">
+              <Button disabled={disabled} element={Link} to={url}>
                 {label}
               </Button>
             </Tooltip>
           ) : (
-            <Button element={Link} to={url} key={url} disabled={disabled}>
+            <Button disabled={disabled} element={Link} key={url} to={url}>
               {label}
             </Button>
           )

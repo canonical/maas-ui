@@ -51,17 +51,17 @@ const NodeConfigurationFields = (): JSX.Element => {
             name="description"
           />
           <TagIdField
+            disabledTags={selectedTags.filter(
+              (tag) => tag.definition.length > 0
+            )}
             externalSelectedTags={selectedTags}
             name="tags"
-            placeholder="Create or remove tags"
-            tagList={manualTags}
             onAddNewTag={(name) => {
               setNewTagName(name);
               openPortal(NULL_EVENT);
             }}
-            disabledTags={selectedTags.filter(
-              (tag) => tag.definition.length > 0
-            )}
+            placeholder="Create or remove tags"
+            tagList={manualTags}
           />
         </Col>
       </Row>

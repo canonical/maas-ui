@@ -66,8 +66,8 @@ const StorageForm = (): JSX.Element => {
               dispatch(updateConfig(values));
               resetForm({ values });
             }}
-            saving={saving}
             saved={saved}
+            saving={saving}
             validationSchema={StorageSchema}
           >
             <StorageFormFields />

@@ -30,8 +30,8 @@ const LXDSingleVMs = ({
     <LXDHostVMs
       hostId={id}
       searchFilter={searchFilter}
-      setSearchFilter={setSearchFilter}
       setHeaderContent={setHeaderContent}
+      setSearchFilter={setSearchFilter}
     />
   );
 };

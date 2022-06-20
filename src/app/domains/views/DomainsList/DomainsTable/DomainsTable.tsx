@@ -75,9 +75,6 @@ const DomainsTable = (): JSX.Element => {
           content: (
             <ContextualMenu
               hasToggleIcon={true}
-              toggleDisabled={domain.is_default}
-              toggleAppearance="base"
-              toggleClassName="u-no-margin--bottom is-small is-dense"
               links={[
                 {
                   children: "Set default...",
@@ -87,6 +84,9 @@ const DomainsTable = (): JSX.Element => {
                   },
                 },
               ]}
+              toggleAppearance="base"
+              toggleClassName="u-no-margin--bottom is-small is-dense"
+              toggleDisabled={domain.is_default}
             />
           ),
           className: "u-align--right",
@@ -97,8 +97,8 @@ const DomainsTable = (): JSX.Element => {
         <TableConfirm
           confirmAppearance="positive"
           confirmLabel="Set default"
-          errors={errors}
           errorKey="domain"
+          errors={errors}
           finished={saved}
           inProgress={saving}
           message={
@@ -131,13 +131,13 @@ const DomainsTable = (): JSX.Element => {
     <MainTable
       className="p-table-expanding--light"
       data-testid="domains-table"
-      headers={headers}
-      rows={rows}
-      paginate={50}
-      sortable
       defaultSort="name"
       defaultSortDirection="ascending"
       expanding={true}
+      headers={headers}
+      paginate={50}
+      rows={rows}
+      sortable
     />
   );
 };

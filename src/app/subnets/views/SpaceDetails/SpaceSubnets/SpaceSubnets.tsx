@@ -89,8 +89,8 @@ const SpaceSubnets = ({ space }: { space: Space }): JSX.Element => {
           { content: "VLAN" },
           { content: "Fabric" },
         ]}
-        rows={generateRows({ subnets, vlans })}
         responsive
+        rows={generateRows({ subnets, vlans })}
       />
     </TitledSection>
   );

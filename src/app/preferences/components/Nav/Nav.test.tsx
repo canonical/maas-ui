@@ -12,7 +12,7 @@ describe("Nav", () => {
         initialIndex={0}
       >
         <CompatRouter>
-          <Route render={() => <Nav />} path="/prefs" />
+          <Route path="/prefs" render={() => <Nav />} />
         </CompatRouter>
       </MemoryRouter>
     );

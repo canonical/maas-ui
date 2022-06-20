@@ -165,6 +165,7 @@ const Pools = (): JSX.Element => {
               <MainTable
                 className="p-table-expanding--light"
                 defaultSortDirection="ascending"
+                expanding={true}
                 headers={[
                   {
                     content: "Name",
@@ -183,7 +184,6 @@ const Pools = (): JSX.Element => {
                     className: "u-align--right",
                   },
                 ]}
-                expanding={true}
                 paginate={50}
                 rows={generateRows(
                   resourcePools,

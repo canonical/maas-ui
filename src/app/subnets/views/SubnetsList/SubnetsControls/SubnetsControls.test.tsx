@@ -7,8 +7,8 @@ it("renders select element correctly", () => {
   render(
     <SubnetsControls
       groupBy="fabric"
-      setGroupBy={jest.fn()}
       handleSearch={jest.fn()}
+      setGroupBy={jest.fn()}
     />
   );
   expect(screen.getByRole("combobox", { name: "Group by" })).toBeVisible();
@@ -18,8 +18,8 @@ it("displays additional information for group by on press", async () => {
   render(
     <SubnetsControls
       groupBy="fabric"
-      setGroupBy={jest.fn()}
       handleSearch={jest.fn()}
+      setGroupBy={jest.fn()}
     />
   );
   expect(
@@ -42,8 +42,8 @@ it("calls handleSearch with a correct value on user input", async () => {
   render(
     <SubnetsControls
       groupBy="fabric"
-      setGroupBy={jest.fn()}
       handleSearch={handleSearch}
+      setGroupBy={jest.fn()}
     />
   );
   await user.type(screen.getByRole("searchbox", { name: "Search" }), "test");

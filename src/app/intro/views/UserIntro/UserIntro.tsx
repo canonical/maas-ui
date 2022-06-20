@@ -42,9 +42,9 @@ const UserIntro = (): JSX.Element => {
       windowTitle="User"
     >
       <IntroCard
+        complete={!!hasSSHKeys}
         data-testid="sshkey-card"
         hasErrors={!!errorMessage}
-        complete={!!hasSSHKeys}
         title={<>SSH keys for {authUser?.username}</>}
       >
         <p>

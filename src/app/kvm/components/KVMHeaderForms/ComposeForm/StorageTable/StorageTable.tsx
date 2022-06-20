@@ -132,7 +132,7 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                       placeholder="Add tags"
                     />
                   </TableCell>
-                  <TableCell data-heading="Boot" className="u-align-non-field">
+                  <TableCell className="u-align-non-field" data-heading="Boot">
                     <FormikField
                       aria-label="Boot"
                       checked={bootDisk === disk.id}
@@ -146,8 +146,8 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
                     />
                   </TableCell>
                   <TableCell
-                    data-heading="Actions"
                     className="u-align--right u-no-padding--right u-align-non-field"
+                    data-heading="Actions"
                   >
                     <TableActions
                       data-testid="remove-disk"

@@ -95,8 +95,8 @@ describe("HashPolicySelect", () => {
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <HashPolicySelect
-            name="xmitHashPolicy"
             defaultOption={defaultOption}
+            name="xmitHashPolicy"
           />
         </Formik>
       </Provider>
@@ -115,7 +115,7 @@ describe("HashPolicySelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <HashPolicySelect name="xmitHashPolicy" defaultOption={null} />
+          <HashPolicySelect defaultOption={null} name="xmitHashPolicy" />
         </Formik>
       </Provider>
     );

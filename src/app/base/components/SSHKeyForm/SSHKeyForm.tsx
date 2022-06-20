@@ -55,8 +55,8 @@ export const SSHKeyForm = ({ cols, ...props }: Props): JSX.Element => {
           dispatch(sshkeyActions.import(values));
         }
       }}
-      saving={saving}
       saved={saved}
+      saving={saving}
       submitLabel="Import SSH key"
       validationSchema={SSHKeySchema}
       {...props}

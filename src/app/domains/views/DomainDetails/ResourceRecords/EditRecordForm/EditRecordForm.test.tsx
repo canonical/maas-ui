@@ -58,7 +58,7 @@ describe("EditRecordForm", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <EditRecordForm id={1} resource={resourceA} closeForm={closeForm} />
+            <EditRecordForm closeForm={closeForm} id={1} resource={resourceA} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

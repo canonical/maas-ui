@@ -26,9 +26,9 @@ it("dispatches actions to fetch necessary data and set subnet as active on mount
       >
         <CompatRouter>
           <Route
+            component={() => <SubnetDetails />}
             exact
             path={subnetsURLs.subnet.index(null, true)}
-            component={() => <SubnetDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -60,9 +60,9 @@ it("dispatches actions to unset active subnet and clean up on unmount", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SubnetDetails />}
             exact
             path={subnetsURLs.subnet.index(null, true)}
-            component={() => <SubnetDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -103,9 +103,9 @@ it("displays a message if the subnet does not exist", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SubnetDetails />}
             exact
             path={subnetsURLs.subnet.index(null, true)}
-            component={() => <SubnetDetails />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -130,9 +130,9 @@ it("shows a spinner if the subnet has not loaded yet", () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SubnetDetails />}
             exact
             path={subnetsURLs.subnet.index(null, true)}
-            component={() => <SubnetDetails />}
           />
         </CompatRouter>
       </MemoryRouter>

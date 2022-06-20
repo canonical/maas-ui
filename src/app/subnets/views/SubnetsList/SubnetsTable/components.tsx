@@ -22,9 +22,9 @@ export const SpaceCellContents = ({
         {value.label === "No space" ? (
           <Button
             appearance="base"
+            aria-label="No space - press to see more information"
             dense
             hasIcon
-            aria-label="No space - press to see more information"
             onClick={() => setIsWarningOpen(!isWarningOpen)}
           >
             <i className="p-icon--warning"></i> <span>No space</span>

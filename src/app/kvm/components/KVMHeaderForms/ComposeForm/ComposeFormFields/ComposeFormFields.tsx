@@ -67,7 +67,7 @@ export const ComposeFormFields = ({
         <ZoneSelect name="zone" required valueKey="id" />
         <ResourcePoolSelect name="pool" required valueKey="id" />
       </Col>
-      <Col size={5} emptyLarge={7}>
+      <Col emptyLarge={7} size={5}>
         <FormikField
           component={Select}
           label="Architecture"

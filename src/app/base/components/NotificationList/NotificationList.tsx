@@ -65,8 +65,8 @@ const NotificationList = (): JSX.Element => {
           return (
             <NotificationGroup
               key={severity}
-              severity={severity}
               notifications={items}
+              severity={severity}
             />
           );
         } else if (items.length === 1) {

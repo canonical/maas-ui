@@ -39,11 +39,11 @@ const _generateSection = (
       return (
         <li className="p-side-navigation__item" key={subPath}>
           <Link
-            to={subPath}
             className={classNames("p-side-navigation__link", {
               "is-active": isActive,
             })}
             onClick={closeDrawer}
+            to={subPath}
           >
             {subsection.label}
           </Link>
@@ -64,11 +64,11 @@ const _generateSection = (
     return (
       <li className="p-side-navigation__item--title" key={path}>
         <Link
-          to={path}
           className={classNames("p-side-navigation__link", {
             "is-active": isActive,
           })}
           onClick={closeDrawer}
+          to={path}
         >
           {section.label}
         </Link>

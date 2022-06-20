@@ -105,9 +105,9 @@ describe("LinkModeSelect", () => {
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
           <LinkModeSelect
+            defaultOption={defaultOption}
             interfaceType={NetworkInterfaceTypes.PHYSICAL}
             name="mode"
-            defaultOption={defaultOption}
           />
         </Formik>
       </Provider>
@@ -123,9 +123,9 @@ describe("LinkModeSelect", () => {
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
           <LinkModeSelect
+            defaultOption={null}
             interfaceType={NetworkInterfaceTypes.PHYSICAL}
             name="mode"
-            defaultOption={null}
           />
         </Formik>
       </Provider>

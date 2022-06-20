@@ -55,7 +55,7 @@ const TitledSection = ({
 }: Props): JSX.Element => {
   const id = useId();
   const heading = (
-    <Heading element={headingElement} id={id} className={headingClassName}>
+    <Heading className={headingClassName} element={headingElement} id={id}>
       {title}
     </Heading>
   );

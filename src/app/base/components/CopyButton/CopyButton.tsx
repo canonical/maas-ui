@@ -33,7 +33,7 @@ const CopyButton = ({ value }: Props): JSX.Element => {
       >
         <i className="p-icon--copy">Copy</i>
       </Button>
-      <input type="hidden" ref={input} value={value} />
+      <input ref={input} type="hidden" value={value} />
     </>
   );
 };

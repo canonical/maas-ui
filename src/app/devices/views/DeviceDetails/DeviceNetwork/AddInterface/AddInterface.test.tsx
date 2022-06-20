@@ -58,7 +58,7 @@ describe("AddInterface", () => {
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <AddInterface systemId="abc123" closeForm={jest.fn()} />
+            <AddInterface closeForm={jest.fn()} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

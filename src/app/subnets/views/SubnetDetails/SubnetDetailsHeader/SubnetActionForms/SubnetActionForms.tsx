@@ -26,8 +26,8 @@ const SubnetActionForms = ({
 
   return (
     <FormComponent
-      id={id}
       activeForm={activeForm}
+      id={id}
       setActiveForm={setActiveForm}
     />
   );

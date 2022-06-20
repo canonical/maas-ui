@@ -18,9 +18,9 @@ it("can perform a secondary submit action if function and label provided", async
   render(
     <Formik initialValues={{}} onSubmit={jest.fn()}>
       <FormikFormButtons
-        submitLabel="Save user"
         secondarySubmit={secondarySubmit}
         secondarySubmitLabel="Save and add another"
+        submitLabel="Save user"
       />
     </Formik>
   );
@@ -38,9 +38,9 @@ it("can generate a secondary submit label via a function", async () => {
   render(
     <Formik initialValues={{ name: "Koala" }} onSubmit={jest.fn()}>
       <FormikFormButtons
-        submitLabel="Save user"
         secondarySubmit={secondarySubmit}
         secondarySubmitLabel={({ name }) => `Kool ${name}`}
+        submitLabel="Save user"
       />
     </Formik>
   );
@@ -55,10 +55,10 @@ it("can display a tooltip for the secondary submit action", async () => {
   render(
     <Formik initialValues={{}} onSubmit={jest.fn()}>
       <FormikFormButtons
-        submitLabel="Save user"
         secondarySubmit={jest.fn()}
         secondarySubmitLabel="Save and add another"
         secondarySubmitTooltip="Will add another"
+        submitLabel="Save user"
       />
     </Formik>
   );

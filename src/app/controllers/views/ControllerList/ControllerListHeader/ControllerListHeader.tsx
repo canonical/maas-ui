@@ -42,8 +42,8 @@ const ControllerListHeader = ({
           Add rack controller
         </Button>,
         <NodeActionMenu
-          nodes={selectedControllers}
           nodeDisplay="controller"
+          nodes={selectedControllers}
           onActionClick={(action) => {
             const view = Object.values(ControllerHeaderViews).find(
               ([, actionName]) => actionName === action

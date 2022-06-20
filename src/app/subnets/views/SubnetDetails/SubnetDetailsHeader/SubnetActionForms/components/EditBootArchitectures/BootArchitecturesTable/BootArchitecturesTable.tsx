@@ -90,9 +90,9 @@ export const BootArchitecturesTable = (): JSX.Element => {
                 <RowCheckbox
                   checkSelected={isChecked}
                   handleRowCheckbox={handleArchChange}
+                  inputLabel={name}
                   item={name}
                   items={disabled_boot_architectures}
-                  inputLabel={name}
                 />
               ),
             },

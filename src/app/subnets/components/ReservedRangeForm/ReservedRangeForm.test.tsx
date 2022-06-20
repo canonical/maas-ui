@@ -46,7 +46,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+            <ReservedRangeForm id={ipRange.id} onClose={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -78,7 +78,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+            <ReservedRangeForm id={ipRange.id} onClose={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -105,7 +105,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+            <ReservedRangeForm id={ipRange.id} onClose={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -170,7 +170,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+            <ReservedRangeForm id={ipRange.id} onClose={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -202,7 +202,7 @@ describe("ReservedRangeForm", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <ReservedRangeForm onClose={jest.fn()} id={ipRange.id} />
+            <ReservedRangeForm id={ipRange.id} onClose={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

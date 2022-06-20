@@ -52,9 +52,9 @@ it("can display buttons", () => {
 it("displays a custom heading level", () => {
   render(
     <TitledSection
-      title="echidna says"
       headingElement="h4"
       headingVisuallyHidden={true}
+      title="echidna says"
     ></TitledSection>
   );
 
@@ -65,7 +65,7 @@ it("displays a custom heading level", () => {
 
 it("adds a custom heading className", () => {
   render(
-    <TitledSection title="echidna says" headingClassName="u-no-margin--bottom">
+    <TitledSection headingClassName="u-no-margin--bottom" title="echidna says">
       G'day
     </TitledSection>
   );

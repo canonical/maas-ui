@@ -41,9 +41,9 @@ const renderTestCase = (
         <Router history={history}>
           <CompatRouter>
             <Route
+              component={() => <SpaceDetailsHeader space={space} />}
               exact
               path={subnetsURLs.space.index({ id: space.id })}
-              component={() => <SpaceDetailsHeader space={space} />}
             />
           </CompatRouter>
         </Router>

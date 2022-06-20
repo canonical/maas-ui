@@ -31,8 +31,8 @@ const ControllerNetwork = ({ systemId }: Props): JSX.Element => {
       dhcpTable={() => (
         <DHCPTable
           className="u-no-padding--top"
-          node={controller}
           modelName={ControllerMeta.MODEL}
+          node={controller}
         />
       )}
       interfaceTable={() => <NetworkTable node={controller} />}

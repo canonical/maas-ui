@@ -238,6 +238,13 @@ const DiscoveriesList = (): JSX.Element => {
         data-testid="discoveries-table"
         defaultSort="lastSeen"
         defaultSortDirection="ascending"
+        emptyStateMsg={
+          loading ? (
+            <Spinner text="Loading..." />
+          ) : (
+            "No discoveries match the search criteria."
+          )
+        }
         expanding
         headers={headers}
         rows={generateRows(
@@ -249,13 +256,6 @@ const DiscoveriesList = (): JSX.Element => {
           dispatch
         )}
         sortable
-        emptyStateMsg={
-          loading ? (
-            <Spinner text="Loading..." />
-          ) : (
-            "No discoveries match the search criteria."
-          )
-        }
       />
     </>
   );

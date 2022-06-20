@@ -104,7 +104,7 @@ describe("BondModeSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <BondModeSelect name="mode" defaultOption={defaultOption} />
+          <BondModeSelect defaultOption={defaultOption} name="mode" />
         </Formik>
       </Provider>
     );
@@ -122,7 +122,7 @@ describe("BondModeSelect", () => {
     const wrapper = mount(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <BondModeSelect name="mode" defaultOption={null} />
+          <BondModeSelect defaultOption={null} name="mode" />
         </Formik>
       </Provider>
     );

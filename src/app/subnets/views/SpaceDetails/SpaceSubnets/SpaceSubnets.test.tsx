@@ -57,9 +57,9 @@ it("displays a message when there are no subnets", async () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SpaceSubnets space={space} />}
             exact
             path={subnetsURLs.space.index({ id: space.id })}
-            component={() => <SpaceSubnets space={space} />}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -95,9 +95,9 @@ it("displays subnet details correctly", async () => {
       >
         <CompatRouter>
           <Route
+            component={() => <SpaceSubnets space={space} />}
             exact
             path={subnetsURLs.space.index({ id: space.id })}
-            component={() => <SpaceSubnets space={space} />}
           />
         </CompatRouter>
       </MemoryRouter>

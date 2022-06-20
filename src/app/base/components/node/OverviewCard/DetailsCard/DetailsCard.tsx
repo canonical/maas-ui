@@ -63,14 +63,14 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
       {isMachine && (
         <div>
           <div className="u-text--muted">Owner</div>
-          <span title={node.owner || "-"} data-testid="owner">
+          <span data-testid="owner" title={node.owner || "-"}>
             {node.owner || "-"}
           </span>
         </div>
       )}
       <div>
         <div className="u-text--muted">Domain</div>
-        <span title={node.domain?.name} data-testid="domain">
+        <span data-testid="domain" title={node.domain?.name}>
           {node.domain?.name}
         </span>
       </div>
@@ -157,7 +157,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
             <span className="u-text--muted">Power type</span>
           )}
         </div>
-        <span title={node.power_type} data-testid="power-type">
+        <span data-testid="power-type" title={node.power_type}>
           {powerTypeDisplay || node.power_type || <em>None</em>}
         </span>
       </div>

@@ -42,8 +42,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -85,8 +85,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -123,8 +123,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -161,8 +161,8 @@ describe("LXDHostVMs", () => {
               clusterId={2}
               hostId={1}
               searchFilter=""
-              setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -187,8 +187,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setSearchFilter={jest.fn()}
               setHeaderContent={jest.fn()}
+              setSearchFilter={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>

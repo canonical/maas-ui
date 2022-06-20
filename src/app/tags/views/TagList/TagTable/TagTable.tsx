@@ -138,9 +138,9 @@ const generateNoTagsMessage = (
     if (message) {
       noTagsMessage = (
         <Strip
-          shallow
-          rowClassName="u-align--center"
           data-testid={TestId.NoTags}
+          rowClassName="u-align--center"
+          shallow
         >
           {message}
         </Strip>

@@ -91,7 +91,6 @@ const generateRows = (
     } else if (expanded?.type === ExpandedType.Update) {
       expandedContent = (
         <EditStaticRouteForm
-          staticRouteId={staticRoute.id}
           handleDismiss={() =>
             toggleExpanded(
               staticRoute.id,
@@ -100,6 +99,7 @@ const generateRows = (
               setExpanded
             )
           }
+          staticRouteId={staticRoute.id}
         />
       );
     }
@@ -176,7 +176,6 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
 
   return (
     <TitledSection
-      title="Static routes"
       buttons={
         isAdmin ? (
           <Button
@@ -189,10 +188,10 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
           </Button>
         ) : null
       }
+      title="Static routes"
     >
       <MainTable
         className="static-routes-table p-table-expanding--light"
-        responsive
         defaultSort="gateway_ip"
         defaultSortDirection="ascending"
         emptyStateMsg={
@@ -221,6 +220,7 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
             className: "u-align--right",
           },
         ]}
+        responsive
         rows={generateRows(
           dispatch,
           staticRoutes,
@@ -235,8 +235,8 @@ const StaticRoutes = ({ subnetId }: Props): JSX.Element | null => {
       {isAddStaticRouteOpen ? (
         <FormCard sidebar={false}>
           <AddStaticRouteForm
-            subnetId={subnetId}
             handleDismiss={() => setExpanded(null)}
+            subnetId={subnetId}
           />
         </FormCard>
       ) : null}

@@ -17,8 +17,8 @@ describe("TagSelector", () => {
     const component = shallow(
       <TagSelector
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -29,8 +29,8 @@ describe("TagSelector", () => {
     const component = mount(
       <TagSelector
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -42,8 +42,8 @@ describe("TagSelector", () => {
     const component = mount(
       <TagSelector
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={[
           { ...tags[0], description: "description one" },
           { ...tags[1], description: "description two" },
@@ -60,8 +60,8 @@ describe("TagSelector", () => {
       <TagSelector
         initialSelected={[tags[0]]}
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -74,8 +74,8 @@ describe("TagSelector", () => {
     const component = shallow(
       <TagSelector
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -88,8 +88,8 @@ describe("TagSelector", () => {
     const component = shallow(
       <TagSelector
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -104,8 +104,8 @@ describe("TagSelector", () => {
     const component = shallow(
       <TagSelector
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         showSelectedTags={false}
         tags={tags}
       />
@@ -123,8 +123,8 @@ describe("TagSelector", () => {
       <TagSelector
         initialSelected={tags}
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -142,8 +142,8 @@ describe("TagSelector", () => {
       <TagSelector
         allowNewTags
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -162,10 +162,10 @@ describe("TagSelector", () => {
     const component = shallow(
       <TagSelector
         allowNewTags
-        onAddNewTag={onAddNewTag}
         label="Tags"
-        placeholder="Select or create tags"
+        onAddNewTag={onAddNewTag}
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -184,8 +184,8 @@ describe("TagSelector", () => {
       <TagSelector
         allowNewTags
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={tags}
       />
     );
@@ -203,8 +203,8 @@ describe("TagSelector", () => {
     const component = shallow(
       <TagSelector
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={[...tags, { displayName: "other", name: "other" }]}
       />
     );
@@ -220,8 +220,8 @@ describe("TagSelector", () => {
     const component = shallow(
       <TagSelector
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         tags={[
           { displayName: "there", name: "there" },
           { displayName: "other", name: "other" },
@@ -272,8 +272,8 @@ describe("TagSelector", () => {
       <TagSelector
         header={<span data-testid="dropdown-header"></span>}
         label="Tags"
-        placeholder="Select or create tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         showSelectedTags={false}
         tags={tags}
       />
@@ -287,10 +287,10 @@ describe("TagSelector", () => {
   it("can customise the dropdown items", () => {
     const component = shallow(
       <TagSelector
-        label="Tags"
         generateDropdownEntry={() => <span data-testid="dropdown-item"></span>}
-        placeholder="Select or create tags"
+        label="Tags"
         onTagsUpdate={jest.fn()}
+        placeholder="Select or create tags"
         showSelectedTags={false}
         tags={tags}
       />

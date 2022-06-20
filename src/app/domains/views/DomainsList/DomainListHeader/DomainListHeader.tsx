@@ -46,10 +46,10 @@ const DomainListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
+      headerContent={headerContent}
       subtitle={`${pluralize("domain", domainCount, true)} available`}
       subtitleLoading={!domainsLoaded}
       title="DNS"
-      headerContent={headerContent}
     />
   );
 };

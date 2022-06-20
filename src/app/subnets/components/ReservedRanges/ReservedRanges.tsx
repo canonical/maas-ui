@@ -117,7 +117,7 @@ const generateRows = (
         />
       );
     } else if (expanded?.type === ExpandedType.Update) {
-      expandedContent = <ReservedRangeForm onClose={onClose} id={ipRange.id} />;
+      expandedContent = <ReservedRangeForm id={ipRange.id} onClose={onClose} />;
     }
     const columns: MainTableCell[] = [
       {
@@ -262,13 +262,7 @@ const ReservedRanges = ({
     <TitledSection
       buttons={
         <ContextualMenu
-          toggleLabel={
-            isAddingDynamic ? Labels.ReserveDynamicRange : Labels.ReserveRange
-          }
-          toggleAppearance="positive"
-          toggleDisabled={isDisabled}
           hasToggleIcon
-          position="right"
           links={[
             {
               children: Labels.ReserveRange,
@@ -281,6 +275,12 @@ const ReservedRanges = ({
               onClick: () => setExpanded({ type: ExpandedType.CreateDynamic }),
             },
           ]}
+          position="right"
+          toggleAppearance="positive"
+          toggleDisabled={isDisabled}
+          toggleLabel={
+            isAddingDynamic ? Labels.ReserveDynamicRange : Labels.ReserveRange
+          }
         />
       }
       title="Reserved ranges"
@@ -298,7 +298,6 @@ const ReservedRanges = ({
             "reserved-ranges-table--has-subnet": showSubnetColumn,
           }
         )}
-        responsive
         defaultSort="name"
         defaultSortDirection="descending"
         emptyStateMsg={
@@ -312,6 +311,7 @@ const ReservedRanges = ({
         }
         expanding
         headers={headers}
+        responsive
         rows={generateRows(
           dispatch,
           ipRanges,
@@ -326,10 +326,10 @@ const ReservedRanges = ({
       {isAdding ? (
         <FormCard sidebar={false}>
           <ReservedRangeForm
-            onClose={() => setExpanded(null)}
             createType={
               isAddingDynamic ? IPRangeType.Dynamic : IPRangeType.Reserved
             }
+            onClose={() => setExpanded(null)}
             subnetId={subnetId}
           />
         </FormCard>

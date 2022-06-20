@@ -35,13 +35,13 @@ const Section = ({
         shallow
       >
         {sidebar && (
-          <Col element="aside" size={SIDEBAR} className="section__sidebar">
+          <Col className="section__sidebar" element="aside" size={SIDEBAR}>
             {sidebar}
           </Col>
         )}
         <Col
-          size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}
           className="section__content"
+          size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}
         >
           <NotificationList />
           {children}
