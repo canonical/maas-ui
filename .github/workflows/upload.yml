@@ -28,7 +28,7 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build
-        run: yarn build
+        run: CI=false yarn build
         env:
           CI: true
       - name: Compress
