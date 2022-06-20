@@ -84,13 +84,13 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
         />
       ) : (
         <CodeSnippet
-          data-testid="register-snippet"
           blocks={[
             {
               dropdowns,
               code: `sudo maas init rack --maas-url ${maasUrl} --secret ${rpcSharedSecret}`,
             },
           ]}
+          data-testid="register-snippet"
         />
       )}
 
