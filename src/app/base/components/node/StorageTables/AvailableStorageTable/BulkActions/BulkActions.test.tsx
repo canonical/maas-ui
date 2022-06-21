@@ -105,12 +105,12 @@ describe("BulkActions", () => {
     ).toBe(false);
   });
 
-  it("renders VMFS6 bulk actions if the detected layout is VMFS6", () => {
+  it("renders datastore bulk actions if the detected layout is a VMWare layout", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [
           machineDetailsFactory({
-            detected_storage_layout: StorageLayout.VMFS6,
+            detected_storage_layout: StorageLayout.VMFS7,
             system_id: "abc123",
           }),
         ],
@@ -135,7 +135,7 @@ describe("BulkActions", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='vmfs6-bulk-actions']").exists()).toBe(
+    expect(wrapper.find("[data-testid='vmware-bulk-actions']").exists()).toBe(
       true
     );
   });

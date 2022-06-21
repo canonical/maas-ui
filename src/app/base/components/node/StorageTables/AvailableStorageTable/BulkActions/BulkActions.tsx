@@ -12,13 +12,13 @@ import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import { StorageLayout } from "app/store/types/enum";
 import type { Disk, Partition } from "app/store/types/node";
 import {
   canCreateOrUpdateDatastore,
   canCreateRaid,
   canCreateVolumeGroup,
   isDatastore,
+  isVMWareLayout,
 } from "app/store/utils";
 
 type Props = {
@@ -82,7 +82,7 @@ const BulkActions = ({
     );
   }
 
-  if (machine.detected_storage_layout === StorageLayout.VMFS6) {
+  if (isVMWareLayout(machine.detected_storage_layout)) {
     const hasDatastores = machine.disks.some((disk) =>
       isDatastore(disk.filesystem)
     );
@@ -100,7 +100,7 @@ const BulkActions = ({
     return (
       <List
         className="u-no-margin--bottom"
-        data-testid="vmfs6-bulk-actions"
+        data-testid="vmware-bulk-actions"
         inline
         items={[
           <Tooltip
@@ -144,7 +144,6 @@ const BulkActions = ({
   return (
     <List
       className="u-no-margin--bottom"
-      data-testid="vmfs6-bulk-actions"
       inline
       items={[
         <Tooltip
