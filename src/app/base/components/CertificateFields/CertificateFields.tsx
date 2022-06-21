@@ -9,6 +9,13 @@ type Props = {
   shouldGenerateCert: boolean;
 };
 
+export enum Labels {
+  Generate = "Generate new certificate",
+  Provide = "Provide certificate and private key",
+  UploadCert = "Upload certificate",
+  UploadKey = "Upload private key",
+}
+
 export const CertificateFields = ({
   certificateFieldName = "certificate",
   onShouldGenerateCert,
@@ -21,14 +28,14 @@ export const CertificateFields = ({
       <Input
         checked={shouldGenerateCert}
         id="generate-certificate"
-        label="Generate new certificate"
+        label={Labels.Generate}
         onChange={() => onShouldGenerateCert(true)}
         type="radio"
       />
       <Input
         checked={!shouldGenerateCert}
         id="provide-certificate"
-        label="Provide certificate and private key"
+        label={Labels.Provide}
         onChange={() => onShouldGenerateCert(false)}
         type="radio"
         wrapperClassName="u-sv2"
@@ -36,13 +43,13 @@ export const CertificateFields = ({
       {!shouldGenerateCert && (
         <>
           <UploadTextArea
-            label="Upload certificate"
+            label={Labels.UploadCert}
             name={certificateFieldName}
             placeholder="Paste or upload a certificate."
             rows={5}
           />
           <UploadTextArea
-            label="Upload private key"
+            label={Labels.UploadKey}
             name={privateKeyFieldName}
             placeholder="Paste or upload a private key."
             rows={5}

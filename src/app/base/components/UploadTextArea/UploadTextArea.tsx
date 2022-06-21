@@ -7,6 +7,7 @@ import { useFormikContext } from "formik";
 import { useDropzone } from "react-dropzone";
 
 import FormikField from "app/base/components/FormikField";
+import { useId } from "app/base/hooks/base";
 import type { AnyObject } from "app/base/types";
 import { formatBytes } from "app/utils";
 
@@ -16,6 +17,7 @@ type Props<V> = {
   name: keyof V;
 } & Omit<
   TextareaProps,
+  | "aria-labelledby"
   | "autoCapitalize"
   | "autoComplete"
   | "autoCorrect"
@@ -32,6 +34,7 @@ export const UploadTextArea = <V extends AnyObject>({
   name,
   ...textAreaProps
 }: Props<V>): JSX.Element => {
+  const id = useId();
   const [fileErrors, setFileErrors] = useState<string | null>(null);
   const { handleChange, setFieldTouched, setFieldValue } =
     useFormikContext<V>();
@@ -82,7 +85,7 @@ export const UploadTextArea = <V extends AnyObject>({
 
   return (
     <div {...getRootProps()}>
-      <label className="p-button">
+      <label className="p-button" id={id}>
         <span className="u-nudge-left--small">
           <Icon name="back-to-top" />
         </span>
@@ -90,6 +93,7 @@ export const UploadTextArea = <V extends AnyObject>({
         <input {...getInputProps()} />
       </label>
       <FormikField
+        aria-labelledby={id}
         autoCapitalize="off"
         autoComplete="off"
         autoCorrect="off"

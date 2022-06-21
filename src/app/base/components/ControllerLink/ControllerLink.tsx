@@ -14,6 +14,10 @@ type Props = {
   systemId?: Controller[ControllerMeta.PK] | null;
 };
 
+export enum Labels {
+  LoadingControllers = "Loading controllers",
+}
+
 const ControllerLink = ({ systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const controller = useSelector((state: RootState) =>
@@ -26,7 +30,7 @@ const ControllerLink = ({ systemId }: Props): JSX.Element | null => {
   }, [dispatch]);
 
   if (controllersLoading) {
-    return <Spinner aria-label="Loading controllers" />;
+    return <Spinner aria-label={Labels.LoadingControllers} />;
   }
   if (!controller) {
     return null;

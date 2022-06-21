@@ -1,8 +1,9 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import CertificateDetails from "./CertificateDetails";
+import CertificateDetails, { Labels } from "./CertificateDetails";
 
 import * as hooks from "app/base/hooks/analytics";
 import { ConfigNames } from "app/store/config/types";
@@ -17,7 +18,7 @@ const mockStore = configureStore();
 
 describe("CertificateDetails", () => {
   it(`sends an analytics event when clicking the 'read more' link if analytics
-    is enabled`, () => {
+    is enabled`, async () => {
     const mockSendAnalytics = jest.fn();
     const mockUseSendAnalytics = jest
       .spyOn(hooks, "useSendAnalytics")
@@ -30,7 +31,7 @@ describe("CertificateDetails", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <CertificateDetails
           certificate="certificate"
@@ -39,7 +40,8 @@ describe("CertificateDetails", () => {
         />
       </Provider>
     );
-    wrapper.find("Link[data-testid='read-more-link']").simulate("click");
+
+    await userEvent.click(screen.getByRole("link", { name: Labels.ReadMore }));
 
     expect(mockSendAnalytics).toHaveBeenCalled();
     expect(mockSendAnalytics.mock.calls[0]).toEqual([

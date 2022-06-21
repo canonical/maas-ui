@@ -1,4 +1,5 @@
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import ColumnToggle from "./ColumnToggle";
 
@@ -18,21 +19,9 @@ describe("ColumnToggle ", () => {
     jest.spyOn(window, "scrollTo");
   });
 
-  it("renders", () => {
-    const wrapper = shallow(
-      <ColumnToggle
-        isExpanded={false}
-        label="maas.local"
-        onClose={jest.fn()}
-        onOpen={jest.fn()}
-      />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-
-  it("calls the close function when expanded", () => {
+  it("calls the close function when expanded", async () => {
     const onClose = jest.fn();
-    const wrapper = shallow(
+    render(
       <ColumnToggle
         isExpanded={true}
         label="maas.local"
@@ -40,13 +29,15 @@ describe("ColumnToggle ", () => {
         onOpen={jest.fn()}
       />
     );
-    wrapper.simulate("click");
+
+    await userEvent.click(screen.getByRole("button"));
+
     expect(onClose).toHaveBeenCalled();
   });
 
-  it("calls the open function when not expanded", () => {
+  it("calls the open function when not expanded", async () => {
     const onOpen = jest.fn();
-    const wrapper = shallow(
+    render(
       <ColumnToggle
         isExpanded={false}
         label="maas.local"
@@ -54,7 +45,9 @@ describe("ColumnToggle ", () => {
         onOpen={onOpen}
       />
     );
-    wrapper.simulate("click");
+
+    await userEvent.click(screen.getByRole("button"));
+
     expect(onOpen).toHaveBeenCalled();
   });
 
@@ -78,12 +71,12 @@ describe("ColumnToggle ", () => {
       jest.clearAllMocks();
     });
 
-    it("can scroll to a toggle", () => {
+    it("can scroll to a toggle", async () => {
       Element.prototype.getBoundingClientRect = jest.fn(() => ({
         ...DOM_RECT,
         top: -20,
       }));
-      const wrapper = mount(
+      render(
         <ColumnToggle
           isExpanded={false}
           label="maas.local"
@@ -91,16 +84,18 @@ describe("ColumnToggle ", () => {
           onOpen={jest.fn()}
         />
       );
-      wrapper.simulate("click");
+
+      await userEvent.click(screen.getByRole("button"));
+
       expect(window.scrollTo).toHaveBeenCalledWith(0, 80);
     });
 
-    it("does not scroll if the toggle is visible", () => {
+    it("does not scroll if the toggle is visible", async () => {
       Element.prototype.getBoundingClientRect = jest.fn(() => ({
         ...DOM_RECT,
         top: 20,
       }));
-      const wrapper = mount(
+      render(
         <ColumnToggle
           isExpanded={false}
           label="maas.local"
@@ -108,7 +103,9 @@ describe("ColumnToggle ", () => {
           onOpen={jest.fn()}
         />
       );
-      wrapper.simulate("click");
+
+      await userEvent.click(screen.getByRole("button"));
+
       expect(window.scrollTo).not.toHaveBeenCalled();
     });
   });

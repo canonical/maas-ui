@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import EventLogs, { Label } from "./EventLogs";
 
+import { Labels as ArrowPaginationLabels } from "app/base/components/ArrowPagination";
 import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -134,14 +135,11 @@ describe("EventLogs", () => {
       .filter(({ type }) => type === "event/fetch");
     expect(dispatches.length).toBe(1);
     // Navigate to the last page:
-    await userEvent.click(screen.getByRole("button", { name: "Page 2" }));
-    await userEvent.click(screen.getByRole("button", { name: "Page 3" }));
-    await userEvent.click(screen.getByRole("button", { name: "Page 4" }));
-    await userEvent.click(screen.getByRole("button", { name: "Page 5" }));
-    await userEvent.click(screen.getByRole("button", { name: "Page 6" }));
-    await userEvent.click(screen.getByRole("button", { name: "Page 7" }));
-    await userEvent.click(screen.getByRole("button", { name: "Page 8" }));
-    await userEvent.click(screen.getByRole("button", { name: "Page 9" }));
+    for (let i = 0; i < 8; i++) {
+      await userEvent.click(
+        screen.getByRole("button", { name: ArrowPaginationLabels.GoForward })
+      );
+    }
     dispatches = store
       .getActions()
       .filter(({ type }) => type === "event/fetch");

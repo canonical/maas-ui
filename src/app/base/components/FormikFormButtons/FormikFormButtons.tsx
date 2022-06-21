@@ -32,6 +32,14 @@ export type Props<V> = {
   submitLabel?: string;
 };
 
+export enum TestIds {
+  ButtonsHelp = "buttons-help",
+  ButtonsWrapper = "buttons-wrapper",
+  CancelButton = "cancel-action",
+  SavingLabel = "saving-label",
+  SecondarySubmit = "secondary-submit",
+}
+
 export const FormikFormButtons = <V,>({
   buttonsAlign = "right",
   buttonsBordered = true,
@@ -65,7 +73,7 @@ export const FormikFormButtons = <V,>({
     const button = (
       <Button
         className="formik-form-buttons__button"
-        data-testid="secondary-submit"
+        data-testid={TestIds.SecondarySubmit}
         disabled={secondarySubmitDisabled || submitDisabled}
         onClick={
           secondarySubmit
@@ -99,10 +107,13 @@ export const FormikFormButtons = <V,>({
           "is-bordered": buttonsBordered,
           "is-inline": inline,
         })}
-        data-testid="buttons-wrapper"
+        data-testid={TestIds.ButtonsWrapper}
       >
         {buttonsHelp && (
-          <div className="formik-form-buttons__help" data-testid="buttons-help">
+          <div
+            className="formik-form-buttons__help"
+            data-testid={TestIds.ButtonsHelp}
+          >
             {buttonsHelp}
           </div>
         )}
@@ -115,7 +126,7 @@ export const FormikFormButtons = <V,>({
             <Button
               appearance="base"
               className="formik-form-buttons__button"
-              data-testid="cancel-action"
+              data-testid={TestIds.CancelButton}
               disabled={cancelDisabled}
               onClick={
                 onCancel ? () => onCancel(values, formikContext) : undefined
@@ -141,7 +152,7 @@ export const FormikFormButtons = <V,>({
       {saving && savingLabel && (
         <p
           className="u-text--light u-align-text--right"
-          data-testid="saving-label"
+          data-testid={TestIds.SavingLabel}
         >
           {savingLabel}
         </p>

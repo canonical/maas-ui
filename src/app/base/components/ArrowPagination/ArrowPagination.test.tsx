@@ -1,10 +1,10 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import ArrowPagination from "./ArrowPagination";
+import ArrowPagination, { Labels, TestIds } from "./ArrowPagination";
 
 describe("ArrowPagination", () => {
   it("disables both buttons when there are no items", () => {
-    const wrapper = mount(
+    render(
       <ArrowPagination
         currentPage={1}
         itemCount={0}
@@ -12,12 +12,15 @@ describe("ArrowPagination", () => {
         setCurrentPage={() => null}
       />
     );
-    expect(wrapper.find("Button").first().prop("disabled")).toBe(true);
-    expect(wrapper.find("Button").last().prop("disabled")).toBe(true);
+
+    expect(screen.getByRole("button", { name: Labels.GoBack })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: Labels.GoForward })
+    ).toBeDisabled();
   });
 
   it("activates both buttons when between the start and end", () => {
-    const wrapper = mount(
+    render(
       <ArrowPagination
         currentPage={2}
         itemCount={75}
@@ -25,12 +28,17 @@ describe("ArrowPagination", () => {
         setCurrentPage={() => null}
       />
     );
-    expect(wrapper.find("Button").first().prop("disabled")).toBe(false);
-    expect(wrapper.find("Button").last().prop("disabled")).toBe(false);
+
+    expect(
+      screen.getByRole("button", { name: Labels.GoBack })
+    ).not.toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: Labels.GoForward })
+    ).not.toBeDisabled();
   });
 
   it("disables the back button when on the first page", () => {
-    const wrapper = mount(
+    render(
       <ArrowPagination
         currentPage={1}
         itemCount={50}
@@ -38,11 +46,15 @@ describe("ArrowPagination", () => {
         setCurrentPage={() => null}
       />
     );
-    expect(wrapper.find("Button").first().prop("disabled")).toBe(true);
+
+    expect(screen.getByRole("button", { name: Labels.GoBack })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: Labels.GoForward })
+    ).not.toBeDisabled();
   });
 
   it("disables the forward button when on the last page", () => {
-    const wrapper = mount(
+    render(
       <ArrowPagination
         currentPage={2}
         itemCount={50}
@@ -50,11 +62,17 @@ describe("ArrowPagination", () => {
         setCurrentPage={() => null}
       />
     );
-    expect(wrapper.find("Button").last().prop("disabled")).toBe(true);
+
+    expect(
+      screen.getByRole("button", { name: Labels.GoBack })
+    ).not.toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: Labels.GoForward })
+    ).toBeDisabled();
   });
 
   it("can show the page bounds when there are no items", () => {
-    const wrapper = mount(
+    render(
       <ArrowPagination
         currentPage={1}
         itemCount={0}
@@ -63,13 +81,14 @@ describe("ArrowPagination", () => {
         showPageBounds
       />
     );
-    expect(wrapper.find("[data-testid='page-bounds']").text()).toBe(
+
+    expect(screen.getByTestId(TestIds.PageBounds).textContent).toBe(
       "0 - 0 of 0"
     );
   });
 
   it("can show the page bounds when there are more items than the current page shows", () => {
-    const wrapper = mount(
+    render(
       <ArrowPagination
         currentPage={1}
         itemCount={26}
@@ -78,13 +97,14 @@ describe("ArrowPagination", () => {
         showPageBounds
       />
     );
-    expect(wrapper.find("[data-testid='page-bounds']").text()).toBe(
+
+    expect(screen.getByTestId(TestIds.PageBounds).textContent).toBe(
       "1 - 25 of 26"
     );
   });
 
   it("can show the page bounds when there are less items than the current page shows", () => {
-    const wrapper = mount(
+    render(
       <ArrowPagination
         currentPage={1}
         itemCount={24}
@@ -93,13 +113,14 @@ describe("ArrowPagination", () => {
         showPageBounds
       />
     );
-    expect(wrapper.find("[data-testid='page-bounds']").text()).toBe(
+
+    expect(screen.getByTestId(TestIds.PageBounds).textContent).toBe(
       "1 - 24 of 24"
     );
   });
 
   it("shows a spinner in the page bound section if items are loading", () => {
-    const wrapper = mount(
+    render(
       <ArrowPagination
         currentPage={1}
         itemCount={24}
@@ -109,8 +130,9 @@ describe("ArrowPagination", () => {
         showPageBounds
       />
     );
-    expect(wrapper.find("[data-testid='page-bounds'] Spinner").exists()).toBe(
-      true
-    );
+
+    expect(
+      screen.getByRole("alert", { name: Labels.LoadingPagination })
+    ).toBeInTheDocument();
   });
 });

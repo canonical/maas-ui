@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import ControllerLink from "./ControllerLink";
+import ControllerLink, { Labels } from "./ControllerLink";
 
 import controllersURLs from "app/controllers/urls";
 import {
@@ -31,7 +31,7 @@ it("handles when controllers are loading", () => {
     </Provider>
   );
 
-  expect(screen.getByLabelText("Loading controllers")).toBeInTheDocument();
+  expect(screen.getByLabelText(Labels.LoadingControllers)).toBeInTheDocument();
 });
 
 it("handles when a controller does not exist", () => {

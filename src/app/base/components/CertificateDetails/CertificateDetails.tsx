@@ -14,6 +14,10 @@ type Props = {
   metadata: CertificateMetadataType;
 };
 
+export enum Labels {
+  ReadMore = "Read more about authentication",
+}
+
 const CertificateDetails = ({
   certificate,
   eventCategory,
@@ -38,7 +42,7 @@ const CertificateDetails = ({
           rel="noopener noreferrer"
           target="_blank"
         >
-          Read more about authentication
+          {Labels.ReadMore}
         </Link>
       </p>
       <CertificateMetadata metadata={metadata} />
