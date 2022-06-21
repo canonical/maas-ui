@@ -1,11 +1,13 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DHCPTable from "./DHCPTable";
+import DHCPTable, { Labels, TestIds } from "./DHCPTable";
 
+import { Labels as FormLabels } from "app/base/components/DhcpForm";
 import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
@@ -53,7 +55,7 @@ describe("DHCPTable", () => {
     state.dhcpsnippet.loaded = false;
     state.dhcpsnippet.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -67,7 +69,10 @@ describe("DHCPTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("table caption").text().trim()).toEqual("Loading...");
+
+    expect(
+      screen.getByRole("alert", { name: Labels.LoadingData })
+    ).toBeInTheDocument();
   });
 
   it("shows snippets for a machine", () => {
@@ -80,7 +85,7 @@ describe("DHCPTable", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -94,7 +99,8 @@ describe("DHCPTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("TableRow").length).toBe(3);
+
+    expect(screen.getAllByRole("row").length).toBe(3);
   });
 
   it("shows snippets for subnets", () => {
@@ -108,7 +114,7 @@ describe("DHCPTable", () => {
       dhcpSnippetFactory({ subnet: subnets[1].id }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -119,18 +125,17 @@ describe("DHCPTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper.find("TableCell[data-testid='snippet-applies-to']").length
-    ).toBe(2);
-    expect(
-      wrapper.find("TableCell[data-testid='snippet-applies-to']").at(0).text()
-    ).toBe("subnet-name1");
-    expect(
-      wrapper.find("TableCell[data-testid='snippet-applies-to']").at(1).text()
-    ).toBe("subnet-name2");
+    const subnetSnippets = screen.getAllByTestId(TestIds.AppliesTo);
+
+    expect(subnetSnippets.length).toBe(2);
+    expect(subnetSnippets[0].textContent).toBe("subnet-name1");
+    expect(subnetSnippets[1].textContent).toBe("subnet-name2");
   });
 
-  it("can show a form to edit a snippet", () => {
+  it("can show a form to edit a snippet", async () => {
+    state.controller.loaded = true;
+    state.device.loaded = true;
+    state.machine.loaded = true;
     state.machine.items = [
       machineDetailsFactory({
         on_network: true,
@@ -140,7 +145,7 @@ describe("DHCPTable", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -154,7 +159,12 @@ describe("DHCPTable", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("TableActions Button").last().simulate("click");
-    expect(wrapper.find("EditDHCP").exists()).toBe(true);
+    const buttons = screen.getAllByRole("button", { name: "Edit" });
+
+    await userEvent.click(buttons[buttons.length - 1]);
+
+    expect(
+      screen.getByRole("form", { name: FormLabels.Form })
+    ).toBeInTheDocument();
   });
 });

@@ -37,6 +37,15 @@ type SubnetProps = BaseProps & {
 
 export type Props = NodeProps | SubnetProps;
 
+export enum Labels {
+  LoadingData = "Loading DHCP snippets",
+  SectionTitle = "DHCP snippets",
+}
+
+export enum TestIds {
+  AppliesTo = "snippet-applies-to",
+}
+
 const generateRows = (
   dhcpsnippets: DHCPSnippet[],
   expanded: DHCPSnippet["id"] | null,
@@ -74,7 +83,7 @@ const generateRows = (
         },
         {
           content: appliesTo,
-          "data-testid": "snippet-applies-to",
+          "data-testid": TestIds.AppliesTo,
         },
         { content: enabled },
         { content: dhcpsnippet.description },
@@ -134,7 +143,7 @@ const DHCPTable = ({
   }, [dispatch]);
 
   return (
-    <TitledSection className={className} title="DHCP snippets">
+    <TitledSection className={className} title={Labels.SectionTitle}>
       {node || subnets?.length ? (
         <>
           <MainTable
@@ -143,7 +152,7 @@ const DHCPTable = ({
             defaultSortDirection="descending"
             emptyStateMsg={
               dhcpsnippetLoading ? (
-                <Spinner text="Loading..." />
+                <Spinner aria-label={Labels.LoadingData} text="Loading..." />
               ) : (
                 `No DHCP snippets applied to this ${modelName}.`
               )

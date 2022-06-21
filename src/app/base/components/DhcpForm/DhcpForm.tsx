@@ -42,6 +42,12 @@ type Props = {
   onSave?: () => void;
 } & Partial<FormikFormProps<DHCPFormValues>>;
 
+export enum Labels {
+  Form = "DHCP Form",
+  LoadingData = "Loading DHCP snippet data",
+  Submit = "Save snippet",
+}
+
 export const DhcpForm = ({
   analyticsCategory,
   id,
@@ -85,11 +91,12 @@ export const DhcpForm = ({
     (dhcpSnippet?.node || dhcpSnippet?.subnet) &&
     (loading || !loaded)
   ) {
-    return <Spinner text="Loading..." />;
+    return <Spinner aria-label={Labels.LoadingData} text="Loading..." />;
   }
 
   return (
     <FormikForm<DHCPFormValues>
+      aria-label={Labels.Form}
       cleanup={dhcpsnippetActions.cleanup}
       errors={errors}
       initialValues={{
@@ -143,7 +150,7 @@ export const DhcpForm = ({
       onSuccess={() => onSave && onSave()}
       saved={saved}
       saving={saving}
-      submitLabel="Save snippet"
+      submitLabel={Labels.Submit}
       validationSchema={DhcpSchema}
       {...props}
     >

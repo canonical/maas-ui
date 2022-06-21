@@ -50,6 +50,17 @@ const generateOptions = (
       )
     : null;
 
+export enum Labels {
+  Description = "Description",
+  Disabled = "This snippet is disabled and will not be used by MAAS.",
+  Enabled = "Enabled",
+  Entity = "Applies to",
+  LoadingData = "Loading DHCP snippet data",
+  Name = "Snippet name",
+  Type = "Type",
+  Value = "DHCP snippet",
+}
+
 export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
   const formikProps = useFormikContext<DHCPFormValues>();
   const subnets = useSelector(subnetSelectors.all);
@@ -91,24 +102,24 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
     <>
       {editing && !enabled && (
         <Notification severity="caution" title="Warning:">
-          This snippet is disabled and will not be used by MAAS.
+          {Labels.Disabled}
         </Notification>
       )}
       <FormikField
-        label="Snippet name"
+        label={Labels.Name}
         name="name"
         required={true}
         type="text"
       />
-      <FormikField label="Enabled" name="enabled" type="checkbox" />
+      <FormikField label={Labels.Enabled} name="enabled" type="checkbox" />
       <FormikField
         component={Textarea}
-        label="Description"
+        label={Labels.Description}
         name="description"
       />
       <FormikField
         component={Select}
-        label="Type"
+        label={Labels.Type}
         name="type"
         onChange={(e: React.FormEvent) => {
           formikProps.handleChange(e);
@@ -125,11 +136,11 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
       />
       {type &&
         (isLoading || !hasLoaded ? (
-          <Spinner text="loading..." />
+          <Spinner aria-label={Labels.LoadingData} text="loading..." />
         ) : (
           <FormikField
             component={Select}
-            label="Applies to"
+            label={Labels.Entity}
             name="entity"
             options={
               // This won't need to pass the empty array once this issue is fixed:
@@ -141,7 +152,7 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
       <FormikField
         component={Textarea}
         grow
-        label="DHCP snippet"
+        label={Labels.Value}
         name="value"
         placeholder="Custom DHCP snippet"
         required

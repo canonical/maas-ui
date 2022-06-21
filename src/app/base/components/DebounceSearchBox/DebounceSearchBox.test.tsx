@@ -1,50 +1,52 @@
-import type { ReactWrapper } from "enzyme";
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { useState } from "react";
+
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import DebounceSearchBox, {
   DEFAULT_DEBOUNCE_INTERVAL,
+  Labels,
 } from "./DebounceSearchBox";
 
-jest.useFakeTimers("modern");
-
 describe("DebounceSearchBox", () => {
-  const updateSearch = (wrapper: ReactWrapper, text: string) => {
-    act(() => {
-      wrapper.find("input[name='search']").simulate("change", {
-        target: { name: "search", value: text },
-      });
-    });
-    wrapper.update();
-  };
+  beforeEach(() => {
+    jest.useFakeTimers("modern");
+  });
 
-  const advanceDebounceTimer = (wrapper: ReactWrapper) => {
-    act(() => {
-      jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
-    });
-    wrapper.update();
-  };
+  afterEach(() => {
+    jest.useRealTimers();
+  });
 
   it(`runs onDebounced fn when the search text changes via the input, after the
-      debounce interval`, () => {
+      debounce interval`, async () => {
     const onDebounced = jest.fn();
-    const wrapper = mount(
-      <DebounceSearchBox
-        onDebounced={onDebounced}
-        searchText="old-value"
-        setSearchText={jest.fn()}
-      />
-    );
+    const Proxy = () => {
+      const [searchText, setSearchText] = useState("old-value");
+      return (
+        <DebounceSearchBox
+          onDebounced={onDebounced}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
+      );
+    };
+    render(<Proxy />);
+    const searchBox = screen.getByRole("searchbox");
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
 
-    updateSearch(wrapper, "new-value");
+    await user.clear(searchBox);
+    await user.type(searchBox, "new-value");
+
     expect(onDebounced).not.toHaveBeenCalled();
 
-    advanceDebounceTimer(wrapper);
+    await waitFor(() => {
+      jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+    });
     expect(onDebounced).toHaveBeenCalledWith("new-value");
   });
 
   it(`does not run onDebounced fn when the search text changes via props, even
-      after the debounce interval`, () => {
+      after the debounce interval`, async () => {
     const onDebounced = jest.fn();
     const Proxy = ({ searchText }: { searchText: string }) => (
       <DebounceSearchBox
@@ -53,34 +55,41 @@ describe("DebounceSearchBox", () => {
         setSearchText={jest.fn()}
       />
     );
-    const wrapper = mount(<Proxy searchText="old-value" />);
+    const { rerender } = render(<Proxy searchText="old-value" />);
 
-    wrapper.setProps({
-      searchText: "new-value",
-    });
-    wrapper.update();
     expect(onDebounced).not.toHaveBeenCalled();
 
-    advanceDebounceTimer(wrapper);
+    rerender(<Proxy searchText="new-value" />);
+    await waitFor(() => {
+      jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+    });
     expect(onDebounced).not.toHaveBeenCalled();
   });
 
-  it("displays a spinner while debouncing search box input", () => {
-    const wrapper = mount(
+  it("displays a spinner while debouncing search box input", async () => {
+    render(
       <DebounceSearchBox
         onDebounced={jest.fn()}
         searchText="old-value"
         setSearchText={jest.fn()}
       />
     );
-    const spinnerExists = () =>
-      wrapper.find("[data-testid='debouncing-spinner']").exists();
-    expect(spinnerExists()).toBe(false);
+    const searchBox = screen.getByRole("searchbox");
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+    expect(
+      screen.queryByRole("alert", { name: Labels.Loading })
+    ).not.toBeInTheDocument();
 
-    updateSearch(wrapper, "new-value");
-    expect(spinnerExists()).toBe(true);
+    await user.clear(searchBox);
+    expect(
+      screen.getByRole("alert", { name: Labels.Loading })
+    ).toBeInTheDocument();
 
-    advanceDebounceTimer(wrapper);
-    expect(spinnerExists()).toBe(false);
+    await waitFor(() => {
+      jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);
+    });
+    expect(
+      screen.queryByRole("alert", { name: Labels.Loading })
+    ).not.toBeInTheDocument();
   });
 });
