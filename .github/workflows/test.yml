@@ -77,3 +77,22 @@ jobs:
       - run: CI=false yarn build
         env:
           CI: true
+
+  run-dotrun:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install dotrun
+        uses: canonical/install-dotrun@main
+
+      - name: Install dependencies
+        run: /snap/bin/dotrun install
+
+      - name: Build assets
+        run: /snap/bin/dotrun build
+
+      - name: Run dotrun
+        run: |
+          /snap/bin/dotrun &
+          curl --head --fail --retry-delay 1 --retry 30 --retry-connrefused http://localhost:8400
