@@ -7,6 +7,8 @@ jobs:
     if: github.event.pull_request.merged == true
     name: Upload build artifacts
     runs-on: ubuntu-latest
+    env:
+      PACKAGE_NAME: maas-ui-${{ github.sha }}.tar.gz
     strategy:
       matrix:
         node-version: [16.x]
@@ -26,11 +28,14 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build
-        run: yarn build-all
+        run: CI=false yarn build
         env:
           CI: true
-      - name: Upload build
-        uses: actions/upload-artifact@v3
-        with:
-          name: maas-ui-${{ github.sha }}
-          path: build/
+      - name: Compress
+        run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./
+      - name: Install upload-assets snap
+        run: sudo snap install upload-assets
+      - name: Upload to assets server
+        run: upload-assets --url-path ${{env.PACKAGE_NAME}} ${{env.PACKAGE_NAME}}
+        env:
+          UPLOAD_ASSETS_API_TOKEN: ${{secrets.UPLOAD_ASSETS_API_TOKEN}}
