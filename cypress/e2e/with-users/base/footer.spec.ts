@@ -25,6 +25,6 @@ context("Footer", () => {
   });
 
   it("displays the feedback link", () => {
-    cy.get(".p-footer__nav a:contains(Give feedback)").should("exist");
+    cy.get(".p-footer__nav button:contains(Give feedback)").should("exist");
   });
 });
