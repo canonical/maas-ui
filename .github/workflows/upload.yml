@@ -28,9 +28,9 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build
-        run: CI=false yarn build
+        run: yarn build
         env:
-          CI: true
+          CI: false
       - name: Compress
         run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./
       - name: Install upload-assets snap
