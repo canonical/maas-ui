@@ -20,16 +20,27 @@ import configSelectors from "app/store/config/selectors";
 import { actions as repoActions } from "app/store/packagerepository";
 import repoSelectors from "app/store/packagerepository/selectors";
 
+const UrlSchema = Yup.string().test({
+  name: "url",
+  test: (value) => {
+    try {
+      const valid = value ? new URL(value) : false;
+      return !!valid;
+    } catch {
+      return false;
+    }
+  },
+  message: "Must be a valid URL.",
+});
+
 export const MaasIntroSchema = Yup.object()
   .shape({
-    httpProxy: Yup.string().url("Must be a valid URL."),
-    mainArchiveUrl: Yup.string()
-      .url("Must be a valid URL.")
-      .required("Ubuntu archive is required."),
+    httpProxy: UrlSchema,
+    mainArchiveUrl: UrlSchema.required("Ubuntu archive is required."),
     name: Yup.string().required("MAAS name is required"),
-    portsArchiveUrl: Yup.string()
-      .url("Must be a valid URL.")
-      .required("Ubuntu extra architectures is required."),
+    portsArchiveUrl: UrlSchema.required(
+      "Ubuntu extra architectures is required."
+    ),
     upstreamDns: Yup.string(),
   })
   .defined();
