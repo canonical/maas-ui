@@ -1,3 +1,8 @@
+import type {
+  FilterGroupsResponse,
+  ListResponse,
+  ListResponseGroup,
+} from "./actions";
 import type { MachineMeta } from "./enum";
 
 import type { APIError, Seconds } from "app/base/types";
@@ -186,6 +191,24 @@ export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
 export type MachineEventErrors = CloneError;
 
+export type MachineFilterGroup = FilterGroupsResponse[0] & {
+  options: { key: string; label: string }[];
+  optionsLoaded: boolean;
+  optionsLoading: boolean;
+};
+
+export type MachineListGroup = Omit<ListResponseGroup, "items" | "name"> & {
+  items: Machine[MachineMeta.PK][];
+  name: string | null;
+};
+
+export type MachineList = Omit<ListResponse, "items"> & {
+  errors: APIError | null;
+  groups: MachineListGroup[];
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type MachineState = {
   active: Machine[MachineMeta.PK] | null;
   eventErrors: EventError<
@@ -195,4 +218,11 @@ export type MachineState = {
   >[];
   selected: Machine[MachineMeta.PK][];
   statuses: MachineStatuses;
+  count: number;
+  countLoaded: boolean;
+  countLoading: boolean;
+  filterGroups: MachineFilterGroup[];
+  filterGroupsLoaded: boolean;
+  filterGroupsLoading: boolean;
+  lists: { [listId: string]: MachineList };
 } & GenericState<Machine, APIError>;

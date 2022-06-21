@@ -1,6 +1,7 @@
 import { Redirect } from "react-router-dom";
 import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
+import SSFTest from "./SSFTest";
 import Pools from "./pools/views/Pools";
 import Tags from "./tags/views/Tags";
 
@@ -237,6 +238,14 @@ const Routes = (): JSX.Element => (
         </ErrorBoundary>
       }
       path={`${dashboardURLs.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <SSFTest />
+        </ErrorBoundary>
+      }
+      path={"/ssf-test"}
     />
     <Route element={<NotFound includeSection />} path="*" />
   </ReactRouterRoutes>

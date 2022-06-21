@@ -13,9 +13,16 @@ describe("machine reducer", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
       active: null,
+      count: 0,
+      countLoaded: false,
+      countLoading: false,
       errors: null,
       eventErrors: [],
+      filterGroups: [],
+      filterGroupsLoaded: false,
+      filterGroupsLoading: false,
       items: [],
+      lists: {},
       loaded: false,
       loading: false,
       saved: false,

@@ -26,9 +26,15 @@ import type {
   DeletePartitionParams,
   DeleteVolumeGroupParams,
   DeployParams,
+  FilterGroupsResponse,
+  FilterOptionsParams,
+  FilterOptionsResponse,
   GetSummaryXmlParams,
   GetSummaryYamlParams,
   LinkSubnetParams,
+  ListParams,
+  ListResponse,
+  ListResponseGroup,
   Machine,
   MachineState,
   MarkBrokenParams,
@@ -39,6 +45,7 @@ import type {
   TagParams,
   UnlinkSubnetParams,
   UnmountSpecialParams,
+  UnsubscribeParams,
   UntagParams,
   UpdateDiskParams,
   UpdateFilesystemParams,
@@ -46,6 +53,7 @@ import type {
   UpdateVmfsDatastoreParams,
 } from "./types";
 
+import type { APIError } from "app/base/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type {
   BaseNodeActionParams,
@@ -363,6 +371,13 @@ const machineSlice = createSlice({
     eventErrors: [],
     selected: [],
     statuses: {},
+    count: 0,
+    countLoaded: false,
+    countLoading: false,
+    filterGroups: [],
+    filterGroupsLoaded: false,
+    filterGroupsLoading: false,
+    lists: {},
   } as MachineState,
   reducers: {
     ...generateCommonReducers<
@@ -1682,6 +1697,296 @@ const machineSlice = createSlice({
     updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
+    getCount: {
+      prepare: () => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "count",
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getCountStart: (state) => {
+      state.countLoading = true;
+      state.countLoaded = false;
+    },
+    getCountSuccess: (state, action: PayloadAction<number>) => {
+      state.count = action.payload;
+      state.countLoading = false;
+      state.countLoaded = true;
+    },
+    getCountError: (state, action: PayloadAction<APIError>) => {
+      state.errors = action.payload;
+      state.countLoading = false;
+      state.countLoaded = false;
+    },
+    getFilterGroups: {
+      prepare: () => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "filter_groups",
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getFilterGroupsStart: (state) => {
+      state.filterGroupsLoading = true;
+      state.filterGroupsLoaded = false;
+    },
+    getFilterGroupsSuccess: (
+      state,
+      action: PayloadAction<FilterGroupsResponse>
+    ) => {
+      const groups = action.payload;
+      state.filterGroups = groups.map((group) => ({
+        ...group,
+        options: [],
+        optionsLoaded: false,
+        optionsLoading: false,
+      }));
+      state.filterGroupsLoading = false;
+      state.filterGroupsLoaded = true;
+    },
+    getFilterGroupsError: (state, action: PayloadAction<APIError>) => {
+      state.errors = action.payload;
+      state.filterGroupsLoading = false;
+      state.filterGroupsLoaded = false;
+    },
+    getFilterOptions: {
+      prepare: (params: FilterOptionsParams) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "filter_options",
+          identifier: params.group_key,
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    getFilterOptionsStart: {
+      prepare: (action) => action,
+      reducer: (
+        state,
+        action: PayloadAction<null, string, { identifier: string }>
+      ) => {
+        const {
+          meta: { identifier },
+        } = action;
+        const group = state.filterGroups.find(
+          (group) => group.key === identifier
+        );
+        if (group) {
+          group.optionsLoaded = false;
+          group.optionsLoading = true;
+        }
+      },
+    },
+    getFilterOptionsSuccess: {
+      prepare: (action) => action,
+      reducer: (
+        state,
+        action: PayloadAction<
+          FilterOptionsResponse,
+          string,
+          { identifier: string }
+        >
+      ) => {
+        const {
+          meta: { identifier },
+          payload,
+        } = action;
+        const group = state.filterGroups.find(
+          (group) => group.key === identifier
+        );
+        if (group) {
+          group.options = payload;
+          group.optionsLoaded = true;
+          group.optionsLoading = false;
+        }
+      },
+    },
+    getFilterOptionsError: {
+      prepare: (action) => action,
+      reducer: (
+        state,
+        action: PayloadAction<APIError, string, { identifier: string }>
+      ) => {
+        const {
+          meta: { identifier },
+        } = action;
+        const group = state.filterGroups.find(
+          (group) => group.key === identifier
+        );
+        if (group) {
+          group.optionsLoaded = false;
+          group.optionsLoading = false;
+        }
+        state.errors = action.payload;
+      },
+    },
+    list: {
+      prepare: (listId: string, params: ListParams) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "list",
+          nocache: true,
+          identifier: listId,
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    listStart: {
+      prepare: (action) => action,
+      reducer: (
+        state,
+        action: PayloadAction<null, string, { identifier: string }>
+      ) => {
+        const {
+          meta: { identifier },
+        } = action;
+        state.lists[identifier] = {
+          count: 0,
+          cur_page: 1,
+          errors: null,
+          groups: [],
+          loaded: false,
+          loading: true,
+          num_pages: 1,
+        };
+      },
+    },
+    listSuccess: {
+      prepare: (action) => action,
+      reducer: (
+        state,
+        action: PayloadAction<ListResponse, string, { identifier: string }>
+      ) => {
+        const {
+          meta: { identifier },
+          payload,
+        } = action;
+        const list = state.lists[identifier];
+
+        if (!list) {
+          return;
+        }
+
+        // Convert ungrouped response into null group
+        const isGroupedResponse =
+          payload.items.length && "collapsed" in payload.items[0];
+        const groups = isGroupedResponse
+          ? (payload.items as ListResponseGroup[])
+          : [
+              {
+                collapsed: false,
+                count: payload.count,
+                items: payload.items as Machine[],
+                name: null,
+              },
+            ];
+        const groupedResponse = {
+          count: payload.count,
+          cur_page: payload.cur_page,
+          groups,
+          num_pages: payload.num_pages,
+        };
+
+        groupedResponse.groups.forEach((group, i) => {
+          list.groups[i] = {
+            collapsed: group.collapsed,
+            count: group.count,
+            items: group.items.map(({ system_id }) => system_id),
+            name: group.name,
+          };
+          group.items.forEach((machine) => {
+            if (
+              !state.items.some(
+                (existingMachine) =>
+                  existingMachine.system_id === machine.system_id
+              )
+            ) {
+              state.items.push(machine);
+              state.statuses[machine.system_id] = DEFAULT_STATUSES;
+            }
+          });
+        });
+        list.count = groupedResponse.count;
+        list.cur_page = groupedResponse.cur_page;
+        list.num_pages = groupedResponse.num_pages;
+        list.loaded = true;
+        list.loading = false;
+      },
+    },
+    listError: {
+      prepare: (action) => action,
+      reducer: (
+        state,
+        action: PayloadAction<APIError, string, { identifier: string }>
+      ) => {
+        const {
+          meta: { identifier },
+        } = action;
+        const list = state.lists[identifier];
+        if (list) {
+          list.errors = action.payload;
+          list.loaded = false;
+          list.loading = false;
+        }
+      },
+    },
+    clearList: (state, action: PayloadAction<string>) => {
+      const listId = action.payload;
+      const list = state.lists[listId];
+      if (list) {
+        delete state.lists[listId];
+      }
+    },
+    unsubscribe: {
+      prepare: (params: UnsubscribeParams) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "unsubscribe",
+        },
+        payload: {
+          params,
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    unsubscribeSuccess: (
+      state,
+      action: PayloadAction<Machine[MachineMeta.PK][]>
+    ) => {
+      const unsubIds = action.payload;
+      state.items = state.items.filter(
+        (machine) => !unsubIds.includes(machine.system_id)
+      );
+      unsubIds.forEach((unsubId) => {
+        if (state.statuses[unsubId]) {
+          delete state.statuses[unsubId];
+        }
+      });
+    },
+    unsubscribeError: (state, action: PayloadAction<APIError>) => {
+      state.errors = action.payload;
+    },
   },
 });
 

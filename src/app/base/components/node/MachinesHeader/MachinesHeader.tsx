@@ -22,7 +22,7 @@ type Props = SectionHeaderProps;
 export const MachinesHeader = (props: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
-  const machineCount = useSelector(machineSelectors.count);
+  const machines = useSelector(machineSelectors.all);
   const poolCount = useSelector(resourcePoolSelectors.count);
   const tagCount = useSelector(tagSelectors.count);
 
@@ -39,7 +39,7 @@ export const MachinesHeader = (props: Props): JSX.Element => {
         {
           active: !!matchPath(machineURLs.machines.index, location.pathname),
           component: Link,
-          label: `${pluralize("Machine", machineCount, true)}`,
+          label: `${pluralize("Machine", machines.length, true)}`,
           to: machineURLs.machines.index,
         },
         {

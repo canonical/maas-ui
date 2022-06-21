@@ -260,6 +260,13 @@ export const machineState = define<MachineState>({
   eventErrors: () => [],
   selected: () => [],
   statuses: () => ({}),
+  count: 0,
+  countLoaded: false,
+  countLoading: false,
+  filterGroups: () => [],
+  filterGroupsLoaded: false,
+  filterGroupsLoading: false,
+  lists: () => ({}),
 });
 
 export const scriptState = define<ScriptState>({

@@ -315,6 +315,80 @@ const getDeployedWithTag = createSelector(
   }
 );
 
+const getByIds = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, systemIds: Machine[MachineMeta.PK][]) => systemIds,
+  ],
+  (machines, systemIds) => {
+    return machines.filter((machine) => systemIds.includes(machine.system_id));
+  }
+);
+
+const count = (state: RootState): MachineState["count"] => state.machine.count;
+
+const countLoaded = (state: RootState): MachineState["countLoaded"] =>
+  state.machine.countLoaded;
+
+const countLoading = (state: RootState): MachineState["countLoading"] =>
+  state.machine.countLoading;
+
+const filterGroups = (state: RootState): MachineState["filterGroups"] =>
+  state.machine.filterGroups;
+
+const filterGroupsLoaded = (
+  state: RootState
+): MachineState["filterGroupsLoaded"] => state.machine.filterGroupsLoaded;
+
+const filterGroupsLoading = (
+  state: RootState
+): MachineState["filterGroupsLoading"] => state.machine.filterGroupsLoading;
+
+const lists = (state: RootState): MachineState["lists"] => state.machine.lists;
+
+const getFilterGroupByKey = createSelector(
+  [filterGroups, (_state: RootState, groupKey: string) => groupKey],
+  (filterGroups, groupKey) =>
+    filterGroups.find((group) => group.key === groupKey) || null
+);
+
+const getFiltersForGrouping = createSelector([filterGroups], (filterGroups) =>
+  filterGroups.filter((filterGroup) => filterGroup.for_grouping)
+);
+
+const getListById = createSelector(
+  [lists, (_state: RootState, listId: string) => listId],
+  (lists, listId) => lists[listId] || null
+);
+
+const getForUnsubscribe = createSelector(
+  [
+    activeID,
+    lists,
+    (state: RootState, listId: string) => getListById(state, listId),
+  ],
+  (activeId, lists, thisList) => {
+    if (!thisList) {
+      return [];
+    }
+    const canUnsub: Machine[MachineMeta.PK][] = [];
+    thisList.groups.forEach((group) => {
+      group.items.forEach((item) => {
+        const isActive = activeId === item;
+        const inOtherList = Object.entries(lists).some(
+          ([, list]) =>
+            thisList !== list &&
+            list.groups.some((group) => group.items.includes(item))
+        );
+        if (!isActive && !inOtherList) {
+          canUnsub.push(item);
+        }
+      });
+    });
+    return canUnsub;
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -324,6 +398,9 @@ const selectors = {
   checkingPower: statusSelectors["checkingPower"],
   cloning: statusSelectors["cloning"],
   commissioning: statusSelectors["commissioning"],
+  count,
+  countLoaded,
+  countLoading,
   creatingPhysical: statusSelectors["creatingPhysical"],
   creatingVlan: statusSelectors["creatingVlan"],
   deleting: statusSelectors["deleting"],
@@ -333,12 +410,21 @@ const selectors = {
   eventErrors,
   eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
+  filterGroups,
+  filterGroupsLoaded,
+  filterGroupsLoading,
+  getByIds,
   getByStatusCode,
   getDeployedWithTag,
+  getFiltersForGrouping,
+  getFilterGroupByKey,
+  getForUnsubscribe,
   getInterfaceById,
+  getListById,
   getStatuses,
   getStatusForMachine,
   linkingSubnet: statusSelectors["linkingSubnet"],
+  lists,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],
@@ -355,10 +441,10 @@ const selectors = {
   testing: statusSelectors["testing"],
   turningOff: statusSelectors["turningOff"],
   turningOn: statusSelectors["turningOn"],
-  unlocking: statusSelectors["unlocking"],
   unlinkingSubnet: statusSelectors["unlinkingSubnet"],
-  untagging: statusSelectors["untagging"],
+  unlocking: statusSelectors["unlocking"],
   unselected,
+  untagging: statusSelectors["untagging"],
   updatingTags,
 };
 

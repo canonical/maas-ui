@@ -327,3 +327,46 @@ export type UpdateVmfsDatastoreParams = {
   systemId: Machine[MachineMeta.PK];
   vmfsDatastoreId?: number;
 };
+
+export type ListParams = {
+  group_collapsed?: string[];
+  group_key?: string;
+  page_number: number;
+  page_size: number;
+  sort_direction?: "ascending" | "descending";
+  sort_key?: string;
+};
+
+export type ListResponseGroup = {
+  collapsed: boolean;
+  count: number;
+  items: Machine[];
+  name: string;
+};
+
+export type ListResponse = {
+  count: number;
+  cur_page: number;
+  items: Machine[] | ListResponseGroup[];
+  num_pages: number;
+};
+
+export type FilterGroupsResponse = {
+  dynamic: boolean;
+  for_grouping: boolean;
+  key: string;
+  label: string;
+}[];
+
+export type FilterOptionsParams = {
+  group_key: string;
+};
+
+export type FilterOptionsResponse = {
+  key: string;
+  label: string;
+}[];
+
+export type UnsubscribeParams = {
+  system_ids: Machine[MachineMeta.PK][];
+};
