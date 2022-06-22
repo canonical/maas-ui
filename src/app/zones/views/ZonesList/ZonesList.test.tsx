@@ -1,4 +1,3 @@
-// import { mount } from "enzyme";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -54,7 +53,6 @@ describe("ZonesList", () => {
       </Provider>
     );
 
-    // expect(wrapper.find("[data-testid='zones-table']").exists()).toBe(true);
     expect(
       screen.getByTestId(TestIds.ZonesTable)
     ).toBeInTheDocument();
