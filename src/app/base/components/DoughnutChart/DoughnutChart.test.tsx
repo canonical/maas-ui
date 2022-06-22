@@ -1,10 +1,10 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import DoughnutChart from "./DoughnutChart";
+import DoughnutChart, { TestIds } from "./DoughnutChart";
 
 describe("DoughnutChart", () => {
   it("renders", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <DoughnutChart
         label="200GB"
         segmentHoverWidth={20}
@@ -24,13 +24,14 @@ describe("DoughnutChart", () => {
         size={96}
       />
     );
-    expect(wrapper).toMatchSnapshot();
+
+    expect(container).toMatchSnapshot();
   });
 
-  it("can render without tooltips", () => {
-    const wrapper = shallow(
+  it("can render with a label", () => {
+    render(
       <DoughnutChart
-        label="200GB"
+        label="Label!"
         segmentHoverWidth={20}
         segmentWidth={15}
         segments={[
@@ -46,13 +47,12 @@ describe("DoughnutChart", () => {
         size={96}
       />
     );
-    const segment = wrapper.find(".doughnut-chart__segment").at(0);
-    expect(segment.prop("onMouseOver")).toBeUndefined();
-    expect(segment.prop("onMouseOut")).toBeUndefined();
+
+    expect(screen.getByTestId(TestIds.Label)).toBeInTheDocument();
   });
 
   it("can render without a label", () => {
-    const wrapper = shallow(
+    render(
       <DoughnutChart
         segmentHoverWidth={20}
         segmentWidth={15}
@@ -69,6 +69,7 @@ describe("DoughnutChart", () => {
         size={96}
       />
     );
-    expect(wrapper.find(".doughnut-chart__label").exists()).toBe(false);
+
+    expect(screen.queryByTestId(TestIds.Label)).not.toBeInTheDocument();
   });
 });

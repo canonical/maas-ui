@@ -13,6 +13,10 @@ type Props = {
 
 export const DEFAULT_DEBOUNCE_INTERVAL = 500;
 
+export enum Labels {
+  Loading = "Loading search results",
+}
+
 const DebounceSearchBox = ({
   debounceInterval = DEFAULT_DEBOUNCE_INTERVAL,
   onDebounced,
@@ -51,11 +55,12 @@ const DebounceSearchBox = ({
       />
       {debouncing && (
         <div
+          aria-label={Labels.Loading}
           className={classNames(
             "debounce-search-box__spinner-container u-vertically-center",
             { "nudge-left": !!searchText }
           )}
-          data-testid="debouncing-spinner"
+          role="alert"
         >
           <Icon className="u-animation--spin" name="spinner" />
         </div>
