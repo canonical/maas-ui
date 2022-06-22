@@ -26,6 +26,10 @@ type Props = {
   setHeaderContent: KVMSetHeaderContent;
 };
 
+export enum Label {
+  Title = "LXD settings",
+}
+
 const LXDSingleSettings = ({
   id,
   setHeaderContent,
@@ -50,7 +54,7 @@ const LXDSingleSettings = ({
     return <Spinner text="Loading..." />;
   }
   return (
-    <Strip className="u-no-padding--top" shallow>
+    <Strip aria-label={Label.Title} className="u-no-padding--top" shallow>
       <LXDHostToolbar hostId={id} showBasic />
       <KVMConfigurationCard pod={pod} />
       <AuthenticationCard hostId={id} objectName={pod.name} />

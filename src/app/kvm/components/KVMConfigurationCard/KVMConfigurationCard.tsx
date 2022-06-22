@@ -46,7 +46,15 @@ type Props = {
   zoneDisabled?: boolean;
 };
 
-const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
+export enum Label {
+  Title = "KVM configuration",
+}
+
+const KVMConfigurationCard = ({
+  pod,
+  zoneDisabled,
+  ...formProps
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const podErrors = useSelector(podSelectors.errors);
   const podSaved = useSelector(podSelectors.saved);
@@ -54,8 +62,9 @@ const KVMConfigurationCard = ({ pod, zoneDisabled }: Props): JSX.Element => {
   const cleanup = useCallback(() => podActions.cleanup(), []);
 
   return (
-    <FormCard highlighted={false} sidebar={false} title="KVM configuration">
+    <FormCard highlighted={false} sidebar={false} title={Label.Title}>
       <FormikForm<KVMConfigurationValues>
+        {...formProps}
         cleanup={cleanup}
         enableReinitialize
         errors={podErrors}

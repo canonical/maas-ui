@@ -50,24 +50,28 @@ describe("Tags", () => {
     {
       label: TagListLabel.Title,
       path: tagURLs.tags.index,
+      pattern: `${tagURLs.tags.index}/*`,
     },
     {
       label: NotFoundLabel.Title,
-      path: "/not/a/path",
+      path: `${tagURLs.tags.index}/not/a/path`,
+      pattern: `${tagURLs.tags.index}/*`,
     },
-  ].forEach(({ label, path }) => {
-    it(`Displays: ${label} at: ${path}`, () => {
-      renderWithBrowserRouter(<Tags />, {
-        wrapperProps: { state },
-        route: path,
+  ].forEach(
+    ({ label, path, pattern = `${tagURLs.tag.index(null, true)}/*` }) => {
+      it(`Displays: ${label} at: ${path}`, () => {
+        renderWithBrowserRouter(<Tags />, {
+          wrapperProps: { routePattern: pattern, state },
+          route: path,
+        });
+        expect(screen.getByLabelText(label)).toBeInTheDocument();
       });
-      expect(screen.getByLabelText(label)).toBeInTheDocument();
-    });
-  });
+    }
+  );
 
   it("shows buttons when not displaying forms", () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { state },
+      wrapperProps: { routePattern: tagURLs.tag.index(null, true), state },
       route: tagURLs.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
@@ -87,7 +91,7 @@ describe("Tags", () => {
 
   it("hides buttons when deleting tags", async () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { state },
+      wrapperProps: { routePattern: tagURLs.tag.index(null, true), state },
       route: tagURLs.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
@@ -114,7 +118,10 @@ describe("Tags", () => {
 
   it("hides buttons when updating tags", () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { state },
+      wrapperProps: {
+        routePattern: `${tagURLs.tag.index(null, true)}/*`,
+        state,
+      },
       route: tagURLs.tag.update({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
@@ -136,7 +143,10 @@ describe("Tags", () => {
 
   it("hides buttons when creating tags", async () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { state },
+      wrapperProps: {
+        routePattern: `${tagURLs.tag.index(null, true)}/*`,
+        state,
+      },
       route: tagURLs.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);

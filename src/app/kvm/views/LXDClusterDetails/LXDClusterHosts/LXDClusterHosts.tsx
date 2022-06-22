@@ -24,6 +24,10 @@ type Props = {
   setHeaderContent: KVMSetHeaderContent;
 };
 
+export enum Label {
+  Title = "LXD cluster hosts",
+}
+
 const LXDClusterHosts = ({
   clusterId,
   setHeaderContent,
@@ -59,7 +63,7 @@ const LXDClusterHosts = ({
   );
 
   return (
-    <>
+    <div aria-label={Label.Title}>
       <Strip shallow>
         <LXDClusterSummaryCard clusterId={clusterId} />
       </Strip>
@@ -78,7 +82,7 @@ const LXDClusterHosts = ({
         searchFilter={searchFilter}
         setHeaderContent={setHeaderContent}
       />
-    </>
+    </div>
   );
 };
 

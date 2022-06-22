@@ -37,7 +37,7 @@ describe("Routes", () => {
   [
     {
       // Redirects to machines:
-      component: "Machines",
+      component: "Redirect",
       path: baseURLs.index,
     },
     {
@@ -53,11 +53,11 @@ describe("Routes", () => {
       path: controllersURLs.controllers.index,
     },
     {
-      component: "Devices",
+      component: "DeviceList",
       path: devicesURLs.devices.index,
     },
     {
-      component: "Devices",
+      component: "DeviceDetails",
       path: devicesURLs.device.index({ id: "abc123" }),
     },
     {
@@ -93,23 +93,23 @@ describe("Routes", () => {
       path: settingsURLs.index,
     },
     {
-      component: "Subnets",
+      component: "SubnetsList",
       path: subnetsURLs.index,
     },
     {
-      component: "Subnets",
+      component: "FabricDetails",
       path: subnetsURLs.fabric.index({ id: 1 }),
     },
     {
-      component: "Subnets",
+      component: "SpaceDetails",
       path: subnetsURLs.space.index({ id: 1 }),
     },
     {
-      component: "Subnets",
+      component: "SubnetDetails",
       path: subnetsURLs.subnet.index({ id: 1 }),
     },
     {
-      component: "Subnets",
+      component: "VLANDetails",
       path: subnetsURLs.vlan.index({ id: 1 }),
     },
     {

@@ -13,6 +13,7 @@ export { generateCheckboxHandlers } from "./generateCheckboxHandlers";
 export { getCookie } from "./getCookie";
 export { getNextName } from "./getNextName";
 export { getRanges } from "./getRanges";
+export { getRelativeRoute } from "./getRelativeRoute";
 export { getStatusText } from "./getStatusText";
 export { groupAsMap } from "./groupAsMap";
 export { isComparable } from "./isComparable";

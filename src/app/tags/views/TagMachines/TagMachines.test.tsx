@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import TagMachines, { Label } from "./TagMachines";
@@ -56,11 +56,12 @@ it("dispatches actions to fetch necessary data", () => {
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
-          <Route
-            component={() => <TagMachines />}
-            exact
-            path={tagURLs.tag.index(null, true)}
-          />
+          <Routes>
+            <Route
+              element={<TagMachines />}
+              path={tagURLs.tag.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -90,11 +91,12 @@ it("displays a message if the tag does not exist", () => {
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
-          <Route
-            component={() => <TagMachines />}
-            exact
-            path={tagURLs.tag.index(null, true)}
-          />
+          <Routes>
+            <Route
+              element={<TagMachines />}
+              path={tagURLs.tag.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -116,11 +118,12 @@ it("shows a spinner if the tag has not loaded yet", () => {
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
-          <Route
-            component={() => <TagMachines />}
-            exact
-            path={tagURLs.tag.index(null, true)}
-          />
+          <Routes>
+            <Route
+              element={<TagMachines />}
+              path={tagURLs.tag.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -136,11 +139,12 @@ it("displays the machine list", () => {
         initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
-          <Route
-            component={() => <TagMachines />}
-            exact
-            path={tagURLs.tag.index(null, true)}
-          />
+          <Routes>
+            <Route
+              element={<TagMachines />}
+              path={tagURLs.tag.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>

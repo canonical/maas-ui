@@ -15,6 +15,10 @@ type Props = {
   setHeaderContent: KVMSetHeaderContent;
 };
 
+export enum Label {
+  Title = "LXD cluster settings",
+}
+
 const LXDClusterSettings = ({
   clusterId,
   setHeaderContent,
@@ -26,7 +30,7 @@ const LXDClusterSettings = ({
   useWindowTitle(`${cluster?.name || "Cluster"} settings`);
 
   return (
-    <Strip shallow>
+    <Strip aria-label={Label.Title} shallow>
       <AuthenticationCard
         hostId={cluster?.hosts[0]?.id || null}
         objectName={cluster?.name || null}

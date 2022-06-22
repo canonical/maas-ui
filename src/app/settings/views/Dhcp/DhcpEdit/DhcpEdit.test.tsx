@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { DhcpEdit } from "./DhcpEdit";
@@ -82,11 +82,9 @@ describe("DhcpEdit", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/settings/dhcp/:id/edit"
-              render={() => <DhcpEdit />}
-            />
+            <Routes>
+              <Route element={<DhcpEdit />} path="/settings/dhcp/:id/edit" />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

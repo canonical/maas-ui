@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerDetails from "./ControllerDetails";
@@ -38,11 +38,12 @@ it("gets and sets the controller as active", () => {
         ]}
       >
         <CompatRouter>
-          <Route
-            exact
-            path={controllerURLs.controller.index(null, true)}
-            render={() => <ControllerDetails />}
-          />
+          <Routes>
+            <Route
+              element={<ControllerDetails />}
+              path={controllerURLs.controller.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -84,11 +85,12 @@ it("unsets active controller and cleans up when unmounting", () => {
         ]}
       >
         <CompatRouter>
-          <Route
-            exact
-            path={controllerURLs.controller.index(null, true)}
-            render={() => <ControllerDetails />}
-          />
+          <Routes>
+            <Route
+              element={<ControllerDetails />}
+              path={controllerURLs.controller.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -135,11 +137,12 @@ it("displays a message if the controller does not exist", () => {
         ]}
       >
         <CompatRouter>
-          <Route
-            exact
-            path={controllerURLs.controller.index(null, true)}
-            render={() => <ControllerDetails />}
-          />
+          <Routes>
+            <Route
+              element={<ControllerDetails />}
+              path={controllerURLs.controller.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>

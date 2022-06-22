@@ -6,7 +6,6 @@ const urls = {
     index: "/tags",
   },
   tag: {
-    base: "/tag",
     index: argPath<{ id: Tag[TagMeta.PK] }>("/tag/:id"),
     machines: argPath<{ id: Tag[TagMeta.PK] }>("/tag/:id/machines"),
     update: argPath<{ id: Tag[TagMeta.PK] }>("/tag/:id/edit"),

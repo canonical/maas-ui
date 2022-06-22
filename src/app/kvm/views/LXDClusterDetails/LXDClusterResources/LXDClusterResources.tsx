@@ -13,6 +13,10 @@ type Props = {
   clusterId: VMCluster["id"];
 };
 
+export enum Label {
+  Title = "LXD cluster resources",
+}
+
 const LXDClusterResources = ({ clusterId }: Props): JSX.Element => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
@@ -20,7 +24,7 @@ const LXDClusterResources = ({ clusterId }: Props): JSX.Element => {
   useWindowTitle(`${cluster?.name || "Cluster"} resources`);
 
   return (
-    <>
+    <div aria-label={Label.Title}>
       <Strip shallow>
         <LXDClusterSummaryCard clusterId={clusterId} showStorage={false} />
       </Strip>
@@ -31,7 +35,7 @@ const LXDClusterResources = ({ clusterId }: Props): JSX.Element => {
           <Spinner text="Loading..." />
         )}
       </Strip>
-    </>
+    </div>
   );
 };
 

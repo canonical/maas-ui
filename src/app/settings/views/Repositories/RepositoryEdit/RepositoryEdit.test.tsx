@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import RepositoryEdit from "./RepositoryEdit";
@@ -40,11 +40,19 @@ describe("RepositoryEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories/1/edit", key: "testKey" },
+            {
+              pathname: "/settings/repositories/edit/repository/1",
+              key: "testKey",
+            },
           ]}
         >
           <CompatRouter>
-            <RepositoryEdit />
+            <Routes>
+              <Route
+                element={<RepositoryEdit />}
+                path="/settings/repositories/edit/:type/:id"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -58,11 +66,19 @@ describe("RepositoryEdit", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: "/settings/repositories/100/edit", key: "testKey" },
+            {
+              pathname: "/settings/repositories/edit/repository/100",
+              key: "testKey",
+            },
           ]}
         >
           <CompatRouter>
-            <RepositoryEdit />
+            <Routes>
+              <Route
+                element={<RepositoryEdit />}
+                path="/settings/repositories/edit/:type/:id"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -83,11 +99,12 @@ describe("RepositoryEdit", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/settings/repositories/edit/:type/:id"
-              render={() => <RepositoryEdit />}
-            />
+            <Routes>
+              <Route
+                element={<RepositoryEdit />}
+                path="/settings/repositories/edit/:type/:id"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

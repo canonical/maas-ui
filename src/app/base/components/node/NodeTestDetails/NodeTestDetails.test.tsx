@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router";
+import { CompatRouter, Routes, Route } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeTestDetails from "./NodeTestDetails";
@@ -47,10 +47,12 @@ describe("NodeTestDetails", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
           <CompatRouter>
-            <Route
-              path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
-            />
+            <Routes>
+              <Route
+                element={<NodeTestDetails getReturnPath={getReturnPath} />}
+                path="/machine/:id/testing/:scriptResultId/details"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -65,10 +67,12 @@ describe("NodeTestDetails", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
           <CompatRouter>
-            <Route
-              path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
-            />
+            <Routes>
+              <Route
+                element={<NodeTestDetails getReturnPath={getReturnPath} />}
+                path="/machine/:id/testing/:scriptResultId/details"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -86,10 +90,12 @@ describe("NodeTestDetails", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
           <CompatRouter>
-            <Route
-              path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
-            />
+            <Routes>
+              <Route
+                element={<NodeTestDetails getReturnPath={getReturnPath} />}
+                path="/machine/:id/testing/:scriptResultId/details"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -120,10 +126,12 @@ describe("NodeTestDetails", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
           <CompatRouter>
-            <Route
-              path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
-            />
+            <Routes>
+              <Route
+                element={<NodeTestDetails getReturnPath={getReturnPath} />}
+                path="/machine/:id/testing/:scriptResultId/details"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -151,10 +159,12 @@ describe("NodeTestDetails", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
           <CompatRouter>
-            <Route
-              path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
-            />
+            <Routes>
+              <Route
+                element={<NodeTestDetails getReturnPath={getReturnPath} />}
+                path="/machine/:id/testing/:scriptResultId/details"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -181,10 +191,12 @@ describe("NodeTestDetails", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
           <CompatRouter>
-            <Route
-              path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
-            />
+            <Routes>
+              <Route
+                element={<NodeTestDetails getReturnPath={getReturnPath} />}
+                path="/machine/:id/testing/:scriptResultId/details"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -223,10 +235,12 @@ describe("NodeTestDetails", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
           <CompatRouter>
-            <Route
-              path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
-            />
+            <Routes>
+              <Route
+                element={<NodeTestDetails getReturnPath={getReturnPath} />}
+                path="/machine/:id/testing/:scriptResultId/details"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -251,10 +265,12 @@ describe("NodeTestDetails", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={["/machine/abc123/testing/1/details"]}>
           <CompatRouter>
-            <Route
-              path="/machine/:id/testing/:scriptResultId/details"
-              render={() => <NodeTestDetails getReturnPath={getReturnPath} />}
-            />
+            <Routes>
+              <Route
+                element={<NodeTestDetails getReturnPath={getReturnPath} />}
+                path="/machine/:id/testing/:scriptResultId/details"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
