@@ -1,13 +1,14 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { RootState } from "app/store/root/types";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
-import { rootState as rootStateFactory } from "testing/factories";
 
 import ZonesListHeader from "./ZonesListHeader";
+
+import type { RootState } from "app/store/root/types";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 

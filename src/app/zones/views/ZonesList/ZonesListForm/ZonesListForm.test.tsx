@@ -1,14 +1,15 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { RootState } from "app/store/root/types";
-import { actions as zoneActions } from "app/store/zone";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
-import { rootState as rootStateFactory } from "testing/factories";
 
 import ZonesListForm from "./ZonesListForm";
+
+import type { RootState } from "app/store/root/types";
+import { actions as zoneActions } from "app/store/zone";
+import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
