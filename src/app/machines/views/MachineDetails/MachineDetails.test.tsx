@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter, Link } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Link, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineDetails from "./MachineDetails";
@@ -122,10 +122,9 @@ describe("MachineDetails", () => {
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
             <CompatRouter>
-              <Route
-                path={route || "*/:id/*"}
-                render={() => <MachineDetails />}
-              />
+              <Routes>
+                <Route element={<MachineDetails />} path={route || "*/:id/*"} />
+              </Routes>
             </CompatRouter>
           </MemoryRouter>
         </Provider>
@@ -142,11 +141,9 @@ describe("MachineDetails", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id"
-              render={() => <MachineDetails />}
-            />
+            <Routes>
+              <Route element={<MachineDetails />} path="/machine/:id" />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -195,11 +192,9 @@ describe("MachineDetails", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id"
-              render={() => <MachineDetails />}
-            />
+            <Routes>
+              <Route element={<MachineDetails />} path="/machine/:id" />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -218,8 +213,17 @@ describe("MachineDetails", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <Link to="/machine/abc123/commissioning" />
-            <Route path="/machine/:id" render={() => <MachineDetails />} />
+            <Routes>
+              <Route
+                element={
+                  <>
+                    <Link to="/machine/abc123/commissioning" />
+                    <MachineDetails />
+                  </>
+                }
+                path="/machine/:id"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

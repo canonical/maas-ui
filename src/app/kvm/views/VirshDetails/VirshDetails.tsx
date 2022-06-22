@@ -19,6 +19,10 @@ import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { isId } from "app/utils";
 
+export enum Label {
+  Title = "Virsh details",
+}
+
 const VirshDetails = (): JSX.Element => {
   const navigate = useNavigate();
   const id = useGetURLId(PodMeta.PK);
@@ -50,6 +54,7 @@ const VirshDetails = (): JSX.Element => {
   }
   return (
     <Section
+      aria-label={Label.Title}
       header={
         <VirshDetailsHeader
           headerContent={headerContent}

@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { UserEdit } from "./UserEdit";
@@ -95,11 +95,9 @@ describe("UserEdit", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/settings/users/:id/edit"
-              render={() => <UserEdit />}
-            />
+            <Routes>
+              <Route element={<UserEdit />} path="/settings/users/:id/edit" />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

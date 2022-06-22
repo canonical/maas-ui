@@ -1,4 +1,5 @@
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
 import Pools from "./pools/views/Pools";
 import Tags from "./tags/views/Tags";
@@ -11,7 +12,8 @@ import Controllers from "app/controllers/views/Controllers";
 import dashboardURLs from "app/dashboard/urls";
 import Dashboard from "app/dashboard/views/Dashboard";
 import devicesURLs from "app/devices/urls";
-import Devices from "app/devices/views/Devices";
+import DeviceDetails from "app/devices/views/DeviceDetails";
+import DeviceList from "app/devices/views/DeviceList";
 import domainsURLs from "app/domains/urls";
 import Domains from "app/domains/views/Domains";
 import imagesURLs from "app/images/urls";
@@ -29,177 +31,215 @@ import Preferences from "app/preferences/views/Preferences";
 import settingsURLs from "app/settings/urls";
 import Settings from "app/settings/views/Settings";
 import subnetsURLs from "app/subnets/urls";
-import Subnets from "app/subnets/views/Subnets";
+import FabricDetails from "app/subnets/views/FabricDetails";
+import SpaceDetails from "app/subnets/views/SpaceDetails";
+import SubnetDetails from "app/subnets/views/SubnetDetails";
+import SubnetsList from "app/subnets/views/SubnetsList";
+import VLANDetails from "app/subnets/views/VLANDetails";
 import tagURLs from "app/tags/urls";
 import zonesURLs from "app/zones/urls";
 import Zones from "app/zones/views/Zones";
 
 const Routes = (): JSX.Element => (
-  <Switch>
+  <ReactRouterRoutes>
     <Route
-      exact
+      element={<Redirect to={machineURLs.machines.index} />}
       path={baseURLs.index}
-      render={() => <Redirect to={machineURLs.machines.index} />}
     />
     <Route
-      path={introURLs.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Intro />
         </ErrorBoundary>
-      )}
+      }
+      path={`${introURLs.index}/*`}
     />
     <Route
-      path={prefsURLs.prefs}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Preferences />
         </ErrorBoundary>
-      )}
+      }
+      path={`${prefsURLs.prefs}/*`}
     />
-    {[
-      controllersURLs.controllers.index,
-      controllersURLs.controller.index(null, true),
-    ].map((path) => (
-      <Route
-        key={path}
-        path={path}
-        render={() => (
-          <ErrorBoundary>
-            <Controllers />
-          </ErrorBoundary>
-        )}
-      />
-    ))}
-    {[devicesURLs.devices.index, devicesURLs.device.index(null, true)].map(
-      (path) => (
-        <Route
-          key={path}
-          path={path}
-          render={() => (
-            <ErrorBoundary>
-              <Devices />
-            </ErrorBoundary>
-          )}
-        />
-      )
-    )}
-    {[domainsURLs.domains, domainsURLs.details(null, true)].map((path) => (
-      <Route
-        exact
-        key={path}
-        path={path}
-        render={() => (
-          <ErrorBoundary>
-            <Domains />
-          </ErrorBoundary>
-        )}
-      />
-    ))}
     <Route
-      path={imagesURLs.index}
-      render={() => (
+      element={
+        <ErrorBoundary>
+          <Controllers />
+        </ErrorBoundary>
+      }
+      path={`${controllersURLs.controllers.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <Controllers />
+        </ErrorBoundary>
+      }
+      path={`${controllersURLs.controller.index(null, true)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <DeviceList />
+        </ErrorBoundary>
+      }
+      path={`${devicesURLs.devices.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <DeviceDetails />
+        </ErrorBoundary>
+      }
+      path={`${devicesURLs.device.index(null, true)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <Domains />
+        </ErrorBoundary>
+      }
+      path={`${domainsURLs.domains}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <Domains />
+        </ErrorBoundary>
+      }
+      path={`${domainsURLs.details(null, true)}/*`}
+    />
+    <Route
+      element={
         <ErrorBoundary>
           <Images />
         </ErrorBoundary>
-      )}
+      }
+      path={`${imagesURLs.index}/*`}
     />
     <Route
-      path={kvmURLs.kvm}
-      render={() => (
+      element={
         <ErrorBoundary>
           <KVM />
         </ErrorBoundary>
-      )}
+      }
+      path={`${kvmURLs.kvm}/*`}
     />
     <Route
-      path={machineURLs.machines.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Machines />
         </ErrorBoundary>
-      )}
+      }
+      path={`${machineURLs.machines.index}/*`}
     />
     <Route
-      path={machineURLs.machine.index(null, true)}
-      render={() => (
+      element={
         <ErrorBoundary>
           <MachineDetails />
         </ErrorBoundary>
-      )}
+      }
+      path={`${machineURLs.machine.index(null, true)}/*`}
     />
     <Route
-      path={poolsURLs.pools}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Pools />
         </ErrorBoundary>
-      )}
+      }
+      path={`${poolsURLs.pools}/*`}
     />
     <Route
-      path={tagURLs.tags.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Tags />
         </ErrorBoundary>
-      )}
+      }
+      path={`${tagURLs.tags.index}/*`}
     />
     <Route
-      path={tagURLs.tag.index(null, true)}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Tags />
         </ErrorBoundary>
-      )}
+      }
+      path={`${tagURLs.tag.index(null, true)}/*`}
     />
     <Route
-      path={settingsURLs.index}
-      render={() => (
+      element={
         <ErrorBoundary>
           <Settings />
         </ErrorBoundary>
-      )}
+      }
+      path={`${settingsURLs.index}/*`}
     />
-    {[
-      subnetsURLs.index,
-      subnetsURLs.fabric.index(null, true),
-      subnetsURLs.space.index(null, true),
-      subnetsURLs.subnet.index(null, true),
-      subnetsURLs.vlan.index(null, true),
-    ].map((path) => (
-      <Route
-        exact
-        key={path}
-        path={path}
-        render={() => (
-          <ErrorBoundary>
-            <Subnets />
-          </ErrorBoundary>
-        )}
-      />
-    ))}
-    {[zonesURLs.index, zonesURLs.details(null, true)].map((path) => (
-      <Route
-        exact
-        key={path}
-        path={path}
-        render={() => (
-          <ErrorBoundary>
-            <Zones />
-          </ErrorBoundary>
-        )}
-      />
-    ))}
     <Route
-      path={dashboardURLs.index}
-      render={() => (
+      element={
+        <ErrorBoundary>
+          <SubnetsList />
+        </ErrorBoundary>
+      }
+      path={`${subnetsURLs.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <FabricDetails />
+        </ErrorBoundary>
+      }
+      path={`${subnetsURLs.fabric.index(null, true)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <SpaceDetails />
+        </ErrorBoundary>
+      }
+      path={`${subnetsURLs.space.index(null, true)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <SubnetDetails />
+        </ErrorBoundary>
+      }
+      path={`${subnetsURLs.subnet.index(null, true)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <VLANDetails />
+        </ErrorBoundary>
+      }
+      path={`${subnetsURLs.vlan.index(null, true)}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <Zones />
+        </ErrorBoundary>
+      }
+      path={`${zonesURLs.index}/*`}
+    />
+    <Route
+      element={
+        <ErrorBoundary>
+          <Zones />
+        </ErrorBoundary>
+      }
+      path={`${zonesURLs.details(null, true)}/*`}
+    />
+    <Route
+      element={
         <ErrorBoundary>
           <Dashboard />
         </ErrorBoundary>
-      )}
+      }
+      path={`${dashboardURLs.index}/*`}
     />
-    <Route path="*" render={() => <NotFound includeSection />} />
-  </Switch>
+    <Route element={<NotFound includeSection />} path="*" />
+  </ReactRouterRoutes>
 );
 
 export default Routes;

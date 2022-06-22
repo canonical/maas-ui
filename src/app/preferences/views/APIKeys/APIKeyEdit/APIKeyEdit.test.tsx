@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { APIKeyEdit } from "./APIKeyEdit";
@@ -81,11 +81,12 @@ describe("APIKeyEdit", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/account/prefs/api-keys/:id/edit"
-              render={() => <APIKeyEdit />}
-            />
+            <Routes>
+              <Route
+                element={<APIKeyEdit />}
+                path="/account/prefs/api-keys/:id/edit"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

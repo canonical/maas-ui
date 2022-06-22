@@ -1,68 +1,97 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
-import LXDClusterHostVMs from "./LXDClusterHostVMs";
+import LXDClusterHostVMs, { Label } from "./LXDClusterHostVMs";
 
+import kvmURLs from "app/kvm/urls";
+import { PodType } from "app/store/pod/constants";
+import type { RootState } from "app/store/root/types";
 import {
+  podDetails as podFactory,
+  podState as podStateFactory,
   rootState as rootStateFactory,
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+let state: RootState;
+
+beforeEach(() => {
+  state = rootStateFactory({
+    pod: podStateFactory({
+      items: [podFactory({ id: 2, type: PodType.LXD, cluster: 1 })],
+      loaded: true,
+    }),
+    vmcluster: vmClusterStateFactory({
+      items: [
+        vmClusterFactory({
+          id: 1,
+          hosts: [vmHostFactory({ id: 1 })],
+        }),
+      ],
+      loaded: true,
+    }),
+  });
+});
 
 describe("LXDClusterHostVMs", () => {
   it("renders the LXD host VM table if the host is part of the cluster", () => {
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
-        items: [vmClusterFactory({ id: 1, hosts: [vmHostFactory({ id: 2 })] })],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <LXDClusterHostVMs
-              clusterId={1}
-              hostId={2}
-              searchFilter=""
-              setHeaderContent={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDClusterHostVMs
+        clusterId={1}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      {
+        route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        wrapperProps: {
+          state,
+          routePattern: kvmURLs.lxd.cluster.vms.host(null, true),
+        },
+      }
     );
-    expect(wrapper.find("LXDHostVMs").exists()).toBe(true);
+    expect(screen.getByText("VMs on pod1")).toBeInTheDocument();
   });
 
   it("renders a spinner if cluster hasn't loaded", () => {
-    const state = rootStateFactory({
-      vmcluster: vmClusterStateFactory({
-        items: [],
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <LXDClusterHostVMs
-              clusterId={1}
-              hostId={2}
-              searchFilter=""
-              setHeaderContent={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    state.pod.loaded = false;
+    renderWithBrowserRouter(
+      <LXDClusterHostVMs
+        clusterId={1}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      {
+        route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        wrapperProps: {
+          state,
+          routePattern: kvmURLs.lxd.cluster.vms.host(null, true),
+        },
+      }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
+  });
+
+  it("displays a message if the host is not found", () => {
+    state.pod.items = [];
+    renderWithBrowserRouter(
+      <LXDClusterHostVMs
+        clusterId={1}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      {
+        route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        wrapperProps: {
+          state,
+          routePattern: kvmURLs.lxd.cluster.vms.host(null, true),
+        },
+      }
+    );
+    expect(screen.getByText("LXD host not found")).toBeInTheDocument();
   });
 });

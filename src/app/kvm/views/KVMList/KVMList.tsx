@@ -3,8 +3,7 @@ import { useEffect, useState } from "react";
 
 import { Col, Row, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useLocation, useNavigate } from "react-router-dom-v5-compat";
 
 import KVMListHeader from "./KVMListHeader";
 import LxdTable from "./LxdTable";
@@ -20,6 +19,10 @@ import { actions as poolActions } from "app/store/resourcepool";
 import { actions as vmclusterActions } from "app/store/vmcluster";
 import vmclusterSelectors from "app/store/vmcluster/selectors";
 import { actions as zoneActions } from "app/store/zone";
+
+export enum Label {
+  Title = "KVM list",
+}
 
 const KVMList = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -88,6 +91,7 @@ const KVMList = (): JSX.Element => {
   }
   return (
     <Section
+      aria-label={Label.Title}
       header={
         <KVMListHeader
           headerContent={headerContent}

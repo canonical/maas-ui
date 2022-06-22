@@ -33,6 +33,7 @@ const LXDHostVMs = ({
   searchFilter,
   setSearchFilter,
   setHeaderContent,
+  ...wrapperProps
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
@@ -54,7 +55,7 @@ const LXDHostVMs = ({
 
   if (pod) {
     return (
-      <>
+      <div {...wrapperProps}>
         <LXDHostToolbar
           clusterId={clusterId}
           hostId={hostId}
@@ -93,7 +94,7 @@ const LXDHostVMs = ({
             vms={vms}
           />
         </Strip>
-      </>
+      </div>
     );
   }
   return <Spinner text="Loading..." />;

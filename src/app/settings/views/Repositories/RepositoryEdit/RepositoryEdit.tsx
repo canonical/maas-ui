@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom-v5-compat";
 
 import RepositoryForm from "../RepositoryForm";
 
@@ -30,7 +30,7 @@ export const RepositoryEdit = (): JSX.Element => {
   if (loading) {
     return <Spinner text="Loading..." />;
   }
-  if (loaded && !repository) {
+  if ((loaded && !repository) || !type) {
     return <h4>Repository not found</h4>;
   }
   return <RepositoryForm repository={repository} type={type} />;

@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceDetails from "./DeviceDetails";
@@ -51,10 +51,12 @@ describe("DeviceDetails", () => {
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
             <CompatRouter>
-              <Route
-                path={deviceURLs.device.index(null, true)}
-                render={() => <DeviceDetails />}
-              />
+              <Routes>
+                <Route
+                  element={<DeviceDetails />}
+                  path={`${deviceURLs.device.index(null, true)}/*`}
+                />
+              </Routes>
             </CompatRouter>
           </MemoryRouter>
         </Provider>
@@ -73,11 +75,12 @@ describe("DeviceDetails", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path={deviceURLs.device.index(null, true)}
-              render={() => <DeviceDetails />}
-            />
+            <Routes>
+              <Route
+                element={<DeviceDetails />}
+                path={deviceURLs.device.index(null, true)}
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -107,11 +110,12 @@ describe("DeviceDetails", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path={deviceURLs.device.index(null, true)}
-              render={() => <DeviceDetails />}
-            />
+            <Routes>
+              <Route
+                element={<DeviceDetails />}
+                path={deviceURLs.device.index(null, true)}
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -147,11 +151,12 @@ describe("DeviceDetails", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path={deviceURLs.device.index(null, true)}
-              render={() => <DeviceDetails />}
-            />
+            <Routes>
+              <Route
+                element={<DeviceDetails />}
+                path={deviceURLs.device.index(null, true)}
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineUSBDevices from "./MachineUSBDevices";
@@ -33,11 +34,14 @@ describe("MachineUSBDevices", () => {
             { pathname: "/machine/abc123/usb-devices", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/usb-devices"
-            render={() => <MachineUSBDevices setHeaderContent={jest.fn()} />}
-          />
+          <CompatRouter>
+            <Routes>
+              <Route
+                element={<MachineUSBDevices setHeaderContent={jest.fn()} />}
+                path="/machine/:id/usb-devices"
+              />
+            </Routes>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
