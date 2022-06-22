@@ -1,13 +1,15 @@
-import { screen, render, waitFor, within } from "@testing-library/react";
+import { screen, render, waitFor, within, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
-import { BrowserRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { BrowserRouter, Router } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Header } from "./Header";
 
 import urls from "app/base/urls";
+import introURLs from "app/intro/urls";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
@@ -26,6 +28,7 @@ jest.mock("react-router-dom-v5-compat", () => ({
   ...jest.requireActual("react-router-dom-v5-compat"),
   useNavigate: () => mockUseNavigate,
 }));
+const mockStore = configureStore();
 
 let state: RootState;
 
@@ -266,4 +269,27 @@ it("redirects to the user intro page if user intro not completed", () => {
   });
 
   expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user);
+});
+
+it("does not redirect if the intro is being displayed", async () => {
+  state.config.items = [
+    configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
+  ];
+  const history = createMemoryHistory({
+    initialEntries: [{ pathname: "/" }],
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <Router history={history}>
+        <CompatRouter>
+          <Routes>
+            <Route element={<Header />} path="*" />
+          </Routes>
+        </CompatRouter>
+      </Router>
+    </Provider>
+  );
+  act(() => history.push(introURLs.images));
+  await waitFor(() => expect(history.location.pathname).toBe(introURLs.images));
 });
