@@ -1,15 +1,14 @@
 import { useEffect, useState } from "react";
 
 import { Button } from "@canonical/react-components";
+import SectionHeader from "app/base/components/SectionHeader";
+import { actions } from "app/store/zone";
+import zoneSelectors from "app/store/zone/selectors";
 import { useDispatch, useSelector } from "react-redux";
 
 import ZonesListForm from "../ZonesListForm";
 
 import ZonesListTitle from "./ZonesListTitle";
-
-import SectionHeader from "app/base/components/SectionHeader";
-import { actions } from "app/store/zone";
-import zoneSelectors from "app/store/zone/selectors";
 
 const ZonesListHeader = (): JSX.Element => {
   const [showForm, setShowForm] = useState(false);

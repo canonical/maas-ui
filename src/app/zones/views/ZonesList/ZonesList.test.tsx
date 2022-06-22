@@ -3,14 +3,13 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
-
-import ZonesList, { TestIds } from "./ZonesListTable/ZonesListTable";
-
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+
+import ZonesList, { TestIds } from "./ZonesListTable/ZonesListTable";
 
 const mockStore = configureStore();
 
@@ -53,8 +52,6 @@ describe("ZonesList", () => {
       </Provider>
     );
 
-    expect(
-      screen.getByTestId(TestIds.ZonesTable)
-    ).toBeInTheDocument();
+    expect(screen.getByTestId(TestIds.ZonesTable)).toBeInTheDocument();
   });
 });

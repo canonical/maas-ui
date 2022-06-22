@@ -1,12 +1,11 @@
 import { useCallback } from "react";
 
 import { Row, Col, Textarea } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
+import { useDispatch, useSelector } from "react-redux";
 
 type Props = {
   closeForm: () => void;
