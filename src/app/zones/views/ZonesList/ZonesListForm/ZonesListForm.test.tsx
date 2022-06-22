@@ -1,5 +1,5 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { render, screen } from "@testing-library/react";
+import userEvent from '@testing-library/user-event';
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -8,8 +8,8 @@ import configureStore from "redux-mock-store";
 import ZonesListForm from "./ZonesListForm";
 
 import type { RootState } from "app/store/root/types";
+import { actions as zoneActions } from "app/store/zone"
 import { rootState as rootStateFactory } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -19,10 +19,10 @@ describe("ZonesListForm", () => {
     state = rootStateFactory();
   });
 
-  it("runs closeForm function when the cancel button is clicked", () => {
+  it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -32,13 +32,15 @@ describe("ZonesListForm", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-testid='cancel-action']").simulate("click");
+    await userEvent.click(
+      screen.getByRole("button", {name: /Cancel/i})
+    )
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("calls actions.create on save click", () => {
+  it("calls actions.create on save click", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -47,27 +49,28 @@ describe("ZonesListForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        description: "desc",
-        name: "test-zone",
-      })
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /name/i}),
+      "test-zone"
     );
 
-    expect(
-      store.getActions().find((action) => action.type === "zone/create")
-    ).toStrictEqual({
-      type: "zone/create",
-      meta: {
-        method: "create",
-        model: "zone",
-      },
-      payload: {
-        params: {
-          description: "desc",
-          name: "test-zone",
-        },
-      },
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /description/i}),
+      "desc"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Add AZ/i })
+    )
+
+    const expectedAction = zoneActions.create({
+      description: "desc",
+      name: "test-zone"
     });
+
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 });
