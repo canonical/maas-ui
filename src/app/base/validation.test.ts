@@ -1,6 +1,11 @@
 import { ValidationError } from "yup";
 
-import { hostnameValidation, HostnameValidationLabel } from "./validation";
+import {
+  hostnameValidation,
+  HostnameValidationLabel,
+  UrlSchema,
+  UrlSchemaError,
+} from "./validation";
 
 describe("hostname regex", () => {
   it("handles valid characters", async () => {
@@ -40,6 +45,26 @@ describe("hostname regex", () => {
       )
     ).rejects.toStrictEqual(
       new ValidationError(HostnameValidationLabel.LengthError)
+    );
+  });
+});
+
+describe("UrlSchema", () => {
+  it("rejects invalid URLs", async () => {
+    await expect(UrlSchema.validate("test")).rejects.toStrictEqual(
+      new ValidationError(UrlSchemaError)
+    );
+  });
+
+  it("allows URLs with a TLD", async () => {
+    await expect(UrlSchema.validate("http://test.proxy")).resolves.toBe(
+      "http://test.proxy"
+    );
+  });
+
+  it("allows URLs without a TLD (e.g. test.proxy, )", async () => {
+    await expect(UrlSchema.validate("localhost:300")).resolves.toBe(
+      "localhost:300"
     );
   });
 });

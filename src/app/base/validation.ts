@@ -43,3 +43,17 @@ export const hostnameValidation = Yup.string()
   .matches(/^[a-zA-Z0-9]/, HostnameValidationLabel.DashStartError)
   // Validate host name does not end with a dash.
   .matches(/[a-zA-Z0-9]$/, HostnameValidationLabel.DashEndError);
+
+export const UrlSchemaError = "Must be a valid URL.";
+export const UrlSchema = Yup.string().test({
+  name: "url",
+  test: (value) => {
+    try {
+      const valid = value ? new URL(value) : false;
+      return !!valid;
+    } catch {
+      return false;
+    }
+  },
+  message: UrlSchemaError,
+});

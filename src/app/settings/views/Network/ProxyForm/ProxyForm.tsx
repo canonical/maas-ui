@@ -10,6 +10,7 @@ import type { ProxyFormValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
 import { useWindowTitle } from "app/base/hooks";
+import { UrlSchema } from "app/base/validation";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
@@ -17,9 +18,7 @@ const ProxySchema = Yup.object().shape({
   proxyType: Yup.string().required(),
   httpProxy: Yup.string().when("proxyType", {
     is: (val: string) => val === "externalProxy" || val === "peerProxy",
-    then: Yup.string()
-      .url("Must be a valid URL.")
-      .required("Please enter the proxy URL."),
+    then: UrlSchema.required("Please enter the proxy URL."),
   }),
 });
 

@@ -11,6 +11,7 @@ import type { MaasIntroValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
 import TableConfirm from "app/base/components/TableConfirm";
+import { UrlSchema } from "app/base/validation";
 import IntroSection from "app/intro/components/IntroSection";
 import { useExitURL } from "app/intro/hooks";
 import introURLs from "app/intro/urls";
@@ -19,19 +20,6 @@ import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { actions as repoActions } from "app/store/packagerepository";
 import repoSelectors from "app/store/packagerepository/selectors";
-
-const UrlSchema = Yup.string().test({
-  name: "url",
-  test: (value) => {
-    try {
-      const valid = value ? new URL(value) : false;
-      return !!valid;
-    } catch {
-      return false;
-    }
-  },
-  message: "Must be a valid URL.",
-});
 
 export const MaasIntroSchema = Yup.object()
   .shape({
