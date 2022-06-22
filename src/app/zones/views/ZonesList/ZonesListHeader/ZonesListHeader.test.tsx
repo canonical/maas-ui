@@ -36,7 +36,7 @@ describe("ZonesListHeader", () => {
     ).not.toBeInTheDocument();
 
     await userEvent.click(
-      screen.getByRole("button", {name: "Add AZ"})
+      screen.getByRole("button", { name: "Add AZ" })
     )
 
     expect(

@@ -33,7 +33,7 @@ describe("ZonesListForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", {name: /Cancel/i})
+      screen.getByRole("button", { name: /Cancel/i })
     )
     expect(closeForm).toHaveBeenCalled();
   });
@@ -51,12 +51,12 @@ describe("ZonesListForm", () => {
     );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: /name/i}),
+      screen.getByRole("textbox", { name: /name/i }),
       "test-zone"
     );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: /description/i}),
+      screen.getByRole("textbox", { name: /description/i }),
       "desc"
     );
 
