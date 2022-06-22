@@ -1,14 +1,15 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import ActionForm from "./ActionForm";
+import ActionForm, { Labels } from "./ActionForm";
 
+import { TestIds } from "app/base/components/FormikFormButtons";
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
 
 let state: RootState;
 const mockStore = configureStore();
@@ -20,7 +21,7 @@ describe("ActionForm", () => {
 
   it("shows a spinner if form has not fully loaded", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -38,12 +39,14 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(
+      screen.getByRole("alert", { name: Labels.LoadingForm })
+    ).toBeInTheDocument();
   });
 
-  it("can show the correct submit label", () => {
+  it("can show the default submit label", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -60,12 +63,14 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("ActionButton").text()).toBe("Process machine");
+    expect(
+      screen.getByRole("button", { name: "Process machine" })
+    ).toBeInTheDocument();
   });
 
   it("can override the submit label", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -83,12 +88,14 @@ describe("ActionForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("ActionButton").text()).toBe("Special save");
+    expect(
+      screen.getByRole("button", { name: "Special save" })
+    ).toBeInTheDocument();
   });
 
-  it("can show the correct saving state", () => {
+  it("can show the correct saving state", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -104,14 +111,13 @@ describe("ActionForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper);
-    wrapper.update();
 
-    expect(wrapper.find("[data-testid='saving-label']").text()).toBe(
+    await userEvent.click(screen.getByRole("button"));
+
+    expect(screen.getByTestId(TestIds.SavingLabel).textContent).toBe(
       "Processing 1 of 2 machines..."
     );
-    expect(wrapper.find("ActionButton").prop("loading")).toBe(true);
-    expect(wrapper.find("ActionButton").prop("disabled")).toBe(true);
+    expect(screen.getByRole("button")).toBeDisabled();
   });
 
   it("shows correct saving label if selectedCount changes after submit", async () => {
@@ -132,26 +138,25 @@ describe("ActionForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    const wrapper = mount(<Proxy selectedCount={2} />);
+    const { rerender } = render(<Proxy selectedCount={2} />);
 
     // Submit the form to start processing.
-    wrapper.find("Formik").simulate("submit");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-testid='saving-label']").text()).toBe(
+    await userEvent.click(screen.getByRole("button"));
+    expect(screen.getByTestId(TestIds.SavingLabel).textContent).toBe(
       "Processing 0 of 2 machines..."
     );
 
     // Change the selected count prop - the label should stay the same.
-    wrapper.setProps({ selectedCount: 1 });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("[data-testid='saving-label']").text()).toBe(
+    rerender(<Proxy selectedCount={1} />);
+
+    expect(screen.getByTestId(TestIds.SavingLabel).textContent).toBe(
       "Processing 0 of 2 machines..."
     );
   });
 
-  it("can override showing the processing count", () => {
+  it("can override showing the processing count", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -168,9 +173,9 @@ describe("ActionForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper);
-    wrapper.update();
 
-    expect(wrapper.find("[data-testid='saving-label']").exists()).toBe(false);
+    await userEvent.click(screen.getByRole("button"));
+
+    expect(screen.queryByTestId(TestIds.SavingLabel)).not.toBeInTheDocument();
   });
 });

@@ -14,9 +14,13 @@ type Props = {
   name: string;
 } & HTMLProps<HTMLSelectElement>;
 
+export enum Labels {
+  DefaultLabel = "Architecture",
+}
+
 export const ArchitectureSelect = ({
   disabled = false,
-  label = "Architecture",
+  label = Labels.DefaultLabel,
   name,
   ...props
 }: Props): JSX.Element => {

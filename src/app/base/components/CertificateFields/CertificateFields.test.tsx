@@ -1,11 +1,11 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 
-import CertificateFields from "./CertificateFields";
+import CertificateFields, { Labels } from "./CertificateFields";
 
 describe("CertificateFields", () => {
   it("does not render certificate and key fields if generating a certificate", () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={jest.fn()}
@@ -16,12 +16,17 @@ describe("CertificateFields", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("textarea[name='certificate']").exists()).toBe(false);
-    expect(wrapper.find("textarea[name='key']").exists()).toBe(false);
+
+    expect(
+      screen.queryByRole("textbox", { name: Labels.UploadCert })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", { name: Labels.UploadKey })
+    ).not.toBeInTheDocument();
   });
 
   it("renders certificate and key fields if not generating a certificate", () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={jest.fn()}
@@ -32,12 +37,17 @@ describe("CertificateFields", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("textarea[name='certificate']").exists()).toBe(true);
-    expect(wrapper.find("textarea[name='key']").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("textbox", { name: Labels.UploadCert })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: Labels.UploadKey })
+    ).toBeInTheDocument();
   });
 
   it("can be given different field names", () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{ certificate: "", key: "", password: "" }}
         onSubmit={jest.fn()}
@@ -49,8 +59,9 @@ describe("CertificateFields", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("textarea[name='custom-private-key']").exists()).toBe(
-      true
-    );
+
+    expect(
+      screen.getByRole("textbox", { name: Labels.UploadKey })
+    ).toHaveAttribute("name", "custom-private-key");
   });
 });

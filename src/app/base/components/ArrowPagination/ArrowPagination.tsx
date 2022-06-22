@@ -22,6 +22,16 @@ const getBounds = (
   return `${lowerBound} - ${upperBound} of ${itemCount}`;
 };
 
+export enum Labels {
+  GoBack = "Go back a page",
+  GoForward = "Go forward a page",
+  LoadingPagination = "Loading pagination",
+}
+
+export enum TestIds {
+  PageBounds = "page-bounds",
+}
+
 const ArrowPagination = ({
   currentPage,
   itemCount,
@@ -38,13 +48,20 @@ const ArrowPagination = ({
   return (
     <nav aria-label="pagination" {...props}>
       {showPageBounds && (
-        <span className="u-text--muted u-nudge-left" data-testid="page-bounds">
-          {loading ? <Spinner /> : getBounds(itemCount, currentPage, pageSize)}
+        <span
+          className="u-text--muted u-nudge-left"
+          data-testid={TestIds.PageBounds}
+        >
+          {loading ? (
+            <Spinner aria-label={Labels.LoadingPagination} />
+          ) : (
+            getBounds(itemCount, currentPage, pageSize)
+          )}
         </span>
       )}
       <Button
         appearance="base"
-        aria-label={onFirstPage ? "" : `Page ${currentPage - 1}`}
+        aria-label={Labels.GoBack}
         className="u-no-margin--right u-no-margin--bottom"
         disabled={onFirstPage}
         hasIcon
@@ -56,7 +73,7 @@ const ArrowPagination = ({
       </Button>
       <Button
         appearance="base"
-        aria-label={onLastPage ? "" : `Page ${currentPage + 1}`}
+        aria-label={Labels.GoForward}
         className="u-no-margin--bottom"
         disabled={onLastPage}
         hasIcon

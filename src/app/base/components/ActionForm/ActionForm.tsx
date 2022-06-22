@@ -43,6 +43,10 @@ export type Props<V, E = null> = Omit<
   submitLabel?: string;
 };
 
+export enum Labels {
+  LoadingForm = "Loading form",
+}
+
 const ActionForm = <V, E = null>({
   actionName,
   buttonsBordered = false,
@@ -66,7 +70,7 @@ const ActionForm = <V, E = null>({
   if (!loaded) {
     return (
       <Strip>
-        <Spinner text="Loading..." />
+        <Spinner aria-label={Labels.LoadingForm} text="Loading..." />
       </Strip>
     );
   }

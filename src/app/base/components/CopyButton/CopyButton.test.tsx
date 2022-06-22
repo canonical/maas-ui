@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import CopyButton from "./CopyButton";
 
@@ -18,14 +19,10 @@ describe("CopyButton", () => {
     document.execCommand = execCommand;
   });
 
-  it("can render", () => {
-    const wrapper = mount(<CopyButton value="Test key" />);
-    expect(wrapper).toMatchSnapshot();
-  });
+  it("can copy a value", async () => {
+    render(<CopyButton value="Test key" />);
 
-  it("can copy a value", () => {
-    const wrapper = mount(<CopyButton value="Test key" />);
-    wrapper.find("Button").simulate("click");
+    await userEvent.click(screen.getByRole("button"));
 
     expect(document.execCommand).toHaveBeenCalled();
   });

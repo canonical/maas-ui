@@ -14,6 +14,15 @@ type Props = {
   isGenerated?: boolean;
 };
 
+export enum Labels {
+  Download = "Download certificate",
+}
+
+export enum TestIds {
+  CertCodeSnippet = "certificate-code-snippet",
+  CertTextarea = "certificate-textarea",
+}
+
 const CertificateDownload = ({
   certificate,
   filename,
@@ -30,13 +39,13 @@ const CertificateDownload = ({
               { code: "EOF" },
             ]}
             className="u-no-margin--bottom"
-            data-testid="certificate-code-snippet"
+            data-testid={TestIds.CertCodeSnippet}
           />
         </div>
       ) : (
         <Textarea
           className="p-textarea--readonly"
-          data-testid="certificate-textarea"
+          data-testid={TestIds.CertTextarea}
           id="lxd-cert"
           readOnly
           rows={5}
@@ -44,13 +53,12 @@ const CertificateDownload = ({
         />
       )}
       <Button
-        data-testid="certificate-download-button"
         onClick={() => {
           fileDownload(certificate, filename);
         }}
         type="button"
       >
-        Download certificate
+        {Labels.Download}
         <span className="u-nudge-right--small">
           <Icon name="begin-downloading" />
         </span>

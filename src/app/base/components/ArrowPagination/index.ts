@@ -1,1 +1,1 @@
-export { default } from "./ArrowPagination";
+export { default, Labels } from "./ArrowPagination";

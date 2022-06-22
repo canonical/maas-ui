@@ -1,7 +1,8 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import * as fileDownload from "js-file-download";
 
-import CertificateDownload from "./CertificateDownload";
+import CertificateDownload, { Labels, TestIds } from "./CertificateDownload";
 
 import type { GeneratedCertificate } from "app/store/general/types";
 import { generatedCertificate as certFactory } from "testing/factories";
@@ -21,17 +22,18 @@ describe("CertificateDownload", () => {
     jest.restoreAllMocks();
   });
 
-  it("can generate a download based on the certificate details", () => {
+  it("can generate a download based on the certificate details", async () => {
     const downloadSpy = jest.spyOn(fileDownload, "default");
-    const wrapper = mount(
+    render(
       <CertificateDownload
         certificate={certificate.certificate}
         filename={certificate.CN}
       />
     );
-    wrapper
-      .find("button[data-testid='certificate-download-button']")
-      .simulate("click");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: Labels.Download })
+    );
 
     expect(downloadSpy).toHaveBeenCalledWith(
       certificate.certificate,
@@ -40,7 +42,7 @@ describe("CertificateDownload", () => {
   });
 
   it("shows as a code snippet if certificate was generated", () => {
-    const wrapper = mount(
+    render(
       <CertificateDownload
         certificate={certificate.certificate}
         filename={certificate.CN}
@@ -48,16 +50,12 @@ describe("CertificateDownload", () => {
       />
     );
 
-    expect(
-      wrapper.find("[data-testid='certificate-code-snippet']").exists()
-    ).toBe(true);
-    expect(wrapper.find("[data-testid='certificate-textarea']").exists()).toBe(
-      false
-    );
+    expect(screen.getByTestId(TestIds.CertCodeSnippet)).toBeInTheDocument();
+    expect(screen.queryByTestId(TestIds.CertTextarea)).not.toBeInTheDocument();
   });
 
   it("shows as a textarea if certificate was not generated", () => {
-    const wrapper = mount(
+    render(
       <CertificateDownload
         certificate={certificate.certificate}
         filename={certificate.CN}
@@ -65,11 +63,9 @@ describe("CertificateDownload", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='certificate-textarea']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId(TestIds.CertTextarea)).toBeInTheDocument();
     expect(
-      wrapper.find("[data-testid='certificate-code-snippet']").exists()
-    ).toBe(false);
+      screen.queryByTestId(TestIds.CertCodeSnippet)
+    ).not.toBeInTheDocument();
   });
 });
