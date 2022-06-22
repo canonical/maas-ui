@@ -139,7 +139,7 @@ it("can update the tag", async () => {
 
 it("can return to the previous page on save", async () => {
   const history = createMemoryHistory({
-    initialEntries: [{ pathname: urls.index }],
+    initialEntries: [{ pathname: urls.tags.index }],
   });
   history.push({
     pathname: urls.tags.tag.update({ id: 1 }),

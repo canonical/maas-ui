@@ -1,55 +1,35 @@
-import type { Controller, ControllerMeta } from "app/store/controller/types";
-import type {
-  ScriptResult,
-  ScriptResultMeta,
-} from "app/store/scriptresult/types";
+import { Controller, ControllerMeta } from "app/store/controller/types";
+import { ScriptResult, ScriptResultMeta } from "app/store/scriptresult/types";
 import { argPath } from "app/utils";
+
+const withId = argPath<{ id: Controller[ControllerMeta.PK] }>;
+const withIdScriptResultId = argPath<{
+  id: Controller[ControllerMeta.PK];
+  scriptResultId: ScriptResult[ScriptResultMeta.PK];
+}>;
 
 const urls = {
   index: "/controllers",
   controller: {
     commissioning: {
-      index: argPath<{ id: Controller[ControllerMeta.PK] }>(
-        "/controller/:id/commissioning"
+      index: withId("/controller/:id/commissioning"),
+      scriptResult: withIdScriptResultId(
+        "/controller/:id/commissioning/:scriptResultId/details"
       ),
-      scriptResult: argPath<{
-        id: Controller[ControllerMeta.PK];
-        scriptResultId: ScriptResult[ScriptResultMeta.PK];
-      }>("/controller/:id/commissioning/:scriptResultId/details"),
     },
-    configuration: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/configuration"
-    ),
-    index: argPath<{ id: Controller[ControllerMeta.PK] }>("/controller/:id"),
+    configuration: withId("/controller/:id/configuration"),
+    index: withId("/controller/:id"),
     logs: {
-      events: argPath<{ id: Controller[ControllerMeta.PK] }>(
-        "/controller/:id/logs/events"
-      ),
-      index: argPath<{ id: Controller[ControllerMeta.PK] }>(
-        "/controller/:id/logs"
-      ),
-      installationOutput: argPath<{ id: Controller[ControllerMeta.PK] }>(
-        "/controller/:id/logs/installation-output"
-      ),
+      events: withId("/controller/:id/logs/events"),
+      index: withId("/controller/:id/logs"),
+      installationOutput: withId("/controller/:id/logs/installation-output"),
     },
-    network: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/network"
-    ),
-    pciDevices: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/pci-devices"
-    ),
-    storage: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/storage"
-    ),
-    summary: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/summary"
-    ),
-    usbDevices: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/usb-devices"
-    ),
-    vlans: argPath<{ id: Controller[ControllerMeta.PK] }>(
-      "/controller/:id/vlans"
-    ),
+    network: withId("/controller/:id/network"),
+    pciDevices: withId("/controller/:id/pci-devices"),
+    storage: withId("/controller/:id/storage"),
+    summary: withId("/controller/:id/summary"),
+    usbDevices: withId("/controller/:id/usb-devices"),
+    vlans: withId("/controller/:id/vlans"),
   },
 } as const;
 

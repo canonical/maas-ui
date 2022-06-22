@@ -1,12 +1,14 @@
-import type { Tag, TagMeta } from "app/store/tag/types";
+import { Tag, TagMeta } from "app/store/tag/types";
 import { argPath } from "app/utils";
+
+const withId = argPath<{ id: Tag[TagMeta.PK] }>;
 
 const urls = {
   index: "/tags",
   tag: {
-    index: argPath<{ id: Tag[TagMeta.PK] }>("/tag/:id"),
-    machines: argPath<{ id: Tag[TagMeta.PK] }>("/tag/:id/machines"),
-    update: argPath<{ id: Tag[TagMeta.PK] }>("/tag/:id/edit"),
+    index: withId("/tag/:id"),
+    machines: withId("/tag/:id/machines"),
+    update: withId("/tag/:id/edit"),
   },
 } as const;
 
