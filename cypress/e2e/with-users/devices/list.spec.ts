@@ -45,7 +45,7 @@ context("Device listing", () => {
       name: /Create and add to tag changes/,
     }).click();
 
-    cy.findByRole("button", { name: /Save changed/ }).click();
+    cy.findByRole("button", { name: /Save changes/ }).click();
 
     cy.findByRole("link", { name: /Summary/ }).click();
     cy.findByText(/device-tag/).should("exist");

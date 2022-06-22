@@ -28,7 +28,7 @@ type Props = {
 
 export enum Label {
   Form = "Device configuration",
-  Submit = "Save changed",
+  Submit = "Save changes",
 }
 
 const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
