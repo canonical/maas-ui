@@ -1,10 +1,11 @@
-import { mount } from "enzyme";
+// import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react"
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import ZonesList from "./ZonesList";
+import ZonesList, { TestIds } from "./ZonesListTable/ZonesListTable";
 
 import {
   zone as zoneFactory,
@@ -18,7 +19,7 @@ describe("ZonesList", () => {
   it("correctly fetches the necessary data", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/zones", key: "testKey" }]}>
           <CompatRouter>
@@ -43,7 +44,7 @@ describe("ZonesList", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/zones", key: "testKey" }]}>
           <CompatRouter>
@@ -53,6 +54,9 @@ describe("ZonesList", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='zones-table']").exists()).toBe(true);
+    // expect(wrapper.find("[data-testid='zones-table']").exists()).toBe(true);
+    expect(
+      screen.getByTestId(TestIds.ZonesTable)
+    ).toBeInTheDocument();
   });
 });
