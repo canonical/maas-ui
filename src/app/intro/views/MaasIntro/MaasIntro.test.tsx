@@ -125,7 +125,7 @@ describe("MaasIntro", () => {
       </Provider>
     );
     submitFormikForm(wrapper, {
-      httpProxy: "http://www.newproxy.com",
+      httpProxy: "http://localhost:3000",
       mainArchiveUrl: "http://www.newmainarchive.com",
       name: "my new maas",
       portsArchiveUrl: "http://www.newportsarchive.com",

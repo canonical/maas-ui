@@ -11,6 +11,7 @@ import type { MaasIntroValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
 import TableConfirm from "app/base/components/TableConfirm";
+import { UrlSchema } from "app/base/validation";
 import IntroSection from "app/intro/components/IntroSection";
 import { useExitURL } from "app/intro/hooks";
 import introURLs from "app/intro/urls";
@@ -22,14 +23,12 @@ import repoSelectors from "app/store/packagerepository/selectors";
 
 export const MaasIntroSchema = Yup.object()
   .shape({
-    httpProxy: Yup.string().url("Must be a valid URL."),
-    mainArchiveUrl: Yup.string()
-      .url("Must be a valid URL.")
-      .required("Ubuntu archive is required."),
+    httpProxy: UrlSchema,
+    mainArchiveUrl: UrlSchema.required("Ubuntu archive is required."),
     name: Yup.string().required("MAAS name is required"),
-    portsArchiveUrl: Yup.string()
-      .url("Must be a valid URL.")
-      .required("Ubuntu extra architectures is required."),
+    portsArchiveUrl: UrlSchema.required(
+      "Ubuntu extra architectures is required."
+    ),
     upstreamDns: Yup.string(),
   })
   .defined();
