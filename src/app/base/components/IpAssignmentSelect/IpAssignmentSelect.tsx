@@ -9,9 +9,14 @@ type Props = {
   includeStatic?: boolean;
 } & Omit<FormikFieldProps<typeof Select>, "component" | "options">;
 
+export enum Labels {
+  DefaultOption = "Select IP assignment",
+  Select = "IP assignment",
+}
+
 export const IpAssignmentSelect = ({
   includeStatic = true,
-  label = "IP assignment",
+  label = Labels.Select,
   ...props
 }: Props): JSX.Element => {
   return (
@@ -19,7 +24,7 @@ export const IpAssignmentSelect = ({
       component={Select}
       label={label}
       options={[
-        { label: "Select IP assignment", value: "", disabled: true },
+        { label: Labels.DefaultOption, value: "", disabled: true },
         {
           label: getIpAssignmentDisplay(DeviceIpAssignment.DYNAMIC),
           value: DeviceIpAssignment.DYNAMIC,
