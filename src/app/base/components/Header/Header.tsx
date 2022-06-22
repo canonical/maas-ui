@@ -14,6 +14,7 @@ import {
   useNavigate,
   useLocation,
   matchPath,
+  useMatch,
 } from "react-router-dom-v5-compat";
 
 import {
@@ -22,6 +23,7 @@ import {
   useGoogleAnalytics,
 } from "app/base/hooks";
 import urls from "app/base/urls";
+import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as statusActions } from "app/store/status";
@@ -172,10 +174,16 @@ export const Header = (): JSX.Element => {
   const completedUserIntro = useCompletedUserIntro();
   useGoogleAnalytics();
   const isAuthenticated = !!authUser;
-
+  const introMatch = useMatch({ path: introURLs.index, end: false });
+  const isAtIntro = !!introMatch;
   // Redirect to the intro pages if not completed.
   useEffect(() => {
-    if (configLoaded) {
+    // Check that we're not already at the intro to allow navigation through the
+    // intro pages. This is necessary beacuse this useEffect runs every time
+    // there is a navigation change as the `navigate` function is regenerated
+    // for every route change, see:
+    // https://github.com/remix-run/react-router/issues/7634
+    if (!isAtIntro && configLoaded) {
       if (!completedIntro) {
         navigate({ pathname: urls.intro.index }, { replace: true });
       } else if (isAuthenticated && !completedUserIntro) {
@@ -186,6 +194,7 @@ export const Header = (): JSX.Element => {
     completedIntro,
     completedUserIntro,
     configLoaded,
+    isAtIntro,
     isAuthenticated,
     navigate,
   ]);
