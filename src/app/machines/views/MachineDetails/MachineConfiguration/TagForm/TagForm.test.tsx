@@ -103,13 +103,13 @@ describe("TagForm", () => {
     expect(screen.queryByLabelText("tag-form")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "tag-1" })).toHaveAttribute(
       "href",
-      `${machineURLs.machines.index}${FilterMachines.filtersToQueryString({
+      `${machineURLs.index}${FilterMachines.filtersToQueryString({
         tags: ["=tag-1"],
       })}`
     );
     expect(screen.getByRole("link", { name: "tag-2" })).toHaveAttribute(
       "href",
-      `${machineURLs.machines.index}${FilterMachines.filtersToQueryString({
+      `${machineURLs.index}${FilterMachines.filtersToQueryString({
         tags: ["=tag-2"],
       })}`
     );

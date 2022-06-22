@@ -53,7 +53,7 @@ describe("VirshDetails", () => {
         route: path,
         wrapperProps: {
           state,
-          routePattern: `${kvmURLs.virsh.details.index(null, true)}/*`,
+          routePattern: `${kvmURLs.virsh.details.index(null)}/*`,
         },
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();

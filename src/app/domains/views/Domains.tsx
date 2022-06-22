@@ -9,10 +9,10 @@ import domainsURLs from "app/domains/urls";
 const Domains = (): JSX.Element => {
   return (
     <Switch>
-      <Route exact path={domainsURLs.domains} render={() => <DomainsList />} />
+      <Route exact path={domainsURLs.index} render={() => <DomainsList />} />
       <Route
         exact
-        path={domainsURLs.details(null, true)}
+        path={domainsURLs.details(null)}
         render={() => <DomainDetails />}
       />
       <Route path="*" render={() => <NotFound />} />

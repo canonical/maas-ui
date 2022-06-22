@@ -9,11 +9,11 @@ import configureStore from "redux-mock-store";
 import TagUpdate from "./TagUpdate";
 
 import * as baseHooks from "app/base/hooks/base";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
 import { NewDefinitionMessage } from "app/tags/constants";
-import tagURLs from "app/tags/urls";
 import { Label } from "app/tags/views/TagDetails";
 import {
   rootState as rootStateFactory,
@@ -49,13 +49,13 @@ it("dispatches actions to fetch necessary data", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Route
             component={() => <TagUpdate id={1} />}
             exact
-            path={tagURLs.tag.index(null, true)}
+            path={urls.tags.tag.index(null)}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -84,13 +84,13 @@ it("shows a spinner if the tag has not loaded yet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Route
             component={() => <TagUpdate id={1} />}
             exact
-            path={tagURLs.tag.index(null, true)}
+            path={urls.tags.tag.index(null)}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -139,10 +139,10 @@ it("can update the tag", async () => {
 
 it("can return to the previous page on save", async () => {
   const history = createMemoryHistory({
-    initialEntries: [{ pathname: tagURLs.tags.index }],
+    initialEntries: [{ pathname: urls.index }],
   });
   history.push({
-    pathname: tagURLs.tag.update({ id: 1 }),
+    pathname: urls.tags.tag.update({ id: 1 }),
     state: { canGoBack: true },
   });
   const store = mockStore(state);
@@ -153,13 +153,13 @@ it("can return to the previous page on save", async () => {
           <Route
             component={() => <TagUpdate id={1} />}
             exact
-            path={tagURLs.tag.update(null, true)}
+            path={urls.tags.tag.update(null)}
           />
         </CompatRouter>
       </Router>
     </Provider>
   );
-  expect(history.location.pathname).toBe(tagURLs.tag.update({ id: 1 }));
+  expect(history.location.pathname).toBe(urls.tags.tag.update({ id: 1 }));
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
@@ -172,16 +172,14 @@ it("can return to the previous page on save", async () => {
     .spyOn(baseHooks, "useCycled")
     .mockImplementation(() => [true, () => null]);
   await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
-  await waitFor(() =>
-    expect(history.location.pathname).toBe(tagURLs.tags.index)
-  );
+  await waitFor(() => expect(history.location.pathname).toBe(urls.tags.index));
 });
 
 it("goes to the tag details page if it can't go back", async () => {
   const history = createMemoryHistory({
     initialEntries: [
       {
-        pathname: tagURLs.tag.update({ id: 1 }),
+        pathname: urls.tags.tag.update({ id: 1 }),
       },
     ],
   });
@@ -193,13 +191,13 @@ it("goes to the tag details page if it can't go back", async () => {
           <Route
             component={() => <TagUpdate id={1} />}
             exact
-            path={tagURLs.tag.update(null, true)}
+            path={urls.tags.tag.update(null)}
           />
         </CompatRouter>
       </Router>
     </Provider>
   );
-  expect(history.location.pathname).toBe(tagURLs.tag.update({ id: 1 }));
+  expect(history.location.pathname).toBe(urls.tags.tag.update({ id: 1 }));
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
@@ -213,7 +211,7 @@ it("goes to the tag details page if it can't go back", async () => {
     .mockImplementation(() => [true, () => null]);
   await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
   await waitFor(() =>
-    expect(history.location.pathname).toBe(tagURLs.tag.index({ id: 1 }))
+    expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 1 }))
   );
 });
 

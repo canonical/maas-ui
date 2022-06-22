@@ -66,7 +66,7 @@ it("redirects to the config form", async () => {
           <Routes>
             <Route
               element={<LXDClusterDetailsRedirect clusterId={1} />}
-              path={kvmURLs.lxd.cluster.host.index(null, true)}
+              path={kvmURLs.lxd.cluster.host.index(null)}
             />
           </Routes>
         </CompatRouter>

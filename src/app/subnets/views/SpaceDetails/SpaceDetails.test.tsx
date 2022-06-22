@@ -28,7 +28,7 @@ it("dispatches actions to get and set space as active on mount", () => {
           <Routes>
             <Route
               element={<SpaceDetails />}
-              path={subnetsURLs.space.index(null, true)}
+              path={subnetsURLs.space.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -59,7 +59,7 @@ it("dispatches actions to unset active space and clean up on unmount", () => {
           <Routes>
             <Route
               element={<SpaceDetails />}
-              path={subnetsURLs.space.index(null, true)}
+              path={subnetsURLs.space.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -103,7 +103,7 @@ it("displays a message if the space does not exist", () => {
           <Routes>
             <Route
               element={<SpaceDetails />}
-              path={subnetsURLs.space.index(null, true)}
+              path={subnetsURLs.space.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -131,7 +131,7 @@ it("shows a spinner if the space has not loaded yet", () => {
           <Routes>
             <Route
               element={<SpaceDetails />}
-              path={subnetsURLs.space.index(null, true)}
+              path={subnetsURLs.space.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -166,7 +166,7 @@ it("displays space details", async () => {
           <Routes>
             <Route
               element={<SpaceDetails />}
-              path={subnetsURLs.space.index(null, true)}
+              path={subnetsURLs.space.index(null)}
             />
           </Routes>
         </CompatRouter>

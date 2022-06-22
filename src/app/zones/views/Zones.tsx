@@ -11,7 +11,7 @@ const Zones = (): JSX.Element => {
       <Route exact path={zonesURLs.index} render={() => <ZonesList />} />
       <Route
         exact
-        path={zonesURLs.details(null, true)}
+        path={zonesURLs.details(null)}
         render={() => <ZoneDetails />}
       />
       <Route path="*" render={() => <NotFound />} />

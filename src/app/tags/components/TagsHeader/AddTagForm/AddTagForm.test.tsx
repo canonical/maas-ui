@@ -10,12 +10,12 @@ import AddTagForm, { Label } from "./AddTagForm";
 
 import * as analyticsHooks from "app/base/hooks/analytics";
 import * as baseHooks from "app/base/hooks/base";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { Label as DefinitionLabel } from "app/tags/components/DefinitionField";
 import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
 import { NewDefinitionMessage } from "app/tags/constants";
-import tagsURLs from "app/tags/urls";
 import {
   tag as tagFactory,
   rootState as rootStateFactory,
@@ -82,7 +82,7 @@ it("dispatches an action to create a tag", async () => {
 
 it("redirects to the newly created tag on save", async () => {
   const history = createMemoryHistory({
-    initialEntries: [{ pathname: tagsURLs.tags.index }],
+    initialEntries: [{ pathname: urls.tags.index }],
   });
   const onClose = jest.fn();
   const store = mockStore(state);
@@ -93,14 +93,14 @@ it("redirects to the newly created tag on save", async () => {
           <Route
             component={() => <AddTagForm onClose={onClose} />}
             exact
-            path={tagsURLs.tags.index}
+            path={urls.tags.index}
           />
         </CompatRouter>
       </Router>
     </Provider>
   );
   render(<TagForm />);
-  expect(history.location.pathname).toBe(tagsURLs.tags.index);
+  expect(history.location.pathname).toBe(urls.tags.index);
   await userEvent.type(
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
@@ -117,7 +117,7 @@ it("redirects to the newly created tag on save", async () => {
     saved: true,
   });
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
-  expect(history.location.pathname).toBe(tagsURLs.tag.index({ id: 8 }));
+  expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 8 }));
   expect(onClose).toBeCalled();
 });
 

@@ -67,7 +67,7 @@ describe("LXDClusterDetails", () => {
         route: path,
         wrapperProps: {
           state,
-          routePattern: `${kvmURLs.lxd.cluster.index(null, true)}/*`,
+          routePattern: `${kvmURLs.lxd.cluster.index(null)}/*`,
         },
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();

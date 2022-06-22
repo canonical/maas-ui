@@ -3,9 +3,7 @@ import type { ScriptResult } from "app/store/scriptresult/types";
 import { argPath } from "app/utils";
 
 const urls = {
-  machines: {
-    index: "/machines",
-  },
+  index: "/machines",
   machine: {
     commissioning: {
       index: argPath<{ id: Machine["system_id"] }>(

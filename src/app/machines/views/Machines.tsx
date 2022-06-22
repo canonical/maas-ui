@@ -62,7 +62,7 @@ const Machines = (): JSX.Element => {
       <Switch>
         <Route
           exact
-          path={machineURLs.machines.index}
+          path={machineURLs.index}
           render={() => (
             <MachineList
               headerFormOpen={!!headerContent}

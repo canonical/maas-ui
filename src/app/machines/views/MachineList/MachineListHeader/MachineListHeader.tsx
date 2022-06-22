@@ -50,7 +50,7 @@ export const MachineListHeader = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (location.pathname !== machineURLs.machines.index) {
+    if (location.pathname !== machineURLs.index) {
       setHeaderContent(null);
     }
   }, [location.pathname, setHeaderContent]);

@@ -3,7 +3,7 @@ import type { VMCluster } from "app/store/vmcluster/types";
 import { argPath } from "app/utils";
 
 const urls = {
-  kvm: "/kvm",
+  index: "/kvm",
   lxd: {
     index: "/kvm/lxd",
     cluster: {

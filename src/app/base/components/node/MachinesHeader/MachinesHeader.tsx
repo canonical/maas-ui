@@ -7,15 +7,13 @@ import { matchPath, Link } from "react-router-dom-v5-compat";
 
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
-import machineURLs from "app/machines/urls";
-import poolsURLs from "app/pools/urls";
+import urls from "app/base/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
-import tagURLs from "app/tags/urls";
 
 type Props = SectionHeaderProps;
 
@@ -37,24 +35,24 @@ export const MachinesHeader = (props: Props): JSX.Element => {
       {...props}
       tabLinks={[
         {
-          active: !!matchPath(machineURLs.machines.index, location.pathname),
+          active: !!matchPath(urls.machines.index, location.pathname),
           component: Link,
           label: `${pluralize("Machine", machineCount, true)}`,
-          to: machineURLs.machines.index,
+          to: urls.machines.index,
         },
         {
-          active: !!matchPath(poolsURLs.pools, location.pathname),
+          active: !!matchPath(urls.pools.index, location.pathname),
           component: Link,
           label: `${pluralize("Resource pool", poolCount, true)}`,
-          to: poolsURLs.pools,
+          to: urls.pools.index,
         },
         {
           active:
-            !!matchPath(tagURLs.tags.index, location.pathname) ||
-            !!matchPath(tagURLs.tag.index(null, true), location.pathname),
+            !!matchPath(urls.tags.index, location.pathname) ||
+            !!matchPath(urls.tags.tag.index(null), location.pathname),
           component: Link,
           label: `${pluralize("Tag", tagCount, true)}`,
-          to: tagURLs.tags.index,
+          to: urls.tags.index,
         },
       ]}
       title={"title" in props && !!props.title ? props.title : "Machines"}

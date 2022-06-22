@@ -136,7 +136,7 @@ export const ActionFormWrapper = ({
                 );
               });
             }}
-            redirectURL={machineURLs.machines.index}
+            redirectURL={machineURLs.index}
             {...commonNodeFormProps}
           />
         );

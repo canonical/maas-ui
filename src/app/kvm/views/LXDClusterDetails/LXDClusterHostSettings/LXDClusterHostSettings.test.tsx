@@ -37,7 +37,7 @@ describe("LXDClusterHostSettings", () => {
       route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
       wrapperProps: {
         state,
-        routePattern: kvmURLs.lxd.cluster.host.edit(null, true),
+        routePattern: kvmURLs.lxd.cluster.host.edit(null),
       },
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -49,7 +49,7 @@ describe("LXDClusterHostSettings", () => {
       route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
       wrapperProps: {
         state,
-        routePattern: kvmURLs.lxd.cluster.host.edit(null, true),
+        routePattern: kvmURLs.lxd.cluster.host.edit(null),
       },
     });
     expect(screen.getByText("LXD host not found")).toBeInTheDocument();
@@ -60,7 +60,7 @@ describe("LXDClusterHostSettings", () => {
       route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
       wrapperProps: {
         state,
-        routePattern: kvmURLs.lxd.cluster.host.edit(null, true),
+        routePattern: kvmURLs.lxd.cluster.host.edit(null),
       },
     });
     expect(screen.getByRole("combobox", { name: "Zone" })).toBeDisabled();

@@ -39,61 +39,58 @@ type NavItem = {
 const navLinks: NavItem[] = [
   {
     highlight: [
-      urls.machines.machines.index,
-      urls.machines.machine.index(null, true),
-      urls.pools.pools,
-      urls.tags.tags.index,
-      urls.tags.tag.index(null, true),
+      urls.machines.index,
+      urls.machines.machine.index(null),
+      urls.pools.index,
+      urls.tags.index,
+      urls.tags.tag.index(null),
     ],
     inHardwareMenu: true,
     label: "Machines",
-    url: urls.machines.machines.index,
+    url: urls.machines.index,
   },
   {
-    highlight: [
-      urls.devices.devices.index,
-      urls.devices.device.index(null, true),
-    ],
+    highlight: [urls.devices.index, urls.devices.device.index(null)],
     inHardwareMenu: true,
     label: "Devices",
-    url: urls.devices.devices.index,
+    url: urls.devices.index,
   },
   {
     adminOnly: true,
     highlight: [
-      urls.controllers.controllers.index,
-      urls.controllers.controller.index(null, true),
+      urls.controllers.index,
+      urls.controllers.controller.index(null),
     ],
     inHardwareMenu: true,
     label: "Controllers",
-    url: urls.controllers.controllers.index,
+    url: urls.controllers.index,
   },
   {
     inHardwareMenu: true,
     label: "KVM",
-    url: urls.kvm.kvm,
+    url: urls.kvm.index,
   },
   {
     label: "Images",
     url: urls.images.index,
   },
   {
-    highlight: [urls.domains.domains, urls.domains.details(null, true)],
+    highlight: [urls.domains.index, urls.domains.details(null)],
     label: "DNS",
-    url: urls.domains.domains,
+    url: urls.domains.index,
   },
   {
-    highlight: [urls.zones.index, urls.zones.details(null, true)],
+    highlight: [urls.zones.index, urls.zones.details(null)],
     label: "AZs",
     url: urls.zones.index,
   },
   {
     highlight: [
       urls.subnets.index,
-      urls.subnets.subnet.index(null, true),
-      urls.subnets.space.index(null, true),
-      urls.subnets.fabric.index(null, true),
-      urls.subnets.vlan.index(null, true),
+      urls.subnets.subnet.index(null),
+      urls.subnets.space.index(null),
+      urls.subnets.fabric.index(null),
+      urls.subnets.vlan.index(null),
     ],
     label: "Subnets",
     url: urls.subnets.index,
@@ -207,7 +204,7 @@ export const Header = (): JSX.Element => {
     .filter(({ adminOnly }) => !adminOnly || isAdmin);
   const homepageLink = isAdmin
     ? { url: urls.dashboard.index, label: "Homepage" }
-    : { url: urls.machines.machines.index, label: "Homepage" };
+    : { url: urls.machines.index, label: "Homepage" };
   const path = location.pathname + location.search;
 
   return (
@@ -236,11 +233,11 @@ export const Header = (): JSX.Element => {
                   ? [
                       {
                         isSelected: !!matchPath(
-                          { path: urls.preferences.prefs, end: false },
+                          { path: urls.preferences.index, end: false },
                           location.pathname
                         ),
                         label: authUser.username,
-                        url: urls.preferences.prefs,
+                        url: urls.preferences.index,
                       },
                     ]
                   : []),

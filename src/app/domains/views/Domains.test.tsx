@@ -15,7 +15,7 @@ describe("Domains", () => {
   [
     {
       component: "DomainsList",
-      path: domainsURLs.domains,
+      path: domainsURLs.index,
     },
     {
       component: "DomainDetails",

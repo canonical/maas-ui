@@ -112,7 +112,7 @@ describe("IntroSection", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      machineURLs.machines.index
+      machineURLs.index
     );
   });
 

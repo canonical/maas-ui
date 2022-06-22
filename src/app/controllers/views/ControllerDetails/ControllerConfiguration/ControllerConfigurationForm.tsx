@@ -105,7 +105,7 @@ const ControllerConfigurationForm = ({
                     const filter = FilterControllers.filtersToQueryString({
                       tags: [`=${tag.name}`],
                     });
-                    return `${controllerURLs.controllers.index}${filter}`;
+                    return `${controllerURLs.index}${filter}`;
                   }}
                   tags={controllerTags}
                 />

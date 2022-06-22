@@ -6,9 +6,7 @@ import type {
 import { argPath } from "app/utils";
 
 const urls = {
-  controllers: {
-    index: "/controllers",
-  },
+  index: "/controllers",
   controller: {
     commissioning: {
       index: argPath<{ id: Controller[ControllerMeta.PK] }>(

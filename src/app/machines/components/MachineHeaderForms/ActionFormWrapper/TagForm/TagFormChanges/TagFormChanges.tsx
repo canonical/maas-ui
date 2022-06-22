@@ -272,8 +272,7 @@ export const TagFormChanges = ({
       {hasAutomaticTags && (
         <p className="u-text--muted u-nudge-right--small">
           These tags cannot be unassigned. Go to the{" "}
-          <Link to={tagsURLs.tags.index}>Tags tab</Link> to manage automatic
-          tags.
+          <Link to={tagsURLs.index}>Tags tab</Link> to manage automatic tags.
         </p>
       )}
       {isOpen && tagDetails ? (
