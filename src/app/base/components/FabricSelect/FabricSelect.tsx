@@ -13,13 +13,14 @@ type Props = {
 } & FormikFieldProps;
 
 export enum Label {
+  DefaultOption = "Select fabric",
   Select = "Fabric",
 }
 
 export const FabricSelect = ({
-  defaultOption = { label: "Select fabric", value: "", disabled: true },
+  defaultOption = { label: Label.DefaultOption, value: "", disabled: true },
   name,
-  label = "Fabric",
+  label = Label.Select,
   disabled,
   ...props
 }: Props): JSX.Element => {

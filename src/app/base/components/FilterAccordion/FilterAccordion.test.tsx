@@ -1,6 +1,7 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import FilterAccordion from "./FilterAccordion";
+import FilterAccordion, { Labels } from "./FilterAccordion";
 import type { Props as FilterAccordionProps } from "./FilterAccordion";
 
 import type { Machine, MachineMeta } from "app/store/machine/types";
@@ -50,8 +51,8 @@ describe("FilterAccordion", () => {
     };
   });
 
-  it("can mark an item as active", () => {
-    const wrapper = mount(
+  it("can mark an item as active", async () => {
+    render(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
@@ -65,16 +66,22 @@ describe("FilterAccordion", () => {
         toggleFilter={FilterMachines.toggleFilter}
       />
     );
-    // Open the menu:
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find(".filter-accordion__item.is-active").exists()).toBe(
-      true
+
+    // Open menu and pool filter accordion
+    await userEvent.click(screen.getByRole("button", { name: Labels.Toggle }));
+    await userEvent.click(
+      screen.getByRole("tab", { name: filterNames.get("pool") })
     );
+
+    // Pool 1 should be active due to filterString prop
+    expect(
+      screen.getByRole("checkbox", { checked: true, name: "pool1 (1)" })
+    ).toBeInTheDocument();
   });
 
-  it("can set a filter", () => {
+  it("can set a filter", async () => {
     const onUpdateFilterString = jest.fn();
-    const wrapper = mount(
+    render(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
@@ -88,15 +95,20 @@ describe("FilterAccordion", () => {
         toggleFilter={FilterMachines.toggleFilter}
       />
     );
-    // Open the menu:
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    wrapper.find("button[data-testid='filter-pool']").simulate("click");
+
+    // Open menu and pool filter accordion and click pool 1 option
+    await userEvent.click(screen.getByRole("button", { name: Labels.Toggle }));
+    await userEvent.click(
+      screen.getByRole("tab", { name: filterNames.get("pool") })
+    );
+    await userEvent.click(screen.getByRole("checkbox", { name: "pool1 (1)" }));
+
     expect(onUpdateFilterString).toHaveBeenCalledWith("pool:(=pool1)");
   });
 
-  it("hides filters if there are no values", () => {
+  it("hides filters if there are no values", async () => {
     delete items[0].pxe_mac;
-    const wrapper = mount(
+    render(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
@@ -110,14 +122,17 @@ describe("FilterAccordion", () => {
         toggleFilter={FilterMachines.toggleFilter}
       />
     );
-    // Open the menu:
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-testid='filter-pxe_mac']").exists()).toBe(false);
+
+    // Open menu - there shouldn't be an option to filter by PXE mac
+    await userEvent.click(screen.getByRole("button", { name: Labels.Toggle }));
+    expect(
+      screen.queryByRole("tab", { name: filterNames.get("pxe_mac") })
+    ).not.toBeInTheDocument();
   });
 
-  it("hides filters if the value is an empty array", () => {
+  it("hides filters if the value is an empty array", async () => {
     items[0].link_speeds = [];
-    const wrapper = mount(
+    render(
       <FilterAccordion
         filterNames={filterNames}
         filterOrder={filterOrder}
@@ -131,10 +146,11 @@ describe("FilterAccordion", () => {
         toggleFilter={FilterMachines.toggleFilter}
       />
     );
-    // Open the menu:
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find("[data-testid='filter-link_speeds']").exists()).toBe(
-      false
-    );
+
+    // Open menu - there shouldn't be an option to filter by link speed
+    await userEvent.click(screen.getByRole("button", { name: Labels.Toggle }));
+    expect(
+      screen.queryByRole("tab", { name: filterNames.get("link_speeds") })
+    ).not.toBeInTheDocument();
   });
 });
