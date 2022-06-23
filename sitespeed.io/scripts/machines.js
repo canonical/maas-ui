@@ -7,6 +7,7 @@ const fetchMachines = async (context, commands) => {
 
 const fetchMachinesWarm = async (context, commands) => {
   await commands.navigate(`${context.options.hostname}/MAAS/r/settings`);
+  await commands.wait.bySelector(".p-side-navigation", 2000);
   await commands.measure.start("Fetch machines with warm cache");
   await commands.click.byLinkText("Machines");
   await commands.wait.byXpath("//*[text()='1000 Machines']", 30000);
