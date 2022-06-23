@@ -2,7 +2,7 @@ const updateURL = async (url, driver) => {
   // const script = `history.pushState({}, "", ${url})`;
   // await driver.executeScript(script);
   var currentURL = await driver.getCurrentUrl();
-  var script = 'history.pushState({}, "", "' + currentURL + '")';
+  var script = 'history.pushState({}, "", "' + currentURL + '#test")';
   console.log("script is : " + script);
   console.log("url is : " + url);
   await driver.executeScript(script);
