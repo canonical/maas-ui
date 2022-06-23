@@ -38,7 +38,6 @@ describe("VirshTable", () => {
         ],
       }),
       zone: zoneStateFactory({
-        loaded: true,
         items: [
           zoneFactory({ id: pods[0].zone }),
           zoneFactory({ id: pods[1].zone }),

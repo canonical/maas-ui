@@ -28,6 +28,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -67,7 +68,7 @@ beforeEach(() => {
       ],
     }),
     zone: zoneStateFactory({
-      loaded: true,
+      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
       items: [zoneFactory({ name: "twilight" })],
     }),
   });

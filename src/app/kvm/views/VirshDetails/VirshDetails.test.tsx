@@ -13,6 +13,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   tagState as tagStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
@@ -33,7 +34,7 @@ describe("VirshDetails", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
-        loaded: true,
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
       }),
     });
   });

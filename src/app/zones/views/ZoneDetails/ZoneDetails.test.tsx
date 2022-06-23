@@ -23,9 +23,6 @@ describe("ZoneDetails", () => {
   let initialState: RootState;
 
   const testZones = zoneStateFactory({
-    errors: {},
-    loading: false,
-    loaded: true,
     items: [
       zoneFactory({
         id: 1,

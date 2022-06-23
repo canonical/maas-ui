@@ -33,9 +33,7 @@ describe("LXDSingleSettings", () => {
       tag: tagStateFactory({
         loaded: true,
       }),
-      zone: zoneStateFactory({
-        loaded: true,
-      }),
+      zone: zoneStateFactory({}),
     });
   });
 

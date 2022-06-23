@@ -3,6 +3,7 @@ import type { RouterState } from "redux-first-history";
 
 import { bondOptions } from "./general";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { APIError } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
@@ -96,7 +97,14 @@ import type {
 } from "app/store/vlan/types";
 import type { VMClusterState } from "app/store/vmcluster/types";
 import type { VMClusterStatuses } from "app/store/vmcluster/types/base";
-import type { ZoneState } from "app/store/zone/types";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
+import type {
+  ZoneGenericActions,
+  ZoneModelAction,
+  ZoneModelActions,
+  ZoneState,
+  ZoneStateError,
+} from "app/store/zone/types";
 
 const defaultState = {
   errors: () => ({}),
@@ -502,8 +510,33 @@ export const vmClusterState = define<VMClusterState>({
   statuses: vmClusterStatuses,
 });
 
+export const zoneGenericActions = define<ZoneGenericActions>({
+  [ZONE_ACTIONS.create]: ACTION_STATUS.idle,
+  [ZONE_ACTIONS.fetch]: ACTION_STATUS.idle,
+});
+
+export const zoneModelAction = define<ZoneModelAction>({
+  [ACTION_STATUS.error]: () => [],
+  [ACTION_STATUS.loading]: () => [],
+  [ACTION_STATUS.success]: () => [],
+});
+
+export const zoneModelActions = define<ZoneModelActions>({
+  [ZONE_ACTIONS.delete]: zoneModelAction,
+  [ZONE_ACTIONS.update]: zoneModelAction,
+});
+
+export const zoneError = define<ZoneStateError>({
+  action: ZONE_ACTIONS.fetch,
+  error: "There was an error",
+  identifier: null,
+});
+
 export const zoneState = define<ZoneState>({
-  ...defaultState,
+  errors: () => [],
+  genericActions: zoneGenericActions,
+  items: () => [],
+  modelActions: zoneModelActions,
 });
 
 export const locationState = define<RouterState["location"]>({

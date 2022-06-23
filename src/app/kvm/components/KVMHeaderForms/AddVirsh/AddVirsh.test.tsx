@@ -24,6 +24,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";
@@ -60,8 +61,8 @@ describe("AddVirsh", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
         items: [zoneFactory()],
-        loaded: true,
       }),
     });
   });

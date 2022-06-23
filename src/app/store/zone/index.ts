@@ -1,1 +1,6 @@
-export { default, actions } from "./slice";
+export {
+  default,
+  actions,
+  initialGenericActions,
+  initialModelActions,
+} from "./slice";

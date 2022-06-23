@@ -323,10 +323,14 @@ describe("websocket sagas", () => {
         data: JSON.stringify({ request_id: 99, result: { response: "here" } }),
       }).value
     ).toStrictEqual(call([socketClient, socketClient.getRequest], 99));
-    saga.next({ type: "test/action", payload: { id: 808 } });
+    saga.next({
+      type: "test/action",
+      payload: { id: 808 },
+      meta: { identifier: 123 },
+    });
     expect(saga.next(false).value).toEqual(
       put({
-        meta: { item: { id: 808 } },
+        meta: { item: { id: 808 }, identifier: 123 },
         type: "test/actionSuccess",
         payload: { response: "here" },
       })

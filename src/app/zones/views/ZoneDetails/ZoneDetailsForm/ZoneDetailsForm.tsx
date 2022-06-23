@@ -5,8 +5,10 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import { ACTION_STATUS } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
@@ -19,14 +21,20 @@ export type CreateZoneValues = {
   name: string;
 };
 
-const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
+const ZoneDetailsForm = ({ id, closeForm }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
-  const errors = useSelector(zoneSelectors.errors);
-  const saved = useSelector(zoneSelectors.saved);
-  const saving = useSelector(zoneSelectors.saving);
-  const cleanup = useCallback(() => zoneActions.cleanup(), []);
+  const cleanup = useCallback(
+    () => zoneActions.cleanup([ZONE_ACTIONS.update]),
+    []
+  );
   const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, id)
+  );
+  const errors = useSelector((state: RootState) =>
+    zoneSelectors.getLatestError(state, ZONE_ACTIONS.update, id)
+  );
+  const updateStatus = useSelector((state: RootState) =>
+    zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.update, id)
   );
 
   useEffect(() => {
@@ -54,8 +62,8 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
           );
         }}
         onSuccess={closeForm}
-        saved={saved}
-        saving={saving}
+        saved={updateStatus === ACTION_STATUS.success}
+        saving={updateStatus === ACTION_STATUS.loading}
         submitLabel="Update AZ"
       >
         <Row>
@@ -79,4 +87,4 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
   return null;
 };
 
-export default ZoneForm;
+export default ZoneDetailsForm;

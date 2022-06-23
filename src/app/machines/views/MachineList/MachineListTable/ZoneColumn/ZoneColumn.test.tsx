@@ -36,7 +36,6 @@ describe("ZoneColumn", () => {
         ],
       }),
       zone: zoneStateFactory({
-        loaded: true,
         items: [
           zoneFactory({
             id: 0,
