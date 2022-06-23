@@ -1,5 +1,5 @@
 const updateURL = async (url, driver) => {
-  const script = 'history.pushState({}, "", url)';
+  const script = `history.pushState({}, "", ${url})`;
   await driver.executeScript(script);
 };
 
