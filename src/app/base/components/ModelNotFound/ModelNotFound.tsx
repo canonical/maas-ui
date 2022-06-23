@@ -12,6 +12,10 @@ type Props = {
   modelName: string;
 };
 
+export enum TestIds {
+  NotFound = "not-found",
+}
+
 const ModelNotFound = ({
   id,
   inSection = true,
@@ -30,7 +34,10 @@ const ModelNotFound = ({
     </p>
   );
   return inSection ? (
-    <Section data-testid="not-found" header={<SectionHeader title={title} />}>
+    <Section
+      data-testid={TestIds.NotFound}
+      header={<SectionHeader title={title} />}
+    >
       {content}
     </Section>
   ) : (

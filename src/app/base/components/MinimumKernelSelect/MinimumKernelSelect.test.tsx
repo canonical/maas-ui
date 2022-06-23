@@ -1,9 +1,9 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import MinimumKernelSelect from "./MinimumKernelSelect";
+import MinimumKernelSelect, { Labels } from "./MinimumKernelSelect";
 
 import {
   hweKernelsState as hweKernelsStateFactory,
@@ -14,34 +14,10 @@ import {
 const mockStore = configureStore();
 
 describe("MinimumKernelSelect", () => {
-  it("renders a list of all hwe kernels in state", () => {
-    const state = rootStateFactory({
-      general: generalStateFactory({
-        hweKernels: hweKernelsStateFactory({
-          data: [
-            ["kernel-1", "Kernel 1"],
-            ["kernel-2", "Kernel 2"],
-          ],
-          loaded: true,
-        }),
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ minKernel: "" }} onSubmit={jest.fn()}>
-          <MinimumKernelSelect name="minKernel" />
-        </Formik>
-      </Provider>
-    );
-
-    expect(wrapper.find("select[name='minKernel']")).toMatchSnapshot();
-  });
-
   it("dispatches action to fetch hwe kernels on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ minKernel: "" }} onSubmit={jest.fn()}>
           <MinimumKernelSelect name="minKernel" />
@@ -65,7 +41,7 @@ describe("MinimumKernelSelect", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ minKernel: "" }} onSubmit={jest.fn()}>
           <MinimumKernelSelect name="minKernel" />
@@ -73,8 +49,8 @@ describe("MinimumKernelSelect", () => {
       </Provider>
     );
 
-    expect(wrapper.find("select[name='minKernel']").prop("disabled")).toBe(
-      true
-    );
+    expect(
+      screen.getByRole("combobox", { name: Labels.Select })
+    ).toBeDisabled();
   });
 });

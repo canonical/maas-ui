@@ -14,9 +14,15 @@ type Props = {
   name: string;
 } & HTMLProps<HTMLSelectElement>;
 
+export enum Labels {
+  DefaultOption = "Select minimum kernel",
+  NoneOption = "No minimum kernel",
+  Select = "Minimum kernel",
+}
+
 export const MinimumKernelSelect = ({
   disabled = false,
-  label = "Minimum kernel",
+  label = Labels.Select,
   name,
   ...props
 }: Props): JSX.Element => {
@@ -36,10 +42,10 @@ export const MinimumKernelSelect = ({
       name={name}
       options={[
         {
-          label: "Select minimum kernel",
+          label: Labels.DefaultOption,
           disabled: true,
         },
-        { label: "No minimum kernel", value: "" },
+        { label: Labels.NoneOption, value: "" },
         ...hweKernels.map((kernel) => ({
           key: `kernel-${kernel[1]}`,
           label: kernel[1],

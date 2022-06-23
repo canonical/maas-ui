@@ -1,13 +1,12 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import DynamicSelect from "../DynamicSelect";
+import LinkModeSelect, { Label } from "./LinkModeSelect";
 
-import LinkModeSelect from "./LinkModeSelect";
-
-import { NetworkInterfaceTypes } from "app/store/types/enum";
+import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import { LINK_MODE_DISPLAY } from "app/store/utils";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
@@ -15,7 +14,7 @@ const mockStore = configureStore();
 describe("LinkModeSelect", () => {
   it("only displays LINK_UP if a subnet is not provided", () => {
     const store = mockStore(rootStateFactory());
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
           <LinkModeSelect
@@ -27,17 +26,18 @@ describe("LinkModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      {
-        label: "Unconfigured",
-        value: "link_up",
-      },
-    ]);
+
+    expect(screen.getAllByRole("option").length).toBe(1);
+    expect(
+      screen.getByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.LINK_UP],
+      })
+    ).toBeInTheDocument();
   });
 
   it("can display all options", () => {
     const store = mockStore(rootStateFactory());
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
           <LinkModeSelect
@@ -49,29 +49,32 @@ describe("LinkModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      {
-        label: "Auto assign",
-        value: "auto",
-      },
-      {
-        label: "Static assign",
-        value: "static",
-      },
-      {
-        label: "Unconfigured",
-        value: "link_up",
-      },
-      {
-        label: "DHCP",
-        value: "dhcp",
-      },
-    ]);
+
+    expect(
+      screen.getByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.AUTO],
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.STATIC],
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.LINK_UP],
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.DHCP],
+      })
+    ).toBeInTheDocument();
   });
 
   it("only displays auto or static for an alias", () => {
     const store = mockStore(rootStateFactory());
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
           <LinkModeSelect
@@ -83,16 +86,27 @@ describe("LinkModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
-      {
-        label: "Auto assign",
-        value: "auto",
-      },
-      {
-        label: "Static assign",
-        value: "static",
-      },
-    ]);
+
+    expect(
+      screen.getByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.AUTO],
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.STATIC],
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.LINK_UP],
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("option", {
+        name: LINK_MODE_DISPLAY[NetworkLinkMode.DHCP],
+      })
+    ).not.toBeInTheDocument();
   });
 
   it("can display a default option", () => {
@@ -101,7 +115,7 @@ describe("LinkModeSelect", () => {
       label: "Default",
       value: "99",
     };
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
           <LinkModeSelect
@@ -112,14 +126,13 @@ describe("LinkModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
-      defaultOption
-    );
+
+    expect(screen.getByRole("option", { name: "Default" })).toBeInTheDocument();
   });
 
   it("can hide the default option", () => {
     const store = mockStore(rootStateFactory());
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ mode: "" }} onSubmit={jest.fn()}>
           <LinkModeSelect
@@ -130,10 +143,9 @@ describe("LinkModeSelect", () => {
         </Formik>
       </Provider>
     );
-    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(1);
-    expect(wrapper.find(DynamicSelect).prop("options")[0]).not.toStrictEqual({
-      label: "Select IP mode",
-      value: "",
-    });
+
+    expect(
+      screen.queryByRole("option", { name: Label.DefaultOption })
+    ).not.toBeInTheDocument();
   });
 });

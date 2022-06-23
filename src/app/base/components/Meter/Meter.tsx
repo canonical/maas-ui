@@ -49,6 +49,15 @@ type Props = {
   small?: boolean;
 };
 
+export enum TestIds {
+  Bar = "meter-bar",
+  Container = "meter-container",
+  Filled = "meter-filled",
+  Label = "meter-label",
+  MeterOverflow = "meter-overflow",
+  Segments = "meter-segments",
+}
+
 const Meter = ({
   className,
   data,
@@ -82,13 +91,18 @@ const Meter = ({
   return (
     <div
       className={classNames(small ? "p-meter--small" : "p-meter", className)}
+      data-testid={TestIds.Container}
       ref={el}
     >
-      <div className="p-meter__bar" style={{ backgroundColor: emptyColor }}>
+      <div
+        className="p-meter__bar"
+        data-testid={TestIds.Bar}
+        style={{ backgroundColor: emptyColor }}
+      >
         {valueSum > maximum ? (
           <div
             className="p-meter__filled"
-            data-testid="meter-overflow"
+            data-testid={TestIds.MeterOverflow}
             style={{
               backgroundColor: overColor,
               width: "100%",
@@ -98,6 +112,7 @@ const Meter = ({
           data.map((datum, i) => (
             <div
               className="p-meter__filled"
+              data-testid={TestIds.Filled}
               key={`meter-${i}`}
               style={{
                 backgroundColor:
@@ -119,6 +134,7 @@ const Meter = ({
         {segmentWidth > 0 && (
           <div
             className="p-meter__separators"
+            data-testid={TestIds.Segments}
             style={{
               background: `repeating-linear-gradient(
                 to right,
@@ -132,7 +148,10 @@ const Meter = ({
         )}
       </div>
       {label && (
-        <div className={classNames("p-meter__label", labelClassName)}>
+        <div
+          className={classNames("p-meter__label", labelClassName)}
+          data-testid={TestIds.Label}
+        >
           {label}
         </div>
       )}
