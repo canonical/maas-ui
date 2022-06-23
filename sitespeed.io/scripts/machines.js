@@ -1,3 +1,8 @@
+const updateURL = async (url, driver) => {
+  const script = 'history.pushState({}, "", url)';
+  await driver.executeScript(script);
+};
+
 const fetchMachines = async (context, commands) => {
   await commands.measure.start("Fetch machines with cold cache");
   await commands.navigate(`${context.options.hostname}/MAAS/r/machines`);
@@ -6,23 +11,27 @@ const fetchMachines = async (context, commands) => {
 };
 
 const fetchMachinesWarm = async (context, commands) => {
+  const driver = context.selenium.driver;
   await commands.navigate(`${context.options.hostname}/MAAS/r/settings`);
   await commands.wait.bySelector(".p-side-navigation", 5000);
-  const stopWatch = commands.stopWatch.get("Fetch machines with warm cache");
-  await commands.click.byLinkText("Machines");
+  await commands.measure.start("Fetch machines with warm cache");
+  await updateURL("/MAAS/r/machines", driver);
+  // await commands.click.byLinkText("Machines");
   await commands.wait.byXpath("//*[text()='1000 Machines']", 30000);
-  stopWatch.stopAndAdd();
+  return commands.measure.stop();
 };
 
 const fetchMachinesHot = async (context, commands) => {
+  const driver = context.selenium.driver;
   await commands.navigate(`${context.options.hostname}/MAAS/r/machines`);
   await commands.wait.byXpath("//*[text()='1000 Machines']", 30000);
   await commands.click.byLinkText("Settings");
   await commands.wait.bySelector(".p-side-navigation", 2000);
-  const stopWatch = commands.stopWatch.get("Fetch machines with hot cache");
-  await commands.click.byLinkText("Machines");
+  await commands.measure.start("Fetch machines with hot cache");
+  // await commands.click.byLinkText("Machines");
+  await updateURL("/MAAS/r/machines", driver);
   await commands.wait.byXpath("//*[text()='1000 Machines']", 30000);
-  stopWatch.stopAndAdd();
+  return commands.measure.stop();
 };
 
 module.exports = async (context, commands) => {
