@@ -11,21 +11,16 @@ jobs:
       - name: Install MAAS
         run: |
           sudo systemctl enable snapd
-          sudo snap install maas-test-db --channel=latest/edge
           sudo snap install maas --channel=latest/edge
-      - name: Fetch database dump
-        uses: wei/wget@v1
-        with:
-          args: -O maasdb.dump https://github.com/canonical-web-and-design/maas-ui-testing/raw/main/db/maasdb-20.04-master-1000.dump
-      - name: Set up MAAS with database dump
+          sudo snap install maas-test-db --channel=latest/edge
+      - name: Set up database dump
         run: |
-          sudo sed -i "s/dynamic_shared_memory_type = posix/dynamic_shared_memory_type = sysv/" /var/snap/maas-test-db/common/postgres/data/postgresql.conf
-          sudo snap restart maas-test-db
-          sudo mv maasdb.dump /var/snap/maas-test-db/common/maasdb.dump
+          sudo cp sitespeed.io/test_data/maasdb-20.04-master-100.dump /var/snap/maas-test-db/common/maasdb.dump
           sudo snap run --shell maas-test-db.psql -c 'db-dump restore /var/snap/maas-test-db/common/maasdb.dump maassampledata'
-          sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
           sudo sed -i "s/database_name: maasdb/database_name: maassampledata/" /var/snap/maas/current/regiond.conf
           sudo snap restart maas
+      - name: Initialise MAAS
+        run: sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS
@@ -36,7 +31,7 @@ jobs:
           timeout: 200000
           interval: 500
       - name: Run sitespeed.io tests
-        run: docker run -v "$(pwd)/sitespeed.io:/sitespeed.io" --network=host sitespeedio/sitespeed.io:25.2.0 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --spa --browsertime.hostname=${{env.MAAS_URL}}
+        run: docker run -v "$(pwd)/sitespeed.io:/sitespeed.io" --network=host sitespeedio/sitespeed.io:23.0.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --browsertime.hostname=${{env.MAAS_URL}}
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:

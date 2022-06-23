@@ -1,41 +1,25 @@
-const updateURL = async (url, driver) => {
-  // const script = `history.pushState({}, "", ${url})`;
-  // await driver.executeScript(script);
-  var currentURL = await driver.getCurrentUrl();
-  var script = 'history.pushState({}, "", "' + currentURL + '#test")';
-  console.log("script is : " + script);
-  console.log("url is : " + url);
-  await driver.executeScript(script);
-};
-
 const fetchMachines = async (context, commands) => {
   await commands.measure.start("Fetch machines with cold cache");
   await commands.navigate(`${context.options.hostname}/MAAS/r/machines`);
-  await commands.wait.byXpath("//*[text()='1000 Machines']", 30000);
+  await commands.wait.byXpath("//*[text()='100 Machines']", 15000);
   return commands.measure.stop();
 };
 
 const fetchMachinesWarm = async (context, commands) => {
-  const driver = context.selenium.driver;
   await commands.navigate(`${context.options.hostname}/MAAS/r/settings`);
-  await commands.wait.bySelector(".p-side-navigation", 5000);
   await commands.measure.start("Fetch machines with warm cache");
   await commands.click.byLinkText("Machines");
-  await updateURL("/MAAS/r/machines", driver);
-  await commands.wait.byXpath("//*[text()='1000 Machines']", 30000);
+  await commands.wait.byXpath("//*[text()='100 Machines']", 15000);
   return commands.measure.stop();
 };
 
 const fetchMachinesHot = async (context, commands) => {
-  const driver = context.selenium.driver;
   await commands.navigate(`${context.options.hostname}/MAAS/r/machines`);
-  await commands.wait.byXpath("//*[text()='1000 Machines']", 30000);
+  await commands.wait.byXpath("//*[text()='100 Machines']", 15000);
   await commands.click.byLinkText("Settings");
-  await commands.wait.bySelector(".p-side-navigation", 2000);
   await commands.measure.start("Fetch machines with hot cache");
   await commands.click.byLinkText("Machines");
-  await updateURL("/MAAS/r/machines", driver);
-  await commands.wait.byXpath("//*[text()='1000 Machines']", 30000);
+  await commands.wait.byXpath("//*[text()='100 Machines']", 15000);
   return commands.measure.stop();
 };
 
