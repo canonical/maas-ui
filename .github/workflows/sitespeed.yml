@@ -36,7 +36,7 @@ jobs:
           timeout: 200000
           interval: 500
       - name: Run sitespeed.io tests
-        run: docker run -v "$(pwd)/sitespeed.io:/sitespeed.io" --network=host sitespeedio/sitespeed.io:25.2.0 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --browsertime.hostname=${{env.MAAS_URL}}
+        run: docker run -v "$(pwd)/sitespeed.io:/sitespeed.io" --spa --network=host sitespeedio/sitespeed.io:25.2.0 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --browsertime.hostname=${{env.MAAS_URL}}
       - name: Upload results
         uses: actions/upload-artifact@v2
         with:
