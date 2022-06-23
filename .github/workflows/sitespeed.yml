@@ -19,7 +19,6 @@ jobs:
           args: -O maasdb.dump https://github.com/canonical-web-and-design/maas-ui-testing/raw/main/db/maasdb-20.04-master-1000.dump
       - name: Set up MAAS with database dump
         run: |
-          sudo sed -i "s/dynamic_shared_memory_type = posix/dynamic_shared_memory_type = none/" /var/snap/maas-test-db/common/postgres/data/postgresql.conf
           sudo snap restart maas-test-db
           sudo mv maasdb.dump /var/snap/maas-test-db/common/maasdb.dump
           sudo snap run --shell maas-test-db.psql -c 'db-dump restore /var/snap/maas-test-db/common/maasdb.dump maassampledata'
