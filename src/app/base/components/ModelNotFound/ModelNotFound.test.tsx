@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -14,7 +14,7 @@ describe("ModelNotFound", () => {
   it("renders the correct heading", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -24,39 +24,38 @@ describe("ModelNotFound", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
-      "Model not found"
-    );
+    expect(screen.getByRole("heading").textContent).toBe("Model not found");
   });
 
   it("renders the default link correctly", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
-            <ModelNotFound id={1} linkURL="www.url.com" modelName="model" />
+            <ModelNotFound id={1} linkURL="/models" modelName="model" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
 
-    expect(wrapper.find("Link").prop("to")).toBe("www.url.com");
-    expect(wrapper.find("Link").text()).toBe("View all models");
+    expect(
+      screen.getByRole("link", { name: "View all models" })
+    ).toHaveAttribute("href", "/models");
   });
 
   it("can be given customised link text", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
             <ModelNotFound
               id={1}
               linkText="Click here to win $500"
-              linkURL="www.url.com"
+              linkURL="/models"
               modelName="model"
             />
           </CompatRouter>
@@ -64,6 +63,8 @@ describe("ModelNotFound", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Link").text()).toBe("Click here to win $500");
+    expect(
+      screen.getByRole("link", { name: "Click here to win $500" })
+    ).toBeInTheDocument();
   });
 });

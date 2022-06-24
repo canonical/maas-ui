@@ -1,6 +1,6 @@
-import { mount, shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import Meter, { DEFAULT_SEPARATOR_COLOR } from "./Meter";
+import Meter, { DEFAULT_SEPARATOR_COLOR, TestIds } from "./Meter";
 
 const mockClientRect = ({
   bottom = 0,
@@ -28,32 +28,28 @@ const mockClientRect = ({
   });
 
 describe("Meter", () => {
-  it("renders", () => {
-    const wrapper = shallow(<Meter data={[{ value: 1 }, { value: 3 }]} />);
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("can be made small", () => {
-    const wrapper = shallow(<Meter data={[]} small />);
-    expect(wrapper.find("div").at(0).props().className).toBe("p-meter--small");
+    render(<Meter data={[]} small />);
+
+    expect(screen.getByTestId(TestIds.Container)).toHaveClass("p-meter--small");
   });
 
   it("can be given a label", () => {
-    const wrapper = shallow(
-      <Meter data={[{ value: 1 }, { value: 3 }]} label="Meter label" />
-    );
-    expect(wrapper.find(".p-meter__label").at(0).text()).toBe("Meter label");
+    render(<Meter data={[{ value: 1 }, { value: 3 }]} label="Meter label" />);
+
+    expect(screen.getByTestId(TestIds.Label).textContent).toBe("Meter label");
   });
 
   it("can be given a custom empty colour", () => {
-    const wrapper = shallow(<Meter data={[]} emptyColor="#ABC" />);
-    expect(wrapper.find(".p-meter__bar").props().style?.backgroundColor).toBe(
-      "#ABC"
-    );
+    render(<Meter data={[]} emptyColor="#ABC" />);
+
+    expect(screen.getByTestId(TestIds.Bar)).toHaveStyle({
+      backgroundColor: "#ABC",
+    });
   });
 
   it("can be given custom bar colours", () => {
-    const wrapper = shallow(
+    render(
       <Meter
         data={[
           { color: "#AAA", value: 1 },
@@ -62,29 +58,25 @@ describe("Meter", () => {
         ]}
       />
     );
-    expect(
-      wrapper.find(".p-meter__filled").at(0).props().style?.backgroundColor
-    ).toBe("#AAA");
-    expect(
-      wrapper.find(".p-meter__filled").at(1).props().style?.backgroundColor
-    ).toBe("#BBB");
-    expect(
-      wrapper.find(".p-meter__filled").at(2).props().style?.backgroundColor
-    ).toBe("#CCC");
+    const segments = screen.getAllByTestId(TestIds.Filled);
+
+    expect(segments[0]).toHaveStyle({ backgroundColor: "#AAA" });
+    expect(segments[1]).toHaveStyle({ backgroundColor: "#BBB" });
+    expect(segments[2]).toHaveStyle({ backgroundColor: "#CCC" });
   });
 
   it("changes colour if values exceed given maximum value", () => {
-    const wrapper = shallow(
+    render(
       <Meter data={[{ color: "#ABC", value: 100 }]} max={10} overColor="#DEF" />
     );
-    expect(
-      wrapper.find("[data-testid='meter-overflow']").props().style
-        ?.backgroundColor
-    ).toBe("#DEF");
+
+    expect(screen.getByTestId(TestIds.MeterOverflow)).toHaveStyle({
+      backgroundColor: "#DEF",
+    });
   });
 
   it("correctly calculates datum widths", () => {
-    const wrapper = shallow(
+    render(
       <Meter
         data={[
           { value: 10 }, // 10/100 = 10%
@@ -94,22 +86,16 @@ describe("Meter", () => {
         ]}
       />
     );
-    expect(wrapper.find(".p-meter__filled").at(0).props().style?.width).toBe(
-      "10%"
-    );
-    expect(wrapper.find(".p-meter__filled").at(1).props().style?.width).toBe(
-      "20%"
-    );
-    expect(wrapper.find(".p-meter__filled").at(2).props().style?.width).toBe(
-      "30%"
-    );
-    expect(wrapper.find(".p-meter__filled").at(3).props().style?.width).toBe(
-      "40%"
-    );
+    const segments = screen.getAllByTestId(TestIds.Filled);
+
+    expect(segments[0]).toHaveStyle({ width: "10%" });
+    expect(segments[1]).toHaveStyle({ width: "20%" });
+    expect(segments[2]).toHaveStyle({ width: "30%" });
+    expect(segments[3]).toHaveStyle({ width: "40%" });
   });
 
   it("correctly calculates datum positions", () => {
-    const wrapper = shallow(
+    render(
       <Meter
         data={[
           { value: 10 }, // 1st = 0%
@@ -119,27 +105,22 @@ describe("Meter", () => {
         ]}
       />
     );
-    expect(wrapper.find(".p-meter__filled").at(0).props().style?.left).toBe(
-      "0%"
-    );
-    expect(wrapper.find(".p-meter__filled").at(1).props().style?.left).toBe(
-      "10%"
-    );
-    expect(wrapper.find(".p-meter__filled").at(2).props().style?.left).toBe(
-      "30%"
-    );
-    expect(wrapper.find(".p-meter__filled").at(3).props().style?.left).toBe(
-      "60%"
-    );
+    const segments = screen.getAllByTestId(TestIds.Filled);
+
+    expect(segments[0]).toHaveStyle({ left: "0%" });
+    expect(segments[1]).toHaveStyle({ left: "10%" });
+    expect(segments[2]).toHaveStyle({ left: "30%" });
+    expect(segments[3]).toHaveStyle({ left: "60%" });
   });
 
   it("can be made segmented", () => {
-    const wrapper = mount(<Meter data={[{ value: 2 }]} max={10} segmented />);
-    expect(wrapper.find(".p-meter__separators").exists()).toBe(true);
+    render(<Meter data={[{ value: 2 }]} max={10} segmented />);
+
+    expect(screen.getByTestId(TestIds.Segments)).toBeInTheDocument();
   });
 
   it("can set the segment separator color", () => {
-    const wrapper = mount(
+    render(
       <Meter
         data={[{ value: 2 }]}
         max={10}
@@ -148,9 +129,9 @@ describe("Meter", () => {
       />
     );
 
-    const backgroundStyle = wrapper.find(".p-meter__separators").props().style
-      ?.background as string;
-    expect(backgroundStyle.includes("#abc123")).toBe(true);
+    expect(screen.getByTestId(TestIds.Segments)).toHaveStyle({
+      background: "rgb(171, 193, 35);",
+    });
   });
 
   it("sets segment width to 1px if not enough space to show all segments", () => {
@@ -158,13 +139,10 @@ describe("Meter", () => {
     Element.prototype.getBoundingClientRect = mockClientRect({
       width: 128,
     });
-    const wrapper = mount(<Meter data={[{ value: 10 }]} max={100} segmented />);
+    render(<Meter data={[{ value: 10 }]} max={100} segmented />);
 
-    const backgroundStyle = wrapper.find(".p-meter__separators").props().style
-      ?.background as string;
-    const trimmed = backgroundStyle.replace(/\s\s+/g, " ");
-    expect(trimmed).toBe(
-      `repeating-linear-gradient( to right, transparent 0, transparent 1px, ${DEFAULT_SEPARATOR_COLOR} 1px, ${DEFAULT_SEPARATOR_COLOR} 2px )`
-    );
+    expect(screen.getByTestId(TestIds.Segments)).toHaveStyle({
+      background: `repeating-linear-gradient(to right, transparent 0, transparent 1px, ${DEFAULT_SEPARATOR_COLOR} 1px, ${DEFAULT_SEPARATOR_COLOR} 2px );`,
+    });
   });
 });

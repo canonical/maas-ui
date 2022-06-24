@@ -28,6 +28,20 @@ export type LoginValues = {
   username: string;
 };
 
+export enum Labels {
+  APILoginForm = "API login form",
+  ExternalLoginButton = "Go to login page",
+  NoUsers = "No admin user has been created yet",
+  Password = "Password",
+  Submit = "Login",
+  Username = "Username",
+}
+
+export enum TestIds {
+  NoUsers = "no-users-warning",
+  SectionHeaderTitle = "section-header-title",
+}
+
 export const Login = (): JSX.Element => {
   const dispatch = useDispatch();
   const authenticated = useSelector(statusSelectors.authenticated);
@@ -55,10 +69,7 @@ export const Login = (): JSX.Element => {
             </Notification>
           )}
           {noUsers && !externalAuthURL ? (
-            <Card
-              data-testid="no-users-warning"
-              title="No admin user has been created yet"
-            >
+            <Card title={Labels.NoUsers}>
               <p>Use the following command to create one:</p>
               <Code copyable>sudo maas createadmin</Code>
               <Button
@@ -72,7 +83,7 @@ export const Login = (): JSX.Element => {
             <Card>
               <h1
                 className="p-card__title p-heading--3"
-                data-testid="section-header-title"
+                data-testid={TestIds.SectionHeaderTitle}
               >
                 Login
               </h1>
@@ -84,12 +95,12 @@ export const Login = (): JSX.Element => {
                   href={externalLoginURL}
                   rel="noopener noreferrer"
                   target="_blank"
-                  title={`Login through ${externalAuthURL}`}
                 >
-                  Go to login page
+                  {Labels.ExternalLoginButton}
                 </Button>
               ) : (
                 <FormikForm<LoginValues>
+                  aria-label={Labels.APILoginForm}
                   errors={error}
                   initialValues={{
                     password: "",
@@ -100,18 +111,18 @@ export const Login = (): JSX.Element => {
                   }}
                   saved={authenticated}
                   saving={authenticating}
-                  submitLabel="Login"
+                  submitLabel={Labels.Submit}
                   validationSchema={LoginSchema}
                 >
                   <FormikField
-                    label="Username"
+                    label={Labels.Username}
                     name="username"
                     required={true}
                     takeFocus
                     type="text"
                   />
                   <FormikField
-                    label="Password"
+                    label={Labels.Password}
                     name="password"
                     required={true}
                     type="password"
