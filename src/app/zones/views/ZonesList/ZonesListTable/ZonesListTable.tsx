@@ -13,6 +13,10 @@ import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 import zonesURLs from "app/zones/urls";
 
+export enum TestIds {
+  ZonesTable = "zones-table",
+}
+
 const ZonesListTable = (): JSX.Element => {
   const zones = useSelector(zoneSelectors.all);
   const dispatch = useDispatch();
@@ -91,7 +95,7 @@ const ZonesListTable = (): JSX.Element => {
   return (
     <MainTable
       className="p-table--zones"
-      data-testid="zones-table"
+      data-testid={TestIds.ZonesTable}
       defaultSort="name"
       defaultSortDirection="ascending"
       headers={headers}

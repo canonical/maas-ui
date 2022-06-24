@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -17,9 +18,9 @@ describe("ZonesListHeader", () => {
     state = rootStateFactory();
   });
 
-  it("displays the form when Add AZ is clicked", () => {
+  it("displays the form when Add AZ is clicked", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -28,10 +29,13 @@ describe("ZonesListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("ZonesListForm").exists()).toBe(false);
 
-    wrapper.find("button[data-testid='add-zone']").simulate("click");
+    expect(
+      screen.queryByRole("form", { name: "Add AZ" })
+    ).not.toBeInTheDocument();
 
-    expect(wrapper.find("ZonesListForm").exists()).toBe(true);
+    await userEvent.click(screen.getByRole("button", { name: "Add AZ" }));
+
+    expect(screen.getByRole("form", { name: "Add AZ" })).toBeInTheDocument();
   });
 });
