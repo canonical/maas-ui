@@ -7,8 +7,10 @@ const REACT_BASENAME = process.env.REACT_BASENAME;
 
 var app = express();
 
-const PROXY_PORT = 8400;
+const PROXY_PORT = process.env.PROXY_PORT || 8400;
 const REACT_PORT = 8401;
+
+console.log(`${BASENAME}${REACT_BASENAME}`);
 
 app.get(BASENAME, (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
 app.get("/", (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
@@ -48,11 +50,18 @@ app.use(
 );
 
 // Proxy to the React client.
-app.use(
-  createProxyMiddleware("/", {
-    target: `http://localhost:${REACT_PORT}/`,
-  })
-);
+if (process.env.STATIC_DEMO !== "true") {
+  app.use(
+    createProxyMiddleware("/", {
+      target: `http://localhost:${REACT_PORT}/`,
+    })
+  );
+}
+
+if (process.env.STATIC_DEMO === "true") {
+  app.use(`${BASENAME}${REACT_BASENAME}`, express.static("./build"));
+  app.use(`*`, express.static("./build"));
+}
 
 app.listen(PROXY_PORT);
 
