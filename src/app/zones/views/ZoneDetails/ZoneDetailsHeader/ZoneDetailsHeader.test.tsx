@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -51,7 +51,7 @@ describe("ZoneDetailsHeader", () => {
   it("displays zone name in header if one exists", () => {
     const state = initialState;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
@@ -66,15 +66,15 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
-      "Availability zone: zone-name"
-    );
+
+    const { getByText } = within(screen.getByTestId("section-header-title"));
+    expect(getByText("Availability zone: zone-name")).toBeInTheDocument();
   });
 
   it("displays not found message if no zone exists", () => {
     const state = initialState;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/3", key: "testKey" }]}
@@ -89,15 +89,14 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
-      "Availability zone not found"
-    );
+    const { getByText } = within(screen.getByTestId("section-header-title"));
+    expect(getByText("Availability zone not found")).toBeInTheDocument();
   });
 
   it("shows delete az button when zone id isn't 1", () => {
     const state = initialState;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/2", key: "testKey" }]}
@@ -112,13 +111,13 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="delete-zone"]').exists()).toBe(true);
+    expect(screen.getByTestId("delete-zone")).toBeInTheDocument();
   });
 
   it("hides delete button when zone id is 1 (as this is the default)", () => {
     const state = initialState;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
@@ -133,7 +132,7 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="delete-zone"]').exists()).toBe(false);
+    expect(screen.queryByTestId("delete-zone")).not.toBeInTheDocument();
   });
 
   it("hides delete button for all zones when user isn't admin", () => {
@@ -146,7 +145,7 @@ describe("ZoneDetailsHeader", () => {
       zone: testZones,
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/2", key: "testKey" }]}
@@ -161,6 +160,6 @@ describe("ZoneDetailsHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="delete-zone"]').exists()).toBe(false);
+    expect(screen.queryByTestId("delete-zone")).not.toBeInTheDocument();
   });
 });
