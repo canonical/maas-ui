@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -32,11 +33,11 @@ describe("DeleteConfirm", () => {
     });
   });
 
-  it("runs onConfirm function when Delete AZ is clicked", () => {
+  it("runs onConfirm function when Delete AZ is clicked", async () => {
     const closeExpanded = jest.fn();
     const onConfirm = jest.fn();
     const store = mockStore(initialState);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <DeleteConfirm
           closeExpanded={closeExpanded}
@@ -46,15 +47,18 @@ describe("DeleteConfirm", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-testid='delete-az']").simulate("click");
+    // wrapper.find("button[data-testid='delete-az']").simulate("click");
+    // expect(onConfirm).toHaveBeenCalled();
+
+    await userEvent.click(screen.getByTestId("delete-az"));
     expect(onConfirm).toHaveBeenCalled();
   });
 
-  it("runs closeExpanded function when cancel is clicked", () => {
+  it("runs closeExpanded function when cancel is clicked", async () => {
     const closeExpanded = jest.fn();
     const onConfirm = jest.fn();
     const store = mockStore(initialState);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <DeleteConfirm
           closeExpanded={closeExpanded}
@@ -64,9 +68,7 @@ describe("DeleteConfirm", () => {
       </Provider>
     );
 
-    wrapper
-      .find("button[data-testid='close-confirm-delete']")
-      .simulate("click");
+    await userEvent.click(screen.getByTestId("close-confirm-delete"));
     expect(closeExpanded).toHaveBeenCalled();
   });
 });
