@@ -40,3 +40,5 @@ cypress.env.json
 # junk
 *.DS_Store
 *.fuse*
+
+sitespeed.io/results
