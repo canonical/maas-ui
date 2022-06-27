@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -6,7 +6,6 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetails from "./ZoneDetails";
 
-import { Labels } from "app/base/components/EditableSection";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -48,7 +47,7 @@ describe("ZoneDetails", () => {
   it("shows Edit button if user is admin", () => {
     const state = initialState;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
@@ -59,14 +58,9 @@ describe("ZoneDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .findWhere(
-          (node) =>
-            node.type() === "button" && node.text() === Labels.EditButton
-        )
-        .exists()
-    ).toBe(true);
+
+    const editButtons = screen.getAllByRole("button", { name: "Edit" });
+    editButtons.forEach((button) => expect(button).toBeInTheDocument());
   });
 
   it("hides Edit button if user is not admin", () => {
@@ -79,7 +73,7 @@ describe("ZoneDetails", () => {
       zone: testZones,
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
@@ -90,13 +84,8 @@ describe("ZoneDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .findWhere(
-          (node) =>
-            node.type() === "button" && node.text() === Labels.EditButton
-        )
-        .exists()
-    ).toBe(false);
+
+    const editButtons = screen.queryAllByRole("button", { name: "Edit" });
+    editButtons.forEach((button) => expect(button).not.toBeInTheDocument());
   });
 });
