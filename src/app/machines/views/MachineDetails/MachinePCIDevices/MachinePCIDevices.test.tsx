@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachinePCIDevices from "./MachinePCIDevices";
@@ -33,11 +34,14 @@ describe("MachinePCIDevices", () => {
             { pathname: "/machine/abc123/pci-devices", key: "testKey" },
           ]}
         >
-          <Route
-            exact
-            path="/machine/:id/pci-devices"
-            render={() => <MachinePCIDevices setHeaderContent={jest.fn()} />}
-          />
+          <CompatRouter>
+            <Routes>
+              <Route
+                element={<MachinePCIDevices setHeaderContent={jest.fn()} />}
+                path="/machine/:id/pci-devices"
+              />
+            </Routes>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

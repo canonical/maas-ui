@@ -1,6 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeTestsTable from "./NodeTestsTable";
@@ -81,7 +82,9 @@ describe("NodeTestsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          <CompatRouter>
+            <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -108,7 +111,9 @@ describe("NodeTestsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          <CompatRouter>
+            <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -135,7 +140,9 @@ describe("NodeTestsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeTestsTable node={controller} scriptResults={scriptResults} />
+          <CompatRouter>
+            <NodeTestsTable node={controller} scriptResults={scriptResults} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -162,7 +169,9 @@ describe("NodeTestsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          <CompatRouter>
+            <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -194,7 +203,9 @@ describe("NodeTestsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          <CompatRouter>
+            <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -230,7 +241,9 @@ describe("NodeTestsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          <CompatRouter>
+            <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -266,7 +279,9 @@ describe("NodeTestsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          <CompatRouter>
+            <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -301,7 +316,9 @@ describe("NodeTestsTable", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          <CompatRouter>
+            <NodeTestsTable node={machine} scriptResults={scriptResults} />
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

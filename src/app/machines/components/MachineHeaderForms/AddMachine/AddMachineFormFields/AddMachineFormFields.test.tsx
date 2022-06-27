@@ -21,6 +21,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -67,8 +68,8 @@ describe("AddMachineFormFields", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
         items: [zoneFactory()],
-        loaded: true,
       }),
     });
   });

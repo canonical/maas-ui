@@ -1,12 +1,14 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import LXDClusterDetails from "./LXDClusterDetails";
 
 import kvmURLs from "app/kvm/urls";
+import { Label as LXDClusterHostSettingsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHostSettings/LXDClusterHostSettings";
+import { Label as LXDClusterHostVMsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHostVMs/LXDClusterHostVMs";
+import { Label as LXDClusterHostsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHosts";
+import { Label as LXDClusterResourcesLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterResources/LXDClusterResources";
+import { Label as LXDClusterSettingsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterSettings/LXDClusterSettings";
+import { Label as LXDClusterVMsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterVMs/LXDClusterVMs";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -16,8 +18,7 @@ import {
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("LXDClusterDetails", () => {
   let state: RootState;
@@ -37,47 +38,39 @@ describe("LXDClusterDetails", () => {
 
   [
     {
-      component: "LXDClusterHosts",
+      label: LXDClusterHostsLabel.Title,
       path: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
     },
     {
-      component: "LXDClusterVMs",
+      label: LXDClusterVMsLabel.Title,
       path: kvmURLs.lxd.cluster.vms.index({ clusterId: 1 }),
     },
     {
-      component: "LXDClusterResources",
+      label: LXDClusterResourcesLabel.Title,
       path: kvmURLs.lxd.cluster.resources({ clusterId: 1 }),
     },
     {
-      component: "LXDClusterSettings",
+      label: LXDClusterSettingsLabel.Title,
       path: kvmURLs.lxd.cluster.edit({ clusterId: 1 }),
     },
     {
-      component: "LXDClusterHostVMs",
-      route: kvmURLs.lxd.cluster.vms.host(null, true),
+      label: LXDClusterHostVMsLabel.Title,
       path: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
     },
     {
-      component: "LXDClusterHostSettings",
-      route: kvmURLs.lxd.cluster.host.edit(null, true),
+      label: LXDClusterHostSettingsLabel.Title,
       path: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
     },
-  ].forEach(({ component, path, route }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Route
-                path={route || "*/:clusterId/*"}
-                render={() => <LXDClusterDetails />}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+  ].forEach(({ label, path }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<LXDClusterDetails />, {
+        route: path,
+        wrapperProps: {
+          state,
+          routePattern: `${kvmURLs.lxd.cluster.index(null, true)}/*`,
+        },
+      });
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
 });

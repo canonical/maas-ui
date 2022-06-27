@@ -1,37 +1,23 @@
-import { Textarea } from "@canonical/react-components";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 
 import FormikField from "./FormikField";
 
 describe("FormikField", () => {
-  it("can render", () => {
-    const wrapper = mount(
-      <Formik initialValues={{}} onSubmit={jest.fn()}>
-        <FormikField
-          help="Required."
-          id="username"
-          label="Username"
-          name="username"
-          required={true}
-          type="text"
-        />
-      </Formik>
-    );
-    expect(wrapper.find("FormikField")).toMatchSnapshot();
-  });
-
   it("can set a different component", () => {
-    const wrapper = mount(
+    const Component = () => <select />;
+    render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
-        <FormikField component={Textarea} name="username" />
+        <FormikField component={Component} name="username" />
       </Formik>
     );
-    expect(wrapper.find("Textarea").exists()).toBe(true);
+
+    expect(screen.getByRole("combobox")).toBeInTheDocument();
+    expect(screen.queryByRole("textbox")).not.toBeInTheDocument();
   });
 
   it("can pass errors", () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialErrors={{ username: "Uh oh!" }}
         initialTouched={{ username: true }}
@@ -41,11 +27,12 @@ describe("FormikField", () => {
         <FormikField name="username" />
       </Formik>
     );
-    expect(wrapper.find("Input").prop("error")).toBe("Uh oh!");
+
+    expect(screen.getByRole("textbox")).toHaveErrorMessage("Error: Uh oh!");
   });
 
   it("can hide the errors", () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialErrors={{ username: "Uh oh!" }}
         initialTouched={{ username: true }}
@@ -55,6 +42,7 @@ describe("FormikField", () => {
         <FormikField displayError={false} name="username" />
       </Formik>
     );
-    expect(wrapper.find("Input").prop("error")).toBe(null);
+
+    expect(screen.getByRole("textbox")).not.toHaveErrorMessage();
   });
 });

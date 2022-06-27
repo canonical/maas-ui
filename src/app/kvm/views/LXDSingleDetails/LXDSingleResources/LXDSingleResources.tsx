@@ -12,6 +12,10 @@ type Props = {
   id: Pod["id"];
 };
 
+export enum Label {
+  Title = "LXD resources",
+}
+
 const LXDSingleResources = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
@@ -22,7 +26,7 @@ const LXDSingleResources = ({ id }: Props): JSX.Element => {
     return <Spinner text="Loading" />;
   }
   return (
-    <>
+    <div aria-label={Label.Title}>
       <Strip shallow>
         <KVMResourcesCard id={pod.id} />
       </Strip>
@@ -32,7 +36,7 @@ const LXDSingleResources = ({ id }: Props): JSX.Element => {
           pools={pod.resources.storage_pools}
         />
       </Strip>
-    </>
+    </div>
   );
 };
 

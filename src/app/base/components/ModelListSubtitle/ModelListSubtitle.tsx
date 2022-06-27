@@ -28,6 +28,11 @@ const getSubtitleString = (
   }
 };
 
+export enum TestIds {
+  Filter = "filter-selected",
+  Subtitle = "subtitle-string",
+}
+
 export const ModelListSubtitle = ({
   available,
   filterSelected,
@@ -42,7 +47,7 @@ export const ModelListSubtitle = ({
       <Button
         appearance="link"
         className="u-no-margin--bottom"
-        data-testid="filter-selected"
+        data-testid={TestIds.Filter}
         onClick={filterSelected}
       >
         {subtitleString}
@@ -50,7 +55,7 @@ export const ModelListSubtitle = ({
     );
   }
   return (
-    <span className="u-text--muted" data-testid="subtitle-string">
+    <span className="u-text--muted" data-testid={TestIds.Subtitle}>
       {subtitleString}
     </span>
   );

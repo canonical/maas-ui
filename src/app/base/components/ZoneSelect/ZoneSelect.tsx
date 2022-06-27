@@ -20,7 +20,7 @@ export enum Label {
   Zone = "Zone",
 }
 
-export const DomainSelect = ({
+export const ZoneSelect = ({
   disabled = false,
   label = Label.Zone,
   name,
@@ -54,4 +54,4 @@ export const DomainSelect = ({
   );
 };
 
-export default DomainSelect;
+export default ZoneSelect;

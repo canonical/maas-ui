@@ -14,6 +14,10 @@ type Props = {
   systemId?: Machine[MachineMeta.PK] | null;
 };
 
+export enum Labels {
+  Loading = "Loading machines",
+}
+
 const MachineLink = ({ systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const machine = useSelector((state: RootState) =>
@@ -26,7 +30,7 @@ const MachineLink = ({ systemId }: Props): JSX.Element | null => {
   }, [dispatch]);
 
   if (machinesLoading) {
-    return <Spinner aria-label="Loading machines" />;
+    return <Spinner aria-label={Labels.Loading} />;
   }
   if (!machine) {
     return null;

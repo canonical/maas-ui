@@ -19,6 +19,10 @@ type State = {
   hasError: boolean;
 };
 
+export enum Labels {
+  ErrorMessage = "An unexpected error has occurred, please try refreshing your browser window.",
+}
+
 class ErrorBoundary extends Component<Props, State> {
   constructor(props: Props) {
     super(props);
@@ -47,8 +51,8 @@ class ErrorBoundary extends Component<Props, State> {
       return (
         <div className="p-notification--negative">
           <p className="p-notification__response u-no-max-width">
-            <span className="p-notification__status">Error:</span> An unexpected
-            error has occurred, please try refreshing your browser window.
+            <span className="p-notification__status">Error:</span>
+            {Labels.ErrorMessage}
           </p>
         </div>
       );

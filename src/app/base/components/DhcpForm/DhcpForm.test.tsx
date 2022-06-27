@@ -1,12 +1,15 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { DhcpForm } from "./DhcpForm";
+import { Labels as FieldLabels } from "../DhcpFormFields";
 
+import DhcpForm, { Labels } from "./DhcpForm";
+
+import { actions as dhcpActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import type { RootState } from "app/store/root/types";
 import {
@@ -14,7 +17,6 @@ import {
   dhcpSnippetState as dhcpSnippetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -48,23 +50,9 @@ describe("DhcpForm", () => {
     jest.restoreAllMocks();
   });
 
-  it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("DhcpForm").exists()).toBe(true);
-  });
-
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -74,58 +62,51 @@ describe("DhcpForm", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
 
+    const expectedAction = dhcpActions.cleanup();
     expect(
-      store.getActions().some((action) => action.type === "dhcpsnippet/cleanup")
-    ).toBe(true);
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 
-  it("can update a snippet", () => {
+  it("can update a snippet", async () => {
+    const dhcpSnippet = state.dhcpsnippet.items[0];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
-            <DhcpForm
-              analyticsCategory="settings"
-              id={state.dhcpsnippet.items[0].id}
-            />
+            <DhcpForm analyticsCategory="settings" id={dhcpSnippet.id} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "new-lease",
-        id: 1,
-      })
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: FieldLabels.Name })
     );
-    expect(
-      store.getActions().find((action) => action.type === "dhcpsnippet/update")
-    ).toStrictEqual({
-      type: "dhcpsnippet/update",
-      payload: {
-        params: {
-          description: undefined,
-          enabled: undefined,
-          id: 1,
-          name: "new-lease",
-          value: undefined,
-        },
-      },
-      meta: {
-        model: "dhcpsnippet",
-        method: "update",
-      },
+    await userEvent.type(
+      screen.getByRole("textbox", { name: FieldLabels.Name }),
+      "new-lease"
+    );
+    await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
+
+    const expectedAction = dhcpActions.update({
+      description: dhcpSnippet.description,
+      enabled: dhcpSnippet.enabled,
+      id: dhcpSnippet.id,
+      name: "new-lease",
+      value: dhcpSnippet.value,
     });
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 
-  it("can create a snippet", () => {
+  it("can create a snippet", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -134,31 +115,36 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "new-lease",
-      })
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: FieldLabels.Name }),
+      "new-lease"
     );
-    expect(
-      store.getActions().find((action) => action.type === "dhcpsnippet/create")
-    ).toStrictEqual({
-      type: "dhcpsnippet/create",
-      payload: {
-        params: {
-          description: undefined,
-          enabled: undefined,
-          value: undefined,
-          name: "new-lease",
-        },
-      },
-      meta: {
-        model: "dhcpsnippet",
-        method: "create",
-      },
+    await userEvent.type(
+      screen.getByRole("textbox", { name: FieldLabels.Description }),
+      "new-description"
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: FieldLabels.Enabled })
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: FieldLabels.Value }),
+      "new-value"
+    );
+    await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
+
+    const expectedAction = dhcpActions.create({
+      description: "new-description",
+      enabled: true,
+      name: "new-lease",
+      value: "new-value",
     });
+    expect(
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 
-  it("can call the onSave on success", () => {
+  it("can call the onSave on success", async () => {
     state.dhcpsnippet.saved = false;
     const onSave = jest.fn();
     const store = mockStore(state);
@@ -171,22 +157,24 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    const wrapper = mount(<Proxy analyticsCategory="settings" />);
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "new-lease",
-      })
+    const { rerender } = render(<Proxy analyticsCategory="settings" />);
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: FieldLabels.Name }),
+      "new-lease"
     );
+    await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
     jest.spyOn(dhcpsnippetSelectors, "saved").mockReturnValue(true);
-    wrapper.setProps({ analyticsCategory: "newvalue" });
+    rerender(<Proxy analyticsCategory="new-value" />);
+
     expect(onSave).toHaveBeenCalled();
   });
 
-  it("does not call onSave if there is an error", () => {
+  it("does not call onSave if there is an error", async () => {
     state.dhcpsnippet.errors = "Uh oh!";
     const onSave = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -195,18 +183,20 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "new-lease",
-      })
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: FieldLabels.Name }),
+      "new-lease"
     );
+    await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
+
     expect(onSave).not.toHaveBeenCalled();
   });
 
   it("adds a message when a snippet is added", () => {
     state.dhcpsnippet.saved = true;
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -224,7 +214,7 @@ describe("DhcpForm", () => {
 
   it("fetches models when editing", () => {
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -258,7 +248,7 @@ describe("DhcpForm", () => {
     state.machine.loaded = false;
     const store = mockStore(state);
     state.dhcpsnippet.items[0].node = "xyz";
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -270,7 +260,9 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.find("FormikForm").exists()).toBe(false);
+
+    expect(
+      screen.getByRole("alert", { name: Labels.LoadingData })
+    ).toBeInTheDocument();
   });
 });

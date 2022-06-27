@@ -1,51 +1,18 @@
-import { mount } from "enzyme";
+import { fireEvent, render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
 import DynamicSelect from "./DynamicSelect";
 import type { Props as DynamicSelectProps } from "./DynamicSelect";
 
-import { waitForComponentToPaint } from "testing/utils";
-
 describe("DynamicSelect", () => {
-  it("resets to the first option if the value changes to something unknown", async () => {
-    const wrapper = mount(
-      <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
-        <DynamicSelect
-          name="fabric"
-          options={[
-            { label: "one", value: "1" },
-            { label: "two", value: "2" },
-          ]}
-        />
-      </Formik>
-    );
-    expect(wrapper.find("FormikField select").prop("value")).toBe("1");
-    wrapper.find("FormikField select").simulate("change", {
-      target: {
-        name: "fabric",
-        value: "2",
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe("2");
-    wrapper.find("FormikField select").simulate("change", {
-      target: {
-        name: "fabric",
-        value: "99999",
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe("1");
-  });
-
   it("resets to the first option if the options change and the value no longer exists", async () => {
-    // Create a mock component so that setProps can pass props past the Formik wrapper.
     const MockComponent = (props: DynamicSelectProps) => (
       <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
         <DynamicSelect {...props} />
       </Formik>
     );
-    const wrapper = mount(
+    const { rerender } = render(
       <MockComponent
         name="fabric"
         options={[
@@ -54,26 +21,57 @@ describe("DynamicSelect", () => {
         ]}
       />
     );
-    wrapper.find("FormikField select").simulate("change", {
-      target: {
-        name: "fabric",
-        value: "2",
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe("2");
-    wrapper.setProps({
-      options: [
-        { label: "three", value: "3" },
-        { label: "four", value: "4" },
-      ],
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe("3");
+    const select = screen.getByRole("combobox");
+
+    await userEvent.selectOptions(select, "2");
+    expect(select).toHaveValue("2");
+
+    rerender(
+      <MockComponent
+        name="fabric"
+        options={[
+          { label: "three", value: "3" },
+          { label: "four", value: "4" },
+        ]}
+      />
+    );
+    expect(select).toHaveValue("3");
   });
 
   it("doesn't change the value if the options change and the value still exists", async () => {
-    const wrapper = mount(
+    const MockComponent = (props: DynamicSelectProps) => (
+      <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
+        <DynamicSelect {...props} />
+      </Formik>
+    );
+    const { rerender } = render(
+      <MockComponent
+        name="fabric"
+        options={[
+          { label: "one", value: "1" },
+          { label: "two", value: "2" },
+        ]}
+      />
+    );
+    const select = screen.getByRole("combobox");
+
+    await userEvent.selectOptions(select, "2");
+    expect(select).toHaveValue("2");
+
+    rerender(
+      <MockComponent
+        name="fabric"
+        options={[
+          { label: "two", value: "2" },
+          { label: "three", value: "3" },
+        ]}
+      />
+    );
+    expect(select).toHaveValue("2");
+  });
+
+  it("accepts changing to a value that is a number", async () => {
+    render(
       <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
         <DynamicSelect
           name="fabric"
@@ -84,66 +82,21 @@ describe("DynamicSelect", () => {
         />
       </Formik>
     );
-    wrapper.find("FormikField select").simulate("change", {
-      target: {
-        name: "fabric",
-        value: "2",
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe("2");
-    wrapper.setProps({
-      options: [
-        { label: "three", value: "3" },
-        { label: "two", value: "2" },
-      ],
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe("2");
-  });
+    const select = screen.getByRole("combobox");
 
-  it("accepts changing to a value that is a number", async () => {
-    // Create a mock component so that setProps can pass props past the Formik wrapper.
-    const MockComponent = (props: DynamicSelectProps) => (
-      <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
-        <DynamicSelect {...props} />
-      </Formik>
-    );
-    const wrapper = mount(
-      <MockComponent
-        name="fabric"
-        options={[
-          { label: "one", value: "1" },
-          { label: "two", value: "2" },
-        ]}
-      />
-    );
-    wrapper.find("FormikField select").simulate("change", {
-      target: {
-        name: "fabric",
-        value: 2,
-      },
+    fireEvent.change(select, { target: { name: "fabric", value: 2 } });
+    await waitFor(() => {
+      expect(select).toHaveValue("2");
     });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe(2);
-    wrapper.setProps({
-      options: [
-        { label: "three", value: "3" },
-        { label: "two", value: "2" },
-      ],
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe(2);
   });
 
   it("accepts updated values that are numbers", async () => {
-    // Create a mock component so that setProps can pass props past the Formik wrapper.
     const MockComponent = (props: DynamicSelectProps) => (
       <Formik initialValues={{ fabric: "" }} onSubmit={jest.fn()}>
         <DynamicSelect {...props} />
       </Formik>
     );
-    const wrapper = mount(
+    const { rerender } = render(
       <MockComponent
         name="fabric"
         options={[
@@ -152,26 +105,25 @@ describe("DynamicSelect", () => {
         ]}
       />
     );
-    wrapper.find("FormikField select").simulate("change", {
-      target: {
-        name: "fabric",
-        value: "2",
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe("2");
-    wrapper.setProps({
-      options: [
-        { label: "three", value: 3 },
-        { label: "two", value: 2 },
-      ],
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField select").prop("value")).toBe("2");
+    const select = screen.getByRole("combobox");
+
+    await userEvent.selectOptions(select, "2");
+    expect(select).toHaveValue("2");
+
+    rerender(
+      <MockComponent
+        name="fabric"
+        options={[
+          { label: "one", value: 1 },
+          { label: "two", value: 2 },
+        ]}
+      />
+    );
+    expect(select).toHaveValue("2");
   });
 
   it("doesn't change the value on first render", async () => {
-    const wrapper = mount(
+    render(
       <Formik initialValues={{ fabric: "2" }} onSubmit={jest.fn()}>
         <DynamicSelect
           name="fabric"
@@ -182,6 +134,8 @@ describe("DynamicSelect", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("FormikField select").prop("value")).toBe("2");
+    const select = screen.getByRole("combobox");
+
+    expect(select).toHaveValue("2");
   });
 });

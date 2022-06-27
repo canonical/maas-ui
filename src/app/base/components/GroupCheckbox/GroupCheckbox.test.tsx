@@ -1,33 +1,23 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import GroupCheckbox from "./GroupCheckbox";
 
 describe("GroupCheckbox", () => {
-  it("renders", () => {
-    const wrapper = shallow(
-      <GroupCheckbox
-        handleGroupCheckbox={jest.fn()}
-        items={[]}
-        selectedItems={[]}
-      />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("shows as mixed when some items are checked", () => {
-    const wrapper = shallow(
+    render(
       <GroupCheckbox
         handleGroupCheckbox={jest.fn()}
         items={[1, 2, 3]}
         selectedItems={[2]}
       />
     );
-    expect(wrapper.prop("checked")).toBe(true);
-    expect(wrapper.prop("aria-checked")).toBe("mixed");
+
+    expect(screen.getByRole("checkbox")).toBeChecked();
+    expect(screen.getByRole("checkbox")).toBePartiallyChecked();
   });
 
   it("can show a label", () => {
-    const wrapper = shallow(
+    render(
       <GroupCheckbox
         handleGroupCheckbox={jest.fn()}
         inputLabel="Check all"
@@ -35,11 +25,14 @@ describe("GroupCheckbox", () => {
         selectedItems={[]}
       />
     );
-    expect(wrapper.prop("label")).toBe("Check all");
+
+    expect(
+      screen.getByRole("checkbox", { name: "Check all" })
+    ).toBeInTheDocument();
   });
 
   it("can be disabled even if items exist", () => {
-    const wrapper = shallow(
+    render(
       <GroupCheckbox
         disabled
         handleGroupCheckbox={jest.fn()}
@@ -48,11 +41,12 @@ describe("GroupCheckbox", () => {
         selectedItems={[2]}
       />
     );
-    expect(wrapper.prop("disabled")).toBe(true);
+
+    expect(screen.getByRole("checkbox")).toBeDisabled();
   });
 
   it("can check if it should be selected via a function", () => {
-    const wrapper = shallow(
+    render(
       <GroupCheckbox
         checkSelected={() => true}
         handleGroupCheckbox={jest.fn()}
@@ -60,11 +54,12 @@ describe("GroupCheckbox", () => {
         selectedItems={[]}
       />
     );
-    expect(wrapper.prop("checked")).toBe(true);
+
+    expect(screen.getByRole("checkbox")).toBeChecked();
   });
 
   it("can check if it should display as mixed via a function", () => {
-    const wrapper = shallow(
+    render(
       <GroupCheckbox
         checkAllSelected={() => false}
         handleGroupCheckbox={jest.fn()}
@@ -72,7 +67,8 @@ describe("GroupCheckbox", () => {
         selectedItems={[2]}
       />
     );
-    expect(wrapper.prop("checked")).toBe(true);
-    expect(wrapper.prop("aria-checked")).toBe("mixed");
+
+    expect(screen.getByRole("checkbox")).toBeChecked();
+    expect(screen.getByRole("checkbox")).toBePartiallyChecked();
   });
 });

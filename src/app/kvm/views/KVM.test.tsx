@@ -1,107 +1,78 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import KVM from "./KVM";
 
 import kvmURLs from "app/kvm/urls";
-import { rootState as rootStateFactory } from "testing/factories";
+import { Label as KVMListLabel } from "app/kvm/views/KVMList/KVMList";
+import { Label as LXDClusterDetailsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterDetails";
+import { Label as LXDSingleDetailsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleDetails";
+import { Label as VirshDetailsLabel } from "app/kvm/views/VirshDetails/VirshDetails";
+import { PodType } from "app/store/pod/constants";
+import type { RootState } from "app/store/root/types";
+import {
+  podDetails as podFactory,
+  podState as podStateFactory,
+  rootState as rootStateFactory,
+  vmCluster as vmClusterFactory,
+  vmClusterState as vmClusterStateFactory,
+} from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+let state: RootState;
+
+beforeEach(() => {
+  state = rootStateFactory({
+    pod: podStateFactory({
+      items: [
+        podFactory({ id: 2, type: PodType.LXD, cluster: 1 }),
+        podFactory({ id: 4, type: PodType.LXD }),
+        podFactory({ id: 3, type: PodType.VIRSH }),
+      ],
+      loaded: true,
+    }),
+    vmcluster: vmClusterStateFactory({
+      items: [vmClusterFactory({ id: 1 })],
+      loaded: true,
+    }),
+  });
+});
 
 describe("KVM", () => {
   [
     {
-      component: "KVMList",
+      label: KVMListLabel.Title,
       path: kvmURLs.kvm,
     },
     {
-      component: "KVMList",
+      label: KVMListLabel.Title,
       path: kvmURLs.lxd.index,
     },
     {
-      component: "KVMList",
+      label: KVMListLabel.Title,
       path: kvmURLs.virsh.index,
     },
     {
-      component: "LXDClusterDetails",
-      path: kvmURLs.lxd.cluster.edit({ clusterId: 1 }),
-    },
-    {
-      component: "LXDClusterDetails",
+      label: LXDClusterDetailsLabel.Title,
       path: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
     },
     {
-      component: "LXDClusterDetails",
-      path: kvmURLs.lxd.cluster.host.index({ clusterId: 1, hostId: 1 }),
+      label: LXDSingleDetailsLabel.Title,
+      path: kvmURLs.lxd.single.index({ id: 4 }),
     },
     {
-      component: "LXDClusterDetails",
-      path: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 1 }),
+      label: VirshDetailsLabel.Title,
+      path: kvmURLs.virsh.details.index({ id: 3 }),
     },
-    {
-      component: "LXDClusterDetails",
-      path: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
-    },
-    {
-      component: "LXDClusterDetails",
-      path: kvmURLs.lxd.cluster.resources({ clusterId: 1 }),
-    },
-    {
-      component: "LXDClusterDetails",
-      path: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 1 }),
-    },
-    {
-      component: "LXDClusterDetails",
-      path: kvmURLs.lxd.cluster.vms.index({ clusterId: 1 }),
-    },
-    {
-      component: "LXDSingleDetails",
-      path: kvmURLs.lxd.single.index({ id: 1 }),
-    },
-    {
-      component: "LXDSingleDetails",
-      path: kvmURLs.lxd.single.edit({ id: 1 }),
-    },
-    {
-      component: "LXDSingleDetails",
-      path: kvmURLs.lxd.single.resources({ id: 1 }),
-    },
-    {
-      component: "LXDSingleDetails",
-      path: kvmURLs.lxd.single.vms({ id: 1 }),
-    },
-    {
-      component: "VirshDetails",
-      path: kvmURLs.virsh.details.index({ id: 1 }),
-    },
-    {
-      component: "VirshDetails",
-      path: kvmURLs.virsh.details.edit({ id: 1 }),
-    },
-    {
-      component: "VirshDetails",
-      path: kvmURLs.virsh.details.resources({ id: 1 }),
-    },
-    {
-      component: "NotFound",
-      path: "/not/a/path",
-    },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(rootStateFactory());
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <KVM />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+  ].forEach(({ label, path }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<KVM />, {
+        route: path,
+        wrapperProps: {
+          state,
+          routePattern: `${kvmURLs.kvm}/*`,
+        },
+      });
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
 });

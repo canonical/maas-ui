@@ -44,6 +44,10 @@ type Section = {
   key: string;
 };
 
+export enum Labels {
+  Toggle = "Filters:",
+}
+
 const getFilters = <I, PK extends keyof I>(
   items: Props<I, PK>["items"],
   filterOrder: Props<I, PK>["filterOrder"],
@@ -127,37 +131,42 @@ const FilterAccordion = <I, PK extends keyof I>({
               className="u-no-margin--bottom"
               items={Array.from(filterValues)
                 .sort(sortByFilterKey)
-                .map(([filterValue, count]) => (
-                  <Button
-                    appearance="base"
-                    className={classNames(
-                      "u-align-text--left u-no-margin--bottom filter-accordion__item is-dense",
-                      {
-                        "is-active": isFilterActive(
+                .map(([filterValue, count]) => {
+                  const isActive = isFilterActive(
+                    currentFilters,
+                    filter,
+                    filterValue,
+                    true
+                  );
+                  return (
+                    <Button
+                      appearance="base"
+                      aria-checked={isActive}
+                      className={classNames(
+                        "u-align-text--left u-no-margin--bottom filter-accordion__item is-dense",
+                        {
+                          "is-active": isActive,
+                        }
+                      )}
+                      data-testid={`filter-${filter}`}
+                      onClick={() => {
+                        const newFilters = toggleFilter(
                           currentFilters,
                           filter,
                           filterValue,
                           true
-                        ),
-                      }
-                    )}
-                    data-testid={`filter-${filter}`}
-                    onClick={() => {
-                      const newFilters = toggleFilter(
-                        currentFilters,
-                        filter,
-                        filterValue,
-                        true
-                      );
-                      onUpdateFilterString(filtersToString(newFilters));
-                    }}
-                  >
-                    {getValueDisplay
-                      ? getValueDisplay(filter, filterValue)
-                      : filterValue}{" "}
-                    ({count})
-                  </Button>
-                ))}
+                        );
+                        onUpdateFilterString(filtersToString(newFilters));
+                      }}
+                      role="checkbox"
+                    >
+                      {getValueDisplay
+                        ? getValueDisplay(filter, filterValue)
+                        : filterValue}{" "}
+                      ({count})
+                    </Button>
+                  );
+                })}
             />
           ),
           key: filter,
@@ -186,7 +195,7 @@ const FilterAccordion = <I, PK extends keyof I>({
       position="left"
       toggleClassName="filter-accordion__toggle"
       toggleDisabled={disabled}
-      toggleLabel="Filters"
+      toggleLabel={Labels.Toggle}
     >
       <Accordion
         className="filter-accordion__dropdown"

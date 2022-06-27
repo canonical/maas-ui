@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import MachineLink from "./MachineLink";
+import MachineLink, { Labels } from "./MachineLink";
 
 import machineURLs from "app/machines/urls";
 import {
@@ -30,7 +30,7 @@ it("handles when machines are loading", () => {
     </Provider>
   );
 
-  expect(screen.getByLabelText("Loading machines")).toBeInTheDocument();
+  expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
 });
 
 it("handles when a machine does not exist", () => {

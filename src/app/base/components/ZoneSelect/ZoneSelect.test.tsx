@@ -8,6 +8,7 @@ import ZoneSelect from "./ZoneSelect";
 import {
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -17,11 +18,11 @@ describe("ZoneSelect", () => {
   it("renders a list of all zones in state", () => {
     const state = rootStateFactory({
       zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
         items: [
           zoneFactory({ id: 101, name: "Pool 1" }),
           zoneFactory({ id: 202, name: "Pool 2" }),
         ],
-        loaded: true,
       }),
     });
     const store = mockStore(state);
@@ -55,7 +56,7 @@ describe("ZoneSelect", () => {
   it("disables select if zones have not loaded", () => {
     const state = rootStateFactory({
       zone: zoneStateFactory({
-        loaded: false,
+        genericActions: zoneGenericActionsFactory({ fetch: "idle" }),
       }),
     });
     const store = mockStore(state);

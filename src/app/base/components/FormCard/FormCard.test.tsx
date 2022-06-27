@@ -1,58 +1,64 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
-import FormCard from "./FormCard";
+import FormCard, { TestIds } from "./FormCard";
 
 import { COL_SIZES } from "app/base/constants";
 
-describe("FormCard ", () => {
-  it("renders", () => {
-    const wrapper = shallow(<FormCard title="Add user">Content</FormCard>);
-    expect(wrapper).toMatchSnapshot();
-  });
+const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
 
+describe("FormCard ", () => {
   it("can display the heading on a separate row", () => {
-    const wrapper = shallow(
+    render(
       <FormCard stacked title="Add user">
         Content
       </FormCard>
     );
-    expect(wrapper.find("Col").exists()).toBe(false);
+    expect(screen.queryByTestId(TestIds.ColContent)).not.toBeInTheDocument();
   });
 
-  it("decreases content column size if sidebar or title is present", () => {
-    const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
-    const withNeither = shallow(
+  it("occupies full width if neither sidebar or title is present", () => {
+    render(
       <FormCard sidebar={false} title={null}>
         Content
       </FormCard>
     );
-    const withTitle = shallow(
+
+    expect(screen.getByTestId(TestIds.ColContent)).toHaveClass(`col-${TOTAL}`);
+  });
+
+  it("decreases column size if title is presnet", () => {
+    render(
       <FormCard sidebar={false} title="Title">
         Content
       </FormCard>
     );
-    const withSidebar = shallow(
+
+    expect(screen.getByTestId(TestIds.ColContent)).toHaveClass(
+      `col-${TOTAL - CARD_TITLE}`
+    );
+  });
+
+  it("decreases column size if sidebar is presnet", () => {
+    render(
       <FormCard sidebar title={null}>
         Content
       </FormCard>
     );
-    const withBoth = shallow(
+
+    expect(screen.getByTestId(TestIds.ColContent)).toHaveClass(
+      `col-${TOTAL - SIDEBAR}`
+    );
+  });
+
+  it("decreases column size if title and sidebar are present", () => {
+    render(
       <FormCard sidebar title="Title">
         Content
       </FormCard>
     );
 
-    expect(withNeither.find("[data-testid='content']").prop("size")).toBe(
-      TOTAL
-    );
-    expect(withTitle.find("[data-testid='content']").prop("size")).toBe(
-      TOTAL - CARD_TITLE
-    );
-    expect(withSidebar.find("[data-testid='content']").prop("size")).toBe(
-      TOTAL - SIDEBAR
-    );
-    expect(withBoth.find("[data-testid='content']").prop("size")).toBe(
-      TOTAL - CARD_TITLE - SIDEBAR
+    expect(screen.getByTestId(TestIds.ColContent)).toHaveClass(
+      `col-${TOTAL - CARD_TITLE - SIDEBAR}`
     );
   });
 });

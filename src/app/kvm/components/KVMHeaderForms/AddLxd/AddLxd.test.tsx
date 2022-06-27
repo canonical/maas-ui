@@ -65,7 +65,6 @@ describe("AddLxd", () => {
       }),
       zone: zoneStateFactory({
         items: [zoneFactory()],
-        loaded: true,
       }),
     });
   });

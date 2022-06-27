@@ -3,8 +3,12 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Route, Switch, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import {
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom-v5-compat";
 
 import { useExitURL } from "../hooks";
 
@@ -16,10 +20,10 @@ import UserIntro from "./UserIntro";
 
 import Section from "app/base/components/Section";
 import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
-import NotFound from "app/base/views/NotFound";
 import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
+import { getRelativeRoute } from "app/utils";
 
 const Intro = (): JSX.Element => {
   const navigate = useNavigate();
@@ -31,18 +35,10 @@ const Intro = (): JSX.Element => {
   const completedUserIntro = useCompletedUserIntro();
   const exitURL = useExitURL();
   const viewingUserIntro = location.pathname.startsWith(introURLs.user);
-
-  let content: ReactNode;
-  if (authLoading || configLoading) {
-    content = <Spinner text="Loading..." />;
-  } else if (!completedIntro && !isAdmin) {
-    // Prevent the user from reaching any of the intro urls if they are not an
-    // admin.
-    content = <IncompleteCard />;
-  }
+  const showIncomplete = !completedIntro && !isAdmin;
 
   useEffect(() => {
-    if (!authLoading && !configLoading && !(!completedIntro && !isAdmin)) {
+    if (!authLoading && !configLoading && !showIncomplete) {
       if (completedIntro && completedUserIntro) {
         // If both intros have been completed then exit the flow.
         navigate(exitURL, { replace: true });
@@ -63,25 +59,39 @@ const Intro = (): JSX.Element => {
     completedIntro,
     isAdmin,
     completedUserIntro,
+    showIncomplete,
     viewingUserIntro,
     exitURL,
   ]);
 
+  let content: ReactNode;
+  if (authLoading || configLoading) {
+    content = <Spinner text="Loading..." />;
+  } else if (showIncomplete) {
+    // Prevent the user from reaching any of the intro urls if they are not an
+    // admin.
+    content = <IncompleteCard />;
+  }
   if (content) {
     return <Section>{content}</Section>;
   }
+  const base = `${introURLs.index}`;
   return (
-    <Switch>
-      <Route exact path={introURLs.index} render={() => <MaasIntro />} />
-      <Route exact path={introURLs.images} render={() => <ImagesIntro />} />
+    <Routes>
+      <Route element={<MaasIntro />} path="/" />
       <Route
-        exact
-        path={introURLs.success}
-        render={() => <MaasIntroSuccess />}
+        element={<ImagesIntro />}
+        path={getRelativeRoute(introURLs.images, base)}
       />
-      <Route exact path={introURLs.user} render={() => <UserIntro />} />
-      <Route path="*" render={() => <NotFound />} />
-    </Switch>
+      <Route
+        element={<MaasIntroSuccess />}
+        path={getRelativeRoute(introURLs.success, base)}
+      />
+      <Route
+        element={<UserIntro />}
+        path={getRelativeRoute(introURLs.user, base)}
+      />
+    </Routes>
   );
 };
 

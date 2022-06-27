@@ -1,3 +1,25 @@
+export const ACTION_STATUS = {
+  error: "error",
+  idle: "idle",
+  loading: "loading",
+  success: "success",
+} as const;
+
+export const COMMON_ACTIONS = {
+  cleanup: "cleanup",
+  create: "create",
+  delete: "delete",
+  fetch: "fetch",
+  update: "update",
+} as const;
+
+export const COMMON_WEBSOCKET_METHODS = {
+  create: "create",
+  delete: "delete",
+  list: "list",
+  update: "update",
+} as const;
+
 /**
  * Common column sizes used in <Col> components
  */

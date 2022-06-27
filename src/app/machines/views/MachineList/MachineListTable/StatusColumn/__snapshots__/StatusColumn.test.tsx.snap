@@ -263,9 +263,11 @@ exports[`StatusColumn renders 1`] = `
     >
       <div
         className="p-double-row__icon"
+        data-testid="icon"
       >
         <div
           className="p-double-row__icon-space"
+          data-testid="icon-space"
         />
       </div>
       <div

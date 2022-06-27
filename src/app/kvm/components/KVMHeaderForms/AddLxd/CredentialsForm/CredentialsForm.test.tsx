@@ -50,7 +50,6 @@ describe("CredentialsForm", () => {
       }),
       zone: zoneStateFactory({
         items: [zoneFactory()],
-        loaded: true,
       }),
     });
     newPodValues = {

@@ -25,6 +25,13 @@ type Props<L> = {
   secondaryTitle?: string | null;
 };
 
+export enum TestIds {
+  Icon = "icon",
+  IconSpace = "icon-space",
+  Primary = "primary",
+  Secondary = "secondary",
+}
+
 const DoubleRow = <L,>({
   className,
   icon,
@@ -57,8 +64,13 @@ const DoubleRow = <L,>({
       )}
     >
       {hasIcon ? (
-        <div className="p-double-row__icon">
-          {icon || <div className="p-double-row__icon-space"></div>}
+        <div className="p-double-row__icon" data-testid={TestIds.Icon}>
+          {icon || (
+            <div
+              className="p-double-row__icon-space"
+              data-testid={TestIds.IconSpace}
+            ></div>
+          )}
         </div>
       ) : null}
       <div className="p-double-row__rows-container">
@@ -72,7 +84,7 @@ const DoubleRow = <L,>({
               "p-double-row__primary-row-text u-truncate",
               primaryTextClassName
             )}
-            data-testid="primary"
+            data-testid={TestIds.Primary}
             title={primaryTitle || undefined}
           >
             {primary}
@@ -95,7 +107,7 @@ const DoubleRow = <L,>({
               "u-truncate",
               secondaryClassName
             )}
-            data-testid="secondary"
+            data-testid={TestIds.Secondary}
             title={secondaryTitle || undefined}
           >
             {secondary}

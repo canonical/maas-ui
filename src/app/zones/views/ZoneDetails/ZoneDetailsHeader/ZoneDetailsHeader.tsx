@@ -10,6 +10,7 @@ import SectionHeader from "app/base/components/SectionHeader";
 import authSelectors from "app/store/auth/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
+import { ZONE_ACTIONS } from "app/store/zone/constants";
 import zoneSelectors from "app/store/zone/selectors";
 import zonesURLs from "app/zones/urls";
 
@@ -20,7 +21,9 @@ type Props = {
 const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   const [showConfirm, setShowConfirm] = useState(false);
   const zonesLoaded = useSelector(zoneSelectors.loaded);
-  const zonesSaved = useSelector(zoneSelectors.saved);
+  const deleteStatus = useSelector((state: RootState) =>
+    zoneSelectors.getModelActionStatus(state, ZONE_ACTIONS.delete, id)
+  );
   const zone = useSelector((state: RootState) =>
     zoneSelectors.getById(state, Number(id))
   );
@@ -32,18 +35,18 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   }, [dispatch]);
 
   useEffect(() => {
-    if (zonesSaved) {
-      dispatch(zoneActions.cleanup());
+    if (deleteStatus === "success") {
+      dispatch(zoneActions.cleanup([ZONE_ACTIONS.delete]));
       navigate({ pathname: zonesURLs.index });
     }
-  }, [dispatch, zonesSaved, navigate]);
+  }, [dispatch, deleteStatus, navigate]);
 
   const isAdmin = useSelector(authSelectors.isAdmin);
   const isDefaultZone = id === 1;
 
   const deleteZone = () => {
     if (isAdmin && !isDefaultZone) {
-      dispatch(zoneActions.delete(id));
+      dispatch(zoneActions.delete({ id }));
     }
   };
 
@@ -74,6 +77,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
         <DeleteConfirm
           closeExpanded={closeExpanded}
           confirmLabel="Delete AZ"
+          deleting={deleteStatus === "loading"}
           message="Are you sure you want to delete this AZ?"
           onConfirm={deleteZone}
         />

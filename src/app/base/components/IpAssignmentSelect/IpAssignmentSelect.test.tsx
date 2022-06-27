@@ -1,39 +1,35 @@
-import { Select } from "@canonical/react-components";
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Formik } from "formik";
 
 import IpAssignmentSelect from "./IpAssignmentSelect";
 
 import { DeviceIpAssignment } from "app/store/device/types";
+import { getIpAssignmentDisplay } from "app/store/device/utils";
+
+const staticDisplay = getIpAssignmentDisplay(DeviceIpAssignment.STATIC);
 
 describe("IpAssignmentSelect", () => {
   it("includes static IP assignment as an option by default", () => {
-    const wrapper = mount(
+    render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <IpAssignmentSelect name="ipAssignment" />
       </Formik>
     );
 
     expect(
-      wrapper
-        .find(Select)
-        .prop("options")
-        ?.some((option) => option.value === DeviceIpAssignment.STATIC)
-    ).toBe(true);
+      screen.getByRole("option", { name: staticDisplay })
+    ).toBeInTheDocument();
   });
 
   it("can omit static IP assignment as an option", () => {
-    const wrapper = mount(
+    render(
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <IpAssignmentSelect includeStatic={false} name="ipAssignment" />
       </Formik>
     );
 
     expect(
-      wrapper
-        .find(Select)
-        .prop("options")
-        ?.some((option) => option.value === DeviceIpAssignment.STATIC)
-    ).toBe(false);
+      screen.queryByRole("option", { name: staticDisplay })
+    ).not.toBeInTheDocument();
   });
 });

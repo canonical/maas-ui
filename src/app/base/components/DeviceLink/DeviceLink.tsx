@@ -14,6 +14,10 @@ type Props = {
   systemId?: Device[DeviceMeta.PK] | null;
 };
 
+export enum Labels {
+  LoadingDevices = "Loading devices",
+}
+
 const DeviceLink = ({ systemId }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const device = useSelector((state: RootState) =>
@@ -26,7 +30,7 @@ const DeviceLink = ({ systemId }: Props): JSX.Element | null => {
   }, [dispatch]);
 
   if (devicesLoading) {
-    return <Spinner aria-label="Loading devices" />;
+    return <Spinner aria-label={Labels.LoadingDevices} />;
   }
   if (!device) {
     return null;

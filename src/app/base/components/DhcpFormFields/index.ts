@@ -1,1 +1,1 @@
-export { default } from "./DhcpFormFields";
+export { default, Labels } from "./DhcpFormFields";

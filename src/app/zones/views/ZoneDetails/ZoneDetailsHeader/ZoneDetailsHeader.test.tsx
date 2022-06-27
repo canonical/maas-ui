@@ -10,6 +10,7 @@ import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
@@ -22,9 +23,7 @@ describe("ZoneDetailsHeader", () => {
   let initialState: RootState;
 
   const testZones = zoneStateFactory({
-    errors: {},
-    loading: false,
-    loaded: true,
+    genericActions: zoneGenericActionsFactory({ fetch: "success" }),
     items: [
       zoneFactory({
         id: 1,

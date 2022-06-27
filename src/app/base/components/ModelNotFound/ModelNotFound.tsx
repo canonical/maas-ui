@@ -6,13 +6,19 @@ import { capitaliseFirst, isId } from "app/utils";
 
 type Props = {
   id?: number | string | null;
+  inSection?: boolean;
   linkText?: string;
   linkURL: string;
   modelName: string;
 };
 
+export enum TestIds {
+  NotFound = "not-found",
+}
+
 const ModelNotFound = ({
   id,
+  inSection = true,
   linkText,
   linkURL,
   modelName,
@@ -20,18 +26,25 @@ const ModelNotFound = ({
   const message = isId(id)
     ? `Unable to find a ${modelName} with id "${id}".`
     : `Unable to find this ${modelName}.`;
-  return (
+  const title = `${capitaliseFirst(modelName)} not found`;
+  const content = (
+    <p>
+      {message} <Link to={linkURL}>{linkText || `View all ${modelName}s`}</Link>
+      .
+    </p>
+  );
+  return inSection ? (
     <Section
-      data-testid="not-found"
-      header={
-        <SectionHeader title={`${capitaliseFirst(modelName)} not found`} />
-      }
+      data-testid={TestIds.NotFound}
+      header={<SectionHeader title={title} />}
     >
-      <p>
-        {message}{" "}
-        <Link to={linkURL}>{linkText || `View all ${modelName}s`}</Link>.
-      </p>
+      {content}
     </Section>
+  ) : (
+    <>
+      <h4>{title}</h4>
+      {content}
+    </>
   );
 };
 

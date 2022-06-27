@@ -8,6 +8,12 @@ import {
 } from "./validation";
 
 describe("hostname regex", () => {
+  it("is valid if undefined", async () => {
+    await expect(hostnameValidation.validate(undefined)).resolves.toBe(
+      undefined
+    );
+  });
+
   it("handles valid characters", async () => {
     await expect(hostnameValidation.validate("valid-name")).resolves.toBe(
       "valid-name"
@@ -50,6 +56,16 @@ describe("hostname regex", () => {
 });
 
 describe("UrlSchema", () => {
+  it("is valid if undefined", async () => {
+    await expect(UrlSchema.validate(undefined)).resolves.toBe(undefined);
+  });
+
+  it("is invalid if undefined when chained with .required()", async () => {
+    await expect(
+      UrlSchema.required("URL is required").validate(undefined)
+    ).rejects.toStrictEqual(new ValidationError("URL is required"));
+  });
+
   it("rejects invalid URLs", async () => {
     await expect(UrlSchema.validate("test")).rejects.toStrictEqual(
       new ValidationError(UrlSchemaError)

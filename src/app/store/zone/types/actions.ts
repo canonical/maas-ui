@@ -1,4 +1,4 @@
-import type { Zone } from "./base";
+import type { Zone, ZonePK } from "./base";
 import type { ZoneMeta } from "./enum";
 
 export type CreateParams = {
@@ -6,6 +6,10 @@ export type CreateParams = {
   name: Zone["name"];
 };
 
-export type UpdateParams = CreateParams & {
-  [ZoneMeta.PK]: Zone[ZoneMeta.PK];
+export type DeleteParams = {
+  [ZoneMeta.PK]: ZonePK;
 };
+
+export type UpdateParams = {
+  [ZoneMeta.PK]: ZonePK;
+} & Partial<CreateParams>;
