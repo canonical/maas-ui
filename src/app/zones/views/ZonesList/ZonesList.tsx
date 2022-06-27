@@ -21,7 +21,7 @@ const ZonesList = (): JSX.Element => {
   }, [dispatch]);
 
   return (
-    <Section header={<ZonesListHeader />}>
+    <Section aria-label="Zones List" header={<ZonesListHeader />}>
       {zonesCount > 0 && <ZonesListTable />}
     </Section>
   );

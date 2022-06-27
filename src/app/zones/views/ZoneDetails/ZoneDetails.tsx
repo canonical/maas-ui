@@ -40,7 +40,10 @@ const ZoneDetails = (): JSX.Element => {
   }
 
   return (
-    <Section header={<ZoneDetailsHeader id={zoneID} />}>
+    <Section
+      aria-label="Zone Details"
+      header={<ZoneDetailsHeader id={zoneID} />}
+    >
       <EditableSection
         canEdit={isAdmin}
         className="u-no-padding--top"
