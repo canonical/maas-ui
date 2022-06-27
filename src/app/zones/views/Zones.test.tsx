@@ -34,7 +34,7 @@ describe("Zones", () => {
   });
 
   const testZones = zoneStateFactory({
-    errors: {},
+    errors: [],
     loading: false,
     loaded: true,
     items: [
