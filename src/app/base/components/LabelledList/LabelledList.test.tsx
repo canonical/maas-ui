@@ -1,21 +1,12 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import LabelledList from "./LabelledList";
 
 describe("LabelledList ", () => {
-  it("renders", () => {
-    const wrapper = shallow(
-      <LabelledList items={[{ label: "Item", value: "Value" }]} />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("can add additional classes", () => {
-    const wrapper = shallow(
-      <LabelledList className="extra-class" items={[]} />
-    );
-    const className = wrapper.prop("className");
-    expect(className.includes("p-list--labelled")).toBe(true);
-    expect(className.includes("extra-class")).toBe(true);
+    render(<LabelledList className="extra-class" items={[]} />);
+
+    expect(screen.getByRole("list")).toHaveClass("p-list--labelled");
+    expect(screen.getByRole("list")).toHaveClass("extra-class");
   });
 });

@@ -22,6 +22,10 @@ import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import { isId } from "app/utils";
 
+export enum Label {
+  Title = "LXD details",
+}
+
 const LXDSingleDetails = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -63,6 +67,7 @@ const LXDSingleDetails = (): JSX.Element => {
   }
   return (
     <Section
+      aria-label={Label.Title}
       header={
         <LXDSingleDetailsHeader
           headerContent={headerContent}

@@ -45,11 +45,20 @@ export const hostnameValidation = Yup.string()
   .matches(/[a-zA-Z0-9]$/, HostnameValidationLabel.DashEndError);
 
 export const UrlSchemaError = "Must be a valid URL.";
+
+/**
+ * Validate a URL e.g. "http://example.com"
+ * If a URL is required, chain with the Yup .required() method
+ * The URL value is optional
+ */
 export const UrlSchema = Yup.string().test({
   name: "url",
   test: (value) => {
+    if (!value) {
+      return true;
+    }
     try {
-      const valid = value ? new URL(value) : false;
+      const valid = new URL(value);
       return !!valid;
     } catch {
       return false;

@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 
 import { renderHook } from "@testing-library/react-hooks";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { useGetURLId } from "./urls";
@@ -17,7 +18,11 @@ const generateWrapper =
     (
       <Provider store={mockStore(rootStateFactory())}>
         <MemoryRouter initialEntries={[{ pathname }]}>
-          <Route exact path={route} render={() => <>{children}</>} />
+          <CompatRouter>
+            <Routes>
+              <Route element={<>{children}</>} path={route} />
+            </Routes>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

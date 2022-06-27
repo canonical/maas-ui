@@ -23,6 +23,10 @@ type Props = {
   setSearchFilter: SetSearchFilter;
 };
 
+export enum Label {
+  Title = "LXD cluster VMs",
+}
+
 const LXDClusterVMs = ({
   clusterId,
   searchFilter,
@@ -46,7 +50,7 @@ const LXDClusterVMs = ({
     return null;
   }
   return (
-    <>
+    <div aria-label={Label.Title}>
       <Strip shallow>
         <LXDClusterSummaryCard clusterId={clusterId} />
       </Strip>
@@ -84,7 +88,7 @@ const LXDClusterVMs = ({
         setSearchFilter={setSearchFilter}
         vms={clusterVMs}
       />
-    </>
+    </div>
   );
 };
 

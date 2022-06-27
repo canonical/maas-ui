@@ -20,6 +20,10 @@ type Props = {
   id: Pod["id"];
 };
 
+export enum Label {
+  Title = "Virsh settings",
+}
+
 const VirshSettings = ({ id }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
@@ -42,7 +46,7 @@ const VirshSettings = ({ id }: Props): JSX.Element | null => {
   }
   return (
     <>
-      <KVMConfigurationCard pod={pod} />
+      <KVMConfigurationCard aria-label={Label.Title} pod={pod} />
     </>
   );
 };

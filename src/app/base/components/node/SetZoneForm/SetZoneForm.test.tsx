@@ -13,6 +13,7 @@ import {
   modelRef as modelRefFactory,
   rootState as rootStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 
@@ -22,11 +23,11 @@ let state: RootState;
 beforeEach(() => {
   state = rootStateFactory({
     zone: zoneStateFactory({
+      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
       items: [
         zoneFactory({ id: 0, name: "default" }),
         zoneFactory({ id: 1, name: "zone-1" }),
       ],
-      loaded: true,
     }),
   });
 });

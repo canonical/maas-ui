@@ -24,9 +24,6 @@ describe("ZoneDetailsForm", () => {
   beforeEach(() => {
     initialState = rootStateFactory({
       zone: zoneStateFactory({
-        errors: {},
-        loading: false,
-        loaded: true,
         items: [testZone],
       }),
     });

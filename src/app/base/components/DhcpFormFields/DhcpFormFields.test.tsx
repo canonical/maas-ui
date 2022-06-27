@@ -1,9 +1,11 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
+
+import { Labels } from "./DhcpFormFields";
 
 import DhcpForm from "app/base/components/DhcpForm";
 import type { RootState } from "app/store/root/types";
@@ -66,23 +68,9 @@ describe("DhcpFormFields", () => {
     });
   });
 
-  it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <DhcpForm analyticsCategory="settings" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("DhcpFormFields").exists()).toBe(true);
-  });
-
   it("shows a notification if editing and disabled", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
@@ -94,7 +82,8 @@ describe("DhcpFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Notification").exists()).toBe(true);
+
+    expect(screen.getByText(Labels.Disabled)).toBeInTheDocument();
   });
 
   it("shows a loader if the models have not loaded", async () => {
@@ -107,7 +96,7 @@ describe("DhcpFormFields", () => {
     state.controller.loaded = false;
     state.machine.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
@@ -116,24 +105,21 @@ describe("DhcpFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    const select = wrapper.find("select[name='type']");
-    await act(async () => {
-      select.simulate("change", { target: { name: "type", value: "subnet" } });
-    });
-    wrapper.update();
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    const select = screen.getByRole("combobox", { name: Labels.Type });
+
+    await userEvent.selectOptions(select, "subnet");
+
     expect(
-      wrapper
-        .findWhere(
-          (n) => n.name() === "FormikField" && n.prop("name") === "entity"
-        )
-        .exists()
-    ).toBe(false);
+      screen.getByRole("alert", { name: Labels.LoadingData })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("combobox", { name: Labels.Entity })
+    ).not.toBeInTheDocument();
   });
 
   it("shows the entity options for a chosen type", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
@@ -142,24 +128,22 @@ describe("DhcpFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    const select = wrapper.find("select[name='type']");
-    await act(async () => {
-      select.simulate("change", { target: { name: "type", value: "subnet" } });
-    });
-    wrapper.update();
-    expect(wrapper.find("Spinner").exists()).toBe(false);
+    const select = screen.getByRole("combobox", { name: Labels.Type });
+
+    await userEvent.selectOptions(select, "subnet");
+
     expect(
-      wrapper
-        .findWhere(
-          (n) => n.name() === "FormikField" && n.prop("name") === "entity"
-        )
-        .exists()
-    ).toBe(true);
+      screen.queryByRole("alert", { name: Labels.LoadingData })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: Labels.Entity })
+    ).toBeInTheDocument();
   });
 
   it("resets the entity if the type changes", async () => {
+    const machine = state.machine.items[0];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <CompatRouter>
@@ -168,35 +152,17 @@ describe("DhcpFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
+    // Set an initial type.
+    const typeSelect = screen.getByRole("combobox", { name: Labels.Type });
+    await userEvent.selectOptions(typeSelect, "machine");
 
-    let typeSelect = wrapper.find("select[name='type']");
-    await act(async () => {
-      // Set an initial type.
-      typeSelect.simulate("change", {
-        target: { name: "type", value: "machine" },
-      });
-    });
-    wrapper.update();
-    let entitySelect = wrapper.find("select[name='entity']");
-    await act(async () => {
-      // Select a machine.
-      entitySelect.simulate("change", {
-        target: { name: "entity", value: "2" },
-      });
-    });
-    wrapper.update();
-    entitySelect = wrapper.find("select[name='entity']");
-    expect(entitySelect.prop("value")).toEqual("2");
-    typeSelect = wrapper.find("select[name='type']");
-    await act(async () => {
-      // Change the type.
-      typeSelect.simulate("change", {
-        target: { name: "type", value: "subnet" },
-      });
-    });
-    wrapper.update();
-    entitySelect = wrapper.find("select[name='entity']");
-    // The select value should have been cleared.
-    expect(entitySelect.prop("value")).toEqual("");
+    // Select a machine. Value should get set.
+    const entitySelect = screen.getByRole("combobox", { name: Labels.Entity });
+    await userEvent.selectOptions(entitySelect, machine.system_id);
+    expect(entitySelect).toHaveValue(machine.system_id);
+
+    // Change the type. The select value should be cleared.
+    await userEvent.selectOptions(typeSelect, "subnet");
+    expect(entitySelect).toHaveValue("");
   });
 });

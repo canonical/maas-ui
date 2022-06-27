@@ -46,6 +46,11 @@ type Props = {
   size: number;
 };
 
+export enum TestIds {
+  Label = "label",
+  Segment = "segment",
+}
+
 export const DoughnutChart = ({
   className,
   label,
@@ -86,6 +91,7 @@ export const DoughnutChart = ({
         className="doughnut-chart__segment"
         cx={radius - segmentWidth / 2 - hoverIncrease}
         cy={radius + segmentWidth / 2 + hoverIncrease}
+        data-testid={TestIds.Segment}
         key={i}
         onMouseOut={
           tooltip
@@ -179,7 +185,12 @@ export const DoughnutChart = ({
               x={radius + adjustedHoverWidth / 2}
               y={radius + adjustedHoverWidth / 2}
             >
-              <tspan className="doughnut-chart__label">{label}</tspan>
+              <tspan
+                className="doughnut-chart__label"
+                data-testid={TestIds.Label}
+              >
+                {label}
+              </tspan>
             </text>
           ) : null}
         </svg>

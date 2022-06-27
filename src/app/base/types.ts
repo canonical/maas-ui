@@ -1,4 +1,7 @@
 import type { ValueOf } from "@canonical/react-components";
+import type { PayloadAction } from "@reduxjs/toolkit";
+
+import type { ACTION_STATUS } from "./constants";
 
 export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
@@ -76,3 +79,23 @@ type UsabillaConfig =
     };
 
 export type UsabillaLive = (type: string, config?: UsabillaConfig) => void;
+
+export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
+
+export type ModelAction<PK> = {
+  [ACTION_STATUS.error]: PK[];
+  [ACTION_STATUS.loading]: PK[];
+  [ACTION_STATUS.success]: PK[];
+};
+
+export type PayloadActionWithIdentifier<I, P = null> = PayloadAction<
+  P,
+  string,
+  { identifier: I }
+>;
+
+export type StateError<A extends string, I> = {
+  action: A;
+  error: APIError;
+  identifier: I | null;
+};

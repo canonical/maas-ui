@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { renderHook } from "@testing-library/react-hooks";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
+import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
 
@@ -24,7 +25,9 @@ const generateWrapper =
   ({ children }: { children: ReactNode }) =>
     (
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname }]}>{children}</MemoryRouter>
+        <MemoryRouter initialEntries={[{ pathname }]}>
+          <CompatRouter>{children}</CompatRouter>
+        </MemoryRouter>
       </Provider>
     );
 

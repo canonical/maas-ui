@@ -1,7 +1,8 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { Route, MemoryRouter } from "react-router-dom";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineCommissioning from ".";
@@ -74,7 +75,11 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id" render={() => <MachineCommissioning />} />
+          <CompatRouter>
+            <Routes>
+              <Route element={<MachineCommissioning />} path="/machine/:id" />
+            </Routes>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -94,7 +99,11 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id" render={() => <MachineCommissioning />} />
+          <CompatRouter>
+            <Routes>
+              <Route element={<MachineCommissioning />} path="/machine/:id" />
+            </Routes>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
@@ -142,7 +151,11 @@ describe("MachineCommissioning", () => {
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
-          <Route path="/machine/:id" render={() => <MachineCommissioning />} />
+          <CompatRouter>
+            <Routes>
+              <Route element={<MachineCommissioning />} path="/machine/:id" />
+            </Routes>
+          </CompatRouter>
         </MemoryRouter>
       </Provider>
     );

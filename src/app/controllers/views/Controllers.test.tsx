@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { ControllerDetailsTabLabels } from "../constants";
@@ -29,7 +29,7 @@ describe("Controllers", () => {
     },
     {
       component: "NotFound",
-      path: "/not/a/path",
+      path: `${controllerURLs.controllers.index}/not/a/path`,
     },
   ].forEach(({ component, path }) => {
     it(`Displays: ${component} at: ${path}`, () => {
@@ -38,7 +38,12 @@ describe("Controllers", () => {
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
             <CompatRouter>
-              <Controllers />
+              <Routes>
+                <Route
+                  element={<Controllers />}
+                  path={`${controllerURLs.controllers.index}/*`}
+                />
+              </Routes>
             </CompatRouter>
           </MemoryRouter>
         </Provider>
@@ -70,7 +75,12 @@ it("gets and sets the controller as active only once when navigating within the 
         ]}
       >
         <CompatRouter>
-          <Controllers />
+          <Routes>
+            <Route
+              element={<Controllers />}
+              path={`${controllerURLs.controller.index(null, true)}/*`}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>

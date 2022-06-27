@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DeviceLink from "./DeviceLink";
+import DeviceLink, { Labels } from "./DeviceLink";
 
 import deviceURLs from "app/devices/urls";
 import {
@@ -30,7 +30,7 @@ it("handles when devices are loading", () => {
     </Provider>
   );
 
-  expect(screen.getByLabelText("Loading devices")).toBeInTheDocument();
+  expect(screen.getByLabelText(Labels.LoadingDevices)).toBeInTheDocument();
 });
 
 it("handles when a device does not exist", () => {

@@ -1,21 +1,22 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import VirshDetails from "./VirshDetails";
 
 import kvmURLs from "app/kvm/urls";
+import { Label as VirshResourcesLabel } from "app/kvm/views/VirshDetails/VirshResources/VirshResources";
+import { Label as VirshSettingsLabel } from "app/kvm/views/VirshDetails/VirshSettings/VirshSettings";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
+  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
+  tagState as tagStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
+  zoneState as zoneStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("VirshDetails", () => {
   let state: RootState;
@@ -26,31 +27,37 @@ describe("VirshDetails", () => {
         items: [podFactory({ id: 1, type: PodType.VIRSH })],
         loaded: true,
       }),
+      resourcepool: resourcePoolStateFactory({
+        loaded: true,
+      }),
+      tag: tagStateFactory({
+        loaded: true,
+      }),
+      zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+      }),
     });
   });
 
   [
     {
-      component: "VirshResources",
+      label: VirshResourcesLabel.Title,
       path: kvmURLs.virsh.details.resources({ id: 1 }),
     },
     {
-      component: "VirshSettings",
+      label: VirshSettingsLabel.Title,
       path: kvmURLs.virsh.details.edit({ id: 1 }),
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Route path="*/:id/*" render={() => <VirshDetails />} />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+  ].forEach(({ label, path }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<VirshDetails />, {
+        route: path,
+        wrapperProps: {
+          state,
+          routePattern: `${kvmURLs.virsh.details.index(null, true)}/*`,
+        },
+      });
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
 });

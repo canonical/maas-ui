@@ -15,6 +15,10 @@ type Props = {
   id?: Fabric[FabricMeta.PK] | null;
 };
 
+export enum Labels {
+  Loading = "Loading fabrics",
+}
+
 const FabricLink = ({ id }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const fabric = useSelector((state: RootState) =>
@@ -28,7 +32,7 @@ const FabricLink = ({ id }: Props): JSX.Element => {
   }, [dispatch]);
 
   if (fabricsLoading) {
-    return <Spinner aria-label="Loading fabrics" />;
+    return <Spinner aria-label={Labels.Loading} />;
   }
   if (!fabric) {
     return <>{fabricDisplay}</>;

@@ -1,21 +1,23 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import LXDSingleDetails from "./LXDSingleDetails";
 
 import kvmURLs from "app/kvm/urls";
+import { Label as LXDSingleResourcesLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleResources/LXDSingleResources";
+import { Label as LXDSingleSettingsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleSettings/LXDSingleSettings";
+import { Label as LXDSingleVMsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleVMs/LXDSingleVMs";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   podDetails as podFactory,
   podState as podStateFactory,
+  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
+  tagState as tagStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
+  zoneState as zoneStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("LXDSingleDetails", () => {
   let state: RootState;
@@ -26,38 +28,41 @@ describe("LXDSingleDetails", () => {
         items: [podFactory({ id: 1, type: PodType.LXD })],
         loaded: true,
       }),
+      resourcepool: resourcePoolStateFactory({
+        loaded: true,
+      }),
+      tag: tagStateFactory({
+        loaded: true,
+      }),
+      zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+      }),
     });
   });
 
   [
     {
-      component: "LXDSingleVMs",
+      label: LXDSingleVMsLabel.Title,
       path: kvmURLs.lxd.single.vms({ id: 1 }),
     },
     {
-      component: "LXDSingleResources",
+      label: LXDSingleResourcesLabel.Title,
       path: kvmURLs.lxd.single.resources({ id: 1 }),
     },
     {
-      component: "LXDSingleSettings",
+      label: LXDSingleSettingsLabel.Title,
       path: kvmURLs.lxd.single.edit({ id: 1 }),
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Route
-                path={kvmURLs.lxd.single.index(null, true)}
-                render={() => <LXDSingleDetails />}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+  ].forEach(({ label, path }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<LXDSingleDetails />, {
+        route: path,
+        wrapperProps: {
+          state,
+          routePattern: `${kvmURLs.lxd.single.index(null, true)}/*`,
+        },
+      });
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
 });

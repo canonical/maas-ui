@@ -20,9 +20,6 @@ describe("DeleteConfirm", () => {
   beforeEach(() => {
     initialState = rootStateFactory({
       zone: zoneStateFactory({
-        errors: {},
-        loading: false,
-        loaded: true,
         items: [
           zoneFactory({
             id: 1,
@@ -42,6 +39,7 @@ describe("DeleteConfirm", () => {
         <DeleteConfirm
           closeExpanded={closeExpanded}
           confirmLabel="Delete AZ"
+          deleting={false}
           onConfirm={onConfirm}
         />
       </Provider>
@@ -63,6 +61,7 @@ describe("DeleteConfirm", () => {
         <DeleteConfirm
           closeExpanded={closeExpanded}
           confirmLabel="Delete AZ"
+          deleting={false}
           onConfirm={onConfirm}
         />
       </Provider>

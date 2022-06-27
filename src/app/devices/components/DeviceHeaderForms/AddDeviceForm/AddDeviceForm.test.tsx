@@ -19,6 +19,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   zone as zoneFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";
@@ -39,8 +40,8 @@ describe("AddDeviceForm", () => {
         loaded: true,
       }),
       zone: zoneStateFactory({
+        genericActions: zoneGenericActionsFactory({ fetch: "success" }),
         items: [zoneFactory({ id: 0, name: "default" })],
-        loaded: true,
       }),
     });
   });
@@ -73,7 +74,7 @@ describe("AddDeviceForm", () => {
   });
 
   it("displays a spinner if data has not loaded", () => {
-    state.zone.loaded = false;
+    state.zone.genericActions.fetch = "idle";
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

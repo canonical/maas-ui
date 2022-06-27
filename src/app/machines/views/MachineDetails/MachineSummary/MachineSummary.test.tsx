@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineSummary from "./MachineSummary";
@@ -75,11 +75,12 @@ describe("MachineSummary", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/summary"
-              render={() => <MachineSummary setHeaderContent={jest.fn()} />}
-            />
+            <Routes>
+              <Route
+                element={<MachineSummary setHeaderContent={jest.fn()} />}
+                path="/machine/:id/summary"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -103,11 +104,12 @@ describe("MachineSummary", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/summary"
-              render={() => <MachineSummary setHeaderContent={jest.fn()} />}
-            />
+            <Routes>
+              <Route
+                element={<MachineSummary setHeaderContent={jest.fn()} />}
+                path="/machine/:id/summary"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -131,11 +133,12 @@ describe("MachineSummary", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/summary"
-              render={() => <MachineSummary setHeaderContent={jest.fn()} />}
-            />
+            <Routes>
+              <Route
+                element={<MachineSummary setHeaderContent={jest.fn()} />}
+                path="/machine/:id/summary"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

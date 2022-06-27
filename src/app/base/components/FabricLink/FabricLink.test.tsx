@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import FabricLink from "./FabricLink";
+import FabricLink, { Labels } from "./FabricLink";
 
 import subnetsURLs from "app/subnets/urls";
 import {
@@ -30,7 +30,7 @@ it("handles when fabrics are loading", () => {
     </Provider>
   );
 
-  expect(screen.getByLabelText("Loading fabrics")).toBeInTheDocument();
+  expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
 });
 
 it("handles when a fabric does not exist", () => {

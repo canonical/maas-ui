@@ -1,9 +1,9 @@
 import * as Sentry from "@sentry/browser";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import ErrorBoundary from "./ErrorBoundary";
+import ErrorBoundary, { Labels } from "./ErrorBoundary";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -31,12 +31,14 @@ describe("ErrorBoundary", () => {
   });
 
   it("should display an ErrorMessage if wrapped component throws", () => {
-    jest.spyOn(console, "error"); // suppress traceback in test
+    jest.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
 
     const store = mockStore(state);
 
-    const Component = () => null;
-    const wrapper = mount(
+    const Component = () => {
+      throw new Error("kerblam");
+    };
+    render(
       <Provider store={store}>
         <ErrorBoundary>
           <Component />
@@ -44,14 +46,11 @@ describe("ErrorBoundary", () => {
       </Provider>
     );
 
-    const error = new Error("kerblam");
-    wrapper.find(Component).simulateError(error);
-
-    expect(wrapper.find("ErrorBoundary").state("hasError")).toEqual(true);
+    expect(screen.getByText(Labels.ErrorMessage)).toBeInTheDocument();
   });
 
   it("should not capture exceptions with Sentry when enable_analytics is disabled", () => {
-    jest.spyOn(console, "error"); // suppress traceback in test
+    jest.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
     jest.spyOn(Sentry, "captureException").mockImplementation(() => "");
 
     state.config.items = [
@@ -62,8 +61,10 @@ describe("ErrorBoundary", () => {
     ];
     const store = mockStore(state);
 
-    const Component = () => null;
-    const wrapper = mount(
+    const Component = () => {
+      throw new Error("kerblam");
+    };
+    render(
       <Provider store={store}>
         <ErrorBoundary>
           <Component />
@@ -71,14 +72,11 @@ describe("ErrorBoundary", () => {
       </Provider>
     );
 
-    const error = new Error("kerblam");
-    wrapper.find(Component).simulateError(error);
-
     expect(Sentry.captureException).toHaveBeenCalledTimes(0);
   });
 
   it("should capture exceptions with Sentry when enable_analytics is enabled", () => {
-    jest.spyOn(console, "error"); // suppress traceback in test
+    jest.spyOn(console, "error").mockImplementation(() => null); // suppress traceback in test
     jest.spyOn(Sentry, "captureException").mockImplementation(() => "");
 
     state.config.items = [
@@ -89,17 +87,16 @@ describe("ErrorBoundary", () => {
     ];
     const store = mockStore(state);
 
-    const Component = () => null;
-    const wrapper = mount(
+    const Component = () => {
+      throw new Error("kerblam");
+    };
+    render(
       <Provider store={store}>
         <ErrorBoundary>
           <Component />
         </ErrorBoundary>
       </Provider>
     );
-
-    const error = new Error("kerblam");
-    wrapper.find(Component).simulateError(error);
 
     expect(Sentry.captureException).toHaveBeenCalledTimes(1);
   });

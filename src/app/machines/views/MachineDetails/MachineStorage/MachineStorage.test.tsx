@@ -1,8 +1,8 @@
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineStorage from "./MachineStorage";
@@ -72,11 +72,9 @@ it("renders storage layout dropdown if machine's storage can be edited", () => {
         ]}
       >
         <CompatRouter>
-          <Route
-            exact
-            path="/machine/:id/storage"
-            render={() => <MachineStorage />}
-          />
+          <Routes>
+            <Route element={<MachineStorage />} path="/machine/:id/storage" />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -105,11 +103,9 @@ it("sends an analytics event when clicking on the MAAS docs footer link", () => 
         ]}
       >
         <CompatRouter>
-          <Route
-            exact
-            path="/machine/:id/storage"
-            render={() => <MachineStorage />}
-          />
+          <Routes>
+            <Route element={<MachineStorage />} path="/machine/:id/storage" />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>

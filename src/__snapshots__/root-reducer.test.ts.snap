@@ -406,12 +406,24 @@ Object {
     },
   },
   "zone": Object {
-    "errors": null,
+    "errors": Array [],
+    "genericActions": Object {
+      "create": "idle",
+      "fetch": "idle",
+    },
     "items": Array [],
-    "loaded": false,
-    "loading": false,
-    "saved": false,
-    "saving": false,
+    "modelActions": Object {
+      "delete": Object {
+        "error": Array [],
+        "loading": Array [],
+        "success": Array [],
+      },
+      "update": Object {
+        "error": Array [],
+        "loading": Array [],
+        "success": Array [],
+      },
+    },
   },
 }
 `;

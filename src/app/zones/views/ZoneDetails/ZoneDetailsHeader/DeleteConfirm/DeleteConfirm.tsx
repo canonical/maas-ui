@@ -4,10 +4,10 @@ import { ActionButton, Button, Col, Row } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
 
 type Props = {
-  confirmLabel: string;
-  eventName?: string;
-  message?: ReactNode;
   closeExpanded: () => void;
+  confirmLabel: string;
+  deleting: boolean;
+  message?: ReactNode;
   onConfirm: () => void;
   submitAppearance?: ActionButtonProps["appearance"];
 };
@@ -15,6 +15,7 @@ type Props = {
 const DeleteConfirm = ({
   closeExpanded,
   confirmLabel,
+  deleting,
   message,
   onConfirm,
   submitAppearance = "negative",
@@ -36,6 +37,7 @@ const DeleteConfirm = ({
         <ActionButton
           appearance={submitAppearance}
           data-testid="delete-az"
+          loading={deleting}
           onClick={onConfirm}
         >
           {confirmLabel}

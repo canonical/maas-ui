@@ -11,6 +11,7 @@ type Props = {
 } & FormikFieldProps;
 
 export enum Label {
+  DefaultOption = "Select IP mode",
   Select = "IP mode",
 }
 
@@ -33,7 +34,7 @@ const getAvailableLinkModes = (
 };
 
 export const LinkModeSelect = ({
-  defaultOption = { label: "Select IP mode", value: "" },
+  defaultOption = { label: Label.DefaultOption, value: "" },
   interfaceType,
   name,
   subnet,
@@ -51,7 +52,7 @@ export const LinkModeSelect = ({
 
   return (
     <DynamicSelect
-      label="IP mode"
+      label={Label.Select}
       name={name}
       options={modeOptions}
       {...props}

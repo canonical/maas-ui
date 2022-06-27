@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineInstances from "./MachineInstances";
@@ -58,11 +58,12 @@ describe("MachineInstances", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/instances"
-              render={() => <MachineInstances />}
-            />
+            <Routes>
+              <Route
+                element={<MachineInstances />}
+                path="/machine/:id/instances"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -82,11 +83,12 @@ describe("MachineInstances", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/instances"
-              render={() => <MachineInstances />}
-            />
+            <Routes>
+              <Route
+                element={<MachineInstances />}
+                path="/machine/:id/instances"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -126,11 +128,12 @@ describe("MachineInstances", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/instances"
-              render={() => <MachineInstances />}
-            />
+            <Routes>
+              <Route
+                element={<MachineInstances />}
+                path="/machine/:id/instances"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -169,11 +172,12 @@ describe("MachineInstances", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/instances"
-              render={() => <MachineInstances />}
-            />
+            <Routes>
+              <Route
+                element={<MachineInstances />}
+                path="/machine/:id/instances"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -228,11 +232,12 @@ describe("MachineInstances", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/instances"
-              render={() => <MachineInstances />}
-            />
+            <Routes>
+              <Route
+                element={<MachineInstances />}
+                path="/machine/:id/instances"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -270,11 +275,12 @@ describe("MachineInstances", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/instances"
-              render={() => <MachineInstances />}
-            />
+            <Routes>
+              <Route
+                element={<MachineInstances />}
+                path="/machine/:id/instances"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -327,11 +333,12 @@ describe("MachineInstances", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/machine/:id/instances"
-              render={() => <MachineInstances />}
-            />
+            <Routes>
+              <Route
+                element={<MachineInstances />}
+                path="/machine/:id/instances"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

@@ -1,17 +1,18 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { Login } from "./Login";
+import Login, { Labels } from "./Login";
 
 import type { RootState } from "app/store/root/types";
+import { actions as statusActions } from "app/store/status";
 import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -28,7 +29,7 @@ describe("Login", () => {
 
   it("can render api login", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -37,13 +38,16 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("FormikForm").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("form", { name: Labels.APILoginForm })
+    ).toBeInTheDocument();
   });
 
-  it("can render external login", () => {
+  it("can render external login link", () => {
     state.status.externalAuthURL = "http://login.example.com";
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -52,13 +56,15 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find(".login__external").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("link", { name: Labels.ExternalLoginButton })
+    ).toBeInTheDocument();
   });
 
-  it("can render external login", () => {
-    state.status.externalAuthURL = "http://login.example.com";
+  it("can login via the api", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -67,39 +73,27 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find(".login__external").exists()).toBe(true);
-  });
 
-  it("can login via the api", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Login />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    await userEvent.type(
+      screen.getByRole("textbox", { name: Labels.Username }),
+      "koala"
     );
-    submitFormikForm(wrapper, {
+    await userEvent.type(screen.getByLabelText(Labels.Password), "gumtree");
+    await userEvent.click(screen.getByRole("button", { name: Labels.Submit }));
+
+    const expectedAction = statusActions.login({
       username: "koala",
       password: "gumtree",
     });
     expect(
-      store.getActions().find((action) => action.type === "status/login")
-    ).toStrictEqual({
-      type: "status/login",
-      payload: {
-        username: "koala",
-        password: "gumtree",
-      },
-    });
+      store.getActions().find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
   });
 
   it("shows a warning if no users have been added yet", () => {
     state.status.noUsers = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -108,8 +102,9 @@ describe("Login", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='no-users-warning']").exists()).toBe(
-      true
-    );
+
+    expect(
+      screen.getByRole("heading", { name: Labels.NoUsers })
+    ).toBeInTheDocument();
   });
 });

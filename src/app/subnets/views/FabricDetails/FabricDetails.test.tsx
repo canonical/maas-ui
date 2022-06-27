@@ -1,7 +1,7 @@
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FabricDetails from "./FabricDetails";
@@ -25,11 +25,12 @@ it("dispatches actions to fetch necessary data and set fabric as active on mount
         initialEntries={[{ pathname: subnetsURLs.fabric.index({ id: 1 }) }]}
       >
         <CompatRouter>
-          <Route
-            component={() => <FabricDetails />}
-            exact
-            path={subnetsURLs.fabric.index(null, true)}
-          />
+          <Routes>
+            <Route
+              element={<FabricDetails />}
+              path={subnetsURLs.fabric.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -59,11 +60,12 @@ it("dispatches actions to unset active fabric and clean up on unmount", () => {
         initialEntries={[{ pathname: subnetsURLs.fabric.index({ id: 1 }) }]}
       >
         <CompatRouter>
-          <Route
-            component={() => <FabricDetails />}
-            exact
-            path={subnetsURLs.fabric.index(null, true)}
-          />
+          <Routes>
+            <Route
+              element={<FabricDetails />}
+              path={subnetsURLs.fabric.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -102,11 +104,12 @@ it("displays a message if the fabric does not exist", () => {
         initialEntries={[{ pathname: subnetsURLs.fabric.index({ id: 1 }) }]}
       >
         <CompatRouter>
-          <Route
-            component={() => <FabricDetails />}
-            exact
-            path={subnetsURLs.fabric.index(null, true)}
-          />
+          <Routes>
+            <Route
+              element={<FabricDetails />}
+              path={subnetsURLs.fabric.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -129,11 +132,12 @@ it("shows a spinner if the fabric has not loaded yet", () => {
         initialEntries={[{ pathname: subnetsURLs.fabric.index({ id: 1 }) }]}
       >
         <CompatRouter>
-          <Route
-            component={() => <FabricDetails />}
-            exact
-            path={subnetsURLs.fabric.index(null, true)}
-          />
+          <Routes>
+            <Route
+              element={<FabricDetails />}
+              path={subnetsURLs.fabric.index(null, true)}
+            />
+          </Routes>
         </CompatRouter>
       </MemoryRouter>
     </Provider>

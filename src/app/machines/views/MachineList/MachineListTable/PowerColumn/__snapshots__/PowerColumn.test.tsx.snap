@@ -58,6 +58,7 @@ exports[`PowerColumn renders 1`] = `
     >
       <div
         className="p-double-row__icon"
+        data-testid="icon"
       >
         <Tooltip
           message={null}

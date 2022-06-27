@@ -481,14 +481,14 @@ export function* handleMessage(
         // can be 0 when requesting a model with an id of 0.
         if (error || error === 0) {
           yield* put({
-            meta: { item },
+            meta: { item, identifier: action.meta?.identifier },
             type: `${action.type}Error`,
             error: true,
             payload: error,
           });
         } else {
           yield* put({
-            meta: { item },
+            meta: { item, identifier: action.meta?.identifier },
             type: `${action.type}Success`,
             payload: result,
           });
@@ -569,7 +569,7 @@ export function* sendMessage(
 ): SagaGenerator<void> {
   const { meta, payload, type } = action;
   const params = payload ? payload.params : null;
-  const { cache, method, model, nocache } = meta;
+  const { cache, identifier, method, model, nocache } = meta;
   const endpoint = `${model}.${method}`;
   const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
   // If method is 'list' and data has loaded/is loading, do not fetch again
@@ -587,7 +587,10 @@ export function* sendMessage(
     }
     setLoaded(endpoint);
   }
-  yield* put({ meta: { item: params || payload }, type: `${type}Start` });
+  yield* put({
+    meta: { item: params || payload, identifier },
+    type: `${type}Start`,
+  });
   const requestIDs = [];
   try {
     if (params && hasMultipleDispatches) {

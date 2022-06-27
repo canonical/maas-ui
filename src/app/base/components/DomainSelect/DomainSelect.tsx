@@ -15,9 +15,13 @@ type Props = {
   valueKey?: "name" | "id";
 } & FormikFieldProps;
 
+export enum Labels {
+  DefaultLabel = "Domain",
+}
+
 export const DomainSelect = ({
   disabled = false,
-  label = "Domain",
+  label = Labels.DefaultLabel,
   name,
   valueKey = "name",
   ...props

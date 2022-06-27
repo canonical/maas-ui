@@ -15,6 +15,10 @@ type Props = {
   setSearchFilter: SetSearchFilter;
 };
 
+export enum Label {
+  Title = "LXD VMs",
+}
+
 const LXDSingleVMs = ({
   id,
   searchFilter,
@@ -28,6 +32,7 @@ const LXDSingleVMs = ({
 
   return (
     <LXDHostVMs
+      aria-label={Label.Title}
       hostId={id}
       searchFilter={searchFilter}
       setHeaderContent={setHeaderContent}

@@ -1,20 +1,16 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
-import LXDClusterHostSettings from "./LXDClusterHostSettings";
+import LXDClusterHostSettings, { Label } from "./LXDClusterHostSettings";
 
-import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
+import kvmURLs from "app/kvm/urls";
+import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   podDetails as podDetailsFactory,
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("LXDClusterHostSettings", () => {
   let state: RootState;
@@ -22,7 +18,14 @@ describe("LXDClusterHostSettings", () => {
   beforeEach(() => {
     state = rootStateFactory({
       pod: podStateFactory({
-        items: [podDetailsFactory({ id: 1, name: "pod1" })],
+        items: [
+          podDetailsFactory({
+            cluster: 1,
+            id: 2,
+            name: "pod1",
+            type: PodType.LXD,
+          }),
+        ],
         loaded: true,
       }),
     });
@@ -30,30 +33,36 @@ describe("LXDClusterHostSettings", () => {
 
   it("displays a spinner if data is loading", () => {
     state.pod.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <LXDClusterHostSettings clusterId={2} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
+      route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
+      wrapperProps: {
+        state,
+        routePattern: kvmURLs.lxd.cluster.host.edit(null, true),
+      },
+    });
+    expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
+  });
+
+  it("displays a message if the host is not found", () => {
+    state.pod.items = [];
+    renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
+      route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
+      wrapperProps: {
+        state,
+        routePattern: kvmURLs.lxd.cluster.host.edit(null, true),
+      },
+    });
+    expect(screen.getByText("LXD host not found")).toBeInTheDocument();
   });
 
   it("has a disabled zone field", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <LXDClusterHostSettings clusterId={2} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find(KVMConfigurationCard).prop("zoneDisabled")).toBe(true);
+    renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
+      route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
+      wrapperProps: {
+        state,
+        routePattern: kvmURLs.lxd.cluster.host.edit(null, true),
+      },
+    });
+    expect(screen.getByRole("combobox", { name: "Zone" })).toBeDisabled();
   });
 });

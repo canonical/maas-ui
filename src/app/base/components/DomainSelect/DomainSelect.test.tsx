@@ -1,12 +1,11 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import DomainSelect from "./DomainSelect";
+import DomainSelect, { Labels } from "./DomainSelect";
 
 import {
-  domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -14,32 +13,10 @@ import {
 const mockStore = configureStore();
 
 describe("DomainSelect", () => {
-  it("renders a list of all domains in state", () => {
-    const state = rootStateFactory({
-      domain: domainStateFactory({
-        items: [
-          domainFactory({ id: 101, name: "Domain 1" }),
-          domainFactory({ id: 202, name: "Domain 2" }),
-        ],
-        loaded: true,
-      }),
-    });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ domain: "" }} onSubmit={jest.fn()}>
-          <DomainSelect name="domain" />
-        </Formik>
-      </Provider>
-    );
-
-    expect(wrapper.find("select[name='domain']")).toMatchSnapshot();
-  });
-
   it("dispatches action to fetch domains on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ domain: "" }} onSubmit={jest.fn()}>
           <DomainSelect name="domain" />
@@ -59,7 +36,7 @@ describe("DomainSelect", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ domain: "" }} onSubmit={jest.fn()}>
           <DomainSelect name="domain" />
@@ -67,6 +44,8 @@ describe("DomainSelect", () => {
       </Provider>
     );
 
-    expect(wrapper.find("select[name='domain']").prop("disabled")).toBe(true);
+    expect(
+      screen.getByRole("combobox", { name: Labels.DefaultLabel })
+    ).toBeDisabled();
   });
 });

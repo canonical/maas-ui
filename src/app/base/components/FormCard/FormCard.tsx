@@ -27,6 +27,10 @@ const getContentSize = (sidebar: boolean, title: ReactNode) => {
   return contentSize as ColSize;
 };
 
+export enum TestIds {
+  ColContent = "col-content",
+}
+
 export const FormCard = ({
   children,
   className,
@@ -51,7 +55,7 @@ export const FormCard = ({
   ) : (
     <Row>
       {title && <Col size={CARD_TITLE}>{titleNode}</Col>}
-      <Col data-testid="content" size={contentSize}>
+      <Col data-testid={TestIds.ColContent} size={contentSize}>
         {children}
       </Col>
     </Row>
