@@ -36,6 +36,7 @@ const ZoneForm = ({ id, closeForm }: Props): JSX.Element | null => {
   if (zone) {
     return (
       <FormikForm<CreateZoneValues>
+        aria-label="Update AZ"
         cleanup={cleanup}
         errors={errors}
         initialValues={{
