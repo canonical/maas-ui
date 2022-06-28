@@ -10,7 +10,5 @@ import authSelectors from "app/store/auth/selectors";
  */
 export const useExitURL = (): string => {
   const authUser = useSelector(authSelectors.get);
-  return authUser?.is_superuser
-    ? dashboardURLs.index
-    : machineURLs.machines.index;
+  return authUser?.is_superuser ? dashboardURLs.index : machineURLs.index;
 };

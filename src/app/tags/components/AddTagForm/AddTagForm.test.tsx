@@ -8,10 +8,10 @@ import configureStore from "redux-mock-store";
 import AddTagForm, { Label } from "./AddTagForm";
 
 import * as baseHooks from "app/base/hooks/base";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { Label as KernelOptionsLabel } from "app/tags/components/KernelOptionsField";
-import tagsURLs from "app/tags/urls";
 import {
   tag as tagFactory,
   rootState as rootStateFactory,
@@ -79,7 +79,7 @@ it("returns the newly created tag on save", async () => {
               <AddTagForm name="new-tag" onTagCreated={onTagCreated} />
             )}
             exact
-            path={tagsURLs.tags.index}
+            path={urls.tags.index}
           />
         </CompatRouter>
       </MemoryRouter>

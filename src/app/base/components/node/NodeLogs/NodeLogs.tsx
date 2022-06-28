@@ -55,10 +55,10 @@ const NodeLogs = ({ node, urls }: Props): JSX.Element => {
       </div>
       <Route
         exact
-        path={urls.installationOutput(null, true)}
+        path={urls.installationOutput(null)}
         render={() => <InstallationOutput node={node} />}
       />
-      {[urls.index(null, true), urls.events(null, true)].map((path) => (
+      {[urls.index(null), urls.events(null)].map((path) => (
         <Route
           exact
           key={path}

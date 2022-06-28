@@ -118,7 +118,7 @@ const DeleteForm = ({
             NotificationSeverity.INFORMATION
           )
         );
-        navigate({ pathname: kvmURLs.kvm });
+        navigate({ pathname: kvmURLs.index });
         clearHeaderContent();
       }}
       processingCount={deletingCount}

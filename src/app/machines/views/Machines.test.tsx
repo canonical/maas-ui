@@ -68,7 +68,7 @@ describe("Machines", () => {
   [
     {
       component: "MachineList",
-      path: machineURLs.machines.index,
+      path: machineURLs.index,
     },
     {
       component: "NotFound",

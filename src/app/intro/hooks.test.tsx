@@ -61,7 +61,7 @@ describe("hooks", () => {
       const { result } = renderHook(() => useExitURL(), {
         wrapper: generateWrapper(store),
       });
-      expect(result.current).toBe(machineURLs.machines.index);
+      expect(result.current).toBe(machineURLs.index);
     });
   });
 });

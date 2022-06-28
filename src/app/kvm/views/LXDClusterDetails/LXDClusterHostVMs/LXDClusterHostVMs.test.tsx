@@ -48,7 +48,7 @@ describe("LXDClusterHostVMs", () => {
         route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
         wrapperProps: {
           state,
-          routePattern: kvmURLs.lxd.cluster.vms.host(null, true),
+          routePattern: kvmURLs.lxd.cluster.vms.host(null),
         },
       }
     );
@@ -68,7 +68,7 @@ describe("LXDClusterHostVMs", () => {
         route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
         wrapperProps: {
           state,
-          routePattern: kvmURLs.lxd.cluster.vms.host(null, true),
+          routePattern: kvmURLs.lxd.cluster.vms.host(null),
         },
       }
     );
@@ -88,7 +88,7 @@ describe("LXDClusterHostVMs", () => {
         route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
         wrapperProps: {
           state,
-          routePattern: kvmURLs.lxd.cluster.vms.host(null, true),
+          routePattern: kvmURLs.lxd.cluster.vms.host(null),
         },
       }
     );

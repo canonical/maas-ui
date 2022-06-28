@@ -51,7 +51,7 @@ it("dispatches actions to fetch necessary data", () => {
           <Routes>
             <Route
               element={<TagDetails onDelete={jest.fn()} />}
-              path={tagURLs.tag.index(null, true)}
+              path={tagURLs.tag.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -87,7 +87,7 @@ it("displays a message if the tag does not exist", () => {
           <Routes>
             <Route
               element={<TagDetails onDelete={jest.fn()} />}
-              path={tagURLs.tag.index(null, true)}
+              path={tagURLs.tag.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -115,7 +115,7 @@ it("shows a spinner if the tag has not loaded yet", () => {
           <Routes>
             <Route
               element={<TagDetails onDelete={jest.fn()} />}
-              path={tagURLs.tag.index(null, true)}
+              path={tagURLs.tag.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -142,7 +142,7 @@ it("can display the edit form", () => {
                   tagViewState={TagViewState.Updating}
                 />
               }
-              path={tagURLs.tag.update(null, true)}
+              path={tagURLs.tag.update(null)}
             />
           </Routes>
         </CompatRouter>
@@ -165,7 +165,7 @@ it("can go to the tag edit page", async () => {
           <Routes>
             <Route
               element={<TagDetails onDelete={jest.fn()} />}
-              path={tagURLs.tag.index(null, true)}
+              path={tagURLs.tag.index(null)}
             />
           </Routes>
         </CompatRouter>

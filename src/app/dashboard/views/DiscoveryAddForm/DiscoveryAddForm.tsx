@@ -12,7 +12,7 @@ import type { DiscoveryAddValues } from "./types";
 import FormikForm from "app/base/components/FormikForm";
 import { useCycled } from "app/base/hooks";
 import { hostnameValidation } from "app/base/validation";
-import deviceURLs from "app/devices/urls";
+import devicesURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
@@ -94,7 +94,7 @@ const setRedirectURL = (
   setRedirect(
     values.parent
       ? machineURLs.machine.index({ id: values.parent })
-      : deviceURLs.devices.index
+      : devicesURLs.index
   );
 };
 

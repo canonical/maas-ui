@@ -87,7 +87,7 @@ export const ControllerActionFormWrapper = ({
                 );
               });
             }}
-            redirectURL={controllerURLs.controllers.index}
+            redirectURL={controllerURLs.index}
             {...commonNodeFormProps}
           />
         );

@@ -22,10 +22,10 @@
         @include breakpoint-widths(0, 0, 0.17, 0.12, 0.11, true);
       }
       &:nth-child(6) {
-        @include breakpoint-widths(0, 0, 0.17, 0.13, 0.12, true);
+        @include breakpoint-widths(0, 0, 0, 0.13, 0.12, true);
       }
       &:nth-child(7) {
-        @include breakpoint-widths(0, 0, 0, 0.13, 0.13, true);
+        @include breakpoint-widths(0, 0, 0.17, 0.13, 0.13, true);
       }
       &:nth-child(8) {
         @include breakpoint-widths(0, 0, 0, 0, 0.14, true);
@@ -52,10 +52,10 @@
         @include breakpoint-widths(0, 0, 0.17, 0.12, 0.11, true);
       }
       &:nth-child(6) {
-        @include breakpoint-widths(0, 0, 0.17, 0.13, 0.12, true);
+        @include breakpoint-widths(0, 0, 0, 0.13, 0.12, true);
       }
       &:nth-child(7) {
-        @include breakpoint-widths(0, 0, 0, 0.12, 0.11, true);
+        @include breakpoint-widths(0, 0, 0.17, 0.12, 0.11, true);
       }
       &:nth-child(8) {
         @include breakpoint-widths(0, 0, 0, 0, 0.12, true);

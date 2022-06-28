@@ -53,9 +53,7 @@ const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
   }, [dispatch]);
 
   if (!isId(id) || (!tagsLoading && !tag)) {
-    return (
-      <ModelNotFound id={id} linkURL={tagURLs.tags.index} modelName="tag" />
-    );
+    return <ModelNotFound id={id} linkURL={tagURLs.index} modelName="tag" />;
   }
 
   if (!tag || tagsLoading) {
@@ -74,7 +72,7 @@ const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
     <div aria-label={Label.Title}>
       <Row>
         <Col size={6}>
-          <Link className="u-sv3" to={tagURLs.tags.index}>
+          <Link className="u-sv3" to={tagURLs.index}>
             &lsaquo; Back to all tags
           </Link>
         </Col>

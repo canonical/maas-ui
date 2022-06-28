@@ -76,7 +76,7 @@ const Routes = (): JSX.Element => {
       <Route exact path={settingsURLs.users.add} render={() => <UserAdd />} />
       <Route
         exact
-        path={settingsURLs.users.edit(null, true)}
+        path={settingsURLs.users.edit(null)}
         render={() => <UserEdit />}
       />
       <Route
@@ -91,7 +91,7 @@ const Routes = (): JSX.Element => {
       />
       <Route
         exact
-        path={settingsURLs.licenseKeys.edit(null, true)}
+        path={settingsURLs.licenseKeys.edit(null)}
         render={() => <LicenseKeyEdit />}
       />
       <Route exact path={settingsURLs.storage} render={() => <StorageForm />} />
@@ -141,7 +141,7 @@ const Routes = (): JSX.Element => {
       <Route exact path={settingsURLs.dhcp.add} render={() => <DhcpAdd />} />
       <Route
         exact
-        path={settingsURLs.dhcp.edit(null, true)}
+        path={settingsURLs.dhcp.edit(null)}
         render={() => <DhcpEdit />}
       />
       <Route
@@ -151,12 +151,12 @@ const Routes = (): JSX.Element => {
       />
       <Route
         exact
-        path={settingsURLs.repositories.add(null, true)}
+        path={settingsURLs.repositories.add(null)}
         render={() => <RepositoryAdd />}
       />
       <Route
         exact
-        path={settingsURLs.repositories.edit(null, true)}
+        path={settingsURLs.repositories.edit(null)}
         render={() => <RepositoryEdit />}
       />
       <Route

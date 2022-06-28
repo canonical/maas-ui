@@ -12,7 +12,7 @@ import NodeConfigurationFields, {
 import type { NodeConfigurationValues } from "app/base/components/NodeConfigurationFields/types";
 import TagLinks from "app/base/components/TagLinks";
 import { useWindowTitle } from "app/base/hooks";
-import deviceURLs from "app/devices/urls";
+import devicesURLs from "app/devices/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device, DeviceMeta } from "app/store/device/types";
@@ -110,7 +110,7 @@ const DeviceConfiguration = ({ systemId }: Props): JSX.Element => {
                     const filter = FilterDevices.filtersToQueryString({
                       tags: [`=${tag.name}`],
                     });
-                    return `${deviceURLs.devices.index}${filter}`;
+                    return `${devicesURLs.index}${filter}`;
                   }}
                   tags={deviceTags}
                 />

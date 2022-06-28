@@ -24,13 +24,9 @@ const Pools = (): JSX.Element => (
     }
   >
     <Switch>
-      <Route exact path={poolsURLs.pools} render={() => <PoolList />} />
+      <Route exact path={poolsURLs.index} render={() => <PoolList />} />
       <Route exact path={poolsURLs.add} render={() => <PoolAdd />} />
-      <Route
-        exact
-        path={poolsURLs.edit(null, true)}
-        render={() => <PoolEdit />}
-      />
+      <Route exact path={poolsURLs.edit(null)} render={() => <PoolEdit />} />
       <Route path="*" render={() => <NotFound />} />
     </Switch>
   </Section>

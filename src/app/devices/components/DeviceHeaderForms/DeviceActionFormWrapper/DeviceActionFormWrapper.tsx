@@ -4,7 +4,7 @@ import DeleteForm from "app/base/components/node/DeleteForm";
 import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import type { ClearHeaderContent } from "app/base/types";
-import deviceURLs from "app/devices/urls";
+import devicesURLs from "app/devices/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device, DeviceActions } from "app/store/device/types";
@@ -69,7 +69,7 @@ export const ActionFormWrapper = ({
               dispatch(deviceActions.delete({ system_id: device.system_id }));
             });
           }}
-          redirectURL={deviceURLs.devices.index}
+          redirectURL={devicesURLs.index}
           {...commonNodeFormProps}
         />
       ) : (

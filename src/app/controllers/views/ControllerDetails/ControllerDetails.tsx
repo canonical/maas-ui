@@ -54,7 +54,7 @@ const ControllerDetails = (): JSX.Element => {
     return (
       <ModelNotFound
         id={id}
-        linkURL={controllerURLs.controllers.index}
+        linkURL={controllerURLs.index}
         modelName="controller"
       />
     );
@@ -74,45 +74,42 @@ const ControllerDetails = (): JSX.Element => {
         <Switch>
           <Route
             exact
-            path={controllerURLs.controller.summary(null, true)}
+            path={controllerURLs.controller.summary(null)}
             render={() => <ControllerSummary systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.vlans(null, true)}
+            path={controllerURLs.controller.vlans(null)}
             render={() => <ControllerVLANs systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.network(null, true)}
+            path={controllerURLs.controller.network(null)}
             render={() => <ControllerNetwork systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.storage(null, true)}
+            path={controllerURLs.controller.storage(null)}
             render={() => <ControllerStorage systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.pciDevices(null, true)}
+            path={controllerURLs.controller.pciDevices(null)}
             render={() => <ControllerPCIDevices systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.usbDevices(null, true)}
+            path={controllerURLs.controller.usbDevices(null)}
             render={() => <ControllerUSBDevices systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.commissioning.index(null, true)}
+            path={controllerURLs.controller.commissioning.index(null)}
             render={() => <ControllerCommissioning systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.commissioning.scriptResult(
-              null,
-              true
-            )}
+            path={controllerURLs.controller.commissioning.scriptResult(null)}
             render={() => (
               <NodeTestDetails
                 getReturnPath={(id) =>
@@ -123,27 +120,27 @@ const ControllerDetails = (): JSX.Element => {
           />
           <Route
             exact
-            path={controllerURLs.controller.logs.index(null, true)}
+            path={controllerURLs.controller.logs.index(null)}
             render={() => <ControllerLogs systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.logs.events(null, true)}
+            path={controllerURLs.controller.logs.events(null)}
             render={() => <ControllerLogs systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.logs.installationOutput(null, true)}
+            path={controllerURLs.controller.logs.installationOutput(null)}
             render={() => <ControllerLogs systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.configuration(null, true)}
+            path={controllerURLs.controller.configuration(null)}
             render={() => <ControllerConfiguration systemId={id} />}
           />
           <Redirect
-            from={controllerURLs.controller.index(null, true)}
-            to={controllerURLs.controller.summary(null, true)}
+            from={controllerURLs.controller.index(null)}
+            to={controllerURLs.controller.summary(null)}
           />
         </Switch>
       )}

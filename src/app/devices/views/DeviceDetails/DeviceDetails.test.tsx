@@ -54,7 +54,7 @@ describe("DeviceDetails", () => {
               <Routes>
                 <Route
                   element={<DeviceDetails />}
-                  path={`${deviceURLs.device.index(null, true)}/*`}
+                  path={`${deviceURLs.device.index(null)}/*`}
                 />
               </Routes>
             </CompatRouter>
@@ -78,7 +78,7 @@ describe("DeviceDetails", () => {
             <Routes>
               <Route
                 element={<DeviceDetails />}
-                path={deviceURLs.device.index(null, true)}
+                path={deviceURLs.device.index(null)}
               />
             </Routes>
           </CompatRouter>
@@ -113,7 +113,7 @@ describe("DeviceDetails", () => {
             <Routes>
               <Route
                 element={<DeviceDetails />}
-                path={deviceURLs.device.index(null, true)}
+                path={deviceURLs.device.index(null)}
               />
             </Routes>
           </CompatRouter>
@@ -154,7 +154,7 @@ describe("DeviceDetails", () => {
             <Routes>
               <Route
                 element={<DeviceDetails />}
-                path={deviceURLs.device.index(null, true)}
+                path={deviceURLs.device.index(null)}
               />
             </Routes>
           </CompatRouter>

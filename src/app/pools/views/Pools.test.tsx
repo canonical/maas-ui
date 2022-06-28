@@ -15,7 +15,7 @@ describe("Pools", () => {
   [
     {
       component: "Pools",
-      path: poolsURLs.pools,
+      path: poolsURLs.index,
     },
     {
       component: "PoolAdd",

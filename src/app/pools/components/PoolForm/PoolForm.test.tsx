@@ -83,7 +83,7 @@ describe("PoolForm", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      poolsURLs.pools
+      poolsURLs.index
     );
   });
 

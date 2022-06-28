@@ -170,7 +170,7 @@ it("can return to the list on cancel", async () => {
     </Provider>
   );
   await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(history.location.pathname).toBe(tagsURLs.tags.index);
+  expect(history.location.pathname).toBe(tagsURLs.index);
   expect(onClose).toBeCalled();
 });
 

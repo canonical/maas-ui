@@ -5,7 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import controllersURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
+import devicesURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import { FilterDevices } from "app/store/device/utils";
 import { FilterMachines } from "app/store/machine/utils";
@@ -59,7 +59,7 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <Link to={`${machineURLs.machines.index}${machinesFilter}`}>
+            <Link to={`${machineURLs.index}${machinesFilter}`}>
               {zone.machines_count}
             </Link>
           ),
@@ -67,7 +67,7 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <Link to={`${deviceURLs.devices.index}${devicesFilter}`}>
+            <Link to={`${devicesURLs.index}${devicesFilter}`}>
               {zone.devices_count}
             </Link>
           ),
@@ -75,9 +75,7 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <Link to={controllersURLs.controllers.index}>
-              {zone.controllers_count}
-            </Link>
+            <Link to={controllersURLs.index}>{zone.controllers_count}</Link>
           ),
           className: "u-align--right",
         },

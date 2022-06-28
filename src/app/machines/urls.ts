@@ -1,50 +1,42 @@
-import type { Machine } from "app/store/machine/types";
-import type { ScriptResult } from "app/store/scriptresult/types";
+import { Machine } from "app/store/machine/types";
+import { ScriptResult } from "app/store/scriptresult/types";
 import { argPath } from "app/utils";
 
+const withId = argPath<{ id: Machine["system_id"] }>;
+const withIdScriptResultId = argPath<{
+  id: Machine["system_id"];
+  scriptResultId: ScriptResult["id"];
+}>;
+
 const urls = {
-  machines: {
-    index: "/machines",
-  },
+  index: "/machines",
   machine: {
     commissioning: {
-      index: argPath<{ id: Machine["system_id"] }>(
-        "/machine/:id/commissioning"
+      index: withId("/machine/:id/commissioning"),
+      scriptResult: withIdScriptResultId(
+        "/machine/:id/commissioning/:scriptResultId/details"
       ),
-      scriptResult: argPath<{
-        id: Machine["system_id"];
-        scriptResultId: ScriptResult["id"];
-      }>("/machine/:id/commissioning/:scriptResultId/details"),
     },
-    configuration: argPath<{ id: Machine["system_id"] }>(
-      "/machine/:id/configuration"
-    ),
-    events: argPath<{ id: Machine["system_id"] }>("/machine/:id/events"),
-    index: argPath<{ id: Machine["system_id"] }>("/machine/:id"),
-    instances: argPath<{ id: Machine["system_id"] }>("/machine/:id/instances"),
+    configuration: withId("/machine/:id/configuration"),
+    events: withId("/machine/:id/events"),
+    index: withId("/machine/:id"),
+    instances: withId("/machine/:id/instances"),
     logs: {
-      events: argPath<{ id: Machine["system_id"] }>("/machine/:id/logs/events"),
-      index: argPath<{ id: Machine["system_id"] }>("/machine/:id/logs"),
-      installationOutput: argPath<{ id: Machine["system_id"] }>(
-        "/machine/:id/logs/installation-output"
+      events: withId("/machine/:id/logs/events"),
+      index: withId("/machine/:id/logs"),
+      installationOutput: withId("/machine/:id/logs/installation-output"),
+    },
+    network: withId("/machine/:id/network"),
+    pciDevices: withId("/machine/:id/pci-devices"),
+    storage: withId("/machine/:id/storage"),
+    summary: withId("/machine/:id/summary"),
+    testing: {
+      index: withId("/machine/:id/testing"),
+      scriptResult: withIdScriptResultId(
+        "/machine/:id/testing/:scriptResultId/details"
       ),
     },
-    network: argPath<{ id: Machine["system_id"] }>("/machine/:id/network"),
-    pciDevices: argPath<{ id: Machine["system_id"] }>(
-      "/machine/:id/pci-devices"
-    ),
-    storage: argPath<{ id: Machine["system_id"] }>("/machine/:id/storage"),
-    summary: argPath<{ id: Machine["system_id"] }>("/machine/:id/summary"),
-    testing: {
-      index: argPath<{ id: Machine["system_id"] }>("/machine/:id/testing"),
-      scriptResult: argPath<{
-        id: Machine["system_id"];
-        scriptResultId: ScriptResult["id"];
-      }>("/machine/:id/testing/:scriptResultId/details"),
-    },
-    usbDevices: argPath<{ id: Machine["system_id"] }>(
-      "/machine/:id/usb-devices"
-    ),
+    usbDevices: withId("/machine/:id/usb-devices"),
   },
 } as const;
 

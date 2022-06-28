@@ -99,7 +99,7 @@ describe("MaasIntroSuccess", () => {
       </Provider>
     );
     expect(wrapper.find("Link[data-testid='continue-button']").prop("to")).toBe(
-      machineURLs.machines.index
+      machineURLs.index
     );
   });
 

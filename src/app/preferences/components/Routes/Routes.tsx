@@ -14,7 +14,7 @@ import SSLKeyList from "app/preferences/views/SSLKeys/SSLKeyList";
 const Routes = (): JSX.Element => {
   return (
     <Switch>
-      <Redirect exact from={prefsURLs.prefs} to={prefsURLs.details} />
+      <Redirect exact from={prefsURLs.index} to={prefsURLs.details} />
       <Route exact path={prefsURLs.details} render={() => <Details />} />
       <Route
         exact
@@ -24,7 +24,7 @@ const Routes = (): JSX.Element => {
       <Route exact path={prefsURLs.apiKeys.add} render={() => <APIKeyAdd />} />
       <Route
         exact
-        path={prefsURLs.apiKeys.edit(null, true)}
+        path={prefsURLs.apiKeys.edit(null)}
         render={() => <APIKeyEdit />}
       />
       <Route
