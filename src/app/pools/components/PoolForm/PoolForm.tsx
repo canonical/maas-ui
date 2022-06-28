@@ -66,7 +66,7 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
         cleanup={poolActions.cleanup}
         errors={errors}
         initialValues={initialValues}
-        onCancel={() => navigate({ pathname: poolsURLs.pools })}
+        onCancel={() => navigate({ pathname: poolsURLs.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "Resource pool",
@@ -87,7 +87,7 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
           setSaving(values.name);
         }}
         saved={saved}
-        savedRedirect={poolsURLs.pools}
+        savedRedirect={poolsURLs.index}
         saving={saving}
         submitLabel="Save pool"
         validationSchema={PoolSchema}

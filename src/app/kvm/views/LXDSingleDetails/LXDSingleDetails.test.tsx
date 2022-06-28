@@ -59,7 +59,7 @@ describe("LXDSingleDetails", () => {
         route: path,
         wrapperProps: {
           state,
-          routePattern: `${kvmURLs.lxd.single.index(null, true)}/*`,
+          routePattern: `${kvmURLs.lxd.single.index(null)}/*`,
         },
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();

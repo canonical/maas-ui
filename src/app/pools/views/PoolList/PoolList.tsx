@@ -34,7 +34,7 @@ const getMachinesLabel = (row: ResourcePool) => {
     pool: [`=${row.name}`],
   });
   return (
-    <Link to={`${machineURLs.machines.index}${filters}`}>
+    <Link to={`${machineURLs.index}${filters}`}>
       {`${row.machine_ready_count} of ${row.machine_total_count} ready`}
     </Link>
   );

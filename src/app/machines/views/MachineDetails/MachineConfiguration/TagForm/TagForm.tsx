@@ -65,7 +65,7 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
                 const filter = FilterMachines.filtersToQueryString({
                   tags: [`=${tag.name}`],
                 });
-                return `${machineURLs.machines.index}${filter}`;
+                return `${machineURLs.index}${filter}`;
               }}
               tags={tags}
             />

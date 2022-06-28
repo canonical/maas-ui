@@ -71,7 +71,7 @@ it("selects the correct subnets to display in the table", () => {
             />
           )}
           exact
-          path={subnetsURLs.subnet.index(null, true)}
+          path={subnetsURLs.subnet.index(null)}
         />
       </MemoryRouter>
     </Provider>

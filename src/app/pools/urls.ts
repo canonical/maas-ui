@@ -4,7 +4,7 @@ import { argPath } from "app/utils";
 const urls = {
   add: "/pools/add",
   edit: argPath<{ id: ResourcePool["id"] }>("/pools/:id/edit"),
-  pools: "/pools",
+  index: "/pools",
 };
 
 export default urls;

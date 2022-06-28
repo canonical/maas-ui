@@ -27,7 +27,7 @@ const DomainsList = (): JSX.Element => {
       <Switch>
         <Route
           exact
-          path={domainsURLs.domains}
+          path={domainsURLs.index}
           render={() => <>{domains.length > 0 && <DomainsTable />}</>}
         />
       </Switch>

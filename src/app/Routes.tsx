@@ -5,54 +5,37 @@ import Pools from "./pools/views/Pools";
 import Tags from "./tags/views/Tags";
 
 import ErrorBoundary from "app/base/components/ErrorBoundary";
-import baseURLs from "app/base/urls";
+import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
-import controllersURLs from "app/controllers/urls";
 import Controllers from "app/controllers/views/Controllers";
-import dashboardURLs from "app/dashboard/urls";
 import Dashboard from "app/dashboard/views/Dashboard";
-import devicesURLs from "app/devices/urls";
 import DeviceDetails from "app/devices/views/DeviceDetails";
 import DeviceList from "app/devices/views/DeviceList";
-import domainsURLs from "app/domains/urls";
 import Domains from "app/domains/views/Domains";
-import imagesURLs from "app/images/urls";
 import Images from "app/images/views/Images";
-import introURLs from "app/intro/urls";
 import Intro from "app/intro/views/Intro";
-import kvmURLs from "app/kvm/urls";
 import KVM from "app/kvm/views/KVM";
-import machineURLs from "app/machines/urls";
 import MachineDetails from "app/machines/views/MachineDetails";
 import Machines from "app/machines/views/Machines";
-import poolsURLs from "app/pools/urls";
-import prefsURLs from "app/preferences/urls";
 import Preferences from "app/preferences/views/Preferences";
-import settingsURLs from "app/settings/urls";
 import Settings from "app/settings/views/Settings";
-import subnetsURLs from "app/subnets/urls";
 import FabricDetails from "app/subnets/views/FabricDetails";
 import SpaceDetails from "app/subnets/views/SpaceDetails";
 import SubnetDetails from "app/subnets/views/SubnetDetails";
 import SubnetsList from "app/subnets/views/SubnetsList";
 import VLANDetails from "app/subnets/views/VLANDetails";
-import tagURLs from "app/tags/urls";
-import zonesURLs from "app/zones/urls";
 import Zones from "app/zones/views/Zones";
 
 const Routes = (): JSX.Element => (
   <ReactRouterRoutes>
-    <Route
-      element={<Redirect to={machineURLs.machines.index} />}
-      path={baseURLs.index}
-    />
+    <Route element={<Redirect to={urls.machines.index} />} path={urls.index} />
     <Route
       element={
         <ErrorBoundary>
           <Intro />
         </ErrorBoundary>
       }
-      path={`${introURLs.index}/*`}
+      path={`${urls.intro.index}/*`}
     />
     <Route
       element={
@@ -60,7 +43,7 @@ const Routes = (): JSX.Element => (
           <Preferences />
         </ErrorBoundary>
       }
-      path={`${prefsURLs.prefs}/*`}
+      path={`${urls.preferences.index}/*`}
     />
     <Route
       element={
@@ -68,7 +51,7 @@ const Routes = (): JSX.Element => (
           <Controllers />
         </ErrorBoundary>
       }
-      path={`${controllersURLs.controllers.index}/*`}
+      path={`${urls.controllers.index}/*`}
     />
     <Route
       element={
@@ -76,7 +59,7 @@ const Routes = (): JSX.Element => (
           <Controllers />
         </ErrorBoundary>
       }
-      path={`${controllersURLs.controller.index(null, true)}/*`}
+      path={`${urls.controllers.controller.index(null)}/*`}
     />
     <Route
       element={
@@ -84,7 +67,7 @@ const Routes = (): JSX.Element => (
           <DeviceList />
         </ErrorBoundary>
       }
-      path={`${devicesURLs.devices.index}/*`}
+      path={`${urls.devices.index}/*`}
     />
     <Route
       element={
@@ -92,7 +75,7 @@ const Routes = (): JSX.Element => (
           <DeviceDetails />
         </ErrorBoundary>
       }
-      path={`${devicesURLs.device.index(null, true)}/*`}
+      path={`${urls.devices.device.index(null)}/*`}
     />
     <Route
       element={
@@ -100,7 +83,7 @@ const Routes = (): JSX.Element => (
           <Domains />
         </ErrorBoundary>
       }
-      path={`${domainsURLs.domains}/*`}
+      path={`${urls.domains.index}/*`}
     />
     <Route
       element={
@@ -108,7 +91,7 @@ const Routes = (): JSX.Element => (
           <Domains />
         </ErrorBoundary>
       }
-      path={`${domainsURLs.details(null, true)}/*`}
+      path={`${urls.domains.details(null)}/*`}
     />
     <Route
       element={
@@ -116,7 +99,7 @@ const Routes = (): JSX.Element => (
           <Images />
         </ErrorBoundary>
       }
-      path={`${imagesURLs.index}/*`}
+      path={`${urls.images.index}/*`}
     />
     <Route
       element={
@@ -124,7 +107,7 @@ const Routes = (): JSX.Element => (
           <KVM />
         </ErrorBoundary>
       }
-      path={`${kvmURLs.kvm}/*`}
+      path={`${urls.kvm.index}/*`}
     />
     <Route
       element={
@@ -132,7 +115,7 @@ const Routes = (): JSX.Element => (
           <Machines />
         </ErrorBoundary>
       }
-      path={`${machineURLs.machines.index}/*`}
+      path={`${urls.machines.index}/*`}
     />
     <Route
       element={
@@ -140,7 +123,7 @@ const Routes = (): JSX.Element => (
           <MachineDetails />
         </ErrorBoundary>
       }
-      path={`${machineURLs.machine.index(null, true)}/*`}
+      path={`${urls.machines.machine.index(null)}/*`}
     />
     <Route
       element={
@@ -148,7 +131,7 @@ const Routes = (): JSX.Element => (
           <Pools />
         </ErrorBoundary>
       }
-      path={`${poolsURLs.pools}/*`}
+      path={`${urls.pools.index}/*`}
     />
     <Route
       element={
@@ -156,7 +139,7 @@ const Routes = (): JSX.Element => (
           <Tags />
         </ErrorBoundary>
       }
-      path={`${tagURLs.tags.index}/*`}
+      path={`${urls.tags.index}/*`}
     />
     <Route
       element={
@@ -164,7 +147,7 @@ const Routes = (): JSX.Element => (
           <Tags />
         </ErrorBoundary>
       }
-      path={`${tagURLs.tag.index(null, true)}/*`}
+      path={`${urls.tags.tag.index(null)}/*`}
     />
     <Route
       element={
@@ -172,7 +155,7 @@ const Routes = (): JSX.Element => (
           <Settings />
         </ErrorBoundary>
       }
-      path={`${settingsURLs.index}/*`}
+      path={`${urls.settings.index}/*`}
     />
     <Route
       element={
@@ -180,7 +163,7 @@ const Routes = (): JSX.Element => (
           <SubnetsList />
         </ErrorBoundary>
       }
-      path={`${subnetsURLs.index}/*`}
+      path={`${urls.subnets.index}/*`}
     />
     <Route
       element={
@@ -188,7 +171,7 @@ const Routes = (): JSX.Element => (
           <FabricDetails />
         </ErrorBoundary>
       }
-      path={`${subnetsURLs.fabric.index(null, true)}/*`}
+      path={`${urls.subnets.fabric.index(null)}/*`}
     />
     <Route
       element={
@@ -196,7 +179,7 @@ const Routes = (): JSX.Element => (
           <SpaceDetails />
         </ErrorBoundary>
       }
-      path={`${subnetsURLs.space.index(null, true)}/*`}
+      path={`${urls.subnets.space.index(null)}/*`}
     />
     <Route
       element={
@@ -204,7 +187,7 @@ const Routes = (): JSX.Element => (
           <SubnetDetails />
         </ErrorBoundary>
       }
-      path={`${subnetsURLs.subnet.index(null, true)}/*`}
+      path={`${urls.subnets.subnet.index(null)}/*`}
     />
     <Route
       element={
@@ -212,7 +195,7 @@ const Routes = (): JSX.Element => (
           <VLANDetails />
         </ErrorBoundary>
       }
-      path={`${subnetsURLs.vlan.index(null, true)}/*`}
+      path={`${urls.subnets.vlan.index(null)}/*`}
     />
     <Route
       element={
@@ -220,7 +203,7 @@ const Routes = (): JSX.Element => (
           <Zones />
         </ErrorBoundary>
       }
-      path={`${zonesURLs.index}/*`}
+      path={`${urls.zones.index}/*`}
     />
     <Route
       element={
@@ -228,7 +211,7 @@ const Routes = (): JSX.Element => (
           <Zones />
         </ErrorBoundary>
       }
-      path={`${zonesURLs.details(null, true)}/*`}
+      path={`${urls.zones.details(null)}/*`}
     />
     <Route
       element={
@@ -236,7 +219,7 @@ const Routes = (): JSX.Element => (
           <Dashboard />
         </ErrorBoundary>
       }
-      path={`${dashboardURLs.index}/*`}
+      path={`${urls.dashboard.index}/*`}
     />
     <Route element={<NotFound includeSection />} path="*" />
   </ReactRouterRoutes>

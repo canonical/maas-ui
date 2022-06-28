@@ -45,42 +45,42 @@ describe("MachineDetails", () => {
   [
     {
       component: "MachineSummary",
-      route: machineURLs.machine.summary(null, true),
+      route: machineURLs.machine.summary(null),
       path: machineURLs.machine.summary({ id: "abc123" }),
     },
     {
       component: "MachineInstances",
-      route: machineURLs.machine.instances(null, true),
+      route: machineURLs.machine.instances(null),
       path: machineURLs.machine.instances({ id: "abc123" }),
     },
     {
       component: "MachineNetwork",
-      route: machineURLs.machine.network(null, true),
+      route: machineURLs.machine.network(null),
       path: machineURLs.machine.network({ id: "abc123" }),
     },
     {
       component: "MachineStorage",
-      route: machineURLs.machine.storage(null, true),
+      route: machineURLs.machine.storage(null),
       path: machineURLs.machine.storage({ id: "abc123" }),
     },
     {
       component: "MachinePCIDevices",
-      route: machineURLs.machine.pciDevices(null, true),
+      route: machineURLs.machine.pciDevices(null),
       path: machineURLs.machine.pciDevices({ id: "abc123" }),
     },
     {
       component: "MachineUSBDevices",
-      route: machineURLs.machine.usbDevices(null, true),
+      route: machineURLs.machine.usbDevices(null),
       path: machineURLs.machine.usbDevices({ id: "abc123" }),
     },
     {
       component: "MachineCommissioning",
-      route: machineURLs.machine.commissioning.index(null, true),
+      route: machineURLs.machine.commissioning.index(null),
       path: machineURLs.machine.commissioning.index({ id: "abc123" }),
     },
     {
       component: "NodeTestDetails",
-      route: machineURLs.machine.commissioning.scriptResult(null, true),
+      route: machineURLs.machine.commissioning.scriptResult(null),
       path: machineURLs.machine.commissioning.scriptResult({
         id: "abc123",
         scriptResultId: 1,
@@ -88,12 +88,12 @@ describe("MachineDetails", () => {
     },
     {
       component: "MachineTests",
-      route: machineURLs.machine.testing.index(null, true),
+      route: machineURLs.machine.testing.index(null),
       path: machineURLs.machine.testing.index({ id: "abc123" }),
     },
     {
       component: "NodeTestDetails",
-      route: machineURLs.machine.testing.scriptResult(null, true),
+      route: machineURLs.machine.testing.scriptResult(null),
       path: machineURLs.machine.testing.scriptResult({
         id: "abc123",
         scriptResultId: 1,
@@ -101,18 +101,18 @@ describe("MachineDetails", () => {
     },
     {
       component: "NodeLogs",
-      route: machineURLs.machine.logs.index(null, true),
+      route: machineURLs.machine.logs.index(null),
       path: machineURLs.machine.logs.index({ id: "abc123" }),
     },
     {
       component: "MachineConfiguration",
-      route: machineURLs.machine.configuration(null, true),
+      route: machineURLs.machine.configuration(null),
       path: machineURLs.machine.configuration({ id: "abc123" }),
     },
     {
       // Redirects to summary:
       component: "MachineSummary",
-      route: machineURLs.machine.index(null, true),
+      route: machineURLs.machine.index(null),
       path: machineURLs.machine.index({ id: "abc123" }),
     },
   ].forEach(({ component, path, route }) => {

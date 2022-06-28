@@ -12,6 +12,6 @@ describe("argPath", () => {
     const urls = {
       machine: argPath<{ id: number }>("/machine/:id"),
     };
-    expect(urls.machine(null, true)).toBe("/machine/:id");
+    expect(urls.machine(null)).toBe("/machine/:id");
   });
 });

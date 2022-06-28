@@ -44,9 +44,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
                     });
                     return (
                       <div key={`${key}-${val}`}>
-                        <RouterLink
-                          to={`${machineURLs.machines.index}${filter}`}
-                        >
+                        <RouterLink to={`${machineURLs.index}${filter}`}>
                           {val}
                         </RouterLink>
                       </div>

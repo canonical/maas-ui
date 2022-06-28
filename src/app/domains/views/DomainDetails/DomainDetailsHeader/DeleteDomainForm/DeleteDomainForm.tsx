@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import FormikForm from "app/base/components/FormikForm";
 import type { EmptyObject } from "app/base/types";
-import domainsURLs from "app/domains/urls";
+import urls from "app/base/urls";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
@@ -49,7 +49,7 @@ const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
         dispatch(domainActions.delete(id));
       }}
       saved={saved}
-      savedRedirect={domainsURLs.domains}
+      savedRedirect={urls.domains.index}
       saving={saving}
       submitAppearance="negative"
       submitDisabled={!canBeDeleted}

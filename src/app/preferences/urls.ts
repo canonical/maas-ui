@@ -8,7 +8,7 @@ const urls = {
     index: "/account/prefs/api-keys",
   },
   details: "/account/prefs/details",
-  prefs: "/account/prefs",
+  index: "/account/prefs",
   sshKeys: {
     add: "/account/prefs/ssh-keys/add",
     index: "/account/prefs/ssh-keys",

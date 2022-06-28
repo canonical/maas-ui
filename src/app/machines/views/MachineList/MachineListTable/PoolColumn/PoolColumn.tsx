@@ -85,7 +85,7 @@ export const PoolColumn = ({
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
-          <Link className="p-link--soft" to={poolsURLs.pools}>
+          <Link className="p-link--soft" to={poolsURLs.index}>
             {machine.pool.name}
           </Link>
         </span>

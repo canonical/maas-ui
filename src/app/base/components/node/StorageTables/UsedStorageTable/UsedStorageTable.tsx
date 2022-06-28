@@ -101,12 +101,12 @@ const normaliseColumns = (
                   const filter = FilterMachines.filtersToQueryString({
                     storage_tags: [`=${tag}`],
                   });
-                  return `${machineURLs.machines.index}${filter}`;
+                  return `${machineURLs.index}${filter}`;
                 }
                 const filter = FilterControllers.filtersToQueryString({
                   storage_tags: [`=${tag}`],
                 });
-                return `${controllerURLs.controllers.index}${filter}`;
+                return `${controllerURLs.index}${filter}`;
               }}
               tags={storageDevice.tags}
             />

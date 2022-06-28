@@ -88,7 +88,7 @@ const LXDClusterDetails = (): JSX.Element => {
     );
   }
 
-  const base = kvmURLs.lxd.cluster.index(null, true);
+  const base = kvmURLs.lxd.cluster.index(null);
   return (
     <Section
       aria-label={Label.Title}
@@ -109,7 +109,7 @@ const LXDClusterDetails = (): JSX.Element => {
               setHeaderContent={setHeaderContent}
             />
           }
-          path={getRelativeRoute(kvmURLs.lxd.cluster.hosts(null, true), base)}
+          path={getRelativeRoute(kvmURLs.lxd.cluster.hosts(null), base)}
         />
         <Route
           element={
@@ -120,17 +120,11 @@ const LXDClusterDetails = (): JSX.Element => {
               setSearchFilter={setSearchFilter}
             />
           }
-          path={getRelativeRoute(
-            kvmURLs.lxd.cluster.vms.index(null, true),
-            base
-          )}
+          path={getRelativeRoute(kvmURLs.lxd.cluster.vms.index(null), base)}
         />
         <Route
           element={<LXDClusterResources clusterId={clusterId} />}
-          path={getRelativeRoute(
-            kvmURLs.lxd.cluster.resources(null, true),
-            base
-          )}
+          path={getRelativeRoute(kvmURLs.lxd.cluster.resources(null), base)}
         />
         <Route
           element={
@@ -139,7 +133,7 @@ const LXDClusterDetails = (): JSX.Element => {
               setHeaderContent={setHeaderContent}
             />
           }
-          path={getRelativeRoute(kvmURLs.lxd.cluster.edit(null, true), base)}
+          path={getRelativeRoute(kvmURLs.lxd.cluster.edit(null), base)}
         />
         <Route
           element={
@@ -150,28 +144,19 @@ const LXDClusterDetails = (): JSX.Element => {
               setSearchFilter={setSearchFilter}
             />
           }
-          path={getRelativeRoute(
-            kvmURLs.lxd.cluster.vms.host(null, true),
-            base
-          )}
+          path={getRelativeRoute(kvmURLs.lxd.cluster.vms.host(null), base)}
         />
         <Route
           element={<LXDClusterHostSettings clusterId={clusterId} />}
-          path={getRelativeRoute(
-            kvmURLs.lxd.cluster.host.edit(null, true),
-            base
-          )}
+          path={getRelativeRoute(kvmURLs.lxd.cluster.host.edit(null), base)}
         />
         <Route
           element={<Redirect to={kvmURLs.lxd.cluster.hosts({ clusterId })} />}
-          path={getRelativeRoute(kvmURLs.lxd.cluster.index(null, true), base)}
+          path={getRelativeRoute(kvmURLs.lxd.cluster.index(null), base)}
         />
         <Route
           element={<LXDClusterDetailsRedirect clusterId={clusterId} />}
-          path={getRelativeRoute(
-            kvmURLs.lxd.cluster.host.index(null, true),
-            base
-          )}
+          path={getRelativeRoute(kvmURLs.lxd.cluster.host.index(null), base)}
         />
       </Routes>
     </Section>

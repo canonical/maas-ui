@@ -8,9 +8,9 @@ import { Label as TagListLabel } from "./TagList/TagList";
 import { Label as TagUpdateLabel } from "./TagUpdate/TagUpdate";
 import Tags from "./Tags";
 
+import urls from "app/base/urls";
 import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
 import type { RootState } from "app/store/root/types";
-import tagURLs from "app/tags/urls";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -41,38 +41,36 @@ describe("Tags", () => {
   [
     {
       label: TagDetailsLabel.Title,
-      path: tagURLs.tag.index({ id: 1 }),
+      path: urls.tags.tag.index({ id: 1 }),
     },
     {
       label: TagUpdateLabel.Form,
-      path: tagURLs.tag.update({ id: 1 }),
+      path: urls.tags.tag.update({ id: 1 }),
     },
     {
       label: TagListLabel.Title,
-      path: tagURLs.tags.index,
-      pattern: `${tagURLs.tags.index}/*`,
+      path: urls.tags.index,
+      pattern: `${urls.tags.index}/*`,
     },
     {
       label: NotFoundLabel.Title,
-      path: `${tagURLs.tags.index}/not/a/path`,
-      pattern: `${tagURLs.tags.index}/*`,
+      path: `${urls.tags.index}/not/a/path`,
+      pattern: `${urls.tags.index}/*`,
     },
-  ].forEach(
-    ({ label, path, pattern = `${tagURLs.tag.index(null, true)}/*` }) => {
-      it(`Displays: ${label} at: ${path}`, () => {
-        renderWithBrowserRouter(<Tags />, {
-          wrapperProps: { routePattern: pattern, state },
-          route: path,
-        });
-        expect(screen.getByLabelText(label)).toBeInTheDocument();
+  ].forEach(({ label, path, pattern = `${urls.tags.tag.index(null)}/*` }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<Tags />, {
+        wrapperProps: { routePattern: pattern, state },
+        route: path,
       });
-    }
-  );
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
+    });
+  });
 
   it("shows buttons when not displaying forms", () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { routePattern: tagURLs.tag.index(null, true), state },
-      route: tagURLs.tag.index({ id: 1 }),
+      wrapperProps: { routePattern: urls.tags.tag.index(null), state },
+      route: urls.tags.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
     const details = screen.getByLabelText(TagDetailsLabel.Title);
@@ -91,8 +89,8 @@ describe("Tags", () => {
 
   it("hides buttons when deleting tags", async () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { routePattern: tagURLs.tag.index(null, true), state },
-      route: tagURLs.tag.index({ id: 1 }),
+      wrapperProps: { routePattern: urls.tags.tag.index(null), state },
+      route: urls.tags.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
     const details = screen.getByLabelText(TagDetailsLabel.Title);
@@ -119,10 +117,10 @@ describe("Tags", () => {
   it("hides buttons when updating tags", () => {
     renderWithBrowserRouter(<Tags />, {
       wrapperProps: {
-        routePattern: `${tagURLs.tag.index(null, true)}/*`,
+        routePattern: `${urls.tags.tag.index(null)}/*`,
         state,
       },
-      route: tagURLs.tag.update({ id: 1 }),
+      route: urls.tags.tag.update({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
     const details = screen.getByLabelText(TagUpdateLabel.Form);
@@ -144,10 +142,10 @@ describe("Tags", () => {
   it("hides buttons when creating tags", async () => {
     renderWithBrowserRouter(<Tags />, {
       wrapperProps: {
-        routePattern: `${tagURLs.tag.index(null, true)}/*`,
+        routePattern: `${urls.tags.tag.index(null)}/*`,
         state,
       },
-      route: tagURLs.tag.index({ id: 1 }),
+      route: urls.tags.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
     const details = screen.getByLabelText(TagDetailsLabel.Title);

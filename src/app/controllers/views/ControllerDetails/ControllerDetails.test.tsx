@@ -41,7 +41,7 @@ it("gets and sets the controller as active", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={controllerURLs.controller.index(null, true)}
+              path={controllerURLs.controller.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -88,7 +88,7 @@ it("unsets active controller and cleans up when unmounting", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={controllerURLs.controller.index(null, true)}
+              path={controllerURLs.controller.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -140,7 +140,7 @@ it("displays a message if the controller does not exist", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={controllerURLs.controller.index(null, true)}
+              path={controllerURLs.controller.index(null)}
             />
           </Routes>
         </CompatRouter>

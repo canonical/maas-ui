@@ -326,15 +326,15 @@ it("can link to nodes", () => {
   expect(deviceLink).toBeInTheDocument();
   expect(machineLink).toHaveAttribute(
     "href",
-    `${machineURLs.machines.index}?tags=%3Da-tag`
+    `${machineURLs.index}?tags=%3Da-tag`
   );
   expect(controllerLink).toHaveAttribute(
     "href",
-    `${controllerURLs.controllers.index}?tags=%3Da-tag`
+    `${controllerURLs.index}?tags=%3Da-tag`
   );
   expect(deviceLink).toHaveAttribute(
     "href",
-    `${deviceURLs.devices.index}?tags=%3Da-tag`
+    `${deviceURLs.index}?tags=%3Da-tag`
   );
 });
 

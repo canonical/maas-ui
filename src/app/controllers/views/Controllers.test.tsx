@@ -25,11 +25,11 @@ describe("Controllers", () => {
   [
     {
       component: "ControllerList",
-      path: controllersURLs.controllers.index,
+      path: controllersURLs.index,
     },
     {
       component: "NotFound",
-      path: `${controllerURLs.controllers.index}/not/a/path`,
+      path: `${controllerURLs.index}/not/a/path`,
     },
   ].forEach(({ component, path }) => {
     it(`Displays: ${component} at: ${path}`, () => {
@@ -41,7 +41,7 @@ describe("Controllers", () => {
               <Routes>
                 <Route
                   element={<Controllers />}
-                  path={`${controllerURLs.controllers.index}/*`}
+                  path={`${controllerURLs.index}/*`}
                 />
               </Routes>
             </CompatRouter>
@@ -78,7 +78,7 @@ it("gets and sets the controller as active only once when navigating within the 
           <Routes>
             <Route
               element={<Controllers />}
-              path={`${controllerURLs.controller.index(null, true)}/*`}
+              path={`${controllerURLs.controller.index(null)}/*`}
             />
           </Routes>
         </CompatRouter>

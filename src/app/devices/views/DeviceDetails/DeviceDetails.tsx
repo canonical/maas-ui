@@ -12,7 +12,7 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { DeviceHeaderContent } from "app/devices/types";
-import deviceURLs from "app/devices/urls";
+import devicesURLs from "app/devices/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceMeta } from "app/store/device/types";
@@ -47,11 +47,7 @@ const DeviceDetails = (): JSX.Element => {
 
   if (!isId(id) || (!devicesLoading && !device)) {
     return (
-      <ModelNotFound
-        id={id}
-        linkURL={deviceURLs.devices.index}
-        modelName="device"
-      />
+      <ModelNotFound id={id} linkURL={devicesURLs.index} modelName="device" />
     );
   }
 
@@ -69,22 +65,22 @@ const DeviceDetails = (): JSX.Element => {
         <Switch>
           <Route
             exact
-            path={deviceURLs.device.summary(null, true)}
+            path={devicesURLs.device.summary(null)}
             render={() => <DeviceSummary systemId={id} />}
           />
           <Route
             exact
-            path={deviceURLs.device.network(null, true)}
+            path={devicesURLs.device.network(null)}
             render={() => <DeviceNetwork systemId={id} />}
           />
           <Route
             exact
-            path={deviceURLs.device.configuration(null, true)}
+            path={devicesURLs.device.configuration(null)}
             render={() => <DeviceConfiguration systemId={id} />}
           />
           <Redirect
-            from={deviceURLs.device.index(null, true)}
-            to={deviceURLs.device.summary(null, true)}
+            from={devicesURLs.device.index(null)}
+            to={devicesURLs.device.summary(null)}
           />
         </Switch>
       )}

@@ -2,7 +2,7 @@ import pluralize from "pluralize";
 import { Link } from "react-router-dom-v5-compat";
 
 import controllerURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
+import devicesURLs from "app/devices/urls";
 import machineURLs from "app/machines/urls";
 import { ControllerMeta } from "app/store/controller/types";
 import { DeviceMeta } from "app/store/device/types";
@@ -26,15 +26,15 @@ const NodesTagsLink = ({
   let nodeName: string | null = null;
   switch (nodeType) {
     case MachineMeta.MODEL:
-      url = machineURLs.machines.index;
+      url = machineURLs.index;
       nodeName = "machine";
       break;
     case ControllerMeta.MODEL:
-      url = controllerURLs.controllers.index;
+      url = controllerURLs.index;
       nodeName = "controller";
       break;
     case DeviceMeta.MODEL:
-      url = deviceURLs.devices.index;
+      url = devicesURLs.index;
       nodeName = "device";
       break;
   }

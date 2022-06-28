@@ -19,7 +19,7 @@ describe("DomainsList", () => {
   [
     {
       component: "DomainsTable",
-      path: domainsURLs.domains,
+      path: domainsURLs.index,
     },
   ].forEach(({ component, path }) => {
     it(`Displays: ${component} at: ${path}`, () => {

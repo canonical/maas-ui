@@ -1,8 +1,10 @@
-import type { Zone } from "app/store/zone/types";
+import { Zone } from "app/store/zone/types";
 import { argPath } from "app/utils";
 
+const withId = argPath<{ id: Zone["id"] }>;
+
 const urls = {
-  details: argPath<{ id: Zone["id"] }>("/zone/:id"),
+  details: withId("/zone/:id"),
   index: "/zones",
 } as const;
 

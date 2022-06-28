@@ -1,17 +1,15 @@
-import type { Device, DeviceMeta } from "app/store/device/types";
+import { Device, DeviceMeta } from "app/store/device/types";
 import { argPath } from "app/utils";
 
+const withId = argPath<{ id: Device[DeviceMeta.PK] }>;
+
 const urls = {
-  devices: {
-    index: "/devices",
-  },
+  index: "/devices",
   device: {
-    configuration: argPath<{ id: Device[DeviceMeta.PK] }>(
-      "/device/:id/configuration"
-    ),
-    index: argPath<{ id: Device[DeviceMeta.PK] }>("/device/:id"),
-    network: argPath<{ id: Device[DeviceMeta.PK] }>("/device/:id/network"),
-    summary: argPath<{ id: Device[DeviceMeta.PK] }>("/device/:id/summary"),
+    configuration: withId("/device/:id/configuration"),
+    index: withId("/device/:id"),
+    network: withId("/device/:id/network"),
+    summary: withId("/device/:id/summary"),
   },
 } as const;
 

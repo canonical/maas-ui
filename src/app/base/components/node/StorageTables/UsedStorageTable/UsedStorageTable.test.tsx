@@ -83,7 +83,7 @@ it("can render storage tag links for a controller", () => {
   const filter = FilterControllers.filtersToQueryString({
     storage_tags: ["=abc"],
   });
-  const href = `${controllerURLs.controllers.index}${filter}`;
+  const href = `${controllerURLs.index}${filter}`;
 
   render(
     <MemoryRouter>
@@ -112,7 +112,7 @@ it("can render storage tag links for a machine", () => {
   const filter = FilterMachines.filtersToQueryString({
     storage_tags: ["=abc"],
   });
-  const href = `${machineURLs.machines.index}${filter}`;
+  const href = `${machineURLs.index}${filter}`;
 
   render(
     <MemoryRouter>

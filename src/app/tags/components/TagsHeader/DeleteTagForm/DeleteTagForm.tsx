@@ -52,7 +52,7 @@ export const DeleteTagForm = ({
       // the list of machines.
       navigate({ pathname: tagsURLs.tag.index({ id: id }) });
     } else {
-      navigate({ pathname: tagsURLs.tags.index });
+      navigate({ pathname: tagsURLs.index });
     }
   };
   if (!tag) {
@@ -81,7 +81,7 @@ export const DeleteTagForm = ({
         onClose();
       }}
       saved={saved}
-      savedRedirect={tagsURLs.tags.index}
+      savedRedirect={tagsURLs.index}
       saving={saving}
       submitAppearance="negative"
       submitLabel="Delete"

@@ -81,7 +81,7 @@ const LXDSingleDetails = (): JSX.Element => {
         <Switch>
           <Route
             exact
-            path={kvmURLs.lxd.single.vms(null, true)}
+            path={kvmURLs.lxd.single.vms(null)}
             render={() => (
               <LXDSingleVMs
                 id={id}
@@ -93,19 +93,19 @@ const LXDSingleDetails = (): JSX.Element => {
           />
           <Route
             exact
-            path={kvmURLs.lxd.single.resources(null, true)}
+            path={kvmURLs.lxd.single.resources(null)}
             render={() => <LXDSingleResources id={id} />}
           />
           <Route
             exact
-            path={kvmURLs.lxd.single.edit(null, true)}
+            path={kvmURLs.lxd.single.edit(null)}
             render={() => (
               <LXDSingleSettings id={id} setHeaderContent={setHeaderContent} />
             )}
           />
           <Redirect
-            from={kvmURLs.lxd.single.index(null, true)}
-            to={kvmURLs.lxd.single.vms(null, true)}
+            from={kvmURLs.lxd.single.index(null)}
+            to={kvmURLs.lxd.single.vms(null)}
           />
         </Switch>
       )}

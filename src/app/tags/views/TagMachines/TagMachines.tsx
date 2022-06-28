@@ -39,9 +39,7 @@ const TagMachines = (): JSX.Element => {
   }, [dispatch]);
 
   if (!isId(id) || (!tagsLoading && !tag)) {
-    return (
-      <ModelNotFound id={id} linkURL={tagURLs.tags.index} modelName="tag" />
-    );
+    return <ModelNotFound id={id} linkURL={tagURLs.index} modelName="tag" />;
   }
 
   if (!tag || tagsLoading) {

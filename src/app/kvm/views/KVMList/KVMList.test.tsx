@@ -121,7 +121,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.kvm, key: "testKey" }]}
+          initialEntries={[{ pathname: kvmURLs.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />
@@ -204,7 +204,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.kvm, key: "testKey" }]}
+          initialEntries={[{ pathname: kvmURLs.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />

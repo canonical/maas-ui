@@ -67,17 +67,17 @@ const VirshDetails = (): JSX.Element => {
         <Switch>
           <Route
             exact
-            path={kvmURLs.virsh.details.resources(null, true)}
+            path={kvmURLs.virsh.details.resources(null)}
             render={() => <VirshResources id={id} />}
           />
           <Route
             exact
-            path={kvmURLs.virsh.details.edit(null, true)}
+            path={kvmURLs.virsh.details.edit(null)}
             render={() => <VirshSettings id={id} />}
           />
           <Redirect
-            from={kvmURLs.virsh.details.index(null, true)}
-            to={kvmURLs.virsh.details.resources(null, true)}
+            from={kvmURLs.virsh.details.index(null)}
+            to={kvmURLs.virsh.details.resources(null)}
           />
         </Switch>
       )}

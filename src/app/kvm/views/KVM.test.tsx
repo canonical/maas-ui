@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import KVM from "./KVM";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { Label as KVMListLabel } from "app/kvm/views/KVMList/KVMList";
 import { Label as LXDClusterDetailsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterDetails";
 import { Label as LXDSingleDetailsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleDetails";
@@ -41,27 +41,27 @@ describe("KVM", () => {
   [
     {
       label: KVMListLabel.Title,
-      path: kvmURLs.kvm,
+      path: urls.kvm.index,
     },
     {
       label: KVMListLabel.Title,
-      path: kvmURLs.lxd.index,
+      path: urls.kvm.lxd.index,
     },
     {
       label: KVMListLabel.Title,
-      path: kvmURLs.virsh.index,
+      path: urls.kvm.virsh.index,
     },
     {
       label: LXDClusterDetailsLabel.Title,
-      path: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
+      path: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
     },
     {
       label: LXDSingleDetailsLabel.Title,
-      path: kvmURLs.lxd.single.index({ id: 4 }),
+      path: urls.kvm.lxd.single.index({ id: 4 }),
     },
     {
       label: VirshDetailsLabel.Title,
-      path: kvmURLs.virsh.details.index({ id: 3 }),
+      path: urls.kvm.virsh.details.index({ id: 3 }),
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
@@ -69,7 +69,7 @@ describe("KVM", () => {
         route: path,
         wrapperProps: {
           state,
-          routePattern: `${kvmURLs.kvm}/*`,
+          routePattern: `${urls.kvm.index}/*`,
         },
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();

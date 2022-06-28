@@ -14,23 +14,23 @@ const Controllers = (): JSX.Element => {
     <Switch>
       <Route
         exact
-        path={controllersURLs.controllers.index}
+        path={controllersURLs.index}
         render={() => <ControllerList />}
       />
       {[
-        controllersURLs.controller.commissioning.index(null, true),
-        controllersURLs.controller.commissioning.scriptResult(null, true),
-        controllersURLs.controller.configuration(null, true),
-        controllersURLs.controller.index(null, true),
-        controllersURLs.controller.logs.index(null, true),
-        controllersURLs.controller.logs.events(null, true),
-        controllersURLs.controller.logs.installationOutput(null, true),
-        controllersURLs.controller.network(null, true),
-        controllersURLs.controller.pciDevices(null, true),
-        controllersURLs.controller.storage(null, true),
-        controllersURLs.controller.summary(null, true),
-        controllersURLs.controller.usbDevices(null, true),
-        controllersURLs.controller.vlans(null, true),
+        controllersURLs.controller.commissioning.index(null),
+        controllersURLs.controller.commissioning.scriptResult(null),
+        controllersURLs.controller.configuration(null),
+        controllersURLs.controller.index(null),
+        controllersURLs.controller.logs.index(null),
+        controllersURLs.controller.logs.events(null),
+        controllersURLs.controller.logs.installationOutput(null),
+        controllersURLs.controller.network(null),
+        controllersURLs.controller.pciDevices(null),
+        controllersURLs.controller.storage(null),
+        controllersURLs.controller.summary(null),
+        controllersURLs.controller.usbDevices(null),
+        controllersURLs.controller.vlans(null),
       ].map((path) => (
         <Route
           // using a single key as a workaround for Controller details pages
