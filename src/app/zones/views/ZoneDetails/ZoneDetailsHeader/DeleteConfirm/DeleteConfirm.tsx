@@ -3,6 +3,10 @@ import type { ReactNode } from "react";
 import { ActionButton, Button, Col, Row } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
 
+export enum Label {
+  DeleteAZ = "Delete Availability Zone",
+}
+
 type Props = {
   closeExpanded: () => void;
   confirmLabel: string;
@@ -36,6 +40,7 @@ const DeleteConfirm = ({
         </Button>
         <ActionButton
           appearance={submitAppearance}
+          aria-label={Label.DeleteAZ}
           data-testid="delete-az"
           loading={deleting}
           onClick={onConfirm}

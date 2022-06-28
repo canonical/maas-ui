@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import DeleteConfirm from "./DeleteConfirm";
+import DeleteConfirm, { Label as DeleteAZLabel } from "./DeleteConfirm";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -45,10 +45,7 @@ describe("DeleteConfirm", () => {
       </Provider>
     );
 
-    // wrapper.find("button[data-testid='delete-az']").simulate("click");
-    // expect(onConfirm).toHaveBeenCalled();
-
-    await userEvent.click(screen.getByTestId("delete-az"));
+    await userEvent.click(screen.getByLabelText(DeleteAZLabel.DeleteAZ));
     expect(onConfirm).toHaveBeenCalled();
   });
 
