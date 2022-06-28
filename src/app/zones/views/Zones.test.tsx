@@ -39,7 +39,7 @@ describe("Zones", () => {
     {
       label: ZoneDetailsLabel.Details,
       path: zonesURLs.details({ id: 1 }),
-      pattern: zonesURLs.details(null, true),
+      pattern: zonesURLs.details(null),
     },
     {
       label: NotFoundLabel.Title,
