@@ -853,6 +853,7 @@ export const MachineListTable = ({
   return (
     <>
       <MainTable
+        aria-label="Machines"
         className={classNames("p-table-expanding--light", "machine-list", {
           "machine-list--grouped": grouping !== "none",
         })}
