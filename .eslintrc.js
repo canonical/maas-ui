@@ -1,7 +1,6 @@
 module.exports = {
   root: true,
-  parser: "@typescript-eslint/parser",
-  plugins: ["@typescript-eslint", "prettier", "eslint-plugin-import"],
+  plugins: ["prettier"],
   extends: [
     "react-app", // Use the recommended rules from CRA.
     "plugin:prettier/recommended", // Ensure this is last in the list.
@@ -27,11 +26,7 @@ module.exports = {
   overrides: [
     {
       files: ["src/**/*.ts?(x)"],
-      parser: "@typescript-eslint/parser",
-      plugins: ["react", "@typescript-eslint", "prettier", "no-only-tests"],
       extends: [
-        "react-app", // Uses the recommended rules from CRA.
-        "plugin:@typescript-eslint/recommended", // Uses the recommended rules from @typescript-eslint/eslint-plugin
         "prettier",
         "plugin:import/errors",
         "plugin:import/warnings",
@@ -102,7 +97,6 @@ module.exports = {
           },
         ],
         "react/jsx-sort-props": "error",
-        "no-only-tests/no-only-tests": "error",
       },
       settings: {
         "import/resolver": {
@@ -125,7 +119,9 @@ module.exports = {
     {
       files: ["src/**/*.test.[jt]s?(x)"],
       extends: ["plugin:testing-library/react"],
+      plugins: ["no-only-tests"],
       rules: {
+        "no-only-tests/no-only-tests": "error",
         "testing-library/prefer-find-by": "off",
         "testing-library/prefer-explicit-assert": "error",
         "testing-library/prefer-user-event": [
@@ -140,17 +136,8 @@ module.exports = {
     },
     {
       files: ["cypress/**/*.spec.[jt]s?(x)"],
-      extends: [
-        "plugin:@typescript-eslint/recommended",
-        "plugin:cypress/recommended",
-        "plugin:prettier/recommended",
-      ],
-      plugins: [
-        "cypress",
-        "@typescript-eslint",
-        "prettier",
-        "eslint-plugin-import",
-      ],
+      extends: ["plugin:cypress/recommended", "plugin:prettier/recommended"],
+      plugins: ["cypress"],
       rules: {
         "cypress/no-force": "warn",
         "prettier/prettier": "error",
