@@ -1,78 +1,58 @@
-import { screen, render } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import Zones from "./Zones";
 
+import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
 import type { RootState } from "app/store/root/types";
 import zonesURLs from "app/zones/urls";
+import { Label as ZoneDetailsLabel } from "app/zones/views/ZoneDetails/ZoneDetails";
+import { Label as ZoneListLabel } from "app/zones/views/ZonesList/ZonesList";
 import {
-  authState as authStateFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
-  user as userFactory,
-  userState as userStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("Zones", () => {
-  let initialState: RootState;
+  let state: RootState;
 
   beforeEach(() => {
-    initialState = rootStateFactory({
-      user: userStateFactory({
-        auth: authStateFactory({
-          user: userFactory({ is_superuser: true }),
-        }),
+    state = rootStateFactory({
+      zone: zoneStateFactory({
+        items: [
+          zoneFactory({
+            id: 1,
+            name: "zone-name",
+          }),
+        ],
       }),
-      zone: testZones,
     });
-  });
-
-  const testZones = zoneStateFactory({
-    errors: [],
-    loading: false,
-    loaded: true,
-    items: [
-      zoneFactory({
-        id: 1,
-        name: "zone-name",
-      }),
-    ],
   });
 
   [
     {
-      component: "Availability zones",
+      label: ZoneListLabel.List,
       path: zonesURLs.index,
+      pattern: zonesURLs.index,
     },
     {
-      component: /Availability Zone/i,
+      label: ZoneDetailsLabel.Details,
       path: zonesURLs.details({ id: 1 }),
+      pattern: zonesURLs.details(null, true),
     },
     {
-      component: "Zone not found",
-      path: zonesURLs.details({ id: 2 }),
+      label: NotFoundLabel.Title,
+      path: `${zonesURLs.index}/not/a/path`,
+      pattern: `${zonesURLs.index}/*`,
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(initialState);
-      render(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Zones />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        screen.getByRole("heading", { name: component })
-      ).toBeInTheDocument();
+  ].forEach(({ label, path, pattern }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<Zones />, {
+        wrapperProps: { routePattern: pattern, state },
+        route: path,
+      });
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
 });
