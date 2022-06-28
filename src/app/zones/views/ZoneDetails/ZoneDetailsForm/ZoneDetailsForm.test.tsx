@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetailsForm from "./ZoneDetailsForm";
 
+import { Label as FormikFormButtonsLabel } from "app/base/components/FormikFormButtons/FormikFormButtons";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
 import {
@@ -42,7 +43,9 @@ describe("ZoneDetailsForm", () => {
       </Provider>
     );
 
-    await userEvent.click(screen.getByTestId("cancel-action"));
+    await userEvent.click(
+      screen.getByLabelText(FormikFormButtonsLabel.CancelButton)
+    );
     expect(closeForm).toHaveBeenCalled();
   });
 

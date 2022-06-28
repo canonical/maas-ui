@@ -40,6 +40,10 @@ export enum TestIds {
   SecondarySubmit = "secondary-submit",
 }
 
+export enum Label {
+  CancelButton = "Cancel action",
+}
+
 export const FormikFormButtons = <V,>({
   buttonsAlign = "right",
   buttonsBordered = true,
@@ -125,6 +129,7 @@ export const FormikFormButtons = <V,>({
           {onCancel && (
             <Button
               appearance="base"
+              aria-label={Label.CancelButton}
               className="formik-form-buttons__button"
               data-testid={TestIds.CancelButton}
               disabled={cancelDisabled}
