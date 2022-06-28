@@ -4,14 +4,11 @@ import { MainTable } from "@canonical/react-components";
 import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import controllersURLs from "app/controllers/urls";
-import devicesURLs from "app/devices/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import { FilterDevices } from "app/store/device/utils";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
-import zonesURLs from "app/zones/urls";
 
 export enum TestIds {
   ZonesTable = "zones-table",
@@ -49,7 +46,7 @@ const ZonesListTable = (): JSX.Element => {
       columns: [
         {
           content: (
-            <Link to={`${zonesURLs.details({ id: zone.id })}`}>
+            <Link to={`${urls.zones.details({ id: zone.id })}`}>
               {zone.name}
             </Link>
           ),
@@ -59,7 +56,7 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <Link to={`${machineURLs.index}${machinesFilter}`}>
+            <Link to={`${urls.machines.index}${machinesFilter}`}>
               {zone.machines_count}
             </Link>
           ),
@@ -67,7 +64,7 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <Link to={`${devicesURLs.index}${devicesFilter}`}>
+            <Link to={`${urls.devices.index}${devicesFilter}`}>
               {zone.devices_count}
             </Link>
           ),
@@ -75,7 +72,7 @@ const ZonesListTable = (): JSX.Element => {
         },
         {
           content: (
-            <Link to={controllersURLs.index}>{zone.controllers_count}</Link>
+            <Link to={urls.controllers.index}>{zone.controllers_count}</Link>
           ),
           className: "u-align--right",
         },

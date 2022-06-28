@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom-v5-compat";
 
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -97,7 +97,7 @@ const MachineInstances = (): JSX.Element => {
       machine &&
       (!isMachineDetails(machine) || machine.devices.length === 0)
     ) {
-      navigate(machineURLs.machine.summary({ id: machine.system_id }), {
+      navigate(urls.machines.machine.summary({ id: machine.system_id }), {
         replace: true,
       });
     }

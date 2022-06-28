@@ -6,12 +6,12 @@ import configureStore from "redux-mock-store";
 
 import TagMachines, { Label } from "./TagMachines";
 
+import urls from "app/base/urls";
 import { columnLabels, MachineColumns } from "app/machines/constants";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { NodeStatus } from "app/store/types/node";
-import tagURLs from "app/tags/urls";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -53,11 +53,11 @@ it("dispatches actions to fetch necessary data", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
-            <Route element={<TagMachines />} path={tagURLs.tag.index(null)} />
+            <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
           </Routes>
         </CompatRouter>
       </MemoryRouter>
@@ -85,11 +85,11 @@ it("displays a message if the tag does not exist", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
-            <Route element={<TagMachines />} path={tagURLs.tag.index(null)} />
+            <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
           </Routes>
         </CompatRouter>
       </MemoryRouter>
@@ -109,11 +109,11 @@ it("shows a spinner if the tag has not loaded yet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
-            <Route element={<TagMachines />} path={tagURLs.tag.index(null)} />
+            <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
           </Routes>
         </CompatRouter>
       </MemoryRouter>
@@ -127,11 +127,11 @@ it("displays the machine list", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
-            <Route element={<TagMachines />} path={tagURLs.tag.index(null)} />
+            <Route element={<TagMachines />} path={urls.tags.tag.index(null)} />
           </Routes>
         </CompatRouter>
       </MemoryRouter>

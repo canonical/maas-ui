@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import { AddSSLKey } from "./AddSSLKey";
 
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   sslKeyState as sslKeyStateFactory,
@@ -78,7 +78,7 @@ describe("AddSSLKey", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      prefsURLs.sslKeys.index
+      urls.preferences.sslKeys.index
     );
   });
 

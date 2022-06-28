@@ -4,7 +4,7 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
-import deviceURLs from "app/devices/urls";
+import urls from "app/base/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device, DeviceMeta } from "app/store/device/types";
@@ -36,7 +36,7 @@ const DeviceLink = ({ systemId }: Props): JSX.Element | null => {
     return null;
   }
   return (
-    <Link to={deviceURLs.device.index({ id: device.system_id })}>
+    <Link to={urls.devices.device.index({ id: device.system_id })}>
       <strong>{device.hostname}</strong>
       <span>.{device.domain.name}</span>
     </Link>

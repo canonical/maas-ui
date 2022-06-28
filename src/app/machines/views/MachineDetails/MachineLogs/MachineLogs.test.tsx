@@ -4,7 +4,7 @@ import MachineLogs, { Label } from "./MachineLogs";
 
 import { Label as EventLogsLabel } from "app/base/components/node/NodeLogs/EventLogs/EventLogs";
 import { Label as InstallationOutputLabel } from "app/base/components/node/NodeLogs/InstallationOutput/InstallationOutput";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
@@ -39,15 +39,15 @@ describe("MachineLogs", () => {
   [
     {
       label: InstallationOutputLabel.Title,
-      path: machineURLs.machine.logs.installationOutput({ id: "abc123" }),
+      path: urls.machines.machine.logs.installationOutput({ id: "abc123" }),
     },
     {
       label: EventLogsLabel.Title,
-      path: machineURLs.machine.logs.index({ id: "abc123" }),
+      path: urls.machines.machine.logs.index({ id: "abc123" }),
     },
     {
       label: EventLogsLabel.Title,
-      path: machineURLs.machine.logs.events({ id: "abc123" }),
+      path: urls.machines.machine.logs.events({ id: "abc123" }),
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {

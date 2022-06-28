@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import urls from "app/base/urls";
 import { useToggleMenu } from "app/machines/hooks";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -13,7 +14,6 @@ import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import zoneSelectors from "app/store/zone/selectors";
 import type { Zone, ZoneMeta } from "app/store/zone/types";
-import zonesURLs from "app/zones/urls";
 
 type Props = {
   onToggleMenu?: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
@@ -95,7 +95,7 @@ export const ZoneColumn = ({
           ) : null}
           <Link
             className="p-link--soft"
-            to={zonesURLs.details({ id: machine.zone.id })}
+            to={urls.zones.details({ id: machine.zone.id })}
           >
             {machine.zone.name}
           </Link>

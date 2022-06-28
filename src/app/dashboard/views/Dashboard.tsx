@@ -8,8 +8,8 @@ import DiscoveriesList from "./DiscoveriesList";
 
 import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
+import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
-import dashboardURLs from "app/dashboard/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 
@@ -37,12 +37,12 @@ const Dashboard = (): JSX.Element => {
       <Switch>
         <Route
           exact
-          path={dashboardURLs.index}
+          path={urls.dashboard.index}
           render={() => <DiscoveriesList />}
         />
         <Route
           exact
-          path={dashboardURLs.configuration}
+          path={urls.dashboard.configuration}
           render={() => <DashboardConfigurationForm />}
         />
         <Route path="*" render={() => <NotFound />} />

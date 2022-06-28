@@ -9,11 +9,11 @@ import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage, useScrollToTop } from "app/base/hooks";
 import type { EmptyObject } from "app/base/types";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
-import tagsURLs from "app/tags/urls";
 
 type Props = {
   fromDetails?: boolean;
@@ -50,9 +50,9 @@ export const DeleteTagForm = ({
     if (fromDetails) {
       // Explicitly return to the page they user came from in case they have opened
       // the list of machines.
-      navigate({ pathname: tagsURLs.tag.index({ id: id }) });
+      navigate({ pathname: urls.tags.tag.index({ id: id }) });
     } else {
-      navigate({ pathname: tagsURLs.index });
+      navigate({ pathname: urls.tags.index });
     }
   };
   if (!tag) {
@@ -81,7 +81,7 @@ export const DeleteTagForm = ({
         onClose();
       }}
       saved={saved}
-      savedRedirect={tagsURLs.index}
+      savedRedirect={urls.tags.index}
       saving={saving}
       submitAppearance="negative"
       submitLabel="Delete"

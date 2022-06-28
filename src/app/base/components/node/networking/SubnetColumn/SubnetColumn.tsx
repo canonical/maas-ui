@@ -5,6 +5,7 @@ import { Link } from "react-router-dom-v5-compat";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
+import urls from "app/base/urls";
 import fabricSelectors from "app/store/fabric/selectors";
 import subnetSelectors from "app/store/subnet/selectors";
 import { getSubnetDisplay } from "app/store/subnet/utils";
@@ -16,7 +17,6 @@ import {
   getLinkInterface,
 } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
-import subnetsURLs from "app/subnets/urls";
 
 type Props = {
   link?: NetworkLink | null;
@@ -59,7 +59,7 @@ const SubnetColumn = ({ link, nic, node }: Props): JSX.Element | null => {
     primary = subnet ? (
       <Link
         className="p-link--soft"
-        to={subnetsURLs.subnet.index({ id: subnet.id })}
+        to={urls.subnets.subnet.index({ id: subnet.id })}
       >
         {subnetDisplay}
       </Link>
@@ -79,7 +79,7 @@ const SubnetColumn = ({ link, nic, node }: Props): JSX.Element | null => {
         showLinkSubnet && subnet ? (
           <Link
             className="p-link--muted"
-            to={subnetsURLs.subnet.index({ id: subnet.id })}
+            to={urls.subnets.subnet.index({ id: subnet.id })}
           >
             {subnet.name}
           </Link>

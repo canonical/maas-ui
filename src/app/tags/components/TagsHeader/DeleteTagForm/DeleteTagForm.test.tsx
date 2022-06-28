@@ -10,10 +10,10 @@ import configureStore from "redux-mock-store";
 import DeleteTagForm from "./DeleteTagForm";
 
 import * as baseHooks from "app/base/hooks/base";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { NodeStatus } from "app/store/types/node";
-import tagsURLs from "app/tags/urls";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -150,7 +150,7 @@ it("can return to the list on cancel", async () => {
       name: "tag1",
     }),
   ];
-  const path = tagsURLs.tag.machines({ id: 1 });
+  const path = urls.tags.tag.machines({ id: 1 });
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
   });
@@ -170,7 +170,7 @@ it("can return to the list on cancel", async () => {
     </Provider>
   );
   await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(history.location.pathname).toBe(tagsURLs.index);
+  expect(history.location.pathname).toBe(urls.tags.index);
   expect(onClose).toBeCalled();
 });
 
@@ -183,7 +183,7 @@ it("can return to the details on cancel", async () => {
       name: "tag1",
     }),
   ];
-  const path = tagsURLs.tag.machines({ id: 1 });
+  const path = urls.tags.tag.machines({ id: 1 });
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
   });
@@ -208,6 +208,6 @@ it("can return to the details on cancel", async () => {
     screen.getByRole("link", { name: "Show the deployed machine" })
   );
   await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
-  expect(history.location.pathname).toBe(tagsURLs.tag.index({ id: 1 }));
+  expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 1 }));
   expect(onClose).toBeCalled();
 });

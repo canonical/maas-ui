@@ -4,8 +4,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import UsedStorageTable from "./UsedStorageTable";
 
-import controllerURLs from "app/controllers/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import { FilterControllers } from "app/store/controller/utils";
 import { MIN_PARTITION_SIZE } from "app/store/machine/constants";
 import { FilterMachines } from "app/store/machine/utils";
@@ -83,7 +82,7 @@ it("can render storage tag links for a controller", () => {
   const filter = FilterControllers.filtersToQueryString({
     storage_tags: ["=abc"],
   });
-  const href = `${controllerURLs.index}${filter}`;
+  const href = `${urls.controllers.index}${filter}`;
 
   render(
     <MemoryRouter>
@@ -112,7 +111,7 @@ it("can render storage tag links for a machine", () => {
   const filter = FilterMachines.filtersToQueryString({
     storage_tags: ["=abc"],
   });
-  const href = `${machineURLs.index}${filter}`;
+  const href = `${urls.machines.index}${filter}`;
 
   render(
     <MemoryRouter>

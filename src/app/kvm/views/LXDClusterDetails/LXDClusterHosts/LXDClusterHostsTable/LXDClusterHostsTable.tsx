@@ -17,6 +17,7 @@ import { Link } from "react-router-dom-v5-compat";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
+import urls from "app/base/urls";
 import CPUColumn from "app/kvm/components/CPUColumn";
 import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
 import NameColumn from "app/kvm/components/NameColumn";
@@ -25,7 +26,6 @@ import StorageColumn from "app/kvm/components/StorageColumn";
 import TagsColumn from "app/kvm/components/TagsColumn";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { actions as poolActions } from "app/store/resourcepool";
@@ -87,7 +87,10 @@ const generateRows = (
             <NameColumn
               name={host.name}
               secondary={host.power_parameters.power_address}
-              url={kvmURLs.lxd.cluster.vms.host({ clusterId, hostId: host.id })}
+              url={urls.kvm.lxd.cluster.vms.host({
+                clusterId,
+                hostId: host.id,
+              })}
             />
           ),
         },
@@ -153,7 +156,7 @@ const generateRows = (
                   data-testid="vm-host-settings"
                   state={{ from: location.pathname }}
                   to={{
-                    pathname: kvmURLs.lxd.cluster.host.edit({
+                    pathname: urls.kvm.lxd.cluster.host.edit({
                       clusterId,
                       hostId: host.id,
                     }),

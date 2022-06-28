@@ -9,8 +9,8 @@ import MachineList from "./MachineList";
 import MachineListHeader from "./MachineList/MachineListHeader";
 import Machines from "./Machines";
 
+import urls from "app/base/urls";
 import { MachineHeaderViews } from "app/machines/constants";
-import machineURLs from "app/machines/urls";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -68,7 +68,7 @@ describe("Machines", () => {
   [
     {
       component: "MachineList",
-      path: machineURLs.index,
+      path: urls.machines.index,
     },
     {
       component: "NotFound",

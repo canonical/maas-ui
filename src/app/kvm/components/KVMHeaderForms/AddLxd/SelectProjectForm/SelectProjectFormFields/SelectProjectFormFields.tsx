@@ -14,7 +14,7 @@ import { Link } from "react-router-dom-v5-compat";
 import type { NewPodValues } from "../../types";
 
 import FormikField from "app/base/components/FormikField";
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 
@@ -112,7 +112,7 @@ export const SelectProjectFormFields = ({
               />
               {!newProject && projectPod && (
                 <label className="u-nudge-right" data-testid="existing-pod">
-                  <Link to={kvmURLs.lxd.single.index({ id: projectPod.id })}>
+                  <Link to={urls.kvm.lxd.single.index({ id: projectPod.id })}>
                     already exists
                   </Link>
                 </label>

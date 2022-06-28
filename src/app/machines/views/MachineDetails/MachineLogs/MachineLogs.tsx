@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import NodeLogs from "app/base/components/node/NodeLogs";
 import { useWindowTitle } from "app/base/hooks";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -29,9 +29,9 @@ const MachineLogs = ({ systemId }: Props): JSX.Element => {
     <NodeLogs
       node={machine}
       urls={{
-        events: machineURLs.machine.logs.events,
-        index: machineURLs.machine.logs.index,
-        installationOutput: machineURLs.machine.logs.installationOutput,
+        events: urls.machines.machine.logs.events,
+        index: urls.machines.machine.logs.index,
+        installationOutput: urls.machines.machine.logs.installationOutput,
       }}
     />
   );

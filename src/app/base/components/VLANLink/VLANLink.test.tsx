@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import VLANLink from "./VLANLink";
 
-import subnetsURLs from "app/subnets/urls";
+import urls from "app/base/urls";
 import {
   rootState as rootStateFactory,
   vlan as vlanFactory,
@@ -69,6 +69,6 @@ it("renders a link if VLANs have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    subnetsURLs.vlan.index({ id: vlan.id })
+    urls.subnets.vlan.index({ id: vlan.id })
   );
 });

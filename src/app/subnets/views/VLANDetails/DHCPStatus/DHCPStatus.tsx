@@ -14,6 +14,7 @@ import ControllerLink from "app/base/components/ControllerLink";
 import Definition from "app/base/components/Definition";
 import TitledSection from "app/base/components/TitledSection";
 import docsUrls from "app/base/docsUrls";
+import urls from "app/base/urls";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
@@ -24,7 +25,6 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 import { getFullVLANName } from "app/store/vlan/utils";
-import subnetsURLs from "app/subnets/urls";
 import { isId } from "app/utils";
 
 type Props = {
@@ -45,7 +45,7 @@ const getDHCPStatus = (vlan: VLAN, vlans: VLAN[], fabrics: Fabric[]) => {
     return (
       <span>
         Relayed via{" "}
-        <Link to={subnetsURLs.vlan.index({ id: vlan.relay_vlan })}>
+        <Link to={urls.subnets.vlan.index({ id: vlan.relay_vlan })}>
           {getFullVLANName(vlan.relay_vlan, vlans, fabrics)}
         </Link>
       </span>

@@ -6,9 +6,7 @@ import configureStore from "redux-mock-store";
 
 import MaasIntroSuccess from "./MaasIntroSuccess";
 
-import dashboardURLs from "app/dashboard/urls";
-import introURLs from "app/intro/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import { actions as configActions } from "app/store/config";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -57,7 +55,7 @@ describe("MaasIntroSuccess", () => {
       </Provider>
     );
     expect(wrapper.find("Link[data-testid='continue-button']").prop("to")).toBe(
-      introURLs.user
+      urls.intro.user
     );
   });
 
@@ -78,7 +76,7 @@ describe("MaasIntroSuccess", () => {
       </Provider>
     );
     expect(wrapper.find("Link[data-testid='continue-button']").prop("to")).toBe(
-      dashboardURLs.index
+      urls.dashboard.index
     );
   });
 
@@ -99,7 +97,7 @@ describe("MaasIntroSuccess", () => {
       </Provider>
     );
     expect(wrapper.find("Link[data-testid='continue-button']").prop("to")).toBe(
-      machineURLs.index
+      urls.machines.index
     );
   });
 

@@ -7,7 +7,7 @@ import { Link } from "react-router-dom-v5-compat";
 import FormikForm from "app/base/components/FormikForm";
 import { useCycled } from "app/base/hooks";
 import type { EmptyObject } from "app/base/types";
-import dashboardURLs from "app/dashboard/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -62,7 +62,7 @@ export const MapSubnet = ({
       {isIPv4 ? (
         <>
           You will start mapping your subnet. Go to the{" "}
-          <Link to={dashboardURLs.index}>dashboard</Link> to see the discovered
+          <Link to={urls.dashboard.index}>dashboard</Link> to see the discovered
           items.
         </>
       ) : (

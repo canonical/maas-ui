@@ -7,8 +7,8 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsHeader from "./LXDClusterDetailsHeader";
 
+import urls from "app/base/urls";
 import { KVMHeaderViews } from "app/kvm/constants";
-import kvmURLs from "app/kvm/urls";
 import type { RootState } from "app/store/root/types";
 import {
   rootState as rootStateFactory,
@@ -51,7 +51,7 @@ describe("LXDClusterDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -78,7 +78,7 @@ describe("LXDClusterDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -112,7 +112,7 @@ describe("LXDClusterDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -141,7 +141,7 @@ describe("LXDClusterDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -170,7 +170,7 @@ describe("LXDClusterDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -202,7 +202,7 @@ describe("LXDClusterDetailsHeader", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.index({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.index({ clusterId: 1 }),
               key: "testKey",
             },
           ]}

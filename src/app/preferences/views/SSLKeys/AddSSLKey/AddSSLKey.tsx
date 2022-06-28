@@ -8,7 +8,7 @@ import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 import { actions as sslkeyActions } from "app/store/sslkey";
 import sslkeySelectors from "app/store/sslkey/selectors";
 
@@ -39,7 +39,7 @@ export const AddSSLKey = (): JSX.Element => {
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}
-        onCancel={() => navigate({ pathname: prefsURLs.sslKeys.index })}
+        onCancel={() => navigate({ pathname: urls.preferences.sslKeys.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "SSL keys preferences",
@@ -49,7 +49,7 @@ export const AddSSLKey = (): JSX.Element => {
           dispatch(sslkeyActions.create(values));
         }}
         saved={saved}
-        savedRedirect={prefsURLs.sslKeys.index}
+        savedRedirect={urls.preferences.sslKeys.index}
         saving={saving}
         submitLabel="Save SSL key"
         validationSchema={SSLKeySchema}

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import Zones from "./Zones";
 
-import zonesURLs from "app/zones/urls";
+import urls from "app/base/urls";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
@@ -15,11 +15,11 @@ describe("Zones", () => {
   [
     {
       component: "ZonesList",
-      path: zonesURLs.index,
+      path: urls.zones.index,
     },
     {
       component: "ZoneDetails",
-      path: zonesURLs.details({ id: 1 }),
+      path: urls.zones.details({ id: 1 }),
     },
     {
       component: "NotFound",

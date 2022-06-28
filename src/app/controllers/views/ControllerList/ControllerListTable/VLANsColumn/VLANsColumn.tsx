@@ -2,7 +2,7 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import controllersURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
@@ -44,7 +44,7 @@ export const VLANsColumn = ({ systemId }: Props): JSX.Element | null => {
     <DoubleRow
       primary={
         <Link
-          to={controllersURLs.controller.vlans({
+          to={urls.controllers.controller.vlans({
             id: systemId,
           })}
         >

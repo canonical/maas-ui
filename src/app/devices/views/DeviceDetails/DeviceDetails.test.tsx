@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DeviceDetails from "./DeviceDetails";
 
-import deviceURLs from "app/devices/urls";
+import urls from "app/base/urls";
 import { actions as deviceActions } from "app/store/device";
 import type { RootState } from "app/store/root/types";
 import {
@@ -34,15 +34,15 @@ describe("DeviceDetails", () => {
   [
     {
       component: "DeviceSummary",
-      path: deviceURLs.device.summary({ id: "abc123" }),
+      path: urls.devices.device.summary({ id: "abc123" }),
     },
     {
       component: "DeviceNetwork",
-      path: deviceURLs.device.network({ id: "abc123" }),
+      path: urls.devices.device.network({ id: "abc123" }),
     },
     {
       component: "DeviceConfiguration",
-      path: deviceURLs.device.configuration({ id: "abc123" }),
+      path: urls.devices.device.configuration({ id: "abc123" }),
     },
   ].forEach(({ component, path }) => {
     it(`Displays: ${component} at: ${path}`, () => {
@@ -54,7 +54,7 @@ describe("DeviceDetails", () => {
               <Routes>
                 <Route
                   element={<DeviceDetails />}
-                  path={`${deviceURLs.device.index(null)}/*`}
+                  path={`${urls.devices.device.index(null)}/*`}
                 />
               </Routes>
             </CompatRouter>
@@ -71,14 +71,14 @@ describe("DeviceDetails", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: deviceURLs.device.index({ id: device.system_id }) },
+            { pathname: urls.devices.device.index({ id: device.system_id }) },
           ]}
         >
           <CompatRouter>
             <Routes>
               <Route
                 element={<DeviceDetails />}
-                path={deviceURLs.device.index(null)}
+                path={urls.devices.device.index(null)}
               />
             </Routes>
           </CompatRouter>
@@ -106,14 +106,14 @@ describe("DeviceDetails", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: deviceURLs.device.index({ id: device.system_id }) },
+            { pathname: urls.devices.device.index({ id: device.system_id }) },
           ]}
         >
           <CompatRouter>
             <Routes>
               <Route
                 element={<DeviceDetails />}
-                path={deviceURLs.device.index(null)}
+                path={urls.devices.device.index(null)}
               />
             </Routes>
           </CompatRouter>
@@ -147,14 +147,14 @@ describe("DeviceDetails", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: deviceURLs.device.index({ id: device.system_id }) },
+            { pathname: urls.devices.device.index({ id: device.system_id }) },
           ]}
         >
           <CompatRouter>
             <Routes>
               <Route
                 element={<DeviceDetails />}
-                path={deviceURLs.device.index(null)}
+                path={urls.devices.device.index(null)}
               />
             </Routes>
           </CompatRouter>

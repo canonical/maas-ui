@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import MachineLink, { Labels } from "./MachineLink";
 
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -69,6 +69,6 @@ it("renders a link if machines have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    machineURLs.machine.index({ id: machine.system_id })
+    urls.machines.machine.index({ id: machine.system_id })
   );
 });

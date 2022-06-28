@@ -7,11 +7,10 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { ControllerDetailsTabLabels } from "../constants";
-import controllerURLs from "../urls";
 
 import Controllers from "./Controllers";
 
-import controllersURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import { actions as controllerActions } from "app/store/controller";
 import {
   controller as controllerFactory,
@@ -25,11 +24,11 @@ describe("Controllers", () => {
   [
     {
       component: "ControllerList",
-      path: controllersURLs.index,
+      path: urls.controllers.index,
     },
     {
       component: "NotFound",
-      path: `${controllerURLs.index}/not/a/path`,
+      path: `${urls.controllers.index}/not/a/path`,
     },
   ].forEach(({ component, path }) => {
     it(`Displays: ${component} at: ${path}`, () => {
@@ -41,7 +40,7 @@ describe("Controllers", () => {
               <Routes>
                 <Route
                   element={<Controllers />}
-                  path={`${controllerURLs.index}/*`}
+                  path={`${urls.controllers.index}/*`}
                 />
               </Routes>
             </CompatRouter>
@@ -68,7 +67,7 @@ it("gets and sets the controller as active only once when navigating within the 
       <MemoryRouter
         initialEntries={[
           {
-            pathname: controllerURLs.controller.index({
+            pathname: urls.controllers.controller.index({
               id: controller.system_id,
             }),
           },
@@ -78,7 +77,7 @@ it("gets and sets the controller as active only once when navigating within the 
           <Routes>
             <Route
               element={<Controllers />}
-              path={`${controllerURLs.controller.index(null)}/*`}
+              path={`${urls.controllers.controller.index(null)}/*`}
             />
           </Routes>
         </CompatRouter>

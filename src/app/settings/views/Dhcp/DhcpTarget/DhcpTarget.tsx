@@ -3,12 +3,9 @@ import type { ReactNode } from "react";
 import { Spinner } from "@canonical/react-components";
 import { Link } from "react-router-dom-v5-compat";
 
-import controllersURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import { useDhcpTarget } from "app/settings/hooks";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
-import subnetsURLs from "app/subnets/urls";
 
 type Props = {
   nodeId?: DHCPSnippet["node"];
@@ -40,15 +37,15 @@ const DhcpTarget = ({ nodeId, subnetId }: Props): JSX.Element | null => {
   }
   let route;
   if (type === "machine" && nodeId) {
-    route = machineURLs.machine.index({ id: nodeId });
+    route = urls.machines.machine.index({ id: nodeId });
   } else if (type === "controller" && nodeId) {
     return (
-      <Link to={controllersURLs.controller.index({ id: nodeId })}>{name}</Link>
+      <Link to={urls.controllers.controller.index({ id: nodeId })}>{name}</Link>
     );
   } else if (type === "device" && nodeId) {
-    route = deviceURLs.device.index({ id: nodeId });
+    route = urls.devices.device.index({ id: nodeId });
   } else if (type === "subnet" && subnetId) {
-    route = subnetsURLs.subnet.index({ id: subnetId });
+    route = urls.subnets.subnet.index({ id: subnetId });
   }
   return route ? <Link to={route}>{name}</Link> : null;
 };

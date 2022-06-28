@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerLink, { Labels } from "./ControllerLink";
 
-import controllersURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
@@ -75,6 +75,6 @@ it("renders a link if controllers have loaded and it exists", () => {
   expect(link).toHaveTextContent("bolla.maas");
   expect(link).toHaveAttribute(
     "href",
-    controllersURLs.controller.index({ id: controller.system_id })
+    urls.controllers.controller.index({ id: controller.system_id })
   );
 });

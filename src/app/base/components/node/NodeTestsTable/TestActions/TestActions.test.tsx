@@ -6,8 +6,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import TestActions from "./TestActions";
 
 import * as hooks from "app/base/hooks/analytics";
-import controllerURLs from "app/controllers/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import {
   ScriptResultStatus,
   ScriptResultType,
@@ -62,7 +61,7 @@ describe("TestActions", () => {
       true
     );
     expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
-      machineURLs.machine.commissioning.scriptResult({
+      urls.machines.machine.commissioning.scriptResult({
         id: machine.system_id,
         scriptResultId: scriptResult.id,
       })
@@ -92,7 +91,7 @@ describe("TestActions", () => {
       true
     );
     expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
-      controllerURLs.controller.commissioning.scriptResult({
+      urls.controllers.controller.commissioning.scriptResult({
         id: controller.system_id,
         scriptResultId: scriptResult.id,
       })
@@ -122,7 +121,7 @@ describe("TestActions", () => {
       true
     );
     expect(wrapper.find("Link[data-testid='view-details']").prop("to")).toBe(
-      machineURLs.machine.testing.scriptResult({
+      urls.machines.machine.testing.scriptResult({
         id: machine.system_id,
         scriptResultId: scriptResult.id,
       })

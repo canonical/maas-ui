@@ -8,8 +8,8 @@ import * as Yup from "yup";
 
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
+import urls from "app/base/urls";
 import type { MachineActionFormProps } from "app/machines/types";
-import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import type {
   Machine,
@@ -41,7 +41,9 @@ const generateFailedTestsMessage = (
       return (
         <span>
           Machine <strong>{singleMachine.hostname}</strong> has{" "}
-          <Link to={machineURLs.machine.index({ id: singleMachine.system_id })}>
+          <Link
+            to={urls.machines.machine.index({ id: singleMachine.system_id })}
+          >
             {numFailedTestsString}
           </Link>
         </span>
@@ -193,7 +195,7 @@ export const OverrideTestForm = ({
                       <br />
                       {machines.length === 1 ? (
                         <Link
-                          to={machineURLs.machine.index({
+                          to={urls.machines.machine.index({
                             id: machines[0].system_id,
                           })}
                         >

@@ -13,9 +13,9 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { SetSearchFilter } from "app/base/types";
+import urls from "app/base/urls";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
@@ -62,7 +62,11 @@ const LXDSingleDetails = (): JSX.Element => {
 
   if (!isId(id) || (!loading && !pod)) {
     return (
-      <ModelNotFound id={id} linkURL={kvmURLs.lxd.index} modelName="LXD host" />
+      <ModelNotFound
+        id={id}
+        linkURL={urls.kvm.lxd.index}
+        modelName="LXD host"
+      />
     );
   }
   return (
@@ -81,7 +85,7 @@ const LXDSingleDetails = (): JSX.Element => {
         <Switch>
           <Route
             exact
-            path={kvmURLs.lxd.single.vms(null)}
+            path={urls.kvm.lxd.single.vms(null)}
             render={() => (
               <LXDSingleVMs
                 id={id}
@@ -93,19 +97,19 @@ const LXDSingleDetails = (): JSX.Element => {
           />
           <Route
             exact
-            path={kvmURLs.lxd.single.resources(null)}
+            path={urls.kvm.lxd.single.resources(null)}
             render={() => <LXDSingleResources id={id} />}
           />
           <Route
             exact
-            path={kvmURLs.lxd.single.edit(null)}
+            path={urls.kvm.lxd.single.edit(null)}
             render={() => (
               <LXDSingleSettings id={id} setHeaderContent={setHeaderContent} />
             )}
           />
           <Redirect
-            from={kvmURLs.lxd.single.index(null)}
-            to={kvmURLs.lxd.single.vms(null)}
+            from={urls.kvm.lxd.single.index(null)}
+            to={urls.kvm.lxd.single.vms(null)}
           />
         </Switch>
       )}

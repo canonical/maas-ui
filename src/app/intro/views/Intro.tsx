@@ -20,7 +20,7 @@ import UserIntro from "./UserIntro";
 
 import Section from "app/base/components/Section";
 import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
-import introURLs from "app/intro/urls";
+import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { getRelativeRoute } from "app/utils";
@@ -34,7 +34,7 @@ const Intro = (): JSX.Element => {
   const completedIntro = useCompletedIntro();
   const completedUserIntro = useCompletedUserIntro();
   const exitURL = useExitURL();
-  const viewingUserIntro = location.pathname.startsWith(introURLs.user);
+  const viewingUserIntro = location.pathname.startsWith(urls.intro.user);
   const showIncomplete = !completedIntro && !isAdmin;
 
   useEffect(() => {
@@ -45,11 +45,11 @@ const Intro = (): JSX.Element => {
       } else if (viewingUserIntro && !completedIntro) {
         // If the user is viewing the user intro but hasn't yet completed the maas
         // intro then send them back to the start.
-        navigate(introURLs.index, { replace: true });
+        navigate(urls.intro.index, { replace: true });
       } else if (!viewingUserIntro && completedIntro) {
         // If the user is viewing the maas intro but has already completed it then
         // send them to the user intro.
-        navigate(introURLs.user, { replace: true });
+        navigate(urls.intro.user, { replace: true });
       }
     }
   }, [
@@ -75,21 +75,21 @@ const Intro = (): JSX.Element => {
   if (content) {
     return <Section>{content}</Section>;
   }
-  const base = `${introURLs.index}`;
+  const base = `${urls.intro.index}`;
   return (
     <Routes>
       <Route element={<MaasIntro />} path="/" />
       <Route
         element={<ImagesIntro />}
-        path={getRelativeRoute(introURLs.images, base)}
+        path={getRelativeRoute(urls.intro.images, base)}
       />
       <Route
         element={<MaasIntroSuccess />}
-        path={getRelativeRoute(introURLs.success, base)}
+        path={getRelativeRoute(urls.intro.success, base)}
       />
       <Route
         element={<UserIntro />}
-        path={getRelativeRoute(introURLs.user, base)}
+        path={getRelativeRoute(urls.intro.user, base)}
       />
     </Routes>
   );

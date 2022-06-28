@@ -6,6 +6,7 @@ import { Link } from "react-router-dom-v5-compat";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import urls from "app/base/urls";
 import configSelectors from "app/store/config/selectors";
 import { NetworkDiscovery } from "app/store/config/types";
 import { actions as fabricActions } from "app/store/fabric";
@@ -13,7 +14,6 @@ import fabricSelectors from "app/store/fabric/selectors";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
 import type { Subnet } from "app/store/subnet/types";
-import subnetsURLS from "app/subnets/urls";
 import { simpleSortByKey } from "app/utils";
 
 type SubnetDiscoveryValues = {
@@ -81,7 +81,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
                     <>
                       <Link
                         data-testid="subnet-link"
-                        to={subnetsURLS.subnet.index({ id: subnet.id })}
+                        to={urls.subnets.subnet.index({ id: subnet.id })}
                       >
                         {subnet.cidr}
                       </Link>
@@ -90,7 +90,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
                           <span> on </span>
                           <Link
                             data-testid="fabric-link"
-                            to={subnetsURLS.fabric.index({
+                            to={urls.subnets.fabric.index({
                               id: targetFabric.id,
                             })}
                           >

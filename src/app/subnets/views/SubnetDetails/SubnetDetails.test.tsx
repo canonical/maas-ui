@@ -6,9 +6,9 @@ import configureStore from "redux-mock-store";
 
 import SubnetDetails from "./SubnetDetails";
 
+import urls from "app/base/urls";
 import { actions as staticRouteActions } from "app/store/staticroute";
 import { actions as subnetActions } from "app/store/subnet";
-import subnetsURLs from "app/subnets/urls";
 import {
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
@@ -22,13 +22,13 @@ it("dispatches actions to fetch necessary data and set subnet as active on mount
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
             <Route
               element={<SubnetDetails />}
-              path={subnetsURLs.subnet.index(null)}
+              path={urls.subnets.subnet.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -57,13 +57,13 @@ it("dispatches actions to unset active subnet and clean up on unmount", () => {
   const { unmount } = render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
             <Route
               element={<SubnetDetails />}
-              path={subnetsURLs.subnet.index(null)}
+              path={urls.subnets.subnet.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -101,13 +101,13 @@ it("displays a message if the subnet does not exist", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
             <Route
               element={<SubnetDetails />}
-              path={subnetsURLs.subnet.index(null)}
+              path={urls.subnets.subnet.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -129,13 +129,13 @@ it("shows a spinner if the subnet has not loaded yet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
             <Route
               element={<SubnetDetails />}
-              path={subnetsURLs.subnet.index(null)}
+              path={urls.subnets.subnet.index(null)}
             />
           </Routes>
         </CompatRouter>

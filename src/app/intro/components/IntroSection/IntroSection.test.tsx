@@ -6,8 +6,7 @@ import configureStore from "redux-mock-store";
 
 import IntroSection from "./IntroSection";
 
-import dashboardURLs from "app/dashboard/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -66,7 +65,7 @@ describe("IntroSection", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      dashboardURLs.index
+      urls.dashboard.index
     );
   });
 
@@ -89,7 +88,7 @@ describe("IntroSection", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      dashboardURLs.index
+      urls.dashboard.index
     );
   });
 
@@ -112,7 +111,7 @@ describe("IntroSection", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      machineURLs.index
+      urls.machines.index
     );
   });
 

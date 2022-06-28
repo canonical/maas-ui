@@ -8,9 +8,9 @@ import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
+import urls from "app/base/urls";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
 import type { KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
@@ -61,7 +61,7 @@ const LXDClusterVMs = ({
             return (
               <Link
                 data-testid="host-link"
-                to={kvmURLs.lxd.cluster.vms.host({
+                to={urls.kvm.lxd.cluster.vms.host({
                   clusterId,
                   hostId: machine.pod.id,
                 })}

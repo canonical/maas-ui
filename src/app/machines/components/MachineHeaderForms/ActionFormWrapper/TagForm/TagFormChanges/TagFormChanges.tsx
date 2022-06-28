@@ -13,6 +13,7 @@ import { useSelectedTags, useUnchangedTags } from "../hooks";
 import type { TagFormValues } from "../types";
 
 import { NULL_EVENT } from "app/base/constants";
+import urls from "app/base/urls";
 import type { Machine } from "app/store/machine/types";
 import type { TagIdCountMap } from "app/store/machine/utils";
 import { getTagCountsForMachines } from "app/store/machine/utils";
@@ -20,7 +21,6 @@ import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import TagDetails from "app/tags/components/TagDetails";
-import tagsURLs from "app/tags/urls";
 import { toFormikNumber } from "app/utils";
 
 type Props = {
@@ -272,7 +272,7 @@ export const TagFormChanges = ({
       {hasAutomaticTags && (
         <p className="u-text--muted u-nudge-right--small">
           These tags cannot be unassigned. Go to the{" "}
-          <Link to={tagsURLs.index}>Tags tab</Link> to manage automatic tags.
+          <Link to={urls.tags.index}>Tags tab</Link> to manage automatic tags.
         </p>
       )}
       {isOpen && tagDetails ? (
