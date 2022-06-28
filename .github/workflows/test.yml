@@ -61,6 +61,8 @@ jobs:
         node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
+      - name: Install dotrun
+        uses: canonical/install-dotrun@main
       - name: Restore node_modules
         id: yarn-cache
         uses: actions/cache@v3
@@ -83,20 +85,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - name: Install dotrun
         uses: canonical/install-dotrun@main
-
       - name: Install dependencies
-        run: /snap/bin/dotrun install
-
+        run: dotrun install
       - name: Build assets
-        run: /snap/bin/dotrun --env CI=false build
-
+        run: dotrun --env CI=false build
       - name: Run dotrun
-        run: |
-          /snap/bin/dotrun &
-
+        run: dotrun &
       - name: Wait for MAAS UI to be ready
-        run: |
-          /snap/bin/dotrun wait-on-ui
+        run: dotrun wait-on-ui
