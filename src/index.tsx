@@ -28,6 +28,18 @@ const Root = (): JSX.Element => {
 
 const rootNode = document.getElementById("root");
 
+if (process.env.NODE_ENV === "development") {
+  // eslint-disable-next-line @typescript-eslint/no-var-requires
+  // @ts-ignore
+  const { devtools } = require("./mocks/browser");
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  devtools.init();
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  window.MAAS_DEVTOOLS = devtools;
+}
+
 if (rootNode) {
   ReactDOM.render(<Root />, rootNode);
 }

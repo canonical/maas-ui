@@ -649,6 +649,16 @@ export function* setupWebSocket({
 }): SagaGenerator<void> {
   try {
     const socketClient = yield* call(createConnection, websocketClient);
+    if (
+      process.env.NODE_ENV === "development" &&
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window?.MAAS_DEVTOOLS?.getOptions()?.enabled
+    ) {
+      // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+      // @ts-ignore
+      window.MAAS_DEVTOOLS.connect(socketClient);
+    }
     yield* put({ type: "status/websocketConnected" });
     // Set up the list of models that have been loaded.
     resetLoaded();

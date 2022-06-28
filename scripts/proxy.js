@@ -10,8 +10,6 @@ var app = express();
 const PROXY_PORT = process.env.PROXY_PORT || 8400;
 const REACT_PORT = 8401;
 
-console.log(`${BASENAME}${REACT_BASENAME}`);
-
 app.get(BASENAME, (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
 app.get("/", (req, res) => res.redirect(`${BASENAME}${REACT_BASENAME}`));
 app.get(`${BASENAME}/`, (req, res) =>

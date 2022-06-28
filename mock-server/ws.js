@@ -3,6 +3,9 @@ import fs from "fs";
 import { parse } from "url";
 import { createServer } from "http";
 
+const LOG_LEVEL = process.env.LOG_LEVEL || "normal";
+const isLogLevelVerbose = LOG_LEVEL === "verbose";
+
 const handleLogin = (request, response) => {
   if (
     request.headers["content-type"]?.includes(
@@ -17,7 +20,6 @@ const handleLogin = (request, response) => {
       const params = new URLSearchParams(body);
       const username = params.get("username");
       const password = params.get("password");
-      console.log(username, password);
       if (username === "admin" && password === "test1") {
         response.setHeader(
           "Set-Cookie",
@@ -70,23 +72,28 @@ server.listen(8080, function () {
   console.log(new Date() + " Server is listening on port 8080");
 });
 
-const mockResponses = JSON.parse(
-  fs.readFileSync("mocks/maas-websocket-responses.json")
-);
+const mocks = {
+  default: fs.readFileSync("./mocks/ws-default.json"),
+  noMachines: fs.readFileSync("./mocks/ws-noMachines.json"),
+};
 
 const wsHandler = (method, func) => ({ [method]: func });
 
-const handlers = [
-  wsHandler("*", (request, response) =>
-    response({
-      result: mockResponses[request.method],
-    })
-  ),
-  // example of a handler for a specific method
-  wsHandler("machine.list", (_request, response) => {
-    response({ result: mockResponses["machine.list"] });
-  }),
-];
+let scenario = "noMachines";
+
+const getHandlers = () => {
+  return [
+    wsHandler("*", (request, response) =>
+      response({
+        result: JSON.parse(mocks[scenario])[request.method],
+      })
+    ),
+    // example of a handler for a specific method
+    wsHandler("machine.list", (_request, response) => {
+      response({ result: JSON.parse(mocks[scenario])["machine.list"] });
+    }),
+  ];
+};
 
 const wss = new WebSocketServer({ noServer: true });
 
@@ -110,15 +117,21 @@ wss.on("connection", function connection(ws) {
   ws.on("message", function message(data) {
     const dataString = data.toString();
 
-    console.log("received: %s", data);
-    const { method, request_id, params } = JSON.parse(dataString);
-    const handlersObj = handlers.reduce(
+    isLogLevelVerbose && console.log("received: %s", dataString);
+    const { method, request_id, payload } = JSON.parse(dataString);
+    const handlersObj = getHandlers().reduce(
       (acc, curr) => ({ ...acc, ...curr }),
       {}
     );
+
+    if (method === "devtools.set_scenario") {
+      scenario = payload;
+      return;
+    }
+
     const handlerFunc = handlersObj[method] || handlersObj["*"];
 
-    handlerFunc({ method, request_id, params }, (message) => {
+    handlerFunc({ method, request_id, payload }, (message) => {
       const responseMessage = JSON.stringify({
         request_id,
         ...message,
@@ -126,7 +139,7 @@ wss.on("connection", function connection(ws) {
         type: 1,
       });
       ws.send(responseMessage);
-      console.log("message sent", responseMessage);
+      isLogLevelVerbose && console.log("message sent", responseMessage);
       wss.clients.forEach(function each(client) {
         if (client !== ws && client.readyState === WebSocket.OPEN) {
           client.send(responseMessage);

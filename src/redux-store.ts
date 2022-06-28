@@ -36,6 +36,6 @@ export const store = configureStore({
 
 export const history = createReduxHistory(store);
 
-const websocketClient = new WebSocketClient();
+export const websocketClient = new WebSocketClient();
 
 sagaMiddleware.run(rootSaga, websocketClient);

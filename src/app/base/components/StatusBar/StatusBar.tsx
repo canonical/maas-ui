@@ -3,6 +3,8 @@ import type { ReactNode } from "react";
 import { formatDistance, parse } from "date-fns";
 import { useSelector } from "react-redux";
 
+import DevTools from "./DevTools";
+
 import configSelectors from "app/store/config/selectors";
 import controllerSelectors from "app/store/controller/selectors";
 import {
@@ -64,6 +66,9 @@ export const StatusBar = (): JSX.Element | null => {
   const activeMachine = useSelector(machineSelectors.active);
   const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const isDevtoolsEnabled = window?.MAAS_DEVTOOLS?.getOptions()?.enabled;
 
   if (!(maasName && version)) {
     return null;
@@ -114,6 +119,7 @@ export const StatusBar = (): JSX.Element | null => {
             {status}
           </div>
         )}
+        {isDevtoolsEnabled ? <DevTools /> : null}
       </div>
     </aside>
   );
