@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
+import urls from "app/base/urls";
 import { KVMHeaderViews } from "app/kvm/constants";
-import kvmURLs from "app/kvm/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -61,7 +61,7 @@ describe("LXDClusterHostsTable", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -88,7 +88,7 @@ describe("LXDClusterHostsTable", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -106,7 +106,7 @@ describe("LXDClusterHostsTable", () => {
       </Provider>
     );
     expect(wrapper.find("NameColumn Link").at(0).prop("to")).toBe(
-      kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 22 })
+      urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 22 })
     );
   });
 
@@ -117,7 +117,7 @@ describe("LXDClusterHostsTable", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -147,7 +147,7 @@ describe("LXDClusterHostsTable", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -178,7 +178,7 @@ describe("LXDClusterHostsTable", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -198,12 +198,12 @@ describe("LXDClusterHostsTable", () => {
     expect(
       wrapper.find("Link[data-testid='vm-host-settings']").prop("to")
     ).toStrictEqual({
-      pathname: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 22 }),
+      pathname: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 22 }),
     });
     expect(
       wrapper.find("Link[data-testid='vm-host-settings']").prop("state")
     ).toStrictEqual({
-      from: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+      from: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
     });
   });
 
@@ -214,7 +214,7 @@ describe("LXDClusterHostsTable", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
               key: "testKey",
             },
           ]}

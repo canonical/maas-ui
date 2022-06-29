@@ -8,13 +8,13 @@ import DeviceName from "./DeviceName";
 
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
+import urls from "app/base/urls";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
 import type {
   DeviceHeaderContent,
   DeviceSetHeaderContent,
 } from "app/devices/types";
-import deviceURLs from "app/devices/urls";
 import { getHeaderTitle } from "app/devices/utils";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
@@ -72,27 +72,27 @@ const DeviceDetailsHeader = ({
       tabLinks={[
         {
           active: pathname.startsWith(
-            deviceURLs.device.summary({ id: systemId })
+            urls.devices.device.summary({ id: systemId })
           ),
           component: Link,
           label: "Summary",
-          to: deviceURLs.device.summary({ id: systemId }),
+          to: urls.devices.device.summary({ id: systemId }),
         },
         {
           active: pathname.startsWith(
-            deviceURLs.device.network({ id: systemId })
+            urls.devices.device.network({ id: systemId })
           ),
           component: Link,
           label: "Network",
-          to: deviceURLs.device.network({ id: systemId }),
+          to: urls.devices.device.network({ id: systemId }),
         },
         {
           active: pathname.startsWith(
-            deviceURLs.device.configuration({ id: systemId })
+            urls.devices.device.configuration({ id: systemId })
           ),
           component: Link,
           label: "Configuration",
-          to: deviceURLs.device.configuration({ id: systemId }),
+          to: urls.devices.device.configuration({ id: systemId }),
         },
       ]}
       title={

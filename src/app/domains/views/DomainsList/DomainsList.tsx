@@ -8,7 +8,7 @@ import DomainsTable from "./DomainsTable";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
-import domainsURLs from "app/domains/urls";
+import urls from "app/base/urls";
 import { actions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
 
@@ -27,7 +27,7 @@ const DomainsList = (): JSX.Element => {
       <Switch>
         <Route
           exact
-          path={domainsURLs.index}
+          path={urls.domains.index}
           render={() => <>{domains.length > 0 && <DomainsTable />}</>}
         />
       </Switch>

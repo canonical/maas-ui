@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterDetailsRedirect, { Label } from "./LXDClusterDetailsRedirect";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -37,7 +37,7 @@ beforeEach(() => {
 it("displays a spinner while loading", () => {
   state.pod.loaded = false;
   renderWithBrowserRouter(<LXDClusterDetailsRedirect clusterId={1} />, {
-    route: kvmURLs.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
+    route: urls.kvm.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
     wrapperProps: { state },
   });
   expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -46,7 +46,7 @@ it("displays a spinner while loading", () => {
 it("displays a message if the host is not found", () => {
   state.pod.items = [];
   renderWithBrowserRouter(<LXDClusterDetailsRedirect clusterId={1} />, {
-    route: kvmURLs.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
+    route: urls.kvm.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
     wrapperProps: { state },
   });
   expect(screen.getByText("LXD host not found")).toBeInTheDocument();
@@ -55,7 +55,9 @@ it("displays a message if the host is not found", () => {
 it("redirects to the config form", async () => {
   const history = createMemoryHistory({
     initialEntries: [
-      { pathname: kvmURLs.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }) },
+      {
+        pathname: urls.kvm.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
+      },
     ],
   });
   const store = configureStore()(state);
@@ -66,7 +68,7 @@ it("redirects to the config form", async () => {
           <Routes>
             <Route
               element={<LXDClusterDetailsRedirect clusterId={1} />}
-              path={kvmURLs.lxd.cluster.host.index(null)}
+              path={urls.kvm.lxd.cluster.host.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -75,7 +77,7 @@ it("redirects to the config form", async () => {
   );
   await waitFor(() =>
     expect(history.location.pathname).toEqual(
-      kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 })
+      urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 })
     )
   );
 });

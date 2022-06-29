@@ -10,10 +10,10 @@ import { Label } from "../TagUpdate/TagUpdate";
 
 import TagDetails from "./TagDetails";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { TagViewState } from "app/tags/types";
-import tagURLs from "app/tags/urls";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -45,13 +45,13 @@ it("dispatches actions to fetch necessary data", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
             <Route
               element={<TagDetails onDelete={jest.fn()} />}
-              path={tagURLs.tag.index(null)}
+              path={urls.tags.tag.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -81,13 +81,13 @@ it("displays a message if the tag does not exist", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
             <Route
               element={<TagDetails onDelete={jest.fn()} />}
-              path={tagURLs.tag.index(null)}
+              path={urls.tags.tag.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -109,13 +109,13 @@ it("shows a spinner if the tag has not loaded yet", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
             <Route
               element={<TagDetails onDelete={jest.fn()} />}
-              path={tagURLs.tag.index(null)}
+              path={urls.tags.tag.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -131,7 +131,7 @@ it("can display the edit form", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.update({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.update({ id: 1 }) }]}
       >
         <CompatRouter>
           <Routes>
@@ -142,7 +142,7 @@ it("can display the edit form", () => {
                   tagViewState={TagViewState.Updating}
                 />
               }
-              path={tagURLs.tag.update(null)}
+              path={urls.tags.tag.update(null)}
             />
           </Routes>
         </CompatRouter>
@@ -153,7 +153,7 @@ it("can display the edit form", () => {
 });
 
 it("can go to the tag edit page", async () => {
-  const path = tagURLs.tag.index({ id: 1 });
+  const path = urls.tags.tag.index({ id: 1 });
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
   });
@@ -165,7 +165,7 @@ it("can go to the tag edit page", async () => {
           <Routes>
             <Route
               element={<TagDetails onDelete={jest.fn()} />}
-              path={tagURLs.tag.index(null)}
+              path={urls.tags.tag.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -173,6 +173,6 @@ it("can go to the tag edit page", async () => {
     </Provider>
   );
   await userEvent.click(screen.getByRole("link", { name: "Edit" }));
-  expect(history.location.pathname).toBe(tagURLs.tag.update({ id: 1 }));
+  expect(history.location.pathname).toBe(urls.tags.tag.update({ id: 1 }));
   expect(history.location.state).toStrictEqual({ canGoBack: true });
 });

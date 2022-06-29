@@ -2,10 +2,10 @@ import { Button, List } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import urls from "app/base/urls";
 import IntroCard from "app/intro/components/IntroCard";
 import IntroSection from "app/intro/components/IntroSection";
 import { useExitURL } from "app/intro/hooks";
-import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
 
@@ -13,7 +13,7 @@ const MaasIntroSuccess = (): JSX.Element => {
   const dispatch = useDispatch();
   const authUser = useSelector(authSelectors.get);
   const exitURL = useExitURL();
-  const continueLink = authUser?.completed_intro ? exitURL : introURLs.user;
+  const continueLink = authUser?.completed_intro ? exitURL : urls.intro.user;
 
   return (
     <IntroSection windowTitle="Success">
@@ -31,7 +31,7 @@ const MaasIntroSuccess = (): JSX.Element => {
         />
       </IntroCard>
       <div className="u-align--right">
-        <Button element={Link} to={introURLs.images}>
+        <Button element={Link} to={urls.intro.images}>
           Back
         </Button>
         <Button

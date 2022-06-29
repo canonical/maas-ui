@@ -13,7 +13,7 @@ import * as Yup from "yup";
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 import type { ClearHeaderContent } from "app/base/types";
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { actions as messageActions } from "app/store/message";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -118,7 +118,7 @@ const DeleteForm = ({
             NotificationSeverity.INFORMATION
           )
         );
-        navigate({ pathname: kvmURLs.index });
+        navigate({ pathname: urls.kvm.index });
         clearHeaderContent();
       }}
       processingCount={deletingCount}

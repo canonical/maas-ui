@@ -11,9 +11,8 @@ import NodeDevicesWarning from "./NodeDevicesWarning";
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import { HardwareType } from "app/base/enum";
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import type { MachineSetHeaderContent } from "app/machines/types";
-import machineURLs from "app/machines/urls";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
@@ -42,11 +41,11 @@ const generateGroup = (
 ) => {
   const isMachine = nodeIsMachine(node);
   const storageURL = isMachine
-    ? machineURLs.machine.storage({ id: node.system_id })
-    : controllerURLs.controller.storage({ id: node.system_id });
+    ? urls.machines.machine.storage({ id: node.system_id })
+    : urls.controllers.controller.storage({ id: node.system_id });
   const networkURL = isMachine
-    ? machineURLs.machine.network({ id: node.system_id })
-    : controllerURLs.controller.network({ id: node.system_id });
+    ? urls.machines.machine.network({ id: node.system_id })
+    : urls.controllers.controller.network({ id: node.system_id });
 
   return group.items.map((nodeDevice, i) => {
     const {

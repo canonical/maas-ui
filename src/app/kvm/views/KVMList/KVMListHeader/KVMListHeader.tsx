@@ -7,10 +7,10 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import urls from "app/base/urls";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
@@ -28,8 +28,8 @@ const KVMListHeader = ({
   const location = useLocation();
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
-  const lxdTabActive = location.pathname.endsWith(kvmURLs.lxd.index);
-  const virshTabActive = location.pathname.endsWith(kvmURLs.virsh.index);
+  const lxdTabActive = location.pathname.endsWith(urls.kvm.lxd.index);
+  const virshTabActive = location.pathname.endsWith(urls.kvm.virsh.index);
 
   useEffect(() => {
     dispatch(podActions.fetch());
@@ -69,14 +69,14 @@ const KVMListHeader = ({
           component: Link,
           "data-testid": "lxd-tab",
           label: "LXD",
-          to: kvmURLs.lxd.index,
+          to: urls.kvm.lxd.index,
         },
         {
           active: virshTabActive,
           component: Link,
           "data-testid": "virsh-tab",
           label: "Virsh",
-          to: kvmURLs.virsh.index,
+          to: urls.kvm.virsh.index,
         },
       ]}
       title={headerContent ? getFormTitle(headerContent) : "KVM"}

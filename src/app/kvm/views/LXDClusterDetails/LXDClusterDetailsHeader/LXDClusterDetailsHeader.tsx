@@ -8,10 +8,10 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import type { SetSearchFilter } from "app/base/types";
+import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import { getFormTitle } from "app/kvm/utils";
 import type { RootState } from "app/store/root/types";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
@@ -83,35 +83,35 @@ const LXDClusterDetailsHeader = ({
       tabLinks={[
         {
           active: location.pathname.endsWith(
-            kvmURLs.lxd.cluster.hosts({ clusterId })
+            urls.kvm.lxd.cluster.hosts({ clusterId })
           ),
           component: Link,
           label: "KVM hosts",
-          to: kvmURLs.lxd.cluster.hosts({ clusterId }),
+          to: urls.kvm.lxd.cluster.hosts({ clusterId }),
         },
         {
           active: location.pathname.includes(
-            kvmURLs.lxd.cluster.vms.index({ clusterId })
+            urls.kvm.lxd.cluster.vms.index({ clusterId })
           ),
           component: Link,
           label: "Virtual machines",
-          to: kvmURLs.lxd.cluster.vms.index({ clusterId }),
+          to: urls.kvm.lxd.cluster.vms.index({ clusterId }),
         },
         {
           active: location.pathname.endsWith(
-            kvmURLs.lxd.cluster.resources({ clusterId })
+            urls.kvm.lxd.cluster.resources({ clusterId })
           ),
           component: Link,
           label: "Resources",
-          to: kvmURLs.lxd.cluster.resources({ clusterId }),
+          to: urls.kvm.lxd.cluster.resources({ clusterId }),
         },
         {
           active: location.pathname.endsWith(
-            kvmURLs.lxd.cluster.edit({ clusterId })
+            urls.kvm.lxd.cluster.edit({ clusterId })
           ),
           component: Link,
           label: "Cluster settings",
-          to: kvmURLs.lxd.cluster.edit({ clusterId }),
+          to: urls.kvm.lxd.cluster.edit({ clusterId }),
         },
       ]}
       title={title}

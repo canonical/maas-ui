@@ -7,8 +7,8 @@ import { Link } from "react-router-dom-v5-compat";
 
 import Switch from "app/base/components/Switch";
 import { useSendAnalytics } from "app/base/hooks";
+import urls from "app/base/urls";
 import type { KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -76,7 +76,7 @@ const LXDHostToolbar = ({
               data-testid="settings-link"
               state={{ from: location.pathname }}
               to={{
-                pathname: kvmURLs.lxd.cluster.host.edit({
+                pathname: urls.kvm.lxd.cluster.host.edit({
                   clusterId,
                   hostId,
                 }),

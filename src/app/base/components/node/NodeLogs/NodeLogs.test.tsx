@@ -4,7 +4,7 @@ import { Label as EventLogsLabel } from "./EventLogs/EventLogs";
 import { Label as InstallationOutputLabel } from "./InstallationOutput/InstallationOutput";
 import NodeLogs from "./NodeLogs";
 
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -30,15 +30,15 @@ describe("NodeLogs", () => {
   [
     {
       label: InstallationOutputLabel.Title,
-      path: machineURLs.machine.logs.installationOutput({ id: "abc123" }),
+      path: urls.machines.machine.logs.installationOutput({ id: "abc123" }),
     },
     {
       label: EventLogsLabel.Title,
-      path: machineURLs.machine.logs.index({ id: "abc123" }),
+      path: urls.machines.machine.logs.index({ id: "abc123" }),
     },
     {
       label: EventLogsLabel.Title,
-      path: machineURLs.machine.logs.events({ id: "abc123" }),
+      path: urls.machines.machine.logs.events({ id: "abc123" }),
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
@@ -46,9 +46,9 @@ describe("NodeLogs", () => {
         <NodeLogs
           node={machine}
           urls={{
-            events: machineURLs.machine.logs.events,
-            index: machineURLs.machine.logs.index,
-            installationOutput: machineURLs.machine.logs.installationOutput,
+            events: urls.machines.machine.logs.events,
+            index: urls.machines.machine.logs.index,
+            installationOutput: urls.machines.machine.logs.installationOutput,
           }}
         />,
         {

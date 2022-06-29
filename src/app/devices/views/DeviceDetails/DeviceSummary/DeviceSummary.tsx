@@ -5,7 +5,7 @@ import DeviceOverviewCard from "./DeviceOverviewCard";
 
 import NodeSummaryNetworkCard from "app/base/components/NodeSummaryNetworkCard";
 import { useWindowTitle } from "app/base/hooks";
-import deviceURLs from "app/devices/urls";
+import urls from "app/base/urls";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device, DeviceMeta } from "app/store/device/types";
 import { isDeviceDetails } from "app/store/device/utils";
@@ -37,7 +37,7 @@ const DeviceSummary = ({ systemId }: Props): JSX.Element => {
         <div className="device-summary__network">
           <NodeSummaryNetworkCard
             interfaces={isDeviceDetails(device) ? device.interfaces : null}
-            networkURL={deviceURLs.device.network({ id: systemId })}
+            networkURL={urls.devices.device.network({ id: systemId })}
           />
         </div>
       </div>

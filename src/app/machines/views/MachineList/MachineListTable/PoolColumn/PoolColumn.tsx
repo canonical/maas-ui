@@ -5,8 +5,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import urls from "app/base/urls";
 import { useToggleMenu } from "app/machines/hooks";
-import poolsURLs from "app/pools/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
@@ -85,7 +85,7 @@ export const PoolColumn = ({
           {updating !== null ? (
             <Spinner className="u-nudge-left--small" />
           ) : null}
-          <Link className="p-link--soft" to={poolsURLs.index}>
+          <Link className="p-link--soft" to={urls.pools.index}>
             {machine.pool.name}
           </Link>
         </span>

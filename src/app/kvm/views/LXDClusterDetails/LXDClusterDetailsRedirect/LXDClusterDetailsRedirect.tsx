@@ -4,7 +4,7 @@ import { Redirect } from "react-router-dom";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useGetURLId } from "app/base/hooks/urls";
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -34,12 +34,14 @@ const LXDClusterDetailsRedirect = ({ clusterId }: Props): JSX.Element => {
         id={hostId}
         inSection={false}
         linkText="View all LXD hosts in this cluster"
-        linkURL={kvmURLs.lxd.cluster.hosts({ clusterId })}
+        linkURL={urls.kvm.lxd.cluster.hosts({ clusterId })}
         modelName="LXD host"
       />
     );
   }
-  return <Redirect to={kvmURLs.lxd.cluster.host.edit({ clusterId, hostId })} />;
+  return (
+    <Redirect to={urls.kvm.lxd.cluster.host.edit({ clusterId, hostId })} />
+  );
 };
 
 export default LXDClusterDetailsRedirect;

@@ -8,7 +8,7 @@ import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import poolsURLs from "app/pools/urls";
+import urls from "app/base/urls";
 import { actions as poolActions } from "app/store/resourcepool";
 import poolSelectors from "app/store/resourcepool/selectors";
 import type { ResourcePool } from "app/store/resourcepool/types";
@@ -66,7 +66,7 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
         cleanup={poolActions.cleanup}
         errors={errors}
         initialValues={initialValues}
-        onCancel={() => navigate({ pathname: poolsURLs.index })}
+        onCancel={() => navigate({ pathname: urls.pools.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "Resource pool",
@@ -87,7 +87,7 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
           setSaving(values.name);
         }}
         saved={saved}
-        savedRedirect={poolsURLs.index}
+        savedRedirect={urls.pools.index}
         saving={saving}
         submitLabel="Save pool"
         validationSchema={PoolSchema}

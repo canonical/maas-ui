@@ -7,11 +7,10 @@ import configureStore from "redux-mock-store";
 
 import DeviceListTable from "./DeviceListTable";
 
-import deviceURLs from "app/devices/urls";
+import urls from "app/base/urls";
 import type { Device } from "app/store/device/types";
 import { DeviceIpAssignment } from "app/store/device/types";
 import type { RootState } from "app/store/root/types";
-import zoneURLs from "app/zones/urls";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,
@@ -61,7 +60,7 @@ describe("DeviceListTable", () => {
 
     expect(
       wrapper.find("Link[data-testid='device-details-link']").at(0).prop("to")
-    ).toBe(deviceURLs.device.index({ id: device.system_id }));
+    ).toBe(urls.devices.device.index({ id: device.system_id }));
   });
 
   it("can show when a device has more than one mac address", () => {
@@ -106,7 +105,7 @@ describe("DeviceListTable", () => {
 
     expect(
       wrapper.find("Link[data-testid='device-zone-link']").at(0).prop("to")
-    ).toBe(zoneURLs.details({ id: device.zone.id }));
+    ).toBe(urls.zones.details({ id: device.zone.id }));
   });
 
   describe("device list sorting", () => {

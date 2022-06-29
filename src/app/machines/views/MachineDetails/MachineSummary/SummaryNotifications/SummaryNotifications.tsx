@@ -4,8 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import { useCanEdit, useIsRackControllerConnected } from "app/base/hooks";
-import imagesURLs from "app/images/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import MachineNotifications from "app/machines/views/MachineDetails/MachineNotifications";
 import { actions as generalActions } from "app/store/general";
 import { architectures as architecturesSelectors } from "app/store/general/selectors";
@@ -78,7 +77,7 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
               {formatEventText(machine.events[0])}.{" "}
               <Link
                 className="p-notification__action"
-                to={machineURLs.machine.logs.index({ id: machine.system_id })}
+                to={urls.machines.machine.logs.index({ id: machine.system_id })}
               >
                 See logs
               </Link>
@@ -114,8 +113,9 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
           content: (
             <>
               No boot images have been imported for a valid architecture to be
-              selected. Visit the <Link to={imagesURLs.index}>images page</Link>{" "}
-              to start the import process.
+              selected. Visit the{" "}
+              <Link to={urls.images.index}>images page</Link> to start the
+              import process.
             </>
           ),
           severity: "negative",
@@ -131,7 +131,7 @@ const SummaryNotifications = ({ id }: Props): JSX.Element | null => {
           content: (
             <>
               This machine was not synced when it was scheduled. Check the{" "}
-              <Link to={machineURLs.machine.logs.index({ id })}>
+              <Link to={urls.machines.machine.logs.index({ id })}>
                 machine logs
               </Link>{" "}
               for more information.

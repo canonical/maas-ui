@@ -9,6 +9,7 @@ import TagUpdate from "../TagUpdate";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
@@ -16,7 +17,6 @@ import type { Tag } from "app/store/tag/types";
 import { TagMeta } from "app/store/tag/types";
 import BaseTagDetails from "app/tags/components/TagDetails";
 import { TagViewState } from "app/tags/types";
-import tagURLs from "app/tags/urls";
 import { isId } from "app/utils";
 
 export enum Label {
@@ -53,7 +53,7 @@ const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
   }, [dispatch]);
 
   if (!isId(id) || (!tagsLoading && !tag)) {
-    return <ModelNotFound id={id} linkURL={tagURLs.index} modelName="tag" />;
+    return <ModelNotFound id={id} linkURL={urls.tags.index} modelName="tag" />;
   }
 
   if (!tag || tagsLoading) {
@@ -72,7 +72,7 @@ const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
     <div aria-label={Label.Title}>
       <Row>
         <Col size={6}>
-          <Link className="u-sv3" to={tagURLs.index}>
+          <Link className="u-sv3" to={urls.tags.index}>
             &lsaquo; Back to all tags
           </Link>
         </Col>
@@ -84,7 +84,7 @@ const TagDetails = ({ onDelete, tagViewState }: Props): JSX.Element => {
                 hasIcon
                 state={{ canGoBack: true }}
                 to={{
-                  pathname: tagURLs.tag.update({ id: tag.id }),
+                  pathname: urls.tags.tag.update({ id: tag.id }),
                 }}
               >
                 <Icon name="edit" /> <span>{Label.EditButton}</span>

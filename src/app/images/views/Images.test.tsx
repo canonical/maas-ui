@@ -5,7 +5,7 @@ import configureStore from "redux-mock-store";
 
 import Images from "./Images";
 
-import imagesURLs from "app/images/urls";
+import urls from "app/base/urls";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
@@ -14,7 +14,7 @@ describe("Images", () => {
   [
     {
       component: "ImageList",
-      path: imagesURLs.index,
+      path: urls.images.index,
     },
     {
       component: "NotFound",

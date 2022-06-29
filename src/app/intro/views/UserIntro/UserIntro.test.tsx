@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 import UserIntro from "./UserIntro";
 
 import * as baseHooks from "app/base/hooks/base";
-import dashboardURLs from "app/dashboard/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as userActions } from "app/store/user";
 import {
@@ -93,7 +93,7 @@ describe("UserIntro", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      dashboardURLs.index
+      urls.dashboard.index
     );
   });
 
@@ -211,7 +211,7 @@ describe("UserIntro", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      dashboardURLs.index
+      urls.dashboard.index
     );
   });
 

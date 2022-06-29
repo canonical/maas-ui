@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import SpaceSubnets from "./SpaceSubnets";
 
-import subnetsURLs from "app/subnets/urls";
+import urls from "app/base/urls";
 import {
   fabricState as fabricStateFactory,
   rootState as rootStateFactory,
@@ -53,13 +53,13 @@ it("displays a message when there are no subnets", async () => {
   render(
     <Provider store={mockStore(state)}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.space.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Route
             component={() => <SpaceSubnets space={space} />}
             exact
-            path={subnetsURLs.space.index({ id: space.id })}
+            path={urls.subnets.space.index({ id: space.id })}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -91,13 +91,13 @@ it("displays subnet details correctly", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.space.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.space.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <Route
             component={() => <SpaceSubnets space={space} />}
             exact
-            path={subnetsURLs.space.index({ id: space.id })}
+            path={urls.subnets.space.index({ id: space.id })}
           />
         </CompatRouter>
       </MemoryRouter>

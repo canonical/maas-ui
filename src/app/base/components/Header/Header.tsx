@@ -23,7 +23,6 @@ import {
   useGoogleAnalytics,
 } from "app/base/hooks";
 import urls from "app/base/urls";
-import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as statusActions } from "app/store/status";
@@ -171,7 +170,7 @@ export const Header = (): JSX.Element => {
   const completedUserIntro = useCompletedUserIntro();
   useGoogleAnalytics();
   const isAuthenticated = !!authUser;
-  const introMatch = useMatch({ path: introURLs.index, end: false });
+  const introMatch = useMatch({ path: urls.intro.index, end: false });
   const isAtIntro = !!introMatch;
   // Redirect to the intro pages if not completed.
   useEffect(() => {

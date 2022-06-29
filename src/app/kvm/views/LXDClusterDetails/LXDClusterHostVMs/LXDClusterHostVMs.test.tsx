@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import LXDClusterHostVMs, { Label } from "./LXDClusterHostVMs";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -45,10 +45,10 @@ describe("LXDClusterHostVMs", () => {
         setSearchFilter={jest.fn()}
       />,
       {
-        route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
         wrapperProps: {
           state,
-          routePattern: kvmURLs.lxd.cluster.vms.host(null),
+          routePattern: urls.kvm.lxd.cluster.vms.host(null),
         },
       }
     );
@@ -65,10 +65,10 @@ describe("LXDClusterHostVMs", () => {
         setSearchFilter={jest.fn()}
       />,
       {
-        route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
         wrapperProps: {
           state,
-          routePattern: kvmURLs.lxd.cluster.vms.host(null),
+          routePattern: urls.kvm.lxd.cluster.vms.host(null),
         },
       }
     );
@@ -85,10 +85,10 @@ describe("LXDClusterHostVMs", () => {
         setSearchFilter={jest.fn()}
       />,
       {
-        route: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+        route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
         wrapperProps: {
           state,
-          routePattern: kvmURLs.lxd.cluster.vms.host(null),
+          routePattern: urls.kvm.lxd.cluster.vms.host(null),
         },
       }
     );

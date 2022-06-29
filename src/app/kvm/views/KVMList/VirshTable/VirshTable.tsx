@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
+import urls from "app/base/urls";
 import CPUColumn from "app/kvm/components/CPUColumn";
 import NameColumn from "app/kvm/components/NameColumn";
 import PoolColumn from "app/kvm/components/PoolColumn";
@@ -11,7 +12,6 @@ import RAMColumn from "app/kvm/components/RAMColumn";
 import StorageColumn from "app/kvm/components/StorageColumn";
 import TagsColumn from "app/kvm/components/TagsColumn";
 import VMsColumn from "app/kvm/components/VMsColumn";
-import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import poolSelectors from "app/store/resourcepool/selectors";
@@ -55,7 +55,7 @@ const generateRows = (kvms: Pod[]) =>
           <NameColumn
             name={kvm.name}
             secondary={kvm.power_parameters.power_address}
-            url={kvmURLs.virsh.details.index({ id: kvm.id })}
+            url={urls.kvm.virsh.details.index({ id: kvm.id })}
           />
         ),
       },

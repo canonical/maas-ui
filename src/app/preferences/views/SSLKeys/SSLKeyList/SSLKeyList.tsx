@@ -7,7 +7,7 @@ import type { Dispatch } from "redux";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 import SettingsTable from "app/settings/components/SettingsTable";
 import { actions as sslkeyActions } from "app/store/sslkey";
 import sslkeySelectors from "app/store/sslkey/selectors";
@@ -92,7 +92,7 @@ const SSLKeyList = (): JSX.Element => {
         </Notification>
       )}
       <SettingsTable
-        buttons={[{ label: "Add SSL key", url: prefsURLs.sslKeys.add }]}
+        buttons={[{ label: "Add SSL key", url: urls.preferences.sslKeys.add }]}
         headers={[
           {
             content: "Key",

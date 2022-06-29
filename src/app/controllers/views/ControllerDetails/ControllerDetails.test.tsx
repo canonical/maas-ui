@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerDetails from "./ControllerDetails";
 
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import { actions as controllerActions } from "app/store/controller";
 import {
   controller as controllerFactory,
@@ -31,7 +31,7 @@ it("gets and sets the controller as active", () => {
       <MemoryRouter
         initialEntries={[
           {
-            pathname: controllerURLs.controller.index({
+            pathname: urls.controllers.controller.index({
               id: controller.system_id,
             }),
           },
@@ -41,7 +41,7 @@ it("gets and sets the controller as active", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={controllerURLs.controller.index(null)}
+              path={urls.controllers.controller.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -78,7 +78,7 @@ it("unsets active controller and cleans up when unmounting", () => {
       <MemoryRouter
         initialEntries={[
           {
-            pathname: controllerURLs.controller.index({
+            pathname: urls.controllers.controller.index({
               id: controller.system_id,
             }),
           },
@@ -88,7 +88,7 @@ it("unsets active controller and cleans up when unmounting", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={controllerURLs.controller.index(null)}
+              path={urls.controllers.controller.index(null)}
             />
           </Routes>
         </CompatRouter>
@@ -130,7 +130,7 @@ it("displays a message if the controller does not exist", () => {
       <MemoryRouter
         initialEntries={[
           {
-            pathname: controllerURLs.controller.index({
+            pathname: urls.controllers.controller.index({
               id: "missing-id",
             }),
           },
@@ -140,7 +140,7 @@ it("displays a message if the controller does not exist", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={controllerURLs.controller.index(null)}
+              path={urls.controllers.controller.index(null)}
             />
           </Routes>
         </CompatRouter>

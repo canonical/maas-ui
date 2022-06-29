@@ -10,7 +10,7 @@ import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import TableHeader from "app/base/components/TableHeader";
 import { useAddMessage, useTableSort, useWindowTitle } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 import SettingsTable from "app/settings/components/SettingsTable";
 import settingsURLs from "app/settings/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -72,7 +72,7 @@ const generateUserRows = (
               }
               editPath={
                 isAuthUser
-                  ? prefsURLs.details
+                  ? urls.preferences.details
                   : settingsURLs.users.edit({ id: user.id })
               }
               onDelete={() => setExpandedId(user.id)}

@@ -12,9 +12,9 @@ import TagList from "./TagList";
 import TagMachines from "./TagMachines";
 
 import Section from "app/base/components/Section";
+import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import type { Tag, TagMeta } from "app/store/tag/types";
-import tagsURLs from "app/tags/urls";
 
 const getViewState = (
   headerContent: TagHeaderContent | null,
@@ -27,7 +27,7 @@ const getViewState = (
     return TagViewState.Creating;
   }
   const isUpdating = matchPath(pathname, {
-    path: tagsURLs.tag.update(null),
+    path: urls.tags.tag.update(null),
     exact: true,
     strict: false,
   });
@@ -61,26 +61,26 @@ const Tags = (): JSX.Element => {
       <Switch>
         <Route
           exact
-          path={tagsURLs.tag.index(null)}
+          path={urls.tags.tag.index(null)}
           render={() => (
             <TagDetails onDelete={onDelete} tagViewState={tagViewState} />
           )}
         />
         <Route
           exact
-          path={tagsURLs.tag.update(null)}
+          path={urls.tags.tag.update(null)}
           render={() => (
             <TagDetails onDelete={onDelete} tagViewState={tagViewState} />
           )}
         />
         <Route
           exact
-          path={tagsURLs.tag.machines(null)}
+          path={urls.tags.tag.machines(null)}
           render={() => <TagMachines />}
         />
         <Route
           exact
-          path={tagsURLs.index}
+          path={urls.tags.index}
           render={() => <TagList onDelete={onDelete} />}
         />
         <Route path="*" render={() => <NotFound />} />

@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
+import urls from "app/base/urls";
 import MachineListTable from "app/machines/views/MachineList/MachineListTable";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -13,7 +14,6 @@ import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { TagMeta } from "app/store/tag/types";
-import tagURLs from "app/tags/urls";
 import { isId } from "app/utils";
 
 export enum Label {
@@ -39,7 +39,7 @@ const TagMachines = (): JSX.Element => {
   }, [dispatch]);
 
   if (!isId(id) || (!tagsLoading && !tag)) {
-    return <ModelNotFound id={id} linkURL={tagURLs.index} modelName="tag" />;
+    return <ModelNotFound id={id} linkURL={urls.tags.index} modelName="tag" />;
   }
 
   if (!tag || tagsLoading) {

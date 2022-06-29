@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import NodeLogs from "app/base/components/node/NodeLogs";
 import { useWindowTitle } from "app/base/hooks";
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
@@ -30,9 +30,9 @@ const ControllerLogs = ({ systemId }: Props): JSX.Element => {
     <NodeLogs
       node={controller}
       urls={{
-        events: controllerURLs.controller.logs.events,
-        index: controllerURLs.controller.logs.index,
-        installationOutput: controllerURLs.controller.logs.installationOutput,
+        events: urls.controllers.controller.logs.events,
+        index: urls.controllers.controller.logs.index,
+        installationOutput: urls.controllers.controller.logs.installationOutput,
       }}
     />
   );

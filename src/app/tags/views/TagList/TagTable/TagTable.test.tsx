@@ -8,13 +8,10 @@ import configureStore from "redux-mock-store";
 
 import TagTable, { Label, TestId } from "./TagTable";
 
-import controllerURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { TagSearchFilter } from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
-import tagsURLs from "app/tags/urls";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -326,15 +323,15 @@ it("can link to nodes", () => {
   expect(deviceLink).toBeInTheDocument();
   expect(machineLink).toHaveAttribute(
     "href",
-    `${machineURLs.index}?tags=%3Da-tag`
+    `${urls.machines.index}?tags=%3Da-tag`
   );
   expect(controllerLink).toHaveAttribute(
     "href",
-    `${controllerURLs.index}?tags=%3Da-tag`
+    `${urls.controllers.index}?tags=%3Da-tag`
   );
   expect(deviceLink).toHaveAttribute(
     "href",
-    `${deviceURLs.index}?tags=%3Da-tag`
+    `${urls.devices.index}?tags=%3Da-tag`
   );
 });
 
@@ -528,7 +525,7 @@ it("returns to the first page if the filter changes", () => {
 });
 
 it("can go to the tag edit page", async () => {
-  const path = tagsURLs.tag.machines({ id: 1 });
+  const path = urls.tags.tag.machines({ id: 1 });
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],
   });
@@ -556,6 +553,6 @@ it("can go to the tag edit page", async () => {
     </Provider>
   );
   await userEvent.click(screen.getAllByRole("button", { name: "Edit" })[0]);
-  expect(history.location.pathname).toBe(tagsURLs.tag.update({ id: 2 }));
+  expect(history.location.pathname).toBe(urls.tags.tag.update({ id: 2 }));
   expect(history.location.state).toStrictEqual({ canGoBack: true });
 });

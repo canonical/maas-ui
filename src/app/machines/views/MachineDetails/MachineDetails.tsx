@@ -22,8 +22,8 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
+import urls from "app/base/urls";
 import type { MachineHeaderContent } from "app/machines/types";
-import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
@@ -63,7 +63,11 @@ const MachineDetails = (): JSX.Element => {
 
   if (!isId(id) || (!machinesLoading && !machine)) {
     return (
-      <ModelNotFound id={id} linkURL={machineURLs.index} modelName="machine" />
+      <ModelNotFound
+        id={id}
+        linkURL={urls.machines.index}
+        modelName="machine"
+      />
     );
   }
 
@@ -81,7 +85,7 @@ const MachineDetails = (): JSX.Element => {
         <Switch>
           <Route
             exact
-            path={machineURLs.machine.summary(null)}
+            path={urls.machines.machine.summary(null)}
             render={() => (
               <>
                 <SummaryNotifications id={id} />
@@ -91,12 +95,12 @@ const MachineDetails = (): JSX.Element => {
           />
           <Route
             exact
-            path={machineURLs.machine.instances(null)}
+            path={urls.machines.machine.instances(null)}
             render={() => <MachineInstances />}
           />
           <Route
             exact
-            path={machineURLs.machine.network(null)}
+            path={urls.machines.machine.network(null)}
             render={() => (
               <>
                 <NetworkNotifications id={id} />
@@ -106,7 +110,7 @@ const MachineDetails = (): JSX.Element => {
           />
           <Route
             exact
-            path={machineURLs.machine.storage(null)}
+            path={urls.machines.machine.storage(null)}
             render={() => (
               <>
                 <StorageNotifications id={id} />
@@ -116,70 +120,72 @@ const MachineDetails = (): JSX.Element => {
           />
           <Route
             exact
-            path={machineURLs.machine.pciDevices(null)}
+            path={urls.machines.machine.pciDevices(null)}
             render={() => (
               <MachinePCIDevices setHeaderContent={setHeaderContent} />
             )}
           />
           <Route
             exact
-            path={machineURLs.machine.usbDevices(null)}
+            path={urls.machines.machine.usbDevices(null)}
             render={() => (
               <MachineUSBDevices setHeaderContent={setHeaderContent} />
             )}
           />
           <Route
             exact
-            path={machineURLs.machine.commissioning.index(null)}
+            path={urls.machines.machine.commissioning.index(null)}
             render={() => <MachineCommissioning />}
           />
           <Route
             exact
-            path={machineURLs.machine.commissioning.scriptResult(null)}
+            path={urls.machines.machine.commissioning.scriptResult(null)}
             render={() => (
               <NodeTestDetails
                 getReturnPath={(id) =>
-                  machineURLs.machine.commissioning.index({ id })
+                  urls.machines.machine.commissioning.index({ id })
                 }
               />
             )}
           />
           <Route
             exact
-            path={machineURLs.machine.testing.index(null)}
+            path={urls.machines.machine.testing.index(null)}
             render={() => <MachineTests />}
           />
           <Route
             exact
-            path={machineURLs.machine.testing.scriptResult(null)}
+            path={urls.machines.machine.testing.scriptResult(null)}
             render={() => (
               <NodeTestDetails
                 getReturnPath={(id) =>
-                  machineURLs.machine.testing.index({ id })
+                  urls.machines.machine.testing.index({ id })
                 }
               />
             )}
           />
           <Route
-            path={machineURLs.machine.logs.index(null)}
+            path={urls.machines.machine.logs.index(null)}
             render={() => <MachineLogs systemId={id} />}
           />
           <Route
             exact
-            path={machineURLs.machine.events(null)}
+            path={urls.machines.machine.events(null)}
             render={() => (
-              <Redirect to={machineURLs.machine.logs.events({ id })} />
+              <Redirect to={urls.machines.machine.logs.events({ id })} />
             )}
           />
           <Route
             exact
-            path={machineURLs.machine.configuration(null)}
+            path={urls.machines.machine.configuration(null)}
             render={() => <MachineConfiguration />}
           />
           <Route
             exact
-            path={machineURLs.machine.index(null)}
-            render={() => <Redirect to={machineURLs.machine.summary({ id })} />}
+            path={urls.machines.machine.index(null)}
+            render={() => (
+              <Redirect to={urls.machines.machine.summary({ id })} />
+            )}
           />
         </Switch>
       )}

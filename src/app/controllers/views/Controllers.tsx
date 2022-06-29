@@ -4,8 +4,8 @@ import ControllerDetails from "./ControllerDetails";
 import ControllerList from "./ControllerList";
 
 import { useScrollToTop } from "app/base/hooks";
+import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
-import controllersURLs from "app/controllers/urls";
 
 const Controllers = (): JSX.Element => {
   useScrollToTop();
@@ -14,23 +14,23 @@ const Controllers = (): JSX.Element => {
     <Switch>
       <Route
         exact
-        path={controllersURLs.index}
+        path={urls.controllers.index}
         render={() => <ControllerList />}
       />
       {[
-        controllersURLs.controller.commissioning.index(null),
-        controllersURLs.controller.commissioning.scriptResult(null),
-        controllersURLs.controller.configuration(null),
-        controllersURLs.controller.index(null),
-        controllersURLs.controller.logs.index(null),
-        controllersURLs.controller.logs.events(null),
-        controllersURLs.controller.logs.installationOutput(null),
-        controllersURLs.controller.network(null),
-        controllersURLs.controller.pciDevices(null),
-        controllersURLs.controller.storage(null),
-        controllersURLs.controller.summary(null),
-        controllersURLs.controller.usbDevices(null),
-        controllersURLs.controller.vlans(null),
+        urls.controllers.controller.commissioning.index(null),
+        urls.controllers.controller.commissioning.scriptResult(null),
+        urls.controllers.controller.configuration(null),
+        urls.controllers.controller.index(null),
+        urls.controllers.controller.logs.index(null),
+        urls.controllers.controller.logs.events(null),
+        urls.controllers.controller.logs.installationOutput(null),
+        urls.controllers.controller.network(null),
+        urls.controllers.controller.pciDevices(null),
+        urls.controllers.controller.storage(null),
+        urls.controllers.controller.summary(null),
+        urls.controllers.controller.usbDevices(null),
+        urls.controllers.controller.vlans(null),
       ].map((path) => (
         <Route
           // using a single key as a workaround for Controller details pages

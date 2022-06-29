@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DetailsCard from "./DetailsCard";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { PowerTypeNames } from "app/store/general/constants";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
@@ -274,7 +274,7 @@ describe("node is a machine", () => {
 
     expect(wrapper.find("[data-testid='host']").text()).toEqual("lxd-pod ›");
     expect(wrapper.find("[data-testid='host'] Link").prop("to")).toBe(
-      kvmURLs.lxd.single.index({ id: pod.id })
+      urls.kvm.lxd.single.index({ id: pod.id })
     );
   });
 
@@ -307,7 +307,7 @@ describe("node is a machine", () => {
 
     expect(wrapper.find("[data-testid='host']").text()).toEqual("virsh-pod ›");
     expect(wrapper.find("[data-testid='host'] Link").prop("to")).toBe(
-      kvmURLs.virsh.details.index({ id: pod.id })
+      urls.kvm.virsh.details.index({ id: pod.id })
     );
   });
 
