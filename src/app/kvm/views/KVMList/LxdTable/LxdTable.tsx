@@ -5,7 +5,7 @@ import LxdKVMHostTable from "./LxdKVMHostTable";
 import type { LxdKVMHostTableRow } from "./LxdKVMHostTable/LxdKVMHostTable";
 import { LxdKVMHostType } from "./LxdKVMHostTable/LxdKVMHostTable";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import vmclusterSelectors from "app/store/vmcluster/selectors";
@@ -28,7 +28,7 @@ export const generateSingleHostRows = (pods: Pod[]): LxdKVMHostTableRow[] =>
       storage: pod.resources.storage,
       storagePools: pod.resources.storage_pools,
       tags: pod.tags,
-      url: kvmURLs.lxd.single.index({ id: pod.id }),
+      url: urls.kvm.lxd.single.index({ id: pod.id }),
       version: pod.version,
       vms: pod.resources.vm_count.tracked,
       zone: pod.zone,
@@ -54,7 +54,7 @@ export const generateClusterRows = (
     project: vmcluster.project,
     storage: vmcluster.total_resources.storage,
     storagePools: vmcluster.total_resources.storage_pools,
-    url: kvmURLs.lxd.cluster.index({ clusterId: vmcluster.id }),
+    url: urls.kvm.lxd.cluster.index({ clusterId: vmcluster.id }),
     version: vmcluster.version,
     vms: vmcluster.virtual_machines.length,
     zone:

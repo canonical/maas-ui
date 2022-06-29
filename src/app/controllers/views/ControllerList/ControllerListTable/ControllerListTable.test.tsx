@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerListTable from "./ControllerListTable";
 
-import controllersURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import type { Controller } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -50,7 +50,7 @@ describe("ControllerListTable", () => {
     );
 
     expect(wrapper.find("Link").at(0).prop("to")).toBe(
-      controllersURLs.controller.index({ id: controller.system_id })
+      urls.controllers.controller.index({ id: controller.system_id })
     );
   });
 

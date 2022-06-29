@@ -3,11 +3,11 @@ import pluralize from "pluralize";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
-import tagsURLs from "app/tags/urls";
 
 type Props = {
   id: Tag[TagMeta.PK];
@@ -50,7 +50,7 @@ export const DeleteTagFormWarnings = ({ id }: Props): JSX.Element | null => {
             You are deleting a tag with kernel options.{" "}
             {generateDeployedMessage(deployedCount)}
           </span>
-          <Link to={tagsURLs.tag.machines({ id })}>
+          <Link to={urls.tags.tag.machines({ id })}>
             Show the deployed {pluralize("machine", deployedCount)}
           </Link>
         </Notification>

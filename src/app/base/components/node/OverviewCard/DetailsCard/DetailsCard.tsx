@@ -6,9 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import { useCanEdit, useSendAnalytics } from "app/base/hooks";
-import controllerURLs from "app/controllers/urls";
-import kvmURLs from "app/kvm/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { ControllerDetails } from "app/store/controller/types";
 import { actions as generalActions } from "app/store/general";
 import { PowerTypeNames } from "app/store/general/constants";
@@ -37,8 +35,8 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
 
   const isMachine = nodeIsMachine(node);
   const configTabUrl = isMachine
-    ? machineURLs.machine.configuration({ id: node.system_id })
-    : controllerURLs.controller.configuration({ id: node.system_id });
+    ? urls.machines.machine.configuration({ id: node.system_id })
+    : urls.controllers.controller.configuration({ id: node.system_id });
   const powerTypeDescription = powerTypes.find(
     (powerType) => powerType.name === node.power_type
   )?.description;
@@ -82,8 +80,8 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
               <Link
                 to={
                   node.power_type === PowerTypeNames.LXD
-                    ? kvmURLs.lxd.single.index({ id: node.pod.id })
-                    : kvmURLs.virsh.details.index({ id: node.pod.id })
+                    ? urls.kvm.lxd.single.index({ id: node.pod.id })
+                    : urls.kvm.virsh.details.index({ id: node.pod.id })
                 }
               >
                 {node.pod.name} ›

@@ -4,7 +4,7 @@ import ControllerLogs, { Label } from "./ControllerLogs";
 
 import { Label as EventLogsLabel } from "app/base/components/node/NodeLogs/EventLogs/EventLogs";
 import { Label as InstallationOutputLabel } from "app/base/components/node/NodeLogs/InstallationOutput/InstallationOutput";
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   controllerDetails as controllerDetailsFactory,
@@ -39,15 +39,17 @@ describe("ControllerLogs", () => {
   [
     {
       label: InstallationOutputLabel.Title,
-      path: controllerURLs.controller.logs.installationOutput({ id: "abc123" }),
+      path: urls.controllers.controller.logs.installationOutput({
+        id: "abc123",
+      }),
     },
     {
       label: EventLogsLabel.Title,
-      path: controllerURLs.controller.logs.index({ id: "abc123" }),
+      path: urls.controllers.controller.logs.index({ id: "abc123" }),
     },
     {
       label: EventLogsLabel.Title,
-      path: controllerURLs.controller.logs.events({ id: "abc123" }),
+      path: urls.controllers.controller.logs.events({ id: "abc123" }),
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {

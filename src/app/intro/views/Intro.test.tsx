@@ -6,8 +6,7 @@ import configureStore from "redux-mock-store";
 
 import Intro from "./Intro";
 
-import dashboardURLs from "app/dashboard/urls";
-import introURLs from "app/intro/urls";
+import urls from "app/base/urls";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -82,7 +81,7 @@ describe("Intro", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: introURLs.index }]}>
+        <MemoryRouter initialEntries={[{ pathname: urls.intro.index }]}>
           <CompatRouter>
             <Intro />
           </CompatRouter>
@@ -90,7 +89,7 @@ describe("Intro", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      dashboardURLs.index
+      urls.dashboard.index
     );
   });
 
@@ -98,7 +97,7 @@ describe("Intro", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: introURLs.user }]}>
+        <MemoryRouter initialEntries={[{ pathname: urls.intro.user }]}>
           <CompatRouter>
             <Intro />
           </CompatRouter>
@@ -106,7 +105,7 @@ describe("Intro", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      introURLs.index
+      urls.intro.index
     );
   });
 
@@ -117,7 +116,7 @@ describe("Intro", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: introURLs.index }]}>
+        <MemoryRouter initialEntries={[{ pathname: urls.intro.index }]}>
           <CompatRouter>
             <Intro />
           </CompatRouter>
@@ -125,7 +124,7 @@ describe("Intro", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      introURLs.user
+      urls.intro.user
     );
   });
 });

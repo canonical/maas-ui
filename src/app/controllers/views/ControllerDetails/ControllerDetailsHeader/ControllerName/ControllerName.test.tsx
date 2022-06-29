@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import ControllerName from "./ControllerName";
 
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -52,7 +52,7 @@ it("can update a controller with the new domain", async () => {
       <MemoryRouter
         initialEntries={[
           {
-            pathname: controllerURLs.controller.index({
+            pathname: urls.controllers.controller.index({
               id: controller.system_id,
             }),
             key: "testKey",

@@ -8,8 +8,8 @@ import configureStore from "redux-mock-store";
 import TagForm from "./TagForm";
 
 import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
+import urls from "app/base/urls";
 import { Label as TagFormFieldsLabel } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm/TagFormFields";
-import machineURLs from "app/machines/urls";
 import { FilterMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import {
@@ -103,13 +103,13 @@ describe("TagForm", () => {
     expect(screen.queryByLabelText("tag-form")).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "tag-1" })).toHaveAttribute(
       "href",
-      `${machineURLs.index}${FilterMachines.filtersToQueryString({
+      `${urls.machines.index}${FilterMachines.filtersToQueryString({
         tags: ["=tag-1"],
       })}`
     );
     expect(screen.getByRole("link", { name: "tag-2" })).toHaveAttribute(
       "href",
-      `${machineURLs.index}${FilterMachines.filtersToQueryString({
+      `${urls.machines.index}${FilterMachines.filtersToQueryString({
         tags: ["=tag-2"],
       })}`
     );

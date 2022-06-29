@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import VLANControllers from "./VLANControllers";
 
-import controllersURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import type { VLAN } from "app/store/vlan/types";
 import {
@@ -76,10 +76,10 @@ it("renders correct details", () => {
   );
   expect(screen.getByRole("link", { name: /controller-abc/i })).toHaveAttribute(
     "href",
-    controllersURLs.controller.index({ id: "abc123" })
+    urls.controllers.controller.index({ id: "abc123" })
   );
   expect(screen.getByRole("link", { name: /controller-def/i })).toHaveAttribute(
     "href",
-    controllersURLs.controller.index({ id: "def456" })
+    urls.controllers.controller.index({ id: "def456" })
   );
 });

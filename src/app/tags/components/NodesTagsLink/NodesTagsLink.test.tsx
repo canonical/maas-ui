@@ -4,9 +4,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 
 import NodesTagsLink from "./NodesTagsLink";
 
-import controllerURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import { ControllerMeta } from "app/store/controller/types";
 import { DeviceMeta } from "app/store/device/types";
 import { MachineMeta } from "app/store/machine/types";
@@ -29,7 +27,7 @@ it("create a link to machines", () => {
   expect(machineLink).toBeInTheDocument();
   expect(machineLink).toHaveAttribute(
     "href",
-    `${machineURLs.index}?tags=%3Da-tag`
+    `${urls.machines.index}?tags=%3Da-tag`
   );
 });
 
@@ -51,7 +49,7 @@ it("create a link to controllers", () => {
   expect(controllerLink).toBeInTheDocument();
   expect(controllerLink).toHaveAttribute(
     "href",
-    `${controllerURLs.index}?tags=%3Da-tag`
+    `${urls.controllers.index}?tags=%3Da-tag`
   );
 });
 
@@ -69,6 +67,6 @@ it("create a link to devices", () => {
   expect(deviceLink).toBeInTheDocument();
   expect(deviceLink).toHaveAttribute(
     "href",
-    `${deviceURLs.index}?tags=%3Da-tag`
+    `${urls.devices.index}?tags=%3Da-tag`
   );
 });

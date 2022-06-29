@@ -9,7 +9,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useActivePod, useKVMDetailsRedirect } from "./hooks";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import {
@@ -108,11 +108,11 @@ describe("kvm hooks", () => {
       const { result } = renderHook(() => useKVMDetailsRedirect(1), {
         // Set the URL to the LXD single host settings page, but it's actually
         // in a cluster.
-        wrapper: generateWrapper(store, kvmURLs.lxd.single.edit({ id: 1 })),
+        wrapper: generateWrapper(store, urls.kvm.lxd.single.edit({ id: 1 })),
       });
 
       expect(result.current).toBe(
-        kvmURLs.lxd.cluster.host.edit({ clusterId: 2, hostId: 1 })
+        urls.kvm.lxd.cluster.host.edit({ clusterId: 2, hostId: 1 })
       );
     });
 
@@ -126,10 +126,13 @@ describe("kvm hooks", () => {
       const store = mockStore(state);
       const { result } = renderHook(() => useKVMDetailsRedirect(1), {
         // Set the URL to virsh details, but it's actually a LXD single host.
-        wrapper: generateWrapper(store, kvmURLs.virsh.details.index({ id: 1 })),
+        wrapper: generateWrapper(
+          store,
+          urls.kvm.virsh.details.index({ id: 1 })
+        ),
       });
 
-      expect(result.current).toBe(kvmURLs.lxd.single.index({ id: 1 }));
+      expect(result.current).toBe(urls.kvm.lxd.single.index({ id: 1 }));
     });
 
     it("can redirect to Virsh page", () => {
@@ -142,10 +145,10 @@ describe("kvm hooks", () => {
       const store = mockStore(state);
       const { result } = renderHook(() => useKVMDetailsRedirect(1), {
         // Set the URL to LXD single settings, but it's actually a virsh host
-        wrapper: generateWrapper(store, kvmURLs.lxd.single.index({ id: 1 })),
+        wrapper: generateWrapper(store, urls.kvm.lxd.single.index({ id: 1 })),
       });
 
-      expect(result.current).toBe(kvmURLs.virsh.details.index({ id: 1 }));
+      expect(result.current).toBe(urls.kvm.virsh.details.index({ id: 1 }));
     });
   });
 });

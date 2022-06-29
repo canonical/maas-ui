@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 import TestResults from "app/base/components/node/TestResults";
 import { HardwareType } from "app/base/enum";
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import type { MachineSetHeaderContent } from "app/machines/types";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
@@ -35,7 +35,7 @@ const StorageCard = ({ node, setHeaderContent }: Props): JSX.Element => (
       />
     ) : (
       <div className="overview-card__storage-tests">
-        <Link to={controllerURLs.controller.storage({ id: node.system_id })}>
+        <Link to={urls.controllers.controller.storage({ id: node.system_id })}>
           See storage
         </Link>
       </div>

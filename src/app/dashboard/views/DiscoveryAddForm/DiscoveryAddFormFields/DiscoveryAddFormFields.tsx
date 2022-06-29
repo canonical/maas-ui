@@ -9,6 +9,7 @@ import { DeviceType } from "../types";
 import FormikField from "app/base/components/FormikField";
 import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
 import TooltipButton from "app/base/components/TooltipButton";
+import urls from "app/base/urls";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import { DeviceMeta } from "app/store/device/types";
@@ -21,7 +22,6 @@ import { getSubnetDisplay } from "app/store/subnet/utils";
 import { NodeStatusCode } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 import { getVLANDisplay } from "app/store/vlan/utils";
-import subnetsURLs from "app/subnets/urls";
 
 type Props = {
   discovery: Discovery;
@@ -146,7 +146,7 @@ const DiscoveryAddFormFields = ({
           <div className="">
             <p>Fabric</p>
             <p>
-              <Link to={subnetsURLs.fabric.index({ id: discovery.fabric })}>
+              <Link to={urls.subnets.fabric.index({ id: discovery.fabric })}>
                 {discovery.fabric_name}
               </Link>
             </p>
@@ -155,7 +155,7 @@ const DiscoveryAddFormFields = ({
             <p>VLAN</p>
             <p>
               {vlanDisplay ? (
-                <Link to={subnetsURLs.vlan.index({ id: discovery.vlan })}>
+                <Link to={urls.subnets.vlan.index({ id: discovery.vlan })}>
                   {vlanDisplay}
                 </Link>
               ) : null}
@@ -165,7 +165,7 @@ const DiscoveryAddFormFields = ({
             <p>Subnet</p>
             {discovery.subnet && subnetDisplay ? (
               <p>
-                <Link to={subnetsURLs.subnet.index({ id: discovery.subnet })}>
+                <Link to={urls.subnets.subnet.index({ id: discovery.subnet })}>
                   {subnetDisplay}
                 </Link>
               </p>

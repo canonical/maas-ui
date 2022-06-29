@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import SubnetLink from "./SubnetLink";
 
-import subnetsURLs from "app/subnets/urls";
+import urls from "app/base/urls";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -70,6 +70,6 @@ it("renders a link if subnets have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    subnetsURLs.subnet.index({ id: subnet.id })
+    urls.subnets.subnet.index({ id: subnet.id })
   );
 });

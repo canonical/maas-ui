@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import LXDClusterDetails from "./LXDClusterDetails";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { Label as LXDClusterHostSettingsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHostSettings/LXDClusterHostSettings";
 import { Label as LXDClusterHostVMsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHostVMs/LXDClusterHostVMs";
 import { Label as LXDClusterHostsLabel } from "app/kvm/views/LXDClusterDetails/LXDClusterHosts/LXDClusterHosts";
@@ -39,27 +39,27 @@ describe("LXDClusterDetails", () => {
   [
     {
       label: LXDClusterHostsLabel.Title,
-      path: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }),
+      path: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
     },
     {
       label: LXDClusterVMsLabel.Title,
-      path: kvmURLs.lxd.cluster.vms.index({ clusterId: 1 }),
+      path: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }),
     },
     {
       label: LXDClusterResourcesLabel.Title,
-      path: kvmURLs.lxd.cluster.resources({ clusterId: 1 }),
+      path: urls.kvm.lxd.cluster.resources({ clusterId: 1 }),
     },
     {
       label: LXDClusterSettingsLabel.Title,
-      path: kvmURLs.lxd.cluster.edit({ clusterId: 1 }),
+      path: urls.kvm.lxd.cluster.edit({ clusterId: 1 }),
     },
     {
       label: LXDClusterHostVMsLabel.Title,
-      path: kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
+      path: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
     },
     {
       label: LXDClusterHostSettingsLabel.Title,
-      path: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
+      path: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
@@ -67,7 +67,7 @@ describe("LXDClusterDetails", () => {
         route: path,
         wrapperProps: {
           state,
-          routePattern: `${kvmURLs.lxd.cluster.index(null)}/*`,
+          routePattern: `${urls.kvm.lxd.cluster.index(null)}/*`,
         },
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();

@@ -7,8 +7,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import { useExitURL } from "./hooks";
 
-import dashboardURLs from "app/dashboard/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -48,7 +47,7 @@ describe("hooks", () => {
       const { result } = renderHook(() => useExitURL(), {
         wrapper: generateWrapper(store),
       });
-      expect(result.current).toBe(dashboardURLs.index);
+      expect(result.current).toBe(urls.dashboard.index);
     });
 
     it("gets the exit URL for a non-admin", () => {
@@ -61,7 +60,7 @@ describe("hooks", () => {
       const { result } = renderHook(() => useExitURL(), {
         wrapper: generateWrapper(store),
       });
-      expect(result.current).toBe(machineURLs.index);
+      expect(result.current).toBe(urls.machines.index);
     });
   });
 });

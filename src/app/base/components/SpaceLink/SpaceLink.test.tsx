@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import SpaceLink from "./SpaceLink";
 
-import subnetsURLs from "app/subnets/urls";
+import urls from "app/base/urls";
 import {
   rootState as rootStateFactory,
   space as spaceFactory,
@@ -70,6 +70,6 @@ it("renders a link if spaces have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    subnetsURLs.space.index({ id: space.id })
+    urls.subnets.space.index({ id: space.id })
   );
 });

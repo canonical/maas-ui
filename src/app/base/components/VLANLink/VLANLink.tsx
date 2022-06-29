@@ -4,12 +4,12 @@ import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import type { VLAN, VLANMeta } from "app/store/vlan/types";
 import { getVLANDisplay } from "app/store/vlan/utils";
-import subnetsURLs from "app/subnets/urls";
 
 type Props = {
   id?: VLAN[VLANMeta.PK] | null;
@@ -34,7 +34,7 @@ const VLANLink = ({ id }: Props): JSX.Element => {
     return <>{vlanDisplay}</>;
   }
   return (
-    <Link to={subnetsURLs.vlan.index({ id: vlan.id })}>{vlanDisplay}</Link>
+    <Link to={urls.subnets.vlan.index({ id: vlan.id })}>{vlanDisplay}</Link>
   );
 };
 

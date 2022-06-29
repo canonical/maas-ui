@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 import DHCPSnippets from "./DHCPSnippets";
 
 import type { Props as DHCPTableProps } from "app/base/components/DHCPTable/DHCPTable";
+import urls from "app/base/urls";
 import { actions as subnetActions } from "app/store/subnet";
-import subnetsURLs from "app/subnets/urls";
 import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
@@ -31,7 +31,7 @@ it("dispatches an action to fetch the subnets on mount", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <DHCPSnippets modelName="subnet" subnetIds={[1, 2]} />
       </MemoryRouter>
@@ -61,7 +61,7 @@ it("selects the correct subnets to display in the table", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <Route
           component={() => (
@@ -71,7 +71,7 @@ it("selects the correct subnets to display in the table", () => {
             />
           )}
           exact
-          path={subnetsURLs.subnet.index(null)}
+          path={urls.subnets.subnet.index(null)}
         />
       </MemoryRouter>
     </Provider>

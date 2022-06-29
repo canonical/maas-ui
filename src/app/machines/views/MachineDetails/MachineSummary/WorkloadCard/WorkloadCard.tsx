@@ -5,7 +5,7 @@ import { Link as RouterLink } from "react-router-dom";
 import LabelledList from "app/base/components/LabelledList";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useSendAnalytics } from "app/base/hooks";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
@@ -44,7 +44,7 @@ const WorkloadCard = ({ id }: Props): JSX.Element => {
                     });
                     return (
                       <div key={`${key}-${val}`}>
-                        <RouterLink to={`${machineURLs.index}${filter}`}>
+                        <RouterLink to={`${urls.machines.index}${filter}`}>
                           {val}
                         </RouterLink>
                       </div>

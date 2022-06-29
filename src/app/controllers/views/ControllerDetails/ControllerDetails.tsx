@@ -18,8 +18,8 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
+import urls from "app/base/urls";
 import type { ControllerHeaderContent } from "app/controllers/types";
-import controllerURLs from "app/controllers/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { ControllerMeta } from "app/store/controller/types";
@@ -54,7 +54,7 @@ const ControllerDetails = (): JSX.Element => {
     return (
       <ModelNotFound
         id={id}
-        linkURL={controllerURLs.index}
+        linkURL={urls.controllers.index}
         modelName="controller"
       />
     );
@@ -74,73 +74,73 @@ const ControllerDetails = (): JSX.Element => {
         <Switch>
           <Route
             exact
-            path={controllerURLs.controller.summary(null)}
+            path={urls.controllers.controller.summary(null)}
             render={() => <ControllerSummary systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.vlans(null)}
+            path={urls.controllers.controller.vlans(null)}
             render={() => <ControllerVLANs systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.network(null)}
+            path={urls.controllers.controller.network(null)}
             render={() => <ControllerNetwork systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.storage(null)}
+            path={urls.controllers.controller.storage(null)}
             render={() => <ControllerStorage systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.pciDevices(null)}
+            path={urls.controllers.controller.pciDevices(null)}
             render={() => <ControllerPCIDevices systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.usbDevices(null)}
+            path={urls.controllers.controller.usbDevices(null)}
             render={() => <ControllerUSBDevices systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.commissioning.index(null)}
+            path={urls.controllers.controller.commissioning.index(null)}
             render={() => <ControllerCommissioning systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.commissioning.scriptResult(null)}
+            path={urls.controllers.controller.commissioning.scriptResult(null)}
             render={() => (
               <NodeTestDetails
                 getReturnPath={(id) =>
-                  controllerURLs.controller.commissioning.index({ id })
+                  urls.controllers.controller.commissioning.index({ id })
                 }
               />
             )}
           />
           <Route
             exact
-            path={controllerURLs.controller.logs.index(null)}
+            path={urls.controllers.controller.logs.index(null)}
             render={() => <ControllerLogs systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.logs.events(null)}
+            path={urls.controllers.controller.logs.events(null)}
             render={() => <ControllerLogs systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.logs.installationOutput(null)}
+            path={urls.controllers.controller.logs.installationOutput(null)}
             render={() => <ControllerLogs systemId={id} />}
           />
           <Route
             exact
-            path={controllerURLs.controller.configuration(null)}
+            path={urls.controllers.controller.configuration(null)}
             render={() => <ControllerConfiguration systemId={id} />}
           />
           <Redirect
-            from={controllerURLs.controller.index(null)}
-            to={controllerURLs.controller.summary(null)}
+            from={urls.controllers.controller.index(null)}
+            to={urls.controllers.controller.summary(null)}
           />
         </Switch>
       )}

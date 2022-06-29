@@ -7,13 +7,12 @@ import configureStore from "redux-mock-store";
 
 import VLANSummary from "./VLANSummary";
 
-import controllersURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import type { Controller } from "app/store/controller/types";
 import type { Fabric } from "app/store/fabric/types";
 import type { RootState } from "app/store/root/types";
 import type { Space } from "app/store/space/types";
 import type { VLAN } from "app/store/vlan/types";
-import subnetsURLs from "app/subnets/urls";
 import {
   authState as authStateFactory,
   user as userFactory,
@@ -80,15 +79,15 @@ it("renders correct details", () => {
   const vlanSummary = screen.getByRole("region", { name: "VLAN summary" });
   expect(
     within(vlanSummary).getByRole("link", { name: space.name })
-  ).toHaveAttribute("href", subnetsURLs.space.index({ id: space.id }));
+  ).toHaveAttribute("href", urls.subnets.space.index({ id: space.id }));
   expect(
     within(vlanSummary).getByRole("link", { name: fabric.name })
-  ).toHaveAttribute("href", subnetsURLs.fabric.index({ id: fabric.id }));
+  ).toHaveAttribute("href", urls.subnets.fabric.index({ id: fabric.id }));
   expect(
     within(vlanSummary).getByRole("link", { name: /controller-abc/i })
   ).toHaveAttribute(
     "href",
-    controllersURLs.controller.index({ id: controller.system_id })
+    urls.controllers.controller.index({ id: controller.system_id })
   );
 });
 

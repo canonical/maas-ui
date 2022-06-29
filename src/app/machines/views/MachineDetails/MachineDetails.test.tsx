@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import MachineDetails from "./MachineDetails";
 
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   machineDetails as machineDetailsFactory,
@@ -45,75 +45,75 @@ describe("MachineDetails", () => {
   [
     {
       component: "MachineSummary",
-      route: machineURLs.machine.summary(null),
-      path: machineURLs.machine.summary({ id: "abc123" }),
+      route: urls.machines.machine.summary(null),
+      path: urls.machines.machine.summary({ id: "abc123" }),
     },
     {
       component: "MachineInstances",
-      route: machineURLs.machine.instances(null),
-      path: machineURLs.machine.instances({ id: "abc123" }),
+      route: urls.machines.machine.instances(null),
+      path: urls.machines.machine.instances({ id: "abc123" }),
     },
     {
       component: "MachineNetwork",
-      route: machineURLs.machine.network(null),
-      path: machineURLs.machine.network({ id: "abc123" }),
+      route: urls.machines.machine.network(null),
+      path: urls.machines.machine.network({ id: "abc123" }),
     },
     {
       component: "MachineStorage",
-      route: machineURLs.machine.storage(null),
-      path: machineURLs.machine.storage({ id: "abc123" }),
+      route: urls.machines.machine.storage(null),
+      path: urls.machines.machine.storage({ id: "abc123" }),
     },
     {
       component: "MachinePCIDevices",
-      route: machineURLs.machine.pciDevices(null),
-      path: machineURLs.machine.pciDevices({ id: "abc123" }),
+      route: urls.machines.machine.pciDevices(null),
+      path: urls.machines.machine.pciDevices({ id: "abc123" }),
     },
     {
       component: "MachineUSBDevices",
-      route: machineURLs.machine.usbDevices(null),
-      path: machineURLs.machine.usbDevices({ id: "abc123" }),
+      route: urls.machines.machine.usbDevices(null),
+      path: urls.machines.machine.usbDevices({ id: "abc123" }),
     },
     {
       component: "MachineCommissioning",
-      route: machineURLs.machine.commissioning.index(null),
-      path: machineURLs.machine.commissioning.index({ id: "abc123" }),
+      route: urls.machines.machine.commissioning.index(null),
+      path: urls.machines.machine.commissioning.index({ id: "abc123" }),
     },
     {
       component: "NodeTestDetails",
-      route: machineURLs.machine.commissioning.scriptResult(null),
-      path: machineURLs.machine.commissioning.scriptResult({
+      route: urls.machines.machine.commissioning.scriptResult(null),
+      path: urls.machines.machine.commissioning.scriptResult({
         id: "abc123",
         scriptResultId: 1,
       }),
     },
     {
       component: "MachineTests",
-      route: machineURLs.machine.testing.index(null),
-      path: machineURLs.machine.testing.index({ id: "abc123" }),
+      route: urls.machines.machine.testing.index(null),
+      path: urls.machines.machine.testing.index({ id: "abc123" }),
     },
     {
       component: "NodeTestDetails",
-      route: machineURLs.machine.testing.scriptResult(null),
-      path: machineURLs.machine.testing.scriptResult({
+      route: urls.machines.machine.testing.scriptResult(null),
+      path: urls.machines.machine.testing.scriptResult({
         id: "abc123",
         scriptResultId: 1,
       }),
     },
     {
       component: "NodeLogs",
-      route: machineURLs.machine.logs.index(null),
-      path: machineURLs.machine.logs.index({ id: "abc123" }),
+      route: urls.machines.machine.logs.index(null),
+      path: urls.machines.machine.logs.index({ id: "abc123" }),
     },
     {
       component: "MachineConfiguration",
-      route: machineURLs.machine.configuration(null),
-      path: machineURLs.machine.configuration({ id: "abc123" }),
+      route: urls.machines.machine.configuration(null),
+      path: urls.machines.machine.configuration({ id: "abc123" }),
     },
     {
       // Redirects to summary:
       component: "MachineSummary",
-      route: machineURLs.machine.index(null),
-      path: machineURLs.machine.index({ id: "abc123" }),
+      route: urls.machines.machine.index(null),
+      path: urls.machines.machine.index({ id: "abc123" }),
     },
   ].forEach(({ component, path, route }) => {
     it(`Displays: ${component} at: ${path}`, () => {

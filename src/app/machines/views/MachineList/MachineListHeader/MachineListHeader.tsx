@@ -10,13 +10,13 @@ import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import MachinesHeader from "app/base/components/node/MachinesHeader";
 import type { SetSearchFilter } from "app/base/types";
+import urls from "app/base/urls";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
 import type {
   MachineHeaderContent,
   MachineSetHeaderContent,
 } from "app/machines/types";
-import machineURLs from "app/machines/urls";
 import { getHeaderTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
@@ -50,7 +50,7 @@ export const MachineListHeader = ({
   }, [dispatch]);
 
   useEffect(() => {
-    if (location.pathname !== machineURLs.index) {
+    if (location.pathname !== urls.machines.index) {
       setHeaderContent(null);
     }
   }, [location.pathname, setHeaderContent]);

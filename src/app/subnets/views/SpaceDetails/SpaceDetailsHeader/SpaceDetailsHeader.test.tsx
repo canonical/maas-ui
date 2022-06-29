@@ -8,8 +8,8 @@ import configureStore from "redux-mock-store";
 
 import SpaceDetailsHeader from "./SpaceDetailsHeader";
 
+import urls from "app/base/urls";
 import { actions as spaceActions } from "app/store/space";
-import subnetsURLs from "app/subnets/urls";
 import {
   space as spaceFactory,
   spaceState as spaceStateFactory,
@@ -24,7 +24,7 @@ const renderTestCase = (
   })
 ) => {
   const history = createMemoryHistory({
-    initialEntries: [{ pathname: subnetsURLs.space.index({ id: space.id }) }],
+    initialEntries: [{ pathname: urls.subnets.space.index({ id: space.id }) }],
   });
   const state = rootStateFactory({
     space: spaceStateFactory({
@@ -43,7 +43,7 @@ const renderTestCase = (
             <Route
               component={() => <SpaceDetailsHeader space={space} />}
               exact
-              path={subnetsURLs.space.index({ id: space.id })}
+              path={urls.subnets.space.index({ id: space.id })}
             />
           </CompatRouter>
         </Router>

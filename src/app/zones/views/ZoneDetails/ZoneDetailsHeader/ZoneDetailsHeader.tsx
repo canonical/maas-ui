@@ -7,12 +7,12 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import DeleteConfirm from "./DeleteConfirm";
 
 import SectionHeader from "app/base/components/SectionHeader";
+import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as zoneActions } from "app/store/zone";
 import { ZONE_ACTIONS } from "app/store/zone/constants";
 import zoneSelectors from "app/store/zone/selectors";
-import zonesURLs from "app/zones/urls";
 
 type Props = {
   id: number;
@@ -37,7 +37,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
   useEffect(() => {
     if (deleteStatus === "success") {
       dispatch(zoneActions.cleanup([ZONE_ACTIONS.delete]));
-      navigate({ pathname: zonesURLs.index });
+      navigate({ pathname: urls.zones.index });
     }
   }, [dispatch, deleteStatus, navigate]);
 

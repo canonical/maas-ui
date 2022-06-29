@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import LXDSingleDetails from "./LXDSingleDetails";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { Label as LXDSingleResourcesLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleResources/LXDSingleResources";
 import { Label as LXDSingleSettingsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleSettings/LXDSingleSettings";
 import { Label as LXDSingleVMsLabel } from "app/kvm/views/LXDSingleDetails/LXDSingleVMs/LXDSingleVMs";
@@ -43,15 +43,15 @@ describe("LXDSingleDetails", () => {
   [
     {
       label: LXDSingleVMsLabel.Title,
-      path: kvmURLs.lxd.single.vms({ id: 1 }),
+      path: urls.kvm.lxd.single.vms({ id: 1 }),
     },
     {
       label: LXDSingleResourcesLabel.Title,
-      path: kvmURLs.lxd.single.resources({ id: 1 }),
+      path: urls.kvm.lxd.single.resources({ id: 1 }),
     },
     {
       label: LXDSingleSettingsLabel.Title,
-      path: kvmURLs.lxd.single.edit({ id: 1 }),
+      path: urls.kvm.lxd.single.edit({ id: 1 }),
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
@@ -59,7 +59,7 @@ describe("LXDSingleDetails", () => {
         route: path,
         wrapperProps: {
           state,
-          routePattern: `${kvmURLs.lxd.single.index(null)}/*`,
+          routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
         },
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();

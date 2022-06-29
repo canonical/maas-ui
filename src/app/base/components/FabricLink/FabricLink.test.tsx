@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import FabricLink, { Labels } from "./FabricLink";
 
-import subnetsURLs from "app/subnets/urls";
+import urls from "app/base/urls";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -69,6 +69,6 @@ it("renders a link if fabrics have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    subnetsURLs.fabric.index({ id: fabric.id })
+    urls.subnets.fabric.index({ id: fabric.id })
   );
 });

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import VLANSubnets from "./VLANSubnets";
 
-import subnetsURLs from "app/subnets/urls";
+import urls from "app/base/urls";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -49,7 +49,7 @@ it("renders correct details", () => {
 
   expect(within(vlanSubnetsTable).getByRole("link")).toHaveAttribute(
     "href",
-    subnetsURLs.subnet.index({ id: subnet.id })
+    urls.subnets.subnet.index({ id: subnet.id })
   );
   expect(within(vlanSubnetsTable).getByLabelText("Usage").textContent).toBe(
     subnet.statistics.usage_string

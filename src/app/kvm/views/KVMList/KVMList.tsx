@@ -11,8 +11,8 @@ import VirshTable from "./VirshTable";
 
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
+import urls from "app/base/urls";
 import type { KVMHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { actions as poolActions } from "app/store/resourcepool";
@@ -38,8 +38,8 @@ const KVMList = (): JSX.Element => {
   );
   const hasLXDs = vmclusters.length + lxdKvms.length > 0;
   const hasVirsh = virshKvms.length > 0;
-  const showingLXD = location.pathname.endsWith(kvmURLs.lxd.index);
-  const showingVirsh = location.pathname.endsWith(kvmURLs.virsh.index);
+  const showingLXD = location.pathname.endsWith(urls.kvm.lxd.index);
+  const showingVirsh = location.pathname.endsWith(urls.kvm.virsh.index);
   useWindowTitle("KVM");
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const KVMList = (): JSX.Element => {
   // Redirect to the appropriate tab when arriving at /kvm.
   useEffect(() => {
     if (!showingLXD && !showingVirsh) {
-      navigate(kvmURLs.lxd.index, { replace: true });
+      navigate(urls.kvm.lxd.index, { replace: true });
     }
   }, [navigate, showingLXD, showingVirsh]);
 

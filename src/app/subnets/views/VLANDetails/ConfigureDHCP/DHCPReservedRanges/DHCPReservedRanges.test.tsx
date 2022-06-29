@@ -11,7 +11,7 @@ import { DHCPType } from "../ConfigureDHCP";
 
 import DHCPReservedRanges, { Headers } from "./DHCPReservedRanges";
 
-import subnetsURLs from "app/subnets/urls";
+import urls from "app/base/urls";
 import {
   ipRange as ipRangeFactory,
   ipRangeState as ipRangeStateFactory,
@@ -91,7 +91,7 @@ it("renders a table of IP ranges if the VLAN has any defined", () => {
     within(screen.getByRole("gridcell", { name: Headers.Subnet })).getByRole(
       "link"
     )
-  ).toHaveAttribute("href", subnetsURLs.subnet.index({ id: subnet.id }));
+  ).toHaveAttribute("href", urls.subnets.subnet.index({ id: subnet.id }));
   expect(
     screen.getByRole("gridcell", { name: Headers.StartIP }).textContent
   ).toBe(ipRange.start_ip);

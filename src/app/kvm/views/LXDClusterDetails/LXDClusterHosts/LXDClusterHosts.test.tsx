@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterHosts from "./LXDClusterHosts";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -51,7 +51,7 @@ describe("LXDClusterHosts", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: kvmURLs.lxd.cluster.hosts({ clusterId: 1 }) },
+            { pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }) },
           ]}
         >
           <CompatRouter>

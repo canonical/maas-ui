@@ -9,7 +9,7 @@ import { Link } from "react-router-dom-v5-compat";
 import ClearAllForm from "./ClearAllForm";
 
 import SectionHeader from "app/base/components/SectionHeader";
-import dashboardURLs from "app/dashboard/urls";
+import urls from "app/base/urls";
 import { actions as discoveryActions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
 
@@ -51,16 +51,16 @@ const DashboardHeader = (): JSX.Element => {
       headerContent={headerContent}
       tabLinks={[
         {
-          active: location.pathname === dashboardURLs.index,
+          active: location.pathname === urls.dashboard.index,
           component: Link,
           label: pluralize("discovery", discoveries.length, true),
-          to: dashboardURLs.index,
+          to: urls.dashboard.index,
         },
         {
-          active: location.pathname === dashboardURLs.configuration,
+          active: location.pathname === urls.dashboard.configuration,
           component: Link,
           label: "Configuration",
-          to: dashboardURLs.configuration,
+          to: urls.dashboard.configuration,
         },
       ]}
       title="Network discovery"

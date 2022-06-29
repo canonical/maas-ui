@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import LXDClusterHostSettings, { Label } from "./LXDClusterHostSettings";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -34,10 +34,10 @@ describe("LXDClusterHostSettings", () => {
   it("displays a spinner if data is loading", () => {
     state.pod.loading = true;
     renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
-      route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
+      route: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
       wrapperProps: {
         state,
-        routePattern: kvmURLs.lxd.cluster.host.edit(null),
+        routePattern: urls.kvm.lxd.cluster.host.edit(null),
       },
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -46,10 +46,10 @@ describe("LXDClusterHostSettings", () => {
   it("displays a message if the host is not found", () => {
     state.pod.items = [];
     renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
-      route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
+      route: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
       wrapperProps: {
         state,
-        routePattern: kvmURLs.lxd.cluster.host.edit(null),
+        routePattern: urls.kvm.lxd.cluster.host.edit(null),
       },
     });
     expect(screen.getByText("LXD host not found")).toBeInTheDocument();
@@ -57,10 +57,10 @@ describe("LXDClusterHostSettings", () => {
 
   it("has a disabled zone field", () => {
     renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
-      route: kvmURLs.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
+      route: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
       wrapperProps: {
         state,
-        routePattern: kvmURLs.lxd.cluster.host.edit(null),
+        routePattern: urls.kvm.lxd.cluster.host.edit(null),
       },
     });
     expect(screen.getByRole("combobox", { name: "Zone" })).toBeDisabled();

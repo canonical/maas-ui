@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 
 import LXDClusterVMs from "./LXDClusterVMs";
 
+import urls from "app/base/urls";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
-import kvmURLs from "app/kvm/urls";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -45,7 +45,7 @@ describe("LXDClusterVMs", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.vms.index({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -98,7 +98,7 @@ describe("LXDClusterVMs", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.vms.index({ clusterId: 1 }),
+              pathname: urls.kvm.lxd.cluster.vms.index({ clusterId: 1 }),
               key: "testKey",
             },
           ]}
@@ -116,7 +116,7 @@ describe("LXDClusterVMs", () => {
     );
 
     expect(wrapper.find("Link[data-testid='host-link']").prop("to")).toBe(
-      kvmURLs.lxd.cluster.vms.host({ clusterId: 1, hostId: 11 })
+      urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 11 })
     );
   });
 });

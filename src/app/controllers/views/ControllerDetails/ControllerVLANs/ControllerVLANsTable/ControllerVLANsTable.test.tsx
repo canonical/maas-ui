@@ -3,7 +3,7 @@ import { screen, within } from "@testing-library/react";
 import ControllerVLANsTable from "./ControllerVLANsTable";
 import { ControllerVLANsColumns } from "./constants";
 
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   fabric as fabricFactory,
@@ -70,7 +70,7 @@ it("displays correct text when loading", function () {
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       wrapperProps: { state },
-      route: controllerURLs.controller.vlans({
+      route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
     }
@@ -97,7 +97,7 @@ it("displays correct text for no VLANs", function () {
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       wrapperProps: { state },
-      route: controllerURLs.controller.vlans({
+      route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
     }
@@ -124,7 +124,7 @@ it("displays a VLANs table with a single row", function () {
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       wrapperProps: { state },
-      route: controllerURLs.controller.vlans({
+      route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
     }
@@ -167,7 +167,7 @@ it("displays no duplicate vlans", function () {
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       wrapperProps: { state },
-      route: controllerURLs.controller.vlans({
+      route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
     }
@@ -195,7 +195,7 @@ it("displays correct text within each cell", () => {
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
       wrapperProps: { state },
-      route: controllerURLs.controller.vlans({
+      route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
     }

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DeviceLink, { Labels } from "./DeviceLink";
 
-import deviceURLs from "app/devices/urls";
+import urls from "app/base/urls";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,
@@ -69,6 +69,6 @@ it("renders a link if devices have loaded and it exists", () => {
 
   expect(screen.getByRole("link")).toHaveAttribute(
     "href",
-    deviceURLs.device.index({ id: device.system_id })
+    urls.devices.device.index({ id: device.system_id })
   );
 });

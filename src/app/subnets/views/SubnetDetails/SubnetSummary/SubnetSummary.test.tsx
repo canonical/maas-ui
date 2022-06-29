@@ -6,9 +6,9 @@ import configureStore from "redux-mock-store";
 
 import SubnetSummary from "./SubnetSummary";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import type { Subnet } from "app/store/subnet/types";
-import subnetsURLs from "app/subnets/urls";
 import {
   rootState as rootStateFactory,
   subnet as subnetFactory,
@@ -87,7 +87,7 @@ it("renders correct section heading", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <SubnetSummary id={subnet.id} />
@@ -105,7 +105,7 @@ it("renders current values for static fields", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <SubnetSummary id={subnet.id} />
@@ -133,7 +133,7 @@ it("renders the correct value for 'VLAN'", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <SubnetSummary id={subnet.id} />
@@ -149,7 +149,7 @@ it("renders the correct value for 'Fabric'", async () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: subnetsURLs.subnet.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.subnets.subnet.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <SubnetSummary id={subnet.id} />

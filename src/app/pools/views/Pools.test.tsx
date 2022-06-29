@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import Pools from "./Pools";
 
-import poolsURLs from "app/pools/urls";
+import urls from "app/base/urls";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
@@ -15,15 +15,15 @@ describe("Pools", () => {
   [
     {
       component: "Pools",
-      path: poolsURLs.index,
+      path: urls.pools.index,
     },
     {
       component: "PoolAdd",
-      path: poolsURLs.add,
+      path: urls.pools.add,
     },
     {
       component: "PoolEdit",
-      path: poolsURLs.edit({ id: 1 }),
+      path: urls.pools.edit({ id: 1 }),
     },
     {
       component: "NotFound",

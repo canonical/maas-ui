@@ -16,7 +16,7 @@ import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors, { statusSelectors } from "app/store/machine/selectors";
 import { ACTIONS } from "app/store/machine/slice";
@@ -136,7 +136,7 @@ export const ActionFormWrapper = ({
                 );
               });
             }}
-            redirectURL={machineURLs.index}
+            redirectURL={urls.machines.index}
             {...commonNodeFormProps}
           />
         );

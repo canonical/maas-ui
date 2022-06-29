@@ -14,8 +14,8 @@ import OverviewCard from "app/base/components/node/OverviewCard";
 import { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
+import urls from "app/base/urls";
 import type { MachineSetHeaderContent } from "app/machines/types";
-import machineURLs from "app/machines/urls";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
@@ -47,7 +47,7 @@ const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
     return <Spinner text="Loading" />;
   }
 
-  const networkURL = machineURLs.machine.network({ id });
+  const networkURL = urls.machines.machine.network({ id });
   const showWorkloadCard = [
     NodeStatusCode.ALLOCATED,
     NodeStatusCode.DEPLOYED,

@@ -10,7 +10,7 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
-import domainsURLs from "app/domains/urls";
+import urls from "app/base/urls";
 import { actions as domainsActions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
 import { DomainMeta } from "app/store/domain/types";
@@ -41,7 +41,7 @@ const DomainDetails = (): JSX.Element => {
 
   if (!isId(id) || (!domainsLoading && !domain)) {
     return (
-      <ModelNotFound id={id} linkURL={domainsURLs.index} modelName="domain" />
+      <ModelNotFound id={id} linkURL={urls.domains.index} modelName="domain" />
     );
   }
   return (

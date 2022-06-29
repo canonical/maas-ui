@@ -7,7 +7,7 @@ import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
 import type { ClearHeaderContent } from "app/base/types";
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors, {
   statusSelectors,
@@ -87,7 +87,7 @@ export const ControllerActionFormWrapper = ({
                 );
               });
             }}
-            redirectURL={controllerURLs.index}
+            redirectURL={urls.controllers.index}
             {...commonNodeFormProps}
           />
         );

@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DomainsList from "./DomainsList";
 
-import domainsURLs from "app/domains/urls";
+import urls from "app/base/urls";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -19,7 +19,7 @@ describe("DomainsList", () => {
   [
     {
       component: "DomainsTable",
-      path: domainsURLs.index,
+      path: urls.domains.index,
     },
   ].forEach(({ component, path }) => {
     it(`Displays: ${component} at: ${path}`, () => {

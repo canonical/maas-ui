@@ -6,9 +6,9 @@ import configureStore from "redux-mock-store";
 
 import DeleteTagFormWarnings from "./DeleteTagFormWarnings";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { NodeStatus } from "app/store/types/node";
-import tagsURLs from "app/tags/urls";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -170,7 +170,7 @@ it("links to a page to display deployed machines", async () => {
   );
   expect(
     screen.getByRole("link", { name: "Show the deployed machine" })
-  ).toHaveAttribute("href", tagsURLs.tag.machines({ id: 1 }));
+  ).toHaveAttribute("href", urls.tags.tag.machines({ id: 1 }));
 });
 
 it("displays warning when deleting a tag applied to devices", async () => {

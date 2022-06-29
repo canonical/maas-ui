@@ -11,9 +11,9 @@ import VirshSettings from "./VirshSettings";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import { useGetURLId } from "app/base/hooks/urls";
+import urls from "app/base/urls";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -47,7 +47,7 @@ const VirshDetails = (): JSX.Element => {
     return (
       <ModelNotFound
         id={id}
-        linkURL={kvmURLs.virsh.index}
+        linkURL={urls.kvm.virsh.index}
         modelName="Virsh host"
       />
     );
@@ -67,17 +67,17 @@ const VirshDetails = (): JSX.Element => {
         <Switch>
           <Route
             exact
-            path={kvmURLs.virsh.details.resources(null)}
+            path={urls.kvm.virsh.details.resources(null)}
             render={() => <VirshResources id={id} />}
           />
           <Route
             exact
-            path={kvmURLs.virsh.details.edit(null)}
+            path={urls.kvm.virsh.details.edit(null)}
             render={() => <VirshSettings id={id} />}
           />
           <Redirect
-            from={kvmURLs.virsh.details.index(null)}
-            to={kvmURLs.virsh.details.resources(null)}
+            from={urls.kvm.virsh.details.index(null)}
+            to={urls.kvm.virsh.details.resources(null)}
           />
         </Switch>
       )}

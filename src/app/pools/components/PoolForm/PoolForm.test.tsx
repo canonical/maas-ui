@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import { PoolForm } from "./PoolForm";
 
-import poolsURLs from "app/pools/urls";
+import urls from "app/base/urls";
 import { actions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
 import {
@@ -83,7 +83,7 @@ describe("PoolForm", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      poolsURLs.index
+      urls.pools.index
     );
   });
 
