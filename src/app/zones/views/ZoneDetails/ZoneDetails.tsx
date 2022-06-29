@@ -19,10 +19,6 @@ import zoneSelectors from "app/store/zone/selectors";
 import { ZoneMeta } from "app/store/zone/types";
 import { isId } from "app/utils";
 
-export enum Label {
-  Details = "Zone Details",
-}
-
 const ZoneDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const zoneID = useGetURLId(ZoneMeta.PK);
@@ -44,10 +40,7 @@ const ZoneDetails = (): JSX.Element => {
   }
 
   return (
-    <Section
-      aria-label={Label.Details}
-      header={<ZoneDetailsHeader id={zoneID} />}
-    >
+    <Section header={<ZoneDetailsHeader id={zoneID} />}>
       <EditableSection
         canEdit={isAdmin}
         className="u-no-padding--top"

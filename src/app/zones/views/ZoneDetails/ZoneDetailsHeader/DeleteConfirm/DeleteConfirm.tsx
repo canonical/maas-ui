@@ -3,10 +3,6 @@ import type { ReactNode } from "react";
 import { ActionButton, Button, Col, Row } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
 
-export enum Label {
-  DeleteAZ = "Delete AZ",
-}
-
 type Props = {
   closeExpanded: () => void;
   confirmLabel: string;

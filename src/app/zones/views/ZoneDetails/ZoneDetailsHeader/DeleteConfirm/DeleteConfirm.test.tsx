@@ -3,7 +3,7 @@ import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import DeleteConfirm, { Label as DeleteAZLabel } from "./DeleteConfirm";
+import DeleteConfirm from "./DeleteConfirm";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -38,7 +38,7 @@ describe("DeleteConfirm", () => {
       <Provider store={store}>
         <DeleteConfirm
           closeExpanded={closeExpanded}
-          confirmLabel={DeleteAZLabel.DeleteAZ}
+          confirmLabel="Delete AZ"
           deleting={false}
           onConfirm={onConfirm}
         />
@@ -57,7 +57,7 @@ describe("DeleteConfirm", () => {
       <Provider store={store}>
         <DeleteConfirm
           closeExpanded={closeExpanded}
-          confirmLabel={DeleteAZLabel.DeleteAZ}
+          confirmLabel="Delete AZ"
           deleting={false}
           onConfirm={onConfirm}
         />
