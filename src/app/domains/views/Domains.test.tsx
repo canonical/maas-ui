@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import Domains from "./Domains";
 
-import domainsURLs from "app/domains/urls";
+import urls from "app/base/urls";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
@@ -15,11 +15,11 @@ describe("Domains", () => {
   [
     {
       component: "DomainsList",
-      path: domainsURLs.index,
+      path: urls.domains.index,
     },
     {
       component: "DomainDetails",
-      path: domainsURLs.details({ id: 1 }),
+      path: urls.domains.details({ id: 1 }),
     },
     {
       component: "NotFound",

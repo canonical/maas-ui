@@ -9,13 +9,13 @@ import * as Yup from "yup";
 import TagUpdateFormFields from "./TagUpdateFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
+import urls from "app/base/urls";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, UpdateParams, TagMeta } from "app/store/tag/types";
 import { NewDefinitionMessage } from "app/tags/constants";
-import tagURLs from "app/tags/urls";
 
 type Props = {
   id: Tag[TagMeta.PK];
@@ -66,7 +66,7 @@ const TagUpdate = ({ id }: Props): JSX.Element => {
     } else {
       navigate(
         {
-          pathname: tagURLs.tag.index({ id }),
+          pathname: urls.tags.tag.index({ id }),
         },
         { replace: true }
       );

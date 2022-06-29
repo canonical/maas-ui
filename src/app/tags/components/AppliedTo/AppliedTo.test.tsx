@@ -6,11 +6,8 @@ import configureStore from "redux-mock-store";
 
 import AppliedTo from "./AppliedTo";
 
-import controllerURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
-import tagURLs from "app/tags/urls";
 import {
   rootState as rootStateFactory,
   tag as tagFactory,
@@ -46,7 +43,7 @@ it("links to nodes", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <AppliedTo id={1} />
@@ -68,15 +65,15 @@ it("links to nodes", () => {
   expect(deviceLink).toBeInTheDocument();
   expect(machineLink).toHaveAttribute(
     "href",
-    `${machineURLs.index}?tags=%3Da-tag`
+    `${urls.machines.index}?tags=%3Da-tag`
   );
   expect(controllerLink).toHaveAttribute(
     "href",
-    `${controllerURLs.index}?tags=%3Da-tag`
+    `${urls.controllers.index}?tags=%3Da-tag`
   );
   expect(deviceLink).toHaveAttribute(
     "href",
-    `${deviceURLs.index}?tags=%3Da-tag`
+    `${urls.devices.index}?tags=%3Da-tag`
   );
 });
 
@@ -94,7 +91,7 @@ it("displays a message if there are no nodes", () => {
   render(
     <Provider store={store}>
       <MemoryRouter
-        initialEntries={[{ pathname: tagURLs.tag.index({ id: 1 }) }]}
+        initialEntries={[{ pathname: urls.tags.tag.index({ id: 1 }) }]}
       >
         <CompatRouter>
           <AppliedTo id={1} />

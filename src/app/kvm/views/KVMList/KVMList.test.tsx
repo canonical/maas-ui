@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 
 import KVMList from "./KVMList";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { PodType } from "app/store/pod/constants";
 import {
   pod as podFactory,
@@ -56,7 +56,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />
@@ -78,7 +78,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />
@@ -99,7 +99,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />
@@ -121,7 +121,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />
@@ -130,7 +130,7 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      kvmURLs.lxd.index
+      urls.kvm.lxd.index
     );
   });
 
@@ -144,7 +144,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />
@@ -153,7 +153,7 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      kvmURLs.lxd.index
+      urls.kvm.lxd.index
     );
     expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(true);
     expect(
@@ -174,7 +174,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />
@@ -183,7 +183,7 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      kvmURLs.virsh.index
+      urls.kvm.virsh.index
     );
     expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(true);
     expect(
@@ -204,7 +204,7 @@ describe("KVMList", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMList />
@@ -213,7 +213,7 @@ describe("KVMList", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      kvmURLs.lxd.index
+      urls.kvm.lxd.index
     );
     expect(wrapper.find("[data-testid='no-hosts']").exists()).toBe(false);
     expect(wrapper.find("Spinner").exists()).toBe(true);

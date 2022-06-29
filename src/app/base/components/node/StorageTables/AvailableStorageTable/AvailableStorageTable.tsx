@@ -20,8 +20,7 @@ import ActionConfirm from "app/base/components/node/ActionConfirm";
 import DiskBootStatus from "app/base/components/node/DiskBootStatus";
 import DiskNumaNodes from "app/base/components/node/DiskNumaNodes";
 import DiskTestStatus from "app/base/components/node/DiskTestStatus";
-import controllerURLs from "app/controllers/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { ControllerDetails } from "app/store/controller/types";
 import { FilterControllers } from "app/store/controller/utils";
 import { actions as machineActions } from "app/store/machine";
@@ -243,12 +242,12 @@ const normaliseRowData = (
                     const filter = FilterMachines.filtersToQueryString({
                       storage_tags: [`=${tag}`],
                     });
-                    return `${machineURLs.index}${filter}`;
+                    return `${urls.machines.index}${filter}`;
                   }
                   const filter = FilterControllers.filtersToQueryString({
                     storage_tags: [`=${tag}`],
                   });
-                  return `${controllerURLs.index}${filter}`;
+                  return `${urls.controllers.index}${filter}`;
                 }}
                 tags={storageDevice.tags}
               />

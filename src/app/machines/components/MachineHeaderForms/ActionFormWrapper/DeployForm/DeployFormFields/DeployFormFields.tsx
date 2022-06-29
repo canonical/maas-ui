@@ -19,8 +19,7 @@ import FormikField from "app/base/components/FormikField";
 import TooltipButton from "app/base/components/TooltipButton";
 import UploadTextArea from "app/base/components/UploadTextArea";
 import docsUrls from "app/base/docsUrls";
-import imagesURLs from "app/images/urls";
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
@@ -60,7 +59,7 @@ export const DeployFormFields = (): JSX.Element => {
         <Notification data-testid="images-error" severity="negative">
           You will not be able to deploy a machine until at least one valid
           image has been downloaded. To download an image, visit the{" "}
-          <Link to={imagesURLs.index}>images page</Link>.
+          <Link to={urls.images.index}>images page</Link>.
         </Notification>
       )}
       <div className="u-sv2">
@@ -246,7 +245,7 @@ export const DeployFormFields = (): JSX.Element => {
                 <i className="p-icon--warning is-inline"></i>
                 Login will not be possible because no SSH keys have been added
                 to your account. To add an SSH key, visit your{" "}
-                <Link to={prefsURLs.sshKeys.index}>account page</Link>.
+                <Link to={urls.preferences.sshKeys.index}>account page</Link>.
               </p>
             </Col>
           </Row>

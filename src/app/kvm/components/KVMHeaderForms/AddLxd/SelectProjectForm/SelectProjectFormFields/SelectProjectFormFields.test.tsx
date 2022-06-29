@@ -9,7 +9,7 @@ import type { NewPodValues } from "../../types";
 
 import SelectProjectFormFields from "./SelectProjectFormFields";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -238,7 +238,7 @@ describe("SelectProjectFormFields", () => {
 
     expect(wrapper.find("[data-testid='existing-pod']").exists()).toBe(true);
     expect(wrapper.find("[data-testid='existing-pod'] Link").prop("to")).toBe(
-      kvmURLs.lxd.single.index({ id: pod.id })
+      urls.kvm.lxd.single.index({ id: pod.id })
     );
   });
 });

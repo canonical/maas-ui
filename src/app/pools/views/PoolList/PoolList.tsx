@@ -14,8 +14,7 @@ import type { Dispatch } from "redux";
 import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import machineURLs from "app/machines/urls";
-import poolsURLs from "app/pools/urls";
+import urls from "app/base/urls";
 import { actions as machineActions } from "app/store/machine";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -34,7 +33,7 @@ const getMachinesLabel = (row: ResourcePool) => {
     pool: [`=${row.name}`],
   });
   return (
-    <Link to={`${machineURLs.index}${filters}`}>
+    <Link to={`${urls.machines.index}${filters}`}>
       {`${row.machine_ready_count} of ${row.machine_total_count} ready`}
     </Link>
   );
@@ -78,7 +77,7 @@ const generateRows = (
                 null
               }
               editDisabled={!row.permissions.includes("edit")}
-              editPath={poolsURLs.edit({ id: row.id })}
+              editPath={urls.pools.edit({ id: row.id })}
               onDelete={() => setExpandedId(row.id)}
             />
           ),

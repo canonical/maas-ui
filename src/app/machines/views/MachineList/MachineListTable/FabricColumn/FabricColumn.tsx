@@ -6,10 +6,10 @@ import { Link } from "react-router-dom-v5-compat";
 import MachineTestStatus from "../MachineTestStatus";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import subnetsURLs from "app/subnets/urls";
 
 type Props = { systemId: Machine["system_id"] };
 
@@ -34,7 +34,7 @@ export const FabricColumn = ({ systemId }: Props): JSX.Element | null => {
             {fabricName && (fabricID || fabricID === 0) ? (
               <Link
                 className="p-link--soft"
-                to={subnetsURLs.fabric.index({ id: fabricID })}
+                to={urls.subnets.fabric.index({ id: fabricID })}
               >
                 {fabricName}
               </Link>

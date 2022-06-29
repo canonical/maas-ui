@@ -6,8 +6,8 @@ import { useDispatch, useSelector } from "react-redux";
 import EditableSection from "app/base/components/EditableSection";
 import TagLinks from "app/base/components/TagLinks";
 import { useCanEdit } from "app/base/hooks";
+import urls from "app/base/urls";
 import TagActionForm from "app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm";
-import machineURLs from "app/machines/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
@@ -65,7 +65,7 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
                 const filter = FilterMachines.filtersToQueryString({
                   tags: [`=${tag.name}`],
                 });
-                return `${machineURLs.index}${filter}`;
+                return `${urls.machines.index}${filter}`;
               }}
               tags={tags}
             />

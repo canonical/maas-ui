@@ -7,7 +7,7 @@ import FormCard from "app/base/components/FormCard";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 import { actions as tokenActions } from "app/store/token";
 import tokenSelectors from "app/store/token/selectors";
 import type { Token } from "app/store/token/types";
@@ -49,7 +49,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
         initialValues={{
           name: token ? token.consumer.name : "",
         }}
-        onCancel={() => navigate({ pathname: prefsURLs.apiKeys.index })}
+        onCancel={() => navigate({ pathname: urls.preferences.apiKeys.index })}
         onSaveAnalytics={{
           action: "Saved",
           category: "API keys preferences",
@@ -70,7 +70,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
           }
         }}
         saved={saved}
-        savedRedirect={prefsURLs.apiKeys.index}
+        savedRedirect={urls.preferences.apiKeys.index}
         saving={saving}
         submitLabel={editing ? "Save API key" : "Generate API key"}
         validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}

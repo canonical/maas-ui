@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 import LXDHostToolbar from "./LXDHostToolbar";
 
 import * as hooks from "app/base/hooks/analytics";
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { ConfigNames } from "app/store/config/types";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
@@ -53,7 +53,7 @@ describe("LXDHostToolbar", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
+            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
           <CompatRouter>
@@ -79,7 +79,7 @@ describe("LXDHostToolbar", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
+            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
           <CompatRouter>
@@ -104,7 +104,7 @@ describe("LXDHostToolbar", () => {
         <MemoryRouter
           initialEntries={[
             {
-              pathname: kvmURLs.lxd.cluster.vms.host({
+              pathname: urls.kvm.lxd.cluster.vms.host({
                 clusterId: 2,
                 hostId: 1,
               }),
@@ -128,12 +128,12 @@ describe("LXDHostToolbar", () => {
     expect(
       wrapper.find("Link[data-testid='settings-link']").prop("to")
     ).toStrictEqual({
-      pathname: kvmURLs.lxd.cluster.host.edit({ clusterId: 2, hostId: 1 }),
+      pathname: urls.kvm.lxd.cluster.host.edit({ clusterId: 2, hostId: 1 }),
     });
     expect(
       wrapper.find("Link[data-testid='settings-link']").prop("state")
     ).toStrictEqual({
-      from: kvmURLs.lxd.cluster.vms.host({
+      from: urls.kvm.lxd.cluster.vms.host({
         clusterId: 2,
         hostId: 1,
       }),
@@ -146,7 +146,7 @@ describe("LXDHostToolbar", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
+            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
           <CompatRouter>
@@ -170,7 +170,7 @@ describe("LXDHostToolbar", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
+            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
           <CompatRouter>
@@ -262,7 +262,7 @@ describe("LXDHostToolbar", () => {
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
-            { pathname: kvmURLs.lxd.single.vms({ id: 1 }), key: "testKey" },
+            { pathname: urls.kvm.lxd.single.vms({ id: 1 }), key: "testKey" },
           ]}
         >
           <CompatRouter>

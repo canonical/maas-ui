@@ -7,8 +7,7 @@ import configureStore from "redux-mock-store";
 import NodeDevices from "./NodeDevices";
 
 import { HardwareType } from "app/base/enum";
-import controllerURLs from "app/controllers/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
 import {
@@ -237,10 +236,10 @@ describe("NodeDevices", () => {
 
     expect(
       wrapper.find("[data-testid='group-label']").at(0).find("Link").prop("to")
-    ).toBe(machineURLs.machine.network({ id: machine.system_id }));
+    ).toBe(urls.machines.machine.network({ id: machine.system_id }));
     expect(
       wrapper.find("[data-testid='group-label']").at(1).find("Link").prop("to")
-    ).toBe(machineURLs.machine.storage({ id: machine.system_id }));
+    ).toBe(urls.machines.machine.storage({ id: machine.system_id }));
   });
 
   it("can link to the controller network and storage tabs", () => {
@@ -277,10 +276,10 @@ describe("NodeDevices", () => {
 
     expect(
       wrapper.find("[data-testid='group-label']").at(0).find("Link").prop("to")
-    ).toBe(controllerURLs.controller.network({ id: controller.system_id }));
+    ).toBe(urls.controllers.controller.network({ id: controller.system_id }));
     expect(
       wrapper.find("[data-testid='group-label']").at(1).find("Link").prop("to")
-    ).toBe(controllerURLs.controller.storage({ id: controller.system_id }));
+    ).toBe(urls.controllers.controller.storage({ id: controller.system_id }));
   });
 
   it("displays the NUMA node index of a node device", () => {

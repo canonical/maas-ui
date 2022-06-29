@@ -11,10 +11,10 @@ import type { MaasIntroValues } from "./types";
 
 import FormikForm from "app/base/components/FormikForm";
 import TableConfirm from "app/base/components/TableConfirm";
+import urls from "app/base/urls";
 import { UrlSchema } from "app/base/validation";
 import IntroSection from "app/intro/components/IntroSection";
 import { useExitURL } from "app/intro/hooks";
-import introURLs from "app/intro/urls";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -116,7 +116,7 @@ const MaasIntro = (): JSX.Element => {
             }
           }}
           saved={saved}
-          savedRedirect={introURLs.images}
+          savedRedirect={urls.intro.images}
           saving={saving}
           secondarySubmit={() => {
             setShowSkip(true);
@@ -146,7 +146,7 @@ const MaasIntro = (): JSX.Element => {
               onConfirm={() => {
                 dispatch(configActions.update({ completed_intro: true }));
                 if (!authUser?.completed_intro) {
-                  navigate({ pathname: introURLs.user });
+                  navigate({ pathname: urls.intro.user });
                 } else {
                   navigate({
                     pathname: exitURL,

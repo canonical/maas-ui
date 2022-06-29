@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import Dashboard from "./Dashboard";
 
-import dashboardURLs from "app/dashboard/urls";
+import urls from "app/base/urls";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -36,11 +36,11 @@ describe("Dashboard", () => {
   [
     {
       component: "DiscoveriesList",
-      path: dashboardURLs.index,
+      path: urls.dashboard.index,
     },
     {
       component: "DashboardConfigurationForm",
-      path: dashboardURLs.configuration,
+      path: urls.dashboard.configuration,
     },
     {
       component: "NotFound",

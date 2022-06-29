@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import DashboardHeader from "./DashboardHeader";
 
-import dashboardURLs from "app/dashboard/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   discovery as discoveryFactory,
@@ -49,7 +49,7 @@ describe("DashboardHeader", () => {
       </Provider>
     );
 
-    expect(wrapper.find(`[to='${dashboardURLs.index}']`).text()).toBe(
+    expect(wrapper.find(`[to='${urls.dashboard.index}']`).text()).toBe(
       "2 discoveries"
     );
   });

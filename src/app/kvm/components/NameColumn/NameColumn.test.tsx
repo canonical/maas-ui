@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import NameColumn from "./NameColumn";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -36,7 +36,7 @@ describe("NameColumn", () => {
             <NameColumn
               name={pod.name}
               secondary={pod.power_parameters.project}
-              url={kvmURLs.virsh.details.index({ id: 1 })}
+              url={urls.kvm.virsh.details.index({ id: 1 })}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -45,7 +45,7 @@ describe("NameColumn", () => {
 
     expect(wrapper.find("Link").text()).toBe("pod-1");
     expect(wrapper.find("Link").props().to).toBe(
-      kvmURLs.virsh.details.index({ id: 1 })
+      urls.kvm.virsh.details.index({ id: 1 })
     );
   });
 
@@ -61,7 +61,7 @@ describe("NameColumn", () => {
             <NameColumn
               name={pod.name}
               secondary={pod.power_parameters.project}
-              url={kvmURLs.lxd.single.index({ id: 1 })}
+              url={urls.kvm.lxd.single.index({ id: 1 })}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -70,7 +70,7 @@ describe("NameColumn", () => {
 
     expect(wrapper.find("Link").text()).toBe("pod-1");
     expect(wrapper.find("Link").props().to).toBe(
-      kvmURLs.lxd.single.index({ id: 1 })
+      urls.kvm.lxd.single.index({ id: 1 })
     );
   });
 
@@ -93,7 +93,7 @@ describe("NameColumn", () => {
             <NameColumn
               name={pod.name}
               secondary={pod.power_parameters.project}
-              url={kvmURLs.virsh.details.index({ id: 1 })}
+              url={urls.kvm.virsh.details.index({ id: 1 })}
             />
           </CompatRouter>
         </MemoryRouter>

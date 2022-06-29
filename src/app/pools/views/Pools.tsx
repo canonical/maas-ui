@@ -6,8 +6,8 @@ import PoolList from "./PoolList";
 
 import Section from "app/base/components/Section";
 import MachinesHeader from "app/base/components/node/MachinesHeader";
+import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
-import poolsURLs from "app/pools/urls";
 import PoolAdd from "app/pools/views/PoolAdd";
 import PoolEdit from "app/pools/views/PoolEdit";
 
@@ -16,7 +16,7 @@ const Pools = (): JSX.Element => (
     header={
       <MachinesHeader
         buttons={[
-          <Button data-testid="add-pool" element={Link} to={poolsURLs.add}>
+          <Button data-testid="add-pool" element={Link} to={urls.pools.add}>
             Add pool
           </Button>,
         ]}
@@ -24,9 +24,9 @@ const Pools = (): JSX.Element => (
     }
   >
     <Switch>
-      <Route exact path={poolsURLs.index} render={() => <PoolList />} />
-      <Route exact path={poolsURLs.add} render={() => <PoolAdd />} />
-      <Route exact path={poolsURLs.edit(null)} render={() => <PoolEdit />} />
+      <Route exact path={urls.pools.index} render={() => <PoolList />} />
+      <Route exact path={urls.pools.add} render={() => <PoolAdd />} />
+      <Route exact path={urls.pools.edit(null)} render={() => <PoolEdit />} />
       <Route path="*" render={() => <NotFound />} />
     </Switch>
   </Section>

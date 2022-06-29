@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import VirshDetails from "./VirshDetails";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { Label as VirshResourcesLabel } from "app/kvm/views/VirshDetails/VirshResources/VirshResources";
 import { Label as VirshSettingsLabel } from "app/kvm/views/VirshDetails/VirshSettings/VirshSettings";
 import { PodType } from "app/store/pod/constants";
@@ -42,11 +42,11 @@ describe("VirshDetails", () => {
   [
     {
       label: VirshResourcesLabel.Title,
-      path: kvmURLs.virsh.details.resources({ id: 1 }),
+      path: urls.kvm.virsh.details.resources({ id: 1 }),
     },
     {
       label: VirshSettingsLabel.Title,
-      path: kvmURLs.virsh.details.edit({ id: 1 }),
+      path: urls.kvm.virsh.details.edit({ id: 1 }),
     },
   ].forEach(({ label, path }) => {
     it(`Displays: ${label} at: ${path}`, () => {
@@ -54,7 +54,7 @@ describe("VirshDetails", () => {
         route: path,
         wrapperProps: {
           state,
-          routePattern: `${kvmURLs.virsh.details.index(null)}/*`,
+          routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
         },
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();

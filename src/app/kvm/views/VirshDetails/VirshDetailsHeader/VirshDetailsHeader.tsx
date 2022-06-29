@@ -8,9 +8,9 @@ import { Link } from "react-router-dom-v5-compat";
 
 import VirshDetailsActionMenu from "./VirshDetailsActionMenu";
 
+import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
@@ -72,19 +72,19 @@ const VirshDetailsHeader = ({
       tabLinks={[
         {
           active: location.pathname.endsWith(
-            kvmURLs.virsh.details.resources({ id })
+            urls.kvm.virsh.details.resources({ id })
           ),
           component: Link,
           label: "Resources",
-          to: kvmURLs.virsh.details.resources({ id }),
+          to: urls.kvm.virsh.details.resources({ id }),
         },
         {
           active: location.pathname.endsWith(
-            kvmURLs.virsh.details.edit({ id })
+            urls.kvm.virsh.details.edit({ id })
           ),
           component: Link,
           label: "Settings",
-          to: kvmURLs.virsh.details.edit({ id }),
+          to: urls.kvm.virsh.details.edit({ id }),
         },
       ]}
       title={title}

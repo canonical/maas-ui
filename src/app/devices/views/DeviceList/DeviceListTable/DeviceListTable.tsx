@@ -9,12 +9,11 @@ import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
-import deviceURLs from "app/devices/urls";
+import urls from "app/base/urls";
 import type { Device, DeviceMeta } from "app/store/device/types";
 import { getIpAssignmentDisplay } from "app/store/device/utils";
 import { generateCheckboxHandlers, isComparable } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
-import zoneURLs from "app/zones/urls";
 
 type Props = {
   devices: Device[];
@@ -74,7 +73,7 @@ const generateRows = (
                   inputLabel={
                     <Link
                       data-testid="device-details-link"
-                      to={deviceURLs.device.index({ id: system_id })}
+                      to={urls.devices.device.index({ id: system_id })}
                     >
                       <strong>{hostname}</strong>
                       <span>.{domainName}</span>
@@ -108,7 +107,7 @@ const generateRows = (
             <Link
               className="p-link--soft"
               data-testid="device-zone-link"
-              to={zoneURLs.details({ id: zoneId })}
+              to={urls.zones.details({ id: zoneId })}
             >
               {zoneName}
             </Link>

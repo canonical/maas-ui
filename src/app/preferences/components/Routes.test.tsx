@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import Routes from "./Routes";
 
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
@@ -15,35 +15,35 @@ describe("Routes", () => {
   [
     {
       component: "Details",
-      path: prefsURLs.details,
+      path: urls.preferences.details,
     },
     {
       component: "APIKeyList",
-      path: prefsURLs.apiKeys.index,
+      path: urls.preferences.apiKeys.index,
     },
     {
       component: "APIKeyAdd",
-      path: prefsURLs.apiKeys.add,
+      path: urls.preferences.apiKeys.add,
     },
     {
       component: "APIKeyEdit",
-      path: prefsURLs.apiKeys.edit({ id: 1 }),
+      path: urls.preferences.apiKeys.edit({ id: 1 }),
     },
     {
       component: "SSHKeyList",
-      path: prefsURLs.sshKeys.index,
+      path: urls.preferences.sshKeys.index,
     },
     {
       component: "AddSSHKey",
-      path: prefsURLs.sshKeys.add,
+      path: urls.preferences.sshKeys.add,
     },
     {
       component: "SSLKeyList",
-      path: prefsURLs.sslKeys.index,
+      path: urls.preferences.sslKeys.index,
     },
     {
       component: "AddSSLKey",
-      path: prefsURLs.sslKeys.add,
+      path: urls.preferences.sslKeys.add,
     },
     {
       component: "NotFound",

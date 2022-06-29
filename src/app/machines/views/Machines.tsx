@@ -7,9 +7,9 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import MachineListHeader from "./MachineList/MachineListHeader";
 
 import Section from "app/base/components/Section";
+import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import type { MachineHeaderContent } from "app/machines/types";
-import machineURLs from "app/machines/urls";
 import MachineList from "app/machines/views/MachineList";
 import { FilterMachines } from "app/store/machine/utils";
 
@@ -62,7 +62,7 @@ const Machines = (): JSX.Element => {
       <Switch>
         <Route
           exact
-          path={machineURLs.index}
+          path={urls.machines.index}
           render={() => (
             <MachineList
               headerFormOpen={!!headerContent}

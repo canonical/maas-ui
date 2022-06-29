@@ -15,7 +15,7 @@ import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import type { APIError, SetSearchFilter } from "app/base/types";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
@@ -192,7 +192,7 @@ export const CloneResults = ({
               true
             )} cloned successfully from `}
             <Link
-              to={machineURLs.machine.index({ id: sourceMachine.system_id })}
+              to={urls.machines.machine.index({ id: sourceMachine.system_id })}
             >
               {sourceMachine.hostname}
             </Link>

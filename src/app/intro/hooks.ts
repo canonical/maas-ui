@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 
-import dashboardURLs from "app/dashboard/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 
 /**
@@ -10,5 +9,5 @@ import authSelectors from "app/store/auth/selectors";
  */
 export const useExitURL = (): string => {
   const authUser = useSelector(authSelectors.get);
-  return authUser?.is_superuser ? dashboardURLs.index : machineURLs.index;
+  return authUser?.is_superuser ? urls.dashboard.index : urls.machines.index;
 };

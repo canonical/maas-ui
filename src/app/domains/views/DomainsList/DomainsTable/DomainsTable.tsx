@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import TableConfirm from "app/base/components/TableConfirm";
-import domainURLs from "app/domains/urls";
+import urls from "app/base/urls";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import type { Domain, DomainMeta } from "app/store/domain/types";
@@ -54,7 +54,7 @@ const DomainsTable = (): JSX.Element => {
       columns: [
         {
           content: (
-            <Link to={domainURLs.details({ id: domain.id })}>
+            <Link to={urls.domains.details({ id: domain.id })}>
               {domain.is_default ? `${domain.name} (default)` : domain.name}
             </Link>
           ),

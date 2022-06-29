@@ -9,7 +9,6 @@ import configureStore from "redux-mock-store";
 import { Header } from "./Header";
 
 import urls from "app/base/urls";
-import introURLs from "app/intro/urls";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
@@ -290,6 +289,8 @@ it("does not redirect if the intro is being displayed", async () => {
       </Router>
     </Provider>
   );
-  act(() => history.push(introURLs.images));
-  await waitFor(() => expect(history.location.pathname).toBe(introURLs.images));
+  act(() => history.push(urls.intro.images));
+  await waitFor(() =>
+    expect(history.location.pathname).toBe(urls.intro.images)
+  );
 });

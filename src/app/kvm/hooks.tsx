@@ -3,7 +3,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom-v5-compat";
 
-import kvmURLs from "app/kvm/urls";
+import urls from "app/base/urls";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
@@ -56,9 +56,9 @@ export const useKVMDetailsRedirect = (id?: Pod["id"] | null): string | null => {
   const isLXDClusterHost = clusterId !== null && pod.type === PodType.LXD;
   const isLXDSingleHost = clusterId === null && pod.type === PodType.LXD;
   const isVirshHost = pod.type === PodType.VIRSH;
-  const clusterURLs = kvmURLs.lxd.cluster;
-  const singleURLs = kvmURLs.lxd.single;
-  const virshURLs = kvmURLs.virsh.details;
+  const clusterURLs = urls.kvm.lxd.cluster;
+  const singleURLs = urls.kvm.lxd.single;
+  const virshURLs = urls.kvm.virsh.details;
 
   if (isLXDClusterHost) {
     const hostId = pod.id;

@@ -18,12 +18,12 @@ import TooltipButton from "app/base/components/TooltipButton";
 import docsUrls from "app/base/docsUrls";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
+import urls from "app/base/urls";
 import { actions as tagActions } from "app/store/tag";
 import { TagSearchFilter } from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { TagMeta } from "app/store/tag/types";
 import AppliedTo from "app/tags/components/AppliedTo";
-import tagURLs from "app/tags/urls";
 import { isComparable } from "app/utils";
 
 type Props = PropsWithSpread<
@@ -70,7 +70,7 @@ const generateRows = (
         {
           "aria-label": Label.Name,
           content: (
-            <Link to={tagURLs.tag.index({ id: tag.id })}>{tag.name}</Link>
+            <Link to={urls.tags.tag.index({ id: tag.id })}>{tag.name}</Link>
           ),
         },
         {
@@ -99,7 +99,7 @@ const generateRows = (
                 onDelete(tag[TagMeta.PK]);
               }}
               onEdit={() =>
-                navigate(tagURLs.tag.update({ id: tag.id }), {
+                navigate(urls.tags.tag.update({ id: tag.id }), {
                   state: { canGoBack: true },
                 })
               }

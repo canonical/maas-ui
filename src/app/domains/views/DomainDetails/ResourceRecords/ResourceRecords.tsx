@@ -15,9 +15,7 @@ import { Link } from "react-router-dom-v5-compat";
 import DeleteRecordForm from "./DeleteRecordForm";
 import EditRecordForm from "./EditRecordForm";
 
-import controllersURLs from "app/controllers/urls";
-import deviceURLs from "app/devices/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import domainsSelectors from "app/store/domain/selectors";
 import type { Domain, DomainResource } from "app/store/domain/types";
@@ -99,14 +97,14 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
       switch (resource.node_type) {
         case NodeType.MACHINE:
           nameCell = (
-            <Link to={machineURLs.machine.index({ id: resource.system_id })}>
+            <Link to={urls.machines.machine.index({ id: resource.system_id })}>
               {resource.name}
             </Link>
           );
           break;
         case NodeType.DEVICE:
           nameCell = (
-            <Link to={deviceURLs.device.index({ id: resource.system_id })}>
+            <Link to={urls.devices.device.index({ id: resource.system_id })}>
               {resource.name}
             </Link>
           );
@@ -116,7 +114,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
         case NodeType.REGION_AND_RACK_CONTROLLER:
           nameCell = (
             <Link
-              to={controllersURLs.controller.index({
+              to={urls.controllers.controller.index({
                 id: resource.system_id,
               })}
             >

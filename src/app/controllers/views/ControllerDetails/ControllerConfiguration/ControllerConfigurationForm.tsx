@@ -12,7 +12,7 @@ import NodeConfigurationFields, {
 import type { NodeConfigurationValues } from "app/base/components/NodeConfigurationFields";
 import TagLinks from "app/base/components/TagLinks";
 import { useCanEdit } from "app/base/hooks";
-import controllerURLs from "app/controllers/urls";
+import urls from "app/base/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import {
@@ -105,7 +105,7 @@ const ControllerConfigurationForm = ({
                     const filter = FilterControllers.filtersToQueryString({
                       tags: [`=${tag.name}`],
                     });
-                    return `${controllerURLs.index}${filter}`;
+                    return `${urls.controllers.index}${filter}`;
                   }}
                   tags={controllerTags}
                 />

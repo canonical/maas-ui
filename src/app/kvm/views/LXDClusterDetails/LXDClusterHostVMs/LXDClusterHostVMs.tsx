@@ -7,10 +7,10 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
+import urls from "app/base/urls";
 import LXDHostVMs from "app/kvm/components/LXDHostVMs";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
 import type { KVMSetHeaderContent } from "app/kvm/types";
-import kvmURLs from "app/kvm/urls";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -67,7 +67,7 @@ const LXDClusterHostVMs = ({
         id={hostId}
         inSection={false}
         linkText="View all LXD hosts in this cluster"
-        linkURL={kvmURLs.lxd.cluster.hosts({ clusterId })}
+        linkURL={urls.kvm.lxd.cluster.hosts({ clusterId })}
         modelName="LXD host"
       />
     );

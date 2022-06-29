@@ -6,7 +6,7 @@ import configureStore from "redux-mock-store";
 
 import { AddSSHKey } from "./AddSSHKey";
 
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   sshKeyState as sshKeyStateFactory,
@@ -55,7 +55,7 @@ describe("AddSSHKey", () => {
       </Provider>
     );
     expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      prefsURLs.sshKeys.index
+      urls.preferences.sshKeys.index
     );
   });
 });

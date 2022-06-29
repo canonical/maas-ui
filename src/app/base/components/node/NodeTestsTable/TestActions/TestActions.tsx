@@ -8,8 +8,7 @@ import { ScriptResultAction } from "../NodeTestsTable";
 import TableMenu from "app/base/components/TableMenu";
 import { useSendAnalytics } from "app/base/hooks";
 import type { DataTestElement } from "app/base/types";
-import controllerURLs from "app/controllers/urls";
-import machineURLs from "app/machines/urls";
+import urls from "app/base/urls";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -40,9 +39,9 @@ const TestActions = ({
   const isMachine = nodeIsMachine(node);
   const detailsURL = isMachine
     ? isTesting
-      ? machineURLs.machine.testing.scriptResult
-      : machineURLs.machine.commissioning.scriptResult
-    : controllerURLs.controller.commissioning.scriptResult;
+      ? urls.machines.machine.testing.scriptResult
+      : urls.machines.machine.commissioning.scriptResult
+    : urls.controllers.controller.commissioning.scriptResult;
 
   if (canViewDetails) {
     links.push({

@@ -8,6 +8,7 @@ import ControllerName from "./ControllerName";
 
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
+import urls from "app/base/urls";
 import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
 import {
   ControllerDetailsTabLabels,
@@ -17,7 +18,6 @@ import type {
   ControllerHeaderContent,
   ControllerSetHeaderContent,
 } from "app/controllers/types";
-import controllerURLs from "app/controllers/urls";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
@@ -75,39 +75,41 @@ const ControllerDetailsHeader = ({
       tabLinks={[
         {
           label: ControllerDetailsTabLabels.summary,
-          url: controllerURLs.controller.summary({ id: systemId }),
+          url: urls.controllers.controller.summary({ id: systemId }),
         },
         {
           label: ControllerDetailsTabLabels.vlans,
-          url: controllerURLs.controller.vlans({ id: systemId }),
+          url: urls.controllers.controller.vlans({ id: systemId }),
         },
         {
           label: ControllerDetailsTabLabels.network,
-          url: controllerURLs.controller.network({ id: systemId }),
+          url: urls.controllers.controller.network({ id: systemId }),
         },
         {
           label: ControllerDetailsTabLabels.storage,
-          url: controllerURLs.controller.storage({ id: systemId }),
+          url: urls.controllers.controller.storage({ id: systemId }),
         },
         {
           label: ControllerDetailsTabLabels.pciDevices,
-          url: controllerURLs.controller.pciDevices({ id: systemId }),
+          url: urls.controllers.controller.pciDevices({ id: systemId }),
         },
         {
           label: ControllerDetailsTabLabels.usbDevices,
-          url: controllerURLs.controller.usbDevices({ id: systemId }),
+          url: urls.controllers.controller.usbDevices({ id: systemId }),
         },
         {
           label: ControllerDetailsTabLabels.commissioning,
-          url: controllerURLs.controller.commissioning.index({ id: systemId }),
+          url: urls.controllers.controller.commissioning.index({
+            id: systemId,
+          }),
         },
         {
           label: ControllerDetailsTabLabels.logs,
-          url: controllerURLs.controller.logs.index({ id: systemId }),
+          url: urls.controllers.controller.logs.index({ id: systemId }),
         },
         {
           label: ControllerDetailsTabLabels.configuration,
-          url: controllerURLs.controller.configuration({ id: systemId }),
+          url: urls.controllers.controller.configuration({ id: systemId }),
         },
       ].map((link) => ({
         active: pathname.startsWith(link.url),

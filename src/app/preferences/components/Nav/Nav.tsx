@@ -1,24 +1,24 @@
 import SideNav from "app/base/components/SideNav";
-import prefsURLs from "app/preferences/urls";
+import urls from "app/base/urls";
 
 export const Nav = (): JSX.Element => (
   <SideNav
     closeToggleText="Close preferences menu"
     items={[
       {
-        path: prefsURLs.details,
+        path: urls.preferences.details,
         label: "Details",
       },
       {
-        path: prefsURLs.apiKeys.index,
+        path: urls.preferences.apiKeys.index,
         label: "API keys",
       },
       {
-        path: prefsURLs.sshKeys.index,
+        path: urls.preferences.sshKeys.index,
         label: "SSH keys",
       },
       {
-        path: prefsURLs.sslKeys.index,
+        path: urls.preferences.sslKeys.index,
         label: "SSL keys",
       },
     ]}

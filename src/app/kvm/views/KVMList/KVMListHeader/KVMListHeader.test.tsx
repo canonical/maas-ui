@@ -6,8 +6,8 @@ import configureStore from "redux-mock-store";
 
 import KVMListHeader from "./KVMListHeader";
 
+import urls from "app/base/urls";
 import { KVMHeaderViews } from "app/kvm/constants";
-import kvmURLs from "app/kvm/urls";
 import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
@@ -70,7 +70,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
@@ -88,7 +88,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
@@ -107,7 +107,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.lxd.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMListHeader
@@ -133,7 +133,7 @@ describe("KVMListHeader", () => {
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter
-          initialEntries={[{ pathname: kvmURLs.virsh.index, key: "testKey" }]}
+          initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
         >
           <CompatRouter>
             <KVMListHeader
