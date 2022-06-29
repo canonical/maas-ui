@@ -5,6 +5,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
 
 import DeleteConfirm from "./DeleteConfirm";
+import { Label } from "./DeleteConfirm/DeleteConfirm";
 
 import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
@@ -76,7 +77,7 @@ const ZoneDetailsHeader = ({ id }: Props): JSX.Element => {
         <hr />
         <DeleteConfirm
           closeExpanded={closeExpanded}
-          confirmLabel="Delete AZ"
+          confirmLabel={Label.DeleteAZ}
           deleting={deleteStatus === "loading"}
           message="Are you sure you want to delete this AZ?"
           onConfirm={deleteZone}
