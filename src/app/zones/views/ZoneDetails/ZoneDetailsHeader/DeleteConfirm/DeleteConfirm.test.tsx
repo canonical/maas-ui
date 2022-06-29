@@ -38,14 +38,14 @@ describe("DeleteConfirm", () => {
       <Provider store={store}>
         <DeleteConfirm
           closeExpanded={closeExpanded}
-          confirmLabel="Delete AZ"
+          confirmLabel={DeleteAZLabel.DeleteAZ}
           deleting={false}
           onConfirm={onConfirm}
         />
       </Provider>
     );
 
-    await userEvent.click(screen.getByLabelText(DeleteAZLabel.DeleteAZ));
+    await userEvent.click(screen.getByRole("button", { name: "Delete AZ" }));
     expect(onConfirm).toHaveBeenCalled();
   });
 
@@ -57,14 +57,14 @@ describe("DeleteConfirm", () => {
       <Provider store={store}>
         <DeleteConfirm
           closeExpanded={closeExpanded}
-          confirmLabel="Delete AZ"
+          confirmLabel={DeleteAZLabel.DeleteAZ}
           deleting={false}
           onConfirm={onConfirm}
         />
       </Provider>
     );
 
-    await userEvent.click(screen.getByTestId("close-confirm-delete"));
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(closeExpanded).toHaveBeenCalled();
   });
 });

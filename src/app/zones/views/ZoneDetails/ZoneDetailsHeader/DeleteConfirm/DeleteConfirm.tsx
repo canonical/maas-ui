@@ -4,7 +4,7 @@ import { ActionButton, Button, Col, Row } from "@canonical/react-components";
 import type { ActionButtonProps } from "@canonical/react-components";
 
 export enum Label {
-  DeleteAZ = "Delete Availability Zone",
+  DeleteAZ = "Delete AZ",
 }
 
 type Props = {
@@ -40,7 +40,6 @@ const DeleteConfirm = ({
         </Button>
         <ActionButton
           appearance={submitAppearance}
-          aria-label={Label.DeleteAZ}
           data-testid="delete-az"
           loading={deleting}
           onClick={onConfirm}
