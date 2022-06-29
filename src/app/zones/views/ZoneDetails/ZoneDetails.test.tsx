@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import ZoneDetails from "./ZoneDetails";
 
+import { Labels } from "app/base/components/EditableSection";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -58,7 +59,9 @@ describe("ZoneDetails", () => {
       </Provider>
     );
 
-    const editButtons = screen.getAllByRole("button", { name: "Edit" });
+    const editButtons = screen.getAllByRole("button", {
+      name: Labels.EditButton,
+    });
     editButtons.forEach((button) => expect(button).toBeInTheDocument());
   });
 
@@ -86,7 +89,9 @@ describe("ZoneDetails", () => {
       </Provider>
     );
 
-    const editButtons = screen.queryAllByRole("button", { name: "Edit" });
+    const editButtons = screen.queryAllByRole("button", {
+      name: Labels.EditButton,
+    });
     editButtons.forEach((button) => expect(button).not.toBeInTheDocument());
   });
 });
