@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+// import { mount } from "enzyme";
+import { screen, render, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -14,132 +15,162 @@ const mockStore = configureStore();
 describe("Routes", () => {
   [
     {
-      component: "General",
+      title: "General",
       path: settingsURLs.configuration.general,
+      pattern: settingsURLs.configuration.general,
     },
     {
-      component: "Commissioning",
+      title: "Commissioning",
       path: settingsURLs.configuration.commissioning,
+      pattern: settingsURLs.configuration.commissioning,
     },
     {
-      component: "KernelParameters",
+      title: "Kernel parameters",
       path: settingsURLs.configuration.kernelParameters,
+      pattern: settingsURLs.configuration.kernelParameters,
     },
     {
-      component: "Deploy",
+      title: "Deploy",
       path: settingsURLs.configuration.deploy,
+      pattern: settingsURLs.configuration.deploy,
     },
     {
-      component: "UsersList",
+      title: "Users",
       path: settingsURLs.users.index,
+      pattern: settingsURLs.users.index,
     },
     {
-      component: "UserAdd",
+      title: "Add user",
       path: settingsURLs.users.add,
+      pattern: settingsURLs.users.add,
     },
     {
-      component: "UserEdit",
+      title: /^Editing\s+.*$/,
       path: settingsURLs.users.edit({ id: 1 }),
+      pattern: settingsURLs.users.edit(null),
     },
     {
-      component: "LicenseKeyList",
+      title: "License keys",
       path: settingsURLs.licenseKeys.index,
+      pattern: settingsURLs.licenseKeys.index,
     },
     {
-      component: "LicenseKeyAdd",
+      title: "Add license key",
       path: settingsURLs.licenseKeys.add,
+      pattern: settingsURLs.licenseKeys.add,
     },
     {
-      component: "LicenseKeyEdit",
+      title: "Update license key",
       path: settingsURLs.licenseKeys.edit({
         osystem: "ubuntu",
         distro_series: "disco",
       }),
+      pattern: settingsURLs.licenseKeys.edit(null),
     },
     {
-      component: "StorageForm",
+      title: "Storage",
       path: settingsURLs.storage,
+      pattern: settingsURLs.storage,
     },
     {
-      component: "ProxyForm",
+      title: "Proxy",
       path: settingsURLs.network.proxy,
+      pattern: settingsURLs.network.proxy,
     },
     {
-      component: "DnsForm",
+      title: "DNS",
       path: settingsURLs.network.dns,
+      pattern: settingsURLs.network.dns,
     },
     {
-      component: "NtpForm",
+      title: "NTP",
       path: settingsURLs.network.ntp,
+      pattern: settingsURLs.network.ntp,
     },
     {
-      component: "SyslogForm",
+      title: "Syslog",
       path: settingsURLs.network.syslog,
+      pattern: settingsURLs.network.syslog,
     },
     {
-      component: "NetworkDiscoveryForm",
+      title: "Network discovery",
       path: settingsURLs.network.networkDiscovery,
+      pattern: settingsURLs.network.networkDiscovery,
     },
     {
-      component: "ScriptsList",
+      title: "Commissioning scripts",
       path: settingsURLs.scripts.commissioning.index,
+      pattern: settingsURLs.scripts.commissioning.index,
     },
     {
-      component: "ScriptsUpload",
+      title: "Upload commissioning script",
       path: settingsURLs.scripts.commissioning.upload,
+      pattern: settingsURLs.scripts.commissioning.upload,
     },
     {
-      component: "ScriptsList",
+      title: "Testing scripts",
       path: settingsURLs.scripts.testing.index,
+      pattern: settingsURLs.scripts.testing.index,
     },
     {
-      component: "ScriptsUpload",
+      title: "Upload testing script",
       path: settingsURLs.scripts.testing.upload,
+      pattern: settingsURLs.scripts.testing.upload,
     },
     {
-      component: "DhcpList",
+      title: "DHCP snippets",
       path: settingsURLs.dhcp.index,
+      pattern: settingsURLs.dhcp.index,
     },
     {
-      component: "DhcpAdd",
+      title: "Add DHCP snippet",
       path: settingsURLs.dhcp.add,
+      patternpath: settingsURLs.dhcp.add,
     },
     {
-      component: "DhcpEdit",
+      title: /^Editing\s+.*$/,
       path: settingsURLs.dhcp.edit({ id: 1 }),
+      pattern: settingsURLs.dhcp.edit(null),
     },
     {
-      component: "RepositoriesList",
+      title: "Package repos",
       path: settingsURLs.repositories.index,
+      pattern: settingsURLs.repositories.index,
     },
     {
-      component: "RepositoryAdd",
+      title: "Add PPA",
       path: settingsURLs.repositories.add({ type: "ppa" }),
+      pattern: settingsURLs.repositories.add(null),
     },
     {
-      component: "RepositoryEdit",
+      title: "Edit PPA",
       path: settingsURLs.repositories.edit({ id: 1, type: "ppa" }),
+      pattern: settingsURLs.repositories.edit(null),
     },
     {
-      component: "Windows",
+      title: "Windows",
       path: settingsURLs.images.windows,
+      pattern: settingsURLs.images.windows,
     },
     {
-      component: "VMWare",
+      title: "VMWare",
       path: settingsURLs.images.vmware,
+      pattern: settingsURLs.images.vmware,
     },
     {
-      component: "ThirdPartyDrivers",
+      title: "Ubuntu",
       path: settingsURLs.images.ubuntu,
+      pattern: settingsURLs.images.ubuntu,
     },
     {
-      component: "NotFound",
-      path: "/not/a/path",
+      title: "Error: Page not found.",
+      path: `${settingsURLs.index}/not/a/path`,
+      pattern: `${settingsURLs.index}/*`,
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
+  ].forEach(({ title, path }) => {
+    it(`Displays: ${title} at: ${path}`, async () => {
       const store = mockStore(rootStateFactory());
-      const wrapper = mount(
+      render(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
             <CompatRouter>
@@ -148,7 +179,7 @@ describe("Routes", () => {
           </MemoryRouter>
         </Provider>
       );
-      expect(wrapper.find(component).exists()).toBe(true);
+      await waitFor(() => expect(document.title).toBe(`${title} | MAAS`));
     });
   });
 });
