@@ -10,10 +10,6 @@ import { useWindowTitle } from "app/base/hooks";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
-export enum Label {
-  List = "Zones list",
-}
-
 const ZonesList = (): JSX.Element => {
   const dispatch = useDispatch();
   const zonesCount = useSelector(zoneSelectors.count);
@@ -25,7 +21,7 @@ const ZonesList = (): JSX.Element => {
   }, [dispatch]);
 
   return (
-    <Section aria-label={Label.List} header={<ZonesListHeader />}>
+    <Section header={<ZonesListHeader />}>
       {zonesCount > 0 && <ZonesListTable />}
     </Section>
   );

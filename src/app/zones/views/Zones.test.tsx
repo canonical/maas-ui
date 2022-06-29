@@ -5,8 +5,6 @@ import Zones from "./Zones";
 import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
 import type { RootState } from "app/store/root/types";
 import zonesURLs from "app/zones/urls";
-import { Label as ZoneDetailsLabel } from "app/zones/views/ZoneDetails/ZoneDetails";
-import { Label as ZoneListLabel } from "app/zones/views/ZonesList/ZonesList";
 import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
@@ -32,12 +30,12 @@ describe("Zones", () => {
 
   [
     {
-      label: ZoneListLabel.List,
+      label: "Availability zones",
       path: zonesURLs.index,
       pattern: zonesURLs.index,
     },
     {
-      label: ZoneDetailsLabel.Details,
+      label: "Zone summary",
       path: zonesURLs.details({ id: 1 }),
       pattern: zonesURLs.details(null),
     },
@@ -52,7 +50,7 @@ describe("Zones", () => {
         wrapperProps: { routePattern: pattern, state },
         route: path,
       });
-      expect(screen.getByLabelText(label)).toBeInTheDocument();
+      expect(screen.getByText(label)).toBeInTheDocument();
     });
   });
 });
