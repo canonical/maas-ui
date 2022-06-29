@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -45,7 +45,7 @@ describe("ZoneDetails", () => {
   it("shows Edit button if user is admin", () => {
     const state = initialState;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
@@ -58,14 +58,11 @@ describe("ZoneDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .findWhere(
-          (node) =>
-            node.type() === "button" && node.text() === Labels.EditButton
-        )
-        .exists()
-    ).toBe(true);
+
+    const editButtons = screen.getAllByRole("button", {
+      name: Labels.EditButton,
+    });
+    editButtons.forEach((button) => expect(button).toBeInTheDocument());
   });
 
   it("hides Edit button if user is not admin", () => {
@@ -78,7 +75,7 @@ describe("ZoneDetails", () => {
       zone: testZones,
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/zone/1", key: "testKey" }]}
@@ -91,13 +88,10 @@ describe("ZoneDetails", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper
-        .findWhere(
-          (node) =>
-            node.type() === "button" && node.text() === Labels.EditButton
-        )
-        .exists()
-    ).toBe(false);
+
+    const editButtons = screen.queryAllByRole("button", {
+      name: Labels.EditButton,
+    });
+    editButtons.forEach((button) => expect(button).not.toBeInTheDocument());
   });
 });

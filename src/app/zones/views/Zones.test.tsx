@@ -1,43 +1,56 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import Zones from "./Zones";
 
-import urls from "app/base/urls";
-import { rootState as rootStateFactory } from "testing/factories";
-
-const mockStore = configureStore();
+import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
+import type { RootState } from "app/store/root/types";
+import zonesURLs from "app/zones/urls";
+import {
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("Zones", () => {
+  let state: RootState;
+
+  beforeEach(() => {
+    state = rootStateFactory({
+      zone: zoneStateFactory({
+        items: [
+          zoneFactory({
+            id: 1,
+            name: "zone-name",
+          }),
+        ],
+      }),
+    });
+  });
+
   [
     {
-      component: "ZonesList",
-      path: urls.zones.index,
+      label: "Availability zones",
+      path: zonesURLs.index,
+      pattern: zonesURLs.index,
     },
     {
-      component: "ZoneDetails",
-      path: urls.zones.details({ id: 1 }),
+      label: "Zone summary",
+      path: zonesURLs.details({ id: 1 }),
+      pattern: zonesURLs.details(null),
     },
     {
-      component: "NotFound",
-      path: "/not/a/path",
+      label: NotFoundLabel.Title,
+      path: `${zonesURLs.index}/not/a/path`,
+      pattern: `${zonesURLs.index}/*`,
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(rootStateFactory());
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Zones />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+  ].forEach(({ label, path, pattern }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<Zones />, {
+        wrapperProps: { routePattern: pattern, state },
+        route: path,
+      });
+      expect(screen.getByText(label)).toBeInTheDocument();
     });
   });
 });

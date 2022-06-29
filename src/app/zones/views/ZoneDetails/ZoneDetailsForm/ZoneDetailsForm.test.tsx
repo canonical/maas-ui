@@ -1,5 +1,5 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { render, screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -14,7 +14,6 @@ import {
   zoneState as zoneStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -30,10 +29,10 @@ describe("ZoneDetailsForm", () => {
     });
   });
 
-  it("runs closeForm function when the cancel button is clicked", () => {
+  it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = jest.fn();
     const store = mockStore(initialState);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -43,13 +42,13 @@ describe("ZoneDetailsForm", () => {
       </Provider>
     );
 
-    wrapper.find("button[data-testid='cancel-action']").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("calls actions.update on save click", () => {
+  it("calls actions.update on save click", async () => {
     const store = mockStore(initialState);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -58,21 +57,33 @@ describe("ZoneDetailsForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        id: testZone.id,
-        description: testZone.description,
-        name: testZone.name,
-      })
+
+    await userEvent.clear(screen.getByLabelText("Name"));
+
+    await userEvent.clear(screen.getByLabelText("Description"));
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /name/i }),
+      "test name 2"
     );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: /description/i }),
+      "test description 2"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: /Update AZ/i }));
 
     const expectedAction = zoneActions.update({
       id: testZone.id,
-      description: testZone.description,
-      name: testZone.name,
+      description: "test description 2",
+      name: "test name 2",
     });
-    expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+
+    await waitFor(() =>
+      expect(
+        store.getActions().find((action) => action.type === expectedAction.type)
+      ).toStrictEqual(expectedAction)
+    );
   });
 });
