@@ -1,6 +1,6 @@
 import Routes from "./Routes";
 
-import settingsURLs from "app/settings/urls";
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import {
   rootState as rootStateFactory,
@@ -55,134 +55,134 @@ beforeEach(() => {
 const routes = [
   {
     title: "General",
-    path: settingsURLs.configuration.general,
+    path: urls.settings.configuration.general,
   },
   {
     title: "Commissioning",
-    path: settingsURLs.configuration.commissioning,
+    path: urls.settings.configuration.commissioning,
   },
   {
     title: "Kernel parameters",
-    path: settingsURLs.configuration.kernelParameters,
+    path: urls.settings.configuration.kernelParameters,
   },
   {
     title: "Deploy",
-    path: settingsURLs.configuration.deploy,
+    path: urls.settings.configuration.deploy,
   },
   {
     title: "Users",
-    path: settingsURLs.users.index,
+    path: urls.settings.users.index,
   },
   {
     title: "Add user",
-    path: settingsURLs.users.add,
+    path: urls.settings.users.add,
   },
   {
     title: `Editing \`${user.username}\``,
-    path: settingsURLs.users.edit({ id: user.id }),
-    pattern: `${settingsURLs.users.edit(null)}/*`,
+    path: urls.settings.users.edit({ id: user.id }),
+    pattern: `${urls.settings.users.edit(null)}/*`,
   },
   {
     title: "License keys",
-    path: settingsURLs.licenseKeys.index,
+    path: urls.settings.licenseKeys.index,
   },
   {
     title: "Add license key",
-    path: settingsURLs.licenseKeys.add,
+    path: urls.settings.licenseKeys.add,
   },
   {
     title: "Update license key",
-    path: settingsURLs.licenseKeys.edit({
+    path: urls.settings.licenseKeys.edit({
       osystem: licensekey.osystem,
       distro_series: licensekey.distro_series,
     }),
-    pattern: `${settingsURLs.licenseKeys.edit(null)}/*`,
+    pattern: `${urls.settings.licenseKeys.edit(null)}/*`,
   },
   {
     title: "Storage",
-    path: settingsURLs.storage,
+    path: urls.settings.storage,
   },
   {
     title: "Proxy",
-    path: settingsURLs.network.proxy,
+    path: urls.settings.network.proxy,
   },
   {
     title: "DNS",
-    path: settingsURLs.network.dns,
+    path: urls.settings.network.dns,
   },
   {
     title: "NTP",
-    path: settingsURLs.network.ntp,
+    path: urls.settings.network.ntp,
   },
   {
     title: "Syslog",
-    path: settingsURLs.network.syslog,
+    path: urls.settings.network.syslog,
   },
   {
     title: "Network discovery",
-    path: settingsURLs.network.networkDiscovery,
+    path: urls.settings.network.networkDiscovery,
   },
   {
     title: "Commissioning scripts",
-    path: settingsURLs.scripts.commissioning.index,
+    path: urls.settings.scripts.commissioning.index,
   },
   {
     title: "Upload commissioning script",
-    path: settingsURLs.scripts.commissioning.upload,
+    path: urls.settings.scripts.commissioning.upload,
   },
   {
     title: "Testing scripts",
-    path: settingsURLs.scripts.testing.index,
+    path: urls.settings.scripts.testing.index,
   },
   {
     title: "Upload testing script",
-    path: settingsURLs.scripts.testing.upload,
+    path: urls.settings.scripts.testing.upload,
   },
   {
     title: "DHCP snippets",
-    path: settingsURLs.dhcp.index,
-    pattern: settingsURLs.dhcp.index,
+    path: urls.settings.dhcp.index,
+    pattern: urls.settings.dhcp.index,
   },
   {
     title: "Add DHCP snippet",
-    path: settingsURLs.dhcp.add,
+    path: urls.settings.dhcp.add,
   },
   {
     title: `Editing \`${dhcpSnippet.name}\``,
-    path: settingsURLs.dhcp.edit({ id: dhcpSnippet.id }),
-    pattern: `${settingsURLs.dhcp.edit(null)}/*`,
+    path: urls.settings.dhcp.edit({ id: dhcpSnippet.id }),
+    pattern: `${urls.settings.dhcp.edit(null)}/*`,
   },
   {
     title: "Package repos",
-    path: settingsURLs.repositories.index,
+    path: urls.settings.repositories.index,
   },
   {
     title: "Add PPA",
-    path: settingsURLs.repositories.add({ type: "ppa" }),
+    path: urls.settings.repositories.add({ type: "ppa" }),
   },
   {
     title: "Edit PPA",
-    path: settingsURLs.repositories.edit({
+    path: urls.settings.repositories.edit({
       id: packageRepository.id,
       type: "ppa",
     }),
-    pattern: `${settingsURLs.repositories.edit(null)}/*`,
+    pattern: `${urls.settings.repositories.edit(null)}/*`,
   },
   {
     title: "Windows",
-    path: settingsURLs.images.windows,
+    path: urls.settings.images.windows,
   },
   {
     title: "VMWare",
-    path: settingsURLs.images.vmware,
+    path: urls.settings.images.vmware,
   },
   {
     title: "Ubuntu",
-    path: settingsURLs.images.ubuntu,
+    path: urls.settings.images.ubuntu,
   },
   {
     title: "Error: Page not found.",
-    path: `${settingsURLs.index}/not/a/path`,
+    path: `${urls.settings.index}/not/a/path`,
   },
 ];
 
