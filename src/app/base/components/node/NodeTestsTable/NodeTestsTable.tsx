@@ -174,6 +174,7 @@ const NodeTestsTable = ({ node, scriptResults }: Props): JSX.Element => {
   return (
     <>
       <MainTable
+        aria-label="Test results"
         className="node-tests-table p-table-expanding--light"
         expanding
         headers={[

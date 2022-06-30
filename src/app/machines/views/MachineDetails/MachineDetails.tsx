@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch, useLocation } from "react-router-dom";
+import { Redirect, useLocation } from "react-router-dom";
+import { Route, Routes } from "react-router-dom-v5-compat";
 
 import MachineCommissioning from "./MachineCommissioning";
 import MachineConfiguration from "./MachineConfiguration";
@@ -29,7 +30,7 @@ import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
-import { isId } from "app/utils";
+import { getRelativeRoute, isId } from "app/utils";
 
 const MachineDetails = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -71,6 +72,8 @@ const MachineDetails = (): JSX.Element => {
     );
   }
 
+  const base = urls.machines.machine.index(null);
+
   return (
     <Section
       header={
@@ -82,112 +85,121 @@ const MachineDetails = (): JSX.Element => {
       }
     >
       {machine && (
-        <Switch>
+        <Routes>
           <Route
-            exact
-            path={urls.machines.machine.summary(null)}
-            render={() => (
+            element={<Redirect to={urls.machines.machine.summary({ id })} />}
+            index
+          />
+          <Route
+            element={
               <>
                 <SummaryNotifications id={id} />
                 <MachineSummary setHeaderContent={setHeaderContent} />
               </>
-            )}
+            }
+            path={getRelativeRoute(urls.machines.machine.summary(null), base)}
           />
           <Route
-            exact
-            path={urls.machines.machine.instances(null)}
-            render={() => <MachineInstances />}
+            element={<MachineInstances />}
+            path={getRelativeRoute(urls.machines.machine.instances(null), base)}
           />
           <Route
-            exact
-            path={urls.machines.machine.network(null)}
-            render={() => (
+            element={
               <>
                 <NetworkNotifications id={id} />
                 <MachineNetwork id={id} setHeaderContent={setHeaderContent} />
               </>
-            )}
+            }
+            path={getRelativeRoute(urls.machines.machine.network(null), base)}
           />
           <Route
-            exact
-            path={urls.machines.machine.storage(null)}
-            render={() => (
+            element={
               <>
                 <StorageNotifications id={id} />
                 <MachineStorage />
               </>
+            }
+            path={getRelativeRoute(urls.machines.machine.storage(null), base)}
+          />
+          <Route
+            element={<MachinePCIDevices setHeaderContent={setHeaderContent} />}
+            path={getRelativeRoute(
+              urls.machines.machine.pciDevices(null),
+              base
             )}
           />
           <Route
-            exact
-            path={urls.machines.machine.pciDevices(null)}
-            render={() => (
-              <MachinePCIDevices setHeaderContent={setHeaderContent} />
+            element={<MachineUSBDevices setHeaderContent={setHeaderContent} />}
+            path={getRelativeRoute(
+              urls.machines.machine.usbDevices(null),
+              base
             )}
           />
           <Route
-            exact
-            path={urls.machines.machine.usbDevices(null)}
-            render={() => (
-              <MachineUSBDevices setHeaderContent={setHeaderContent} />
+            element={<MachineCommissioning />}
+            path={getRelativeRoute(
+              urls.machines.machine.commissioning.index(null),
+              base
             )}
           />
           <Route
-            exact
-            path={urls.machines.machine.commissioning.index(null)}
-            render={() => <MachineCommissioning />}
-          />
-          <Route
-            exact
-            path={urls.machines.machine.commissioning.scriptResult(null)}
-            render={() => (
+            element={
               <NodeTestDetails
                 getReturnPath={(id) =>
                   urls.machines.machine.commissioning.index({ id })
                 }
               />
+            }
+            path={getRelativeRoute(
+              urls.machines.machine.commissioning.scriptResult(null),
+              base
             )}
           />
           <Route
-            exact
-            path={urls.machines.machine.testing.index(null)}
-            render={() => <MachineTests />}
+            element={<MachineTests />}
+            path={getRelativeRoute(
+              urls.machines.machine.testing.index(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.machines.machine.testing.scriptResult(null)}
-            render={() => (
+            element={
               <NodeTestDetails
                 getReturnPath={(id) =>
                   urls.machines.machine.testing.index({ id })
                 }
               />
+            }
+            path={getRelativeRoute(
+              urls.machines.machine.testing.scriptResult(null),
+              base
             )}
           />
           <Route
-            path={urls.machines.machine.logs.index(null)}
-            render={() => <MachineLogs systemId={id} />}
+            element={<MachineLogs systemId={id} />}
+            path={getRelativeRoute(
+              `${urls.machines.machine.logs.index(null)}/*`,
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.machines.machine.events(null)}
-            render={() => (
+            element={
               <Redirect to={urls.machines.machine.logs.events({ id })} />
+            }
+            path={getRelativeRoute(urls.machines.machine.events(null), base)}
+          />
+          <Route
+            element={<MachineConfiguration />}
+            path={getRelativeRoute(
+              urls.machines.machine.configuration(null),
+              base
             )}
           />
           <Route
-            exact
-            path={urls.machines.machine.configuration(null)}
-            render={() => <MachineConfiguration />}
+            element={<Redirect to={urls.machines.machine.summary({ id })} />}
+            path={base}
           />
-          <Route
-            exact
-            path={urls.machines.machine.index(null)}
-            render={() => (
-              <Redirect to={urls.machines.machine.summary({ id })} />
-            )}
-          />
-        </Switch>
+        </Routes>
       )}
     </Section>
   );

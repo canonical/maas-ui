@@ -15,6 +15,8 @@ export const generateMac = () =>
 export const generateEmail = () => `${nanoid()}@example.com`;
 export const generateId = () => nanoid();
 export const generateVid = () => `${Math.floor(Math.random() * 1000)}`;
+export const generateName = (name?: string) =>
+  `cy-${name ? `${name}-` : ""}${generateId()}`;
 
 export const generateMAASURL = (route?: string): string =>
   `${Cypress.env("BASENAME")}${Cypress.env("REACT_BASENAME")}${route || ""}`;

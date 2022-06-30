@@ -1,6 +1,6 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { BrowserRouter, MemoryRouter } from "react-router-dom";
 import { CompatRouter, Link, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
@@ -45,42 +45,34 @@ describe("MachineDetails", () => {
   [
     {
       component: "MachineSummary",
-      route: urls.machines.machine.summary(null),
       path: urls.machines.machine.summary({ id: "abc123" }),
     },
     {
       component: "MachineInstances",
-      route: urls.machines.machine.instances(null),
       path: urls.machines.machine.instances({ id: "abc123" }),
     },
     {
       component: "MachineNetwork",
-      route: urls.machines.machine.network(null),
       path: urls.machines.machine.network({ id: "abc123" }),
     },
     {
       component: "MachineStorage",
-      route: urls.machines.machine.storage(null),
       path: urls.machines.machine.storage({ id: "abc123" }),
     },
     {
       component: "MachinePCIDevices",
-      route: urls.machines.machine.pciDevices(null),
       path: urls.machines.machine.pciDevices({ id: "abc123" }),
     },
     {
       component: "MachineUSBDevices",
-      route: urls.machines.machine.usbDevices(null),
       path: urls.machines.machine.usbDevices({ id: "abc123" }),
     },
     {
       component: "MachineCommissioning",
-      route: urls.machines.machine.commissioning.index(null),
       path: urls.machines.machine.commissioning.index({ id: "abc123" }),
     },
     {
       component: "NodeTestDetails",
-      route: urls.machines.machine.commissioning.scriptResult(null),
       path: urls.machines.machine.commissioning.scriptResult({
         id: "abc123",
         scriptResultId: 1,
@@ -88,12 +80,10 @@ describe("MachineDetails", () => {
     },
     {
       component: "MachineTests",
-      route: urls.machines.machine.testing.index(null),
       path: urls.machines.machine.testing.index({ id: "abc123" }),
     },
     {
       component: "NodeTestDetails",
-      route: urls.machines.machine.testing.scriptResult(null),
       path: urls.machines.machine.testing.scriptResult({
         id: "abc123",
         scriptResultId: 1,
@@ -101,29 +91,24 @@ describe("MachineDetails", () => {
     },
     {
       component: "NodeLogs",
-      route: urls.machines.machine.logs.index(null),
       path: urls.machines.machine.logs.index({ id: "abc123" }),
     },
     {
       component: "MachineConfiguration",
-      route: urls.machines.machine.configuration(null),
       path: urls.machines.machine.configuration({ id: "abc123" }),
     },
-    {
-      // Redirects to summary:
-      component: "MachineSummary",
-      route: urls.machines.machine.index(null),
-      path: urls.machines.machine.index({ id: "abc123" }),
-    },
-  ].forEach(({ component, path, route }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
+  ].forEach(({ component, path }) => {
+    it(`Displays: ${component} at: ${path}`, async () => {
       const store = mockStore(state);
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter initialEntries={[{ pathname: path }]}>
             <CompatRouter>
               <Routes>
-                <Route element={<MachineDetails />} path={route || "*/:id/*"} />
+                <Route
+                  element={<MachineDetails />}
+                  path={`${urls.machines.machine.index(null)}/*`}
+                />
               </Routes>
             </CompatRouter>
           </MemoryRouter>
@@ -131,6 +116,32 @@ describe("MachineDetails", () => {
       );
       expect(wrapper.find(component).exists()).toBe(true);
     });
+  });
+
+  it("redirects to summary", () => {
+    window.history.pushState(
+      {},
+      "",
+      urls.machines.machine.index({ id: "abc123" })
+    );
+    const store = mockStore(state);
+    mount(
+      <Provider store={store}>
+        <BrowserRouter>
+          <CompatRouter>
+            <Routes>
+              <Route
+                element={<MachineDetails />}
+                path={urls.machines.machine.index(null)}
+              />
+            </Routes>
+          </CompatRouter>
+        </BrowserRouter>
+      </Provider>
+    );
+    expect(window.location.pathname).toBe(
+      urls.machines.machine.summary({ id: "abc123" })
+    );
   });
 
   it("dispatches an action to set the machine as active", () => {
@@ -142,7 +153,10 @@ describe("MachineDetails", () => {
         >
           <CompatRouter>
             <Routes>
-              <Route element={<MachineDetails />} path="/machine/:id" />
+              <Route
+                element={<MachineDetails />}
+                path={urls.machines.machine.index(null)}
+              />
             </Routes>
           </CompatRouter>
         </MemoryRouter>
@@ -193,7 +207,10 @@ describe("MachineDetails", () => {
         >
           <CompatRouter>
             <Routes>
-              <Route element={<MachineDetails />} path="/machine/:id" />
+              <Route
+                element={<MachineDetails />}
+                path={urls.machines.machine.index(null)}
+              />
             </Routes>
           </CompatRouter>
         </MemoryRouter>
@@ -221,7 +238,7 @@ describe("MachineDetails", () => {
                     <MachineDetails />
                   </>
                 }
-                path="/machine/:id"
+                path={urls.machines.machine.index(null)}
               />
             </Routes>
           </CompatRouter>
