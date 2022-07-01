@@ -41,7 +41,7 @@ it("gets and sets the controller as active", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={urls.controllers.controller.index(null)}
+              path={`${urls.controllers.controller.index(null)}/*`}
             />
           </Routes>
         </CompatRouter>

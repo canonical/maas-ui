@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { Routes, Route } from "react-router-dom-v5-compat";
 
 import ControllerCommissioning from "./ControllerCommissioning";
 import ControllerConfiguration from "./ControllerConfiguration";
@@ -24,7 +25,7 @@ import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { ControllerMeta } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
-import { isId } from "app/utils";
+import { getRelativeRoute, isId } from "app/utils";
 
 const ControllerDetails = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -60,6 +61,8 @@ const ControllerDetails = (): JSX.Element => {
     );
   }
 
+  const base = urls.controllers.controller.index(null);
+
   return (
     <Section
       header={
@@ -71,78 +74,104 @@ const ControllerDetails = (): JSX.Element => {
       }
     >
       {controller && (
-        <Switch>
+        <Routes>
           <Route
-            exact
-            path={urls.controllers.controller.summary(null)}
-            render={() => <ControllerSummary systemId={id} />}
+            element={
+              <Redirect to={urls.controllers.controller.summary({ id })} />
+            }
+            index
           />
           <Route
-            exact
-            path={urls.controllers.controller.vlans(null)}
-            render={() => <ControllerVLANs systemId={id} />}
+            element={<ControllerSummary systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.summary(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.network(null)}
-            render={() => <ControllerNetwork systemId={id} />}
+            element={<ControllerVLANs systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.vlans(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.storage(null)}
-            render={() => <ControllerStorage systemId={id} />}
+            element={<ControllerNetwork systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.network(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.pciDevices(null)}
-            render={() => <ControllerPCIDevices systemId={id} />}
+            element={<ControllerStorage systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.storage(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.usbDevices(null)}
-            render={() => <ControllerUSBDevices systemId={id} />}
+            element={<ControllerPCIDevices systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.pciDevices(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.commissioning.index(null)}
-            render={() => <ControllerCommissioning systemId={id} />}
+            element={<ControllerUSBDevices systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.usbDevices(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.commissioning.scriptResult(null)}
-            render={() => (
+            element={<ControllerCommissioning systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.commissioning.index(null),
+              base
+            )}
+          />
+          <Route
+            element={
               <NodeTestDetails
                 getReturnPath={(id) =>
                   urls.controllers.controller.commissioning.index({ id })
                 }
               />
+            }
+            path={getRelativeRoute(
+              urls.controllers.controller.commissioning.scriptResult(null),
+              base
             )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.logs.index(null)}
-            render={() => <ControllerLogs systemId={id} />}
+            element={<ControllerLogs systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.logs.index(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.logs.events(null)}
-            render={() => <ControllerLogs systemId={id} />}
+            element={<ControllerLogs systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.logs.events(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.logs.installationOutput(null)}
-            render={() => <ControllerLogs systemId={id} />}
+            element={<ControllerLogs systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.logs.installationOutput(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.controllers.controller.configuration(null)}
-            render={() => <ControllerConfiguration systemId={id} />}
+            element={<ControllerConfiguration systemId={id} />}
+            path={getRelativeRoute(
+              urls.controllers.controller.configuration(null),
+              base
+            )}
           />
-          <Redirect
-            from={urls.controllers.controller.index(null)}
-            to={urls.controllers.controller.summary(null)}
-          />
-        </Switch>
+        </Routes>
       )}
     </Section>
   );
