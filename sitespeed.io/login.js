@@ -1,5 +1,7 @@
 const { constructURL } = require("./utils");
 
+const TIMEOUT = 5000;
+
 module.exports = async function (context, commands) {
   await commands.cdp.send("Network.setCookie", {
     domain: context.options.domain,
@@ -12,13 +14,13 @@ module.exports = async function (context, commands) {
     value: "true",
   });
   await commands.navigate(constructURL(context, "/dashboard"));
-  await commands.wait.bySelector("input[name='username']", 5000);
+  await commands.wait.bySelector("input[name='username']", TIMEOUT);
   await commands.addText.byName("admin", "username");
   await commands.addText.byName("test", "password");
   await commands.click.bySelector("button.p-button--positive");
   await commands.wait.bySelector(
     "[data-testid='section-header-title-spinner']",
-    5000
+    TIMEOUT
   );
-  return commands.wait.byTime(500);
+  await commands.wait.byXpath("//header//a[text()='admin']");
 };
