@@ -1,0 +1,47 @@
+name: sitespeed.io
+on:
+  pull_request:
+    types: [closed]
+jobs:
+  run-sitespeed:
+    if: github.event.pull_request.merged == true
+    name: Run sitespeed.io
+    runs-on: ubuntu-20.04
+    env:
+      MAAS_DOMAIN: localhost
+    steps:
+      - uses: actions/checkout@main
+      - name: Install MAAS
+        run: |
+          sudo systemctl enable snapd
+          sudo snap install maas-test-db --channel=latest/edge
+          sudo snap install maas --channel=latest/edge
+      - name: Fetch database dump
+        uses: wei/wget@v1
+        with:
+          args: -O maasdb.dump https://github.com/canonical-web-and-design/maas-ui-testing/raw/main/db/maasdb-20.04-master-1000.dump
+      - name: Set up MAAS with database dump
+        run: |
+          sudo sed -i "s/dynamic_shared_memory_type = posix/dynamic_shared_memory_type = sysv/" /var/snap/maas-test-db/common/postgres/data/postgresql.conf
+          sudo snap restart maas-test-db
+          sudo mv maasdb.dump /var/snap/maas-test-db/common/maasdb.dump
+          sudo snap run --shell maas-test-db.psql -c 'db-dump restore /var/snap/maas-test-db/common/maasdb.dump maassampledata'
+          sudo maas init region+rack --maas-url=http://${{env.MAAS_DOMAIN}}:5240/MAAS --database-uri maas-test-db:///
+          sudo sed -i "s/database_name: maasdb/database_name: maassampledata/" /var/snap/maas/current/regiond.conf
+          sudo snap restart maas
+      - name: Create MAAS admin
+        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+      - name: Wait for MAAS
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: "http://${{env.MAAS_DOMAIN}}:5240/MAAS/r"
+          responseCode: 200
+          timeout: 200000
+          interval: 500
+      - name: Run sitespeed.io tests
+        run: yarn sitespeed --browsertime.domain=${{env.MAAS_DOMAIN}}
+      - name: Upload results
+        uses: actions/upload-artifact@v2
+        with:
+          name: sitespeed.io-results
+          path: sitespeed.io/results

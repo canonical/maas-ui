@@ -16,6 +16,7 @@
 - Testing
   - [Integration tests](#integration-tests)
   - [Unit tests](#unit-tests)
+  - [Performance tests](#performance-tests)
 
 # Project conventions
 
@@ -599,4 +600,25 @@ _Note: this only limits the tests in a single file. You will also need to make s
 ```javascript
 describe.only("NetworkTable", () => {
 it.only("displays a spinner when loading", () => {
+```
+
+## Performance tests
+
+Performance tests use [Sitespeed.io](https://www.sitespeed.io/) and are run when
+PRs are merged.
+
+Sitespeed can also be run manually, though the tests expect a MAAS with a
+specific dataset. For best results a [local MAAS](#local-deployments) can be set
+up using [sample data](#sample-data).
+
+To run against a MAAS deployment you can use:
+
+```shell
+yarn sitespeed --browsertime.domain=[maas.ip.or.hostname]
+```
+
+To run against a local UI you will also need to set the port:
+
+```shell
+yarn sitespeed --browsertime.domain=[maas-ui.ip.or.hostname] --browsertime.port=8400
 ```
