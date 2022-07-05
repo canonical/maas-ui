@@ -1,47 +1,58 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
+import { Label as PoolAddLabel } from "./PoolAdd/PoolAdd";
+import { Label as PoolEditLabel } from "./PoolEdit/PoolEdit";
+import { Label as PoolListLabel } from "./PoolList/PoolList";
 import Pools from "./Pools";
 
 import urls from "app/base/urls";
-import { rootState as rootStateFactory } from "testing/factories";
-
-const mockStore = configureStore();
+import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
+import type { RootState } from "app/store/root/types";
+import {
+  resourcePool as resourcePoolFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("Pools", () => {
+  let state: RootState;
+  beforeEach(() => {
+    state = rootStateFactory({
+      resourcepool: resourcePoolStateFactory({
+        loaded: true,
+        items: [resourcePoolFactory({ id: 1 })],
+      }),
+    });
+  });
+
   [
     {
-      component: "Pools",
+      label: PoolListLabel.Title,
       path: urls.pools.index,
     },
     {
-      component: "PoolAdd",
+      label: PoolAddLabel.Title,
       path: urls.pools.add,
     },
     {
-      component: "PoolEdit",
+      label: PoolEditLabel.Title,
       path: urls.pools.edit({ id: 1 }),
     },
     {
-      component: "NotFound",
-      path: "/not/a/path",
+      label: NotFoundLabel.Title,
+      path: `${urls.pools.index}/not/a/path`,
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(rootStateFactory());
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Pools />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+  ].forEach(({ label, path }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<Pools />, {
+        route: path,
+        wrapperProps: {
+          routePattern: `${urls.pools.index}/*`,
+          state,
+        },
+      });
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
 });
