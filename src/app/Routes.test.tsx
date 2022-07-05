@@ -38,11 +38,11 @@ const componentPaths: { component: string; path: string }[] = [
     path: urls.devices.device.index({ id: "abc123" }),
   },
   {
-    component: "Domains",
+    component: "DomainsList",
     path: urls.domains.index,
   },
   {
-    component: "Domains",
+    component: "DomainDetails",
     path: urls.domains.details({ id: 1 }),
   },
   {
