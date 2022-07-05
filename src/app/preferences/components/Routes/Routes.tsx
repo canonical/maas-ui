@@ -1,4 +1,5 @@
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Redirect } from "react-router";
+import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
@@ -10,53 +11,47 @@ import AddSSHKey from "app/preferences/views/SSHKeys/AddSSHKey";
 import SSHKeyList from "app/preferences/views/SSHKeys/SSHKeyList";
 import AddSSLKey from "app/preferences/views/SSLKeys/AddSSLKey";
 import SSLKeyList from "app/preferences/views/SSLKeys/SSLKeyList";
+import { getRelativeRoute } from "app/utils";
 
 const Routes = (): JSX.Element => {
+  const base = urls.preferences.index;
   return (
-    <Switch>
-      <Redirect
-        exact
-        from={urls.preferences.index}
-        to={urls.preferences.details}
-      />
-      <Route exact path={urls.preferences.details} render={() => <Details />} />
+    <ReactRouterRoutes>
+      <Route element={<Redirect to={urls.preferences.details} />} path="/" />
       <Route
-        exact
-        path={urls.preferences.apiKeys.index}
-        render={() => <APIKeyList />}
+        element={<Details />}
+        path={getRelativeRoute(urls.preferences.details, base)}
       />
       <Route
-        exact
-        path={urls.preferences.apiKeys.add}
-        render={() => <APIKeyAdd />}
+        element={<APIKeyList />}
+        path={getRelativeRoute(urls.preferences.apiKeys.index, base)}
       />
       <Route
-        exact
-        path={urls.preferences.apiKeys.edit(null)}
-        render={() => <APIKeyEdit />}
+        element={<APIKeyAdd />}
+        path={getRelativeRoute(urls.preferences.apiKeys.add, base)}
       />
       <Route
-        exact
-        path={urls.preferences.sshKeys.index}
-        render={() => <SSHKeyList />}
+        element={<APIKeyEdit />}
+        path={getRelativeRoute(urls.preferences.apiKeys.edit(null), base)}
       />
       <Route
-        exact
-        path={urls.preferences.sshKeys.add}
-        render={() => <AddSSHKey />}
+        element={<SSHKeyList />}
+        path={getRelativeRoute(urls.preferences.sshKeys.index, base)}
       />
       <Route
-        exact
-        path={urls.preferences.sslKeys.index}
-        render={() => <SSLKeyList />}
+        element={<AddSSHKey />}
+        path={getRelativeRoute(urls.preferences.sshKeys.add, base)}
       />
       <Route
-        exact
-        path={urls.preferences.sslKeys.add}
-        render={() => <AddSSLKey />}
+        element={<SSLKeyList />}
+        path={getRelativeRoute(urls.preferences.sslKeys.index, base)}
       />
-      <Route path="*" render={() => <NotFound />} />
-    </Switch>
+      <Route
+        element={<AddSSLKey />}
+        path={getRelativeRoute(urls.preferences.sslKeys.add, base)}
+      />
+      <Route element={<NotFound />} path="*" />
+    </ReactRouterRoutes>
   );
 };
 

@@ -11,6 +11,10 @@ import statusSelectors from "app/store/status/selectors";
 import { actions as userActions } from "app/store/user";
 import userSelectors from "app/store/user/selectors";
 
+export enum Label {
+  Title = "Details",
+}
+
 export const Details = (): JSX.Element => {
   const dispatch = useDispatch();
   const authUser = useSelector(authSelectors.get);
@@ -24,7 +28,7 @@ export const Details = (): JSX.Element => {
     return userActions.cleanup();
   };
 
-  useWindowTitle("Details");
+  useWindowTitle(Label.Title);
 
   useAddMessage(
     usersSaved && (!passwordChanged || authUserSaved),
@@ -33,7 +37,7 @@ export const Details = (): JSX.Element => {
   );
 
   return (
-    <>
+    <div aria-label={Label.Title}>
       {externalAuthURL && (
         <Notification severity="information">
           Users for this MAAS are managed using an external service
@@ -83,7 +87,7 @@ export const Details = (): JSX.Element => {
           />
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 
