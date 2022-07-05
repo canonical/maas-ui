@@ -69,7 +69,7 @@ describe("Tags", () => {
 
   it("shows buttons when not displaying forms", () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { routePattern: urls.tags.tag.index(null), state },
+      wrapperProps: { routePattern: `${urls.tags.tag.index(null)}/*`, state },
       route: urls.tags.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
@@ -89,7 +89,7 @@ describe("Tags", () => {
 
   it("hides buttons when deleting tags", async () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { routePattern: urls.tags.tag.index(null), state },
+      wrapperProps: { routePattern: `${urls.tags.tag.index(null)}/*`, state },
       route: urls.tags.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
