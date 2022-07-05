@@ -1,3 +1,5 @@
+import DeviceDetails from "../../../devices/views/DeviceDetails/DeviceDetails";
+
 import Routes from "./Routes";
 
 import urls from "app/base/urls";
@@ -190,5 +192,38 @@ describe("Routes", () => {
       });
       expect(document.title).toBe(`${title} | MAAS`);
     });
+  });
+
+  it("redirects from base URL to configuration", () => {
+    renderWithBrowserRouter(<Routes />, {
+      route: urls.settings.index,
+      wrapperProps: {
+        state,
+        routePattern: `${urls.settings.index}/*`,
+      },
+    });
+    expect(window.location.pathname).toBe(urls.settings.configuration.index);
+  });
+
+  it("redirects from configuration index to general", () => {
+    renderWithBrowserRouter(<Routes />, {
+      route: urls.settings.configuration.index,
+      wrapperProps: {
+        state,
+        routePattern: `${urls.settings.index}/*`,
+      },
+    });
+    expect(window.location.pathname).toBe(urls.settings.configuration.general);
+  });
+
+  it("redirects from network index to proxy", () => {
+    renderWithBrowserRouter(<Routes />, {
+      route: urls.settings.network.index,
+      wrapperProps: {
+        state,
+        routePattern: `${urls.settings.index}/*`,
+      },
+    });
+    expect(window.location.pathname).toBe(urls.settings.network.proxy);
   });
 });
