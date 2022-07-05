@@ -24,7 +24,8 @@ import SpaceDetails from "app/subnets/views/SpaceDetails";
 import SubnetDetails from "app/subnets/views/SubnetDetails";
 import SubnetsList from "app/subnets/views/SubnetsList";
 import VLANDetails from "app/subnets/views/VLANDetails";
-import Zones from "app/zones/views/Zones";
+import ZoneDetails from "app/zones/views/ZoneDetails";
+import ZonesList from "app/zones/views/ZonesList";
 
 const Routes = (): JSX.Element => (
   <ReactRouterRoutes>
@@ -200,7 +201,7 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
-          <Zones />
+          <ZonesList />
         </ErrorBoundary>
       }
       path={`${urls.zones.index}/*`}
@@ -208,7 +209,7 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
-          <Zones />
+          <ZoneDetails />
         </ErrorBoundary>
       }
       path={`${urls.zones.details(null)}/*`}

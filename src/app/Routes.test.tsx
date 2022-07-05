@@ -102,11 +102,11 @@ const componentPaths: { component: string; path: string }[] = [
     path: "/not/a/path",
   },
   {
-    component: "Zones",
+    component: "ZonesList",
     path: urls.zones.index,
   },
   {
-    component: "Zones",
+    component: "ZoneDetails",
     path: urls.zones.details({ id: 1 }),
   },
   {
