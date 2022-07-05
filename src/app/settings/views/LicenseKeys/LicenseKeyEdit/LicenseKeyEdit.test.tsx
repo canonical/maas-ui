@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { LicenseKeyEdit } from "./LicenseKeyEdit";
@@ -115,11 +115,12 @@ describe("LicenseKeyEdit", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/settings/license-keys/:osystem/:distro_series/edit"
-              render={() => <LicenseKeyEdit />}
-            />
+            <Routes>
+              <Route
+                element={<LicenseKeyEdit />}
+                path="/settings/license-keys/:osystem/:distro_series/edit"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
