@@ -11,6 +11,10 @@ import type { Device, DeviceMeta } from "app/store/device/types";
 import { isDeviceDetails } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
 
+export enum Label {
+  Title = "Device summary",
+}
+
 type Props = {
   systemId: Device[DeviceMeta.PK];
 };
@@ -29,7 +33,7 @@ const DeviceSummary = ({ systemId }: Props): JSX.Element => {
     );
   }
   return (
-    <Strip data-testid="device-summary" shallow>
+    <Strip aria-label={Label.Title} shallow>
       <div className="device-summary">
         <div className="device-summary__overview">
           <DeviceOverviewCard systemId={systemId} />

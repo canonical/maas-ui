@@ -27,7 +27,8 @@ type Props = {
 };
 
 export enum Label {
-  Form = "Device configuration",
+  Title = "Device configuration",
+  Form = "Device configuration form",
   Submit = "Save changes",
 }
 
