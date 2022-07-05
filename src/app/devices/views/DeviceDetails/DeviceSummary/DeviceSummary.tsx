@@ -33,7 +33,7 @@ const DeviceSummary = ({ systemId }: Props): JSX.Element => {
     );
   }
   return (
-    <Strip aria-label={Label.Title} shallow>
+    <Strip aria-label={Label.Title} data-testid="device-summary" shallow>
       <div className="device-summary">
         <div className="device-summary__overview">
           <DeviceOverviewCard systemId={systemId} />
