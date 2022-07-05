@@ -39,7 +39,7 @@ context("Machine details", () => {
     cy.findByRole("columnheader", { name: /subnet/i }).should("not.exist");
   });
 
-  it.only("displays machine commissioning details", () => {
+  it("displays machine commissioning details", () => {
     const { name } = completeAddMachineForm();
 
     cy.findByRole("link", { name: new RegExp(name, "i") }).click();
