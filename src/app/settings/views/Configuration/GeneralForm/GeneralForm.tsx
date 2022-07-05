@@ -102,6 +102,15 @@ const GeneralForm = (): JSX.Element => {
         type="text"
         wrapperClassName="u-sv2"
       />
+      <p className="p-form-help-text">
+        Use MAAS name and unicode emoji(s) to describe your MAAS instance.
+      </p>
+      <p className="p-form-help-text">Examples:</p>
+      <p>
+        ⛔ maas-prod my-maas
+        <br />
+        my-maas ⚠️ no-deploys
+      </p>
       <h5>Data analytics</h5>
       <FormikField
         help={
