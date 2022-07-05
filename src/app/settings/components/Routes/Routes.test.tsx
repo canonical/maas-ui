@@ -80,7 +80,6 @@ const routes = [
   {
     title: `Editing \`${user.username}\``,
     path: urls.settings.users.edit({ id: user.id }),
-    pattern: `${urls.settings.users.edit(null)}/*`,
   },
   {
     title: "License keys",
@@ -96,7 +95,6 @@ const routes = [
       osystem: licensekey.osystem,
       distro_series: licensekey.distro_series,
     }),
-    pattern: `${urls.settings.licenseKeys.edit(null)}/*`,
   },
   {
     title: "Storage",
@@ -141,7 +139,6 @@ const routes = [
   {
     title: "DHCP snippets",
     path: urls.settings.dhcp.index,
-    pattern: urls.settings.dhcp.index,
   },
   {
     title: "Add DHCP snippet",
@@ -150,7 +147,6 @@ const routes = [
   {
     title: `Editing \`${dhcpSnippet.name}\``,
     path: urls.settings.dhcp.edit({ id: dhcpSnippet.id }),
-    pattern: `${urls.settings.dhcp.edit(null)}/*`,
   },
   {
     title: "Package repos",
@@ -166,7 +162,6 @@ const routes = [
       id: packageRepository.id,
       type: "ppa",
     }),
-    pattern: `${urls.settings.repositories.edit(null)}/*`,
   },
   {
     title: "Windows",
@@ -187,10 +182,10 @@ const routes = [
 ];
 
 describe("Routes", () => {
-  routes.forEach(({ title, path, pattern }) => {
+  routes.forEach(({ title, path }) => {
     it(`Displays: ${title} at: ${path}`, () => {
       renderWithBrowserRouter(<Routes />, {
-        wrapperProps: { routePattern: pattern, state },
+        wrapperProps: { routePattern: `${urls.settings.index}/*`, state },
         route: path,
       });
       expect(document.title).toBe(`${title} | MAAS`);

@@ -497,6 +497,12 @@ Now create a fake Windows image:
 dd if=/dev/zero of=windows-dd bs=512 count=10000
 ```
 
+Move the image somewhere that the snap can access:
+
+```shell
+mv windows-dd /var/snap/maas/common/windows-dd
+```
+
 ## Login to MAAS
 
 You will need to log in to the CLI (if you haven't before).
@@ -522,7 +528,7 @@ Ensure you have downloaded and synced an amd64 ubuntu image (via `<your-maas-url
 Now you can upload the image (remember to use `<path-to-maas-dir>/bin/maas/...` if you're using a development MAAS):
 
 ```shell
-maas <profile-name> boot-resources create name=windows/win2012 title="Windows Server 2012" architecture=amd64/generic filetype=ddtgz content@=windows-dd
+maas <profile-name> boot-resources create name=windows/win2012 title="Windows Server 2012" architecture=amd64/generic filetype=ddtgz content@=/var/snap/maas/common/windows-dd
 ```
 
 Then you should be able to visit `<your-maas-url>:5240/MAAS/l/images` and your Windows image should appear under the "Custom Images" section.

@@ -1,4 +1,4 @@
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom-v5-compat";
 
 import RepositoryForm from "../RepositoryForm";
 
