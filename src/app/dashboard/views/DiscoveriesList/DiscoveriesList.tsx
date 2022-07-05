@@ -27,6 +27,10 @@ import type { Discovery } from "app/store/discovery/types";
 import { DiscoveryMeta } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
 
+export enum Label {
+  Title = "Discoveries list",
+}
+
 enum ExpandedType {
   ADD = "add",
   DELETE = "delete",
@@ -216,7 +220,7 @@ const DiscoveriesList = (): JSX.Element => {
   ];
 
   return (
-    <>
+    <div aria-label={Label.Title}>
       <Row>
         <Col size={3}>
           <DiscoveriesFilterAccordion
@@ -257,7 +261,7 @@ const DiscoveriesList = (): JSX.Element => {
         )}
         sortable
       />
-    </>
+    </div>
   );
 };
 
