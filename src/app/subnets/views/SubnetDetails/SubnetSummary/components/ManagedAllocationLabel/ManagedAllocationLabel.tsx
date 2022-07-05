@@ -13,6 +13,7 @@ const ManagedAllocationLabel = ({ managed }: Props): JSX.Element => (
         message={`MAAS allocates IP addresses from this subnet, excluding the
         reserved and dynamic ranges.`}
         position="btm-right"
+        positionElementClassName="u-display--inline"
       />
     )}
   </>
