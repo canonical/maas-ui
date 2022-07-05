@@ -1,5 +1,3 @@
-import DeviceDetails from "../../../devices/views/DeviceDetails/DeviceDetails";
-
 import Routes from "./Routes";
 
 import urls from "app/base/urls";
