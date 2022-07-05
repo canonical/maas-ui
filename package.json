@@ -11,6 +11,7 @@
   "scripts": {
     "build-all": "yarn build",
     "build": "CYPRESS_INSTALL_BINARY=0 yarn install && react-scripts build",
+    "build-demo": "CYPRESS_INSTALL_BINARY=0 yarn install && REACT_APP_STATIC_DEMO=true react-scripts build",
     "clean-all": "yarn clean",
     "clean": "rm -rf node_modules build",
     "cleanbuild": "yarn clean-all && yarn build",
@@ -26,9 +27,12 @@
     "serve-react": "BROWSER=none PORT=8401 react-scripts start",
     "serve-static-demo": "STATIC_DEMO=true PROXY_PORT=80 nodemon ./scripts/proxy.js",
     "serve": "yarn start",
+    "start-mock-server": "nodemon ./mock-server/index.js",
     "show-ready": "wait-on http-get://0.0.0.0:8401 && nodemon ./scripts/proxy-ready.js",
     "sitespeed": "docker run -v \"$(pwd)/sitespeed.io:/sitespeed.io\" --network=host sitespeedio/sitespeed.io:25.2.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --spa",
     "start": "concurrently \"yarn serve-proxy\" \"yarn serve-react\" \"yarn show-ready\"",
+    "start-mock-server-and-serve": "concurrently \"yarn start-mock-server\" \"yarn start\"",
+    "serve-demo": "concurrently \"yarn start-mock-server\" \"REACT_APP_STATIC_DEMO=true PROXY_PORT=80 MAAS_URL=http://localhost:8080/ yarn serve-proxy\"",
     "test-cypress": "start-server-and-test start '8401' serve-base 'tcp:8400' cypress-run",
     "test-ui": "TZ=UTC react-scripts test --testURL http://example.com/MAAS/r --watchAll=false",
     "test": "yarn test-ui",
@@ -121,7 +125,8 @@
     "redux-saga-test-plan": "4.0.5",
     "sass": "1.53.0",
     "start-server-and-test": "1.14.0",
-    "wait-on": "6.0.1"
+    "wait-on": "6.0.1",
+    "ws": "8.8.0"
   },
   "browserslist": {
     "production": [

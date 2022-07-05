@@ -1,12 +1,20 @@
+import { useState } from "react";
+
 import { Button } from "@canonical/react-components";
 
+import DevTools from "app/base/components/Devtools";
 import { useUsabilla } from "app/base/hooks";
 
 export const Footer = (): JSX.Element => {
   const allowUsabilla = useUsabilla();
+  const isDevtoolsEnabled =
+    process.env.NODE_ENV === "development" ||
+    process.env.REACT_APP_STATIC_DEMO === "true";
+  const [isDevtoolsVisible, setIsDevtoolsVisible] = useState(false);
 
   return (
     <footer className="p-strip--light is-shallow p-footer">
+      {isDevtoolsEnabled && isDevtoolsVisible ? <DevTools /> : null}
       <div className="row">
         <div className="col-10 p-footer__nav">
           <ul className="p-inline-list--middot">
@@ -44,6 +52,11 @@ export const Footer = (): JSX.Element => {
           <svg
             aria-label="Canonical"
             className="p-footer__logo u-float--right"
+            onClick={
+              !isDevtoolsEnabled
+                ? undefined
+                : () => setIsDevtoolsVisible(!isDevtoolsVisible)
+            }
             viewBox="-0.835 -0.92 761 101"
             xmlns="http://www.w3.org/2000/svg"
           >

@@ -48,7 +48,7 @@ app.use(
 );
 
 // Proxy to the React client.
-if (process.env.STATIC_DEMO !== "true") {
+if (process.env.REACT_APP_STATIC_DEMO !== "true") {
   app.use(
     createProxyMiddleware("/", {
       target: `http://localhost:${REACT_PORT}/`,
@@ -56,7 +56,7 @@ if (process.env.STATIC_DEMO !== "true") {
   );
 }
 
-if (process.env.STATIC_DEMO === "true") {
+if (process.env.REACT_APP_STATIC_DEMO === "true") {
   app.use(`${BASENAME}${REACT_BASENAME}`, express.static("./build"));
   app.use(`*`, express.static("./build"));
 }
