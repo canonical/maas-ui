@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams } from "react-router";
+import { useParams } from "react-router-dom-v5-compat";
 
 import LicenseKeyForm from "../LicenseKeyForm";
 

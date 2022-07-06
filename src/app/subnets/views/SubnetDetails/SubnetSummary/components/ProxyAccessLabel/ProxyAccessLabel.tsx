@@ -14,6 +14,7 @@ const ProxyAccessLabel = ({ allowProxy }: Props): JSX.Element => (
         allowProxy ? "" : "not"
       } allow clients from this subnet to access the MAAS proxy.`}
       position="btm-right"
+      positionElementClassName="u-display--inline"
     />
   </>
 );

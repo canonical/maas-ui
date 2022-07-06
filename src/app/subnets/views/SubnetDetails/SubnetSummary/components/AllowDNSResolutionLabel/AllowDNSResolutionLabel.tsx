@@ -13,6 +13,7 @@ const AllowDNSResolutionLabel = ({ allowDNS }: Props): JSX.Element => (
         allowDNS ? "" : "not"
       } allow clients from this subnet to use MAAS for DNS resolution.`}
       position="btm-right"
+      positionElementClassName="u-display--inline"
     />
   </>
 );
