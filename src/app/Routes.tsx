@@ -1,6 +1,7 @@
 import { Redirect } from "react-router-dom";
 import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
+import ImageList from "./images/views/ImageList";
 import Pools from "./pools/views/Pools";
 import Tags from "./tags/views/Tags";
 
@@ -12,7 +13,6 @@ import Dashboard from "app/dashboard/views/Dashboard";
 import DeviceDetails from "app/devices/views/DeviceDetails";
 import DeviceList from "app/devices/views/DeviceList";
 import Domains from "app/domains/views/Domains";
-import Images from "app/images/views/Images";
 import Intro from "app/intro/views/Intro";
 import KVM from "app/kvm/views/KVM";
 import MachineDetails from "app/machines/views/MachineDetails";
@@ -96,7 +96,7 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
-          <Images />
+          <ImageList />
         </ErrorBoundary>
       }
       path={`${urls.images.index}/*`}

@@ -46,7 +46,7 @@ const componentPaths: { component: string; path: string }[] = [
     path: urls.domains.details({ id: 1 }),
   },
   {
-    component: "Images",
+    component: "ImageList",
     path: urls.images.index,
   },
   {
