@@ -9,6 +9,10 @@ import poolSelectors from "app/store/resourcepool/selectors";
 import { ResourcePoolMeta } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
 
+export enum Label {
+  Title = "Edit pool",
+}
+
 export const PoolEdit = (): JSX.Element => {
   const id = useGetURLId(ResourcePoolMeta.PK);
   const loading = useSelector(poolSelectors.loading);
@@ -28,7 +32,7 @@ export const PoolEdit = (): JSX.Element => {
       />
     );
   }
-  return <PoolForm pool={pool} />;
+  return <PoolForm aria-label={Label.Title} pool={pool} />;
 };
 
 export default PoolEdit;

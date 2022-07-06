@@ -27,7 +27,7 @@ const PoolSchema = Yup.object().shape({
   description: Yup.string(),
 });
 
-export const PoolForm = ({ pool }: Props): JSX.Element => {
+export const PoolForm = ({ pool, ...props }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const saved = useSelector(poolSelectors.saved);
@@ -91,6 +91,7 @@ export const PoolForm = ({ pool }: Props): JSX.Element => {
         saving={saving}
         submitLabel="Save pool"
         validationSchema={PoolSchema}
+        {...props}
       >
         <FormikField label="Name (required)" name="name" type="text" />
         <FormikField label="Description" name="description" type="text" />
