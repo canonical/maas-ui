@@ -1,7 +1,7 @@
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { MemoryRouter } from "react-router-dom";
+import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import RepositoryAdd from "./RepositoryAdd";
@@ -35,11 +35,12 @@ describe("RepositoryAdd", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/settings/repositories/add/:type"
-              render={() => <RepositoryAdd />}
-            />
+            <Routes>
+              <Route
+                element={<RepositoryAdd />}
+                path="/settings/repositories/add/:type"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -62,11 +63,12 @@ describe("RepositoryAdd", () => {
           ]}
         >
           <CompatRouter>
-            <Route
-              exact
-              path="/settings/repositories/add/:type"
-              render={() => <RepositoryAdd />}
-            />
+            <Routes>
+              <Route
+                element={<RepositoryAdd />}
+                path="/settings/repositories/add/:type"
+              />
+            </Routes>
           </CompatRouter>
         </MemoryRouter>
       </Provider>

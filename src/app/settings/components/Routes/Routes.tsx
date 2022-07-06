@@ -1,7 +1,8 @@
-import { Route, Redirect, Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { Route, Routes as ReactRouterRoutes } from "react-router-dom-v5-compat";
 
+import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
-import settingsURLs from "app/settings/urls";
 import Commissioning from "app/settings/views/Configuration/Commissioning";
 import Deploy from "app/settings/views/Configuration/Deploy";
 import General from "app/settings/views/Configuration/General";
@@ -30,152 +31,152 @@ import StorageForm from "app/settings/views/Storage/StorageForm";
 import UserAdd from "app/settings/views/Users/UserAdd";
 import UserEdit from "app/settings/views/Users/UserEdit";
 import UsersList from "app/settings/views/Users/UsersList";
+import { getRelativeRoute } from "app/utils";
 
 const Routes = (): JSX.Element => {
+  const base = urls.settings.index;
   return (
-    <Switch>
+    <ReactRouterRoutes>
       <Route
-        exact
-        path={settingsURLs.configuration.general}
-        render={() => <General />}
-      />
-      <Route
-        exact
-        path={settingsURLs.configuration.security}
-        render={() => <Security />}
+        element={<General />}
+        path={getRelativeRoute(urls.settings.configuration.general, base)}
       />
       <Route
-        exact
-        path={settingsURLs.configuration.commissioning}
-        render={() => <Commissioning />}
+        element={<Security />}
+        path={getRelativeRoute(urls.settings.configuration.security, base)}
       />
       <Route
-        exact
-        path={settingsURLs.configuration.kernelParameters}
-        render={() => <KernelParameters />}
+        element={<Commissioning />}
+        path={getRelativeRoute(urls.settings.configuration.commissioning, base)}
       />
       <Route
-        exact
-        path={settingsURLs.configuration.deploy}
-        render={() => <Deploy />}
-      />
-      <Redirect
-        exact
-        from={settingsURLs.index}
-        to={settingsURLs.configuration.index}
-      />
-      <Redirect
-        from={settingsURLs.configuration.index}
-        to={settingsURLs.configuration.general}
+        element={<KernelParameters />}
+        path={getRelativeRoute(
+          urls.settings.configuration.kernelParameters,
+          base
+        )}
       />
       <Route
-        exact
-        path={settingsURLs.users.index}
-        render={() => <UsersList />}
-      />
-      <Route exact path={settingsURLs.users.add} render={() => <UserAdd />} />
-      <Route
-        exact
-        path={settingsURLs.users.edit(null)}
-        render={() => <UserEdit />}
+        element={<Deploy />}
+        path={getRelativeRoute(urls.settings.configuration.deploy, base)}
       />
       <Route
-        exact
-        path={settingsURLs.licenseKeys.index}
-        render={() => <LicenseKeyList />}
+        element={<Redirect to={urls.settings.configuration.index} />}
+        path="/"
       />
       <Route
-        exact
-        path={settingsURLs.licenseKeys.add}
-        render={() => <LicenseKeyAdd />}
+        element={<Redirect to={urls.settings.configuration.general} />}
+        path={getRelativeRoute(urls.settings.configuration.index, base)}
       />
       <Route
-        exact
-        path={settingsURLs.licenseKeys.edit(null)}
-        render={() => <LicenseKeyEdit />}
-      />
-      <Route exact path={settingsURLs.storage} render={() => <StorageForm />} />
-      <Route
-        exact
-        path={settingsURLs.network.proxy}
-        render={() => <ProxyForm />}
-      />
-      <Route exact path={settingsURLs.network.dns} render={() => <DnsForm />} />
-      <Route exact path={settingsURLs.network.ntp} render={() => <NtpForm />} />
-      <Route
-        exact
-        path={settingsURLs.network.syslog}
-        render={() => <SyslogForm />}
+        element={<UsersList />}
+        path={getRelativeRoute(urls.settings.users.index, base)}
       />
       <Route
-        exact
-        path={settingsURLs.network.networkDiscovery}
-        render={() => <NetworkDiscoveryForm />}
-      />
-      <Redirect
-        exact
-        from={settingsURLs.network.index}
-        to={settingsURLs.network.proxy}
+        element={<UserAdd />}
+        path={getRelativeRoute(urls.settings.users.add, base)}
       />
       <Route
-        exact
-        path={settingsURLs.scripts.commissioning.index}
-        render={() => <ScriptsList type="commissioning" />}
+        element={<UserEdit />}
+        path={getRelativeRoute(urls.settings.users.edit(null), base)}
       />
       <Route
-        exact
-        path={settingsURLs.scripts.commissioning.upload}
-        render={() => <ScriptsUpload type="commissioning" />}
+        element={<LicenseKeyList />}
+        path={getRelativeRoute(urls.settings.licenseKeys.index, base)}
       />
       <Route
-        exact
-        path={settingsURLs.scripts.testing.index}
-        render={() => <ScriptsList type="testing" />}
+        element={<LicenseKeyAdd />}
+        path={getRelativeRoute(urls.settings.licenseKeys.add, base)}
       />
       <Route
-        exact
-        path={settingsURLs.scripts.testing.upload}
-        render={() => <ScriptsUpload type="testing" />}
-      />
-      <Route exact path={settingsURLs.dhcp.index} render={() => <DhcpList />} />
-      <Route exact path={settingsURLs.dhcp.add} render={() => <DhcpAdd />} />
-      <Route
-        exact
-        path={settingsURLs.dhcp.edit(null)}
-        render={() => <DhcpEdit />}
+        element={<LicenseKeyEdit />}
+        path={getRelativeRoute(urls.settings.licenseKeys.edit(null), base)}
       />
       <Route
-        exact
-        path={settingsURLs.repositories.index}
-        render={() => <RepositoriesList />}
+        element={<StorageForm />}
+        path={getRelativeRoute(urls.settings.storage, base)}
       />
       <Route
-        exact
-        path={settingsURLs.repositories.add(null)}
-        render={() => <RepositoryAdd />}
+        element={<ProxyForm />}
+        path={getRelativeRoute(urls.settings.network.proxy, base)}
       />
       <Route
-        exact
-        path={settingsURLs.repositories.edit(null)}
-        render={() => <RepositoryEdit />}
+        element={<DnsForm />}
+        path={getRelativeRoute(urls.settings.network.dns, base)}
       />
       <Route
-        exact
-        path={settingsURLs.images.windows}
-        render={() => <Windows />}
+        element={<NtpForm />}
+        path={getRelativeRoute(urls.settings.network.ntp, base)}
       />
       <Route
-        exact
-        path={settingsURLs.images.vmware}
-        render={() => <VMWare />}
+        element={<SyslogForm />}
+        path={getRelativeRoute(urls.settings.network.syslog, base)}
       />
       <Route
-        exact
-        path={settingsURLs.images.ubuntu}
-        render={() => <ThirdPartyDrivers />}
+        element={<NetworkDiscoveryForm />}
+        path={getRelativeRoute(urls.settings.network.networkDiscovery, base)}
       />
-      <Route path="*" render={() => <NotFound />} />
-    </Switch>
+      <Route
+        element={<Redirect to={urls.settings.network.proxy} />}
+        path={getRelativeRoute(urls.settings.network.index, base)}
+      />
+      <Route
+        element={<ScriptsList type="commissioning" />}
+        path={getRelativeRoute(urls.settings.scripts.commissioning.index, base)}
+      />
+      <Route
+        element={<ScriptsUpload type="commissioning" />}
+        path={getRelativeRoute(
+          urls.settings.scripts.commissioning.upload,
+          base
+        )}
+      />
+      <Route
+        element={<ScriptsList type="testing" />}
+        path={getRelativeRoute(urls.settings.scripts.testing.index, base)}
+      />
+      <Route
+        element={<ScriptsUpload type="testing" />}
+        path={getRelativeRoute(urls.settings.scripts.testing.upload, base)}
+      />
+      <Route
+        element={<DhcpList />}
+        path={getRelativeRoute(urls.settings.dhcp.index, base)}
+      />
+      <Route
+        element={<DhcpAdd />}
+        path={getRelativeRoute(urls.settings.dhcp.add, base)}
+      />
+      <Route
+        element={<DhcpEdit />}
+        path={getRelativeRoute(urls.settings.dhcp.edit(null), base)}
+      />
+      <Route
+        element={<RepositoriesList />}
+        path={getRelativeRoute(urls.settings.repositories.index, base)}
+      />
+      <Route
+        element={<RepositoryAdd />}
+        path={getRelativeRoute(urls.settings.repositories.add(null), base)}
+      />
+      <Route
+        element={<RepositoryEdit />}
+        path={getRelativeRoute(urls.settings.repositories.edit(null), base)}
+      />
+      <Route
+        element={<Windows />}
+        path={getRelativeRoute(urls.settings.images.windows, base)}
+      />
+      <Route
+        element={<VMWare />}
+        path={getRelativeRoute(urls.settings.images.vmware, base)}
+      />
+      <Route
+        element={<ThirdPartyDrivers />}
+        path={getRelativeRoute(urls.settings.images.ubuntu, base)}
+      />
+      <Route element={<NotFound />} path="*" />
+    </ReactRouterRoutes>
   );
 };
 
