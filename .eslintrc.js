@@ -137,8 +137,9 @@ module.exports = {
     {
       files: ["cypress/**/*.spec.[jt]s?(x)"],
       extends: ["plugin:cypress/recommended", "plugin:prettier/recommended"],
-      plugins: ["cypress"],
+      plugins: ["cypress", "no-only-tests"],
       rules: {
+        "no-only-tests/no-only-tests": "error",
         "cypress/no-force": "warn",
         "prettier/prettier": "error",
       },
