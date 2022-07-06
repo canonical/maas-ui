@@ -65,4 +65,15 @@ describe("LXDSingleDetails", () => {
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
+
+  it("redirects to vms", () => {
+    renderWithBrowserRouter(<LXDSingleDetails />, {
+      route: urls.kvm.lxd.single.index({ id: 1 }),
+      wrapperProps: {
+        state,
+        routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
+      },
+    });
+    expect(window.location.pathname).toBe(urls.kvm.lxd.single.vms({ id: 1 }));
+  });
 });
