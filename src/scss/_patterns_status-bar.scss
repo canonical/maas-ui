@@ -1,6 +1,6 @@
 @mixin maas-status-bar {
   .p-status-bar {
-    background-color: $color-mid-x-light;
+    background-color: $colors--dark-theme--background-default;
     bottom: 0;
     left: 0;
     padding: $spv--small 0;
@@ -11,6 +11,7 @@
 
   .p-status-bar__row {
     @extend %fixed-width-container;
+    color: $color-x-light;
     column-gap: $sph--small;
     flex-direction: column;
 
