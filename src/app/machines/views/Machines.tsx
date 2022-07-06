@@ -1,14 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
-import { Route, Switch, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { useLocation, useNavigate } from "react-router-dom-v5-compat";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
 
 import Section from "app/base/components/Section";
-import urls from "app/base/urls";
-import NotFound from "app/base/views/NotFound";
 import type { MachineHeaderContent } from "app/machines/types";
 import MachineList from "app/machines/views/MachineList";
 import { FilterMachines } from "app/store/machine/utils";
@@ -59,20 +56,11 @@ const Machines = (): JSX.Element => {
         />
       }
     >
-      <Switch>
-        <Route
-          exact
-          path={urls.machines.index}
-          render={() => (
-            <MachineList
-              headerFormOpen={!!headerContent}
-              searchFilter={searchFilter}
-              setSearchFilter={setSearchFilter}
-            />
-          )}
-        />
-        <Route path="*" render={() => <NotFound />} />
-      </Switch>
+      <MachineList
+        headerFormOpen={!!headerContent}
+        searchFilter={searchFilter}
+        setSearchFilter={setSearchFilter}
+      />
     </Section>
   );
 };
