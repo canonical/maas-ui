@@ -49,7 +49,10 @@ export const MachinesHeader = (props: Props): JSX.Element => {
         {
           active:
             !!matchPath(urls.tags.index, location.pathname) ||
-            !!matchPath(urls.tags.tag.index(null), location.pathname),
+            !!matchPath(
+              { path: urls.tags.tag.index(null), end: false },
+              location.pathname
+            ),
           component: Link,
           label: `${pluralize("Tag", tagCount, true)}`,
           to: urls.tags.index,
