@@ -116,7 +116,7 @@ const Routes = (): JSX.Element => (
           <Machines />
         </ErrorBoundary>
       }
-      path={`${urls.machines.index}/*`}
+      path={urls.machines.index}
     />
     <Route
       element={

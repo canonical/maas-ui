@@ -9,7 +9,6 @@ import MachineList from "./MachineList";
 import MachineListHeader from "./MachineList/MachineListHeader";
 import Machines from "./Machines";
 
-import urls from "app/base/urls";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import {
@@ -62,31 +61,6 @@ describe("Machines", () => {
         },
       }),
       router: routerStateFactory(),
-    });
-  });
-
-  [
-    {
-      component: "MachineList",
-      path: urls.machines.index,
-    },
-    {
-      component: "NotFound",
-      path: "/not/a/path",
-    },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Machines />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
     });
   });
 
