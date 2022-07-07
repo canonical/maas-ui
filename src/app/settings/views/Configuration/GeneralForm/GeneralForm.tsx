@@ -7,6 +7,7 @@ import * as Yup from "yup";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
+import ThemedRadioButton from "app/base/components/ThemedRadioButton";
 import { useSendAnalytics } from "app/base/hooks";
 import type { UsabillaLive } from "app/base/types";
 import { actions as configActions } from "app/store/config";
@@ -110,6 +111,57 @@ const GeneralForm = (): JSX.Element => {
         required={true}
         type="text"
         wrapperClassName="u-sv2"
+      />
+      <p>MAAS theme main colour</p>
+      <FormikField
+        component={ThemedRadioButton}
+        label="Default"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Bark"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Sage"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Olive"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Viridian"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Prussian green"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Blue"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Purple"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Magenta"
+        name="maas_theme_colour"
+      />
+      <FormikField
+        component={ThemedRadioButton}
+        label="Red"
+        name="maas_theme_colour"
       />
       <h5>Data analytics</h5>
       <FormikField
