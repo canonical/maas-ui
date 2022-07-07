@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 
-// import classNames from "classnames";
+import classNames from "classnames";
 
 export type Props = {
   className?: string;
@@ -15,9 +15,9 @@ const ThemedRadioButton = ({
   ...inputProps
 }: Props): JSX.Element => {
   return (
-    <label>
+    <label className={classNames(className, "themedRadioButton")}>
+      <input className="radioButton" name={name} type="radio" {...inputProps} />
       {label}
-      <input className="" name={name} type="radio" {...inputProps} />
     </label>
   );
 };
