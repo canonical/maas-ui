@@ -78,8 +78,8 @@ const _generateSection = (
   }
 
   return (
-    <li className="p-side-navigation__item" key={section.label}>
-      <span className="p-side-navigation__text p-side-navigation__item--title">
+    <li className="p-side-navigation__item--title" key={section.label}>
+      <span className="p-side-navigation__text p-side-navigation__item">
         {section.label}
       </span>
       {subNav}

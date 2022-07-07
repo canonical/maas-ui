@@ -36,10 +36,10 @@ exports[`matches the snapshot 1`] = `
       class="p-side-navigation__list"
     >
       <li
-        class="p-side-navigation__item"
+        class="p-side-navigation__item--title"
       >
         <span
-          class="p-side-navigation__text p-side-navigation__item--title"
+          class="p-side-navigation__text p-side-navigation__item"
         >
           Configuration
         </span>

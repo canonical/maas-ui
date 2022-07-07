@@ -15,6 +15,10 @@ import { DeviceMeta } from "app/store/device/types";
 import type { Device } from "app/store/device/types";
 import type { RootState } from "app/store/root/types";
 
+export enum Label {
+  Title = "Device network",
+}
+
 type Props = {
   systemId: Device[DeviceMeta.PK];
 };
@@ -46,6 +50,7 @@ const DeviceNetwork = ({ systemId }: Props): JSX.Element => {
             systemId={systemId}
           />
         )}
+        aria-label={Label.Title}
         dhcpTable={() => (
           <DHCPTable
             className="u-no-padding--top"

@@ -1,12 +1,11 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
-import Dashboard from "./Dashboard";
+import Dashboard, { Label } from "./Dashboard";
+import { Label as DashboardConfigurationFormLabel } from "./DashboardConfigurationForm/DashboardConfigurationForm";
+import { Label as DiscoveriesListLabel } from "./DiscoveriesList/DiscoveriesList";
 
 import urls from "app/base/urls";
+import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -16,8 +15,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("Dashboard", () => {
   let state: RootState;
@@ -35,30 +33,27 @@ describe("Dashboard", () => {
 
   [
     {
-      component: "DiscoveriesList",
+      label: DiscoveriesListLabel.Title,
       path: urls.dashboard.index,
     },
     {
-      component: "DashboardConfigurationForm",
+      label: DashboardConfigurationFormLabel.Title,
       path: urls.dashboard.configuration,
     },
     {
-      component: "NotFound",
-      path: "/not/a/path",
+      label: NotFoundLabel.Title,
+      path: `${urls.dashboard.index}/not/a/path`,
     },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Dashboard />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+  ].forEach(({ label, path }) => {
+    it(`Displays: ${label} at: ${path}`, () => {
+      renderWithBrowserRouter(<Dashboard />, {
+        route: path,
+        wrapperProps: {
+          state,
+          routePattern: `${urls.dashboard.index}/*`,
+        },
+      });
+      expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
 
@@ -66,58 +61,38 @@ describe("Dashboard", () => {
     state.config = configStateFactory({
       items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "disabled" }],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/dashboard" }]}>
-          <CompatRouter>
-            <Dashboard />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='disabled-notification']").exists()).toBe(
-      true
-    );
+    renderWithBrowserRouter(<Dashboard />, {
+      route: urls.dashboard.index,
+      wrapperProps: {
+        state,
+      },
+    });
+    expect(screen.getByText(Label.Disabled)).toBeInTheDocument();
   });
 
   it("does not display a notification when discovery is enabled", () => {
     state.config = configStateFactory({
       items: [{ name: ConfigNames.NETWORK_DISCOVERY, value: "enabled" }],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/dashboard" }]}>
-          <CompatRouter>
-            <Dashboard />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='disabled-notification']").exists()).toBe(
-      false
-    );
+    renderWithBrowserRouter(<Dashboard />, {
+      route: urls.dashboard.index,
+      wrapperProps: {
+        state,
+      },
+    });
+    expect(screen.queryByText(Label.Disabled)).not.toBeInTheDocument();
   });
 
   it("displays a message if not an admin", () => {
     state.user.auth = authStateFactory({
       user: userFactory({ is_superuser: false }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Dashboard />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("SectionHeader").prop("title")).toEqual(
-      "You do not have permission to view this page."
-    );
+    renderWithBrowserRouter(<Dashboard />, {
+      route: urls.dashboard.index,
+      wrapperProps: {
+        state,
+      },
+    });
+    expect(screen.getByText(Label.Permissions)).toBeInTheDocument();
   });
 });

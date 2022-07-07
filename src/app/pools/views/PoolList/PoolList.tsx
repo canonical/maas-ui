@@ -25,6 +25,10 @@ import type {
 } from "app/store/resourcepool/types";
 import { formatErrors } from "app/utils";
 
+export enum Label {
+  Title = "Pool list",
+}
+
 const getMachinesLabel = (row: ResourcePool) => {
   if (row.machine_total_count === 0) {
     return "Empty pool";
@@ -139,7 +143,7 @@ const Pools = (): JSX.Element => {
   const resourcePools = useSelector(resourcePoolSelectors.all);
 
   return (
-    <>
+    <div aria-label={Label.Title}>
       {errorMessage ? (
         <Row>
           <Col size={12}>
@@ -199,7 +203,7 @@ const Pools = (): JSX.Element => {
           </div>
         </Col>
       </Row>
-    </>
+    </div>
   );
 };
 

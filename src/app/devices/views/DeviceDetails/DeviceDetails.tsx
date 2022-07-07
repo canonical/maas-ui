@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
+import { Redirect } from "react-router-dom";
+import { Route, Routes } from "react-router-dom-v5-compat";
 
 import DeviceConfiguration from "./DeviceConfiguration";
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
@@ -18,7 +19,7 @@ import deviceSelectors from "app/store/device/selectors";
 import { DeviceMeta } from "app/store/device/types";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
-import { isId } from "app/utils";
+import { isId, getRelativeRoute } from "app/utils";
 
 const DeviceDetails = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -51,6 +52,7 @@ const DeviceDetails = (): JSX.Element => {
     );
   }
 
+  const base = urls.devices.device.index(null);
   return (
     <Section
       header={
@@ -62,27 +64,27 @@ const DeviceDetails = (): JSX.Element => {
       }
     >
       {device && (
-        <Switch>
+        <Routes>
           <Route
-            exact
-            path={urls.devices.device.summary(null)}
-            render={() => <DeviceSummary systemId={id} />}
-          />
-          <Route
-            exact
-            path={urls.devices.device.network(null)}
-            render={() => <DeviceNetwork systemId={id} />}
+            element={<DeviceSummary systemId={id} />}
+            path={getRelativeRoute(urls.devices.device.summary(null), base)}
           />
           <Route
-            exact
-            path={urls.devices.device.configuration(null)}
-            render={() => <DeviceConfiguration systemId={id} />}
+            element={<DeviceNetwork systemId={id} />}
+            path={getRelativeRoute(urls.devices.device.network(null), base)}
           />
-          <Redirect
-            from={urls.devices.device.index(null)}
-            to={urls.devices.device.summary(null)}
+          <Route
+            element={<DeviceConfiguration systemId={id} />}
+            path={getRelativeRoute(
+              urls.devices.device.configuration(null),
+              base
+            )}
           />
-        </Switch>
+          <Route
+            element={<Redirect to={urls.devices.device.summary({ id })} />}
+            path="/"
+          />
+        </Routes>
       )}
     </Section>
   );

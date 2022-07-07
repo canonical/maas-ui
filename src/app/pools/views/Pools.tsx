@@ -1,6 +1,5 @@
 import { Button } from "@canonical/react-components";
-import { Route, Switch } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
+import { Link, Route, Routes } from "react-router-dom-v5-compat";
 
 import PoolList from "./PoolList";
 
@@ -10,26 +9,39 @@ import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import PoolAdd from "app/pools/views/PoolAdd";
 import PoolEdit from "app/pools/views/PoolEdit";
+import { getRelativeRoute } from "app/utils";
 
-const Pools = (): JSX.Element => (
-  <Section
-    header={
-      <MachinesHeader
-        buttons={[
-          <Button data-testid="add-pool" element={Link} to={urls.pools.add}>
-            Add pool
-          </Button>,
-        ]}
-      />
-    }
-  >
-    <Switch>
-      <Route exact path={urls.pools.index} render={() => <PoolList />} />
-      <Route exact path={urls.pools.add} render={() => <PoolAdd />} />
-      <Route exact path={urls.pools.edit(null)} render={() => <PoolEdit />} />
-      <Route path="*" render={() => <NotFound />} />
-    </Switch>
-  </Section>
-);
+const Pools = (): JSX.Element => {
+  const base = urls.pools.index;
+  return (
+    <Section
+      header={
+        <MachinesHeader
+          buttons={[
+            <Button data-testid="add-pool" element={Link} to={urls.pools.add}>
+              Add pool
+            </Button>,
+          ]}
+        />
+      }
+    >
+      <Routes>
+        <Route
+          element={<PoolList />}
+          path={getRelativeRoute(urls.pools.index, base)}
+        />
+        <Route
+          element={<PoolAdd />}
+          path={getRelativeRoute(urls.pools.add, base)}
+        />
+        <Route
+          element={<PoolEdit />}
+          path={getRelativeRoute(urls.pools.edit(null), base)}
+        />
+        <Route element={<NotFound />} path="*" />
+      </Routes>
+    </Section>
+  );
+};
 
 export default Pools;

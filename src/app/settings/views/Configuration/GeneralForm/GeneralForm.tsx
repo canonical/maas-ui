@@ -96,6 +96,15 @@ const GeneralForm = (): JSX.Element => {
       validationSchema={GeneralSchema}
     >
       <FormikField
+        help={
+          <>
+            Use MAAS name and unicode emoji(s) to describe your MAAS instance.{" "}
+            <br />
+            <br />
+            Examples: <br />⛔ maas-prod <br />
+            my-maas ⚠️ no-deploys
+          </>
+        }
         label="MAAS name"
         name="maas_name"
         required={true}

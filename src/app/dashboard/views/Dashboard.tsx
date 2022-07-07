@@ -1,6 +1,6 @@
 import { Notification } from "@canonical/react-components";
 import { useSelector } from "react-redux";
-import { Route, Switch } from "react-router-dom";
+import { Route, Routes } from "react-router-dom-v5-compat";
 
 import DashboardConfigurationForm from "./DashboardConfigurationForm";
 import DashboardHeader from "./DashboardHeader";
@@ -12,41 +12,35 @@ import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
+import { getRelativeRoute } from "app/utils";
+
+export enum Label {
+  Disabled = "List of devices will not update as discovery is turned off.",
+  Permissions = "You do not have permission to view this page.",
+}
 
 const Dashboard = (): JSX.Element => {
   const networkDiscovery = useSelector(configSelectors.networkDiscovery);
   const isAdmin = useSelector(authSelectors.isAdmin);
 
   if (!isAdmin) {
-    return (
-      <Section
-        header={
-          <SectionHeader title="You do not have permission to view this page." />
-        }
-      />
-    );
+    return <Section header={<SectionHeader title={Label.Permissions} />} />;
   }
 
+  const base = urls.dashboard.index;
   return (
     <Section header={<DashboardHeader />}>
       {networkDiscovery === "disabled" && (
-        <Notification data-testid="disabled-notification" severity="caution">
-          List of devices will not update as discovery is turned off.
-        </Notification>
+        <Notification severity="caution">{Label.Disabled}</Notification>
       )}
-      <Switch>
+      <Routes>
+        <Route element={<DiscoveriesList />} path="/" />
         <Route
-          exact
-          path={urls.dashboard.index}
-          render={() => <DiscoveriesList />}
+          element={<DashboardConfigurationForm />}
+          path={getRelativeRoute(urls.dashboard.configuration, base)}
         />
-        <Route
-          exact
-          path={urls.dashboard.configuration}
-          render={() => <DashboardConfigurationForm />}
-        />
-        <Route path="*" render={() => <NotFound />} />
-      </Switch>
+        <Route element={<NotFound />} path="*" />
+      </Routes>
     </Section>
   );
 };
