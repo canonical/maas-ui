@@ -99,6 +99,7 @@
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
+@import "~app/base/components/ThemedRadioButton";
 @include ActionBar;
 @include CertificateDownload;
 @include CertificateMetadata;
@@ -129,6 +130,7 @@
 @include Stepper;
 @include TableMenu;
 @include TagSelector;
+@include ThemedRadioButton;
 
 // controllers
 @import "~app/controllers/views/ControllerList/ControllerListTable";
