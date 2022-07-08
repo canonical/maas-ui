@@ -6,7 +6,6 @@ import configureStore from "redux-mock-store";
 
 import DomainsList from "./DomainsList";
 
-import urls from "app/base/urls";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
@@ -16,32 +15,6 @@ import {
 const mockStore = configureStore();
 
 describe("DomainsList", () => {
-  [
-    {
-      component: "DomainsTable",
-      path: urls.domains.index,
-    },
-  ].forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
-      const state = rootStateFactory({
-        domain: domainStateFactory({
-          items: [domainFactory({ name: "test" })],
-        }),
-      });
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <DomainsList />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
-    });
-  });
-
   it("correctly fetches the necessary data", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
