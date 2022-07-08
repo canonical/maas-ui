@@ -202,8 +202,6 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Spinner").exists()).toBe(true);
-    // The machine list should also be visible as the machines are
-    // loaded in batches.
     expect(wrapper.find("Memo(MachineListTable)").exists()).toBe(true);
   });
 
