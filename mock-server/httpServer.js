@@ -17,7 +17,7 @@ function main(setMockFromUrl, getEnabledMock) {
   });
 
   httpServer.post(
-    "/MAAS/accounts/devtools/scenario",
+    "/mock-server-devtools/options",
     function (request, response) {
       let body = "";
       request.on("data", (chunk) => {
@@ -37,7 +37,7 @@ function main(setMockFromUrl, getEnabledMock) {
     }
   );
   httpServer.get(
-    "/MAAS/accounts/devtools/scenario",
+    "/mock-server-devtools/options",
     function (_request, response) {
       response.setHeader("Content-Type", "application/json");
       response.writeHead(200);
