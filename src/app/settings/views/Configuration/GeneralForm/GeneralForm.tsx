@@ -114,51 +114,61 @@ const GeneralForm = (): JSX.Element => {
       />
       <p>MAAS theme main colour</p>
       <FormikField
+        colour="default"
         component={ThemedRadioButton}
         label="Default"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="bark"
         component={ThemedRadioButton}
         label="Bark"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="sage"
         component={ThemedRadioButton}
         label="Sage"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="olive"
         component={ThemedRadioButton}
         label="Olive"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="viridian"
         component={ThemedRadioButton}
         label="Viridian"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="prussian-green"
         component={ThemedRadioButton}
         label="Prussian green"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="blue"
         component={ThemedRadioButton}
         label="Blue"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="purple"
         component={ThemedRadioButton}
         label="Purple"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="magenta"
         component={ThemedRadioButton}
         label="Magenta"
         name="maas_theme_colour"
       />
       <FormikField
+        colour="red"
         component={ThemedRadioButton}
         label="Red"
         name="maas_theme_colour"

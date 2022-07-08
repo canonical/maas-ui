@@ -1,6 +1,5 @@
 @mixin ThemedRadioButton {
-    .themedRadioButton{
-        --button-color: #A71B33;
+    .themedRadioButton {
         // Colours:
         // Default: #262626
         // Bark:#585841
@@ -16,7 +15,46 @@
         input[type="radio"] {
             -webkit-appearance: none;
             appearance: none;
-            background-color: var(--button-color);
+
+            &.default {
+                background-color: #262626;
+            }
+
+            &.bark {
+                background-color: #585841;
+            }
+
+            &.sage {
+                background-color: #4E5F51;
+            }
+
+            &.olive {
+                background-color: #3D5F11;
+            }
+
+            &.viridian {
+                background-color: #025A3D;
+            }
+
+            &.prussian-green {
+                background-color: #225D5C;
+            }
+
+            &.blue {
+                background-color: #0060BF;
+            }
+
+            &.purple {
+                background-color: #7764D8;
+            }
+
+            &.magenta {
+                background-color: #974097;
+            }
+
+            &.red {
+                background-color: #A71B33;
+            }
         }
 
         .radioButton{
