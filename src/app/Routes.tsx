@@ -12,7 +12,8 @@ import Controllers from "app/controllers/views/Controllers";
 import Dashboard from "app/dashboard/views/Dashboard";
 import DeviceDetails from "app/devices/views/DeviceDetails";
 import DeviceList from "app/devices/views/DeviceList";
-import Domains from "app/domains/views/Domains";
+import DomainDetails from "app/domains/views/DomainDetails";
+import DomainsList from "app/domains/views/DomainsList";
 import Intro from "app/intro/views/Intro";
 import KVM from "app/kvm/views/KVM";
 import MachineDetails from "app/machines/views/MachineDetails";
@@ -81,7 +82,7 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
-          <Domains />
+          <DomainsList />
         </ErrorBoundary>
       }
       path={`${urls.domains.index}/*`}
@@ -89,7 +90,7 @@ const Routes = (): JSX.Element => (
     <Route
       element={
         <ErrorBoundary>
-          <Domains />
+          <DomainDetails />
         </ErrorBoundary>
       }
       path={`${urls.domains.details(null)}/*`}
