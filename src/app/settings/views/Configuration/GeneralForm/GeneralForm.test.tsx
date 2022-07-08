@@ -1,4 +1,5 @@
-import { shallow, mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -13,7 +14,6 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -37,7 +37,7 @@ describe("GeneralForm", () => {
   it("can render", () => {
     const store = mockStore(state);
 
-    const wrapper = shallow(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -46,13 +46,15 @@ describe("GeneralForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("GeneralForm").exists()).toBe(true);
+    // Form doesn't have a title, but the save button is within the form
+    // So by testing that this is in the document, we can know if the form is there
+    expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
   });
 
   it("sets maas_name value", () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -61,7 +63,8 @@ describe("GeneralForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("input[name='maas_name']").props().value).toBe(
+
+    expect(screen.getByRole("textbox", { name: "MAAS name" })).toHaveValue(
       "bionic-maas"
     );
   });
@@ -69,7 +72,7 @@ describe("GeneralForm", () => {
   it("sets enable_analytics value", () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -78,15 +81,18 @@ describe("GeneralForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("input[name='enable_analytics']").props().value).toBe(
-      true
-    );
+
+    expect(
+      screen.getByRole("checkbox", {
+        name: "Enable analytics to shape improvements to user experience",
+      })
+    ).toHaveProperty("checked", true);
   });
 
   it("sets release_notifications value", () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -95,15 +101,18 @@ describe("GeneralForm", () => {
         </MemoryRouter>
       </Provider>
     );
+
     expect(
-      wrapper.find("input[name='release_notifications']").props().value
-    ).toBe(true);
+      screen.getByRole("checkbox", {
+        name: "Enable new release notifications",
+      })
+    ).toHaveProperty("checked", true);
   });
 
-  it("can trigger usabilla when the notifications are turned off", () => {
+  it("can trigger usabilla when the notifications are turned off", async () => {
     const store = mockStore(state);
     window.usabilla_live = jest.fn();
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -112,10 +121,16 @@ describe("GeneralForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      enable_analytics: true,
-      release_notifications: false,
+
+    const release_notifications_checkbox = screen.getByRole("checkbox", {
+      name: "Enable new release notifications",
     });
+
+    const saveButton = screen.getByRole("button", { name: "Save" });
+
+    await userEvent.click(release_notifications_checkbox);
+    await userEvent.click(saveButton);
+
     expect(window.usabilla_live).toHaveBeenCalled();
   });
 });
