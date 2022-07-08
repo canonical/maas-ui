@@ -2,10 +2,10 @@ name: CI
 on:
   push:
     branches:
-      - main
+      - server-side-search-and-filter
   pull_request:
     branches:
-      - main
+      - server-side-search-and-filter
 jobs:
   lint:
     name: Lint
