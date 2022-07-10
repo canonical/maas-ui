@@ -15,7 +15,6 @@ import TableActions from "app/base/components/TableActions";
 import TableDeleteConfirm from "app/base/components/TableDeleteConfirm";
 import { useAddMessage, useWindowTitle } from "app/base/hooks";
 import urls from "app/base/urls";
-import { actions as machineActions } from "app/store/machine";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
@@ -137,7 +136,6 @@ const Pools = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(resourcePoolActions.fetch());
-    dispatch(machineActions.fetch());
   }, [dispatch]);
 
   const resourcePools = useSelector(resourcePoolSelectors.all);
