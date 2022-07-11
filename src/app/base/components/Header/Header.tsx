@@ -172,6 +172,7 @@ export const Header = (): JSX.Element => {
   const isAuthenticated = !!authUser;
   const introMatch = useMatch({ path: urls.intro.index, end: false });
   const isAtIntro = !!introMatch;
+  const maasTheme = useSelector(configSelectors.theme);
   // Redirect to the intro pages if not completed.
   useEffect(() => {
     // Check that we're not already at the intro to allow navigation through the
@@ -212,6 +213,7 @@ export const Header = (): JSX.Element => {
         Skip to main content
       </a>
       <Navigation
+        className={maasTheme ? maasTheme : "default"}
         generateLink={generateLink}
         items={
           showLinks
