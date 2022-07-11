@@ -11,6 +11,19 @@ import type { ReactNode } from "react";
 
 import classNames from "classnames";
 
+// const colours = {
+//   default: "#262626",
+//   bark: "#585841",
+//   sage: "#4E5F51",
+//   olive: "#3D5F11",
+//   viridian: "#025A3D",
+//   prussian_green: "#225D5C",
+//   blue: "#0060BF",
+//   purple: "#7764D8",
+//   magenta: "#974097",
+//   red: "#A71B33",
+// };
+
 export type Props = {
   className?: string;
   colour?: string;
@@ -32,6 +45,7 @@ const ThemedRadioButton = ({
         name={name}
         type="radio"
         {...inputProps}
+        value={colour}
       />
       {label}
     </label>
