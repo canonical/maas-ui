@@ -983,10 +983,8 @@ const machineSlice = createSlice({
     fetch: {
       prepare: () => ({
         meta: {
-          batch: true,
           model: MachineMeta.MODEL,
           method: "list",
-          subsequentLimit: 100,
         },
         payload: {
           params: { limit: 25 },
@@ -995,10 +993,6 @@ const machineSlice = createSlice({
       reducer: () => {
         // No state changes need to be handled for this action.
       },
-    },
-    fetchComplete: (state: MachineState) => {
-      state.loading = false;
-      state.loaded = true;
     },
     fetchSuccess: (state: MachineState, action: PayloadAction<Machine[]>) => {
       action.payload.forEach((newItem: Machine) => {
@@ -1015,6 +1009,8 @@ const machineSlice = createSlice({
           state.statuses[newItem.system_id] = DEFAULT_STATUSES;
         }
       });
+      state.loading = false;
+      state.loaded = true;
     },
     get: {
       prepare: (machineID: Machine[MachineMeta.PK]) => ({

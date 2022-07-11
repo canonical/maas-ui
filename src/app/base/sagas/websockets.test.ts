@@ -13,9 +13,7 @@ import WebSocketClient, {
 } from "../../../websocket-client";
 
 import {
-  batchRequests,
   createConnection,
-  handleBatch,
   handleFileContextRequest,
   handleMessage,
   handleNextActions,
@@ -213,37 +211,6 @@ describe("websocket sagas", () => {
     expect(saga.next().done).toBe(false);
   });
 
-  it("allows batch messages even if data has already been fetched", () => {
-    const action = {
-      type: "test/fetch",
-      meta: {
-        model: "test",
-        method: "test.list",
-        type: WebSocketMessageType.REQUEST,
-      },
-      payload: {
-        params: {
-          limit: 25,
-          start: 808,
-        },
-      },
-    };
-    const previous = sendMessage(socketClient, action);
-    previous.next();
-    const saga = sendMessage(socketClient, action);
-    expect(saga.next().value).toEqual(
-      put({
-        meta: {
-          item: {
-            limit: 25,
-            start: 808,
-          },
-        },
-        type: "test/fetchStart",
-      })
-    );
-  });
-
   it("can handle dispatching for each param in an array", () => {
     const action = {
       type: "test/action",
@@ -335,118 +302,6 @@ describe("websocket sagas", () => {
         payload: { response: "here" },
       })
     );
-  });
-
-  it("can handle a batch response", () => {
-    const saga = handleMessage(socketChannel, socketClient);
-    saga.next();
-    const response: WebSocketResponseResult = {
-      rtype: WebSocketResponseType.SUCCESS,
-      type: WebSocketMessageType.RESPONSE,
-      request_id: 99,
-      result: [{ id: 11 }],
-    };
-    saga.next({ data: JSON.stringify(response) });
-    saga.next({ type: "test/action" });
-    saga.next();
-    expect(saga.next().value).toEqual(call(handleBatch, response));
-  });
-
-  it("can send the next batch message", () => {
-    const response: WebSocketResponseResult = {
-      rtype: WebSocketResponseType.SUCCESS,
-      type: WebSocketMessageType.RESPONSE,
-      request_id: 99,
-      result: [{ id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }],
-    };
-    return expectSaga(handleBatch, response)
-      .provide([
-        [
-          call([batchRequests, batchRequests.get], 99),
-          {
-            type: "test/fetch",
-            meta: {
-              model: "test",
-              method: "test.list",
-              type: WebSocketMessageType.REQUEST,
-            },
-            payload: { params: { limit: 5 } },
-          },
-        ],
-      ])
-      .put({
-        type: "test/fetch",
-        meta: {
-          model: "test",
-          method: "test.list",
-          type: WebSocketMessageType.REQUEST,
-        },
-        payload: { params: { limit: 5, start: 15 } },
-      })
-      .run();
-  });
-
-  it("can modify the limit of subsequent batch messages", () => {
-    const response: WebSocketResponseResult = {
-      rtype: WebSocketResponseType.SUCCESS,
-      type: WebSocketMessageType.RESPONSE,
-      request_id: 99,
-      result: [{ id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }],
-    };
-    return expectSaga(handleBatch, response)
-      .provide([
-        [
-          call([batchRequests, batchRequests.get], 99),
-          {
-            type: "test/fetch",
-            meta: {
-              model: "test",
-              method: "test.list",
-              type: WebSocketMessageType.REQUEST,
-              subsequentLimit: 100,
-            },
-            payload: { params: { limit: 5 } },
-          },
-        ],
-      ])
-      .put({
-        type: "test/fetch",
-        meta: {
-          model: "test",
-          method: "test.list",
-          type: WebSocketMessageType.REQUEST,
-        },
-        payload: { params: { limit: 100, start: 15 } },
-      })
-      .run();
-  });
-
-  it("can dispatch the complete action when receiving the last batch", () => {
-    const response: WebSocketResponseResult = {
-      rtype: WebSocketResponseType.SUCCESS,
-      type: WebSocketMessageType.RESPONSE,
-      request_id: 99,
-      result: [{ id: 11 }],
-    };
-    return expectSaga(handleBatch, response)
-      .provide([
-        [
-          call([batchRequests, batchRequests.get], 99),
-          {
-            type: "test/fetch",
-            meta: {
-              model: "test",
-              method: "test.list",
-              type: WebSocketMessageType.REQUEST,
-            },
-            payload: { params: { limit: 5 } },
-          },
-        ],
-      ])
-      .put({
-        type: "test/fetchComplete",
-      })
-      .run();
   });
 
   it("can dispatch a next action", () => {

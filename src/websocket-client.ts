@@ -62,8 +62,6 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
   },
   string,
   {
-    // Whether the request should be fetched in batches.
-    batch?: boolean;
     // Whether the request should only be fetched the first time.
     cache?: boolean;
     // Whether each item in the params should be dispatched separately. The
@@ -89,10 +87,6 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     pollInterval?: number;
     // Whether polling should be stopped for the request.
     pollStop?: boolean;
-    // Batch requests may set a limit for all requests after the first (i.e. the
-    // first action may set a limit of 5 and then use subsequentLimit to set all
-    // following requests to 10).
-    subsequentLimit?: number;
     // Whether the response should be stored in the file context.
     useFileContext?: boolean;
   }
