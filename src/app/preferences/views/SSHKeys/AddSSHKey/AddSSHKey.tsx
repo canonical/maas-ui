@@ -6,6 +6,10 @@ import { COL_SIZES } from "app/base/constants";
 import { useWindowTitle } from "app/base/hooks";
 import urls from "app/base/urls";
 
+export enum Label {
+  Title = "Add SSH key",
+}
+
 const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
 
 export const AddSSHKey = (): JSX.Element => {

@@ -26,8 +26,12 @@ const componentPaths: { component: string; path: string }[] = [
     path: urls.preferences.index,
   },
   {
-    component: "Controllers",
+    component: "ControllerList",
     path: urls.controllers.index,
+  },
+  {
+    component: "ControllerDetails",
+    path: urls.controllers.controller.index({ id: "abc123" }),
   },
   {
     component: "DeviceList",

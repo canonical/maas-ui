@@ -24,6 +24,7 @@
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "serve-proxy": "nodemon ./scripts/proxy.js",
     "serve-react": "BROWSER=none PORT=8401 react-scripts start",
+    "serve-static-demo": "STATIC_DEMO=true PROXY_PORT=80 nodemon ./scripts/proxy.js",
     "serve": "yarn start",
     "show-ready": "wait-on http-get://0.0.0.0:8401 && nodemon ./scripts/proxy-ready.js",
     "sitespeed": "docker run -v \"$(pwd)/sitespeed.io:/sitespeed.io\" --network=host sitespeedio/sitespeed.io:25.2.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --spa",

@@ -5,6 +5,7 @@ import type { ClassName, ColSize } from "@canonical/react-components";
 import classNames from "classnames";
 
 import { COL_SIZES } from "app/base/constants";
+import { useId } from "app/base/hooks/base";
 
 type Props = {
   children: ReactNode;
@@ -39,11 +40,14 @@ export const FormCard = ({
   stacked,
   title,
 }: Props): JSX.Element => {
+  const id = useId();
   const { CARD_TITLE } = COL_SIZES;
   const contentSize = getContentSize(sidebar, title);
   const titleNode =
     typeof title === "string" ? (
-      <h4 className="form-card__title">{title}</h4>
+      <h4 className="form-card__title" id={id}>
+        {title}
+      </h4>
     ) : (
       title
     );
@@ -62,6 +66,7 @@ export const FormCard = ({
   );
   return (
     <Card
+      aria-labelledby={id}
       className={classNames("form-card", className)}
       highlighted={highlighted}
     >

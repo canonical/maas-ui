@@ -1,8 +1,13 @@
 import { useCallback, useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { Redirect, Route, Switch, useLocation } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { Redirect } from "react-router-dom";
+import {
+  Route,
+  Routes,
+  useLocation,
+  useNavigate,
+} from "react-router-dom-v5-compat";
 
 import LXDSingleDetailsHeader from "./LXDSingleDetailsHeader";
 import LXDSingleResources from "./LXDSingleResources";
@@ -20,7 +25,7 @@ import { FilterMachines } from "app/store/machine/utils";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import { isId } from "app/utils";
+import { isId, getRelativeRoute } from "app/utils";
 
 export enum Label {
   Title = "LXD details",
@@ -69,6 +74,7 @@ const LXDSingleDetails = (): JSX.Element => {
       />
     );
   }
+  const base = urls.kvm.lxd.single.index(null);
   return (
     <Section
       aria-label={Label.Title}
@@ -82,36 +88,33 @@ const LXDSingleDetails = (): JSX.Element => {
       }
     >
       {pod && (
-        <Switch>
+        <Routes>
           <Route
-            exact
-            path={urls.kvm.lxd.single.vms(null)}
-            render={() => (
+            element={
               <LXDSingleVMs
                 id={id}
                 searchFilter={searchFilter}
                 setHeaderContent={setHeaderContent}
                 setSearchFilter={setSearchFilter}
               />
-            )}
+            }
+            path={getRelativeRoute(urls.kvm.lxd.single.vms(null), base)}
           />
           <Route
-            exact
-            path={urls.kvm.lxd.single.resources(null)}
-            render={() => <LXDSingleResources id={id} />}
+            element={<LXDSingleResources id={id} />}
+            path={getRelativeRoute(urls.kvm.lxd.single.resources(null), base)}
           />
           <Route
-            exact
-            path={urls.kvm.lxd.single.edit(null)}
-            render={() => (
+            element={
               <LXDSingleSettings id={id} setHeaderContent={setHeaderContent} />
-            )}
+            }
+            path={getRelativeRoute(urls.kvm.lxd.single.edit(null), base)}
           />
-          <Redirect
-            from={urls.kvm.lxd.single.index(null)}
-            to={urls.kvm.lxd.single.vms(null)}
+          <Route
+            element={<Redirect to={urls.kvm.lxd.single.vms({ id })} />}
+            path="/"
           />
-        </Switch>
+        </Routes>
       )}
     </Section>
   );

@@ -18,6 +18,7 @@ import ControllerVLANs from "./ControllerVLANs";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
+import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import type { ControllerHeaderContent } from "app/controllers/types";
@@ -36,6 +37,7 @@ const ControllerDetails = (): JSX.Element => {
   const controllersLoading = useSelector(controllerSelectors.loading);
   const [headerContent, setHeaderContent] =
     useState<ControllerHeaderContent | null>(null);
+  useScrollToTop();
 
   useEffect(() => {
     if (isId(id)) {
