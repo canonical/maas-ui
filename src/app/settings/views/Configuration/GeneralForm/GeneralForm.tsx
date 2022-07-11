@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 
-import { Link } from "@canonical/react-components";
+import { Col, Link, Row } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
@@ -21,12 +21,14 @@ declare global {
 
 const GeneralSchema = Yup.object().shape({
   maas_name: Yup.string().required(),
+  maas_theme_colour: Yup.string(),
   enable_analytics: Yup.boolean(),
   release_notifications: Yup.boolean(),
 });
 
 type GeneralFormValues = {
   maas_name: string;
+  maas_theme_colour: string;
   enable_analytics: boolean;
   release_notifications: boolean;
 };
@@ -62,6 +64,7 @@ const GeneralForm = (): JSX.Element => {
       buttonsBordered={false}
       initialValues={{
         maas_name: maasName || "",
+        maas_theme_colour: maasTheme || "",
         enable_analytics: analyticsEnabled || false,
         release_notifications: releaseNotifications || false,
       }}
@@ -114,67 +117,90 @@ const GeneralForm = (): JSX.Element => {
         wrapperClassName="u-sv2"
       />
       <p>MAAS theme main colour</p>
-      <p>{maasTheme}</p>
-      <FormikField
-        colour="default"
-        component={ThemedRadioButton}
-        label="Default"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="bark"
-        component={ThemedRadioButton}
-        label="Bark"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="sage"
-        component={ThemedRadioButton}
-        label="Sage"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="olive"
-        component={ThemedRadioButton}
-        label="Olive"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="viridian"
-        component={ThemedRadioButton}
-        label="Viridian"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="prussian-green"
-        component={ThemedRadioButton}
-        label="Prussian green"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="blue"
-        component={ThemedRadioButton}
-        label="Blue"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="purple"
-        component={ThemedRadioButton}
-        label="Purple"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="magenta"
-        component={ThemedRadioButton}
-        label="Magenta"
-        name="maas_theme_colour"
-      />
-      <FormikField
-        colour="red"
-        component={ThemedRadioButton}
-        label="Red"
-        name="maas_theme_colour"
-      />
+      {/* <p>{maasTheme}</p> */}
+      <Row>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="default"
+            component={ThemedRadioButton}
+            label="Default"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="bark"
+            component={ThemedRadioButton}
+            label="Bark"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="sage"
+            component={ThemedRadioButton}
+            label="Sage"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="olive"
+            component={ThemedRadioButton}
+            label="Olive"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="viridian"
+            component={ThemedRadioButton}
+            label="Viridian"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="prussian-green"
+            component={ThemedRadioButton}
+            label="Prussian green"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="blue"
+            component={ThemedRadioButton}
+            label="Blue"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="purple"
+            component={ThemedRadioButton}
+            label="Purple"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="magenta"
+            component={ThemedRadioButton}
+            label="Magenta"
+            name="maas_theme_colour"
+          />
+        </Col>
+        <Col medium={1} size={1} small={1}>
+          <FormikField
+            colour="red"
+            component={ThemedRadioButton}
+            label="Red"
+            name="maas_theme_colour"
+          />
+        </Col>
+      </Row>
+
       <h5>Data analytics</h5>
       <FormikField
         help={
