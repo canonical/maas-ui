@@ -7,6 +7,7 @@ import type { ReactNode } from "react";
 import classNames from "classnames";
 
 export type Props = {
+  checked?: boolean;
   className?: string;
   colour?: string;
   name?: string;
@@ -14,6 +15,7 @@ export type Props = {
 } & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
 
 const ThemedRadioButton = ({
+  checked,
   className,
   colour,
   label,
@@ -23,6 +25,7 @@ const ThemedRadioButton = ({
   return (
     <label className={classNames(className, "themedRadioButton")}>
       <input
+        checked={checked}
         className={`radioButton ${colour}`}
         name={name}
         type="radio"
