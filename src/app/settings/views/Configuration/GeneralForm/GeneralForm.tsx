@@ -119,7 +119,7 @@ const GeneralForm = (): JSX.Element => {
       <p>MAAS theme main colour</p>
       {/* <p>{maasTheme}</p> */}
       <Row>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="default"
             component={ThemedRadioButton}
@@ -127,7 +127,7 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="bark"
             component={ThemedRadioButton}
@@ -135,7 +135,7 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="sage"
             component={ThemedRadioButton}
@@ -143,7 +143,7 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="olive"
             component={ThemedRadioButton}
@@ -151,7 +151,7 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="viridian"
             component={ThemedRadioButton}
@@ -159,7 +159,9 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+      </Row>
+      <Row>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="prussian-green"
             component={ThemedRadioButton}
@@ -167,7 +169,7 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="blue"
             component={ThemedRadioButton}
@@ -175,7 +177,7 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="purple"
             component={ThemedRadioButton}
@@ -183,7 +185,7 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="magenta"
             component={ThemedRadioButton}
@@ -191,7 +193,7 @@ const GeneralForm = (): JSX.Element => {
             name="maas_theme_colour"
           />
         </Col>
-        <Col medium={1} size={1} small={1}>
+        <Col medium={1} size={1} small={2}>
           <FormikField
             colour="red"
             component={ThemedRadioButton}
