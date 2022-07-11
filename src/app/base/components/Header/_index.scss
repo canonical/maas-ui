@@ -1,0 +1,41 @@
+@mixin Header {
+    .default {
+        background-color: #262626 !important;
+    }
+
+    .bark {
+        background-color: #585841 !important;
+    }
+
+    .sage {
+        background-color: #4E5F51 !important;
+    }
+
+    .olive {
+        background-color: #3D5F11 !important;
+    }
+
+    .viridian {
+        background-color: #025A3D !important;
+    }
+
+    .prussian_green {
+        background-color: #225D5C !important;
+    }
+
+    .blue {
+        background-color: #0060BF !important;
+    }
+
+    .purple {
+        background-color: #7764D8 !important;
+    }
+
+    .magenta {
+        background-color: #974097 !important;
+    }
+
+    .red {
+        background-color: #A71B33 !important;
+    }
+}
