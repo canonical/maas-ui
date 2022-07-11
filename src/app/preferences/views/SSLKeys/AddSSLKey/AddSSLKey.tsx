@@ -12,6 +12,10 @@ import urls from "app/base/urls";
 import { actions as sslkeyActions } from "app/store/sslkey";
 import sslkeySelectors from "app/store/sslkey/selectors";
 
+export enum Label {
+  Title = "Add SSL key",
+}
+
 // This can be removed when the autoComplete prop is supported:
 // https://github.com/canonical-web-and-design/react-components/issues/571
 const ProxyTextarea = (
@@ -29,12 +33,12 @@ export const AddSSLKey = (): JSX.Element => {
   const saved = useSelector(sslkeySelectors.saved);
   const errors = useSelector(sslkeySelectors.errors);
 
-  useWindowTitle("Add SSL key");
+  useWindowTitle(Label.Title);
 
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key successfully added.");
 
   return (
-    <FormCard title="Add SSL key">
+    <FormCard title={Label.Title}>
       <FormikForm
         cleanup={sslkeyActions.cleanup}
         errors={errors}

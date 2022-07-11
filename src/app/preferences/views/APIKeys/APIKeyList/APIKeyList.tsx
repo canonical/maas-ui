@@ -13,6 +13,10 @@ import { actions as tokenActions } from "app/store/token";
 import tokenSelectors from "app/store/token/selectors";
 import type { Token, TokenMeta, TokenState } from "app/store/token/types";
 
+export enum Label {
+  Title = "API keys",
+}
+
 const generateRows = (
   tokens: Token[],
   expandedId: Token[TokenMeta.PK] | null,
@@ -89,7 +93,7 @@ const APIKeyList = (): JSX.Element => {
     dispatch(tokenActions.fetch());
   }, [dispatch]);
 
-  useWindowTitle("API keys");
+  useWindowTitle(Label.Title);
 
   return (
     <>
@@ -99,6 +103,7 @@ const APIKeyList = (): JSX.Element => {
         </Notification>
       )}
       <SettingsTable
+        aria-label={Label.Title}
         buttons={[
           {
             label: "Generate MAAS API key",

@@ -10,7 +10,7 @@ import { ResourcePoolMeta } from "app/store/resourcepool/types";
 import type { RootState } from "app/store/root/types";
 
 export enum Label {
-  Title = "Edit pool",
+  Title = "Edit pool form",
 }
 
 export const PoolEdit = (): JSX.Element => {
