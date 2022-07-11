@@ -60,4 +60,17 @@ describe("VirshDetails", () => {
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
   });
+
+  it("redirects to resources", () => {
+    renderWithBrowserRouter(<VirshDetails />, {
+      route: urls.kvm.virsh.details.index({ id: 1 }),
+      wrapperProps: {
+        state,
+        routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
+      },
+    });
+    expect(window.location.pathname).toBe(
+      urls.kvm.virsh.details.resources({ id: 1 })
+    );
+  });
 });

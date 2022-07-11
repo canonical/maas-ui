@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
 import { useSelector } from "react-redux";
-import { Redirect, Route, Switch } from "react-router-dom";
-import { useNavigate } from "react-router-dom-v5-compat";
+import { Redirect } from "react-router-dom";
+import { Route, Routes, useNavigate } from "react-router-dom-v5-compat";
 
 import VirshDetailsHeader from "./VirshDetailsHeader";
 import VirshResources from "./VirshResources";
@@ -17,7 +17,7 @@ import type { KVMHeaderContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import { isId } from "app/utils";
+import { isId, getRelativeRoute } from "app/utils";
 
 export enum Label {
   Title = "Virsh details",
@@ -52,6 +52,7 @@ const VirshDetails = (): JSX.Element => {
       />
     );
   }
+  const base = urls.kvm.virsh.details.index(null);
   return (
     <Section
       aria-label={Label.Title}
@@ -64,22 +65,23 @@ const VirshDetails = (): JSX.Element => {
       }
     >
       {pod && (
-        <Switch>
+        <Routes>
           <Route
-            exact
-            path={urls.kvm.virsh.details.resources(null)}
-            render={() => <VirshResources id={id} />}
+            element={<VirshResources id={id} />}
+            path={getRelativeRoute(
+              urls.kvm.virsh.details.resources(null),
+              base
+            )}
           />
           <Route
-            exact
-            path={urls.kvm.virsh.details.edit(null)}
-            render={() => <VirshSettings id={id} />}
+            element={<VirshSettings id={id} />}
+            path={getRelativeRoute(urls.kvm.virsh.details.edit(null), base)}
           />
-          <Redirect
-            from={urls.kvm.virsh.details.index(null)}
-            to={urls.kvm.virsh.details.resources(null)}
+          <Route
+            element={<Redirect to={urls.kvm.virsh.details.resources({ id })} />}
+            path="/"
           />
-        </Switch>
+        </Routes>
       )}
     </Section>
   );
