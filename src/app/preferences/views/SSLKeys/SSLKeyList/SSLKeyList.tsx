@@ -13,6 +13,10 @@ import { actions as sslkeyActions } from "app/store/sslkey";
 import sslkeySelectors from "app/store/sslkey/selectors";
 import type { SSLKey, SSLKeyMeta, SSLKeyState } from "app/store/sslkey/types";
 
+export enum Label {
+  Title = "SSL keys",
+}
+
 const generateRows = (
   sslkeys: SSLKey[],
   expandedId: SSLKey[SSLKeyMeta.PK] | null,
@@ -72,7 +76,7 @@ const SSLKeyList = (): JSX.Element => {
   const saving = useSelector(sslkeySelectors.saving);
   const dispatch = useDispatch();
 
-  useWindowTitle("SSL keys");
+  useWindowTitle(Label.Title);
 
   useAddMessage(saved, sslkeyActions.cleanup, "SSL key removed successfully.");
 
@@ -92,6 +96,7 @@ const SSLKeyList = (): JSX.Element => {
         </Notification>
       )}
       <SettingsTable
+        aria-label={Label.Title}
         buttons={[{ label: "Add SSL key", url: urls.preferences.sslKeys.add }]}
         headers={[
           {

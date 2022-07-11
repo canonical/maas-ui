@@ -12,6 +12,11 @@ import { actions as tokenActions } from "app/store/token";
 import tokenSelectors from "app/store/token/selectors";
 import type { Token } from "app/store/token/types";
 
+export enum Label {
+  AddTitle = "Generate MAAS API key",
+  EditTitle = "Edit MAAS API key",
+}
+
 type Props = {
   token?: Token;
 };
@@ -31,7 +36,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
   const errors = useSelector(tokenSelectors.errors);
   const saved = useSelector(tokenSelectors.saved);
   const saving = useSelector(tokenSelectors.saving);
-  const title = editing ? "Edit MAAS API key" : "Generate MAAS API key";
+  const title = editing ? Label.EditTitle : Label.AddTitle;
 
   useWindowTitle(title);
   useAddMessage(
