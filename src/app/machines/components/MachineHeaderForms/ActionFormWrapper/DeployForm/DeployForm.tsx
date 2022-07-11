@@ -60,7 +60,6 @@ export const DeployForm = ({
   useEffect(() => {
     dispatch(generalActions.fetchDefaultMinHweKernel());
     dispatch(generalActions.fetchOsInfo());
-    dispatch(machineActions.fetch());
   }, [dispatch]);
 
   if (!defaultMinHweKernelLoaded || !osInfoLoaded) {
