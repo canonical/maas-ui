@@ -79,6 +79,7 @@
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
 @import "~app/base/components/FormikFormButtons";
+@import "~app/base/components/Header";
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
@@ -112,6 +113,7 @@
 @include FilterAccordion;
 @include FormCard;
 @include FormikFormButtons;
+@include Header;
 @include LabelledList;
 @include Login;
 @include Meter;
