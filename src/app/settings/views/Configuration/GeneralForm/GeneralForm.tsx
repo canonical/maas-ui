@@ -34,6 +34,7 @@ type GeneralFormValues = {
 const GeneralForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const maasName = useSelector(configSelectors.maasName);
+  const maasTheme = useSelector(configSelectors.theme);
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const releaseNotifications = useSelector(
     configSelectors.releaseNotifications
@@ -113,6 +114,7 @@ const GeneralForm = (): JSX.Element => {
         wrapperClassName="u-sv2"
       />
       <p>MAAS theme main colour</p>
+      <p>{maasTheme}</p>
       <FormikField
         colour="default"
         component={ThemedRadioButton}
