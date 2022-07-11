@@ -1,8 +1,11 @@
 import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
+
+import { ControllerDetailsTabLabels } from "../../constants";
 
 import ControllerDetails from "./ControllerDetails";
 
@@ -15,6 +18,14 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
+
+beforeEach(() => {
+  global.scrollTo = jest.fn();
+});
+
+afterAll(() => {
+  jest.restoreAllMocks();
+});
 
 it("gets and sets the controller as active", () => {
   const controller = controllerFactory({ system_id: "abc123" });
@@ -88,7 +99,7 @@ it("unsets active controller and cleans up when unmounting", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={urls.controllers.controller.index(null)}
+              path={`${urls.controllers.controller.index(null)}/*`}
             />
           </Routes>
         </CompatRouter>
@@ -140,7 +151,7 @@ it("displays a message if the controller does not exist", () => {
           <Routes>
             <Route
               element={<ControllerDetails />}
-              path={urls.controllers.controller.index(null)}
+              path={`${urls.controllers.controller.index(null)}/*`}
             />
           </Routes>
         </CompatRouter>
@@ -151,4 +162,56 @@ it("displays a message if the controller does not exist", () => {
   expect(
     screen.getByText(/Unable to find a controller with id/)
   ).toBeInTheDocument();
+});
+
+it("gets and sets the controller as active only once when navigating within the same controller", async () => {
+  const controller = controllerFactory({ system_id: "abc123" });
+  const state = rootStateFactory({
+    controller: controllerStateFactory({
+      items: [controller],
+      loaded: true,
+      loading: false,
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[
+          {
+            pathname: urls.controllers.controller.index({
+              id: controller.system_id,
+            }),
+          },
+        ]}
+      >
+        <CompatRouter>
+          <Routes>
+            <Route
+              element={<ControllerDetails />}
+              path={`${urls.controllers.controller.index(null)}/*`}
+            />
+          </Routes>
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  await userEvent.click(
+    screen.getByRole("link", { name: ControllerDetailsTabLabels.vlans })
+  );
+
+  const actualActions = store.getActions();
+  const getControllerActions = actualActions.filter(
+    (actualAction) =>
+      actualAction.type === controllerActions.get(controller.system_id).type
+  );
+  const setActiveControllerActions = actualActions.filter(
+    (actualAction) =>
+      actualAction.type ===
+      controllerActions.setActive(controller.system_id).type
+  );
+
+  expect(getControllerActions).toHaveLength(1);
+  expect(setActiveControllerActions).toHaveLength(1);
 });
