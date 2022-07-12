@@ -1,0 +1,9 @@
+@mixin GeneralForm {
+    .themeRow {
+        grid-template-columns: repeat(10, minmax(0, 1fr)) !important;
+    }
+
+    .themeColumn {
+        // margin-right: 5px !important;
+    }
+}
