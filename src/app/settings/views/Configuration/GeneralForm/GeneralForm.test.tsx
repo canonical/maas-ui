@@ -24,6 +24,7 @@ describe("GeneralForm", () => {
       config: configStateFactory({
         items: [
           configFactory({ name: ConfigNames.MAAS_NAME, value: "bionic-maas" }),
+          configFactory({ name: ConfigNames.THEME, value: "default" }),
           configFactory({ name: ConfigNames.ENABLE_ANALYTICS, value: true }),
           configFactory({
             name: ConfigNames.RELEASE_NOTIFICATIONS,
@@ -69,6 +70,26 @@ describe("GeneralForm", () => {
     );
   });
 
+  it("sets theme value", () => {
+    const store = mockStore(state);
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <GeneralForm />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(
+      screen.getByRole("radio", {
+        name: "Default",
+      })
+    ).toHaveProperty("checked", true);
+  });
+
   it("sets enable_analytics value", () => {
     const store = mockStore(state);
 
@@ -107,6 +128,28 @@ describe("GeneralForm", () => {
         name: "Enable new release notifications",
       })
     ).toHaveProperty("checked", true);
+  });
+
+  it("can change the MAAS theme colour", async () => {
+    const store = mockStore(state);
+
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <GeneralForm />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    const redRadioButton = screen.getByRole("radio", { name: "Red" });
+    const saveButton = screen.getByRole("button", { name: "Save" });
+
+    await userEvent.click(redRadioButton);
+    await userEvent.click(saveButton);
+
+    expect(redRadioButton).toHaveProperty("checked", true);
   });
 
   it("can trigger usabilla when the notifications are turned off", async () => {
