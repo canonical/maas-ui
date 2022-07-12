@@ -158,8 +158,6 @@ const GeneralForm = (): JSX.Element => {
             name="theme"
           />
         </Col>
-        {/* </Row>
-      <Row> */}
         <Col medium={1} size={1} small={2}>
           <FormikField
             colour="prussian_green"
