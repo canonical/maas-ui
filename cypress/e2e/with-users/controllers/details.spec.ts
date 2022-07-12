@@ -84,14 +84,12 @@ context("Controller details", () => {
   });
 
   it("displays controller commissioning details", () => {
+    cy.findAllByRole("gridcell", { name: "Name" })
+      .first()
+      .within(() => {
+        cy.findByRole("link").click();
+      });
     cy.waitForPageToLoad();
-    cy.get("[data-testid='section-header-buttons']").within(() =>
-      cy
-        .findByRole("button", {
-          name: /Take action/i,
-        })
-        .click()
-    );
 
     cy.findByRole("link", { name: "Commissioning" }).click();
     cy.findByRole("grid").within(() => {
