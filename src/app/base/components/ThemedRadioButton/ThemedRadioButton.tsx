@@ -1,7 +1,3 @@
-// nick notes
-// -Set up a useEffect for live preview
-// -Remove from redux when "save" or "cancel"
-
 import type { ReactNode } from "react";
 
 import classNames from "classnames";
