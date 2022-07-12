@@ -1,10 +1,13 @@
 name: Upload
 on:
-  pull_request_target:
-    types: [closed]
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 jobs:
   upload-build:
-    if: github.event.pull_request.merged == true
     name: Upload build artifacts
     runs-on: ubuntu-latest
     env:
