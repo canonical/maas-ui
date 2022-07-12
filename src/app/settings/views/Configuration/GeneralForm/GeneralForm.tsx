@@ -120,7 +120,6 @@ const GeneralForm = (): JSX.Element => {
       <Row>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "default" ? true : false}
             colour="default"
             component={ThemedRadioButton}
             label="Default"
@@ -129,7 +128,6 @@ const GeneralForm = (): JSX.Element => {
         </Col>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "bark" ? true : false}
             colour="bark"
             component={ThemedRadioButton}
             label="Bark"
@@ -138,7 +136,6 @@ const GeneralForm = (): JSX.Element => {
         </Col>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "sage" ? true : false}
             colour="sage"
             component={ThemedRadioButton}
             label="Sage"
@@ -147,7 +144,6 @@ const GeneralForm = (): JSX.Element => {
         </Col>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "olive" ? true : false}
             colour="olive"
             component={ThemedRadioButton}
             label="Olive"
@@ -156,18 +152,16 @@ const GeneralForm = (): JSX.Element => {
         </Col>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "viridian" ? true : false}
             colour="viridian"
             component={ThemedRadioButton}
             label="Viridian"
             name="theme"
           />
         </Col>
-      </Row>
-      <Row>
+        {/* </Row>
+      <Row> */}
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "prussian_green" ? true : false}
             colour="prussian_green"
             component={ThemedRadioButton}
             label="Prussian green"
@@ -176,7 +170,6 @@ const GeneralForm = (): JSX.Element => {
         </Col>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "blue" ? true : false}
             colour="blue"
             component={ThemedRadioButton}
             label="Blue"
@@ -185,7 +178,6 @@ const GeneralForm = (): JSX.Element => {
         </Col>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "purple" ? true : false}
             colour="purple"
             component={ThemedRadioButton}
             label="Purple"
@@ -194,7 +186,6 @@ const GeneralForm = (): JSX.Element => {
         </Col>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "magenta" ? true : false}
             colour="magenta"
             component={ThemedRadioButton}
             label="Magenta"
@@ -203,7 +194,6 @@ const GeneralForm = (): JSX.Element => {
         </Col>
         <Col medium={1} size={1} small={2}>
           <FormikField
-            checked={maasTheme === "red" ? true : false}
             colour="red"
             component={ThemedRadioButton}
             label="Red"
