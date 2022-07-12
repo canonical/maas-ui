@@ -4,6 +4,7 @@
         input[type="radio"] {
             -webkit-appearance: none;
             appearance: none;
+            cursor: pointer;
 
             &.default {
                 background-color: #262626;
