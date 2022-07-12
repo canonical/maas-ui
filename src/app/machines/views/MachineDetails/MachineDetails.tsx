@@ -28,6 +28,7 @@ import type { MachineHeaderContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
+import { useGetMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { getRelativeRoute, isId } from "app/utils";
@@ -42,6 +43,7 @@ const MachineDetails = (): JSX.Element => {
   const machinesLoading = useSelector(machineSelectors.loading);
   const [headerContent, setHeaderContent] =
     useState<MachineHeaderContent | null>(null);
+  useGetMachine(id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -49,7 +51,6 @@ const MachineDetails = (): JSX.Element => {
 
   useEffect(() => {
     if (isId(id)) {
-      dispatch(machineActions.get(id));
       // Set machine as active to ensure all machine data is sent from the server.
       dispatch(machineActions.setActive(id));
       dispatch(tagActions.fetch());

@@ -8,7 +8,8 @@ import {
   architectures as architecturesSelectors,
   osInfo as osInfoSelectors,
 } from "app/store/general/selectors";
-import type { Machine } from "app/store/machine/types";
+import { actions as machineActions } from "app/store/machine";
+import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { Host } from "app/store/types/host";
@@ -20,6 +21,24 @@ import {
   isNodeStorageConfigurable,
 } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
+import { isId } from "app/utils";
+
+/**
+ * Get a machine via the API.
+ * @param id - A machine's system id.
+ */
+export const useGetMachine = (id?: Machine[MachineMeta.PK] | null): void => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // TODO: this should not fetch the machine again once the request has been
+    // made. This can be done by checking the request id once the action has
+    // been updated:
+    // https://github.com/canonical-web-and-design/app-tribe/issues/1167
+    if (isId(id)) {
+      dispatch(machineActions.get(id));
+    }
+  }, [dispatch, id]);
+};
 
 /**
  * Check whether a machine's storage can be edited based on permissions and the
