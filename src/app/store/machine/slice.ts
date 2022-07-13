@@ -638,19 +638,6 @@ const machineSlice = createSlice({
     createLogicalVolumeError: statusHandlers.createLogicalVolume.error,
     createLogicalVolumeStart: statusHandlers.createLogicalVolume.start,
     createLogicalVolumeSuccess: statusHandlers.createLogicalVolume.success,
-    createNotify: (state: MachineState, action) => {
-      // In the event that the server erroneously attempts to create an existing machine,
-      // due to a race condition etc., ensure we update instead of creating duplicates.
-      const existingIdx = state.items.findIndex(
-        (draftItem: Machine) => draftItem.id === action.payload.id
-      );
-      if (existingIdx !== -1) {
-        state.items[existingIdx] = action.payload;
-      } else {
-        state.items.push(action.payload);
-        state.statuses[action.payload.system_id] = DEFAULT_STATUSES;
-      }
-    },
     createPartition: {
       prepare: (params: CreatePartitionParams) => ({
         meta: {
