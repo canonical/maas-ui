@@ -60,6 +60,7 @@ const GeneralForm = (): JSX.Element => {
 
   return (
     <FormikForm<GeneralFormValues>
+      aria-label="Configuration - General"
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{

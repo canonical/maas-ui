@@ -47,9 +47,10 @@ describe("GeneralForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    // Form doesn't have a title, but the save button is within the form
-    // So by testing that this is in the document, we can know if the form is there
-    expect(screen.getByRole("button", { name: "Save" })).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("form", { name: "Configuration - General" })
+    ).toBeInTheDocument();
   });
 
   it("sets maas_name value", () => {
