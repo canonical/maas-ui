@@ -120,86 +120,27 @@ const GeneralForm = (): JSX.Element => {
       />
       <p>MAAS theme main colour</p>
       <Row className=".generalForm__radio-row">
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="default"
-            component={ThemedRadioButton}
-            label="Default"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="bark"
-            component={ThemedRadioButton}
-            label="Bark"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="sage"
-            component={ThemedRadioButton}
-            label="Sage"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="olive"
-            component={ThemedRadioButton}
-            label="Olive"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="viridian"
-            component={ThemedRadioButton}
-            label="Viridian"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="prussian_green"
-            component={ThemedRadioButton}
-            label="Prussian green"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="blue"
-            component={ThemedRadioButton}
-            label="Blue"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="purple"
-            component={ThemedRadioButton}
-            label="Purple"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="magenta"
-            component={ThemedRadioButton}
-            label="Magenta"
-            name="theme"
-          />
-        </Col>
-        <Col medium={1} size={1} small={2}>
-          <FormikField
-            colour="red"
-            component={ThemedRadioButton}
-            label="Red"
-            name="theme"
-          />
-        </Col>
+        {[
+          "Default",
+          "Bark",
+          "Sage",
+          "Olive",
+          "Viridian",
+          "Prussian green",
+          "Blue",
+          "Purple",
+          "Magenta",
+          "Red",
+        ].map((color) => (
+          <Col medium={1} size={1} small={2}>
+            <FormikField
+              colour={color.toLowerCase().split(" ").join("_")}
+              component={ThemedRadioButton}
+              label={color}
+              name="theme"
+            />
+          </Col>
+        ))}
       </Row>
 
       <h5>Data analytics</h5>
