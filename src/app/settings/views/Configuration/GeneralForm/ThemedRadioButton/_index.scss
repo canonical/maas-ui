@@ -1,5 +1,5 @@
 @mixin ThemedRadioButton {
-    .generalForm__radio--themed {
+    .general-form__radio--themed {
 
         input[type="radio"] {
             -webkit-appearance: none;
@@ -47,7 +47,7 @@
             }
         }
 
-        .generalForm__radio {
+        .general-form__radio {
             color: currentColor;
             width: 24px;
             height: 24px;
@@ -58,7 +58,7 @@
             margin-left: 0;
         }
 
-        .generalForm__radio::before {
+        .general-form__radio::before {
             content: "";
             width: 8px;
             height: 8px;
@@ -68,7 +68,7 @@
             box-shadow: inset 8px 8px #fff;
         }
 
-        .generalForm__radio:checked::before {
+        .general-form__radio:checked::before {
             transform: scale(1);
         }
     }
