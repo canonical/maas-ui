@@ -4,19 +4,22 @@ context("Controller details", () => {
   beforeEach(() => {
     cy.login();
     cy.visit(generateMAASURL("/controllers"));
+
+    // navigate to controller details page of the first controller
+    cy.findByRole("grid", { name: /controllers list/i }).within(() =>
+      cy
+        .findAllByRole("gridcell", { name: "Name" })
+        .first()
+        .within(() => {
+          cy.findByRole("link").click();
+        })
+    );
+    cy.waitForPageToLoad();
+    cy.findByText(/Summary/).should("exist");
   });
 
   it("can add a tag to the controller", () => {
     const tagName = `tag-${generateId()}`;
-
-    // displays the controller details page on click of the controller name
-    cy.findAllByRole("gridcell", { name: "Name" })
-      .first()
-      .within(() => {
-        cy.findByRole("link").click();
-      });
-
-    cy.findByText(/Summary/).should("exist");
 
     // can add a tag to the controller
     cy.findByRole("link", {
@@ -59,12 +62,6 @@ context("Controller details", () => {
   });
 
   it("lists valid actions on the controller details page", () => {
-    cy.findAllByRole("gridcell", { name: "Name" })
-      .first()
-      .within(() => {
-        cy.findByRole("link").click();
-      });
-
     cy.findByText(/Take action/).click();
 
     [/Import images/i, /Delete/i].forEach((name) =>
@@ -84,15 +81,6 @@ context("Controller details", () => {
   });
 
   it("displays controller commissioning details", () => {
-    cy.waitForPageToLoad();
-    cy.get("[data-testid='section-header-buttons']").within(() =>
-      cy
-        .findByRole("button", {
-          name: /Take action/i,
-        })
-        .click()
-    );
-
     cy.findByRole("link", { name: "Commissioning" }).click();
     cy.findByRole("grid").within(() => {
       cy.findAllByRole("button", { name: /Take action/i })
