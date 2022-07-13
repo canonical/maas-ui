@@ -270,49 +270,6 @@ describe("machine reducer", () => {
     );
   });
 
-  it("should update if machine exists on createNotify", () => {
-    const initialState = machineStateFactory({
-      items: [
-        machineFactory({ id: 1, hostname: "machine1", system_id: "abc123" }),
-      ],
-      statuses: { abc123: machineStatusFactory() },
-    });
-    const updatedMachine = machineFactory({
-      id: 1,
-      hostname: "machine1-newname",
-      system_id: "abc123",
-    });
-
-    expect(
-      reducers(initialState, actions.createNotify(updatedMachine))
-    ).toEqual(
-      machineStateFactory({
-        items: [updatedMachine],
-        statuses: {
-          abc123: machineStatusFactory(),
-        },
-      })
-    );
-  });
-
-  it("reduces createNotify", () => {
-    const initialState = machineStateFactory({
-      items: [machineFactory({ id: 1, system_id: "abc123" })],
-      statuses: { abc123: machineStatusFactory() },
-    });
-    const newMachine = machineFactory({ id: 2, system_id: "def456" });
-
-    expect(reducers(initialState, actions.createNotify(newMachine))).toEqual(
-      machineStateFactory({
-        items: [...initialState.items, newMachine],
-        statuses: {
-          abc123: machineStatusFactory(),
-          def456: machineStatusFactory(),
-        },
-      })
-    );
-  });
-
   it("reduces deleteNotify", () => {
     const initialState = machineStateFactory({
       items: [
