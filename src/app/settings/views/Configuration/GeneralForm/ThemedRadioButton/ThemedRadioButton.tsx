@@ -5,14 +5,14 @@ import classNames from "classnames";
 export type Props = {
   checked?: boolean;
   className?: string;
-  colour?: string;
+  color?: string;
   name?: string;
   label?: ReactNode;
 } & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
 
 const ThemedRadioButton = ({
   className,
-  colour,
+  color,
   label,
   name,
   value,
@@ -21,12 +21,12 @@ const ThemedRadioButton = ({
   return (
     <label className={classNames(className, "generalForm__radio--themed")}>
       <input
-        checked={value === colour}
-        className={`generalForm__radio radio--theme-${colour}`}
+        checked={value === color}
+        className={`generalForm__radio radio--theme-${color}`}
         name={name}
         type="radio"
         {...inputProps}
-        value={colour}
+        value={color}
       />
       {label}
     </label>

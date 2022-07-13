@@ -134,7 +134,7 @@ const GeneralForm = (): JSX.Element => {
         ].map((color) => (
           <Col medium={1} size={1} small={2}>
             <FormikField
-              colour={color.toLowerCase().split(" ").join("_")}
+              color={color.toLowerCase().split(" ").join("_")}
               component={ThemedRadioButton}
               label={color}
               name="theme"
