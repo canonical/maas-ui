@@ -1,53 +1,53 @@
 @mixin ThemedRadioButton {
-    .themedRadioButton {
+    .generalForm__radio--themed {
 
         input[type="radio"] {
             -webkit-appearance: none;
             appearance: none;
             cursor: pointer;
 
-            &.default {
+            &.radio--theme-default {
                 background-color: #262626;
             }
 
-            &.bark {
+            &.radio--theme-bark {
                 background-color: #585841;
             }
 
-            &.sage {
+            &.radio--theme-sage {
                 background-color: #4E5F51;
             }
 
-            &.olive {
+            &.radio--theme-olive {
                 background-color: #3D5F11;
             }
 
-            &.viridian {
+            &.radio--theme-viridian {
                 background-color: #025A3D;
             }
 
-            &.prussian_green {
+            &.radio--theme-prussian_green {
                 background-color: #225D5C;
             }
 
-            &.blue {
+            &.radio--theme-blue {
                 background-color: #0060BF;
             }
 
-            &.purple {
+            &.radio--theme-purple {
                 background-color: #7764D8;
             }
 
-            &.magenta {
+            &.radio--theme-magenta {
                 background-color: #974097;
             }
 
-            &.red {
+            &.radio--theme-red {
                 background-color: #A71B33;
             }
         }
 
-        .radioButton{
+        .generalForm__radio {
             color: currentColor;
             width: 24px;
             height: 24px;
@@ -58,7 +58,7 @@
             margin-left: 0;
         }
 
-        .radioButton::before {
+        .generalForm__radio::before {
             content: "";
             width: 8px;
             height: 8px;
@@ -68,7 +68,7 @@
             box-shadow: inset 8px 8px #fff;
         }
 
-        .radioButton:checked::before {
+        .generalForm__radio:checked::before {
             transform: scale(1);
         }
     }

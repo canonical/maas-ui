@@ -213,7 +213,7 @@ export const Header = (): JSX.Element => {
         Skip to main content
       </a>
       <Navigation
-        className={maasTheme ? maasTheme : "default"}
+        className={maasTheme ? `p-navigation--${maasTheme}` : "default"}
         generateLink={generateLink}
         items={
           showLinks

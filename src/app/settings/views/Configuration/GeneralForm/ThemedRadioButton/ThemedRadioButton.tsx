@@ -19,10 +19,10 @@ const ThemedRadioButton = ({
   ...inputProps
 }: Props): JSX.Element => {
   return (
-    <label className={classNames(className, "themedRadioButton")}>
+    <label className={classNames(className, "generalForm__radio--themed")}>
       <input
         checked={value === colour}
-        className={`radioButton ${colour}`}
+        className={`generalForm__radio radio--theme-${colour}`}
         name={name}
         type="radio"
         {...inputProps}

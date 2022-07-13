@@ -1,5 +1,5 @@
 @mixin GeneralForm {
-    .themeRow {
+    .generalForm__radio-row {
         grid-template-columns: repeat(10, minmax(0, 1fr)) !important;
         grid-gap: 0 5rem;
     }

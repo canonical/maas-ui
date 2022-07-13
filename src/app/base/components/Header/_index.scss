@@ -1,38 +1,38 @@
 @mixin Header {
 
-    .bark {
+    .p-navigation--bark {
         background-color: #585841 !important;
     }
 
-    .sage {
+    .p-navigation--sage {
         background-color: #4E5F51 !important;
     }
 
-    .olive {
+    .p-navigation--olive {
         background-color: #3D5F11 !important;
     }
 
-    .viridian {
+    .p-navigation--viridian {
         background-color: #025A3D !important;
     }
 
-    .prussian_green {
+    .p-navigation--prussian_green {
         background-color: #225D5C !important;
     }
 
-    .blue {
+    .p-navigation--blue {
         background-color: #0060BF !important;
     }
 
-    .purple {
+    .p-navigation--purple {
         background-color: #7764D8 !important;
     }
 
-    .magenta {
+    .p-navigation--magenta {
         background-color: #974097 !important;
     }
 
-    .red {
+    .p-navigation--red {
         background-color: #A71B33 !important;
     }
 }
