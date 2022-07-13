@@ -100,7 +100,6 @@
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
-@import "~app/base/components/ThemedRadioButton";
 @include ActionBar;
 @include CertificateDownload;
 @include CertificateMetadata;
@@ -132,7 +131,6 @@
 @include Stepper;
 @include TableMenu;
 @include TagSelector;
-@include ThemedRadioButton;
 
 // controllers
 @import "~app/controllers/views/ControllerList/ControllerListTable";
@@ -247,6 +245,7 @@
 // settings
 @import "~app/settings/components/SettingsTable";
 @import "~app/settings/views/Configuration/GeneralForm";
+@import "~app/settings/views/Configuration/GeneralForm/ThemedRadioButton";
 @import "~app/settings/views/Configuration/Security/TLSEnabled/TLSEnabledFields";
 @import "~app/settings/views/Dhcp/DhcpList";
 @import "~app/settings/views/LicenseKeys/LicenseKeyList";
@@ -265,6 +264,7 @@
 @include TLSEnabledFields;
 @include UsersList;
 @include GeneralForm;
+@include ThemedRadioButton;
 
 // subnets
 @import "~app/subnets/components/ReservedRanges";

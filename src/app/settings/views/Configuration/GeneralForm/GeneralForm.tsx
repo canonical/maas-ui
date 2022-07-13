@@ -5,9 +5,10 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
+import ThemedRadioButton from "./ThemedRadioButton";
+
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
-import ThemedRadioButton from "app/base/components/ThemedRadioButton";
 import { useSendAnalytics } from "app/base/hooks";
 import type { UsabillaLive } from "app/base/types";
 import { actions as configActions } from "app/store/config";
