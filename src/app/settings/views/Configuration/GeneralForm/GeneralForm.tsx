@@ -122,25 +122,22 @@ const GeneralForm = (): JSX.Element => {
       <p>MAAS theme main colour</p>
       <Row className="general-form__radio-row">
         {[
-          ColorValues.Default,
-          ColorValues.Bark,
-          ColorValues.Sage,
-          ColorValues.Olive,
-          ColorValues.Viridian,
-          ColorValues.PrussianGreen,
-          ColorValues.Blue,
-          ColorValues.Purple,
-          ColorValues.Magenta,
-          ColorValues.Red,
+          { value: ColorValues.Default, label: "Default" },
+          { value: ColorValues.Bark, label: "Bark" },
+          { value: ColorValues.Sage, label: "Sage" },
+          { value: ColorValues.Olive, label: "Olive" },
+          { value: ColorValues.Viridian, label: "Viridian" },
+          { value: ColorValues.PrussianGreen, label: "Prussian green" },
+          { value: ColorValues.Blue, label: "Blue" },
+          { value: ColorValues.Purple, label: "Purple" },
+          { value: ColorValues.Magenta, label: "Magenta" },
+          { value: ColorValues.Red, label: "Red" },
         ].map((color) => (
           <Col medium={1} size={1} small={2}>
             <FormikField
-              color={color}
+              color={color.value}
               component={ThemedRadioButton}
-              label={
-                color.charAt(0).toUpperCase() +
-                color.slice(1).split("_").join(" ")
-              }
+              label={color.label}
               name="theme"
             />
           </Col>
