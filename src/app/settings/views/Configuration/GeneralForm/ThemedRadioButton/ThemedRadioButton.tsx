@@ -5,10 +5,23 @@ import classNames from "classnames";
 export type Props = {
   checked?: boolean;
   className?: string;
-  color?: string;
+  color?: ColorValues;
   name?: string;
   label?: ReactNode;
 } & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
+
+export enum ColorValues {
+  Default = "default",
+  Bark = "bark",
+  Sage = "sage",
+  Olive = "olive",
+  Viridian = "viridian",
+  PrussianGreen = "prussian_green",
+  Blue = "blue",
+  Purple = "purple",
+  Magenta = "magenta",
+  Red = "red",
+}
 
 const ThemedRadioButton = ({
   className,

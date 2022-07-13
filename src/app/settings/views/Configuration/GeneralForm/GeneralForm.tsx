@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
 
 import ThemedRadioButton from "./ThemedRadioButton";
+import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
@@ -66,7 +67,7 @@ const GeneralForm = (): JSX.Element => {
       buttonsBordered={false}
       initialValues={{
         maas_name: maasName || "",
-        theme: maasTheme || "default",
+        theme: maasTheme || ColorValues.Default,
         enable_analytics: analyticsEnabled || false,
         release_notifications: releaseNotifications || false,
       }}
@@ -121,22 +122,25 @@ const GeneralForm = (): JSX.Element => {
       <p>MAAS theme main colour</p>
       <Row className="general-form__radio-row">
         {[
-          "Default",
-          "Bark",
-          "Sage",
-          "Olive",
-          "Viridian",
-          "Prussian green",
-          "Blue",
-          "Purple",
-          "Magenta",
-          "Red",
+          ColorValues.Default,
+          ColorValues.Bark,
+          ColorValues.Sage,
+          ColorValues.Olive,
+          ColorValues.Viridian,
+          ColorValues.PrussianGreen,
+          ColorValues.Blue,
+          ColorValues.Purple,
+          ColorValues.Magenta,
+          ColorValues.Red,
         ].map((color) => (
           <Col medium={1} size={1} small={2}>
             <FormikField
-              color={color.toLowerCase().split(" ").join("_")}
+              color={color}
               component={ThemedRadioButton}
-              label={color}
+              label={
+                color.charAt(0).toUpperCase() +
+                color.slice(1).split("_").join(" ")
+              }
               name="theme"
             />
           </Col>
