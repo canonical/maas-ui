@@ -1,4 +1,9 @@
 @mixin GeneralForm {
+
+    .general-form__theme-label {
+        margin-bottom: 0.2rem;
+    }
+
     @media screen and (min-width: $breakpoint-large) {
         .general-form__radio-row {
             grid-template-columns: repeat(10, minmax(0, 1fr)) !important;

@@ -119,7 +119,7 @@ const GeneralForm = (): JSX.Element => {
         type="text"
         wrapperClassName="u-sv2"
       />
-      <p>MAAS theme main colour</p>
+      <p className="general-form__theme-label">MAAS theme main colour</p>
       <Row className="general-form__radio-row">
         {[
           { value: ColorValues.Default, label: "Default" },
