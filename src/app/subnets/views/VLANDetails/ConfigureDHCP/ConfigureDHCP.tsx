@@ -156,7 +156,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
               enableDHCP: true,
               endIP: "",
               gatewayIP: "",
-              primaryRack: vlan.primary_rack || "",
+              primaryRack: vlan.primary_rack || vlan.rack_sids[0] || "",
               relayVLAN: vlan.relay_vlan || "",
               secondaryRack: vlan.secondary_rack || "",
               startIP: "",
