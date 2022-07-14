@@ -1412,6 +1412,21 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle unsubscribing from machines", () => {
+    expect(actions.unsubscribe(["abc123", "def456"])).toEqual({
+      type: "machine/unsubscribe",
+      meta: {
+        model: "machine",
+        method: "unsubscribe",
+      },
+      payload: {
+        params: {
+          system_ids: ["abc123", "def456"],
+        },
+      },
+    });
+  });
+
   it("can handle setting a boot disk", () => {
     expect(
       actions.setBootDisk({

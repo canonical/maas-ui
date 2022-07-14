@@ -55,11 +55,11 @@ import type {
 } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
+import type { StatusHandlers, GenericItemMeta } from "app/store/utils/slice";
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-import type { StatusHandlers } from "app/store/utils/slice";
 import { preparePayloadParams, kebabToCamelCase } from "app/utils";
 
 export const ACTIONS: Action[] = [
@@ -316,6 +316,7 @@ export const DEFAULT_STATUSES = {
   unlocking: false,
   unlinkingSubnet: false,
   unmountingSpecial: false,
+  unsubscribing: false,
   untagging: false,
   updatingDisk: false,
   updatingFilesystem: false,
@@ -1553,6 +1554,63 @@ const machineSlice = createSlice({
       reducer: () => {
         // No state changes need to be handled for this action.
       },
+    },
+    unsubscribe: {
+      prepare: (ids: Machine[MachineMeta.PK][]) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "unsubscribe",
+        },
+        payload: {
+          params: { system_ids: ids },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    unsubscribeError: (
+      state: MachineState,
+      action: PayloadAction<MachineState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state = setErrors(state, action, "unsubscribe");
+    },
+    unsubscribeStart: {
+      prepare: (ids: Machine[MachineMeta.PK][]) => ({
+        meta: {
+          item: { system_ids: ids },
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          null,
+          string,
+          GenericItemMeta<{ system_ids: Machine[MachineMeta.PK][] }>
+        >
+      ) => {
+        action.meta.item.system_ids.forEach((id) => {
+          state.statuses[id].unsubscribing = true;
+        });
+      },
+    },
+    unsubscribeSuccess: (
+      state: MachineState,
+      action: PayloadAction<Machine[MachineMeta.PK][]>
+    ) => {
+      action.payload.forEach((id) => {
+        const index = state.items.findIndex(
+          (item: Machine) => item.system_id === id
+        );
+        state.items.splice(index, 1);
+        state.selected = state.selected.filter(
+          (machineId: Machine[MachineMeta.PK]) => machineId !== id
+        );
+        // Clean up the statuses for model.
+        delete state.statuses[id];
+      });
     },
     [NodeActions.UNTAG]: {
       prepare: (params: UntagParams) => ({

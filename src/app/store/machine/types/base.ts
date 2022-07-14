@@ -175,6 +175,7 @@ export type MachineStatus = {
   unlocking: boolean;
   unlinkingSubnet: boolean;
   unmountingSpecial: boolean;
+  unsubscribing: boolean;
   untagging: boolean;
   updatingDisk: boolean;
   updatingFilesystem: boolean;
