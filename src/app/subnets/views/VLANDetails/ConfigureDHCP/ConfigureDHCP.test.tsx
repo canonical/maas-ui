@@ -221,6 +221,66 @@ it(`shows an error if the subnet selected for reserving a dynamic range has no
   expect(screen.getByRole("button", { name: "Configure DHCP" })).toBeDisabled();
 });
 
+it("pre-selects the first available rack controller as a primary rack controller", async () => {
+  const primary = controllerFactory({ system_id: "abc123" });
+  const secondary = controllerFactory({ system_id: "def456" });
+  const vlan = vlanFactory({
+    id: 1,
+    primary_rack: null,
+    rack_sids: [primary.system_id, secondary.system_id],
+    relay_vlan: null,
+    secondary_rack: null,
+  });
+
+  const subnet = subnetFactory({
+    statistics: subnetStatisticsFactory(),
+    vlan: vlan.id,
+  });
+  const state = rootStateFactory({
+    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
+    controller: controllerStateFactory({
+      items: [primary, secondary, controllerFactory(), controllerFactory()],
+    }),
+    vlan: vlanStateFactory({ items: [vlan] }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Subnet" }),
+    subnet.id.toString()
+  );
+
+  await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
+
+  const expectedAction = vlanActions.configureDHCP({
+    controllers: [primary.system_id],
+    id: vlan.id,
+    relay_vlan: null,
+    extra: {
+      end: subnet.statistics.ranges[0].end,
+      gateway: "",
+      start: subnet.statistics.ranges[0].start,
+      subnet: subnet.id,
+    },
+  });
+
+  await waitFor(() => {
+    const actualAction = store
+      .getActions()
+      .find((action) => action.type === expectedAction.type);
+    expect(actualAction).toStrictEqual(expectedAction);
+  });
+});
+
 it("shows a warning when attempting to disable DHCP on a VLAN", async () => {
   const vlan = vlanFactory({
     id: 1,
