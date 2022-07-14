@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import NumaCard from "./NumaCard";
@@ -16,10 +14,10 @@ import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import type { MachineSetHeaderContent } from "app/machines/types";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
+import { useGetMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { NodeStatusCode } from "app/store/types/node";
 import { isId } from "app/utils";
@@ -29,19 +27,12 @@ type Props = {
 };
 
 const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-
+  useGetMachine(id);
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} details`);
-
-  useEffect(() => {
-    if (isId(id)) {
-      dispatch(machineActions.get(id));
-    }
-  }, [dispatch, id]);
 
   if (!isId(id) || !isMachineDetails(machine)) {
     return <Spinner text="Loading" />;

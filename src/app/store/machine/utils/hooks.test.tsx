@@ -11,8 +11,10 @@ import {
   useFormattedOS,
   useHasInvalidArchitecture,
   useIsLimitedEditingAllowed,
+  useGetMachine,
 } from "./hooks";
 
+import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -67,6 +69,19 @@ describe("machine hook utils", () => {
       machine: machineStateFactory({
         items: [machine],
       }),
+    });
+  });
+
+  describe("useGetMachine", () => {
+    it("can get a machine", () => {
+      const store = mockStore(state);
+      renderHook(() => useGetMachine("def456"), {
+        wrapper: generateWrapper(store),
+      });
+      const expected = machineActions.get("def456");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
     });
   });
 
