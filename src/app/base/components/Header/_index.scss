@@ -1,0 +1,38 @@
+@mixin Header {
+
+    .p-navigation--bark {
+        background-color: #585841 !important;
+    }
+
+    .p-navigation--sage {
+        background-color: #4E5F51 !important;
+    }
+
+    .p-navigation--olive {
+        background-color: #3D5F11 !important;
+    }
+
+    .p-navigation--viridian {
+        background-color: #025A3D !important;
+    }
+
+    .p-navigation--prussian_green {
+        background-color: #225D5C !important;
+    }
+
+    .p-navigation--blue {
+        background-color: #0060BF !important;
+    }
+
+    .p-navigation--purple {
+        background-color: #7764D8 !important;
+    }
+
+    .p-navigation--magenta {
+        background-color: #974097 !important;
+    }
+
+    .p-navigation--red {
+        background-color: #A71B33 !important;
+    }
+}

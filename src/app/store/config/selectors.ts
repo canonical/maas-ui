@@ -207,6 +207,15 @@ const maasName = createSelector([all], (configs) =>
 );
 
 /**
+ * Returns the MAAS config for MAAS theme.
+ * @param - The redux state
+ * @returns The MAAS theme.
+ */
+const theme = createSelector([all], (configs) =>
+  getValueFromName<string>(configs, ConfigNames.THEME)
+);
+
+/**
  * Returns the MAAS config for MAAS uuid.
  * @param - The redux state.
  * @returns Then MAAS uuid.
@@ -586,6 +595,7 @@ const config = {
   saved,
   saving,
   storageLayoutOptions,
+  theme,
   thirdPartyDriversEnabled,
   tlsCertExpirationNotificationEnabled,
   tlsCertExpirationNotificationInterval,

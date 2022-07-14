@@ -60,6 +60,7 @@ export enum ConfigNames {
   REMOTE_SYSLOG = "remote_syslog",
   RPC_SHARED_SECRET = "rpc_shared_secret",
   SUBNET_IP_EXHAUSTION_THRESHOLD_COUNT = "subnet_ip_exhaustion_threshold_count",
+  THEME = "theme",
   TLS_CERT_EXPIRATION_NOTIFICATION_ENABLED = "tls_cert_expiration_notification_enabled",
   TLS_CERT_EXPIRATION_NOTIFICATION_INTERVAL = "tls_cert_expiration_notification_interval",
   UPSTREAM_DNS = "upstream_dns",

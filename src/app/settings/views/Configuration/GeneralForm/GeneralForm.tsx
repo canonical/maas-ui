@@ -1,9 +1,12 @@
 import { useEffect, useRef } from "react";
 
-import { Link } from "@canonical/react-components";
+import { Col, Link, Row } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useDispatch, useSelector } from "react-redux";
 import * as Yup from "yup";
+
+import ThemedRadioButton from "./ThemedRadioButton";
+import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
@@ -20,12 +23,14 @@ declare global {
 
 const GeneralSchema = Yup.object().shape({
   maas_name: Yup.string().required(),
+  theme: Yup.string(),
   enable_analytics: Yup.boolean(),
   release_notifications: Yup.boolean(),
 });
 
 type GeneralFormValues = {
   maas_name: string;
+  theme: string;
   enable_analytics: boolean;
   release_notifications: boolean;
 };
@@ -33,6 +38,7 @@ type GeneralFormValues = {
 const GeneralForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const maasName = useSelector(configSelectors.maasName);
+  const maasTheme = useSelector(configSelectors.theme);
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const releaseNotifications = useSelector(
     configSelectors.releaseNotifications
@@ -56,10 +62,12 @@ const GeneralForm = (): JSX.Element => {
 
   return (
     <FormikForm<GeneralFormValues>
+      aria-label="Configuration - General"
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
         maas_name: maasName || "",
+        theme: maasTheme || ColorValues.Default,
         enable_analytics: analyticsEnabled || false,
         release_notifications: releaseNotifications || false,
       }}
@@ -111,6 +119,31 @@ const GeneralForm = (): JSX.Element => {
         type="text"
         wrapperClassName="u-sv2"
       />
+      <p className="general-form__theme-label">MAAS theme main colour</p>
+      <Row className="general-form__radio-row">
+        {[
+          { value: ColorValues.Default, label: "Default" },
+          { value: ColorValues.Bark, label: "Bark" },
+          { value: ColorValues.Sage, label: "Sage" },
+          { value: ColorValues.Olive, label: "Olive" },
+          { value: ColorValues.Viridian, label: "Viridian" },
+          { value: ColorValues.PrussianGreen, label: "Prussian green" },
+          { value: ColorValues.Blue, label: "Blue" },
+          { value: ColorValues.Purple, label: "Purple" },
+          { value: ColorValues.Magenta, label: "Magenta" },
+          { value: ColorValues.Red, label: "Red" },
+        ].map((color) => (
+          <Col medium={1} size={1} small={2}>
+            <FormikField
+              color={color.value}
+              component={ThemedRadioButton}
+              label={color.label}
+              name="theme"
+            />
+          </Col>
+        ))}
+      </Row>
+
       <h5>Data analytics</h5>
       <FormikField
         help={

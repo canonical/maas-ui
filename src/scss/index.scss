@@ -79,6 +79,7 @@
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
 @import "~app/base/components/FormikFormButtons";
+@import "~app/base/components/Header";
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
@@ -111,6 +112,7 @@
 @include FilterAccordion;
 @include FormCard;
 @include FormikFormButtons;
+@include Header;
 @include LabelledList;
 @include Login;
 @include Meter;
@@ -242,6 +244,8 @@
 
 // settings
 @import "~app/settings/components/SettingsTable";
+@import "~app/settings/views/Configuration/GeneralForm";
+@import "~app/settings/views/Configuration/GeneralForm/ThemedRadioButton";
 @import "~app/settings/views/Configuration/Security/TLSEnabled/TLSEnabledFields";
 @import "~app/settings/views/Dhcp/DhcpList";
 @import "~app/settings/views/LicenseKeys/LicenseKeyList";
@@ -259,6 +263,8 @@
 @include ScriptsUpload;
 @include TLSEnabledFields;
 @include UsersList;
+@include GeneralForm;
+@include ThemedRadioButton;
 
 // subnets
 @import "~app/subnets/components/ReservedRanges";
