@@ -1,0 +1,76 @@
+@mixin ThemedRadioButton {
+    .general-form__radio--themed {
+
+        input[type="radio"] {
+            -webkit-appearance: none;
+            appearance: none;
+            cursor: pointer;
+
+            &.radio--theme-default {
+                background-color: #262626;
+            }
+
+            &.radio--theme-bark {
+                background-color: #585841;
+            }
+
+            &.radio--theme-sage {
+                background-color: #4E5F51;
+            }
+
+            &.radio--theme-olive {
+                background-color: #3D5F11;
+            }
+
+            &.radio--theme-viridian {
+                background-color: #025A3D;
+            }
+
+            &.radio--theme-prussian_green {
+                background-color: #225D5C;
+            }
+
+            &.radio--theme-blue {
+                background-color: #0060BF;
+            }
+
+            &.radio--theme-purple {
+                background-color: #7764D8;
+            }
+
+            &.radio--theme-magenta {
+                background-color: #974097;
+            }
+
+            &.radio--theme-red {
+                background-color: #A71B33;
+            }
+        }
+
+        .general-form__radio {
+            color: currentColor;
+            width: 24px;
+            height: 24px;
+            border: 0;
+            border-radius: 50%;
+            display: grid;
+            place-content: center;
+            margin-left: 0;
+            margin-bottom: 0.5rem;
+        }
+
+        .general-form__radio::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            transform: scale(0);
+            transition: 120ms transform ease-in-out;
+            box-shadow: inset 8px 8px #fff;
+        }
+
+        .general-form__radio:checked::before {
+            transform: scale(1);
+        }
+    }
+}
