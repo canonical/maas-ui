@@ -101,24 +101,32 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
         is: (val: string) => isId(val),
         then: Yup.string().required("Start IP address is required"),
       }),
-      subnet: Yup.string().test(
-        "hasNoIPs",
-        "Selected subnet has not available IPs",
-        (subnetId, context) => {
-          if (isId(subnetId)) {
-            const subnet = subnets.find(
-              (subnet) => subnet.id === Number(subnetId)
-            );
-            if (subnet?.statistics.num_available === 0) {
-              return context.createError({
-                message: "This subnet has no available IP addresses.",
-                path: "subnet",
-              });
+      subnet: Yup.string()
+        .when(["enableDHCP", "dhcpType"], {
+          is: (
+            dhcpEnabled: boolean,
+            dhcpType: DHCPType.CONTROLLERS | DHCPType.RELAY
+          ) => dhcpEnabled && DHCPType.CONTROLLERS === dhcpType,
+          then: Yup.string().required("Subnet is required"),
+        })
+        .test(
+          "hasNoIPs",
+          "Selected subnet has not available IPs",
+          (subnetId, context) => {
+            if (isId(subnetId)) {
+              const subnet = subnets.find(
+                (subnet) => subnet.id === Number(subnetId)
+              );
+              if (subnet?.statistics.num_available === 0) {
+                return context.createError({
+                  message: "This subnet has no available IP addresses.",
+                  path: "subnet",
+                });
+              }
             }
+            return true;
           }
-          return true;
-        }
-      ),
+        ),
     })
     .test("invalidConfig", "Invalid DHCP configuration", (values, context) => {
       const { enableDHCP, primaryRack, relayVLAN } = values;
