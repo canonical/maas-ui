@@ -14,6 +14,7 @@ describe("machine reducer", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
       active: null,
       errors: null,
+      details: {},
       eventErrors: [],
       items: [],
       loaded: false,
