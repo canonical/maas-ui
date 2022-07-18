@@ -390,14 +390,22 @@ export function* handleMessage(
         // can be 0 when requesting a model with an id of 0.
         if (error || error === 0) {
           yield* put({
-            meta: { item, identifier: action.meta?.identifier },
+            meta: {
+              item,
+              identifier: action.meta?.identifier,
+              requestId: action.meta?.requestId,
+            },
             type: `${action.type}Error`,
             error: true,
             payload: error,
           });
         } else {
           yield* put({
-            meta: { item, identifier: action.meta?.identifier },
+            meta: {
+              item,
+              identifier: action.meta?.identifier,
+              requestId: action.meta?.requestId,
+            },
             type: `${action.type}Success`,
             payload: result,
           });
