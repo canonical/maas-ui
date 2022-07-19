@@ -133,6 +133,35 @@ describe("websocket sagas", () => {
     );
   });
 
+  it("can send a WebSocket message with a request id", () => {
+    const action = {
+      type: "test/action",
+      meta: {
+        model: "test",
+        method: "method",
+        requestId: "123456",
+        type: WebSocketMessageType.REQUEST,
+      },
+      payload: {
+        params: { foo: "bar" },
+      },
+    };
+    const saga = sendMessage(socketClient, action);
+    expect(saga.next().value).toEqual(
+      put({
+        meta: { item: { foo: "bar" }, requestId: "123456" },
+        type: "test/actionStart",
+      })
+    );
+    expect(saga.next().value).toEqual(
+      call([socketClient, socketClient.send], action, {
+        method: "test.method",
+        type: WebSocketMessageType.REQUEST,
+        params: { foo: "bar" },
+      })
+    );
+  });
+
   it("can store a next action when sending a WebSocket message", () => {
     const action = {
       type: "test/action",

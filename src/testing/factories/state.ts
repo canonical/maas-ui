@@ -1,6 +1,11 @@
 import { define, random } from "cooky-cutter";
 import type { RouterState } from "redux-first-history";
 
+import type {
+  MachineStateDetails,
+  MachineStateDetailsItem,
+} from "../../app/store/machine/types/base";
+
 import { bondOptions } from "./general";
 
 import { ACTION_STATUS } from "app/base/constants";
@@ -269,6 +274,17 @@ export const machineStatus = define<MachineStatus>(DEFAULT_MACHINE_STATUSES);
 
 export const machineStatuses = define<MachineStatuses>({
   testNode: machineStatus,
+});
+
+export const machineStateDetailsItem = define<MachineStateDetailsItem>({
+  errors: null,
+  loaded: false,
+  loading: false,
+  system_id: () => random().toString(),
+});
+
+export const machineStateDetails = define<MachineStateDetails>({
+  testNode: machineStateDetailsItem,
 });
 
 export const machineEventError = define<
