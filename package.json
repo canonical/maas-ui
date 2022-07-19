@@ -9,6 +9,7 @@
   },
   "bugs": "https://github.com/canonical-web-and-design/maas-ui/issues",
   "scripts": {
+    "analyze": "npx -y source-map-explorer 'build/static/js/*.js'",
     "build-all": "yarn build",
     "build": "CYPRESS_INSTALL_BINARY=0 yarn install && react-scripts build",
     "clean-all": "yarn clean",
