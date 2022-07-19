@@ -1922,10 +1922,10 @@
   resolved "https://registry.yarnpkg.com/@canonical/latest-news/-/latest-news-1.4.1.tgz#dcdd445ac2268a54cf60f2f8c725b6bdeb285d71"
   integrity sha512-lwrikCj0Y11X8Ln8D+elp6Ri3mYjMjsAOJtadNEFzhBrgmg8TVGYJjOdwy8TvRaxy7fHnvVajIKAYWX44Tfj6w==
 
-"@canonical/macaroon-bakery@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@canonical/macaroon-bakery/-/macaroon-bakery-1.2.0.tgz#cbe2024ce5edfea6155f9fbafc8400464c019074"
-  integrity sha512-docfGyIlNioBNAsyqK0BCtXTD5cmsHZkOAP/l3JZMNQxRlC63Twif3CCr51ud6LiDjo7SlrUhmmBjp8iQ6z1hw==
+"@canonical/macaroon-bakery@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@canonical/macaroon-bakery/-/macaroon-bakery-1.2.1.tgz#c3a7a9cda783a6f22f4f1fd01180c1ec63682cd7"
+  integrity sha512-CxPkLtZzIJstruiMMd3w4y6RflkotLhqVQPTkJZP3abKahfbJrm70Lqcyfblqth2WAVhmTz5pYvaEnVU/8swxQ==
   dependencies:
     macaroon "3.0.4"
 
