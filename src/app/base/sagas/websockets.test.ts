@@ -304,6 +304,28 @@ describe("websocket sagas", () => {
     );
   });
 
+  it("can handle a WebSocket response message with a request id", () => {
+    const saga = handleMessage(socketChannel, socketClient);
+    expect(saga.next().value).toEqual(take(socketChannel));
+    expect(
+      saga.next({
+        data: JSON.stringify({ request_id: 99, result: { response: "here" } }),
+      }).value
+    ).toStrictEqual(call([socketClient, socketClient.getRequest], 99));
+    saga.next({
+      type: "test/action",
+      payload: { id: 808 },
+      meta: { identifier: 123, requestId: "456" },
+    });
+    expect(saga.next(false).value).toEqual(
+      put({
+        meta: { item: { id: 808 }, identifier: 123, requestId: "456" },
+        type: "test/actionSuccess",
+        payload: { response: "here" },
+      })
+    );
+  });
+
   it("can dispatch a next action", () => {
     const response: WebSocketResponseResult = {
       rtype: WebSocketResponseType.SUCCESS,

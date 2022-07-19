@@ -184,10 +184,20 @@ export type MachineStatus = {
 
 export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
+export type MachineStateDetailsItem = {
+  errors: APIError;
+  loaded: boolean;
+  loading: boolean;
+  system_id: Machine[MachineMeta.PK];
+};
+
+export type MachineStateDetails = Record<string, MachineStateDetailsItem>;
+
 export type MachineEventErrors = CloneError;
 
 export type MachineState = {
   active: Machine[MachineMeta.PK] | null;
+  details: MachineStateDetails;
   eventErrors: EventError<
     Machine,
     APIError<MachineEventErrors>,

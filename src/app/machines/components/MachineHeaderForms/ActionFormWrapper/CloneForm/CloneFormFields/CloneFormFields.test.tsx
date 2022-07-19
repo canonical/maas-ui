@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -23,12 +24,17 @@ describe("CloneFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     state = rootStateFactory({
       fabric: fabricStateFactory({ loaded: true }),
       machine: machineStateFactory({ loaded: true }),
       subnet: subnetStateFactory({ loaded: true }),
       vlan: vlanStateFactory({ loaded: true }),
     });
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
   });
 
   it("dispatches action to fetch data on load", () => {
@@ -81,7 +87,10 @@ describe("CloneFormFields", () => {
     wrapper.find("[data-testid='source-machine-row']").at(0).simulate("click");
     await waitForComponentToPaint(wrapper);
 
-    const expectedAction = machineActions.get(machine.system_id);
+    const expectedAction = machineActions.get(
+      machine.system_id,
+      "mocked-nanoid"
+    );
     const actualActions = store.getActions();
     expect(
       actualActions.find((action) => action.type === expectedAction.type)

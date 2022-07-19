@@ -360,6 +360,7 @@ const machineSlice = createSlice({
   initialState: {
     ...genericInitialState,
     active: null,
+    details: {},
     eventErrors: [],
     selected: [],
     statuses: {},
@@ -1000,10 +1001,11 @@ const machineSlice = createSlice({
       state.loaded = true;
     },
     get: {
-      prepare: (machineID: Machine[MachineMeta.PK]) => ({
+      prepare: (machineID: Machine[MachineMeta.PK], requestId: string) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "get",
+          requestId,
         },
         payload: {
           params: { system_id: machineID },

@@ -31,11 +31,12 @@ describe("machine actions", () => {
   });
 
   it("can get machines", () => {
-    expect(actions.get("abc123")).toEqual({
+    expect(actions.get("abc123", "123456")).toEqual({
       type: "machine/get",
       meta: {
         model: "machine",
         method: "get",
+        requestId: "123456",
       },
       payload: {
         params: { system_id: "abc123" },

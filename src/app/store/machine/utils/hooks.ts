@@ -1,5 +1,7 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
+import { usePrevious } from "@canonical/react-components/dist/hooks";
+import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useCanEdit } from "app/base/hooks";
@@ -28,16 +30,17 @@ import { isId } from "app/utils";
  * @param id - A machine's system id.
  */
 export const useGetMachine = (id?: Machine[MachineMeta.PK] | null): void => {
+  const requestId = useRef<string | null>(null);
+  const previousId = usePrevious(id, false);
   const dispatch = useDispatch();
   useEffect(() => {
-    // TODO: this should not fetch the machine again once the request has been
-    // made. This can be done by checking the request id once the action has
-    // been updated:
-    // https://github.com/canonical-web-and-design/app-tribe/issues/1167
-    if (isId(id)) {
-      dispatch(machineActions.get(id));
+    if (isId(id) && id !== previousId) {
+      requestId.current = nanoid();
+      dispatch(machineActions.get(id, requestId.current));
     }
-  }, [dispatch, id]);
+  }, [dispatch, id, previousId]);
+  // TODO: clean up the previous request if the id changes or the component is unmounted:
+  // https://github.com/canonical-web-and-design/app-tribe/issues/1151
 };
 
 /**

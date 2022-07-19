@@ -1,5 +1,6 @@
 import type { ReactNode } from "react";
 
+import reduxToolkit from "@reduxjs/toolkit";
 import { renderHook } from "@testing-library/react-hooks";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -73,15 +74,72 @@ describe("machine hook utils", () => {
   });
 
   describe("useGetMachine", () => {
+    beforeEach(() => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+    const generateWrapper =
+      (store: MockStoreEnhanced<unknown>) =>
+      ({ children }: { children?: ReactNode; id: string }) =>
+        <Provider store={store}>{children}</Provider>;
+
     it("can get a machine", () => {
       const store = mockStore(state);
-      renderHook(() => useGetMachine("def456"), {
-        wrapper: generateWrapper(store),
-      });
-      const expected = machineActions.get("def456");
+      renderHook(
+        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        {
+          initialProps: {
+            id: "def456",
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      const expected = machineActions.get("def456", "mocked-nanoid");
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
+    });
+
+    it("does not fetch again if the id hasn't changed", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        {
+          initialProps: {
+            id: "def456",
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ id: "def456" });
+      const expected = machineActions.get("def456", "mocked-nanoid");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
+    it("gets a machine if the id changes", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        {
+          initialProps: {
+            id: "def456",
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ id: "ghi789" });
+      const expected = machineActions.get("ghi789", "mocked-nanoid");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(2);
+      expect(getDispatches[1]).toStrictEqual(expected);
     });
   });
 
