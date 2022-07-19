@@ -1,11 +1,6 @@
 import { define, random } from "cooky-cutter";
 import type { RouterState } from "redux-first-history";
 
-import type {
-  MachineStateDetails,
-  MachineStateDetailsItem,
-} from "../../app/store/machine/types/base";
-
 import { bondOptions } from "./general";
 
 import { ACTION_STATUS } from "app/base/constants";
@@ -64,6 +59,8 @@ import type {
 } from "app/store/machine/types";
 import type {
   MachineEventErrors,
+  MachineStateDetails,
+  MachineStateDetailsItem,
   MachineStateList,
   MachineStateListGroup,
   MachineStateLists,
