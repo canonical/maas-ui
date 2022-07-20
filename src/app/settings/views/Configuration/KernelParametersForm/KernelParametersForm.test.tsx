@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -35,7 +35,7 @@ describe("KernelParametersForm", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -45,7 +45,9 @@ describe("KernelParametersForm", () => {
       </Provider>
     );
     expect(
-      wrapper.find("input[name='kernel_opts']").first().props().value
-    ).toBe("foo");
+      screen.getByRole("textbox", {
+        name: "Global boot parameters always passed to the kernel",
+      })
+    ).toHaveValue("foo");
   });
 });
