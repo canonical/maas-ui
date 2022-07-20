@@ -27,6 +27,7 @@ const KernelParametersForm = (): JSX.Element => {
 
   return (
     <FormikForm<KernelParametersValues>
+      aria-label="Configuration - Kernel parameters"
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{

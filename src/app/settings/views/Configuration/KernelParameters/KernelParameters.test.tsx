@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -36,7 +36,7 @@ describe("KernelParameters", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -46,7 +46,7 @@ describe("KernelParameters", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays the KernelParameters form if config is loaded", () => {
@@ -54,7 +54,7 @@ describe("KernelParameters", () => {
     state.config.loaded = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -64,7 +64,9 @@ describe("KernelParameters", () => {
       </Provider>
     );
 
-    expect(wrapper.find("KernelParametersForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: "Configuration - Kernel parameters" })
+    ).toBeInTheDocument();
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
@@ -72,7 +74,7 @@ describe("KernelParameters", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
