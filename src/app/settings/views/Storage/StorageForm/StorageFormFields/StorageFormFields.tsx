@@ -24,7 +24,10 @@ const StorageFormFields = (): JSX.Element => {
         options={storageLayoutOptions}
       />
       {values.default_storage_layout === StorageLayout.BLANK && (
-        <p className="p-form-validation__message">
+        <p
+          className="p-form-validation__message"
+          data-testid="blank-layout-warning"
+        >
           <i className="p-icon--warning" />
           <strong className="u-nudge-right--x-small">Caution:</strong> You will
           not be able to deploy machines with this storage layout. Manual
@@ -32,7 +35,10 @@ const StorageFormFields = (): JSX.Element => {
         </p>
       )}
       {isVMWareLayout(values.default_storage_layout) && (
-        <p className="p-form-validation__message">
+        <p
+          className="p-form-validation__message"
+          data-testid="vmfs6-layout-warning"
+        >
           <i className="p-icon--warning" />
           <strong className="u-nudge-right--x-small">Caution:</strong> This
           storage layout only allows for the deployment of{" "}
