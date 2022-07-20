@@ -2,6 +2,7 @@ import reducers, { actions } from "./slice";
 
 import { NodeActions } from "app/store/types/node";
 import {
+  filterGroup as filterGroupFactory,
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,
@@ -16,6 +17,9 @@ describe("machine reducer", () => {
       errors: null,
       details: {},
       eventErrors: [],
+      filters: [],
+      filtersLoaded: false,
+      filtersLoading: false,
       items: [],
       lists: {},
       loaded: false,
@@ -124,6 +128,62 @@ describe("machine reducer", () => {
         ],
         loaded: false,
         loading: false,
+      })
+    );
+  });
+
+  it("reduces filterGroupsStart", () => {
+    const initialState = machineStateFactory({ filtersLoading: false });
+
+    expect(reducers(initialState, actions.filterGroupsStart())).toEqual(
+      machineStateFactory({
+        filtersLoading: true,
+      })
+    );
+  });
+
+  it("reduces filterGroupsSuccess", () => {
+    const initialState = machineStateFactory({
+      filters: [],
+      filtersLoaded: false,
+      filtersLoading: true,
+    });
+    const filterGroup = filterGroupFactory();
+    const fetchedGroups = [filterGroup];
+
+    expect(
+      reducers(initialState, actions.filterGroupsSuccess(fetchedGroups))
+    ).toEqual(
+      machineStateFactory({
+        filters: fetchedGroups,
+        filtersLoaded: true,
+        filtersLoading: false,
+      })
+    );
+  });
+
+  it("reduces filterGroupsError", () => {
+    const initialState = machineStateFactory({
+      eventErrors: [],
+      filtersLoading: true,
+    });
+
+    expect(
+      reducers(
+        initialState,
+        actions.filterGroupsError("Could not fetch filter groups")
+      )
+    ).toEqual(
+      machineStateFactory({
+        errors: "Could not fetch filter groups",
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "Could not fetch filter groups",
+            event: "filterGroups",
+            id: null,
+          }),
+        ],
+        filtersLoading: false,
       })
     );
   });

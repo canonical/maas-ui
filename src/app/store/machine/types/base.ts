@@ -319,6 +319,21 @@ export type MachineStateList = {
 
 export type MachineStateLists = Record<string, MachineStateList>;
 
+export type FilterGroup = {
+  key: string;
+  label: string;
+  dynamic: boolean;
+  for_grouping: boolean;
+} & (
+  | { options: boolean | null; type: "bool" }
+  | { options: Record<string, string> | null; type: "dict[string, string]" }
+  | { options: number | null; type: "float" | "int" }
+  | { options: number[] | null; type: "list[float]" | "list[int]" }
+  | { options: boolean[] | null; type: "list[bool]" }
+  | { options: string[] | null; type: "list[string]" }
+  | { options: string | null; type: "string" }
+);
+
 export type MachineEventErrors = CloneError;
 
 export type MachineState = {
@@ -329,6 +344,9 @@ export type MachineState = {
     APIError<MachineEventErrors>,
     MachineMeta.PK
   >[];
+  filters: FilterGroup[];
+  filtersLoaded: boolean;
+  filtersLoading: boolean;
   lists: MachineStateLists;
   selected: Machine[MachineMeta.PK][];
   statuses: MachineStatuses;

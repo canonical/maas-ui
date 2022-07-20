@@ -16,6 +16,7 @@ import type {
 } from "app/store/device/types";
 import { DeviceIpAssignment } from "app/store/device/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
+import type { FilterGroup } from "app/store/machine/types/base";
 import { PodType } from "app/store/pod/constants";
 import type {
   Pod,
@@ -236,6 +237,15 @@ const node = extend<SimpleNode, BaseNode>(simpleNode, {
   status_message: "",
   status_code: 10,
   storage_test_status: testStatus,
+});
+
+export const filterGroup = define<FilterGroup>({
+  dynamic: false,
+  for_grouping: true,
+  key: "arch",
+  label: "Architecture",
+  options: null,
+  type: "string",
 });
 
 export const machine = extend<BaseNode, Machine>(node, {

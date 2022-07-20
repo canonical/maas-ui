@@ -44,6 +44,7 @@ import type {
   UpdateFilesystemParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
+  FilterGroupResponse,
 } from "./types";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -363,6 +364,9 @@ const machineSlice = createSlice({
     active: null,
     details: {},
     eventErrors: [],
+    filters: [],
+    filtersLoaded: false,
+    filtersLoading: false,
     lists: {},
     selected: [],
     statuses: {},
@@ -1009,6 +1013,41 @@ const machineSlice = createSlice({
       });
       state.loading = false;
       state.loaded = true;
+    },
+    filterGroups: {
+      prepare: () => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "filter_groups",
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    filterGroupsError: (
+      state: MachineState,
+      action: PayloadAction<MachineState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state = setErrors(state, action, "filterGroups");
+      state.filtersLoading = false;
+      state.saving = false;
+    },
+    filterGroupsStart: (state: MachineState) => {
+      state.filtersLoading = true;
+    },
+    filterGroupsSuccess: (
+      state: MachineState,
+      action: PayloadAction<FilterGroupResponse[]>
+    ) => {
+      state.filters = action.payload.map((response) => ({
+        ...response,
+        options: null,
+      }));
+      state.filtersLoading = false;
+      state.filtersLoaded = true;
     },
     get: {
       prepare: (machineID: Machine[MachineMeta.PK], requestId: string) => ({

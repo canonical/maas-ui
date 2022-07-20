@@ -1623,4 +1623,15 @@ describe("machine actions", () => {
       type: "machine/cleanup",
     });
   });
+
+  it("can handle filter groups", () => {
+    expect(actions.filterGroups()).toEqual({
+      type: "machine/filterGroups",
+      meta: {
+        model: "machine",
+        method: "filter_groups",
+      },
+      payload: null,
+    });
+  });
 });

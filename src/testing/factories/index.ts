@@ -106,6 +106,7 @@ export {
   device,
   deviceDetails,
   deviceInterface,
+  filterGroup,
   machine,
   machineDetails,
   machineDevice,
