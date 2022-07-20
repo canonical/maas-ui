@@ -1,4 +1,3 @@
-// import { mount } from "enzyme";
 import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -76,7 +75,6 @@ describe("Commissioning", () => {
       </Provider>
     );
 
-    // expect(wrapper.find("CommissioningForm").exists()).toBe(true);
     expect(
       screen.getByRole("form", { name: "Commissioning form" })
     ).toBeInTheDocument();
