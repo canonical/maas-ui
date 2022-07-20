@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+// import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -48,7 +49,7 @@ describe("Commissioning", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -58,14 +59,14 @@ describe("Commissioning", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays the Commissioning form if config is loaded", () => {
     state.config.loaded = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -75,7 +76,10 @@ describe("Commissioning", () => {
       </Provider>
     );
 
-    expect(wrapper.find("CommissioningForm").exists()).toBe(true);
+    // expect(wrapper.find("CommissioningForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: "Commissioning form" })
+    ).toBeInTheDocument();
   });
 
   it(`dispatches actions to fetch config and general os info if either has not
@@ -83,7 +87,7 @@ describe("Commissioning", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
