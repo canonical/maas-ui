@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -38,7 +38,7 @@ describe("CommissioningFormFields", () => {
           },
           {
             name: ConfigNames.DEFAULT_MIN_HWE_KERNEL,
-            value: "ga-16.04-lowlatency",
+            value: "hwe-18.04-lowlatency",
           },
           {
             name: ConfigNames.MAAS_AUTO_IPMI_USER,
@@ -66,6 +66,7 @@ describe("CommissioningFormFields", () => {
                   ["hwe-16.04", "xenial (hwe-16.04)"],
                 ],
                 bionic: [
+                  ["hwe-18.04-lowlatency", "bionic (hwe-18.04-lowlatency)"],
                   ["hwe-18.04-edge", "xenial (hwe-18.04-edge)"],
                   ["hwe-18.04", "xenial (hwe-18.04)"],
                 ],
@@ -81,7 +82,7 @@ describe("CommissioningFormFields", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -91,16 +92,17 @@ describe("CommissioningFormFields", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("select[name='commissioning_distro_series']").props().value
-    ).toBe("bionic");
+    const bionic_option = screen.getByRole("option", {
+      name: 'Ubuntu 18.04 LTS "Bionic Beaver"',
+    }) as HTMLOptionElement;
+    expect(bionic_option.selected).toBe(true);
   });
 
   it("updates value for default min kernel", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -110,16 +112,17 @@ describe("CommissioningFormFields", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("select[name='default_min_hwe_kernel']").props().value
-    ).toBe("ga-16.04-lowlatency");
+    const hwe_18_lowlatency_option = screen.getByRole("option", {
+      name: "bionic (hwe-18.04-lowlatency)",
+    }) as HTMLOptionElement;
+    expect(hwe_18_lowlatency_option.selected).toBe(true);
   });
 
   it("updates value for ipmi username", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -130,15 +133,15 @@ describe("CommissioningFormFields", () => {
     );
 
     expect(
-      wrapper.find("input[name='maas_auto_ipmi_user']").props().value
-    ).toBe("maas");
+      screen.getByRole("textbox", { name: "MAAS generated IPMI username" })
+    ).toHaveValue("maas");
   });
 
   it("updates value for ipmi user privilege level", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -148,10 +151,9 @@ describe("CommissioningFormFields", () => {
       </Provider>
     );
 
-    expect(
-      wrapper
-        .find("input[name='maas_auto_ipmi_user_privilege_level'][checked=true]")
-        .props().value
-    ).toBe("OPERATOR");
+    expect(screen.getByRole("radio", { name: "Operator" })).toHaveProperty(
+      "checked",
+      true
+    );
   });
 });
