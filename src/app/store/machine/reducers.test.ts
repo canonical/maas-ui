@@ -644,4 +644,54 @@ describe("machine reducer", () => {
       );
     });
   });
+
+  it("reduces unsubscribeStart", () => {
+    const items = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+    ];
+    expect(
+      reducers(
+        machineStateFactory({
+          items,
+          statuses: {
+            abc123: machineStatusFactory(),
+            def456: machineStatusFactory(),
+          },
+        }),
+        actions.unsubscribeStart(["abc123"])
+      )
+    ).toEqual(
+      machineStateFactory({
+        items,
+        statuses: {
+          abc123: machineStatusFactory({ unsubscribing: true }),
+          def456: machineStatusFactory(),
+        },
+      })
+    );
+  });
+
+  it("reduces unsubscribeSuccess", () => {
+    const initialState = machineStateFactory({
+      items: [
+        machineFactory({ system_id: "abc123" }),
+        machineFactory({ system_id: "def456" }),
+      ],
+      selected: ["abc123"],
+      statuses: {
+        abc123: machineStatusFactory(),
+        def456: machineStatusFactory(),
+      },
+    });
+    expect(
+      reducers(initialState, actions.unsubscribeSuccess(["abc123"]))
+    ).toEqual(
+      machineStateFactory({
+        items: [initialState.items[1]],
+        selected: [],
+        statuses: { def456: machineStatusFactory() },
+      })
+    );
+  });
 });
