@@ -71,6 +71,7 @@ const CommissioningFormFields = (): JSX.Element => {
         type="text"
       />
       <FormikField
+        aria-label="K_g BMC key textbox"
         autoComplete="new-password"
         help={
           <>

@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -15,7 +16,6 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -65,10 +65,10 @@ describe("CommissioningForm", () => {
     });
   });
 
-  it("dispatched an action to update config on save button click", () => {
+  it("dispatched an action to update config on save button click", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -77,13 +77,22 @@ describe("CommissioningForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      commissioning_distro_series: "bionic",
-      default_min_hwe_kernel: "ga-16.04-lowlatency",
-      maas_auto_ipmi_user: "maas",
-      maas_auto_ipmi_k_g_bmc_key: "password",
-      maas_auto_ipmi_user_privilege_level: "USER",
+
+    const maas_auto_ipmi_user_input = screen.getByRole("textbox", {
+      name: "MAAS generated IPMI username",
     });
+    await userEvent.clear(maas_auto_ipmi_user_input);
+    await userEvent.type(maas_auto_ipmi_user_input, "maas");
+
+    const maas_auto_ipmi_k_g_bmc_key_input = screen.getByLabelText(
+      "K_g BMC key textbox"
+    );
+    await userEvent.clear(maas_auto_ipmi_k_g_bmc_key_input);
+    await userEvent.type(maas_auto_ipmi_k_g_bmc_key_input, "password");
+
+    await userEvent.click(screen.getByRole("radio", { name: "User" }));
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     const updateConfigAction = store
       .getActions()
