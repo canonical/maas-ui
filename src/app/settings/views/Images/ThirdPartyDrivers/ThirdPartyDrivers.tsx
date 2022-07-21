@@ -9,6 +9,10 @@ import { useWindowTitle } from "app/base/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
+export enum Labels {
+  Loading = "Loading...",
+}
+
 const ThirdPartyDrivers = (): JSX.Element => {
   const loaded = useSelector(configSelectors.loaded);
   const loading = useSelector(configSelectors.loading);

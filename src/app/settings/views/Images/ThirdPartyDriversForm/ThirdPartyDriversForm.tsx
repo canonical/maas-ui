@@ -10,6 +10,10 @@ const ThirdPartyDriversSchema = Yup.object().shape({
   enable_third_party_drivers: Yup.boolean(),
 });
 
+export enum Labels {
+  FormLabel = "Third-party drivers form",
+}
+
 const ThirdPartyDriversForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
@@ -23,6 +27,7 @@ const ThirdPartyDriversForm = (): JSX.Element => {
 
   return (
     <FormikForm
+      aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
