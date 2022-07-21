@@ -13,6 +13,14 @@ import configSelectors from "app/store/config/selectors";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 
+export enum Labels {
+  IPMIUsername = "MAAS generated IPMI username",
+  KGBMCKeyLabel = "Auto IPMI K_g BMC key",
+  UserRadio = "User",
+  AdminRadio = "Admin",
+  OperatorRadio = "operator",
+}
+
 const CommissioningFormFields = (): JSX.Element => {
   const formikProps = useFormikContext<CommissioningFormValues>();
   const distroSeriesOptions = useSelector(configSelectors.distroSeriesOptions);
@@ -65,13 +73,13 @@ const CommissioningFormFields = (): JSX.Element => {
       <h5 className="u-sv1">IPMI settings</h5>
       <FormikField
         autoComplete="username"
-        label="MAAS generated IPMI username"
+        label={Labels.IPMIUsername}
         name="maas_auto_ipmi_user"
         placeholder="maas"
         type="text"
       />
       <FormikField
-        aria-label="K_g BMC key textbox"
+        aria-label={Labels.KGBMCKeyLabel}
         autoComplete="new-password"
         help={
           <>
@@ -100,19 +108,19 @@ const CommissioningFormFields = (): JSX.Element => {
       />
       <p className="u-sv1">MAAS generated IPMI user privilege level</p>
       <FormikField
-        label="Admin"
+        label={Labels.AdminRadio}
         name="maas_auto_ipmi_user_privilege_level"
         type="radio"
         value="ADMIN"
       />
       <FormikField
-        label="Operator"
+        label={Labels.OperatorRadio}
         name="maas_auto_ipmi_user_privilege_level"
         type="radio"
         value="OPERATOR"
       />
       <FormikField
-        label="User"
+        label={Labels.UserRadio}
         name="maas_auto_ipmi_user_privilege_level"
         type="radio"
         value="USER"

@@ -6,6 +6,8 @@ import configureStore from "redux-mock-store";
 
 import CommissioningForm from "../CommissioningForm";
 
+import { Labels as FormFieldsLabels } from "./CommissioningFormFields";
+
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -133,7 +135,7 @@ describe("CommissioningFormFields", () => {
     );
 
     expect(
-      screen.getByRole("textbox", { name: "MAAS generated IPMI username" })
+      screen.getByRole("textbox", { name: FormFieldsLabels.IPMIUsername })
     ).toHaveValue("maas");
   });
 
@@ -151,9 +153,8 @@ describe("CommissioningFormFields", () => {
       </Provider>
     );
 
-    expect(screen.getByRole("radio", { name: "Operator" })).toHaveProperty(
-      "checked",
-      true
-    );
+    expect(
+      screen.getByRole("radio", { name: FormFieldsLabels.OperatorRadio })
+    ).toHaveProperty("checked", true);
   });
 });
