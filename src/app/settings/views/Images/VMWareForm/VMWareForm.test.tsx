@@ -1,10 +1,10 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import VMWareForm from "./VMWareForm";
+import VMWareForm, { Labels as VMWareFormLabels } from "./VMWareForm";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -46,7 +46,7 @@ describe("VMWareForm", () => {
   it("sets vcenter_server value", () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -55,15 +55,15 @@ describe("VMWareForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("input[name='vcenter_server']").props().value).toBe(
-      "my server"
-    );
+    expect(
+      screen.getByRole("textbox", { name: VMWareFormLabels.ServerLabel })
+    ).toHaveValue("my server");
   });
 
   it("sets vcenter_username value", () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -72,15 +72,15 @@ describe("VMWareForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("input[name='vcenter_username']").props().value).toBe(
-      "admin"
-    );
+    expect(
+      screen.getByRole("textbox", { name: VMWareFormLabels.UsernameLabel })
+    ).toHaveValue("admin");
   });
 
   it("sets vcenter_password value", () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -89,15 +89,15 @@ describe("VMWareForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("input[name='vcenter_password']").props().value).toBe(
-      "passwd"
-    );
+    expect(
+      screen.getByRole("textbox", { name: VMWareFormLabels.PasswordLabel })
+    ).toHaveValue("passwd");
   });
 
   it("sets vcenter_datacenter value", () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -106,8 +106,8 @@ describe("VMWareForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("input[name='vcenter_datacenter']").props().value).toBe(
-      "my datacenter"
-    );
+    expect(
+      screen.getByRole("textbox", { name: VMWareFormLabels.DatacenterLabel })
+    ).toHaveValue("my datacenter");
   });
 });

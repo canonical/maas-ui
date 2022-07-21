@@ -15,6 +15,10 @@ const VMWareSchema = Yup.object().shape({
 
 export enum Labels {
   FormLabel = "VMWare Form",
+  ServerLabel = "VMware vCenter server FQDN or IP address",
+  UsernameLabel = "VMware vCenter username",
+  PasswordLabel = "VMware vCenter password",
+  DatacenterLabel = "VMware vCenter datacenter",
 }
 
 const VMWareForm = (): JSX.Element => {
@@ -55,25 +59,25 @@ const VMWareForm = (): JSX.Element => {
     >
       <FormikField
         help="VMware vCenter server FQDN or IP address which is passed to a deployed VMware ESXi host."
-        label="VMware vCenter server FQDN or IP address"
+        label={Labels.ServerLabel}
         name="vcenter_server"
         type="text"
       />
       <FormikField
         help="VMware vCenter server username which is passed to a deployed VMware ESXi host."
-        label="VMware vCenter username"
+        label={Labels.UsernameLabel}
         name="vcenter_username"
         type="text"
       />
       <FormikField
         help="VMware vCenter server password which is passed to a deployed VMware ESXi host."
-        label="VMware vCenter password"
+        label={Labels.PasswordLabel}
         name="vcenter_password"
         type="text"
       />
       <FormikField
         help="VMware vCenter datacenter which is passed to a deployed VMware ESXi host."
-        label="VMware vCenter datacenter"
+        label={Labels.DatacenterLabel}
         name="vcenter_datacenter"
         type="text"
       />
