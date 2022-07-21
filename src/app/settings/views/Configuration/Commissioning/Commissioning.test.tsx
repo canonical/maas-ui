@@ -4,7 +4,9 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import Commissioning from "./Commissioning";
+import { Labels as CommissioningFormLabels } from "../CommissioningForm/CommissioningForm";
+
+import Commissioning, { Labels as CommissioningLabels } from "./Commissioning";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -58,7 +60,7 @@ describe("Commissioning", () => {
       </Provider>
     );
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(screen.getByText(CommissioningLabels.Loading)).toBeInTheDocument();
   });
 
   it("displays the Commissioning form if config is loaded", () => {
@@ -76,7 +78,7 @@ describe("Commissioning", () => {
     );
 
     expect(
-      screen.getByRole("form", { name: "Commissioning form" })
+      screen.getByRole("form", { name: CommissioningFormLabels.FormLabel })
     ).toBeInTheDocument();
   });
 
