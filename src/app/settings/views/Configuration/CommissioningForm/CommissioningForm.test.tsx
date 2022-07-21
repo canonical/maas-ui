@@ -5,6 +5,8 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
+import { Labels as FormFieldsLabels } from "../CommissioningFormFields/CommissioningFormFields";
+
 import CommissioningForm from "./CommissioningForm";
 
 import { ConfigNames } from "app/store/config/types";
@@ -78,19 +80,21 @@ describe("CommissioningForm", () => {
       </Provider>
     );
 
-    const maas_auto_ipmi_user_input = screen.getByRole("textbox", {
-      name: "MAAS generated IPMI username",
+    const maasAutoIpmiUserInput = screen.getByRole("textbox", {
+      name: FormFieldsLabels.IPMIUsername,
     });
-    await userEvent.clear(maas_auto_ipmi_user_input);
-    await userEvent.type(maas_auto_ipmi_user_input, "maas");
+    await userEvent.clear(maasAutoIpmiUserInput);
+    await userEvent.type(maasAutoIpmiUserInput, "maas");
 
-    const maas_auto_ipmi_k_g_bmc_key_input = screen.getByLabelText(
-      "K_g BMC key textbox"
+    const maasAutoIpmiKGBmcKeyInput = screen.getByLabelText(
+      FormFieldsLabels.KGBMCKeyLabel
     );
-    await userEvent.clear(maas_auto_ipmi_k_g_bmc_key_input);
-    await userEvent.type(maas_auto_ipmi_k_g_bmc_key_input, "password");
+    await userEvent.clear(maasAutoIpmiKGBmcKeyInput);
+    await userEvent.type(maasAutoIpmiKGBmcKeyInput, "password");
 
-    await userEvent.click(screen.getByRole("radio", { name: "User" }));
+    await userEvent.click(
+      screen.getByRole("radio", { name: FormFieldsLabels.UserRadio })
+    );
 
     await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
