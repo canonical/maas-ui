@@ -9,6 +9,10 @@ import { useWindowTitle } from "app/base/hooks";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
+export enum Labels {
+  Loading = "Loading...",
+}
+
 const General = (): JSX.Element => {
   const loaded = useSelector(configSelectors.loaded);
   const loading = useSelector(configSelectors.loading);
@@ -25,7 +29,7 @@ const General = (): JSX.Element => {
   return (
     <Row>
       <Col size={6}>
-        {loading && <Spinner text="Loading..." />}
+        {loading && <Spinner text={Labels.Loading} />}
         {loaded && <GeneralForm />}
       </Col>
     </Row>
