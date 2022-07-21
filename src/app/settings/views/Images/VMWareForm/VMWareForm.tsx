@@ -13,6 +13,10 @@ const VMWareSchema = Yup.object().shape({
   vcenter_datacenter: Yup.string(),
 });
 
+export enum Labels {
+  FormLabel = "VMWare Form",
+}
+
 const VMWareForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
@@ -27,6 +31,7 @@ const VMWareForm = (): JSX.Element => {
 
   return (
     <FormikForm
+      aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
