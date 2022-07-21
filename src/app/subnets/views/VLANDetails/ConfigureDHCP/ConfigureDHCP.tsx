@@ -67,6 +67,9 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
     vlanSelectors.eventErrorsForVLANs(state, id, "configureDHCP")
   )[0]?.error;
   const [configuredDHCP, resetConfiguredDHCP] = useCycled(!configuringDHCP);
+  const ipRanges = useSelector((state: RootState) =>
+    ipRangeSelectors.getByVLAN(state, id)
+  );
   const saved = configuredDHCP && !configureDHCPError;
   const cleanup = useCallback(() => vlanActions.cleanup(), []);
   const loading =
@@ -106,7 +109,10 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
           is: (
             dhcpEnabled: boolean,
             dhcpType: DHCPType.CONTROLLERS | DHCPType.RELAY
-          ) => dhcpEnabled && DHCPType.CONTROLLERS === dhcpType,
+          ) =>
+            dhcpEnabled &&
+            dhcpType === DHCPType.CONTROLLERS &&
+            ipRanges.length === 0,
           then: Yup.string().required("Subnet is required"),
         })
         .test(
