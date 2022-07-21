@@ -4,7 +4,11 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import KernelParameters from "./KernelParameters";
+import { Labels as KPFormLabels } from "../KernelParametersForm/KernelParametersForm";
+
+import KernelParameters, {
+  Labels as KernelParametersLabels,
+} from "./KernelParameters";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -46,7 +50,9 @@ describe("KernelParameters", () => {
       </Provider>
     );
 
-    expect(screen.getByText("Loading...")).toBeInTheDocument();
+    expect(
+      screen.getByText(KernelParametersLabels.Loading)
+    ).toBeInTheDocument();
   });
 
   it("displays the KernelParameters form if config is loaded", () => {
@@ -65,7 +71,7 @@ describe("KernelParameters", () => {
     );
 
     expect(
-      screen.getByRole("form", { name: "Configuration - Kernel parameters" })
+      screen.getByRole("form", { name: KPFormLabels.FormLabel })
     ).toBeInTheDocument();
   });
 
