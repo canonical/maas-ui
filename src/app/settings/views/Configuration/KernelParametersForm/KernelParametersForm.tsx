@@ -10,6 +10,11 @@ type KernelParametersValues = {
   kernel_opts: string;
 };
 
+export enum Labels {
+  FormLabel = "Configuration - Kernel parameters",
+  GlobalBootParams = "Global boot parameters always passed to the kernel",
+}
+
 const KernelParametersSchema = Yup.object()
   .shape({
     kernel_opts: Yup.string(),
@@ -27,7 +32,7 @@ const KernelParametersForm = (): JSX.Element => {
 
   return (
     <FormikForm<KernelParametersValues>
-      aria-label="Configuration - Kernel parameters"
+      aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
@@ -47,7 +52,7 @@ const KernelParametersForm = (): JSX.Element => {
       validationSchema={KernelParametersSchema}
     >
       <FormikField
-        label="Global boot parameters always passed to the kernel"
+        label={Labels.GlobalBootParams}
         name="kernel_opts"
         type="text"
       />

@@ -4,7 +4,9 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import KernelParametersForm from "./KernelParametersForm";
+import KernelParametersForm, {
+  Labels as FormLabels,
+} from "./KernelParametersForm";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -46,7 +48,7 @@ describe("KernelParametersForm", () => {
     );
     expect(
       screen.getByRole("textbox", {
-        name: "Global boot parameters always passed to the kernel",
+        name: FormLabels.GlobalBootParams,
       })
     ).toHaveValue("foo");
   });
