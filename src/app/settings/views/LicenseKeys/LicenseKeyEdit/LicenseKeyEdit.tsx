@@ -11,6 +11,11 @@ import licenseKeysSelectors from "app/store/licensekeys/selectors";
 import type { LicenseKeys } from "app/store/licensekeys/types";
 import type { RootState } from "app/store/root/types";
 
+export enum Labels {
+  Loading = "Loading...",
+  KeyNotFound = "License key not found",
+}
+
 export const LicenseKeyEdit = (): JSX.Element => {
   const dispatch = useDispatch();
   const { osystem, distro_series } = useParams<{
@@ -32,10 +37,10 @@ export const LicenseKeyEdit = (): JSX.Element => {
   }, [dispatch]);
 
   if (loading) {
-    return <Spinner text="Loading..." />;
+    return <Spinner text={Labels.Loading} />;
   }
   if (!licenseKey) {
-    return <h4>License key not found</h4>;
+    return <h4>{Labels.KeyNotFound}</h4>;
   }
   return <LicenseKeyForm licenseKey={licenseKey} />;
 };

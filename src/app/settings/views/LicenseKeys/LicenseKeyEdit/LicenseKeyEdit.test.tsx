@@ -1,10 +1,12 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { LicenseKeyEdit } from "./LicenseKeyEdit";
+import { Labels as LicenseKeyFormLabels } from "../LicenseKeyForm/LicenseKeyForm";
+
+import { LicenseKeyEdit, Labels as LicenseKeyLabels } from "./LicenseKeyEdit";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -65,7 +67,7 @@ describe("LicenseKeyEdit", () => {
     state.licensekeys.loading = true;
     state.licensekeys.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -81,12 +83,12 @@ describe("LicenseKeyEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(LicenseKeyLabels.Loading)).toBeInTheDocument();
   });
 
   it("handles license key not found", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -99,12 +101,12 @@ describe("LicenseKeyEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("h4").text()).toBe("License key not found");
+    expect(screen.getByText(LicenseKeyLabels.KeyNotFound)).toBeInTheDocument();
   });
 
   it("can display a license key edit form", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -126,8 +128,24 @@ describe("LicenseKeyEdit", () => {
       </Provider>
     );
 
-    const form = wrapper.find("LicenseKeyForm");
-    expect(form.exists()).toBe(true);
-    expect(form.prop("licenseKey")).toStrictEqual(state.licensekeys.items[0]);
+    expect(
+      screen.getByRole("form", {
+        name: LicenseKeyFormLabels.FormLabel,
+      })
+    ).toBeInTheDocument();
+
+    const operatingSystem = screen.getByRole("option", {
+      name: "Windows",
+    }) as HTMLOptionElement;
+    expect(operatingSystem.selected).toBe(true);
+
+    const release = screen.getByRole("option", {
+      name: "Windows Server 2012",
+    }) as HTMLOptionElement;
+    expect(release.selected).toBe(true);
+
+    expect(screen.getByRole("textbox", { name: "License key" })).toHaveValue(
+      "XXXXX-XXXXX-XXXXX-XXXXX-XXXXA"
+    );
   });
 });
