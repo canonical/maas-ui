@@ -6,6 +6,8 @@ import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
+import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFormFields";
+
 import {
   LicenseKeyForm,
   Labels as LicenseKeyFormLabels,
@@ -154,17 +156,17 @@ describe("LicenseKeyForm", () => {
     );
 
     await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Operating System" }),
+      screen.getByRole("combobox", { name: FormFieldsLabels.OperatingSystem }),
       "Windows"
     );
 
     await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Release" }),
+      screen.getByRole("combobox", { name: FormFieldsLabels.Release }),
       "Windows Server 2012"
     );
 
     const licenseKeyInput = screen.getByRole("textbox", {
-      name: "License key",
+      name: FormFieldsLabels.LicenseKey,
     });
     await userEvent.clear(licenseKeyInput);
     await userEvent.type(licenseKeyInput, "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX");
@@ -204,7 +206,7 @@ describe("LicenseKeyForm", () => {
     );
 
     const licenseKeyInput = screen.getByRole("textbox", {
-      name: "License key",
+      name: FormFieldsLabels.LicenseKey,
     });
 
     // At least one field has to be updated in order for the submit button to be enabled

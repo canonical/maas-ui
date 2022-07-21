@@ -5,6 +5,7 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Labels as LicenseKeyFormLabels } from "../LicenseKeyForm/LicenseKeyForm";
+import { Labels as FormFieldsLabels } from "../LicenseKeyFormFields/LicenseKeyFormFields";
 
 import { LicenseKeyEdit, Labels as LicenseKeyLabels } from "./LicenseKeyEdit";
 
@@ -144,8 +145,8 @@ describe("LicenseKeyEdit", () => {
     }) as HTMLOptionElement;
     expect(release.selected).toBe(true);
 
-    expect(screen.getByRole("textbox", { name: "License key" })).toHaveValue(
-      "XXXXX-XXXXX-XXXXX-XXXXX-XXXXA"
-    );
+    expect(
+      screen.getByRole("textbox", { name: FormFieldsLabels.LicenseKey })
+    ).toHaveValue("XXXXX-XXXXX-XXXXX-XXXXX-XXXXA");
   });
 });
