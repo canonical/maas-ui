@@ -264,7 +264,13 @@ it("can configure DHCP with rack controllers", async () => {
     relay_vlan: null,
     secondary_rack: null,
   });
+  const subnet = subnetFactory({
+    statistics: subnetStatisticsFactory(),
+    vlan: vlan.id,
+  });
+
   const state = rootStateFactory({
+    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
     controller: controllerStateFactory({
       items: [primary, secondary],
     }),
@@ -289,10 +295,49 @@ it("can configure DHCP with rack controllers", async () => {
     screen.getByRole("combobox", { name: "Secondary rack" }),
     secondary.system_id
   );
-  await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Subnet" }),
+    getSubnetDisplay(subnet)
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole("textbox", { name: "Start IP address" })
+    ).toBeInTheDocument()
+  );
+  await userEvent.clear(
+    screen.getByRole("textbox", { name: "Start IP address" })
+  );
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "Start IP address" }),
+    "192.168.1.1"
+  );
+  await userEvent.clear(
+    screen.getByRole("textbox", { name: "End IP address" })
+  );
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "End IP address" }),
+    "192.168.1.5"
+  );
+  await userEvent.clear(screen.getByRole("textbox", { name: "Gateway IP" }));
+  await userEvent.type(
+    screen.getByRole("textbox", { name: "Gateway IP" }),
+    "192.168.1.6"
+  );
+  await waitFor(() =>
+    expect(
+      screen.getByRole("button", { name: "Configure DHCP" })
+    ).not.toBeDisabled()
+  );
 
+  await userEvent.click(screen.getByRole("button", { name: "Configure DHCP" }));
   const expectedAction = vlanActions.configureDHCP({
     controllers: [primary.system_id, secondary.system_id],
+    extra: {
+      end: "192.168.1.5",
+      gateway: "192.168.1.6",
+      start: "192.168.1.1",
+      subnet: subnet.id,
+    },
     id: vlan.id,
     relay_vlan: null,
   });
@@ -303,6 +348,48 @@ it("can configure DHCP with rack controllers", async () => {
       .find((action) => action.type === expectedAction.type);
     expect(actualAction).toStrictEqual(expectedAction);
   });
+});
+
+it("displays an error when no subnet is selected", async () => {
+  const primary = controllerFactory({ system_id: "abc123" });
+  const secondary = controllerFactory({ system_id: "def456" });
+  const vlan = vlanFactory({
+    id: 1,
+    primary_rack: null,
+    rack_sids: [primary.system_id, secondary.system_id],
+    relay_vlan: null,
+    secondary_rack: null,
+  });
+  const subnet = subnetFactory({
+    statistics: subnetStatisticsFactory(),
+    vlan: vlan.id,
+  });
+
+  const state = rootStateFactory({
+    subnet: subnetStateFactory({ items: [subnet], loaded: true }),
+    controller: controllerStateFactory({
+      items: [primary, secondary],
+    }),
+    vlan: vlanStateFactory({ items: [vlan] }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <CompatRouter>
+          <ConfigureDHCP closeForm={jest.fn()} id={1} />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  await userEvent.selectOptions(
+    screen.getByRole("combobox", { name: "Subnet" }),
+    "Select subnet"
+  );
+  await userEvent.tab();
+  expect(screen.getByText(/Subnet is required/)).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Configure DHCP" })).toBeDisabled();
 });
 
 it("can configure relayed DHCP", async () => {

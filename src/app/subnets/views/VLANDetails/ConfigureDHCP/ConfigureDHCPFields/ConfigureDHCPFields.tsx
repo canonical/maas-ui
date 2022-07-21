@@ -83,12 +83,17 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
                           : "Primary rack"
                       }
                       name="primaryRack"
-                      options={primaryRackOptions
-                        .map((controller) => ({
-                          label: controller.hostname,
-                          value: controller.system_id,
-                        }))
-                        .sort(simpleSortByKey("label", { alphanumeric: true }))}
+                      options={[
+                        { label: "Select rack controller", value: "" },
+                        ...primaryRackOptions
+                          .map((controller) => ({
+                            label: controller.hostname,
+                            value: controller.system_id,
+                          }))
+                          .sort(
+                            simpleSortByKey("label", { alphanumeric: true })
+                          ),
+                      ]}
                       wrapperClassName="u-nudge-right--x-large"
                     />
                     {connectedControllers.length > 1 && (
