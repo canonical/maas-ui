@@ -25,6 +25,7 @@ type Props = {
 };
 
 export enum Labels {
+  Loading = "Loading...",
   FormLabel = "License Key Form",
 }
 
@@ -72,7 +73,7 @@ export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
   return (
     <FormCard title={title}>
       {!isLoaded ? (
-        <Spinner text="loading..." />
+        <Spinner text={Labels.Loading} />
       ) : osystems.length > 0 ? (
         <FormikForm<LicenseKeyFormValues>
           aria-label={Labels.FormLabel}

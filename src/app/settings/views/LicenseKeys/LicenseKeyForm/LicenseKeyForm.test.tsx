@@ -1,11 +1,15 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { LicenseKeyForm } from "./LicenseKeyForm";
+import {
+  LicenseKeyForm,
+  Labels as LicenseKeyFormLabels,
+} from "./LicenseKeyForm";
 
 import settingsURLs from "app/settings/urls";
 import type { RootState } from "app/store/root/types";
@@ -17,7 +21,6 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -49,7 +52,7 @@ describe("LicenseKeyForm", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -59,13 +62,15 @@ describe("LicenseKeyForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("LicenseKeyForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: LicenseKeyFormLabels.FormLabel })
+    ).toBeInTheDocument();
   });
 
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -75,9 +80,7 @@ describe("LicenseKeyForm", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
 
     expect(
       store.getActions().some((action) => action.type === "licensekeys/cleanup")
@@ -87,7 +90,7 @@ describe("LicenseKeyForm", () => {
   it("fetches OsInfo if not loaded", () => {
     state.general.osInfo.loaded = false;
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -105,7 +108,7 @@ describe("LicenseKeyForm", () => {
   it("fetches license keys if not loaded", () => {
     state.licensekeys.loaded = false;
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -123,23 +126,24 @@ describe("LicenseKeyForm", () => {
   it("redirects when the snippet is saved", () => {
     state.licensekeys.saved = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    const history = createMemoryHistory({
+      initialEntries: ["/"],
+    });
+    render(
       <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
+        <Router history={history}>
           <CompatRouter>
             <LicenseKeyForm />
           </CompatRouter>
-        </MemoryRouter>
+        </Router>
       </Provider>
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      settingsURLs.licenseKeys.index
-    );
+    expect(history.location.pathname).toEqual(settingsURLs.licenseKeys.index);
   });
 
-  it("can add a key", () => {
+  it("can add a key", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -148,11 +152,26 @@ describe("LicenseKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      osystem: "windows",
-      distro_series: "win2012",
-      license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Operating System" }),
+      "Windows"
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Release" }),
+      "Windows Server 2012"
+    );
+
+    const licenseKeyInput = screen.getByRole("textbox", {
+      name: "License key",
     });
+    await userEvent.clear(licenseKeyInput);
+    await userEvent.type(licenseKeyInput, "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add license key" })
+    );
 
     expect(
       store.getActions().find((action) => action.type === "licensekeys/create")
@@ -166,15 +185,15 @@ describe("LicenseKeyForm", () => {
     });
   });
 
-  it("can update a key", () => {
+  it("can update a key", async () => {
     const store = mockStore(state);
     const licenseKey = licenseKeysFactory({
       id: 1,
       osystem: "windows",
       distro_series: "win2012",
-      license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
+      license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXY",
     });
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -183,25 +202,40 @@ describe("LicenseKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, licenseKey);
 
-    expect(
-      store.getActions().find((action) => action.type === "licensekeys/update")
-    ).toStrictEqual({
-      type: "licensekeys/update",
-      payload: {
-        id: 1,
-        osystem: "windows",
-        distro_series: "win2012",
-        license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
-      },
+    const licenseKeyInput = screen.getByRole("textbox", {
+      name: "License key",
+    });
+
+    // At least one field has to be updated in order for the submit button to be enabled
+    await userEvent.clear(licenseKeyInput);
+    await userEvent.type(licenseKeyInput, "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Update license key" })
+    );
+
+    await waitFor(() => {
+      expect(
+        store
+          .getActions()
+          .find((action) => action.type === "licensekeys/update")
+      ).toStrictEqual({
+        type: "licensekeys/update",
+        payload: {
+          id: 1,
+          osystem: "windows",
+          distro_series: "win2012",
+          license_key: "XXXXX-XXXXX-XXXXX-XXXXX-XXXXX",
+        },
+      });
     });
   });
 
   it("adds a message when a license key is created", () => {
     state.licensekeys.saved = true;
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
