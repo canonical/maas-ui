@@ -12,6 +12,7 @@ const ThirdPartyDriversSchema = Yup.object().shape({
 
 export enum Labels {
   FormLabel = "Third-party drivers form",
+  CheckboxLabel = "Enable the installation of proprietary drivers (i.e. HPVSA)",
 }
 
 const ThirdPartyDriversForm = (): JSX.Element => {
@@ -47,7 +48,7 @@ const ThirdPartyDriversForm = (): JSX.Element => {
       validationSchema={ThirdPartyDriversSchema}
     >
       <FormikField
-        label="Enable the installation of proprietary drivers (i.e. HPVSA)"
+        label={Labels.CheckboxLabel}
         name="enable_third_party_drivers"
         type="checkbox"
       />
