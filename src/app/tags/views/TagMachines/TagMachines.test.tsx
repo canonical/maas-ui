@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -25,6 +26,7 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -48,6 +50,10 @@ beforeEach(() => {
   });
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 it("dispatches actions to fetch necessary data", () => {
   const store = mockStore(state);
   render(
@@ -63,7 +69,10 @@ it("dispatches actions to fetch necessary data", () => {
       </MemoryRouter>
     </Provider>
   );
-  const expectedActions = [machineActions.fetch(), tagActions.fetch()];
+  const expectedActions = [
+    machineActions.fetch("mocked-nanoid"),
+    tagActions.fetch(),
+  ];
   const actualActions = store.getActions();
   expectedActions.forEach((expectedAction) => {
     expect(

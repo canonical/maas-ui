@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -22,6 +23,14 @@ import {
 const mockStore = configureStore();
 
 describe("NumaResourcesCard", () => {
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("fetches machines on load", () => {
     const numaNode = podNumaFactory({ node_id: 111 });
     const pod = podFactory({
@@ -39,7 +48,7 @@ describe("NumaResourcesCard", () => {
         <NumaResourcesCard numaId={111} podId={1} />
       </Provider>
     );
-    const expectedAction = machineActions.fetch();
+    const expectedAction = machineActions.fetch("mocked-nanoid");
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);

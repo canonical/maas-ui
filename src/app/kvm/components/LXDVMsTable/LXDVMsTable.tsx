@@ -10,6 +10,7 @@ import type { SetSearchFilter } from "app/base/types";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine } from "app/store/machine/types";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 
 type Props = {
   displayForCluster?: boolean;
@@ -36,15 +37,15 @@ const LXDVMsTable = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
+  useFetchMachines();
 
-  useEffect(() => {
-    dispatch(machineActions.fetch());
-
-    return () => {
+  useEffect(
+    () => () => {
       // Clear machine selected state when unmounting.
       dispatch(machineActions.setSelected([]));
-    };
-  }, [dispatch]);
+    },
+    [dispatch]
+  );
 
   return (
     <>

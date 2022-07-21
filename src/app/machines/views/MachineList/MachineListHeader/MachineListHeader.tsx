@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
 
@@ -18,8 +18,8 @@ import type {
   MachineSetHeaderContent,
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
@@ -34,7 +34,6 @@ export const MachineListHeader = ({
   setSearchFilter,
   setHeaderContent,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const location = useLocation();
   const machines = useSelector(machineSelectors.all);
   const machinesLoaded = useSelector(machineSelectors.loaded);
@@ -44,10 +43,7 @@ export const MachineListHeader = ({
     "machineViewTagsSeen",
     false
   );
-
-  useEffect(() => {
-    dispatch(machineActions.fetch());
-  }, [dispatch]);
+  useFetchMachines();
 
   useEffect(() => {
     if (location.pathname !== urls.machines.index) {

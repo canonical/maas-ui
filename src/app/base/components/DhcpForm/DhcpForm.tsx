@@ -16,7 +16,7 @@ import { actions as deviceActions } from "app/store/device";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
-import { actions as machineActions } from "app/store/machine";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 
@@ -71,6 +71,7 @@ export const DhcpForm = ({
     editing ? dhcpSnippet?.node : null,
     editing ? dhcpSnippet?.subnet : null
   );
+  useFetchMachines();
 
   useAddMessage(
     saved && !errors,
@@ -83,7 +84,6 @@ export const DhcpForm = ({
     dispatch(subnetActions.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
-    dispatch(machineActions.fetch());
   }, [dispatch]);
 
   if (

@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -11,6 +12,14 @@ import { rootState as rootStateFactory } from "testing/factories";
 const mockStore = configureStore();
 
 describe("LXDVMsTable", () => {
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("fetches machines on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
@@ -30,7 +39,7 @@ describe("LXDVMsTable", () => {
       </Provider>
     );
 
-    const expectedAction = machineActions.fetch();
+    const expectedAction = machineActions.fetch("mocked-nanoid");
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);

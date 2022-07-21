@@ -9,9 +9,9 @@ import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -48,6 +48,7 @@ export const useDhcpTarget = (
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, nodeId)
   );
+  useFetchMachines();
   const isLoading =
     (!!subnetId && subnetLoading) ||
     (!!nodeId && (controllerLoading || deviceLoading || machineLoading));
@@ -59,7 +60,6 @@ export const useDhcpTarget = (
     dispatch(subnetActions.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
-    dispatch(machineActions.fetch());
   }, [dispatch]);
 
   return {
