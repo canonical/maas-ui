@@ -1,10 +1,10 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import WindowsForm from "./WindowsForm";
+import WindowsForm, { Labels as WindowsFormLabels } from "./WindowsForm";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -36,7 +36,7 @@ describe("WindowsForm", () => {
   it("sets windows_kms_host value", () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -46,7 +46,7 @@ describe("WindowsForm", () => {
       </Provider>
     );
     expect(
-      wrapper.find("input[name='windows_kms_host']").first().props().value
-    ).toBe("127.0.0.1");
+      screen.getByRole("textbox", { name: WindowsFormLabels.KMSHostLabel })
+    ).toHaveValue("127.0.0.1");
   });
 });

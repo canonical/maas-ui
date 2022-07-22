@@ -1,10 +1,12 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import Windows from "./Windows";
+import { Labels as WindowsFormLabels } from "../WindowsForm/WindowsForm";
+
+import Windows, { Labels as WindowsLabels } from "./Windows";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -38,7 +40,7 @@ describe("Windows", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -48,14 +50,14 @@ describe("Windows", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(WindowsLabels.Loading)).toBeInTheDocument();
   });
 
   it("displays the Windows form if config is loaded", () => {
     state.config.loaded = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -65,14 +67,16 @@ describe("Windows", () => {
       </Provider>
     );
 
-    expect(wrapper.find("WindowsForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: WindowsFormLabels.FormLabel })
+    ).toBeInTheDocument();
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
