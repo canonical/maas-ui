@@ -21,6 +21,10 @@ declare global {
   }
 }
 
+export enum Labels {
+  FormLabel = "Configuration - General",
+}
+
 const GeneralSchema = Yup.object().shape({
   maas_name: Yup.string().required(),
   theme: Yup.string(),
@@ -132,8 +136,8 @@ const GeneralForm = (): JSX.Element => {
           { value: ColorValues.Purple, label: "Purple" },
           { value: ColorValues.Magenta, label: "Magenta" },
           { value: ColorValues.Red, label: "Red" },
-        ].map((color) => (
-          <Col medium={1} size={1} small={2}>
+        ].map((color, i) => (
+          <Col key={i} medium={1} size={1} small={2}>
             <FormikField
               color={color.value}
               component={ThemedRadioButton}

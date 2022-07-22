@@ -11,6 +11,10 @@ import configSelectors from "app/store/config/selectors";
 import { actions as generalActions } from "app/store/general";
 import { osInfo as osInfoSelectors } from "app/store/general/selectors";
 
+export enum Labels {
+  Loading = "Loading...",
+}
+
 const Commissioning = (): JSX.Element => {
   const configLoaded = useSelector(configSelectors.loaded);
   const configLoading = useSelector(configSelectors.loading);
@@ -32,7 +36,7 @@ const Commissioning = (): JSX.Element => {
   return (
     <Row>
       <Col size={6}>
-        {loading && <Spinner text="Loading..." />}
+        {loading && <Spinner text={Labels.Loading} />}
         {loaded && <CommissioningForm />}
       </Col>
     </Row>

@@ -24,6 +24,10 @@ const CommissioningSchema = Yup.object().shape({
   ),
 });
 
+export enum Labels {
+  FormLabel = "Commissioning Form",
+}
+
 export type CommissioningFormValues = {
   commissioning_distro_series: string;
   default_min_hwe_kernel: string;
@@ -50,6 +54,7 @@ const CommissioningForm = (): JSX.Element => {
 
   return (
     <FormikForm<CommissioningFormValues>
+      aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
