@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -49,7 +49,7 @@ describe("LicenseKeyList", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>

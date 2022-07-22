@@ -13,6 +13,12 @@ type Props = {
   releases: OSInfoOptions;
 };
 
+export enum Labels {
+  OperatingSystem = "Operating System",
+  Release = "Release",
+  LicenseKey = "License key",
+}
+
 export const LicenseKeyFormFields = ({
   osystems,
   releases,
@@ -24,7 +30,7 @@ export const LicenseKeyFormFields = ({
     <>
       <FormikField
         component={Select}
-        label="Operating System"
+        label={Labels.OperatingSystem}
         name="osystem"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
@@ -42,7 +48,7 @@ export const LicenseKeyFormFields = ({
       />
       <FormikField
         component={Select}
-        label="Release"
+        label={Labels.Release}
         name="distro_series"
         onChange={(e: ChangeEvent<HTMLSelectElement>) => {
           formikProps.handleChange(e);
@@ -52,7 +58,7 @@ export const LicenseKeyFormFields = ({
         required={true}
       />
       <FormikField
-        label="License key"
+        label={Labels.LicenseKey}
         name="license_key"
         required={true}
         type="text"

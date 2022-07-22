@@ -1,10 +1,12 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import LicenseKeyFormFields from "./LicenseKeyFormFields";
+import LicenseKeyFormFields, {
+  Labels as FormFieldsLabels,
+} from "./LicenseKeyFormFields";
 
 import type { OSInfoOptions } from "app/store/general/selectors/osInfo";
 import type { RootState } from "app/store/root/types";
@@ -53,7 +55,7 @@ describe("LicenseKeyFormFields", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
           <Formik initialValues={{}} onSubmit={jest.fn()}>
@@ -62,6 +64,23 @@ describe("LicenseKeyFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("LicenseKeyFormFields").exists()).toBe(true);
+
+    expect(
+      screen.getByRole("combobox", {
+        name: FormFieldsLabels.OperatingSystem,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("combobox", {
+        name: FormFieldsLabels.Release,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("textbox", {
+        name: FormFieldsLabels.LicenseKey,
+      })
+    ).toBeInTheDocument();
   });
 });
