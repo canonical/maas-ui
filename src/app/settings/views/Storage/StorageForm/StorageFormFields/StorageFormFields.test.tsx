@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -12,7 +13,6 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -54,7 +54,7 @@ describe("StorageFormFields", () => {
 
   it("displays a warning if blank storage layout chosen", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -63,18 +63,21 @@ describe("StorageFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("select[name='default_storage_layout']").simulate("change", {
-      target: { name: "default_storage_layout", value: "blank" },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find(".p-form-validation__message").text()).toBe(
-      "Caution: You will not be able to deploy machines with this storage layout. Manual configuration is required."
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Default storage layout" }),
+      "No storage (blank) layout"
     );
+
+    // Writing a matcher function for getByText turned out to be too complex here, using a test ID was the only sensible option
+    await waitFor(() => {
+      expect(screen.getByTestId("blank-layout-warning")).toBeInTheDocument();
+    });
   });
 
   it("displays a warning if a VMFS storage layout chosen", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -83,12 +86,12 @@ describe("StorageFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("select[name='default_storage_layout']").simulate("change", {
-      target: { name: "default_storage_layout", value: "vmfs6" },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find(".p-form-validation__message").text()).toBe(
-      "Caution: This storage layout only allows for the deployment of VMware (ESXi) images."
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Default storage layout" }),
+      "VMFS6 layout"
     );
+    await waitFor(() => {
+      expect(screen.getByTestId("vmfs6-layout-warning")).toBeInTheDocument();
+    });
   });
 });
