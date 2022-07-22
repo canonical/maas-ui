@@ -9,6 +9,7 @@ import { Labels as FormFieldsLabels } from "../CommissioningFormFields/Commissio
 
 import CommissioningForm from "./CommissioningForm";
 
+import { Labels as FormikButtonLabels } from "app/base/components/FormikFormButtons/FormikFormButtons";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -96,7 +97,9 @@ describe("CommissioningForm", () => {
       screen.getByRole("radio", { name: FormFieldsLabels.UserRadio })
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: FormikButtonLabels.Submit })
+    );
 
     const updateConfigAction = store
       .getActions()

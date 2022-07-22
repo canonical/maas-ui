@@ -40,6 +40,11 @@ export enum TestIds {
   SecondarySubmit = "secondary-submit",
 }
 
+export enum Labels {
+  Cancel = "Cancel",
+  Submit = "Save",
+}
+
 export const FormikFormButtons = <V,>({
   buttonsAlign = "right",
   buttonsBordered = true,
