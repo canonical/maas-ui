@@ -18,11 +18,12 @@ import { scriptResult as scriptResultFactory } from "testing/factories";
 
 describe("machine actions", () => {
   it("should handle fetching machines", () => {
-    expect(actions.fetch()).toEqual({
+    expect(actions.fetch("123456")).toEqual({
       type: "machine/fetch",
       meta: {
         model: "machine",
         method: "list",
+        requestId: "123456",
       },
       payload: {
         params: { limit: 25 },

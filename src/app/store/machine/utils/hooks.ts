@@ -26,6 +26,24 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { isId } from "app/utils";
 
 /**
+ * Fetch machines via the API.
+ */
+export const useFetchMachines = (): void => {
+  const requestId = useRef<string | null>(null);
+  const dispatch = useDispatch();
+  useEffect(() => {
+    // TODO: request the machines again if the provided options change (filters,
+    // ordering, pagination etc.)
+    if (!requestId.current) {
+      requestId.current = nanoid();
+      dispatch(machineActions.fetch(requestId.current));
+    }
+  }, [dispatch]);
+  // TODO: clean up the previous request if the options change or the component is unmounted:
+  // https://github.com/canonical-web-and-design/app-tribe/issues/1128
+};
+
+/**
  * Get a machine via the API.
  * @param id - A machine's system id.
  */

@@ -21,8 +21,8 @@ import { actions as discoveryActions } from "app/store/discovery";
 import type { Discovery } from "app/store/discovery/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
@@ -146,11 +146,11 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   const processing =
     deviceType === DeviceType.DEVICE ? saving : creatingInterface;
   const processed = deviceType === DeviceType.DEVICE ? saved : createdInterface;
+  useFetchMachines();
 
   useEffect(() => {
     dispatch(deviceActions.fetch());
     dispatch(domainActions.fetch());
-    dispatch(machineActions.fetch());
     dispatch(subnetActions.fetch());
     dispatch(vlanActions.fetch());
   }, [dispatch]);

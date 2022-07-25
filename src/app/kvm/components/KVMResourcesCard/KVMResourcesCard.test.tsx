@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -14,6 +15,14 @@ import {
 const mockStore = configureStore();
 
 describe("KVMResourcesCard", () => {
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("fetches machines on load", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -31,7 +40,7 @@ describe("KVMResourcesCard", () => {
       </Provider>
     );
 
-    const expectedAction = machineActions.fetch();
+    const expectedAction = machineActions.fetch("mocked-nanoid");
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);

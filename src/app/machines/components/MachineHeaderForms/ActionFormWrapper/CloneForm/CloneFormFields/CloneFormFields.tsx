@@ -12,11 +12,10 @@ import SourceMachineSelect from "./SourceMachineSelect";
 import FormikField from "app/base/components/FormikField";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
-import { useGetMachine } from "app/store/machine/utils/hooks";
+import { useGetMachine, useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -46,10 +45,10 @@ export const CloneFormFields = ({
     loadingFabrics || loadingMachines || loadingSubnets || loadingVlans;
   const loadingMachineDetails = !!values.source && !selectedMachine;
   useGetMachine(values.source);
+  useFetchMachines();
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
-    dispatch(machineActions.fetch());
     dispatch(subnetActions.fetch());
     dispatch(vlanActions.fetch());
   }, [dispatch]);

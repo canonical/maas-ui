@@ -13,6 +13,7 @@ import {
   useHasInvalidArchitecture,
   useIsLimitedEditingAllowed,
   useGetMachine,
+  useFetchMachines,
 } from "./hooks";
 
 import { actions as machineActions } from "app/store/machine";
@@ -48,6 +49,7 @@ describe("machine hook utils", () => {
   let machine: Machine | null;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     machine = machineFactory({
       architecture: "amd64",
       events: [machineEventFactory()],
@@ -73,7 +75,11 @@ describe("machine hook utils", () => {
     });
   });
 
-  describe("useGetMachine", () => {
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
+  describe("useFetchMachines", () => {
     beforeEach(() => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     });
@@ -81,6 +87,37 @@ describe("machine hook utils", () => {
     afterEach(() => {
       jest.restoreAllMocks();
     });
+    const generateWrapper =
+      (store: MockStoreEnhanced<unknown>) =>
+      ({ children }: { children?: ReactNode; id: string }) =>
+        <Provider store={store}>{children}</Provider>;
+
+    it("can get a machine", () => {
+      const store = mockStore(state);
+      renderHook(() => useFetchMachines(), {
+        wrapper: generateWrapper(store),
+      });
+      const expected = machineActions.fetch("mocked-nanoid");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+    });
+
+    it("does not fetch again", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(() => useFetchMachines(), {
+        wrapper: generateWrapper(store),
+      });
+      rerender({ id: "def456" });
+      const expected = machineActions.fetch("mocked-nanoid");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+  });
+
+  describe("useGetMachine", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode; id: string }) =>

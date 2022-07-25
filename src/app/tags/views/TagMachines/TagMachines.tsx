@@ -8,8 +8,8 @@ import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import MachineListTable from "app/machines/views/MachineList/MachineListTable";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
@@ -30,12 +30,12 @@ const TagMachines = (): JSX.Element => {
   const deployedMachines = useSelector((state: RootState) =>
     machineSelectors.getDeployedWithTag(state, id)
   );
+  useFetchMachines();
 
   useWindowTitle(tag ? `Deployed machines for: ${tag.name}` : "Tag");
 
   useEffect(() => {
     dispatch(tagActions.fetch());
-    dispatch(machineActions.fetch());
   }, [dispatch]);
 
   if (!isId(id) || (!tagsLoading && !tag)) {

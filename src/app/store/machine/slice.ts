@@ -971,10 +971,11 @@ const machineSlice = createSlice({
     exitRescueModeStart: statusHandlers.exitRescueMode.start,
     exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
     fetch: {
-      prepare: () => ({
+      prepare: (requestId: string) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "list",
+          requestId,
         },
         payload: {
           params: { limit: 25 },
