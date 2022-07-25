@@ -46,7 +46,13 @@ export type {
   MachineActions,
   MachineDetails,
   MachineEventErrors,
+  MachinesGroupName,
   MachineState,
+  MachineStateDetails,
+  MachineStateDetailsItem,
+  MachineStateLists,
+  MachineStateListGroup,
+  MachineStateList,
   MachineStatus,
   MachineStatuses,
 } from "./base";

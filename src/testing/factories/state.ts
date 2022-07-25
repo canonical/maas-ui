@@ -57,7 +57,12 @@ import type {
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import type {
+  MachineEventErrors,
+  MachineStateList,
+  MachineStateListGroup,
+  MachineStateLists,
+} from "app/store/machine/types/base";
 import type { MessageState } from "app/store/message/types";
 import type { NodeDeviceState } from "app/store/nodedevice/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
@@ -240,6 +245,26 @@ export const licenseKeysState = define<LicenseKeysState>({
   ...defaultState,
 });
 
+export const machineStateListGroup = define<MachineStateListGroup>({
+  count: 15,
+  items: () => [],
+  name: "owner",
+});
+
+export const machineStateList = define<MachineStateList>({
+  count: 40,
+  cur_page: 1,
+  errors: null,
+  groups: () => [],
+  loaded: false,
+  loading: false,
+  num_pages: 1,
+});
+
+export const machineStateLists = define<MachineStateLists>({
+  testNode: machineStateList,
+});
+
 export const machineStatus = define<MachineStatus>(DEFAULT_MACHINE_STATUSES);
 
 export const machineStatuses = define<MachineStatuses>({
@@ -259,6 +284,7 @@ export const machineState = define<MachineState>({
   active: null,
   details: () => ({}),
   eventErrors: () => [],
+  lists: () => ({}),
   selected: () => [],
   statuses: () => ({}),
 });

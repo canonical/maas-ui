@@ -194,6 +194,131 @@ export type MachineStateDetailsItem = {
 
 export type MachineStateDetails = Record<string, MachineStateDetailsItem>;
 
+export type MachinesGroupName =
+  | "address_ttl"
+  | "agent_name"
+  | "architecture"
+  | "bios_boot_method"
+  | "bmc"
+  | "bmc_id"
+  | "boot_cluster_ip"
+  | "boot_disk"
+  | "boot_disk_id"
+  | "boot_interface"
+  | "boot_interface_id"
+  | "children"
+  | "connections"
+  | "controllerinfo"
+  | "cpu_count"
+  | "cpu_speed"
+  | "created"
+  | "current_commissioning_script_set"
+  | "current_commissioning_script_set_id"
+  | "current_config"
+  | "current_config_id"
+  | "current_installation_script_set"
+  | "current_installation_script_set_id"
+  | "current_testing_script_set"
+  | "current_testing_script_set_id"
+  | "default_user"
+  | "description"
+  | "dhcpsnippet"
+  | "discovery"
+  | "distro_series"
+  | "dns_process"
+  | "dns_process_id"
+  | "domain"
+  | "domain_id"
+  | "dynamic"
+  | "enable_hw_sync"
+  | "enable_ssh"
+  | "ephemeral_deploy"
+  | "error"
+  | "error_description"
+  | "event"
+  | "gateway_link_ipv4"
+  | "gateway_link_ipv4_id"
+  | "gateway_link_ipv6"
+  | "gateway_link_ipv6_id"
+  | "hardware_uuid"
+  | "hostname"
+  | "hwe_kernel"
+  | "id"
+  | "install_kvm"
+  | "install_rackd"
+  | "instance_power_parameters"
+  | "last_applied_storage_layout"
+  | "last_image_sync"
+  | "last_sync"
+  | "license_key"
+  | "locked"
+  | "managing_process"
+  | "managing_process_id"
+  | "memory"
+  | "min_hwe_kernel"
+  | "netboot"
+  | "node_type"
+  | "nodeconfig"
+  | "nodekey"
+  | "nodemetadata"
+  | "nodeuserdata"
+  | "numa_nodes_count"
+  | "numanode"
+  | "osystem"
+  | "owner"
+  | "owner_id"
+  | "ownerdata"
+  | "parent"
+  | "parent_id"
+  | "podhints"
+  | "pool"
+  | "pool_id"
+  | "power_state"
+  | "power_state_queried"
+  | "power_state_updated"
+  | "previous_status"
+  | "processes"
+  | "rdns"
+  | "register_vmhost"
+  | "routable_bmc_relationships"
+  | "routable_bmcs"
+  | "scriptset"
+  | "service"
+  | "skip_networking"
+  | "skip_storage"
+  | "sriov_support"
+  | "status"
+  | "status_event_description"
+  | "status_event_type_description"
+  | "status_expires"
+  | "swap_size"
+  | "sync_interval"
+  | "system_id"
+  | "tags"
+  | "updated"
+  | "url"
+  | "virtualmachine"
+  | "zone"
+  | "zone_id";
+
+export type MachineStateListGroup = {
+  count: number;
+  items: Machine[MachineMeta.PK];
+  name: MachinesGroupName;
+};
+
+export type MachineStateList = {
+  count: number;
+  cur_page: number;
+  errors: APIError;
+  groups: MachineStateListGroup[];
+  loaded: boolean;
+  loading: boolean;
+  num_pages: number;
+};
+
+export type MachineStateLists = Record<string, MachineStateList>;
+
 export type MachineEventErrors = CloneError;
 
 export type MachineState = {
@@ -204,6 +329,7 @@ export type MachineState = {
     APIError<MachineEventErrors>,
     MachineMeta.PK
   >[];
+  lists: MachineStateLists;
   selected: Machine[MachineMeta.PK][];
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;
