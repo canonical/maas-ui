@@ -363,6 +363,7 @@ const machineSlice = createSlice({
     active: null,
     details: {},
     eventErrors: [],
+    lists: {},
     selected: [],
     statuses: {},
   } as MachineState,

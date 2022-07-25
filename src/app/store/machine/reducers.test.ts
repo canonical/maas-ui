@@ -17,6 +17,7 @@ describe("machine reducer", () => {
       details: {},
       eventErrors: [],
       items: [],
+      lists: {},
       loaded: false,
       loading: false,
       saved: false,
