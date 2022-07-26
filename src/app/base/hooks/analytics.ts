@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useRef } from "react";
+import { useCallback, useEffect } from "react";
 
 import { useSelector } from "react-redux";
+import { useLocation } from "react-router-dom-v5-compat";
 
 import type { UsabillaLive } from "app/base/types";
 import authSelectors from "app/store/auth/selectors";
@@ -76,8 +77,7 @@ export const useSendAnalyticsWhen = (
 };
 
 export const useGoogleAnalytics = (): boolean => {
-  const sendPageview = useRef<(() => void) | null>(null);
-  const previousURL = useRef<string>();
+  const location = useLocation();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authUser = useSelector(authSelectors.get);
   const uuid = useSelector(configSelectors.uuid);
@@ -138,15 +138,18 @@ export const useGoogleAnalytics = (): boolean => {
       window.ga("set", "dimension1", version);
       window.ga("set", "dimension2", uuid);
 
-      sendPageview.current = () => {
-        const path = window.location.pathname + window.location.search;
-        if (path !== previousURL.current) {
-          window.ga("send", "pageview", path);
-          previousURL.current = path;
-        }
-      };
+      window.ga(
+        "send",
+        "pageview",
+        window.location.pathname + window.location.search
+      );
     }
   }, [allowGoogleAnalytics, authUser, uuid, version]);
+
+  useEffect(() => {
+    window.ga &&
+      window.ga("send", "pageview", location.pathname + location.search);
+  }, [location.pathname, location.search]);
 
   return allowGoogleAnalytics;
 };
