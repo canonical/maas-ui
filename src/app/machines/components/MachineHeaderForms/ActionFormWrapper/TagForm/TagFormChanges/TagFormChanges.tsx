@@ -97,7 +97,7 @@ const generateRows = (
         tagIdsAndCounts={tagIdsAndCounts}
       />
     ),
-    options: tag.kernel_opts ? <Icon name="tick" /> : null,
+    options: tag.kernel_opts ? <Icon aria-label="ticked" name="tick" /> : null,
     action: (
       <Button
         appearance="base"
