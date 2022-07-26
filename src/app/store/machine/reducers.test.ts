@@ -48,7 +48,10 @@ describe("machine reducer", () => {
     ];
 
     expect(
-      reducers(initialState, actions.fetchSuccess(fetchedMachines))
+      reducers(
+        initialState,
+        actions.fetchSuccess({ groups: [{ items: fetchedMachines }] })
+      )
     ).toEqual(
       machineStateFactory({
         items: fetchedMachines,
@@ -81,7 +84,10 @@ describe("machine reducer", () => {
     ];
 
     expect(
-      reducers(initialState, actions.fetchSuccess(fetchedMachines))
+      reducers(
+        initialState,
+        actions.fetchSuccess({ groups: [{ items: fetchedMachines }] })
+      )
     ).toEqual(
       machineStateFactory({
         items: [existingMachine, fetchedMachines[1]],
