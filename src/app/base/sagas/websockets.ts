@@ -503,7 +503,11 @@ export function* sendMessage(
     setLoaded(endpoint);
   }
   yield* put({
-    meta: { item: params || payload, identifier },
+    meta: {
+      item: params || payload,
+      identifier,
+      requestId: action.meta?.requestId,
+    },
     type: `${type}Start`,
   });
   const requestIDs = [];

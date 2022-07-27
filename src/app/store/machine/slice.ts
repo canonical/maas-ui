@@ -26,11 +26,14 @@ import type {
   DeletePartitionParams,
   DeleteVolumeGroupParams,
   DeployParams,
+  FilterGroupResponse,
   GetSummaryXmlParams,
   GetSummaryYamlParams,
   LinkSubnetParams,
   Machine,
+  MachineDetails,
   MachineState,
+  MachineStateDetailsItem,
   MarkBrokenParams,
   MountSpecialParams,
   ReleaseParams,
@@ -44,7 +47,6 @@ import type {
   UpdateFilesystemParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
-  FilterGroupResponse,
 } from "./types";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -1064,33 +1066,104 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    getError: (
-      state: MachineState,
-      action: PayloadAction<MachineState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state = setErrors(state, action, "get");
-      state.loading = false;
-      state.saving = false;
+    getError: {
+      prepare: (
+        item: { system_id: Machine[MachineMeta.PK] },
+        requestId: string,
+        errors: MachineStateDetailsItem["errors"]
+      ) => ({
+        meta: {
+          item,
+          requestId,
+        },
+        payload: errors,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          MachineStateDetailsItem["errors"],
+          string,
+          GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
+        >
+      ) => {
+        if (action.meta.requestId && action.meta.requestId in state.details) {
+          state.details[action.meta.requestId].errors = action.payload;
+          state.details[action.meta.requestId].loading = false;
+        }
+        state = setErrors(state, action, "get");
+      },
     },
-    getStart: (state: MachineState) => {
-      state.loading = true;
+    getStart: {
+      prepare: (
+        item: { system_id: Machine[MachineMeta.PK] },
+        requestId: string
+      ) => ({
+        meta: {
+          item,
+          requestId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          MachineStateDetailsItem["errors"],
+          string,
+          GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
+        >
+      ) => {
+        if (action.meta.requestId) {
+          if (action.meta.requestId in state.details) {
+            state.details[action.meta.requestId].loading = true;
+          } else {
+            state.details[action.meta.requestId] = {
+              errors: null,
+              loaded: false,
+              loading: true,
+              system_id: action.meta.item.system_id,
+            };
+          }
+        }
+      },
     },
-    getSuccess: (state: MachineState, action: PayloadAction<Machine>) => {
-      const machine = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Machine) => draftItem.system_id === machine.system_id
-      );
-      if (i !== -1) {
-        state.items[i] = machine;
-      } else {
-        state.items.push(machine);
-        // Set up the statuses for this machine.
-        state.statuses[machine.system_id] = DEFAULT_STATUSES;
-      }
-      state.loading = false;
+    getSuccess: {
+      prepare: (
+        item: { system_id: Machine[MachineMeta.PK] },
+        requestId: string,
+        machine: MachineDetails
+      ) => ({
+        meta: {
+          item,
+          requestId,
+        },
+        payload: machine,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          MachineDetails,
+          string,
+          GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
+        >
+      ) => {
+        const machine = action.payload;
+        // If the item already exists, update it, otherwise
+        // add it to the store.
+        const i = state.items.findIndex(
+          (draftItem: Machine) => draftItem.system_id === machine.system_id
+        );
+        if (i !== -1) {
+          state.items[i] = machine;
+        } else {
+          state.items.push(machine);
+          // Set up the statuses for this machine.
+          state.statuses[machine.system_id] = DEFAULT_STATUSES;
+        }
+        if (action.meta.requestId && action.meta.requestId in state.details) {
+          state.details[action.meta.requestId].loading = false;
+          state.details[action.meta.requestId].loaded = true;
+        }
+      },
     },
     getSummaryXml: {
       prepare: (params: GetSummaryXmlParams) => ({

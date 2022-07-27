@@ -59,6 +59,8 @@ import type {
 } from "app/store/machine/types";
 import type {
   MachineEventErrors,
+  MachineStateDetails,
+  MachineStateDetailsItem,
   MachineStateList,
   MachineStateListGroup,
   MachineStateLists,
@@ -269,6 +271,17 @@ export const machineStatus = define<MachineStatus>(DEFAULT_MACHINE_STATUSES);
 
 export const machineStatuses = define<MachineStatuses>({
   testNode: machineStatus,
+});
+
+export const machineStateDetailsItem = define<MachineStateDetailsItem>({
+  errors: null,
+  loaded: false,
+  loading: false,
+  system_id: () => random().toString(),
+});
+
+export const machineStateDetails = define<MachineStateDetails>({
+  testNode: machineStateDetailsItem,
 });
 
 export const machineEventError = define<

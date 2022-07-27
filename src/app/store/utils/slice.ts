@@ -27,6 +27,8 @@ import { objectHasKey } from "app/utils";
 
 export type GenericItemMeta<I> = {
   item: I;
+  requestId?: string;
+  identifier?: number | string;
 };
 
 // Get the models that follow the generic shape. The following models are excluded:

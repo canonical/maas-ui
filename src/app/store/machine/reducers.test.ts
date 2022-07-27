@@ -7,6 +7,7 @@ import {
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,
   machineState as machineStateFactory,
+  machineStateDetailsItem as machineStateDetailsItemFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
 
@@ -191,38 +192,69 @@ describe("machine reducer", () => {
   it("reduces getStart", () => {
     const initialState = machineStateFactory({ loading: false });
 
-    expect(reducers(initialState, actions.getStart())).toEqual(
-      machineStateFactory({ loading: true })
+    expect(
+      reducers(
+        initialState,
+        actions.getStart({ system_id: "abc123" }, "123456")
+      )
+    ).toEqual(
+      machineStateFactory({
+        details: {
+          123456: machineStateDetailsItemFactory({
+            loading: true,
+            system_id: "abc123",
+          }),
+        },
+      })
     );
   });
 
   it("reduces getError", () => {
-    const initialState = machineStateFactory({ errors: null, loading: true });
+    const initialState = machineStateFactory({
+      details: {
+        123456: machineStateDetailsItemFactory({
+          system_id: "abc123",
+        }),
+      },
+      errors: null,
+    });
 
     expect(
       reducers(
         initialState,
-        actions.getError({ system_id: "id was not supplied" })
+        actions.getError({ system_id: "abc123" }, "123456", {
+          system_id: "id was not supplied",
+        })
       )
     ).toEqual(
       machineStateFactory({
-        errors: { system_id: "id was not supplied" },
+        details: {
+          123456: machineStateDetailsItemFactory({
+            errors: { system_id: "id was not supplied" },
+            system_id: "abc123",
+          }),
+        },
+        errors: null,
         eventErrors: [
           machineEventErrorFactory({
             error: { system_id: "id was not supplied" },
             event: "get",
-            id: null,
+            id: "abc123",
           }),
         ],
-        loading: false,
       })
     );
   });
 
   it("should update if machine exists on getSuccess", () => {
     const initialState = machineStateFactory({
+      details: {
+        123456: machineStateDetailsItemFactory({
+          loading: true,
+          system_id: "abc123",
+        }),
+      },
       items: [machineFactory({ system_id: "abc123", hostname: "machine1" })],
-      loading: false,
       statuses: {
         abc123: machineStatusFactory(),
       },
@@ -232,8 +264,20 @@ describe("machine reducer", () => {
       hostname: "machine1-newname",
     });
 
-    expect(reducers(initialState, actions.getSuccess(updatedMachine))).toEqual(
+    expect(
+      reducers(
+        initialState,
+        actions.getSuccess({ system_id: "abc123" }, "123456", updatedMachine)
+      )
+    ).toEqual(
       machineStateFactory({
+        details: {
+          123456: machineStateDetailsItemFactory({
+            loaded: true,
+            loading: false,
+            system_id: "abc123",
+          }),
+        },
         items: [updatedMachine],
         loading: false,
         statuses: {
@@ -245,16 +289,33 @@ describe("machine reducer", () => {
 
   it("reduces getSuccess", () => {
     const initialState = machineStateFactory({
+      details: {
+        123456: machineStateDetailsItemFactory({
+          loading: true,
+          system_id: "abc123",
+        }),
+      },
       items: [machineFactory({ system_id: "abc123" })],
-      loading: true,
       statuses: {
         abc123: machineStatusFactory(),
       },
     });
     const newMachine = machineDetailsFactory({ system_id: "def456" });
 
-    expect(reducers(initialState, actions.getSuccess(newMachine))).toEqual(
+    expect(
+      reducers(
+        initialState,
+        actions.getSuccess({ system_id: "abc123" }, "123456", newMachine)
+      )
+    ).toEqual(
       machineStateFactory({
+        details: {
+          123456: machineStateDetailsItemFactory({
+            loaded: true,
+            loading: false,
+            system_id: "abc123",
+          }),
+        },
         items: [...initialState.items, newMachine],
         loading: false,
         statuses: {
