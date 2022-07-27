@@ -88,7 +88,7 @@ export const useGoogleAnalytics = (): boolean => {
     authUser &&
     uuid &&
     version &&
-    !debug
+    debug
   );
 
   useEffect(() => {
@@ -148,7 +148,11 @@ export const useGoogleAnalytics = (): boolean => {
 
   useEffect(() => {
     window.ga &&
-      window.ga("send", "pageview", location.pathname + location.search);
+      window.ga(
+        "send",
+        "pageview",
+        window.location.pathname + window.location.search
+      );
   }, [location.pathname, location.search]);
 
   return allowGoogleAnalytics;
