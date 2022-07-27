@@ -1,10 +1,12 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import KernelParametersForm from "./KernelParametersForm";
+import KernelParametersForm, {
+  Labels as FormLabels,
+} from "./KernelParametersForm";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -35,7 +37,7 @@ describe("KernelParametersForm", () => {
     const state = { ...initialState };
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -45,7 +47,9 @@ describe("KernelParametersForm", () => {
       </Provider>
     );
     expect(
-      wrapper.find("input[name='kernel_opts']").first().props().value
-    ).toBe("foo");
+      screen.getByRole("textbox", {
+        name: FormLabels.GlobalBootParams,
+      })
+    ).toHaveValue("foo");
   });
 });

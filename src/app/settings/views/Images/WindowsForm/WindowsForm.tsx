@@ -10,6 +10,11 @@ const WindowsSchema = Yup.object().shape({
   windows_kms_host: Yup.string(),
 });
 
+export enum Labels {
+  FormLabel = "Windows Form",
+  KMSHostLabel = "Windows KMS activation host",
+}
+
 const WindowsForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const updateConfig = configActions.update;
@@ -21,6 +26,7 @@ const WindowsForm = (): JSX.Element => {
 
   return (
     <FormikForm
+      aria-label={Labels.FormLabel}
       buttonsAlign="left"
       buttonsBordered={false}
       initialValues={{
@@ -41,7 +47,7 @@ const WindowsForm = (): JSX.Element => {
     >
       <FormikField
         help="FQDN or IP address of the host that provides the KMS Windows activation service. (Only needed for Windows deployments using KMS activation.)"
-        label="Windows KMS activation host"
+        label={Labels.KMSHostLabel}
         name="windows_kms_host"
         type="text"
       />

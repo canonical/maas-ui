@@ -1,11 +1,15 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
+import { Labels as FormFieldsLabels } from "../CommissioningFormFields/CommissioningFormFields";
+
 import CommissioningForm from "./CommissioningForm";
 
+import { Labels as FormikButtonLabels } from "app/base/components/FormikFormButtons/FormikFormButtons";
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -15,7 +19,6 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -65,10 +68,10 @@ describe("CommissioningForm", () => {
     });
   });
 
-  it("dispatched an action to update config on save button click", () => {
+  it("dispatched an action to update config on save button click", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -77,13 +80,26 @@ describe("CommissioningForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      commissioning_distro_series: "bionic",
-      default_min_hwe_kernel: "ga-16.04-lowlatency",
-      maas_auto_ipmi_user: "maas",
-      maas_auto_ipmi_k_g_bmc_key: "password",
-      maas_auto_ipmi_user_privilege_level: "USER",
+
+    const maasAutoIpmiUserInput = screen.getByRole("textbox", {
+      name: FormFieldsLabels.IPMIUsername,
     });
+    await userEvent.clear(maasAutoIpmiUserInput);
+    await userEvent.type(maasAutoIpmiUserInput, "maas");
+
+    const maasAutoIpmiKGBmcKeyInput = screen.getByLabelText(
+      FormFieldsLabels.KGBMCKeyLabel
+    );
+    await userEvent.clear(maasAutoIpmiKGBmcKeyInput);
+    await userEvent.type(maasAutoIpmiKGBmcKeyInput, "password");
+
+    await userEvent.click(
+      screen.getByRole("radio", { name: FormFieldsLabels.UserRadio })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: FormikButtonLabels.Submit })
+    );
 
     const updateConfigAction = store
       .getActions()

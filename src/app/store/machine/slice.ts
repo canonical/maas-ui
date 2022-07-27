@@ -985,20 +985,27 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    fetchSuccess: (state: MachineState, action: PayloadAction<Machine[]>) => {
-      action.payload.forEach((newItem: Machine) => {
-        // Add items that don't already exist in the store. Existing items
-        // are probably MachineDetails so this would overwrite them with the
-        // simple machine. Existing items will be kept up to date via the
-        // notify (sync) messages.
-        const existing = state.items.find(
-          (draftItem: Machine) => draftItem.id === newItem.id
-        );
-        if (!existing) {
-          state.items.push(newItem);
-          // Set up the statuses for this machine.
-          state.statuses[newItem.system_id] = DEFAULT_STATUSES;
-        }
+    fetchSuccess: (
+      state: MachineState,
+      // This is a partial type to get the machine list working while the server
+      // side machine list is being implemented.
+      action: PayloadAction<{ groups: { items: Machine[] }[] }>
+    ) => {
+      action.payload.groups.forEach(({ items }) => {
+        items.forEach((newItem: Machine) => {
+          // Add items that don't already exist in the store. Existing items
+          // are probably MachineDetails so this would overwrite them with the
+          // simple machine. Existing items will be kept up to date via the
+          // notify (sync) messages.
+          const existing = state.items.find(
+            (draftItem: Machine) => draftItem.id === newItem.id
+          );
+          if (!existing) {
+            state.items.push(newItem);
+            // Set up the statuses for this machine.
+            state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+          }
+        });
       });
       state.loading = false;
       state.loaded = true;

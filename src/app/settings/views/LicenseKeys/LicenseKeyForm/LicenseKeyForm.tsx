@@ -24,6 +24,11 @@ type Props = {
   licenseKey?: LicenseKeys;
 };
 
+export enum Labels {
+  Loading = "Loading...",
+  FormLabel = "License Key Form",
+}
+
 const LicenseKeySchema = Yup.object().shape({
   osystem: Yup.string().required("Operating system is required"),
   distro_series: Yup.string().required("Release is required"),
@@ -68,9 +73,10 @@ export const LicenseKeyForm = ({ licenseKey }: Props): JSX.Element => {
   return (
     <FormCard title={title}>
       {!isLoaded ? (
-        <Spinner text="loading..." />
+        <Spinner text={Labels.Loading} />
       ) : osystems.length > 0 ? (
         <FormikForm<LicenseKeyFormValues>
+          aria-label={Labels.FormLabel}
           cleanup={licenseKeysActions.cleanup}
           errors={errors}
           initialValues={{
