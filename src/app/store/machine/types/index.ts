@@ -58,3 +58,4 @@ export type {
 } from "./base";
 
 export { BcacheModes, MachineMeta } from "./enum";
+export type { FilterGroupResponse } from "./responses";
