@@ -49,6 +49,10 @@ const SERVICE_ITEMS: ServiceItem[] = [
     types: [NodeType.REGION_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
   },
   {
+    name: ServiceName.REVERSE_PROXY,
+    types: [NodeType.REGION_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
+  },
+  {
     name: ServiceName.RACKD,
     types: [NodeType.RACK_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
     children: [
@@ -84,10 +88,6 @@ const SERVICE_ITEMS: ServiceItem[] = [
   },
   {
     name: ServiceName.SYSLOG_RACK,
-    types: [NodeType.RACK_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
-  },
-  {
-    name: ServiceName.REVERSE_PROXY,
     types: [NodeType.RACK_CONTROLLER, NodeType.REGION_AND_RACK_CONTROLLER],
   },
 ];
