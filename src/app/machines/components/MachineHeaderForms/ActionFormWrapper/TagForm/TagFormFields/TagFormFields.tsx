@@ -67,7 +67,10 @@ export const TagFormFields = ({
               <div className="u-flex--between">
                 <span>{highlightedName}</span>
                 {hasKernelOptions(tags, tag) ? (
-                  <span className="u-nudge-left--small">
+                  <span
+                    aria-label="with kernel options"
+                    className="u-nudge-left--small"
+                  >
                     <Icon name="tick" />
                   </span>
                 ) : null}
