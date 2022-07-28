@@ -13,7 +13,7 @@ import { tlsCertificate as tlsCertificateSelectors } from "app/store/general/sel
 
 export type TLSEnabledValues = {
   notificationEnabled: boolean;
-  notificationInterval: number;
+  notificationInterval: string;
 };
 
 export enum Labels {
@@ -28,9 +28,13 @@ const INTERVAL_RANGE_ERROR = `Notification interval must be between ${TLSExpiryN
 const TLSEnabledSchema = Yup.object()
   .shape({
     notificationEnabled: Yup.boolean(),
-    notificationInterval: Yup.number()
-      .min(TLSExpiryNotificationInterval.MIN, INTERVAL_RANGE_ERROR)
-      .max(TLSExpiryNotificationInterval.MAX, INTERVAL_RANGE_ERROR),
+    notificationInterval: Yup.number().when("notificationEnabled", {
+      is: true,
+      then: Yup.number()
+        .min(TLSExpiryNotificationInterval.MIN, INTERVAL_RANGE_ERROR)
+        .max(TLSExpiryNotificationInterval.MAX, INTERVAL_RANGE_ERROR)
+        .required("Notification interval is required."),
+    }),
   })
   .defined();
 
@@ -77,28 +81,35 @@ const TLSEnabled = (): JSX.Element | null => {
         value={tlsCertificate.certificate}
       />
       <FormikForm<TLSEnabledValues>
+        allowUnchanged
         buttonsAlign="left"
         buttonsBordered={false}
         cleanup={configActions.cleanup}
         initialValues={{
           notificationEnabled: notificationEnabled || false,
-          notificationInterval: notificationInterval || 30,
+          notificationInterval: notificationInterval
+            ? `${notificationInterval}`
+            : "30",
         }}
         onSaveAnalytics={{
           action: "Saved",
           category: "Security settings",
           label: "Security form",
         }}
-        onSubmit={(values, { resetForm }) => {
+        onSubmit={(values) => {
           const { notificationEnabled, notificationInterval } = values;
           dispatch(configActions.cleanup());
           dispatch(
             configActions.update({
               tls_cert_expiration_notification_enabled: notificationEnabled,
-              tls_cert_expiration_notification_interval: notificationInterval,
+              ...(notificationEnabled
+                ? {
+                    tls_cert_expiration_notification_interval:
+                      Number(notificationInterval),
+                  }
+                : {}),
             })
           );
-          resetForm({ values });
         }}
         saving={saving}
         saved={saved}

@@ -113,7 +113,49 @@ it("disables the interval field if notification is not enabled", async () => {
   });
 });
 
-it("dispatches an action to update TLS notification config", async () => {
+it("shows an error if TLS notification is enabled but interval is invalid", async () => {
+  const tlsCertificate = tlsCertificateFactory();
+  const state = rootStateFactory({
+    config: configStateFactory({
+      items: [
+        configFactory({
+          name: "tls_cert_expiration_notification_enabled",
+          value: true,
+        }),
+        configFactory({
+          name: "tls_cert_expiration_notification_interval",
+          value: 45,
+        }),
+      ],
+    }),
+    general: generalStateFactory({
+      tlsCertificate: tlsCertificateStateFactory({
+        data: tlsCertificate,
+        loaded: true,
+      }),
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <TLSEnabled />
+    </Provider>
+  );
+  const intervalInput = screen.getByRole("spinbutton", {
+    name: Labels.Interval,
+  });
+
+  await userEvent.clear(intervalInput);
+  await userEvent.tab();
+
+  await waitFor(() => {
+    expect(intervalInput).toHaveErrorMessage(
+      "Error: Notification interval is required."
+    );
+  });
+});
+
+it("dispatches an action to update TLS notification config with notification enabled", async () => {
   const tlsCertificate = tlsCertificateFactory();
   const state = rootStateFactory({
     config: configStateFactory({
@@ -155,6 +197,59 @@ it("dispatches an action to update TLS notification config", async () => {
     const expectedAction = configActions.update({
       tls_cert_expiration_notification_enabled: true,
       tls_cert_expiration_notification_interval: 45,
+    });
+    expect(
+      actualActions.find((action) => action.type === expectedAction.type)
+    ).toStrictEqual(expectedAction);
+  });
+});
+
+it("dispatches an action to update TLS notification config with notification disabled", async () => {
+  const tlsCertificate = tlsCertificateFactory();
+  const state = rootStateFactory({
+    config: configStateFactory({
+      items: [
+        configFactory({
+          name: "tls_cert_expiration_notification_enabled",
+          value: true,
+        }),
+        configFactory({
+          name: "tls_cert_expiration_notification_interval",
+          value: 45,
+        }),
+      ],
+    }),
+    general: generalStateFactory({
+      tlsCertificate: tlsCertificateStateFactory({
+        data: tlsCertificate,
+        loaded: true,
+      }),
+    }),
+  });
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <TLSEnabled />
+    </Provider>
+  );
+  const notificationCheckbox = screen.getByRole("checkbox", {
+    name: Labels.NotificationCheckbox,
+  });
+  const intervalInput = screen.getByRole("spinbutton", {
+    name: Labels.Interval,
+  });
+
+  // Change the notification interval, then disable the notification.
+  await userEvent.clear(intervalInput);
+  await userEvent.type(intervalInput, "90");
+  await userEvent.click(notificationCheckbox);
+  await userEvent.click(screen.getByRole("button", { name: /Save/ }));
+
+  // Dispatched action shouldn't include interval.
+  await waitFor(() => {
+    const actualActions = store.getActions();
+    const expectedAction = configActions.update({
+      tls_cert_expiration_notification_enabled: false,
     });
     expect(
       actualActions.find((action) => action.type === expectedAction.type)
