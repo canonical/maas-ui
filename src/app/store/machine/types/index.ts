@@ -22,6 +22,8 @@ export type {
   DeletePartitionParams,
   DeleteVolumeGroupParams,
   DeployParams,
+  FetchFilters,
+  FetchParams,
   GetSummaryXmlParams,
   GetSummaryYamlParams,
   LinkSubnetParams,
@@ -40,13 +42,14 @@ export type {
   UpdateVmfsDatastoreParams,
 } from "./actions";
 
+export { FetchGroupKey, FetchSortDirection } from "./actions";
+
 export type {
   BaseMachine,
   Machine,
   MachineActions,
   MachineDetails,
   MachineEventErrors,
-  MachinesGroupName,
   MachineState,
   MachineStateDetails,
   MachineStateDetailsItem,
@@ -58,4 +61,9 @@ export type {
 } from "./base";
 
 export { BcacheModes, MachineMeta } from "./enum";
-export type { FilterGroupResponse } from "./responses";
+
+export type {
+  FilterGroupResponse,
+  FetchResponse,
+  FetchResponseGroup,
+} from "./responses";

@@ -1,6 +1,8 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
+import type { GenericMeta } from "../utils/slice";
+
 import { MachineMeta } from "./types";
 import type {
   Action,
@@ -26,6 +28,9 @@ import type {
   DeletePartitionParams,
   DeleteVolumeGroupParams,
   DeployParams,
+  FetchParams,
+  FetchResponse,
+  FetchResponseGroup,
   FilterGroupResponse,
   GetSummaryXmlParams,
   GetSummaryYamlParams,
@@ -47,6 +52,7 @@ import type {
   UpdateFilesystemParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
+  MachineStateList,
 } from "./types";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -325,6 +331,16 @@ export const DEFAULT_STATUSES = {
   updatingFilesystem: false,
   updatingInterface: false,
   updatingVmfsDatastore: false,
+};
+
+const DEFAULT_LIST_STATE = {
+  count: null,
+  cur_page: null,
+  errors: null,
+  groups: null,
+  loaded: false,
+  loading: true,
+  num_pages: null,
 };
 
 /**
@@ -977,44 +993,111 @@ const machineSlice = createSlice({
     exitRescueModeStart: statusHandlers.exitRescueMode.start,
     exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
     fetch: {
-      prepare: (requestId: string) => ({
+      prepare: (requestId: string, params?: FetchParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "list",
+          nocache: true,
           requestId,
         },
-        payload: {
-          params: { limit: 25 },
-        },
+        payload: params
+          ? {
+              params,
+            }
+          : null,
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
       },
     },
-    fetchSuccess: (
-      state: MachineState,
-      // This is a partial type to get the machine list working while the server
-      // side machine list is being implemented.
-      action: PayloadAction<{ groups: { items: Machine[] }[] }>
-    ) => {
-      action.payload.groups.forEach(({ items }) => {
-        items.forEach((newItem: Machine) => {
-          // Add items that don't already exist in the store. Existing items
-          // are probably MachineDetails so this would overwrite them with the
-          // simple machine. Existing items will be kept up to date via the
-          // notify (sync) messages.
-          const existing = state.items.find(
-            (draftItem: Machine) => draftItem.id === newItem.id
-          );
-          if (!existing) {
-            state.items.push(newItem);
-            // Set up the statuses for this machine.
-            state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+    fetchError: {
+      prepare: (requestId: string, errors: MachineStateList["errors"]) => ({
+        meta: {
+          requestId,
+        },
+        payload: errors,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<MachineStateList["errors"], string, GenericMeta>
+      ) => {
+        if (action.meta.requestId) {
+          if (action.meta.requestId in state.lists) {
+            state.lists[action.meta.requestId].errors = action.payload;
+            state.lists[action.meta.requestId].loading = false;
+          } else {
           }
+        }
+        state = setErrors(state, action, "fetch");
+      },
+    },
+    fetchStart: {
+      prepare: (requestId: string) => ({
+        meta: {
+          requestId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<null, string, GenericMeta>
+      ) => {
+        if (action.meta.requestId) {
+          if (action.meta.requestId in state.lists) {
+            state.lists[action.meta.requestId].loading = true;
+          } else {
+            state.lists[action.meta.requestId] = DEFAULT_LIST_STATE;
+          }
+        }
+      },
+    },
+    fetchSuccess: {
+      prepare: (requestId: string, payload: FetchResponse) => ({
+        meta: {
+          requestId,
+        },
+        payload,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<FetchResponse, string, GenericMeta>
+      ) => {
+        action.payload.groups.forEach((group: FetchResponseGroup) => {
+          group.items.forEach((newItem: Machine) => {
+            // Add items that don't already exist in the store. Existing items
+            // are probably MachineDetails so this would overwrite them with the
+            // simple machine. Existing items will be kept up to date via the
+            // notify (sync) messages.
+            const existing = state.items.find(
+              (draftItem: Machine) => draftItem.id === newItem.id
+            );
+            if (!existing) {
+              state.items.push(newItem);
+              // Set up the statuses for this machine.
+              state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+            }
+          });
         });
-      });
-      state.loading = false;
-      state.loaded = true;
+        if (action.meta.requestId) {
+          const newState = {
+            ...(state.lists[action.meta.requestId] ?? DEFAULT_LIST_STATE),
+            ...action.payload,
+            groups: action.payload.groups.map((group) => ({
+              ...group,
+              items: group.items.map(({ system_id }) => system_id),
+            })),
+            loading: false,
+            loaded: true,
+          };
+          if (action.meta.requestId in state.lists) {
+          } else {
+            state.lists[action.meta.requestId] = DEFAULT_LIST_STATE;
+          }
+          state.lists[action.meta.requestId] = newState;
+          state.lists[action.meta.requestId].loading = false;
+          state.lists[action.meta.requestId].loaded = true;
+        }
+      },
     },
     filterGroups: {
       prepare: () => ({
@@ -1107,7 +1190,7 @@ const machineSlice = createSlice({
       reducer: (
         state: MachineState,
         action: PayloadAction<
-          MachineStateDetailsItem["errors"],
+          null,
           string,
           GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
         >

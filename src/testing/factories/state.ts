@@ -248,19 +248,20 @@ export const licenseKeysState = define<LicenseKeysState>({
 });
 
 export const machineStateListGroup = define<MachineStateListGroup>({
+  collapsed: false,
   count: 15,
   items: () => [],
-  name: "owner",
+  name: null,
 });
 
 export const machineStateList = define<MachineStateList>({
-  count: 40,
-  cur_page: 1,
+  count: null,
+  cur_page: null,
   errors: null,
-  groups: () => [],
+  groups: null,
   loaded: false,
   loading: false,
-  num_pages: 1,
+  num_pages: null,
 });
 
 export const machineStateLists = define<MachineStateLists>({
