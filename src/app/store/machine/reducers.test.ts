@@ -9,6 +9,7 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
   machineState as machineStateFactory,
+  machineStateCount as machineStateCountFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
   machineStatus as machineStatusFactory,
 } from "testing/factories";
@@ -18,6 +19,7 @@ describe("machine reducer", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
       active: null,
       errors: null,
+      counts: {},
       details: {},
       eventErrors: [],
       filters: [],
@@ -32,6 +34,80 @@ describe("machine reducer", () => {
       selected: [],
       statuses: {},
     });
+  });
+
+  it("reduces countStart", () => {
+    const initialState = machineStateFactory({ loading: false });
+    expect(reducers(initialState, actions.countStart("123456"))).toEqual(
+      machineStateFactory({
+        counts: {
+          "123456": machineStateCountFactory({
+            loading: true,
+          }),
+        },
+      })
+    );
+  });
+
+  it("reduces countSuccess", () => {
+    const initialState = machineStateFactory({
+      counts: {
+        "123456": machineStateCountFactory({
+          loaded: true,
+          loading: true,
+        }),
+      },
+    });
+    expect(
+      reducers(
+        initialState,
+        actions.countSuccess("123456", {
+          count: 11,
+        })
+      )
+    ).toEqual(
+      machineStateFactory({
+        counts: {
+          "123456": machineStateCountFactory({
+            count: 11,
+            loaded: true,
+            loading: false,
+          }),
+        },
+      })
+    );
+  });
+
+  it("reduces countError", () => {
+    const initialState = machineStateFactory({
+      counts: {
+        "123456": machineStateCountFactory({
+          loading: true,
+        }),
+      },
+    });
+    expect(
+      reducers(
+        initialState,
+        actions.countError("123456", "Could not count machines")
+      )
+    ).toEqual(
+      machineStateFactory({
+        counts: {
+          "123456": machineStateCountFactory({
+            errors: "Could not count machines",
+            loading: false,
+          }),
+        },
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "Could not count machines",
+            event: "count",
+            id: null,
+          }),
+        ],
+      })
+    );
   });
 
   it("reduces fetchStart", () => {

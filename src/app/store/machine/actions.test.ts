@@ -71,6 +71,30 @@ describe("machine actions", () => {
     });
   });
 
+  it("can get a count of machines", () => {
+    expect(actions.count("123456")).toEqual({
+      type: "machine/count",
+      meta: {
+        model: "machine",
+        method: "count",
+        requestId: "123456",
+      },
+      payload: null,
+    });
+  });
+
+  it("can get a count of filtered machines", () => {
+    expect(actions.count("123456", { owner: "admin" })).toEqual({
+      type: "machine/count",
+      meta: {
+        model: "machine",
+        method: "count",
+        requestId: "123456",
+      },
+      payload: { params: { filters: { owner: "admin" } } },
+    });
+  });
+
   it("can set an active machine", () => {
     expect(actions.setActive("abc123")).toEqual({
       type: "machine/setActive",

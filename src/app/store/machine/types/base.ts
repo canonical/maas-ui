@@ -230,8 +230,18 @@ export type FilterGroup = {
 
 export type MachineEventErrors = CloneError;
 
+export type MachineStateCount = {
+  count: number | null;
+  errors: APIError;
+  loaded: boolean;
+  loading: boolean;
+};
+
+export type MachineStateCounts = Record<string, MachineStateCount>;
+
 export type MachineState = {
   active: Machine[MachineMeta.PK] | null;
+  counts: MachineStateCounts;
   details: MachineStateDetails;
   eventErrors: EventError<
     Machine,

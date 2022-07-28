@@ -54,6 +54,8 @@ import type {
   UpdateVmfsDatastoreParams,
   MachineStateList,
 } from "./types";
+import type { FetchFilters } from "./types/actions";
+import type { MachineStateCount } from "./types/base";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type {
@@ -64,7 +66,11 @@ import type {
 } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
-import type { StatusHandlers, GenericItemMeta } from "app/store/utils/slice";
+import type {
+  StatusHandlers,
+  GenericItemMeta,
+  GenericMeta,
+} from "app/store/utils/slice";
 import {
   generateCommonReducers,
   genericInitialState,
@@ -343,6 +349,13 @@ const DEFAULT_LIST_STATE = {
   num_pages: null,
 };
 
+const DEFAULT_COUNT_STATE = {
+  loading: false,
+  loaded: false,
+  count: null,
+  errors: null,
+};
+
 /**
  * Wrap the updateError call so that the call is made with the correct generics.
  */
@@ -380,6 +393,7 @@ const machineSlice = createSlice({
   initialState: {
     ...genericInitialState,
     active: null,
+    counts: {},
     details: {},
     eventErrors: [],
     filters: [],
@@ -581,6 +595,88 @@ const machineSlice = createSlice({
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
+      },
+    },
+    count: {
+      prepare: (requestId: string, filters?: FetchFilters) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "count",
+          requestId,
+        },
+        payload: filters
+          ? {
+              params: { filters },
+            }
+          : null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    countError: {
+      prepare: (requestId: string, errors: MachineStateCount["errors"]) => ({
+        meta: {
+          requestId,
+        },
+        payload: errors,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<MachineStateCount["errors"], string, GenericMeta>
+      ) => {
+        if (action.meta.requestId) {
+          state.counts[action.meta.requestId] = {
+            ...(action.meta.requestId in state.counts
+              ? state.counts[action.meta.requestId]
+              : DEFAULT_COUNT_STATE),
+            errors: action.payload,
+            loading: false,
+          };
+        }
+        state = setErrors(state, action, "count");
+      },
+    },
+    countStart: {
+      prepare: (requestId: string) => ({
+        meta: {
+          requestId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<null, string, GenericMeta>
+      ) => {
+        if (action.meta.requestId) {
+          if (!(action.meta.requestId in state.counts)) {
+            state.counts[action.meta.requestId] = DEFAULT_COUNT_STATE;
+          }
+          state.counts[action.meta.requestId].loading = true;
+        }
+      },
+    },
+    countSuccess: {
+      prepare: (requestId: string, count: { count: number }) => ({
+        meta: {
+          requestId,
+        },
+        payload: count,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<{ count: number }, string, GenericMeta>
+      ) => {
+        if (action.meta.requestId) {
+          state.counts[action.meta.requestId] = {
+            ...(action.meta.requestId in state.counts
+              ? state.counts[action.meta.requestId]
+              : DEFAULT_COUNT_STATE),
+            count: action.payload.count,
+            loading: false,
+            loaded: true,
+          };
+        }
       },
     },
     createBcacheError: statusHandlers.createBcache.error,
