@@ -164,6 +164,7 @@ it("only renders rack controller services for a rack controller", () => {
   const services = [
     serviceFactory({ name: ServiceName.RACKD }),
     serviceFactory({ name: ServiceName.REGIOND }),
+    serviceFactory({ name: ServiceName.REVERSE_PROXY }),
   ];
   const controller = controllerDetailsFactory({
     node_type: NodeType.RACK_CONTROLLER,
@@ -191,12 +192,16 @@ it("only renders rack controller services for a rack controller", () => {
   expect(
     screen.queryByText(getServiceDisplayName(ServiceName.REGIOND))
   ).not.toBeInTheDocument();
+  expect(
+    screen.queryByText(getServiceDisplayName(ServiceName.REVERSE_PROXY))
+  ).not.toBeInTheDocument();
 });
 
 it("only renders region controller services for a region controller", () => {
   const services = [
     serviceFactory({ name: ServiceName.RACKD }),
     serviceFactory({ name: ServiceName.REGIOND }),
+    serviceFactory({ name: ServiceName.REVERSE_PROXY }),
   ];
   const controller = controllerDetailsFactory({
     node_type: NodeType.REGION_CONTROLLER,
@@ -222,6 +227,9 @@ it("only renders region controller services for a region controller", () => {
     screen.getByText(getServiceDisplayName(ServiceName.REGIOND))
   ).toBeInTheDocument();
   expect(
+    screen.getByText(getServiceDisplayName(ServiceName.REVERSE_PROXY))
+  ).toBeInTheDocument();
+  expect(
     screen.queryByText(getServiceDisplayName(ServiceName.RACKD))
   ).not.toBeInTheDocument();
 });
@@ -230,6 +238,7 @@ it("renders both region and rack controller services for a region+rack controlle
   const services = [
     serviceFactory({ name: ServiceName.RACKD }),
     serviceFactory({ name: ServiceName.REGIOND }),
+    serviceFactory({ name: ServiceName.REVERSE_PROXY }),
   ];
   const controller = controllerDetailsFactory({
     node_type: NodeType.REGION_AND_RACK_CONTROLLER,
@@ -256,5 +265,8 @@ it("renders both region and rack controller services for a region+rack controlle
   ).toBeInTheDocument();
   expect(
     screen.getByText(getServiceDisplayName(ServiceName.RACKD))
+  ).toBeInTheDocument();
+  expect(
+    screen.getByText(getServiceDisplayName(ServiceName.REVERSE_PROXY))
   ).toBeInTheDocument();
 });
