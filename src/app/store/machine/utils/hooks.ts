@@ -11,6 +11,7 @@ import {
   osInfo as osInfoSelectors,
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -49,10 +50,19 @@ export const useFetchMachines = (): void => {
  */
 export const useGetMachine = (
   id?: Machine[MachineMeta.PK] | null
-): string | null => {
+): { machine: Machine | null; loading?: boolean; loaded?: boolean } => {
   const callId = useRef<string | null>(null);
   const previousId = usePrevious(id, false);
   const dispatch = useDispatch();
+  const loaded = useSelector((state: RootState) =>
+    machineSelectors.detailsLoaded(state, callId.current)
+  );
+  const loading = useSelector((state: RootState) =>
+    machineSelectors.detailsLoading(state, callId.current)
+  );
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, id)
+  );
   useEffect(() => {
     if (isId(id) && id !== previousId) {
       callId.current = nanoid();
@@ -61,7 +71,7 @@ export const useGetMachine = (
   }, [dispatch, id, previousId]);
   // TODO: clean up the previous request if the id changes or the component is unmounted:
   // https://github.com/canonical-web-and-design/app-tribe/issues/1151
-  return callId.current;
+  return { machine, loading, loaded };
 };
 
 /**
