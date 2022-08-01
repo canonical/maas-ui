@@ -1,4 +1,5 @@
 import { actions } from "./slice";
+import { FetchGroupKey, FetchSortDirection } from "./types";
 
 import { PowerTypeNames } from "app/store/general/constants";
 import {
@@ -23,10 +24,35 @@ describe("machine actions", () => {
       meta: {
         model: "machine",
         method: "list",
+        nocache: true,
+        requestId: "123456",
+      },
+      payload: null,
+    });
+  });
+
+  it("should handle fetching machines with params", () => {
+    const params = {
+      filter: {
+        owner: "admin",
+      },
+      group_key: FetchGroupKey.Owner,
+      group_collapsed: [],
+      page_size: 20,
+      page_number: 5,
+      sort_key: "owner",
+      sort_direction: FetchSortDirection.Ascending,
+    };
+    expect(actions.fetch("123456", params)).toEqual({
+      type: "machine/fetch",
+      meta: {
+        model: "machine",
+        method: "list",
+        nocache: true,
         requestId: "123456",
       },
       payload: {
-        params: { limit: 25 },
+        params,
       },
     });
   });

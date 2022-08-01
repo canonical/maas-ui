@@ -27,6 +27,9 @@ import { objectHasKey } from "app/utils";
 
 export type GenericItemMeta<I> = {
   item: I;
+} & GenericMeta;
+
+export type GenericMeta = {
   requestId?: string;
   identifier?: number | string;
 };

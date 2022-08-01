@@ -6,6 +6,8 @@ import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
   machineState as machineStateFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
   machineStatus as machineStatusFactory,
@@ -35,9 +37,13 @@ describe("machine reducer", () => {
   it("reduces fetchStart", () => {
     const initialState = machineStateFactory({ loading: false });
 
-    expect(reducers(initialState, actions.fetchStart())).toEqual(
+    expect(reducers(initialState, actions.fetchStart("123456"))).toEqual(
       machineStateFactory({
-        loading: true,
+        lists: {
+          "123456": machineStateListFactory({
+            loading: true,
+          }),
+        },
       })
     );
   });
@@ -45,8 +51,12 @@ describe("machine reducer", () => {
   it("reduces fetchSuccess", () => {
     const initialState = machineStateFactory({
       items: [],
-      loading: true,
-      loaded: false,
+      lists: {
+        "123456": machineStateListFactory({
+          loaded: true,
+          loading: true,
+        }),
+      },
       statuses: {},
     });
     const fetchedMachines = [
@@ -57,13 +67,40 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.fetchSuccess({ groups: [{ items: fetchedMachines }] })
+        actions.fetchSuccess("123456", {
+          count: 1,
+          cur_page: 2,
+          groups: [
+            {
+              collapsed: true,
+              count: 4,
+              items: fetchedMachines,
+              name: "admin",
+            },
+          ],
+          num_pages: 3,
+        })
       )
     ).toEqual(
       machineStateFactory({
         items: fetchedMachines,
-        loading: false,
-        loaded: true,
+        lists: {
+          "123456": machineStateListFactory({
+            count: 1,
+            cur_page: 2,
+            groups: [
+              machineStateListGroupFactory({
+                collapsed: true,
+                count: 4,
+                items: ["abc123", "def456"],
+                name: "admin",
+              }),
+            ],
+            num_pages: 3,
+            loaded: true,
+            loading: false,
+          }),
+        },
         statuses: {
           abc123: machineStatusFactory(),
           def456: machineStatusFactory(),
@@ -79,8 +116,6 @@ describe("machine reducer", () => {
     });
     const initialState = machineStateFactory({
       items: [existingMachine],
-      loading: true,
-      loaded: false,
       statuses: {
         abc123: machineStatusFactory(),
       },
@@ -93,13 +128,40 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.fetchSuccess({ groups: [{ items: fetchedMachines }] })
+        actions.fetchSuccess("123456", {
+          count: 1,
+          cur_page: 2,
+          groups: [
+            {
+              collapsed: true,
+              count: 4,
+              items: fetchedMachines,
+              name: "admin",
+            },
+          ],
+          num_pages: 3,
+        })
       )
     ).toEqual(
       machineStateFactory({
         items: [existingMachine, fetchedMachines[1]],
-        loading: false,
-        loaded: true,
+        lists: {
+          "123456": machineStateListFactory({
+            count: 1,
+            cur_page: 2,
+            groups: [
+              machineStateListGroupFactory({
+                collapsed: true,
+                count: 4,
+                items: ["abc123", "def456"],
+                name: "admin",
+              }),
+            ],
+            num_pages: 3,
+            loaded: true,
+            loading: false,
+          }),
+        },
         statuses: {
           abc123: machineStatusFactory(),
           def456: machineStatusFactory(),
@@ -110,16 +172,26 @@ describe("machine reducer", () => {
 
   it("reduces fetchError", () => {
     const initialState = machineStateFactory({
-      errors: null,
-      loaded: false,
-      loading: true,
+      lists: {
+        "123456": machineStateListFactory({
+          loading: true,
+        }),
+      },
     });
 
     expect(
-      reducers(initialState, actions.fetchError("Could not fetch machines"))
+      reducers(
+        initialState,
+        actions.fetchError("123456", "Could not fetch machines")
+      )
     ).toEqual(
       machineStateFactory({
-        errors: "Could not fetch machines",
+        lists: {
+          "123456": machineStateListFactory({
+            errors: "Could not fetch machines",
+            loading: false,
+          }),
+        },
         eventErrors: [
           machineEventErrorFactory({
             error: "Could not fetch machines",
@@ -127,8 +199,6 @@ describe("machine reducer", () => {
             id: null,
           }),
         ],
-        loaded: false,
-        loading: false,
       })
     );
   });

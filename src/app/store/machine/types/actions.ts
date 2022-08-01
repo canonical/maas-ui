@@ -231,6 +231,135 @@ export type DeployParams = BaseNodeActionParams & {
   user_data?: string;
 };
 
+export enum FetchSortDirection {
+  Ascending = "ascending",
+  Descending = "descending",
+}
+
+// TODO: Define the specific filters that the API supports:
+// https://github.com/canonical-web-and-design/app-tribe/issues/1149
+export type FetchFilters = {
+  [x: string]: string | number | boolean | (string | number)[];
+};
+
+export enum FetchGroupKey {
+  AddressTtl = "address_ttl",
+  AgentName = "agent_name",
+  Architecture = "architecture",
+  BiosBootMethod = "bios_boot_method",
+  Bmc = "bmc",
+  BmcId = "bmc_id",
+  BootClusterIp = "boot_cluster_ip",
+  BootDisk = "boot_disk",
+  BootDiskId = "boot_disk_id",
+  BootInterface = "boot_interface",
+  BootInterfaceId = "boot_interface_id",
+  Children = "children",
+  Connections = "connections",
+  Controllerinfo = "controllerinfo",
+  CpuCount = "cpu_count",
+  CpuSpeed = "cpu_speed",
+  Created = "created",
+  CurrentCommissioningScriptSet = "current_commissioning_script_set",
+  CurrentCommissioningScriptSetId = "current_commissioning_script_set_id",
+  CurrentConfig = "current_config",
+  CurrentConfigId = "current_config_id",
+  CurrentInstallationScriptSet = "current_installation_script_set",
+  CurrentInstallationScriptSetId = "current_installation_script_set_id",
+  CurrentTestingScriptSet = "current_testing_script_set",
+  CurrentTestingScriptSetId = "current_testing_script_set_id",
+  DefaultUser = "default_user",
+  Description = "description",
+  Dhcpsnippet = "dhcpsnippet",
+  Discovery = "discovery",
+  DistroSeries = "distro_series",
+  DnsProcess = "dns_process",
+  DnsProcessId = "dns_process_id",
+  Domain = "domain",
+  DomainId = "domain_id",
+  Dynamic = "dynamic",
+  EnableHwSync = "enable_hw_sync",
+  EnableSsh = "enable_ssh",
+  EphemeralDeploy = "ephemeral_deploy",
+  Error = "error",
+  ErrorDescription = "error_description",
+  Event = "event",
+  GatewayLinkIpv4 = "gateway_link_ipv4",
+  GatewayLinkIpv4Id = "gateway_link_ipv4_id",
+  GatewayLinkIpv6 = "gateway_link_ipv6",
+  GatewayLinkIpv6Id = "gateway_link_ipv6_id",
+  HardwareUuid = "hardware_uuid",
+  Hostname = "hostname",
+  HweKernel = "hwe_kernel",
+  Id = "id",
+  InstallKvm = "install_kvm",
+  InstallRackd = "install_rackd",
+  InstancePowerParameters = "instance_power_parameters",
+  LastAppliedStorageLayout = "last_applied_storage_layout",
+  LastImageSync = "last_image_sync",
+  LastSync = "last_sync",
+  LicenseKey = "license_key",
+  Locked = "locked",
+  ManagingProcess = "managing_process",
+  ManagingProcessId = "managing_process_id",
+  Memory = "memory",
+  MinHweKernel = "min_hwe_kernel",
+  Netboot = "netboot",
+  NodeType = "node_type",
+  Nodeconfig = "nodeconfig",
+  Nodekey = "nodekey",
+  Nodemetadata = "nodemetadata",
+  Nodeuserdata = "nodeuserdata",
+  NumaNodesCount = "numa_nodes_count",
+  Numanode = "numanode",
+  Osystem = "osystem",
+  Owner = "owner",
+  OwnerId = "owner_id",
+  Ownerdata = "ownerdata",
+  Parent = "parent",
+  ParentId = "parent_id",
+  Podhints = "podhints",
+  Pool = "pool",
+  PoolId = "pool_id",
+  PowerState = "power_state",
+  PowerStateQueried = "power_state_queried",
+  PowerStateUpdated = "power_state_updated",
+  PreviousStatus = "previous_status",
+  Processes = "processes",
+  Rdns = "rdns",
+  RegisterVmhost = "register_vmhost",
+  RoutableBmcRelationships = "routable_bmc_relationships",
+  RoutableBmcs = "routable_bmcs",
+  Scriptset = "scriptset",
+  Service = "service",
+  SkipNetworking = "skip_networking",
+  SkipStorage = "skip_storage",
+  SriovSupport = "sriov_support",
+  Status = "status",
+  StatusEventDescription = "status_event_description",
+  StatusEventTypeDescription = "status_event_type_description",
+  StatusExpires = "status_expires",
+  SwapSize = "swap_size",
+  SyncInterval = "sync_interval",
+  SystemId = "system_id",
+  Tags = "tags",
+  Updated = "updated",
+  Url = "url",
+  Virtualmachine = "virtualmachine",
+  Zone = "zone",
+  ZoneId = "zone_id",
+}
+
+export type FetchParams = {
+  filter?: FetchFilters;
+  group_key?: FetchGroupKey | null;
+  group_collapsed?: string[];
+  page_size?: number;
+  page_number?: number;
+  sort_key?: string | null;
+  sort_direction?: FetchSortDirection;
+};
+
 export type GetSummaryXmlParams = {
   systemId: Machine[MachineMeta.PK];
   fileId: string;
