@@ -40,10 +40,12 @@ const MachineDetails = (): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  const machinesLoading = useSelector(machineSelectors.loading);
+  const requestId = useGetMachine(id);
+  const detailsLoaded = useSelector((state: RootState) =>
+    machineSelectors.detailsLoaded(state, requestId)
+  );
   const [headerContent, setHeaderContent] =
     useState<MachineHeaderContent | null>(null);
-  useGetMachine(id);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -63,7 +65,7 @@ const MachineDetails = (): JSX.Element => {
     };
   }, [dispatch, id]);
 
-  if (!isId(id) || (!machinesLoading && !machine)) {
+  if (!isId(id) || (detailsLoaded && !machine)) {
     return (
       <ModelNotFound
         id={id}

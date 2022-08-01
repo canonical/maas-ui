@@ -43,8 +43,10 @@ export const CloneFormFields = ({
   const loadingVlans = !useSelector(vlanSelectors.loaded);
   const loadingData =
     loadingFabrics || loadingMachines || loadingSubnets || loadingVlans;
-  const loadingMachineDetails = !!values.source && !selectedMachine;
-  useGetMachine(values.source);
+  const requestId = useGetMachine(values.source);
+  const loadingMachineDetails = useSelector((state: RootState) =>
+    machineSelectors.detailsLoading(state, requestId)
+  );
   useFetchMachines();
 
   useEffect(() => {

@@ -28,6 +28,9 @@ const defaultSelectors = generateBaseSelectors<
   MachineMeta.PK
 >(MachineMeta.MODEL, MachineMeta.PK);
 
+const machineState = (state: RootState): MachineState =>
+  state[MachineMeta.MODEL];
+
 /**
  * Returns currently active machine's system_id.
  * @param {RootState} state - The redux state.
@@ -315,6 +318,42 @@ const getDeployedWithTag = createSelector(
   }
 );
 
+const getDetails = (
+  machineState: MachineState,
+  requestId: string | null | undefined
+) =>
+  requestId && requestId in machineState.details
+    ? machineState.details[requestId]
+    : null;
+
+/**
+ * Get the loaded state for a details request.
+ * @param state - The redux state.
+ * @param requestId - A details request id.
+ * @returns Whether the details are loaded.
+ */
+const detailsLoaded = createSelector(
+  [
+    machineState,
+    (_state: RootState, requestId: string | null | undefined) => requestId,
+  ],
+  (machineState, requestId) => getDetails(machineState, requestId)?.loaded
+);
+
+/**
+ * Get the loading state for a details request.
+ * @param state - The redux state.
+ * @param requestId - A details request id.
+ * @returns Whether the details are loading.
+ */
+const detailsLoading = createSelector(
+  [
+    machineState,
+    (_state: RootState, requestId: string | null | undefined) => requestId,
+  ],
+  (machineState, requestId) => getDetails(machineState, requestId)?.loading
+);
+
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -329,6 +368,8 @@ const selectors = {
   deleting: statusSelectors["deleting"],
   deletingInterface: statusSelectors["deletingInterface"],
   deploying: statusSelectors["deploying"],
+  detailsLoaded,
+  detailsLoading,
   enteringRescueMode: statusSelectors["enteringRescueMode"],
   eventErrors,
   eventErrorsForIds,

@@ -47,7 +47,9 @@ export const useFetchMachines = (): void => {
  * Get a machine via the API.
  * @param id - A machine's system id.
  */
-export const useGetMachine = (id?: Machine[MachineMeta.PK] | null): void => {
+export const useGetMachine = (
+  id?: Machine[MachineMeta.PK] | null
+): string | null => {
   const requestId = useRef<string | null>(null);
   const previousId = usePrevious(id, false);
   const dispatch = useDispatch();
@@ -59,6 +61,7 @@ export const useGetMachine = (id?: Machine[MachineMeta.PK] | null): void => {
   }, [dispatch, id, previousId]);
   // TODO: clean up the previous request if the id changes or the component is unmounted:
   // https://github.com/canonical-web-and-design/app-tribe/issues/1151
+  return requestId.current;
 };
 
 /**
