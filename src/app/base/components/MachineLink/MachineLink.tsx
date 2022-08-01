@@ -5,7 +5,7 @@ import { Link } from "react-router-dom-v5-compat";
 import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
+import { useGetMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
@@ -21,7 +21,7 @@ const MachineLink = ({ systemId }: Props): JSX.Element | null => {
     machineSelectors.getById(state, systemId)
   );
   const machinesLoading = useSelector(machineSelectors.loading);
-  useFetchMachines();
+  useGetMachine(systemId);
 
   if (machinesLoading) {
     return <Spinner aria-label={Labels.Loading} />;
