@@ -32,11 +32,6 @@ export type GenericItemMeta<I> = {
 export type GenericMeta = {
   requestId?: string;
   identifier?: number | string;
-} & GenericMeta;
-
-export type GenericMeta = {
-  requestId?: string;
-  identifier?: number | string;
 };
 
 // Get the models that follow the generic shape. The following models are excluded:

@@ -1,8 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { GenericMeta } from "../utils/slice";
-
 import { MachineMeta } from "./types";
 import type {
   Action,
