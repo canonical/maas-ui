@@ -29,14 +29,14 @@ import { isId } from "app/utils";
  * Fetch machines via the API.
  */
 export const useFetchMachines = (): void => {
-  const requestId = useRef<string | null>(null);
+  const callId = useRef<string | null>(null);
   const dispatch = useDispatch();
   useEffect(() => {
     // TODO: request the machines again if the provided options change (filters,
     // ordering, pagination etc.)
-    if (!requestId.current) {
-      requestId.current = nanoid();
-      dispatch(machineActions.fetch(requestId.current));
+    if (!callId.current) {
+      callId.current = nanoid();
+      dispatch(machineActions.fetch(callId.current));
     }
   }, [dispatch]);
   // TODO: clean up the previous request if the options change or the component is unmounted:
@@ -50,18 +50,18 @@ export const useFetchMachines = (): void => {
 export const useGetMachine = (
   id?: Machine[MachineMeta.PK] | null
 ): string | null => {
-  const requestId = useRef<string | null>(null);
+  const callId = useRef<string | null>(null);
   const previousId = usePrevious(id, false);
   const dispatch = useDispatch();
   useEffect(() => {
     if (isId(id) && id !== previousId) {
-      requestId.current = nanoid();
-      dispatch(machineActions.get(id, requestId.current));
+      callId.current = nanoid();
+      dispatch(machineActions.get(id, callId.current));
     }
   }, [dispatch, id, previousId]);
   // TODO: clean up the previous request if the id changes or the component is unmounted:
   // https://github.com/canonical-web-and-design/app-tribe/issues/1151
-  return requestId.current;
+  return callId.current;
 };
 
 /**

@@ -30,7 +30,7 @@ export type GenericItemMeta<I> = {
 } & GenericMeta;
 
 export type GenericMeta = {
-  requestId?: string;
+  callId?: string;
   identifier?: number | string;
 };
 

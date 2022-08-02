@@ -86,7 +86,7 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     // The amount of time in milliseconds between requests.
     pollInterval?: number;
     // An id to identify this request.
-    requestId?: string;
+    callId?: string;
     // Whether polling should be stopped for the request.
     pollStop?: boolean;
     // Whether the response should be stored in the file context.

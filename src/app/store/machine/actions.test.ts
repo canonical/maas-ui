@@ -25,7 +25,7 @@ describe("machine actions", () => {
         model: "machine",
         method: "list",
         nocache: true,
-        requestId: "123456",
+        callId: "123456",
       },
       payload: null,
     });
@@ -49,7 +49,7 @@ describe("machine actions", () => {
         model: "machine",
         method: "list",
         nocache: true,
-        requestId: "123456",
+        callId: "123456",
       },
       payload: {
         params,
@@ -63,7 +63,7 @@ describe("machine actions", () => {
       meta: {
         model: "machine",
         method: "get",
-        requestId: "123456",
+        callId: "123456",
       },
       payload: {
         params: { system_id: "abc123" },
@@ -77,7 +77,7 @@ describe("machine actions", () => {
       meta: {
         model: "machine",
         method: "count",
-        requestId: "123456",
+        callId: "123456",
       },
       payload: null,
     });
@@ -89,7 +89,7 @@ describe("machine actions", () => {
       meta: {
         model: "machine",
         method: "count",
-        requestId: "123456",
+        callId: "123456",
       },
       payload: { params: { filters: { owner: "admin" } } },
     });

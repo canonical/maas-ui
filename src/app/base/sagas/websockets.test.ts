@@ -139,7 +139,7 @@ describe("websocket sagas", () => {
       meta: {
         model: "test",
         method: "method",
-        requestId: "123456",
+        callId: "123456",
         type: WebSocketMessageType.REQUEST,
       },
       payload: {
@@ -149,7 +149,7 @@ describe("websocket sagas", () => {
     const saga = sendMessage(socketClient, action);
     expect(saga.next().value).toEqual(
       put({
-        meta: { item: { foo: "bar" }, requestId: "123456" },
+        meta: { item: { foo: "bar" }, callId: "123456" },
         type: "test/actionStart",
       })
     );
@@ -344,11 +344,11 @@ describe("websocket sagas", () => {
     saga.next({
       type: "test/action",
       payload: { id: 808 },
-      meta: { identifier: 123, requestId: "456" },
+      meta: { identifier: 123, callId: "456" },
     });
     expect(saga.next(false).value).toEqual(
       put({
-        meta: { item: { id: 808 }, identifier: 123, requestId: "456" },
+        meta: { item: { id: 808 }, identifier: 123, callId: "456" },
         type: "test/actionSuccess",
         payload: { response: "here" },
       })

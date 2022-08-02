@@ -393,7 +393,7 @@ export function* handleMessage(
             meta: {
               item,
               identifier: action.meta?.identifier,
-              requestId: action.meta?.requestId,
+              callId: action.meta?.callId,
             },
             type: `${action.type}Error`,
             error: true,
@@ -404,7 +404,7 @@ export function* handleMessage(
             meta: {
               item,
               identifier: action.meta?.identifier,
-              requestId: action.meta?.requestId,
+              callId: action.meta?.callId,
             },
             type: `${action.type}Success`,
             payload: result,
@@ -506,7 +506,7 @@ export function* sendMessage(
     meta: {
       item: params || payload,
       identifier,
-      requestId: action.meta?.requestId,
+      callId: action.meta?.callId,
     },
     type: `${type}Start`,
   });
