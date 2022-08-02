@@ -6,6 +6,7 @@ import { useFormikContext } from "formik";
 import { withFormikDevtools } from "formik-devtools-extension";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom-v5-compat";
+import type { AnyAction } from "redux";
 
 import type { FormikFormButtonsProps } from "app/base/components/FormikFormButtons";
 import FormikFormButtons from "app/base/components/FormikFormButtons";
@@ -22,7 +23,7 @@ export type Props<V, E> = {
   allowUnchanged?: boolean;
   children?: ReactNode;
   className?: string;
-  cleanup?: () => void;
+  cleanup?: () => AnyAction;
   "data-testid"?: string;
   editable?: boolean;
   errors?: APIError<E>;
