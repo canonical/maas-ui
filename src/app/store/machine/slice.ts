@@ -596,11 +596,11 @@ const machineSlice = createSlice({
       },
     },
     count: {
-      prepare: (requestId: string, filters?: FetchFilters) => ({
+      prepare: (callId: string, filters?: FetchFilters) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "count",
-          requestId,
+          callId,
         },
         payload: filters
           ? {
@@ -613,9 +613,9 @@ const machineSlice = createSlice({
       },
     },
     countError: {
-      prepare: (requestId: string, errors: MachineStateCount["errors"]) => ({
+      prepare: (callId: string, errors: MachineStateCount["errors"]) => ({
         meta: {
-          requestId,
+          callId,
         },
         payload: errors,
       }),
@@ -623,10 +623,10 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<MachineStateCount["errors"], string, GenericMeta>
       ) => {
-        if (action.meta.requestId) {
-          state.counts[action.meta.requestId] = {
-            ...(action.meta.requestId in state.counts
-              ? state.counts[action.meta.requestId]
+        if (action.meta.callId) {
+          state.counts[action.meta.callId] = {
+            ...(action.meta.callId in state.counts
+              ? state.counts[action.meta.callId]
               : DEFAULT_COUNT_STATE),
             errors: action.payload,
             loading: false,
@@ -636,9 +636,9 @@ const machineSlice = createSlice({
       },
     },
     countStart: {
-      prepare: (requestId: string) => ({
+      prepare: (callId: string) => ({
         meta: {
-          requestId,
+          callId,
         },
         payload: null,
       }),
@@ -646,18 +646,18 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<null, string, GenericMeta>
       ) => {
-        if (action.meta.requestId) {
-          if (!(action.meta.requestId in state.counts)) {
-            state.counts[action.meta.requestId] = DEFAULT_COUNT_STATE;
+        if (action.meta.callId) {
+          if (!(action.meta.callId in state.counts)) {
+            state.counts[action.meta.callId] = DEFAULT_COUNT_STATE;
           }
-          state.counts[action.meta.requestId].loading = true;
+          state.counts[action.meta.callId].loading = true;
         }
       },
     },
     countSuccess: {
-      prepare: (requestId: string, count: { count: number }) => ({
+      prepare: (callId: string, count: { count: number }) => ({
         meta: {
-          requestId,
+          callId,
         },
         payload: count,
       }),
@@ -665,10 +665,10 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<{ count: number }, string, GenericMeta>
       ) => {
-        if (action.meta.requestId) {
-          state.counts[action.meta.requestId] = {
-            ...(action.meta.requestId in state.counts
-              ? state.counts[action.meta.requestId]
+        if (action.meta.callId) {
+          state.counts[action.meta.callId] = {
+            ...(action.meta.callId in state.counts
+              ? state.counts[action.meta.callId]
               : DEFAULT_COUNT_STATE),
             count: action.payload.count,
             loading: false,
@@ -1087,12 +1087,12 @@ const machineSlice = createSlice({
     exitRescueModeStart: statusHandlers.exitRescueMode.start,
     exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
     fetch: {
-      prepare: (requestId: string, params?: FetchParams) => ({
+      prepare: (callId: string, params?: FetchParams) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "list",
           nocache: true,
-          requestId,
+          callId,
         },
         payload: params
           ? {
@@ -1105,9 +1105,9 @@ const machineSlice = createSlice({
       },
     },
     fetchError: {
-      prepare: (requestId: string, errors: MachineStateList["errors"]) => ({
+      prepare: (callId: string, errors: MachineStateList["errors"]) => ({
         meta: {
-          requestId,
+          callId,
         },
         payload: errors,
       }),
@@ -1115,10 +1115,10 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<MachineStateList["errors"], string, GenericMeta>
       ) => {
-        if (action.meta.requestId) {
-          if (action.meta.requestId in state.lists) {
-            state.lists[action.meta.requestId].errors = action.payload;
-            state.lists[action.meta.requestId].loading = false;
+        if (action.meta.callId) {
+          if (action.meta.callId in state.lists) {
+            state.lists[action.meta.callId].errors = action.payload;
+            state.lists[action.meta.callId].loading = false;
           } else {
           }
         }
@@ -1126,9 +1126,9 @@ const machineSlice = createSlice({
       },
     },
     fetchStart: {
-      prepare: (requestId: string) => ({
+      prepare: (callId: string) => ({
         meta: {
-          requestId,
+          callId,
         },
         payload: null,
       }),
@@ -1136,19 +1136,19 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<null, string, GenericMeta>
       ) => {
-        if (action.meta.requestId) {
-          if (action.meta.requestId in state.lists) {
-            state.lists[action.meta.requestId].loading = true;
+        if (action.meta.callId) {
+          if (action.meta.callId in state.lists) {
+            state.lists[action.meta.callId].loading = true;
           } else {
-            state.lists[action.meta.requestId] = DEFAULT_LIST_STATE;
+            state.lists[action.meta.callId] = DEFAULT_LIST_STATE;
           }
         }
       },
     },
     fetchSuccess: {
-      prepare: (requestId: string, payload: FetchResponse) => ({
+      prepare: (callId: string, payload: FetchResponse) => ({
         meta: {
-          requestId,
+          callId,
         },
         payload,
       }),
@@ -1172,9 +1172,9 @@ const machineSlice = createSlice({
             }
           });
         });
-        if (action.meta.requestId) {
+        if (action.meta.callId) {
           const newState = {
-            ...(state.lists[action.meta.requestId] ?? DEFAULT_LIST_STATE),
+            ...(state.lists[action.meta.callId] ?? DEFAULT_LIST_STATE),
             ...action.payload,
             groups: action.payload.groups.map((group) => ({
               ...group,
@@ -1183,13 +1183,13 @@ const machineSlice = createSlice({
             loading: false,
             loaded: true,
           };
-          if (action.meta.requestId in state.lists) {
+          if (action.meta.callId in state.lists) {
           } else {
-            state.lists[action.meta.requestId] = DEFAULT_LIST_STATE;
+            state.lists[action.meta.callId] = DEFAULT_LIST_STATE;
           }
-          state.lists[action.meta.requestId] = newState;
-          state.lists[action.meta.requestId].loading = false;
-          state.lists[action.meta.requestId].loaded = true;
+          state.lists[action.meta.callId] = newState;
+          state.lists[action.meta.callId].loading = false;
+          state.lists[action.meta.callId].loaded = true;
         }
       },
     },
@@ -1229,11 +1229,11 @@ const machineSlice = createSlice({
       state.filtersLoaded = true;
     },
     get: {
-      prepare: (machineID: Machine[MachineMeta.PK], requestId: string) => ({
+      prepare: (machineID: Machine[MachineMeta.PK], callId: string) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "get",
-          requestId,
+          callId,
         },
         payload: {
           params: { system_id: machineID },
@@ -1246,12 +1246,12 @@ const machineSlice = createSlice({
     getError: {
       prepare: (
         item: { system_id: Machine[MachineMeta.PK] },
-        requestId: string,
+        callId: string,
         errors: MachineStateDetailsItem["errors"]
       ) => ({
         meta: {
           item,
-          requestId,
+          callId,
         },
         payload: errors,
       }),
@@ -1263,9 +1263,9 @@ const machineSlice = createSlice({
           GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
         >
       ) => {
-        if (action.meta.requestId && action.meta.requestId in state.details) {
-          state.details[action.meta.requestId].errors = action.payload;
-          state.details[action.meta.requestId].loading = false;
+        if (action.meta.callId && action.meta.callId in state.details) {
+          state.details[action.meta.callId].errors = action.payload;
+          state.details[action.meta.callId].loading = false;
         }
         state = setErrors(state, action, "get");
       },
@@ -1273,11 +1273,11 @@ const machineSlice = createSlice({
     getStart: {
       prepare: (
         item: { system_id: Machine[MachineMeta.PK] },
-        requestId: string
+        callId: string
       ) => ({
         meta: {
           item,
-          requestId,
+          callId,
         },
         payload: null,
       }),
@@ -1289,11 +1289,11 @@ const machineSlice = createSlice({
           GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
         >
       ) => {
-        if (action.meta.requestId) {
-          if (action.meta.requestId in state.details) {
-            state.details[action.meta.requestId].loading = true;
+        if (action.meta.callId) {
+          if (action.meta.callId in state.details) {
+            state.details[action.meta.callId].loading = true;
           } else {
-            state.details[action.meta.requestId] = {
+            state.details[action.meta.callId] = {
               errors: null,
               loaded: false,
               loading: true,
@@ -1306,12 +1306,12 @@ const machineSlice = createSlice({
     getSuccess: {
       prepare: (
         item: { system_id: Machine[MachineMeta.PK] },
-        requestId: string,
+        callId: string,
         machine: MachineDetails
       ) => ({
         meta: {
           item,
-          requestId,
+          callId,
         },
         payload: machine,
       }),
@@ -1336,9 +1336,9 @@ const machineSlice = createSlice({
           // Set up the statuses for this machine.
           state.statuses[machine.system_id] = DEFAULT_STATUSES;
         }
-        if (action.meta.requestId && action.meta.requestId in state.details) {
-          state.details[action.meta.requestId].loading = false;
-          state.details[action.meta.requestId].loaded = true;
+        if (action.meta.callId && action.meta.callId in state.details) {
+          state.details[action.meta.callId].loading = false;
+          state.details[action.meta.callId].loaded = true;
         }
       },
     },
