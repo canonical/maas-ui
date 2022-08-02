@@ -54,21 +54,22 @@ const VfResources = ({
     const noInterfaces = interfaces.length === 0;
     content = (
       <div className="vf-resources__table-container" data-testid="iface-table">
+        <h4 className="p-text--x-small-capitalised">Virtual Functions</h4>
         <table className="vf-resources__table">
           <thead>
             <tr>
-              <th>VF</th>
+              <th className="u-text--light">Interfaces</th>
               <th className="u-align--right u-text--light">
                 Allocated
-                <span className="u-nudge-right--small">
+                {/* <span className="u-nudge-right--small">
                   <i className="p-circle--link"></i>
-                </span>
+                </span> */}
               </th>
               <th className="u-align--right u-text--light">
                 Free
-                <span className="u-nudge-right--small">
+                {/* <span className="u-nudge-right--small">
                   <i className="p-circle--link-faded"></i>
-                </span>
+                </span> */}
               </th>
             </tr>
           </thead>
