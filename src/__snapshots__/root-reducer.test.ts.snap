@@ -202,6 +202,7 @@ Object {
   },
   "machine": Object {
     "active": null,
+    "counts": Object {},
     "details": Object {},
     "errors": null,
     "eventErrors": Array [],
