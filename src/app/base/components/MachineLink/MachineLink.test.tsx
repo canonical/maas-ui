@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import reduxToolkit from "@reduxjs/toolkit";
+import { render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -11,13 +12,30 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
+  machineStateDetailsItem as machineStateDetailsItemFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
-it("handles when machines are loading", () => {
+beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+});
+
+it("handles when machines are loading", async () => {
   const state = rootStateFactory({
-    machine: machineStateFactory({ items: [], loading: true }),
+    machine: machineStateFactory({
+      items: [
+        machineFactory({
+          system_id: "abc123",
+        }),
+      ],
+      details: {
+        123456: machineStateDetailsItemFactory({
+          loading: true,
+          system_id: "abc123",
+        }),
+      },
+    }),
   });
   const store = mockStore(state);
   render(
@@ -30,7 +48,9 @@ it("handles when machines are loading", () => {
     </Provider>
   );
 
-  expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument();
+  await waitFor(() =>
+    expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument()
+  );
 });
 
 it("handles when a machine does not exist", () => {
