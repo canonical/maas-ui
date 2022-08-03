@@ -1684,4 +1684,15 @@ describe("machine actions", () => {
       payload: null,
     });
   });
+
+  it("can handle filter options", () => {
+    expect(actions.filterOptions(FetchGroupKey.Owner)).toEqual({
+      type: "machine/filterOptions",
+      meta: {
+        model: "machine",
+        method: "filter_options",
+      },
+      payload: null,
+    });
+  });
 });

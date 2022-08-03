@@ -47,6 +47,10 @@ export { FetchGroupKey, FetchSortDirection } from "./actions";
 export type {
   BaseMachine,
   Machine,
+  FilterGroup,
+  FilterGroupType,
+  FilterGroupOption,
+  FilterGroupOptionType,
   MachineActions,
   MachineDetails,
   MachineEventErrors,
