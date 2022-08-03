@@ -77,6 +77,10 @@ const GeneralForm = (): JSX.Element => {
         enable_analytics: analyticsEnabled || false,
         release_notifications: releaseNotifications || false,
       }}
+      onCancel={(values) => {
+        setTheme(maasTheme ? maasTheme : "default");
+        values.theme = maasTheme ? maasTheme : "default";
+      }}
       onSaveAnalytics={{
         action: "Saved",
         category: "Configuration settings",
