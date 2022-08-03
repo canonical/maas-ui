@@ -6,12 +6,12 @@ import type { Tag, TagMeta } from "../tag/types";
 import { ACTIONS } from "app/store/machine/slice";
 import { MachineMeta } from "app/store/machine/types";
 import type {
-  Machine,
   MachineState,
   MachineStatus,
   MachineStatuses,
   MachineStateDetails,
   MachineStateLists,
+  Machine,
 } from "app/store/machine/types";
 import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -90,26 +90,47 @@ const lists = (state: RootState): MachineStateLists => state.machine.lists;
 const details = (state: RootState): MachineStateDetails =>
   state.machine.details;
 
-const machineIdsInDetails = (state: RootState): Machine[MachineMeta.PK][] =>
-  Object.values(state.machine.details).reduce((acc, curr) => {
-    if (curr.system_id) {
-      acc.push(curr.system_id);
+const machineIdsInDetails = (
+  state: RootState
+): Record<Machine[MachineMeta.PK], string[]> =>
+  Object.entries(state.machine.details).reduce((acc, [key, value]) => {
+    if (value.system_id) {
+      acc[value.system_id] = [...(acc[value.system_id] ?? []), key];
     }
     return acc;
-  }, [] as Machine[MachineMeta.PK][]);
+  }, {} as Record<Machine[MachineMeta.PK], string[]>);
 
-const machineIdsInLists = (state: RootState): Machine[MachineMeta.PK][] =>
-  Object.values(state.machine.lists).reduce((acc, curr) => {
-    if (curr.groups && curr.groups.length) {
-      curr.groups.reduce((acc, curr) => {
+const machineIdsInLists = (
+  state: RootState
+): Record<Machine[MachineMeta.PK], string[]> =>
+  Object.entries(state.machine.lists).reduce((acc, [callId, value]) => {
+    if (value.groups && value.groups.length) {
+      return value.groups.reduce((acc, curr) => {
         if (curr.items.length > 0) {
-          return acc.concat(curr.items);
+          return curr.items.reduce((acc, systemId) => {
+            acc[systemId] = [...(acc[systemId] ?? []), callId];
+            return acc;
+          }, {} as Record<Machine[MachineMeta.PK], string[]>);
         }
         return acc;
-      }, [] as Machine[MachineMeta.PK][]);
+      }, {} as Record<Machine[MachineMeta.PK], string[]>);
     }
     return acc;
-  }, [] as Machine[MachineMeta.PK][]);
+  }, {} as Record<Machine[MachineMeta.PK], string[]>);
+
+const callIdsForMachine = (
+  state: RootState,
+  systemId: string | null | undefined
+): string[] => {
+  if (systemId) {
+    return [
+      ...(machineIdsInDetails(state)[systemId] ?? []),
+      ...(machineIdsInLists(state)[systemId] ?? []),
+    ];
+  } else {
+    return [];
+  }
+};
 
 /**
  * Get the machines that are either tagging or untagging.
@@ -420,6 +441,7 @@ const selectors = {
   search,
   selected,
   selectedIDs,
+  callIdsForMachine,
   machineIdsInLists,
   settingPool: statusSelectors["settingPool"],
   settingZone: statusSelectors["settingZone"],

@@ -44,18 +44,30 @@ export const useFetchMachines = (): void => {
   // https://github.com/canonical-web-and-design/app-tribe/issues/1128
 };
 
-// TODO: Maybe in the hook for getting a machine it should check for whether the machine details exist in the store,
-// or otherwise it could check if there is another request in the store for the same id.
-// We still need to store a details request for each place that is using it so that we know when it is safe to unsubscribe from the machine.
+const useUnsubscribeGetMachine = (
+  id?: Machine[MachineMeta.PK] | null,
+  callId?: string | null
+) => {
+  const dispatch = useDispatch();
+  const loaded = useSelector((state: RootState) =>
+    machineSelectors.detailsLoaded(state, callId)
+  );
+  const callIdsForMachine = useSelector((state: RootState) =>
+    machineSelectors.callIdsForMachine(state, id)
+  );
+  const hasOtherCallsForMachine =
+    callIdsForMachine.filter((call) => call !== callId)?.length > 0;
 
-// do we need a hook? I don't think so. We can just dispatch the cleanup on unmount.
-// TODO: hook for cleaning up machine requests
-// check if any machine.list or machine.get requests are using the machine(s)
-// if not it should:
-// 1. remove the machine(s) from the items list
-// 2. remove the list or get entry
-// 3. , clean up any other references e.g. errors and statuses
-// dispatch the machine.unsubscribe action to unsubscribe from the machine
+  useEffect(() => {
+    return () => {
+      if (id && callId && loaded && !hasOtherCallsForMachine) {
+        dispatch(machineActions.unsubscribe([id]));
+      }
+    };
+  }, [id, callId, loaded, dispatch, hasOtherCallsForMachine]);
+
+  return null;
+};
 
 /**
  * Get a machine via the API.
@@ -65,8 +77,8 @@ export const useGetMachine = (
   id?: Machine[MachineMeta.PK] | null
 ): { machine: Machine | null; loading?: boolean; loaded?: boolean } => {
   const [callId, setCallId] = useState<string | null>(null);
-  const previousId = usePrevious(id, false);
   const previousCallId = usePrevious(callId);
+  const previousId = usePrevious(id, false);
   const dispatch = useDispatch();
   const loaded = useSelector((state: RootState) =>
     machineSelectors.detailsLoaded(state, callId)
@@ -83,8 +95,6 @@ export const useGetMachine = (
       if (id) {
         dispatch(machineActions.cleanupRequest(id));
       }
-      // TODO: run unsubscribe if no other requestId is using this machine
-      // https://github.com/canonical/app-tribe/issues/1141
     },
     [dispatch]
   );
@@ -98,9 +108,6 @@ export const useGetMachine = (
   useEffect(() => {
     if (isId(id) && callId && callId !== previousCallId) {
       dispatch(machineActions.get(id, callId));
-      if (previousCallId) {
-        cleanup(previousCallId);
-      }
     }
   }, [dispatch, id, callId, previousCallId, cleanup]);
 
@@ -110,8 +117,7 @@ export const useGetMachine = (
     };
   }, [cleanup, callId]);
 
-  // TODO: clean up the previous request if the id changes or the component is unmounted:
-  // https://github.com/canonical-web-and-design/app-tribe/issues/1151
+  useUnsubscribeGetMachine(id, callId);
 
   return { machine, loading, loaded };
 };
