@@ -49,7 +49,6 @@ describe("machine hook utils", () => {
   let machine: Machine | null;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     machine = machineFactory({
       architecture: "amd64",
       events: [machineEventFactory()],
@@ -124,6 +123,7 @@ describe("machine hook utils", () => {
         <Provider store={store}>{children}</Provider>;
 
     it("can get a machine", () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
       const store = mockStore(state);
       renderHook(
         ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
@@ -160,6 +160,10 @@ describe("machine hook utils", () => {
     });
 
     it("gets a machine if the id changes", () => {
+      jest
+        .spyOn(reduxToolkit, "nanoid")
+        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);
       const { rerender } = renderHook(
         ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
@@ -171,7 +175,7 @@ describe("machine hook utils", () => {
         }
       );
       rerender({ id: "ghi789" });
-      const expected = machineActions.get("ghi789", "mocked-nanoid");
+      const expected = machineActions.get("ghi789", "mocked-nanoid-2");
       const getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);

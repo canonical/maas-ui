@@ -17,11 +17,8 @@ import {
 
 const mockStore = configureStore();
 
-beforeEach(() => {
-  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-});
-
 it("handles when machines are loading", async () => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   const state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -51,6 +48,7 @@ it("handles when machines are loading", async () => {
   await waitFor(() =>
     expect(screen.getByLabelText(Labels.Loading)).toBeInTheDocument()
   );
+  jest.restoreAllMocks();
 });
 
 it("handles when a machine does not exist", () => {
