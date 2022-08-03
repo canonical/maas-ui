@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import reduxToolkit from "@reduxjs/toolkit";
-import { renderHook } from "@testing-library/react-hooks";
+import { renderHook, cleanup } from "@testing-library/react-hooks";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -181,6 +181,54 @@ describe("machine hook utils", () => {
         .filter((action) => action.type === expected.type);
       expect(getDispatches).toHaveLength(2);
       expect(getDispatches[1]).toStrictEqual(expected);
+    });
+
+    it("cleans up machine request on unmount", async () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
+      const store = mockStore(state);
+      renderHook(
+        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        {
+          initialProps: {
+            id: "def456",
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      cleanup();
+      const expected = machineActions.cleanupRequest("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+    });
+
+    it("cleans up machine requests when the id changes", async () => {
+      jest
+        .spyOn(reduxToolkit, "nanoid")
+        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce("mocked-nanoid-2");
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        {
+          initialProps: {
+            id: "def123",
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+
+      const expected1 = machineActions.cleanupRequest("mocked-nanoid-1");
+      const expected2 = machineActions.cleanupRequest("mocked-nanoid-2");
+      const getCleanupActions = () =>
+        store.getActions().filter((action) => action.type === expected1.type);
+
+      rerender({ id: "def456" });
+      expect(getCleanupActions()).toHaveLength(1);
+      cleanup();
+      expect(getCleanupActions()).toHaveLength(2);
+      expect(getCleanupActions()[0]).toStrictEqual(expected1);
+      expect(getCleanupActions()[1]).toStrictEqual(expected2);
     });
   });
 

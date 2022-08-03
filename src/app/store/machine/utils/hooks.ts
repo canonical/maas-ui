@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useCallback, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { nanoid } from "@reduxjs/toolkit";
@@ -52,8 +52,8 @@ export const useGetMachine = (
   id?: Machine[MachineMeta.PK] | null
 ): { machine: Machine | null; loading?: boolean; loaded?: boolean } => {
   const [callId, setCallId] = useState<string | null>(null);
-  const previousCallId = usePrevious(callId);
   const previousId = usePrevious(id, false);
+  const previousCallId = usePrevious(callId);
   const dispatch = useDispatch();
   const loaded = useSelector((state: RootState) =>
     machineSelectors.detailsLoaded(state, callId)
@@ -63,6 +63,17 @@ export const useGetMachine = (
   );
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
+  );
+
+  const cleanup = useCallback(
+    (id: string | null | undefined) => {
+      if (id) {
+        dispatch(machineActions.cleanupRequest(id));
+      }
+      // TODO: run unsubscribe if no other requestId is using this machine
+      // https://github.com/canonical/app-tribe/issues/1141
+    },
+    [dispatch]
   );
 
   useEffect(() => {
@@ -76,6 +87,13 @@ export const useGetMachine = (
       dispatch(machineActions.get(id, callId));
     }
   }, [dispatch, id, callId, previousCallId]);
+
+  useEffect(() => {
+    return () => {
+      cleanup(callId);
+    };
+  }, [cleanup, callId]);
+
   // TODO: clean up the previous request if the id changes or the component is unmounted:
   // https://github.com/canonical-web-and-design/app-tribe/issues/1151
   return { machine, loading, loaded };
