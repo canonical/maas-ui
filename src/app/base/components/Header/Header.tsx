@@ -173,7 +173,9 @@ export const Header = (): JSX.Element => {
   const isAuthenticated = !!authUser;
   const introMatch = useMatch({ path: urls.intro.index, end: false });
   const isAtIntro = !!introMatch;
-  const { theme } = useContext(ThemeContext);
+  const maasTheme = useSelector(configSelectors.theme);
+  const { theme, setTheme } = useContext(ThemeContext);
+
   // Redirect to the intro pages if not completed.
   useEffect(() => {
     // Check that we're not already at the intro to allow navigation through the
@@ -197,6 +199,10 @@ export const Header = (): JSX.Element => {
     navigate,
   ]);
 
+  useEffect(() => {
+    setTheme(maasTheme ? maasTheme : "default");
+  }, [maasTheme, setTheme]);
+
   // Hide the navigation items when the user is not authenticated or hasn't been
   // through the intro process.
   const showLinks = isAuthenticated && completedIntro && completedUserIntro;
@@ -214,7 +220,13 @@ export const Header = (): JSX.Element => {
         Skip to main content
       </a>
       <Navigation
-        className={theme ? `p-navigation--${theme}` : "default"}
+        className={
+          theme
+            ? `p-navigation--${theme}`
+            : maasTheme
+            ? `p-navigation--${maasTheme}`
+            : "default"
+        }
         generateLink={generateLink}
         items={
           showLinks

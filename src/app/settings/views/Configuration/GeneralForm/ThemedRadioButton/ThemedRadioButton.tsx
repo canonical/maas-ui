@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, MouseEventHandler } from "react";
 
 import classNames from "classnames";
 
@@ -7,6 +7,7 @@ export type Props = {
   className?: string;
   color?: ColorValues;
   name?: string;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   label?: ReactNode;
 } & React.PropsWithoutRef<JSX.IntrinsicElements["input"]>;
 
@@ -28,6 +29,7 @@ const ThemedRadioButton = ({
   color,
   label,
   name,
+  onClick,
   value,
   ...inputProps
 }: Props): JSX.Element => {
@@ -39,6 +41,7 @@ const ThemedRadioButton = ({
         name={name}
         type="radio"
         {...inputProps}
+        onClick={onClick}
         value={color}
       />
       {label}

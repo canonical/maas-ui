@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useContext } from "react";
 
 import { Col, Link, Row } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
@@ -11,6 +11,7 @@ import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useSendAnalytics } from "app/base/hooks";
+import ThemeContext from "app/base/theme-context";
 import type { UsabillaLive } from "app/base/types";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -51,6 +52,7 @@ const GeneralForm = (): JSX.Element => {
   const saving = useSelector(configSelectors.saving);
   const previousReleaseNotifications = useRef(releaseNotifications);
   const previousEnableAnalytics = usePrevious(analyticsEnabled);
+  const { setTheme } = useContext(ThemeContext);
 
   useEffect(() => {
     if (analyticsEnabled !== previousEnableAnalytics) {
@@ -143,6 +145,7 @@ const GeneralForm = (): JSX.Element => {
               component={ThemedRadioButton}
               label={color.label}
               name="theme"
+              onClick={() => setTheme(color.value)}
             />
           </Col>
         ))}
