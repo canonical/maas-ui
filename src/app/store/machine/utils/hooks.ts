@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { nanoid } from "@reduxjs/toolkit";
@@ -11,6 +11,7 @@ import {
   osInfo as osInfoSelectors,
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -49,19 +50,35 @@ export const useFetchMachines = (): void => {
  */
 export const useGetMachine = (
   id?: Machine[MachineMeta.PK] | null
-): string | null => {
-  const callId = useRef<string | null>(null);
+): { machine: Machine | null; loading?: boolean; loaded?: boolean } => {
+  const [callId, setCallId] = useState<string | null>(null);
+  const previousCallId = usePrevious(callId);
   const previousId = usePrevious(id, false);
   const dispatch = useDispatch();
+  const loaded = useSelector((state: RootState) =>
+    machineSelectors.detailsLoaded(state, callId)
+  );
+  const loading = useSelector((state: RootState) =>
+    machineSelectors.detailsLoading(state, callId)
+  );
+  const machine = useSelector((state: RootState) =>
+    machineSelectors.getById(state, id)
+  );
+
   useEffect(() => {
     if (isId(id) && id !== previousId) {
-      callId.current = nanoid();
-      dispatch(machineActions.get(id, callId.current));
+      setCallId(nanoid());
     }
   }, [dispatch, id, previousId]);
+
+  useEffect(() => {
+    if (isId(id) && callId && callId !== previousCallId) {
+      dispatch(machineActions.get(id, callId));
+    }
+  }, [dispatch, id, callId, previousCallId]);
   // TODO: clean up the previous request if the id changes or the component is unmounted:
   // https://github.com/canonical-web-and-design/app-tribe/issues/1151
-  return callId.current;
+  return { machine, loading, loaded };
 };
 
 /**
