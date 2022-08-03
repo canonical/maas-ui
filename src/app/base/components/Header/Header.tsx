@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useContext } from "react";
 
 import type { NavLink } from "@canonical/react-components";
 import {
@@ -22,6 +22,7 @@ import {
   useCompletedUserIntro,
   useGoogleAnalytics,
 } from "app/base/hooks";
+import ThemeContext from "app/base/theme-context";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
@@ -172,7 +173,7 @@ export const Header = (): JSX.Element => {
   const isAuthenticated = !!authUser;
   const introMatch = useMatch({ path: urls.intro.index, end: false });
   const isAtIntro = !!introMatch;
-  const maasTheme = useSelector(configSelectors.theme);
+  const { theme } = useContext(ThemeContext);
   // Redirect to the intro pages if not completed.
   useEffect(() => {
     // Check that we're not already at the intro to allow navigation through the
@@ -213,7 +214,7 @@ export const Header = (): JSX.Element => {
         Skip to main content
       </a>
       <Navigation
-        className={maasTheme ? `p-navigation--${maasTheme}` : "default"}
+        className={theme ? `p-navigation--${theme}` : "default"}
         generateLink={generateLink}
         items={
           showLinks

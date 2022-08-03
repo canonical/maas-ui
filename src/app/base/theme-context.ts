@@ -1,18 +1,13 @@
-import React from "react";
+import { createContext } from "react";
 
-export const themes = {
-  default: "default",
-  bark: "bark",
-  sage: "sage",
-  olive: "olive",
-  viridian: "viridian",
-  prussian_green: "prussian_green",
-  blue: "blue",
-  purple: "purple",
-  magenta: "magenta",
-  red: "red",
+export type ThemeContent = {
+  theme: string;
+  setTheme: (c: string) => void;
 };
 
-const ThemeContext = React.createContext(themes.default);
+const ThemeContext = createContext<ThemeContent>({
+  theme: "default",
+  setTheme: () => {},
+});
 
 export default ThemeContext;
