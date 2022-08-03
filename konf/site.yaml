@@ -5,4 +5,4 @@ readinessPath: "/"
 demo:
   env:
     - name: MAAS_URL
-      value: "http://polong.internal:5240/"
+      value: "http://bolla.internal:5240/"
