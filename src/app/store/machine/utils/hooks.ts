@@ -44,6 +44,19 @@ export const useFetchMachines = (): void => {
   // https://github.com/canonical-web-and-design/app-tribe/issues/1128
 };
 
+// TODO: Maybe in the hook for getting a machine it should check for whether the machine details exist in the store,
+// or otherwise it could check if there is another request in the store for the same id.
+// We still need to store a details request for each place that is using it so that we know when it is safe to unsubscribe from the machine.
+
+// do we need a hook? I don't think so. We can just dispatch the cleanup on unmount.
+// TODO: hook for cleaning up machine requests
+// check if any machine.list or machine.get requests are using the machine(s)
+// if not it should:
+// 1. remove the machine(s) from the items list
+// 2. remove the list or get entry
+// 3. , clean up any other references e.g. errors and statuses
+// dispatch the machine.unsubscribe action to unsubscribe from the machine
+
 /**
  * Get a machine via the API.
  * @param id - A machine's system id.
@@ -85,8 +98,11 @@ export const useGetMachine = (
   useEffect(() => {
     if (isId(id) && callId && callId !== previousCallId) {
       dispatch(machineActions.get(id, callId));
+      if (previousCallId) {
+        cleanup(previousCallId);
+      }
     }
-  }, [dispatch, id, callId, previousCallId]);
+  }, [dispatch, id, callId, previousCallId, cleanup]);
 
   useEffect(() => {
     return () => {
@@ -96,6 +112,7 @@ export const useGetMachine = (
 
   // TODO: clean up the previous request if the id changes or the component is unmounted:
   // https://github.com/canonical-web-and-design/app-tribe/issues/1151
+
   return { machine, loading, loaded };
 };
 

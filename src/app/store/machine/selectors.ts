@@ -10,6 +10,8 @@ import type {
   MachineState,
   MachineStatus,
   MachineStatuses,
+  MachineStateDetails,
+  MachineStateLists,
 } from "app/store/machine/types";
 import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
@@ -82,6 +84,32 @@ ACTIONS.forEach(({ status }) => {
       )
   );
 });
+
+const lists = (state: RootState): MachineStateLists => state.machine.lists;
+
+const details = (state: RootState): MachineStateDetails =>
+  state.machine.details;
+
+const machineIdsInDetails = (state: RootState): Machine[MachineMeta.PK][] =>
+  Object.values(state.machine.details).reduce((acc, curr) => {
+    if (curr.system_id) {
+      acc.push(curr.system_id);
+    }
+    return acc;
+  }, [] as Machine[MachineMeta.PK][]);
+
+const machineIdsInLists = (state: RootState): Machine[MachineMeta.PK][] =>
+  Object.values(state.machine.lists).reduce((acc, curr) => {
+    if (curr.groups && curr.groups.length) {
+      curr.groups.reduce((acc, curr) => {
+        if (curr.items.length > 0) {
+          return acc.concat(curr.items);
+        }
+        return acc;
+      }, [] as Machine[MachineMeta.PK][]);
+    }
+    return acc;
+  }, [] as Machine[MachineMeta.PK][]);
 
 /**
  * Get the machines that are either tagging or untagging.
@@ -368,8 +396,10 @@ const selectors = {
   deleting: statusSelectors["deleting"],
   deletingInterface: statusSelectors["deletingInterface"],
   deploying: statusSelectors["deploying"],
+  details,
   detailsLoaded,
   detailsLoading,
+  machineIdsInDetails,
   enteringRescueMode: statusSelectors["enteringRescueMode"],
   eventErrors,
   eventErrorsForIds,
@@ -380,6 +410,7 @@ const selectors = {
   getStatuses,
   getStatusForMachine,
   linkingSubnet: statusSelectors["linkingSubnet"],
+  lists,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],
@@ -389,6 +420,7 @@ const selectors = {
   search,
   selected,
   selectedIDs,
+  machineIdsInLists,
   settingPool: statusSelectors["settingPool"],
   settingZone: statusSelectors["settingZone"],
   statuses,
