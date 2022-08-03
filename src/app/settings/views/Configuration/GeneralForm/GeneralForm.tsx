@@ -70,7 +70,7 @@ const GeneralForm = (): JSX.Element => {
     <FormikForm<GeneralFormValues>
       aria-label="Configuration - General"
       buttonsAlign="right"
-      buttonsBordered={false}
+      buttonsBordered={true}
       initialValues={{
         maas_name: maasName || "",
         theme: maasTheme || ColorValues.Default,
