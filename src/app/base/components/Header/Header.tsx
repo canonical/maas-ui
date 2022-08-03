@@ -201,7 +201,7 @@ export const Header = (): JSX.Element => {
 
   useEffect(() => {
     setTheme(maasTheme ? maasTheme : "default");
-  }, [maasTheme, setTheme]);
+  }, [location, maasTheme, setTheme]);
 
   // Hide the navigation items when the user is not authenticated or hasn't been
   // through the intro process.
