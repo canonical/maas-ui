@@ -31,6 +31,12 @@
     margin-bottom: 0;
   }
 
+  button.p-double-row__button {
+    @extend %small-text;
+    margin-left: $sph--x-small !important;
+    color: $color-mid-dark;
+  }
+
   .p-double-row__icon-space {
     width: $icon-space;
   }
