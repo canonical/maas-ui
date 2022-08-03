@@ -1692,7 +1692,11 @@ describe("machine actions", () => {
         model: "machine",
         method: "filter_options",
       },
-      payload: null,
+      payload: {
+        params: {
+          group_key: FetchGroupKey.Owner,
+        },
+      },
     });
   });
 });
