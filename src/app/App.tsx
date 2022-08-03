@@ -6,7 +6,7 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
 
-import ThemeContext from "./base/theme-context";
+import ThemePreviewContext from "./base/theme-preview-context";
 
 import Routes from "app/Routes";
 import Footer from "app/base/components/Footer";
@@ -96,12 +96,12 @@ export const App = (): JSX.Element => {
 
   return (
     <div id="maas-ui">
-      <ThemeContext.Provider value={{ theme, setTheme }}>
+      <ThemePreviewContext.Provider value={{ theme, setTheme }}>
         <Header />
         <main id="main-content">{content}</main>
         <Footer />
         <StatusBar />
-      </ThemeContext.Provider>
+      </ThemePreviewContext.Provider>
     </div>
   );
 };

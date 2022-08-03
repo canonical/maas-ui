@@ -22,7 +22,7 @@ import {
   useCompletedUserIntro,
   useGoogleAnalytics,
 } from "app/base/hooks";
-import ThemeContext from "app/base/theme-context";
+import ThemePreviewContext from "app/base/theme-preview-context";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
@@ -174,7 +174,7 @@ export const Header = (): JSX.Element => {
   const introMatch = useMatch({ path: urls.intro.index, end: false });
   const isAtIntro = !!introMatch;
   const maasTheme = useSelector(configSelectors.theme);
-  const { theme, setTheme } = useContext(ThemeContext);
+  const { theme, setTheme } = useContext(ThemePreviewContext);
 
   // Redirect to the intro pages if not completed.
   useEffect(() => {

@@ -5,9 +5,9 @@ export type ThemeContent = {
   setTheme: (c: string) => void;
 };
 
-const ThemeContext = createContext<ThemeContent>({
+const ThemePreviewContext = createContext<ThemeContent>({
   theme: "default",
   setTheme: () => {},
 });
 
-export default ThemeContext;
+export default ThemePreviewContext;

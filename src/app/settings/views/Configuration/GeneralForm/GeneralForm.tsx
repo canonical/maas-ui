@@ -11,7 +11,7 @@ import { ColorValues } from "./ThemedRadioButton/ThemedRadioButton";
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { useSendAnalytics } from "app/base/hooks";
-import ThemeContext from "app/base/theme-context";
+import ThemePreviewContext from "app/base/theme-preview-context";
 import type { UsabillaLive } from "app/base/types";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
@@ -52,7 +52,7 @@ const GeneralForm = (): JSX.Element => {
   const saving = useSelector(configSelectors.saving);
   const previousReleaseNotifications = useRef(releaseNotifications);
   const previousEnableAnalytics = usePrevious(analyticsEnabled);
-  const { setTheme } = useContext(ThemeContext);
+  const { setTheme } = useContext(ThemePreviewContext);
 
   useEffect(() => {
     if (analyticsEnabled !== previousEnableAnalytics) {
@@ -69,7 +69,7 @@ const GeneralForm = (): JSX.Element => {
   return (
     <FormikForm<GeneralFormValues>
       aria-label="Configuration - General"
-      buttonsAlign="left"
+      buttonsAlign="right"
       buttonsBordered={false}
       initialValues={{
         maas_name: maasName || "",
