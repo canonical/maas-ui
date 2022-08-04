@@ -1228,6 +1228,22 @@ const machineSlice = createSlice({
       state.filtersLoading = false;
       state.filtersLoaded = true;
     },
+    cleanupRequest: {
+      prepare: (callId: string) => ({
+        meta: {
+          callId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<null, string, GenericMeta>
+      ) => {
+        if (action.meta.callId && action.meta.callId in state.details) {
+          delete state.details[action.meta.callId];
+        }
+      },
+    },
     get: {
       prepare: (machineID: Machine[MachineMeta.PK], callId: string) => ({
         meta: {
