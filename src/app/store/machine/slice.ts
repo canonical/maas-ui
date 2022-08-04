@@ -1239,7 +1239,7 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<null, string, GenericMeta>
       ) => {
-        if (action.meta.callId) {
+        if (action.meta.callId && action.meta.callId in state.details) {
           delete state.details[action.meta.callId];
         }
       },
