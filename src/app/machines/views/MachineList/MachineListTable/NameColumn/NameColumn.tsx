@@ -81,12 +81,17 @@ const generateIPAddresses = (machine: Machine) => {
             </>
           }
           position="right"
+          positionElementClassName="p-double-row__tooltip-inner"
         >
           {ipAddresses.length > 1 ? (
-            <Button
-              appearance="base"
-              className="p-double-row__button u-no-border u-no-margin u-no-padding"
-            >{`(+${ipAddresses.length - 1})`}</Button>
+            <>
+              {"("}
+              <Button
+                appearance="link"
+                className="p-double-row__button u-no-border u-no-margin u-no-padding"
+              >{`+${ipAddresses.length - 1}`}</Button>
+              {")"}
+            </>
           ) : null}
         </Tooltip>
       </>
@@ -145,7 +150,7 @@ export const NameColumn = ({
       secondary={secondaryRow || <NonBreakingSpace />}
       secondaryClassName={classNames([
         "u-flex",
-        { "u-flex u-nudge--secondary-row u-align--left": handleCheckbox },
+        { "u-nudge--secondary-row u-align--left": handleCheckbox },
       ])}
     />
   );
