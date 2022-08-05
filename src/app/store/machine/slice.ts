@@ -52,8 +52,13 @@ import type {
   UpdateVmfsDatastoreParams,
   MachineStateList,
 } from "./types";
-import type { FetchFilters } from "./types/actions";
-import type { MachineStateCount } from "./types/base";
+import type { FetchFilters, FetchGroupKey } from "./types/actions";
+import type {
+  MachineStateCount,
+  FilterGroupOption,
+  FilterGroupOptionType,
+} from "./types/base";
+import { FilterGroupType } from "./types/base";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type {
@@ -353,6 +358,12 @@ const DEFAULT_COUNT_STATE = {
   count: null,
   errors: null,
 };
+
+const isArrayOfOptionsType = <T extends FilterGroupOptionType>(
+  options: FilterGroupOption[],
+  typeString: string
+): options is FilterGroupOption<T>[] =>
+  options.every(({ key }) => typeof key === typeString);
 
 /**
  * Wrap the updateError call so that the call is made with the correct generics.
@@ -1212,7 +1223,6 @@ const machineSlice = createSlice({
       state.errors = action.payload;
       state = setErrors(state, action, "filterGroups");
       state.filtersLoading = false;
-      state.saving = false;
     },
     filterGroupsStart: (state: MachineState) => {
       state.filtersLoading = true;
@@ -1223,10 +1233,135 @@ const machineSlice = createSlice({
     ) => {
       state.filters = action.payload.map((response) => ({
         ...response,
+        errors: null,
+        loaded: false,
+        loading: false,
         options: null,
       }));
       state.filtersLoading = false;
       state.filtersLoaded = true;
+    },
+    filterOptions: {
+      prepare: (groupKey: FetchGroupKey) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "filter_options",
+        },
+        payload: {
+          params: {
+            group_key: groupKey,
+          },
+        },
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    filterOptionsError: {
+      prepare: (
+        groupKey: FetchGroupKey,
+        errors: MachineStateDetailsItem["errors"]
+      ) => ({
+        meta: {
+          item: {
+            group_key: groupKey,
+          },
+        },
+        payload: errors,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          MachineStateDetailsItem["errors"],
+          string,
+          GenericItemMeta<{ group_key: FetchGroupKey }>
+        >
+      ) => {
+        // Find the group for the requested key.
+        const filterGroup = state.filters.find(
+          ({ key }) => key === action.meta.item.group_key
+        );
+        if (filterGroup) {
+          filterGroup.errors = action.payload;
+          filterGroup.loading = false;
+        }
+        state = setErrors(state, action, "filterOptions");
+      },
+    },
+    filterOptionsStart: {
+      prepare: (groupKey: FetchGroupKey) => ({
+        meta: {
+          item: {
+            group_key: groupKey,
+          },
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          null,
+          string,
+          GenericItemMeta<{ group_key: FetchGroupKey }>
+        >
+      ) => {
+        // Find the group for the requested key.
+        const filterGroup = state.filters.find(
+          ({ key }) => key === action.meta.item.group_key
+        );
+        if (filterGroup) {
+          filterGroup.loading = true;
+        }
+      },
+    },
+    filterOptionsSuccess: {
+      prepare: (groupKey: FetchGroupKey, payload: FilterGroupOption[]) => ({
+        meta: {
+          item: {
+            group_key: groupKey,
+          },
+        },
+        payload,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          FilterGroupOption[],
+          string,
+          GenericItemMeta<{ group_key: FetchGroupKey }>
+        >
+      ) => {
+        // Find the group for the requested key.
+        const filterGroup = state.filters.find(
+          ({ key }) => key === action.meta.item.group_key
+        );
+        if (filterGroup) {
+          const payload = action.payload;
+          // Narrow the type of the response to match the expected options
+          // and instert the options inside the filter group.
+          if (
+            filterGroup.type === FilterGroupType.Bool &&
+            isArrayOfOptionsType<boolean>(payload, "boolean")
+          ) {
+            filterGroup.options = payload;
+          } else if (
+            (filterGroup.type === FilterGroupType.Float ||
+              filterGroup.type === FilterGroupType.Int) &&
+            isArrayOfOptionsType<number>(payload, "number")
+          ) {
+            filterGroup.options = payload;
+          } else if (
+            (filterGroup.type === FilterGroupType.String ||
+              filterGroup.type === FilterGroupType.Dict ||
+              filterGroup.type === FilterGroupType.List) &&
+            isArrayOfOptionsType<string>(payload, "string")
+          ) {
+            filterGroup.options = payload;
+          }
+          filterGroup.loading = false;
+          filterGroup.loaded = true;
+        }
+      },
     },
     cleanupRequest: {
       prepare: (callId: string) => ({

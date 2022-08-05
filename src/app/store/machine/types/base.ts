@@ -213,19 +213,45 @@ export type MachineStateList = {
 
 export type MachineStateLists = Record<string, MachineStateList>;
 
+export type FilterGroupOptionType = boolean | number | string[] | string;
+
+export type FilterGroupOption<K = FilterGroupOptionType> = {
+  key: K;
+  label: string;
+};
+
+export enum FilterGroupType {
+  Bool = "bool",
+  Dict = "dict[string,string]",
+  Float = "float",
+  Int = "int",
+  // Only multichoice strings are currently supported:
+  // https://github.com/maas/maas/blob/a9e9029d0153a938e5a73b9d1de5b59252e64c6a/src/maasserver/node_constraint_filter_forms.py#L688
+  List = "list[string]",
+  String = "string",
+}
+
 export type FilterGroup = {
+  errors: APIError;
   key: string;
   label: string;
+  loaded: boolean;
+  loading: boolean;
   dynamic: boolean;
   for_grouping: boolean;
 } & (
-  | { options: boolean | null; type: "bool" }
-  | { options: Record<string, string> | null; type: "dict[string, string]" }
-  | { options: number | null; type: "float" | "int" }
-  | { options: number[] | null; type: "list[float]" | "list[int]" }
-  | { options: boolean[] | null; type: "list[bool]" }
-  | { options: string[] | null; type: "list[string]" }
-  | { options: string | null; type: "string" }
+  | { options: FilterGroupOption<boolean>[] | null; type: FilterGroupType.Bool }
+  | {
+      options: FilterGroupOption<string>[] | null;
+      type:
+        | FilterGroupType.Dict
+        | FilterGroupType.List
+        | FilterGroupType.String;
+    }
+  | {
+      options: FilterGroupOption<number>[] | null;
+      type: FilterGroupType.Float | FilterGroupType.Int;
+    }
 );
 
 export type MachineEventErrors = CloneError;

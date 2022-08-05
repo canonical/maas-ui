@@ -1,5 +1,7 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
+import { FilterGroupType } from "../../app/store/machine/types/base";
+
 import { model, modelRef, timestampedModel } from "./model";
 
 import type {
@@ -241,11 +243,14 @@ const node = extend<SimpleNode, BaseNode>(simpleNode, {
 
 export const filterGroup = define<FilterGroup>({
   dynamic: false,
+  errors: null,
   for_grouping: true,
   key: "arch",
   label: "Architecture",
+  loaded: false,
+  loading: false,
   options: null,
-  type: "string",
+  type: FilterGroupType.String,
 });
 
 export const machine = extend<BaseNode, Machine>(node, {

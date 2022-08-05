@@ -1,4 +1,6 @@
 import reducers, { actions } from "./slice";
+import { FetchGroupKey } from "./types/actions";
+import { FilterGroupType } from "./types/base";
 
 import { NodeActions } from "app/store/types/node";
 import {
@@ -331,6 +333,286 @@ describe("machine reducer", () => {
           }),
         ],
         filtersLoading: false,
+      })
+    );
+  });
+
+  it("reduces filterOptionsStart", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.Owner,
+          loading: false,
+        }),
+      ],
+    });
+    expect(
+      reducers(initialState, actions.filterOptionsStart(FetchGroupKey.Owner))
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.Owner,
+            loading: true,
+          }),
+        ],
+      })
+    );
+  });
+
+  it("reduces filterOptionsError", () => {
+    const initialState = machineStateFactory({
+      eventErrors: [],
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.Owner,
+          loading: true,
+        }),
+      ],
+    });
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsError(
+          FetchGroupKey.Owner,
+          "Could not fetch filter groups"
+        )
+      )
+    ).toEqual(
+      machineStateFactory({
+        eventErrors: [
+          machineEventErrorFactory({
+            error: "Could not fetch filter groups",
+            event: "filterOptions",
+            id: undefined,
+          }),
+        ],
+        filters: [
+          filterGroupFactory({
+            errors: "Could not fetch filter groups",
+            key: FetchGroupKey.Owner,
+            loading: false,
+          }),
+        ],
+      })
+    );
+  });
+
+  it("reduces filterOptionsSuccess for bool options", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.PowerState,
+          options: null,
+          loaded: false,
+          loading: true,
+          type: FilterGroupType.Bool,
+        }),
+      ],
+    });
+    const fetchedOptions = [
+      { key: true, label: "On" },
+      { key: false, label: "Off" },
+    ];
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsSuccess(FetchGroupKey.PowerState, fetchedOptions)
+      )
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.PowerState,
+            options: fetchedOptions,
+            loaded: true,
+            loading: false,
+            type: FilterGroupType.Bool,
+          }),
+        ],
+      })
+    );
+  });
+
+  it("reduces filterOptionsSuccess for float options", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.Memory,
+          options: null,
+          loaded: false,
+          loading: true,
+          type: FilterGroupType.Float,
+        }),
+      ],
+    });
+    const fetchedOptions = [
+      { key: 1024.1, label: "1024.1" },
+      { key: 1024.2, label: "2024.2" },
+    ];
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsSuccess(FetchGroupKey.Memory, fetchedOptions)
+      )
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.Memory,
+            options: fetchedOptions,
+            loaded: true,
+            loading: false,
+            type: FilterGroupType.Float,
+          }),
+        ],
+      })
+    );
+  });
+
+  it("reduces filterOptionsSuccess for int options", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.Status,
+          options: null,
+          loaded: false,
+          loading: true,
+          type: FilterGroupType.Int,
+        }),
+      ],
+    });
+    const fetchedOptions = [
+      { key: 1, label: "New" },
+      { key: 2, label: "Ready" },
+    ];
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsSuccess(FetchGroupKey.Status, fetchedOptions)
+      )
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.Status,
+            options: fetchedOptions,
+            loaded: true,
+            loading: false,
+            type: FilterGroupType.Int,
+          }),
+        ],
+      })
+    );
+  });
+
+  it("reduces filterOptionsSuccess for string options", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.Tags,
+          options: null,
+          loaded: false,
+          loading: true,
+          type: FilterGroupType.List,
+        }),
+      ],
+    });
+    const fetchedOptions = [
+      { key: "tag1", label: "Tag 1" },
+      { key: "tag2", label: "Tag 2" },
+    ];
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsSuccess(FetchGroupKey.Tags, fetchedOptions)
+      )
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.Tags,
+            options: fetchedOptions,
+            loaded: true,
+            loading: false,
+            type: FilterGroupType.List,
+          }),
+        ],
+      })
+    );
+  });
+
+  it("reduces filterOptionsSuccess for dict options", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.BootInterface,
+          options: null,
+          loaded: false,
+          loading: true,
+          type: FilterGroupType.Dict,
+        }),
+      ],
+    });
+    const fetchedOptions = [
+      { key: "iface:name=eth0", label: "name=eth0" },
+      { key: "iface:name=eth1", label: "name=eth1" },
+    ];
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsSuccess(
+          FetchGroupKey.BootInterface,
+          fetchedOptions
+        )
+      )
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.BootInterface,
+            options: fetchedOptions,
+            loaded: true,
+            loading: false,
+            type: FilterGroupType.Dict,
+          }),
+        ],
+      })
+    );
+  });
+
+  it("reduces filterOptionsSuccess for list options", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.Owner,
+          options: null,
+          loaded: false,
+          loading: true,
+          type: FilterGroupType.String,
+        }),
+      ],
+    });
+    const fetchedOptions = [
+      { key: "admin", label: "Admin" },
+      { key: "admin2", label: "Admin2" },
+    ];
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsSuccess(FetchGroupKey.Owner, fetchedOptions)
+      )
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.Owner,
+            options: fetchedOptions,
+            loaded: true,
+            loading: false,
+            type: FilterGroupType.String,
+          }),
+        ],
       })
     );
   });
