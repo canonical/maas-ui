@@ -85,12 +85,12 @@ const generateIPAddresses = (machine: Machine) => {
         >
           {ipAddresses.length > 1 ? (
             <>
-              {"("}
+              (
               <Button
                 appearance="link"
                 className="p-double-row__button u-no-border u-no-margin u-no-padding"
               >{`+${ipAddresses.length - 1}`}</Button>
-              {")"}
+              )
             </>
           ) : null}
         </Tooltip>
