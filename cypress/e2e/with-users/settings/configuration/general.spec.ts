@@ -1,6 +1,6 @@
 import { generateMAASURL } from "../../../utils";
 
-context("Settings Deploy configuration", () => {
+context("Settings - General", () => {
   beforeEach(() => {
     cy.login();
     cy.visit(generateMAASURL("/settings/configuration/general"));
