@@ -7,6 +7,25 @@ export type GetValue<I, D = void> = (
   extraData?: D
 ) => FilterValue | FilterValue[] | null;
 
+export enum FilterSelected {
+  All,
+  Selected,
+  NotSelected,
+}
+
+export const getSelectedValue = (terms: FilterValue[]): FilterSelected => {
+  // The terms will be an array, but it is invalid to have more than
+  // one of 'selected' or '!selected'.
+  const term = terms[0].toString().toLowerCase();
+  if (term === "selected") {
+    return FilterSelected.Selected;
+  }
+  if (term === "!selected") {
+    return FilterSelected.NotSelected;
+  }
+  return FilterSelected.All;
+};
+
 export default class FilterItems<
   I,
   PK extends keyof I,
@@ -94,10 +113,11 @@ export default class FilterItems<
           const selected = selectedIDs.includes(item[this.primaryKey]);
           // The terms will be an array, but it is invalid to have more than
           // one of 'selected' or '!selected'.
-          const term = terms[0].toString().toLowerCase();
-          const onlySelected = term === "selected";
-          const onlyNotSelected = term === "!selected";
-          if ((selected && onlySelected) || (!selected && onlyNotSelected)) {
+          const selectedValue = getSelectedValue(terms);
+          if (
+            (selected && selectedValue === FilterSelected.Selected) ||
+            (!selected && selectedValue === FilterSelected.NotSelected)
+          ) {
             matched = true;
           } else {
             exclude = true;

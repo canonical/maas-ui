@@ -1098,7 +1098,7 @@ const machineSlice = createSlice({
     exitRescueModeStart: statusHandlers.exitRescueMode.start,
     exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
     fetch: {
-      prepare: (callId: string, params?: FetchParams) => ({
+      prepare: (callId: string, params?: FetchParams | null) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "list",
