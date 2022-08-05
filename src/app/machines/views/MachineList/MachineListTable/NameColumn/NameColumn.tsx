@@ -1,6 +1,7 @@
 import { memo } from "react";
 
-import { Tooltip } from "@canonical/react-components";
+import { Button, Tooltip } from "@canonical/react-components";
+import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
@@ -51,35 +52,49 @@ const generateIPAddresses = (machine: Machine) => {
 
   if (ipAddresses.length) {
     const ipAddressesLine = (
-      <span
-        data-testid="ip-addresses"
-        title={ipAddresses.length === 1 ? ipAddresses[0] : ""}
-      >
-        {bootIP || ipAddresses[0]}
-        {ipAddresses.length > 1 ? ` (+${ipAddresses.length - 1})` : null}
-      </span>
+      <>
+        <span
+          className="u-truncate"
+          data-testid="ip-addresses"
+          title={ipAddresses.length === 1 ? ipAddresses[0] : ""}
+        >
+          {bootIP || ipAddresses[0]}
+        </span>
+      </>
     );
 
     if (ipAddresses.length === 1) {
       return ipAddressesLine;
     }
     return (
-      <Tooltip
-        message={
-          <>
-            <strong>{ipAddresses.length} interfaces:</strong>
-            <ul className="p-list u-no-margin--bottom">
-              {ipAddresses.map((address) => (
-                <li key={address}>{address}</li>
-              ))}
-            </ul>
-          </>
-        }
-        position="btm-left"
-        positionElementClassName="p-double-row__tooltip-inner"
-      >
+      <>
         {ipAddressesLine}
-      </Tooltip>
+        <Tooltip
+          message={
+            <>
+              <strong>{ipAddresses.length} interfaces:</strong>
+              <ul className="p-list u-no-margin--bottom">
+                {ipAddresses.map((address) => (
+                  <li key={address}>{address}</li>
+                ))}
+              </ul>
+            </>
+          }
+          position="right"
+          positionElementClassName="p-double-row__tooltip-inner"
+        >
+          {ipAddresses.length > 1 ? (
+            <>
+              (
+              <Button
+                appearance="link"
+                className="p-double-row__button u-no-border u-no-margin u-no-padding"
+              >{`+${ipAddresses.length - 1}`}</Button>
+              )
+            </>
+          ) : null}
+        </Tooltip>
+      </>
     );
   }
   return "";
@@ -133,9 +148,10 @@ export const NameColumn = ({
       }
       // fallback to non-breaking space to keep equal height of all rows
       secondary={secondaryRow || <NonBreakingSpace />}
-      secondaryClassName={
-        handleCheckbox && "u-nudge--secondary-row u-align--left"
-      }
+      secondaryClassName={classNames([
+        "u-flex",
+        { "u-nudge--secondary-row u-align--left": handleCheckbox },
+      ])}
     />
   );
 };

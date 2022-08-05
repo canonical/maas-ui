@@ -135,8 +135,9 @@ describe("NameColumn", () => {
       </Provider>
     );
     expect(wrapper.find('[data-testid="ip-addresses"]').text()).toBe(
-      "127.0.0.1 (+1)"
+      "127.0.0.1"
     );
+    expect(wrapper.find("Button").text()).toBe("+1");
     // Shows a tooltip.
     expect(wrapper.find("Tooltip").exists()).toBe(true);
   });
