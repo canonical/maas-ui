@@ -71,7 +71,6 @@ describe("RepositoryEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    // expect(wrapper.find("Spinner").exists()).toBe(true);
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
@@ -98,7 +97,6 @@ describe("RepositoryEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    // expect(wrapper.find("h4").text()).toBe("Repository not found");
     expect(screen.getByText("Repository not found")).toBeInTheDocument();
   });
 
