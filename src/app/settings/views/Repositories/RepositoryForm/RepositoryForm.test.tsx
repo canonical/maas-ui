@@ -1,5 +1,6 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -18,7 +19,6 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -50,7 +50,7 @@ describe("RepositoryForm", () => {
     state.packagerepository.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
@@ -103,7 +103,7 @@ describe("RepositoryForm", () => {
 
   it("correctly sets title given type and repository props", () => {
     const store = mockStore(state);
-    let component = mount(
+    const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
@@ -114,9 +114,9 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(component.find("h4").text()).toBe("Add repository");
+    expect(screen.getByText("Add repository")).toBeInTheDocument();
 
-    component = mount(
+    rerender(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
@@ -127,9 +127,9 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(component.find("h4").text()).toBe("Add PPA");
+    expect(screen.getByText("Add PPA")).toBeInTheDocument();
 
-    component = mount(
+    rerender(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
@@ -143,9 +143,9 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(component.find("h4").text()).toBe("Edit repository");
+    expect(screen.getByText("Edit repository")).toBeInTheDocument();
 
-    component = mount(
+    rerender(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
@@ -159,12 +159,12 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(component.find("h4").text()).toBe("Edit PPA");
+    expect(screen.getByText("Edit PPA")).toBeInTheDocument();
   });
 
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
@@ -176,9 +176,7 @@ describe("RepositoryForm", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
 
     expect(store.getActions()).toEqual([
       {
@@ -190,21 +188,22 @@ describe("RepositoryForm", () => {
   it("redirects when the repository is saved", () => {
     state.packagerepository.saved = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    const history = createMemoryHistory({
+      initialEntries: ["/"],
+    });
+    render(
       <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
+        <Router history={history}>
           <CompatRouter>
             <RepositoryForm type="repository" />
           </CompatRouter>
-        </MemoryRouter>
+        </Router>
       </Provider>
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      settingsURLs.repositories.index
-    );
+    expect(history.location.pathname).toBe(settingsURLs.repositories.index);
   });
 
-  it("can update a repository", () => {
+  it("can update a repository", async () => {
     const store = mockStore(state);
     const repository = {
       id: 9,
@@ -222,7 +221,7 @@ describe("RepositoryForm", () => {
       default: false,
       enabled: true,
     };
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
@@ -233,18 +232,28 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      name: "newName",
-      url: "http://www.website.com",
-      distributions: "",
-      disabled_pockets: [],
-      disabled_components: [],
-      disable_sources: false,
-      components: "",
-      arches: ["i386", "amd64"],
-      key: "",
-      enabled: true,
-    });
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
+    await userEvent.clear(screen.getByRole("textbox", { name: "URL" }));
+    await userEvent.clear(screen.getByRole("textbox", { name: "Key" }));
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: "Distributions" })
+    );
+    await userEvent.clear(screen.getByRole("textbox", { name: "Components" }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "newName"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "URL" }),
+      "http://www.website.com"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save repository" })
+    );
+
     const action = store
       .getActions()
       .find((action) => action.type === "packagerepository/update");
@@ -270,9 +279,9 @@ describe("RepositoryForm", () => {
     });
   });
 
-  it("can create a repository", () => {
+  it("can create a repository", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
@@ -283,19 +292,17 @@ describe("RepositoryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      name: "name",
-      url: "http://www.website.com",
-      distributions: "",
-      disabled_pockets: [],
-      disabled_components: [],
-      disable_sources: false,
-      components: "",
-      arches: ["i386", "amd64"],
-      key: "",
-      default: false,
-      enabled: true,
-    });
+
+    await userEvent.type(screen.getByRole("textbox", { name: "Name" }), "name");
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "URL" }),
+      "http://www.website.com"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save repository" })
+    );
+
     const action = store
       .getActions()
       .find((action) => action.type === "packagerepository/create");
@@ -323,7 +330,7 @@ describe("RepositoryForm", () => {
   it("adds a message and cleans up packagerepository state when a repo is added", () => {
     state.packagerepository.saved = true;
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
