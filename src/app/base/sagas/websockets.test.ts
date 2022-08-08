@@ -1,7 +1,6 @@
 import { eventChannel } from "redux-saga";
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
-import { select } from "redux-saga-test-plan/matchers";
 import { call, put, take } from "redux-saga/effects";
 
 import type {
@@ -12,7 +11,6 @@ import WebSocketClient, {
   WebSocketMessageType,
   WebSocketResponseType,
 } from "../../../websocket-client";
-import machine from "../../store/machine/selectors";
 
 import type { WebSocketChannel } from "./websockets";
 import {
@@ -32,12 +30,10 @@ import {
 } from "./websockets";
 
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import { getCookie } from "app/utils";
 import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
-  machineStateDetailsItem as machineStateDetailsItemFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
