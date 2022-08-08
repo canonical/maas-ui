@@ -13,7 +13,6 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-// import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
