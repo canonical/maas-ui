@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -8,7 +8,12 @@ import RepositoryAdd from "./RepositoryAdd";
 
 import type { RootState } from "app/store/root/types";
 import {
+  componentsToDisableState as componentsToDisableStateFactory,
+  knownArchitecturesState as knownArchitecturesStateFactory,
+  packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
+  pocketsToDisableState as pocketsToDisableStateFactory,
+  generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
@@ -19,15 +24,27 @@ describe("RepositoryAdd", () => {
 
   beforeEach(() => {
     state = rootStateFactory({
+      general: generalStateFactory({
+        componentsToDisable: componentsToDisableStateFactory({
+          loaded: true,
+        }),
+        knownArchitectures: knownArchitecturesStateFactory({
+          loaded: true,
+        }),
+        pocketsToDisable: pocketsToDisableStateFactory({
+          loaded: true,
+        }),
+      }),
       packagerepository: packageRepositoryStateFactory({
         loaded: true,
+        items: [packageRepositoryFactory()],
       }),
     });
   });
 
   it("can display a repository add form with type ppa", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -45,14 +62,13 @@ describe("RepositoryAdd", () => {
         </MemoryRouter>
       </Provider>
     );
-    const form = wrapper.find("RepositoryForm");
-    expect(form.exists()).toBe(true);
-    expect(form.prop("type")).toStrictEqual("ppa");
+
+    expect(screen.getByRole("form", { name: "Add PPA" })).toBeInTheDocument();
   });
 
   it("can display a repository add form with type repository", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -73,8 +89,8 @@ describe("RepositoryAdd", () => {
         </MemoryRouter>
       </Provider>
     );
-    const form = wrapper.find("RepositoryForm");
-    expect(form.exists()).toBe(true);
-    expect(form.prop("type")).toStrictEqual("repository");
+    expect(
+      screen.getByRole("form", { name: "Add repository" })
+    ).toBeInTheDocument();
   });
 });
