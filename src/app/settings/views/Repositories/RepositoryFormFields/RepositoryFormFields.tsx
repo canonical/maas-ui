@@ -16,9 +16,16 @@ type Props = {
   type: "ppa" | "repository";
 };
 
+export enum Labels {
+  Arches = "Architectures",
+  DisabledPockets = "Disabled pockets",
+  DisabledComponents = "Disabled components",
+}
+
 const generateCheckboxGroup = (
   key: keyof RepositoryFormValues,
   fields: string[],
+  label: string,
   setFieldTouched: FormikProps<RepositoryFormValues>["setFieldTouched"],
   setFieldValue: FormikProps<RepositoryFormValues>["setFieldValue"],
   values: string[]
@@ -47,7 +54,9 @@ const generateCheckboxGroup = (
     />
   ));
 
-  return <List className="is-split--small" items={checkboxes} />;
+  return (
+    <List aria-label={label} className="is-split--small" items={checkboxes} />
+  );
 };
 
 const RepositoryFormFields = ({ type }: Props): JSX.Element => {
@@ -132,28 +141,31 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
             />,
           ]}
         />
-        <p className="u-no-margin--bottom">Architectures</p>
+        <p className="u-no-margin--bottom">{Labels.Arches}</p>
         {generateCheckboxGroup(
           "arches",
           knownArchitectures,
+          Labels.Arches,
           setFieldTouched,
           setFieldValue,
           values["arches"]
         )}
         {values.default && (
           <>
-            <p className="u-no-margin--bottom">Disabled pockets</p>
+            <p className="u-no-margin--bottom">{Labels.DisabledPockets}</p>
             {generateCheckboxGroup(
               "disabled_pockets",
               pocketsToDisable,
+              Labels.DisabledPockets,
               setFieldTouched,
               setFieldValue,
               values["disabled_pockets"]
             )}
-            <p className="u-no-margin--bottom">Disabled components</p>
+            <p className="u-no-margin--bottom">{Labels.DisabledComponents}</p>
             {generateCheckboxGroup(
               "disabled_components",
               componentsToDisable,
+              Labels.DisabledComponents,
               setFieldTouched,
               setFieldValue,
               values["disabled_components"]
