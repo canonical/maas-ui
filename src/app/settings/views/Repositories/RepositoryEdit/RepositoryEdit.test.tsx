@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -8,8 +8,11 @@ import RepositoryEdit from "./RepositoryEdit";
 
 import type { RootState } from "app/store/root/types";
 import {
+  componentsToDisableState as componentsToDisableStateFactory,
+  knownArchitecturesState as knownArchitecturesStateFactory,
   packageRepository as packageRepositoryFactory,
   packageRepositoryState as packageRepositoryStateFactory,
+  pocketsToDisableState as pocketsToDisableStateFactory,
   generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -21,12 +24,23 @@ describe("RepositoryEdit", () => {
 
   beforeEach(() => {
     state = rootStateFactory({
-      general: generalStateFactory(),
+      general: generalStateFactory({
+        componentsToDisable: componentsToDisableStateFactory({
+          loaded: true,
+        }),
+        knownArchitectures: knownArchitecturesStateFactory({
+          loaded: true,
+        }),
+        pocketsToDisable: pocketsToDisableStateFactory({
+          loaded: true,
+        }),
+      }),
       packagerepository: packageRepositoryStateFactory({
         loaded: true,
         items: [
           packageRepositoryFactory({
             id: 1,
+            name: "test",
           }),
         ],
       }),
@@ -36,7 +50,7 @@ describe("RepositoryEdit", () => {
   it("displays a loading component if loading", () => {
     state.packagerepository.loading = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -57,12 +71,13 @@ describe("RepositoryEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    // expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("handles repository not found", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -83,12 +98,13 @@ describe("RepositoryEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("h4").text()).toBe("Repository not found");
+    // expect(wrapper.find("h4").text()).toBe("Repository not found");
+    expect(screen.getByText("Repository not found")).toBeInTheDocument();
   });
 
   it("can display a repository edit form with correct repo data", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -109,11 +125,10 @@ describe("RepositoryEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    const form = wrapper.find("RepositoryForm");
-    expect(form.exists()).toBe(true);
-    expect(form.prop("type")).toStrictEqual("repository");
-    expect(form.prop("repository")).toStrictEqual(
-      state.packagerepository.items[0]
-    );
+    const form = screen.getByRole("form", { name: "Edit repository" });
+    expect(form).toBeInTheDocument();
+    expect(
+      within(form).getByRole("textbox", { name: "Name" })
+    ).toBeInTheDocument();
   });
 });
