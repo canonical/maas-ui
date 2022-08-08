@@ -11,9 +11,8 @@ import type {
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
 import type { NetworkInterface } from "app/store/types/node";
 import { NodeStatus } from "app/store/types/node";
 import {
@@ -21,6 +20,7 @@ import {
   getInterfaceById as getInterfaceByIdUtil,
 } from "app/store/utils";
 import { isId } from "app/utils";
+import { FilterSelected } from "app/utils/search/filter-items";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
@@ -127,33 +127,6 @@ const getStatusForMachine = createSelector(
     }),
   ],
   (allStatuses, { id, status }) => allStatuses[id][status]
-);
-
-/**
- * Get machines that match terms.
- * @param {RootState} state - The redux state.
- * @param {String} terms - The terms to match against.
- * @returns {Machine[]} A filtered list of machines.
- */
-const search = createSelector(
-  [
-    defaultSelectors.all,
-    tagSelectors.all,
-    (
-      _state: RootState,
-      terms: string | null,
-      selectedIDs: Machine[MachineMeta.PK][]
-    ) => ({
-      terms,
-      selectedIDs,
-    }),
-  ],
-  (items: Machine[], tags, { terms, selectedIDs }) => {
-    if (!terms) {
-      return items;
-    }
-    return FilterMachines.filterItems(items, terms, selectedIDs, { tags });
-  }
 );
 
 /**
@@ -320,38 +293,89 @@ const getDeployedWithTag = createSelector(
 
 const getDetails = (
   machineState: MachineState,
-  requestId: string | null | undefined
+  callId: string | null | undefined
 ) =>
-  requestId && requestId in machineState.details
-    ? machineState.details[requestId]
+  callId && callId in machineState.details
+    ? machineState.details[callId]
     : null;
 
 /**
  * Get the loaded state for a details request.
  * @param state - The redux state.
- * @param requestId - A details request id.
+ * @param callId - A details request id.
  * @returns Whether the details are loaded.
  */
 const detailsLoaded = createSelector(
   [
     machineState,
-    (_state: RootState, requestId: string | null | undefined) => requestId,
+    (_state: RootState, callId: string | null | undefined) => callId,
   ],
-  (machineState, requestId) => getDetails(machineState, requestId)?.loaded
+  (machineState, callId) => getDetails(machineState, callId)?.loaded
 );
 
 /**
  * Get the loading state for a details request.
  * @param state - The redux state.
- * @param requestId - A details request id.
+ * @param callId - A details request id.
  * @returns Whether the details are loading.
  */
 const detailsLoading = createSelector(
   [
     machineState,
-    (_state: RootState, requestId: string | null | undefined) => requestId,
+    (_state: RootState, callId: string | null | undefined) => callId,
   ],
-  (machineState, requestId) => getDetails(machineState, requestId)?.loading
+  (machineState, callId) => getDetails(machineState, callId)?.loading
+);
+
+const getList = (
+  machineState: MachineState,
+  callId: string | null | undefined
+) =>
+  callId && callId in machineState.lists ? machineState.lists[callId] : null;
+
+/**
+ * Get machines in a list request.
+ * @param state - The redux state.
+ * @param callId - A list request id.
+ * @param selected - Whether to filter for selected machines.
+ * @returns A list of machines.
+ */
+const list = createSelector(
+  [
+    machineState,
+    defaultSelectors.all,
+    selectedIDs,
+    (
+      _state: RootState,
+      callId: string | null | undefined,
+      filterSelected: FilterSelected | null | undefined
+    ) => ({
+      callId,
+      filterSelected,
+    }),
+  ],
+  (machineState, allMachines, selectedIDs, { callId, filterSelected }) => {
+    const machines: Machine[] = [];
+    getList(machineState, callId)?.groups?.forEach((group) => {
+      group.items.forEach((systemId) => {
+        const machine = allMachines.find(
+          ({ system_id }) => system_id === systemId
+        );
+        if (machine) {
+          const inSelected = selectedIDs.includes(machine.system_id);
+          if (
+            filterSelected === FilterSelected.All ||
+            (filterSelected === FilterSelected.Selected && inSelected) ||
+            (filterSelected === FilterSelected.NotSelected && !inSelected) ||
+            !filterSelected
+          ) {
+            machines.push(machine);
+          }
+        }
+      });
+    });
+    return machines;
+  }
 );
 
 const selectors = {
@@ -380,13 +404,13 @@ const selectors = {
   getStatuses,
   getStatusForMachine,
   linkingSubnet: statusSelectors["linkingSubnet"],
+  list,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],
   overridingFailedTesting: statusSelectors["overridingFailedTesting"],
   processing,
   releasing: statusSelectors["releasing"],
-  search,
   selected,
   selectedIDs,
   settingPool: statusSelectors["settingPool"],

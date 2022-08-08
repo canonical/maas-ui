@@ -1,7 +1,8 @@
-import { useEffect, useRef, useCallback, useState } from "react";
+import { useEffect, useCallback, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { nanoid } from "@reduxjs/toolkit";
+import fastDeepEqual from "fast-deep-equal";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useCanEdit } from "app/base/hooks";
@@ -12,7 +13,11 @@ import {
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineMeta } from "app/store/machine/types";
+import type {
+  FetchFilters,
+  Machine,
+  MachineMeta,
+} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { Host } from "app/store/types/host";
@@ -25,23 +30,48 @@ import {
 } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 import { isId } from "app/utils";
+import type { FilterSelected } from "app/utils/search/filter-items";
 
 /**
  * Fetch machines via the API.
  */
-export const useFetchMachines = (): void => {
-  const callId = useRef<string | null>(null);
+export const useFetchMachines = (
+  filters?: FetchFilters | null,
+  filterSelected?: FilterSelected | null
+): {
+  machines: Machine[];
+} => {
+  const [callId, setCallId] = useState<string | null>(null);
+  const previousCallId = usePrevious(callId);
+  const previousFilters = usePrevious(filters, false);
   const dispatch = useDispatch();
+  const machines = useSelector((state: RootState) =>
+    machineSelectors.list(state, callId, filterSelected)
+  );
+
   useEffect(() => {
-    // TODO: request the machines again if the provided options change (filters,
+    // TODO: request the machines again if the provided options change (
     // ordering, pagination etc.)
-    if (!callId.current) {
-      callId.current = nanoid();
-      dispatch(machineActions.fetch(callId.current));
+    if (
+      ((filters || previousFilters) &&
+        !fastDeepEqual(filters, previousFilters)) ||
+      !callId
+    ) {
+      setCallId(nanoid());
     }
-  }, [dispatch]);
+  }, [callId, dispatch, filters, previousFilters]);
+
+  useEffect(() => {
+    if (callId && callId !== previousCallId) {
+      dispatch(
+        machineActions.fetch(callId, filters ? { filter: filters } : null)
+      );
+    }
+  }, [dispatch, filters, callId, previousCallId]);
+
   // TODO: clean up the previous request if the options change or the component is unmounted:
   // https://github.com/canonical-web-and-design/app-tribe/issues/1128
+  return { machines };
 };
 
 /**
@@ -94,8 +124,6 @@ export const useGetMachine = (
     };
   }, [cleanup, callId]);
 
-  // TODO: clean up the previous request if the id changes or the component is unmounted:
-  // https://github.com/canonical-web-and-design/app-tribe/issues/1151
   return { machine, loading, loaded };
 };
 

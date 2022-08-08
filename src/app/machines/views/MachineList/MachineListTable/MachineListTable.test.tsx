@@ -213,6 +213,31 @@ describe("MachineListTable", () => {
     localStorage.clear();
   });
 
+  it("displays a loading component if machines are loading", () => {
+    state.machine.loaded = false;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              grouping="status"
+              hiddenGroups={[]}
+              machines={machines}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(wrapper.find("MachineListTable").exists()).toBe(true);
+  });
+
   it("includes groups", () => {
     const store = mockStore(state);
     const wrapper = mount(

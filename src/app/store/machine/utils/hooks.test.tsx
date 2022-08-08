@@ -17,7 +17,7 @@ import {
 } from "./hooks";
 
 import { actions as machineActions } from "app/store/machine";
-import type { Machine } from "app/store/machine/types";
+import type { FetchFilters, Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeStatus, NodeStatusCode } from "app/store/types/node";
@@ -35,6 +35,8 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -80,39 +82,104 @@ describe("machine hook utils", () => {
 
   describe("useFetchMachines", () => {
     beforeEach(() => {
-      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      jest
+        .spyOn(reduxToolkit, "nanoid")
+        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce("mocked-nanoid-2")
+        .mockReturnValueOnce("mocked-nanoid-3");
     });
 
     afterEach(() => {
       jest.restoreAllMocks();
     });
+
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode; id: string }) =>
+      ({ children }: { children?: ReactNode; filters?: FetchFilters }) =>
         <Provider store={store}>{children}</Provider>;
 
-    it("can get a machine", () => {
+    it("can fetch machines", () => {
       const store = mockStore(state);
       renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
-      const expected = machineActions.fetch("mocked-nanoid");
+      const expected = machineActions.fetch("mocked-nanoid-1");
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
     });
 
-    it("does not fetch again", () => {
+    it("returns the fetched machines", () => {
+      const machines = [machineFactory(), machineFactory(), machineFactory()];
+      state.machine = machineStateFactory({
+        loaded: true,
+        items: [...machines, machineFactory()],
+        lists: {
+          "mocked-nanoid-1": machineStateListFactory({
+            loading: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: machines.map(({ system_id }) => system_id),
+              }),
+            ],
+          }),
+        },
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useFetchMachines(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current.machines).toStrictEqual(machines);
+    });
+
+    it("does not fetch again with no params", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
-      rerender({ id: "def456" });
-      const expected = machineActions.fetch("mocked-nanoid");
+      rerender();
+      const expected = machineActions.fetch("mocked-nanoid-1");
       const getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
       expect(getDispatches).toHaveLength(1);
+    });
+
+    it("does not fetch again if the filters haven't changed", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        () => useFetchMachines({ hostname: "spotted-quoll" }),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ filters: { hostname: "spotted-quoll" } });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
+    it("fetches again if the filters change", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({ filters }) => useFetchMachines(filters),
+        {
+          initialProps: {
+            filters: {
+              hostname: "spotted-quoll",
+            },
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ filters: { hostname: "eastern-quoll" } });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(2);
     });
   });
 
