@@ -378,12 +378,6 @@ const list = createSelector(
   }
 );
 
-const getList = (
-  machineState: MachineState,
-  callId: string | null | undefined
-) =>
-  callId && callId in machineState.lists ? machineState.lists[callId] : null;
-
 /**
  * Get the ids of machines in a list or details call that are not being used
  * by other calls.
