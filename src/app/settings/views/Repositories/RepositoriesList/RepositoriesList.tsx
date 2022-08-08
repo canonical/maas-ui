@@ -121,6 +121,7 @@ export const RepositoriesList = (): JSX.Element => {
 
   return (
     <SettingsTable
+      aria-label="Package repositories"
       buttons={[
         {
           label: "Add PPA",
