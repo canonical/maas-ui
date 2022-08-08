@@ -115,7 +115,7 @@ describe("machine hook utils", () => {
         loaded: true,
         items: [...machines, machineFactory()],
         lists: {
-          "123456": machineStateListFactory({
+          "mocked-nanoid-1": machineStateListFactory({
             loading: true,
             groups: [
               machineStateListGroupFactory({
@@ -129,7 +129,7 @@ describe("machine hook utils", () => {
       const { result } = renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
-      expect(result).toStrictEqual(result);
+      expect(result.current.machines).toStrictEqual(machines);
     });
 
     it("does not fetch again with no params", () => {
