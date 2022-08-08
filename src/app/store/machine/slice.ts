@@ -1263,16 +1263,13 @@ const machineSlice = createSlice({
       prepare: (callId: string) => ({
         meta: {
           callId,
+          model: MachineMeta.MODEL,
+          unsubscribe: true,
         },
         payload: null,
       }),
-      reducer: (
-        state: MachineState,
-        action: PayloadAction<null, string, GenericMeta>
-      ) => {
-        if (action.meta.callId && action.meta.callId in state.details) {
-          delete state.details[action.meta.callId];
-        }
+      reducer: () => {
+        // No state changes need to be handled for this action.
       },
     },
     get: {
@@ -1512,6 +1509,27 @@ const machineSlice = createSlice({
     [`${NodeActions.RELEASE}Error`]: statusHandlers.release.error,
     [`${NodeActions.RELEASE}Start`]: statusHandlers.release.start,
     [`${NodeActions.RELEASE}Success`]: statusHandlers.release.success,
+    removeRequest: {
+      prepare: (callId: string) => ({
+        meta: {
+          callId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<null, string, GenericMeta>
+      ) => {
+        const { callId } = action.meta;
+        if (callId) {
+          if (callId in state.details) {
+            delete state.details[callId];
+          } else if (callId in state.lists) {
+            delete state.lists[callId];
+          }
+        }
+      },
+    },
     rescueMode: generateActionParams<BaseNodeActionParams>(
       NodeActions.RESCUE_MODE
     ),

@@ -1,4 +1,4 @@
-import { useEffect, useCallback, useState } from "react";
+import { useEffect, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { nanoid } from "@reduxjs/toolkit";
@@ -48,6 +48,7 @@ export const useFetchMachines = (
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId, filterSelected)
   );
+  useCleanup(callId);
 
   useEffect(() => {
     // TODO: request the machines again if the provided options change (
@@ -69,8 +70,6 @@ export const useFetchMachines = (
     }
   }, [dispatch, filters, callId, previousCallId]);
 
-  // TODO: clean up the previous request if the options change or the component is unmounted:
-  // https://github.com/canonical-web-and-design/app-tribe/issues/1128
   return { machines };
 };
 
@@ -94,21 +93,12 @@ export const useGetMachine = (
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-
-  const cleanup = useCallback(
-    (id: string | null | undefined) => {
-      if (id) {
-        dispatch(machineActions.cleanupRequest(id));
-      }
-      // TODO: run unsubscribe if no other requestId is using this machine
-      // https://github.com/canonical/app-tribe/issues/1141
-    },
-    [dispatch]
-  );
+  useCleanup(callId);
 
   useEffect(() => {
     if (isId(id) && id !== previousId) {
-      setCallId(nanoid());
+      const newId = nanoid();
+      setCallId(newId);
     }
   }, [dispatch, id, previousId]);
 
@@ -118,13 +108,22 @@ export const useGetMachine = (
     }
   }, [dispatch, id, callId, previousCallId]);
 
+  return { machine, loading, loaded };
+};
+
+/**
+ * Unsubscribe from machines if they're no longer being used.
+ */
+const useCleanup = (callId: string | null): void => {
+  const dispatch = useDispatch();
+
   useEffect(() => {
     return () => {
-      cleanup(callId);
+      if (callId) {
+        dispatch(machineActions.cleanupRequest(callId));
+      }
     };
-  }, [cleanup, callId]);
-
-  return { machine, loading, loaded };
+  }, [callId, dispatch]);
 };
 
 /**

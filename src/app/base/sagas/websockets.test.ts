@@ -1,6 +1,7 @@
 import { eventChannel } from "redux-saga";
 import { expectSaga } from "redux-saga-test-plan";
 import * as matchers from "redux-saga-test-plan/matchers";
+import { select } from "redux-saga-test-plan/matchers";
 import { call, put, take } from "redux-saga/effects";
 
 import type {
@@ -11,7 +12,9 @@ import WebSocketClient, {
   WebSocketMessageType,
   WebSocketResponseType,
 } from "../../../websocket-client";
+import machine from "../../store/machine/selectors";
 
+import type { WebSocketChannel } from "./websockets";
 import {
   createConnection,
   handleFileContextRequest,
@@ -25,12 +28,24 @@ import {
   storeFileContextActions,
   watchMessages,
   watchWebSockets,
+  handleUnsubscribe,
 } from "./websockets";
-import type { WebSocketChannel } from "./websockets";
 
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
 import { getCookie } from "app/utils";
+import {
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+  machineStateDetailsItem as machineStateDetailsItemFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
+} from "testing/factories";
 
-jest.mock("app/utils");
+jest.mock("app/utils", () => ({
+  ...jest.requireActual("app/utils"),
+  getCookie: jest.fn(),
+}));
 
 describe("websocket sagas", () => {
   let socketChannel: WebSocketChannel;
@@ -524,6 +539,53 @@ describe("websocket sagas", () => {
         payload: null,
       })
     );
+  });
+
+  it("can unsubscribe from unused machines", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          123456: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["abc123"],
+              }),
+            ],
+          }),
+        },
+      }),
+    });
+    return expectSaga(
+      handleUnsubscribe,
+      machineActions.cleanupRequest("123456")
+    )
+      .withState(state)
+      .put(machineActions.unsubscribe(["abc123"]))
+      .put(machineActions.removeRequest("123456"))
+      .run();
+  });
+
+  it("removes request when machines are in use", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          123456: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["abc123"],
+              }),
+            ],
+          }),
+        },
+      }),
+    });
+    return expectSaga(
+      handleUnsubscribe,
+      machineActions.cleanupRequest("123456")
+    )
+      .withState(state)
+      .put(machineActions.removeRequest("123456"))
+      .run();
   });
 
   describe("polling", () => {

@@ -6,15 +6,16 @@ import { FilterSelected } from "app/utils/search/filter-items";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
-  machineInterface as machineInterfaceFactory,
-  networkLink as networkLinkFactory,
   machineEventError as machineEventErrorFactory,
+  machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
-  machineStatus as machineStatusFactory,
-  machineStatuses as machineStatusesFactory,
-  rootState as rootStateFactory,
+  machineStateDetailsItem as machineStateDetailsItemFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
+  machineStatus as machineStatusFactory,
+  machineStatuses as machineStatusesFactory,
+  networkLink as networkLinkFactory,
+  rootState as rootStateFactory,
 } from "testing/factories";
 
 describe("machine selectors", () => {
@@ -601,5 +602,113 @@ describe("machine selectors", () => {
       }),
     });
     expect(machine.getDeployedWithTag(state, 1)).toStrictEqual([items[1]]);
+  });
+
+  it("can get unused ids for a details request when the id is being used", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        details: {
+          123456: machineStateDetailsItemFactory({
+            system_id: "abc123",
+          }),
+          78910: machineStateDetailsItemFactory({
+            system_id: "abc123",
+          }),
+        },
+        lists: {
+          123456: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["abc123", "def456"],
+              }),
+            ],
+          }),
+        },
+      }),
+    });
+    expect(machine.unusedIdsInCall(state, "123456")).toStrictEqual([]);
+  });
+
+  it("can get unused ids for a details request when the id is not being used", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        details: {
+          123456: machineStateDetailsItemFactory({
+            system_id: "abc123",
+          }),
+        },
+        lists: {
+          123456: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["def456", "ghi789"],
+              }),
+            ],
+          }),
+        },
+      }),
+    });
+    expect(machine.unusedIdsInCall(state, "123456")).toStrictEqual(["abc123"]);
+  });
+
+  it("can get unused ids for a list request when the ids are being used", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        details: {
+          123456: machineStateDetailsItemFactory({
+            system_id: "abc123",
+          }),
+        },
+        lists: {
+          111213: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["abc123", "def456"],
+              }),
+            ],
+          }),
+          78910: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["def456"],
+              }),
+            ],
+          }),
+        },
+      }),
+    });
+    expect(machine.unusedIdsInCall(state, "111213")).toStrictEqual([]);
+  });
+
+  it("can get unused ids for a list request when the ids are not being used", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        details: {
+          123456: machineStateDetailsItemFactory({
+            system_id: "abc123",
+          }),
+        },
+        lists: {
+          111213: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["def456", "ghi789"],
+              }),
+            ],
+          }),
+          78910: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["jkl101112"],
+              }),
+            ],
+          }),
+        },
+      }),
+    });
+    expect(machine.unusedIdsInCall(state, "111213")).toStrictEqual([
+      "def456",
+      "ghi789",
+    ]);
   });
 });

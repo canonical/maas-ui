@@ -1250,4 +1250,30 @@ describe("machine reducer", () => {
       })
     );
   });
+
+  it("reduces removeRequest for a details request", () => {
+    const initialState = machineStateFactory({
+      details: {
+        123456: machineStateDetailsItemFactory(),
+      },
+    });
+    expect(reducers(initialState, actions.removeRequest("123456"))).toEqual(
+      machineStateFactory({
+        details: {},
+      })
+    );
+  });
+
+  it("reduces removeRequest for a list request", () => {
+    const initialState = machineStateFactory({
+      lists: {
+        123456: machineStateListFactory(),
+      },
+    });
+    expect(reducers(initialState, actions.removeRequest("123456"))).toEqual(
+      machineStateFactory({
+        lists: {},
+      })
+    );
+  });
 });

@@ -29,14 +29,15 @@ import {
   machineEvent as machineEventFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
+  machineStateDetailsItem as machineStateDetailsItemFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
-  machineStateList as machineStateListFactory,
-  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -181,6 +182,19 @@ describe("machine hook utils", () => {
         .filter((action) => action.type === expected.type);
       expect(getDispatches).toHaveLength(2);
     });
+
+    it("cleans up list request on unmount", async () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
+      const store = mockStore(state);
+      renderHook(() => useFetchMachines(), {
+        wrapper: generateWrapper(store),
+      });
+      cleanup();
+      const expected = machineActions.cleanupRequest("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+    });
   });
 
   describe("useGetMachine", () => {
@@ -248,6 +262,36 @@ describe("machine hook utils", () => {
         .filter((action) => action.type === expected.type);
       expect(getDispatches).toHaveLength(2);
       expect(getDispatches[1]).toStrictEqual(expected);
+    });
+
+    it("returns the machine and loading states", () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
+      const machine = machineFactory({
+        system_id: "abc123",
+      });
+      state.machine = machineStateFactory({
+        items: [machine, machineFactory()],
+        details: {
+          "mocked-nanoid-1": machineStateDetailsItemFactory({
+            loaded: true,
+            loading: true,
+            system_id: "abc123",
+          }),
+        },
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(
+        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        {
+          initialProps: {
+            id: "abc123",
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      expect(result.current.loaded).toBe(true);
+      expect(result.current.loading).toBe(true);
+      expect(result.current.machine).toStrictEqual(machine);
     });
 
     it("cleans up machine request on unmount", async () => {
