@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -42,7 +42,7 @@ describe("ProxyFormFields", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
@@ -53,6 +53,11 @@ describe("ProxyFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("ProxyFormFields").exists()).toBe(true);
+
+    const fields = ["Don't use a proxy", "MAAS built-in", "External", "Peer"];
+
+    fields.forEach((field) =>
+      expect(screen.getByRole("radio", { name: field })).toBeInTheDocument()
+    );
   });
 });
