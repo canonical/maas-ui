@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -12,7 +13,6 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -56,7 +56,7 @@ describe("NetworkDiscoveryForm", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -66,12 +66,12 @@ describe("NetworkDiscoveryForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("dispatches an action to update config on save button click", () => {
+  it("dispatches an action to update config on save button click", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -80,10 +80,14 @@ describe("NetworkDiscoveryForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      active_discovery_interval: "0",
-      network_discovery: "enabled",
-    });
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Active subnet mapping interval" }),
+      "Every week"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
     expect(store.getActions()).toEqual([
       {
         type: "config/update",
@@ -91,7 +95,7 @@ describe("NetworkDiscoveryForm", () => {
           params: [
             {
               name: "active_discovery_interval",
-              value: "0",
+              value: "604800",
             },
             {
               name: "network_discovery",
@@ -112,7 +116,7 @@ describe("NetworkDiscoveryForm", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
