@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -37,7 +38,7 @@ describe("SyslogForm", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -47,12 +48,12 @@ describe("SyslogForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("dispatches an action to update config on save button click", () => {
+  it("dispatches an action to update config on save button click", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -61,9 +62,16 @@ describe("SyslogForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      remote_syslog: "",
-    });
+
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: "Remote syslog server to forward machine logs",
+      }),
+      "0.0.0.0"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
     expect(store.getActions()).toEqual([
       {
         type: "config/update",
@@ -71,7 +79,7 @@ describe("SyslogForm", () => {
           params: [
             {
               name: "remote_syslog",
-              value: "",
+              value: "0.0.0.0",
             },
           ],
         },
@@ -88,7 +96,7 @@ describe("SyslogForm", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
