@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -12,7 +13,6 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -47,7 +47,7 @@ describe("DnsForm", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -57,12 +57,12 @@ describe("DnsForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("dispatches an action to update config on save button click", () => {
+  it("dispatches an action to update config on save button click", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -71,11 +71,14 @@ describe("DnsForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      dnssec_validation: "auto",
-      dns_trusted_acl: "",
-      upstream_dns: "",
+
+    const upstream_dns_input = screen.getByRole("textbox", {
+      name: "Upstream DNS used to resolve domains not managed by this MAAS (space-separated IP addresses)",
     });
+
+    await userEvent.type(upstream_dns_input, "0.0.0.0");
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
     expect(store.getActions()).toEqual([
       {
         type: "config/update",
@@ -83,7 +86,7 @@ describe("DnsForm", () => {
           params: [
             { name: "dnssec_validation", value: "auto" },
             { name: "dns_trusted_acl", value: "" },
-            { name: "upstream_dns", value: "" },
+            { name: "upstream_dns", value: "0.0.0.0" },
           ],
         },
         meta: {
@@ -99,7 +102,7 @@ describe("DnsForm", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>

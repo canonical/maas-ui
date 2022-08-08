@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -12,7 +13,6 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -38,7 +38,7 @@ describe("NtpForm", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -48,12 +48,12 @@ describe("NtpForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("dispatches an action to update config on save button click", () => {
+  it("dispatches an action to update config on save button click", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -62,10 +62,14 @@ describe("NtpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      ntp_external_only: false,
-      ntp_servers: "",
-    });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Addresses of NTP servers" }),
+      "ntp.test"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
     expect(store.getActions()).toEqual([
       {
         type: "config/update",
@@ -75,7 +79,7 @@ describe("NtpForm", () => {
               name: "ntp_external_only",
               value: false,
             },
-            { name: "ntp_servers", value: "" },
+            { name: "ntp_servers", value: "ntp.test" },
           ],
         },
         meta: {
@@ -91,7 +95,7 @@ describe("NtpForm", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
