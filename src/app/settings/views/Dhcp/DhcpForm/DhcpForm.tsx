@@ -25,6 +25,7 @@ export const DhcpForm = ({ dhcpSnippet }: Props): JSX.Element => {
     <FormCard title={title}>
       <BaseDhcpForm
         analyticsCategory="DHCP snippet settings"
+        aria-label={title}
         id={dhcpSnippet?.id}
         onCancel={() => navigate({ pathname: settingsURLs.dhcp.index })}
         onValuesChanged={(values) => {
