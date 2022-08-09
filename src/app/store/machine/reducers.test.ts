@@ -131,7 +131,7 @@ describe("machine reducer", () => {
       items: [],
       lists: {
         "123456": machineStateListFactory({
-          loaded: true,
+          loaded: false,
           loading: true,
         }),
       },
@@ -187,6 +187,43 @@ describe("machine reducer", () => {
     );
   });
 
+  it("ignores calls that don't exist when reducing fetchSuccess", () => {
+    const initialState = machineStateFactory({
+      items: [],
+      lists: {},
+      statuses: {},
+    });
+    const fetchedMachines = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+    ];
+
+    expect(
+      reducers(
+        initialState,
+        actions.fetchSuccess("123456", {
+          count: 1,
+          cur_page: 2,
+          groups: [
+            {
+              collapsed: true,
+              count: 4,
+              items: fetchedMachines,
+              name: "admin",
+            },
+          ],
+          num_pages: 3,
+        })
+      )
+    ).toEqual(
+      machineStateFactory({
+        items: [],
+        lists: {},
+        statuses: {},
+      })
+    );
+  });
+
   it("does not update existing items when reducing fetchSuccess", () => {
     const existingMachine = machineDetailsFactory({
       id: 1,
@@ -194,6 +231,9 @@ describe("machine reducer", () => {
     });
     const initialState = machineStateFactory({
       items: [existingMachine],
+      lists: {
+        "123456": machineStateListFactory(),
+      },
       statuses: {
         abc123: machineStatusFactory(),
       },
@@ -750,6 +790,28 @@ describe("machine reducer", () => {
           abc123: machineStatusFactory(),
           def456: machineStatusFactory(),
         },
+      })
+    );
+  });
+
+  it("ignores calls that don't exist when reducing getSuccess", () => {
+    const initialState = machineStateFactory({
+      details: {},
+      items: [],
+      statuses: {},
+    });
+    const newMachine = machineDetailsFactory({ system_id: "def456" });
+
+    expect(
+      reducers(
+        initialState,
+        actions.getSuccess({ system_id: "abc123" }, "123456", newMachine)
+      )
+    ).toEqual(
+      machineStateFactory({
+        details: {},
+        items: [],
+        statuses: {},
       })
     );
   });

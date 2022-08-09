@@ -1044,11 +1044,10 @@ const machineSlice = createSlice({
         action: PayloadAction<null, string, GenericMeta>
       ) => {
         if (action.meta.callId) {
-          if (action.meta.callId in state.lists) {
-            state.lists[action.meta.callId].loading = true;
-          } else {
-            state.lists[action.meta.callId] = DEFAULT_LIST_STATE;
-          }
+          state.lists[action.meta.callId] = {
+            ...DEFAULT_LIST_STATE,
+            loading: true,
+          };
         }
       },
     },
@@ -1063,40 +1062,37 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<FetchResponse, string, GenericMeta>
       ) => {
-        action.payload.groups.forEach((group: FetchResponseGroup) => {
-          group.items.forEach((newItem: Machine) => {
-            // Add items that don't already exist in the store. Existing items
-            // are probably MachineDetails so this would overwrite them with the
-            // simple machine. Existing items will be kept up to date via the
-            // notify (sync) messages.
-            const existing = state.items.find(
-              (draftItem: Machine) => draftItem.id === newItem.id
-            );
-            if (!existing) {
-              state.items.push(newItem);
-              // Set up the statuses for this machine.
-              state.statuses[newItem.system_id] = DEFAULT_STATUSES;
-            }
+        const { callId } = action.meta;
+        // Only update state if this call exists in the store. This check is required
+        // because the call may have been cleaned up in the time the API takes
+        // to respond.
+        if (callId && callId in state.lists) {
+          action.payload.groups.forEach((group: FetchResponseGroup) => {
+            group.items.forEach((newItem: Machine) => {
+              // Add items that don't already exist in the store. Existing items
+              // are probably MachineDetails so this would overwrite them with the
+              // simple machine. Existing items will be kept up to date via the
+              // notify (sync) messages.
+              const existing = state.items.find(
+                (draftItem: Machine) => draftItem.id === newItem.id
+              );
+              if (!existing) {
+                state.items.push(newItem);
+                // Set up the statuses for this machine.
+                state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+              }
+            });
           });
-        });
-        if (action.meta.callId) {
-          const newState = {
-            ...(state.lists[action.meta.callId] ?? DEFAULT_LIST_STATE),
-            ...action.payload,
-            groups: action.payload.groups.map((group) => ({
-              ...group,
-              items: group.items.map(({ system_id }) => system_id),
-            })),
-            loading: false,
-            loaded: true,
-          };
-          if (action.meta.callId in state.lists) {
-          } else {
-            state.lists[action.meta.callId] = DEFAULT_LIST_STATE;
-          }
-          state.lists[action.meta.callId] = newState;
-          state.lists[action.meta.callId].loading = false;
-          state.lists[action.meta.callId].loaded = true;
+          const { payload } = action;
+          state.lists[callId].count = payload.count;
+          state.lists[callId].cur_page = payload.cur_page;
+          state.lists[callId].groups = payload.groups.map((group) => ({
+            ...group,
+            items: group.items.map(({ system_id }) => system_id),
+          }));
+          state.lists[callId].loaded = true;
+          state.lists[callId].loading = false;
+          state.lists[callId].num_pages = payload.num_pages;
         }
       },
     },
@@ -1367,22 +1363,26 @@ const machineSlice = createSlice({
           GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
         >
       ) => {
-        const machine = action.payload;
-        // If the item already exists, update it, otherwise
-        // add it to the store.
-        const i = state.items.findIndex(
-          (draftItem: Machine) => draftItem.system_id === machine.system_id
-        );
-        if (i !== -1) {
-          state.items[i] = machine;
-        } else {
-          state.items.push(machine);
-          // Set up the statuses for this machine.
-          state.statuses[machine.system_id] = DEFAULT_STATUSES;
-        }
-        if (action.meta.callId && action.meta.callId in state.details) {
-          state.details[action.meta.callId].loading = false;
-          state.details[action.meta.callId].loaded = true;
+        const { callId } = action.meta;
+        // Only update state if this call exists in the store. This check is required
+        // because the call may have been cleaned up in the time the API takes
+        // to respond.
+        if (callId && callId in state.details) {
+          const machine = action.payload;
+          // If the item already exists, update it, otherwise
+          // add it to the store.
+          const i = state.items.findIndex(
+            (draftItem: Machine) => draftItem.system_id === machine.system_id
+          );
+          if (i !== -1) {
+            state.items[i] = machine;
+          } else {
+            state.items.push(machine);
+            // Set up the statuses for this machine.
+            state.statuses[machine.system_id] = DEFAULT_STATUSES;
+          }
+          state.details[callId].loading = false;
+          state.details[callId].loaded = true;
         }
       },
     },
