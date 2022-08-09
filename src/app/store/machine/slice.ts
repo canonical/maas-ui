@@ -62,10 +62,10 @@ import { FilterGroupType } from "./types/base";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type {
-  BaseNodeActionParams,
   SetZoneParams,
   TestParams,
   UpdateInterfaceParams,
+  BaseNodeActionParams,
 } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
@@ -397,6 +397,31 @@ const statusHandlers = generateStatusHandlers<
   setErrors
 );
 
+const generateActionParams = <P extends BaseNodeActionParams>(
+  action: NodeActions
+) => ({
+  prepare: (params: P) => {
+    // Separate the id from the params to pass to 'extra'.
+    const { system_id, ...extra } = params;
+    return {
+      meta: {
+        model: MachineMeta.MODEL,
+        method: "action",
+      },
+      payload: {
+        params: {
+          action,
+          extra,
+          system_id,
+        },
+      },
+    };
+  },
+  reducer: () => {
+    // No state changes need to be handled for this action.
+  },
+});
+
 const machineSlice = createSlice({
   name: MachineMeta.MODEL,
   initialState: {
@@ -419,45 +444,15 @@ const machineSlice = createSlice({
       CreateParams,
       UpdateParams
     >(MachineMeta.MODEL, MachineMeta.PK, setErrors),
-    [NodeActions.ABORT]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ABORT,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.ABORT]: generateActionParams<BaseNodeActionParams>(
+      NodeActions.ABORT
+    ),
     [`${NodeActions.ABORT}Error`]: statusHandlers.abort.error,
     [`${NodeActions.ABORT}Start`]: statusHandlers.abort.start,
     [`${NodeActions.ABORT}Success`]: statusHandlers.abort.success,
-    [NodeActions.ACQUIRE]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ACQUIRE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.ACQUIRE]: generateActionParams<BaseNodeActionParams>(
+      NodeActions.ACQUIRE
+    ),
     [`${NodeActions.ACQUIRE}Error`]: statusHandlers.acquire.error,
     [`${NodeActions.ACQUIRE}Start`]: statusHandlers.acquire.start,
     [`${NodeActions.ACQUIRE}Success`]: statusHandlers.acquire.success,
@@ -528,59 +523,13 @@ const machineSlice = createSlice({
     checkPowerError: statusHandlers.checkPower.error,
     checkPowerStart: statusHandlers.checkPower.start,
     checkPowerSuccess: statusHandlers.checkPower.success,
-    [NodeActions.CLONE]: {
-      prepare: (params: CloneParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.CLONE,
-            extra: {
-              destinations: params.destinations,
-              interfaces: params.interfaces,
-              storage: params.storage,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.CLONE]: generateActionParams<CloneParams>(NodeActions.CLONE),
     cloneError: statusHandlers.clone.error,
     cloneStart: statusHandlers.clone.start,
     cloneSuccess: statusHandlers.clone.success,
-    [NodeActions.COMMISSION]: {
-      prepare: (params: CommissionParams) => {
-        return {
-          meta: {
-            model: MachineMeta.MODEL,
-            method: "action",
-          },
-          payload: {
-            params: {
-              action: NodeActions.COMMISSION,
-              extra: {
-                commissioning_scripts: params.commissioning_scripts,
-                enable_ssh: params.enable_ssh,
-                script_input: params.script_input,
-                skip_bmc_config: params.skip_bmc_config,
-                skip_networking: params.skip_networking,
-                skip_storage: params.skip_storage,
-                testing_scripts: params.testing_scripts,
-              },
-              system_id: params.system_id,
-            },
-          },
-        };
-      },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.COMMISSION]: generateActionParams<CommissionParams>(
+      NodeActions.COMMISSION
+    ),
     [`${NodeActions.COMMISSION}Error`]: statusHandlers.commission.error,
     [`${NodeActions.COMMISSION}Start`]: statusHandlers.commission.start,
     [`${NodeActions.COMMISSION}Success`]: statusHandlers.commission.success,
@@ -893,24 +842,9 @@ const machineSlice = createSlice({
     createVolumeGroupError: statusHandlers.createVolumeGroup.error,
     createVolumeGroupStart: statusHandlers.createVolumeGroup.start,
     createVolumeGroupSuccess: statusHandlers.createVolumeGroup.success,
-    [NodeActions.DELETE]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DELETE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.DELETE]: generateActionParams<BaseNodeActionParams>(
+      NodeActions.DELETE
+    ),
     [`${NodeActions.DELETE}Error`]: statusHandlers.delete.error,
     [`${NodeActions.DELETE}Start`]: statusHandlers.delete.start,
     [`${NodeActions.DELETE}Success`]: statusHandlers.delete.success,
@@ -1047,53 +981,15 @@ const machineSlice = createSlice({
     deleteVolumeGroupError: statusHandlers.deleteVolumeGroup.error,
     deleteVolumeGroupStart: statusHandlers.deleteVolumeGroup.start,
     deleteVolumeGroupSuccess: statusHandlers.deleteVolumeGroup.success,
-    [NodeActions.DEPLOY]: {
-      prepare: (params: DeployParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DEPLOY,
-            extra: {
-              distro_series: params.distro_series,
-              enable_hw_sync: params.enable_hw_sync,
-              hwe_kernel: params.hwe_kernel,
-              install_kvm: params.install_kvm,
-              osystem: params.osystem,
-              register_vmhost: params.register_vmhost,
-              user_data: params.user_data,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.DEPLOY]: generateActionParams<DeployParams>(
+      NodeActions.DEPLOY
+    ),
     [`${NodeActions.DEPLOY}Error`]: statusHandlers.deploy.error,
     [`${NodeActions.DEPLOY}Start`]: statusHandlers.deploy.start,
     [`${NodeActions.DEPLOY}Success`]: statusHandlers.deploy.success,
-    exitRescueMode: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.EXIT_RESCUE_MODE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    exitRescueMode: generateActionParams<BaseNodeActionParams>(
+      NodeActions.EXIT_RESCUE_MODE
+    ),
     exitRescueModeError: statusHandlers.exitRescueMode.error,
     exitRescueModeStart: statusHandlers.exitRescueMode.start,
     exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
@@ -1554,68 +1450,19 @@ const machineSlice = createSlice({
     linkSubnetError: statusHandlers.linkSubnet.error,
     linkSubnetStart: statusHandlers.linkSubnet.start,
     linkSubnetSuccess: statusHandlers.linkSubnet.success,
-    [NodeActions.LOCK]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.LOCK,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.LOCK]: generateActionParams<BaseNodeActionParams>(
+      NodeActions.LOCK
+    ),
     [`${NodeActions.LOCK}Error`]: statusHandlers.lock.error,
     [`${NodeActions.LOCK}Start`]: statusHandlers.lock.start,
     [`${NodeActions.LOCK}Success`]: statusHandlers.lock.success,
-    markBroken: {
-      prepare: (params: MarkBrokenParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.MARK_BROKEN,
-            extra: {
-              message: params.message,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    markBroken: generateActionParams<MarkBrokenParams>(NodeActions.MARK_BROKEN),
     markBrokenError: statusHandlers.markBroken.error,
     markBrokenStart: statusHandlers.markBroken.start,
     markBrokenSuccess: statusHandlers.markBroken.success,
-    markFixed: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.MARK_FIXED,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    markFixed: generateActionParams<BaseNodeActionParams>(
+      NodeActions.MARK_FIXED
+    ),
     markFixedError: statusHandlers.markFixed.error,
     markFixedStart: statusHandlers.markFixed.start,
     markFixedSuccess: statusHandlers.markFixed.success,
@@ -1641,112 +1488,33 @@ const machineSlice = createSlice({
     mountSpecialError: statusHandlers.mountSpecial.error,
     mountSpecialStart: statusHandlers.mountSpecial.start,
     mountSpecialSuccess: statusHandlers.mountSpecial.success,
-    [NodeActions.OFF]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.OFF,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.OFF]: generateActionParams<BaseNodeActionParams>(
+      NodeActions.OFF
+    ),
     [`${NodeActions.OFF}Error`]: statusHandlers.off.error,
     [`${NodeActions.OFF}Start`]: statusHandlers.off.start,
     [`${NodeActions.OFF}Success`]: statusHandlers.off.success,
-    [NodeActions.ON]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ON,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.ON]: generateActionParams<BaseNodeActionParams>(
+      NodeActions.ON
+    ),
     [`${NodeActions.ON}Error`]: statusHandlers.on.error,
     [`${NodeActions.ON}Start`]: statusHandlers.on.start,
     [`${NodeActions.ON}Success`]: statusHandlers.on.success,
-    overrideFailedTesting: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.OVERRIDE_FAILED_TESTING,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    overrideFailedTesting: generateActionParams<BaseNodeActionParams>(
+      NodeActions.OVERRIDE_FAILED_TESTING
+    ),
     overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
     overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
     overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting.success,
-    [NodeActions.RELEASE]: {
-      prepare: (params: ReleaseParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.RELEASE,
-            extra: {
-              erase: params.erase,
-              quick_erase: params.quick_erase,
-              secure_erase: params.secure_erase,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.RELEASE]: generateActionParams<ReleaseParams>(
+      NodeActions.RELEASE
+    ),
     [`${NodeActions.RELEASE}Error`]: statusHandlers.release.error,
     [`${NodeActions.RELEASE}Start`]: statusHandlers.release.start,
     [`${NodeActions.RELEASE}Success`]: statusHandlers.release.success,
-    rescueMode: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.RESCUE_MODE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    rescueMode: generateActionParams<BaseNodeActionParams>(
+      NodeActions.RESCUE_MODE
+    ),
     rescueModeError: statusHandlers.rescueMode.error,
     rescueModeStart: statusHandlers.rescueMode.start,
     rescueModeSuccess: statusHandlers.rescueMode.success,
@@ -1799,26 +1567,7 @@ const machineSlice = createSlice({
     setBootDiskError: statusHandlers.setBootDisk.error,
     setBootDiskStart: statusHandlers.setBootDisk.start,
     setBootDiskSuccess: statusHandlers.setBootDisk.success,
-    setPool: {
-      prepare: (params: SetPoolParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.SET_POOL,
-            extra: {
-              pool_id: params.pool_id,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    setPool: generateActionParams<SetPoolParams>(NodeActions.SET_POOL),
     setPoolError: statusHandlers.setPool.error,
     setPoolStart: statusHandlers.setPool.start,
     setPoolSuccess: statusHandlers.setPool.success,
@@ -1833,26 +1582,7 @@ const machineSlice = createSlice({
         state.selected = action.payload;
       },
     },
-    setZone: {
-      prepare: (params: SetZoneParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.SET_ZONE,
-            extra: {
-              zone_id: params.zone_id,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    setZone: generateActionParams<SetZoneParams>(NodeActions.SET_ZONE),
     setZoneError: statusHandlers.setZone.error,
     setZoneStart: statusHandlers.setZone.start,
     setZoneSuccess: statusHandlers.setZone.success,
@@ -1876,72 +1606,17 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    [NodeActions.TAG]: {
-      prepare: (params: TagParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.TAG,
-            extra: {
-              tags: params.tags,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.TAG]: generateActionParams<TagParams>(NodeActions.TAG),
     [`${NodeActions.TAG}Error`]: statusHandlers.tag.error,
     [`${NodeActions.TAG}Start`]: statusHandlers.tag.start,
     [`${NodeActions.TAG}Success`]: statusHandlers.tag.success,
-    [NodeActions.TEST]: {
-      prepare: (params: TestParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.TEST,
-            extra: {
-              enable_ssh: params.enable_ssh,
-              script_input: params.script_input,
-              testing_scripts: params.testing_scripts,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.TEST]: generateActionParams<TestParams>(NodeActions.TEST),
     [`${NodeActions.TEST}Error`]: statusHandlers.test.error,
     [`${NodeActions.TEST}Start`]: statusHandlers.test.start,
     [`${NodeActions.TEST}Success`]: statusHandlers.test.success,
-    [NodeActions.UNLOCK]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.UNLOCK,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.UNLOCK]: generateActionParams<BaseNodeActionParams>(
+      NodeActions.UNLOCK
+    ),
     [`${NodeActions.UNLOCK}Error`]: statusHandlers.unlock.error,
     [`${NodeActions.UNLOCK}Start`]: statusHandlers.unlock.start,
     [`${NodeActions.UNLOCK}Success`]: statusHandlers.unlock.success,
@@ -2063,26 +1738,7 @@ const machineSlice = createSlice({
         delete state.statuses[id];
       });
     },
-    [NodeActions.UNTAG]: {
-      prepare: (params: UntagParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.UNTAG,
-            extra: {
-              tags: params.tags,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.UNTAG]: generateActionParams<UntagParams>(NodeActions.UNTAG),
     untagError: statusHandlers.untag.error,
     untagStart: statusHandlers.untag.start,
     untagSuccess: statusHandlers.untag.success,
