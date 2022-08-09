@@ -10,7 +10,7 @@ import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
 import type { Machine } from "app/store/machine/types";
-import { useGetMachine } from "app/store/machine/utils/hooks";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -46,7 +46,7 @@ export const useDhcpTarget = (
     machine,
     loaded: machineLoaded = false,
     loading: machineLoading = false,
-  } = useGetMachine(nodeId);
+  } = useFetchMachine(nodeId);
 
   const isLoading =
     (!!subnetId && subnetLoading) ||

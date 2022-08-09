@@ -24,7 +24,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
-import { useGetMachine } from "app/store/machine/utils/hooks";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
@@ -55,7 +55,7 @@ const MachineHeader = ({
     NodeActions.ON,
   ]);
   const isDetails = isMachineDetails(machine);
-  useGetMachine(systemId);
+  useFetchMachine(systemId);
 
   if (!machine || !isDetails) {
     return <SectionHeader loading />;

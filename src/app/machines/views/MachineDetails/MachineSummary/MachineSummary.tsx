@@ -17,7 +17,7 @@ import type { MachineSetHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
-import { useGetMachine } from "app/store/machine/utils/hooks";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { NodeStatusCode } from "app/store/types/node";
 import { isId } from "app/utils";
@@ -31,7 +31,7 @@ const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  useGetMachine(id);
+  useFetchMachine(id);
   useWindowTitle(`${`${machine?.fqdn} ` || "Machine"} details`);
 
   if (!isId(id) || !isMachineDetails(machine)) {

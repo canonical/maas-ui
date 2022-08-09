@@ -75,10 +75,10 @@ export const useFetchMachines = (
 };
 
 /**
- * Get a machine via the API.
+ * Fetch a machine via the API.
  * @param id - A machine's system id.
  */
-export const useGetMachine = (
+export const useFetchMachine = (
   id?: Machine[MachineMeta.PK] | null
 ): { machine: Machine | null; loading?: boolean; loaded?: boolean } => {
   const [callId, setCallId] = useState<string | null>(null);

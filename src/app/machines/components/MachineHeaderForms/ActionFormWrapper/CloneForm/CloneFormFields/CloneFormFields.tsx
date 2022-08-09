@@ -15,7 +15,10 @@ import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
-import { useGetMachine, useFetchMachines } from "app/store/machine/utils/hooks";
+import {
+  useFetchMachine,
+  useFetchMachines,
+} from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -43,7 +46,7 @@ export const CloneFormFields = ({
   const loadingVlans = !useSelector(vlanSelectors.loaded);
   const loadingData =
     loadingFabrics || loadingMachines || loadingSubnets || loadingVlans;
-  const { loading: loadingMachineDetails } = useGetMachine(values.source);
+  const { loading: loadingMachineDetails } = useFetchMachine(values.source);
   useFetchMachines();
 
   useEffect(() => {
