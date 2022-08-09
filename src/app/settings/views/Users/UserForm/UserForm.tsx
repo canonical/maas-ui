@@ -38,6 +38,7 @@ export const UserForm = ({ user }: PropTypes): JSX.Element => {
   return (
     <FormCard title={title}>
       <BaseUserForm
+        aria-label={title}
         buttonsAlign="right"
         buttonsBordered
         cleanup={userActions.cleanup}

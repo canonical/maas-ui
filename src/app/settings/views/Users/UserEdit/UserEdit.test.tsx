@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -54,7 +54,7 @@ describe("UserEdit", () => {
     state.user.loading = true;
     state.user.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
@@ -65,13 +65,13 @@ describe("UserEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("handles user not found", () => {
     state.user.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users/1", key: "testKey" }]}
@@ -82,12 +82,12 @@ describe("UserEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("h4").text()).toBe("User not found");
+    expect(screen.getByText("User not found")).toBeInTheDocument();
   });
 
   it("can display a user edit form", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -102,8 +102,8 @@ describe("UserEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    const form = wrapper.find("UserForm").at(0);
-    expect(form.exists()).toBe(true);
-    expect(form.prop("user")).toStrictEqual(state.user.items[0]);
+    expect(
+      screen.getByRole("form", { name: "Editing `admin`" })
+    ).toBeInTheDocument();
   });
 });
