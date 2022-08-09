@@ -13,9 +13,10 @@ type Props = {
   items: LabelledListItem[];
 };
 
-const LabelledList = ({ className, items }: Props): JSX.Element => {
+const LabelledList = ({ className, items, ...props }: Props): JSX.Element => {
   return (
     <List
+      {...props}
       className={classNames("p-list--labelled", className)}
       items={items.map(({ label, value }) => (
         <>
