@@ -237,14 +237,6 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    // wrapper.find(BaseUserForm).invoke("onSave")({
-    //   isSuperuser: true,
-    //   email: "test@example.com",
-    //   fullName: "Miss Wallaby",
-    //   password: "test1234",
-    //   passwordConfirm: "test1234",
-    //   username: "admin",
-    // });
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Username" }),
