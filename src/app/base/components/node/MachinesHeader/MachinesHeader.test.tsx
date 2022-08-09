@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -10,6 +11,8 @@ import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
+  machineStateCount as machineStateCountFactory,
+  machineStateCounts as machineStateCountsFactory,
   machineStatus as machineStatusFactory,
   resourcePool as resourcePoolFactory,
   resourcePoolState as resourcePoolStateFactory,
@@ -24,9 +27,17 @@ describe("MachinesHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
+        counts: machineStateCountsFactory({
+          "mocked-nanoid": machineStateCountFactory({
+            count: 2,
+            loaded: true,
+            loading: false,
+          }),
+        }),
         items: [
           machineFactory({ system_id: "abc123" }),
           machineFactory({ system_id: "def456" }),

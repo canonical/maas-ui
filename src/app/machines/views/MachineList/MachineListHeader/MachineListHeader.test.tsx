@@ -1,4 +1,5 @@
 import { ContextualMenu } from "@canonical/react-components";
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -12,6 +13,8 @@ import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
   machine as machineFactory,
+  machineStateCount as machineStateCountFactory,
+  machineStateCounts as machineStateCountsFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
@@ -23,9 +26,17 @@ describe("MachineListHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
+        counts: machineStateCountsFactory({
+          "mocked-nanoid": machineStateCountFactory({
+            count: 2,
+            loaded: true,
+            loading: false,
+          }),
+        }),
         items: [
           machineFactory({ system_id: "abc123" }),
           machineFactory({ system_id: "def456" }),

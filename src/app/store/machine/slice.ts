@@ -607,10 +607,14 @@ const machineSlice = createSlice({
         action: PayloadAction<null, string, GenericMeta>
       ) => {
         if (action.meta.callId) {
-          if (!(action.meta.callId in state.counts)) {
-            state.counts[action.meta.callId] = DEFAULT_COUNT_STATE;
+          if (action.meta.callId in state.counts) {
+            state.counts[action.meta.callId].loading = true;
+          } else {
+            state.counts[action.meta.callId] = {
+              ...DEFAULT_COUNT_STATE,
+              loading: true,
+            };
           }
-          state.counts[action.meta.callId].loading = true;
         }
       },
     },

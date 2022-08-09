@@ -3,6 +3,8 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Tag, TagMeta } from "../tag/types";
 
+import type { MachineStateCount } from "./types/base";
+
 import { ACTIONS } from "app/store/machine/slice";
 import { MachineMeta } from "app/store/machine/types";
 import type {
@@ -269,6 +271,36 @@ const getByStatusCode = createSelector(
     machines.filter(({ status_code }) => status_code === statusCode)
 );
 
+const getCount = (
+  machine: MachineState,
+  callId: string | null | undefined
+): MachineStateCount | null =>
+  callId && callId in machine.counts ? machine.counts[callId] : null;
+
+const count = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getCount(machineState, callId)?.count
+);
+
+const countLoaded = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => !!getCount(machineState, callId)?.loaded
+);
+
+const countLoading = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => !!getCount(machineState, callId)?.loading
+);
+
 /**
  * Get the deployed machines with the provided tag.
  * @param state - The redux state.
@@ -455,6 +487,9 @@ const selectors = {
   eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
   getByStatusCode,
+  count,
+  countLoaded,
+  countLoading,
   getDeployedWithTag,
   getInterfaceById,
   getStatuses,

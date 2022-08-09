@@ -32,6 +32,51 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { isId } from "app/utils";
 import type { FilterSelected } from "app/utils/search/filter-items";
 
+export const useFetchMachineCount = (
+  filters?: FetchFilters
+): {
+  machineCount: number;
+  machineCountLoading: boolean;
+  machineCountLoaded: boolean;
+} => {
+  const [callId, setCallId] = useState<string | null>(null);
+  const previousCallId = usePrevious(callId);
+  const previousFilters = usePrevious(filters);
+  const dispatch = useDispatch();
+  const machineCount = useSelector((state: RootState) =>
+    machineSelectors.count(state, callId)
+  );
+  const machineCountLoading = useSelector((state: RootState) =>
+    machineSelectors.countLoading(state, callId)
+  );
+  const machineCountLoaded = useSelector((state: RootState) =>
+    machineSelectors.countLoaded(state, callId)
+  );
+
+  useEffect(() => {
+    if (!callId) {
+      setCallId(nanoid());
+    }
+  }, [callId, dispatch]);
+
+  useEffect(() => {
+    if (
+      (callId && callId !== previousCallId) ||
+      (callId &&
+        (filters || previousFilters) &&
+        !fastDeepEqual(filters, previousFilters))
+    ) {
+      dispatch(machineActions.count(callId, filters));
+    }
+  }, [dispatch, callId, previousCallId, filters, previousFilters]);
+
+  return {
+    machineCount: machineCount || 0,
+    machineCountLoading,
+    machineCountLoaded,
+  };
+};
+
 /**
  * Fetch machines via the API.
  */
