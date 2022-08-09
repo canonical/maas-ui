@@ -20,6 +20,7 @@ const ColumnToggle = ({
   return (
     <Button
       appearance="link"
+      aria-label="Show/hide details"
       className="column-toggle u-flex--between u-no-margin u-no-padding"
       onClick={() => {
         if (isExpanded) {
