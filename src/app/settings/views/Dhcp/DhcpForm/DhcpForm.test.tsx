@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -44,7 +45,7 @@ describe("DhcpForm", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -53,29 +54,32 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("DhcpForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: "Add DHCP snippet" })
+    ).toBeInTheDocument();
   });
 
   it("redirects when the snippet is saved", () => {
     state.dhcpsnippet.saved = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    const history = createMemoryHistory({
+      initialEntries: ["/"],
+    });
+    render(
       <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
+        <Router history={history}>
           <CompatRouter>
             <DhcpForm />
           </CompatRouter>
-        </MemoryRouter>
+        </Router>
       </Provider>
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      settingsURLs.dhcp.index
-    );
+    expect(history.location.pathname).toBe(settingsURLs.dhcp.index);
   });
 
   it("shows the snippet name in the title when editing", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -84,6 +88,9 @@ describe("DhcpForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find(".form-card__title").text()).toEqual("Editing `lease`");
+
+    expect(
+      screen.getByRole("heading", { name: "Editing `lease`" })
+    ).toBeInTheDocument();
   });
 });
