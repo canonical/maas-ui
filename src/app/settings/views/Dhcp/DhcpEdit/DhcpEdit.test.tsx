@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -38,7 +38,7 @@ describe("DhcpEdit", () => {
     state.dhcpsnippet.loading = true;
     state.dhcpsnippet.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -51,12 +51,12 @@ describe("DhcpEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("handles dhcp snippet not found", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -69,12 +69,12 @@ describe("DhcpEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("h4").text()).toBe("DHCP snippet not found");
+    expect(screen.getByText("DHCP snippet not found")).toBeInTheDocument();
   });
 
   it("can display a dhcp snippet edit form", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -89,8 +89,22 @@ describe("DhcpEdit", () => {
         </MemoryRouter>
       </Provider>
     );
-    const form = wrapper.find("DhcpForm").first();
-    expect(form.exists()).toBe(true);
-    expect(form.prop("dhcpSnippet")).toStrictEqual(state.dhcpsnippet.items[0]);
+    expect(
+      screen.getByRole("form", { name: "Editing `test snippet`" })
+    ).toBeInTheDocument();
+
+    expect(screen.getByRole("textbox", { name: "Snippet name" })).toHaveValue(
+      "test snippet"
+    );
+
+    expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue(
+      "test description"
+    );
+
+    expect(screen.getByRole("checkbox", { name: "Enabled" })).not.toBeChecked();
+
+    expect(screen.getByRole("textbox", { name: "DHCP snippet" })).toHaveValue(
+      "test value"
+    );
   });
 });
