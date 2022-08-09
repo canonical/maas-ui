@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -78,7 +78,7 @@ describe("DhcpTarget", () => {
     state.machine.loading = true;
     state.subnet.loading = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -87,12 +87,12 @@ describe("DhcpTarget", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("can display a subnet link", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -101,14 +101,15 @@ describe("DhcpTarget", () => {
         </MemoryRouter>
       </Provider>
     );
-    const link = wrapper.find("Link");
-    expect(link?.prop("to")?.toString().includes("/subnet/1")).toBe(true);
-    expect(link.text()).toEqual("10.0.0.99");
+    const link = screen.getByRole("link", { name: "10.0.0.99" });
+
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveProperty("href", "http://example.com/subnet/1");
   });
 
   it("can display a node link", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -117,8 +118,8 @@ describe("DhcpTarget", () => {
         </MemoryRouter>
       </Provider>
     );
-    const link = wrapper.find("Link");
-    expect(link.prop("to")).toBe("/machine/xyz");
-    expect(link).toMatchSnapshot();
+    const link = screen.getByRole("link", { name: "machine1 .test" });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveProperty("href", "http://example.com/machine/xyz");
   });
 });
