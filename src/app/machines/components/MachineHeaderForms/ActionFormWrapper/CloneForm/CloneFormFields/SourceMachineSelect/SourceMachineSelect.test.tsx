@@ -13,6 +13,7 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
+  machineState as machineStateFactory,
 } from "testing/factories";
 import { renderWithMockStore } from "testing/utils";
 
@@ -36,6 +37,10 @@ describe("SourceMachineSelect", () => {
       }),
     ];
     state = rootStateFactory({
+      machine: machineStateFactory({
+        items: machines,
+        loaded: true,
+      }),
       tag: tagStateFactory({
         items: [
           tagFactory({ id: 12, name: "tagA" }),

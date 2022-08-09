@@ -67,6 +67,7 @@ const generateRows = (
         ),
       },
     ],
+    "data-testid": "machine-select-row",
     onClick: () => onRowClick(machine),
     tabIndex: 0,
   }));
