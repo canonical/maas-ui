@@ -62,6 +62,7 @@ export type {
   MachineStateList,
   MachineStatus,
   MachineStatuses,
+  SelectedMachines,
 } from "./base";
 
 export { BcacheModes, MachineMeta } from "./enum";

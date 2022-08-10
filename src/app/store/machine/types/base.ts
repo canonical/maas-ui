@@ -1,3 +1,4 @@
+import type { FetchFilters } from "./actions";
 import type { MachineMeta } from "./enum";
 
 import type { APIError, Seconds } from "app/base/types";
@@ -265,6 +266,18 @@ export type MachineStateCount = {
 
 export type MachineStateCounts = Record<string, MachineStateCount>;
 
+type SelectedMachinesGroup = {
+  key: FilterGroup;
+  option: FilterGroupOptionType;
+};
+
+export type SelectedMachines =
+  | {
+      items?: Machine[MachineMeta.PK][];
+      groups?: SelectedMachinesGroup[];
+    }
+  | { filter: FetchFilters };
+
 export type MachineState = {
   active: Machine[MachineMeta.PK] | null;
   counts: MachineStateCounts;
@@ -279,5 +292,6 @@ export type MachineState = {
   filtersLoading: boolean;
   lists: MachineStateLists;
   selected: Machine[MachineMeta.PK][];
+  selectedMachines: SelectedMachines | null;
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;
