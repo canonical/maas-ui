@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Notification } from "@canonical/react-components";
 import cloneDeep from "clone-deep";
@@ -43,11 +43,12 @@ const MachineList = ({
   setSearchFilter,
 }: Props): JSX.Element => {
   useWindowTitle("Machines");
+  const [machinesErrorsOpen, setMachinesErrorsOpen] = useState(true);
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const filters = FilterMachines.getCurrentFilters(searchFilter);
-  const { machines } = useFetchMachines(
+  const { machines, machinesErrors } = useFetchMachines(
     parseFilters(filters),
     "in" in filters ? getSelectedValue(filters.in) : null
   );
@@ -62,7 +63,6 @@ const MachineList = ({
     "hiddenGroups",
     []
   );
-
   useEffect(() => {
     dispatch(tagActions.fetch());
   }, [dispatch]);
@@ -85,6 +85,14 @@ const MachineList = ({
           severity="negative"
         >
           {errorMessage}
+        </Notification>
+      ) : null}
+      {machinesErrors && machinesErrorsOpen && !headerFormOpen ? (
+        <Notification
+          onDismiss={() => setMachinesErrorsOpen(false)}
+          severity="negative"
+        >
+          {formatErrors(machinesErrors)}
         </Notification>
       ) : null}
       <MachineListControls

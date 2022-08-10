@@ -365,6 +365,14 @@ const getList = (
 ) =>
   callId && callId in machineState.lists ? machineState.lists[callId] : null;
 
+const listErrors = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.errors || null
+);
+
 /**
  * Get machines in a list request.
  * @param state - The redux state.
@@ -496,6 +504,7 @@ const selectors = {
   getStatusForMachine,
   linkingSubnet: statusSelectors["linkingSubnet"],
   list,
+  listErrors,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],

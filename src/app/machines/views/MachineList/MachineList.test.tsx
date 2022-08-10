@@ -344,6 +344,28 @@ describe("MachineList", () => {
     expect(wrapper.find("Notification").props().children).toBe("Uh oh!");
   });
 
+  it("can display and close an error from machine list", () => {
+    state.machine.lists["123456"].errors = { tag: "No such constraint." };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("Notification").exists()).toBe(true);
+    expect(wrapper.find("Notification").props().children).toBe(
+      "tag: No such constraint."
+    );
+    wrapper.find("Notification button").simulate("click");
+    expect(wrapper.find("Notification").exists()).toBe(false);
+  });
+
   it("can display a list of errors", () => {
     state.machine.errors = ["Uh oh!", "It broke"];
     const store = mockStore(state);
