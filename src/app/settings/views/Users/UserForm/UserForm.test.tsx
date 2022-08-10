@@ -6,8 +6,9 @@ import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { UserForm } from "./UserForm";
+import { UserForm, Labels as UserFormLabels } from "./UserForm";
 
+import { Labels as BaseUserFormLabels } from "app/base/components/UserForm/UserForm";
 import settingsURLs from "app/settings/urls";
 import type { RootState } from "app/store/root/types";
 import type { User } from "app/store/user/types";
@@ -99,28 +100,32 @@ describe("UserForm", () => {
       </Provider>
     );
 
-    await userEvent.clear(screen.getByRole("textbox", { name: "Username" }));
     await userEvent.clear(
-      screen.getByRole("textbox", { name: "Full name (optional)" })
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Username })
     );
     await userEvent.clear(
-      screen.getByRole("textbox", { name: "Email address" })
+      screen.getByRole("textbox", { name: BaseUserFormLabels.FullName })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Email })
     );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Username" }),
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Username }),
       "admin"
     );
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Full name (optional)" }),
+      screen.getByRole("textbox", { name: BaseUserFormLabels.FullName }),
       "Miss Wallaby"
     );
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Email address" }),
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Email }),
       "test@example.com"
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "Save user" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: UserFormLabels.Save })
+    );
 
     expect(store.getActions()).toEqual([
       {
@@ -156,14 +161,22 @@ describe("UserForm", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: "Change password…" })
+      screen.getByRole("button", { name: BaseUserFormLabels.ChangePassword })
     );
 
-    await userEvent.type(screen.getByText("Password"), "test1234");
+    await userEvent.type(
+      screen.getByText(BaseUserFormLabels.Password),
+      "test1234"
+    );
 
-    await userEvent.type(screen.getByText("Password (again)"), "test1234");
+    await userEvent.type(
+      screen.getByText(BaseUserFormLabels.PasswordAgain),
+      "test1234"
+    );
 
-    await userEvent.click(screen.getByRole("button", { name: "Save user" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: UserFormLabels.Save })
+    );
 
     expect(store.getActions()).toEqual([
       {
@@ -217,27 +230,35 @@ describe("UserForm", () => {
     );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Username" }),
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Username }),
       "admin"
     );
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Full name (optional)" }),
+      screen.getByRole("textbox", { name: BaseUserFormLabels.FullName }),
       "Miss Wallaby"
     );
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Email address" }),
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Email }),
       "test@example.com"
     );
 
-    await userEvent.type(screen.getByText("Password"), "test1234");
-
-    await userEvent.type(screen.getByText("Password (again)"), "test1234");
-
-    await userEvent.click(
-      screen.getByRole("checkbox", { name: "MAAS administrator" })
+    await userEvent.type(
+      screen.getByText(BaseUserFormLabels.Password),
+      "test1234"
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "Save user" }));
+    await userEvent.type(
+      screen.getByText(BaseUserFormLabels.PasswordAgain),
+      "test1234"
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: BaseUserFormLabels.MaasAdmin })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: UserFormLabels.Save })
+    );
 
     expect(store.getActions()).toEqual([
       {
@@ -290,7 +311,7 @@ describe("UserForm", () => {
     );
 
     expect(
-      screen.getByRole("checkbox", { name: "MAAS administrator" })
+      screen.getByRole("checkbox", { name: BaseUserFormLabels.MaasAdmin })
     ).toBeInTheDocument();
   });
 });

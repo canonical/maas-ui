@@ -13,6 +13,10 @@ import { actions as userActions } from "app/store/user";
 import userSelectors from "app/store/user/selectors";
 import type { User } from "app/store/user/types";
 
+export enum Labels {
+  Save = "Save user",
+}
+
 type PropTypes = {
   user?: UserFormProps["user"];
 };
