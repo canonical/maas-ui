@@ -54,21 +54,28 @@ export const useFetchMachineCount = (
   );
 
   useEffect(() => {
-    if (!callId) {
+    // undefined, null and {} are all equivalent i.e. no filters so compare the
+    // current and previous filters using an empty object if the filters are falsy.
+    if (!fastDeepEqual(filters || {}, previousFilters || {}) || !callId) {
       setCallId(nanoid());
     }
+  }, [callId, dispatch, filters, previousFilters]);
+  
+  useEffect(() => {
+    return () => {
+      if (callId) {
+        dispatch(machineActions.removeRequest(callId));
+      }
+    };
   }, [callId, dispatch]);
 
   useEffect(() => {
-    if (
-      (callId && callId !== previousCallId) ||
-      (callId &&
-        (filters || previousFilters) &&
-        !fastDeepEqual(filters, previousFilters))
-    ) {
-      dispatch(machineActions.count(callId, filters));
+    if (callId && callId !== previousCallId) {
+      dispatch(
+        machineActions.count(callId, filters)
+      );
     }
-  }, [dispatch, callId, previousCallId, filters, previousFilters]);
+  }, [dispatch, filters, callId, previousCallId]);
 
   return {
     machineCount: machineCount || 0,
