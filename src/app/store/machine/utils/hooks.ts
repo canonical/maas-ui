@@ -53,6 +53,8 @@ export const useFetchMachines = (
   useEffect(() => {
     // TODO: request the machines again if the provided options change (
     // ordering, pagination etc.)
+    // undefined, null and {} are all equivalent i.e. no filters so compare the
+    // current and previous filters using an empty object if the filters are falsy.
     if (!fastDeepEqual(filters || {}, previousFilters || {}) || !callId) {
       setCallId(nanoid());
     }
