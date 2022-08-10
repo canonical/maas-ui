@@ -60,7 +60,7 @@ export const useFetchMachineCount = (
       setCallId(nanoid());
     }
   }, [callId, dispatch, filters, previousFilters]);
-  
+
   useEffect(() => {
     return () => {
       if (callId) {
@@ -71,9 +71,7 @@ export const useFetchMachineCount = (
 
   useEffect(() => {
     if (callId && callId !== previousCallId) {
-      dispatch(
-        machineActions.count(callId, filters)
-      );
+      dispatch(machineActions.count(callId, filters));
     }
   }, [dispatch, filters, callId, previousCallId]);
 

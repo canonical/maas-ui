@@ -412,7 +412,7 @@ describe("machine hook utils", () => {
       });
       const store = mockStore(state);
       const { result } = renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
           initialProps: {
             id: "abc123",

@@ -1,5 +1,3 @@
-import reduxToolkit from "@reduxjs/toolkit";
-
 import machine from "./selectors";
 
 import { NetworkInterfaceTypes } from "app/store/types/enum";
