@@ -8,7 +8,7 @@ import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
-import { NodeStatus } from "app/store/types/node";
+import { FetchNodeStatus } from "app/store/types/node";
 
 type Props = {
   id: Tag[TagMeta.PK];
@@ -34,8 +34,7 @@ export const DeleteTagFormWarnings = ({ id }: Props): JSX.Element | null => {
     tagSelectors.getById(state, id)
   );
   const { machineCount: deployedCount } = useFetchMachineCount({
-    // TODO: update with filter types in https://github.com/canonical/app-tribe/issues/1149
-    status: [NodeStatus.DEPLOYED.toLowerCase()],
+    status: [FetchNodeStatus.DEPLOYED],
     ...(tag?.id ? { tags: [tag.name] } : {}),
   });
   if (!tag) {

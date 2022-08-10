@@ -2,12 +2,14 @@ import type { Machine, MachineStatus } from "./base";
 import type { MachineMeta } from "./enum";
 
 import type { Domain } from "app/store/domain/types";
+import type { Fabric } from "app/store/fabric/types";
 import type { LicenseKeys } from "app/store/licensekeys/types";
 import type {
   ResourcePool,
   ResourcePoolMeta,
 } from "app/store/resourcepool/types";
 import type { Script, ScriptName } from "app/store/script/types";
+import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import type {
@@ -15,12 +17,16 @@ import type {
   NetworkLinkMode,
   StorageLayout,
 } from "app/store/types/enum";
+import type { ModelRef } from "app/store/types/model";
 import type {
   BaseNodeActionParams,
+  FetchNodeStatus,
   LinkParams,
   NetworkInterface,
   NetworkInterfaceParams,
   NetworkLink,
+  NodeIpAddress,
+  NodeVlan,
   PowerParameters,
   ScriptInputParam,
 } from "app/store/types/node";
@@ -236,11 +242,55 @@ export enum FetchSortDirection {
   Descending = "descending",
 }
 
-// TODO: Define the specific filters that the API supports:
-// https://github.com/canonical-web-and-design/app-tribe/issues/1149
-export type FetchFilters = {
-  [x: string]: string | number | boolean | (string | number)[];
+type Filters = {
+  free_text: string;
+  system_id: Machine["system_id"];
+  hostname: Machine["hostname"];
+  description: Machine["description"];
+  distro_series: Machine["distro_series"];
+  osystem: Machine["osystem"];
+  error_description: Machine["error_description"];
+  mac_address: NetworkInterface["mac_address"];
+  domain: Domain["name"];
+  agent_name: string;
+  fabric_classes: Fabric["class_type"];
+  fabrics: Machine["fabrics"];
+  zone: Machine["zone"]["name"];
+  pool: ResourcePool["name"];
+  arch: string;
+  tags: Tag["name"];
+  vlans: NodeVlan["name"];
+  pod: ModelRef["name"];
+  pod_type: string;
+  owner: Machine["owner"];
+  subnets: Subnet["name"];
+  ip_addresses: NodeIpAddress["ip"];
+  spaces: Space["name"];
+  workloads: string;
+  status: FetchNodeStatus;
 };
+
+type ExcludeFilters = {
+  not_fabric_classes: Filters["fabric_classes"];
+  not_fabrics: Filters["fabrics"];
+  not_in_zone: Filters["zone"];
+  not_in_pool: Filters["pool"];
+  not_arch: Filters["arch"];
+  not_tags: Filters["tags"];
+  not_system_id: Filters["system_id"];
+  not_pod: Filters["pod"];
+  not_pod_type: Filters["pod_type"];
+  not_owner: Filters["owner"];
+  not_subnets: Filters["subnets"];
+  not_vlans: Filters["vlans"];
+  not_ip_addresses: Filters["ip_addresses"];
+  not_distro_series: Filters["distro_series"];
+  not_osystem: Filters["osystem"];
+};
+
+type ArrayOrValue<T> = { [P in keyof T]?: T[P] | Array<T[P]> };
+
+export type FetchFilters = Partial<ArrayOrValue<Filters & ExcludeFilters>>;
 
 export enum FetchGroupKey {
   AddressTtl = "address_ttl",
