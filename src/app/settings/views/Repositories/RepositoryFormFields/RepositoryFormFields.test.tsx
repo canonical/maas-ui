@@ -43,7 +43,7 @@ describe("RepositoryFormFields", () => {
     });
   });
 
-  it("displays disitribution and component inputs if type is repository", () => {
+  it("displays distribution and component inputs if type is repository", () => {
     state.packagerepository.items[0].default = false;
     const store = mockStore(state);
 
@@ -71,7 +71,7 @@ describe("RepositoryFormFields", () => {
     ).toBeInTheDocument();
   });
 
-  it("doesn't display disitribution and component inputs if type is ppa", () => {
+  it("doesn't display distribution and component inputs if type is ppa", () => {
     state.packagerepository.items[0].default = false;
     const store = mockStore(state);
 
