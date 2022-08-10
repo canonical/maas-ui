@@ -14,6 +14,7 @@ import {
   useIsLimitedEditingAllowed,
   useFetchMachine,
   useFetchMachines,
+  useFetchMachineCount,
 } from "./hooks";
 
 import { actions as machineActions } from "app/store/machine";
@@ -32,6 +33,8 @@ import {
   machineStateDetailsItem as machineStateDetailsItemFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
+  machineStateCount as machineStateCountFactory,
+  machineStateCounts as machineStateCountsFactory,
   osInfo as osInfoFactory,
   osInfoState as osInfoStateFactory,
   powerType as powerTypeFactory,
@@ -79,6 +82,109 @@ describe("machine hook utils", () => {
 
   afterEach(() => {
     jest.restoreAllMocks();
+  });
+
+  describe("useFetchMachineCount", () => {
+    beforeEach(() => {
+      jest
+        .spyOn(reduxToolkit, "nanoid")
+        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce("mocked-nanoid-2")
+        .mockReturnValueOnce("mocked-nanoid-3");
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    const generateWrapper =
+      (store: MockStoreEnhanced<unknown>) =>
+      ({ children }: { children?: ReactNode; filters?: FetchFilters }) =>
+        <Provider store={store}>{children}</Provider>;
+
+    it("can dispatch machine count action", () => {
+      const store = mockStore(state);
+      renderHook(() => useFetchMachineCount(), {
+        wrapper: generateWrapper(store),
+      });
+      const expected = machineActions.count("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+    });
+
+    it("returns the machine count", async () => {
+      jest.restoreAllMocks();
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
+      const machineCount = 2;
+      const counts = machineStateCountsFactory({
+        "mocked-nanoid": machineStateCountFactory({
+          count: machineCount,
+          loaded: true,
+          loading: false,
+        }),
+      });
+      state.machine = machineStateFactory({
+        loaded: true,
+        counts,
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useFetchMachineCount(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current.machineCountLoaded).toBe(true);
+      expect(result.current.machineCount).toStrictEqual(machineCount);
+    });
+
+    it("does not fetch again with no params", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(() => useFetchMachineCount(), {
+        wrapper: generateWrapper(store),
+      });
+      rerender();
+      const expected = machineActions.count("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
+    it("does not fetch again if the filters haven't changed", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        () => useFetchMachineCount({ hostname: "spotted-quoll" }),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ filters: { hostname: "spotted-quoll" } });
+      const expected = machineActions.count("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
+    it("fetches again if the filters change", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({ filters }) => useFetchMachineCount(filters),
+        {
+          initialProps: {
+            filters: {
+              hostname: "spotted-quoll",
+            },
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ filters: { hostname: "eastern-quoll" } });
+      const expected = machineActions.count("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(2);
+    });
   });
 
   describe("useFetchMachines", () => {
@@ -217,6 +323,12 @@ describe("machine hook utils", () => {
   });
 
   describe("useFetchMachine", () => {
+    beforeEach(() => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    });
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode; id: string }) =>
@@ -300,7 +412,7 @@ describe("machine hook utils", () => {
       });
       const store = mockStore(state);
       const { result } = renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
           initialProps: {
             id: "abc123",

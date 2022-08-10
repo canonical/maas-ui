@@ -10,6 +10,8 @@ import {
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
+  machineStateCount as machineStateCountFactory,
+  machineStateCounts as machineStateCountsFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
   machineStatus as machineStatusFactory,
@@ -463,6 +465,25 @@ describe("machine selectors", () => {
     expect(
       machine.eventErrorsForIds(state, ["abc123", "def456"], null)
     ).toStrictEqual([machineEventErrors[0], machineEventErrors[1]]);
+  });
+
+  it("can get machine count", () => {
+    const machines = [machineFactory(), machineFactory()];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        items: [...machines, machineFactory()],
+        counts: machineStateCountsFactory({
+          "mocked-nanoid": machineStateCountFactory({
+            count: 2,
+            loaded: true,
+            loading: false,
+          }),
+        }),
+      }),
+    });
+    expect(machine.count(state, "mocked-nanoid")).toStrictEqual(2);
+    expect(machine.countLoaded(state, "mocked-nanoid")).toStrictEqual(true);
+    expect(machine.countLoading(state, "mocked-nanoid")).toStrictEqual(false);
   });
 
   it("can get items in a list", () => {

@@ -32,6 +32,7 @@ export {
   machineEventError,
   machineState,
   machineStateCount,
+  machineStateCounts,
   machineStateDetails,
   machineStateDetailsItem,
   machineStateListGroup,
