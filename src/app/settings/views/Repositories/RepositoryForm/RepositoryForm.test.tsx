@@ -19,6 +19,7 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -187,18 +188,16 @@ describe("RepositoryForm", () => {
 
   it("redirects when the repository is saved", () => {
     state.packagerepository.saved = true;
-    const store = mockStore(state);
     const history = createMemoryHistory({
       initialEntries: ["/"],
     });
-    render(
-      <Provider store={store}>
-        <Router history={history}>
-          <CompatRouter>
-            <RepositoryForm type="repository" />
-          </CompatRouter>
-        </Router>
-      </Provider>
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <RepositoryForm type="repository" />
+        </CompatRouter>
+      </Router>,
+      { state }
     );
     expect(history.location.pathname).toBe(settingsURLs.repositories.index);
   });
