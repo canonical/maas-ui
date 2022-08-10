@@ -4,6 +4,7 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
 import { DhcpEdit } from "./DhcpEdit";
 
+import { Labels as DhcpFormFieldsLabels } from "app/base/components/DhcpFormFields/DhcpFormFields";
 import type { RootState } from "app/store/root/types";
 import {
   dhcpSnippet as dhcpSnippetFactory,
@@ -80,18 +81,20 @@ describe("DhcpEdit", () => {
       screen.getByRole("form", { name: "Editing `test snippet`" })
     ).toBeInTheDocument();
 
-    expect(screen.getByRole("textbox", { name: "Snippet name" })).toHaveValue(
-      "test snippet"
-    );
+    expect(
+      screen.getByRole("textbox", { name: DhcpFormFieldsLabels.Name })
+    ).toHaveValue("test snippet");
 
-    expect(screen.getByRole("textbox", { name: "Description" })).toHaveValue(
-      "test description"
-    );
+    expect(
+      screen.getByRole("textbox", { name: DhcpFormFieldsLabels.Description })
+    ).toHaveValue("test description");
 
-    expect(screen.getByRole("checkbox", { name: "Enabled" })).not.toBeChecked();
+    expect(
+      screen.getByRole("checkbox", { name: DhcpFormFieldsLabels.Enabled })
+    ).not.toBeChecked();
 
-    expect(screen.getByRole("textbox", { name: "DHCP snippet" })).toHaveValue(
-      "test value"
-    );
+    expect(
+      screen.getByRole("textbox", { name: DhcpFormFieldsLabels.Value })
+    ).toHaveValue("test value");
   });
 });
