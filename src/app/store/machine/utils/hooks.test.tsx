@@ -96,7 +96,7 @@ describe("machine hook utils", () => {
 
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode; filters?: FetchFilters }) =>
+      ({ children }: { children?: ReactNode; filters?: FetchFilters | null }) =>
         <Provider store={store}>{children}</Provider>;
 
     it("can fetch machines", () => {
@@ -155,6 +155,25 @@ describe("machine hook utils", () => {
         }
       );
       rerender({ filters: { hostname: "spotted-quoll" } });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
+    it("does not fetch again if the filters haven't changed including empty objects", () => {
+      const store = mockStore(state);
+      const initialProps: { filters: FetchFilters | null } = { filters: null };
+      const { rerender } = renderHook(
+        ({ filters }: { filters: FetchFilters | null }) =>
+          useFetchMachines(filters),
+        {
+          initialProps,
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ filters: {} });
       const expected = machineActions.fetch("mocked-nanoid-1");
       const getDispatches = store
         .getActions()

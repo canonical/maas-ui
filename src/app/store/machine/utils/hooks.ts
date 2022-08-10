@@ -53,11 +53,7 @@ export const useFetchMachines = (
   useEffect(() => {
     // TODO: request the machines again if the provided options change (
     // ordering, pagination etc.)
-    if (
-      ((filters || previousFilters) &&
-        !fastDeepEqual(filters, previousFilters)) ||
-      !callId
-    ) {
+    if (!fastDeepEqual(filters || {}, previousFilters || {}) || !callId) {
       setCallId(nanoid());
     }
   }, [callId, dispatch, filters, previousFilters]);
