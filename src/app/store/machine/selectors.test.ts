@@ -23,9 +23,6 @@ import {
 } from "testing/factories";
 
 describe("machine selectors", () => {
-  afterEach(() => {
-    jest.restoreAllMocks();
-  });
   it("can get all items", () => {
     const items = [machineFactory(), machineFactory()];
     const state = rootStateFactory({
@@ -473,7 +470,6 @@ describe("machine selectors", () => {
   });
 
   it("can get machine count", () => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
     const machines = [machineFactory(), machineFactory()];
     const state = rootStateFactory({
       machine: machineStateFactory({
