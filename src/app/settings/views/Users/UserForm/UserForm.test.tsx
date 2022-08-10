@@ -16,6 +16,7 @@ import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -33,16 +34,13 @@ describe("UserForm", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <UserForm user={user} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(
@@ -73,19 +71,17 @@ describe("UserForm", () => {
 
   it("redirects when the user is saved", () => {
     state.user.saved = true;
-    const store = mockStore(state);
     const history = createMemoryHistory({
       initialEntries: ["/"],
     });
 
-    render(
-      <Provider store={store}>
-        <Router history={history}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
-        </Router>
-      </Provider>
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <UserForm user={user} />
+        </CompatRouter>
+      </Router>,
+      { state }
     );
     expect(history.location.pathname).toBe(settingsURLs.users.index);
   });
@@ -302,16 +298,13 @@ describe("UserForm", () => {
   });
 
   it("displays a checkbox for making the user a MAAS admin", () => {
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <UserForm user={user} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(

@@ -16,6 +16,7 @@ import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -141,34 +142,30 @@ describe("UsersList", () => {
   });
 
   it("disables delete for the current user", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UsersList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     let row = screen.getAllByTestId("user-row")[0];
     expect(within(row).getByTestId("table-actions-delete")).toBeDisabled();
   });
 
   it("links to preferences for the current user", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UsersList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     let row = screen.getAllByTestId("user-row")[0];
     expect(within(row).getByRole("link", { name: "Edit" })).toHaveAttribute(
@@ -234,17 +231,15 @@ describe("UsersList", () => {
   });
 
   it("can toggle username and real name", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UsersList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(
       within(screen.getAllByTestId("user-row")[0]).getByText("admin")
@@ -258,17 +253,15 @@ describe("UsersList", () => {
 
   it("shows a message when using external auth", () => {
     state.status.externalAuthURL = "http://login.example.com";
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UsersList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(
       screen.getByText(
