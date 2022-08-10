@@ -2,6 +2,8 @@ import { screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
+import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
+
 import RepositoryEdit from "./RepositoryEdit";
 
 import type { RootState } from "app/store/root/types";
@@ -117,7 +119,7 @@ describe("RepositoryEdit", () => {
     const form = screen.getByRole("form", { name: "Edit repository" });
     expect(form).toBeInTheDocument();
     expect(
-      within(form).getByRole("textbox", { name: "Name" })
+      within(form).getByRole("textbox", { name: RepositoryFormLabels.Name })
     ).toBeInTheDocument();
   });
 });
