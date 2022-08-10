@@ -58,11 +58,11 @@ describe("RepositoryFormFields", () => {
     );
 
     expect(
-      screen.getByRole("textbox", { name: "Distributions" })
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Distributions })
     ).toBeInTheDocument();
 
     expect(
-      screen.getByRole("textbox", { name: "Components" })
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Components })
     ).toBeInTheDocument();
   });
 
@@ -83,11 +83,13 @@ describe("RepositoryFormFields", () => {
       { state }
     );
     expect(
-      screen.queryByRole("textbox", { name: "Distributions" })
+      screen.queryByRole("textbox", {
+        name: RepositoryFormLabels.Distributions,
+      })
     ).not.toBeInTheDocument();
 
     expect(
-      screen.queryByRole("textbox", { name: "Components" })
+      screen.queryByRole("textbox", { name: RepositoryFormLabels.Components })
     ).not.toBeInTheDocument();
   });
 
@@ -221,9 +223,9 @@ describe("RepositoryFormFields", () => {
       { state }
     );
 
-    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(
-      "repo-name"
-    );
+    expect(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Name })
+    ).toHaveValue("repo-name");
   });
 
   it("correctly reflects repository url", () => {
@@ -243,9 +245,9 @@ describe("RepositoryFormFields", () => {
       { state }
     );
 
-    expect(screen.getByRole("textbox", { name: "URL" })).toHaveValue(
-      "fake.url"
-    );
+    expect(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.URL })
+    ).toHaveValue("fake.url");
   });
 
   it("correctly reflects repository key", () => {
@@ -265,9 +267,9 @@ describe("RepositoryFormFields", () => {
       { state }
     );
 
-    expect(screen.getByRole("textbox", { name: "Key" })).toHaveValue(
-      "fake-key"
-    );
+    expect(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Key })
+    ).toHaveValue("fake-key");
   });
 
   it("correctly reflects repository enabled state", () => {
@@ -288,7 +290,9 @@ describe("RepositoryFormFields", () => {
     );
 
     expect(
-      screen.getAllByRole("checkbox", { name: "Enable repository" })[0]
+      screen.getAllByRole("checkbox", {
+        name: RepositoryFormLabels.EnableRepo,
+      })[0]
     ).not.toBeChecked();
   });
 
@@ -310,7 +314,9 @@ describe("RepositoryFormFields", () => {
     );
 
     expect(
-      screen.getAllByRole("checkbox", { name: "Enable sources" })[0]
+      screen.getAllByRole("checkbox", {
+        name: RepositoryFormLabels.EnableSources,
+      })[0]
     ).toBeChecked();
   });
 

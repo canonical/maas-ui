@@ -20,6 +20,13 @@ export enum Labels {
   Arches = "Architectures",
   DisabledPockets = "Disabled pockets",
   DisabledComponents = "Disabled components",
+  Name = "Name",
+  URL = "URL",
+  EnableRepo = "Enable repository",
+  EnableSources = "Enable sources",
+  Key = "Key",
+  Distributions = "Distributions",
+  Components = "Components",
 }
 
 const generateCheckboxGroup = (
@@ -71,26 +78,26 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
       <Col size={4}>
         <FormikField
           disabled={values.default}
-          label="Name"
+          label={Labels.Name}
           name="name"
           required
           type="text"
         />
-        <FormikField label="URL" name="url" required type="text" />
+        <FormikField label={Labels.URL} name="url" required type="text" />
         <List
           className="is-split--small u-hide--medium u-hide--large"
           items={[
             <FormikField
               checked={values.enabled}
               disabled={values.default}
-              label="Enable repository"
+              label={Labels.EnableRepo}
               name="enabled"
               type="checkbox"
               wrapperClassName="u-no-margin--bottom"
             />,
             <FormikField
               checked={!values.disable_sources}
-              label="Enable sources"
+              label={Labels.EnableSources}
               name="disable_sources"
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources);
@@ -102,7 +109,7 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
         />
         <FormikField
           component={Textarea}
-          label="Key"
+          label={Labels.Key}
           name="key"
           style={{ height: "10rem", maxWidth: "100%" }}
         />
@@ -124,14 +131,14 @@ const RepositoryFormFields = ({ type }: Props): JSX.Element => {
             <FormikField
               checked={values.enabled}
               disabled={values.default}
-              label="Enable repository"
+              label={Labels.EnableRepo}
               name="enabled"
               type="checkbox"
               wrapperClassName="u-no-margin--bottom"
             />,
             <FormikField
               checked={!values.disable_sources}
-              label="Enable sources"
+              label={Labels.EnableSources}
               name="disable_sources"
               onChange={() => {
                 setFieldValue("disable_sources", !values.disable_sources);
