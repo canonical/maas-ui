@@ -27,7 +27,7 @@ import urls from "app/base/urls";
 import type { MachineHeaderContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import { MachineMeta } from "app/store/machine/types";
-import { useGetMachine } from "app/store/machine/utils/hooks";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
 import { getRelativeRoute, isId } from "app/utils";
 
@@ -35,7 +35,7 @@ const MachineDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
-  const { machine, loaded: detailsLoaded } = useGetMachine(id);
+  const { machine, loaded: detailsLoaded } = useFetchMachine(id);
   const [headerContent, setHeaderContent] =
     useState<MachineHeaderContent | null>(null);
 

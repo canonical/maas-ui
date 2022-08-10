@@ -12,7 +12,7 @@ import {
   useFormattedOS,
   useHasInvalidArchitecture,
   useIsLimitedEditingAllowed,
-  useGetMachine,
+  useFetchMachine,
   useFetchMachines,
 } from "./hooks";
 
@@ -216,7 +216,7 @@ describe("machine hook utils", () => {
     });
   });
 
-  describe("useGetMachine", () => {
+  describe("useFetchMachine", () => {
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
       ({ children }: { children?: ReactNode; id: string }) =>
@@ -226,7 +226,7 @@ describe("machine hook utils", () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
       const store = mockStore(state);
       renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
           initialProps: {
             id: "def456",
@@ -243,7 +243,7 @@ describe("machine hook utils", () => {
     it("does not fetch again if the id hasn't changed", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
           initialProps: {
             id: "def456",
@@ -266,7 +266,7 @@ describe("machine hook utils", () => {
         .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);
       const { rerender } = renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
           initialProps: {
             id: "def456",
@@ -317,7 +317,7 @@ describe("machine hook utils", () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
       const store = mockStore(state);
       renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
           initialProps: {
             id: "def456",
@@ -339,7 +339,7 @@ describe("machine hook utils", () => {
         .mockReturnValueOnce("mocked-nanoid-2");
       const store = mockStore(state);
       const { rerender } = renderHook(
-        ({ id }: { children?: ReactNode; id: string }) => useGetMachine(id),
+        ({ id }: { children?: ReactNode; id: string }) => useFetchMachine(id),
         {
           initialProps: {
             id: "def123",
