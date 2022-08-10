@@ -6,6 +6,8 @@ import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
+import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
+
 import RepositoryForm from "./RepositoryForm";
 
 import settingsURLs from "app/settings/urls";
@@ -232,20 +234,28 @@ describe("RepositoryForm", () => {
       </Provider>
     );
 
-    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
-    await userEvent.clear(screen.getByRole("textbox", { name: "URL" }));
-    await userEvent.clear(screen.getByRole("textbox", { name: "Key" }));
     await userEvent.clear(
-      screen.getByRole("textbox", { name: "Distributions" })
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Name })
     );
-    await userEvent.clear(screen.getByRole("textbox", { name: "Components" }));
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.URL })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Key })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Distributions })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Components })
+    );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: "Name" }),
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Name }),
       "newName"
     );
     await userEvent.type(
-      screen.getByRole("textbox", { name: "URL" }),
+      screen.getByRole("textbox", { name: RepositoryFormLabels.URL }),
       "http://www.website.com"
     );
 
@@ -292,9 +302,12 @@ describe("RepositoryForm", () => {
       </Provider>
     );
 
-    await userEvent.type(screen.getByRole("textbox", { name: "Name" }), "name");
     await userEvent.type(
-      screen.getByRole("textbox", { name: "URL" }),
+      screen.getByRole("textbox", { name: RepositoryFormLabels.Name }),
+      "name"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RepositoryFormLabels.URL }),
       "http://www.website.com"
     );
 
