@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -19,6 +20,7 @@ import {
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -71,28 +73,28 @@ describe("DhcpList", () => {
     });
   });
 
-  it("can show a delete confirmation", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can show a delete confirmation", async () => {
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    let row = wrapper.find("[data-testid='dhcp-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(false);
+    let row = screen.getAllByTestId("dhcp-row")[0];
+    expect(row).not.toHaveClass("is-active");
+
     // Click on the delete button:
-    row.find("Button[data-testid='table-actions-delete']").simulate("click");
-    row = wrapper.find("[data-testid='dhcp-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(true);
+    await userEvent.click(within(row).getByTestId("table-actions-delete"));
+
+    row = screen.getAllByTestId("dhcp-row")[0];
+    expect(row).toHaveClass("is-active");
   });
 
-  it("can delete a dhcp snippet", () => {
+  it("can delete a dhcp snippet", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -101,18 +103,18 @@ describe("DhcpList", () => {
         </MemoryRouter>
       </Provider>
     );
+    let row = screen.getAllByTestId("dhcp-row")[1];
+    expect(row).not.toHaveClass("is-active");
+
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(2)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .simulate("click");
+    await userEvent.click(within(row).getByTestId("table-actions-delete"));
+
+    row = screen.getAllByTestId("dhcp-row")[1];
+    expect(row).toHaveClass("is-active");
+
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(2)
-      .find("ActionButton[data-testid='action-confirm']")
-      .simulate("click");
+    await userEvent.click(within(row).getByTestId("action-confirm"));
+
     expect(
       store.getActions().find((action) => action.type === "dhcpsnippet/delete")
     ).toEqual({
@@ -129,10 +131,10 @@ describe("DhcpList", () => {
     });
   });
 
-  it("can add a message when a dhcp snippet is deleted", () => {
+  it("can add a message when a dhcp snippet is deleted", async () => {
     state.dhcpsnippet.saved = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -142,18 +144,18 @@ describe("DhcpList", () => {
       </Provider>
     );
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(2)
-      .findWhere((n) => n.name() === "Button" && n.text() === "Delete")
-      .simulate("click");
+    let row = screen.getAllByTestId("dhcp-row")[1];
+    expect(row).not.toHaveClass("is-active");
+
+    // Click on the delete button:
+    await userEvent.click(within(row).getByTestId("table-actions-delete"));
+
+    row = screen.getAllByTestId("dhcp-row")[1];
+    expect(row).toHaveClass("is-active");
+
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(2)
-      .find("ActionButton[data-testid='action-confirm']")
-      .last()
-      .simulate("click");
+    await userEvent.click(within(row).getByTestId("action-confirm"));
+
     const actions = store.getActions();
     expect(
       actions.some((action) => action.type === "dhcpsnippet/cleanup")
@@ -161,43 +163,45 @@ describe("DhcpList", () => {
     expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
-  it("can show snippet details", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can show snippet details", async () => {
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    let row = wrapper.find("[data-testid='dhcp-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(false);
-    // Click on the delete button:
-    row.find("Button.column-toggle").simulate("click");
-    row = wrapper.find("[data-testid='dhcp-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(true);
+    let row = screen.getAllByTestId("dhcp-row")[0];
+    expect(row).not.toHaveClass("is-active");
+
+    // Click on the column toggle button:
+    await userEvent.click(
+      within(row).getByRole("button", { name: "Show/hide details" })
+    );
+
+    row = screen.getAllByTestId("dhcp-row")[0];
+    expect(row).toHaveClass("is-active");
   });
 
-  it("can filter dhcp snippets", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can filter dhcp snippets", async () => {
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    let rows = wrapper.find("TableRow[data-testid='dhcp-row']");
+    let rows = screen.getAllByTestId("dhcp-row");
     expect(rows.length).toBe(3);
-    wrapper
-      .find("SearchBox input")
-      .simulate("change", { target: { name: "search", value: "lease" } });
-    wrapper.update();
-    rows = wrapper.find("TableRow[data-testid='dhcp-row']");
+
+    await userEvent.type(
+      screen.getByRole("searchbox", { name: "Search DHCP snippets" }),
+      "lease"
+    );
+
+    rows = screen.getAllByTestId("dhcp-row");
     expect(rows.length).toBe(1);
   });
 });
