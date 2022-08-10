@@ -13,6 +13,7 @@ import {
   packageRepositoryState as packageRepositoryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -59,56 +60,50 @@ describe("RepositoriesList", () => {
 
   it("displays a loading component if loading", () => {
     state.packagerepository.loading = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("shows the table if there are repositories and loaded is true", () => {
     state.packagerepository.loaded = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(screen.getByLabelText("Package repositories")).toBeInTheDocument();
   });
 
   it("can show a delete confirmation", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(
@@ -181,19 +176,17 @@ describe("RepositoriesList", () => {
   });
 
   it("can filter repositories", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     let rows = screen.getAllByTestId("repository-row");
     expect(rows.length).toBe(state.packagerepository.items.length);
@@ -208,19 +201,17 @@ describe("RepositoriesList", () => {
   });
 
   it("displays default repositories with user-friendly names", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     const mainRepoRow = screen.getAllByTestId("repository-row")[0];
     const extraRepoRow = screen.getAllByTestId("repository-row")[1];
