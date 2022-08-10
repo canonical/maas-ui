@@ -59,7 +59,7 @@ export type WebSocketActionParams = AnyObject | AnyObject[];
 export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
   {
     params: P;
-  },
+  } | null,
   string,
   {
     // Whether the request should only be fetched the first time.
@@ -73,7 +73,7 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     // key of a model in order to track a its loading/success/error states.
     identifier?: number | string;
     // The endpoint method e.g. "list".
-    method: string;
+    method?: string;
     // The endpoint model e.g. "machine".
     model: string;
     // Whether the request should be fetched every time.
@@ -89,6 +89,8 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     callId?: string;
     // Whether polling should be stopped for the request.
     pollStop?: boolean;
+    // Whether the request should unsubscribe from unused entities.
+    unsubscribe?: boolean;
     // Whether the response should be stored in the file context.
     useFileContext?: boolean;
   }

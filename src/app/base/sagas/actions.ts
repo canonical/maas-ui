@@ -178,24 +178,26 @@ export const generateNextDeleteRecordAction = (
 export function* deleteDomainRecord(
   socketClient: WebSocketClient,
   sendMessage: SendMessage,
-  { payload }: PayloadAction<{ params: DeleteRecordParams }>
+  { payload }: PayloadAction<{ params: DeleteRecordParams } | null>
 ): SagaGenerator<void> {
-  const { domain, rrset } = payload.params;
-  const initialAction = isAddressRecord(rrset.rrtype)
-    ? domainActions.deleteAddressRecord({
-        dnsresource_id: rrset.dnsresource_id,
-        domain,
-        rrdata: rrset.rrdata,
-      })
-    : domainActions.deleteDNSData({
-        dnsdata_id: rrset.dnsdata_id,
-        domain,
-      });
-  const nextAction = yield* call(
-    generateNextDeleteRecordAction,
-    payload.params
-  );
-  yield* call(sendMessage, socketClient, initialAction, nextAction);
+  if (payload?.params) {
+    const { domain, rrset } = payload?.params;
+    const initialAction = isAddressRecord(rrset.rrtype)
+      ? domainActions.deleteAddressRecord({
+          dnsresource_id: rrset.dnsresource_id,
+          domain,
+          rrdata: rrset.rrdata,
+        })
+      : domainActions.deleteDNSData({
+          dnsdata_id: rrset.dnsdata_id,
+          domain,
+        });
+    const nextAction = yield* call(
+      generateNextDeleteRecordAction,
+      payload.params
+    );
+    yield* call(sendMessage, socketClient, initialAction, nextAction);
+  }
 }
 
 const deleteRecordHandler: MessageHandler<DeleteRecordParams> = {

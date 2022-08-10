@@ -378,6 +378,62 @@ const list = createSelector(
   }
 );
 
+/**
+ * Get the ids of machines in a list or details call that are not being used
+ * by other calls.
+ * @param state - The redux state.
+ * @param callId - A list request id.
+ * @returns A list of unused machine ids.
+ */
+const unusedIdsInCall = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => {
+    const usedIds: Machine[MachineMeta.PK][] = [];
+    // Get the ids for all machines in list and details requests, ignoring the
+    // current request.
+    Object.entries(machineState.details).forEach(
+      ([detailsCallId, { system_id }]) => {
+        if (detailsCallId !== callId) {
+          usedIds.push(system_id);
+        }
+      }
+    );
+    Object.entries(machineState.lists).forEach(
+      ([detailsCallId, { groups }]) => {
+        if (detailsCallId !== callId) {
+          groups?.forEach((group) => {
+            group.items.forEach((systemId) => {
+              usedIds.push(systemId);
+            });
+          });
+        }
+      }
+    );
+    const unusedIds: Machine[MachineMeta.PK][] = [];
+    const details = getDetails(machineState, callId);
+    const list = getList(machineState, callId);
+    if (details) {
+      // Check if the machine in the details request is used by any other requests.
+      if (!usedIds.includes(details.system_id)) {
+        unusedIds.push(details.system_id);
+      }
+    } else if (list) {
+      // Find any machines in the list request that are not used by any other requests.
+      list.groups?.forEach((group) => {
+        group.items.forEach((systemId) => {
+          if (!usedIds.includes(systemId)) {
+            unusedIds.push(systemId);
+          }
+        });
+      });
+    }
+    return unusedIds;
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
   aborting: statusSelectors["aborting"],
@@ -422,8 +478,9 @@ const selectors = {
   turningOn: statusSelectors["turningOn"],
   unlocking: statusSelectors["unlocking"],
   unlinkingSubnet: statusSelectors["unlinkingSubnet"],
-  untagging: statusSelectors["untagging"],
   unselected,
+  untagging: statusSelectors["untagging"],
+  unusedIdsInCall,
   updatingTags,
 };
 

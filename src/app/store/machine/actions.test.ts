@@ -1674,6 +1674,28 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle cleaning up requests", () => {
+    expect(actions.cleanupRequest("123456")).toEqual({
+      meta: {
+        callId: "123456",
+        model: "machine",
+        unsubscribe: true,
+      },
+      payload: null,
+      type: "machine/cleanupRequest",
+    });
+  });
+
+  it("can handle removing requests", () => {
+    expect(actions.removeRequest("123456")).toEqual({
+      meta: {
+        callId: "123456",
+      },
+      payload: null,
+      type: "machine/removeRequest",
+    });
+  });
+
   it("can handle filter groups", () => {
     expect(actions.filterGroups()).toEqual({
       type: "machine/filterGroups",
