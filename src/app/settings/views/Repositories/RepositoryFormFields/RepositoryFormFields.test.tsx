@@ -1,8 +1,6 @@
-import { screen, render, within } from "@testing-library/react";
-import { Provider } from "react-redux";
+import { screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import RepositoryForm from "../RepositoryForm";
 import { Labels as RepositoryFormLabels } from "../RepositoryFormFields/RepositoryFormFields";
@@ -17,8 +15,7 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("RepositoryFormFields", () => {
   let state: RootState;
@@ -45,21 +42,19 @@ describe("RepositoryFormFields", () => {
 
   it("displays distribution and component inputs if type is repository", () => {
     state.packagerepository.items[0].default = false;
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(
@@ -73,21 +68,19 @@ describe("RepositoryFormFields", () => {
 
   it("doesn't display distribution and component inputs if type is ppa", () => {
     state.packagerepository.items[0].default = false;
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="ppa"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="ppa"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(
       screen.queryByRole("textbox", { name: "Distributions" })
@@ -102,21 +95,19 @@ describe("RepositoryFormFields", () => {
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
     state.packagerepository.items[0].default = false;
     state.packagerepository.items[0].disabled_pockets = ["updates"];
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(
@@ -128,21 +119,19 @@ describe("RepositoryFormFields", () => {
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
     state.packagerepository.items[0].default = true;
     state.packagerepository.items[0].disabled_pockets = ["updates"];
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     const disabled_pockets_list = screen.getByRole("list", {
@@ -162,21 +151,19 @@ describe("RepositoryFormFields", () => {
     ];
     state.packagerepository.items[0].default = false;
     state.packagerepository.items[0].disabled_components = ["universe"];
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(
       screen.queryByRole("list", {
@@ -193,21 +180,19 @@ describe("RepositoryFormFields", () => {
     ];
     state.packagerepository.items[0].default = true;
     state.packagerepository.items[0].disabled_components = ["universe"];
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     const disabled_components_list = screen.getByRole("list", {
@@ -221,21 +206,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository name", () => {
     state.packagerepository.items[0].name = "repo-name";
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue(
@@ -245,21 +228,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository url", () => {
     state.packagerepository.items[0].url = "fake.url";
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(screen.getByRole("textbox", { name: "URL" })).toHaveValue(
@@ -269,21 +250,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository key", () => {
     state.packagerepository.items[0].key = "fake-key";
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(screen.getByRole("textbox", { name: "Key" })).toHaveValue(
@@ -293,21 +272,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository enabled state", () => {
     state.packagerepository.items[0].enabled = false;
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(
@@ -317,21 +294,19 @@ describe("RepositoryFormFields", () => {
 
   it("correctly reflects repository disable_sources state by displaying the inverse", () => {
     state.packagerepository.items[0].disable_sources = false;
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(
@@ -342,21 +317,19 @@ describe("RepositoryFormFields", () => {
   it("correctly reflects repository arches", () => {
     state.general.knownArchitectures.data = ["amd64", "i386", "ppc64el"];
     state.packagerepository.items[0].arches = ["amd64", "ppc64el"];
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     const arches_list = screen.getByRole("list", {
@@ -376,21 +349,19 @@ describe("RepositoryFormFields", () => {
     state.general.pocketsToDisable.data = ["updates", "security", "backports"];
     state.packagerepository.items[0].default = true;
     state.packagerepository.items[0].disabled_pockets = ["updates"];
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     const disabled_pockets_list = within(
@@ -413,21 +384,19 @@ describe("RepositoryFormFields", () => {
     ];
     state.packagerepository.items[0].default = true;
     state.packagerepository.items[0].disabled_components = ["universe"];
-    const store = mockStore(state);
 
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <RepositoryForm
-              repository={state.packagerepository.items[0]}
-              type="repository"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/repositories/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <RepositoryForm
+            repository={state.packagerepository.items[0]}
+            type="repository"
+          />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     const disabled_components_list = within(
