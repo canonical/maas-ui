@@ -34,6 +34,7 @@ describe("machine reducer", () => {
       saved: false,
       saving: false,
       selected: [],
+      selectedMachines: null,
       statuses: {},
     });
   });
