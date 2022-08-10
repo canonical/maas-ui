@@ -91,7 +91,7 @@ describe("machine actions", () => {
         method: "count",
         callId: "123456",
       },
-      payload: { params: { filters: { owner: "admin" } } },
+      payload: { params: { filter: { owner: "admin" } } },
     });
   });
 
