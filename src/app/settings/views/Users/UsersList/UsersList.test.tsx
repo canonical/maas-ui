@@ -1,5 +1,5 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -16,6 +16,7 @@ import {
   rootState as rootStateFactory,
   statusState as statusStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -56,9 +57,9 @@ describe("UsersList", () => {
     });
   });
 
-  it("can show a delete confirmation", () => {
+  it("can show a delete confirmation", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
@@ -69,22 +70,31 @@ describe("UsersList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let row = wrapper.find("[data-testid='user-row']").at(2);
-    expect(row.hasClass("is-active")).toBe(false);
+    let row = screen.getAllByTestId("user-row")[1];
+    expect(row).not.toHaveClass("is-active");
+
     // Click on the delete button:
-    wrapper
-      .find("[data-testid='user-row']")
-      .at(2)
-      .find("Button[data-testid='table-actions-delete']")
-      .simulate("click");
-    wrapper.update();
-    row = wrapper.find("[data-testid='user-row']").at(2);
-    expect(row.hasClass("is-active")).toBe(true);
+    await userEvent.click(within(row).getByTestId("table-actions-delete"));
+
+    rerender(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    row = screen.getAllByTestId("user-row")[1];
+    expect(row).toHaveClass("is-active");
   });
 
-  it("can delete a user", () => {
+  it("can delete a user", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
@@ -95,14 +105,28 @@ describe("UsersList", () => {
         </MemoryRouter>
       </Provider>
     );
+    let row = screen.getAllByTestId("user-row")[1];
+
     // Click on the delete button:
-    wrapper.find("TableRow").at(2).find("Button").at(1).simulate("click");
+    await userEvent.click(within(row).getByTestId("table-actions-delete"));
+
+    rerender(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    row = screen.getAllByTestId("user-row")[1];
+
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(2)
-      .find("ActionButton[data-testid='action-confirm']")
-      .simulate("click");
+    await userEvent.click(within(row).getByTestId("action-confirm"));
+
     expect(store.getActions()[1]).toEqual({
       type: "user/delete",
       payload: {
@@ -118,45 +142,42 @@ describe("UsersList", () => {
   });
 
   it("disables delete for the current user", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UsersList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(
-      wrapper.find("tbody TableRow").at(0).find("Button").at(1).prop("disabled")
-    ).toBe(true);
+    let row = screen.getAllByTestId("user-row")[0];
+    expect(within(row).getByTestId("table-actions-delete")).toBeDisabled();
   });
 
   it("links to preferences for the current user", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UsersList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(
-      wrapper.find("tbody TableRow").at(0).find("Button").at(0).prop("to")
-    ).toBe("/account/prefs/details");
+    let row = screen.getAllByTestId("user-row")[0];
+    expect(within(row).getByRole("link", { name: "Edit" })).toHaveAttribute(
+      "href",
+      "/account/prefs/details"
+    );
   });
 
   it("can add a message when a user is deleted", () => {
     state.user.saved = true;
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
@@ -172,9 +193,9 @@ describe("UsersList", () => {
     expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
-  it("can filter users", () => {
+  it("can filter users", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
@@ -185,59 +206,68 @@ describe("UsersList", () => {
         </MemoryRouter>
       </Provider>
     );
-    let rows = wrapper.find("TableRow[data-testid='user-row']");
+    let rows = screen.getAllByTestId("user-row");
     expect(rows.length).toBe(2);
-    act(() => {
-      wrapper.find("SearchBox input").simulate("change", {
-        target: { name: "search", value: "admin" },
-      });
-    });
-    wrapper.update();
-    rows = wrapper.find("TableRow[data-testid='user-row']");
+
+    await userEvent.type(
+      screen.getByRole("searchbox", { name: "Search users" }),
+      "admin"
+    );
+
+    rerender(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <UsersList />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    rows = screen.getAllByTestId("user-row");
     expect(rows.length).toBe(1);
   });
 
-  it("can toggle username and real name", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can toggle username and real name", async () => {
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UsersList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(
-      wrapper.find("TableRow").at(1).find("TableCell").at(0).text()
-    ).toEqual("admin");
+      within(screen.getAllByTestId("user-row")[0]).getByText("admin")
+    ).toBeInTheDocument();
     // Click on the header toggle.
-    wrapper
-      .find('[data-testid="real-name-header"]')
-      .find("button")
-      .simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Real name" }));
     expect(
-      wrapper.find("TableRow").at(1).find("TableCell").at(0).text()
-    ).toEqual("Kangaroo");
+      within(screen.getAllByTestId("user-row")[0]).getByText("Kangaroo")
+    ).toBeInTheDocument();
   });
 
   it("shows a message when using external auth", () => {
     state.status.externalAuthURL = "http://login.example.com";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UsersList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UsersList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Notification").exists()).toBe(true);
-    expect(wrapper.find("MainTable").exists()).toBe(false);
+    expect(
+      screen.getByText(
+        "Users for this MAAS are managed using an external service"
+      )
+    ).toBeInTheDocument();
+    expect(screen.queryByRole("table")).not.toBeInTheDocument();
   });
 });

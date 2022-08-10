@@ -12,6 +12,19 @@ import statusSelectors from "app/store/status/selectors";
 import userSelectors from "app/store/user/selectors";
 import type { User } from "app/store/user/types";
 
+export enum Labels {
+  Username = "Username",
+  FullName = "Full name (optional)",
+  Email = "Email address",
+  MaasAdmin = "MAAS administrator",
+  ChangePassword = "Change password…",
+  CurrentPassword = "Current password",
+  Password = "Password",
+  PasswordAgain = "Password (again)",
+  NewPassword = "New password",
+  NewPasswordAgain = "New password (again)",
+}
+
 export type UserValues = {
   isSuperuser: User["is_superuser"];
   email: User["email"];
@@ -139,20 +152,20 @@ export const UserForm = ({
         autoComplete="username"
         disabled={formDisabled}
         help="Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only."
-        label="Username"
+        label={Labels.Username}
         name="username"
         required={true}
         type="text"
       />
       <FormikField
         disabled={formDisabled}
-        label="Full name (optional)"
+        label={Labels.FullName}
         name="fullName"
         type="text"
       />
       <FormikField
         disabled={formDisabled}
-        label="Email address"
+        label={Labels.Email}
         name="email"
         required={true}
         type="email"
@@ -160,7 +173,7 @@ export const UserForm = ({
       {includeUserType && (
         <FormikField
           disabled={formDisabled}
-          label="MAAS administrator"
+          label={Labels.MaasAdmin}
           name="isSuperuser"
           type="checkbox"
         />
@@ -172,8 +185,9 @@ export const UserForm = ({
             className="u-no-margin--bottom"
             data-testid="toggle-passwords"
             onClick={() => setPasswordVisible(!passwordVisible)}
+            type="button"
           >
-            Change password&hellip;
+            {Labels.ChangePassword}
           </Button>
         </div>
       )}
@@ -183,7 +197,7 @@ export const UserForm = ({
             <FormikField
               autoComplete="current-password"
               disabled={formDisabled}
-              label="Current password"
+              label={Labels.CurrentPassword}
               name="old_password"
               required={true}
               type="password"
@@ -192,7 +206,9 @@ export const UserForm = ({
           <FormikField
             autoComplete="new-password"
             disabled={formDisabled}
-            label={includeCurrentPassword ? "New password" : "Password"}
+            label={
+              includeCurrentPassword ? Labels.NewPassword : Labels.Password
+            }
             name="password"
             required={true}
             type="password"
@@ -203,8 +219,8 @@ export const UserForm = ({
             help="Enter the same password as before, for verification"
             label={
               includeCurrentPassword
-                ? "New password (again)"
-                : "Password (again)"
+                ? Labels.NewPasswordAgain
+                : Labels.PasswordAgain
             }
             name="passwordConfirm"
             required={true}

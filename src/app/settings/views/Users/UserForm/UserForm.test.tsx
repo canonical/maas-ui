@@ -1,20 +1,23 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { UserForm } from "./UserForm";
+import { UserForm, Labels as UserFormLabels } from "./UserForm";
 
-import BaseUserForm from "app/base/components/UserForm";
+import { Labels as BaseUserFormLabels } from "app/base/components/UserForm/UserForm";
 import settingsURLs from "app/settings/urls";
 import type { RootState } from "app/store/root/types";
 import type { User } from "app/store/user/types";
 import {
   user as userFactory,
   rootState as rootStateFactory,
+  statusState as statusStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -23,30 +26,33 @@ describe("UserForm", () => {
   let user: User;
 
   beforeEach(() => {
-    state = rootStateFactory();
+    state = rootStateFactory({
+      status: statusStateFactory({
+        externalAuthURL: null,
+      }),
+    });
     user = userFactory();
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <UserForm user={user} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("UserForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: "Editing `user1`" })
+    ).toBeInTheDocument();
   });
 
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -55,9 +61,7 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
 
     expect(store.getActions()).toEqual([
       {
@@ -68,26 +72,25 @@ describe("UserForm", () => {
 
   it("redirects when the user is saved", () => {
     state.user.saved = true;
-    const store = mockStore(state);
+    const history = createMemoryHistory({
+      initialEntries: ["/"],
+    });
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <UserForm user={user} />
+        </CompatRouter>
+      </Router>,
+      { state }
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      settingsURLs.users.index
-    );
+    expect(history.location.pathname).toBe(settingsURLs.users.index);
   });
 
-  it("can update a user", () => {
+  it("can update a user", async () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -96,12 +99,33 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(BaseUserForm).invoke("onSave")({
-      isSuperuser: true,
-      email: "test@example.com",
-      fullName: "Miss Wallaby",
-      username: "admin",
-    });
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Username })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.FullName })
+    );
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Email })
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Username }),
+      "admin"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.FullName }),
+      "Miss Wallaby"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Email }),
+      "test@example.com"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: UserFormLabels.Save })
+    );
 
     expect(store.getActions()).toEqual([
       {
@@ -123,10 +147,10 @@ describe("UserForm", () => {
     ]);
   });
 
-  it("can change a user's password", () => {
+  it("can change a user's password", async () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -135,14 +159,24 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(BaseUserForm).invoke("onSave")({
-      isSuperuser: true,
-      email: "test@example.com",
-      fullName: "Miss Wallaby",
-      password: "test1234",
-      passwordConfirm: "test1234",
-      username: "admin",
-    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: BaseUserFormLabels.ChangePassword })
+    );
+
+    await userEvent.type(
+      screen.getByText(BaseUserFormLabels.Password),
+      "test1234"
+    );
+
+    await userEvent.type(
+      screen.getByText(BaseUserFormLabels.PasswordAgain),
+      "test1234"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: UserFormLabels.Save })
+    );
 
     expect(store.getActions()).toEqual([
       {
@@ -151,9 +185,9 @@ describe("UserForm", () => {
           params: {
             id: user.id,
             is_superuser: true,
-            email: "test@example.com",
-            last_name: "Miss Wallaby",
-            username: "admin",
+            email: "email5@example.com",
+            last_name: "Full Name jr.",
+            username: "user5",
           },
         },
         meta: {
@@ -166,12 +200,12 @@ describe("UserForm", () => {
         payload: {
           params: {
             id: user.id,
-            email: "test@example.com",
-            last_name: "Miss Wallaby",
+            email: "email5@example.com",
+            last_name: "Full Name jr.",
             is_superuser: true,
             password1: "test1234",
             password2: "test1234",
-            username: "admin",
+            username: "user5",
           },
         },
         meta: {
@@ -182,10 +216,10 @@ describe("UserForm", () => {
     ]);
   });
 
-  it("can create a user", () => {
+  it("can create a user", async () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -194,14 +228,37 @@ describe("UserForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(BaseUserForm).invoke("onSave")({
-      isSuperuser: true,
-      email: "test@example.com",
-      fullName: "Miss Wallaby",
-      password: "test1234",
-      passwordConfirm: "test1234",
-      username: "admin",
-    });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Username }),
+      "admin"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.FullName }),
+      "Miss Wallaby"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: BaseUserFormLabels.Email }),
+      "test@example.com"
+    );
+
+    await userEvent.type(
+      screen.getByText(BaseUserFormLabels.Password),
+      "test1234"
+    );
+
+    await userEvent.type(
+      screen.getByText(BaseUserFormLabels.PasswordAgain),
+      "test1234"
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: BaseUserFormLabels.MaasAdmin })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: UserFormLabels.Save })
+    );
 
     expect(store.getActions()).toEqual([
       {
@@ -228,7 +285,7 @@ describe("UserForm", () => {
     state.user.saved = true;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -244,20 +301,17 @@ describe("UserForm", () => {
   });
 
   it("displays a checkbox for making the user a MAAS admin", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <UserForm user={user} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <UserForm user={user} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(
-      wrapper.find("FormikField[label='MAAS administrator']").exists()
-    ).toBe(true);
+      screen.getByRole("checkbox", { name: BaseUserFormLabels.MaasAdmin })
+    ).toBeInTheDocument();
   });
 });
