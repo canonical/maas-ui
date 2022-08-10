@@ -1,9 +1,7 @@
-import { screen, render } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import { DhcpForm } from "./DhcpForm";
 
@@ -14,8 +12,7 @@ import {
   dhcpSnippetState as dhcpSnippetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("DhcpForm", () => {
   let state: RootState;
@@ -44,15 +41,13 @@ describe("DhcpForm", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <DhcpForm />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(
       screen.getByRole("form", { name: "Add DHCP snippet" })
@@ -61,32 +56,28 @@ describe("DhcpForm", () => {
 
   it("redirects when the snippet is saved", () => {
     state.dhcpsnippet.saved = true;
-    const store = mockStore(state);
     const history = createMemoryHistory({
       initialEntries: ["/"],
     });
-    render(
-      <Provider store={store}>
-        <Router history={history}>
-          <CompatRouter>
-            <DhcpForm />
-          </CompatRouter>
-        </Router>
-      </Provider>
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <DhcpForm />
+        </CompatRouter>
+      </Router>,
+      { state }
     );
     expect(history.location.pathname).toBe(settingsURLs.dhcp.index);
   });
 
   it("shows the snippet name in the title when editing", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <DhcpForm dhcpSnippet={state.dhcpsnippet.items[0]} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
     expect(

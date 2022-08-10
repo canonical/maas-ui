@@ -1,8 +1,6 @@
-import { screen, render } from "@testing-library/react";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import DhcpTarget from "./DhcpTarget";
 
@@ -19,8 +17,7 @@ import {
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("DhcpTarget", () => {
   let state: RootState;
@@ -77,29 +74,25 @@ describe("DhcpTarget", () => {
     state.dhcpsnippet.loading = true;
     state.machine.loading = true;
     state.subnet.loading = true;
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpTarget subnetId={808} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpTarget subnetId={808} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("can display a subnet link", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpTarget subnetId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpTarget subnetId={1} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     const link = screen.getByRole("link", { name: "10.0.0.99" });
 
@@ -108,15 +101,13 @@ describe("DhcpTarget", () => {
   });
 
   it("can display a node link", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpTarget nodeId="xyz" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpTarget nodeId="xyz" />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     const link = screen.getByRole("link", { name: "machine1 .test" });
     expect(link).toBeInTheDocument();

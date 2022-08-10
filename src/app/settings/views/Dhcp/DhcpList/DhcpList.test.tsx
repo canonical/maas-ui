@@ -20,6 +20,7 @@ import {
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -73,15 +74,13 @@ describe("DhcpList", () => {
   });
 
   it("can show a delete confirmation", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     let row = screen.getAllByTestId("dhcp-row")[0];
     expect(row).not.toHaveClass("is-active");
@@ -165,15 +164,13 @@ describe("DhcpList", () => {
   });
 
   it("can show snippet details", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     let row = screen.getAllByTestId("dhcp-row")[0];
     expect(row).not.toHaveClass("is-active");
@@ -188,15 +185,13 @@ describe("DhcpList", () => {
   });
 
   it("can filter dhcp snippets", async () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     let rows = screen.getAllByTestId("dhcp-row");
     expect(rows.length).toBe(3);
