@@ -165,25 +165,7 @@ describe("UserForm", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Save user" }));
 
-    // TODO: Fix form submitting "user/update" action twice:
-    // https://github.com/canonical/app-tribe/issues/1254
     expect(store.getActions()).toEqual([
-      {
-        type: "user/update",
-        payload: {
-          params: {
-            id: user.id,
-            is_superuser: true,
-            email: "email5@example.com",
-            last_name: "Full Name jr.",
-            username: "user5",
-          },
-        },
-        meta: {
-          model: "user",
-          method: "update",
-        },
-      },
       {
         type: "user/update",
         payload: {

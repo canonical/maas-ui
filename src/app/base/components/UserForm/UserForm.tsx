@@ -172,6 +172,7 @@ export const UserForm = ({
             className="u-no-margin--bottom"
             data-testid="toggle-passwords"
             onClick={() => setPasswordVisible(!passwordVisible)}
+            type="button"
           >
             Change password&hellip;
           </Button>
