@@ -216,6 +216,7 @@ Object {
     "saved": false,
     "saving": false,
     "selected": Array [],
+    "selectedMachines": null,
     "statuses": Object {},
   },
   "message": Object {
