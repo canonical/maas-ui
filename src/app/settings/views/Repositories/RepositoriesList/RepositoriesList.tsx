@@ -35,6 +35,7 @@ const generateRepositoryRows = (
 
     const expanded = expandedId === repo.id;
     return {
+      "aria-label": name,
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {

@@ -108,14 +108,14 @@ describe("RepositoriesList", () => {
 
     expect(
       screen.queryByRole("row", {
-        name: "secret_archive http://www.website.com No Edit Delete",
+        name: "secret_archive",
       })
     ).not.toHaveClass("is-active");
 
     await userEvent.click(
       within(
         screen.getByRole("row", {
-          name: "secret_archive http://www.website.com No Edit Delete",
+          name: "secret_archive",
         })
       ).getByTestId("table-actions-delete")
     );
@@ -146,7 +146,7 @@ describe("RepositoriesList", () => {
     await userEvent.click(
       within(
         screen.getByRole("row", {
-          name: "secret_archive http://www.website.com No Edit Delete",
+          name: "secret_archive",
         })
       ).getByTestId("table-actions-delete")
     );
@@ -155,7 +155,7 @@ describe("RepositoriesList", () => {
     await userEvent.click(
       within(
         screen.getByRole("row", {
-          name: `secret_archive http://www.website.com No Edit Delete Are you sure you want to delete repository "secret_archive"? This action is permanent and can not be undone. Cancel Delete`,
+          name: `secret_archive`,
         })
       ).getByTestId("action-confirm")
     );
