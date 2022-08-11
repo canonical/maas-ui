@@ -1338,4 +1338,17 @@ describe("machine reducer", () => {
       })
     );
   });
+
+  it("reduces removeRequest for a count request", () => {
+    const initialState = machineStateFactory({
+      counts: {
+        123456: machineStateCountFactory(),
+      },
+    });
+    expect(reducers(initialState, actions.removeRequest("123456"))).toEqual(
+      machineStateFactory({
+        counts: {},
+      })
+    );
+  });
 });
