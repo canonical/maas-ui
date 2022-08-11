@@ -28,7 +28,7 @@ const General = (): JSX.Element => {
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={9}>
         {loading && <Spinner text={Labels.Loading} />}
         {loaded && <GeneralForm />}
       </Col>
