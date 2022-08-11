@@ -160,10 +160,14 @@ describe("RepositoriesList", () => {
     // Click on the delete confirm button
     await userEvent.click(
       within(
-        screen.getByRole("row", {
-          name: "secret_archive",
+        within(
+          screen.getByRole("row", {
+            name: "secret_archive",
+          })
+        ).getByRole("gridcell", {
+          name: `Are you sure you want to delete repository "secret_archive"? This action is permanent and can not be undone. Cancel Delete`,
         })
-      ).getByTestId("action-confirm")
+      ).getByRole("button", { name: "Delete" })
     );
 
     // 1. Fetch, 2. Cleanup, 3. Delete
