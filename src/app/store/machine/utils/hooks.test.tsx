@@ -216,10 +216,7 @@ describe("machine hook utils", () => {
       renderHook(() => useFetchMachines(), {
         wrapper: generateWrapper(store),
       });
-      const expected = machineActions.fetch("mocked-nanoid-1", {
-        filter: null,
-        group_key: null,
-      });
+      const expected = machineActions.fetch("mocked-nanoid-1");
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);

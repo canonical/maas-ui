@@ -125,10 +125,15 @@ export const useFetchMachines = (
   useEffect(() => {
     if (callId && callId !== previousCallId) {
       dispatch(
-        machineActions.fetch(callId, {
-          filter: filters ?? null,
-          group_key: grouping ?? null,
-        })
+        machineActions.fetch(
+          callId,
+          filters || grouping
+            ? {
+                filter: filters ?? null,
+                group_key: grouping ?? null,
+              }
+            : null
+        )
       );
     }
   }, [callId, dispatch, filters, grouping, previousCallId]);
