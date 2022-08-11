@@ -345,6 +345,7 @@ describe("MachineList", () => {
   });
 
   it("can display and close an error from machine list", () => {
+    state.machine.errors = null;
     state.machine.lists["123456"].errors = { tag: "No such constraint." };
     const store = mockStore(state);
     const wrapper = mount(
