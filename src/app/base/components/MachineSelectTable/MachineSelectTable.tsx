@@ -81,14 +81,15 @@ export const MachineSelectTable = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const tags = useSelector(tagSelectors.all);
-  const loadingMachines = !useSelector(machineSelectors.loaded);
+  let loadingMachines = useSelector(machineSelectors.loading);
+  loadingMachines = false;
 
   useEffect(() => {
     dispatch(tagActions.fetch());
   }, [dispatch]);
 
   if (loadingMachines) {
-    return <Spinner aria-label={Label.Loading} text={Label.Loading} />;
+    return <Spinner text={Label.Loading} />;
   }
   return (
     <MainTable

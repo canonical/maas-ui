@@ -36,7 +36,6 @@ describe("MachineSelectTable", () => {
     state = rootStateFactory({
       machine: machineStateFactory({
         items: machines,
-        loaded: true,
       }),
       tag: tagStateFactory({
         items: [
@@ -48,7 +47,7 @@ describe("MachineSelectTable", () => {
   });
 
   it("shows a spinner while data is loading", () => {
-    state.machine.loaded = false;
+    state.machine.loading = true;
     renderWithMockStore(
       <MachineSelectTable
         machines={machines}
@@ -58,7 +57,7 @@ describe("MachineSelectTable", () => {
       />,
       { state }
     );
-    expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
+    expect(screen.getByText(Label.Loading)).toBeInTheDocument();
   });
 
   it("highlights the substring that matches the search text", async () => {
