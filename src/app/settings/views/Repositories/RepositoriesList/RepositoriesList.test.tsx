@@ -5,7 +5,9 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import RepositoriesList from "./RepositoriesList";
+import RepositoriesList, {
+  Labels as RepositoriesListLabels,
+} from "./RepositoriesList";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -114,10 +116,12 @@ describe("RepositoriesList", () => {
 
     await userEvent.click(
       within(
-        screen.getByRole("row", {
-          name: "secret_archive",
-        })
-      ).getByTestId("table-actions-delete")
+        within(
+          screen.getByRole("row", {
+            name: "secret_archive",
+          })
+        ).getByLabelText(RepositoriesListLabels.Actions)
+      ).getByRole("button", { name: "Delete" })
     );
 
     expect(
@@ -145,17 +149,19 @@ describe("RepositoriesList", () => {
     // Click on the delete button:
     await userEvent.click(
       within(
-        screen.getByRole("row", {
-          name: "secret_archive",
-        })
-      ).getByTestId("table-actions-delete")
+        within(
+          screen.getByRole("row", {
+            name: "secret_archive",
+          })
+        ).getByRole("gridcell", { name: RepositoriesListLabels.Actions })
+      ).getByRole("button", { name: "Delete" })
     );
 
     // Click on the delete confirm button
     await userEvent.click(
       within(
         screen.getByRole("row", {
-          name: `secret_archive`,
+          name: "secret_archive",
         })
       ).getByTestId("action-confirm")
     );
@@ -192,7 +198,9 @@ describe("RepositoriesList", () => {
     expect(rows.length).toBe(state.packagerepository.items.length);
 
     await userEvent.type(
-      screen.getByRole("searchbox", { name: "Search package repositories" }),
+      screen.getByRole("searchbox", {
+        name: RepositoriesListLabels.SearchboxPlaceholder,
+      }),
       "secret"
     );
 
