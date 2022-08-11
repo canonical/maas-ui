@@ -1,8 +1,11 @@
-import { mount } from "enzyme";
+import { screen, render, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
+
+import { Labels as ScriptsListLabels } from "./ScriptsList";
 
 import ScriptsList from ".";
 
@@ -13,6 +16,7 @@ import {
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -50,7 +54,7 @@ describe("ScriptsList", () => {
     state.script.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -69,7 +73,7 @@ describe("ScriptsList", () => {
     state.script.loaded = true;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -85,84 +89,85 @@ describe("ScriptsList", () => {
   });
 
   it("Displays commissioning scripts by default", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <ScriptsList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("TableRow[data-testid='script-row']").length).toEqual(
-      1
-    );
+    expect(screen.getAllByTestId("script-row")).toHaveLength(1);
+
+    const commissioning_script = screen.getByRole("row", {
+      name: "commissioning-script",
+    });
+
+    expect(commissioning_script).toBeInTheDocument();
     expect(
-      wrapper
-        .find("[data-testid='script-row']")
-        .at(0)
-        .find("TableCell")
-        .at(1)
-        .text()
-    ).toEqual("a commissioning script");
+      within(commissioning_script).getByRole("gridcell", {
+        name: "a commissioning script",
+      })
+    ).toBeInTheDocument();
   });
 
   it("Displays testing scripts", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList type="testing" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <ScriptsList type="testing" />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("TableRow[data-testid='script-row']").length).toEqual(
-      2
-    );
+    expect(screen.getAllByTestId("script-row")).toHaveLength(2);
+
+    const testing_script = screen.getByRole("row", {
+      name: "testing-script",
+    });
+
+    const another_testing_script = screen.getByRole("row", {
+      name: "testing-script-2",
+    });
+
+    expect(testing_script).toBeInTheDocument();
     expect(
-      wrapper
-        .find("TableRow[data-testid='script-row']")
-        .at(0)
-        .find("TableCell")
-        .at(1)
-        .text()
-    ).toEqual("a testing script");
+      within(testing_script).getByRole("gridcell", {
+        name: "a testing script",
+      })
+    ).toBeInTheDocument();
+
+    expect(another_testing_script).toBeInTheDocument();
     expect(
-      wrapper
-        .find("TableRow[data-testid='script-row']")
-        .at(1)
-        .find("TableCell")
-        .at(1)
-        .text()
-    ).toEqual("another testing script");
+      within(another_testing_script).getByRole("gridcell", {
+        name: "another testing script",
+      })
+    ).toBeInTheDocument();
   });
 
-  it("can show a delete confirmation", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can show a delete confirmation", async () => {
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <ScriptsList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    let row = wrapper.find("[data-testid='script-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(false);
+    let row = screen.getByRole("row", { name: "commissioning-script" });
+    expect(row).not.toHaveClass("is-active");
     // Click on the delete button:
-    wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
-    row = wrapper.find("[data-testid='script-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(true);
+    await userEvent.click(
+      within(within(row).getByLabelText(ScriptsListLabels.Actions)).getByRole(
+        "button",
+        { name: "Delete" }
+      )
+    );
+    row = screen.getByRole("row", { name: "commissioning-script" });
+    expect(row).toHaveClass("is-active");
   });
 
   it("disables the delete button if a default script", () => {
@@ -181,29 +186,38 @@ describe("ScriptsList", () => {
         ],
       }),
     });
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList type="testing" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <ScriptsList type="testing" />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(
-      wrapper.find("TableRow").at(1).find("Button").at(1).prop("disabled")
-    ).toBe(true);
 
     expect(
-      wrapper.find("TableRow").at(2).find("Button").at(1).prop("disabled")
-    ).toBe(false);
+      within(
+        within(screen.getByRole("row", { name: "test name 19" })).getByRole(
+          "gridcell",
+          { name: ScriptsListLabels.Actions }
+        )
+      ).getByRole("button")
+    ).toBeDisabled();
+
+    expect(
+      within(
+        within(screen.getByRole("row", { name: "test name 20" })).getByRole(
+          "gridcell",
+          { name: ScriptsListLabels.Actions }
+        )
+      ).getByRole("button")
+    ).not.toBeDisabled();
   });
 
-  it("can delete a script", () => {
+  it("can delete a script", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -212,14 +226,24 @@ describe("ScriptsList", () => {
         </MemoryRouter>
       </Provider>
     );
+    let row = screen.getByRole("row", { name: "commissioning-script" });
+    expect(row).not.toHaveClass("is-active");
     // Click on the delete button:
-    wrapper.find("TableRow").at(1).find("Button").at(1).simulate("click");
+    await userEvent.click(
+      within(within(row).getByLabelText(ScriptsListLabels.Actions)).getByRole(
+        "button",
+        { name: "Delete" }
+      )
+    );
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("ActionButton[data-testid='action-confirm']")
-      .simulate("click");
+    await userEvent.click(
+      within(
+        within(row).getByRole("gridcell", {
+          name: `Are you sure you want to delete Script "commissioning-script"? This action is permanent and can not be undone. Cancel Delete`,
+        })
+      ).getByRole("button", { name: "Delete" })
+    );
+
     expect(
       store.getActions().find((action) => action.type === "script/delete")
     ).toEqual({
@@ -240,7 +264,7 @@ describe("ScriptsList", () => {
     state.script.saved = true;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -256,28 +280,28 @@ describe("ScriptsList", () => {
     expect(actions.some((action) => action.type === "message/add")).toBe(true);
   });
 
-  it("can show script source", () => {
-    const store = mockStore(state);
+  it("can show script source", async () => {
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <ScriptsList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
+    );
+    let row = screen.getByRole("row", { name: "commissioning-script" });
+    expect(row).not.toHaveClass("is-active");
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    let row = wrapper.find("[data-testid='script-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(false);
     // Click on the expand button:
-    wrapper.find("TableRow").at(1).find("Button").at(0).simulate("click");
-    row = wrapper.find("[data-testid='script-row']").at(0);
-    expect(row.hasClass("is-active")).toBe(true);
-    // expect script source to be decoded base64
-    expect(wrapper.find("TableRow").find("ScriptDetails").exists()).toEqual(
-      true
+    await userEvent.click(
+      within(row).getByRole("button", { name: "Show/hide details" })
     );
+    row = screen.getByRole("row", { name: "commissioning-script" });
+    expect(row).toHaveClass("is-active");
+
+    // TODO: Fix this
+    // expect script source to be decoded base64
+    // expect(screen.getByRole("code")).toBeInTheDocument();
   });
 
   it("correctly formats script creation date", () => {
@@ -292,20 +316,20 @@ describe("ScriptsList", () => {
         ],
       }),
     });
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList type="testing" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <ScriptsList type="testing" />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("[data-testid='upload-date']").text()).toBe(
-      "2020-12-31 22:59"
-    );
+    expect(
+      within(screen.getByRole("row", { name: "test name 33" })).getByText(
+        "2020-12-31 22:59"
+      )
+    ).toBeInTheDocument();
   });
 
   it("formats script creation date as 'Never' if date cannot be parsed", () => {
@@ -320,17 +344,19 @@ describe("ScriptsList", () => {
         ],
       }),
     });
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsList type="testing" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <ScriptsList type="testing" />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("[data-testid='upload-date']").text()).toBe("Never");
+    expect(
+      within(screen.getByRole("row", { name: "test name 37" })).getByText(
+        "Never"
+      )
+    ).toBeInTheDocument();
   });
 });

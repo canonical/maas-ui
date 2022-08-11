@@ -16,6 +16,10 @@ import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
 
+export enum Labels {
+  Actions = "Table actions",
+}
+
 type Props = {
   type?: "commissioning" | "testing";
 };
@@ -51,6 +55,7 @@ const generateRows = (
     }
 
     return {
+      "aria-label": script.name,
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
@@ -72,6 +77,7 @@ const generateRows = (
         },
         { content: <span data-testid="upload-date">{uploadedOn}</span> },
         {
+          "aria-label": Labels.Actions,
           content: (
             <TableActions
               deleteDisabled={script.default}
