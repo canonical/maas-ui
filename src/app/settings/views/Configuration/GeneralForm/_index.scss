@@ -7,7 +7,7 @@
     @media screen and (min-width: $breakpoint-large) {
         .general-form__radio-row {
             grid-template-columns: repeat(10, minmax(0, 1fr)) !important;
-            grid-gap: 0 5rem;
+            grid-gap: 0 3rem;
         }
       }
     
