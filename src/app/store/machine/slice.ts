@@ -564,7 +564,7 @@ const machineSlice = createSlice({
         },
         payload: filters
           ? {
-              params: { filters },
+              params: { filter: filters },
             }
           : null,
       }),

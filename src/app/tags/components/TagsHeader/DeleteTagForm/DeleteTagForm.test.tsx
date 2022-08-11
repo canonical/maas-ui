@@ -1,4 +1,5 @@
 import { NotificationSeverity } from "@canonical/react-components";
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
@@ -17,6 +18,7 @@ import { NodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
+  machineStateCount as machineStateCountFactory,
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
@@ -28,6 +30,7 @@ let state: RootState;
 let scrollToSpy: jest.Mock;
 
 beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -183,6 +186,12 @@ it("can return to the details on cancel", async () => {
       name: "tag1",
     }),
   ];
+  state.machine.counts = {
+    "mocked-nanoid": machineStateCountFactory({
+      count: 1,
+      loaded: true,
+    }),
+  };
   const path = urls.tags.tag.machines({ id: 1 });
   const history = createMemoryHistory({
     initialEntries: [{ pathname: path }],

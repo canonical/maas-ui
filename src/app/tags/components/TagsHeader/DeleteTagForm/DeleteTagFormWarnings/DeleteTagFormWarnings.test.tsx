@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -14,6 +15,7 @@ import {
   machineState as machineStateFactory,
   tag as tagFactory,
   rootState as rootStateFactory,
+  machineStateCount as machineStateCountFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
 
@@ -22,6 +24,7 @@ const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [
@@ -56,6 +59,12 @@ it("does not display a kernel options warning for non-deployed machines", async 
       tags: [1],
     }),
   ];
+  state.machine.counts = {
+    "mocked-nanoid": machineStateCountFactory({
+      count: 0,
+      loaded: true,
+    }),
+  };
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -80,6 +89,12 @@ it("displays warning when deleting a tag with kernel options", async () => {
       name: "tag1",
     }),
   ];
+  state.machine.counts = {
+    "mocked-nanoid": machineStateCountFactory({
+      count: 1,
+      loaded: true,
+    }),
+  };
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -110,6 +125,12 @@ it("displays a kernel options warning with multiple machines", async () => {
       name: "tag1",
     }),
   ];
+  state.machine.counts = {
+    "mocked-nanoid": machineStateCountFactory({
+      count: 2,
+      loaded: true,
+    }),
+  };
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -134,6 +155,12 @@ it("displays a kernel options warning with one machine", async () => {
       name: "tag1",
     }),
   ];
+  state.machine.counts = {
+    "mocked-nanoid": machineStateCountFactory({
+      count: 1,
+      loaded: true,
+    }),
+  };
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -158,6 +185,12 @@ it("links to a page to display deployed machines", async () => {
       name: "tag1",
     }),
   ];
+  state.machine.counts = {
+    "mocked-nanoid": machineStateCountFactory({
+      count: 1,
+      loaded: true,
+    }),
+  };
   const store = mockStore(state);
   render(
     <Provider store={store}>

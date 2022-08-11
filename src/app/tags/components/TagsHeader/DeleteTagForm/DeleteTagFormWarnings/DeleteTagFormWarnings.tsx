@@ -4,10 +4,11 @@ import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import urls from "app/base/urls";
-import machineSelectors from "app/store/machine/selectors";
+import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
+import { NodeStatus } from "app/store/types/node";
 
 type Props = {
   id: Tag[TagMeta.PK];
@@ -32,10 +33,11 @@ export const DeleteTagFormWarnings = ({ id }: Props): JSX.Element | null => {
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
-  const deployedMachines = useSelector((state: RootState) =>
-    machineSelectors.getDeployedWithTag(state, id)
-  );
-  const deployedCount = deployedMachines.length;
+  const { machineCount: deployedCount } = useFetchMachineCount({
+    // TODO: update with filter types in https://github.com/canonical/app-tribe/issues/1149
+    status: [NodeStatus.DEPLOYED.toLowerCase()],
+    ...(tag?.id ? { tags: [tag.name] } : {}),
+  });
   if (!tag) {
     return null;
   }
