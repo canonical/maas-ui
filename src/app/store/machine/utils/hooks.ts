@@ -18,6 +18,7 @@ import type {
   FetchFilters,
   Machine,
   MachineMeta,
+  FetchGroupKey,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -88,6 +89,7 @@ export const useFetchMachineCount = (
  */
 export const useFetchMachines = (
   filters?: FetchFilters | null,
+  grouping?: FetchGroupKey | null,
   filterSelected?: FilterSelected | null
 ): {
   machines: Machine[];
@@ -96,6 +98,7 @@ export const useFetchMachines = (
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
   const previousFilters = usePrevious(filters, false);
+  const previousGrouping = usePrevious(grouping, false);
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId, filterSelected)
@@ -110,18 +113,25 @@ export const useFetchMachines = (
     // ordering, pagination etc.)
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
-    if (!fastDeepEqual(filters || {}, previousFilters || {}) || !callId) {
+    if (
+      !fastDeepEqual(filters || {}, previousFilters || {}) ||
+      !callId ||
+      grouping !== previousGrouping
+    ) {
       setCallId(nanoid());
     }
-  }, [callId, dispatch, filters, previousFilters]);
+  }, [callId, dispatch, filters, grouping, previousFilters, previousGrouping]);
 
   useEffect(() => {
     if (callId && callId !== previousCallId) {
       dispatch(
-        machineActions.fetch(callId, filters ? { filter: filters } : null)
+        machineActions.fetch(callId, {
+          filter: filters ?? null,
+          group_key: grouping ?? null,
+        })
       );
     }
-  }, [dispatch, filters, callId, previousCallId]);
+  }, [callId, dispatch, filters, grouping, previousCallId]);
 
   return { machines, machinesErrors };
 };

@@ -13,6 +13,7 @@ import type { SetSearchFilter } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { FetchFilters } from "app/store/machine/types";
+import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
@@ -46,14 +47,15 @@ const MachineList = ({
   const errors = useSelector(machineSelectors.errors);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const filters = FilterMachines.getCurrentFilters(searchFilter);
-  const { machines, machinesErrors } = useFetchMachines(
-    parseFilters(filters),
-    "in" in filters ? getSelectedValue(filters.in) : null
-  );
-  const [grouping, setGrouping] = useStorageState(
+  const [grouping, setGrouping] = useStorageState<FetchGroupKey | null>(
     localStorage,
     "grouping",
-    "status"
+    FetchGroupKey.Status
+  );
+  const { machines, machinesErrors } = useFetchMachines(
+    parseFilters(filters),
+    grouping,
+    "in" in filters ? getSelectedValue(filters.in) : null
   );
   const [hiddenGroups, setHiddenGroups] = useStorageState<string[]>(
     localStorage,
