@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 
-import { Notification } from "@canonical/react-components";
 import cloneDeep from "clone-deep";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";

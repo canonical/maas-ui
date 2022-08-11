@@ -365,6 +365,9 @@ const getList = (
 ) =>
   callId && callId in machineState.lists ? machineState.lists[callId] : null;
 
+/**
+ * Get the errors for a machine list request with a given callId
+ */
 const listErrors = createSelector(
   [
     machineState,
