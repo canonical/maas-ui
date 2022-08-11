@@ -6,6 +6,7 @@ import fastDeepEqual from "fast-deep-equal";
 import { useDispatch, useSelector } from "react-redux";
 
 import { useCanEdit } from "app/base/hooks";
+import type { APIError } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import {
   architectures as architecturesSelectors,
@@ -90,6 +91,7 @@ export const useFetchMachines = (
   filterSelected?: FilterSelected | null
 ): {
   machines: Machine[];
+  machinesErrors: APIError;
 } => {
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
@@ -97,6 +99,9 @@ export const useFetchMachines = (
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId, filterSelected)
+  );
+  const machinesErrors = useSelector((state: RootState) =>
+    machineSelectors.listErrors(state, callId)
   );
   useCleanup(callId);
 
@@ -118,7 +123,7 @@ export const useFetchMachines = (
     }
   }, [dispatch, filters, callId, previousCallId]);
 
-  return { machines };
+  return { machines, machinesErrors };
 };
 
 /**

@@ -1,10 +1,10 @@
 import { useEffect } from "react";
 
-import { Notification } from "@canonical/react-components";
 import cloneDeep from "clone-deep";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
+import ErrorsNotification from "./ErrorsNotification";
 import MachineListControls from "./MachineListControls";
 import MachineListTable from "./MachineListTable";
 
@@ -16,7 +16,6 @@ import type { FetchFilters } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
-import { formatErrors } from "app/utils";
 import type { Filters } from "app/utils/search/filter-handlers";
 import { getSelectedValue } from "app/utils/search/filter-items";
 
@@ -47,11 +46,10 @@ const MachineList = ({
   const errors = useSelector(machineSelectors.errors);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const filters = FilterMachines.getCurrentFilters(searchFilter);
-  const { machines } = useFetchMachines(
+  const { machines, machinesErrors } = useFetchMachines(
     parseFilters(filters),
     "in" in filters ? getSelectedValue(filters.in) : null
   );
-  const errorMessage = formatErrors(errors);
   const [grouping, setGrouping] = useStorageState(
     localStorage,
     "grouping",
@@ -62,7 +60,6 @@ const MachineList = ({
     "hiddenGroups",
     []
   );
-
   useEffect(() => {
     dispatch(tagActions.fetch());
   }, [dispatch]);
@@ -79,14 +76,13 @@ const MachineList = ({
 
   return (
     <>
-      {errorMessage && !headerFormOpen ? (
-        <Notification
-          onDismiss={() => dispatch(machineActions.cleanup())}
-          severity="negative"
-        >
-          {errorMessage}
-        </Notification>
+      {errors && !headerFormOpen ? (
+        <ErrorsNotification
+          errors={errors}
+          onAfterDismiss={() => dispatch(machineActions.cleanup())}
+        />
       ) : null}
+      {!headerFormOpen ? <ErrorsNotification errors={machinesErrors} /> : null}
       <MachineListControls
         filter={searchFilter}
         grouping={grouping}
