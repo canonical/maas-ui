@@ -1,10 +1,13 @@
-import { mount } from "enzyme";
+import { screen, render, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import RepositoriesList from "./RepositoriesList";
+import RepositoriesList, {
+  Labels as RepositoriesListLabels,
+} from "./RepositoriesList";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -12,6 +15,7 @@ import {
   packageRepositoryState as packageRepositoryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -58,68 +62,78 @@ describe("RepositoriesList", () => {
 
   it("displays a loading component if loading", () => {
     state.packagerepository.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("shows the table if there are repositories and loaded is true", () => {
     state.packagerepository.loaded = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("MainTable").exists()).toBe(true);
+    expect(screen.getByLabelText("Package repositories")).toBeInTheDocument();
   });
 
-  it("can show a delete confirmation", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can show a delete confirmation", async () => {
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    let row = wrapper.find("TableRow[data-testid='repository-row']").at(2);
-    expect(row.hasClass("is-active")).toBe(false);
-    // Click on the delete button:
-    wrapper.find("TableRow").at(3).find("Button").at(1).simulate("click");
-    row = wrapper.find("TableRow[data-testid='repository-row']").at(2);
-    expect(row.hasClass("is-active")).toBe(true);
+
+    expect(
+      screen.queryByRole("row", {
+        name: "secret_archive",
+      })
+    ).not.toHaveClass("is-active");
+
+    await userEvent.click(
+      within(
+        within(
+          screen.getByRole("row", {
+            name: "secret_archive",
+          })
+        ).getByLabelText(RepositoriesListLabels.Actions)
+      ).getByRole("button", { name: "Delete" })
+    );
+
+    expect(
+      screen.getByText(
+        `Are you sure you want to delete repository "secret_archive"?`
+      )
+    ).toBeInTheDocument();
   });
 
-  it("can delete a repository", () => {
+  it("can delete a repository", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -133,20 +147,35 @@ describe("RepositoriesList", () => {
       </Provider>
     );
     // Click on the delete button:
-    wrapper.find("TableRow").at(3).find("Button").at(1).simulate("click");
+    await userEvent.click(
+      within(
+        within(
+          screen.getByRole("row", {
+            name: "secret_archive",
+          })
+        ).getByRole("gridcell", { name: RepositoriesListLabels.Actions })
+      ).getByRole("button", { name: "Delete" })
+    );
+
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(3)
-      .find("ActionButton[data-testid='action-confirm']")
-      .simulate("click");
+    await userEvent.click(
+      within(
+        within(
+          screen.getByRole("row", {
+            name: "secret_archive",
+          })
+        ).getByRole("gridcell", {
+          name: `Are you sure you want to delete repository "secret_archive"? This action is permanent and can not be undone. Cancel Delete`,
+        })
+      ).getByRole("button", { name: "Delete" })
+    );
 
     // 1. Fetch, 2. Cleanup, 3. Delete
     expect(store.getActions()[2]).toEqual({
       type: "packagerepository/delete",
       payload: {
         params: {
-          id: 3,
+          id: 4,
         },
       },
       meta: {
@@ -156,62 +185,59 @@ describe("RepositoriesList", () => {
     });
   });
 
-  it("can filter repositories", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can filter repositories", async () => {
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    let rows = wrapper.find("TableRow[data-testid='repository-row']");
+    let rows = screen.getAllByTestId("repository-row");
     expect(rows.length).toBe(state.packagerepository.items.length);
-    wrapper
-      .find("SearchBox input")
-      .simulate("change", { target: { name: "search", value: "secret" } });
-    wrapper.update();
-    rows = wrapper.find("TableRow[data-testid='repository-row']");
+
+    await userEvent.type(
+      screen.getByRole("searchbox", {
+        name: RepositoriesListLabels.SearchboxPlaceholder,
+      }),
+      "secret"
+    );
+
+    rows = screen.getAllByTestId("repository-row");
     expect(rows.length).toBe(1);
   });
 
   it("displays default repositories with user-friendly names", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/repositories", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <RepositoriesList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/repositories", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <RepositoriesList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    const mainRepoRow = wrapper
-      .find("TableRow[data-testid='repository-row']")
-      .at(0);
-    const extraRepoRow = wrapper
-      .find("TableRow[data-testid='repository-row']")
-      .at(1);
-    expect(mainRepoRow.find("TableCell").first().text()).toBe("Ubuntu archive");
-    expect(extraRepoRow.find("TableCell").first().text()).toBe(
-      "Ubuntu extra architectures"
-    );
+    const mainRepoRow = screen.getAllByTestId("repository-row")[0];
+    const extraRepoRow = screen.getAllByTestId("repository-row")[1];
+
+    expect(within(mainRepoRow).getByText("Ubuntu archive")).toBeInTheDocument();
+    expect(
+      within(extraRepoRow).getByText("Ubuntu extra architectures")
+    ).toBeInTheDocument();
   });
 
   it("adds a message and cleans up packagerepository state when a repo is deleted", () => {
     state.packagerepository.saved = true;
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[

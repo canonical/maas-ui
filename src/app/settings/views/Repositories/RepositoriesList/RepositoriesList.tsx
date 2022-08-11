@@ -18,6 +18,11 @@ import type {
 import { getRepoDisplayName } from "app/store/packagerepository/utils";
 import type { RootState } from "app/store/root/types";
 
+export enum Labels {
+  Actions = "Table actions",
+  SearchboxPlaceholder = "Search package repositories",
+}
+
 const generateRepositoryRows = (
   dispatch: Dispatch,
   expandedId: PackageRepository[PackageRepositoryMeta.PK] | null,
@@ -35,6 +40,7 @@ const generateRepositoryRows = (
 
     const expanded = expandedId === repo.id;
     return {
+      "aria-label": name,
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
@@ -46,6 +52,7 @@ const generateRepositoryRows = (
           content: repo.enabled ? "Yes" : "No",
         },
         {
+          "aria-label": Labels.Actions,
           content: (
             <TableActions
               deleteDisabled={repo.default}
@@ -121,6 +128,7 @@ export const RepositoriesList = (): JSX.Element => {
 
   return (
     <SettingsTable
+      aria-label="Package repositories"
       buttons={[
         {
           label: "Add PPA",
@@ -150,7 +158,7 @@ export const RepositoriesList = (): JSX.Element => {
         saving
       )}
       searchOnChange={setSearchText}
-      searchPlaceholder="Search package repositories"
+      searchPlaceholder={Labels.SearchboxPlaceholder}
       searchText={searchText}
       tableClassName="repo-list"
     />
