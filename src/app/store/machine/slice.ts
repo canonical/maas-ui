@@ -1241,15 +1241,21 @@ const machineSlice = createSlice({
           ) {
             filterGroup.options = payload;
           } else if (
-            (filterGroup.type === FilterGroupType.Float ||
-              filterGroup.type === FilterGroupType.Int) &&
+            [
+              FilterGroupType.Float,
+              FilterGroupType.FloatList,
+              FilterGroupType.Int,
+              FilterGroupType.IntList,
+            ].includes(filterGroup.type) &&
             isArrayOfOptionsType<number>(payload, "number")
           ) {
             filterGroup.options = payload;
           } else if (
-            (filterGroup.type === FilterGroupType.String ||
-              filterGroup.type === FilterGroupType.Dict ||
-              filterGroup.type === FilterGroupType.List) &&
+            [
+              FilterGroupType.String,
+              FilterGroupType.StringList,
+              FilterGroupType.Dict,
+            ].includes(filterGroup.type) &&
             isArrayOfOptionsType<string>(payload, "string")
           ) {
             filterGroup.options = payload;

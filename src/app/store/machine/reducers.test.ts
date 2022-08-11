@@ -510,6 +510,42 @@ describe("machine reducer", () => {
     );
   });
 
+  it("reduces filterOptionsSuccess for lists of float options", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.Memory,
+          options: null,
+          loaded: false,
+          loading: true,
+          type: FilterGroupType.FloatList,
+        }),
+      ],
+    });
+    const fetchedOptions = [
+      { key: 1024.1, label: "1024.1" },
+      { key: 1024.2, label: "2024.2" },
+    ];
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsSuccess(FetchGroupKey.Memory, fetchedOptions)
+      )
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.Memory,
+            options: fetchedOptions,
+            loaded: true,
+            loading: false,
+            type: FilterGroupType.FloatList,
+          }),
+        ],
+      })
+    );
+  });
+
   it("reduces filterOptionsSuccess for int options", () => {
     const initialState = machineStateFactory({
       filters: [
@@ -546,6 +582,42 @@ describe("machine reducer", () => {
     );
   });
 
+  it("reduces filterOptionsSuccess for lists of int options", () => {
+    const initialState = machineStateFactory({
+      filters: [
+        filterGroupFactory({
+          key: FetchGroupKey.Status,
+          options: null,
+          loaded: false,
+          loading: true,
+          type: FilterGroupType.IntList,
+        }),
+      ],
+    });
+    const fetchedOptions = [
+      { key: 1, label: "New" },
+      { key: 2, label: "Ready" },
+    ];
+    expect(
+      reducers(
+        initialState,
+        actions.filterOptionsSuccess(FetchGroupKey.Status, fetchedOptions)
+      )
+    ).toEqual(
+      machineStateFactory({
+        filters: [
+          filterGroupFactory({
+            key: FetchGroupKey.Status,
+            options: fetchedOptions,
+            loaded: true,
+            loading: false,
+            type: FilterGroupType.IntList,
+          }),
+        ],
+      })
+    );
+  });
+
   it("reduces filterOptionsSuccess for string options", () => {
     const initialState = machineStateFactory({
       filters: [
@@ -554,7 +626,7 @@ describe("machine reducer", () => {
           options: null,
           loaded: false,
           loading: true,
-          type: FilterGroupType.List,
+          type: FilterGroupType.String,
         }),
       ],
     });
@@ -575,7 +647,7 @@ describe("machine reducer", () => {
             options: fetchedOptions,
             loaded: true,
             loading: false,
-            type: FilterGroupType.List,
+            type: FilterGroupType.String,
           }),
         ],
       })
@@ -621,7 +693,7 @@ describe("machine reducer", () => {
     );
   });
 
-  it("reduces filterOptionsSuccess for list options", () => {
+  it("reduces filterOptionsSuccess for lists of string options", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
@@ -629,7 +701,7 @@ describe("machine reducer", () => {
           options: null,
           loaded: false,
           loading: true,
-          type: FilterGroupType.String,
+          type: FilterGroupType.StringList,
         }),
       ],
     });
@@ -650,7 +722,7 @@ describe("machine reducer", () => {
             options: fetchedOptions,
             loaded: true,
             loading: false,
-            type: FilterGroupType.String,
+            type: FilterGroupType.StringList,
           }),
         ],
       })
