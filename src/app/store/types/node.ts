@@ -129,6 +129,32 @@ export enum NodeStatus {
   TESTING = "Testing",
 }
 
+export enum FetchNodeStatus {
+  ALLOCATED = "allocated",
+  BROKEN = "broken",
+  COMMISSIONING = "commissioning",
+  DEPLOYED = "deployed",
+  DEPLOYING = "deploying",
+  DISK_ERASING = "disk_erasing",
+  ENTERING_RESCUE_MODE = "entering_rescue_mode",
+  EXITING_RESCUE_MODE = "exiting_rescue_mode",
+  FAILED_COMMISSIONING = "failed_commissioning",
+  FAILED_DEPLOYMENT = "failed_deployment",
+  FAILED_DISK_ERASING = "failed_disk_erasing",
+  FAILED_ENTERING_RESCUE_MODE = "failed_entering_rescue_mode",
+  FAILED_EXITING_RESCUE_MODE = "failed_exiting_rescue_mode",
+  FAILED_RELEASING = "failed_releasing",
+  FAILED_TESTING = "failed_testing",
+  MISSING = "missing",
+  NEW = "new",
+  READY = "ready",
+  RELEASING = "releasing",
+  RESCUE_MODE = "rescue_mode",
+  RESERVED = "reserved",
+  RETIRED = "retired",
+  TESTING = "testing",
+}
+
 export enum NodeActions {
   ABORT = "abort",
   ACQUIRE = "acquire",
