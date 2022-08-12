@@ -1531,6 +1531,8 @@ const machineSlice = createSlice({
             delete state.details[callId];
           } else if (callId in state.lists) {
             delete state.lists[callId];
+          } else if (callId in state.counts) {
+            delete state.counts[callId];
           }
         }
       },
