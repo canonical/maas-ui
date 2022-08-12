@@ -81,8 +81,7 @@ export const MachineSelectTable = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const tags = useSelector(tagSelectors.all);
-  let loadingMachines = useSelector(machineSelectors.loading);
-  loadingMachines = false;
+  const loadingMachines = useSelector(machineSelectors.loading);
 
   useEffect(() => {
     dispatch(tagActions.fetch());
