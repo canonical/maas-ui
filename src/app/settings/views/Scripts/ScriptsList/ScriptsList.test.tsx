@@ -9,6 +9,7 @@ import { Labels as ScriptsListLabels } from "./ScriptsList";
 
 import ScriptsList from ".";
 
+import { fileContextStore } from "app/base/file-context";
 import type { RootState } from "app/store/root/types";
 import { ScriptType } from "app/store/script/types";
 import {
@@ -21,6 +22,14 @@ import { renderWithMockStore } from "testing/utils";
 const mockStore = configureStore();
 
 describe("ScriptsList", () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
+  });
+
   let state: RootState;
   beforeEach(() => {
     state = rootStateFactory({
@@ -281,6 +290,8 @@ describe("ScriptsList", () => {
   });
 
   it("can show script source", async () => {
+    jest.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
+
     renderWithMockStore(
       <MemoryRouter initialEntries={[{ pathname: "/" }]}>
         <CompatRouter>
@@ -299,9 +310,8 @@ describe("ScriptsList", () => {
     row = screen.getByRole("row", { name: "commissioning-script" });
     expect(row).toHaveClass("is-active");
 
-    // TODO: Fix this
     // expect script source to be decoded base64
-    // expect(screen.getByRole("code")).toBeInTheDocument();
+    expect(screen.getByText("test script contents")).toBeInTheDocument();
   });
 
   it("correctly formats script creation date", () => {
