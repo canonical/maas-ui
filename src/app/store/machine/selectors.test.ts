@@ -2,7 +2,6 @@ import machine from "./selectors";
 
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeActions, NodeStatus, NodeStatusCode } from "app/store/types/node";
-import { FilterSelected } from "app/utils/search/filter-items";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -503,76 +502,7 @@ describe("machine selectors", () => {
         },
       }),
     });
-    expect(machine.list(state, "123456", null)).toStrictEqual(machines);
-  });
-
-  it("can get selected items in a list", () => {
-    const machines = [machineFactory(), machineFactory()];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [...machines, machineFactory()],
-        lists: {
-          "123456": machineStateListFactory({
-            loading: true,
-            groups: [
-              machineStateListGroupFactory({
-                items: machines.map(({ system_id }) => system_id),
-              }),
-            ],
-          }),
-        },
-        selected: [machines[0].system_id],
-      }),
-    });
-    expect(
-      machine.list(state, "123456", FilterSelected.Selected)
-    ).toStrictEqual([machines[0]]);
-  });
-
-  it("can get unselected items in a list", () => {
-    const machines = [machineFactory(), machineFactory()];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [...machines, machineFactory()],
-        lists: {
-          "123456": machineStateListFactory({
-            loading: true,
-            groups: [
-              machineStateListGroupFactory({
-                items: machines.map(({ system_id }) => system_id),
-              }),
-            ],
-          }),
-        },
-        selected: [machines[0].system_id],
-      }),
-    });
-    expect(
-      machine.list(state, "123456", FilterSelected.NotSelected)
-    ).toStrictEqual([machines[1]]);
-  });
-
-  it("can get selected and unselected items in a list", () => {
-    const machines = [machineFactory(), machineFactory()];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [...machines, machineFactory()],
-        lists: {
-          "123456": machineStateListFactory({
-            loading: true,
-            groups: [
-              machineStateListGroupFactory({
-                items: machines.map(({ system_id }) => system_id),
-              }),
-            ],
-          }),
-        },
-        selected: [machines[0].system_id],
-      }),
-    });
-    expect(machine.list(state, "123456", FilterSelected.All)).toStrictEqual(
-      machines
-    );
+    expect(machine.list(state, "123456")).toStrictEqual(machines);
   });
 
   it("can get an interface by id", () => {

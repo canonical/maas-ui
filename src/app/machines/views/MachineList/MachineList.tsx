@@ -18,7 +18,6 @@ import { FilterMachines } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
 import type { Filters } from "app/utils/search/filter-handlers";
-import { getSelectedValue } from "app/utils/search/filter-items";
 
 type Props = {
   headerFormOpen?: boolean;
@@ -54,8 +53,7 @@ const MachineList = ({
   );
   const { machines, machinesErrors } = useFetchMachines(
     parseFilters(filters),
-    grouping,
-    "in" in filters ? getSelectedValue(filters.in) : null
+    grouping
   );
   const [hiddenGroups, setHiddenGroups] = useStorageState<string[]>(
     localStorage,

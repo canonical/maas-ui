@@ -32,7 +32,6 @@ import {
 } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 import { isId } from "app/utils";
-import type { FilterSelected } from "app/utils/search/filter-items";
 
 export const useFetchMachineCount = (
   filters?: FetchFilters
@@ -89,8 +88,7 @@ export const useFetchMachineCount = (
  */
 export const useFetchMachines = (
   filters?: FetchFilters | null,
-  grouping?: FetchGroupKey | null,
-  filterSelected?: FilterSelected | null
+  grouping?: FetchGroupKey | null
 ): {
   machines: Machine[];
   machinesErrors: APIError;
@@ -101,7 +99,7 @@ export const useFetchMachines = (
   const previousGrouping = usePrevious(grouping, false);
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
-    machineSelectors.list(state, callId, filterSelected)
+    machineSelectors.list(state, callId)
   );
   const machinesErrors = useSelector((state: RootState) =>
     machineSelectors.listErrors(state, callId)
