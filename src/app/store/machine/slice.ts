@@ -435,6 +435,7 @@ const machineSlice = createSlice({
     filtersLoading: false,
     lists: {},
     selected: [],
+    selectedMachines: null,
     statuses: {},
   } as MachineState,
   reducers: {
