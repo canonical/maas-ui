@@ -84,7 +84,7 @@ describe("CloneFormFields", () => {
         </Formik>
       </Provider>
     );
-    wrapper.find("[data-testid='source-machine-row']").at(0).simulate("click");
+    wrapper.find("[data-testid='machine-select-row']").at(0).simulate("click");
     await waitForComponentToPaint(wrapper);
 
     const expectedAction = machineActions.get(

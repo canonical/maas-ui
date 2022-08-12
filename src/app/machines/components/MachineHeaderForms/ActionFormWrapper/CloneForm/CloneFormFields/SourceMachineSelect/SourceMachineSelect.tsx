@@ -2,24 +2,26 @@ import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
 import {
-  MainTable,
   Notification,
   SearchBox,
   Spinner,
   Strip,
 } from "@canonical/react-components";
-import { highlightSubString } from "@canonical/react-components/dist/utils";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 
 import SourceMachineDetails from "./SourceMachineDetails";
 
-import DoubleRow from "app/base/components/DoubleRow";
+import { MachineSelectTable } from "app/base/components/MachineSelectTable/MachineSelectTable";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
-import type { Tag } from "app/store/tag/types";
 import { getTagNamesForIds } from "app/store/tag/utils";
+
+export enum Label {
+  Loading = "Loading...",
+  NoSourceMachines = "No source machine available",
+}
 
 type Props = {
   className?: string;
@@ -28,51 +30,6 @@ type Props = {
   machines: Machine[];
   onMachineClick: (machine: Machine | null) => void;
   selectedMachine?: MachineDetails | null;
-};
-
-const generateRows = (
-  machines: Machine[],
-  searchText: string,
-  onRowClick: (machine: Machine) => void,
-  tags: Tag[]
-) => {
-  const highlightedText = (text: string) => (
-    <span
-      dangerouslySetInnerHTML={{
-        __html: highlightSubString(text, searchText).text,
-      }}
-      data-testid={`source-machine-${text}`}
-    />
-  );
-  return machines.map((machine) => ({
-    className: "source-machine-select__row",
-    columns: [
-      {
-        content: (
-          <DoubleRow
-            primary={highlightedText(machine.hostname)}
-            secondary={highlightedText(machine.system_id)}
-          />
-        ),
-      },
-      {
-        content: (
-          <DoubleRow
-            primary={machine.owner || "-"}
-            secondary={
-              machine.tags.length
-                ? highlightedText(
-                    getTagNamesForIds(machine.tags, tags).join(", ")
-                  )
-                : "-"
-            }
-          />
-        ),
-      },
-    ],
-    "data-testid": "source-machine-row",
-    onClick: () => onRowClick(machine),
-  }));
 };
 
 export const SourceMachineSelect = ({
@@ -104,7 +61,7 @@ export const SourceMachineSelect = ({
   if (loadingData) {
     content = (
       <Strip shallow>
-        <Spinner data-testid="loading-spinner" text="Loading..." />
+        <Spinner aria-label={Label.Loading} text={Label.Loading} />
       </Strip>
     );
   } else if (loadingMachineDetails || selectedMachine) {
@@ -113,9 +70,8 @@ export const SourceMachineSelect = ({
     content = (
       <Notification
         borderless
-        data-testid="no-source-machines"
         severity="negative"
-        title="No source machine available"
+        title={Label.NoSourceMachines}
       >
         All machines are selected as destination machines. Unselect at least one
         machine from the list.
@@ -124,35 +80,11 @@ export const SourceMachineSelect = ({
   } else {
     content = (
       <div className="source-machine-select__table">
-        <MainTable
-          emptyStateMsg="No machines match the search criteria."
-          headers={[
-            {
-              content: (
-                <>
-                  <div>Hostname</div>
-                  <div>system_id</div>
-                </>
-              ),
-            },
-            {
-              content: (
-                <>
-                  <div>Owner</div>
-                  <div>Tags</div>
-                </>
-              ),
-            },
-          ]}
-          rows={generateRows(
-            filteredMachines,
-            searchText,
-            (machine) => {
-              setSearchText(machine.hostname);
-              onMachineClick(machine);
-            },
-            tags
-          )}
+        <MachineSelectTable
+          machines={filteredMachines}
+          onMachineClick={onMachineClick}
+          searchText={searchText}
+          setSearchText={setSearchText}
         />
       </div>
     );
@@ -160,7 +92,6 @@ export const SourceMachineSelect = ({
   return (
     <div className={classNames("source-machine-select", className)}>
       <SearchBox
-        data-testid="source-machine-searchbox"
         externallyControlled
         onChange={(searchText: string) => {
           setSearchText(searchText);

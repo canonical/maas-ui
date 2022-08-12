@@ -8,6 +8,10 @@ type Props = {
   machine: MachineDetails | null;
 };
 
+export enum Label {
+  Title = "Source machine details",
+}
+
 export const SourceMachineDetails = ({ machine }: Props): JSX.Element => {
   // Placeholder content is displayed until the machine has loaded.
   let content = {
@@ -55,6 +59,7 @@ export const SourceMachineDetails = ({ machine }: Props): JSX.Element => {
 
   return (
     <LabelledList
+      aria-label={Label.Title}
       data-testid="source-machine-details"
       items={[
         {

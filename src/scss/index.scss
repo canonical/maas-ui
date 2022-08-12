@@ -82,6 +82,7 @@
 @import "~app/base/components/Header";
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
+@import "~app/base/components/MachineSelectTable";
 @import "~app/base/components/Meter";
 @import "~app/base/components/node/networking/NetworkTable";
 @import "~app/base/components/node/NodeDevices";
@@ -115,6 +116,7 @@
 @include Header;
 @include LabelledList;
 @include Login;
+@include MachineSelectTable;
 @include Meter;
 @include NetworkCardTable;
 @include NetworkTable;
