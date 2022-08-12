@@ -5,6 +5,7 @@ import { MachineMeta } from "./types";
 import type {
   Action,
   ApplyStorageLayoutParams,
+  BaseMachineActionParams,
   CloneParams,
   CommissionParams,
   CreateBcacheParams,
@@ -29,6 +30,8 @@ import type {
   FetchParams,
   FetchResponse,
   FetchResponseGroup,
+  FilterGroupOption,
+  FilterGroupOptionType,
   FilterGroupResponse,
   GetSummaryXmlParams,
   GetSummaryYamlParams,
@@ -36,13 +39,17 @@ import type {
   Machine,
   MachineDetails,
   MachineState,
+  MachineStateCount,
   MachineStateDetailsItem,
+  MachineStateList,
   MarkBrokenParams,
   MountSpecialParams,
   ReleaseParams,
   SetBootDiskParams,
   SetPoolParams,
+  SetZoneParams,
   TagParams,
+  TestParams,
   UnlinkSubnetParams,
   UnmountSpecialParams,
   UntagParams,
@@ -50,23 +57,12 @@ import type {
   UpdateFilesystemParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
-  MachineStateList,
 } from "./types";
 import type { FetchFilters, FetchGroupKey } from "./types/actions";
-import type {
-  MachineStateCount,
-  FilterGroupOption,
-  FilterGroupOptionType,
-} from "./types/base";
 import { FilterGroupType } from "./types/base";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
-import type {
-  SetZoneParams,
-  TestParams,
-  UpdateInterfaceParams,
-  BaseNodeActionParams,
-} from "app/store/types/node";
+import type { UpdateInterfaceParams } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
 import type {
@@ -397,23 +393,38 @@ const statusHandlers = generateStatusHandlers<
   setErrors
 );
 
-const generateActionParams = <P extends BaseNodeActionParams>(
+const generateActionParams = <P extends BaseMachineActionParams>(
   action: NodeActions
 ) => ({
   prepare: (params: P) => {
-    // Separate the id from the params to pass to 'extra'.
-    const { system_id, ...extra } = params;
+    let actionParams: {
+      action: NodeActions;
+      extra: Omit<P, "filter"> | Omit<P, "system_id">;
+    } & BaseMachineActionParams;
+    if ("filter" in params) {
+      // Separate the filter and 'extra' params.
+      const { filter, ...extra } = params;
+      actionParams = {
+        action,
+        extra,
+        filter,
+      };
+    } else {
+      // Separate the id and 'extra' params.
+      const { system_id, ...extra } = params;
+      actionParams = {
+        action,
+        extra,
+        system_id,
+      };
+    }
     return {
       meta: {
         model: MachineMeta.MODEL,
         method: "action",
       },
       payload: {
-        params: {
-          action,
-          extra,
-          system_id,
-        },
+        params: actionParams,
       },
     };
   },
@@ -445,13 +456,13 @@ const machineSlice = createSlice({
       CreateParams,
       UpdateParams
     >(MachineMeta.MODEL, MachineMeta.PK, setErrors),
-    [NodeActions.ABORT]: generateActionParams<BaseNodeActionParams>(
+    [NodeActions.ABORT]: generateActionParams<BaseMachineActionParams>(
       NodeActions.ABORT
     ),
     [`${NodeActions.ABORT}Error`]: statusHandlers.abort.error,
     [`${NodeActions.ABORT}Start`]: statusHandlers.abort.start,
     [`${NodeActions.ABORT}Success`]: statusHandlers.abort.success,
-    [NodeActions.ACQUIRE]: generateActionParams<BaseNodeActionParams>(
+    [NodeActions.ACQUIRE]: generateActionParams<BaseMachineActionParams>(
       NodeActions.ACQUIRE
     ),
     [`${NodeActions.ACQUIRE}Error`]: statusHandlers.acquire.error,
@@ -847,7 +858,7 @@ const machineSlice = createSlice({
     createVolumeGroupError: statusHandlers.createVolumeGroup.error,
     createVolumeGroupStart: statusHandlers.createVolumeGroup.start,
     createVolumeGroupSuccess: statusHandlers.createVolumeGroup.success,
-    [NodeActions.DELETE]: generateActionParams<BaseNodeActionParams>(
+    [NodeActions.DELETE]: generateActionParams<BaseMachineActionParams>(
       NodeActions.DELETE
     ),
     [`${NodeActions.DELETE}Error`]: statusHandlers.delete.error,
@@ -992,7 +1003,7 @@ const machineSlice = createSlice({
     [`${NodeActions.DEPLOY}Error`]: statusHandlers.deploy.error,
     [`${NodeActions.DEPLOY}Start`]: statusHandlers.deploy.start,
     [`${NodeActions.DEPLOY}Success`]: statusHandlers.deploy.success,
-    exitRescueMode: generateActionParams<BaseNodeActionParams>(
+    exitRescueMode: generateActionParams<BaseMachineActionParams>(
       NodeActions.EXIT_RESCUE_MODE
     ),
     exitRescueModeError: statusHandlers.exitRescueMode.error,
@@ -1452,7 +1463,7 @@ const machineSlice = createSlice({
     linkSubnetError: statusHandlers.linkSubnet.error,
     linkSubnetStart: statusHandlers.linkSubnet.start,
     linkSubnetSuccess: statusHandlers.linkSubnet.success,
-    [NodeActions.LOCK]: generateActionParams<BaseNodeActionParams>(
+    [NodeActions.LOCK]: generateActionParams<BaseMachineActionParams>(
       NodeActions.LOCK
     ),
     [`${NodeActions.LOCK}Error`]: statusHandlers.lock.error,
@@ -1462,7 +1473,7 @@ const machineSlice = createSlice({
     markBrokenError: statusHandlers.markBroken.error,
     markBrokenStart: statusHandlers.markBroken.start,
     markBrokenSuccess: statusHandlers.markBroken.success,
-    markFixed: generateActionParams<BaseNodeActionParams>(
+    markFixed: generateActionParams<BaseMachineActionParams>(
       NodeActions.MARK_FIXED
     ),
     markFixedError: statusHandlers.markFixed.error,
@@ -1490,19 +1501,19 @@ const machineSlice = createSlice({
     mountSpecialError: statusHandlers.mountSpecial.error,
     mountSpecialStart: statusHandlers.mountSpecial.start,
     mountSpecialSuccess: statusHandlers.mountSpecial.success,
-    [NodeActions.OFF]: generateActionParams<BaseNodeActionParams>(
+    [NodeActions.OFF]: generateActionParams<BaseMachineActionParams>(
       NodeActions.OFF
     ),
     [`${NodeActions.OFF}Error`]: statusHandlers.off.error,
     [`${NodeActions.OFF}Start`]: statusHandlers.off.start,
     [`${NodeActions.OFF}Success`]: statusHandlers.off.success,
-    [NodeActions.ON]: generateActionParams<BaseNodeActionParams>(
+    [NodeActions.ON]: generateActionParams<BaseMachineActionParams>(
       NodeActions.ON
     ),
     [`${NodeActions.ON}Error`]: statusHandlers.on.error,
     [`${NodeActions.ON}Start`]: statusHandlers.on.start,
     [`${NodeActions.ON}Success`]: statusHandlers.on.success,
-    overrideFailedTesting: generateActionParams<BaseNodeActionParams>(
+    overrideFailedTesting: generateActionParams<BaseMachineActionParams>(
       NodeActions.OVERRIDE_FAILED_TESTING
     ),
     overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
@@ -1537,7 +1548,7 @@ const machineSlice = createSlice({
         }
       },
     },
-    rescueMode: generateActionParams<BaseNodeActionParams>(
+    rescueMode: generateActionParams<BaseMachineActionParams>(
       NodeActions.RESCUE_MODE
     ),
     rescueModeError: statusHandlers.rescueMode.error,
@@ -1639,7 +1650,7 @@ const machineSlice = createSlice({
     [`${NodeActions.TEST}Error`]: statusHandlers.test.error,
     [`${NodeActions.TEST}Start`]: statusHandlers.test.start,
     [`${NodeActions.TEST}Success`]: statusHandlers.test.success,
-    [NodeActions.UNLOCK]: generateActionParams<BaseNodeActionParams>(
+    [NodeActions.UNLOCK]: generateActionParams<BaseMachineActionParams>(
       NodeActions.UNLOCK
     ),
     [`${NodeActions.UNLOCK}Error`]: statusHandlers.unlock.error,

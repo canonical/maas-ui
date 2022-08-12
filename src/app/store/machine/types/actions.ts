@@ -30,6 +30,8 @@ import type {
   NodeVlan,
   PowerParameters,
   ScriptInputParam,
+  SetZoneParams as NodeSetZoneParams,
+  TestParams as NodeTestParams,
 } from "app/store/types/node";
 import type { Zone } from "app/store/zone/types";
 
@@ -43,13 +45,19 @@ export type ApplyStorageLayoutParams = {
   storageLayout: StorageLayout;
 };
 
-export type CloneParams = BaseNodeActionParams & {
+export type BaseMachineActionParams =
+  | BaseNodeActionParams
+  | {
+      filter: FetchFilters;
+    };
+
+export type CloneParams = BaseMachineActionParams & {
   destinations: Machine[MachineMeta.PK][];
   interfaces: boolean;
   storage: boolean;
 };
 
-export type CommissionParams = BaseNodeActionParams & {
+export type CommissionParams = BaseMachineActionParams & {
   commissioning_scripts?: Script["name"][];
   enable_ssh?: boolean;
   script_input?: ScriptInputParam;
@@ -228,7 +236,7 @@ export type DeleteVolumeGroupParams = {
   volumeGroupId: number;
 };
 
-export type DeployParams = BaseNodeActionParams & {
+export type DeployParams = BaseMachineActionParams & {
   distro_series?: Machine["distro_series"];
   enable_hw_sync?: boolean;
   hwe_kernel?: string;
@@ -435,7 +443,7 @@ export type LinkSubnetParams = {
   system_id: Machine[MachineMeta.PK];
 };
 
-export type MarkBrokenParams = BaseNodeActionParams & {
+export type MarkBrokenParams = BaseMachineActionParams & {
   message?: string;
 };
 
@@ -452,7 +460,7 @@ export type OptionalFilesystemParams = {
   mountPoint?: string;
 };
 
-export type ReleaseParams = BaseNodeActionParams & {
+export type ReleaseParams = BaseMachineActionParams & {
   erase?: boolean;
   quick_erase?: boolean;
   secure_erase?: boolean;
@@ -463,13 +471,19 @@ export type SetBootDiskParams = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export type SetPoolParams = BaseNodeActionParams & {
+export type SetPoolParams = BaseMachineActionParams & {
   pool_id: ResourcePool[ResourcePoolMeta.PK];
 };
 
-export type TagParams = BaseNodeActionParams & {
+export type SetZoneParams = BaseMachineActionParams &
+  Omit<NodeSetZoneParams, "system_id">;
+
+export type TagParams = BaseMachineActionParams & {
   tags: Tag[TagMeta.PK][];
 };
+
+export type TestParams = BaseMachineActionParams &
+  Omit<NodeTestParams, "system_id">;
 
 export type UnlinkSubnetParams = {
   interfaceId: NetworkInterface["id"];
@@ -482,7 +496,7 @@ export type UnmountSpecialParams = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export type UntagParams = BaseNodeActionParams & {
+export type UntagParams = BaseMachineActionParams & {
   tags: Tag[TagMeta.PK][];
 };
 

@@ -188,6 +188,30 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle setting the pool for a selection of machines", () => {
+    expect(
+      actions.setPool({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        pool_id: 909,
+      })
+    ).toEqual({
+      type: "machine/setPool",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.SET_POOL,
+          extra: {
+            pool_id: 909,
+          },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle setting the zone", () => {
     expect(actions.setZone({ system_id: "abc123", zone_id: 909 })).toEqual({
       type: "machine/setZone",
@@ -202,6 +226,30 @@ describe("machine actions", () => {
             zone_id: 909,
           },
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle setting the zone for a selection of machines", () => {
+    expect(
+      actions.setZone({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        zone_id: 909,
+      })
+    ).toEqual({
+      type: "machine/setZone",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.SET_ZONE,
+          extra: {
+            zone_id: 909,
+          },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -224,6 +272,27 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle turning on a selection of machines", () => {
+    expect(
+      actions.on({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/on",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.ON,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle turning off the machine", () => {
     expect(actions.off({ system_id: "abc123" })).toEqual({
       type: "machine/off",
@@ -236,6 +305,27 @@ describe("machine actions", () => {
           action: NodeActions.OFF,
           extra: {},
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle turning off a selection of machines", () => {
+    expect(
+      actions.off({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/off",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.OFF,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -273,6 +363,27 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle acquiring a selection of machines", () => {
+    expect(
+      actions.acquire({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/acquire",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.ACQUIRE,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle releasing a machine", () => {
     expect(
       actions.release({
@@ -292,6 +403,30 @@ describe("machine actions", () => {
           action: NodeActions.RELEASE,
           extra: { erase: true, quick_erase: false, secure_erase: true },
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle releasing a selection of machines", () => {
+    expect(
+      actions.release({
+        erase: true,
+        quick_erase: false,
+        secure_erase: true,
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/release",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.RELEASE,
+          extra: { erase: true, quick_erase: false, secure_erase: true },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -322,6 +457,36 @@ describe("machine actions", () => {
             osystem: "ubuntu",
           },
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle deploying a selection of machines", () => {
+    expect(
+      actions.deploy({
+        distro_series: "bionic",
+        hwe_kernel: "ga-16.04",
+        install_kvm: false,
+        osystem: "ubuntu",
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/deploy",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.DEPLOY,
+          extra: {
+            distro_series: "bionic",
+            hwe_kernel: "ga-16.04",
+            install_kvm: false,
+            osystem: "ubuntu",
+          },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -382,6 +547,27 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle aborting a selection of machines", () => {
+    expect(
+      actions.abort({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/abort",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.ABORT,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle commissioning a machine", () => {
     expect(
       actions.commission({
@@ -424,6 +610,48 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle commissioning a selection of machines", () => {
+    expect(
+      actions.commission({
+        commissioning_scripts: [
+          ScriptName.UPDATE_FIRMWARE,
+          ScriptName.CONFIGURE_HBA,
+        ],
+        enable_ssh: true,
+        script_input: { testingScript0: { url: "www.url.com" } },
+        skip_bmc_config: false,
+        skip_networking: false,
+        skip_storage: false,
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        testing_scripts: ["test0", "test2"],
+      })
+    ).toEqual({
+      meta: {
+        method: "action",
+        model: "machine",
+      },
+      payload: {
+        params: {
+          action: NodeActions.COMMISSION,
+          extra: {
+            commissioning_scripts: [
+              ScriptName.UPDATE_FIRMWARE,
+              ScriptName.CONFIGURE_HBA,
+            ],
+            enable_ssh: true,
+            script_input: { testingScript0: { url: "www.url.com" } },
+            skip_bmc_config: false,
+            skip_networking: false,
+            skip_storage: false,
+            testing_scripts: ["test0", "test2"],
+          },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+      type: "machine/commission",
+    });
+  });
+
   it("can handle testing a machine", () => {
     expect(
       actions.test({
@@ -447,6 +675,34 @@ describe("machine actions", () => {
             testing_scripts: ["test1", "test2"],
           },
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle testing for a selection of machines", () => {
+    expect(
+      actions.test({
+        enable_ssh: true,
+        script_input: { "test-0": { url: "www.url.com" } },
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        testing_scripts: ["test1", "test2"],
+      })
+    ).toEqual({
+      type: "machine/test",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.TEST,
+          extra: {
+            enable_ssh: true,
+            script_input: { "test-0": { url: "www.url.com" } },
+            testing_scripts: ["test1", "test2"],
+          },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -490,6 +746,27 @@ describe("machine actions", () => {
     });
   });
 
+  it("can putting a selection of machines into rescue mode", () => {
+    expect(
+      actions.rescueMode({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/rescueMode",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.RESCUE_MODE,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle making a machine exit rescue mode", () => {
     expect(actions.exitRescueMode({ system_id: "abc123" })).toEqual({
       type: "machine/exitRescueMode",
@@ -502,6 +779,27 @@ describe("machine actions", () => {
           action: NodeActions.EXIT_RESCUE_MODE,
           extra: {},
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle making a selection of machines exit rescue mode", () => {
+    expect(
+      actions.exitRescueMode({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/exitRescueMode",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.EXIT_RESCUE_MODE,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -528,6 +826,30 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle marking a selection of machines as broken", () => {
+    expect(
+      actions.markBroken({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        message: "machine is on fire",
+      })
+    ).toEqual({
+      type: "machine/markBroken",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.MARK_BROKEN,
+          extra: {
+            message: "machine is on fire",
+          },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle marking a machine as fixed", () => {
     expect(actions.markFixed({ system_id: "abc123" })).toEqual({
       type: "machine/markFixed",
@@ -540,6 +862,27 @@ describe("machine actions", () => {
           action: NodeActions.MARK_FIXED,
           extra: {},
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle marking a selection of machines as fixed", () => {
+    expect(
+      actions.markFixed({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/markFixed",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.MARK_FIXED,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -562,6 +905,27 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle overriding failed testing for a selection of machines", () => {
+    expect(
+      actions.overrideFailedTesting({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/overrideFailedTesting",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.OVERRIDE_FAILED_TESTING,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle locking a machine", () => {
     expect(actions.lock({ system_id: "abc123" })).toEqual({
       type: "machine/lock",
@@ -574,6 +938,27 @@ describe("machine actions", () => {
           action: NodeActions.LOCK,
           extra: {},
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle locking a selection of machines", () => {
+    expect(
+      actions.lock({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/lock",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.LOCK,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -596,6 +981,27 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle unlocking a selection of machines", () => {
+    expect(
+      actions.unlock({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/unlock",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.UNLOCK,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle deleting a machine", () => {
     expect(actions.delete({ system_id: "abc123" })).toEqual({
       type: "machine/delete",
@@ -608,6 +1014,27 @@ describe("machine actions", () => {
           action: NodeActions.DELETE,
           extra: {},
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle deleting a selection of machines", () => {
+    expect(
+      actions.delete({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/delete",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.DELETE,
+          extra: {},
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -630,6 +1057,28 @@ describe("machine actions", () => {
     });
   });
 
+  it("can handle tagging a selection of machines", () => {
+    expect(
+      actions.tag({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        tags: [1, 2],
+      })
+    ).toEqual({
+      type: "machine/tag",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.TAG,
+          extra: { tags: [1, 2] },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        },
+      },
+    });
+  });
+
   it("can handle untagging a machine", () => {
     expect(actions.untag({ system_id: "abc123", tags: [1, 2] })).toEqual({
       type: "machine/untag",
@@ -642,6 +1091,28 @@ describe("machine actions", () => {
           action: NodeActions.UNTAG,
           extra: { tags: [1, 2] },
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle untagging a selection of machines", () => {
+    expect(
+      actions.untag({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        tags: [1, 2],
+      })
+    ).toEqual({
+      type: "machine/untag",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.UNTAG,
+          extra: { tags: [1, 2] },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
@@ -670,6 +1141,34 @@ describe("machine actions", () => {
             storage: false,
           },
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle cloning a selection of machines", () => {
+    expect(
+      actions.clone({
+        destinations: ["def456", "ghi789"],
+        interfaces: true,
+        storage: false,
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+      })
+    ).toEqual({
+      type: "machine/clone",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.CLONE,
+          extra: {
+            destinations: ["def456", "ghi789"],
+            interfaces: true,
+            storage: false,
+          },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });
