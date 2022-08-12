@@ -415,7 +415,7 @@ export enum FetchGroupKey {
 }
 
 export type FetchParams = {
-  filter?: FetchFilters;
+  filter?: FetchFilters | null;
   group_key?: FetchGroupKey | null;
   group_collapsed?: string[];
   page_size?: number;

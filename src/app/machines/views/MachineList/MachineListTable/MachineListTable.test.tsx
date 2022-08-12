@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 import { MachineListTable } from "./MachineListTable";
 
 import type { Machine } from "app/store/machine/types";
+import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
@@ -224,7 +225,7 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter=""
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
               machines={machines}
               setHiddenGroups={jest.fn()}
@@ -248,7 +249,7 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter=""
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
               machines={machines}
               setHiddenGroups={jest.fn()}
@@ -277,7 +278,7 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter=""
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
               machines={machines}
               setHiddenGroups={jest.fn()}
@@ -314,7 +315,6 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter=""
-              grouping="none"
               hiddenGroups={[]}
               machines={machines}
               setHiddenGroups={jest.fn()}
@@ -361,7 +361,6 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter=""
-              grouping="none"
               hiddenGroups={[]}
               machines={machines}
               setHiddenGroups={jest.fn()}
@@ -424,7 +423,7 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter=""
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
               machines={machines}
               selectedIDs={[machines[0].system_id]}
@@ -454,7 +453,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={["abc123"]}
@@ -481,7 +480,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={["abc123", "ghi789"]}
@@ -514,7 +513,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={["abc123", "def456", "ghi789"]}
@@ -547,7 +546,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 setHiddenGroups={jest.fn()}
@@ -584,7 +583,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={["abc123"]}
@@ -622,7 +621,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={[]}
@@ -660,7 +659,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={["abc123", "def456", "ghi789"]}
@@ -698,7 +697,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={["abc123"]}
@@ -727,7 +726,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={[]}
@@ -765,7 +764,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={machines}
                 selectedIDs={["abc123", "def456", "ghi789"]}
@@ -803,7 +802,7 @@ describe("MachineListTable", () => {
             <CompatRouter>
               <MachineListTable
                 filter=""
-                grouping="status"
+                grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
                 machines={[]}
                 setHiddenGroups={jest.fn()}
@@ -836,7 +835,7 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter=""
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
               machines={machines}
               selectedIDs={["abc123"]}
@@ -866,7 +865,7 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter="in:selected"
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
               machines={machines}
               selectedIDs={["abc123"]}
@@ -897,7 +896,7 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter="in:selected"
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
               machines={machines}
               selectedIDs={["abc123"]}
@@ -928,7 +927,7 @@ describe("MachineListTable", () => {
           <CompatRouter>
             <MachineListTable
               filter="in:selected"
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
               machines={machines}
               selectedIDs={["abc123", "def456", "ghi789"]}

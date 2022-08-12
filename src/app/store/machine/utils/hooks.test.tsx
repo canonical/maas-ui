@@ -19,6 +19,7 @@ import {
 
 import { actions as machineActions } from "app/store/machine";
 import type { FetchFilters, Machine } from "app/store/machine/types";
+import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeStatus, NodeStatusCode } from "app/store/types/node";
@@ -44,6 +45,11 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
+
+type UseFetchMachinesProps = {
+  filters?: FetchFilters | null;
+  grouping?: FetchGroupKey | null;
+};
 
 const generateWrapper =
   (store: MockStoreEnhanced<unknown>) =>
@@ -255,8 +261,9 @@ describe("machine hook utils", () => {
     it("does not fetch again if the filters haven't changed", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(
-        () => useFetchMachines({ hostname: "spotted-quoll" }),
+        ({ filters }: UseFetchMachinesProps) => useFetchMachines(filters),
         {
+          initialProps: { filters: { hostname: "spotted-quoll" } },
           wrapper: generateWrapper(store),
         }
       );
@@ -268,14 +275,30 @@ describe("machine hook utils", () => {
       expect(getDispatches).toHaveLength(1);
     });
 
+    it("does not fetch again if the grouping hasn't changed", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({ filters, grouping }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping),
+        {
+          initialProps: { grouping: FetchGroupKey.Owner },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ grouping: FetchGroupKey.Owner });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
     it("does not fetch again if the filters haven't changed including empty objects", () => {
       const store = mockStore(state);
-      const initialProps: { filters: FetchFilters | null } = { filters: null };
       const { rerender } = renderHook(
-        ({ filters }: { filters: FetchFilters | null }) =>
-          useFetchMachines(filters),
+        ({ filters }: UseFetchMachinesProps) => useFetchMachines(filters),
         {
-          initialProps,
+          initialProps: { filters: null },
           wrapper: generateWrapper(store),
         }
       );
@@ -290,7 +313,8 @@ describe("machine hook utils", () => {
     it("fetches again if the filters change", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(
-        ({ filters }) => useFetchMachines(filters),
+        ({ filters, grouping }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping),
         {
           initialProps: {
             filters: {
@@ -301,6 +325,26 @@ describe("machine hook utils", () => {
         }
       );
       rerender({ filters: { hostname: "eastern-quoll" } });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(2);
+    });
+
+    it("fetches again if the grouping changes", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({ filters, grouping }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping),
+        {
+          initialProps: {
+            grouping: FetchGroupKey.Owner,
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ grouping: FetchGroupKey.Status });
       const expected = machineActions.fetch("mocked-nanoid-1");
       const getDispatches = store
         .getActions()

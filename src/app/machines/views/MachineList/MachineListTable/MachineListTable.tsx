@@ -31,7 +31,11 @@ import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineMeta } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineMeta,
+  FetchGroupKey,
+} from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
@@ -49,7 +53,7 @@ import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 type Props = {
   filter?: string;
-  grouping?: string;
+  grouping?: FetchGroupKey | null;
   hiddenColumns?: string[];
   hiddenGroups?: string[];
   machines: Machine[];
@@ -530,7 +534,7 @@ const generateGroupRows = ({
 
 export const MachineListTable = ({
   filter = "",
-  grouping = "none",
+  grouping,
   hiddenColumns = [],
   hiddenGroups = [],
   machines,
@@ -831,7 +835,7 @@ export const MachineListTable = ({
 
   let rows: MainTableRow[] | null = null;
 
-  if (grouping === "none") {
+  if (!grouping) {
     rows = generateRows({
       machines,
       selectedIDs,
@@ -855,7 +859,7 @@ export const MachineListTable = ({
       <MainTable
         aria-label="Machines"
         className={classNames("p-table-expanding--light", "machine-list", {
-          "machine-list--grouped": grouping !== "none",
+          "machine-list--grouped": grouping,
         })}
         emptyStateMsg={
           !machinesLoaded ? (
