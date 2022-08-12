@@ -223,13 +223,13 @@ export type FilterGroupOption<K = FilterGroupOptionType> = {
 
 export enum FilterGroupType {
   Bool = "bool",
-  Dict = "dict[string,string]",
+  Dict = "dict[str,str]",
   Float = "float",
+  FloatList = "list[float]",
   Int = "int",
-  // Only multichoice strings are currently supported:
-  // https://github.com/maas/maas/blob/a9e9029d0153a938e5a73b9d1de5b59252e64c6a/src/maasserver/node_constraint_filter_forms.py#L688
-  List = "list[string]",
-  String = "string",
+  IntList = "list[int]",
+  String = "str",
+  StringList = "list[str]",
 }
 
 export type FilterGroup = {
@@ -246,12 +246,16 @@ export type FilterGroup = {
       options: FilterGroupOption<string>[] | null;
       type:
         | FilterGroupType.Dict
-        | FilterGroupType.List
+        | FilterGroupType.StringList
         | FilterGroupType.String;
     }
   | {
       options: FilterGroupOption<number>[] | null;
-      type: FilterGroupType.Float | FilterGroupType.Int;
+      type:
+        | FilterGroupType.Float
+        | FilterGroupType.Int
+        | FilterGroupType.FloatList
+        | FilterGroupType.IntList;
     }
 );
 
