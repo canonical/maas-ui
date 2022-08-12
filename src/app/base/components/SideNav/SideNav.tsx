@@ -87,6 +87,7 @@ const _generateSection = (
   );
 };
 
+// eslint-disable-next-line react/no-multi-comp
 export const SideNav = ({
   closeToggleText = "Toggle side navigation",
   items,

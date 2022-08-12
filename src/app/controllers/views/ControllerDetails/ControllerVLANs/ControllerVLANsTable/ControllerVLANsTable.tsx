@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import { useMemo } from "react";
 
 import { ModularTable } from "@canonical/react-components";
