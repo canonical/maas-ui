@@ -81,6 +81,24 @@ describe("machine reducer", () => {
     );
   });
 
+  it("ignores calls that don't exist when reducing countSuccess", () => {
+    const initialState = machineStateFactory({
+      counts: {},
+    });
+    expect(
+      reducers(
+        initialState,
+        actions.countSuccess("123456", {
+          count: 11,
+        })
+      )
+    ).toEqual(
+      machineStateFactory({
+        counts: {},
+      })
+    );
+  });
+
   it("reduces countError", () => {
     const initialState = machineStateFactory({
       counts: {
