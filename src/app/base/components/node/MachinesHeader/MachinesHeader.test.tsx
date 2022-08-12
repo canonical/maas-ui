@@ -62,6 +62,10 @@ describe("MachinesHeader", () => {
     });
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("displays machine, resource pool and tag counts if loaded", () => {
     state.machine.loaded = true;
     state.resourcepool.loaded = true;
