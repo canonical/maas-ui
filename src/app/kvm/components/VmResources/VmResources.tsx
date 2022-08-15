@@ -26,6 +26,7 @@ const VmResources = ({ loading = false, vms }: Props): JSX.Element => {
             {/* TODO: update to use the new API: 
             https://github.com/canonical/app-tribe/issues/1117 */}
             <MachineListTable
+              currentPage={1}
               hiddenColumns={[
                 "owner",
                 "pool",
@@ -34,8 +35,10 @@ const VmResources = ({ loading = false, vms }: Props): JSX.Element => {
                 "disks",
                 "storage",
               ]}
+              machineCount={vms.length}
               machines={vms}
-              paginateLimit={5}
+              pageSize={5}
+              setCurrentPage={() => null}
               setSortDirection={() => null}
               setSortKey={() => null}
               showActions={false}

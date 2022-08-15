@@ -376,6 +376,17 @@ const listErrors = createSelector(
 );
 
 /**
+ * Get the count for a machine list request with a given callId.
+ */
+const listCount = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.count || null
+);
+
+/**
  * Get machines in a list request.
  * @param state - The redux state.
  * @param callId - A list request id.
@@ -492,6 +503,7 @@ const selectors = {
   getStatusForMachine,
   linkingSubnet: statusSelectors["linkingSubnet"],
   list,
+  listCount,
   listErrors,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],

@@ -505,6 +505,19 @@ describe("machine selectors", () => {
     expect(machine.list(state, "123456")).toStrictEqual(machines);
   });
 
+  it("can get the count for a list", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          "123456": machineStateListFactory({
+            count: 5,
+          }),
+        },
+      }),
+    });
+    expect(machine.listCount(state, "123456")).toBe(5);
+  });
+
   it("can get an interface by id", () => {
     const nic = machineInterfaceFactory({
       type: NetworkInterfaceTypes.PHYSICAL,

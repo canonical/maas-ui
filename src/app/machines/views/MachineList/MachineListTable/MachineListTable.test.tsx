@@ -1,12 +1,14 @@
+import { screen } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { MachineListTable } from "./MachineListTable";
+import { MachineListTable, Label } from "./MachineListTable";
 
 import { SortDirection } from "app/base/types";
+import urls from "app/base/urls";
 import type { Machine } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -30,6 +32,7 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -225,10 +228,14 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={jest.fn()}
@@ -253,10 +260,14 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={jest.fn()}
@@ -286,10 +297,14 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={jest.fn()}
@@ -329,9 +344,13 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={setSortDirection}
@@ -363,9 +382,13 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={setSortDirection}
@@ -397,9 +420,13 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={setSortDirection}
@@ -431,9 +458,13 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={setSortDirection}
@@ -465,9 +496,13 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={setSortDirection}
@@ -498,11 +533,15 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
               selectedIDs={[machines[0].system_id]}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={jest.fn()}
@@ -532,11 +571,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={["abc123"]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -563,11 +606,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={["abc123", "ghi789"]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -600,11 +647,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={["abc123", "def456", "ghi789"]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -637,10 +688,14 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -678,11 +733,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={["abc123"]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -720,11 +779,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={[]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -762,11 +825,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={["abc123", "def456", "ghi789"]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -804,11 +871,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={["abc123"]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -837,11 +908,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={[]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -879,11 +954,15 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
                 selectedIDs={["abc123", "def456", "ghi789"]}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -921,10 +1000,14 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
                 hiddenGroups={[]}
+                machineCount={10}
                 machines={[]}
+                pageSize={20}
+                setCurrentPage={jest.fn()}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
                 setSortDirection={jest.fn()}
@@ -958,11 +1041,15 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
               selectedIDs={["abc123"]}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSortDirection={jest.fn()}
@@ -992,11 +1079,15 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter="in:selected"
               grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
               selectedIDs={["abc123"]}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={setSearchFilter}
               setSortDirection={jest.fn()}
@@ -1027,11 +1118,15 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter="in:selected"
               grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
               selectedIDs={["abc123"]}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={setSearchFilter}
               setSortDirection={jest.fn()}
@@ -1062,11 +1157,15 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
               filter="in:selected"
               grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
               selectedIDs={["abc123", "def456", "ghi789"]}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSearchFilter={setSearchFilter}
               setSortDirection={jest.fn()}
@@ -1096,7 +1195,11 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              currentPage={1}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}
               showActions={false}
@@ -1128,8 +1231,12 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 hiddenColumns={["power", "zone"]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
+                setCurrentPage={jest.fn()}
                 setSortDirection={jest.fn()}
                 setSortKey={jest.fn()}
                 sortDirection="none"
@@ -1157,8 +1264,12 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 hiddenColumns={["fqdn"]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
+                setCurrentPage={jest.fn()}
                 setSortDirection={jest.fn()}
                 setSortKey={jest.fn()}
                 showActions
@@ -1183,8 +1294,12 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                currentPage={1}
                 hiddenColumns={["fqdn"]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
+                setCurrentPage={jest.fn()}
                 setSortDirection={jest.fn()}
                 setSortKey={jest.fn()}
                 showActions={false}
@@ -1199,5 +1314,53 @@ describe("MachineListTable", () => {
       expect(wrapper.find('[data-testid="fqdn-header"]').exists()).toBe(false);
       expect(wrapper.find('[data-testid="fqdn-column"]').exists()).toBe(false);
     });
+  });
+
+  it("displays pagination if there are machines", () => {
+    renderWithBrowserRouter(
+      <MachineListTable
+        currentPage={1}
+        machineCount={100}
+        machines={machines}
+        pageSize={20}
+        setCurrentPage={jest.fn()}
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        showActions={false}
+        sortDirection="none"
+        sortKey={null}
+      />,
+      {
+        route: urls.machines.index,
+        wrapperProps: { state },
+      }
+    );
+    expect(
+      screen.getByRole("navigation", { name: Label.Pagination })
+    ).toBeInTheDocument();
+  });
+
+  it("does not display pagination if there are no machines", () => {
+    renderWithBrowserRouter(
+      <MachineListTable
+        currentPage={1}
+        machineCount={100}
+        machines={[]}
+        pageSize={20}
+        setCurrentPage={jest.fn()}
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        showActions={false}
+        sortDirection="none"
+        sortKey={null}
+      />,
+      {
+        route: urls.machines.index,
+        wrapperProps: { state },
+      }
+    );
+    expect(
+      screen.queryByRole("navigation", { name: Label.Pagination })
+    ).not.toBeInTheDocument();
   });
 });

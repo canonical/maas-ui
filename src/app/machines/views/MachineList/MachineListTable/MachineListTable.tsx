@@ -1,7 +1,12 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
-import { Button, MainTable, Spinner } from "@canonical/react-components";
+import {
+  Button,
+  MainTable,
+  Pagination,
+  Spinner,
+} from "@canonical/react-components";
 import type {
   MainTableCell,
   MainTableRow,
@@ -47,20 +52,28 @@ import {
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 export const DEFAULTS = {
+  pageSize: 50,
   sortDirection: SortDirection.DESCENDING,
   // TODO: change this to fqdn when the API supports it:
   // https://github.com/canonical/app-tribe/issues/1268
   sortKey: FetchGroupKey.Hostname,
 };
 
+export enum Label {
+  Pagination = "Table pagination",
+}
+
 type Props = {
+  currentPage: number;
   filter?: string;
   grouping?: FetchGroupKey | null;
   hiddenColumns?: string[];
   hiddenGroups?: string[];
+  machineCount: number | null;
   machines: Machine[];
-  paginateLimit?: number;
+  pageSize: number;
   selectedIDs?: Machine[MachineMeta.PK][];
+  setCurrentPage: (currentPage: number) => void;
   setHiddenGroups?: (hiddenGroups: string[]) => void;
   setSearchFilter?: (filter: string) => void;
   showActions?: boolean;
@@ -517,13 +530,16 @@ const generateGroupRows = ({
 };
 
 export const MachineListTable = ({
+  currentPage,
   filter = "",
   grouping,
   hiddenColumns = [],
   hiddenGroups = [],
+  machineCount,
   machines,
-  paginateLimit = 50,
+  pageSize,
   selectedIDs = [],
+  setCurrentPage,
   setHiddenGroups,
   setSearchFilter,
   showActions = true,
@@ -867,7 +883,6 @@ export const MachineListTable = ({
           ) : null
         }
         headers={filterColumns(headers, hiddenColumns, showActions)}
-        paginate={paginateLimit}
         rows={
           // Pass undefined if there are no rows as the MainTable prop doesn't
           // allow null.
@@ -875,6 +890,16 @@ export const MachineListTable = ({
         }
         {...props}
       />
+      {machines.length > 0 && (
+        <Pagination
+          aria-label={Label.Pagination}
+          currentPage={currentPage}
+          itemsPerPage={pageSize}
+          paginate={setCurrentPage}
+          style={{ marginTop: "1rem" }}
+          totalItems={machineCount ?? 0}
+        />
+      )}
     </>
   );
 };
