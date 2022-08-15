@@ -22,6 +22,11 @@ type Props = {
   type: "commissioning" | "testing";
 };
 
+export enum Labels {
+  FileUploadArea = "File upload area",
+  SubmitButton = "Upload script",
+}
+
 const ScriptsUpload = ({ type }: Props): JSX.Element => {
   const MAX_SIZE_BYTES = 2000000; // 2MB
   const hasErrors = useSelector(scriptSelectors.hasErrors);
@@ -132,7 +137,7 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
             "scripts-upload--reject": isDragReject,
           })}
         >
-          <input {...getInputProps()} />
+          <input aria-label={Labels.FileUploadArea} {...getInputProps()} />
           {isDragActive ? (
             <p className="u-no-margin--bottom">Drop the file here ...</p>
           ) : (
@@ -168,7 +173,7 @@ const ScriptsUpload = ({ type }: Props): JSX.Element => {
           saved={saved}
           saving={saving}
           submitDisabled={acceptedFiles.length === 0}
-          submitLabel="Upload script"
+          submitLabel={Labels.SubmitButton}
         >
           {uploadedFile ? (
             <p>
