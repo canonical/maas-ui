@@ -1,11 +1,12 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { PoolForm } from "./PoolForm";
+import { PoolForm, Labels as PoolFormLabels } from "./PoolForm";
 
 import urls from "app/base/urls";
 import { actions } from "app/store/resourcepool";
@@ -15,7 +16,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -34,25 +35,22 @@ describe("PoolForm", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <PoolForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <PoolForm />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("PoolForm").exists()).toBe(true);
+    expect(screen.getByRole("form", { name: PoolFormLabels.AddPoolTitle }));
   });
 
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
 
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -62,36 +60,31 @@ describe("PoolForm", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
 
     expect(store.getActions()[0]).toEqual(actions.cleanup());
   });
 
   it("redirects when the resource pool is saved", () => {
     state.resourcepool.saved = true;
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/pool/add"]}>
-          <CompatRouter>
-            <PoolForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const history = createMemoryHistory({
+      initialEntries: ["/"],
+    });
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <PoolForm />
+        </CompatRouter>
+      </Router>,
+      { state }
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.pools.index
-    );
+    expect(history.location.pathname).toBe(urls.pools.index);
   });
 
-  it("can create a resource pool", () => {
+  it("can create a resource pool", async () => {
     const store = mockStore(state);
-    const pool = resourcePoolFactory();
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/pools/add"]}>
           <CompatRouter>
@@ -100,16 +93,45 @@ describe("PoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, pool);
 
-    expect(store.getActions()[1]).toEqual(actions.create(pool));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: PoolFormLabels.PoolName }),
+      "test name"
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: PoolFormLabels.PoolDescription }),
+      "test description"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: PoolFormLabels.SubmitLabel })
+    );
+
+    const action = store
+      .getActions()
+      .find((action) => action.type === "resourcepool/create");
+
+    expect(action).toEqual({
+      type: "resourcepool/create",
+      payload: {
+        params: {
+          name: "test name",
+          description: "test description",
+        },
+      },
+      meta: {
+        model: "resourcepool",
+        method: "create",
+      },
+    });
   });
 
-  it("can update a resource pool", () => {
+  it("can update a resource pool", async () => {
     const store = mockStore(state);
     const pool = resourcePoolFactory({ id: 1 });
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/pools/", key: "testKey" }]}
@@ -120,10 +142,24 @@ describe("PoolForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      name: "newName",
-      description: "newDescription",
+
+    const name_textbox = screen.getByRole("textbox", {
+      name: PoolFormLabels.PoolName,
     });
+    const description_textbox = screen.getByRole("textbox", {
+      name: PoolFormLabels.PoolDescription,
+    });
+
+    await userEvent.clear(name_textbox);
+    await userEvent.clear(description_textbox);
+
+    await userEvent.type(name_textbox, "newName");
+    await userEvent.type(description_textbox, "newDescription");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: PoolFormLabels.SubmitLabel })
+    );
+
     const action = store
       .getActions()
       .find((action) => action.type === "resourcepool/update");
@@ -137,7 +173,7 @@ describe("PoolForm", () => {
     state.resourcepool.saved = true;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
