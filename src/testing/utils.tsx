@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
 import { render } from "@testing-library/react";
