@@ -1,11 +1,11 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { APIKeyForm } from "./APIKeyForm";
+import { APIKeyForm, Label as APIKeyFormLabels } from "./APIKeyForm";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -13,7 +13,6 @@ import {
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -38,7 +37,7 @@ describe("APIKeyForm", () => {
 
   it("can render", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -47,12 +46,12 @@ describe("APIKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("APIKeyForm").exists()).toBe(true);
+    expect(screen.getByRole("form", { name: APIKeyFormLabels.AddTitle }));
   });
 
-  it("can create an API key", () => {
+  it("can create an API key", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -61,11 +60,16 @@ describe("APIKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "Token name",
-      })
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: APIKeyFormLabels.AddNameLabel }),
+      "Token name"
     );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: APIKeyFormLabels.AddSubmit })
+    );
+
     expect(
       store.getActions().find((action) => action.type === "token/create")
     ).toStrictEqual({
@@ -82,9 +86,9 @@ describe("APIKeyForm", () => {
     });
   });
 
-  it("can update an API key", () => {
+  it("can update an API key", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -93,10 +97,18 @@ describe("APIKeyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "New token name",
-      })
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: APIKeyFormLabels.EditNameLabel })
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: APIKeyFormLabels.EditNameLabel }),
+      "New token name"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: APIKeyFormLabels.EditSubmit })
     );
     expect(
       store.getActions().find((action) => action.type === "token/update")

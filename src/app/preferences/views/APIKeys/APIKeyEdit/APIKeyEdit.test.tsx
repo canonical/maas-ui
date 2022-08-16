@@ -87,7 +87,9 @@ describe("APIKeyEdit", () => {
     const form = screen.getByRole("form", { name: APIKeyFormLabels.EditTitle });
     expect(form).toBeInTheDocument();
     expect(
-      within(form).getByRole("textbox", { name: "API key name" })
+      within(form).getByRole("textbox", {
+        name: APIKeyFormLabels.EditNameLabel,
+      })
     ).toHaveValue(state.token.items[0].consumer.name);
   });
 });

@@ -15,6 +15,10 @@ import type { Token } from "app/store/token/types";
 export enum Label {
   AddTitle = "Generate MAAS API key",
   EditTitle = "Edit MAAS API key",
+  AddNameLabel = "API key name (optional)",
+  EditNameLabel = "API key name",
+  AddSubmit = "Generate API key",
+  EditSubmit = "Save API key",
 }
 
 type Props = {
@@ -78,13 +82,13 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
         saved={saved}
         savedRedirect={urls.preferences.apiKeys.index}
         saving={saving}
-        submitLabel={editing ? "Save API key" : "Generate API key"}
+        submitLabel={editing ? Label.EditSubmit : Label.AddSubmit}
         validationSchema={editing ? APIKeyEditSchema : APIKeyAddSchema}
       >
         <Row>
           <Col size={4}>
             <FormikField
-              label={`API key name${editing ? "" : " (optional)"}`}
+              label={editing ? Label.EditNameLabel : Label.AddNameLabel}
               name="name"
               required={editing}
               type="text"
