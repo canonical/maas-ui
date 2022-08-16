@@ -1,8 +1,8 @@
 ## MAAS UI
 
-![CI](https://github.com/canonical-web-and-design/maas-ui/workflows/CI/badge.svg)
-![Cypress](https://github.com/canonical-web-and-design/maas-ui/workflows/Cypress/badge.svg)
-![accessibility](https://github.com/canonical-web-and-design/maas-ui/workflows/accessibility/badge.svg)
+![CI](https://github.com/canonical/maas-ui/workflows/CI/badge.svg)
+![Cypress](https://github.com/canonical/maas-ui/workflows/Cypress/badge.svg)
+![accessibility](https://github.com/canonical/maas-ui/workflows/accessibility/badge.svg)
 [![Commitizen friendly](https://img.shields.io/badge/commitizen-friendly-brightgreen.svg)](http://commitizen.github.io/cz-cli/)
 
 - [About](#about)
@@ -26,9 +26,9 @@ This repository contains the sourcecode for the [MAAS](https://maas.io) web app,
 
 Community contributions are most welcome, and there are a number of ways to participate:
 
-- [Submit bugs and feature requests](https://github.com/canonical-web-and-design/maas-ui/issues)
-- [Assist with code review](https://github.com/canonical-web-and-design/maas-ui/pulls)
-- [Submit bugs for the MAAS website](https://github.com/canonical-web-and-design/maas.io)
+- [Submit bugs and feature requests](https://github.com/canonical/maas-ui/issues)
+- [Assist with code review](https://github.com/canonical/maas-ui/pulls)
+- [Submit bugs for the MAAS website](https://github.com/canonical/react-components)
 - [Contribute to MAAS documentation](https://maas.io/docs/writing-guide)
 
 When submitting a PR, please take note that MAAS UI uses the [conventional commit](https://www.conventionalcommits.org/en/v1.0.0/) format. To help you conform to this, you can run `yarn commit` instead of `git commit` for an interactive prompt.
@@ -38,7 +38,7 @@ Please see [HACKING](/docs/HACKING.md) for details on setting up a MAAS UI devel
 ## Feedback
 
 - Ask a question about MAAS on [Discourse](https://discourse.maas.io/).
-- File a [MAAS UI issue](https://github.com/canonical-web-and-design/maas-ui/issues/new/choose).
+- File a [MAAS UI issue](https://github.com/canonical/maas-ui/issues/new/choose).
 - File a [MAAS issue](https://bugs.launchpad.net/maas/+filebug).
 
 ## Related Projects

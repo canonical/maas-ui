@@ -24,7 +24,7 @@ type Props = { systemId: Machine["system_id"] };
 // TODO: Once the API returns a list of allowed storage layouts for a given
 // machine we should either filter this list, or add a boolean e.g. "allowable"
 // to each layout.
-// https://github.com/canonical-web-and-design/maas-ui/issues/3258
+// https://github.com/canonical/maas-ui/issues/3258
 const storageLayoutOptions: StorageLayoutOption[][] = [
   [
     { label: "Flat", sentenceLabel: "flat", value: StorageLayout.FLAT },

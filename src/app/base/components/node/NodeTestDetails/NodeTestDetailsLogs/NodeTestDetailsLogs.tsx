@@ -13,7 +13,7 @@ const NodeTestDetailsLogs = ({ log }: Props): JSX.Element => {
   const [activeTab, setActiveTab] =
     useState<keyof ScriptResultData>("combined");
 
-  // Ideally should be buttons, see https://github.com/canonical-web-and-design/vanilla-framework/issues/3532
+  // Ideally should be buttons, see https://github.com/canonical/vanilla-framework/issues/3532
   const links = [
     ScriptResultDataType.COMBINED,
     ScriptResultDataType.STDOUT,

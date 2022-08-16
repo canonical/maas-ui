@@ -144,7 +144,7 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
             name="entity"
             options={
               // This won't need to pass the empty array once this issue is fixed:
-              // https://github.com/canonical-web-and-design/react-components/issues/570
+              // https://github.com/canonical/react-components/issues/570
               generateOptions(type, models) || []
             }
           />

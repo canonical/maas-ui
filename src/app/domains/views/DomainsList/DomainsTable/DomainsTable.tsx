@@ -48,7 +48,7 @@ const DomainsTable = (): JSX.Element => {
     const isActive = expandedID === domain.id;
     return {
       // making sure we don't pass id directly as a key because of
-      // https://github.com/canonical-web-and-design/react-components/issues/476
+      // https://github.com/canonical/react-components/issues/476
       key: `domain-row-${domain.id}`,
       className: classNames("p-table__row", { "is-active": isActive }),
       columns: [

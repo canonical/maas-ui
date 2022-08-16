@@ -6,7 +6,7 @@
 
 // 10-07-2020 Caleb: Slider input misaligned when using type="number" + wrapper
 // should mirror normal form field spacing.
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/3163
+// https://github.com/canonical/vanilla-framework/issues/3163
 .p-slider__wrapper {
   margin-bottom: $input-margin-bottom;
 }
@@ -22,7 +22,7 @@
 }
 
 // 09-05-2022 Caleb: Side nav sets background to white on full-screen
-// https://github.com/canonical-web-and-design/vanilla-framework/issues/4458
+// https://github.com/canonical/vanilla-framework/issues/4458
 .p-side-navigation .p-side-navigation__drawer {
   @media screen and (min-width: $breakpoint-large) {
     background-color: transparent;
