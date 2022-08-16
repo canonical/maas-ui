@@ -49,6 +49,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
     <FormCard title={title}>
       <FormikForm
         allowAllEmpty={!editing}
+        aria-label={title}
         cleanup={tokenActions.cleanup}
         errors={errors}
         initialValues={{
