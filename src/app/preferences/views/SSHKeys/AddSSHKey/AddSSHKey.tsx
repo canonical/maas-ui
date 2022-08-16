@@ -14,11 +14,12 @@ const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
 
 export const AddSSHKey = (): JSX.Element => {
   const navigate = useNavigate();
-  useWindowTitle("Add SSH key");
+  useWindowTitle(Label.Title);
 
   return (
-    <FormCard title="Add SSH key">
+    <FormCard title={Label.Title}>
       <SSHKeyForm
+        aria-label={Label.Title}
         cols={TOTAL - SIDEBAR - CARD_TITLE}
         onCancel={() => navigate({ pathname: urls.preferences.sshKeys.index })}
         onSaveAnalytics={{
