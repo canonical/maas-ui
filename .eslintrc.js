@@ -97,6 +97,7 @@ module.exports = {
           },
         ],
         "react/jsx-sort-props": "error",
+        "react/no-multi-comp": ["error", { ignoreStateless: false }],
       },
       settings: {
         "import/resolver": {
@@ -132,6 +133,7 @@ module.exports = {
             allowedMethods: ["change"],
           },
         ],
+        "react/no-multi-comp": "off",
       },
     },
     {
