@@ -1,0 +1,67 @@
+import { generateMAASURL } from "../../../utils";
+
+context("Settings - General", () => {
+  beforeEach(() => {
+    cy.login();
+    cy.visit(generateMAASURL("/settings/configuration/general"));
+
+    cy.findByRole("radio", { name: "Default" }).click();
+
+    cy.findByRole("button", { name: "Save" }).then(($btn) => {
+      if ($btn.is(":disabled")) {
+        return;
+      } else {
+        cy.wrap($btn).click();
+      }
+    });
+  });
+
+  it("displays a live preview of a MAAS theme colour", () => {
+    cy.findByRole("radio", { name: "Red" }).click();
+
+    cy.findByRole("banner").should("have.class", "p-navigation--red");
+  });
+
+  it("persists the theme choice after saving and refreshing the page", () => {
+    cy.findByRole("radio", { name: "Red" }).click();
+    cy.findByRole("button", { name: "Save" }).click();
+
+    cy.findByRole("button", { name: "Save" }).should("be.disabled");
+
+    cy.reload(true);
+
+    cy.findByRole("banner").should("have.class", "p-navigation--red");
+  });
+
+  it("persists the theme choice after saving and navigating away from page", () => {
+    cy.findByRole("radio", { name: "Red" }).click();
+    cy.findByRole("button", { name: "Save" }).click();
+
+    cy.findByRole("button", { name: "Save" }).should("be.disabled");
+
+    cy.findByRole("link", { name: "Deploy" }).click();
+
+    cy.findByRole("banner").should("have.class", "p-navigation--red");
+  });
+
+  it("reverts the theme choice if not saved and page is refreshed", () => {
+    cy.findByRole("radio", { name: "Red" }).click();
+    cy.reload(true);
+
+    cy.findByRole("banner").should("have.class", "p-navigation--default");
+  });
+
+  it("reverts the theme choice if the user clicks cancel", () => {
+    cy.findByRole("radio", { name: "Red" }).click();
+    cy.findByRole("button", { name: "Cancel" }).click();
+
+    cy.findByRole("banner").should("have.class", "p-navigation--default");
+  });
+
+  it("reverts the theme choice if the user navigates to another page", () => {
+    cy.findByRole("radio", { name: "Red" }).click();
+    cy.findByRole("link", { name: "Deploy" }).click();
+
+    cy.findByRole("banner").should("have.class", "p-navigation--default");
+  });
+});

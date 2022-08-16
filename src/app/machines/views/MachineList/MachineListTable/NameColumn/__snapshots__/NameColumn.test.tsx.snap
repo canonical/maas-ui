@@ -32,7 +32,7 @@ exports[`NameColumn renders 1`] = `
       />
     }
     secondary={<NonBreakingSpace />}
-    secondaryClassName="u-nudge--secondary-row u-align--left"
+    secondaryClassName="u-flex u-nudge--secondary-row u-align--left"
   >
     <div
       className="p-double-row"
@@ -210,7 +210,7 @@ exports[`NameColumn renders 1`] = `
           </div>
         </div>
         <div
-          className="p-double-row__secondary-row u-truncate u-nudge--secondary-row u-align--left"
+          className="p-double-row__secondary-row u-truncate u-flex u-nudge--secondary-row u-align--left"
           data-testid="secondary"
         >
           <NonBreakingSpace>

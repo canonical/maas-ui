@@ -1,10 +1,12 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
+
+import ThemePreviewContext from "./base/theme-preview-context";
 
 import Routes from "app/Routes";
 import Footer from "app/base/components/Footer";
@@ -31,6 +33,8 @@ export const App = (): JSX.Element => {
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
+  const maasTheme = useSelector(configSelectors.theme);
+  const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
   const previousAuthenticated = usePrevious(authenticated, false);
 
   useEffect(() => {
@@ -92,10 +96,12 @@ export const App = (): JSX.Element => {
 
   return (
     <div id="maas-ui">
-      <Header />
-      <main id="main-content">{content}</main>
-      <Footer />
-      <StatusBar />
+      <ThemePreviewContext.Provider value={{ theme, setTheme }}>
+        <Header />
+        <main id="main-content">{content}</main>
+        <Footer />
+        <StatusBar />
+      </ThemePreviewContext.Provider>
     </div>
   );
 };

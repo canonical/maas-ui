@@ -31,6 +31,10 @@
     margin-bottom: 0;
   }
 
+  button.p-double-row__button {
+    @extend %small-text;
+  }
+
   .p-double-row__icon-space {
     width: $icon-space;
   }
@@ -45,5 +49,6 @@
 
   .p-double-row__tooltip-inner {
     display: inline !important;
+    margin-left: $sph--x-small !important;
   }
 }

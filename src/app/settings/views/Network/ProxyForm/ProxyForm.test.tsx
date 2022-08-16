@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -45,7 +45,7 @@ describe("ProxyForm", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -55,7 +55,7 @@ describe("ProxyForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a text input if http proxy is enabled", () => {
@@ -66,7 +66,7 @@ describe("ProxyForm", () => {
       { value: true }
     );
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/settings/network", key: "testKey" }]}
@@ -77,14 +77,14 @@ describe("ProxyForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Input[type='text']").exists()).toBe(true);
+    expect(screen.getByRole("textbox")).toBeInTheDocument();
   });
 
   it("dispatches action to fetch config if not already loaded", () => {
     state.config.loaded = false;
     const store = mockStore(state);
 
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>

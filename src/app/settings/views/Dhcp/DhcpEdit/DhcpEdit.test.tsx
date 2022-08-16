@@ -1,19 +1,17 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import { DhcpEdit } from "./DhcpEdit";
 
+import { Labels as DhcpFormFieldsLabels } from "app/base/components/DhcpFormFields/DhcpFormFields";
 import type { RootState } from "app/store/root/types";
 import {
   dhcpSnippet as dhcpSnippetFactory,
   dhcpSnippetState as dhcpSnippetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("DhcpEdit", () => {
   let state: RootState;
@@ -37,60 +35,66 @@ describe("DhcpEdit", () => {
   it("displays a loading component if loading", () => {
     state.dhcpsnippet.loading = true;
     state.dhcpsnippet.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/dhcp/1/edit", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <DhcpEdit />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/dhcp/1/edit", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <DhcpEdit />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("handles dhcp snippet not found", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/dhcp/99999/edit", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <DhcpEdit />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/settings/dhcp/99999/edit", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <DhcpEdit />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("h4").text()).toBe("DHCP snippet not found");
+    expect(screen.getByText("DHCP snippet not found")).toBeInTheDocument();
   });
 
   it("can display a dhcp snippet edit form", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/dhcp/1/edit", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route element={<DhcpEdit />} path="/settings/dhcp/:id/edit" />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/dhcp/1/edit", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <Routes>
+            <Route element={<DhcpEdit />} path="/settings/dhcp/:id/edit" />
+          </Routes>
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    const form = wrapper.find("DhcpForm").first();
-    expect(form.exists()).toBe(true);
-    expect(form.prop("dhcpSnippet")).toStrictEqual(state.dhcpsnippet.items[0]);
+    expect(
+      screen.getByRole("form", { name: "Editing `test snippet`" })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("textbox", { name: DhcpFormFieldsLabels.Name })
+    ).toHaveValue("test snippet");
+
+    expect(
+      screen.getByRole("textbox", { name: DhcpFormFieldsLabels.Description })
+    ).toHaveValue("test description");
+
+    expect(
+      screen.getByRole("checkbox", { name: DhcpFormFieldsLabels.Enabled })
+    ).not.toBeChecked();
+
+    expect(
+      screen.getByRole("textbox", { name: DhcpFormFieldsLabels.Value })
+    ).toHaveValue("test value");
   });
 });

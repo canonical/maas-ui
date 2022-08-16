@@ -1,8 +1,6 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import DhcpTarget from "./DhcpTarget";
 
@@ -19,8 +17,7 @@ import {
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("DhcpTarget", () => {
   let state: RootState;
@@ -77,48 +74,43 @@ describe("DhcpTarget", () => {
     state.dhcpsnippet.loading = true;
     state.machine.loading = true;
     state.subnet.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpTarget subnetId={808} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpTarget subnetId={808} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("can display a subnet link", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpTarget subnetId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpTarget subnetId={1} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    const link = wrapper.find("Link");
-    expect(link?.prop("to")?.toString().includes("/subnet/1")).toBe(true);
-    expect(link.text()).toEqual("10.0.0.99");
+    const link = screen.getByRole("link", { name: "10.0.0.99" });
+
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveProperty("href", "http://example.com/subnet/1");
   });
 
   it("can display a node link", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <DhcpTarget nodeId="xyz" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <DhcpTarget nodeId="xyz" />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    const link = wrapper.find("Link");
-    expect(link.prop("to")).toBe("/machine/xyz");
-    expect(link).toMatchSnapshot();
+    const link = screen.getByRole("link", { name: "machine1 .test" });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveProperty("href", "http://example.com/machine/xyz");
   });
 });

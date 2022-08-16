@@ -1,17 +1,17 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import NetworkDiscoveryFormFields from "./NetworkDiscoveryFormFields";
 
-import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -55,31 +55,25 @@ describe("NetworkDiscoveryFormFields", () => {
     state.config.loading = true;
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <NetworkDiscoveryFormFields />
         </Formik>
       </Provider>
     );
+
     expect(
-      wrapper
-        .find("FormikField[name='active_discovery_interval']")
-        .prop("disabled")
-    ).toBe(false);
-    wrapper
-      .find("FormikField[name='network_discovery'] select")
-      .simulate("change", {
-        target: {
-          name: "network_discovery",
-          value: NetworkDiscovery.DISABLED,
-        },
-      });
-    await waitForComponentToPaint(wrapper);
+      screen.queryByRole("combobox", { name: "Active subnet mapping interval" })
+    ).not.toBeDisabled();
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Network discovery" }),
+      "Disabled"
+    );
+
     expect(
-      wrapper
-        .find("FormikField[name='active_discovery_interval']")
-        .prop("disabled")
-    ).toBe(true);
+      screen.getByRole("combobox", { name: "Active subnet mapping interval" })
+    ).toBeDisabled();
   });
 });

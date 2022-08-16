@@ -128,6 +128,7 @@ export const RepositoryForm = ({ type, repository }: Props): JSX.Element => {
       ) : (
         <FormCard title={title}>
           <FormikForm<RepositoryFormValues>
+            aria-label={title}
             cleanup={repositoryActions.cleanup}
             errors={errors}
             initialValues={initialValues}

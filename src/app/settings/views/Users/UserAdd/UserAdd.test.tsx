@@ -1,33 +1,40 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { CompatRouter } from "react-router-dom-v5-compat";
 
 import { UserAdd } from "./UserAdd";
 
 import type { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
-
-const mockStore = configureStore();
+import {
+  rootState as rootStateFactory,
+  statusState as statusStateFactory,
+} from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 describe("UserAdd", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory();
+    state = rootStateFactory({
+      status: statusStateFactory({
+        externalAuthURL: null,
+      }),
+    });
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/users/add", key: "testKey" }]}
-        >
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/settings/users/add", key: "testKey" }]}
+      >
+        <CompatRouter>
           <UserAdd />
-        </MemoryRouter>
-      </Provider>
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("UserAdd").exists()).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: "Add user" })
+    ).toBeInTheDocument();
   });
 });
