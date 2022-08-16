@@ -112,19 +112,9 @@ describe("PoolForm", () => {
       .getActions()
       .find((action) => action.type === "resourcepool/create");
 
-    expect(action).toEqual({
-      type: "resourcepool/create",
-      payload: {
-        params: {
-          name: "test name",
-          description: "test description",
-        },
-      },
-      meta: {
-        model: "resourcepool",
-        method: "create",
-      },
-    });
+    expect(action).toEqual(
+      actions.create({ name: "test name", description: "test description" })
+    );
   });
 
   it("can update a resource pool", async () => {
