@@ -1,4 +1,4 @@
-import { screen, render, waitFor } from "@testing-library/react";
+import { screen, render, waitFor, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import type { FileWithPath } from "react-dropzone";
@@ -110,8 +110,8 @@ describe("ScriptsUpload", () => {
     );
 
     const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
-    await userEvent.upload(upload, files);
-
+    // necessary to use a fireEvent instead of userEvent, since userEvent doesn't support "drag n drop" multiple file upload
+    fireEvent.drop(upload, { target: { files } });
     await waitFor(() => {
       expect(store.getActions()[0]["payload"]["message"]).toEqual(
         "Only a single file may be uploaded."
