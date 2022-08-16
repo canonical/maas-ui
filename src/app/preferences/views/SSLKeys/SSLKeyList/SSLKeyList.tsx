@@ -29,6 +29,7 @@ const generateRows = (
   sslkeys.map(({ id, display, key }) => {
     const expanded = expandedId === id;
     return {
+      "aria-label": key,
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
