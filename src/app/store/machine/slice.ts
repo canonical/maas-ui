@@ -641,7 +641,10 @@ const machineSlice = createSlice({
         state: MachineState,
         action: PayloadAction<{ count: number }, string, GenericMeta>
       ) => {
-        if (action.meta.callId) {
+        // Only update state if this call exists in the store. This check is required
+        // because the call may have been cleaned up in the time the API takes
+        // to respond.
+        if (action.meta.callId && action.meta.callId in state.counts) {
           state.counts[action.meta.callId] = {
             ...(action.meta.callId in state.counts
               ? state.counts[action.meta.callId]
