@@ -13,6 +13,7 @@ import {
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -36,15 +37,13 @@ describe("APIKeyForm", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <APIKeyForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <APIKeyForm />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
     expect(screen.getByRole("form", { name: APIKeyFormLabels.AddTitle }));
   });
