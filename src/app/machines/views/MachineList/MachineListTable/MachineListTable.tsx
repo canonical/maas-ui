@@ -1,5 +1,6 @@
 import { memo, useCallback, useEffect, useMemo, useState } from "react";
 
+import type { ValueOf } from "@canonical/react-components";
 import { Button, MainTable, Spinner } from "@canonical/react-components";
 import type {
   MainTableCell,
@@ -24,18 +25,13 @@ import ZoneColumn from "./ZoneColumn";
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
-import type { TableSort } from "app/base/hooks";
-import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type {
-  Machine,
-  MachineMeta,
-  FetchGroupKey,
-} from "app/store/machine/types";
+import { FetchGroupKey } from "app/store/machine/types";
+import type { Machine, MachineMeta } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import { actions as tagActions } from "app/store/tag";
@@ -45,11 +41,17 @@ import { actions as zoneActions } from "app/store/zone";
 import {
   generateCheckboxHandlers,
   groupAsMap,
-  isComparable,
   simpleSortByKey,
   someInArray,
 } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
+
+export const DEFAULTS = {
+  sortDirection: SortDirection.DESCENDING,
+  // TODO: change this to fqdn when the API supports it:
+  // https://github.com/canonical/app-tribe/issues/1268
+  sortKey: FetchGroupKey.Hostname,
+};
 
 type Props = {
   filter?: string;
@@ -62,9 +64,12 @@ type Props = {
   setHiddenGroups?: (hiddenGroups: string[]) => void;
   setSearchFilter?: (filter: string) => void;
   showActions?: boolean;
+  sortDirection: ValueOf<typeof SortDirection>;
+  sortKey: FetchGroupKey | null;
+  setSortDirection: (sortDirection: ValueOf<typeof SortDirection>) => void;
+  setSortKey: (sortKey: FetchGroupKey | null) => void;
 };
 
-type SortKey = keyof Machine | "fabric";
 type TableColumn = MainTableCell & { key: string };
 
 type Group = {
@@ -83,25 +88,6 @@ type GenerateRowParams = {
   selectedIDs: NonNullable<Props["selectedIDs"]>;
   showActions: Props["showActions"];
   showMAC: boolean;
-  sortRows: TableSort<Machine, SortKey>["sortRows"];
-};
-
-const getSortValue = (
-  sortKey: SortKey,
-  machine: Machine
-): string | number | null => {
-  switch (sortKey) {
-    case "domain":
-      return machine.domain?.name || null;
-    case "pool":
-      return machine.pool?.name || null;
-    case "zone":
-      return machine.zone?.name || null;
-    case "fabric":
-      return machine.vlan?.fabric_name || null;
-  }
-  const value = machine[sortKey];
-  return isComparable(value) ? value : null;
 };
 
 const getGroupSecondaryString = (
@@ -157,12 +143,10 @@ const generateRows = ({
   selectedIDs,
   showActions,
   showMAC,
-  sortRows,
 }: GenerateRowParams) => {
-  const sortedMachines = sortRows(machines);
   const menuCallback = showActions ? onToggleMenu : undefined;
 
-  return sortedMachines.map((row) => {
+  return machines.map((row) => {
     const isActive = activeRow === row.system_id;
 
     const columns = [
@@ -543,19 +527,32 @@ export const MachineListTable = ({
   setHiddenGroups,
   setSearchFilter,
   showActions = true,
+  sortDirection,
+  sortKey,
+  setSortDirection,
+  setSortKey,
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const machinesLoaded = useSelector(machineSelectors.loaded);
   const machineIDs = machines.map((machine) => machine.system_id);
-  const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
-    getSortValue,
-    {
-      key: MachineColumns.FQDN,
-      direction: SortDirection.DESCENDING,
+  const currentSort = {
+    direction: sortDirection,
+    key: sortKey,
+  };
+  const updateSort = (newSortKey: Props["sortKey"]) => {
+    if (newSortKey === sortKey) {
+      if (sortDirection === SortDirection.ASCENDING) {
+        setSortKey(null);
+        setSortDirection(SortDirection.NONE);
+      } else {
+        setSortDirection(SortDirection.ASCENDING);
+      }
+    } else {
+      setSortKey(newSortKey);
+      setSortDirection(SortDirection.DESCENDING);
     }
-  );
-
+  };
   const [activeRow, setActiveRow] = useState<Machine[MachineMeta.PK] | null>(
     null
   );
@@ -617,7 +614,6 @@ export const MachineListTable = ({
     onToggleMenu,
     showActions,
     showMAC,
-    sortRows,
   };
 
   const headers = [
@@ -639,11 +635,13 @@ export const MachineListTable = ({
             <TableHeader
               currentSort={currentSort}
               data-testid="fqdn-header"
+              // TODO: change this to "fqdn" when the API supports it:
+              // https://github.com/canonical/app-tribe/issues/1268
               onClick={() => {
                 setShowMAC(false);
-                updateSort("fqdn");
+                updateSort(FetchGroupKey.Hostname);
               }}
-              sortKey="fqdn"
+              sortKey={FetchGroupKey.Hostname}
             >
               {columnLabels[MachineColumns.FQDN]}
             </TableHeader>
@@ -651,11 +649,11 @@ export const MachineListTable = ({
             <TableHeader
               currentSort={currentSort}
               data-testid="mac-header"
+              // TODO: enable sorting by "pxe_mac" when the API supports it:
+              // https://github.com/canonical/app-tribe/issues/1268
               onClick={() => {
                 setShowMAC(true);
-                updateSort("pxe_mac");
               }}
-              sortKey="pxe_mac"
             >
               MAC
             </TableHeader>
@@ -673,8 +671,8 @@ export const MachineListTable = ({
           className="p-double-row__header-spacer"
           currentSort={currentSort}
           data-testid="power-header"
-          onClick={() => updateSort("power_state")}
-          sortKey="power_state"
+          onClick={() => updateSort(FetchGroupKey.PowerState)}
+          sortKey={FetchGroupKey.PowerState}
         >
           {columnLabels[MachineColumns.POWER]}
         </TableHeader>
@@ -689,8 +687,8 @@ export const MachineListTable = ({
           className="p-double-row__header-spacer"
           currentSort={currentSort}
           data-testid="status-header"
-          onClick={() => updateSort("status")}
-          sortKey="status"
+          onClick={() => updateSort(FetchGroupKey.Status)}
+          sortKey={FetchGroupKey.Status}
         >
           {columnLabels[MachineColumns.STATUS]}
         </TableHeader>
@@ -705,8 +703,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="owner-header"
-            onClick={() => updateSort("owner")}
-            sortKey="owner"
+            onClick={() => updateSort(FetchGroupKey.Owner)}
+            sortKey={FetchGroupKey.Owner}
           >
             {columnLabels[MachineColumns.OWNER]}
           </TableHeader>
@@ -723,8 +721,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="pool-header"
-            onClick={() => updateSort("pool")}
-            sortKey="pool"
+            onClick={() => updateSort(FetchGroupKey.Pool)}
+            sortKey={FetchGroupKey.Pool}
           >
             {columnLabels[MachineColumns.POOL]}
           </TableHeader>
@@ -741,8 +739,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="zone-header"
-            onClick={() => updateSort("zone")}
-            sortKey="zone"
+            onClick={() => updateSort(FetchGroupKey.Zone)}
+            sortKey={FetchGroupKey.Zone}
           >
             {columnLabels[MachineColumns.ZONE]}
           </TableHeader>
@@ -759,8 +757,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="fabric-header"
-            onClick={() => updateSort("fabric")}
-            sortKey="fabric"
+            // TODO: enable sorting by "fabric" when the API supports it:
+            // https://github.com/canonical/app-tribe/issues/1268
           >
             {columnLabels[MachineColumns.FABRIC]}
           </TableHeader>
@@ -777,8 +775,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="cores-header"
-            onClick={() => updateSort("cpu_count")}
-            sortKey="cpu_count"
+            onClick={() => updateSort(FetchGroupKey.CpuCount)}
+            sortKey={FetchGroupKey.CpuCount}
           >
             {columnLabels[MachineColumns.CPU]}
           </TableHeader>
@@ -794,8 +792,8 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="memory-header"
-          onClick={() => updateSort("memory")}
-          sortKey="memory"
+          onClick={() => updateSort(FetchGroupKey.Memory)}
+          sortKey={FetchGroupKey.Memory}
         >
           {columnLabels[MachineColumns.MEMORY]}
         </TableHeader>
@@ -809,8 +807,8 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="disks-header"
-          onClick={() => updateSort("physical_disk_count")}
-          sortKey="physical_disk_count"
+          // TODO: enable sorting by "physical_disk_count" when the API supports it:
+          // https://github.com/canonical/app-tribe/issues/1268
         >
           {columnLabels[MachineColumns.DISKS]}
         </TableHeader>
@@ -824,8 +822,8 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="storage-header"
-          onClick={() => updateSort("storage")}
-          sortKey="storage"
+          // TODO: enable sorting by "storage" when the API supports it:
+          // https://github.com/canonical/app-tribe/issues/1268
         >
           {columnLabels[MachineColumns.STORAGE]}
         </TableHeader>

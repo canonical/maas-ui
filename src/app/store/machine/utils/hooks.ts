@@ -5,6 +5,8 @@ import { nanoid } from "@reduxjs/toolkit";
 import fastDeepEqual from "fast-deep-equal";
 import { useDispatch, useSelector } from "react-redux";
 
+import type { FetchSortDirection } from "../types/actions";
+
 import { useCanEdit } from "app/base/hooks";
 import type { APIError } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
@@ -88,7 +90,9 @@ export const useFetchMachineCount = (
  */
 export const useFetchMachines = (
   filters?: FetchFilters | null,
-  grouping?: FetchGroupKey | null
+  grouping?: FetchGroupKey | null,
+  sortKey?: FetchGroupKey | null,
+  sortDirection?: FetchSortDirection | null
 ): {
   machines: Machine[];
   machinesErrors: APIError;
@@ -97,6 +101,8 @@ export const useFetchMachines = (
   const previousCallId = usePrevious(callId);
   const previousFilters = usePrevious(filters, false);
   const previousGrouping = usePrevious(grouping, false);
+  const previousSortDirection = usePrevious(sortDirection, false);
+  const previousSortKey = usePrevious(sortKey, false);
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId)
@@ -114,27 +120,50 @@ export const useFetchMachines = (
     if (
       !fastDeepEqual(filters || {}, previousFilters || {}) ||
       !callId ||
-      grouping !== previousGrouping
+      grouping !== previousGrouping ||
+      sortKey !== previousSortKey ||
+      sortDirection !== previousSortDirection
     ) {
       setCallId(nanoid());
     }
-  }, [callId, dispatch, filters, grouping, previousFilters, previousGrouping]);
+  }, [
+    callId,
+    dispatch,
+    filters,
+    grouping,
+    previousFilters,
+    previousGrouping,
+    previousSortDirection,
+    previousSortKey,
+    sortKey,
+    sortDirection,
+  ]);
 
   useEffect(() => {
     if (callId && callId !== previousCallId) {
       dispatch(
         machineActions.fetch(
           callId,
-          filters || grouping
+          filters || grouping || sortKey || sortDirection
             ? {
                 filter: filters ?? null,
                 group_key: grouping ?? null,
+                sort_direction: sortDirection ?? null,
+                sort_key: sortKey ?? null,
               }
             : null
         )
       );
     }
-  }, [callId, dispatch, filters, grouping, previousCallId]);
+  }, [
+    callId,
+    dispatch,
+    filters,
+    grouping,
+    previousCallId,
+    sortKey,
+    sortDirection,
+  ]);
 
   return { machines, machinesErrors };
 };

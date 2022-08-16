@@ -1,15 +1,19 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import type { ValueOf } from "@canonical/react-components";
 import cloneDeep from "clone-deep";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
+import { FetchSortDirection } from "../../../store/machine/types/actions";
+
 import ErrorsNotification from "./ErrorsNotification";
 import MachineListControls from "./MachineListControls";
-import MachineListTable from "./MachineListTable";
+import MachineListTable, { DEFAULTS } from "./MachineListTable";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
+import { SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { FetchFilters } from "app/store/machine/types";
@@ -36,6 +40,19 @@ const parseFilters = (filters: Filters): FetchFilters => {
   return fetchFilters;
 };
 
+const mapSortDirection = (
+  sortDirection: ValueOf<typeof SortDirection>
+): FetchSortDirection | null => {
+  switch (sortDirection) {
+    case SortDirection.ASCENDING:
+      return FetchSortDirection.Ascending;
+    case SortDirection.DESCENDING:
+      return FetchSortDirection.Descending;
+    default:
+      return null;
+  }
+};
+
 const MachineList = ({
   headerFormOpen,
   searchFilter,
@@ -45,6 +62,12 @@ const MachineList = ({
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
+  const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
+    DEFAULTS.sortKey
+  );
+  const [sortDirection, setSortDirection] = useState<
+    ValueOf<typeof SortDirection>
+  >(DEFAULTS.sortDirection);
   const filters = FilterMachines.getCurrentFilters(searchFilter);
   const [grouping, setGrouping] = useStorageState<FetchGroupKey | null>(
     localStorage,
@@ -53,7 +76,9 @@ const MachineList = ({
   );
   const { machines, machinesErrors } = useFetchMachines(
     parseFilters(filters),
-    grouping
+    grouping,
+    sortKey,
+    mapSortDirection(sortDirection)
   );
   const [hiddenGroups, setHiddenGroups] = useStorageState<string[]>(
     localStorage,
@@ -98,6 +123,10 @@ const MachineList = ({
         selectedIDs={selectedIDs}
         setHiddenGroups={setHiddenGroups}
         setSearchFilter={setSearchFilter}
+        setSortDirection={setSortDirection}
+        setSortKey={setSortKey}
+        sortDirection={sortDirection}
+        sortKey={sortKey}
       />
     </>
   );

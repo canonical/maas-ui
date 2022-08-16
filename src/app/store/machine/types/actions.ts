@@ -420,8 +420,8 @@ export type FetchParams = {
   group_collapsed?: string[];
   page_size?: number;
   page_number?: number;
-  sort_key?: string | null;
-  sort_direction?: FetchSortDirection;
+  sort_key?: FetchGroupKey | null;
+  sort_direction?: FetchSortDirection | null;
 };
 
 export type GetSummaryXmlParams = {

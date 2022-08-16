@@ -6,6 +6,7 @@ import configureStore from "redux-mock-store";
 
 import { MachineListTable } from "./MachineListTable";
 
+import { SortDirection } from "app/base/types";
 import type { Machine } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -230,6 +231,10 @@ describe("MachineListTable", () => {
               machines={machines}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -254,6 +259,10 @@ describe("MachineListTable", () => {
               machines={machines}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -283,6 +292,10 @@ describe("MachineListTable", () => {
               machines={machines}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -306,6 +319,8 @@ describe("MachineListTable", () => {
   });
 
   it("updates sort on header click", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -319,39 +334,27 @@ describe("MachineListTable", () => {
               machines={machines}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    // First machine has more cores than second machine
-    const [firstMachine, secondMachine] = [machines[0], machines[1]];
-
-    expect(
-      wrapper.find('[data-testid="cores-header"]').find("i").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
-    ).toEqual(firstMachine.fqdn);
     // Click the cores table header
     wrapper
       .find('[data-testid="cores-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper.find('[data-testid="cores-header"]').find("i").exists()
-    ).toBe(true);
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("RowCheckbox")
-        .at(0)
-        .text()
-    ).toEqual(secondMachine.fqdn);
+    expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.CpuCount);
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
   });
 
-  it("updates sort direction on multiple header clicks", () => {
+  it("clears the sort when the same header is clicked and is ascending", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -365,51 +368,124 @@ describe("MachineListTable", () => {
               machines={machines}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.ASCENDING}
+              sortKey={FetchGroupKey.CpuCount}
             />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    const [firstMachine, secondMachine] = [machines[0], machines[1]];
-
-    // Click the status table header
+    // Click the cores table header
     wrapper
-      .find('[data-testid="status-header"]')
+      .find('[data-testid="cores-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper.find('[data-testid="status-header"]').find("i").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find('[data-testid="status-header"]').find("i").props().className
-    ).toBe("p-icon--chevron-down");
-    expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
-    ).toEqual(firstMachine.fqdn);
+    expect(setSortKey).toHaveBeenCalledWith(null);
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.NONE);
+  });
 
-    // Click the status table header again to reverse sort order
+  it("updates the sort when the same header is clicked and is descending", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              hiddenGroups={[]}
+              machines={machines}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.CpuCount}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click the cores table header
     wrapper
-      .find('[data-testid="status-header"]')
+      .find('[data-testid="cores-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper.find('[data-testid="status-header"]').find("i").props().className
-    ).toBe("p-icon--chevron-up");
-    expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
-    ).toEqual(secondMachine.fqdn);
+    expect(setSortKey).not.toHaveBeenCalled();
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.ASCENDING);
+  });
 
-    // Click the FQDN table header again to return to no sort
+  it("updates the sort when the same header is clicked and direction is not set", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              hiddenGroups={[]}
+              machines={machines}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.NONE}
+              sortKey={FetchGroupKey.CpuCount}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click the cores table header
     wrapper
-      .find('[data-testid="status-header"]')
+      .find('[data-testid="cores-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper.find('[data-testid="status-header"]').find("i").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
-    ).toEqual(firstMachine.fqdn);
+    expect(setSortKey).not.toHaveBeenCalled();
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.ASCENDING);
+  });
+
+  it("updates the sort when a different header is clicked", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              filter=""
+              hiddenGroups={[]}
+              machines={machines}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.NONE}
+              sortKey={FetchGroupKey.CpuCount}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click the cores table header
+    wrapper
+      .find('[data-testid="power-header"]')
+      .find("button")
+      .simulate("click");
+    expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.PowerState);
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
   });
 
   it("displays correct selected string in group header", () => {
@@ -429,6 +505,10 @@ describe("MachineListTable", () => {
               selectedIDs={[machines[0].system_id]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -459,6 +539,10 @@ describe("MachineListTable", () => {
                 selectedIDs={["abc123"]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -486,6 +570,10 @@ describe("MachineListTable", () => {
                 selectedIDs={["abc123", "ghi789"]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -519,6 +607,10 @@ describe("MachineListTable", () => {
                 selectedIDs={["abc123", "def456", "ghi789"]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -551,6 +643,10 @@ describe("MachineListTable", () => {
                 machines={machines}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -589,6 +685,10 @@ describe("MachineListTable", () => {
                 selectedIDs={["abc123"]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -627,6 +727,10 @@ describe("MachineListTable", () => {
                 selectedIDs={[]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -665,6 +769,10 @@ describe("MachineListTable", () => {
                 selectedIDs={["abc123", "def456", "ghi789"]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -703,6 +811,10 @@ describe("MachineListTable", () => {
                 selectedIDs={["abc123"]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -732,6 +844,10 @@ describe("MachineListTable", () => {
                 selectedIDs={[]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -770,6 +886,10 @@ describe("MachineListTable", () => {
                 selectedIDs={["abc123", "def456", "ghi789"]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -807,6 +927,10 @@ describe("MachineListTable", () => {
                 machines={[]}
                 setHiddenGroups={jest.fn()}
                 setSearchFilter={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -841,6 +965,10 @@ describe("MachineListTable", () => {
               selectedIDs={["abc123"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -871,6 +999,10 @@ describe("MachineListTable", () => {
               selectedIDs={["abc123"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={setSearchFilter}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -902,6 +1034,10 @@ describe("MachineListTable", () => {
               selectedIDs={["abc123"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={setSearchFilter}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -933,6 +1069,10 @@ describe("MachineListTable", () => {
               selectedIDs={["abc123", "def456", "ghi789"]}
               setHiddenGroups={jest.fn()}
               setSearchFilter={setSearchFilter}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -955,7 +1095,14 @@ describe("MachineListTable", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineListTable machines={machines} showActions={false} />
+            <MachineListTable
+              machines={machines}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              showActions={false}
+              sortDirection="none"
+              sortKey={null}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -983,6 +1130,10 @@ describe("MachineListTable", () => {
               <MachineListTable
                 hiddenColumns={["power", "zone"]}
                 machines={machines}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -1008,7 +1159,11 @@ describe("MachineListTable", () => {
               <MachineListTable
                 hiddenColumns={["fqdn"]}
                 machines={machines}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
                 showActions
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -1030,7 +1185,11 @@ describe("MachineListTable", () => {
               <MachineListTable
                 hiddenColumns={["fqdn"]}
                 machines={machines}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
                 showActions={false}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
