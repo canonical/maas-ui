@@ -80,12 +80,6 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           </span>
         </div>
       )}
-      <div>
-        <div className="u-text--muted">Domain</div>
-        <span data-testid="domain" title={node.domain?.name}>
-          {node.domain?.name}
-        </span>
-      </div>
       {isMachine && (
         <div>
           <div className="u-text--muted">{Labels.Host}</div>
