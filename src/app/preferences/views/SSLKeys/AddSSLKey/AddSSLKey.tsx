@@ -14,6 +14,8 @@ import sslkeySelectors from "app/store/sslkey/selectors";
 
 export enum Label {
   Title = "Add SSL key",
+  KeyField = "SSL key",
+  SubmitLabel = "Save SSL key",
 }
 
 // This can be removed when the autoComplete prop is supported:
@@ -40,6 +42,7 @@ export const AddSSLKey = (): JSX.Element => {
   return (
     <FormCard title={Label.Title}>
       <FormikForm
+        aria-label={Label.Title}
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}
@@ -55,7 +58,7 @@ export const AddSSLKey = (): JSX.Element => {
         saved={saved}
         savedRedirect={urls.preferences.sslKeys.index}
         saving={saving}
-        submitLabel="Save SSL key"
+        submitLabel={Label.SubmitLabel}
         validationSchema={SSLKeySchema}
       >
         <Row>
@@ -66,7 +69,7 @@ export const AddSSLKey = (): JSX.Element => {
               autoCorrect="off"
               className="ssl-key-form-fields__key p-text--code"
               component={ProxyTextarea}
-              label="SSL key"
+              label={Label.KeyField}
               name="key"
               spellCheck="false"
             />
