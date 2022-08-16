@@ -15,6 +15,8 @@ import type { Token } from "app/store/token/types";
 export enum Label {
   AddTitle = "Generate MAAS API key",
   EditTitle = "Edit MAAS API key",
+  AddFormLabel = "Generate MAAS API key form",
+  EditFormLabel = "Edit MAAS API key form",
   AddNameLabel = "API key name (optional)",
   EditNameLabel = "API key name",
   AddSubmit = "Generate API key",
@@ -53,7 +55,7 @@ export const APIKeyForm = ({ token }: Props): JSX.Element => {
     <FormCard title={title}>
       <FormikForm
         allowAllEmpty={!editing}
-        aria-label={title}
+        aria-label={editing ? Label.EditFormLabel : Label.AddFormLabel}
         cleanup={tokenActions.cleanup}
         errors={errors}
         initialValues={{

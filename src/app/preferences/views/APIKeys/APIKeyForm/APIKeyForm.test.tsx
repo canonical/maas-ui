@@ -45,7 +45,7 @@ describe("APIKeyForm", () => {
       </MemoryRouter>,
       { state }
     );
-    expect(screen.getByRole("form", { name: APIKeyFormLabels.AddTitle }));
+    expect(screen.getByRole("form", { name: APIKeyFormLabels.AddFormLabel }));
   });
 
   it("can create an API key", async () => {

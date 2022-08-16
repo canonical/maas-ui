@@ -84,7 +84,9 @@ describe("APIKeyEdit", () => {
       </MemoryRouter>,
       { state }
     );
-    const form = screen.getByRole("form", { name: APIKeyFormLabels.EditTitle });
+    const form = screen.getByRole("form", {
+      name: APIKeyFormLabels.EditFormLabel,
+    });
     expect(form).toBeInTheDocument();
     expect(
       within(form).getByRole("textbox", {

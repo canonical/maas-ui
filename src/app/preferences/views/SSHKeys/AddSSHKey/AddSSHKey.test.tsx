@@ -36,7 +36,7 @@ describe("AddSSHKey", () => {
       { state }
     );
     expect(
-      screen.getByRole("form", { name: AddSSHKeyLabels.Title })
+      screen.getByRole("form", { name: AddSSHKeyLabels.FormLabel })
     ).toBeInTheDocument();
   });
 

@@ -15,6 +15,7 @@ import sslkeySelectors from "app/store/sslkey/selectors";
 
 export enum Label {
   Title = "Add SSL key",
+  FormLabel = "Add SSL key form",
   KeyField = "SSL key",
   SubmitLabel = "Save SSL key",
 }
@@ -43,7 +44,7 @@ export const AddSSLKey = (): JSX.Element => {
   return (
     <FormCard title={Label.Title}>
       <FormikForm
-        aria-label={Label.Title}
+        aria-label={Label.FormLabel}
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}

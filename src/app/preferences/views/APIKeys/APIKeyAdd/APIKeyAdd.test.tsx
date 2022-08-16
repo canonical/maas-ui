@@ -27,7 +27,7 @@ describe("APIKeyAdd", () => {
       { state }
     );
     expect(
-      screen.getByRole("form", { name: APIKeyFormLabels.AddTitle })
+      screen.getByRole("form", { name: APIKeyFormLabels.AddFormLabel })
     ).toBeInTheDocument();
   });
 });

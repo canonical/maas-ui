@@ -40,7 +40,7 @@ describe("AddSSLKey", () => {
       </MemoryRouter>,
       { state }
     );
-    expect(screen.getByRole("form", { name: AddSSLKeyLabels.Title }));
+    expect(screen.getByRole("form", { name: AddSSLKeyLabels.FormLabel }));
   });
 
   it("cleans up when unmounting", async () => {

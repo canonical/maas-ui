@@ -8,6 +8,7 @@ import urls from "app/base/urls";
 
 export enum Label {
   Title = "Add SSH key",
+  FormLabel = "Add SSH key form",
 }
 
 const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
@@ -19,7 +20,7 @@ export const AddSSHKey = (): JSX.Element => {
   return (
     <FormCard title={Label.Title}>
       <SSHKeyForm
-        aria-label={Label.Title}
+        aria-label={Label.FormLabel}
         cols={TOTAL - SIDEBAR - CARD_TITLE}
         onCancel={() => navigate({ pathname: urls.preferences.sshKeys.index })}
         onSaveAnalytics={{
