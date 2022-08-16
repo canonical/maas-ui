@@ -1,10 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
-import DetailsCard from "./DetailsCard";
+import DetailsCard, { Labels as DetailsCardLabels } from "./DetailsCard";
 
 import urls from "app/base/urls";
 import { PowerTypeNames } from "app/store/general/constants";
@@ -23,8 +21,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 let state: RootState;
 beforeEach(() => {
@@ -44,26 +41,6 @@ beforeEach(() => {
   });
 });
 
-it("renders the domain", () => {
-  const machine = machineDetailsFactory({ domain: { id: 1, name: "maas" } });
-  state.machine.items = [machine];
-
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
-
-  expect(wrapper.find("[data-testid='domain']").text()).toEqual("maas");
-});
-
 it("renders a link to zone configuration with edit permissions", () => {
   const machine = machineDetailsFactory({
     permissions: ["edit"],
@@ -71,21 +48,21 @@ it("renders a link to zone configuration with edit permissions", () => {
   });
   state.machine.items = [machine];
 
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithMockStore(
+    <MemoryRouter
+      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+    >
+      <CompatRouter>
+        <DetailsCard node={machine} />
+      </CompatRouter>
+    </MemoryRouter>,
+    { state }
   );
 
-  expect(wrapper.find("[data-testid='zone'] Link").text()).toEqual("Zone ›");
-  expect(wrapper.find("[data-testid='zone'] span").text()).toEqual("danger");
+  expect(
+    screen.getByRole("link", { name: DetailsCardLabels.ZoneLink })
+  ).toBeInTheDocument();
+  expect(screen.getByText("danger")).toBeInTheDocument();
 });
 
 it("renders a zone label without edit permissions", () => {
@@ -95,23 +72,43 @@ it("renders a zone label without edit permissions", () => {
   });
   state.machine.items = [machine];
 
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithMockStore(
+    <MemoryRouter
+      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+    >
+      <CompatRouter>
+        <DetailsCard node={machine} />
+      </CompatRouter>
+    </MemoryRouter>,
+    { state }
   );
 
-  expect(wrapper.find("[data-testid='zone'] Link").exists()).toBe(false);
   expect(
-    wrapper.find("[data-testid='zone']").childAt(1).find("span").text()
-  ).toEqual("danger");
+    screen.queryByRole("link", { name: DetailsCardLabels.ZoneLink })
+  ).not.toBeInTheDocument();
+  expect(screen.getByText(DetailsCardLabels.Zone)).toBeInTheDocument();
+  expect(screen.getByText("danger")).toBeInTheDocument();
+});
+
+it("renders the node's BIOS boot mode", () => {
+  const machine = machineDetailsFactory({
+    bios_boot_method: "uefi",
+  });
+  state.machine.items = [machine];
+
+  renderWithMockStore(
+    <MemoryRouter
+      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+    >
+      <CompatRouter>
+        <DetailsCard node={machine} />
+      </CompatRouter>
+    </MemoryRouter>,
+    { state }
+  );
+
+  expect(screen.getByText(DetailsCardLabels.BiosBootMode)).toBeInTheDocument();
+  expect(screen.getByText("UEFI")).toBeInTheDocument();
 });
 
 it("renders a formatted power type", () => {
@@ -125,20 +122,21 @@ it("renders a formatted power type", () => {
   state.machine.items = [machine];
   state.general.powerTypes.data = [powerType];
 
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+  renderWithMockStore(
+    <MemoryRouter
+      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+    >
+      <CompatRouter>
+        <DetailsCard node={machine} />
+      </CompatRouter>
+    </MemoryRouter>,
+    { state }
   );
 
-  expect(wrapper.find("[data-testid='power-type']").text()).toEqual("LXD");
+  expect(
+    screen.getByRole("link", { name: DetailsCardLabels.PowerTypeLink })
+  ).toBeInTheDocument();
+  expect(screen.getByText("LXD")).toBeInTheDocument();
 });
 
 it("shows a spinner if tags are not loaded", () => {
@@ -152,20 +150,19 @@ it("shows a spinner if tags are not loaded", () => {
       loaded: false,
     }),
   });
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+
+  renderWithMockStore(
+    <MemoryRouter
+      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+    >
+      <CompatRouter>
+        <DetailsCard node={machine} />
+      </CompatRouter>
+    </MemoryRouter>,
+    { state }
   );
 
-  expect(wrapper.find("[data-testid='loading-tags']").exists()).toBe(true);
+  expect(screen.getByText("Loading")).toBeInTheDocument();
 });
 
 it("renders a list of tags once loaded", () => {
@@ -184,22 +181,19 @@ it("renders a list of tags once loaded", () => {
       loaded: true,
     }),
   });
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
+
+  renderWithMockStore(
+    <MemoryRouter
+      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+    >
+      <CompatRouter>
+        <DetailsCard node={machine} />
+      </CompatRouter>
+    </MemoryRouter>,
+    { state }
   );
 
-  expect(wrapper.find("[data-testid='machine-tags']").text()).toEqual(
-    "lxd, test, virtual"
-  );
+  expect(screen.getByText("lxd, test, virtual")).toBeInTheDocument();
 });
 
 describe("node is a controller", () => {
@@ -207,20 +201,20 @@ describe("node is a controller", () => {
     const controller = controllerDetailsFactory();
     state.controller.items = [controller];
 
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DetailsCard node={controller} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter>
+        <CompatRouter>
+          <DetailsCard node={controller} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='owner']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='host']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='resource-pool']").exists()).toBe(false);
+    expect(screen.queryByText(DetailsCardLabels.Owner)).not.toBeInTheDocument();
+    expect(screen.queryByText(DetailsCardLabels.Host)).not.toBeInTheDocument();
+    expect(
+      screen.queryByText(DetailsCardLabels.PoolLink)
+    ).not.toBeInTheDocument();
   });
 });
 
@@ -229,20 +223,19 @@ describe("node is a machine", () => {
     const machine = machineDetailsFactory({ owner: "admin" });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DetailsCard node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <DetailsCard node={machine} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='owner']").text()).toEqual("admin");
+    expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
+    expect(screen.getByText("admin")).toBeInTheDocument();
   });
 
   it("renders host details for LXD machines", () => {
@@ -259,22 +252,21 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
     state.pod.items = [pod];
 
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DetailsCard node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <DetailsCard node={machine} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='host']").text()).toEqual("lxd-pod ›");
-    expect(wrapper.find("[data-testid='host'] Link").prop("to")).toBe(
-      urls.kvm.lxd.single.index({ id: pod.id })
+    expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "lxd-pod ›" })).toHaveProperty(
+      "href",
+      `http://example.com${urls.kvm.lxd.single.index({ id: pod.id })}`
     );
   });
 
@@ -292,22 +284,21 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
     state.pod.items = [pod];
 
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DetailsCard node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <DetailsCard node={machine} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='host']").text()).toEqual("virsh-pod ›");
-    expect(wrapper.find("[data-testid='host'] Link").prop("to")).toBe(
-      urls.kvm.virsh.details.index({ id: pod.id })
+    expect(screen.getByText(DetailsCardLabels.Host)).toBeInTheDocument();
+    expect(screen.getByRole("link", { name: "virsh-pod ›" })).toHaveProperty(
+      "href",
+      `http://example.com${urls.kvm.virsh.details.index({ id: pod.id })}`
     );
   });
 
@@ -318,25 +309,21 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DetailsCard node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <DetailsCard node={machine} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='resource-pool'] Link").text()).toEqual(
-      "Resource pool ›"
-    );
-    expect(wrapper.find("[data-testid='resource-pool'] span").text()).toEqual(
-      "swimming"
-    );
+    expect(
+      screen.getByRole("link", { name: DetailsCardLabels.PoolLink })
+    ).toBeInTheDocument();
+    expect(screen.getByText("swimming")).toBeInTheDocument();
   });
 
   it("renders a resource pool label without edit permissions", () => {
@@ -346,28 +333,21 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DetailsCard node={machine} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <DetailsCard node={machine} />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='resource-pool'] Link").exists()).toBe(
-      false
-    );
     expect(
-      wrapper
-        .find("[data-testid='resource-pool']")
-        .childAt(1)
-        .find("span")
-        .text()
-    ).toEqual("swimming");
+      screen.queryByRole("link", { name: DetailsCardLabels.PoolLink })
+    ).not.toBeInTheDocument();
+    expect(screen.getByText(DetailsCardLabels.Pool)).toBeInTheDocument();
+    expect(screen.getByText("swimming")).toBeInTheDocument();
   });
 });
