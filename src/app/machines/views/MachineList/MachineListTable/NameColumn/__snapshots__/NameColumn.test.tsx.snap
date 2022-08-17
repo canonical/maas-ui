@@ -2,16 +2,18 @@
 
 exports[`NameColumn renders 1`] = `
 <NameColumn
-  handleCheckbox={[MockFunction]}
-  selected={Array []}
+  callId="abc123"
+  groupKey="admin1"
+  showActions={true}
   systemId="abc123"
 >
   <DoubleRow
     data-testid="name-column"
     primary={
-      <RowCheckbox
-        handleRowCheckbox={[MockFunction]}
-        inputLabel={
+      <MachineCheckbox
+        callId="abc123"
+        groupKey="admin1"
+        label={
           <Link
             title="test-machine-1.maas"
             to="/machine/abc123"
@@ -27,8 +29,7 @@ exports[`NameColumn renders 1`] = `
             </small>
           </Link>
         }
-        item="abc123"
-        items={Array []}
+        systemId="abc123"
       />
     }
     secondary={<NonBreakingSpace />}
@@ -47,9 +48,10 @@ exports[`NameColumn renders 1`] = `
             className="p-double-row__primary-row-text u-truncate"
             data-testid="primary"
           >
-            <RowCheckbox
-              handleRowCheckbox={[MockFunction]}
-              inputLabel={
+            <MachineCheckbox
+              callId="abc123"
+              groupKey="admin1"
+              label={
                 <Link
                   title="test-machine-1.maas"
                   to="/machine/abc123"
@@ -65,14 +67,11 @@ exports[`NameColumn renders 1`] = `
                   </small>
                 </Link>
               }
-              item="abc123"
-              items={Array []}
+              systemId="abc123"
             >
-              <Input
-                checked={false}
-                className="keep-label-opacity"
-                id="mock-redux-js-nanoid-1"
-                label={
+              <TableCheckbox
+                callId="abc123"
+                inputLabel={
                   <Link
                     title="test-machine-1.maas"
                     to="/machine/abc123"
@@ -88,59 +87,56 @@ exports[`NameColumn renders 1`] = `
                     </small>
                   </Link>
                 }
-                labelClassName="u-no-margin--bottom u-no-padding--top"
-                onChange={[Function]}
-                type="checkbox"
-                wrapperClassName="u-no-margin--bottom u-nudge--checkbox"
+                isChecked="false"
+                isDisabled={false}
+                onGenerateSelected={[Function]}
               >
-                <Field
-                  className="u-no-margin--bottom u-nudge--checkbox"
-                  forId="mock-redux-js-nanoid-1"
-                  helpId="mock-nanoid-2"
-                  isTickElement={true}
-                  label=""
+                <Input
+                  aria-checked="false"
+                  checked={false}
+                  disabled={false}
+                  label={
+                    <Link
+                      title="test-machine-1.maas"
+                      to="/machine/abc123"
+                    >
+                      <strong
+                        data-testid="hostname"
+                      >
+                        koala
+                      </strong>
+                      <small>
+                        .
+                        example
+                      </small>
+                    </Link>
+                  }
                   labelClassName="u-no-margin--bottom u-no-padding--top"
-                  validationId="mock-nanoid-1"
+                  onChange={[Function]}
+                  type="checkbox"
+                  wrapperClassName="u-no-margin--bottom u-nudge--checkbox p-checkbox--non-disabled-label"
                 >
-                  <div
-                    className="p-form__group p-form-validation u-no-margin--bottom u-nudge--checkbox"
+                  <Field
+                    className="u-no-margin--bottom u-nudge--checkbox p-checkbox--non-disabled-label"
+                    helpId="mock-nanoid-2"
+                    isTickElement={true}
+                    label=""
+                    labelClassName="u-no-margin--bottom u-no-padding--top"
+                    validationId="mock-nanoid-1"
                   >
                     <div
-                      className="p-form__control u-clearfix"
+                      className="p-form__group p-form-validation u-no-margin--bottom u-nudge--checkbox p-checkbox--non-disabled-label"
                     >
-                      <CheckboxInput
-                        aria-describedby={null}
-                        aria-errormessage={null}
-                        aria-invalid={false}
-                        checked={false}
-                        id="mock-redux-js-nanoid-1"
-                        label={
-                          <Link
-                            title="test-machine-1.maas"
-                            to="/machine/abc123"
-                          >
-                            <strong
-                              data-testid="hostname"
-                            >
-                              koala
-                            </strong>
-                            <small>
-                              .
-                              example
-                            </small>
-                          </Link>
-                        }
-                        labelClassName="u-no-margin--bottom u-no-padding--top"
-                        onChange={[Function]}
+                      <div
+                        className="p-form__control u-clearfix"
                       >
-                        <CheckableInput
+                        <CheckboxInput
+                          aria-checked="false"
                           aria-describedby={null}
                           aria-errormessage={null}
                           aria-invalid={false}
                           checked={false}
-                          id="mock-redux-js-nanoid-1"
-                          indeterminate={false}
-                          inputType="checkbox"
+                          disabled={false}
                           label={
                             <Link
                               title="test-machine-1.maas"
@@ -160,53 +156,83 @@ exports[`NameColumn renders 1`] = `
                           labelClassName="u-no-margin--bottom u-no-padding--top"
                           onChange={[Function]}
                         >
-                          <label
-                            className="u-no-margin--bottom u-no-padding--top p-checkbox"
-                          >
-                            <input
-                              aria-describedby={null}
-                              aria-errormessage={null}
-                              aria-invalid={false}
-                              aria-labelledby="mock-nanoid-3"
-                              checked={false}
-                              className="p-checkbox__input"
-                              id="mock-redux-js-nanoid-1"
-                              onChange={[Function]}
-                              type="checkbox"
-                            />
-                            <span
-                              className="p-checkbox__label"
-                              id="mock-nanoid-3"
-                            >
+                          <CheckableInput
+                            aria-checked="false"
+                            aria-describedby={null}
+                            aria-errormessage={null}
+                            aria-invalid={false}
+                            checked={false}
+                            disabled={false}
+                            indeterminate={false}
+                            inputType="checkbox"
+                            label={
                               <Link
                                 title="test-machine-1.maas"
                                 to="/machine/abc123"
                               >
-                                <a
-                                  href="/machine/abc123"
-                                  onClick={[Function]}
-                                  title="test-machine-1.maas"
+                                <strong
+                                  data-testid="hostname"
                                 >
-                                  <strong
-                                    data-testid="hostname"
-                                  >
-                                    koala
-                                  </strong>
-                                  <small>
-                                    .
-                                    example
-                                  </small>
-                                </a>
+                                  koala
+                                </strong>
+                                <small>
+                                  .
+                                  example
+                                </small>
                               </Link>
-                            </span>
-                          </label>
-                        </CheckableInput>
-                      </CheckboxInput>
+                            }
+                            labelClassName="u-no-margin--bottom u-no-padding--top"
+                            onChange={[Function]}
+                          >
+                            <label
+                              className="u-no-margin--bottom u-no-padding--top p-checkbox"
+                            >
+                              <input
+                                aria-checked="false"
+                                aria-describedby={null}
+                                aria-errormessage={null}
+                                aria-invalid={false}
+                                aria-labelledby="mock-nanoid-3"
+                                checked={false}
+                                className="p-checkbox__input"
+                                disabled={false}
+                                onChange={[Function]}
+                                type="checkbox"
+                              />
+                              <span
+                                className="p-checkbox__label"
+                                id="mock-nanoid-3"
+                              >
+                                <Link
+                                  title="test-machine-1.maas"
+                                  to="/machine/abc123"
+                                >
+                                  <a
+                                    href="/machine/abc123"
+                                    onClick={[Function]}
+                                    title="test-machine-1.maas"
+                                  >
+                                    <strong
+                                      data-testid="hostname"
+                                    >
+                                      koala
+                                    </strong>
+                                    <small>
+                                      .
+                                      example
+                                    </small>
+                                  </a>
+                                </Link>
+                              </span>
+                            </label>
+                          </CheckableInput>
+                        </CheckboxInput>
+                      </div>
                     </div>
-                  </div>
-                </Field>
-              </Input>
-            </RowCheckbox>
+                  </Field>
+                </Input>
+              </TableCheckbox>
+            </MachineCheckbox>
           </div>
         </div>
         <div

@@ -616,6 +616,29 @@ describe("machine selectors", () => {
     expect(machine.list(state, "123456")).toStrictEqual(machines);
   });
 
+  it("can get a group in a list", () => {
+    const groups = [
+      machineStateListGroupFactory({
+        name: "admin1",
+      }),
+      machineStateListGroupFactory({
+        name: "admin2",
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          "123456": machineStateListFactory({
+            groups,
+          }),
+        },
+      }),
+    });
+    expect(machine.listGroup(state, "123456", "admin2")).toStrictEqual(
+      groups[1]
+    );
+  });
+
   it("can get the count for a list", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({

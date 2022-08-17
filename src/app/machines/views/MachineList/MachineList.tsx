@@ -29,7 +29,7 @@ const PAGE_SIZE = DEFAULTS.pageSize;
 
 // TODO: this should construct the full set of filters once the API has been
 // updated: https://github.com/canonical/app-tribe/issues/1125
-const parseFilters = (filters: Filters): FetchFilters => {
+export const parseFilters = (filters: Filters): FetchFilters => {
   const fetchFilters = cloneDeep(filters);
   // Remove the in:selected filter as this is done client side.
   delete fetchFilters.in;

@@ -8,13 +8,14 @@ import type {
 } from "./types";
 
 import { ACTIONS } from "app/store/machine/slice";
-import { MachineMeta } from "app/store/machine/types";
 import type {
   Machine,
   MachineState,
   MachineStatus,
   MachineStatuses,
+  FilterGroupOptionType,
 } from "app/store/machine/types";
+import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
@@ -456,7 +457,31 @@ const listCount = createSelector(
     machineState,
     (_state: RootState, callId: string | null | undefined) => callId,
   ],
-  (machineState, callId) => getList(machineState, callId)?.count || null
+  (machineState, callId) => getList(machineState, callId)?.count ?? null
+);
+
+/**
+ * Get the count for a machine list request with a given callId.
+ */
+const listGroup = createSelector(
+  [
+    machineState,
+    (
+      _state: RootState,
+      callId: string | null | undefined,
+      name: FilterGroupOptionType | null | undefined
+    ) => ({
+      callId,
+      name,
+    }),
+  ],
+  (machineState, { callId, name }) =>
+    (callId &&
+      name &&
+      getList(machineState, callId)?.groups?.find(
+        (group) => group.name === name
+      )) ||
+    null
 );
 
 /**
