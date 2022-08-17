@@ -5,6 +5,13 @@ import FormikField from "app/base/components/FormikField";
 import { MIN_TTL } from "app/store/domain/constants";
 import { RecordType } from "app/store/domain/types";
 
+export enum Labels {
+  Name = "Name",
+  Type = "Record type",
+  Data = "Data",
+  Ttl = "TTL",
+}
+
 const recordTypeOptions = [
   { value: "", label: "Type", disabled: true },
   ...Object.values(RecordType).map((value) => {

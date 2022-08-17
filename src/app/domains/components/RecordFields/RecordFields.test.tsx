@@ -1,7 +1,7 @@
 import { screen, render } from "@testing-library/react";
 import { Formik } from "formik";
 
-import RecordFields from "./RecordFields";
+import RecordFields, { Labels as RecordFieldsLabels } from "./RecordFields";
 
 import { RecordType } from "app/store/domain/types";
 
@@ -12,6 +12,8 @@ describe("RecordFields", () => {
         <RecordFields editing />
       </Formik>
     );
-    expect(screen.getByRole("combobox")).toBeDisabled();
+    expect(
+      screen.getByRole("combobox", { name: RecordFieldsLabels.Type })
+    ).toBeDisabled();
   });
 });
