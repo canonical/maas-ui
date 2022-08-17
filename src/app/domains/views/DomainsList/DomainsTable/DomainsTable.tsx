@@ -22,6 +22,7 @@ export enum Labels {
   ConfirmSetDefault = "Set default",
   TableAction = "Table action",
   ContextualMenu = "Actions",
+  TableLable = "Domains table",
 }
 
 const DomainsTable = (): JSX.Element => {
@@ -141,6 +142,7 @@ const DomainsTable = (): JSX.Element => {
 
   return (
     <MainTable
+      aria-label={Labels.TableLable}
       className="p-table-expanding--light"
       data-testid="domains-table"
       defaultSort="name"
