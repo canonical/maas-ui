@@ -16,7 +16,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -35,14 +35,10 @@ describe("PoolForm", () => {
   });
 
   it("can render", () => {
-    renderWithMockStore(
-      <MemoryRouter initialEntries={["/"]}>
-        <CompatRouter>
-          <PoolForm />
-        </CompatRouter>
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithBrowserRouter(<PoolForm />, {
+      route: "/",
+      wrapperProps: { state },
+    });
 
     expect(screen.getByRole("form", { name: PoolFormLabels.AddPoolTitle }));
   });
@@ -67,18 +63,14 @@ describe("PoolForm", () => {
 
   it("redirects when the resource pool is saved", () => {
     state.resourcepool.saved = true;
-    const history = createMemoryHistory({
-      initialEntries: ["/"],
+    renderWithBrowserRouter(<PoolForm />, {
+      route: urls.pools.add,
+      wrapperProps: {
+        state,
+        routePattern: `${urls.pools.index}/*`,
+      },
     });
-    renderWithMockStore(
-      <Router history={history}>
-        <CompatRouter>
-          <PoolForm />
-        </CompatRouter>
-      </Router>,
-      { state }
-    );
-    expect(history.location.pathname).toBe(urls.pools.index);
+    expect(window.location.pathname).toBe(urls.pools.index);
   });
 
   it("can create a resource pool", async () => {
