@@ -4,7 +4,7 @@ import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
 import { Label as APIKeyFormLabels } from "../APIKeyForm/APIKeyForm";
 
-import { APIKeyEdit } from "./APIKeyEdit";
+import { APIKeyEdit, Label as APIKeyEditLabels } from "./APIKeyEdit";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -63,7 +63,7 @@ describe("APIKeyEdit", () => {
       </MemoryRouter>,
       { state }
     );
-    expect(screen.getByText("API key not found")).toBeInTheDocument();
+    expect(screen.getByText(APIKeyEditLabels.NotFound)).toBeInTheDocument();
   });
 
   it("can display an api key edit form", () => {
