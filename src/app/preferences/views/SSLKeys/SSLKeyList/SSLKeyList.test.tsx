@@ -142,9 +142,7 @@ describe("SSLKeyList", () => {
     // Click on the delete confirm button
     await userEvent.click(
       within(
-        within(row).getByRole("gridcell", {
-          name: 'Are you sure you want to delete SSL key "test key display 21"? This action is permanent and can not be undone. Cancel Delete',
-        })
+        within(row).getByLabelText(SSLKeyListLabels.DeleteConfirm)
       ).getByRole("button", {
         name: "Delete",
       })
@@ -189,9 +187,7 @@ describe("SSLKeyList", () => {
     // Click on the delete confirm button
     await userEvent.click(
       within(
-        within(row).getByRole("gridcell", {
-          name: 'Are you sure you want to delete SSL key "test key display 26"? This action is permanent and can not be undone. Cancel Delete',
-        })
+        within(row).getByLabelText(SSLKeyListLabels.DeleteConfirm)
       ).getByRole("button", {
         name: "Delete",
       })
