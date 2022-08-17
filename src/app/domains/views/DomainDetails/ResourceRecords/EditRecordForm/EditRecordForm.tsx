@@ -17,6 +17,11 @@ type Props = {
   resource: DomainResource;
 };
 
+export enum Labels {
+  FormLabel = "Edit record",
+  SubmitLabel = "Save record",
+}
+
 export type EditRecordValues = {
   name: DomainResource["name"];
   rrdata: DomainResource["rrdata"];
@@ -42,6 +47,7 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
 
   return (
     <FormikForm<EditRecordValues>
+      aria-label={Labels.FormLabel}
       buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
@@ -69,7 +75,7 @@ const EditRecordForm = ({ closeForm, id, resource }: Props): JSX.Element => {
       saved={saved}
       saving={saving}
       submitDisabled={false}
-      submitLabel="Save record"
+      submitLabel={Labels.SubmitLabel}
       validationSchema={EditRecordSchema}
     >
       <RecordFields editing />

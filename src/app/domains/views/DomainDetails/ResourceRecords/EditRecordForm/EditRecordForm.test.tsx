@@ -1,10 +1,15 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import EditRecordForm from "./EditRecordForm";
+import { Labels as RecordFieldsLabels } from "../../../../components/RecordFields/RecordFields";
+
+import EditRecordForm, {
+  Labels as EditRecordFormLabels,
+} from "./EditRecordForm";
 
 import { actions as domainActions } from "app/store/domain";
 import { RecordType } from "app/store/domain/types";
@@ -15,7 +20,7 @@ import {
   domainResource as resourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -50,28 +55,22 @@ describe("EditRecordForm", () => {
     });
   });
 
-  it("closes the form when Cancel button is clicked", () => {
-    const store = mockStore(state);
+  it("closes the form when Cancel button is clicked", async () => {
     const closeForm = jest.fn();
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditRecordForm closeForm={closeForm} id={1} resource={resourceA} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditRecordForm closeForm={closeForm} id={1} resource={resourceA} />,
+      { wrapperProps: { state } }
     );
 
-    wrapper.find('button[data-testid="cancel-action"]').simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("dispatches an action to update the record", () => {
+  it("dispatches an action to update the record", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -80,12 +79,22 @@ describe("EditRecordForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      name: resourceA.name,
-      rrdata: "testing",
-      rrtype: resourceA.rrtype,
-      ttl: 42,
+
+    const data_box = screen.getByRole("textbox", {
+      name: RecordFieldsLabels.Data,
     });
+
+    await userEvent.clear(data_box);
+    await userEvent.type(data_box, "testing");
+
+    await userEvent.type(
+      screen.getByRole("spinbutton", { name: RecordFieldsLabels.Ttl }),
+      "42"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: EditRecordFormLabels.SubmitLabel })
+    );
 
     const expectedAction = domainActions.updateRecord({
       domain: 1,
@@ -94,6 +103,7 @@ describe("EditRecordForm", () => {
       rrset: resourceA,
       ttl: 42,
     });
+
     const actualAction = store
       .getActions()
       .find((action) => action.type === "domain/updateRecord");
