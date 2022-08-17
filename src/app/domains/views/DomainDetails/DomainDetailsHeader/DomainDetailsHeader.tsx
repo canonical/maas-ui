@@ -29,6 +29,11 @@ type Props = {
   id: Domain["id"];
 };
 
+export enum Labels {
+  AddRecord = "Add record",
+  DeleteDomain = "Delete domain",
+}
+
 const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
   const domain = useSelector((state: RootState) =>
     domainSelectors.getById(state, id)
@@ -56,7 +61,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
       key="add-record"
       onClick={() => setFormOpen("add-record")}
     >
-      Add record
+      {Labels.AddRecord}
     </Button>,
   ];
   if (!isDefaultDomain) {
@@ -67,7 +72,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
         key="delete-domain"
         onClick={() => setFormOpen("delete")}
       >
-        Delete domain
+        {Labels.DeleteDomain}
       </Button>
     );
   }
