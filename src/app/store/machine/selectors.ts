@@ -477,7 +477,6 @@ const listGroup = createSelector(
   ],
   (machineState, { callId, name }) =>
     (callId &&
-      name &&
       getList(machineState, callId)?.groups?.find(
         (group) => group.name === name
       )) ||

@@ -29,7 +29,8 @@ const MachineCheckbox = ({
   const allSelected = !!selected && "filter" in selected;
   // Whether the group this machine appears in is selected.
   const groupSelected =
-    !!groupKey &&
+    typeof groupKey !== "undefined" &&
+    groupKey !== null &&
     !!selected &&
     "groups" in selected &&
     selected.groups?.includes(groupKey);

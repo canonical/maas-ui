@@ -55,7 +55,7 @@ it("is disabled if all machines are selected", () => {
   expect(screen.getByRole("checkbox")).toBeDisabled();
 });
 
-it("is checked disabled if the machine's group is selected", () => {
+it("is checked and disabled if the machine's group is selected", () => {
   state.machine.selectedMachines = {
     groups: ["admin2"],
   };
@@ -63,6 +63,23 @@ it("is checked disabled if the machine's group is selected", () => {
     <MachineCheckbox
       callId={callId}
       groupKey="admin2"
+      label="spotted-handfish"
+      systemId="abc123"
+    />,
+    { state }
+  );
+  expect(screen.getByRole("checkbox")).toBeDisabled();
+  expect(screen.getByRole("checkbox")).toBeChecked();
+});
+
+it("is checked and disabled if the machine's group is selected and is nullish", () => {
+  state.machine.selectedMachines = {
+    groups: [""],
+  };
+  renderWithMockStore(
+    <MachineCheckbox
+      callId={callId}
+      groupKey=""
       label="spotted-handfish"
       systemId="abc123"
     />,

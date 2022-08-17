@@ -639,6 +639,27 @@ describe("machine selectors", () => {
     );
   });
 
+  it("can get a nullish group in a list", () => {
+    const groups = [
+      machineStateListGroupFactory({
+        name: "admin1",
+      }),
+      machineStateListGroupFactory({
+        name: "",
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          "123456": machineStateListFactory({
+            groups,
+          }),
+        },
+      }),
+    });
+    expect(machine.listGroup(state, "123456", "")).toStrictEqual(groups[1]);
+  });
+
   it("can get the count for a list", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
