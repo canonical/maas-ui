@@ -1,10 +1,13 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DeleteRecordForm from "./DeleteRecordForm";
+import DeleteRecordForm, {
+  Labels as DeleteRecordFormLabels,
+} from "./DeleteRecordForm";
 
 import { actions as domainActions } from "app/store/domain";
 import {
@@ -13,12 +16,12 @@ import {
   domainResource as resourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("DeleteRecordForm", () => {
-  it("closes the form when Cancel button is clicked", () => {
+  it("closes the form when Cancel button is clicked", async () => {
     const resource = resourceFactory();
     const domain = domainFactory({ id: 1, rrsets: [resource] });
     const state = rootStateFactory({
@@ -26,24 +29,18 @@ describe("DeleteRecordForm", () => {
         items: [domain],
       }),
     });
-    const store = mockStore(state);
     const closeForm = jest.fn();
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeleteRecordForm
-              closeForm={closeForm}
-              id={domain.id}
-              resource={resource}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeleteRecordForm
+        closeForm={closeForm}
+        id={domain.id}
+        resource={resource}
+      />,
+      { wrapperProps: { state } }
     );
 
-    wrapper.find('button[data-testid="cancel-action"]').simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
     expect(closeForm).toHaveBeenCalled();
   });
@@ -60,7 +57,7 @@ describe("DeleteRecordForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -73,8 +70,9 @@ describe("DeleteRecordForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("form").simulate("submit");
-    await waitForComponentToPaint(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: DeleteRecordFormLabels.SubmitLabel })
+    );
 
     const expectedAction = domainActions.deleteRecord({
       deleteResource: false,
@@ -96,7 +94,7 @@ describe("DeleteRecordForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -109,8 +107,10 @@ describe("DeleteRecordForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("form").simulate("submit");
-    await waitForComponentToPaint(wrapper);
+
+    await userEvent.click(
+      screen.getByRole("button", { name: DeleteRecordFormLabels.SubmitLabel })
+    );
 
     const expectedAction = domainActions.deleteRecord({
       deleteResource: true,
