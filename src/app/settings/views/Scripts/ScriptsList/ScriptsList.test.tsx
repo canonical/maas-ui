@@ -247,9 +247,7 @@ describe("ScriptsList", () => {
     // Click on the delete confirm button
     await userEvent.click(
       within(
-        within(row).getByRole("gridcell", {
-          name: `Are you sure you want to delete Script "commissioning-script"? This action is permanent and can not be undone. Cancel Delete`,
-        })
+        within(row).getByLabelText(ScriptsListLabels.DeleteConfirm)
       ).getByRole("button", { name: "Delete" })
     );
 

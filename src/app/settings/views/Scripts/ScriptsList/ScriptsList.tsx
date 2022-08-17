@@ -18,6 +18,7 @@ import type { Script } from "app/store/script/types";
 
 export enum Labels {
   Actions = "Table actions",
+  DeleteConfirm = "Confirm or cancel script deletion",
 }
 
 type Props = {
@@ -98,17 +99,19 @@ const generateRows = (
       expandedContent:
         expanded &&
         (showDelete ? (
-          <TableDeleteConfirm
-            deleted={saved}
-            deleting={saving}
-            modelName={script.name}
-            modelType="Script"
-            onClose={hideExpanded}
-            onConfirm={() => {
-              dispatch(scriptActions.delete(script.id));
-              setDeleting(script.name);
-            }}
-          />
+          <div aria-label={Labels.DeleteConfirm}>
+            <TableDeleteConfirm
+              deleted={saved}
+              deleting={saving}
+              modelName={script.name}
+              modelType="Script"
+              onClose={hideExpanded}
+              onConfirm={() => {
+                dispatch(scriptActions.delete(script.id));
+                setDeleting(script.name);
+              }}
+            />
+          </div>
         ) : (
           <ScriptDetails id={script.id} />
         )),
