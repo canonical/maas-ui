@@ -12,6 +12,14 @@ import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import type { Domain } from "app/store/domain/types";
 
+export enum Labels {
+  Name = "Name",
+  Authoritative = "Authoritative",
+  SubmitLabel = "Save domain",
+  SecondarySubmitLabel = "Save and add another",
+  FormLabel = "Add domains",
+}
+
 type Props = {
   closeForm: () => void;
 };
@@ -52,6 +60,7 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
 
   return (
     <FormikForm<CreateDomainValues>
+      aria-label={Labels.FormLabel}
       buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
@@ -76,21 +85,21 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
         createDomain(values);
         setShouldClose(false);
       }}
-      secondarySubmitLabel="Save and add another"
-      submitLabel="Save domain"
+      secondarySubmitLabel={Labels.SecondarySubmitLabel}
+      submitLabel={Labels.SubmitLabel}
       validationSchema={CreateDomainSchema}
     >
       <Row>
         <Col size={6}>
           <FormikField
-            label="Name"
+            label={Labels.Name}
             name="name"
             placeholder="Domain name"
             required
             type="text"
           />
           <FormikField
-            label="Authoritative"
+            label={Labels.Authoritative}
             name="authoritative"
             type="checkbox"
           />
