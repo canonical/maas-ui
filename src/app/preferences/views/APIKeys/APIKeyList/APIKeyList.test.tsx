@@ -1,10 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
-import APIKeyList from "./APIKeyList";
+import APIKeyList, { Label as APIKeyListLabels } from "./APIKeyList";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -12,8 +10,7 @@ import {
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("APIKeyList", () => {
   let state: RootState;
@@ -38,20 +35,20 @@ describe("APIKeyList", () => {
   });
 
   it("can render the table", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/api-keys", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <APIKeyList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/account/prefs/api-keys", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <APIKeyList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("MainTable").exists()).toBe(true);
+    expect(
+      screen.getByRole("grid", { name: APIKeyListLabels.Title })
+    ).toBeInTheDocument();
   });
 });

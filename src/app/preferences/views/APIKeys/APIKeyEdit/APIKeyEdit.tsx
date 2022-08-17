@@ -11,6 +11,10 @@ import { actions as tokenActions } from "app/store/token";
 import tokenSelectors from "app/store/token/selectors";
 import { TokenMeta } from "app/store/token/types";
 
+export enum Label {
+  NotFound = "API key not found",
+}
+
 export const APIKeyEdit = (): JSX.Element => {
   const dispatch = useDispatch();
   useEffect(() => {
@@ -26,7 +30,7 @@ export const APIKeyEdit = (): JSX.Element => {
     return <Spinner text="Loading..." />;
   }
   if (!token) {
-    return <h4>API key not found</h4>;
+    return <h4>{Label.NotFound}</h4>;
   }
   return <APIKeyForm token={token} />;
 };
