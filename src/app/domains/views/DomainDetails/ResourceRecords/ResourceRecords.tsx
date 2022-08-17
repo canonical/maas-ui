@@ -28,6 +28,10 @@ enum RecordActions {
   EDIT = "edit",
 }
 
+export enum Labels {
+  NoRecords = "Domain contains no records.",
+}
+
 type Expanded = {
   content: RecordActions;
   id: string;
@@ -220,7 +224,7 @@ const ResourceRecords = ({ id }: Props): JSX.Element | null => {
           />
           {domain.rrsets.length === 0 && (
             <Strip rowClassName="u-align--center" shallow>
-              <span data-testid="no-records">Domain contains no records.</span>
+              <span data-testid="no-records">{Labels.NoRecords}</span>
             </Strip>
           )}
         </Col>
