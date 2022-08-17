@@ -1,13 +1,14 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render, waitFor, fireEvent } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { createMemoryHistory } from "history";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
-import { MemoryRouter, Route, useLocation } from "react-router-dom";
+import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import type { Dispatch } from "redux";
 import configureStore from "redux-mock-store";
 
-import ScriptsUpload from "./ScriptsUpload";
+import ScriptsUpload, { Labels as ScriptsUploadLabels } from "./ScriptsUpload";
 import * as readScript from "./readScript";
 import type { ReadScriptResponse } from "./readScript";
 
@@ -17,6 +18,7 @@ import {
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -49,36 +51,30 @@ describe("ScriptsUpload", () => {
   });
 
   it("accepts files of any mimetype", async () => {
-    const store = mockStore(state);
-
     const files = [createFile("foo.sh", 2000, "")];
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <CompatRouter>
-            <ScriptsUpload type="testing" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <CompatRouter>
+          <ScriptsUpload type="testing" />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    await act(async () => {
-      wrapper.find("input").simulate("change", {
-        target: { files },
-        preventDefault: jest.fn(),
-        persist: jest.fn(),
-      });
-    });
+    const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
+    await userEvent.upload(upload, files);
 
-    expect(wrapper.text()).toContain("foo.sh (2000 bytes) ready for upload");
+    expect(
+      screen.getByText("foo.sh (2000 bytes) ready for upload.")
+    ).toBeInTheDocument();
   });
 
   it("displays an error if a file larger than 2MB is uploaded", async () => {
     const store = mockStore(state);
     const files = [createFile("foo.sh", 3000000, "text/script")];
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -88,13 +84,8 @@ describe("ScriptsUpload", () => {
       </Provider>
     );
 
-    await act(async () => {
-      wrapper.find("input").simulate("change", {
-        target: { files },
-        preventDefault: jest.fn(),
-        persist: jest.fn(),
-      });
-    });
+    const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
+    await userEvent.upload(upload, files);
 
     expect(store.getActions()[0]["payload"]["message"]).toEqual(
       "foo.sh: File is larger than 2000000 bytes"
@@ -108,7 +99,7 @@ describe("ScriptsUpload", () => {
       createFile("bar.sh", 1000, "text/script"),
     ];
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -118,17 +109,14 @@ describe("ScriptsUpload", () => {
       </Provider>
     );
 
-    await act(async () => {
-      wrapper.find("input").simulate("change", {
-        target: { files },
-        preventDefault: jest.fn(),
-        persist: jest.fn(),
-      });
+    const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
+    // necessary to use a fireEvent instead of userEvent, since userEvent doesn't support "drag n drop" multiple file upload
+    fireEvent.drop(upload, { target: { files } });
+    await waitFor(() => {
+      expect(store.getActions()[0]["payload"]["message"]).toEqual(
+        "Only a single file may be uploaded."
+      );
     });
-
-    expect(store.getActions()[0]["payload"]["message"]).toEqual(
-      "Only a single file may be uploaded."
-    );
     expect(store.getActions().length).toBe(1);
   });
 
@@ -152,7 +140,7 @@ describe("ScriptsUpload", () => {
       );
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -162,17 +150,12 @@ describe("ScriptsUpload", () => {
       </Provider>
     );
 
-    await act(async () => {
-      wrapper.find("input").simulate("change", {
-        target: { files },
-        preventDefault: jest.fn(),
-        persist: jest.fn(),
-      });
-    });
+    const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
+    await userEvent.upload(upload, files);
 
-    await act(async () => {
-      wrapper.find("Form").simulate("submit");
-    });
+    await userEvent.click(
+      screen.getByRole("button", { name: ScriptsUploadLabels.SubmitButton })
+    );
 
     expect(store.getActions()).toEqual([
       { type: "script/cleanup" },
@@ -203,7 +186,7 @@ describe("ScriptsUpload", () => {
       );
     const files = [createFile("foo.sh", 1000, "text/script", contents)];
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <CompatRouter>
@@ -213,17 +196,12 @@ describe("ScriptsUpload", () => {
       </Provider>
     );
 
-    await act(async () => {
-      wrapper.find("input").simulate("change", {
-        target: { files },
-        preventDefault: jest.fn(),
-        persist: jest.fn(),
-      });
-    });
+    const upload = screen.getByLabelText(ScriptsUploadLabels.FileUploadArea);
+    await userEvent.upload(upload, files);
 
-    await act(async () => {
-      wrapper.find("Form").simulate("submit");
-    });
+    await userEvent.click(
+      screen.getByRole("button", { name: ScriptsUploadLabels.SubmitButton })
+    );
 
     expect(store.getActions()).toEqual([
       { type: "script/cleanup" },
@@ -234,51 +212,35 @@ describe("ScriptsUpload", () => {
     ]);
   });
 
-  it("can cancel and return to the commissioning list", () => {
-    let location = { pathname: "" };
-    const FetchRoute = () => {
-      location = useLocation();
-      return null;
-    };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/settings/scripts/commissioning/upload" },
-          ]}
-        >
-          <CompatRouter>
-            <ScriptsUpload type="commissioning" />
-            <Route path="*" render={() => <FetchRoute />} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can cancel and return to the commissioning list", async () => {
+    const history = createMemoryHistory({
+      initialEntries: ["/"],
+    });
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <ScriptsUpload type="commissioning" />
+        </CompatRouter>
+      </Router>,
+      { state }
     );
-    wrapper.find('[data-testid="cancel-action"] button').simulate("click");
-    expect(location?.pathname).toBe("/settings/scripts/commissioning");
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(history.location.pathname).toBe("/settings/scripts/commissioning"); // linting errors occur if you use settingsUrls.scripts
   });
 
-  it("can cancel and return to the testing list", () => {
-    let location = { pathname: "" };
-    const FetchRoute = () => {
-      location = useLocation();
-      return null;
-    };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings/scripts/testing/upload" }]}
-        >
-          <CompatRouter>
-            <ScriptsUpload type="testing" />
-            <Route path="*" render={() => <FetchRoute />} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("can cancel and return to the testing list", async () => {
+    const history = createMemoryHistory({
+      initialEntries: ["/"],
+    });
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <ScriptsUpload type="testing" />
+        </CompatRouter>
+      </Router>,
+      { state }
     );
-    wrapper.find('[data-testid="cancel-action"] button').simulate("click");
-    expect(location.pathname).toBe("/settings/scripts/testing");
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+    expect(history.location.pathname).toBe("/settings/scripts/testing"); // linting errors occur if you use settingsUrls.scripts
   });
 });
