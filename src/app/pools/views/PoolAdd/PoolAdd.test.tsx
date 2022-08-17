@@ -1,15 +1,12 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
-import { PoolAdd } from "./PoolAdd";
+import { PoolAdd, Label as PoolAddLabel } from "./PoolAdd";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("PoolAdd", () => {
   let state: RootState;
@@ -19,18 +16,16 @@ describe("PoolAdd", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/pool/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <PoolAdd />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/pool/add", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <PoolAdd />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("PoolAdd").exists()).toBe(true);
+    expect(screen.getByRole("form", { name: PoolAddLabel.Title }));
   });
 });
