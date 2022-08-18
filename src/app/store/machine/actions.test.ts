@@ -108,6 +108,22 @@ describe("machine actions", () => {
     });
   });
 
+  it("can set selected machines", () => {
+    expect(actions.setSelected(["abc123", "def456"])).toEqual({
+      type: "machine/setSelected",
+      payload: ["abc123", "def456"],
+    });
+  });
+
+  it("can set selected machines", () => {
+    expect(
+      actions.setSelectedMachines({ items: ["abc123", "def456"] })
+    ).toEqual({
+      type: "machine/setSelectedMachines",
+      payload: { items: ["abc123", "def456"] },
+    });
+  });
+
   it("can handle creating machines", () => {
     expect(
       actions.create({

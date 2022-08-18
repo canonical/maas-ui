@@ -52,7 +52,6 @@ export type {
   FilterGroup,
   FilterGroupOption,
   FilterGroupOptionType,
-  FilterGroupType,
   Machine,
   MachineActions,
   MachineDetails,
@@ -68,6 +67,8 @@ export type {
   MachineStatuses,
   SelectedMachines,
 } from "./base";
+
+export { FilterGroupType } from "./base";
 
 export { BcacheModes, MachineMeta } from "./enum";
 
