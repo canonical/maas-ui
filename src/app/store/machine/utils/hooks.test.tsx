@@ -19,7 +19,7 @@ import {
 
 import { actions as machineActions } from "app/store/machine";
 import type { FetchFilters, Machine } from "app/store/machine/types";
-import { FetchGroupKey } from "app/store/machine/types";
+import { FetchGroupKey, FetchSortDirection } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeStatus, NodeStatusCode } from "app/store/types/node";
@@ -49,6 +49,8 @@ const mockStore = configureStore();
 type UseFetchMachinesProps = {
   filters?: FetchFilters | null;
   grouping?: FetchGroupKey | null;
+  sortKey?: FetchGroupKey | null;
+  sortDirection?: FetchSortDirection | null;
 };
 
 const generateWrapper =
@@ -278,14 +280,65 @@ describe("machine hook utils", () => {
     it("does not fetch again if the grouping hasn't changed", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(
-        ({ filters, grouping }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping),
+        ({
+          filters,
+          grouping,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping, sortKey, sortDirection),
         {
           initialProps: { grouping: FetchGroupKey.Owner },
           wrapper: generateWrapper(store),
         }
       );
       rerender({ grouping: FetchGroupKey.Owner });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
+    it("does not fetch again if the sort key hasn't changed", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({
+          filters,
+          grouping,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping, sortKey, sortDirection),
+        {
+          initialProps: { sortKey: FetchGroupKey.Bmc },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ sortKey: FetchGroupKey.Bmc });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
+    it("does not fetch again if the sort direction hasn't changed", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({
+          filters,
+          grouping,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping, sortKey, sortDirection),
+        {
+          initialProps: { sortDirection: FetchSortDirection.Ascending },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ sortDirection: FetchSortDirection.Ascending });
       const expected = machineActions.fetch("mocked-nanoid-1");
       const getDispatches = store
         .getActions()
@@ -313,8 +366,13 @@ describe("machine hook utils", () => {
     it("fetches again if the filters change", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(
-        ({ filters, grouping }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping),
+        ({
+          filters,
+          grouping,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping, sortKey, sortDirection),
         {
           initialProps: {
             filters: {
@@ -335,8 +393,13 @@ describe("machine hook utils", () => {
     it("fetches again if the grouping changes", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(
-        ({ filters, grouping }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping),
+        ({
+          filters,
+          grouping,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping, sortKey, sortDirection),
         {
           initialProps: {
             grouping: FetchGroupKey.Owner,
@@ -345,6 +408,56 @@ describe("machine hook utils", () => {
         }
       );
       rerender({ grouping: FetchGroupKey.Status });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(2);
+    });
+
+    it("fetches again if the sort key changes", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({
+          filters,
+          grouping,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping, sortKey, sortDirection),
+        {
+          initialProps: {
+            sortKey: FetchGroupKey.Bmc,
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ sortKey: FetchGroupKey.AgentName });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(2);
+    });
+
+    it("fetches again if the sort direction changes", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({
+          filters,
+          grouping,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(filters, grouping, sortKey, sortDirection),
+        {
+          initialProps: {
+            sortDirection: FetchSortDirection.Descending,
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ sortDirection: FetchSortDirection.Ascending });
       const expected = machineActions.fetch("mocked-nanoid-1");
       const getDispatches = store
         .getActions()

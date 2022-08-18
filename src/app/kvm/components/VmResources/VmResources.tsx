@@ -23,6 +23,8 @@ const VmResources = ({ loading = false, vms }: Props): JSX.Element => {
             toggleDisabled={vms.length === 0}
             toggleLabel={`Total VMs: ${vms.length}`}
           >
+            {/* TODO: update to use the new API: 
+            https://github.com/canonical/app-tribe/issues/1117 */}
             <MachineListTable
               hiddenColumns={[
                 "owner",
@@ -34,7 +36,11 @@ const VmResources = ({ loading = false, vms }: Props): JSX.Element => {
               ]}
               machines={vms}
               paginateLimit={5}
+              setSortDirection={() => null}
+              setSortKey={() => null}
               showActions={false}
+              sortDirection="none"
+              sortKey={null}
             />
           </ContextualMenu>
         )}

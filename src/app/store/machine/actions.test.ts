@@ -40,7 +40,7 @@ describe("machine actions", () => {
       group_collapsed: [],
       page_size: 20,
       page_number: 5,
-      sort_key: "owner",
+      sort_key: FetchGroupKey.Owner,
       sort_direction: FetchSortDirection.Ascending,
     };
     expect(actions.fetch("123456", params)).toEqual({

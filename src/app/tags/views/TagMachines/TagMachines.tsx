@@ -46,11 +46,17 @@ const TagMachines = (): JSX.Element => {
     return <Spinner data-testid="Spinner" />;
   }
 
+  // Update to use the new API:
+  // https://github.com/canonical/app-tribe/issues/1120
   return (
     <MachineListTable
       aria-label={Label.Machines}
       machines={deployedMachines}
+      setSortDirection={() => null}
+      setSortKey={() => null}
       showActions={false}
+      sortDirection="none"
+      sortKey={null}
     />
   );
 };
