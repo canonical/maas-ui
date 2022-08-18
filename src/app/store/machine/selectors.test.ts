@@ -86,6 +86,17 @@ describe("machine selectors", () => {
     expect(machine.active(state)).toEqual(activeMachine);
   });
 
+  it("can get the selected machines", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        selectedMachines: { items: ["abc123", "def456"] },
+      }),
+    });
+    expect(machine.selectedMachines(state)).toStrictEqual({
+      items: ["abc123", "def456"],
+    });
+  });
+
   it("can get the unselected machines", () => {
     const [selectedMachine, activeMachine, unselectedMachine] = [
       machineFactory(),
