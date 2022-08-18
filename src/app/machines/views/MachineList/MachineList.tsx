@@ -75,7 +75,7 @@ const MachineList = ({
     "grouping",
     FetchGroupKey.Status
   );
-  const pageSize = DEFAULT_PAGE_SIZE;
+  const pageSize = DEFAULTS.pageSize;
   const { machineCount, machines, machinesErrors } = useFetchMachines(
     parseFilters(filters),
     grouping,

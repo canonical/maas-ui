@@ -8,7 +8,7 @@ import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import MachineListTable, {
-  DEFAULT_PAGE_SIZE,
+  DEFAULTS,
 } from "app/machines/views/MachineList/MachineListTable";
 import machineSelectors from "app/store/machine/selectors";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
@@ -56,7 +56,7 @@ const TagMachines = (): JSX.Element => {
       currentPage={1}
       machineCount={deployedMachines.length}
       machines={deployedMachines}
-      pageSize={DEFAULT_PAGE_SIZE}
+      pageSize={DEFAULTS.pageSize}
       setCurrentPage={() => null}
       setSortDirection={() => null}
       setSortKey={() => null}
