@@ -22,7 +22,6 @@ import {
   getInterfaceById as getInterfaceByIdUtil,
 } from "app/store/utils";
 import { isId } from "app/utils";
-import { FilterSelected } from "app/utils/search/filter-items";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
@@ -387,17 +386,11 @@ const list = createSelector(
   [
     machineState,
     defaultSelectors.all,
-    selectedIDs,
-    (
-      _state: RootState,
-      callId: string | null | undefined,
-      filterSelected: FilterSelected | null | undefined
-    ) => ({
+    (_state: RootState, callId: string | null | undefined) => ({
       callId,
-      filterSelected,
     }),
   ],
-  (machineState, allMachines, selectedIDs, { callId, filterSelected }) => {
+  (machineState, allMachines, { callId }) => {
     const machines: Machine[] = [];
     getList(machineState, callId)?.groups?.forEach((group) => {
       group.items.forEach((systemId) => {
@@ -405,15 +398,7 @@ const list = createSelector(
           ({ system_id }) => system_id === systemId
         );
         if (machine) {
-          const inSelected = selectedIDs.includes(machine.system_id);
-          if (
-            filterSelected === FilterSelected.All ||
-            (filterSelected === FilterSelected.Selected && inSelected) ||
-            (filterSelected === FilterSelected.NotSelected && !inSelected) ||
-            !filterSelected
-          ) {
-            machines.push(machine);
-          }
+          machines.push(machine);
         }
       });
     });
