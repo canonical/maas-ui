@@ -1,8 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import ImagesTable from "./ImagesTable";
+import ImagesTable, { Labels as ImagesTableLabels } from "./ImagesTable";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -13,9 +12,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("ImagesTable", () => {
   let state: RootState;
@@ -41,31 +38,31 @@ describe("ImagesTable", () => {
       arch: "amd64",
       complete: true,
       name: "ubuntu/focal",
+      title: "20.04 LTS",
     });
     state.bootresource.resources = [resource];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ImagesTable
-          images={[
-            {
-              arch: resource.arch,
-              os: "ubuntu",
-              release: "focal",
-              resourceId: resource.id,
-              title: "20.04 LTS",
-            },
-          ]}
-          resources={[resource]}
-        />
-      </Provider>
+    renderWithMockStore(
+      <ImagesTable
+        images={[
+          {
+            arch: resource.arch,
+            os: "ubuntu",
+            release: "focal",
+            resourceId: resource.id,
+            title: resource.title,
+          },
+        ]}
+        resources={[resource]}
+      />,
+      { state }
     );
+
+    const row = screen.getByRole("row", { name: resource.title });
+
+    expect(within(row).getByText(resource.status)).toBeInTheDocument();
     expect(
-      wrapper.find("[data-testid='resource-status'] Icon").prop("name")
-    ).toBe("success");
-    expect(wrapper.find("[data-testid='resource-status']").text()).toBe(
-      resource.status
-    );
+      within(row).getByLabelText(ImagesTableLabels.Success)
+    ).toBeInTheDocument();
   });
 
   it("renders the correct status for a downloaded image that is not selected", () => {
@@ -73,51 +70,46 @@ describe("ImagesTable", () => {
       arch: "amd64",
       complete: true,
       name: "ubuntu/focal",
+      title: "20.04 LTS",
     });
     state.bootresource.resources = [resource];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ImagesTable images={[]} resources={[resource]} />
-      </Provider>
-    );
+    renderWithMockStore(<ImagesTable images={[]} resources={[resource]} />, {
+      state,
+    });
+
+    const row = screen.getByRole("row", { name: resource.title });
+
     expect(
-      wrapper.find("[data-testid='resource-status'] Icon").prop("name")
-    ).toBe("error");
-    expect(wrapper.find("[data-testid='resource-status']").text()).toBe(
-      "Will be deleted"
-    );
+      within(row).getByLabelText(ImagesTableLabels.Error)
+    ).toBeInTheDocument();
+    expect(
+      within(row).getByText(ImagesTableLabels.WillBeDeleted)
+    ).toBeInTheDocument();
   });
 
   it("renders the correct data for a new image", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ImagesTable
-          images={[
-            {
-              arch: "arch",
-              os: "os",
-              release: "release",
-              title: "New release",
-            },
-          ]}
-          resources={[]}
-        />
-      </Provider>
-    );
-    expect(wrapper.find("td[data-testid='new-image-title']").text()).toBe(
-      "New release"
-    );
+    const image = {
+      arch: "arch",
+      os: "os",
+      release: "release",
+      title: "New release",
+    };
+    renderWithMockStore(<ImagesTable images={[image]} resources={[]} />, {
+      state,
+    });
+
+    const row = screen.getByRole("row", { name: image.title });
+
+    expect(within(row).getByText("New release")).toBeInTheDocument();
     expect(
-      wrapper.find("[data-testid='new-image-status'] Icon").prop("name")
-    ).toBe("pending");
-    expect(wrapper.find("[data-testid='new-image-status']").text()).toBe(
-      "Selected for download"
-    );
+      within(row).getByLabelText(ImagesTableLabels.Pending)
+    ).toBeInTheDocument();
+    expect(
+      within(row).getByText(ImagesTableLabels.Selected)
+    ).toBeInTheDocument();
   });
 
-  it("can clear an image that has been selected", () => {
+  it("can clear an image that has been selected", async () => {
     const handleClear = jest.fn();
     const image = {
       arch: "arch",
@@ -125,17 +117,13 @@ describe("ImagesTable", () => {
       release: "release",
       title: "New release",
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ImagesTable
-          handleClear={handleClear}
-          images={[image]}
-          resources={[]}
-        />
-      </Provider>
+    renderWithMockStore(
+      <ImagesTable handleClear={handleClear} images={[image]} resources={[]} />,
+      { state }
     );
-    wrapper.find("button[data-testid='table-actions-clear']").simulate("click");
+
+    const row = screen.getByRole("row", { name: image.title });
+    await userEvent.click(within(row).getByRole("button", { name: "Clear" }));
 
     expect(handleClear).toHaveBeenCalledWith(image);
   });
@@ -149,19 +137,13 @@ describe("ImagesTable", () => {
       release: "focal",
       title: "Ubuntu 20.04 LTS",
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ImagesTable
-          handleClear={handleClear}
-          images={[image]}
-          resources={[]}
-        />
-      </Provider>
+    renderWithMockStore(
+      <ImagesTable handleClear={handleClear} images={[image]} resources={[]} />,
+      { state }
     );
-    expect(
-      wrapper.find("button[data-testid='table-actions-clear']").prop("disabled")
-    ).toBe(true);
+
+    const row = screen.getByRole("row", { name: image.title });
+    expect(within(row).getByRole("button", { name: "Clear" })).toBeDisabled();
   });
 
   it(`can open the delete image confirmation if the image does not use the
@@ -169,6 +151,12 @@ describe("ImagesTable", () => {
     const resources = [
       resourceFactory({ arch: "amd64", name: "ubuntu/bionic" }),
     ];
+    const image = {
+      arch: "amd64",
+      os: "ubuntu",
+      release: "bionic",
+      title: "18.04 LTS",
+    };
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         resources,
@@ -182,33 +170,25 @@ describe("ImagesTable", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ImagesTable
-          images={[
-            {
-              arch: "amd64",
-              os: "ubuntu",
-              release: "bionic",
-              title: "18.04 LTS",
-            },
-          ]}
-          resources={resources}
-        />
-      </Provider>
-    );
-    expect(
-      wrapper
-        .find("button[data-testid='table-actions-delete']")
-        .prop("disabled")
-    ).toBe(false);
 
-    wrapper
-      .find("button[data-testid='table-actions-delete']")
-      .simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("DeleteImageConfirm").exists()).toBe(true);
+    renderWithMockStore(
+      <ImagesTable images={[image]} resources={resources} />,
+      {
+        state,
+      }
+    );
+
+    const row = screen.getAllByRole("row", { name: image.title })[1]; // First row has no delete button since it's selected for download
+    const delete_button = within(row).getByRole("button", { name: "Delete" });
+    expect(delete_button).not.toBeDisabled();
+
+    await userEvent.click(delete_button);
+
+    expect(
+      within(row).getByRole("gridcell", {
+        name: ImagesTableLabels.DeleteImageConfirm,
+      })
+    ).toBeInTheDocument();
   });
 
   it(`prevents opening the delete image confirmation if the image uses the
@@ -216,6 +196,12 @@ describe("ImagesTable", () => {
     const resources = [
       resourceFactory({ arch: "amd64", name: "ubuntu/focal" }),
     ];
+    const image = {
+      arch: "amd64",
+      os: "ubuntu",
+      release: "focal",
+      title: "20.04 LTS",
+    };
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         resources,
@@ -229,26 +215,16 @@ describe("ImagesTable", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ImagesTable
-          images={[
-            {
-              arch: "amd64",
-              os: "ubuntu",
-              release: "focal",
-              title: "20.04 LTS",
-            },
-          ]}
-          resources={resources}
-        />
-      </Provider>
+
+    renderWithMockStore(
+      <ImagesTable images={[image]} resources={resources} />,
+      {
+        state,
+      }
     );
-    expect(
-      wrapper
-        .find("button[data-testid='table-actions-delete']")
-        .prop("disabled")
-    ).toBe(true);
+
+    const row = screen.getByRole("row", { name: "18.04 LTS" });
+    const delete_button = within(row).getByRole("button", { name: "Delete" });
+    expect(delete_button).toBeDisabled();
   });
 });
