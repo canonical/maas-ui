@@ -518,6 +518,50 @@ describe("machine selectors", () => {
     expect(machine.listCount(state, "123456")).toBe(5);
   });
 
+  it("can get a group in a list", () => {
+    const groups = [
+      machineStateListGroupFactory({
+        name: "admin1",
+      }),
+      machineStateListGroupFactory({
+        name: "admin2",
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          "123456": machineStateListFactory({
+            groups,
+          }),
+        },
+      }),
+    });
+    expect(machine.listGroup(state, "123456", "admin2")).toStrictEqual(
+      groups[1]
+    );
+  });
+
+  it("can get a nullish group in a list", () => {
+    const groups = [
+      machineStateListGroupFactory({
+        name: "admin1",
+      }),
+      machineStateListGroupFactory({
+        name: "",
+      }),
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          "123456": machineStateListFactory({
+            groups,
+          }),
+        },
+      }),
+    });
+    expect(machine.listGroup(state, "123456", "")).toStrictEqual(groups[1]);
+  });
+
   it("can get an interface by id", () => {
     const nic = machineInterfaceFactory({
       type: NetworkInterfaceTypes.PHYSICAL,
