@@ -178,9 +178,12 @@ describe("DeployFormFields", () => {
     );
   });
 
-  it("correctly sets minimum kernel to default", async () => {
+  it("correctly sets minimum kernel to default when in default release", async () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
+      state.general.osInfo.data.kernels.ubuntu.bionic = [
+        ["ga-18.04", "bionic (ga-18.04)"],
+      ];
       state.general.defaultMinHweKernel.data = "ga-18.04";
     }
     const store = mockStore(state);
@@ -204,6 +207,36 @@ describe("DeployFormFields", () => {
       expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue(
         "ga-18.04"
       )
+    );
+  });
+
+  it("correctly sets minimum kernel to default when not in default release", async () => {
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+      state.general.osInfo.data.kernels.ubuntu.bionic = [
+        ["ga-18.04", "bionic (ga-18.04)"],
+      ];
+      state.general.defaultMinHweKernel.data = "different-kernel";
+    }
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("")
     );
   });
 
@@ -415,9 +448,13 @@ describe("DeployFormFields", () => {
     );
   });
 
-  it("resets kernel selection on OS/release change", async () => {
+  it("clears kernel selection on OS/release change when default is in different release", async () => {
     if (state.general.osInfo.data) {
       state.general.osInfo.data.default_release = "bionic";
+      state.general.osInfo.data.kernels.ubuntu.bionic = [
+        ["ga-18.04", "bionic (ga-18.04)"],
+      ];
+      state.general.defaultMinHweKernel.data = "different-default-release";
     }
     const store = mockStore(state);
     render(
@@ -436,7 +473,7 @@ describe("DeployFormFields", () => {
         </MemoryRouter>
       </Provider>
     );
-    // Default release is Ubuntu 18.04. Change kernel to non-default.
+    // Change kernel to non-default.
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Kernel" }),
       "ga-18.04"
@@ -449,6 +486,52 @@ describe("DeployFormFields", () => {
     // Previous kernel selection should be cleared.
     await waitFor(() =>
       expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("")
+    );
+  });
+
+  it("resets kernel selection to default on OS/release change when has same release", async () => {
+    if (state.general.osInfo.data) {
+      state.general.osInfo.data.default_release = "bionic";
+      state.general.osInfo.data.kernels.ubuntu.bionic = [
+        ["ga-18.04", "bionic (ga-18.04)"],
+      ];
+      state.general.defaultMinHweKernel.data = "ga-18.04";
+    }
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <DeployForm
+              clearHeaderContent={jest.fn()}
+              machines={[]}
+              processingCount={0}
+              viewingDetails={false}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    // Change release to Ubuntu 20.04.
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Release" }),
+      'Ubuntu 20.04 LTS "Focal Fossa"'
+    );
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue("")
+    );
+    // Change release to the one that contains the default.
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Release" }),
+      'Ubuntu 18.04 LTS "Bionic Beaver"'
+    );
+    // The default kernel should now be selected.
+    await waitFor(() =>
+      expect(screen.getByRole("combobox", { name: "Kernel" })).toHaveValue(
+        "ga-18.04"
+      )
     );
   });
 
