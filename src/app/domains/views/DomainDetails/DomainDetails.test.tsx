@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter, Route } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import DomainDetails from "./DomainDetails";
 
@@ -10,8 +6,7 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("DomainDetails", () => {
   it("renders 'Not Found' header if domains loaded and domain not found", () => {
@@ -21,19 +16,11 @@ describe("DomainDetails", () => {
         loading: false,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domain/1", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Route exact path="/domain/:id" render={() => <DomainDetails />} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainDetails />, {
+      route: "/domain/1",
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("ModelNotFound").exists()).toBe(true);
+    expect(screen.getByText("Domain not found")).toBeInTheDocument();
   });
 });

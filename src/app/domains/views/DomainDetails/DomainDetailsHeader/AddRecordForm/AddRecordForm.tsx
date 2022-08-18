@@ -13,6 +13,10 @@ import type { Domain, DomainResource } from "app/store/domain/types";
 import { RecordType } from "app/store/domain/types";
 import { isAddressRecord } from "app/store/domain/utils";
 
+export enum Labels {
+  SubmitLabel = "Add record",
+}
+
 type Props = {
   closeForm: () => void;
   id: Domain["id"];
@@ -82,7 +86,7 @@ const AddRecordForm = ({ closeForm, id }: Props): JSX.Element => {
       }}
       saved={saved}
       saving={saving}
-      submitLabel="Add record"
+      submitLabel={Labels.SubmitLabel}
       validationSchema={CreateRecordSchema}
     >
       <RecordFields />

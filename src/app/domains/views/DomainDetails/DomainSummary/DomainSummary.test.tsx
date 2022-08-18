@@ -1,13 +1,13 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DomainSummary from "./DomainSummary";
+import DomainSummary, { Labels as DomainSummaryLabels } from "./DomainSummary";
 
-import { Labels } from "app/base/components/EditableSection";
+import { Labels as EditableSectionLabels } from "app/base/components/EditableSection";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
@@ -17,26 +17,26 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("DomainSummary", () => {
   it("render nothing if domain doesn't exist", () => {
     const state = rootStateFactory();
-    const store = mockStore(state);
+    renderWithBrowserRouter(<DomainSummary id={1} />, {
+      wrapperProps: { state },
+    });
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DomainSummary id={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(wrapper.find("DomainSummary").children()).toHaveLength(0);
+    expect(
+      screen.queryByRole("heading", { name: DomainSummaryLabels.Title })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(DomainSummaryLabels.Summary)
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("form", { name: DomainSummaryLabels.FormLabel })
+    ).not.toBeInTheDocument();
   });
 
   it("renders domain summary", () => {
@@ -45,22 +45,20 @@ describe("DomainSummary", () => {
         items: [domainFactory({ id: 1, name: "test" })],
       }),
     });
-    const store = mockStore(state);
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DomainSummary id={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainSummary id={1} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find('[data-testid="domain-summary"]').exists()).toBe(true);
-    expect(wrapper.find('[data-testid="domain-summary-form"]').exists()).toBe(
-      false
-    );
+    expect(
+      screen.getByRole("heading", { name: DomainSummaryLabels.Title })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(DomainSummaryLabels.Summary)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("form", { name: DomainSummaryLabels.FormLabel })
+    ).not.toBeInTheDocument();
   });
 
   it("doesn't render Edit button when user is not admin", () => {
@@ -74,25 +72,14 @@ describe("DomainSummary", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DomainSummary id={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithBrowserRouter(<DomainSummary id={1} />, {
+      wrapperProps: { state },
+    });
 
     expect(
-      wrapper
-        .findWhere(
-          (node) =>
-            node.type() === "button" && node.text() === Labels.EditButton
-        )
-        .exists()
-    ).toBe(false);
+      screen.queryByRole("button", { name: EditableSectionLabels.EditButton })
+    ).not.toBeInTheDocument();
   });
 
   describe("when user is admin", () => {
@@ -117,32 +104,61 @@ describe("DomainSummary", () => {
     });
 
     it("renders the Edit button", () => {
-      const store = mockStore(state);
+      renderWithBrowserRouter(<DomainSummary id={1} />, {
+        wrapperProps: { state },
+      });
 
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <DomainSummary id={1} />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      expect(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })[0]
+      ).toBeInTheDocument();
+    });
+
+    it("renders the form when Edit button is clicked", async () => {
+      renderWithBrowserRouter(<DomainSummary id={1} />, {
+        wrapperProps: { state },
+      });
+
+      await userEvent.click(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })[0]
       );
 
       expect(
-        wrapper
-          .findWhere(
-            (node) =>
-              node.type() === "button" && node.text() === Labels.EditButton
-          )
-          .exists()
-      ).toBe(true);
+        screen.queryByLabelText(DomainSummaryLabels.Summary)
+      ).not.toBeInTheDocument();
+      expect(
+        screen.getByRole("form", { name: DomainSummaryLabels.FormLabel })
+      ).toBeInTheDocument();
     });
 
-    it("renders the form when Edit button is clicked", () => {
+    it("closes the form when Cancel button is clicked", async () => {
+      renderWithBrowserRouter(<DomainSummary id={1} />, {
+        wrapperProps: { state },
+      });
+
+      await userEvent.click(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })[0]
+      );
+
+      await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
+
+      expect(
+        screen.getByLabelText(DomainSummaryLabels.Summary)
+      ).toBeInTheDocument();
+      expect(
+        screen.queryByRole("form", { name: DomainSummaryLabels.FormLabel })
+      ).not.toBeInTheDocument();
+    });
+
+    it("calls actions.update on save click", async () => {
       const store = mockStore(state);
 
-      const wrapper = mount(
+      render(
         <Provider store={store}>
           <MemoryRouter>
             <CompatRouter>
@@ -152,80 +168,28 @@ describe("DomainSummary", () => {
         </Provider>
       );
 
-      wrapper
-        .findWhere(
-          (node) =>
-            node.type() === "button" && node.text() === Labels.EditButton
-        )
-        .at(0)
-        .simulate("click");
-
-      expect(wrapper.find('[data-testid="domain-summary"]').exists()).toBe(
-        false
-      );
-      expect(wrapper.find('[data-testid="domain-summary-form"]').exists()).toBe(
-        true
-      );
-    });
-
-    it("closes the form when Cancel button is clicked", () => {
-      const store = mockStore(state);
-
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <DomainSummary id={1} />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      await userEvent.click(
+        screen.getAllByRole("button", {
+          name: EditableSectionLabels.EditButton,
+        })[0]
       );
 
-      wrapper
-        .findWhere(
-          (node) =>
-            node.type() === "button" && node.text() === Labels.EditButton
-        )
-        .at(0)
-        .simulate("click");
-      wrapper.find("button[data-testid='cancel-action']").simulate("click");
-
-      expect(wrapper.find('[data-testid="domain-summary"]').exists()).toBe(
-        true
-      );
-      expect(wrapper.find('[data-testid="domain-summary-form"]').exists()).toBe(
-        false
-      );
-    });
-
-    it("calls actions.update on save click", () => {
-      const store = mockStore(state);
-
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <DomainSummary id={1} />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      await userEvent.clear(
+        screen.getByRole("textbox", { name: DomainSummaryLabels.Name })
       );
 
-      wrapper
-        .findWhere(
-          (node) =>
-            node.type() === "button" && node.text() === Labels.EditButton
-        )
-        .at(0)
-        .simulate("click");
+      await userEvent.type(
+        screen.getByRole("textbox", { name: DomainSummaryLabels.Name }),
+        "test"
+      );
 
-      act(() =>
-        submitFormikForm(wrapper, {
-          id: 1,
-          name: "test",
-          ttl: 42,
-          authoritative: false,
-        })
+      await userEvent.type(
+        screen.getByRole("spinbutton", { name: DomainSummaryLabels.Ttl }),
+        "42"
+      );
+
+      await userEvent.click(
+        screen.getByRole("button", { name: DomainSummaryLabels.SubmitLabel })
       );
 
       expect(

@@ -21,6 +21,16 @@ const EditDomainSchema = Yup.object().shape({
   ttl: Yup.number().min(MIN_TTL, "TTL must be greater than 1."),
 });
 
+export enum Labels {
+  Title = "Domain summary",
+  Summary = "Domain summary details",
+  FormLabel = "Edit domain",
+  SubmitLabel = "Save",
+  Name = "Name",
+  Ttl = "TTL",
+  Authoritative = "Authoritative",
+}
+
 type EditDomainValues = {
   authoritative: Domain["authoritative"];
   name: Domain["name"];
@@ -53,6 +63,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
       renderContent={(editing, setEditing) =>
         editing ? (
           <FormikForm<EditDomainValues>
+            aria-label={Labels.FormLabel}
             buttonsAlign="right"
             buttonsBordered={false}
             cleanup={cleanup}
@@ -78,22 +89,22 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
             onSuccess={() => setEditing(false)}
             saved={saved}
             saving={saving}
-            submitLabel="Save"
+            submitLabel={Labels.SubmitLabel}
             validationSchema={EditDomainSchema}
           >
             <Row>
               <Col size={6}>
                 <FormikField
-                  label="Name"
+                  label={Labels.Name}
                   name="name"
-                  placeholder="Name"
+                  placeholder={Labels.Name}
                   required
                   type="text"
                 />
               </Col>
               <Col size={6}>
                 <FormikField
-                  label="TTL"
+                  label={Labels.Ttl}
                   min={MIN_TTL}
                   name="ttl"
                   type="number"
@@ -103,7 +114,7 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
             <Row>
               <Col size={6}>
                 <FormikField
-                  label="Authoritative"
+                  label={Labels.Authoritative}
                   name="authoritative"
                   type="checkbox"
                 />
@@ -111,18 +122,20 @@ const DomainSummary = ({ id }: Props): JSX.Element | null => {
             </Row>
           </FormikForm>
         ) : (
-          <Row data-testid="domain-summary">
+          <Row aria-label={Labels.Summary} data-testid="domain-summary">
             <Col size={6}>
-              <Definition label="Name">{domain.name}</Definition>
-              <Definition label="TTL">{domain.ttl || "(default)"}</Definition>
-              <Definition label="Authoritative">
+              <Definition label={Labels.Name}>{domain.name}</Definition>
+              <Definition label={Labels.Ttl}>
+                {domain.ttl || "(default)"}
+              </Definition>
+              <Definition label={Labels.Authoritative}>
                 {domain.authoritative ? "Yes" : "No"}
               </Definition>
             </Col>
           </Row>
         )
       }
-      title="Domain summary"
+      title={Labels.Title}
     />
   );
 };

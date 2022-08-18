@@ -5,6 +5,13 @@ import FormikField from "app/base/components/FormikField";
 import { MIN_TTL } from "app/store/domain/constants";
 import { RecordType } from "app/store/domain/types";
 
+export enum Labels {
+  Name = "Name",
+  Type = "Record type",
+  Data = "Data",
+  Ttl = "TTL",
+}
+
 const recordTypeOptions = [
   { value: "", label: "Type", disabled: true },
   ...Object.values(RecordType).map((value) => {
@@ -68,30 +75,30 @@ const RecordFields = ({ editing }: Props): JSX.Element => {
     <Row>
       <Col size={6}>
         <FormikField
-          label="Name"
+          label={Labels.Name}
           name="name"
-          placeholder="Name"
+          placeholder={Labels.Name}
           required
           type="text"
         />
         <FormikField
           component={Select}
           disabled={editing} // when record is edited type can't be changed
-          label="Record type"
+          label={Labels.Type}
           name="rrtype"
           options={recordTypeOptions}
           required
         />
         <FormikField
           help={getRecordDataHelp(values.rrtype)}
-          label="Data"
+          label={Labels.Data}
           name="rrdata"
           placeholder={getRecordDataPlaceholder(values.rrtype)}
           required
           type="text"
         />
         <FormikField
-          label="TTL"
+          label={Labels.Ttl}
           min={MIN_TTL}
           name="ttl"
           placeholder="TTL in seconds (optional)"

@@ -1,45 +1,40 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import AddRecordForm from "./AddRecordForm";
+import AddRecordForm, { Labels as AddRecordFormLabels } from "./AddRecordForm";
 
+import { Labels as RecordFieldsLabels } from "app/domains/components/RecordFields/RecordFields";
 import { RecordType } from "app/store/domain/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("AddRecordForm", () => {
-  it("calls closeForm on cancel click", () => {
+  it("calls closeForm on cancel click", async () => {
     const closeForm = jest.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
         items: [domainFactory({ id: 1, name: "domain-in-the-brain" })],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddRecordForm closeForm={closeForm} id={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.find("button[data-testid='cancel-action']").simulate("click");
+
+    renderWithBrowserRouter(<AddRecordForm closeForm={closeForm} id={1} />, {
+      wrapperProps: { state },
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("Dispatches the correct action on submit", () => {
+  it("Dispatches the correct action on submit", async () => {
     const closeForm = jest.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
@@ -52,8 +47,9 @@ describe("AddRecordForm", () => {
         ],
       }),
     });
+
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -63,13 +59,28 @@ describe("AddRecordForm", () => {
       </Provider>
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "Some name",
-        rrtype: RecordType.CNAME,
-        rrdata: "Some data",
-        ttl: 12,
-      })
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RecordFieldsLabels.Name }),
+      "Some name"
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: RecordFieldsLabels.Type }),
+      RecordType.CNAME
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: RecordFieldsLabels.Data }),
+      "Some data"
+    );
+
+    await userEvent.type(
+      screen.getByRole("spinbutton", { name: RecordFieldsLabels.Ttl }),
+      "12"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: AddRecordFormLabels.SubmitLabel })
     );
 
     expect(

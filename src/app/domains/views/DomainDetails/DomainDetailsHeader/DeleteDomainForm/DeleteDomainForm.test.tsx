@@ -1,43 +1,39 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DeleteDomainForm from "./DeleteDomainForm";
+import DeleteDomainForm, {
+  Labels as DeleteDomainFormLabels,
+} from "./DeleteDomainForm";
 
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
 describe("DeleteDomainForm", () => {
-  it("calls closeForm on cancel click", () => {
+  it("calls closeForm on cancel click", async () => {
     const closeForm = jest.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
         items: [domainFactory({ id: 1, name: "domain-in-the-brain" })],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeleteDomainForm closeForm={closeForm} id={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.find("button[data-testid='cancel-action']").simulate("click");
+    renderWithBrowserRouter(<DeleteDomainForm closeForm={closeForm} id={1} />, {
+      wrapperProps: { state },
+    });
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("shows the correct text if the domain is deletable and dispatches the correct action when delete is clicked", () => {
+  it("shows the correct text if the domain is deletable and dispatches the correct action when delete is clicked", async () => {
     const closeForm = jest.fn();
     const state = rootStateFactory({
       domain: domainStateFactory({
@@ -51,7 +47,7 @@ describe("DeleteDomainForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -61,11 +57,13 @@ describe("DeleteDomainForm", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='delete-message']").text()).toBe(
-      "Are you sure you want to delete this domain?"
-    );
+    expect(
+      screen.getByText(DeleteDomainFormLabels.AreYouSure)
+    ).toBeInTheDocument();
 
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: DeleteDomainFormLabels.DeleteLabel })
+    );
 
     expect(
       store.getActions().find((action) => action.type === "domain/delete")
@@ -96,23 +94,17 @@ describe("DeleteDomainForm", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeleteDomainForm closeForm={closeForm} id={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
 
-    expect(wrapper.find("[data-testid='delete-message']").text()).toBe(
-      "Domain cannot be deleted because it has resource records. Remove all resource records from the domain to allow deletion."
-    );
+    renderWithBrowserRouter(<DeleteDomainForm closeForm={closeForm} id={1} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("ActionButton[type='submit']").prop("disabled")).toBe(
-      true
-    );
+    expect(
+      screen.getByText(DeleteDomainFormLabels.CannotDelete)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.getByRole("button", { name: DeleteDomainFormLabels.DeleteLabel })
+    ).toBeDisabled();
   });
 });
