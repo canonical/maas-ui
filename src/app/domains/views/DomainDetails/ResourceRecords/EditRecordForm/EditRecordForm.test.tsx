@@ -5,12 +5,11 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { Labels as RecordFieldsLabels } from "../../../../components/RecordFields/RecordFields";
-
 import EditRecordForm, {
   Labels as EditRecordFormLabels,
 } from "./EditRecordForm";
 
+import { Labels as RecordFieldsLabels } from "app/domains/components/RecordFields/RecordFields";
 import { actions as domainActions } from "app/store/domain";
 import { RecordType } from "app/store/domain/types";
 import type { RootState } from "app/store/root/types";
