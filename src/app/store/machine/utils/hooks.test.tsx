@@ -51,6 +51,8 @@ type UseFetchMachinesProps = {
   grouping?: FetchGroupKey | null;
   sortKey?: FetchGroupKey | null;
   sortDirection?: FetchSortDirection | null;
+  pageSize?: number;
+  currentPage?: number;
 };
 
 const generateWrapper =
@@ -210,7 +212,11 @@ describe("machine hook utils", () => {
 
     const generateWrapper =
       (store: MockStoreEnhanced<unknown>) =>
-      ({ children }: { children?: ReactNode; filters?: FetchFilters | null }) =>
+      ({
+        children,
+      }: UseFetchMachinesProps & {
+        children?: ReactNode;
+      }) =>
         <Provider store={store}>{children}</Provider>;
 
     it("can fetch machines", () => {
@@ -283,10 +289,19 @@ describe("machine hook utils", () => {
         ({
           filters,
           grouping,
+          pageSize,
+          currentPage,
           sortKey,
           sortDirection,
         }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping, sortKey, sortDirection),
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
         {
           initialProps: { grouping: FetchGroupKey.Owner },
           wrapper: generateWrapper(store),
@@ -306,10 +321,19 @@ describe("machine hook utils", () => {
         ({
           filters,
           grouping,
+          pageSize,
+          currentPage,
           sortKey,
           sortDirection,
         }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping, sortKey, sortDirection),
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
         {
           initialProps: { sortKey: FetchGroupKey.Bmc },
           wrapper: generateWrapper(store),
@@ -323,22 +347,95 @@ describe("machine hook utils", () => {
       expect(getDispatches).toHaveLength(1);
     });
 
+    it("does not fetch again if the current page hasn't changed", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({
+          filters,
+          grouping,
+          pageSize,
+          currentPage,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
+        {
+          initialProps: { currentPage: 4 },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ currentPage: 4 });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
     it("does not fetch again if the sort direction hasn't changed", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(
         ({
           filters,
           grouping,
+          pageSize,
+          currentPage,
           sortKey,
           sortDirection,
         }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping, sortKey, sortDirection),
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
         {
           initialProps: { sortDirection: FetchSortDirection.Ascending },
           wrapper: generateWrapper(store),
         }
       );
       rerender({ sortDirection: FetchSortDirection.Ascending });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      const getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+    });
+
+    it("does not fetch again if the page size hasn't changed", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({
+          filters,
+          grouping,
+          pageSize,
+          currentPage,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
+        {
+          initialProps: { pageSize: 22 },
+          wrapper: generateWrapper(store),
+        }
+      );
+      rerender({ pageSize: 22 });
       const expected = machineActions.fetch("mocked-nanoid-1");
       const getDispatches = store
         .getActions()
@@ -369,10 +466,19 @@ describe("machine hook utils", () => {
         ({
           filters,
           grouping,
+          pageSize,
+          currentPage,
           sortKey,
           sortDirection,
         }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping, sortKey, sortDirection),
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
         {
           initialProps: {
             filters: {
@@ -382,9 +488,13 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      rerender({ filters: { hostname: "eastern-quoll" } });
       const expected = machineActions.fetch("mocked-nanoid-1");
-      const getDispatches = store
+      let getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+      rerender({ filters: { hostname: "eastern-quoll" } });
+      getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
       expect(getDispatches).toHaveLength(2);
@@ -396,10 +506,19 @@ describe("machine hook utils", () => {
         ({
           filters,
           grouping,
+          pageSize,
+          currentPage,
           sortKey,
           sortDirection,
         }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping, sortKey, sortDirection),
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
         {
           initialProps: {
             grouping: FetchGroupKey.Owner,
@@ -407,9 +526,89 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      rerender({ grouping: FetchGroupKey.Status });
       const expected = machineActions.fetch("mocked-nanoid-1");
-      const getDispatches = store
+      let getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+      rerender({ grouping: FetchGroupKey.Status });
+      getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(2);
+    });
+
+    it("fetches again if the page size changes", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({
+          filters,
+          grouping,
+          pageSize,
+          currentPage,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
+        {
+          initialProps: {
+            pageSize: 22,
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      let getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+      rerender({ pageSize: 44 });
+      getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(2);
+    });
+
+    it("fetches again if the current page changes", () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        ({
+          filters,
+          grouping,
+          pageSize,
+          currentPage,
+          sortKey,
+          sortDirection,
+        }: UseFetchMachinesProps) =>
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
+        {
+          initialProps: {
+            currentPage: 3,
+          },
+          wrapper: generateWrapper(store),
+        }
+      );
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      let getDispatches = store
+        .getActions()
+        .filter((action) => action.type === expected.type);
+      expect(getDispatches).toHaveLength(1);
+      rerender({ currentPage: 6 });
+      getDispatches = store
         .getActions()
         .filter((action) => action.type === expected.type);
       expect(getDispatches).toHaveLength(2);
@@ -421,10 +620,19 @@ describe("machine hook utils", () => {
         ({
           filters,
           grouping,
+          pageSize,
+          currentPage,
           sortKey,
           sortDirection,
         }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping, sortKey, sortDirection),
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
         {
           initialProps: {
             sortKey: FetchGroupKey.Bmc,
@@ -446,10 +654,19 @@ describe("machine hook utils", () => {
         ({
           filters,
           grouping,
+          pageSize,
+          currentPage,
           sortKey,
           sortDirection,
         }: UseFetchMachinesProps) =>
-          useFetchMachines(filters, grouping, sortKey, sortDirection),
+          useFetchMachines(
+            filters,
+            grouping,
+            pageSize,
+            currentPage,
+            sortKey,
+            sortDirection
+          ),
         {
           initialProps: {
             sortDirection: FetchSortDirection.Descending,

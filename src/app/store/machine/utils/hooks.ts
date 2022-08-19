@@ -91,9 +91,12 @@ export const useFetchMachineCount = (
 export const useFetchMachines = (
   filters?: FetchFilters | null,
   grouping?: FetchGroupKey | null,
+  pageSize?: number,
+  currentPage?: number,
   sortKey?: FetchGroupKey | null,
   sortDirection?: FetchSortDirection | null
 ): {
+  machineCount: number | null;
   machines: Machine[];
   machinesErrors: APIError;
 } => {
@@ -103,9 +106,14 @@ export const useFetchMachines = (
   const previousGrouping = usePrevious(grouping, false);
   const previousSortDirection = usePrevious(sortDirection, false);
   const previousSortKey = usePrevious(sortKey, false);
+  const previousPage = usePrevious(currentPage, false);
+  const previousPageSize = usePrevious(pageSize, false);
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId)
+  );
+  const machineCount = useSelector((state: RootState) =>
+    machineSelectors.listCount(state, callId)
   );
   const machinesErrors = useSelector((state: RootState) =>
     machineSelectors.listErrors(state, callId)
@@ -122,21 +130,27 @@ export const useFetchMachines = (
       !callId ||
       grouping !== previousGrouping ||
       sortKey !== previousSortKey ||
-      sortDirection !== previousSortDirection
+      sortDirection !== previousSortDirection ||
+      currentPage !== previousPage ||
+      pageSize !== previousPageSize
     ) {
       setCallId(nanoid());
     }
   }, [
     callId,
+    currentPage,
     dispatch,
     filters,
     grouping,
+    pageSize,
     previousFilters,
     previousGrouping,
+    previousPage,
+    previousPageSize,
     previousSortDirection,
     previousSortKey,
-    sortKey,
     sortDirection,
+    sortKey,
   ]);
 
   useEffect(() => {
@@ -144,10 +158,17 @@ export const useFetchMachines = (
       dispatch(
         machineActions.fetch(
           callId,
-          filters || grouping || sortKey || sortDirection
+          filters ||
+            grouping ||
+            sortKey ||
+            sortDirection ||
+            grouping ||
+            pageSize
             ? {
                 filter: filters ?? null,
                 group_key: grouping ?? null,
+                page_number: currentPage,
+                page_size: pageSize,
                 sort_direction: sortDirection ?? null,
                 sort_key: sortKey ?? null,
               }
@@ -157,15 +178,17 @@ export const useFetchMachines = (
     }
   }, [
     callId,
+    currentPage,
     dispatch,
     filters,
     grouping,
+    pageSize,
     previousCallId,
-    sortKey,
     sortDirection,
+    sortKey,
   ]);
 
-  return { machines, machinesErrors };
+  return { machineCount, machines, machinesErrors };
 };
 
 /**

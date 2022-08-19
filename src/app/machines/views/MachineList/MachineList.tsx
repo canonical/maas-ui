@@ -62,6 +62,7 @@ const MachineList = ({
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
+  const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
     DEFAULTS.sortKey
   );
@@ -74,9 +75,12 @@ const MachineList = ({
     "grouping",
     FetchGroupKey.Status
   );
-  const { machines, machinesErrors } = useFetchMachines(
+  const pageSize = DEFAULTS.pageSize;
+  const { machineCount, machines, machinesErrors } = useFetchMachines(
     parseFilters(filters),
     grouping,
+    pageSize,
+    currentPage,
     sortKey,
     mapSortDirection(sortDirection)
   );
@@ -116,11 +120,15 @@ const MachineList = ({
         setHiddenGroups={setHiddenGroups}
       />
       <MachineListTable
+        currentPage={currentPage}
         filter={searchFilter}
         grouping={grouping}
         hiddenGroups={hiddenGroups}
+        machineCount={machineCount}
         machines={machines}
+        pageSize={pageSize}
         selectedIDs={selectedIDs}
+        setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
         setSearchFilter={setSearchFilter}
         setSortDirection={setSortDirection}

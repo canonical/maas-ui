@@ -7,7 +7,9 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
-import MachineListTable from "app/machines/views/MachineList/MachineListTable";
+import MachineListTable, {
+  DEFAULTS,
+} from "app/machines/views/MachineList/MachineListTable";
 import machineSelectors from "app/store/machine/selectors";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
@@ -51,7 +53,11 @@ const TagMachines = (): JSX.Element => {
   return (
     <MachineListTable
       aria-label={Label.Machines}
+      currentPage={1}
+      machineCount={deployedMachines.length}
       machines={deployedMachines}
+      pageSize={DEFAULTS.pageSize}
+      setCurrentPage={() => null}
       setSortDirection={() => null}
       setSortKey={() => null}
       showActions={false}
