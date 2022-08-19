@@ -890,7 +890,7 @@ export const MachineListTable = ({
         }
         {...props}
       />
-      {machines.length > 0 && (
+      {(machineCount ?? 0) > 0 && (
         <Pagination
           aria-label={Label.Pagination}
           currentPage={currentPage}

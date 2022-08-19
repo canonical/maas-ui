@@ -7,7 +7,9 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
+import { DEFAULTS } from "./MachineListTable";
 
+import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
@@ -488,5 +490,48 @@ describe("MachineList", () => {
       type: "machine/setSelected",
       payload: [],
     });
+  });
+
+  it("can change pages", () => {
+    jest
+      .spyOn(reduxToolkit, "nanoid")
+      .mockReturnValueOnce("mocked-nanoid-1")
+      .mockReturnValueOnce("mocked-nanoid-2");
+    // Create two pages of machines.
+    state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
+      machineFactory()
+    );
+    state.machine.lists = {
+      "mocked-nanoid-2": machineStateListFactory({
+        count: state.machine.items.length,
+        groups: [
+          machineStateListGroupFactory({
+            // Insert the ids of all machines in the list's group.
+            items: state.machine.items.map(({ system_id }) => system_id),
+          }),
+        ],
+      }),
+    };
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    wrapper.find(".p-pagination__link--next").simulate("click");
+    const expected = machineActions.fetch("123456", {
+      page_number: 2,
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches).toHaveLength(2);
+    expect(fetches[fetches.length - 1].payload.params.page_number).toBe(2);
   });
 });
