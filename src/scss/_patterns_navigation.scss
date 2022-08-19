@@ -2,6 +2,10 @@
 @mixin maas-navigation {
   $breakpoint-hardware-menu: 1200px;
 
+  .p-navigation {
+    @include vf-animation('background-color');
+  }
+
   .p-navigation__hardware-menu {
     display: none;
 
