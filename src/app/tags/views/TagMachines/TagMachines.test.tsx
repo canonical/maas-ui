@@ -131,7 +131,9 @@ it("shows a spinner if the tag has not loaded yet", () => {
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
 });
 
-it("displays the machine list", () => {
+// Update to use the new API:
+// https://github.com/canonical/app-tribe/issues/1120
+it.skip("displays the machine list", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
