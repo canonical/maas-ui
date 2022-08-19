@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { screen } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -31,6 +32,8 @@ import {
   testStatus as testStatusFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
@@ -41,6 +44,7 @@ describe("MachineListTable", () => {
   let machines: Machine[] = [];
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     machines = [
       machineFactory({
         actions: [],
@@ -185,6 +189,21 @@ describe("MachineListTable", () => {
       machine: machineStateFactory({
         loaded: true,
         items: machines,
+        lists: {
+          "123456": machineStateListFactory({
+            loading: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: [machines[0].system_id, machines[2].system_id],
+                name: "Deployed",
+              }),
+              machineStateListGroupFactory({
+                items: [machines[1].system_id],
+                name: "Releasing",
+              }),
+            ],
+          }),
+        },
       }),
       resourcepool: resourcePoolStateFactory({
         loaded: true,
@@ -228,6 +247,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
@@ -260,6 +280,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
@@ -288,6 +309,38 @@ describe("MachineListTable", () => {
     ).toBe("Releasing");
   });
 
+  it("does not display a group header if the table is ungrouped", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              callId="123456"
+              currentPage={1}
+              filter=""
+              grouping={null}
+              hiddenGroups={[]}
+              machineCount={10}
+              machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
+              setHiddenGroups={jest.fn()}
+              setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find(".machine-list__group")).toHaveLength(0);
+  });
+
   it("can change machines to display PXE MAC instead of FQDN", () => {
     const store = mockStore(state);
     const wrapper = mount(
@@ -297,6 +350,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
@@ -344,6 +398,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               hiddenGroups={[]}
@@ -382,6 +437,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               hiddenGroups={[]}
@@ -420,6 +476,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               hiddenGroups={[]}
@@ -458,6 +515,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               hiddenGroups={[]}
@@ -496,6 +554,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               hiddenGroups={[]}
@@ -533,6 +592,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
@@ -558,7 +618,7 @@ describe("MachineListTable", () => {
         .find("[data-testid='group-cell'] .p-double-row__secondary-row")
         .at(0)
         .text()
-    ).toEqual("3 machines, 1 selected");
+    ).toEqual("2 machines, 1 selected");
   });
 
   describe("Machine selection", () => {
@@ -571,6 +631,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -606,6 +667,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -647,6 +709,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -688,6 +751,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -733,6 +797,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -779,6 +844,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -825,6 +891,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -871,6 +938,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -908,6 +976,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -954,6 +1023,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -1000,6 +1070,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 filter=""
                 grouping={FetchGroupKey.Status}
@@ -1041,6 +1112,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
@@ -1079,6 +1151,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter="in:selected"
               grouping={FetchGroupKey.Status}
@@ -1118,6 +1191,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter="in:selected"
               grouping={FetchGroupKey.Status}
@@ -1157,6 +1231,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               filter="in:selected"
               grouping={FetchGroupKey.Status}
@@ -1195,6 +1270,7 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
               currentPage={1}
               machineCount={10}
               machines={machines}
@@ -1231,6 +1307,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 hiddenColumns={["power", "zone"]}
                 machineCount={10}
@@ -1264,6 +1341,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 hiddenColumns={["fqdn"]}
                 machineCount={10}
@@ -1294,6 +1372,7 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
                 currentPage={1}
                 hiddenColumns={["fqdn"]}
                 machineCount={10}
@@ -1319,6 +1398,7 @@ describe("MachineListTable", () => {
   it("displays pagination if there are machines", () => {
     renderWithBrowserRouter(
       <MachineListTable
+        callId="123456"
         currentPage={1}
         machineCount={100}
         machines={machines}
@@ -1343,6 +1423,7 @@ describe("MachineListTable", () => {
   it("does not display pagination if there are no machines", () => {
     renderWithBrowserRouter(
       <MachineListTable
+        callId="123456"
         currentPage={1}
         machineCount={0}
         machines={[]}

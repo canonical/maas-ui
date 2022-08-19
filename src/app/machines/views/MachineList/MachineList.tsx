@@ -5,8 +5,6 @@ import cloneDeep from "clone-deep";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
-import { FetchSortDirection } from "../../../store/machine/types/actions";
-
 import ErrorsNotification from "./ErrorsNotification";
 import MachineListControls from "./MachineListControls";
 import MachineListTable, { DEFAULTS } from "./MachineListTable";
@@ -17,7 +15,7 @@ import { SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { FetchFilters } from "app/store/machine/types";
-import { FetchGroupKey } from "app/store/machine/types";
+import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
@@ -76,7 +74,7 @@ const MachineList = ({
     FetchGroupKey.Status
   );
   const pageSize = DEFAULTS.pageSize;
-  const { machineCount, machines, machinesErrors } = useFetchMachines(
+  const { callId, machineCount, machines, machinesErrors } = useFetchMachines(
     parseFilters(filters),
     grouping,
     pageSize,
@@ -84,7 +82,7 @@ const MachineList = ({
     sortKey,
     mapSortDirection(sortDirection)
   );
-  const [hiddenGroups, setHiddenGroups] = useStorageState<string[]>(
+  const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
     localStorage,
     "hiddenGroups",
     []
@@ -120,6 +118,7 @@ const MachineList = ({
         setHiddenGroups={setHiddenGroups}
       />
       <MachineListTable
+        callId={callId}
         currentPage={currentPage}
         filter={searchFilter}
         grouping={grouping}

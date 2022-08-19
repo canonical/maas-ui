@@ -96,6 +96,7 @@ export const useFetchMachines = (
   sortKey?: FetchGroupKey | null,
   sortDirection?: FetchSortDirection | null
 ): {
+  callId: string | null;
   machineCount: number | null;
   machines: Machine[];
   machinesErrors: APIError;
@@ -188,7 +189,7 @@ export const useFetchMachines = (
     sortKey,
   ]);
 
-  return { machineCount, machines, machinesErrors };
+  return { callId, machineCount, machines, machinesErrors };
 };
 
 /**
