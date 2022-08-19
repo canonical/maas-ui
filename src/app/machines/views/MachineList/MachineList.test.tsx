@@ -526,7 +526,7 @@ describe("MachineList", () => {
       machineFactory()
     );
     state.machine.lists = {
-      "mocked-nanoid-2": machineStateListFactory({
+      "mocked-nanoid-1": machineStateListFactory({
         count: state.machine.items.length,
         groups: [
           machineStateListGroupFactory({
