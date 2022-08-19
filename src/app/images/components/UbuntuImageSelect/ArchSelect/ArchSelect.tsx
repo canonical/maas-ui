@@ -13,6 +13,11 @@ import type {
 import { splitResourceName } from "app/store/bootresource/utils";
 import configSelectors from "app/store/config/selectors";
 
+export enum Labels {
+  NoReleaseSelected = "Please select a release to view the available architectures.",
+  OneArchMustBeSelected = "At least one architecture must be selected for the default commissioning release.",
+}
+
 type Props = {
   arches: BootResourceUbuntuArch[];
   release: BootResourceUbuntuRelease | BaseImageFields | null;
@@ -35,9 +40,7 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
     return (
       <Col className="p-divider__block" size={6}>
         <h4>Architectures</h4>
-        <p data-testid="no-release-selected">
-          Please select a release to view the available architectures.
-        </p>
+        <p data-testid="no-release-selected">{Labels.NoReleaseSelected}</p>
       </Col>
     );
   }
@@ -107,6 +110,7 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
         {arches.map((arch) => (
           <li className="p-list__item u-sv1" key={arch.name}>
             <Input
+              aria-label={arch.name}
               checked={isChecked(arch)}
               disabled={isDisabled(arch)}
               id={`arch-${arch.name}`}
@@ -118,7 +122,7 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
                       className="u-nudge-right--small"
                       message={
                         isLastCommissioningArch(arch)
-                          ? "At least one architecture must be selected for the default commissioning release."
+                          ? Labels.OneArchMustBeSelected
                           : `${arch.name} is not available on ${release.title}.`
                       }
                       positionElementClassName="u-display--inline"
