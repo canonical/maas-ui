@@ -1344,7 +1344,7 @@ describe("MachineListTable", () => {
     renderWithBrowserRouter(
       <MachineListTable
         currentPage={1}
-        machineCount={100}
+        machineCount={0}
         machines={[]}
         pageSize={20}
         setCurrentPage={jest.fn()}
