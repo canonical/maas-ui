@@ -1,34 +1,30 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
-import HardwareCard from "./HardwareCard";
+import HardwareCard, { Labels as HardwareCardLabels } from "./HardwareCard";
 
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 it("renders with system data", () => {
   const machine = machineDetailsFactory({ system_id: "abc123" });
   const state = rootStateFactory({
     machine: machineStateFactory({ items: [machine] }),
   });
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <HardwareCard node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(wrapper.find("Card")).toMatchSnapshot();
+  renderWithBrowserRouter(<HardwareCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
+
+  // Due to the way a labelled list is rendered, a snapshot unfortunately makes sense here.
+  // You can't check that the information is in the right place since the labels are detached
+  // from the values.
+  expect(
+    screen.getByLabelText(HardwareCardLabels.HardwareInfo)
+  ).toMatchSnapshot();
 });
 
 it("renders when system data is not available", () => {
@@ -36,19 +32,11 @@ it("renders when system data is not available", () => {
   const state = rootStateFactory({
     machine: machineStateFactory({ items: [machine] }),
   });
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <HardwareCard node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    wrapper
-      .find("ul .p-list__item-value")
-      .everyWhere((item) => !item.text() || item.text() === "Unknown")
-  ).toBe(true);
+  renderWithBrowserRouter(<HardwareCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
+
+  // Machine still has a BIOS boot mode, so we're looking for 9 instead of 10
+  expect(screen.getAllByText(HardwareCardLabels.Unknown).length).toBe(9);
 });
