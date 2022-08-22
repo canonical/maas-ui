@@ -16,27 +16,22 @@
       @include pseudo-border(left);
       grid-area: cpu;
       padding: $spv--large 0 0 0;
-      &::after {
-        top: $spv--large;
-      }
     }
 
     .overview-card__memory {
-      @include pseudo-border(left);
+      @media only screen and (min-width: ($breakpoint-large + 1)){
+        @include pseudo-border(left);
+      };
       grid-area: memory;
       padding: $spv--large 0 0 0;
-      &::after {
-        top: $spv--large;
-      }
     }
 
     .overview-card__storage {
-      @include pseudo-border(left);
+      @media only screen and (min-width: ($breakpoint-small + 1)){
+        @include pseudo-border(left);
+      };
       grid-area: storage;
       padding: $spv--large $sph--large 0 0;
-      &::after {
-        top: $spv--large;
-      }
     }
 
     .overview-card__test-warning {
@@ -48,27 +43,18 @@
       @include pseudo-border(left);
       grid-area: cpu-tests;
       padding: $spv--large 0;
-      &::after {
-        bottom: $spv--large;
-      }
     }
 
     .overview-card__memory-tests {
       @include pseudo-border(left);
       grid-area: memory-tests;
       padding: $spv--large 0;
-      &::after {
-        bottom: $spv--large;
-      }
     }
 
     .overview-card__storage-tests {
       @include pseudo-border(left);
       grid-area: storage-tests;
       padding: $spv--large $sph--large $spv--large 0;
-      &::after {
-        bottom: $spv--large;
-      }
     }
 
     .overview-card__details {
@@ -77,6 +63,7 @@
       grid-area: details;
       grid-template-rows: auto;
       padding: $spv--large $sph--large;
+      margin: 0 16px 0 16px ;
 
       &.for-controller {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
@@ -87,6 +74,7 @@
 
       &.for-machine {
         grid-template-columns: repeat(7, minmax(0, 1fr));
+        padding-left: 0;
       }
 
       > * {
@@ -126,22 +114,19 @@
         }
       }
 
-      .overview-card__cpu,
-      .overview-card__storage {
+      .overview-card__cpu {
         @include pseudo-border(left);
         padding: $spv--large $sph--large 0 0;
-        &::after {
-          top: $spv--large;
-        }
+      }
+
+      .overview-card__storage {
+        padding: $spv--large $sph--large 0 0;
       }
 
       .overview-card__cpu-tests,
       .overview-card__storage-tests {
         @include pseudo-border(left);
         padding: $spv--large $sph--large $spv--large 0;
-        &::after {
-          bottom: $spv--large;
-        }
       }
 
       .overview-card__memory {
@@ -149,10 +134,14 @@
         &::before {
           right: -#{map-get($grid-gutter-widths, default)};
         }
+        margin-left: 16px;
+        padding-left: 0;
       }
 
       .overview-card__storage {
         @include pseudo-border(top);
+        margin-right: 16px;
+        padding-right: 0;
       }
 
       .overview-card__details {
@@ -202,6 +191,16 @@
           left: 0;
           right: 0;
         }
+      }
+
+      .overview-card__memory {
+        padding: 16px 0 0 0;
+        margin-right: 16px;
+      }
+
+      .overview-card__storage {
+        padding: 16px 0 0 0;
+        margin-left: 16px;
       }
 
       .overview-card__test-warning,
