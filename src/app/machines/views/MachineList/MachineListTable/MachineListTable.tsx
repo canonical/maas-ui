@@ -1,4 +1,4 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import { memo, useCallback, useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import {
@@ -36,19 +36,18 @@ import { actions as generalActions } from "app/store/general";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { FetchGroupKey } from "app/store/machine/types";
-import type { Machine, MachineMeta } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineMeta,
+  MachineStateListGroup,
+} from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
+import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
-import { NodeStatusCode } from "app/store/types/node";
 import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
-import {
-  generateCheckboxHandlers,
-  groupAsMap,
-  simpleSortByKey,
-  someInArray,
-} from "app/utils";
+import { generateCheckboxHandlers, someInArray } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
 export const DEFAULTS = {
@@ -64,17 +63,18 @@ export enum Label {
 }
 
 type Props = {
+  callId?: string | null;
   currentPage: number;
   filter?: string;
   grouping?: FetchGroupKey | null;
   hiddenColumns?: string[];
-  hiddenGroups?: string[];
+  hiddenGroups?: (string | null)[];
   machineCount: number | null;
   machines: Machine[];
   pageSize: number;
   selectedIDs?: Machine[MachineMeta.PK][];
   setCurrentPage: (currentPage: number) => void;
-  setHiddenGroups?: (hiddenGroups: string[]) => void;
+  setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
   setSearchFilter?: (filter: string) => void;
   showActions?: boolean;
   sortDirection: ValueOf<typeof SortDirection>;
@@ -84,11 +84,6 @@ type Props = {
 };
 
 type TableColumn = MainTableCell & { key: string };
-
-type Group = {
-  machines: Machine[];
-  label: string;
-};
 
 type GenerateRowParams = {
   activeRow: Machine[MachineMeta.PK] | null;
@@ -297,162 +292,32 @@ const generateRows = ({
   });
 };
 
-const generateGroups = (
-  grouping: Props["grouping"],
-  machines: Machine[]
-): Group[] | null => {
-  if (grouping === "owner") {
-    const groupMap = groupAsMap(machines, (machine) => machine.owner);
-    return Array.from(groupMap)
-      .map(([label, machines]) => ({
-        label: label?.toString() || "No owner",
-        machines,
-      }))
-      .sort(simpleSortByKey("label"));
-  }
-
-  if (grouping === "pool") {
-    const groupMap = groupAsMap(machines, (machine) => machine.pool.name);
-    return Array.from(groupMap)
-      .map(([label, machines]) => ({
-        label: label?.toString() || "No pool",
-        machines,
-      }))
-      .sort(simpleSortByKey("label"));
-  }
-
-  if (grouping === "power_state") {
-    const groupMap = groupAsMap(machines, (machine) => machine.power_state);
-    return [
-      {
-        label: "Error",
-        machines: groupMap.get("error") || [],
-      },
-      {
-        label: "Off",
-        machines: groupMap.get("off") || [],
-      },
-      {
-        label: "On",
-        machines: groupMap.get("on") || [],
-      },
-      {
-        label: "Unknown",
-        machines: groupMap.get("unknown") || [],
-      },
-    ].filter((group) => group.machines.length);
-  }
-
-  if (grouping === "status") {
-    const groupMap = groupAsMap(machines, (machine) => machine.status_code);
-    return [
-      {
-        label: "Failed",
-        machines: [
-          ...(groupMap.get(NodeStatusCode.FAILED_COMMISSIONING) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_DEPLOYMENT) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_DISK_ERASING) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_ENTERING_RESCUE_MODE) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_EXITING_RESCUE_MODE) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_RELEASING) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_TESTING) || []),
-        ],
-      },
-      {
-        label: "New",
-        machines: groupMap.get(NodeStatusCode.NEW) || [],
-      },
-      {
-        label: "Commissioning",
-        machines: groupMap.get(NodeStatusCode.COMMISSIONING) || [],
-      },
-      {
-        label: "Testing",
-        machines: groupMap.get(NodeStatusCode.TESTING) || [],
-      },
-      {
-        label: "Ready",
-        machines: groupMap.get(NodeStatusCode.READY) || [],
-      },
-      {
-        label: "Allocated",
-        machines: groupMap.get(NodeStatusCode.ALLOCATED) || [],
-      },
-      {
-        label: "Deploying",
-        machines: groupMap.get(NodeStatusCode.DEPLOYING) || [],
-      },
-      {
-        label: "Deployed",
-        machines: groupMap.get(NodeStatusCode.DEPLOYED) || [],
-      },
-      {
-        label: "Rescue mode",
-        machines: [
-          ...(groupMap.get(NodeStatusCode.ENTERING_RESCUE_MODE) || []),
-          ...(groupMap.get(NodeStatusCode.EXITING_RESCUE_MODE) || []),
-          ...(groupMap.get(NodeStatusCode.RESCUE_MODE) || []),
-        ],
-      },
-      {
-        label: "Releasing",
-        machines: [
-          ...(groupMap.get(NodeStatusCode.DISK_ERASING) || []),
-          ...(groupMap.get(NodeStatusCode.RELEASING) || []),
-        ],
-      },
-      {
-        label: "Broken",
-        machines: groupMap.get(NodeStatusCode.BROKEN) || [],
-      },
-      {
-        label: "Other",
-        machines: [
-          ...(groupMap.get(NodeStatusCode.MISSING) || []),
-          ...(groupMap.get(NodeStatusCode.RESERVED) || []),
-          ...(groupMap.get(NodeStatusCode.RETIRED) || []),
-        ],
-      },
-    ].filter((group) => group.machines.length);
-  }
-
-  if (grouping === "zone") {
-    const groupMap = groupAsMap(machines, (machine) => machine.zone.name);
-    return Array.from(groupMap)
-      .map(([label, machines]) => ({
-        label: label?.toString() || "No zone",
-        machines,
-      }))
-      .sort(simpleSortByKey("label"));
-  }
-
-  return null;
-};
-
 const generateGroupRows = ({
+  grouping,
   groups,
   handleGroupCheckbox,
   hiddenGroups,
+  machines,
   selectedIDs,
   setHiddenGroups,
   showActions,
   hiddenColumns,
   ...rowProps
 }: {
-  groups: Group[];
+  grouping?: FetchGroupKey | null;
+  groups: MachineStateListGroup[] | null;
   handleGroupCheckbox: CheckboxHandlers<
     Machine[MachineMeta.PK]
   >["handleGroupCheckbox"];
   hiddenGroups: NonNullable<Props["hiddenGroups"]>;
   setHiddenGroups: Props["setHiddenGroups"];
-} & Omit<GenerateRowParams, "machines">) => {
+} & GenerateRowParams) => {
   let rows: MainTableRow[] = [];
 
-  groups.length &&
-    groups.forEach((group) => {
-      const { label, machines } = group;
-      const machineIDs = machines.map((machine) => machine.system_id);
-      const collapsed = hiddenGroups.includes(label);
+  groups?.forEach((group) => {
+    const { collapsed, items: machineIDs, name } = group;
+    // When the table is set to ungrouped then there are no group headers.
+    if (grouping) {
       rows.push({
         className: "machine-list__group",
         columns: [
@@ -473,12 +338,12 @@ const generateGroupRows = ({
                         }
                         handleGroupCheckbox={handleGroupCheckbox}
                         inRow
-                        inputLabel={<strong>{label}</strong>}
+                        inputLabel={<strong>{name}</strong>}
                         items={machineIDs}
                         selectedItems={selectedIDs}
                       />
                     ) : (
-                      <strong>{label}</strong>
+                      <strong>{name}</strong>
                     )
                   }
                   secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
@@ -495,11 +360,11 @@ const generateGroupRows = ({
                       if (collapsed) {
                         setHiddenGroups &&
                           setHiddenGroups(
-                            hiddenGroups.filter((group) => group !== label)
+                            hiddenGroups.filter((group) => group !== name)
                           );
                       } else {
                         setHiddenGroups &&
-                          setHiddenGroups(hiddenGroups.concat([label]));
+                          setHiddenGroups(hiddenGroups.concat([name]));
                       }
                     }}
                   >
@@ -515,21 +380,34 @@ const generateGroupRows = ({
           },
         ],
       });
-      const visibleMachines = collapsed ? [] : machines;
-      rows = rows.concat(
-        generateRows({
-          ...rowProps,
-          machines: visibleMachines,
-          selectedIDs,
-          showActions,
-          hiddenColumns,
-        })
-      );
-    });
+    }
+    // Get the machines in this group using the list of machine ids provided by the group.
+    const visibleMachines = collapsed
+      ? []
+      : machineIDs.reduce<Machine[]>((groupMachines, systemId) => {
+          const machine = machines.find(
+            ({ system_id }) => system_id === systemId
+          );
+          if (machine) {
+            groupMachines.push(machine);
+          }
+          return groupMachines;
+        }, []);
+    rows = rows.concat(
+      generateRows({
+        ...rowProps,
+        machines: visibleMachines,
+        selectedIDs,
+        showActions,
+        hiddenColumns,
+      })
+    );
+  });
   return rows;
 };
 
 export const MachineListTable = ({
+  callId,
   currentPage,
   filter = "",
   grouping,
@@ -551,6 +429,9 @@ export const MachineListTable = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const machinesLoaded = useSelector(machineSelectors.loaded);
+  const groups = useSelector((state: RootState) =>
+    machineSelectors.listGroups(state, callId)
+  );
   const machineIDs = machines.map((machine) => machine.system_id);
   const currentSort = {
     direction: sortDirection,
@@ -573,10 +454,6 @@ export const MachineListTable = ({
     null
   );
   const [showMAC, setShowMAC] = useState(false);
-  const groups = useMemo(
-    () => generateGroups(grouping, machines),
-    [grouping, machines]
-  );
   const removeSelectedFilter = () => {
     const filters = FilterMachines.getCurrentFilters(filter);
     const newFilters = FilterMachines.toggleFilter(
@@ -847,26 +724,17 @@ export const MachineListTable = ({
     },
   ];
 
-  let rows: MainTableRow[] | null = null;
-
-  if (!grouping) {
-    rows = generateRows({
-      machines,
-      selectedIDs,
-      hiddenColumns,
-      ...rowProps,
-    });
-  } else if (groups) {
-    rows = generateGroupRows({
-      groups,
-      handleGroupCheckbox,
-      hiddenGroups,
-      selectedIDs,
-      setHiddenGroups,
-      hiddenColumns,
-      ...rowProps,
-    });
-  }
+  const rows = generateGroupRows({
+    grouping,
+    groups,
+    handleGroupCheckbox,
+    hiddenGroups,
+    machines,
+    selectedIDs,
+    setHiddenGroups,
+    hiddenColumns,
+    ...rowProps,
+  });
 
   return (
     <>

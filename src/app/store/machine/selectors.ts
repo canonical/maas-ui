@@ -397,6 +397,40 @@ const listCount = createSelector(
 );
 
 /**
+ * Get a group in a machine list request with a given callId.
+ */
+const listGroup = createSelector(
+  [
+    machineState,
+    (
+      _state: RootState,
+      callId: string | null | undefined,
+      name: FilterGroupOptionType | null | undefined
+    ) => ({
+      callId,
+      name,
+    }),
+  ],
+  (machineState, { callId, name }) =>
+    (callId &&
+      getList(machineState, callId)?.groups?.find(
+        (group) => group.name === name
+      )) ||
+    null
+);
+
+/**
+ * Get the groups for a machine list request with a given callId.
+ */
+const listGroups = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.groups || null
+);
+
+/**
  * Get machines in a list request.
  * @param state - The redux state.
  * @param callId - A list request id.
@@ -425,29 +459,6 @@ const list = createSelector(
     });
     return machines;
   }
-);
-
-/**
- * Get the count for a machine list request with a given callId.
- */
-const listGroup = createSelector(
-  [
-    machineState,
-    (
-      _state: RootState,
-      callId: string | null | undefined,
-      name: FilterGroupOptionType | null | undefined
-    ) => ({
-      callId,
-      name,
-    }),
-  ],
-  (machineState, { callId, name }) =>
-    (callId &&
-      getList(machineState, callId)?.groups?.find(
-        (group) => group.name === name
-      )) ||
-    null
 );
 
 /**
@@ -539,6 +550,7 @@ const selectors = {
   listCount,
   listErrors,
   listGroup,
+  listGroups,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],

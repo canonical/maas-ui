@@ -10,6 +10,7 @@ import MachineList from "./MachineList";
 import { DEFAULTS } from "./MachineListTable";
 
 import { actions as machineActions } from "app/store/machine";
+import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
@@ -191,7 +192,12 @@ describe("MachineList", () => {
             loading: true,
             groups: [
               machineStateListGroupFactory({
-                items: machines.map(({ system_id }) => system_id),
+                items: [machines[0].system_id, machines[2].system_id],
+                name: "Deployed",
+              }),
+              machineStateListGroupFactory({
+                items: [machines[1].system_id],
+                name: "Releasing",
               }),
             ],
           }),
@@ -205,7 +211,9 @@ describe("MachineList", () => {
     jest.restoreAllMocks();
   });
 
-  it("can filter groups", () => {
+  // TODO: handle expanding and collapsing via the API:
+  // https://github.com/canonical/app-tribe/issues/1123
+  it.skip("can filter groups", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -226,6 +234,25 @@ describe("MachineList", () => {
   });
 
   it("can change groups", () => {
+    jest
+      .spyOn(reduxToolkit, "nanoid")
+      .mockReturnValueOnce("mocked-nanoid-1")
+      .mockReturnValueOnce("mocked-nanoid-2");
+    // Create two pages of machines.
+    state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
+      machineFactory()
+    );
+    state.machine.lists = {
+      "mocked-nanoid-2": machineStateListFactory({
+        count: state.machine.items.length,
+        groups: [
+          machineStateListGroupFactory({
+            // Insert the ids of all machines in the list's group.
+            items: state.machine.items.map(({ system_id }) => system_id),
+          }),
+        ],
+      }),
+    };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -238,18 +265,21 @@ describe("MachineList", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(
-      wrapper.find(".machine-list__group").at(0).find("strong").text()
-    ).toBe("Deployed");
     // Change grouping to owner
     wrapper
       .find('Select[name="machine-groupings"]')
       .find("select")
-      .simulate("change", { target: { value: "owner" } });
-    expect(
-      wrapper.find(".machine-list__group").at(0).find("strong").text()
-    ).toBe("admin");
+      .simulate("change", { target: { value: FetchGroupKey.Owner } });
+    const expected = machineActions.fetch("123456", {
+      group_key: FetchGroupKey.Owner,
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches).toHaveLength(2);
+    expect(fetches[fetches.length - 1].payload.params.group_key).toBe(
+      FetchGroupKey.Owner
+    );
   });
 
   it("can store the group in local storage", () => {
@@ -295,7 +325,9 @@ describe("MachineList", () => {
     ).toBe("owner");
   });
 
-  it("can store hidden groups in local storage", () => {
+  // TODO: handle expanding and collapsing via the API:
+  // https://github.com/canonical/app-tribe/issues/1123
+  it.skip("can store hidden groups in local storage", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -432,15 +464,9 @@ describe("MachineList", () => {
   it("displays a message if there are no search results", () => {
     state.machine.lists = {
       "123456": machineStateListFactory({
+        count: 0,
         loading: true,
-        groups: [
-          machineStateListGroupFactory({
-            collapsed: true,
-            count: 4,
-            items: [],
-            name: "admin",
-          }),
-        ],
+        groups: [],
       }),
     };
     const store = mockStore(state);
