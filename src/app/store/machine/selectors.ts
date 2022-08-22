@@ -3,7 +3,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Tag, TagMeta } from "../tag/types";
 
-import type { MachineStateCount } from "./types/base";
+import type { FilterGroupOptionType, MachineStateCount } from "./types";
 
 import { ACTIONS } from "app/store/machine/slice";
 import { MachineMeta } from "app/store/machine/types";
@@ -428,6 +428,29 @@ const list = createSelector(
 );
 
 /**
+ * Get the count for a machine list request with a given callId.
+ */
+const listGroup = createSelector(
+  [
+    machineState,
+    (
+      _state: RootState,
+      callId: string | null | undefined,
+      name: FilterGroupOptionType | null | undefined
+    ) => ({
+      callId,
+      name,
+    }),
+  ],
+  (machineState, { callId, name }) =>
+    (callId &&
+      getList(machineState, callId)?.groups?.find(
+        (group) => group.name === name
+      )) ||
+    null
+);
+
+/**
  * Get the ids of machines in a list or details call that are not being used
  * by other calls.
  * @param state - The redux state.
@@ -515,6 +538,7 @@ const selectors = {
   list,
   listCount,
   listErrors,
+  listGroup,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],
