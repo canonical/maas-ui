@@ -90,27 +90,6 @@ it("renders a zone label without edit permissions", () => {
   expect(screen.getByText("danger")).toBeInTheDocument();
 });
 
-it("renders the node's BIOS boot mode", () => {
-  const machine = machineDetailsFactory({
-    bios_boot_method: "uefi",
-  });
-  state.machine.items = [machine];
-
-  renderWithMockStore(
-    <MemoryRouter
-      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-    >
-      <CompatRouter>
-        <DetailsCard node={machine} />
-      </CompatRouter>
-    </MemoryRouter>,
-    { state }
-  );
-
-  expect(screen.getByText(DetailsCardLabels.BiosBootMode)).toBeInTheDocument();
-  expect(screen.getByText("UEFI")).toBeInTheDocument();
-});
-
 it("renders a formatted power type", () => {
   const machine = machineDetailsFactory({
     power_type: PowerTypeNames.LXD,
