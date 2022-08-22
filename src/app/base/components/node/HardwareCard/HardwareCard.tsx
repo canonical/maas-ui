@@ -20,7 +20,7 @@ export enum Labels {
   MainboardVendor = "Vendor",
   MainboardProduct = "Product",
   MainboardFirmware = "Firmware",
-  BiosBootMode = "BIOS boot mode",
+  BiosBootMode = "Boot mode",
   MainboardVersion = "Version",
   Date = "Date",
 }
