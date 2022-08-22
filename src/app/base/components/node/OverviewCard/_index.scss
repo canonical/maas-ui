@@ -13,7 +13,9 @@
     }
 
     .overview-card__cpu {
-      @include pseudo-border(left);
+      @media only screen and (min-width: ($breakpoint-small + 1)){
+        @include pseudo-border(left);
+      };
       grid-area: cpu;
       padding: $spv--large 0 0 0;
     }
@@ -63,7 +65,7 @@
       grid-area: details;
       grid-template-rows: auto;
       padding: $spv--large $sph--large;
-      margin: 0 16px 0 16px ;
+      margin: 0 1rem 0 1rem ;
 
       &.for-controller {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
@@ -115,7 +117,9 @@
       }
 
       .overview-card__cpu {
-        @include pseudo-border(left);
+        @media only screen and (min-width: ($breakpoint-small + 1)){
+          @include pseudo-border(left);
+        };
         padding: $spv--large $sph--large 0 0;
       }
 
@@ -134,13 +138,13 @@
         &::before {
           right: -#{map-get($grid-gutter-widths, default)};
         }
-        margin-left: 16px;
+        margin-left: 1rem;
         padding-left: 0;
       }
 
       .overview-card__storage {
         @include pseudo-border(top);
-        margin-right: 16px;
+        margin-right: 1rem;
         padding-right: 0;
       }
 
@@ -193,14 +197,20 @@
         }
       }
 
+      .overview-card__cpu {
+        padding: 1rem 0 0 0;
+        margin-left: 1rem;
+        margin-right: 1rem;
+      }
+
       .overview-card__memory {
-        padding: 16px 0 0 0;
-        margin-right: 16px;
+        padding: 1rem 0 0 0;
+        margin-right: 1rem;
       }
 
       .overview-card__storage {
-        padding: 16px 0 0 0;
-        margin-left: 16px;
+        padding: 1rem 0 0 0;
+        margin-left: 1rem;
       }
 
       .overview-card__test-warning,
