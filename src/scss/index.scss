@@ -83,6 +83,7 @@
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/Meter";
+@import "~app/base/components/node/HardwareCard";
 @import "~app/base/components/node/networking/NetworkTable";
 @import "~app/base/components/node/NodeDevices";
 @import "~app/base/components/node/NodeLogs/DownloadMenu";
@@ -112,6 +113,7 @@
 @include FilterAccordion;
 @include FormCard;
 @include FormikFormButtons;
+@include HardwareCard;
 @include Header;
 @include LabelledList;
 @include Login;

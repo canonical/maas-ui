@@ -1,0 +1,17 @@
+@mixin HardwareCard {
+    .hardware-card {
+        padding: 15px 0 15px 0;
+
+        .hardware-card__system {
+            margin: 0 0 0 15px;
+        }
+
+        .hardware-card__mainboard {
+            margin: 0 0 0 15px;
+        }
+
+        .hardware-card__title {
+            margin: 0 0 0 15px;
+        }
+    }
+}
