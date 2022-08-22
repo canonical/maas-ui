@@ -28,7 +28,6 @@ export enum Labels {
   Host = "Host",
   Zone = "Zone",
   ZoneLink = "Zone ›",
-  BiosBootMode = "BIOS boot mode",
   Pool = "Resource pool",
   PoolLink = "Resource pool ›",
   PowerType = "Power type",
@@ -120,16 +119,6 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           )}
         </div>
         <span title={node.zone.name}>{node.zone.name}</span>
-      </div>
-      <div>
-        <div className="u-text--muted">{Labels.BiosBootMode}</div>
-        <span
-          title={
-            node.bios_boot_method ? node.bios_boot_method.toUpperCase() : "-"
-          }
-        >
-          {node.bios_boot_method ? node.bios_boot_method.toUpperCase() : "-"}
-        </span>
       </div>
       {isMachine && (
         <div data-testid="resource-pool">
