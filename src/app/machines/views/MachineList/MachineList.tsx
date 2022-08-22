@@ -74,14 +74,15 @@ const MachineList = ({
     FetchGroupKey.Status
   );
   const pageSize = DEFAULTS.pageSize;
-  const { callId, machineCount, machines, machinesErrors } = useFetchMachines(
-    parseFilters(filters),
-    grouping,
-    pageSize,
-    currentPage,
-    sortKey,
-    mapSortDirection(sortDirection)
-  );
+  const { callId, loading, machineCount, machines, machinesErrors } =
+    useFetchMachines(
+      parseFilters(filters),
+      grouping,
+      pageSize,
+      currentPage,
+      sortKey,
+      mapSortDirection(sortDirection)
+    );
   const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
     localStorage,
     "hiddenGroups",
@@ -125,6 +126,7 @@ const MachineList = ({
         hiddenGroups={hiddenGroups}
         machineCount={machineCount}
         machines={machines}
+        machinesLoading={loading}
         pageSize={pageSize}
         selectedIDs={selectedIDs}
         setCurrentPage={setCurrentPage}

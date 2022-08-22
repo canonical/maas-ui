@@ -431,6 +431,28 @@ const listGroups = createSelector(
 );
 
 /**
+ * Get the loaded state for a machine list request with a given callId.
+ */
+const listLoaded = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.loaded ?? false
+);
+
+/**
+ * Get the loading stateo for a machine list request with a given callId.
+ */
+const listLoading = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.loading ?? false
+);
+
+/**
  * Get machines in a list request.
  * @param state - The redux state.
  * @param callId - A list request id.
@@ -551,6 +573,8 @@ const selectors = {
   listErrors,
   listGroup,
   listGroups,
+  listLoaded,
+  listLoading,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],

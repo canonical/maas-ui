@@ -97,6 +97,8 @@ export const useFetchMachines = (
   sortDirection?: FetchSortDirection | null
 ): {
   callId: string | null;
+  loaded: boolean;
+  loading: boolean;
   machineCount: number | null;
   machines: Machine[];
   machinesErrors: APIError;
@@ -118,6 +120,12 @@ export const useFetchMachines = (
   );
   const machinesErrors = useSelector((state: RootState) =>
     machineSelectors.listErrors(state, callId)
+  );
+  const loaded = useSelector((state: RootState) =>
+    machineSelectors.listLoaded(state, callId)
+  );
+  const loading = useSelector((state: RootState) =>
+    machineSelectors.listLoading(state, callId)
   );
   useCleanup(callId);
 
@@ -189,7 +197,7 @@ export const useFetchMachines = (
     sortKey,
   ]);
 
-  return { callId, machineCount, machines, machinesErrors };
+  return { callId, loaded, loading, machineCount, machines, machinesErrors };
 };
 
 /**

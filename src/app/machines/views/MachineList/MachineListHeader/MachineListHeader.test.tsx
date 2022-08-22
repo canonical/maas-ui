@@ -29,7 +29,6 @@ describe("MachineListHeader", () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     state = rootStateFactory({
       machine: machineStateFactory({
-        loaded: true,
         counts: machineStateCountsFactory({
           "mocked-nanoid": machineStateCountFactory({
             count: 2,
@@ -54,7 +53,13 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a loader if machines have not loaded", () => {
-    state.machine.loaded = false;
+    state.machine.counts = machineStateCountsFactory({
+      "mocked-nanoid": machineStateCountFactory({
+        count: 2,
+        loaded: false,
+        loading: true,
+      }),
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

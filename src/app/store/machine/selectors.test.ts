@@ -594,6 +594,32 @@ describe("machine selectors", () => {
     expect(machine.listGroup(state, "123456", "")).toStrictEqual(groups[1]);
   });
 
+  it("can get the loaded state for a list", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          "123456": machineStateListFactory({
+            loaded: true,
+          }),
+        },
+      }),
+    });
+    expect(machine.listLoaded(state, "123456")).toBe(true);
+  });
+
+  it("can get the loading state for a list", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          "123456": machineStateListFactory({
+            loading: true,
+          }),
+        },
+      }),
+    });
+    expect(machine.listLoading(state, "123456")).toBe(true);
+  });
+
   it("can get an interface by id", () => {
     const nic = machineInterfaceFactory({
       type: NetworkInterfaceTypes.PHYSICAL,
