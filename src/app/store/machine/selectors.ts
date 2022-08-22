@@ -161,6 +161,16 @@ const selected = createSelector(
 );
 
 /**
+ * Returns selected machines.
+ * @param {RootState} state - The redux state.
+ * @returns {Machine[]} Selected machines.
+ */
+const selectedMachines = createSelector(
+  [machineState],
+  ({ selectedMachines }) => selectedMachines
+);
+
+/**
  * Returns machines that are neither active nor selected.
  * @param state - The redux state.
  * @returns Unselected machines.
@@ -513,6 +523,7 @@ const selectors = {
   releasing: statusSelectors["releasing"],
   selected,
   selectedIDs,
+  selectedMachines,
   settingPool: statusSelectors["settingPool"],
   settingZone: statusSelectors["settingZone"],
   statuses,
