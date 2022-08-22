@@ -185,11 +185,10 @@ describe("MachineList", () => {
         },
       }),
       machine: machineStateFactory({
-        loaded: true,
         items: machines,
         lists: {
           "123456": machineStateListFactory({
-            loading: true,
+            loaded: true,
             groups: [
               machineStateListGroupFactory({
                 items: [machines[0].system_id, machines[2].system_id],
@@ -465,8 +464,14 @@ describe("MachineList", () => {
     state.machine.lists = {
       "123456": machineStateListFactory({
         count: 0,
-        loading: true,
-        groups: [],
+        groups: [
+          machineStateListGroupFactory({
+            collapsed: true,
+            count: 4,
+            items: [],
+            name: "admin",
+          }),
+        ],
       }),
     };
     const store = mockStore(state);

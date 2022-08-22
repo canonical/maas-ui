@@ -253,6 +253,23 @@ describe("machine hook utils", () => {
       expect(result.current.machines).toStrictEqual(machines);
     });
 
+    it("returns the loaded and loading states", () => {
+      state.machine = machineStateFactory({
+        lists: {
+          "mocked-nanoid-1": machineStateListFactory({
+            loaded: false,
+            loading: true,
+          }),
+        },
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useFetchMachines(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current.loaded).toBe(false);
+      expect(result.current.loading).toBe(true);
+    });
+
     it("does not fetch again with no params", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(() => useFetchMachines(), {

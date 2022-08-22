@@ -187,7 +187,6 @@ describe("MachineListTable", () => {
         }),
       }),
       machine: machineStateFactory({
-        loaded: true,
         items: machines,
         lists: {
           "123456": machineStateListFactory({
@@ -238,7 +237,6 @@ describe("MachineListTable", () => {
   });
 
   it("displays a loading component if machines are loading", () => {
-    state.machine.loaded = false;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -254,6 +252,7 @@ describe("MachineListTable", () => {
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
+              machinesLoading
               pageSize={20}
               setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}

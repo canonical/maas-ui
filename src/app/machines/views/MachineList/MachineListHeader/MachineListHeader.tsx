@@ -19,10 +19,7 @@ import type {
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import machineSelectors from "app/store/machine/selectors";
-import {
-  useFetchMachineCount,
-  useFetchMachines,
-} from "app/store/machine/utils/hooks";
+import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
@@ -38,15 +35,13 @@ export const MachineListHeader = ({
   setHeaderContent,
 }: Props): JSX.Element => {
   const location = useLocation();
-  const machinesLoaded = useSelector(machineSelectors.loaded);
   const selectedMachines = useSelector(machineSelectors.selected);
   const [tagsSeen, setTagsSeen] = useStorageState(
     localStorage,
     "machineViewTagsSeen",
     false
   );
-  const { machineCount } = useFetchMachineCount();
-  useFetchMachines();
+  const { machineCount, machineCountLoading } = useFetchMachineCount();
 
   useEffect(() => {
     if (location.pathname !== urls.machines.index) {
@@ -117,7 +112,7 @@ export const MachineListHeader = ({
           selected={selectedMachines.length}
         />
       }
-      subtitleLoading={!machinesLoaded}
+      subtitleLoading={machineCountLoading}
       title={getHeaderTitle("Machines", headerContent)}
     />
   );

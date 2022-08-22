@@ -71,6 +71,7 @@ type Props = {
   hiddenGroups?: (string | null)[];
   machineCount: number | null;
   machines: Machine[];
+  machinesLoading?: boolean | null;
   pageSize: number;
   selectedIDs?: Machine[MachineMeta.PK][];
   setCurrentPage: (currentPage: number) => void;
@@ -415,6 +416,7 @@ export const MachineListTable = ({
   hiddenGroups = [],
   machineCount,
   machines,
+  machinesLoading,
   pageSize,
   selectedIDs = [],
   setCurrentPage,
@@ -428,7 +430,6 @@ export const MachineListTable = ({
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const machinesLoaded = useSelector(machineSelectors.loaded);
   const groups = useSelector((state: RootState) =>
     machineSelectors.listGroups(state, callId)
   );
@@ -744,7 +745,7 @@ export const MachineListTable = ({
           "machine-list--grouped": grouping,
         })}
         emptyStateMsg={
-          !machinesLoaded ? (
+          machinesLoading ? (
             <Spinner text="Loading..." />
           ) : filter ? (
             "No machines match the search criteria."
