@@ -12,7 +12,7 @@ import configSelectors from "app/store/config/selectors";
 
 const DnsSchema = Yup.object().shape({
   // TODO: Client-side IP validation, or display error from server
-  // https://github.com/canonical-web-and-design/maas-ui/issues/39
+  // https://github.com/canonical/maas-ui/issues/39
   upstream_dns: Yup.string(),
   dnssec_validation: Yup.string().required(),
   dns_trusted_acl: Yup.string(),

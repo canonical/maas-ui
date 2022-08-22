@@ -47,7 +47,7 @@ export const canBePartitioned = (disk: Disk | null): boolean => {
   }
 
   // TODO: This does not take into account space that needs to be reserved.
-  // https://github.com/canonical-web-and-design/MAAS-squad/issues/2274
+  // https://github.com/canonical/MAAS-squad/issues/2274
   return disk.available_size >= MIN_PARTITION_SIZE;
 };
 

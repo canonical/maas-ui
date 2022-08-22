@@ -22,7 +22,7 @@ Please try to adhere to semantic versioning when creating a release. Although re
 
 Create a new branch from main using the MAAS version as the name (e.g. `git checkout -b 3.2 main`).
 
-Push the branch to the repo at `canonical-web-and-design/maas-ui`.
+Push the branch to the repo at `canonical/maas-ui`.
 
 #### Update the version
 
@@ -59,4 +59,4 @@ Create a new branch of main and update the version in all package.jsons to the n
 
 #### Add branch protection
 
-Create new branch protection rules for the new version branch, copying the rules from the previous branch: https://github.com/canonical-web-and-design/maas-ui/settings/branches.
+Create new branch protection rules for the new version branch, copying the rules from the previous branch: https://github.com/canonical/maas-ui/settings/branches.

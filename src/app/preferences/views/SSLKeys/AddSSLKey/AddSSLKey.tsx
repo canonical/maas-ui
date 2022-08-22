@@ -21,7 +21,7 @@ export enum Label {
 }
 
 // This can be removed when the autoComplete prop is supported:
-// https://github.com/canonical-web-and-design/react-components/issues/571
+// https://github.com/canonical/react-components/issues/571
 const ProxyTextarea = (
   props: TextareaProps & { autoComplete?: "off" | "on" }
 ) => <Textarea {...props} />;
