@@ -464,14 +464,7 @@ describe("MachineList", () => {
     state.machine.lists = {
       "123456": machineStateListFactory({
         count: 0,
-        groups: [
-          machineStateListGroupFactory({
-            collapsed: true,
-            count: 4,
-            items: [],
-            name: "admin",
-          }),
-        ],
+        groups: [],
       }),
     };
     const store = mockStore(state);
