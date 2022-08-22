@@ -97,8 +97,8 @@ export const useFetchMachines = (
   sortDirection?: FetchSortDirection | null
 ): {
   callId: string | null;
-  loaded: boolean | null;
-  loading: boolean | null;
+  loaded: boolean;
+  loading: boolean;
   machineCount: number | null;
   machines: Machine[];
   machinesErrors: APIError;

@@ -438,7 +438,7 @@ const listLoaded = createSelector(
     machineState,
     (_state: RootState, callId: string | null | undefined) => callId,
   ],
-  (machineState, callId) => getList(machineState, callId)?.loaded ?? null
+  (machineState, callId) => getList(machineState, callId)?.loaded ?? false
 );
 
 /**
@@ -449,7 +449,7 @@ const listLoading = createSelector(
     machineState,
     (_state: RootState, callId: string | null | undefined) => callId,
   ],
-  (machineState, callId) => getList(machineState, callId)?.loading ?? null
+  (machineState, callId) => getList(machineState, callId)?.loading ?? false
 );
 
 /**
