@@ -270,15 +270,10 @@ export type MachineStateCount = {
 
 export type MachineStateCounts = Record<string, MachineStateCount>;
 
-type SelectedMachinesGroup = {
-  key: FilterGroup;
-  option: FilterGroupOptionType;
-};
-
 export type SelectedMachines =
   | {
       items?: Machine[MachineMeta.PK][];
-      groups?: SelectedMachinesGroup[];
+      groups?: FilterGroupOptionType[];
     }
   | { filter: FetchFilters };
 

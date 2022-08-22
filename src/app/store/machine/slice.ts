@@ -1,7 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { MachineMeta } from "./types";
 import type {
   Action,
   ApplyStorageLayoutParams,
@@ -57,9 +56,11 @@ import type {
   UpdateFilesystemParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
+  FetchFilters,
+  FetchGroupKey,
+  SelectedMachines,
 } from "./types";
-import type { FetchFilters, FetchGroupKey } from "./types/actions";
-import { FilterGroupType } from "./types/base";
+import { MachineMeta, FilterGroupType } from "./types";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { UpdateInterfaceParams } from "app/store/types/node";
@@ -1625,6 +1626,20 @@ const machineSlice = createSlice({
         action: PayloadAction<Machine[MachineMeta.PK][]>
       ) => {
         state.selected = action.payload;
+      },
+    },
+    // TODO: rename this to setSelected once everything has been migrated to the
+    // new selected type.
+    // https://github.com/canonical/app-tribe/issues/1256
+    setSelectedMachines: {
+      prepare: (selected: SelectedMachines | null) => ({
+        payload: selected,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<SelectedMachines | null>
+      ) => {
+        state.selectedMachines = action.payload;
       },
     },
     setZone: generateActionParams<SetZoneParams>(NodeActions.SET_ZONE),

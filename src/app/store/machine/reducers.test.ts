@@ -1069,6 +1069,21 @@ describe("machine reducer", () => {
     );
   });
 
+  it("reduces setSelectedMachines", () => {
+    const initialState = machineStateFactory({ selected: [] });
+
+    expect(
+      reducers(
+        initialState,
+        actions.setSelectedMachines({ items: ["abcde", "fghij"] })
+      )
+    ).toEqual(
+      machineStateFactory({
+        selectedMachines: { items: ["abcde", "fghij"] },
+      })
+    );
+  });
+
   describe("setPool", () => {
     it("reduces setPoolStart", () => {
       const machines = [
