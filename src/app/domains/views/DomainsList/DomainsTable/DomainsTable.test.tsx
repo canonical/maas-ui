@@ -1,33 +1,26 @@
-import type { ReactWrapper } from "enzyme";
-import { mount } from "enzyme";
+import { screen, render, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DomainsTable from "./DomainsTable";
+import DomainsTable, { Labels as DomainsTableLabels } from "./DomainsTable";
 
-import TableConfirm from "app/base/components/TableConfirm";
 import type { RootState } from "app/store/root/types";
 import {
   domain as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
-const getNameFromTable = (rowNumber: number, wrapper: ReactWrapper) =>
-  wrapper
-    .find("tbody TableRow")
-    .at(rowNumber)
-    .find("[data-testid='domain-name']")
-    .first(); // both TableCell and td have the same data-testid value
-
 describe("DomainsTable", () => {
-  let initialState: RootState;
+  let state: RootState;
   beforeEach(() => {
-    initialState = rootStateFactory({
+    state = rootStateFactory({
       domain: domainStateFactory({
         items: [
           domainFactory({
@@ -50,66 +43,50 @@ describe("DomainsTable", () => {
     });
   });
 
-  it("can update the sort order", () => {
-    const store = mockStore(initialState);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DomainsTable />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+  it("can update the sort order", async () => {
+    renderWithBrowserRouter(<DomainsTable />, {
+      route: "/domains",
+      wrapperProps: { state },
+    });
+
+    const sortButton = screen.getByRole("columnheader", { name: "Domain" });
 
     // Sorted ascending by name by default
-    expect(getNameFromTable(0, wrapper).text()).toBe("a");
-    expect(getNameFromTable(1, wrapper).text()).toBe("b (default)");
-    expect(getNameFromTable(2, wrapper).text()).toBe("c");
+    let rows = screen.getAllByRole("row");
+    expect(within(rows[1]).getByText("a")).toBeInTheDocument();
+    expect(within(rows[2]).getByText("b (default)")).toBeInTheDocument();
+    expect(within(rows[3]).getByText("c")).toBeInTheDocument();
 
     // Change to sort descending by name
-    wrapper
-      .find("[data-testid='domain-name-header']")
-      .first()
-      .simulate("click");
-    expect(getNameFromTable(0, wrapper).text()).toBe("c");
-    expect(getNameFromTable(1, wrapper).text()).toBe("b (default)");
-    expect(getNameFromTable(2, wrapper).text()).toBe("a");
+    await userEvent.click(sortButton);
+    rows = screen.getAllByRole("row");
+    expect(within(rows[1]).getByText("c")).toBeInTheDocument();
+    expect(within(rows[2]).getByText("b (default)")).toBeInTheDocument();
+    expect(within(rows[3]).getByText("a")).toBeInTheDocument();
 
     // Change to no sort
-    wrapper
-      .find("[data-testid='domain-name-header']")
-      .first()
-      .simulate("click");
-    expect(getNameFromTable(0, wrapper).text()).toBe("b (default)");
-    expect(getNameFromTable(1, wrapper).text()).toBe("c");
-    expect(getNameFromTable(2, wrapper).text()).toBe("a");
+    await userEvent.click(sortButton);
+    rows = screen.getAllByRole("row");
+    expect(within(rows[1]).getByText("b (default)")).toBeInTheDocument();
+    expect(within(rows[2]).getByText("c")).toBeInTheDocument();
+    expect(within(rows[3]).getByText("a")).toBeInTheDocument();
   });
 
   it("has a (defaut) next to the default domain's title", () => {
-    const store = mockStore(initialState);
+    renderWithBrowserRouter(<DomainsTable />, {
+      route: "/domains",
+      wrapperProps: { state },
+    });
 
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DomainsTable />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(getNameFromTable(1, wrapper).text()).toBe("b (default)");
+    expect(
+      within(screen.getByRole("row", { name: "b" })).getByText("b (default)")
+    ).toBeInTheDocument();
   });
 
-  it("calls the setDefault action if set default is clicked", () => {
-    const store = mockStore(initialState);
+  it("calls the setDefault action if set default is clicked", async () => {
+    const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/domains", key: "testKey" }]}
@@ -121,11 +98,28 @@ describe("DomainsTable", () => {
       </Provider>
     );
 
-    wrapper
-      .find("tbody TableRow")
-      .first()
-      .find(TableConfirm)
-      .invoke("onConfirm")();
+    let row = screen.getByRole("row", { name: "a" });
+    // Only one button is rendered within the contextual menu (the button to open it),
+    // which is why I'm doing an unlabelled search - adding an aria-label to the button
+    // would require a change to the component in canonical/react-components
+    await userEvent.click(
+      within(within(row).getByLabelText(DomainsTableLabels.Actions)).getByRole(
+        "button"
+      )
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: DomainsTableLabels.SetDefault })
+    );
+
+    row = screen.getByRole("row", { name: "a" });
+    await userEvent.click(
+      within(
+        within(row).getByRole("gridcell", {
+          name: DomainsTableLabels.TableAction,
+        })
+      ).getByRole("button", { name: DomainsTableLabels.ConfirmSetDefault })
+    );
 
     expect(
       store.getActions().find((action) => action.type === "domain/setDefault")

@@ -55,7 +55,7 @@ type Props = {
 
 const getErrorDescription = (code: ValueOf<typeof CloneErrorCodes>) => {
   // TODO: Update with more specific error messages.
-  // https://github.com/canonical-web-and-design/maas-ui/issues/3009
+  // https://github.com/canonical/maas-ui/issues/3009
   switch (code) {
     case CloneErrorCodes.IS_SOURCE:
       return "Source machine cannot be a destination machine.";

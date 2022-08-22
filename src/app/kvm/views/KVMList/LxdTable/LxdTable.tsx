@@ -84,7 +84,7 @@ const LxdTable = (): JSX.Element | null => {
     !vmclusters.length
   ) {
     // TODO: display an empty state.
-    // https://github.com/canonical-web-and-design/app-squad/issues/340.
+    // https://github.com/canonical/app-squad/issues/340.
     return null;
   }
   return <LxdKVMHostTable rows={rows} />;

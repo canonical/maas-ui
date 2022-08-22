@@ -15,10 +15,13 @@ import sslkeySelectors from "app/store/sslkey/selectors";
 
 export enum Label {
   Title = "Add SSL key",
+  FormLabel = "Add SSL key form",
+  KeyField = "SSL key",
+  SubmitLabel = "Save SSL key",
 }
 
 // This can be removed when the autoComplete prop is supported:
-// https://github.com/canonical-web-and-design/react-components/issues/571
+// https://github.com/canonical/react-components/issues/571
 const ProxyTextarea = (
   props: TextareaProps & { autoComplete?: "off" | "on" }
 ) => <Textarea {...props} />;
@@ -41,6 +44,7 @@ export const AddSSLKey = (): JSX.Element => {
   return (
     <FormCard title={Label.Title}>
       <FormikForm
+        aria-label={Label.FormLabel}
         cleanup={sslkeyActions.cleanup}
         errors={errors}
         initialValues={{ key: "" }}
@@ -56,7 +60,7 @@ export const AddSSLKey = (): JSX.Element => {
         saved={saved}
         savedRedirect={urls.preferences.sslKeys.index}
         saving={saving}
-        submitLabel="Save SSL key"
+        submitLabel={Label.SubmitLabel}
         validationSchema={SSLKeySchema}
       >
         <Row>
@@ -67,7 +71,7 @@ export const AddSSLKey = (): JSX.Element => {
               autoCorrect="off"
               className="ssl-key-form-fields__key p-text--code"
               component={ProxyTextarea}
-              label="SSL key"
+              label={Label.KeyField}
               name="key"
               spellCheck="false"
             />

@@ -1,10 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
+import { createMemoryHistory } from "history";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
-import { AddSSHKey } from "./AddSSHKey";
+import { AddSSHKey, Label as AddSSHKeyLabels } from "./AddSSHKey";
 
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
@@ -12,8 +11,7 @@ import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("AddSSHKey", () => {
   let state: RootState;
@@ -29,33 +27,30 @@ describe("AddSSHKey", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <AddSSHKey />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <AddSSHKey />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("AddSSHKey").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: AddSSHKeyLabels.FormLabel })
+    ).toBeInTheDocument();
   });
 
   it("redirects when the SSH key is saved", () => {
     state.sshkey.saved = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <AddSSHKey />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const history = createMemoryHistory({ initialEntries: ["/"] });
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <AddSSHKey />
+        </CompatRouter>
+      </Router>,
+      { state }
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.preferences.sshKeys.index
-    );
+    expect(history.location.pathname).toBe(urls.preferences.sshKeys.index);
   });
 });

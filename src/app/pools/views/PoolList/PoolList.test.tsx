@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -12,6 +13,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -29,56 +31,51 @@ describe("PoolList", () => {
 
   it("displays a loading component if pools are loading", () => {
     state.resourcepool.loading = true;
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("disables the edit button without permissions", () => {
     state.resourcepool.items = [resourcePoolFactory({ permissions: [] })];
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("Button").first().props().disabled).toBe(true);
+    expect(screen.getByRole("link", { name: "Edit" })).toHaveClass(
+      "is-disabled"
+    );
   });
 
   it("enables the edit button with correct permissions", () => {
     state.resourcepool.items = [resourcePoolFactory({ permissions: ["edit"] })];
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("Button").first().props().disabled).toBe(false);
+    expect(screen.getByRole("link", { name: "Edit" })).not.toHaveClass(
+      "is-disabled"
+    );
   });
 
-  it("can show a delete confirmation", () => {
+  it("can show a delete confirmation", async () => {
     state.resourcepool.items = [
       resourcePoolFactory({
         id: 0,
@@ -89,29 +86,31 @@ describe("PoolList", () => {
         permissions: ["delete"],
       }),
     ];
-    const store = mockStore(state);
-
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
 
-    expect(wrapper.find("TableRow").at(1).hasClass("is-active")).toBe(false);
+    const row = screen.getByRole("row", { name: "squambo" });
+
+    expect(row).not.toHaveClass("is-active");
+
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button[data-testid='table-actions-delete']")
-      .simulate("click");
-    expect(wrapper.find("TableRow").at(1).hasClass("is-active")).toBe(true);
+    await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
+
+    expect(row).toHaveClass("is-active");
+    expect(
+      screen.getByText(
+        'Are you sure you want to delete resourcepool "squambo"?'
+      )
+    ).toBeInTheDocument();
   });
 
-  it("can delete a pool", () => {
+  it("can delete a pool", async () => {
     state.resourcepool.items = [
       resourcePoolFactory({
         id: 2,
@@ -124,7 +123,7 @@ describe("PoolList", () => {
     ];
     const store = mockStore(state);
 
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
           <CompatRouter>
@@ -133,18 +132,19 @@ describe("PoolList", () => {
         </MemoryRouter>
       </Provider>
     );
+    const row = screen.getByRole("row", { name: "squambo" });
+
     // Click on the delete button:
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("Button[data-testid='table-actions-delete']")
-      .simulate("click");
+    await userEvent.click(within(row).getByRole("button", { name: "Delete" }));
+
     // Click on the delete confirm button
-    wrapper
-      .find("TableRow")
-      .at(1)
-      .find("ActionButton[data-testid='action-confirm']")
-      .simulate("click");
+    await userEvent.click(
+      within(
+        within(row).getByRole("gridcell", {
+          name: 'Are you sure you want to delete resourcepool "squambo"? This action is permanent and can not be undone. Cancel Delete',
+        })
+      ).getByRole("button", { name: "Delete" })
+    );
 
     expect(
       store.getActions().find(({ type }) => type === "resourcepool/delete")
@@ -163,7 +163,6 @@ describe("PoolList", () => {
   });
 
   it("disables the delete button for default pools", () => {
-    const store = mockStore(state);
     state.resourcepool.items = [
       resourcePoolFactory({
         id: 0,
@@ -173,20 +172,18 @@ describe("PoolList", () => {
         permissions: ["edit", "delete"],
       }),
     ];
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Button").at(1).props().disabled).toBe(true);
+    expect(screen.getByRole("button", { name: "Delete" })).toBeDisabled();
   });
 
   it("disables the delete button for pools that contain machines", () => {
-    const store = mockStore(state);
     state.resourcepool.items = [
       resourcePoolFactory({
         id: 0,
@@ -197,72 +194,60 @@ describe("PoolList", () => {
         machine_total_count: 1,
       }),
     ];
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Button").at(1).props().disabled).toBe(true);
+    expect(screen.getByRole("button", { name: "Delete" })).toBeDisabled();
   });
 
   it("does not show a machine link for empty pools", () => {
     state.resourcepool.items[0].machine_total_count = 0;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    const name = wrapper.find("TableRow").at(1).find("TableCell").at(1);
-    expect(name.text()).toBe("Empty pool");
+    const row = screen.getByRole("row", { name: "default" });
+    expect(within(row).getByText("Empty pool")).toBeInTheDocument();
   });
 
   it("can show a machine link for non-empty pools", () => {
     state.resourcepool.items[0].machine_total_count = 5;
     state.resourcepool.items[0].machine_ready_count = 1;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    const link = wrapper
-      .find("TableRow")
-      .at(1)
-      .find("TableCell")
-      .at(1)
-      .find("Link");
-    expect(link.exists()).toBe(true);
-    expect(link.prop("to")).toBe("/machines?pool=%3Ddefault");
-    expect(link.text()).toBe("1 of 5 ready");
+    const link = within(screen.getByRole("row", { name: "default" })).getByRole(
+      "link",
+      { name: "1 of 5 ready" }
+    );
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute("href", "/machines?pool=%3Ddefault");
   });
 
   it("displays state errors in a notification", () => {
     state.resourcepool.errors = "Pools are not for swimming.";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
-          <CompatRouter>
-            <PoolList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/pools", key: "testKey" }]}>
+        <CompatRouter>
+          <PoolList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Notification p").text()).toEqual(
-      "Pools are not for swimming."
-    );
+    expect(screen.getByText("Pools are not for swimming.")).toBeInTheDocument();
   });
 });

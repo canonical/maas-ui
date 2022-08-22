@@ -54,6 +54,7 @@ const generateRows = (
   rows.map((row) => {
     const expanded = expandedId === row.id;
     return {
+      "aria-label": row.name,
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
@@ -90,6 +91,7 @@ const generateRows = (
       expanded: expanded,
       expandedContent: expanded && (
         <TableDeleteConfirm
+          aria-label="Confirm pool deletion"
           deleted={saved}
           deleting={saving}
           modelName={row.name}

@@ -6,7 +6,7 @@ from launchpadlib.launchpad import Launchpad
 from github import Github
 
 github = Github(os.getenv("GITHUB_TOKEN"))
-github_repo = github.get_repo("canonical-web-and-design/maas-ui")
+github_repo = github.get_repo("canonical/maas-ui")
 
 with tempfile.NamedTemporaryFile(mode="w") as f:
     f.write(os.getenv("LAUNCHPAD_CREDENTIALS"))

@@ -10,6 +10,10 @@ import SectionHeader from "app/base/components/SectionHeader";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 
+export enum Labels {
+  AddDomains = "Add domains",
+}
+
 const DomainListHeader = (): JSX.Element => {
   const dispatch = useDispatch();
   const domainCount = useSelector(domainSelectors.count);
@@ -27,7 +31,7 @@ const DomainListHeader = (): JSX.Element => {
       key="add-domain"
       onClick={() => setFormOpen(true)}
     >
-      Add domains
+      {Labels.AddDomains}
     </Button>,
   ];
 

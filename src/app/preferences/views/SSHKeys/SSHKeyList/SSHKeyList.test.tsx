@@ -1,10 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
-import SSHKeyList from "./SSHKeyList";
+import SSHKeyList, { Label as SSHKeyListLabels } from "./SSHKeyList";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -12,8 +10,7 @@ import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("SSHKeyList", () => {
   let state: RootState;
@@ -51,20 +48,18 @@ describe("SSHKeyList", () => {
   });
 
   it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/account/prefs/ssh-keys", key: "testKey" },
-          ]}
-        >
-          <CompatRouter>
-            <SSHKeyList />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[
+          { pathname: "/account/prefs/ssh-keys", key: "testKey" },
+        ]}
+      >
+        <CompatRouter>
+          <SSHKeyList />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("SSHKeyList").exists()).toBe(true);
+    expect(screen.getByRole("grid", { name: SSHKeyListLabels.Title }));
   });
 });

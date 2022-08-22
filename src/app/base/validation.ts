@@ -3,7 +3,7 @@ import * as Yup from "yup";
 /**
  * Validate domain name e.g. "www.example.com"
  * XXX This should be updated as it currently allows e.g. "www.example.com."
- * https://github.com/canonical-web-and-design/maas-ui/issues/2755
+ * https://github.com/canonical/maas-ui/issues/2755
  */
 export const DOMAIN_NAME_REGEX = /^([a-z\d]|[a-z\d][a-z\d-.]*[a-z\d])*$/i;
 

@@ -17,6 +17,12 @@ type Props = {
   resource: DomainResource;
 };
 
+export enum Labels {
+  FormLabel = "Delete record",
+  SubmitLabel = "Delete record",
+  AreYouSure = "Are you sure you want to delete this record?",
+}
+
 const DeleteRecordForm = ({
   closeForm,
   id,
@@ -42,6 +48,7 @@ const DeleteRecordForm = ({
 
   return (
     <FormikForm<EmptyObject>
+      aria-label={Labels.FormLabel}
       buttonsBordered={false}
       cleanup={cleanup}
       errors={errors}
@@ -62,11 +69,11 @@ const DeleteRecordForm = ({
       saved={saved}
       saving={saving}
       submitAppearance="negative"
-      submitLabel="Delete record"
+      submitLabel={Labels.SubmitLabel}
     >
       <p className="u-no-margin--bottom u-no-max-width">
         <Icon className="is-inline" name="error" />
-        Are you sure you want to delete this record?
+        {Labels.AreYouSure}
       </p>
     </FormikForm>
   );

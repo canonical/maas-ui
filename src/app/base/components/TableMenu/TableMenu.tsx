@@ -37,7 +37,7 @@ const TableMenu = <L,>({
       position={position}
       positionNode={positionNode || undefined}
       // This shouldn't need to pass `undefined` once ContextualMenu supports null
-      // See: https://github.com/canonical-web-and-design/react-components/issues/377
+      // See: https://github.com/canonical/react-components/issues/377
       toggleAppearance="base"
       toggleClassName="u-no-margin--bottom p-table-menu__toggle"
       toggleDisabled={disabled || false}

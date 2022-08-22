@@ -98,7 +98,7 @@ describe("DeployFormFields", () => {
 
   it("displays the default hardware sync interval option with a correct value", () => {
     const syncIntervalValue = "15m";
-    // TODO: Investigate mutating state in integration tests https://github.com/canonical-web-and-design/app-tribe/issues/794
+    // TODO: Investigate mutating state in integration tests https://github.com/canonical/app-tribe/issues/794
     state.config.items.push({
       name: ConfigNames.HARDWARE_SYNC_INTERVAL,
       value: syncIntervalValue,

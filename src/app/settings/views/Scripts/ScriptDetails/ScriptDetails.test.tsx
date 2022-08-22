@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -13,6 +13,7 @@ import {
   scriptState as scriptStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -45,7 +46,7 @@ describe("ScriptDetails", () => {
 
   it("fetches the script", () => {
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/" }]}>
           <ScriptDetails id={1} />
@@ -59,41 +60,36 @@ describe("ScriptDetails", () => {
 
   it("displays a spinner while loading", () => {
     state.script.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptDetails id={1} />
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ScriptDetails id={1} />
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("displays a message when the script does not exist", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <ScriptDetails id={1} />
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <ScriptDetails id={1} />
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.text()).toBe("Script could not be found");
+    expect(screen.getByText("Script could not be found")).toBeInTheDocument();
   });
 
   it("can display the script", () => {
     jest.spyOn(fileContextStore, "get").mockReturnValue("test script contents");
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/" }]}>
-          <FileContext.Provider value={fileContextStore}>
-            <ScriptDetails id={1} />
-          </FileContext.Provider>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <FileContext.Provider value={fileContextStore}>
+          <ScriptDetails id={1} />
+        </FileContext.Provider>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Code").text()).toBe("test script contents");
+
+    expect(screen.getByText("test script contents")).toBeInTheDocument();
   });
 });

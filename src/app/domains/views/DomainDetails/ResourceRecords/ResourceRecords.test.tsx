@@ -1,16 +1,15 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
-import ResourceRecords from "./ResourceRecords";
+import ResourceRecords, {
+  Labels as ResourceRecordsLabels,
+} from "./ResourceRecords";
 
 import {
   domainDetails as domainFactory,
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("ResourceRecords", () => {
   it("shows a message if domain has no records", () => {
@@ -19,16 +18,14 @@ describe("ResourceRecords", () => {
         items: [domainFactory({ id: 1, rrsets: [] })],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ResourceRecords id={1} />
-      </Provider>
-    );
 
-    expect(wrapper.find("[data-testid='no-records']").text()).toBe(
-      "Domain contains no records."
-    );
+    renderWithBrowserRouter(<ResourceRecords id={1} />, {
+      wrapperProps: { state },
+    });
+
+    expect(
+      screen.getByText(ResourceRecordsLabels.NoRecords)
+    ).toBeInTheDocument();
   });
 
   it("displays a loading spinner with text when loading", () => {
@@ -38,14 +35,10 @@ describe("ResourceRecords", () => {
         loading: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <ResourceRecords id={1} />
-      </Provider>
-    );
+    renderWithBrowserRouter(<ResourceRecords id={1} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.text().trim()).toBe("Loading...");
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 });

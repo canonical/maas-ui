@@ -1,10 +1,11 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import DomainListHeader from "./DomainListHeader";
+import { Labels as DomainListHeaderFormLabels } from "../DomainListHeaderForm/DomainListHeaderForm";
+
+import DomainListHeader, {
+  Labels as DomainListHeaderLabels,
+} from "./DomainListHeader";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -12,8 +13,7 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("DomainListHeader", () => {
   let initialState: RootState;
@@ -34,59 +34,42 @@ describe("DomainListHeader", () => {
   it("displays a loader if domains have not loaded", () => {
     const state = { ...initialState };
     state.domain.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DomainListHeader />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+
+    renderWithBrowserRouter(<DomainListHeader />, {
+      route: "/domains",
+      wrapperProps: { state },
+    });
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a domain count if domains have loaded", () => {
     const state = { ...initialState };
     state.domain.loaded = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DomainListHeader />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
-      "2 domains available"
-    );
+    renderWithBrowserRouter(<DomainListHeader />, {
+      route: "/domains",
+      wrapperProps: { state },
+    });
+
+    expect(screen.getByText("2 domains available")).toBeInTheDocument();
   });
 
-  it("displays the form when Add domains is clicked", () => {
+  it("displays the form when Add domains is clicked", async () => {
     const state = { ...initialState };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/domains", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DomainListHeader />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<DomainListHeader />, {
+      route: "/domains",
+      wrapperProps: { state },
+    });
+
+    expect(
+      screen.queryByRole("form", { name: DomainListHeaderFormLabels.FormLabel })
+    ).not.toBeInTheDocument();
+
+    await userEvent.click(
+      screen.getByRole("button", { name: DomainListHeaderLabels.AddDomains })
     );
-    expect(wrapper.find("DomainListHeaderForm").exists()).toBe(false);
 
-    wrapper.find("button[data-testid='add-domain']").simulate("click");
-
-    expect(wrapper.find("DomainListHeaderForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: DomainListHeaderFormLabels.FormLabel })
+    ).toBeInTheDocument();
   });
 });

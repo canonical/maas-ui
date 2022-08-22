@@ -16,6 +16,12 @@ type Props = {
   id: Domain["id"];
 };
 
+export enum Labels {
+  DeleteLabel = "Delete domain",
+  AreYouSure = "Are you sure you want to delete this domain?",
+  CannotDelete = "Domain cannot be deleted because it has resource records. Remove all resource records from the domain to allow deletion.",
+}
+
 const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const domain = useSelector((state: RootState) =>
@@ -31,10 +37,9 @@ const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
   }
 
   const canBeDeleted = domain.resource_count === 0;
-  let message = "Are you sure you want to delete this domain?";
+  let message = Labels.AreYouSure;
   if (!canBeDeleted) {
-    message =
-      "Domain cannot be deleted because it has resource records. Remove all resource records from the domain to allow deletion.";
+    message = Labels.CannotDelete;
   }
 
   return (
@@ -53,7 +58,7 @@ const DeleteDomainForm = ({ closeForm, id }: Props): JSX.Element | null => {
       saving={saving}
       submitAppearance="negative"
       submitDisabled={!canBeDeleted}
-      submitLabel="Delete domain"
+      submitLabel={Labels.DeleteLabel}
     >
       <p
         className="u-no-margin--bottom u-no-max-width"

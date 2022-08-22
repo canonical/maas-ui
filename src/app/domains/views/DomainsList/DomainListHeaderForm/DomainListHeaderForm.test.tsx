@@ -1,15 +1,17 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import DomainListHeaderForm from "./DomainListHeaderForm";
+import DomainListHeaderForm, {
+  Labels as DomainListHeaderFormLabels,
+} from "./DomainListHeaderForm";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -19,26 +21,19 @@ describe("DomainListHeaderForm", () => {
     state = rootStateFactory();
   });
 
-  it("runs closeForm function when the cancel button is clicked", () => {
+  it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = jest.fn();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DomainListHeaderForm closeForm={closeForm} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainListHeaderForm closeForm={closeForm} />, {
+      wrapperProps: { state },
+    });
 
-    wrapper.find("button[data-testid='cancel-action']").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("calls domainActions.create on save click", () => {
+  it("calls domainActions.create on save click", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -47,10 +42,15 @@ describe("DomainListHeaderForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        name: "some-domain",
-        authoritative: true,
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: DomainListHeaderFormLabels.Name }),
+      "some-domain"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: DomainListHeaderFormLabels.SubmitLabel,
       })
     );
 

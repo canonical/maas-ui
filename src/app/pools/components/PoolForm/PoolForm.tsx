@@ -22,6 +22,14 @@ type PoolFormValues = {
   name: ResourcePool["name"];
 };
 
+export enum Labels {
+  AddPoolTitle = "Add pool",
+  EditPoolTitle = "Edit pool",
+  SubmitLabel = "Save pool",
+  PoolName = "Name (required)",
+  PoolDescription = "Description",
+}
+
 const PoolSchema = Yup.object().shape({
   name: Yup.string().required("name is required"),
   description: Yup.string(),
@@ -45,13 +53,13 @@ export const PoolForm = ({ pool, ...props }: Props): JSX.Element => {
   let initialValues: PoolFormValues;
   let title: string;
   if (pool) {
-    title = "Edit pool";
+    title = Labels.EditPoolTitle;
     initialValues = {
       name: pool.name,
       description: pool.description,
     };
   } else {
-    title = "Add pool";
+    title = Labels.AddPoolTitle;
     initialValues = {
       name: "",
       description: "",
@@ -63,6 +71,7 @@ export const PoolForm = ({ pool, ...props }: Props): JSX.Element => {
   return (
     <FormCard sidebar={false} title={title}>
       <FormikForm
+        aria-label={title}
         cleanup={poolActions.cleanup}
         errors={errors}
         initialValues={initialValues}
@@ -89,12 +98,16 @@ export const PoolForm = ({ pool, ...props }: Props): JSX.Element => {
         saved={saved}
         savedRedirect={urls.pools.index}
         saving={saving}
-        submitLabel="Save pool"
+        submitLabel={Labels.SubmitLabel}
         validationSchema={PoolSchema}
         {...props}
       >
-        <FormikField label="Name (required)" name="name" type="text" />
-        <FormikField label="Description" name="description" type="text" />
+        <FormikField label={Labels.PoolName} name="name" type="text" />
+        <FormikField
+          label={Labels.PoolDescription}
+          name="description"
+          type="text"
+        />
       </FormikForm>
     </FormCard>
   );

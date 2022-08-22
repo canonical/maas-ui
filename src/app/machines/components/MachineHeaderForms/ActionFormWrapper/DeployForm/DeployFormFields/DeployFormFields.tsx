@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as React from "react";
 
 import {
@@ -22,7 +22,10 @@ import docsUrls from "app/base/docsUrls";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
-import { osInfo as osInfoSelectors } from "app/store/general/selectors";
+import {
+  osInfo as osInfoSelectors,
+  defaultMinHweKernel as defaultMinHweKernelSelectors,
+} from "app/store/general/selectors";
 import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import { timeSpanToMinutes } from "app/utils";
@@ -35,6 +38,7 @@ export const DeployFormFields = (): JSX.Element => {
 
   const user = useSelector(authSelectors.get);
   const osOptions = useSelector(configSelectors.defaultOSystemOptions);
+  const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
   const { osystems = [], releases = [] } =
     useSelector(osInfoSelectors.get) || {};
   const allReleaseOptions = useSelector(osInfoSelectors.getAllOsReleases) || {};
@@ -52,6 +56,18 @@ export const DeployFormFields = (): JSX.Element => {
   const hardwareSyncInterval = useSelector(
     configSelectors.hardwareSyncInterval
   );
+
+  // When the kernel options change then reset the selected kernel. If the
+  // selected release contains the default kernel then select it.
+  useEffect(() => {
+    if (defaultMinHweKernel) {
+      if (kernelOptions.find(({ value }) => value === defaultMinHweKernel)) {
+        setFieldValue("kernel", defaultMinHweKernel);
+      } else {
+        setFieldValue("kernel", "");
+      }
+    }
+  }, [defaultMinHweKernel, kernelOptions, setFieldValue]);
 
   return (
     <>
@@ -86,7 +102,7 @@ export const DeployFormFields = (): JSX.Element => {
               }}
               options={
                 // This won't need to pass the empty array once this issue is fixed:
-                // https://github.com/canonical-web-and-design/react-components/issues/570
+                // https://github.com/canonical/react-components/issues/570
                 osOptions || []
               }
             />

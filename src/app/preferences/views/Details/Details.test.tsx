@@ -1,20 +1,22 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { Details } from "./Details";
+import { Details, Label as DetailsLabels } from "./Details";
 
-import UserForm from "app/base/components/UserForm";
+import { Labels as UserFormLabels } from "app/base/components/UserForm/UserForm";
 import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
+  statusState as statusStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -23,6 +25,9 @@ describe("Details", () => {
 
   beforeEach(() => {
     state = rootStateFactory({
+      status: statusStateFactory({
+        externalAuthURL: null,
+      }),
       user: userStateFactory({
         auth: authStateFactory({
           user: userFactory({
@@ -40,22 +45,20 @@ describe("Details", () => {
   });
 
   it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <Details />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Details").exists()).toBe(true);
+    expect(screen.getByLabelText(DetailsLabels.Title));
   });
 
-  it("cleans up when unmounting", async () => {
+  it("cleans up when unmounting", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -65,18 +68,16 @@ describe("Details", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
 
     const actions = store.getActions();
     expect(actions.some((action) => action.type === "user/cleanup")).toBe(true);
     expect(actions.some((action) => action.type === "auth/cleanup")).toBe(true);
   });
 
-  it("can update the user", () => {
+  it("can update the user", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -85,14 +86,17 @@ describe("Details", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(UserForm).invoke("onSave")({
-      isSuperuser: true,
-      email: "test@example.com",
-      fullName: "Miss Wallaby",
-      password: "test1234",
-      passwordConfirm: "test1234",
-      username: "admin",
+
+    const fullname = screen.getByRole("textbox", {
+      name: UserFormLabels.FullName,
     });
+
+    await userEvent.clear(fullname);
+
+    await userEvent.type(fullname, "Miss Wallaby");
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
     expect(
       store.getActions().find(({ type }) => type === "user/update")
     ).toEqual({
@@ -113,9 +117,9 @@ describe("Details", () => {
     });
   });
 
-  it("can change the password", () => {
+  it("can change the password", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -124,15 +128,23 @@ describe("Details", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(UserForm).invoke("onSave")({
-      isSuperuser: true,
-      email: "test@example.com",
-      fullName: "Miss Wallaby",
-      old_password: "test1",
-      password: "test1234",
-      passwordConfirm: "test1234",
-      username: "admin",
-    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: UserFormLabels.ChangePassword })
+    );
+
+    const old_password = screen.getByLabelText(UserFormLabels.CurrentPassword);
+    const new_password1 = screen.getByLabelText(UserFormLabels.NewPassword);
+    const new_password2 = screen.getByLabelText(
+      UserFormLabels.NewPasswordAgain
+    );
+
+    await userEvent.type(old_password, "test1");
+    await userEvent.type(new_password1, "test1234");
+    await userEvent.type(new_password2, "test1234");
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
     const changePassword = store
       .getActions()
       .find((action) => action.type === "auth/changePassword");
@@ -156,7 +168,7 @@ describe("Details", () => {
     state.user.saved = true;
     state.user.auth.saved = true;
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
@@ -171,16 +183,18 @@ describe("Details", () => {
 
   it("shows a message when using external auth", () => {
     state.status.externalAuthURL = "http://login.example.com";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <CompatRouter>
-            <Details />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={["/"]}>
+        <CompatRouter>
+          <Details />
+        </CompatRouter>
+      </MemoryRouter>,
+      { state }
     );
-    expect(wrapper.find("Notification").exists()).toBe(true);
+    expect(
+      screen.getByText(
+        "Users for this MAAS are managed using an external service"
+      )
+    );
   });
 });

@@ -15,6 +15,7 @@ import type { SSLKey, SSLKeyMeta, SSLKeyState } from "app/store/sslkey/types";
 
 export enum Label {
   Title = "SSL keys",
+  DeleteConfirm = "Confirm or cancel deletion of SSL key",
 }
 
 const generateRows = (
@@ -29,6 +30,7 @@ const generateRows = (
   sslkeys.map(({ id, display, key }) => {
     const expanded = expandedId === id;
     return {
+      "aria-label": key,
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
@@ -46,16 +48,18 @@ const generateRows = (
       "data-testid": "sslkey-row",
       expanded: expanded,
       expandedContent: expanded && (
-        <TableDeleteConfirm
-          deleted={saved}
-          deleting={saving}
-          modelName={display}
-          modelType="SSL key"
-          onClose={hideExpanded}
-          onConfirm={() => {
-            dispatch(sslkeyActions.delete(id));
-          }}
-        />
+        <div aria-label={Label.DeleteConfirm}>
+          <TableDeleteConfirm
+            deleted={saved}
+            deleting={saving}
+            modelName={display}
+            modelType="SSL key"
+            onClose={hideExpanded}
+            onConfirm={() => {
+              dispatch(sslkeyActions.delete(id));
+            }}
+          />
+        </div>
       ),
       key: id,
       sortData: {

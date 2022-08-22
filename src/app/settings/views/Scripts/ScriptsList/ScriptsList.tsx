@@ -16,6 +16,11 @@ import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
 
+export enum Labels {
+  Actions = "Table actions",
+  DeleteConfirm = "Confirm or cancel script deletion",
+}
+
 type Props = {
   type?: "commissioning" | "testing";
 };
@@ -51,6 +56,7 @@ const generateRows = (
     }
 
     return {
+      "aria-label": script.name,
       className: expanded ? "p-table__row is-active" : null,
       columns: [
         {
@@ -72,6 +78,7 @@ const generateRows = (
         },
         { content: <span data-testid="upload-date">{uploadedOn}</span> },
         {
+          "aria-label": Labels.Actions,
           content: (
             <TableActions
               deleteDisabled={script.default}
@@ -92,17 +99,19 @@ const generateRows = (
       expandedContent:
         expanded &&
         (showDelete ? (
-          <TableDeleteConfirm
-            deleted={saved}
-            deleting={saving}
-            modelName={script.name}
-            modelType="Script"
-            onClose={hideExpanded}
-            onConfirm={() => {
-              dispatch(scriptActions.delete(script.id));
-              setDeleting(script.name);
-            }}
-          />
+          <div aria-label={Labels.DeleteConfirm}>
+            <TableDeleteConfirm
+              deleted={saved}
+              deleting={saving}
+              modelName={script.name}
+              modelType="Script"
+              onClose={hideExpanded}
+              onConfirm={() => {
+                dispatch(scriptActions.delete(script.id));
+                setDeleting(script.name);
+              }}
+            />
+          </div>
         ) : (
           <ScriptDetails id={script.id} />
         )),

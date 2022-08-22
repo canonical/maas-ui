@@ -1,8 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
-import DomainDetailsHeader from "./DomainDetailsHeader";
+import DomainDetailsHeader, {
+  Labels as DomainDetailsHeaderLabels,
+} from "./DomainDetailsHeader";
 
 import {
   domain as domainFactory,
@@ -10,24 +10,19 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("DomainDetailsHeader", () => {
   it("shows a spinner if domain details has not loaded yet", () => {
     const state = rootStateFactory({
       domain: domainStateFactory({ items: [domainFactory({ id: 1 })] }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DomainDetailsHeader id={1} />
-      </Provider>
-    );
 
-    expect(
-      wrapper.find("[data-testid='section-header-subtitle'] Spinner").exists()
-    ).toBe(true);
+    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
+      wrapperProps: { state },
+    });
+
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("shows the domain name in the header if domain has loaded", () => {
@@ -36,16 +31,13 @@ describe("DomainDetailsHeader", () => {
         items: [domainFactory({ id: 1, name: "domain-in-the-membrane" })],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DomainDetailsHeader id={1} />
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
-      "domain-in-the-membrane"
-    );
+    expect(
+      screen.getByRole("heading", { name: "domain-in-the-membrane" })
+    ).toBeInTheDocument();
   });
 
   it("Shows the correct number of hosts and resource records once details loaded", () => {
@@ -62,16 +54,11 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DomainDetailsHeader id={1} />
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
-      "5 hosts; 9 resource records"
-    );
+    expect(screen.getByText("5 hosts; 9 resource records")).toBeInTheDocument();
   });
 
   it("Shows only resource records if there are no hosts", () => {
@@ -88,16 +75,11 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DomainDetailsHeader id={1} />
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
-      "9 resource records"
-    );
+    expect(screen.getByText("9 resource records")).toBeInTheDocument();
   });
 
   it("shows only hosts if there are no resource records", () => {
@@ -114,16 +96,13 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DomainDetailsHeader id={1} />
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
-      "5 hosts; No resource records"
-    );
+    expect(
+      screen.getByText("5 hosts; No resource records")
+    ).toBeInTheDocument();
   });
 
   it("shows the no records message if there is nothing", () => {
@@ -140,16 +119,11 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DomainDetailsHeader id={1} />
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
-      "No resource records"
-    );
+    expect(screen.getByText("No resource records")).toBeInTheDocument();
   });
 
   it("does not show a button to delete domain if it is the default", () => {
@@ -163,13 +137,14 @@ describe("DomainDetailsHeader", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DomainDetailsHeader id={0} />
-      </Provider>
-    );
+    renderWithBrowserRouter(<DomainDetailsHeader id={0} />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("[data-testid='delete-domain']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("button", {
+        name: DomainDetailsHeaderLabels.DeleteDomain,
+      })
+    ).not.toBeInTheDocument();
   });
 });
