@@ -1,6 +1,10 @@
 @mixin HardwareCard {
     .hardware-card {
         padding: 15px 0 15px 0;
+        
+        li {
+            @include pseudo-border(top);
+        }
 
         .hardware-card__system {
             margin: 0 0 0 15px;
