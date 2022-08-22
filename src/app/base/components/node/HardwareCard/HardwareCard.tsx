@@ -14,7 +14,7 @@ export enum Labels {
   SysVendor = "Vendor",
   SysProduct = "Product",
   SysVersion = "Version",
-  Serial = "Seial",
+  Serial = "Serial",
   Unknown = "Unknown",
   Mainboard = "Mainboard",
   MainboardVendor = "Vendor",
