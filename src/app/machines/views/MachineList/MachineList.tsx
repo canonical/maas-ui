@@ -18,7 +18,6 @@ import type { FetchFilters } from "app/store/machine/types";
 import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
-import { actions as tagActions } from "app/store/tag";
 import type { Filters } from "app/utils/search/filter-handlers";
 
 type Props = {
@@ -75,22 +74,19 @@ const MachineList = ({
   );
   const pageSize = DEFAULTS.pageSize;
   const { callId, loading, machineCount, machines, machinesErrors } =
-    useFetchMachines(
-      parseFilters(filters),
+    useFetchMachines({
+      currentPage,
+      filters: parseFilters(filters),
       grouping,
       pageSize,
-      currentPage,
+      sortDirection: mapSortDirection(sortDirection),
       sortKey,
-      mapSortDirection(sortDirection)
-    );
+    });
   const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
     localStorage,
     "hiddenGroups",
     []
   );
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
 
   useEffect(
     () => () => {
