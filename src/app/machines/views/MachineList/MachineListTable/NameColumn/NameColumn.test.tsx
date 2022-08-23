@@ -43,27 +43,6 @@ describe("NameColumn", () => {
     });
   });
 
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <NameColumn
-              callId="abc123"
-              groupName="admin1"
-              showActions
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NameColumn")).toMatchSnapshot();
-  });
-
   it("can be locked", () => {
     state.machine.items[0].locked = true;
     const store = mockStore(state);
