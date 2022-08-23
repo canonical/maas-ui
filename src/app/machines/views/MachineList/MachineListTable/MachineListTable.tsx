@@ -88,7 +88,7 @@ type TableColumn = MainTableCell & { key: string };
 type GenerateRowParams = {
   callId?: string | null;
   activeRow: Machine[MachineMeta.PK] | null;
-  groupKey?: FetchGroupKey | null;
+  groupName?: MachineStateListGroup["name"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
   onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
@@ -331,7 +331,7 @@ const generateSkeletonRows = (
 const generateRows = ({
   callId,
   activeRow,
-  groupKey,
+  groupName,
   hiddenColumns,
   machines,
   onToggleMenu,
@@ -348,7 +348,7 @@ const generateRows = ({
         <NameColumn
           callId={callId}
           data-testid="fqdn-column"
-          groupKey={groupKey}
+          groupName={groupName}
           showActions={showActions}
           showMAC={showMAC}
           systemId={row.system_id}
@@ -452,11 +452,7 @@ const generateGroupRows = ({
                   data-testid="group-cell"
                   primary={
                     showActions ? (
-                      <GroupCheckbox
-                        callId={callId}
-                        groupKey={name}
-                        groupName={name}
-                      />
+                      <GroupCheckbox callId={callId} groupName={name} />
                     ) : (
                       <strong>{name}</strong>
                     )
@@ -512,7 +508,7 @@ const generateGroupRows = ({
       generateRows({
         ...rowProps,
         callId,
-        groupKey: name,
+        groupName: name,
         machines: visibleMachines,
         selectedIDs,
         showActions,

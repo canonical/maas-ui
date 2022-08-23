@@ -1,19 +1,15 @@
 import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
-import type {
-  FilterGroupKey,
-  FilterGroupOptionType,
-  MachineStateCount,
-} from "./types";
-
 import { ACTIONS } from "app/store/machine/slice";
 import type {
+  FilterGroupKey,
   Machine,
   MachineState,
+  MachineStateCount,
   MachineStatus,
   MachineStatuses,
-  FilterGroupOptionType,
+  MachineStateListGroup,
 } from "app/store/machine/types";
 import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -461,29 +457,6 @@ const listCount = createSelector(
 );
 
 /**
- * Get the count for a machine list request with a given callId.
- */
-const listGroup = createSelector(
-  [
-    machineState,
-    (
-      _state: RootState,
-      callId: string | null | undefined,
-      name: FilterGroupOptionType | null | undefined
-    ) => ({
-      callId,
-      name,
-    }),
-  ],
-  (machineState, { callId, name }) =>
-    (callId &&
-      getList(machineState, callId)?.groups?.find(
-        (group) => group.name === name
-      )) ||
-    null
-);
-
-/**
  * Get a group in a machine list request with a given callId.
  */
 const listGroup = createSelector(
@@ -492,7 +465,7 @@ const listGroup = createSelector(
     (
       _state: RootState,
       callId: string | null | undefined,
-      name: FilterGroupOptionType | null | undefined
+      name: MachineStateListGroup["name"] | null | undefined
     ) => ({
       callId,
       name,

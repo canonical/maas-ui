@@ -3,7 +3,7 @@
 exports[`NameColumn renders 1`] = `
 <NameColumn
   callId="abc123"
-  groupKey="admin1"
+  groupName="admin1"
   showActions={true}
   systemId="abc123"
 >
@@ -12,7 +12,7 @@ exports[`NameColumn renders 1`] = `
     primary={
       <MachineCheckbox
         callId="abc123"
-        groupKey="admin1"
+        groupName="admin1"
         label={
           <Link
             title="test-machine-1.maas"
@@ -50,7 +50,7 @@ exports[`NameColumn renders 1`] = `
           >
             <MachineCheckbox
               callId="abc123"
-              groupKey="admin1"
+              groupName="admin1"
               label={
                 <Link
                   title="test-machine-1.maas"

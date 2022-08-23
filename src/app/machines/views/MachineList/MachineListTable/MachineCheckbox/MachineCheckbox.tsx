@@ -7,33 +7,33 @@ import TableCheckbox from "app/machines/components/TableCheckbox";
 import { Checked } from "app/machines/components/TableCheckbox/TableCheckbox";
 import machineSelectors from "app/store/machine/selectors";
 import type {
-  FilterGroupOptionType,
   Machine,
   MachineMeta,
+  MachineStateListGroup,
 } from "app/store/machine/types";
 
 type Props = {
   callId?: string | null;
   label: ReactNode;
-  groupKey?: FilterGroupOptionType | null;
+  groupName?: MachineStateListGroup["name"];
   systemId: Machine[MachineMeta.PK];
 };
 
 const MachineCheckbox = ({
   callId,
   label,
-  groupKey,
+  groupName,
   systemId,
 }: Props): JSX.Element => {
   const selected = useSelector(machineSelectors.selectedMachines);
   const allSelected = !!selected && "filter" in selected;
   // Whether the group this machine appears in is selected.
   const groupSelected =
-    typeof groupKey !== "undefined" &&
-    groupKey !== null &&
+    typeof groupName !== "undefined" &&
+    groupName !== null &&
     !!selected &&
     "groups" in selected &&
-    selected.groups?.includes(groupKey);
+    selected.groups?.includes(groupName);
   // Display this machine as checked if it or the machine's group or all
   // machines are selected.
   const isChecked =

@@ -13,13 +13,13 @@ import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
   MachineMeta,
-  FilterGroupOptionType,
+  MachineStateListGroup,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
   callId?: string | null;
-  groupKey?: FilterGroupOptionType | null;
+  groupName?: MachineStateListGroup["name"];
   showActions?: boolean;
   showMAC?: boolean;
   systemId: Machine[MachineMeta.PK];
@@ -121,7 +121,7 @@ const generateMAC = (machine: Machine, machineURL: string) => {
 
 export const NameColumn = ({
   callId,
-  groupKey,
+  groupName,
   showActions,
   showMAC,
   systemId,
@@ -145,7 +145,7 @@ export const NameColumn = ({
         showActions ? (
           <MachineCheckbox
             callId={callId}
-            groupKey={groupKey}
+            groupName={groupName}
             label={primaryRow}
             systemId={systemId}
           />

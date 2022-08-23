@@ -53,7 +53,7 @@ describe("NameColumn", () => {
           <CompatRouter>
             <NameColumn
               callId="abc123"
-              groupKey="admin1"
+              groupName="admin1"
               showActions
               systemId="abc123"
             />

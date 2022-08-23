@@ -195,11 +195,16 @@ export type MachineStateDetailsItem = {
 
 export type MachineStateDetails = Record<string, MachineStateDetailsItem>;
 
+export type FilterGroupOption<K = FilterGroupOptionType> = {
+  key: K;
+  label: string;
+};
+
 export type MachineStateListGroup = {
   collapsed: boolean;
   count: number;
   items: Machine[MachineMeta.PK][];
-  name: string | null;
+  name: FilterGroupOption["label"] | null;
 };
 
 export type MachineStateList = {
@@ -215,11 +220,6 @@ export type MachineStateList = {
 export type MachineStateLists = Record<string, MachineStateList>;
 
 export type FilterGroupOptionType = boolean | number | string;
-
-export type FilterGroupOption<K = FilterGroupOptionType> = {
-  key: K;
-  label: string;
-};
 
 export enum FilterGroupType {
   Bool = "bool",
@@ -320,7 +320,7 @@ export type MachineStateCounts = Record<string, MachineStateCount>;
 export type SelectedMachines =
   | {
       items?: Machine[MachineMeta.PK][];
-      groups?: FilterGroupOptionType[];
+      groups?: MachineStateListGroup["name"][];
     }
   | { filter: FetchFilters };
 
