@@ -1,21 +1,27 @@
 @mixin HardwareCard {
     .hardware-card {
-        padding: 15px 0 15px 0;
+        padding: 0.5rem 1rem 0.5rem 1rem;
         
-        li {
+        .p-list__item + .p-list__item {
             @include pseudo-border(top);
+            // margin-right: 0.5rem;
         }
 
-        .hardware-card__system {
-            margin: 0 0 0 15px;
+        li.p-list__item {
+            padding: 0.25rem 0 !important;
         }
 
-        .hardware-card__mainboard {
-            margin: 0 0 0 15px;
+        li.p-list__item:first-child {
+            padding-top: 0.5rem !important;
         }
 
-        .hardware-card__title {
-            margin: 0 0 0 15px;
+        .p-list__item-label {
+            text-align: left !important;
+            margin-right: 0;
+        }
+
+        .hardware-card__section {
+            margin-bottom: 1rem;
         }
     }
 }

@@ -28,13 +28,10 @@ export enum Labels {
 const HardwareCard = ({ node }: Props): JSX.Element => {
   return (
     <Card aria-label={Labels.HardwareInfo} className="hardware-card">
-      <strong className="hardware-card__title u-sv1 p-muted-heading">
-        {Labels.HardwareInfo}
-      </strong>
-      <hr />
-      <span className="hardware-card__system">{Labels.System}</span>
+      <strong className="u-sv1 p-muted-heading">{Labels.HardwareInfo}</strong>
+      <span>{Labels.System}</span>
       <LabelledList
-        className="hardware-card__system"
+        className="hardware-card__section"
         items={[
           {
             label: Labels.SysVendor,
@@ -54,10 +51,9 @@ const HardwareCard = ({ node }: Props): JSX.Element => {
           },
         ]}
       />
-      <hr />
-      <span className="hardware-card__mainboard">{Labels.Mainboard}</span>
+      <span>{Labels.Mainboard}</span>
       <LabelledList
-        className="hardware-card__mainboard u-no-margin--bottom"
+        className="hardware-card__section u-no-margin--bottom"
         items={[
           {
             label: Labels.MainboardVendor,
