@@ -1,6 +1,6 @@
 @mixin HardwareCard {
     .hardware-card {
-        padding: 0.5rem 1rem 0.5rem 1rem;
+        padding: 0.5rem 1rem 1rem 1rem;
         
         .p-list__item + .p-list__item {
             @include pseudo-border(top);
