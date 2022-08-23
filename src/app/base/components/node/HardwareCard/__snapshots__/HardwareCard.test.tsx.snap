@@ -8,18 +8,16 @@ exports[`renders with system data 1`] = `
   <div
     class="p-card__content"
   >
-    <strong
-      class="hardware-card__title u-sv1 p-muted-heading"
+    <div
+      class="u-sv1 p-muted-heading"
     >
       Hardware Information
-    </strong>
-    <span
-      class="hardware-card__system"
-    >
+    </div>
+    <span>
       System
     </span>
     <ul
-      class="p-list--labelled hardware-card__system p-list"
+      class="p-list--labelled hardware-card__section p-list"
     >
       <li
         class="p-list__item"
@@ -78,13 +76,11 @@ exports[`renders with system data 1`] = `
         </div>
       </li>
     </ul>
-    <span
-      class="hardware-card__mainboard"
-    >
+    <span>
       Mainboard
     </span>
     <ul
-      class="p-list--labelled hardware-card__mainboard u-no-margin--bottom p-list"
+      class="p-list--labelled hardware-card__section u-no-margin--bottom p-list"
     >
       <li
         class="p-list__item"
