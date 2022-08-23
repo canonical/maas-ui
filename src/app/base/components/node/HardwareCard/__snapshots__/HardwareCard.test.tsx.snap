@@ -3,24 +3,23 @@
 exports[`renders with system data 1`] = `
 <div
   aria-label="Hardware Information"
-  class="p-card"
+  class="hardware-card p-card"
 >
   <div
     class="p-card__content"
   >
     <strong
-      class="p-muted-heading u-sv1"
+      class="hardware-card__title u-sv1 p-muted-heading"
     >
       Hardware Information
     </strong>
-    <hr />
     <span
-      class="u-sv1"
+      class="hardware-card__system"
     >
       System
     </span>
     <ul
-      class="p-list--labelled p-list"
+      class="p-list--labelled hardware-card__system p-list"
     >
       <li
         class="p-list__item"
@@ -70,7 +69,7 @@ exports[`renders with system data 1`] = `
         <div
           class="p-list__item-label"
         >
-          Seial
+          Serial
         </div>
         <div
           class="p-list__item-value"
@@ -79,14 +78,13 @@ exports[`renders with system data 1`] = `
         </div>
       </li>
     </ul>
-    <hr />
     <span
-      class="u-sv1"
+      class="hardware-card__mainboard"
     >
       Mainboard
     </span>
     <ul
-      class="p-list--labelled u-no-margin--bottom p-list"
+      class="p-list--labelled hardware-card__mainboard u-no-margin--bottom p-list"
     >
       <li
         class="p-list__item"
@@ -113,11 +111,7 @@ exports[`renders with system data 1`] = `
         <div
           class="p-list__item-value"
         >
-          <div
-            class="u-sv1"
-          >
-            LXD
-          </div>
+          LXD
         </div>
       </li>
       <li
@@ -140,7 +134,7 @@ exports[`renders with system data 1`] = `
         <div
           class="p-list__item-label"
         >
-          BIOS boot mode
+          Boot mode
         </div>
         <div
           class="p-list__item-value"
