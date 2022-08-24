@@ -72,14 +72,14 @@
       }
 
       &.for-controller {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
+        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(
             0,
             4fr
           );
       }
 
       &.for-machine {
-        grid-template-columns: repeat(7, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 8rem) minmax(0, 8rem) minmax(0, 8rem) minmax(0, 8rem) minmax(0, 8rem) minmax(0, 3fr);
         padding-left: 0;
       }
 
