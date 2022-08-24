@@ -13,6 +13,11 @@ type Props = {
   id: Machine["system_id"];
 };
 
+export enum Labels {
+  NumaCard = "Numa nodes",
+  NumaList = "Numa nodes list",
+}
+
 const NumaCard = ({ id }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -30,6 +35,7 @@ const NumaCard = ({ id }: Props): JSX.Element => {
     numaNodeString = pluralize("NUMA node", numaNodes.length, true);
     content = numaNodes.length ? (
       <List
+        aria-label={Labels.NumaList}
         className="u-no-margin--bottom"
         items={numaNodes.map((numaNode, i) => ({
           className: "numa-card__list",
@@ -48,7 +54,7 @@ const NumaCard = ({ id }: Props): JSX.Element => {
 
   return (
     <div className="machine-summary__numa-card">
-      <Card className="numa-card">
+      <Card aria-label={Labels.NumaCard} className="numa-card">
         <div className="u-sv1 p-muted-heading">{numaNodeString}</div>
         {content}
       </Card>
