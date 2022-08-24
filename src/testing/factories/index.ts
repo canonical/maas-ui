@@ -30,6 +30,7 @@ export {
   locationState,
   machineActionsState,
   machineEventError,
+  machineFilterGroup,
   machineState,
   machineStateCount,
   machineStateCounts,
