@@ -59,7 +59,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
       })}
     >
       {isMachine && (
-        <div>
+        <div className="overview-card__details-item">
           <div className="u-text--muted">Owner</div>
           <span data-testid="owner" title={node.owner || "-"}>
             {node.owner || "-"}
@@ -67,7 +67,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
         </div>
       )}
       {isMachine && (
-        <div>
+        <div className="overview-card__details-item">
           <div className="u-text--muted">Host</div>
           <span data-testid="host">
             {node.pod ? (
@@ -86,7 +86,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           </span>
         </div>
       )}
-      <div data-testid="zone">
+      <div className="overview-card__details-item" data-testid="zone">
         <div>
           {canEdit ? (
             <Link
@@ -108,7 +108,10 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
         <span title={node.zone.name}>{node.zone.name}</span>
       </div>
       {isMachine && (
-        <div data-testid="resource-pool">
+        <div
+          className="overview-card__details-item"
+          data-testid="resource-pool"
+        >
           <div>
             {canEdit ? (
               <Link
@@ -130,7 +133,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           <span title={node.pool.name}>{node.pool.name}</span>
         </div>
       )}
-      <div>
+      <div className="overview-card__details-item">
         <div>
           {canEdit ? (
             <Link

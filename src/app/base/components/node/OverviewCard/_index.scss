@@ -67,6 +67,10 @@
       padding: $spv--large $sph--large;
       margin: 0 1rem 0 1rem ;
 
+      .overview-card__details-item {
+        padding-right: 1rem;
+      }
+
       &.for-controller {
         grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(0, 1fr) minmax(
             0,
