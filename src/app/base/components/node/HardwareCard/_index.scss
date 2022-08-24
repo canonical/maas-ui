@@ -4,11 +4,10 @@
         
         .p-list__item + .p-list__item {
             @include pseudo-border(top);
-            // margin-right: 0.5rem;
         }
 
         li.p-list__item {
-            padding: 0.25rem 0 !important;
+            padding: 0.5rem 0 !important;
         }
 
         li.p-list__item:first-child {

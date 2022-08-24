@@ -32,7 +32,7 @@ const NumaCard = ({ id }: Props): JSX.Element => {
       <List
         className="u-no-margin--bottom"
         items={numaNodes.map((numaNode, i) => ({
-          className: "numa-card",
+          className: "numa-card__list",
           content: (
             <NumaCardDetails
               isLast={i === numaNodes.length - 1}
@@ -48,9 +48,8 @@ const NumaCard = ({ id }: Props): JSX.Element => {
 
   return (
     <div className="machine-summary__numa-card">
-      <Card>
-        <strong className="p-muted-heading u-sv1">{numaNodeString}</strong>
-        <hr />
+      <Card className="numa-card">
+        <div className="u-sv1 p-muted-heading">{numaNodeString}</div>
         {content}
       </Card>
     </div>
