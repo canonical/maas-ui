@@ -1,118 +1,526 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`SourceMachineDetails renders a list of the source machine's details 1`] = `
-<LabelledList
-  data-testid="source-machine-details"
-  items={
-    Array [
-      Object {
-        "label": "Status",
-        "value": <Placeholder
-          loading={false}
-        >
-          Ready
-        </Placeholder>,
-      },
-      Object {
-        "label": "CPU",
-        "value": <React.Fragment>
-          <Placeholder
+Array [
+  <LabelledList
+    data-testid="source-machine-details"
+    items={
+      Array [
+        Object {
+          "label": "Status",
+          "value": <Placeholder
             loading={false}
           >
-            2 cores, 2 GHz
-          </Placeholder>
-          <br />
-          <Placeholder
+            Ready
+          </Placeholder>,
+        },
+        Object {
+          "label": "CPU",
+          "value": <React.Fragment>
+            <Placeholder
+              loading={false}
+            >
+              2 cores, 2 GHz
+            </Placeholder>
+            <br />
+            <Placeholder
+              loading={false}
+            >
+              CPU model
+            </Placeholder>
+            <br />
+            <Placeholder
+              loading={false}
+            >
+              
+            </Placeholder>
+          </React.Fragment>,
+        },
+        Object {
+          "label": "Memory",
+          "value": <Placeholder
             loading={false}
           >
-            CPU model
-          </Placeholder>
-          <br />
-          <Placeholder
+            8 GiB
+          </Placeholder>,
+        },
+        Object {
+          "label": "Storage",
+          "value": <Placeholder
             loading={false}
           >
-            
-          </Placeholder>
-        </React.Fragment>,
-      },
-      Object {
-        "label": "Memory",
-        "value": <Placeholder
-          loading={false}
-        >
-          8 GiB
-        </Placeholder>,
-      },
-      Object {
-        "label": "Storage",
-        "value": <Placeholder
-          loading={false}
-        >
+            <React.Fragment>
+              8
+               GB
+               
+              <small>
+                over 
+                2 disks
+              </small>
+            </React.Fragment>
+          </Placeholder>,
+        },
+        Object {
+          "label": "Power type",
+          "value": <Placeholder
+            loading={false}
+          >
+            manual
+          </Placeholder>,
+        },
+        Object {
+          "label": "Owner",
+          "value": <Placeholder
+            loading={false}
+          >
+            Owner
+          </Placeholder>,
+        },
+        Object {
+          "label": "Host",
+          "value": <Placeholder
+            loading={false}
+          >
+            pod
+          </Placeholder>,
+        },
+        Object {
+          "label": "Zone",
+          "value": <Placeholder
+            loading={false}
+          >
+            zone
+          </Placeholder>,
+        },
+        Object {
+          "label": "Domain",
+          "value": <Placeholder
+            loading={false}
+          >
+            domain
+          </Placeholder>,
+        },
+      ]
+    }
+  >
+    <List
+      className="p-list--labelled"
+      data-testid="source-machine-details"
+      items={
+        Array [
           <React.Fragment>
-            8
-             GB
-             
-            <small>
-              over 
-              2 disks
-            </small>
-          </React.Fragment>
-        </Placeholder>,
-      },
-      Object {
-        "label": "Power type",
-        "value": <Placeholder
-          loading={false}
+            <div
+              className="p-list__item-label"
+              id="Status"
+            >
+              Status
+            </div>
+            <div
+              aria-labelledby="Status"
+              className="p-list__item-value"
+            >
+              <Placeholder
+                loading={false}
+              >
+                Ready
+              </Placeholder>
+            </div>
+          </React.Fragment>,
+          <React.Fragment>
+            <div
+              className="p-list__item-label"
+              id="CPU"
+            >
+              CPU
+            </div>
+            <div
+              aria-labelledby="CPU"
+              className="p-list__item-value"
+            >
+              <React.Fragment>
+                <Placeholder
+                  loading={false}
+                >
+                  2 cores, 2 GHz
+                </Placeholder>
+                <br />
+                <Placeholder
+                  loading={false}
+                >
+                  CPU model
+                </Placeholder>
+                <br />
+                <Placeholder
+                  loading={false}
+                >
+                  
+                </Placeholder>
+              </React.Fragment>
+            </div>
+          </React.Fragment>,
+          <React.Fragment>
+            <div
+              className="p-list__item-label"
+              id="Memory"
+            >
+              Memory
+            </div>
+            <div
+              aria-labelledby="Memory"
+              className="p-list__item-value"
+            >
+              <Placeholder
+                loading={false}
+              >
+                8 GiB
+              </Placeholder>
+            </div>
+          </React.Fragment>,
+          <React.Fragment>
+            <div
+              className="p-list__item-label"
+              id="Storage"
+            >
+              Storage
+            </div>
+            <div
+              aria-labelledby="Storage"
+              className="p-list__item-value"
+            >
+              <Placeholder
+                loading={false}
+              >
+                <React.Fragment>
+                  8
+                   GB
+                   
+                  <small>
+                    over 
+                    2 disks
+                  </small>
+                </React.Fragment>
+              </Placeholder>
+            </div>
+          </React.Fragment>,
+          <React.Fragment>
+            <div
+              className="p-list__item-label"
+              id="Powertype"
+            >
+              Power type
+            </div>
+            <div
+              aria-labelledby="Powertype"
+              className="p-list__item-value"
+            >
+              <Placeholder
+                loading={false}
+              >
+                manual
+              </Placeholder>
+            </div>
+          </React.Fragment>,
+          <React.Fragment>
+            <div
+              className="p-list__item-label"
+              id="Owner"
+            >
+              Owner
+            </div>
+            <div
+              aria-labelledby="Owner"
+              className="p-list__item-value"
+            >
+              <Placeholder
+                loading={false}
+              >
+                Owner
+              </Placeholder>
+            </div>
+          </React.Fragment>,
+          <React.Fragment>
+            <div
+              className="p-list__item-label"
+              id="Host"
+            >
+              Host
+            </div>
+            <div
+              aria-labelledby="Host"
+              className="p-list__item-value"
+            >
+              <Placeholder
+                loading={false}
+              >
+                pod
+              </Placeholder>
+            </div>
+          </React.Fragment>,
+          <React.Fragment>
+            <div
+              className="p-list__item-label"
+              id="Zone"
+            >
+              Zone
+            </div>
+            <div
+              aria-labelledby="Zone"
+              className="p-list__item-value"
+            >
+              <Placeholder
+                loading={false}
+              >
+                zone
+              </Placeholder>
+            </div>
+          </React.Fragment>,
+          <React.Fragment>
+            <div
+              className="p-list__item-label"
+              id="Domain"
+            >
+              Domain
+            </div>
+            <div
+              aria-labelledby="Domain"
+              className="p-list__item-value"
+            >
+              <Placeholder
+                loading={false}
+              >
+                domain
+              </Placeholder>
+            </div>
+          </React.Fragment>,
+        ]
+      }
+    >
+      <ul
+        className="p-list--labelled p-list"
+        data-testid="source-machine-details"
+      >
+        <li
+          className="p-list__item"
+          key="0"
         >
-          manual
-        </Placeholder>,
-      },
-      Object {
-        "label": "Owner",
-        "value": <Placeholder
-          loading={false}
+          <div
+            className="p-list__item-label"
+            id="Status"
+          >
+            Status
+          </div>
+          <div
+            aria-labelledby="Status"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              Ready
+            </Placeholder>
+          </div>
+        </li>
+        <li
+          className="p-list__item"
+          key="1"
         >
-          Owner
-        </Placeholder>,
-      },
-      Object {
-        "label": "Host",
-        "value": <Placeholder
-          loading={false}
+          <div
+            className="p-list__item-label"
+            id="CPU"
+          >
+            CPU
+          </div>
+          <div
+            aria-labelledby="CPU"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              2 cores, 2 GHz
+            </Placeholder>
+            <br />
+            <Placeholder
+              loading={false}
+            >
+              CPU model
+            </Placeholder>
+            <br />
+            <Placeholder
+              loading={false}
+            />
+          </div>
+        </li>
+        <li
+          className="p-list__item"
+          key="2"
         >
-          pod
-        </Placeholder>,
-      },
-      Object {
-        "label": "Zone",
-        "value": <Placeholder
-          loading={false}
+          <div
+            className="p-list__item-label"
+            id="Memory"
+          >
+            Memory
+          </div>
+          <div
+            aria-labelledby="Memory"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              8 GiB
+            </Placeholder>
+          </div>
+        </li>
+        <li
+          className="p-list__item"
+          key="3"
         >
-          zone
-        </Placeholder>,
-      },
-      Object {
-        "label": "Domain",
-        "value": <Placeholder
-          loading={false}
+          <div
+            className="p-list__item-label"
+            id="Storage"
+          >
+            Storage
+          </div>
+          <div
+            aria-labelledby="Storage"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              8
+               GB
+               
+              <small>
+                over 
+                2 disks
+              </small>
+            </Placeholder>
+          </div>
+        </li>
+        <li
+          className="p-list__item"
+          key="4"
         >
-          domain
-        </Placeholder>,
-      },
-    ]
-  }
->
+          <div
+            className="p-list__item-label"
+            id="Powertype"
+          >
+            Power type
+          </div>
+          <div
+            aria-labelledby="Powertype"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              manual
+            </Placeholder>
+          </div>
+        </li>
+        <li
+          className="p-list__item"
+          key="5"
+        >
+          <div
+            className="p-list__item-label"
+            id="Owner"
+          >
+            Owner
+          </div>
+          <div
+            aria-labelledby="Owner"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              Owner
+            </Placeholder>
+          </div>
+        </li>
+        <li
+          className="p-list__item"
+          key="6"
+        >
+          <div
+            className="p-list__item-label"
+            id="Host"
+          >
+            Host
+          </div>
+          <div
+            aria-labelledby="Host"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              pod
+            </Placeholder>
+          </div>
+        </li>
+        <li
+          className="p-list__item"
+          key="7"
+        >
+          <div
+            className="p-list__item-label"
+            id="Zone"
+          >
+            Zone
+          </div>
+          <div
+            aria-labelledby="Zone"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              zone
+            </Placeholder>
+          </div>
+        </li>
+        <li
+          className="p-list__item"
+          key="8"
+        >
+          <div
+            className="p-list__item-label"
+            id="Domain"
+          >
+            Domain
+          </div>
+          <div
+            aria-labelledby="Domain"
+            className="p-list__item-value"
+          >
+            <Placeholder
+              loading={false}
+            >
+              domain
+            </Placeholder>
+          </div>
+        </li>
+      </ul>
+    </List>
+  </LabelledList>,
   <List
     className="p-list--labelled"
+    data-testid="source-machine-details"
     items={
       Array [
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="Status"
           >
             Status
           </div>
           <div
+            aria-labelledby="Status"
             className="p-list__item-value"
           >
             <Placeholder
@@ -125,10 +533,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="CPU"
           >
             CPU
           </div>
           <div
+            aria-labelledby="CPU"
             className="p-list__item-value"
           >
             <React.Fragment>
@@ -155,10 +565,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="Memory"
           >
             Memory
           </div>
           <div
+            aria-labelledby="Memory"
             className="p-list__item-value"
           >
             <Placeholder
@@ -171,10 +583,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="Storage"
           >
             Storage
           </div>
           <div
+            aria-labelledby="Storage"
             className="p-list__item-value"
           >
             <Placeholder
@@ -195,10 +609,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="Powertype"
           >
             Power type
           </div>
           <div
+            aria-labelledby="Powertype"
             className="p-list__item-value"
           >
             <Placeholder
@@ -211,10 +627,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="Owner"
           >
             Owner
           </div>
           <div
+            aria-labelledby="Owner"
             className="p-list__item-value"
           >
             <Placeholder
@@ -227,10 +645,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="Host"
           >
             Host
           </div>
           <div
+            aria-labelledby="Host"
             className="p-list__item-value"
           >
             <Placeholder
@@ -243,10 +663,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="Zone"
           >
             Zone
           </div>
           <div
+            aria-labelledby="Zone"
             className="p-list__item-value"
           >
             <Placeholder
@@ -259,10 +681,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         <React.Fragment>
           <div
             className="p-list__item-label"
+            id="Domain"
           >
             Domain
           </div>
           <div
+            aria-labelledby="Domain"
             className="p-list__item-value"
           >
             <Placeholder
@@ -277,6 +701,7 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
   >
     <ul
       className="p-list--labelled p-list"
+      data-testid="source-machine-details"
     >
       <li
         className="p-list__item"
@@ -284,10 +709,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="Status"
         >
           Status
         </div>
         <div
+          aria-labelledby="Status"
           className="p-list__item-value"
         >
           <Placeholder
@@ -303,10 +730,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="CPU"
         >
           CPU
         </div>
         <div
+          aria-labelledby="CPU"
           className="p-list__item-value"
         >
           <Placeholder
@@ -332,10 +761,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="Memory"
         >
           Memory
         </div>
         <div
+          aria-labelledby="Memory"
           className="p-list__item-value"
         >
           <Placeholder
@@ -351,10 +782,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="Storage"
         >
           Storage
         </div>
         <div
+          aria-labelledby="Storage"
           className="p-list__item-value"
         >
           <Placeholder
@@ -376,10 +809,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="Powertype"
         >
           Power type
         </div>
         <div
+          aria-labelledby="Powertype"
           className="p-list__item-value"
         >
           <Placeholder
@@ -395,10 +830,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="Owner"
         >
           Owner
         </div>
         <div
+          aria-labelledby="Owner"
           className="p-list__item-value"
         >
           <Placeholder
@@ -414,10 +851,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="Host"
         >
           Host
         </div>
         <div
+          aria-labelledby="Host"
           className="p-list__item-value"
         >
           <Placeholder
@@ -433,10 +872,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="Zone"
         >
           Zone
         </div>
         <div
+          aria-labelledby="Zone"
           className="p-list__item-value"
         >
           <Placeholder
@@ -452,10 +893,12 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
       >
         <div
           className="p-list__item-label"
+          id="Domain"
         >
           Domain
         </div>
         <div
+          aria-labelledby="Domain"
           className="p-list__item-value"
         >
           <Placeholder
@@ -466,6 +909,216 @@ exports[`SourceMachineDetails renders a list of the source machine's details 1`]
         </div>
       </li>
     </ul>
-  </List>
-</LabelledList>
+  </List>,
+  <ul
+    className="p-list--labelled p-list"
+    data-testid="source-machine-details"
+  >
+    <li
+      className="p-list__item"
+      key="0"
+    >
+      <div
+        className="p-list__item-label"
+        id="Status"
+      >
+        Status
+      </div>
+      <div
+        aria-labelledby="Status"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          Ready
+        </Placeholder>
+      </div>
+    </li>
+    <li
+      className="p-list__item"
+      key="1"
+    >
+      <div
+        className="p-list__item-label"
+        id="CPU"
+      >
+        CPU
+      </div>
+      <div
+        aria-labelledby="CPU"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          2 cores, 2 GHz
+        </Placeholder>
+        <br />
+        <Placeholder
+          loading={false}
+        >
+          CPU model
+        </Placeholder>
+        <br />
+        <Placeholder
+          loading={false}
+        />
+      </div>
+    </li>
+    <li
+      className="p-list__item"
+      key="2"
+    >
+      <div
+        className="p-list__item-label"
+        id="Memory"
+      >
+        Memory
+      </div>
+      <div
+        aria-labelledby="Memory"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          8 GiB
+        </Placeholder>
+      </div>
+    </li>
+    <li
+      className="p-list__item"
+      key="3"
+    >
+      <div
+        className="p-list__item-label"
+        id="Storage"
+      >
+        Storage
+      </div>
+      <div
+        aria-labelledby="Storage"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          8
+           GB
+           
+          <small>
+            over 
+            2 disks
+          </small>
+        </Placeholder>
+      </div>
+    </li>
+    <li
+      className="p-list__item"
+      key="4"
+    >
+      <div
+        className="p-list__item-label"
+        id="Powertype"
+      >
+        Power type
+      </div>
+      <div
+        aria-labelledby="Powertype"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          manual
+        </Placeholder>
+      </div>
+    </li>
+    <li
+      className="p-list__item"
+      key="5"
+    >
+      <div
+        className="p-list__item-label"
+        id="Owner"
+      >
+        Owner
+      </div>
+      <div
+        aria-labelledby="Owner"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          Owner
+        </Placeholder>
+      </div>
+    </li>
+    <li
+      className="p-list__item"
+      key="6"
+    >
+      <div
+        className="p-list__item-label"
+        id="Host"
+      >
+        Host
+      </div>
+      <div
+        aria-labelledby="Host"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          pod
+        </Placeholder>
+      </div>
+    </li>
+    <li
+      className="p-list__item"
+      key="7"
+    >
+      <div
+        className="p-list__item-label"
+        id="Zone"
+      >
+        Zone
+      </div>
+      <div
+        aria-labelledby="Zone"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          zone
+        </Placeholder>
+      </div>
+    </li>
+    <li
+      className="p-list__item"
+      key="8"
+    >
+      <div
+        className="p-list__item-label"
+        id="Domain"
+      >
+        Domain
+      </div>
+      <div
+        aria-labelledby="Domain"
+        className="p-list__item-value"
+      >
+        <Placeholder
+          loading={false}
+        >
+          domain
+        </Placeholder>
+      </div>
+    </li>
+  </ul>,
+]
 `;

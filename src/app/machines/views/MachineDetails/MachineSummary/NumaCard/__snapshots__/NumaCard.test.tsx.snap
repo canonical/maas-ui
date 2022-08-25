@@ -32,10 +32,12 @@ exports[`NumaCard renders with numa nodes 1`] = `
           >
             <div
               class="p-list__item-label"
+              id="CPUcores"
             >
               CPU cores
             </div>
             <div
+              aria-labelledby="CPUcores"
               class="p-list__item-value"
             >
               <span>
@@ -48,10 +50,12 @@ exports[`NumaCard renders with numa nodes 1`] = `
           >
             <div
               class="p-list__item-label"
+              id="Memory"
             >
               Memory
             </div>
             <div
+              aria-labelledby="Memory"
               class="p-list__item-value"
             >
               256 MiB
@@ -62,10 +66,12 @@ exports[`NumaCard renders with numa nodes 1`] = `
           >
             <div
               class="p-list__item-label"
+              id="Storage"
             >
               Storage
             </div>
             <div
+              aria-labelledby="Storage"
               class="p-list__item-value"
             >
               0 B over 0 disks
@@ -76,10 +82,12 @@ exports[`NumaCard renders with numa nodes 1`] = `
           >
             <div
               class="p-list__item-label"
+              id="Network"
             >
               Network
             </div>
             <div
+              aria-labelledby="Network"
               class="p-list__item-value"
             >
               0 interfaces
