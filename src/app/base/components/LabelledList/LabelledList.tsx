@@ -13,14 +13,27 @@ type Props = {
   items: LabelledListItem[];
 };
 
-const LabelledList = ({ className, items }: Props): JSX.Element => {
+const LabelledList = ({ className, items, ...props }: Props): JSX.Element => {
   return (
     <List
+      {...props}
       className={classNames("p-list--labelled", className)}
       items={items.map(({ label, value }) => (
         <>
-          <div className="p-list__item-label">{label}</div>
-          <div className="p-list__item-value">{value}</div>
+          <div
+            className="p-list__item-label"
+            id={label ? label.toString().split(" ").join("") : "li-label"}
+          >
+            {label}
+          </div>
+          <div
+            aria-labelledby={
+              label ? label.toString().split(" ").join("") : "li-label"
+            }
+            className="p-list__item-value"
+          >
+            {value}
+          </div>
         </>
       ))}
     />

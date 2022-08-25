@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 
 import HardwareCard, { Labels as HardwareCardLabels } from "./HardwareCard";
 
@@ -19,12 +19,49 @@ it("renders with system data", () => {
     wrapperProps: { state },
   });
 
-  // Due to the way a labelled list is rendered, a snapshot unfortunately makes sense here.
-  // You can't check that the information is in the right place since the labels are detached
-  // from the values.
-  expect(
-    screen.getByLabelText(HardwareCardLabels.HardwareInfo)
-  ).toMatchSnapshot();
+  const system = screen.getByRole("list", { name: HardwareCardLabels.System });
+  const mainboard = screen.getByRole("list", {
+    name: HardwareCardLabels.Mainboard,
+  });
+
+  const sys_vendor = within(system).getByLabelText(
+    HardwareCardLabels.SysVendor
+  );
+  const sys_product = within(system).getByLabelText(
+    HardwareCardLabels.SysProduct
+  );
+  const sys_version = within(system).getByLabelText(
+    HardwareCardLabels.SysVersion
+  );
+  const serial = within(system).getByLabelText(HardwareCardLabels.Serial);
+
+  const mb_vendor = within(mainboard).getByLabelText(
+    HardwareCardLabels.MainboardVendor
+  );
+  const mb_product = within(mainboard).getByLabelText(
+    HardwareCardLabels.MainboardProduct
+  );
+  const mb_firmware = within(mainboard).getByLabelText(
+    HardwareCardLabels.MainboardFirmware
+  );
+  const bios_mode = within(mainboard).getByLabelText(
+    HardwareCardLabels.BiosBootMode
+  );
+  const mb_version = within(mainboard).getByLabelText(
+    HardwareCardLabels.MainboardVersion
+  );
+  const date = within(mainboard).getByLabelText(HardwareCardLabels.Date);
+
+  expect(sys_vendor).toHaveTextContent("QEMU");
+  expect(sys_product).toHaveTextContent("Standard PC (Q35 + ICH9, 2009)");
+  expect(sys_version).toHaveTextContent("pc-q35-5.1");
+  expect(serial).toHaveTextContent(HardwareCardLabels.Unknown);
+  expect(mb_vendor).toHaveTextContent("Canonical Ltd.");
+  expect(mb_product).toHaveTextContent("LXD");
+  expect(mb_firmware).toHaveTextContent("EFI Development Kit II / OVMF");
+  expect(bios_mode).toHaveTextContent("UEFI");
+  expect(mb_version).toHaveTextContent("0.0.0");
+  expect(date).toHaveTextContent("02/06/2015");
 });
 
 it("renders when system data is not available", () => {
