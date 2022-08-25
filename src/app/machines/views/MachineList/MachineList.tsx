@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
-import cloneDeep from "clone-deep";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
@@ -14,11 +13,9 @@ import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter, SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { FetchFilters } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
-import { FilterMachines, mapSortDirection } from "app/store/machine/utils";
+import { mapSortDirection, FilterMachineItems } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
-import type { Filters } from "app/utils/search/filter-handlers";
 
 type Props = {
   headerFormOpen?: boolean;
@@ -27,17 +24,6 @@ type Props = {
 };
 
 const PAGE_SIZE = DEFAULTS.pageSize;
-
-// TODO: this should construct the full set of filters once the API has been
-// updated: https://github.com/canonical/app-tribe/issues/1125
-export const parseFilters = (filters: Filters): FetchFilters => {
-  const fetchFilters = cloneDeep(filters);
-  // Remove the in:selected filter as this is done client side.
-  delete fetchFilters.in;
-  // The API doesn't currently support free search.
-  delete fetchFilters.q;
-  return fetchFilters;
-};
 
 const MachineList = ({
   headerFormOpen,
@@ -55,7 +41,6 @@ const MachineList = ({
   const [sortDirection, setSortDirection] = useState<
     ValueOf<typeof SortDirection>
   >(DEFAULTS.sortDirection);
-  const filters = FilterMachines.getCurrentFilters(searchFilter);
   const [grouping, setGrouping] = useStorageState<FetchGroupKey | null>(
     localStorage,
     "grouping",
@@ -64,7 +49,7 @@ const MachineList = ({
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       currentPage,
-      filters: parseFilters(filters),
+      filters: FilterMachineItems.parseFetchFilters(searchFilter),
       grouping,
       pageSize: PAGE_SIZE,
       sortDirection: mapSortDirection(sortDirection),

@@ -11,8 +11,6 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
-import { parseFilters } from "../MachineList";
-
 import AllCheckbox from "./AllCheckbox";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
@@ -41,7 +39,7 @@ import type {
   MachineMeta,
   MachineStateListGroup,
 } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
+import { FilterMachineItems } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -603,7 +601,7 @@ export const MachineListTable = ({
             <AllCheckbox
               callId={callId}
               data-testid="all-machines-checkbox"
-              filter={parseFilters(FilterMachines.getCurrentFilters(filter))}
+              filter={FilterMachineItems.parseFetchFilters(filter)}
             />
           )}
           <div>
