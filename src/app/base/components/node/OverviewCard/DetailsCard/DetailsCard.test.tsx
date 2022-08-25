@@ -1,6 +1,4 @@
 import { screen } from "@testing-library/react";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 
 import DetailsCard, { Labels as DetailsCardLabels } from "./DetailsCard";
 
@@ -21,7 +19,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 let state: RootState;
 beforeEach(() => {
@@ -48,16 +46,10 @@ it("renders a link to zone configuration with edit permissions", () => {
   });
   state.machine.items = [machine];
 
-  renderWithMockStore(
-    <MemoryRouter
-      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-    >
-      <CompatRouter>
-        <DetailsCard node={machine} />
-      </CompatRouter>
-    </MemoryRouter>,
-    { state }
-  );
+  renderWithBrowserRouter(<DetailsCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
 
   expect(
     screen.getByRole("link", { name: DetailsCardLabels.ZoneLink })
@@ -72,16 +64,10 @@ it("renders a zone label without edit permissions", () => {
   });
   state.machine.items = [machine];
 
-  renderWithMockStore(
-    <MemoryRouter
-      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-    >
-      <CompatRouter>
-        <DetailsCard node={machine} />
-      </CompatRouter>
-    </MemoryRouter>,
-    { state }
-  );
+  renderWithBrowserRouter(<DetailsCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
 
   expect(
     screen.queryByRole("link", { name: DetailsCardLabels.ZoneLink })
@@ -101,16 +87,10 @@ it("renders a formatted power type", () => {
   state.machine.items = [machine];
   state.general.powerTypes.data = [powerType];
 
-  renderWithMockStore(
-    <MemoryRouter
-      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-    >
-      <CompatRouter>
-        <DetailsCard node={machine} />
-      </CompatRouter>
-    </MemoryRouter>,
-    { state }
-  );
+  renderWithBrowserRouter(<DetailsCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
 
   expect(
     screen.getByRole("link", { name: DetailsCardLabels.PowerTypeLink })
@@ -130,16 +110,10 @@ it("shows a spinner if tags are not loaded", () => {
     }),
   });
 
-  renderWithMockStore(
-    <MemoryRouter
-      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-    >
-      <CompatRouter>
-        <DetailsCard node={machine} />
-      </CompatRouter>
-    </MemoryRouter>,
-    { state }
-  );
+  renderWithBrowserRouter(<DetailsCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
 
   expect(screen.getByText("Loading")).toBeInTheDocument();
 });
@@ -161,16 +135,10 @@ it("renders a list of tags once loaded", () => {
     }),
   });
 
-  renderWithMockStore(
-    <MemoryRouter
-      initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-    >
-      <CompatRouter>
-        <DetailsCard node={machine} />
-      </CompatRouter>
-    </MemoryRouter>,
-    { state }
-  );
+  renderWithBrowserRouter(<DetailsCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
 
   expect(screen.getByText("lxd, test, virtual")).toBeInTheDocument();
 });
@@ -180,14 +148,9 @@ describe("node is a controller", () => {
     const controller = controllerDetailsFactory();
     state.controller.items = [controller];
 
-    renderWithMockStore(
-      <MemoryRouter>
-        <CompatRouter>
-          <DetailsCard node={controller} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithBrowserRouter(<DetailsCard node={controller} />, {
+      wrapperProps: { state },
+    });
 
     expect(screen.queryByText(DetailsCardLabels.Owner)).not.toBeInTheDocument();
     expect(screen.queryByText(DetailsCardLabels.Host)).not.toBeInTheDocument();
@@ -202,16 +165,10 @@ describe("node is a machine", () => {
     const machine = machineDetailsFactory({ owner: "admin" });
     state.machine.items = [machine];
 
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithBrowserRouter(<DetailsCard node={machine} />, {
+      route: "/machine/abc123",
+      wrapperProps: { state },
+    });
 
     expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
     expect(screen.getByText("admin")).toBeInTheDocument();
@@ -231,16 +188,10 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
     state.pod.items = [pod];
 
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithBrowserRouter(<DetailsCard node={machine} />, {
+      route: "/machine/abc123",
+      wrapperProps: { state },
+    });
 
     expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "lxd-pod ›" })).toHaveProperty(
@@ -263,16 +214,10 @@ describe("node is a machine", () => {
     state.machine.items = [machine];
     state.pod.items = [pod];
 
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithBrowserRouter(<DetailsCard node={machine} />, {
+      route: "/machine/abc123",
+      wrapperProps: { state },
+    });
 
     expect(screen.getByText(DetailsCardLabels.Host)).toBeInTheDocument();
     expect(screen.getByRole("link", { name: "virsh-pod ›" })).toHaveProperty(
@@ -288,16 +233,10 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithBrowserRouter(<DetailsCard node={machine} />, {
+      route: "/machine/abc123",
+      wrapperProps: { state },
+    });
 
     expect(
       screen.getByRole("link", { name: DetailsCardLabels.PoolLink })
@@ -312,16 +251,10 @@ describe("node is a machine", () => {
     });
     state.machine.items = [machine];
 
-    renderWithMockStore(
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { state }
-    );
+    renderWithBrowserRouter(<DetailsCard node={machine} />, {
+      route: "/machine/abc123",
+      wrapperProps: { state },
+    });
 
     expect(
       screen.queryByRole("link", { name: DetailsCardLabels.PoolLink })
