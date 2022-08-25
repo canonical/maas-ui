@@ -1,6 +1,6 @@
 @mixin NodeSummaryNetworkCard {
     .network-card {
-        padding: 0.5rem 1rem 1rem 1rem;
+        padding: $spv--small $sph--large $spv--large $sph--large;
     }
     
 }

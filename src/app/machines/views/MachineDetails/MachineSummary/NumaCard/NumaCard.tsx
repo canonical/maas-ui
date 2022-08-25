@@ -36,7 +36,7 @@ const NumaCard = ({ id }: Props): JSX.Element => {
     content = numaNodes.length ? (
       <List
         aria-label={Labels.NumaList}
-        className="u-no-margin--bottom"
+        className="u-no-margin--bottom  p-list--divided"
         items={numaNodes.map((numaNode, i) => ({
           className: "numa-card__list",
           content: (

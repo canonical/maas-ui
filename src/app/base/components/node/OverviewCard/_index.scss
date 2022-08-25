@@ -9,33 +9,33 @@
 
     .overview-card__status {
       grid-area: status;
-      padding: 0.5rem 0 0 $sph--large;
+      padding: $spv--small 0 0 $sph--large;
     }
 
     .overview-card__cpu {
       @include pseudo-border(left);
       grid-area: cpu;
-      padding: 0.5rem 0 0 0;
+      padding: $spv--small 0 0 0;
       &::after {
-        top: 0.5rem;
+        top: $spv--small;
       }
     }
 
     .overview-card__memory {
       @include pseudo-border(left);
       grid-area: memory;
-      padding: 0.5rem 0 0 0;
+      padding: $spv--small 0 0 0;
       &::after {
-        top: 0.5rem;
+        top: $spv--small;
       }
     }
 
     .overview-card__storage {
       @include pseudo-border(left);
       grid-area: storage;
-      padding: 0.5rem $sph--large 0 0;
+      padding: $spv--small $sph--large 0 0;
       &::after {
-        top: 0.5rem;
+        top: $spv--small;
       }
     }
 

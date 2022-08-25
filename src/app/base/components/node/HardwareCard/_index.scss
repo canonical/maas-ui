@@ -1,17 +1,9 @@
 @mixin HardwareCard {
     .hardware-card {
-        padding: 0.5rem 1rem 1rem 1rem;
-        
-        .p-list__item + .p-list__item {
-            @include pseudo-border(top);
-        }
+        padding: $spv--small $sph--large $spv--large $sph--large;
 
         li.p-list__item {
-            padding: 0.5rem 0 !important;
-        }
-
-        li.p-list__item:first-child {
-            padding-top: 0.5rem !important;
+            padding: $spv--small 0 !important;
         }
 
         .p-list__item-label {
@@ -20,7 +12,7 @@
         }
 
         .hardware-card__section {
-            margin-bottom: 1rem;
+            margin-bottom: $spv--large;
         }
     }
 }

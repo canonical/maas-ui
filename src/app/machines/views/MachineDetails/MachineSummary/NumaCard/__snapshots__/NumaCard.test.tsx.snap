@@ -15,7 +15,7 @@ exports[`NumaCard renders with numa nodes 1`] = `
     </div>
     <ul
       aria-label="Numa nodes list"
-      class="u-no-margin--bottom p-list"
+      class="u-no-margin--bottom  p-list--divided p-list"
     >
       <li
         class="numa-card__list p-list__item"

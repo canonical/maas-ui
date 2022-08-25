@@ -17,7 +17,7 @@ exports[`renders with system data 1`] = `
       System
     </span>
     <ul
-      class="p-list--labelled hardware-card__section p-list"
+      class="p-list--labelled hardware-card__section p-list--divided p-list"
     >
       <li
         class="p-list__item"
@@ -80,7 +80,7 @@ exports[`renders with system data 1`] = `
       Mainboard
     </span>
     <ul
-      class="p-list--labelled hardware-card__section u-no-margin--bottom p-list"
+      class="p-list--labelled hardware-card__section u-no-margin--bottom p-list--divided p-list"
     >
       <li
         class="p-list__item"

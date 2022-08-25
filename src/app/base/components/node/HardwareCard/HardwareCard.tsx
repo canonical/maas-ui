@@ -31,7 +31,7 @@ const HardwareCard = ({ node }: Props): JSX.Element => {
       <div className="u-sv1 p-muted-heading">{Labels.HardwareInfo}</div>
       <span>{Labels.System}</span>
       <LabelledList
-        className="hardware-card__section"
+        className="hardware-card__section p-list--divided"
         items={[
           {
             label: Labels.SysVendor,
@@ -53,7 +53,7 @@ const HardwareCard = ({ node }: Props): JSX.Element => {
       />
       <span>{Labels.Mainboard}</span>
       <LabelledList
-        className="hardware-card__section u-no-margin--bottom"
+        className="hardware-card__section u-no-margin--bottom p-list--divided"
         items={[
           {
             label: Labels.MainboardVendor,
