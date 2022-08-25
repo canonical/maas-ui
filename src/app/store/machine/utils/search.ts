@@ -134,7 +134,7 @@ const searchAPIMappings: SearchAPIMappings = {
   ram: mapNumber("mem"),
   release: (releases) => {
     // Map release strings in the format osystem/distro_series (e.g.
-    // "ubuntu/jammy") to the 'osystem' and ædistro_series' filters.
+    // "ubuntu/jammy") to the 'osystem' and distro_series' filters.
     const newFilters: {
       distro_series: string[];
       osystem: string[];
