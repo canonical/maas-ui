@@ -131,14 +131,17 @@ const MachineStatusCard = ({ machine }: Props): JSX.Element => {
       </div>
       {showFailedTestsWarning(machine) ? (
         <div
-          className="overview-card__test-warning u-flex-bottom"
+          className="overview-card__test-warning u-flex--vertically"
           data-testid="failed-test-warning"
         >
-          <i className="p-icon--warning">Warning:</i>
-          <span className="u-nudge-right--x-small">
-            {" "}
-            Some tests failed, use with caution.
-          </span>
+          <ul className="overview-card__test-warning-text p-inline-list u-no-margin--bottom">
+            <li className="p-inline-list__item">
+              <span>
+                <i className="p-icon--warning">Warning:</i> Some tests failed,
+                use with caution.
+              </span>
+            </li>
+          </ul>
         </div>
       ) : null}
     </>
