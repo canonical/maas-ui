@@ -1,6 +1,7 @@
 import { screen, within } from "@testing-library/react";
 
 import NumaCard, { Labels as NumaCardLabels } from "./NumaCard";
+import { Labels as NumaCardDetailsLabels } from "./NumaCardDetails/NumaCardDetails";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -50,6 +51,20 @@ describe("NumaCard", () => {
       route: "/machine/abc123",
       wrapperProps: { state },
     });
-    expect(screen.getByLabelText(NumaCardLabels.NumaCard)).toMatchSnapshot();
+    expect(screen.getByText("1 NUMA node")).toBeInTheDocument();
+    expect(screen.getByText("Node 2")).toBeInTheDocument();
+
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.CpuCores)
+    ).toHaveTextContent("0");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Memory)
+    ).toHaveTextContent("256 MiB");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Storage)
+    ).toHaveTextContent("0 B over 0 disks");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Network)
+    ).toHaveTextContent("0 interfaces");
   });
 });
