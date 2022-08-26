@@ -67,25 +67,25 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
         </div>
       )}
       {isMachine && (
-        <div>
-          <div className="u-text--muted">Host</div>
-          <span data-testid="host">
-            {node.pod ? (
-              <Link
-                className="p-link__chevron"
-                to={
-                  node.power_type === PowerTypeNames.LXD
-                    ? urls.kvm.lxd.single.index({ id: node.pod.id })
-                    : urls.kvm.virsh.details.index({ id: node.pod.id })
-                }
-              >
-                {node.pod.name} ›
-              </Link>
-            ) : (
-              <em>None</em>
-            )}
-          </span>
-        </div>
+        <>
+          {node.pod && (
+            <div>
+              <div className="u-text--muted">Host</div>
+              <span data-testid="host">
+                <Link
+                  className="p-link__chevron"
+                  to={
+                    node.power_type === PowerTypeNames.LXD
+                      ? urls.kvm.lxd.single.index({ id: node.pod.id })
+                      : urls.kvm.virsh.details.index({ id: node.pod.id })
+                  }
+                >
+                  {node.pod.name} ›
+                </Link>
+              </span>
+            </div>
+          )}
+        </>
       )}
       <div data-testid="zone">
         <div>
