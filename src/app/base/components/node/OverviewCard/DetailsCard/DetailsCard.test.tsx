@@ -44,26 +44,6 @@ beforeEach(() => {
   });
 });
 
-it("renders the domain", () => {
-  const machine = machineDetailsFactory({ domain: { id: 1, name: "maas" } });
-  state.machine.items = [machine];
-
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <CompatRouter>
-          <DetailsCard node={machine} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
-
-  expect(wrapper.find("[data-testid='domain']").text()).toEqual("maas");
-});
-
 it("renders a link to zone configuration with edit permissions", () => {
   const machine = machineDetailsFactory({
     permissions: ["edit"],
