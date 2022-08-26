@@ -39,12 +39,26 @@
     .overview-card__test-warning {
       grid-area: test-warning;
       padding: $spv--large 0 $spv--large $sph--large;
-      
-      .overview-card__test-warning-text {
-        margin-bottom: 0.1rem;
-        padding-top: calc(0.4rem - 1px);
-      }
+    }
 
+    .overview-card__test-text {
+      margin-bottom: 0.1rem;
+      padding-top: calc(0.4rem - 1px);
+    }
+
+    .overview-card__storage-test-text {
+      margin-bottom: 0.1rem;
+      padding-top: calc(0.4rem - 1px);
+    }
+
+    .overview-card__memory-test-text {
+      margin-bottom: 0.1rem;
+      padding-top: calc(0.4rem - 1px);
+    }
+
+    .overview-card__cpu-test-text {
+      margin-bottom: 0.1rem;
+      padding-top: calc(0.4rem - 1px);
     }
 
     .overview-card__cpu-tests {

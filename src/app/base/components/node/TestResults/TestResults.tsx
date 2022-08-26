@@ -54,7 +54,10 @@ const TestResults = ({
 
   return (
     <div className={`overview-card__${scriptType}-tests u-flex--vertically`}>
-      <ul className="p-inline-list u-no-margin--bottom" data-testid="tests">
+      <ul
+        className={`overview-card__${scriptType}-test-text p-inline-list u-no-margin--bottom`}
+        data-testid="tests"
+      >
         {testStatus.passed ? (
           <li className="p-inline-list__item">
             <Link
@@ -142,7 +145,7 @@ const TestResults = ({
             >
               <Button
                 appearance="link"
-                className="u-no-margin--bottom"
+                className="u-no-margin--bottom u-no-padding--top"
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
                   setHeaderContent({
