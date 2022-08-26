@@ -59,7 +59,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
       })}
     >
       {isMachine && (
-        <div className="overview-card__details-item">
+        <div>
           <div className="u-text--muted">Owner</div>
           <span data-testid="owner" title={node.owner || "-"}>
             {node.owner || "-"}
@@ -67,11 +67,12 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
         </div>
       )}
       {isMachine && (
-        <div className="overview-card__details-item">
+        <div>
           <div className="u-text--muted">Host</div>
           <span data-testid="host">
             {node.pod ? (
               <Link
+                className="p-link__chevron"
                 to={
                   node.power_type === PowerTypeNames.LXD
                     ? urls.kvm.lxd.single.index({ id: node.pod.id })
@@ -86,10 +87,11 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           </span>
         </div>
       )}
-      <div className="overview-card__details-item" data-testid="zone">
+      <div data-testid="zone">
         <div>
           {canEdit ? (
             <Link
+              className="p-link__chevron"
               onClick={() =>
                 sendAnalytics(
                   `${node.node_type_display} details`,
@@ -108,13 +110,11 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
         <span title={node.zone.name}>{node.zone.name}</span>
       </div>
       {isMachine && (
-        <div
-          className="overview-card__details-item"
-          data-testid="resource-pool"
-        >
+        <div data-testid="resource-pool">
           <div>
             {canEdit ? (
               <Link
+                className="p-link__chevron"
                 onClick={() =>
                   sendAnalytics(
                     `${node.node_type_display} details`,
@@ -133,10 +133,11 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
           <span title={node.pool.name}>{node.pool.name}</span>
         </div>
       )}
-      <div className="overview-card__details-item">
+      <div>
         <div>
           {canEdit ? (
             <Link
+              className="p-link__chevron"
               onClick={() =>
                 sendAnalytics(
                   `${node.node_type_display} details`,
@@ -160,6 +161,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
         <div>
           {canEdit ? (
             <Link
+              className="p-link__chevron"
               onClick={() =>
                 sendAnalytics(
                   `${node.node_type_display} details`,

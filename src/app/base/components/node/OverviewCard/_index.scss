@@ -79,6 +79,10 @@
           max-width: 50rem;
         }
       }
+
+      .p-link__chevron {
+        white-space: nowrap;
+      }
     }
 
     @media only screen and (max-width: $breakpoint-large) {
