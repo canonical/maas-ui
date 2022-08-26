@@ -61,36 +61,22 @@
 
     .overview-card__details {
       @include pseudo-border(top);
-      display: grid;
+      display: flex;
+      flex: 1 0 auto;
+      justify-content: space-between;
+      gap: $sph--large;
       grid-area: details;
-      grid-template-rows: auto;
-      padding: $spv--large $sph--large;
+      padding: $spv--large 0;
       margin: 0 1rem 0 1rem ;
 
-      .overview-card__details-item {
-        padding-right: 1rem;
-      }
-
-      &.for-controller {
-        grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) minmax(
-            0,
-            4fr
-          );
-      }
-
-      &.for-machine {
-        grid-template-columns: minmax(0, 8rem) minmax(0, 8rem) minmax(0, 8rem) minmax(0, 8rem) minmax(0, 8rem) minmax(0, 3fr);
-        padding-left: 0;
-      }
-
       > * {
-        padding-right: $sph--large;
 
         &:last-child {
           overflow: hidden;
           padding-right: 0;
           text-overflow: ellipsis;
           white-space: nowrap;
+          max-width: 50rem;
         }
       }
     }
