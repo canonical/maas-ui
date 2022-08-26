@@ -1,26 +1,34 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
+import type { ValueOf } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
+
+import ErrorsNotification from "../../../machines/views/MachineList/ErrorsNotification";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
+import type { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
 import MachineListTable, {
   DEFAULTS,
 } from "app/machines/views/MachineList/MachineListTable";
-import machineSelectors from "app/store/machine/selectors";
+import type { FetchGroupKey, FetchFilters } from "app/store/machine/types";
+import { mapSortDirection } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import { TagMeta } from "app/store/tag/types";
+import { FetchNodeStatus } from "app/store/types/node";
 import { isId } from "app/utils";
 
 export enum Label {
   Machines = "Deployed machines",
 }
+
+const PAGE_SIZE = DEFAULTS.pageSize;
 
 const TagMachines = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -29,10 +37,26 @@ const TagMachines = (): JSX.Element => {
     tagSelectors.getById(state, id)
   );
   const tagsLoading = useSelector(tagSelectors.loading);
-  const deployedMachines = useSelector((state: RootState) =>
-    machineSelectors.getDeployedWithTag(state, id)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
+    DEFAULTS.sortKey
   );
-  useFetchMachines();
+  const [sortDirection, setSortDirection] = useState<
+    ValueOf<typeof SortDirection>
+  >(DEFAULTS.sortDirection);
+  let filters: FetchFilters = { status: FetchNodeStatus.DEPLOYED };
+  if (tag) {
+    filters.tags = [tag.name];
+  }
+  const { callId, loading, machineCount, machines, machinesErrors } =
+    useFetchMachines(
+      filters,
+      null,
+      PAGE_SIZE,
+      currentPage,
+      sortKey,
+      mapSortDirection(sortDirection)
+    );
 
   useWindowTitle(tag ? `Deployed machines for: ${tag.name}` : "Tag");
 
@@ -48,22 +72,25 @@ const TagMachines = (): JSX.Element => {
     return <Spinner data-testid="Spinner" />;
   }
 
-  // Update to use the new API:
-  // https://github.com/canonical/app-tribe/issues/1120
   return (
-    <MachineListTable
-      aria-label={Label.Machines}
-      currentPage={1}
-      machineCount={deployedMachines.length}
-      machines={deployedMachines}
-      pageSize={DEFAULTS.pageSize}
-      setCurrentPage={() => null}
-      setSortDirection={() => null}
-      setSortKey={() => null}
-      showActions={false}
-      sortDirection="none"
-      sortKey={null}
-    />
+    <>
+      <ErrorsNotification errors={machinesErrors} />
+      <MachineListTable
+        aria-label={Label.Machines}
+        callId={callId}
+        currentPage={currentPage}
+        machineCount={machineCount}
+        machines={machines}
+        machinesLoading={loading}
+        pageSize={PAGE_SIZE}
+        setCurrentPage={setCurrentPage}
+        setSortDirection={setSortDirection}
+        setSortKey={setSortKey}
+        showActions={false}
+        sortDirection={sortDirection}
+        sortKey={sortKey}
+      />
+    </>
   );
 };
 

@@ -10,9 +10,10 @@ import TagMachines, { Label } from "./TagMachines";
 import urls from "app/base/urls";
 import { columnLabels, MachineColumns } from "app/machines/constants";
 import { actions as machineActions } from "app/store/machine";
+import { FetchGroupKey, FetchSortDirection } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
-import { NodeStatus } from "app/store/types/node";
+import { NodeStatus, FetchNodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -20,6 +21,8 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -27,16 +30,28 @@ let state: RootState;
 
 beforeEach(() => {
   jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  const machines = [
+    machineFactory({
+      domain: modelRefFactory({ id: 1, name: "test" }),
+      hostname: "deployed",
+      status: NodeStatus.DEPLOYED,
+      tags: [1],
+    }),
+  ];
   state = rootStateFactory({
     machine: machineStateFactory({
-      items: [
-        machineFactory({
-          domain: modelRefFactory({ id: 1, name: "test" }),
-          hostname: "deployed",
-          status: NodeStatus.DEPLOYED,
-          tags: [1],
+      items: machines,
+      lists: {
+        "mocked-nanoid": machineStateListFactory({
+          loaded: true,
+          groups: [
+            machineStateListGroupFactory({
+              items: machines.map(({ system_id }) => system_id),
+              name: "Deployed",
+            }),
+          ],
         }),
-      ],
+      },
     }),
     tag: tagStateFactory({
       items: [
@@ -70,7 +85,17 @@ it("dispatches actions to fetch necessary data", () => {
     </Provider>
   );
   const expectedActions = [
-    machineActions.fetch("mocked-nanoid"),
+    machineActions.fetch("mocked-nanoid", {
+      filter: {
+        status: FetchNodeStatus.DEPLOYED,
+        tags: ["rad"],
+      },
+      group_key: null,
+      page_number: 1,
+      page_size: 50,
+      sort_direction: FetchSortDirection.Descending,
+      sort_key: FetchGroupKey.Hostname,
+    }),
     tagActions.fetch(),
   ];
   const actualActions = store.getActions();
@@ -131,9 +156,7 @@ it("shows a spinner if the tag has not loaded yet", () => {
   expect(screen.getByTestId("Spinner")).toBeInTheDocument();
 });
 
-// Update to use the new API:
-// https://github.com/canonical/app-tribe/issues/1120
-it.skip("displays the machine list", () => {
+it("displays the machine list", () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>

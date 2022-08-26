@@ -1,5 +1,9 @@
+import type { ValueOf } from "@canonical/react-components";
+
+import { SortDirection } from "app/base/types";
 import { PowerFieldScope } from "app/store/general/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
+import { FetchSortDirection } from "app/store/machine/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import { NodeStatus } from "app/store/types/node";
 
@@ -70,4 +74,20 @@ export const getHasSyncFailed = (machine?: Machine | null): boolean => {
     return false;
   }
   return machine.is_sync_healthy === false;
+};
+
+/**
+ * Map the table sort direction to the value to send to the fetch request.
+ */
+export const mapSortDirection = (
+  sortDirection: ValueOf<typeof SortDirection>
+): FetchSortDirection | null => {
+  switch (sortDirection) {
+    case SortDirection.ASCENDING:
+      return FetchSortDirection.Ascending;
+    case SortDirection.DESCENDING:
+      return FetchSortDirection.Descending;
+    default:
+      return null;
+  }
 };

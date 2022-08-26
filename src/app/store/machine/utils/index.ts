@@ -4,6 +4,7 @@ export {
   getTagCountsForMachines,
   isDeployedWithHardwareSync,
   isMachineDetails,
+  mapSortDirection,
 } from "./common";
 export type { TagIdCountMap } from "./common";
 
