@@ -6,7 +6,7 @@
 
   .numa-card__list {
     position: relative;
-    padding-top: 0;
+    padding-top: 0 !important;
 
     .p-list__item-label {
       text-align: left;
