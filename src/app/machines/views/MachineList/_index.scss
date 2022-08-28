@@ -71,7 +71,7 @@
     min-height: 1px;
   }
 
-  .machine-list__machine:hover,
+  .machine-list__machine:hover:not(.machine-list__machine--inactive),
   .machine-list__machine--active {
     background-color: $color-x-light;
 
