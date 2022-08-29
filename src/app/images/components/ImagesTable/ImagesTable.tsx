@@ -20,6 +20,7 @@ type Props = {
 };
 
 export enum Labels {
+  Table = "Images",
   Pending = "pending",
   Success = "success",
   Error = "error",
@@ -225,6 +226,7 @@ const ImagesTable = ({
 
   return (
     <MainTable
+      aria-label={Labels.Table}
       className="images-table p-table-expanding--light"
       defaultSort="title"
       defaultSortDirection="descending"
