@@ -12,6 +12,10 @@ import type { Node } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { canOpenActionForm, getNodeActionTitle } from "app/store/utils";
 
+export enum Label {
+  Toggle = "Take action",
+}
+
 type ActionGroup = {
   actions: NodeActions[];
   name: string;
@@ -23,11 +27,14 @@ type Props = {
   alwaysShowLifecycle?: boolean;
   disabledTooltipPosition?: "left" | "top-left";
   excludeActions?: NodeActions[];
+  filterActions?: boolean;
   getTitle?: (action: NodeActions) => ReactNode | null;
+  hasSelection: boolean;
   menuPosition?: "left" | "right";
   nodeDisplay?: string;
-  nodes: Node[];
+  nodes?: Node[];
   onActionClick: (action: NodeActions) => void;
+  showCount?: boolean;
   toggleAppearance?: ValueOf<typeof ButtonAppearance>;
   toggleClassName?: string | null;
 };
@@ -76,11 +83,13 @@ const actionGroups: ActionGroup[] = [
 ];
 
 const getTakeActionLinks = (
-  nodes: Node[],
   onActionClick: (action: NodeActions) => void,
   excludeActions: NodeActions[],
   alwaysShowLifecycle: boolean,
-  getTitle?: Props["getTitle"]
+  showCount?: boolean,
+  filterActions?: boolean,
+  getTitle?: Props["getTitle"],
+  nodes?: Node[]
 ) => {
   return actionGroups.reduce<ActionLink[][]>((links, group) => {
     const groupLinks = group.actions.reduce<ActionLink[]>(
@@ -88,14 +97,22 @@ const getTakeActionLinks = (
         if (excludeActions.includes(action)) {
           return groupLinks;
         }
-        const count = nodes.reduce(
-          (sum, node) => (canOpenActionForm(node, action) ? sum + 1 : sum),
-          0
-        );
+        // When nodes are not provided then counts should not be visible.
+        const count =
+          nodes?.reduce(
+            (sum, node) => (canOpenActionForm(node, action) ? sum + 1 : sum),
+            0
+          ) ?? 0;
         // If alwaysShowLifecycle is true, we display lifecycle actions
         // regardless of whether any of the provided nodes can perform them.
         // Otherwise, the action is not rendered.
-        if (count > 0 || (group.name === "lifecycle" && alwaysShowLifecycle)) {
+        if (
+          (filterActions &&
+            (count > 0 ||
+              (group.name === "lifecycle" && alwaysShowLifecycle))) ||
+          // When there are no counts the actions should always be visible.
+          !filterActions
+        ) {
           groupLinks.push({
             children: (
               <div className="u-flex--between">
@@ -103,7 +120,7 @@ const getTakeActionLinks = (
                   {getTitle?.(action) ?? getNodeActionTitle(action)}
                   ...
                 </span>
-                {nodes.length > 1 && (
+                {showCount && (
                   <span
                     className="u-nudge-right--small"
                     data-testid={`action-count-${action}`}
@@ -114,7 +131,8 @@ const getTakeActionLinks = (
               </div>
             ),
             "data-testid": `action-link-${action}`,
-            disabled: count === 0,
+            // When not showing the counts the actions should always be enabled.
+            disabled: (showCount && count === 0) || false,
             onClick: () => onActionClick(action),
           });
         }
@@ -134,18 +152,21 @@ export const NodeActionMenu = ({
   alwaysShowLifecycle = false,
   disabledTooltipPosition = "left",
   excludeActions = [],
+  filterActions,
   getTitle,
+  hasSelection,
   menuPosition = "right",
   nodeDisplay = "node",
   nodes,
   onActionClick,
+  showCount,
   toggleAppearance = "positive",
   toggleClassName,
 }: Props): JSX.Element => {
   return (
     <Tooltip
       message={
-        !nodes.length
+        !hasSelection
           ? `Select ${nodeDisplay}s below to perform an action.`
           : null
       }
@@ -155,17 +176,19 @@ export const NodeActionMenu = ({
         data-testid="take-action-dropdown"
         hasToggleIcon
         links={getTakeActionLinks(
-          nodes,
           onActionClick,
           excludeActions,
           alwaysShowLifecycle,
-          getTitle
+          showCount,
+          filterActions,
+          getTitle,
+          nodes
         )}
         position={menuPosition}
         toggleAppearance={toggleAppearance}
         toggleClassName={toggleClassName}
-        toggleDisabled={!nodes.length}
-        toggleLabel="Take action"
+        toggleDisabled={!hasSelection}
+        toggleLabel={Label.Toggle}
       />
     </Tooltip>
   );
