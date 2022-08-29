@@ -12,6 +12,12 @@ import type { BootResourceState } from "app/store/bootresource/types";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
+export enum Labels {
+  AutoSyncImages = "Automatically sync images",
+  RackControllersImporting = "Step 2/2: Rack controller(s) importing",
+  RegionControllerImporting = "Step 1/2: Region controller importing",
+}
+
 const generateImportStatus = (
   rackImportRunning: BootResourceState["rackImportRunning"],
   regionImportRunning: BootResourceState["regionImportRunning"]
@@ -19,15 +25,15 @@ const generateImportStatus = (
   if (regionImportRunning) {
     return (
       <>
-        <Spinner data-testid="region-importing" /> Step 1/2: Region controller
-        importing
+        <Spinner data-testid="region-importing" />{" "}
+        {Labels.RegionControllerImporting}
       </>
     );
   } else if (rackImportRunning) {
     return (
       <>
-        <Spinner data-testid="rack-importing" /> Step 2/2: Rack controller(s)
-        importing
+        <Spinner data-testid="rack-importing" />{" "}
+        {Labels.RackControllersImporting}
       </>
     );
   }
@@ -70,7 +76,7 @@ const ImageListHeader = (): JSX.Element => {
                   id="auto-sync-switch"
                   label={
                     <span>
-                      <span>Automatically sync images</span>
+                      <span>{Labels.AutoSyncImages}</span>
                       <TooltipButton
                         className="u-nudge-right--small"
                         iconName="help"
