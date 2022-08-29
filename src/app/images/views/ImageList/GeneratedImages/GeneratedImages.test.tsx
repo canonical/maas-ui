@@ -1,6 +1,4 @@
 import { screen, within } from "@testing-library/react";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import GeneratedImages from "./GeneratedImages";
 
@@ -12,8 +10,6 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import { renderWithMockStore } from "testing/utils";
-
-const mockStore = configureStore();
 
 describe("GeneratedImages", () => {
   it("does not render if there are no generated resources", () => {
