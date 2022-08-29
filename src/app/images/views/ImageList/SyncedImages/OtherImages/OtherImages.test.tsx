@@ -1,10 +1,11 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import OtherImages from "./OtherImages";
+import OtherImages, { Labels as OtherImagesLabels } from "./OtherImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import {
@@ -13,7 +14,7 @@ import {
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -22,17 +23,10 @@ describe("OtherImages", () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({ otherImages: [] }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <OtherImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("ImagesTable").exists()).toBe(false);
+    renderWithBrowserRouter(<OtherImages />, { wrapperProps: { state } });
+    expect(
+      screen.queryByText(OtherImagesLabels.OtherImages)
+    ).not.toBeInTheDocument();
   });
 
   it("correctly sets initial values based on resources", () => {
@@ -65,38 +59,19 @@ describe("OtherImages", () => {
         resources,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <OtherImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
-      images: [
-        {
-          arch: "amd64",
-          os: "centos",
-          release: "centos70",
-          resourceId: resources[2].id,
-          subArch: "generic",
-          title: "CentOS 7",
-        },
-      ],
-    });
+    renderWithBrowserRouter(<OtherImages />, { wrapperProps: { state } });
+
+    expect(screen.getByRole("checkbox", { name: "CentOS 7" })).toBeChecked();
   });
 
-  it("can dispatch an action to save other images", () => {
+  it("can dispatch an action to save other images", async () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         otherImages: [otherImageFactory()],
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -105,19 +80,13 @@ describe("OtherImages", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      images: [
-        {
-          arch: "amd64",
-          os: "centos",
-          release: "centos70",
-          subArch: "generic",
-        },
-      ],
-    });
+    await userEvent.click(screen.getByRole("checkbox", { name: "CentOS 8" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: OtherImagesLabels.SubmitLabel })
+    );
 
     const expectedAction = bootResourceActions.saveOther({
-      images: ["centos/amd64/generic/centos70"],
+      images: ["centos/amd64/generic/8"],
     });
     const actualActions = store.getActions();
     expect(
@@ -136,24 +105,15 @@ describe("OtherImages", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <OtherImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<OtherImages />, { wrapperProps: { state } });
 
     expect(
-      wrapper.find("button[data-testid='secondary-submit']").exists()
-    ).toBe(false);
+      screen.queryByRole("button", { name: OtherImagesLabels.StopImport })
+    ).not.toBeInTheDocument();
   });
 
   it(`can dispatch an action to stop importing other images if at least one is
-    downloading`, () => {
+    downloading`, async () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         otherImages: [otherImageFactory()],
@@ -163,7 +123,7 @@ describe("OtherImages", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -172,7 +132,10 @@ describe("OtherImages", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("button[data-testid='secondary-submit']").simulate("click");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: OtherImagesLabels.StopImport })
+    );
 
     const expectedAction = bootResourceActions.stopImport();
     const actualActions = store.getActions();

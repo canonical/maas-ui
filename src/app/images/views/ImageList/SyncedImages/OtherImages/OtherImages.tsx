@@ -34,6 +34,12 @@ export type OtherImagesValues = {
   images: ImageValue[];
 };
 
+export enum Labels {
+  OtherImages = "Other images",
+  SubmitLabel = "Update selection",
+  StopImport = "Stop import",
+}
+
 const OtherImages = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const otherImages = useSelector(bootResourceSelectors.otherImages);
@@ -85,7 +91,7 @@ const OtherImages = (): JSX.Element | null => {
     <>
       <hr />
       <Strip className="u-no-padding--bottom" shallow>
-        <h4>Other images</h4>
+        <h4>{Labels.OtherImages}</h4>
         <FormikForm<OtherImagesValues>
           allowUnchanged
           buttonsBordered={false}
@@ -115,8 +121,8 @@ const OtherImages = (): JSX.Element | null => {
             dispatch(cleanup());
             dispatch(bootResourceActions.stopImport());
           }}
-          secondarySubmitLabel={canStopImport ? "Stop import" : null}
-          submitLabel="Update selection"
+          secondarySubmitLabel={canStopImport ? Labels.StopImport : null}
+          submitLabel={Labels.SubmitLabel}
           validationSchema={OtherImagesSchema}
         >
           <NonUbuntuImageSelect images={otherImages} resources={resources} />
