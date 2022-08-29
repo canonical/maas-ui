@@ -1,11 +1,15 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { mount } from "enzyme";
+import { screen, render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import FetchImagesForm from "./FetchImagesForm";
+import FetchImagesForm, {
+  Labels as FetchImagesFormLabels,
+} from "./FetchImagesForm";
+import { Labels as FetchImagesFormFieldsLabels } from "./FetchImagesFormFields/FetchImagesFormFields";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import { BootResourceSourceType } from "app/store/bootresource/types";
@@ -14,7 +18,6 @@ import {
   bootResourceStatuses as bootResourceStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -32,10 +35,10 @@ describe("FetchImagesForm", () => {
     jest.restoreAllMocks();
   });
 
-  it("can dispatch an action to fetch images", () => {
+  it("can dispatch an action to fetch images", async () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -44,12 +47,37 @@ describe("FetchImagesForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      keyring_data: "data",
-      keyring_filename: "/path/to/file",
-      source_type: BootResourceSourceType.CUSTOM,
-      url: "http://www.example.com/",
-    });
+
+    await userEvent.click(
+      screen.getByRole("radio", { name: FetchImagesFormFieldsLabels.Custom })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: FetchImagesFormFieldsLabels.ShowAdvanced,
+      })
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: FetchImagesFormFieldsLabels.Url }),
+      "http://www.example.com/"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringFilename,
+      }),
+      "/path/to/file"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringData,
+      }),
+      "data"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: FetchImagesFormLabels.SubmitLabel })
+    );
 
     const actualActions = store.getActions();
     const expectedAction = bootResourceActions.fetch({
@@ -65,7 +93,7 @@ describe("FetchImagesForm", () => {
     ).toStrictEqual(expectedAction);
   });
 
-  it("sets source if images successfuly fetched", () => {
+  it("sets source if images successfuly fetched", async () => {
     // Mock the transition from "saving" to "saved"
     jest
       .spyOn(reactComponentHooks, "usePrevious")
@@ -88,10 +116,15 @@ describe("FetchImagesForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    const wrapper = mount(<Proxy />);
-    // Force the component to rerender to simulate the saved value changing.
-    wrapper.setProps({});
+    const { rerender } = render(<Proxy />);
 
-    expect(setSource).toHaveBeenCalled();
+    await userEvent.click(
+      screen.getByRole("button", { name: FetchImagesFormLabels.SubmitLabel })
+    );
+
+    // Force the component to rerender to simulate the saved value changing.
+    rerender(<Proxy />);
+
+    await waitFor(() => expect(setSource).toHaveBeenCalled());
   });
 });
