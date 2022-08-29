@@ -18,6 +18,10 @@ import configSelectors from "app/store/config/selectors";
 
 export const DEFAULT_ARCH = "amd64";
 
+export enum Labels {
+  SubmitLabel = "Update selection",
+}
+
 const FetchedImagesSchema = Yup.object()
   .shape({
     images: Yup.array().of(
@@ -132,7 +136,7 @@ const FetchedImages = ({ closeForm, source }: Props): JSX.Element | null => {
         }}
         saved={saved}
         saving={saving}
-        submitLabel="Update selection"
+        submitLabel={Labels.SubmitLabel}
         validationSchema={FetchedImagesSchema}
       >
         <UbuntuImageSelect
