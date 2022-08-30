@@ -25,7 +25,7 @@ import {
   generateBaseSelectors,
   getInterfaceById as getInterfaceByIdUtil,
 } from "app/store/utils";
-import { isId } from "app/utils";
+import { isId, simpleSortByKey } from "app/utils";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
@@ -420,7 +420,10 @@ const filterOptions = createSelector(
     (_state: RootState, groupKey: FilterGroupKey | null | undefined) =>
       groupKey,
   ],
-  (machineState, groupKey) => getFilterGroup(machineState, groupKey)?.options
+  (machineState, groupKey) =>
+    [...(getFilterGroup(machineState, groupKey)?.options ?? [])].sort(
+      simpleSortByKey("label")
+    )
 );
 
 /**

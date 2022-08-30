@@ -13,7 +13,6 @@ import type {
 } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import { simpleSortByKey } from "app/utils";
 
 export enum Label {
   False = "false",
@@ -66,7 +65,7 @@ const MachinesFilterOptions = ({
       </span>,
     ];
   } else {
-    items = [...filterOptions].sort(simpleSortByKey("key")).map((filter) => {
+    items = filterOptions.map((filter) => {
       let key: Exclude<FilterGroupOptionType, boolean>;
       if (typeof filter.key === "boolean") {
         key = filter.key ? Label.True : Label.False;

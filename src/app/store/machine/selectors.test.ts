@@ -543,6 +543,27 @@ describe("machine selectors", () => {
     ).toStrictEqual(options);
   });
 
+  it("sorts filter options", () => {
+    const options = [
+      { key: "option10", label: "Option 10" },
+      { key: "anoption", label: "An option" },
+      { key: "option1", label: "Option 1" },
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        filters: [
+          machineFilterGroupFactory({
+            key: FilterGroupKey.AgentName,
+            options,
+          }),
+        ],
+      }),
+    });
+    expect(
+      machine.filterOptions(state, FilterGroupKey.AgentName)
+    ).toStrictEqual([options[1], options[2], options[0]]);
+  });
+
   it("can get filter options loaded state", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
