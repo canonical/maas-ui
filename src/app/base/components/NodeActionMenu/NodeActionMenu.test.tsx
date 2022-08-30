@@ -9,7 +9,9 @@ import { machine as machineFactory } from "testing/factories";
 
 describe("NodeActionMenu", () => {
   const openMenu = async () =>
-    await userEvent.click(screen.getByRole("button", { name: Label.Toggle }));
+    await userEvent.click(
+      screen.getByRole("button", { name: Label.TakeAction })
+    );
 
   const getActionButton = (action: NodeActions) =>
     screen.getByRole("button", {
@@ -34,7 +36,9 @@ describe("NodeActionMenu", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: Label.Toggle })).toBeDisabled();
+    expect(
+      screen.getByRole("button", { name: Label.TakeAction })
+    ).toBeDisabled();
   });
 
   it("is enabled if nodes are selected", async () => {
@@ -49,7 +53,7 @@ describe("NodeActionMenu", () => {
     );
 
     expect(
-      screen.getByRole("button", { name: Label.Toggle })
+      screen.getByRole("button", { name: Label.TakeAction })
     ).not.toBeDisabled();
   });
 
@@ -228,7 +232,7 @@ describe("NodeActionMenu", () => {
       />
     );
 
-    expect(screen.getByRole("button", { name: Label.Toggle })).toHaveClass(
+    expect(screen.getByRole("button", { name: Label.TakeAction })).toHaveClass(
       "p-button--negative"
     );
   });

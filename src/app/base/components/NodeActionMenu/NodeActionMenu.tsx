@@ -13,7 +13,7 @@ import { NodeActions } from "app/store/types/node";
 import { canOpenActionForm, getNodeActionTitle } from "app/store/utils";
 
 export enum Label {
-  Toggle = "Take action",
+  TakeAction = "Take action",
 }
 
 type ActionGroup = {
@@ -188,7 +188,7 @@ export const NodeActionMenu = ({
         toggleAppearance={toggleAppearance}
         toggleClassName={toggleClassName}
         toggleDisabled={!hasSelection}
-        toggleLabel={Label.Toggle}
+        toggleLabel={Label.TakeAction}
       />
     </Tooltip>
   );
