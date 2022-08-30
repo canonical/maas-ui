@@ -85,16 +85,21 @@ export const useFetchMachineCount = (
   };
 };
 
+export type UseFetchMachinesOptions = {
+  filters?: FetchFilters | null;
+  grouping?: FetchGroupKey | null;
+  pageSize?: number;
+  currentPage?: number;
+  sortKey?: FetchGroupKey | null;
+  sortDirection?: FetchSortDirection | null;
+  collapsedGroups?: string[];
+};
+
 /**
  * Fetch machines via the API.
  */
 export const useFetchMachines = (
-  filters?: FetchFilters | null,
-  grouping?: FetchGroupKey | null,
-  pageSize?: number,
-  currentPage?: number,
-  sortKey?: FetchGroupKey | null,
-  sortDirection?: FetchSortDirection | null
+  options?: UseFetchMachinesOptions | null
 ): {
   callId: string | null;
   loaded: boolean;
@@ -105,12 +110,7 @@ export const useFetchMachines = (
 } => {
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
-  const previousFilters = usePrevious(filters, false);
-  const previousGrouping = usePrevious(grouping, false);
-  const previousSortDirection = usePrevious(sortDirection, false);
-  const previousSortKey = usePrevious(sortKey, false);
-  const previousPage = usePrevious(currentPage, false);
-  const previousPageSize = usePrevious(pageSize, false);
+  const previousOptions = usePrevious(options, false);
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId)
@@ -130,72 +130,33 @@ export const useFetchMachines = (
   useCleanup(callId);
 
   useEffect(() => {
-    // TODO: request the machines again if the provided options change (
-    // ordering, pagination etc.)
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
-    if (
-      !fastDeepEqual(filters || {}, previousFilters || {}) ||
-      !callId ||
-      grouping !== previousGrouping ||
-      sortKey !== previousSortKey ||
-      sortDirection !== previousSortDirection ||
-      currentPage !== previousPage ||
-      pageSize !== previousPageSize
-    ) {
+    if (!fastDeepEqual(options || {}, previousOptions || {}) || !callId) {
       setCallId(nanoid());
     }
-  }, [
-    callId,
-    currentPage,
-    dispatch,
-    filters,
-    grouping,
-    pageSize,
-    previousFilters,
-    previousGrouping,
-    previousPage,
-    previousPageSize,
-    previousSortDirection,
-    previousSortKey,
-    sortDirection,
-    sortKey,
-  ]);
+  }, [callId, options, previousOptions]);
 
   useEffect(() => {
     if (callId && callId !== previousCallId) {
       dispatch(
         machineActions.fetch(
           callId,
-          filters ||
-            grouping ||
-            sortKey ||
-            sortDirection ||
-            grouping ||
-            pageSize
+          options
             ? {
-                filter: filters ?? null,
-                group_key: grouping ?? null,
-                page_number: currentPage,
-                page_size: pageSize,
-                sort_direction: sortDirection ?? null,
-                sort_key: sortKey ?? null,
+                filter: options.filters ?? null,
+                group_collapsed: options.collapsedGroups,
+                group_key: options.grouping ?? null,
+                page_number: options.currentPage,
+                page_size: options.pageSize,
+                sort_direction: options.sortDirection ?? null,
+                sort_key: options.sortKey ?? null,
               }
             : null
         )
       );
     }
-  }, [
-    callId,
-    currentPage,
-    dispatch,
-    filters,
-    grouping,
-    pageSize,
-    previousCallId,
-    sortDirection,
-    sortKey,
-  ]);
+  }, [callId, dispatch, options, previousCallId]);
 
   return { callId, loaded, loading, machineCount, machines, machinesErrors };
 };
