@@ -214,7 +214,7 @@ export type MachineStateList = {
 
 export type MachineStateLists = Record<string, MachineStateList>;
 
-export type FilterGroupOptionType = boolean | number | string[] | string;
+export type FilterGroupOptionType = boolean | number | string;
 
 export type FilterGroupOption<K = FilterGroupOptionType> = {
   key: K;
@@ -232,9 +232,56 @@ export enum FilterGroupType {
   StringList = "list[str]",
 }
 
+export enum FilterGroupKey {
+  AgentName = "agent_name",
+  Arch = "arch",
+  CpuCount = "cpu_count",
+  CpuSpeed = "cpu_speed",
+  Description = "description",
+  DistroSeries = "distro_series",
+  Domain = "domain",
+  ErrorDescription = "error_description",
+  FabricClasses = "fabric_classes",
+  Fabrics = "fabrics",
+  FreeText = "free_text",
+  Hostname = "hostname",
+  IpAddresses = "ip_addresses",
+  LinkSpeed = "link_speed",
+  MacAddress = "mac_address",
+  Mem = "mem",
+  NotArch = "not_arch",
+  NotDistroSeries = "not_distro_series",
+  NotFabricClasses = "not_fabric_classes",
+  NotFabrics = "not_fabrics",
+  NotInPool = "not_in_pool",
+  NotInZone = "not_in_zone",
+  NotIpAddresses = "not_ip_addresses",
+  NotOsystem = "not_osystem",
+  NotOwner = "not_owner",
+  NotPod = "not_pod",
+  NotPodType = "not_pod_type",
+  NotSubnets = "not_subnets",
+  NotSystemId = "not_system_id",
+  NotTags = "not_tags",
+  NotVlans = "not_vlans",
+  Osystem = "osystem",
+  Owner = "owner",
+  Pod = "pod",
+  PodType = "pod_type",
+  Pool = "pool",
+  Spaces = "spaces",
+  Status = "status",
+  Subnets = "subnets",
+  SystemId = "system_id",
+  Tags = "tags",
+  Vlans = "vlans",
+  Workloads = "workloads",
+  Zone = "zone",
+}
+
 export type FilterGroup = {
   errors: APIError;
-  key: string;
+  key: FilterGroupKey;
   label: string;
   loaded: boolean;
   loading: boolean;

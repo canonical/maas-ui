@@ -1,5 +1,5 @@
 import { actions } from "./slice";
-import { FetchGroupKey, FetchSortDirection } from "./types";
+import { FetchGroupKey, FetchSortDirection, FilterGroupKey } from "./types";
 
 import { PowerTypeNames } from "app/store/general/constants";
 import {
@@ -2223,7 +2223,7 @@ describe("machine actions", () => {
   });
 
   it("can handle filter options", () => {
-    expect(actions.filterOptions(FetchGroupKey.Owner)).toEqual({
+    expect(actions.filterOptions(FilterGroupKey.Owner)).toEqual({
       type: "machine/filterOptions",
       meta: {
         model: "machine",
@@ -2231,7 +2231,7 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
-          group_key: FetchGroupKey.Owner,
+          group_key: FilterGroupKey.Owner,
         },
       },
     });

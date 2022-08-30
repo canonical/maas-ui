@@ -1,4 +1,5 @@
 import machine from "./selectors";
+import { FilterGroupKey } from "./types";
 
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { NodeActions, NodeStatus, NodeStatusCode } from "app/store/types/node";
@@ -6,6 +7,7 @@ import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
   machineEventError as machineEventErrorFactory,
+  machineFilterGroup as machineFilterGroupFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
@@ -494,6 +496,104 @@ describe("machine selectors", () => {
     expect(machine.count(state, "mocked-nanoid")).toStrictEqual(2);
     expect(machine.countLoaded(state, "mocked-nanoid")).toStrictEqual(true);
     expect(machine.countLoading(state, "mocked-nanoid")).toStrictEqual(false);
+  });
+
+  it("can get machine filters", () => {
+    const filters = [machineFilterGroupFactory()];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        filters,
+      }),
+    });
+    expect(machine.filters(state)).toStrictEqual(filters);
+  });
+
+  it("can get filters loaded state", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        filtersLoaded: true,
+      }),
+    });
+    expect(machine.filtersLoaded(state)).toBe(true);
+  });
+
+  it("can get filters loading state", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        filtersLoading: true,
+      }),
+    });
+    expect(machine.filtersLoading(state)).toBe(true);
+  });
+
+  it("can get machine filter options", () => {
+    const options = [{ key: "option1", label: "Option 1" }];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        filters: [
+          machineFilterGroupFactory({
+            key: FilterGroupKey.AgentName,
+            options,
+          }),
+        ],
+      }),
+    });
+    expect(
+      machine.filterOptions(state, FilterGroupKey.AgentName)
+    ).toStrictEqual(options);
+  });
+
+  it("sorts filter options", () => {
+    const options = [
+      { key: "option10", label: "Option 10" },
+      { key: "anoption", label: "An option" },
+      { key: "option1", label: "Option 1" },
+    ];
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        filters: [
+          machineFilterGroupFactory({
+            key: FilterGroupKey.AgentName,
+            options,
+          }),
+        ],
+      }),
+    });
+    expect(
+      machine.filterOptions(state, FilterGroupKey.AgentName)
+    ).toStrictEqual([options[1], options[2], options[0]]);
+  });
+
+  it("can get filter options loaded state", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        filters: [
+          machineFilterGroupFactory({
+            key: FilterGroupKey.AgentName,
+            loaded: true,
+          }),
+        ],
+      }),
+    });
+    expect(machine.filterOptionsLoaded(state, FilterGroupKey.AgentName)).toBe(
+      true
+    );
+  });
+
+  it("can get filter options loading state", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        filters: [
+          machineFilterGroupFactory({
+            key: FilterGroupKey.AgentName,
+            loading: true,
+          }),
+        ],
+      }),
+    });
+    expect(machine.filterOptionsLoading(state, FilterGroupKey.AgentName)).toBe(
+      true
+    );
   });
 
   it("can get items in a list", () => {

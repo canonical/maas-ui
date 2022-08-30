@@ -3,7 +3,11 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { Tag, TagMeta } from "../tag/types";
 
-import type { FilterGroupOptionType, MachineStateCount } from "./types";
+import type {
+  FilterGroupOptionType,
+  MachineStateCount,
+  FilterGroupKey,
+} from "./types";
 
 import { ACTIONS } from "app/store/machine/slice";
 import { MachineMeta } from "app/store/machine/types";
@@ -21,7 +25,7 @@ import {
   generateBaseSelectors,
   getInterfaceById as getInterfaceByIdUtil,
 } from "app/store/utils";
-import { isId } from "app/utils";
+import { isId, simpleSortByKey } from "app/utils";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
@@ -368,6 +372,90 @@ const detailsLoading = createSelector(
   (machineState, callId) => getDetails(machineState, callId)?.loading
 );
 
+/**
+ * Get the machine filters.
+ * @param state - The redux state.
+ * @returns The machine filters.
+ */
+const filters = createSelector(
+  [machineState],
+  (machineState) => machineState.filters
+);
+
+/**
+ * Get the loaded state for the machine filters.
+ * @param state - The redux state.
+ * @returns The machine filters loaded state.
+ */
+const filtersLoaded = createSelector(
+  [machineState],
+  (machineState) => machineState.filtersLoaded
+);
+
+/**
+ * Get the loading state for the machine filters.
+ * @param state - The redux state.
+ * @returns The machine filters loading state.
+ */
+const filtersLoading = createSelector(
+  [machineState],
+  (machineState) => machineState.filtersLoading
+);
+
+const getFilterGroup = (
+  machineState: MachineState,
+  groupKey: FilterGroupKey | null | undefined
+) =>
+  groupKey ? machineState.filters?.find(({ key }) => key === groupKey) : null;
+
+/**
+ * Get the options for a filter group.
+ * @param state - The redux state.
+ * @param groupKey - A filter group key.
+ * @returns The filter group options.
+ */
+const filterOptions = createSelector(
+  [
+    machineState,
+    (_state: RootState, groupKey: FilterGroupKey | null | undefined) =>
+      groupKey,
+  ],
+  (machineState, groupKey) =>
+    [...(getFilterGroup(machineState, groupKey)?.options ?? [])].sort(
+      simpleSortByKey("label")
+    )
+);
+
+/**
+ * Get the loaded state for a filter group.
+ * @param state - The redux state.
+ * @param groupKey - A filter group key.
+ * @returns The filter group loaded state.
+ */
+const filterOptionsLoaded = createSelector(
+  [
+    machineState,
+    (_state: RootState, groupKey: FilterGroupKey | null | undefined) =>
+      groupKey,
+  ],
+  (machineState, groupKey) => getFilterGroup(machineState, groupKey)?.loaded
+);
+
+/**
+ * Get the loading state for a filter group.
+ * @param state - The redux state.
+ * @param groupKey - A filter group key.
+ * @returns The filter group loading state.
+ */
+const filterOptionsLoading = createSelector(
+  [
+    machineState,
+    (_state: RootState, groupKey: FilterGroupKey | null | undefined) =>
+      groupKey,
+  ],
+  (machineState, groupKey) => getFilterGroup(machineState, groupKey)?.loading
+);
+
 const getList = (
   machineState: MachineState,
   callId: string | null | undefined
@@ -559,6 +647,12 @@ const selectors = {
   eventErrors,
   eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
+  filterOptions,
+  filterOptionsLoaded,
+  filterOptionsLoading,
+  filters,
+  filtersLoaded,
+  filtersLoading,
   getByStatusCode,
   count,
   countLoaded,

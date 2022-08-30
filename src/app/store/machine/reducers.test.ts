@@ -1,6 +1,5 @@
 import reducers, { actions } from "./slice";
-import { FetchGroupKey } from "./types/actions";
-import { FilterGroupType } from "./types/base";
+import { FilterGroupKey, FilterGroupType } from "./types";
 
 import { NodeActions } from "app/store/types/node";
 import {
@@ -400,18 +399,18 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.Owner,
+          key: FilterGroupKey.Owner,
           loading: false,
         }),
       ],
     });
     expect(
-      reducers(initialState, actions.filterOptionsStart(FetchGroupKey.Owner))
+      reducers(initialState, actions.filterOptionsStart(FilterGroupKey.Owner))
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.Owner,
+            key: FilterGroupKey.Owner,
             loading: true,
           }),
         ],
@@ -424,7 +423,7 @@ describe("machine reducer", () => {
       eventErrors: [],
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.Owner,
+          key: FilterGroupKey.Owner,
           loading: true,
         }),
       ],
@@ -433,7 +432,7 @@ describe("machine reducer", () => {
       reducers(
         initialState,
         actions.filterOptionsError(
-          FetchGroupKey.Owner,
+          FilterGroupKey.Owner,
           "Could not fetch filter groups"
         )
       )
@@ -449,7 +448,7 @@ describe("machine reducer", () => {
         filters: [
           filterGroupFactory({
             errors: "Could not fetch filter groups",
-            key: FetchGroupKey.Owner,
+            key: FilterGroupKey.Owner,
             loading: false,
           }),
         ],
@@ -461,7 +460,7 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.PowerState,
+          key: FilterGroupKey.AgentName,
           options: null,
           loaded: false,
           loading: true,
@@ -476,13 +475,13 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.filterOptionsSuccess(FetchGroupKey.PowerState, fetchedOptions)
+        actions.filterOptionsSuccess(FilterGroupKey.AgentName, fetchedOptions)
       )
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.PowerState,
+            key: FilterGroupKey.AgentName,
             options: fetchedOptions,
             loaded: true,
             loading: false,
@@ -497,7 +496,7 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.Memory,
+          key: FilterGroupKey.Mem,
           options: null,
           loaded: false,
           loading: true,
@@ -512,13 +511,13 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.filterOptionsSuccess(FetchGroupKey.Memory, fetchedOptions)
+        actions.filterOptionsSuccess(FilterGroupKey.Mem, fetchedOptions)
       )
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.Memory,
+            key: FilterGroupKey.Mem,
             options: fetchedOptions,
             loaded: true,
             loading: false,
@@ -533,7 +532,7 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.Memory,
+          key: FilterGroupKey.Mem,
           options: null,
           loaded: false,
           loading: true,
@@ -548,13 +547,13 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.filterOptionsSuccess(FetchGroupKey.Memory, fetchedOptions)
+        actions.filterOptionsSuccess(FilterGroupKey.Mem, fetchedOptions)
       )
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.Memory,
+            key: FilterGroupKey.Mem,
             options: fetchedOptions,
             loaded: true,
             loading: false,
@@ -569,7 +568,7 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.Status,
+          key: FilterGroupKey.Status,
           options: null,
           loaded: false,
           loading: true,
@@ -584,13 +583,13 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.filterOptionsSuccess(FetchGroupKey.Status, fetchedOptions)
+        actions.filterOptionsSuccess(FilterGroupKey.Status, fetchedOptions)
       )
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.Status,
+            key: FilterGroupKey.Status,
             options: fetchedOptions,
             loaded: true,
             loading: false,
@@ -605,7 +604,7 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.Status,
+          key: FilterGroupKey.Status,
           options: null,
           loaded: false,
           loading: true,
@@ -620,13 +619,13 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.filterOptionsSuccess(FetchGroupKey.Status, fetchedOptions)
+        actions.filterOptionsSuccess(FilterGroupKey.Status, fetchedOptions)
       )
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.Status,
+            key: FilterGroupKey.Status,
             options: fetchedOptions,
             loaded: true,
             loading: false,
@@ -641,7 +640,7 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.Tags,
+          key: FilterGroupKey.Tags,
           options: null,
           loaded: false,
           loading: true,
@@ -656,13 +655,13 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.filterOptionsSuccess(FetchGroupKey.Tags, fetchedOptions)
+        actions.filterOptionsSuccess(FilterGroupKey.Tags, fetchedOptions)
       )
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.Tags,
+            key: FilterGroupKey.Tags,
             options: fetchedOptions,
             loaded: true,
             loading: false,
@@ -677,7 +676,7 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.BootInterface,
+          key: FilterGroupKey.AgentName,
           options: null,
           loaded: false,
           loading: true,
@@ -692,16 +691,13 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.filterOptionsSuccess(
-          FetchGroupKey.BootInterface,
-          fetchedOptions
-        )
+        actions.filterOptionsSuccess(FilterGroupKey.AgentName, fetchedOptions)
       )
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.BootInterface,
+            key: FilterGroupKey.AgentName,
             options: fetchedOptions,
             loaded: true,
             loading: false,
@@ -716,7 +712,7 @@ describe("machine reducer", () => {
     const initialState = machineStateFactory({
       filters: [
         filterGroupFactory({
-          key: FetchGroupKey.Owner,
+          key: FilterGroupKey.Owner,
           options: null,
           loaded: false,
           loading: true,
@@ -731,13 +727,13 @@ describe("machine reducer", () => {
     expect(
       reducers(
         initialState,
-        actions.filterOptionsSuccess(FetchGroupKey.Owner, fetchedOptions)
+        actions.filterOptionsSuccess(FilterGroupKey.Owner, fetchedOptions)
       )
     ).toEqual(
       machineStateFactory({
         filters: [
           filterGroupFactory({
-            key: FetchGroupKey.Owner,
+            key: FilterGroupKey.Owner,
             options: fetchedOptions,
             loaded: true,
             loading: false,

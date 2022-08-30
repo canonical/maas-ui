@@ -51,14 +51,11 @@ import type { IPRangeState } from "app/store/iprange/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine";
 import type {
+  FilterGroup,
   Machine,
+  MachineEventErrors,
   MachineMeta,
   MachineState,
-  MachineStatus,
-  MachineStatuses,
-} from "app/store/machine/types";
-import type {
-  MachineEventErrors,
   MachineStateCount,
   MachineStateCounts,
   MachineStateDetails,
@@ -66,7 +63,10 @@ import type {
   MachineStateList,
   MachineStateListGroup,
   MachineStateLists,
-} from "app/store/machine/types/base";
+  MachineStatus,
+  MachineStatuses,
+} from "app/store/machine/types";
+import { FilterGroupKey, FilterGroupType } from "app/store/machine/types";
 import type { MessageState } from "app/store/message/types";
 import type { NodeDeviceState } from "app/store/nodedevice/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
@@ -281,6 +281,18 @@ export const machineStateCount = define<MachineStateCount>({
   errors: null,
   loaded: false,
   loading: false,
+});
+
+export const machineFilterGroup = define<FilterGroup>({
+  dynamic: false,
+  errors: null,
+  for_grouping: false,
+  key: FilterGroupKey.AgentName,
+  label: "filter group",
+  loaded: false,
+  loading: false,
+  options: () => [],
+  type: FilterGroupType.String,
 });
 
 export const machineStateCounts = define<MachineStateCounts>({

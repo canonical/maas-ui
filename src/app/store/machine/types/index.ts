@@ -58,6 +58,7 @@ export type {
   MachineEventErrors,
   MachineState,
   MachineStateCount,
+  MachineStateCounts,
   MachineStateDetails,
   MachineStateDetailsItem,
   MachineStateList,
@@ -67,8 +68,7 @@ export type {
   MachineStatuses,
   SelectedMachines,
 } from "./base";
-
-export { FilterGroupType } from "./base";
+export { FilterGroupKey, FilterGroupType } from "./base";
 
 export { BcacheModes, MachineMeta } from "./enum";
 

@@ -1,7 +1,5 @@
 import { define, extend, random, sequence } from "cooky-cutter";
 
-import { FilterGroupType } from "../../app/store/machine/types/base";
-
 import { model, modelRef, timestampedModel } from "./model";
 
 import type {
@@ -18,6 +16,7 @@ import type {
 } from "app/store/device/types";
 import { DeviceIpAssignment } from "app/store/device/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
+import { FilterGroupKey, FilterGroupType } from "app/store/machine/types/base";
 import type { FilterGroup } from "app/store/machine/types/base";
 import { PodType } from "app/store/pod/constants";
 import type {
@@ -245,7 +244,7 @@ export const filterGroup = define<FilterGroup>({
   dynamic: false,
   errors: null,
   for_grouping: true,
-  key: "arch",
+  key: FilterGroupKey.Arch,
   label: "Architecture",
   loaded: false,
   loading: false,

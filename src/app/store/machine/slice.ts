@@ -57,8 +57,8 @@ import type {
   UpdateParams,
   UpdateVmfsDatastoreParams,
   FetchFilters,
-  FetchGroupKey,
   SelectedMachines,
+  FilterGroupKey,
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
 
@@ -1154,7 +1154,7 @@ const machineSlice = createSlice({
       state.filtersLoaded = true;
     },
     filterOptions: {
-      prepare: (groupKey: FetchGroupKey) => ({
+      prepare: (groupKey: FilterGroupKey) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "filter_options",
@@ -1171,7 +1171,7 @@ const machineSlice = createSlice({
     },
     filterOptionsError: {
       prepare: (
-        groupKey: FetchGroupKey,
+        groupKey: FilterGroupKey,
         errors: MachineStateDetailsItem["errors"]
       ) => ({
         meta: {
@@ -1186,7 +1186,7 @@ const machineSlice = createSlice({
         action: PayloadAction<
           MachineStateDetailsItem["errors"],
           string,
-          GenericItemMeta<{ group_key: FetchGroupKey }>
+          GenericItemMeta<{ group_key: FilterGroupKey }>
         >
       ) => {
         // Find the group for the requested key.
@@ -1201,7 +1201,7 @@ const machineSlice = createSlice({
       },
     },
     filterOptionsStart: {
-      prepare: (groupKey: FetchGroupKey) => ({
+      prepare: (groupKey: FilterGroupKey) => ({
         meta: {
           item: {
             group_key: groupKey,
@@ -1214,7 +1214,7 @@ const machineSlice = createSlice({
         action: PayloadAction<
           null,
           string,
-          GenericItemMeta<{ group_key: FetchGroupKey }>
+          GenericItemMeta<{ group_key: FilterGroupKey }>
         >
       ) => {
         // Find the group for the requested key.
@@ -1227,7 +1227,7 @@ const machineSlice = createSlice({
       },
     },
     filterOptionsSuccess: {
-      prepare: (groupKey: FetchGroupKey, payload: FilterGroupOption[]) => ({
+      prepare: (groupKey: FilterGroupKey, payload: FilterGroupOption[]) => ({
         meta: {
           item: {
             group_key: groupKey,
@@ -1240,7 +1240,7 @@ const machineSlice = createSlice({
         action: PayloadAction<
           FilterGroupOption[],
           string,
-          GenericItemMeta<{ group_key: FetchGroupKey }>
+          GenericItemMeta<{ group_key: FilterGroupKey }>
         >
       ) => {
         // Find the group for the requested key.
@@ -1248,14 +1248,17 @@ const machineSlice = createSlice({
           ({ key }) => key === action.meta.item.group_key
         );
         if (filterGroup) {
-          const payload = action.payload;
+          // Remove any blank options.
+          const options = action.payload.filter(
+            ({ key, label }) => key || label
+          );
           // Narrow the type of the response to match the expected options
           // and instert the options inside the filter group.
           if (
             filterGroup.type === FilterGroupType.Bool &&
-            isArrayOfOptionsType<boolean>(payload, "boolean")
+            isArrayOfOptionsType<boolean>(options, "boolean")
           ) {
-            filterGroup.options = payload;
+            filterGroup.options = options;
           } else if (
             [
               FilterGroupType.Float,
@@ -1263,18 +1266,18 @@ const machineSlice = createSlice({
               FilterGroupType.Int,
               FilterGroupType.IntList,
             ].includes(filterGroup.type) &&
-            isArrayOfOptionsType<number>(payload, "number")
+            isArrayOfOptionsType<number>(options, "number")
           ) {
-            filterGroup.options = payload;
+            filterGroup.options = options;
           } else if (
             [
               FilterGroupType.String,
               FilterGroupType.StringList,
               FilterGroupType.Dict,
             ].includes(filterGroup.type) &&
-            isArrayOfOptionsType<string>(payload, "string")
+            isArrayOfOptionsType<string>(options, "string")
           ) {
-            filterGroup.options = payload;
+            filterGroup.options = options;
           }
           filterGroup.loading = false;
           filterGroup.loaded = true;
