@@ -42,6 +42,8 @@ const DeviceListHeader = ({
           Add device
         </Button>,
         <NodeActionMenu
+          filterActions
+          hasSelection={selectedDevices.length > 0}
           nodeDisplay="device"
           nodes={selectedDevices}
           onActionClick={(action) => {
@@ -52,6 +54,7 @@ const DeviceListHeader = ({
               setHeaderContent({ view });
             }
           }}
+          showCount
         />,
       ]}
       headerContent={

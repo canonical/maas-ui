@@ -78,9 +78,9 @@ export const MachineListHeader = ({
         <NodeActionMenu
           alwaysShowLifecycle
           getTitle={getTitle}
+          hasSelection={selectedMachines.length > 0}
           key="machine-list-action-menu"
           nodeDisplay="machine"
-          nodes={selectedMachines}
           onActionClick={(action) => {
             if (action === NodeActions.TAG && !tagsSeen) {
               setTagsSeen(true);

@@ -43,9 +43,9 @@ const VMsActionBar = ({
             data-testid="vm-actions"
             disabledTooltipPosition="top-left"
             excludeActions={[NodeActions.DELETE]}
+            hasSelection={selectedMachines.length > 0}
             menuPosition="left"
             nodeDisplay="VM"
-            nodes={selectedMachines}
             onActionClick={(action) => {
               const view = Object.values(MachineHeaderViews).find(
                 ([, actionName]) => actionName === action
