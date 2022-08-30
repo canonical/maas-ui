@@ -1,32 +1,24 @@
-import { render, screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import Settings from "./Settings";
 
+import type { RootState } from "app/store/root/types";
 import {
   authState as authStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("Settings", () => {
   it("dispatches action to fetch config on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings", key: "testKey" }]}
-        >
-          <Settings />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithMockStore(<Settings />, { store });
 
     const fetchConfigAction = store
       .getActions()
@@ -48,16 +40,7 @@ describe("Settings", () => {
         auth: authStateFactory({ user: userFactory({ is_superuser: false }) }),
       }),
     });
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/settings", key: "testKey" }]}
-        >
-          <Settings />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithMockStore(<Settings />, { state });
     expect(
       screen.getByRole("heading", {
         name: /You do not have permission to view this page./,
