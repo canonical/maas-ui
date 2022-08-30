@@ -1,10 +1,11 @@
-import { mount } from "enzyme";
+import { screen, render, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import UbuntuImages from "./UbuntuImages";
+import UbuntuImages, { Labels as UbuntuImagesLabels } from "./UbuntuImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import { BootResourceSourceType } from "app/store/bootresource/types";
@@ -17,7 +18,7 @@ import {
   bootResourceUbuntuSource as sourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -72,57 +73,67 @@ describe("UbuntuImages", () => {
         ubuntu,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UbuntuImages sources={[source]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
-      images: [
-        {
-          arch: "amd64",
-          os: "ubuntu",
-          release: "xenial",
-          resourceId: resources[0].id,
-          title: "16.04 LTS",
-        },
-        {
-          arch: "i386",
-          os: "ubuntu",
-          release: "xenial",
-          resourceId: resources[1].id,
-          title: "16.04 LTS",
-        },
-        {
-          arch: "amd64",
-          os: "ubuntu",
-          release: "bionic",
-          resourceId: resources[3].id,
-          title: "18.04 LTS",
-        },
-      ],
+
+    renderWithBrowserRouter(<UbuntuImages sources={[source]} />, {
+      wrapperProps: { state },
     });
+
+    const row_18_04_LTS = screen.getByRole("row", { name: "18.04 LTS" });
+    const rows_16_04_LTS = screen.getAllByRole("row", { name: "16.04 LTS" });
+    expect(
+      within(row_18_04_LTS).getByText("Waiting for rack controller(s) to sync")
+    ).toBeInTheDocument();
+
+    expect(
+      within(rows_16_04_LTS[0]).getByText(
+        "Waiting for rack controller(s) to sync"
+      )
+    ).toBeInTheDocument();
+
+    expect(
+      within(rows_16_04_LTS[1]).getByText(
+        "Waiting for rack controller(s) to sync"
+      )
+    ).toBeInTheDocument();
   });
 
-  it("can dispatch an action to save ubuntu images", () => {
-    const source = sourceFactory({
-      keyring_data: "abcde",
-      keyring_filename: "/path/to/file",
-      source_type: BootResourceSourceType.MAAS_IO,
-      url: "www.url.com",
+  it("can dispatch an action to save ubuntu images", async () => {
+    const source = sourceFactory();
+    const ubuntu = bootResourceUbuntuFactory({
+      arches: [
+        bootResourceUbuntuArchFactory({ name: "amd64" }),
+        bootResourceUbuntuArchFactory({ name: "i386" }),
+      ],
+      releases: [
+        bootResourceUbuntuReleaseFactory({ name: "xenial" }),
+        bootResourceUbuntuReleaseFactory({ name: "bionic" }),
+      ],
     });
+    const resources = [
+      bootResourceFactory({
+        name: "ubuntu/xenial",
+        arch: "amd64",
+        title: "16.04 LTS",
+      }),
+      bootResourceFactory({
+        name: "ubuntu/xenial",
+        arch: "i386",
+        title: "16.04 LTS",
+      }),
+      bootResourceFactory({
+        name: "ubuntu/bionic",
+        arch: "amd64",
+        title: "18.04 LTS",
+      }),
+    ];
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
-        ubuntu: bootResourceUbuntuFactory(),
+        resources,
+        ubuntu,
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -131,17 +142,14 @@ describe("UbuntuImages", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      images: [
-        { arch: "amd64", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
-        { arch: "amd64", os: "ubuntu", release: "bionic", title: "18.04 LTS" },
-        { arch: "i386", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
-      ],
-    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: UbuntuImagesLabels.SubmitLabel })
+    );
 
     const expectedAction = bootResourceActions.saveUbuntu({
-      keyring_data: "abcde",
-      keyring_filename: "/path/to/file",
+      keyring_data: "aabbccdd",
+      keyring_filename: "/usr/share/keyrings/ubuntu-cloudimage-keyring.gpg",
       osystems: [
         {
           arches: ["amd64", "i386"],
@@ -155,7 +163,7 @@ describe("UbuntuImages", () => {
         },
       ],
       source_type: BootResourceSourceType.MAAS_IO,
-      url: "www.url.com",
+      url: "http://images.maas.io/ephemeral-v3/stable/",
     });
     const actualActions = store.getActions();
     expect(
@@ -175,24 +183,17 @@ describe("UbuntuImages", () => {
         ubuntu: bootResourceUbuntuFactory(),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UbuntuImages sources={[source]} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<UbuntuImages sources={[source]} />, {
+      wrapperProps: { state },
+    });
 
     expect(
-      wrapper.find("button[data-testid='secondary-submit']").exists()
-    ).toBe(false);
+      screen.queryByRole("button", { name: UbuntuImagesLabels.StopImport })
+    ).not.toBeInTheDocument();
   });
 
   it(`can dispatch an action to stop importing ubuntu images if at least one is
-    downloading`, () => {
+    downloading`, async () => {
     const source = sourceFactory();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
@@ -203,7 +204,7 @@ describe("UbuntuImages", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -212,7 +213,9 @@ describe("UbuntuImages", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("button[data-testid='secondary-submit']").simulate("click");
+    await userEvent.click(
+      screen.getByRole("button", { name: UbuntuImagesLabels.StopImport })
+    );
 
     const expectedAction = bootResourceActions.stopImport();
     const actualActions = store.getActions();
@@ -231,19 +234,16 @@ describe("UbuntuImages", () => {
         ubuntu: bootResourceUbuntuFactory(),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UbuntuImages sources={sources} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='too-many-sources']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("FormikForm").prop("editable")).toBe(false);
+    renderWithBrowserRouter(<UbuntuImages sources={sources} />, {
+      wrapperProps: { state },
+    });
+
+    expect(
+      screen.getByText(UbuntuImagesLabels.MultipleSourceNotification)
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("button", { name: UbuntuImagesLabels.SubmitLabel })
+    ).not.toBeInTheDocument();
   });
 });
