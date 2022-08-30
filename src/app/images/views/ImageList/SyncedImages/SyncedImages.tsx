@@ -31,6 +31,11 @@ const getImageSyncText = (sources: BootResourceUbuntuSource[]) => {
   return "sources";
 };
 
+export enum Labels {
+  ChangeSource = "Change source",
+  SyncedFrom = "Showing images synced from",
+}
+
 type Props = PropsWithSpread<
   {
     formInCard?: boolean;
@@ -66,7 +71,7 @@ const SyncedImages = ({
             <>
               <div className="u-flex--between">
                 <h4 data-testid="image-sync-text">
-                  Showing images synced from{" "}
+                  {Labels.SyncedFrom}{" "}
                   <strong>{getImageSyncText(sources)}</strong>
                 </h4>
                 <Button
@@ -74,7 +79,7 @@ const SyncedImages = ({
                   disabled={!canChangeSource}
                   onClick={() => setShowChangeSource(true)}
                 >
-                  Change source
+                  {Labels.ChangeSource}
                   {!canChangeSource && (
                     <Tooltip
                       className="u-nudge-right--small"
