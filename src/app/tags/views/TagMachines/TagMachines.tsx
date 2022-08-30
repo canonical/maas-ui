@@ -49,14 +49,13 @@ const TagMachines = (): JSX.Element => {
     filters.tags = [tag.name];
   }
   const { callId, loading, machineCount, machines, machinesErrors } =
-    useFetchMachines(
-      filters,
-      null,
-      PAGE_SIZE,
+    useFetchMachines({
       currentPage,
+      filters,
+      pageSize: PAGE_SIZE,
+      sortDirection: mapSortDirection(sortDirection),
       sortKey,
-      mapSortDirection(sortDirection)
-    );
+    });
 
   useWindowTitle(tag ? `Deployed machines for: ${tag.name}` : "Tag");
 

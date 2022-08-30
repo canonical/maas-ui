@@ -90,6 +90,7 @@ it("dispatches actions to fetch necessary data", () => {
         status: FetchNodeStatus.DEPLOYED,
         tags: ["rad"],
       },
+      group_collapsed: undefined,
       group_key: null,
       page_number: 1,
       page_size: 50,
