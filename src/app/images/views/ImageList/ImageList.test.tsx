@@ -1,10 +1,10 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import ImageList from "./ImageList";
+import ImageList, { Labels as ImageListLabels } from "./ImageList";
 
 import { ConfigNames } from "app/store/config/types";
 import {
@@ -12,6 +12,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -29,7 +30,7 @@ describe("ImageList", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/images", key: "testKey" }]}
@@ -38,9 +39,7 @@ describe("ImageList", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
     expect(
       store
         .getActions()
@@ -60,18 +59,11 @@ describe("ImageList", () => {
         loaded: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/images", key: "testKey" }]}
-        >
-          <ImageList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='disabled-sync-warning']").exists()).toBe(
-      true
-    );
+    renderWithBrowserRouter(<ImageList />, {
+      route: "/images",
+      wrapperProps: { state },
+    });
+
+    expect(screen.getByText(ImageListLabels.SyncDisabled)).toBeInTheDocument();
   });
 });
