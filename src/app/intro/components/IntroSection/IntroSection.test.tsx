@@ -1,9 +1,7 @@
-import { screen, render } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
-import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
+import { Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import IntroSection from "./IntroSection";
 
@@ -17,8 +15,6 @@ import {
   userState as userStateFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
-
-const mockStore = configureStore();
 
 describe("IntroSection", () => {
   let state: RootState;
