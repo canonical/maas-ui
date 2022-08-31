@@ -6,7 +6,7 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { MachineListTable } from "./MachineListTable";
+import { MachineListTable, Label } from "./MachineListTable";
 
 import { SortDirection } from "app/base/types";
 import { MachineColumns, columnLabels } from "app/machines/constants";
@@ -265,6 +265,11 @@ describe("MachineListTable", () => {
         })[0]
       ).getByText("xxxxxxxxx.xxxx")
     ).toBeInTheDocument();
+    expect(
+      screen.getByRole("grid", {
+        name: Label.Loading,
+      })
+    ).toHaveClass("machine-list--loading");
   });
 
   it("includes groups", () => {

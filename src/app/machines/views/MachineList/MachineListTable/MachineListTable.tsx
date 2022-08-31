@@ -1,5 +1,5 @@
 import type { ReactNode } from "react";
-import { memo, useCallback, useEffect, useState } from "react";
+import { useMemo, memo, useCallback, useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { Button, MainTable } from "@canonical/react-components";
@@ -55,6 +55,11 @@ export const DEFAULTS = {
   // https://github.com/canonical/app-tribe/issues/1268
   sortKey: FetchGroupKey.Hostname,
 };
+
+export enum Label {
+  Loading = "Loading machines",
+  Machines = "Machines",
+}
 
 type Props = {
   callId?: string | null;
@@ -860,12 +865,18 @@ export const MachineListTable = ({
     ...rowProps,
   });
 
+  const skeletonRows = useMemo(
+    () => generateSkeletonRows(hiddenColumns, showActions),
+    [hiddenColumns, showActions]
+  );
+
   return (
     <>
       <MainTable
-        aria-label="Machines"
+        aria-label={machinesLoading ? Label.Loading : Label.Machines}
         className={classNames("p-table-expanding--light", "machine-list", {
           "machine-list--grouped": grouping,
+          "machine-list--loading": machinesLoading,
         })}
         emptyStateMsg={
           !machinesLoading && filter
@@ -873,11 +884,7 @@ export const MachineListTable = ({
             : null
         }
         headers={filterColumns(headers, hiddenColumns, showActions)}
-        rows={
-          machinesLoading
-            ? generateSkeletonRows(hiddenColumns, showActions)
-            : rows
-        }
+        rows={machinesLoading ? skeletonRows : rows}
         {...props}
       />
       <MachineListPagination
