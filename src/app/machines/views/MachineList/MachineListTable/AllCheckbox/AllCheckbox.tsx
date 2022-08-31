@@ -5,6 +5,10 @@ import { Checked } from "app/machines/components/TableCheckbox/TableCheckbox";
 import machineSelectors from "app/store/machine/selectors";
 import type { FetchFilters } from "app/store/machine/types";
 
+export enum Label {
+  Name = "All machines",
+}
+
 type Props = {
   callId?: string | null;
   filter?: FetchFilters | null;
@@ -22,6 +26,9 @@ const AllCheckbox = ({ callId, filter }: Props): JSX.Element => {
 
   return (
     <TableCheckbox
+      aria-label={Label.Name}
+      // Remove the labelled-by attribute so that the aria-label is used.
+      aria-labelledby=""
       callId={callId}
       isChecked={
         allSelected

@@ -48,14 +48,6 @@ import { actions as tagActions } from "app/store/tag";
 import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
 
-export const DEFAULTS = {
-  pageSize: 50,
-  sortDirection: SortDirection.DESCENDING,
-  // TODO: change this to fqdn when the API supports it:
-  // https://github.com/canonical/app-tribe/issues/1268
-  sortKey: FetchGroupKey.Hostname,
-};
-
 export enum Label {
   Loading = "Loading machines",
   Machines = "Machines",

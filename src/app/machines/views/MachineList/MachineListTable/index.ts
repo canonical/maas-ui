@@ -1,1 +1,1 @@
-export { default, DEFAULTS } from "./MachineListTable";
+export { default } from "./MachineListTable";

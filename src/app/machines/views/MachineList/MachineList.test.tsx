@@ -7,7 +7,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
-import { DEFAULTS } from "./MachineListTable";
+import { DEFAULTS } from "./MachineListTable/constants";
 
 import { actions as machineActions } from "app/store/machine";
 import { FetchGroupKey } from "app/store/machine/types";

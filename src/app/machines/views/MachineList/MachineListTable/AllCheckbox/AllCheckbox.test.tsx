@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
-import AllCheckbox from "./AllCheckbox";
+import AllCheckbox, { Label } from "./AllCheckbox";
 
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
@@ -31,7 +31,7 @@ beforeEach(() => {
 it("is unchecked if there are no filters, groups or items selected", () => {
   state.machine.selectedMachines = null;
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
-  expect(screen.getByRole("checkbox")).not.toBeChecked();
+  expect(screen.getByRole("checkbox", { name: Label.Name })).not.toBeChecked();
 });
 
 it("is checked if there is a selected filter", () => {
@@ -41,7 +41,7 @@ it("is checked if there is a selected filter", () => {
     },
   };
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
-  expect(screen.getByRole("checkbox")).toBeChecked();
+  expect(screen.getByRole("checkbox", { name: Label.Name })).toBeChecked();
 });
 
 it("is partially checked if a group is selected", () => {
@@ -49,7 +49,9 @@ it("is partially checked if a group is selected", () => {
     groups: ["admin1"],
   };
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
-  expect(screen.getByRole("checkbox")).toBePartiallyChecked();
+  expect(
+    screen.getByRole("checkbox", { name: Label.Name })
+  ).toBePartiallyChecked();
 });
 
 it("is partially checked if a machine is selected", () => {
@@ -57,7 +59,9 @@ it("is partially checked if a machine is selected", () => {
     items: ["abc123"],
   };
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
-  expect(screen.getByRole("checkbox")).toBePartiallyChecked();
+  expect(
+    screen.getByRole("checkbox", { name: Label.Name })
+  ).toBePartiallyChecked();
 });
 
 it("can dispatch an action to select all", async () => {
@@ -68,7 +72,7 @@ it("can dispatch an action to select all", async () => {
   renderWithMockStore(<AllCheckbox callId={callId} filter={filter} />, {
     store,
   });
-  await userEvent.click(screen.getByRole("checkbox"));
+  await userEvent.click(screen.getByRole("checkbox", { name: Label.Name }));
   const expected = machineActions.setSelectedMachines({
     filter,
   });
@@ -88,7 +92,7 @@ it("can dispatch an action to unselect all", async () => {
   renderWithMockStore(<AllCheckbox callId={callId} filter={filter} />, {
     store,
   });
-  await userEvent.click(screen.getByRole("checkbox"));
+  await userEvent.click(screen.getByRole("checkbox", { name: Label.Name }));
   const expected = machineActions.setSelectedMachines(null);
   expect(
     store.getActions().find((action) => action.type === expected.type)

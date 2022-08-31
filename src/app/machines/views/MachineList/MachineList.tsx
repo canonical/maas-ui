@@ -7,7 +7,8 @@ import { useStorageState } from "react-storage-hooks";
 
 import ErrorsNotification from "./ErrorsNotification";
 import MachineListControls from "./MachineListControls";
-import MachineListTable, { DEFAULTS } from "./MachineListTable";
+import MachineListTable from "./MachineListTable";
+import { DEFAULTS } from "./MachineListTable/constants";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter, SortDirection } from "app/base/types";
