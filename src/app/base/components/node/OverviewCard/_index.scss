@@ -46,21 +46,6 @@
       padding-top: calc(0.4rem - 1px);
     }
 
-    .overview-card__storage-test-text {
-      margin-bottom: 0.1rem;
-      padding-top: calc(0.4rem - 1px);
-    }
-
-    .overview-card__memory-test-text {
-      margin-bottom: 0.1rem;
-      padding-top: calc(0.4rem - 1px);
-    }
-
-    .overview-card__cpu-test-text {
-      margin-bottom: 0.1rem;
-      padding-top: calc(0.4rem - 1px);
-    }
-
     .overview-card__cpu-tests {
       @include pseudo-border(left);
       grid-area: cpu-tests;

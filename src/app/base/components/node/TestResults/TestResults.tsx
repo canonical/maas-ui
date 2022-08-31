@@ -55,7 +55,7 @@ const TestResults = ({
   return (
     <div className={`overview-card__${scriptType}-tests u-flex--vertically`}>
       <ul
-        className={`overview-card__${scriptType}-test-text p-inline-list u-no-margin--bottom`}
+        className={`overview-card__test-text p-inline-list u-no-margin--bottom`}
         data-testid="tests"
       >
         {testStatus.passed ? (
