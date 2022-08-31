@@ -40,7 +40,7 @@ const ArchSelect = ({ arches, release, resources }: Props): JSX.Element => {
     return (
       <Col className="p-divider__block" size={6}>
         <h4>Architectures</h4>
-        <p data-testid="no-release-selected">{Labels.NoReleaseSelected}</p>
+        <p>{Labels.NoReleaseSelected}</p>
       </Col>
     );
   }
