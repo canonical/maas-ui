@@ -1,12 +1,8 @@
-import { memo, useCallback, useEffect, useState } from "react";
+import type { ReactNode } from "react";
+import { useMemo, memo, useCallback, useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
-import {
-  Button,
-  MainTable,
-  Pagination,
-  Spinner,
-} from "@canonical/react-components";
+import { Button, MainTable } from "@canonical/react-components";
 import type {
   MainTableCell,
   MainTableRow,
@@ -18,6 +14,7 @@ import { useDispatch, useSelector } from "react-redux";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
+import MachineListPagination from "./MachineListPagination";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PoolColumn from "./PoolColumn";
@@ -29,6 +26,7 @@ import ZoneColumn from "./ZoneColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
+import Placeholder from "app/base/components/Placeholder";
 import TableHeader from "app/base/components/TableHeader";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
@@ -59,7 +57,8 @@ export const DEFAULTS = {
 };
 
 export enum Label {
-  Pagination = "Table pagination",
+  Loading = "Loading machines",
+  Machines = "Machines",
 }
 
 type Props = {
@@ -97,6 +96,20 @@ type GenerateRowParams = {
   selectedIDs: NonNullable<Props["selectedIDs"]>;
   showActions: Props["showActions"];
   showMAC: boolean;
+};
+
+type RowContent = {
+  [MachineColumns.FQDN]: ReactNode;
+  [MachineColumns.POWER]: ReactNode;
+  [MachineColumns.STATUS]: ReactNode;
+  [MachineColumns.OWNER]: ReactNode;
+  [MachineColumns.POOL]: ReactNode;
+  [MachineColumns.ZONE]: ReactNode;
+  [MachineColumns.FABRIC]: ReactNode;
+  [MachineColumns.CPU]: ReactNode;
+  [MachineColumns.MEMORY]: ReactNode;
+  [MachineColumns.DISKS]: ReactNode;
+  [MachineColumns.STORAGE]: ReactNode;
 };
 
 const getGroupSecondaryString = (
@@ -143,6 +156,179 @@ const filterColumns = (
   );
 };
 
+const generateRow = ({
+  key,
+  content,
+  hiddenColumns,
+  showActions,
+  classes,
+}: {
+  key: string | number;
+  content: RowContent;
+  hiddenColumns: NonNullable<Props["hiddenColumns"]>;
+  showActions: GenerateRowParams["showActions"];
+  classes: string;
+}) => {
+  const columns = [
+    {
+      "aria-label": columnLabels[MachineColumns.FQDN],
+      key: MachineColumns.FQDN,
+      className: "fqdn-col",
+      content: content[MachineColumns.FQDN],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.POWER],
+      key: MachineColumns.POWER,
+      className: "power-col",
+      content: content[MachineColumns.POWER],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.STATUS],
+      key: MachineColumns.STATUS,
+      className: "status-col",
+      content: content[MachineColumns.STATUS],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.OWNER],
+      key: MachineColumns.OWNER,
+      className: "owner-col",
+      content: content[MachineColumns.OWNER],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.POOL],
+      key: MachineColumns.POOL,
+      className: "pool-col",
+      content: content[MachineColumns.POOL],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.ZONE],
+      key: MachineColumns.ZONE,
+      className: "zone-col",
+      content: content[MachineColumns.ZONE],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.FABRIC],
+      key: MachineColumns.FABRIC,
+      className: "fabric-col",
+      content: content[MachineColumns.FABRIC],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.CPU],
+      key: MachineColumns.CPU,
+      className: "cores-col",
+      content: content[MachineColumns.CPU],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.MEMORY],
+      key: MachineColumns.MEMORY,
+      className: "ram-col",
+      content: content[MachineColumns.MEMORY],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.DISKS],
+      key: MachineColumns.DISKS,
+      className: "disks-col",
+      content: content[MachineColumns.DISKS],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.STORAGE],
+      key: MachineColumns.STORAGE,
+      className: "storage-col",
+      content: content[MachineColumns.STORAGE],
+    },
+  ];
+
+  return {
+    key,
+    className: classNames(
+      "machine-list__machine",
+      {
+        "truncated-border": showActions,
+      },
+      classes
+    ),
+    columns: filterColumns(columns, hiddenColumns, showActions),
+  };
+};
+
+const generateSkeletonRows = (
+  hiddenColumns: NonNullable<Props["hiddenColumns"]>,
+  showActions: GenerateRowParams["showActions"]
+) => {
+  return Array.from(Array(5)).map((_, i) => {
+    const content = {
+      [MachineColumns.FQDN]: (
+        <DoubleRow
+          primary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>}
+          secondary={<Placeholder>xxx.xxx.xx.x</Placeholder>}
+        />
+      ),
+      [MachineColumns.POWER]: (
+        <DoubleRow
+          primary={<Placeholder>Xxxxxxxxxxx</Placeholder>}
+          secondary={<Placeholder>Xxxxxxx</Placeholder>}
+        />
+      ),
+      [MachineColumns.STATUS]: (
+        <DoubleRow primary={<Placeholder>XXXXX XXXXX</Placeholder>} />
+      ),
+      [MachineColumns.OWNER]: (
+        <DoubleRow
+          primary={<Placeholder>Xxxx</Placeholder>}
+          secondary={<Placeholder>XXXX, XXX</Placeholder>}
+        />
+      ),
+      [MachineColumns.POOL]: (
+        <DoubleRow primary={<Placeholder>Xxxxx</Placeholder>} />
+      ),
+      [MachineColumns.ZONE]: (
+        <DoubleRow
+          primary={<Placeholder>Xxxxxxx</Placeholder>}
+          secondary={<Placeholder>Xxxxxxx</Placeholder>}
+        />
+      ),
+      [MachineColumns.FABRIC]: (
+        <DoubleRow
+          primary={<Placeholder>Xxxxxxx-X</Placeholder>}
+          secondary={<Placeholder>Xxxxx</Placeholder>}
+        />
+      ),
+      [MachineColumns.CPU]: (
+        <DoubleRow
+          primary={<Placeholder>XX</Placeholder>}
+          primaryClassName="u-align--right"
+          secondary={<Placeholder>xxxXX</Placeholder>}
+          secondaryClassName="u-align--right"
+        />
+      ),
+      [MachineColumns.MEMORY]: (
+        <DoubleRow
+          primary={<Placeholder>XX xxx</Placeholder>}
+          primaryClassName="u-align--right"
+        />
+      ),
+      [MachineColumns.DISKS]: (
+        <DoubleRow
+          primary={<Placeholder>XX</Placeholder>}
+          primaryClassName="u-align--right"
+        />
+      ),
+      [MachineColumns.STORAGE]: (
+        <DoubleRow
+          primary={<Placeholder>X.XX</Placeholder>}
+          primaryClassName="u-align--right"
+        />
+      ),
+    };
+    return generateRow({
+      key: i,
+      content,
+      hiddenColumns,
+      showActions,
+      classes: "machine-list__machine--inactive",
+    });
+  });
+};
 const generateRows = ({
   activeRow,
   handleRowCheckbox,
@@ -158,138 +344,80 @@ const generateRows = ({
   return machines.map((row) => {
     const isActive = activeRow === row.system_id;
 
-    const columns = [
-      {
-        "aria-label": columnLabels[MachineColumns.FQDN],
-        key: MachineColumns.FQDN,
-        className: "fqdn-col",
-        content: (
-          <NameColumn
-            data-testid="fqdn-column"
-            handleCheckbox={
-              showActions
-                ? () => handleRowCheckbox(row.system_id, selectedIDs)
-                : undefined
-            }
-            selected={selectedIDs}
-            showMAC={showMAC}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.POWER],
-        key: MachineColumns.POWER,
-        className: "power-col",
-        content: (
-          <PowerColumn
-            data-testid="power-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.STATUS],
-        key: MachineColumns.STATUS,
-        className: "status-col",
-        content: (
-          <StatusColumn
-            data-testid="status-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.OWNER],
-        key: MachineColumns.OWNER,
-        className: "owner-col",
-        content: (
-          <OwnerColumn
-            data-testid="owner-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.POOL],
-        key: MachineColumns.POOL,
-        className: "pool-col",
-        content: (
-          <PoolColumn
-            data-testid="pool-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.ZONE],
-        key: MachineColumns.ZONE,
-        className: "zone-col",
-        content: (
-          <ZoneColumn
-            data-testid="zone-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.FABRIC],
-        key: MachineColumns.FABRIC,
-        className: "fabric-col",
-        content: (
-          <FabricColumn data-testid="fabric-column" systemId={row.system_id} />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.CPU],
-        key: MachineColumns.CPU,
-        className: "cores-col",
-        content: (
-          <CoresColumn data-testid="cpu-column" systemId={row.system_id} />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.MEMORY],
-        key: MachineColumns.MEMORY,
-        className: "ram-col",
-        content: (
-          <RamColumn data-testid="memory-column" systemId={row.system_id} />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.DISKS],
-        key: MachineColumns.DISKS,
-        className: "disks-col",
-        content: (
-          <DisksColumn data-testid="disks-column" systemId={row.system_id} />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.STORAGE],
-        key: MachineColumns.STORAGE,
-        className: "storage-col",
-        content: (
-          <StorageColumn
-            data-testid="storage-column"
-            systemId={row.system_id}
-          />
-        ),
-      },
-    ];
-
-    return {
-      key: row.system_id,
-      className: classNames("machine-list__machine", {
-        "machine-list__machine--active": isActive,
-        "truncated-border": showActions,
-      }),
-      columns: filterColumns(columns, hiddenColumns, showActions),
+    const content = {
+      [MachineColumns.FQDN]: (
+        <NameColumn
+          data-testid="fqdn-column"
+          handleCheckbox={
+            showActions
+              ? () => handleRowCheckbox(row.system_id, selectedIDs)
+              : undefined
+          }
+          selected={selectedIDs}
+          showMAC={showMAC}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.POWER]: (
+        <PowerColumn
+          data-testid="power-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.STATUS]: (
+        <StatusColumn
+          data-testid="status-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.OWNER]: (
+        <OwnerColumn
+          data-testid="owner-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.POOL]: (
+        <PoolColumn
+          data-testid="pool-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.ZONE]: (
+        <ZoneColumn
+          data-testid="zone-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.FABRIC]: (
+        <FabricColumn data-testid="fabric-column" systemId={row.system_id} />
+      ),
+      [MachineColumns.CPU]: (
+        <CoresColumn data-testid="cpu-column" systemId={row.system_id} />
+      ),
+      [MachineColumns.MEMORY]: (
+        <RamColumn data-testid="memory-column" systemId={row.system_id} />
+      ),
+      [MachineColumns.DISKS]: (
+        <DisksColumn data-testid="disks-column" systemId={row.system_id} />
+      ),
+      [MachineColumns.STORAGE]: (
+        <StorageColumn data-testid="storage-column" systemId={row.system_id} />
+      ),
     };
+    return generateRow({
+      key: row.system_id,
+      content,
+      hiddenColumns,
+      showActions,
+      classes: classNames({
+        "machine-list__machine--active": isActive,
+      }),
+    });
   });
 };
 
@@ -737,38 +865,35 @@ export const MachineListTable = ({
     ...rowProps,
   });
 
+  const skeletonRows = useMemo(
+    () => generateSkeletonRows(hiddenColumns, showActions),
+    [hiddenColumns, showActions]
+  );
+
   return (
     <>
       <MainTable
-        aria-label="Machines"
+        aria-label={machinesLoading ? Label.Loading : Label.Machines}
         className={classNames("p-table-expanding--light", "machine-list", {
           "machine-list--grouped": grouping,
+          "machine-list--loading": machinesLoading,
         })}
         emptyStateMsg={
-          machinesLoading ? (
-            <Spinner text="Loading..." />
-          ) : filter ? (
-            "No machines match the search criteria."
-          ) : null
+          !machinesLoading && filter
+            ? "No machines match the search criteria."
+            : null
         }
         headers={filterColumns(headers, hiddenColumns, showActions)}
-        rows={
-          // Pass undefined if there are no rows as the MainTable prop doesn't
-          // allow null.
-          rows ? rows : undefined
-        }
+        rows={machinesLoading ? skeletonRows : rows}
         {...props}
       />
-      {(machineCount ?? 0) > 0 && (
-        <Pagination
-          aria-label={Label.Pagination}
-          currentPage={currentPage}
-          itemsPerPage={pageSize}
-          paginate={setCurrentPage}
-          style={{ marginTop: "1rem" }}
-          totalItems={machineCount ?? 0}
-        />
-      )}
+      <MachineListPagination
+        currentPage={currentPage}
+        itemsPerPage={pageSize}
+        machineCount={machineCount}
+        machinesLoading={machinesLoading}
+        paginate={setCurrentPage}
+      />
     </>
   );
 };

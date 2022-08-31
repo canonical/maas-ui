@@ -61,6 +61,11 @@
     }
   }
 
+  .machine-list--loading .u-truncate {
+    // When loading the skeleton placeholders should get cut off and not show an ellipsis.
+    text-overflow: clip !important;
+  }
+
   .machine-list__machine .p-table-menu {
     display: none;
   }
@@ -71,7 +76,7 @@
     min-height: 1px;
   }
 
-  .machine-list__machine:hover,
+  .machine-list__machine:hover:not(.machine-list__machine--inactive),
   .machine-list__machine--active {
     background-color: $color-x-light;
 

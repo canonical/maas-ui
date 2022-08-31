@@ -17,6 +17,7 @@ const Placeholder = ({
   if (loading) {
     return (
       <span
+        aria-hidden={true}
         className={classNames("p-placeholder", className)}
         data-testid="placeholder"
         style={{ animationDelay: `${delay}ms` }}

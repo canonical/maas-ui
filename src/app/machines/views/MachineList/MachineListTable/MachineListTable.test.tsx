@@ -1,5 +1,5 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,7 +9,7 @@ import configureStore from "redux-mock-store";
 import { MachineListTable, Label } from "./MachineListTable";
 
 import { SortDirection } from "app/base/types";
-import urls from "app/base/urls";
+import { MachineColumns, columnLabels } from "app/machines/constants";
 import type { Machine } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -35,7 +35,7 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -236,38 +236,40 @@ describe("MachineListTable", () => {
     localStorage.clear();
   });
 
-  it("displays a loading component if machines are loading", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListTable
-              callId="123456"
-              currentPage={1}
-              filter=""
-              grouping={FetchGroupKey.Status}
-              hiddenGroups={[]}
-              machineCount={10}
-              machines={machines}
-              machinesLoading
-              pageSize={20}
-              setCurrentPage={jest.fn()}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection="none"
-              sortKey={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("displays skeleton rows when loading", () => {
+    renderWithMockStore(
+      <MachineListTable
+        callId="123456"
+        currentPage={1}
+        filter=""
+        grouping={FetchGroupKey.Status}
+        hiddenGroups={[]}
+        machineCount={10}
+        machines={machines}
+        machinesLoading
+        pageSize={20}
+        setCurrentPage={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection="none"
+        sortKey={null}
+      />,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.find("MachineListTable").exists()).toBe(true);
+    expect(
+      within(
+        screen.getAllByRole("gridcell", {
+          name: columnLabels[MachineColumns.FQDN],
+        })[0]
+      ).getByText("xxxxxxxxx.xxxx")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("grid", {
+        name: Label.Loading,
+      })
+    ).toHaveClass("machine-list--loading");
   });
 
   it("includes groups", () => {
@@ -1392,55 +1394,5 @@ describe("MachineListTable", () => {
       expect(wrapper.find('[data-testid="fqdn-header"]').exists()).toBe(false);
       expect(wrapper.find('[data-testid="fqdn-column"]').exists()).toBe(false);
     });
-  });
-
-  it("displays pagination if there are machines", () => {
-    renderWithBrowserRouter(
-      <MachineListTable
-        callId="123456"
-        currentPage={1}
-        machineCount={100}
-        machines={machines}
-        pageSize={20}
-        setCurrentPage={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
-        showActions={false}
-        sortDirection="none"
-        sortKey={null}
-      />,
-      {
-        route: urls.machines.index,
-        wrapperProps: { state },
-      }
-    );
-    expect(
-      screen.getByRole("navigation", { name: Label.Pagination })
-    ).toBeInTheDocument();
-  });
-
-  it("does not display pagination if there are no machines", () => {
-    renderWithBrowserRouter(
-      <MachineListTable
-        callId="123456"
-        currentPage={1}
-        machineCount={0}
-        machines={[]}
-        pageSize={20}
-        setCurrentPage={jest.fn()}
-        setSortDirection={jest.fn()}
-        setSortKey={jest.fn()}
-        showActions={false}
-        sortDirection="none"
-        sortKey={null}
-      />,
-      {
-        route: urls.machines.index,
-        wrapperProps: { state },
-      }
-    );
-    expect(
-      screen.queryByRole("navigation", { name: Label.Pagination })
-    ).not.toBeInTheDocument();
   });
 });
