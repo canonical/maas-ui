@@ -2,7 +2,7 @@ import machine from "./selectors";
 import { FilterGroupKey } from "./types";
 
 import { NetworkInterfaceTypes } from "app/store/types/enum";
-import { NodeActions, NodeStatus, NodeStatusCode } from "app/store/types/node";
+import { NodeActions, NodeStatusCode } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineDetails as machineDetailsFactory,
@@ -754,20 +754,6 @@ describe("machine selectors", () => {
     expect(
       machine.getInterfaceById(state, node.system_id, null, link.id)
     ).toStrictEqual(nic);
-  });
-
-  it("can get deployed machines by tag", () => {
-    const items = [
-      machineFactory({ status: NodeStatus.DISK_ERASING, tags: [1] }),
-      machineFactory({ status: NodeStatus.DEPLOYED, tags: [1] }),
-      machineFactory({ status: NodeStatus.DEPLOYED, tags: [] }),
-    ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items,
-      }),
-    });
-    expect(machine.getDeployedWithTag(state, 1)).toStrictEqual([items[1]]);
   });
 
   it("can get unused ids for a details request when the id is being used", () => {

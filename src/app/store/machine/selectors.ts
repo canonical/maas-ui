@@ -1,12 +1,10 @@
 import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { Tag, TagMeta } from "../tag/types";
-
 import type {
+  FilterGroupKey,
   FilterGroupOptionType,
   MachineStateCount,
-  FilterGroupKey,
 } from "./types";
 
 import { ACTIONS } from "app/store/machine/slice";
@@ -20,12 +18,11 @@ import type {
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
-import { NodeStatus } from "app/store/types/node";
 import {
   generateBaseSelectors,
   getInterfaceById as getInterfaceByIdUtil,
 } from "app/store/utils";
-import { isId, simpleSortByKey } from "app/utils";
+import { simpleSortByKey } from "app/utils";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
@@ -312,28 +309,6 @@ const countLoading = createSelector(
     (_state: RootState, callId: string | null | undefined) => callId,
   ],
   (machineState, callId) => !!getCount(machineState, callId)?.loading
-);
-
-/**
- * Get the deployed machines with the provided tag.
- * @param state - The redux state.
- * @param tagId - The tag id.
- * @returns The deployed machines with the tag.
- */
-const getDeployedWithTag = createSelector(
-  [
-    defaultSelectors.all,
-    (_state: RootState, tagId: Tag[TagMeta.PK] | null | undefined) => tagId,
-  ],
-  (machines, tagId) => {
-    if (!isId(tagId)) {
-      return [];
-    }
-    return machines.filter(
-      ({ status, tags }) =>
-        status === NodeStatus.DEPLOYED && tags.includes(tagId)
-    );
-  }
 );
 
 const getDetails = (
@@ -657,7 +632,6 @@ const selectors = {
   count,
   countLoaded,
   countLoading,
-  getDeployedWithTag,
   getInterfaceById,
   getStatuses,
   getStatusForMachine,

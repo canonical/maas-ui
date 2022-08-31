@@ -4,9 +4,12 @@ import {
   getTagCountsForMachines,
   isMachineDetails,
   isDeployedWithHardwareSync,
+  mapSortDirection,
 } from "./common";
 
+import { SortDirection } from "app/base/types";
 import { PowerFieldScope } from "app/store/general/types";
+import { FetchSortDirection } from "app/store/machine/types";
 import { NodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
@@ -117,6 +120,24 @@ describe("common machine utils", () => {
           })
         )
       ).toBe(false);
+    });
+  });
+
+  describe("mapSortDirection", () => {
+    it("maps ascending", () => {
+      expect(mapSortDirection(SortDirection.ASCENDING)).toBe(
+        FetchSortDirection.Ascending
+      );
+    });
+
+    it("maps descending", () => {
+      expect(mapSortDirection(SortDirection.DESCENDING)).toBe(
+        FetchSortDirection.Descending
+      );
+    });
+
+    it("maps none", () => {
+      expect(mapSortDirection(SortDirection.NONE)).toBeNull();
     });
   });
 });

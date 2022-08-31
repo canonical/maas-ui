@@ -10,13 +10,12 @@ import MachineListControls from "./MachineListControls";
 import MachineListTable, { DEFAULTS } from "./MachineListTable";
 
 import { useWindowTitle } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
-import { SortDirection } from "app/base/types";
+import type { SetSearchFilter, SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { FetchFilters } from "app/store/machine/types";
-import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
+import { FetchGroupKey } from "app/store/machine/types";
+import { FilterMachines, mapSortDirection } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { Filters } from "app/utils/search/filter-handlers";
 
@@ -25,6 +24,8 @@ type Props = {
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
 };
+
+const PAGE_SIZE = DEFAULTS.pageSize;
 
 // TODO: this should construct the full set of filters once the API has been
 // updated: https://github.com/canonical/app-tribe/issues/1125
@@ -35,19 +36,6 @@ const parseFilters = (filters: Filters): FetchFilters => {
   // The API doesn't currently support free search.
   delete fetchFilters.q;
   return fetchFilters;
-};
-
-const mapSortDirection = (
-  sortDirection: ValueOf<typeof SortDirection>
-): FetchSortDirection | null => {
-  switch (sortDirection) {
-    case SortDirection.ASCENDING:
-      return FetchSortDirection.Ascending;
-    case SortDirection.DESCENDING:
-      return FetchSortDirection.Descending;
-    default:
-      return null;
-  }
 };
 
 const MachineList = ({
@@ -72,13 +60,12 @@ const MachineList = ({
     "grouping",
     FetchGroupKey.Status
   );
-  const pageSize = DEFAULTS.pageSize;
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       currentPage,
       filters: parseFilters(filters),
       grouping,
-      pageSize,
+      pageSize: PAGE_SIZE,
       sortDirection: mapSortDirection(sortDirection),
       sortKey,
     });
@@ -123,7 +110,7 @@ const MachineList = ({
         machineCount={machineCount}
         machines={machines}
         machinesLoading={loading}
-        pageSize={pageSize}
+        pageSize={PAGE_SIZE}
         selectedIDs={selectedIDs}
         setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
