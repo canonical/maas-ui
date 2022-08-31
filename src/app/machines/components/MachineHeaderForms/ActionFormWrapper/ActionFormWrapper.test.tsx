@@ -18,14 +18,28 @@ import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
+let html: HTMLHtmlElement | null;
+const originalScrollTo = global.scrollTo;
+
+beforeEach(() => {
+  global.innerHeight = 500;
+  // eslint-disable-next-line testing-library/no-node-access
+  html = document.querySelector("html");
+  global.scrollTo = jest.fn();
+});
+
 afterEach(() => {
+  if (html) {
+    html.scrollTop = 0;
+  }
   jest.restoreAllMocks();
 });
 
+afterAll(() => {
+  global.scrollTo = originalScrollTo;
+});
+
 it("scrolls to the top of the window when opening the form", async () => {
-  global.scrollTo = jest.fn();
-  // eslint-disable-next-line testing-library/no-node-access
-  const html = document.querySelector("html");
   if (html) {
     // Move the page down so that the hook will fire.
     html.scrollTop = 10;
