@@ -20,6 +20,7 @@ export {
   FilterMachines,
   getMachineValue,
   WORKLOAD_FILTER_PREFIX,
+  FilterMachineItems,
 } from "./search";
 
 export { isTransientStatus } from "./status";

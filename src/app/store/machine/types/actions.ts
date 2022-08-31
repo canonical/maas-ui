@@ -253,58 +253,59 @@ export enum FetchSortDirection {
 
 type ArrayOrValue<T> = { [P in keyof T]: T[P] | Array<T[P]> };
 
-type Filters = ArrayOrValue<{
-  [FilterGroupKey.FreeText]: string;
-  [FilterGroupKey.SystemId]: Machine["system_id"];
-  [FilterGroupKey.Hostname]: Machine["hostname"];
+type Filters = {
+  [FilterGroupKey.AgentName]: string;
+  [FilterGroupKey.Arch]: Machine["architecture"];
+  [FilterGroupKey.CpuCount]: Machine["cpu_count"];
+  [FilterGroupKey.CpuSpeed]: Machine["cpu_speed"];
   [FilterGroupKey.Description]: Machine["description"];
   [FilterGroupKey.DistroSeries]: Machine["distro_series"];
-  [FilterGroupKey.Osystem]: Machine["osystem"];
-  [FilterGroupKey.ErrorDescription]: Machine["error_description"];
-  [FilterGroupKey.MacAddress]: NetworkInterface["mac_address"];
   [FilterGroupKey.Domain]: Domain["name"];
-  [FilterGroupKey.AgentName]: string;
+  [FilterGroupKey.ErrorDescription]: Machine["error_description"];
   [FilterGroupKey.FabricClasses]: Fabric["class_type"];
   [FilterGroupKey.Fabrics]: Machine["fabrics"];
-  [FilterGroupKey.Zone]: Machine["zone"]["name"];
-  [FilterGroupKey.Pool]: ResourcePool["name"];
-  [FilterGroupKey.Arch]: Machine["architecture"];
-  [FilterGroupKey.Tags]: Tag["name"];
-  [FilterGroupKey.Vlans]: NodeVlan["name"];
+  [FilterGroupKey.FreeText]: string;
+  [FilterGroupKey.Hostname]: Machine["hostname"];
+  [FilterGroupKey.IpAddresses]: NodeIpAddress["ip"];
+  [FilterGroupKey.LinkSpeed]: Machine["link_speeds"][0];
+  [FilterGroupKey.MacAddress]: NetworkInterface["mac_address"];
+  [FilterGroupKey.Mem]: Machine["memory"];
+  [FilterGroupKey.Osystem]: Machine["osystem"];
+  [FilterGroupKey.Owner]: Machine["owner"];
   [FilterGroupKey.Pod]: ModelRef["name"];
   [FilterGroupKey.PodType]: Pod["type"];
-  [FilterGroupKey.Owner]: Machine["owner"];
-  [FilterGroupKey.Subnets]: Subnet["name"];
-  [FilterGroupKey.IpAddresses]: NodeIpAddress["ip"];
+  [FilterGroupKey.Pool]: ResourcePool["name"];
   [FilterGroupKey.Spaces]: Space["name"];
-  [FilterGroupKey.Workloads]: string;
   [FilterGroupKey.Status]: FetchNodeStatus;
-}> & {
-  [FilterGroupKey.Mem]: string;
-  [FilterGroupKey.CpuCount]: string;
-  [FilterGroupKey.CpuSpeed]: string;
-  [FilterGroupKey.LinkSpeed]: string;
+  [FilterGroupKey.Subnets]: Subnet["name"];
+  [FilterGroupKey.SystemId]: Machine["system_id"];
+  [FilterGroupKey.Tags]: Tag["name"];
+  [FilterGroupKey.Vlans]: NodeVlan["name"];
+  [FilterGroupKey.Workloads]: string;
+  [FilterGroupKey.Zone]: Machine["zone"]["name"];
 };
 
-type ExcludeFilters = ArrayOrValue<{
+type ExcludeFilters = {
+  [FilterGroupKey.NotArch]: Filters["arch"];
+  [FilterGroupKey.NotDistroSeries]: Filters["distro_series"];
   [FilterGroupKey.NotFabricClasses]: Filters["fabric_classes"];
   [FilterGroupKey.NotFabrics]: Filters["fabrics"];
-  [FilterGroupKey.NotInZone]: Filters["zone"];
   [FilterGroupKey.NotInPool]: Filters["pool"];
-  [FilterGroupKey.NotArch]: Filters["arch"];
-  [FilterGroupKey.NotTags]: Filters["tags"];
-  [FilterGroupKey.NotSystemId]: Filters["system_id"];
+  [FilterGroupKey.NotInZone]: Filters["zone"];
+  [FilterGroupKey.NotIpAddresses]: Filters["ip_addresses"];
+  [FilterGroupKey.NotOsystem]: Filters["osystem"];
+  [FilterGroupKey.NotOwner]: Filters["owner"];
   [FilterGroupKey.NotPod]: Filters["pod"];
   [FilterGroupKey.NotPodType]: Filters["pod_type"];
-  [FilterGroupKey.NotOwner]: Filters["owner"];
   [FilterGroupKey.NotSubnets]: Filters["subnets"];
+  [FilterGroupKey.NotSystemId]: Filters["system_id"];
+  [FilterGroupKey.NotTags]: Filters["tags"];
   [FilterGroupKey.NotVlans]: Filters["vlans"];
-  [FilterGroupKey.NotIpAddresses]: Filters["ip_addresses"];
-  [FilterGroupKey.NotDistroSeries]: Filters["distro_series"];
-  [FilterGroupKey.NotOsystem]: Filters["osystem"];
-}>;
+};
 
-export type FetchFilters = Partial<Filters & ExcludeFilters>;
+export type FetchFilters = Partial<
+  ArrayOrValue<Filters> & ArrayOrValue<ExcludeFilters>
+>;
 
 export enum FetchGroupKey {
   AddressTtl = "address_ttl",

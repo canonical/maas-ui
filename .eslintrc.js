@@ -97,7 +97,6 @@ module.exports = {
           },
         ],
         "react/jsx-sort-props": "error",
-        "react/no-multi-comp": ["error", { ignoreStateless: false }],
       },
       settings: {
         "import/resolver": {
@@ -115,6 +114,12 @@ module.exports = {
       files: ["src/**/*.js?(x)"],
       rules: {
         "no-unused-vars": 2,
+      },
+    },
+    {
+      files: ["src/**/*.tsx"],
+      rules: {
+        "react/no-multi-comp": ["error", { ignoreStateless: false }],
       },
     },
     {

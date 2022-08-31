@@ -28,8 +28,9 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 jest.useFakeTimers();
 
@@ -374,6 +375,7 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Notification").exists()).toBe(true);
+    // eslint-disable-next-line testing-library/no-node-access
     expect(wrapper.find("Notification").props().children).toBe("Uh oh!");
   });
 
@@ -393,6 +395,7 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Notification").exists()).toBe(true);
+    // eslint-disable-next-line testing-library/no-node-access
     expect(wrapper.find("Notification").props().children).toBe(
       "tag: No such constraint."
     );
@@ -415,6 +418,7 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Notification").exists()).toBe(true);
+    // eslint-disable-next-line testing-library/no-node-access
     expect(wrapper.find("Notification").props().children).toBe(
       "Uh oh! It broke"
     );
@@ -435,6 +439,7 @@ describe("MachineList", () => {
       </Provider>
     );
     expect(wrapper.find("Notification").exists()).toBe(true);
+    // eslint-disable-next-line testing-library/no-node-access
     expect(wrapper.find("Notification").props().children).toBe(
       "machine: Uh oh! network: It broke"
     );
@@ -514,6 +519,30 @@ describe("MachineList", () => {
       type: "machine/setSelected",
       payload: [],
     });
+  });
+
+  it("can search", () => {
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <MachineList
+        searchFilter="free text workload-service:prod"
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { store } }
+    );
+    const filter = {
+      free_text: ["free text"],
+      workloads: ["service:prod"],
+    };
+    const expected = machineActions.fetch("123456", {
+      filter,
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches[fetches.length - 1].payload.params.filter).toStrictEqual(
+      filter
+    );
   });
 
   it("can change pages", () => {
