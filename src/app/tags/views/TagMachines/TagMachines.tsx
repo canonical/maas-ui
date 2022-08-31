@@ -4,13 +4,12 @@ import type { ValueOf } from "@canonical/react-components";
 import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
-import ErrorsNotification from "../../../machines/views/MachineList/ErrorsNotification";
-
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
+import ErrorsNotification from "app/machines/views/MachineList/ErrorsNotification";
 import MachineListTable, {
   DEFAULTS,
 } from "app/machines/views/MachineList/MachineListTable";
