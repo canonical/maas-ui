@@ -159,16 +159,16 @@ const WithMockStoreProvider = ({
 
 export const renderWithBrowserRouter = (
   ui: React.ReactElement,
-  options: RenderOptions & {
+  options?: RenderOptions & {
     wrapperProps?: WrapperProps;
     route?: string;
   }
 ): RenderResult => {
-  window.history.pushState({}, "", options.route);
+  window.history.pushState({}, "", options?.route);
 
   return render(ui, {
     wrapper: (props) => (
-      <BrowserRouterWithProvider {...props} {...options.wrapperProps} />
+      <BrowserRouterWithProvider {...props} {...options?.wrapperProps} />
     ),
     ...options,
   });
@@ -176,12 +176,12 @@ export const renderWithBrowserRouter = (
 
 export const renderWithMockStore = (
   ui: React.ReactElement,
-  options: RenderOptions & {
+  options?: RenderOptions & {
     state?: RootState;
     store?: WrapperProps["store"];
   }
 ): RenderResult => {
-  const { state, store, ...renderOptions } = options;
+  const { state, store, ...renderOptions } = options ?? {};
   const rendered = render(ui, {
     wrapper: (props) => (
       <WithMockStoreProvider {...props} state={state} store={store} />
