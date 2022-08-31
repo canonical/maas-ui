@@ -1,5 +1,6 @@
-import { screen, within } from "@testing-library/react";
+import { screen, render, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
@@ -17,7 +18,7 @@ import {
   bootResourceUbuntuSource as sourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -132,13 +133,14 @@ describe("UbuntuImages", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter>
-        <CompatRouter>
-          <UbuntuImages sources={[source]} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { store }
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuImages sources={[source]} />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
     );
 
     await userEvent.click(
@@ -202,13 +204,14 @@ describe("UbuntuImages", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter>
-        <CompatRouter>
-          <UbuntuImages sources={[source]} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { store }
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <UbuntuImages sources={[source]} />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
     );
     await userEvent.click(
       screen.getByRole("button", { name: UbuntuImagesLabels.StopImport })

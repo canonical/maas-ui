@@ -13,7 +13,7 @@ import {
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -69,11 +69,12 @@ describe("DeleteImageConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithMockStore(
-      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-        <DeleteImageConfirm closeForm={jest.fn()} resource={resource} />
-      </Formik>,
-      { store }
+    render(
+      <Provider store={store}>
+        <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+          <DeleteImageConfirm closeForm={jest.fn()} resource={resource} />
+        </Formik>
+      </Provider>
     );
 
     await userEvent.click(

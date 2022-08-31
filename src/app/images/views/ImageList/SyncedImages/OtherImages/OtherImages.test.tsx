@@ -1,5 +1,6 @@
-import { screen } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
@@ -13,7 +14,7 @@ import {
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -70,13 +71,14 @@ describe("OtherImages", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter>
-        <CompatRouter>
-          <OtherImages />
-        </CompatRouter>
-      </MemoryRouter>,
-      { store }
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <OtherImages />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
     );
     await userEvent.click(screen.getByRole("checkbox", { name: "CentOS 8" }));
     await userEvent.click(
@@ -121,13 +123,14 @@ describe("OtherImages", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter>
-        <CompatRouter>
-          <OtherImages />
-        </CompatRouter>
-      </MemoryRouter>,
-      { store }
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <OtherImages />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
     );
 
     await userEvent.click(

@@ -18,7 +18,6 @@ import {
   bootResourceStatuses as bootResourceStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -39,13 +38,14 @@ describe("FetchImagesForm", () => {
   it("can dispatch an action to fetch images", async () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter>
-        <CompatRouter>
-          <FetchImagesForm closeForm={jest.fn()} setSource={jest.fn()} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { store }
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <FetchImagesForm closeForm={jest.fn()} setSource={jest.fn()} />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
     );
 
     await userEvent.click(

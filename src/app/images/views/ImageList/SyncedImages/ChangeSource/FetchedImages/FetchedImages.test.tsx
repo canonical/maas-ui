@@ -22,7 +22,6 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   ...jest.requireActual("@canonical/react-components/dist/hooks"),
@@ -77,13 +76,14 @@ describe("FetchedImages", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter>
-        <CompatRouter>
-          <FetchedImages closeForm={jest.fn()} source={source} />
-        </CompatRouter>
-      </MemoryRouter>,
-      { store }
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <FetchedImages closeForm={jest.fn()} source={source} />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
     );
 
     await userEvent.click(screen.getByRole("radio", { name: "16.04 LTS" }));

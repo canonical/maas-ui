@@ -1,5 +1,6 @@
-import { screen } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
@@ -16,7 +17,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -72,11 +73,14 @@ describe("ImageListHeader", () => {
       }),
     });
     const store = mockStore(state);
-    renderWithMockStore(
-      <MemoryRouter initialEntries={[{ pathname: "/images", key: "testKey" }]}>
-        <ImageListHeader />
-      </MemoryRouter>,
-      { store }
+    render(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/images", key: "testKey" }]}
+        >
+          <ImageListHeader />
+        </MemoryRouter>
+      </Provider>
     );
 
     await userEvent.click(
