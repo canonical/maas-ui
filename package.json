@@ -5,9 +5,9 @@
   "license": "AGPL-3.0",
   "repository": {
     "type": "git",
-    "url": "https://github.com/canonical-web-and-design/maas-ui.git"
+    "url": "https://github.com/canonical/maas-ui.git"
   },
-  "bugs": "https://github.com/canonical-web-and-design/maas-ui/issues",
+  "bugs": "https://github.com/canonical/maas-ui/issues",
   "scripts": {
     "analyze": "npx -y source-map-explorer 'build/static/js/*.js'",
     "build-all": "yarn build",

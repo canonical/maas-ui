@@ -70,12 +70,12 @@ lxc exec dev bash -- su ubuntu
 
 ### Clone the repository
 
-If you're planning to contribute changes to maas-ui then first you'll need to make a fork of the [maas-ui project](https://github.com/canonical-web-and-design/maas-ui) in GitHub.
+If you're planning to contribute changes to maas-ui then first you'll need to make a fork of the [maas-ui project](https://github.com/canonical/maas-ui) in GitHub.
 
 Then, inside your MAAS container clone the maas-ui repository.
 
 ```shell
-git clone -o upstream git@github.com:canonical-web-and-design/maas-ui
+git clone -o upstream git@github.com:canonical/maas-ui
 cd maas-ui
 git remote add origin git@github.com:<github-username>/maas-ui
 ```
@@ -83,7 +83,7 @@ git remote add origin git@github.com:<github-username>/maas-ui
 Otherwise you can just use:
 
 ```shell
-git clone git@github.com:canonical-web-and-design/maas-ui
+git clone git@github.com:canonical/maas-ui
 cd maas-ui
 ```
 
@@ -103,7 +103,7 @@ Update the contents of that file to point to a MAAS. [See the section on MAAS de
 MAAS_URL="http://<maas-ip-or-hostname>:5240/"
 ```
 
-The easiest way to run maas-ui is with [Dotrun](https://github.com/canonical-web-and-design/dotrun). You can install it with:
+The easiest way to run maas-ui is with [Dotrun](https://github.com/canonical/dotrun). You can install it with:
 
 ```shell
 sudo snap install dotrun
@@ -563,7 +563,7 @@ Once MAAS has restarted you should be able to access the MAAS and see the data.
 
 ## Integration tests
 
-Integration tests currently run against the maas edge snap (main) [on github actions](https://github.com/canonical-web-and-design/maas-ui/actions?query=workflow%3ACypress) with [Cypress](https://cypress.io).
+Integration tests currently run against the maas edge snap (main) [on github actions](https://github.com/canonical/maas-ui/actions?query=workflow%3ACypress) with [Cypress](https://cypress.io).
 
 For details on developing integration tests, see the integration testing [README](/docs/INTEGRATION.md).
 

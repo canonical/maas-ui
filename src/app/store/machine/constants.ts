@@ -1,7 +1,7 @@
 import { DiskTypes } from "app/store/types/enum";
 
 // From models/partition.py. This should ideally be available over the websocket.
-// https://github.com/canonical-web-and-design/maas-ui/issues/1866
+// https://github.com/canonical/maas-ui/issues/1866
 export const MIN_PARTITION_SIZE = 4 * 1024 * 1024;
 
 export type RaidMode = {
@@ -17,7 +17,7 @@ export type RaidMode = {
   minDevices: number;
 };
 // This should be made available over the websocket.
-// https://github.com/canonical-web-and-design/maas-ui/issues/1866
+// https://github.com/canonical/maas-ui/issues/1866
 export const RAID_MODES: RaidMode[] = [
   {
     allowsSpares: false,

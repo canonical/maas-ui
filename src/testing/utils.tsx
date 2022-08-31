@@ -9,6 +9,7 @@ import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
+import type { MockStoreEnhanced } from "redux-mock-store";
 import configureStore from "redux-mock-store";
 
 import FormikForm from "app/base/components/FormikForm";
@@ -107,6 +108,7 @@ type WrapperProps = {
   parentRoute?: string;
   routePattern?: string;
   state?: RootState;
+  store?: MockStoreEnhanced<RootState, {}>;
 };
 
 const BrowserRouterWithProvider = ({
@@ -114,6 +116,7 @@ const BrowserRouterWithProvider = ({
   parentRoute,
   routePattern,
   state,
+  store,
 }: WrapperProps & { children: React.ReactElement }) => {
   const getMockStore = (state: RootState) => {
     const mockStore = configureStore();
@@ -122,7 +125,7 @@ const BrowserRouterWithProvider = ({
 
   const route = <Route element={children} path={routePattern} />;
   return (
-    <Provider store={getMockStore(state || rootStateFactory())}>
+    <Provider store={store ?? getMockStore(state || rootStateFactory())}>
       <BrowserRouter>
         <CompatRouter>
           {routePattern ? (
@@ -141,13 +144,14 @@ const BrowserRouterWithProvider = ({
 const WithMockStoreProvider = ({
   children,
   state,
+  store,
 }: WrapperProps & { children: React.ReactElement }) => {
   const getMockStore = (state: RootState) => {
     const mockStore = configureStore();
     return mockStore(state);
   };
   return (
-    <Provider store={getMockStore(state || rootStateFactory())}>
+    <Provider store={store ?? getMockStore(state || rootStateFactory())}>
       {children}
     </Provider>
   );
@@ -174,13 +178,15 @@ export const renderWithMockStore = (
   ui: React.ReactElement,
   options: RenderOptions & {
     state?: RootState;
+    store?: WrapperProps["store"];
   }
 ): RenderResult => {
+  const { state, store, ...renderOptions } = options;
   const rendered = render(ui, {
     wrapper: (props) => (
-      <WithMockStoreProvider {...props} state={options.state} />
+      <WithMockStoreProvider {...props} state={state} store={store} />
     ),
-    ...options,
+    ...renderOptions,
   });
   return {
     ...rendered,

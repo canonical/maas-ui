@@ -659,7 +659,7 @@ export function* setupWebSocket({
           [
             call(handleMessage, socketChannel, socketClient),
             // Using takeEvery() instead of call() here to get around this issue:
-            // https://github.com/canonical-web-and-design/maas-ui/issues/172
+            // https://github.com/canonical/maas-ui/issues/172
             takeEvery<
               WebSocketAction,
               (socketClient: WebSocketClient, action: WebSocketAction) => void

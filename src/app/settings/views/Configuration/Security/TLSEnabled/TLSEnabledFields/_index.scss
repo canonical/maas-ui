@@ -1,6 +1,6 @@
 @mixin TLSEnabledFields {
   // TODO: Rewrite using Slider classNames instead of targeting Vanilla classes.
-  // https://github.com/canonical-web-and-design/react-components/issues/765
+  // https://github.com/canonical/react-components/issues/765
   .p-slider--inline {
     .p-form__group {
       display: inline-flex;

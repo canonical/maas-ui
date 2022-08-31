@@ -44,7 +44,7 @@ export const MachineHeaderForms = ({
       // We need to explicitly cast headerContent.view here - TypeScript doesn't
       // seem to be able to infer remaining object tuple values as with string
       // values.
-      // https://github.com/canonical-web-and-design/maas-ui/issues/3040
+      // https://github.com/canonical/maas-ui/issues/3040
       const { extras, view } = headerContent as {
         extras: MachineHeaderContent["extras"];
         view: ValueOf<typeof MachineActionHeaderViews>;
