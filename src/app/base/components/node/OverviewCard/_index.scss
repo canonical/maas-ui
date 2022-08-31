@@ -174,10 +174,10 @@
           &:last-child {
             grid-column-end: 4;
             grid-column-start: 1;
-            overflow: initial;
+            overflow: ellipsis;
             padding-right: 0;
-            text-overflow: initial;
-            white-space: initial;
+            text-overflow: ellipsis;
+            white-space: nowrap;
           }
         }
       }
@@ -243,6 +243,9 @@
 
         > *:last-child {
           grid-column-end: 3;
+          overflow: ellipsis;
+          text-overflow: ellipsis;
+          white-space: nowrap;
         }
       }
     }
