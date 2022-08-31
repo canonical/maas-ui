@@ -11,9 +11,13 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
+import { parseFilters } from "../MachineList";
+
+import AllCheckbox from "./AllCheckbox";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
+import GroupCheckbox from "./GroupCheckbox";
 import MachineListPagination from "./MachineListPagination";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
@@ -25,13 +29,11 @@ import StorageColumn from "./StorageColumn";
 import ZoneColumn from "./ZoneColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import GroupCheckbox from "app/base/components/GroupCheckbox";
 import Placeholder from "app/base/components/Placeholder";
 import TableHeader from "app/base/components/TableHeader";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { FetchGroupKey } from "app/store/machine/types";
 import type {
@@ -45,16 +47,6 @@ import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
-import { generateCheckboxHandlers, someInArray } from "app/utils";
-import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
-
-export const DEFAULTS = {
-  pageSize: 50,
-  sortDirection: SortDirection.DESCENDING,
-  // TODO: change this to fqdn when the API supports it:
-  // https://github.com/canonical/app-tribe/issues/1268
-  sortKey: FetchGroupKey.Hostname,
-};
 
 export enum Label {
   Loading = "Loading machines",
@@ -86,10 +78,9 @@ type Props = {
 type TableColumn = MainTableCell & { key: string };
 
 type GenerateRowParams = {
+  callId?: string | null;
   activeRow: Machine[MachineMeta.PK] | null;
-  handleRowCheckbox: CheckboxHandlers<
-    Machine[MachineMeta.PK]
-  >["handleRowCheckbox"];
+  groupName?: MachineStateListGroup["name"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
   onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
@@ -330,12 +321,12 @@ const generateSkeletonRows = (
   });
 };
 const generateRows = ({
+  callId,
   activeRow,
-  handleRowCheckbox,
+  groupName,
   hiddenColumns,
   machines,
   onToggleMenu,
-  selectedIDs,
   showActions,
   showMAC,
 }: GenerateRowParams) => {
@@ -347,13 +338,10 @@ const generateRows = ({
     const content = {
       [MachineColumns.FQDN]: (
         <NameColumn
+          callId={callId}
           data-testid="fqdn-column"
-          handleCheckbox={
-            showActions
-              ? () => handleRowCheckbox(row.system_id, selectedIDs)
-              : undefined
-          }
-          selected={selectedIDs}
+          groupName={groupName}
+          showActions={showActions}
           showMAC={showMAC}
           systemId={row.system_id}
         />
@@ -422,9 +410,9 @@ const generateRows = ({
 };
 
 const generateGroupRows = ({
+  callId,
   grouping,
   groups,
-  handleGroupCheckbox,
   hiddenGroups,
   machines,
   selectedIDs,
@@ -433,11 +421,9 @@ const generateGroupRows = ({
   hiddenColumns,
   ...rowProps
 }: {
+  callId?: string | null;
   grouping?: FetchGroupKey | null;
   groups: MachineStateListGroup[] | null;
-  handleGroupCheckbox: CheckboxHandlers<
-    Machine[MachineMeta.PK]
-  >["handleGroupCheckbox"];
   hiddenGroups: NonNullable<Props["hiddenGroups"]>;
   setHiddenGroups: Props["setHiddenGroups"];
 } & GenerateRowParams) => {
@@ -458,19 +444,7 @@ const generateGroupRows = ({
                   data-testid="group-cell"
                   primary={
                     showActions ? (
-                      <GroupCheckbox
-                        checkAllSelected={(_, selectedIDs) =>
-                          machineIDs.every((id) => selectedIDs.includes(id))
-                        }
-                        checkSelected={(_, selectedIDs) =>
-                          someInArray(selectedIDs, machineIDs)
-                        }
-                        handleGroupCheckbox={handleGroupCheckbox}
-                        inRow
-                        inputLabel={<strong>{name}</strong>}
-                        items={machineIDs}
-                        selectedItems={selectedIDs}
-                      />
+                      <GroupCheckbox callId={callId} groupName={name} />
                     ) : (
                       <strong>{name}</strong>
                     )
@@ -525,6 +499,8 @@ const generateGroupRows = ({
     rows = rows.concat(
       generateRows({
         ...rowProps,
+        callId,
+        groupName: name,
         machines: visibleMachines,
         selectedIDs,
         showActions,
@@ -561,7 +537,6 @@ export const MachineListTable = ({
   const groups = useSelector((state: RootState) =>
     machineSelectors.listGroups(state, callId)
   );
-  const machineIDs = machines.map((machine) => machine.system_id);
   const currentSort = {
     direction: sortDirection,
     key: sortKey,
@@ -583,18 +558,6 @@ export const MachineListTable = ({
     null
   );
   const [showMAC, setShowMAC] = useState(false);
-  const removeSelectedFilter = () => {
-    const filters = FilterMachines.getCurrentFilters(filter);
-    const newFilters = FilterMachines.toggleFilter(
-      filters,
-      "in",
-      "selected",
-      false,
-      false
-    );
-    setSearchFilter &&
-      setSearchFilter(FilterMachines.filtersToString(newFilters));
-  };
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());
@@ -610,15 +573,6 @@ export const MachineListTable = ({
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
-    Machine[MachineMeta.PK]
-  >((machineIDs) => {
-    if (machineIDs.length === 0) {
-      removeSelectedFilter();
-    }
-    dispatch(machineActions.setSelected(machineIDs));
-  });
-
   const onToggleMenu = useCallback(
     (systemId, open) => {
       if (open && !activeRow) {
@@ -631,8 +585,8 @@ export const MachineListTable = ({
   );
 
   const rowProps = {
+    callId,
     activeRow,
-    handleRowCheckbox,
     onToggleMenu,
     showActions,
     showMAC,
@@ -646,11 +600,10 @@ export const MachineListTable = ({
       content: (
         <div className="u-flex">
           {showActions && (
-            <GroupCheckbox
+            <AllCheckbox
+              callId={callId}
               data-testid="all-machines-checkbox"
-              handleGroupCheckbox={handleGroupCheckbox}
-              items={machineIDs}
-              selectedItems={selectedIDs}
+              filter={parseFilters(FilterMachines.getCurrentFilters(filter))}
             />
           )}
           <div>
@@ -856,7 +809,6 @@ export const MachineListTable = ({
   const rows = generateGroupRows({
     grouping,
     groups,
-    handleGroupCheckbox,
     hiddenGroups,
     machines,
     selectedIDs,

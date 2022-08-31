@@ -5,16 +5,22 @@ import classNames from "classnames";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
+import MachineCheckbox from "../MachineCheckbox";
+
 import DoubleRow from "app/base/components/DoubleRow";
 import NonBreakingSpace from "app/base/components/NonBreakingSpace";
-import RowCheckbox from "app/base/components/RowCheckbox";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineMeta } from "app/store/machine/types";
+import type {
+  Machine,
+  MachineMeta,
+  MachineStateListGroup,
+} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  handleCheckbox?: () => void;
-  selected: Machine[MachineMeta.PK][];
+  callId?: string | null;
+  groupName?: MachineStateListGroup["name"];
+  showActions?: boolean;
   showMAC?: boolean;
   systemId: Machine[MachineMeta.PK];
 };
@@ -114,8 +120,9 @@ const generateMAC = (machine: Machine, machineURL: string) => {
 };
 
 export const NameColumn = ({
-  handleCheckbox,
-  selected,
+  callId,
+  groupName,
+  showActions,
   showMAC,
   systemId,
 }: Props): JSX.Element | null => {
@@ -135,12 +142,12 @@ export const NameColumn = ({
     <DoubleRow
       data-testid="name-column"
       primary={
-        handleCheckbox ? (
-          <RowCheckbox
-            handleRowCheckbox={handleCheckbox}
-            inputLabel={primaryRow}
-            item={systemId}
-            items={selected}
+        showActions ? (
+          <MachineCheckbox
+            callId={callId}
+            groupName={groupName}
+            label={primaryRow}
+            systemId={systemId}
           />
         ) : (
           primaryRow
@@ -150,7 +157,7 @@ export const NameColumn = ({
       secondary={secondaryRow || <NonBreakingSpace />}
       secondaryClassName={classNames([
         "u-flex",
-        { "u-nudge--secondary-row u-align--left": handleCheckbox },
+        { "u-nudge--secondary-row u-align--left": showActions },
       ])}
     />
   );

@@ -10,9 +10,8 @@ import { useGetURLId } from "app/base/hooks/urls";
 import type { SortDirection } from "app/base/types";
 import urls from "app/base/urls";
 import ErrorsNotification from "app/machines/views/MachineList/ErrorsNotification";
-import MachineListTable, {
-  DEFAULTS,
-} from "app/machines/views/MachineList/MachineListTable";
+import MachineListTable from "app/machines/views/MachineList/MachineListTable";
+import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/constants";
 import type { FetchGroupKey, FetchFilters } from "app/store/machine/types";
 import { mapSortDirection } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";

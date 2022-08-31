@@ -7,7 +7,8 @@ import { useStorageState } from "react-storage-hooks";
 
 import ErrorsNotification from "./ErrorsNotification";
 import MachineListControls from "./MachineListControls";
-import MachineListTable, { DEFAULTS } from "./MachineListTable";
+import MachineListTable from "./MachineListTable";
+import { DEFAULTS } from "./MachineListTable/constants";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter, SortDirection } from "app/base/types";
@@ -29,7 +30,7 @@ const PAGE_SIZE = DEFAULTS.pageSize;
 
 // TODO: this should construct the full set of filters once the API has been
 // updated: https://github.com/canonical/app-tribe/issues/1125
-const parseFilters = (filters: Filters): FetchFilters => {
+export const parseFilters = (filters: Filters): FetchFilters => {
   const fetchFilters = cloneDeep(filters);
   // Remove the in:selected filter as this is done client side.
   delete fetchFilters.in;

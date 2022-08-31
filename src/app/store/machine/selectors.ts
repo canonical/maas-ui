@@ -1,20 +1,17 @@
 import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
+import { ACTIONS } from "app/store/machine/slice";
 import type {
   FilterGroupKey,
-  FilterGroupOptionType,
-  MachineStateCount,
-} from "./types";
-
-import { ACTIONS } from "app/store/machine/slice";
-import { MachineMeta } from "app/store/machine/types";
-import type {
   Machine,
   MachineState,
+  MachineStateCount,
   MachineStatus,
   MachineStatuses,
+  MachineStateListGroup,
 } from "app/store/machine/types";
+import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import type { NetworkInterface } from "app/store/types/node";
@@ -456,7 +453,7 @@ const listCount = createSelector(
     machineState,
     (_state: RootState, callId: string | null | undefined) => callId,
   ],
-  (machineState, callId) => getList(machineState, callId)?.count || null
+  (machineState, callId) => getList(machineState, callId)?.count ?? null
 );
 
 /**
@@ -468,7 +465,7 @@ const listGroup = createSelector(
     (
       _state: RootState,
       callId: string | null | undefined,
-      name: FilterGroupOptionType | null | undefined
+      name: MachineStateListGroup["name"] | null | undefined
     ) => ({
       callId,
       name,
