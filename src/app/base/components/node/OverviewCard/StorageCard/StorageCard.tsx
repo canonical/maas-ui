@@ -17,8 +17,10 @@ type Props = {
 const StorageCard = ({ node, setHeaderContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__storage">
-      <strong className="p-muted-heading">Storage</strong>
-      <h4>
+      <strong className="p-muted-heading u-flex--between u-no-margin--bottom">
+        Storage
+      </strong>
+      <h4 className="u-no-margin--bottom">
         <span>{node.storage ? `${node.storage} GB` : "Unknown"}</span>
         {node.storage && node.physical_disk_count ? (
           <small className="u-text--muted">

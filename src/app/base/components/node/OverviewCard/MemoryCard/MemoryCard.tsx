@@ -13,8 +13,12 @@ type Props = {
 const MemoryCard = ({ node, setHeaderContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__memory">
-      <strong className="p-muted-heading">Memory</strong>
-      <h4>{node.memory ? node.memory + " GiB" : "Unknown"}</h4>
+      <strong className="p-muted-heading u-flex--between u-no-margin--bottom">
+        Memory
+      </strong>
+      <h4 className="u-no-margin--bottom">
+        {node.memory ? node.memory + " GiB" : "Unknown"}
+      </h4>
     </div>
     {nodeIsMachine(node) && setHeaderContent ? (
       <TestResults

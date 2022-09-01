@@ -61,7 +61,7 @@ const MachineStatusCard = ({ machine }: Props): JSX.Element => {
   return (
     <>
       <div className="overview-card__status" data-testid="machine-status">
-        <strong className="p-muted-heading">
+        <strong className="p-muted-heading u-flex--between u-no-margin--bottom">
           {isVM(machine, machineTags)
             ? "Virtual Machine Status"
             : "Machine Status"}
