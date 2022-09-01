@@ -254,6 +254,7 @@ export const machineStateListGroup = define<MachineStateListGroup>({
   count: 15,
   items: () => [],
   name: null,
+  value: null,
 });
 
 export const machineStateList = define<MachineStateList>({

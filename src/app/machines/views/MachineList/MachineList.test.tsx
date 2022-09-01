@@ -1,4 +1,6 @@
 import reduxToolkit from "@reduxjs/toolkit";
+import { screen, waitFor, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -7,6 +9,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
+import { Label } from "./MachineListTable/MachineListTable";
 import { DEFAULTS } from "./MachineListTable/constants";
 
 import { actions as machineActions } from "app/store/machine";
@@ -211,26 +214,33 @@ describe("MachineList", () => {
     jest.restoreAllMocks();
   });
 
-  // TODO: handle expanding and collapsing via the API:
-  // https://github.com/canonical/app-tribe/issues/1123
-  it.skip("can filter groups", () => {
+  it("can hide groups", async () => {
+    jest
+      .spyOn(reduxToolkit, "nanoid")
+      .mockReturnValueOnce("123456")
+      .mockReturnValueOnce("78910");
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { store } }
     );
-
-    expect(wrapper.find("tr.machine-list__machine").length).toBe(3);
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     // Click the button to toggle the group.
-    wrapper.find(".machine-list__group button").at(0).simulate("click");
-    expect(wrapper.find("tr.machine-list__machine").length).toBe(1);
+    await user.click(
+      within(
+        screen.getByRole("row", { name: "Deployed machines group" })
+      ).getByRole("button", { name: Label.HideGroup })
+    );
+    const expected = machineActions.fetch("123456", {
+      group_collapsed: ["Deployed"],
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches).toHaveLength(2);
+    expect(
+      fetches[fetches.length - 1].payload.params.group_collapsed
+    ).toStrictEqual(["Deployed"]);
   });
 
   it("can change groups", () => {
@@ -325,39 +335,44 @@ describe("MachineList", () => {
     ).toBe("owner");
   });
 
-  // TODO: handle expanding and collapsing via the API:
-  // https://github.com/canonical/app-tribe/issues/1123
-  it.skip("can store hidden groups in local storage", () => {
+  it("can store hidden groups in local storage", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { store } }
     );
-    expect(wrapper.find("tr.machine-list__machine").length).toBe(3);
+    const expected = machineActions.fetch("123456", {
+      group_collapsed: [],
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(
+      fetches[fetches.length - 1].payload.params.group_collapsed
+    ).toStrictEqual([]);
+    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     // Click the button to toggle the group.
-    wrapper.find(".machine-list__group button").at(0).simulate("click");
+    await user.click(
+      within(
+        screen.getByRole("row", { name: "Deployed machines group" })
+      ).getByRole("button", { name: Label.HideGroup })
+    );
     // Render another machine list, this time it should restore the
     // hidden group state.
     const store2 = mockStore(state);
-    const wrapper2 = mount(
-      <Provider store={store2}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { store: store2 } }
     );
-    expect(wrapper2.find("tr.machine-list__machine").length).toBe(1);
+    const expected2 = machineActions.fetch("123456", {
+      group_collapsed: ["Deployed"],
+    });
+    const fetches2 = store2
+      .getActions()
+      .filter((action) => action.type === expected2.type);
+    expect(
+      fetches2[fetches.length - 1].payload.params.group_collapsed
+    ).toStrictEqual(["Deployed"]);
   });
 
   it("can display an error", () => {

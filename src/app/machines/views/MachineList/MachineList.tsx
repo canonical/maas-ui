@@ -46,8 +46,14 @@ const MachineList = ({
     "grouping",
     FetchGroupKey.Status
   );
+  const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
+    localStorage,
+    "hiddenGroups",
+    []
+  );
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
+      collapsedGroups: hiddenGroups,
       currentPage,
       filters: FilterMachineItems.parseFetchFilters(searchFilter),
       grouping,
@@ -55,11 +61,6 @@ const MachineList = ({
       sortDirection: mapSortDirection(sortDirection),
       sortKey,
     });
-  const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
-    localStorage,
-    "hiddenGroups",
-    []
-  );
 
   useEffect(
     () => () => {

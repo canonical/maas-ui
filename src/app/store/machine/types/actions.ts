@@ -1,4 +1,9 @@
-import type { Machine, MachineStatus, FilterGroupKey } from "./base";
+import type {
+  Machine,
+  MachineStatus,
+  FilterGroupKey,
+  MachineStateListGroup,
+} from "./base";
 import type { MachineMeta } from "./enum";
 
 import type { Domain } from "app/store/domain/types";
@@ -418,7 +423,7 @@ export enum FetchGroupKey {
 export type FetchParams = {
   filter?: FetchFilters | null;
   group_key?: FetchGroupKey | null;
-  group_collapsed?: string[];
+  group_collapsed?: MachineStateListGroup["value"][] | null;
   page_size?: number;
   page_number?: number;
   sort_key?: FetchGroupKey | null;

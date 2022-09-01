@@ -5,7 +5,7 @@ import { nanoid } from "@reduxjs/toolkit";
 import fastDeepEqual from "fast-deep-equal";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { FetchSortDirection } from "../types/actions";
+import type { FetchSortDirection, FetchParams } from "../types/actions";
 
 import { useCanEdit } from "app/base/hooks";
 import type { APIError } from "app/base/types";
@@ -92,7 +92,7 @@ export type UseFetchMachinesOptions = {
   currentPage?: number;
   sortKey?: FetchGroupKey | null;
   sortDirection?: FetchSortDirection | null;
-  collapsedGroups?: string[];
+  collapsedGroups?: FetchParams["group_collapsed"];
 };
 
 /**

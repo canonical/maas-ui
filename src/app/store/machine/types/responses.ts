@@ -1,12 +1,9 @@
-import type { FilterGroup, Machine } from "./base";
+import type { FilterGroup, Machine, MachineStateListGroup } from "./base";
 
 export type FilterGroupResponse = Omit<FilterGroup, "options">;
 
-export type FetchResponseGroup = {
-  collapsed: boolean;
-  count: number;
+export type FetchResponseGroup = Omit<MachineStateListGroup, "items"> & {
   items: Machine[];
-  name: string | null;
 };
 
 export type FetchResponse = {
