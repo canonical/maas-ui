@@ -1,5 +1,5 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen, waitFor, within } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
