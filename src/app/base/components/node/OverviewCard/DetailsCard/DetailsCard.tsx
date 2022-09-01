@@ -23,6 +23,19 @@ type Props = {
   node: ControllerDetails | MachineDetails;
 };
 
+export enum Labels {
+  Owner = "Owner",
+  Host = "Host",
+  Zone = "Zone",
+  ZoneLink = "Zone ›",
+  Pool = "Resource pool",
+  PoolLink = "Resource pool ›",
+  PowerType = "Power type",
+  PowerTypeLink = "Power type ›",
+  Tags = "Tags",
+  TagsLink = "Tags ›",
+}
+
 const DetailsCard = ({ node }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const powerTypes = useSelector(powerTypesSelectors.get);
@@ -60,7 +73,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
     >
       {isMachine && (
         <div>
-          <div className="u-text--muted">Owner</div>
+          <div className="u-text--muted">{Labels.Owner}</div>
           <span data-testid="owner" title={node.owner || "-"}>
             {node.owner || "-"}
           </span>
@@ -70,7 +83,7 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
         <>
           {node.pod && (
             <div>
-              <div className="u-text--muted">Host</div>
+              <div className="u-text--muted">{Labels.Host}</div>
               <span data-testid="host">
                 <Link
                   className="p-link__chevron"
@@ -101,10 +114,10 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
               }
               to={configTabUrl}
             >
-              Zone ›
+              {Labels.ZoneLink}
             </Link>
           ) : (
-            <span className="u-text--muted">Zone</span>
+            <span className="u-text--muted">{Labels.Zone}</span>
           )}
         </div>
         <span title={node.zone.name}>{node.zone.name}</span>
@@ -124,10 +137,10 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
                 }
                 to={configTabUrl}
               >
-                Resource pool ›
+                {Labels.PoolLink}
               </Link>
             ) : (
-              <span className="u-text--muted">Resource pool</span>
+              <span className="u-text--muted">{Labels.Pool}</span>
             )}
           </div>
           <span title={node.pool.name}>{node.pool.name}</span>
@@ -147,10 +160,10 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
               }
               to={configTabUrl}
             >
-              Power type ›
+              {Labels.PowerTypeLink}
             </Link>
           ) : (
-            <span className="u-text--muted">Power type</span>
+            <span className="u-text--muted">{Labels.PowerType}</span>
           )}
         </div>
         <span data-testid="power-type" title={node.power_type}>
@@ -171,10 +184,10 @@ const DetailsCard = ({ node }: Props): JSX.Element => {
               }
               to={configTabUrl}
             >
-              Tags ›
+              {Labels.TagsLink}
             </Link>
           ) : (
-            <span className="u-text--muted">Tags</span>
+            <span className="u-text--muted">{Labels.Tags}</span>
           )}
         </div>
         {tagsLoaded ? (

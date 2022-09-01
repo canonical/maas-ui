@@ -1,34 +1,67 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen, within } from "@testing-library/react";
 
-import HardwareCard from "./HardwareCard";
+import HardwareCard, { Labels as HardwareCardLabels } from "./HardwareCard";
 
 import {
   machineDetails as machineDetailsFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 it("renders with system data", () => {
   const machine = machineDetailsFactory({ system_id: "abc123" });
   const state = rootStateFactory({
     machine: machineStateFactory({ items: [machine] }),
   });
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <HardwareCard node={machine} />
-      </MemoryRouter>
-    </Provider>
+  renderWithBrowserRouter(<HardwareCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
+
+  const system = screen.getByRole("list", { name: HardwareCardLabels.System });
+  const mainboard = screen.getByRole("list", {
+    name: HardwareCardLabels.Mainboard,
+  });
+
+  const sys_vendor = within(system).getByLabelText(
+    HardwareCardLabels.SysVendor
   );
-  expect(wrapper.find("Card")).toMatchSnapshot();
+  const sys_product = within(system).getByLabelText(
+    HardwareCardLabels.SysProduct
+  );
+  const sys_version = within(system).getByLabelText(
+    HardwareCardLabels.SysVersion
+  );
+  const serial = within(system).getByLabelText(HardwareCardLabels.Serial);
+
+  const mb_vendor = within(mainboard).getByLabelText(
+    HardwareCardLabels.MainboardVendor
+  );
+  const mb_product = within(mainboard).getByLabelText(
+    HardwareCardLabels.MainboardProduct
+  );
+  const mb_firmware = within(mainboard).getByLabelText(
+    HardwareCardLabels.MainboardFirmware
+  );
+  const bios_mode = within(mainboard).getByLabelText(
+    HardwareCardLabels.BiosBootMode
+  );
+  const mb_version = within(mainboard).getByLabelText(
+    HardwareCardLabels.MainboardVersion
+  );
+  const date = within(mainboard).getByLabelText(HardwareCardLabels.Date);
+
+  expect(sys_vendor).toHaveTextContent("QEMU");
+  expect(sys_product).toHaveTextContent("Standard PC (Q35 + ICH9, 2009)");
+  expect(sys_version).toHaveTextContent("pc-q35-5.1");
+  expect(serial).toHaveTextContent(HardwareCardLabels.Unknown);
+  expect(mb_vendor).toHaveTextContent("Canonical Ltd.");
+  expect(mb_product).toHaveTextContent("LXD");
+  expect(mb_firmware).toHaveTextContent("EFI Development Kit II / OVMF");
+  expect(bios_mode).toHaveTextContent("UEFI");
+  expect(mb_version).toHaveTextContent("0.0.0");
+  expect(date).toHaveTextContent("02/06/2015");
 });
 
 it("renders when system data is not available", () => {
@@ -36,19 +69,11 @@ it("renders when system data is not available", () => {
   const state = rootStateFactory({
     machine: machineStateFactory({ items: [machine] }),
   });
-  const store = mockStore(state);
-  const wrapper = mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-      >
-        <HardwareCard node={machine} />
-      </MemoryRouter>
-    </Provider>
-  );
-  expect(
-    wrapper
-      .find("ul .p-list__item-value")
-      .everyWhere((item) => !item.text() || item.text() === "Unknown")
-  ).toBe(true);
+  renderWithBrowserRouter(<HardwareCard node={machine} />, {
+    route: "/machine/abc123",
+    wrapperProps: { state },
+  });
+
+  // Machine still has a BIOS boot mode, so we're looking for 9 instead of 10
+  expect(screen.getAllByText(HardwareCardLabels.Unknown).length).toBe(9);
 });

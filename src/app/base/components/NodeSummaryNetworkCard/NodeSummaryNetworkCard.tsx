@@ -152,7 +152,7 @@ const NodeSummaryNetworkCard = ({
   }
 
   return (
-    <Card>
+    <Card className="network-card">
       <h4 className="p-muted-heading u-sv1">
         <Link to={networkURL}>Network&nbsp;&rsaquo;</Link>
       </h4>
