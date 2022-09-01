@@ -17,7 +17,7 @@
         @include pseudo-border(left);
       };
       grid-area: cpu;
-      padding: $spv--large 0 0 0;
+      padding: $spv--small 0 0 0;
     }
 
     .overview-card__memory {
@@ -25,7 +25,7 @@
         @include pseudo-border(left);
       };
       grid-area: memory;
-      padding: $spv--large 0 0 0;
+      padding: $spv--small 0 0 0;
     }
 
     .overview-card__storage {
@@ -33,7 +33,7 @@
         @include pseudo-border(left);
       };
       grid-area: storage;
-      padding: $spv--large $sph--large 0 0;
+      padding: $spv--small $sph--large 0 0;
     }
 
     .overview-card__test-warning {
