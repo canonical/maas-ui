@@ -49,6 +49,7 @@ const LXDVMsTable = ({
     ValueOf<typeof SortDirection>
   >(DEFAULTS.sortDirection);
   const {
+    callId,
     loading,
     machineCount,
     machines: vms,
@@ -85,7 +86,7 @@ const LXDVMsTable = ({
         vmCount={machineCount ?? 0}
       />
       <VMsTable
-        currentPage={currentPage}
+        callId={callId}
         displayForCluster={displayForCluster}
         getHostColumn={getHostColumn}
         getResources={getResources}

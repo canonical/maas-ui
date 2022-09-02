@@ -124,7 +124,7 @@ describe("VMsTable", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-        selected: [],
+        selectedMachines: null,
       }),
     });
     const store = mockStore(state);
@@ -150,14 +150,16 @@ describe("VMsTable", () => {
       </Provider>
     );
 
-    wrapper.find("GroupCheckbox input").simulate("change", {
-      target: { name: "group-checkbox", value: "checked" },
+    wrapper.find("AllCheckbox input").simulate("change", {
+      target: { checked: "checked" },
     });
     expect(
-      store.getActions().find((action) => action.type === "machine/setSelected")
+      store
+        .getActions()
+        .find((action) => action.type === "machine/setSelectedMachines")
     ).toStrictEqual({
-      type: "machine/setSelected",
-      payload: ["abc123", "def456"],
+      type: "machine/setSelectedMachines",
+      payload: { filter: {} },
     });
   });
 
@@ -173,7 +175,7 @@ describe("VMsTable", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-        selected: ["abc123", "def456"],
+        selectedMachines: { filter: {} },
       }),
     });
     const store = mockStore(state);
@@ -199,14 +201,16 @@ describe("VMsTable", () => {
       </Provider>
     );
 
-    wrapper.find("GroupCheckbox input").simulate("change", {
-      target: { name: "group-checkbox", value: "checked" },
+    wrapper.find("AllCheckbox input").simulate("change", {
+      target: { checked: "" },
     });
     expect(
-      store.getActions().find((action) => action.type === "machine/setSelected")
+      store
+        .getActions()
+        .find((action) => action.type === "machine/setSelectedMachines")
     ).toStrictEqual({
-      type: "machine/setSelected",
-      payload: [],
+      type: "machine/setSelectedMachines",
+      payload: null,
     });
   });
 

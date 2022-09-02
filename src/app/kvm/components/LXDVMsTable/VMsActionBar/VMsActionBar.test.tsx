@@ -41,7 +41,7 @@ describe("VMsActionBar", () => {
   it("disables VM actions if none are selected", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
-        selected: [],
+        selectedMachines: null,
       }),
     });
     const store = mockStore(state);
@@ -71,7 +71,7 @@ describe("VMsActionBar", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-        selected: ["abc123"],
+        selectedMachines: { items: ["abc123"] },
       }),
     });
     const store = mockStore(state);
