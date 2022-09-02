@@ -15,6 +15,10 @@ import bootResourceSelectors from "app/store/bootresource/selectors";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 
+export enum Labels {
+  SyncDisabled = "Automatic image updates are disabled. This may mean that images won't be automatically updated and receive the latest package versions and security fixes.",
+}
+
 const ImageList = (): JSX.Element => {
   const dispatch = useDispatch();
   const ubuntu = useSelector(bootResourceSelectors.ubuntu);
@@ -39,9 +43,7 @@ const ImageList = (): JSX.Element => {
               data-testid="disabled-sync-warning"
               severity="caution"
             >
-              Automatic image updates are disabled. This may mean that images
-              won't be automatically updated and receive the latest package
-              versions and security fixes.
+              {Labels.SyncDisabled}
             </Notification>
           )}
           {!!ubuntu && <SyncedImages />}

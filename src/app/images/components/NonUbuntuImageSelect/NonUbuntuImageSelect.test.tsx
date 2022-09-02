@@ -1,7 +1,5 @@
-import { mount } from "enzyme";
+import { screen } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import NonUbuntuImageSelect from "./NonUbuntuImageSelect";
 
@@ -15,8 +13,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("NonUbuntuImageSelect", () => {
   let state: RootState;
@@ -49,33 +46,29 @@ describe("NonUbuntuImageSelect", () => {
     const resources = [bootResourceFactory()];
     state.bootresource.otherImages = otherImages;
     state.bootresource.resources = resources;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{
-            images: [
-              {
-                arch: "amd64",
-                os: "centos",
-                release: "centos7",
-                subArch: "generic",
-                title: "CentOS 7",
-              },
-            ],
-          }}
-          onSubmit={jest.fn()}
-        >
-          <NonUbuntuImageSelect images={otherImages} resources={resources} />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{
+          images: [
+            {
+              arch: "amd64",
+              os: "centos",
+              release: "centos7",
+              subArch: "generic",
+              title: "CentOS 7",
+            },
+          ],
+        }}
+        onSubmit={jest.fn()}
+      >
+        <NonUbuntuImageSelect images={otherImages} resources={resources} />
+      </Formik>,
+      { state }
     );
-    const imageChecked = (id: string) =>
-      wrapper
-        .findWhere((n) => n.name() === "Input" && n.prop("id") === id)
-        .prop("checked");
 
-    expect(imageChecked("image-centos/amd64/generic/centos7")).toBe(true);
-    expect(imageChecked("image-centos/amd64/generic/8")).toBe(false);
+    expect(screen.getByRole("checkbox", { name: "CentOS 7" })).toBeChecked();
+    expect(
+      screen.getByRole("checkbox", { name: "CentOS 8" })
+    ).not.toBeChecked();
   });
 });

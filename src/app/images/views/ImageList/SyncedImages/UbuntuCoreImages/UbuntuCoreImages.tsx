@@ -34,6 +34,12 @@ export type UbuntuCoreImagesValues = {
   images: ImageValue[];
 };
 
+export enum Labels {
+  CoreImages = "Ubuntu Core images",
+  StopImport = "Stop import",
+  SubmitLabel = "Update selection",
+}
+
 const UbuntuCoreImages = (): JSX.Element | null => {
   const dispatch = useDispatch();
   const ubuntuCoreImages = useSelector(bootResourceSelectors.ubuntuCoreImages);
@@ -85,7 +91,7 @@ const UbuntuCoreImages = (): JSX.Element | null => {
     <>
       <hr />
       <Strip shallow>
-        <h4>Ubuntu Core images</h4>
+        <h4>{Labels.CoreImages}</h4>
         <FormikForm<UbuntuCoreImagesValues>
           allowUnchanged
           buttonsBordered={false}
@@ -115,8 +121,8 @@ const UbuntuCoreImages = (): JSX.Element | null => {
             dispatch(cleanup());
             dispatch(bootResourceActions.stopImport());
           }}
-          secondarySubmitLabel={canStopImport ? "Stop import" : null}
-          submitLabel="Update selection"
+          secondarySubmitLabel={canStopImport ? Labels.StopImport : null}
+          submitLabel={Labels.SubmitLabel}
           validationSchema={UbuntuCoreImagesSchema}
         >
           <NonUbuntuImageSelect

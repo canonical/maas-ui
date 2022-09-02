@@ -1,17 +1,15 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
+import { screen, within } from "@testing-library/react";
 
 import CustomImages from "./CustomImages";
 
+import { Labels as ImagesTableLabels } from "app/images/components/ImagesTable/ImagesTable";
 import { BootResourceType } from "app/store/bootresource/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("CustomImages", () => {
   it("does not render if there are no uploaded resources", () => {
@@ -23,13 +21,10 @@ describe("CustomImages", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CustomImages />
-      </Provider>
-    );
-    expect(wrapper.find("ImagesTable").exists()).toBe(false);
+    renderWithMockStore(<CustomImages />, { state });
+    expect(
+      screen.queryByRole("grid", { name: ImagesTableLabels.Table })
+    ).not.toBeInTheDocument();
   });
 
   it("correctly sets images values based on uploaded resources", () => {
@@ -64,27 +59,22 @@ describe("CustomImages", () => {
         resources,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <CustomImages />
-      </Provider>
-    );
-    expect(wrapper.find("ImagesTable").prop("images")).toStrictEqual([
-      {
-        arch: "amd64",
-        os: "esxi",
-        release: "7.0",
-        resourceId: resources[0].id,
-        title: "VMWare ESXi 7.0",
-      },
-      {
-        arch: "arm64",
-        os: "windows",
-        release: "win2012hvr2",
-        resourceId: resources[1].id,
-        title: "Windows 2012",
-      },
-    ]);
+    renderWithMockStore(<CustomImages />, { state });
+    expect(
+      screen.getByRole("grid", { name: ImagesTableLabels.Table })
+    ).toBeInTheDocument();
+
+    const rows = screen.getAllByRole("row");
+
+    const row1cells = within(rows[1]).getAllByRole("gridcell");
+    const row2cells = within(rows[2]).getAllByRole("gridcell");
+
+    expect(row1cells[0]).toHaveTextContent("Windows 2012");
+    expect(row1cells[1]).toHaveTextContent("arm64");
+    expect(row1cells[2]).toHaveTextContent("650.4 MB");
+
+    expect(row2cells[0]).toHaveTextContent("VMWare ESXi 7.0");
+    expect(row2cells[1]).toHaveTextContent("amd64");
+    expect(row2cells[2]).toHaveTextContent("650.4 MB");
   });
 });

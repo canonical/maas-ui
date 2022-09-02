@@ -1,12 +1,16 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
-import ImageListHeader from "./ImageListHeader";
+import ImageListHeader, {
+  Labels as ImageListHeaderLabels,
+} from "./ImageListHeader";
 
 import { actions as configActions } from "app/store/config";
 import { ConfigNames } from "app/store/config/types";
+import type { RootState } from "app/store/root/types";
 import {
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
@@ -14,8 +18,9 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("ImageListHeader", () => {
   it("sets the subtitle loading state when polling", () => {
@@ -26,17 +31,11 @@ describe("ImageListHeader", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/images", key: "testKey" }]}
-        >
-          <ImageListHeader />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("SectionHeader").prop("subtitleLoading")).toBe(true);
+    renderWithBrowserRouter(<ImageListHeader />, {
+      route: "/images",
+      wrapperProps: { state },
+    });
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("does not show sync toggle if config has not loaded yet", () => {
@@ -50,22 +49,19 @@ describe("ImageListHeader", () => {
         loaded: false,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/images", key: "testKey" }]}
-        >
-          <ImageListHeader />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='auto-sync-switch']").exists()).toBe(
-      false
-    );
+    renderWithBrowserRouter(<ImageListHeader />, {
+      route: "/images",
+      wrapperProps: { state },
+    });
+
+    expect(
+      screen.queryByRole("checkbox", {
+        name: ImageListHeaderLabels.AutoSyncImages,
+      })
+    ).not.toBeInTheDocument();
   });
 
-  it("dispatches an action to update config when changing the auto sync switch", () => {
+  it("dispatches an action to update config when changing the auto sync switch", async () => {
     const state = rootStateFactory({
       config: configStateFactory({
         items: [
@@ -78,7 +74,7 @@ describe("ImageListHeader", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/images", key: "testKey" }]}
@@ -87,9 +83,13 @@ describe("ImageListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("input[data-testid='auto-sync-switch']").simulate("change", {
-      target: { checked: false, id: "auto-sync-switch" },
-    });
+
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: ImageListHeaderLabels.AutoSyncImages,
+      })
+    );
+
     const actualActions = store.getActions();
     const expectedAction = configActions.update({
       boot_images_auto_import: false,
@@ -107,20 +107,17 @@ describe("ImageListHeader", () => {
         rackImportRunning: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/images", key: "testKey" }]}
-        >
-          <ImageListHeader />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='rack-importing']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='region-importing']").exists()).toBe(
-      false
-    );
+    renderWithBrowserRouter(<ImageListHeader />, {
+      route: "/images",
+      wrapperProps: { state },
+    });
+
+    expect(
+      screen.getByText(ImageListHeaderLabels.RackControllersImporting)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(ImageListHeaderLabels.RegionControllerImporting)
+    ).not.toBeInTheDocument();
   });
 
   it("can show the region import status", () => {
@@ -129,19 +126,16 @@ describe("ImageListHeader", () => {
         regionImportRunning: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/images", key: "testKey" }]}
-        >
-          <ImageListHeader />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='region-importing']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("[data-testid='rack-importing']").exists()).toBe(false);
+    renderWithBrowserRouter(<ImageListHeader />, {
+      route: "/images",
+      wrapperProps: { state },
+    });
+
+    expect(
+      screen.getByText(ImageListHeaderLabels.RegionControllerImporting)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByText(ImageListHeaderLabels.RackControllersImporting)
+    ).not.toBeInTheDocument();
   });
 });
