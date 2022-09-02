@@ -32,26 +32,26 @@ const ConnectivityCard = (): JSX.Element => {
         <Col size={6}>
           <FormikField
             help="A space-separated list of upstream DNS servers to which MAAS should forward requests for domains not managed by MAAS directly."
-            label="DNS forwarder"
+            label={Labels.UpstreamDns}
             name="upstreamDns"
             placeholder="e.g: 8.8.8.8 8.8.4.4"
             type="text"
           />
           <FormikField
             help="The server where machines retrieve packages for Intel architectures."
-            label="Ubuntu archive"
+            label={Labels.MainArchiveUrl}
             name="mainArchiveUrl"
             type="text"
           />
           <FormikField
             help="Archive used by machines to retrieve packages for non-Intel architectures."
-            label="Ubuntu extra architectures"
+            label={Labels.PortsArchiveUrl}
             name="portsArchiveUrl"
             type="text"
           />
           <FormikField
             help="This will be passed onto deployed machines to use as a proxy for APT and YUM traffic. MAAS also uses the proxy for downloading boot images. If no URL is provided, the built-in MAAS proxy will be used."
-            label="APT &amp; HTTP/HTTPS proxy server"
+            label={Labels.HttpProxy}
             name="httpProxy"
             type="text"
           />
