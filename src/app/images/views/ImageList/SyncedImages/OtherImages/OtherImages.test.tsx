@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 import OtherImages, { Labels as OtherImagesLabels } from "./OtherImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
+import type { RootState } from "app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceOtherImage as otherImageFactory,
@@ -16,7 +17,7 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("OtherImages", () => {
   it("does not render if there is no other image data", () => {

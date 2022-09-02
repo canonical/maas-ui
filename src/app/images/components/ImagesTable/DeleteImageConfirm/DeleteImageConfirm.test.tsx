@@ -8,6 +8,7 @@ import DeleteImageConfirm from "./DeleteImageConfirm";
 
 import { Labels as TableDeleteConfirmLabels } from "app/base/components/TableDeleteConfirm/TableDeleteConfirm";
 import { actions as bootResourceActions } from "app/store/bootresource";
+import type { RootState } from "app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
@@ -15,7 +16,7 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("DeleteImageConfirm", () => {
   it("calls closeForm on cancel click", async () => {
