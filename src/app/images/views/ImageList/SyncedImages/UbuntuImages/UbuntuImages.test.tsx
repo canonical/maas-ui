@@ -8,6 +8,7 @@ import UbuntuImages, { Labels as UbuntuImagesLabels } from "./UbuntuImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import { BootResourceSourceType } from "app/store/bootresource/types";
+import type { RootState } from "app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
@@ -19,7 +20,7 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("UbuntuImages", () => {
   it("correctly sets initial values based on resources", () => {

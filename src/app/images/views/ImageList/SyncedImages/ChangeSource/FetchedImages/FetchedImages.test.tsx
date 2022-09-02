@@ -29,7 +29,7 @@ jest.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: jest.fn(),
 }));
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("FetchedImages", () => {
   let state: RootState;

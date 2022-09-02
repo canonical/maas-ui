@@ -9,6 +9,7 @@ import ImageListHeader, {
 
 import { actions as configActions } from "app/store/config";
 import { ConfigNames } from "app/store/config/types";
+import type { RootState } from "app/store/root/types";
 import {
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
@@ -18,7 +19,7 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("ImageListHeader", () => {
   it("sets the subtitle loading state when polling", () => {

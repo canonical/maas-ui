@@ -9,6 +9,7 @@ import UbuntuCoreImages, {
 } from "./UbuntuCoreImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
+import type { RootState } from "app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceUbuntuCoreImage as ubuntuCoreImageFactory,
@@ -17,7 +18,7 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("UbuntuCoreImages", () => {
   it("does not render if there is no Ubuntu core image data", () => {

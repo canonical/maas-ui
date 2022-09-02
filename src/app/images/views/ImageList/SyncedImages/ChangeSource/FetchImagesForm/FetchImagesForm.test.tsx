@@ -13,6 +13,7 @@ import { Labels as FetchImagesFormFieldsLabels } from "./FetchImagesFormFields/F
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import { BootResourceSourceType } from "app/store/bootresource/types";
+import type { RootState } from "app/store/root/types";
 import {
   bootResourceState as bootResourceStateFactory,
   bootResourceStatuses as bootResourceStatusesFactory,
@@ -20,7 +21,7 @@ import {
 } from "testing/factories";
 import { renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   useId: jest.fn(),
