@@ -1,10 +1,10 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import ImagesIntro from "./ImagesIntro";
+import ImagesIntro, { Labels as ImagesIntroLabels } from "./ImagesIntro";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -14,7 +14,7 @@ import {
   bootResourceUbuntuSource as bootResourceUbuntuSourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -31,24 +31,16 @@ describe("ImagesIntro", () => {
 
   it("displays a spinner if server has not been polled yet", () => {
     state.bootresource.ubuntu = null;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ImagesIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<ImagesIntro />, {
+      route: "/intro/images",
+      wrapperProps: { state },
+    });
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("stops polling when unmounted", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
@@ -59,8 +51,8 @@ describe("ImagesIntro", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.unmount();
-    await waitForComponentToPaint(wrapper);
+    unmount();
+
     expect(
       store
         .getActions()
@@ -71,28 +63,17 @@ describe("ImagesIntro", () => {
   it("disables the continue button if no image and source has been configured", () => {
     state.bootresource.ubuntu = bootResourceUbuntuFactory({ sources: [] });
     state.bootresource.resources = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ImagesIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ImagesIntro />, {
+      route: "/intro/images",
+      wrapperProps: { state },
+    });
+
     expect(
-      wrapper
-        .find("button[data-testid='images-intro-continue']")
-        .prop("disabled")
-    ).toBe(true);
+      screen.getByRole("button", { name: ImagesIntroLabels.Continue })
+    ).toBeDisabled();
     expect(
-      wrapper
-        .find("[data-testid='images-intro-continue'] Tooltip")
-        .prop("message")
-    ).toBe("At least one image and source must be configured to continue.");
+      screen.getByRole("tooltip", { name: ImagesIntroLabels.CantContinue })
+    ).toBeInTheDocument();
   });
 
   it("enables the continue button if an image and source has been configured", () => {
@@ -100,22 +81,13 @@ describe("ImagesIntro", () => {
       sources: [bootResourceUbuntuSourceFactory()],
     });
     state.bootresource.resources = [bootResourceFactory()];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/images", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ImagesIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ImagesIntro />, {
+      route: "/intro/images",
+      wrapperProps: { state },
+    });
+
     expect(
-      wrapper
-        .find("button[data-testid='images-intro-continue']")
-        .prop("disabled")
-    ).toBe(false);
+      screen.getByRole("button", { name: ImagesIntroLabels.Continue })
+    ).not.toBeDisabled();
   });
 });
