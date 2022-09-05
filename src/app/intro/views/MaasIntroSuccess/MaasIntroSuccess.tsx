@@ -47,7 +47,7 @@ const MaasIntroSuccess = (): JSX.Element => {
           }}
           to={continueLink}
         >
-          {Labels.Continue}
+          {Labels.FinishSetup}
         </Button>
       </div>
     </IntroSection>

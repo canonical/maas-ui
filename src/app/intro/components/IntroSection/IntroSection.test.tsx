@@ -62,16 +62,9 @@ describe("IntroSection", () => {
         user: userFactory({ completed_intro: true, is_superuser: true }),
       }),
     });
-    const history = createMemoryHistory({
-      initialEntries: [{ pathname: "/intro/user", key: "testKey" }],
-    });
-    renderWithMockStore(
-      <Router history={history}>
-        <CompatRouter>
-          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
-        </CompatRouter>
-      </Router>,
-      { state }
+    renderWithBrowserRouter(
+      <IntroSection shouldExitIntro={true}>Intro content</IntroSection>,
+      { route: "/intro/user", wrapperProps: { state } }
     );
     expect(window.location.pathname).toBe(urls.dashboard.index);
   });
@@ -82,16 +75,9 @@ describe("IntroSection", () => {
         user: userFactory({ completed_intro: true, is_superuser: false }),
       }),
     });
-    const history = createMemoryHistory({
-      initialEntries: [{ pathname: "/intro/user", key: "testKey" }],
-    });
-    renderWithMockStore(
-      <Router history={history}>
-        <CompatRouter>
-          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
-        </CompatRouter>
-      </Router>,
-      { state }
+    renderWithBrowserRouter(
+      <IntroSection shouldExitIntro={true}>Intro content</IntroSection>,
+      { route: "/intro/user", wrapperProps: { state } }
     );
     expect(window.location.pathname).toBe(urls.machines.index);
   });

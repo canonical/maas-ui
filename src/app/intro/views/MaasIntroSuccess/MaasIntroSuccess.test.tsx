@@ -50,7 +50,7 @@ describe("MaasIntroSuccess", () => {
       wrapperProps: { state },
     });
     expect(
-      screen.getByRole("link", { name: MaasIntroSuccessLabels.Continue })
+      screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
     ).toHaveProperty("href", `http://example.com${urls.intro.user}`);
   });
 
@@ -63,7 +63,7 @@ describe("MaasIntroSuccess", () => {
       wrapperProps: { state },
     });
     expect(
-      screen.getByRole("link", { name: MaasIntroSuccessLabels.Continue })
+      screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
     ).toHaveProperty("href", `http://example.com${urls.dashboard.index}`);
   });
 
@@ -76,7 +76,7 @@ describe("MaasIntroSuccess", () => {
       wrapperProps: { state },
     });
     expect(
-      screen.getByRole("link", { name: MaasIntroSuccessLabels.Continue })
+      screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
     ).toHaveProperty("href", `http://example.com${urls.machines.index}`);
   });
 
@@ -94,7 +94,7 @@ describe("MaasIntroSuccess", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("link", { name: MaasIntroSuccessLabels.Continue })
+      screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
     );
 
     const expectedAction = configActions.update({ completed_intro: true });

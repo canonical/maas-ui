@@ -134,27 +134,27 @@ describe("MaasIntro", () => {
     const proxy = screen.getByRole("textbox", {
       name: ConnectivityCardLabels.HttpProxy,
     });
-    const upstream_dns = screen.getByRole("textbox", {
+    const upstreamDnsField = screen.getByRole("textbox", {
       name: ConnectivityCardLabels.UpstreamDns,
     });
-    const main_archive = screen.getByRole("textbox", {
+    const mainArchiveField = screen.getByRole("textbox", {
       name: ConnectivityCardLabels.MainArchiveUrl,
     });
-    const portsArchive = screen.getByRole("textbox", {
+    const portsArchiveField = screen.getByRole("textbox", {
       name: ConnectivityCardLabels.PortsArchiveUrl,
     });
 
     await userEvent.clear(name);
     await userEvent.clear(proxy);
-    await userEvent.clear(upstream_dns);
-    await userEvent.clear(main_archive);
-    await userEvent.clear(ports_archive);
+    await userEvent.clear(upstreamDnsField);
+    await userEvent.clear(mainArchiveField);
+    await userEvent.clear(portsArchiveField);
 
     await userEvent.type(name, "my new maas");
     await userEvent.type(proxy, "http://localhost:3000");
-    await userEvent.type(upstream_dns, "0.0.0.0");
-    await userEvent.type(main_archive, "http://www.newmainarchive.com");
-    await userEvent.type(ports_archive, "http://www.newportsarchive.com");
+    await userEvent.type(upstreamDnsField, "0.0.0.0");
+    await userEvent.type(mainArchiveField, "http://www.newmainarchive.com");
+    await userEvent.type(portsArchiveField, "http://www.newportsarchive.com");
 
     await userEvent.click(
       screen.getByRole("button", { name: MaasIntroLabels.SubmitLabel })
