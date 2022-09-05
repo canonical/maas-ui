@@ -183,6 +183,7 @@ const SSHKeyList = ({ sidebar = true, ...tableProps }: Props): JSX.Element => {
         </Notification>
       )}
       <SettingsTable
+        aria-label="SSH keys"
         headers={[
           {
             content: "Source",

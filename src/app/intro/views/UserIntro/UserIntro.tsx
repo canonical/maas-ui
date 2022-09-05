@@ -16,6 +16,12 @@ import { actions as userActions } from "app/store/user";
 import userSelectors from "app/store/user/selectors";
 import { formatErrors } from "app/utils";
 
+export enum Labels {
+  Continue = "Finish setup",
+  Skip = "Skip user setup",
+  AreYouSure = "Are you sure you want to skip your user setup? You will still be able to manage your SSH keys in your user preferences.",
+}
+
 const UserIntro = (): JSX.Element => {
   const dispatch = useDispatch();
   const [showSkip, setShowSkip] = useState(false);
@@ -68,7 +74,7 @@ const UserIntro = (): JSX.Element => {
             setShowSkip(true);
           }}
         >
-          Skip user setup
+          {Labels.Skip}
         </Button>
         <ActionButton
           appearance="positive"
@@ -80,21 +86,20 @@ const UserIntro = (): JSX.Element => {
           }}
           success={markedIntroComplete}
         >
-          Finish setup
+          {Labels.Continue}
         </ActionButton>
       </div>
       {showSkip && (
         <Card data-testid="skip-setup" highlighted>
           <TableConfirm
-            confirmLabel="Skip user setup"
+            confirmLabel={Labels.Skip}
             errors={errors}
             finished={markedIntroComplete}
             inProgress={markingIntroComplete && showSkip}
             message={
               <>
                 <Icon className="is-inline" name="warning" />
-                Are you sure you want to skip your user setup? You will still be
-                able to manage your SSH keys in your user preferences.
+                {Labels.AreYouSure}
               </>
             }
             onClose={() => setShowSkip(false)}
