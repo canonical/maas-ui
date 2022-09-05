@@ -9,6 +9,10 @@ import { useExitURL } from "app/intro/hooks";
 import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
 
+export enum Labels {
+  Continue = "Finish setup",
+}
+
 const MaasIntroSuccess = (): JSX.Element => {
   const dispatch = useDispatch();
   const authUser = useSelector(authSelectors.get);
@@ -43,7 +47,7 @@ const MaasIntroSuccess = (): JSX.Element => {
           }}
           to={continueLink}
         >
-          Finish setup
+          {Labels.Continue}
         </Button>
       </div>
     </IntroSection>
