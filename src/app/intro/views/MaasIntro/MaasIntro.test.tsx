@@ -140,7 +140,7 @@ describe("MaasIntro", () => {
     const main_archive = screen.getByRole("textbox", {
       name: ConnectivityCardLabels.MainArchiveUrl,
     });
-    const ports_archive = screen.getByRole("textbox", {
+    const portsArchive = screen.getByRole("textbox", {
       name: ConnectivityCardLabels.PortsArchiveUrl,
     });
 
