@@ -93,7 +93,7 @@ describe("IntroSection", () => {
       </Router>,
       { state }
     );
-    expect(history.location.pathname).toBe(urls.machines.index);
+    expect(window.location.pathname).toBe(urls.machines.index);
   });
 
   it("can show errors", () => {
