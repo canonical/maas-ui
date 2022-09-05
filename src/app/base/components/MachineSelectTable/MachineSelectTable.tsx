@@ -1,8 +1,11 @@
 import { useEffect } from "react";
 
-import { MainTable, Spinner } from "@canonical/react-components";
+import { MainTable } from "@canonical/react-components";
 import { highlightSubString } from "@canonical/react-components/dist/utils";
 import { useDispatch, useSelector } from "react-redux";
+
+import Placeholder from "../Placeholder";
+import VisuallyHidden from "../VisuallyHidden";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import machineSelectors from "app/store/machine/selectors";
@@ -22,6 +25,7 @@ type Props = {
   machines: Machine[];
   onMachineClick: (machine: Machine | null) => void;
   searchText: string;
+  machinesLoading?: boolean;
   setSearchText: (searchText: string) => void;
 };
 
@@ -73,8 +77,35 @@ const generateRows = (
   }));
 };
 
+const getSkeletonRows = () =>
+  Array.from(Array(3)).map((_, i) => ({
+    className: "machine-select-table__row",
+    columns: [
+      {
+        content: (
+          <DoubleRow
+            primary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>}
+            secondary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>}
+          />
+        ),
+      },
+      {
+        content: (
+          <DoubleRow
+            primary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>}
+            secondary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>}
+          />
+        ),
+      },
+    ],
+    "data-testid": "machine-select-row",
+    tabIndex: -1,
+    key: i,
+  }));
+
 export const MachineSelectTable = ({
   machines,
+  machinesLoading,
   onMachineClick,
   searchText,
   setSearchText,
@@ -87,40 +118,49 @@ export const MachineSelectTable = ({
     dispatch(tagActions.fetch());
   }, [dispatch]);
 
-  if (loadingMachines) {
-    return <Spinner text={Label.Loading} />;
-  }
+  const rows = generateRows(
+    machines,
+    searchText,
+    (machine) => {
+      setSearchText(machine.hostname);
+      onMachineClick(machine);
+    },
+    tags
+  );
+
+  const skeletonRows = getSkeletonRows();
+
   return (
-    <MainTable
-      emptyStateMsg="No machines match the search criteria."
-      headers={[
-        {
-          content: (
-            <>
-              <div>{Label.Hostname}</div>
-              <div>system_id</div>
-            </>
-          ),
-        },
-        {
-          content: (
-            <>
-              <div>{Label.Owner}</div>
-              <div>Tags</div>
-            </>
-          ),
-        },
-      ]}
-      rows={generateRows(
-        machines,
-        searchText,
-        (machine) => {
-          setSearchText(machine.hostname);
-          onMachineClick(machine);
-        },
-        tags
-      )}
-    />
+    <>
+      <MainTable
+        aria-busy={machinesLoading || loadingMachines ? "true" : "false"}
+        emptyStateMsg={
+          !machinesLoading ? "No machines match the search criteria." : null
+        }
+        headers={[
+          {
+            content: (
+              <>
+                <div>{Label.Hostname}</div>
+                <div>system_id</div>
+              </>
+            ),
+          },
+          {
+            content: (
+              <>
+                <div>{Label.Owner}</div>
+                <div>Tags</div>
+              </>
+            ),
+          },
+        ]}
+        rows={machinesLoading ? skeletonRows : rows}
+      />
+      <VisuallyHidden>
+        <div aria-live="polite">{machinesLoading ? "loading" : null}</div>
+      </VisuallyHidden>
+    </>
   );
 };
 

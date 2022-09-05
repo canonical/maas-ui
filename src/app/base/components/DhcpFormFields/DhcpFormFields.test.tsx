@@ -1,4 +1,5 @@
-import { render, screen } from "@testing-library/react";
+import reduxToolkit from "@reduxjs/toolkit";
+import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,6 +10,7 @@ import { Labels } from "./DhcpFormFields";
 
 import DhcpForm from "app/base/components/DhcpForm";
 import type { RootState } from "app/store/root/types";
+import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
   controllerState as controllerStateFactory,
   deviceState as deviceStateFactory,
@@ -16,17 +18,43 @@ import {
   dhcpSnippetState as dhcpSnippetStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
-
+const machines = [
+  machineFactory({
+    actions: [],
+    architecture: "amd64/generic",
+    cpu_count: 4,
+    distro_series: "bionic",
+    extra_macs: [],
+    fqdn: "koala.example",
+    hostname: "koala",
+    ip_addresses: [],
+    memory: 8,
+    osystem: "ubuntu",
+    owner: "admin",
+    permissions: ["edit", "delete"],
+    physical_disk_count: 1,
+    pxe_mac: "00:11:22:33:44:55",
+    spaces: [],
+    status: NodeStatus.DEPLOYED,
+    status_code: NodeStatusCode.DEPLOYED,
+    status_message: "",
+    storage: 8,
+    system_id: "abc123",
+  }),
+];
 describe("DhcpFormFields", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       controller: controllerStateFactory({ loaded: true }),
       device: deviceStateFactory({ loaded: true }),
@@ -49,11 +77,19 @@ describe("DhcpFormFields", () => {
         loaded: true,
       }),
       machine: machineStateFactory({
-        items: [
-          machineFactory({
-            fqdn: "node2.maas",
+        items: machines,
+        lists: {
+          "123456": machineStateListFactory({
+            loading: false,
+            loaded: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: [machines[0].system_id],
+                name: "Deployed",
+              }),
+            ],
           }),
-        ],
+        },
         loaded: true,
       }),
       subnet: subnetStateFactory({
@@ -113,7 +149,7 @@ describe("DhcpFormFields", () => {
       screen.getByRole("alert", { name: Labels.LoadingData })
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("combobox", { name: Labels.Entity })
+      screen.queryByRole("combobox", { name: Labels.AppliesTo })
     ).not.toBeInTheDocument();
   });
 
@@ -136,7 +172,7 @@ describe("DhcpFormFields", () => {
       screen.queryByRole("alert", { name: Labels.LoadingData })
     ).not.toBeInTheDocument();
     expect(
-      screen.getByRole("combobox", { name: Labels.Entity })
+      screen.getByRole("combobox", { name: Labels.AppliesTo })
     ).toBeInTheDocument();
   });
 
@@ -154,15 +190,31 @@ describe("DhcpFormFields", () => {
     );
     // Set an initial type.
     const typeSelect = screen.getByRole("combobox", { name: Labels.Type });
-    await userEvent.selectOptions(typeSelect, "machine");
-
+    await userEvent.selectOptions(typeSelect, "subnet");
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", {
+        name: Labels.AppliesTo,
+      }),
+      "test.local"
+    );
     // Select a machine. Value should get set.
-    const entitySelect = screen.getByRole("combobox", { name: Labels.Entity });
-    await userEvent.selectOptions(entitySelect, machine.system_id);
-    expect(entitySelect).toHaveValue(machine.system_id);
-
+    await userEvent.selectOptions(typeSelect, "machine");
+    await userEvent.click(
+      screen.getByRole("button", { name: /Choose machine/ })
+    );
+    await waitFor(() =>
+      expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "false")
+    );
+    within(screen.getByRole("grid")).getByText(machine.hostname).click();
+    expect(
+      screen.getByRole("button", { name: machine.hostname })
+    ).toHaveAccessibleDescription(Labels.AppliesTo);
     // Change the type. The select value should be cleared.
     await userEvent.selectOptions(typeSelect, "subnet");
-    expect(entitySelect).toHaveValue("");
+    expect(
+      screen.getByRole("combobox", {
+        name: Labels.AppliesTo,
+      })
+    ).toHaveValue("");
   });
 });

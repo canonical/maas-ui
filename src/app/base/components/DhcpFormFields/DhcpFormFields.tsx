@@ -7,6 +7,8 @@ import {
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
+import MachineSelect from "./MachineSelect/MachineSelect";
+
 import type { DHCPFormValues } from "app/base/components/DhcpForm/types";
 import FormikField from "app/base/components/FormikField";
 import controllerSelectors from "app/store/controller/selectors";
@@ -54,7 +56,7 @@ export enum Labels {
   Description = "Description",
   Disabled = "This snippet is disabled and will not be used by MAAS.",
   Enabled = "Enabled",
-  Entity = "Applies to",
+  AppliesTo = "Applies to",
   LoadingData = "Loading DHCP snippet data",
   Name = "Snippet name",
   Type = "Type",
@@ -73,12 +75,8 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
   const controllerLoaded = useSelector(controllerSelectors.loaded);
   const deviceLoading = useSelector(deviceSelectors.loading);
   const deviceLoaded = useSelector(deviceSelectors.loaded);
-  const machineLoading = useSelector(machineSelectors.loading);
-  const machineLoaded = useSelector(machineSelectors.loaded);
-  const isLoading =
-    subnetLoading || controllerLoading || deviceLoading || machineLoading;
-  const hasLoaded =
-    subnetLoaded && controllerLoaded && deviceLoaded && machineLoaded;
+  const isLoading = subnetLoading || controllerLoading || deviceLoading;
+  const hasLoaded = subnetLoaded && controllerLoaded && deviceLoaded;
   const { enabled, type } = formikProps.values;
   let models: ModelType[] | null;
   switch (type) {
@@ -97,7 +95,6 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
     default:
       models = null;
   }
-
   return (
     <>
       {editing && !enabled && (
@@ -134,21 +131,30 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
           { value: "device", label: "Device" },
         ]}
       />
-      {type &&
+      {type === "machine" ? (
+        <MachineSelect
+          onSelect={(machine) => {
+            if (machine) {
+              formikProps.setFieldValue("entity", machine.system_id);
+            } else {
+              formikProps.setFieldValue("entity", "");
+            }
+          }}
+          selected={formikProps.values.entity}
+        />
+      ) : (
+        type &&
         (isLoading || !hasLoaded ? (
           <Spinner aria-label={Labels.LoadingData} text="loading..." />
         ) : (
           <FormikField
             component={Select}
-            label={Labels.Entity}
+            label={Labels.AppliesTo}
             name="entity"
-            options={
-              // This won't need to pass the empty array once this issue is fixed:
-              // https://github.com/canonical/react-components/issues/570
-              generateOptions(type, models) || []
-            }
+            options={generateOptions(type, models)}
           />
-        ))}
+        ))
+      )}
       <FormikField
         component={Textarea}
         grow

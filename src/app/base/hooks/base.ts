@@ -175,3 +175,24 @@ export const useScrollToTop = (): void => {
     window.scrollTo(0, 0);
   }, [pathname]);
 };
+
+export const usePreviousPersistent = <T extends unknown>(
+  value: T,
+  isEqualFn?: (prev: T, next: T) => boolean
+): T | null => {
+  const ref = useRef<{ value: T; prev: T | null }>({
+    value: value,
+    prev: null,
+  });
+
+  const current = ref.current.value;
+
+  if (isEqualFn ? !isEqualFn(current, value) : value !== current) {
+    ref.current = {
+      value: value,
+      prev: current,
+    };
+  }
+
+  return ref.current.prev;
+};

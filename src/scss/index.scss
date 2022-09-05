@@ -97,6 +97,7 @@
 @import "~app/base/components/Popover";
 @import "~app/base/components/Section";
 @import "~app/base/components/SectionHeader";
+@import "~app/base/components/SelectButton";
 @import "~app/base/components/SSHKeyList";
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
@@ -129,6 +130,7 @@
 @include Popover;
 @include Section;
 @include SectionHeader;
+@include SelectButton;
 @include SSHKeyList;
 @include Stepper;
 @include TableMenu;
@@ -162,6 +164,7 @@
 @import "~app/kvm/components/CoreResources";
 @import "~app/kvm/components/CPUColumn/CPUPopover";
 @import "~app/kvm/components/KVMDetailsHeader";
+@import "~app/base/components/DhcpFormFields/MachineSelect";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable";
@@ -201,6 +204,7 @@
 @include LXDHostToolbar;
 @include LxdKVMHostTable;
 @include LXDVMsSummaryCard;
+@include MachineSelect;
 @include NumaResources;
 @include NumaResourcesCard;
 @include RAMPopover;

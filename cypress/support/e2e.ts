@@ -9,6 +9,7 @@ export type A11yPageContext = { url?: string; title?: string };
 declare global {
   namespace Cypress {
     interface Chainable {
+      addMachine(hostname?: string): void;
       login(options?: {
         username?: string;
         password?: string;

@@ -29,6 +29,21 @@ type Props = {
   setDeviceType: (deviceType: DeviceType) => void;
 };
 
+export enum Label {
+  ChooseType = "Choose type",
+  ChooseDomain = "Choose domain",
+  Type = "Type",
+  Device = "Device",
+  DeviceName = "Device Name",
+  Interface = "Interface",
+  Parent = "Parent",
+  Hostname = "Hostname (optional)",
+  InterfaceName = "Interface name (optional)",
+  Domain = "Domain",
+  SelectDeviceName = "Select device name",
+  SelectParent = "Select parent (optional)",
+}
+
 const DiscoveryAddFormFields = ({
   discovery,
   setDevice,
@@ -60,7 +75,7 @@ const DiscoveryAddFormFields = ({
         <Col size={6}>
           <FormikField
             component={Select}
-            label="Type"
+            label={Label.Type}
             name="type"
             onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
               setFieldValue("type", evt.target.value);
@@ -69,24 +84,24 @@ const DiscoveryAddFormFields = ({
               setDevice(null);
             }}
             options={[
-              { label: "Choose type", value: "", disabled: true },
-              { label: "Device", value: DeviceType.DEVICE },
-              { label: "Interface", value: DeviceType.INTERFACE },
+              { label: Label.ChooseType, value: "", disabled: true },
+              { label: Label.Device, value: DeviceType.DEVICE },
+              { label: Label.Interface, value: DeviceType.INTERFACE },
             ]}
             required
           />
           <FormikField
-            label={`${isDevice ? "Hostname" : "Interface name"} (optional)`}
+            label={isDevice ? Label.Hostname : Label.InterfaceName}
             name="hostname"
             type="text"
           />
           {isDevice ? (
             <FormikField
               component={Select}
-              label="Domain"
+              label={Label.Domain}
               name="domain"
               options={[
-                { label: "Choose domain", value: "", disabled: true },
+                { label: Label.ChooseDomain, value: "", disabled: true },
                 ...domains.map((domain) => ({
                   label: domain.name,
                   value: domain.name,
@@ -100,7 +115,7 @@ const DiscoveryAddFormFields = ({
               component={Select}
               label={
                 <>
-                  Device name{" "}
+                  {Label.DeviceName}{" "}
                   <TooltipButton message="Create as an interface on the selected device." />
                 </>
               }
@@ -110,7 +125,7 @@ const DiscoveryAddFormFields = ({
                 setDevice(evt.target.value as Device[DeviceMeta.PK]);
               }}
               options={[
-                { label: "Select device name", value: "", disabled: true },
+                { label: Label.SelectDeviceName, value: "", disabled: true },
                 ...devices.map((device) => ({
                   label: device.fqdn,
                   value: device[DeviceMeta.PK],
@@ -123,13 +138,13 @@ const DiscoveryAddFormFields = ({
               component={Select}
               label={
                 <>
-                  Parent{" "}
+                  {Label.Parent}{" "}
                   <TooltipButton message="Assign this device as a child of the parent machine." />
                 </>
               }
               name="parent"
               options={[
-                { label: "Select parent (optional)", value: "" },
+                { label: Label.SelectParent, value: "" },
                 ...machines.map((machine) => ({
                   label: machine.fqdn,
                   value: machine.system_id,
