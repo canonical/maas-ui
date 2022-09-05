@@ -1,10 +1,12 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import MaasIntro from "./MaasIntro";
+import { Labels as ConnectivityCardLabels } from "./ConnectivityCard/ConnectivityCard";
+import MaasIntro, { Labels as MaasIntroLabels } from "./MaasIntro";
+import { Labels as NameCardLabels } from "./NameCard/NameCard";
 
 import { actions as configActions } from "app/store/config";
 import { ConfigNames } from "app/store/config/types";
@@ -20,9 +22,9 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("MaasIntro", () => {
   let state: RootState;
@@ -64,37 +66,42 @@ describe("MaasIntro", () => {
   it("displays a spinner when loading", () => {
     state.config.loading = true;
     state.user.auth.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-          <CompatRouter>
-            <MaasIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<MaasIntro />, {
+      route: "/intro",
+      wrapperProps: { state },
+    });
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
-  it("can update just the config", () => {
+  it("can update just the config", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-          <CompatRouter>
-            <MaasIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
+        <CompatRouter>
+          <MaasIntro />
+        </CompatRouter>
+      </MemoryRouter>,
+      { store }
     );
-    submitFormikForm(wrapper, {
-      httpProxy: "http://www.newproxy.com",
-      mainArchiveUrl: "http://www.mainarchive.com",
-      name: "my new maas",
-      portsArchiveUrl: "http://www.portsarchive.com",
-      upstreamDns: "0.0.0.0",
+    const name = screen.getByRole("textbox", { name: NameCardLabels.Name });
+    const proxy = screen.getByRole("textbox", {
+      name: ConnectivityCardLabels.HttpProxy,
     });
+    const upstream_dns = screen.getByRole("textbox", {
+      name: ConnectivityCardLabels.UpstreamDns,
+    });
+
+    await userEvent.clear(name);
+    await userEvent.clear(proxy);
+    await userEvent.clear(upstream_dns);
+
+    await userEvent.type(name, "my new maas");
+    await userEvent.type(proxy, "http://www.newproxy.com");
+    await userEvent.type(upstream_dns, "0.0.0.0");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: MaasIntroLabels.SubmitLabel })
+    );
     const updateConfigAction = configActions.update({
       http_proxy: "http://www.newproxy.com",
       maas_name: "my new maas",
@@ -113,24 +120,46 @@ describe("MaasIntro", () => {
     ).toBe(0);
   });
 
-  it("can dispatch actions to update the default package repository urls", () => {
+  it("can dispatch actions to update the default package repository urls", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-          <CompatRouter>
-            <MaasIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
+        <CompatRouter>
+          <MaasIntro />
+        </CompatRouter>
+      </MemoryRouter>,
+      { store }
     );
-    submitFormikForm(wrapper, {
-      httpProxy: "http://localhost:3000",
-      mainArchiveUrl: "http://www.newmainarchive.com",
-      name: "my new maas",
-      portsArchiveUrl: "http://www.newportsarchive.com",
-      upstreamDns: "0.0.0.0",
+    const name = screen.getByRole("textbox", { name: NameCardLabels.Name });
+    const proxy = screen.getByRole("textbox", {
+      name: ConnectivityCardLabels.HttpProxy,
     });
+    const upstream_dns = screen.getByRole("textbox", {
+      name: ConnectivityCardLabels.UpstreamDns,
+    });
+    const main_archive = screen.getByRole("textbox", {
+      name: ConnectivityCardLabels.MainArchiveUrl,
+    });
+    const ports_archive = screen.getByRole("textbox", {
+      name: ConnectivityCardLabels.PortsArchiveUrl,
+    });
+
+    await userEvent.clear(name);
+    await userEvent.clear(proxy);
+    await userEvent.clear(upstream_dns);
+    await userEvent.clear(main_archive);
+    await userEvent.clear(ports_archive);
+
+    await userEvent.type(name, "my new maas");
+    await userEvent.type(proxy, "http://localhost:3000");
+    await userEvent.type(upstream_dns, "0.0.0.0");
+    await userEvent.type(main_archive, "http://www.newmainarchive.com");
+    await userEvent.type(ports_archive, "http://www.newportsarchive.com");
+
+    await userEvent.click(
+      screen.getByRole("button", { name: MaasIntroLabels.SubmitLabel })
+    );
+
     const updateMainArchiveAction = repoActions.update({
       id: mainArchive.id,
       name: mainArchive.name,
@@ -150,25 +179,31 @@ describe("MaasIntro", () => {
     expect(updateRepoActions[1]).toStrictEqual(updatePortsArchiveAction);
   });
 
-  it("can skip the initial MAAS setup", () => {
+  it("can skip the initial MAAS setup", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
-          <CompatRouter>
-            <MaasIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/intro", key: "testKey" }]}>
+        <CompatRouter>
+          <MaasIntro />
+        </CompatRouter>
+      </MemoryRouter>,
+      { store }
     );
-    expect(wrapper.find("[data-testid='skip-setup']").exists()).toBe(false);
+    expect(
+      screen.queryByText(MaasIntroLabels.AreYouSure)
+    ).not.toBeInTheDocument();
 
     // Open the skip confirmation.
-    wrapper.find("button[data-testid='secondary-submit']").simulate("click");
-    expect(wrapper.find("[data-testid='skip-setup']").exists()).toBe(true);
+    await userEvent.click(
+      screen.getByRole("button", { name: MaasIntroLabels.SecondarySubmit })
+    );
+
+    expect(screen.getByText(MaasIntroLabels.AreYouSure)).toBeInTheDocument();
 
     // Confirm skipping MAAS setup.
-    wrapper.find("button[data-testid='action-confirm']").simulate("click");
+    await userEvent.click(
+      screen.getByRole("button", { name: MaasIntroLabels.SkipToUserSetup })
+    );
     const expectedAction = configActions.update({
       completed_intro: true,
     });
