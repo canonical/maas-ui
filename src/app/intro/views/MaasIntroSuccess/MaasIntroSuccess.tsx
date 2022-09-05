@@ -10,7 +10,7 @@ import authSelectors from "app/store/auth/selectors";
 import { actions as configActions } from "app/store/config";
 
 export enum Labels {
-  Continue = "Finish setup",
+  FinishSetup = "Finish setup",
 }
 
 const MaasIntroSuccess = (): JSX.Element => {
