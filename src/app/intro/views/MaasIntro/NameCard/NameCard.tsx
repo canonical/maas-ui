@@ -7,6 +7,12 @@ import FormikField from "app/base/components/FormikField";
 import docsUrls from "app/base/docsUrls";
 import IntroCard from "app/intro/components/IntroCard";
 
+export enum Labels {
+  Welcome = "Welcome to MAAS",
+  Help = "Help with configuring MAAS",
+  Name = "Region name",
+}
+
 const NameCard = (): JSX.Element => {
   const { errors } = useFormikContext<MaasIntroValues>();
 
@@ -15,17 +21,17 @@ const NameCard = (): JSX.Element => {
       complete={!errors.name}
       data-testid="maas-name-form"
       hasErrors={!!errors.name}
-      title="Welcome to MAAS"
+      title={Labels.Welcome}
       titleLink={
         <Link href={docsUrls.configurationJourney} target="_blank">
-          Help with configuring MAAS
+          {Labels.Help}
         </Link>
       }
     >
       <Row>
         <Col size={6}>
           <FormikField
-            label="Region name"
+            label={Labels.Name}
             name="name"
             placeholder="e.g. us-west"
             type="text"
