@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { MainTable, Spinner, Strip } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import CoresColumn from "./CoresColumn";
 import HugepagesColumn from "./HugepagesColumn";
@@ -11,17 +11,16 @@ import NameColumn from "./NameColumn";
 import StatusColumn from "./StatusColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { SortDirection } from "app/base/types";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+import AllCheckbox from "app/machines/views/MachineList/MachineListTable/AllCheckbox";
 import type { Machine } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
+import { FilterMachineItems } from "app/store/machine/utils";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { getTagNamesForIds } from "app/store/tag/utils";
-import { formatBytes, generateCheckboxHandlers } from "app/utils";
+import { formatBytes } from "app/utils";
 
 export type GetHostColumn = (vm: Machine) => ReactNode;
 
@@ -32,7 +31,7 @@ export type GetResources = (vm: Machine) => {
 };
 
 type Props = {
-  currentPage: number;
+  callId?: string | null;
   displayForCluster?: boolean;
   getHostColumn?: GetHostColumn;
   getResources: GetResources;
@@ -45,12 +44,19 @@ type Props = {
   vms: Machine[];
 };
 
-const generateRows = (
-  vms: Machine[],
-  getResources: GetResources,
-  tags: Tag[],
-  getHostColumn?: GetHostColumn
-) =>
+const generateRows = ({
+  vms,
+  getResources,
+  tags,
+  getHostColumn,
+  callId,
+}: {
+  vms: Machine[];
+  getResources: GetResources;
+  tags: Tag[];
+  getHostColumn?: GetHostColumn;
+  callId?: string | null;
+}) =>
   vms.map((vm) => {
     const memory = formatBytes(vm.memory, "GiB", { binary: true });
     const storage = formatBytes(vm.storage, "GB");
@@ -60,7 +66,7 @@ const generateRows = (
       columns: [
         {
           className: "name-col",
-          content: <NameColumn systemId={vm.system_id} />,
+          content: <NameColumn callId={callId} systemId={vm.system_id} />,
         },
         {
           className: "status-col",
@@ -126,6 +132,7 @@ const generateRows = (
   });
 
 const VMsTable = ({
+  callId,
   displayForCluster,
   getHostColumn,
   getResources,
@@ -137,15 +144,7 @@ const VMsTable = ({
   sortKey,
   vms,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const tags = useSelector(tagSelectors.all);
-  const machineIDs = vms.map((vm) => vm.system_id);
-  const { handleGroupCheckbox } = generateCheckboxHandlers<
-    Machine["system_id"]
-  >((machineIDs) => {
-    dispatch(machineActions.setSelected(machineIDs));
-  });
   const currentSort = {
     direction: sortDirection,
     key: sortKey,
@@ -186,10 +185,9 @@ const VMsTable = ({
             className: "name-col",
             content: (
               <div className="u-flex">
-                <GroupCheckbox
-                  handleGroupCheckbox={handleGroupCheckbox}
-                  items={machineIDs}
-                  selectedItems={selectedIDs}
+                <AllCheckbox
+                  callId={callId}
+                  filter={FilterMachineItems.parseFetchFilters(searchFilter)}
                 />
                 <div>
                   <TableHeader
@@ -276,7 +274,7 @@ const VMsTable = ({
             ),
           },
         ]}
-        rows={generateRows(vms, getResources, tags, getHostColumn)}
+        rows={generateRows({ vms, getResources, tags, getHostColumn, callId })}
       />
     </>
   );

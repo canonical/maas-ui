@@ -104,7 +104,11 @@ describe("MachineListHeader", () => {
 
   it("displays a selected machine filter button if some machines have been selected", () => {
     state.machine.loaded = true;
+    // TODO: This state can be remove once the count has been updated to use the
+    // new API:
+    // https://github.com/canonical/app-tribe/issues/1102
     state.machine.selected = ["abc123"];
+    state.machine.selectedMachines = { items: ["abc123"] };
     const setSearchFilter = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
@@ -133,7 +137,11 @@ describe("MachineListHeader", () => {
 
   it("displays a message when all machines have been selected", () => {
     state.machine.loaded = true;
+    // TODO: This state can be remove once the count has been updated to use the
+    // new API:
+    // https://github.com/canonical/app-tribe/issues/1102
     state.machine.selected = ["abc123", "def456"];
+    state.machine.selectedMachines = { items: ["abc123", "def456"] };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -156,7 +164,7 @@ describe("MachineListHeader", () => {
   });
 
   it("disables the add hardware menu when machines are selected", () => {
-    state.machine.selected = ["abc123"];
+    state.machine.selectedMachines = { items: ["abc123"] };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -205,7 +213,7 @@ describe("MachineListHeader", () => {
 
   it("displays a new label for the tag action", () => {
     // Set a selected machine so the take action menu becomes enabled.
-    state.machine.selected = ["abc123"];
+    state.machine.selectedMachines = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
     state.machine.items = [
       machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
@@ -242,7 +250,7 @@ describe("MachineListHeader", () => {
 
   it("hides the tag action's new label after it has been clicked", () => {
     // Set a selected machine so the take action menu becomes enabled.
-    state.machine.selected = ["abc123"];
+    state.machine.selectedMachines = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
     state.machine.items = [
       machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),

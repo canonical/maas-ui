@@ -19,7 +19,10 @@ import type {
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import machineSelectors from "app/store/machine/selectors";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
+import {
+  useFetchMachineCount,
+  useHasSelection,
+} from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
@@ -36,6 +39,7 @@ export const MachineListHeader = ({
 }: Props): JSX.Element => {
   const location = useLocation();
   const selectedMachines = useSelector(machineSelectors.selected);
+  const hasSelection = useHasSelection();
   const [tagsSeen, setTagsSeen] = useStorageState(
     localStorage,
     "machineViewTagsSeen",
@@ -71,14 +75,14 @@ export const MachineListHeader = ({
     <MachinesHeader
       buttons={[
         <AddHardwareMenu
-          disabled={selectedMachines.length > 0}
+          disabled={hasSelection}
           key="add-hardware"
           setHeaderContent={setHeaderContent}
         />,
         <NodeActionMenu
           alwaysShowLifecycle
           getTitle={getTitle}
-          hasSelection={selectedMachines.length > 0}
+          hasSelection={hasSelection}
           key="machine-list-action-menu"
           nodeDisplay="machine"
           onActionClick={(action) => {

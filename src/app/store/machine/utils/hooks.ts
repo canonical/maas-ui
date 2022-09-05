@@ -340,3 +340,22 @@ export const useCanAddVLAN = (
   // Check that there are unused VLANS available.
   return unusedVLANs.length > 0;
 };
+
+/**
+ * Whether any machines are selected.
+ */
+export const useHasSelection = (): boolean => {
+  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  if (!selectedMachines) {
+    return false;
+  }
+  // Check if the filter param is set. The just checks for a truthy value (instead
+  // of checking if there are any keys) as an empty object is equivalent to
+  // "select all".
+  const hasFilters = "filter" in selectedMachines && !!selectedMachines.filter;
+  const hasGroups =
+    "groups" in selectedMachines && (selectedMachines.groups ?? [])?.length > 0;
+  const hasItems =
+    "items" in selectedMachines && (selectedMachines.items ?? [])?.length > 0;
+  return hasFilters || hasGroups || hasItems;
+};

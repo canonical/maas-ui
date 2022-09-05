@@ -43,7 +43,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={true}
               searchFilter=""
@@ -92,7 +91,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter=""
@@ -124,7 +122,7 @@ describe("VMsTable", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-        selected: [],
+        selectedMachines: null,
       }),
     });
     const store = mockStore(state);
@@ -135,7 +133,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter=""
@@ -150,14 +147,16 @@ describe("VMsTable", () => {
       </Provider>
     );
 
-    wrapper.find("GroupCheckbox input").simulate("change", {
-      target: { name: "group-checkbox", value: "checked" },
+    wrapper.find("AllCheckbox input").simulate("change", {
+      target: { checked: "checked" },
     });
     expect(
-      store.getActions().find((action) => action.type === "machine/setSelected")
+      store
+        .getActions()
+        .find((action) => action.type === "machine/setSelectedMachines")
     ).toStrictEqual({
-      type: "machine/setSelected",
-      payload: ["abc123", "def456"],
+      type: "machine/setSelectedMachines",
+      payload: { filter: {} },
     });
   });
 
@@ -173,7 +172,7 @@ describe("VMsTable", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-        selected: ["abc123", "def456"],
+        selectedMachines: { filter: {} },
       }),
     });
     const store = mockStore(state);
@@ -184,7 +183,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter=""
@@ -199,14 +197,16 @@ describe("VMsTable", () => {
       </Provider>
     );
 
-    wrapper.find("GroupCheckbox input").simulate("change", {
-      target: { name: "group-checkbox", value: "checked" },
+    wrapper.find("AllCheckbox input").simulate("change", {
+      target: { checked: "" },
     });
     expect(
-      store.getActions().find((action) => action.type === "machine/setSelected")
+      store
+        .getActions()
+        .find((action) => action.type === "machine/setSelectedMachines")
     ).toStrictEqual({
-      type: "machine/setSelected",
-      payload: [],
+      type: "machine/setSelectedMachines",
+      payload: null,
     });
   });
 
@@ -224,7 +224,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter="system_id:(=ghi789)"
@@ -259,7 +258,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               displayForCluster
               getResources={getResources}
               machinesLoading={false}
@@ -291,7 +289,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getHostColumn={jest.fn()}
               getResources={getResources}
               machinesLoading={false}
@@ -320,7 +317,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getHostColumn={undefined}
               getResources={getResources}
               machinesLoading={false}
@@ -360,7 +356,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter=""

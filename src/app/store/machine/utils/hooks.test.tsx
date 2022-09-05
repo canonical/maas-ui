@@ -8,6 +8,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 
 import type { UseFetchMachinesOptions } from "./hooks";
 import {
+  useHasSelection,
   useCanAddVLAN,
   useCanEditStorage,
   useFormattedOS,
@@ -737,6 +738,55 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(false);
+    });
+  });
+
+  describe("useHasSelection", () => {
+    it("can have no selected machines", () => {
+      state.machine.selectedMachines = null;
+      const store = mockStore(state);
+      const { result } = renderHook(() => useHasSelection(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(false);
+    });
+
+    it("is selected if there are filters", () => {
+      state.machine.selectedMachines = {
+        filter: { hostname: "wistful-wallaby" },
+      };
+      const store = mockStore(state);
+      const { result } = renderHook(() => useHasSelection(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("is selected if there are empty filters", () => {
+      state.machine.selectedMachines = { filter: {} };
+      const store = mockStore(state);
+      const { result } = renderHook(() => useHasSelection(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("is selected if there are groups", () => {
+      state.machine.selectedMachines = { groups: ["Admin 2"] };
+      const store = mockStore(state);
+      const { result } = renderHook(() => useHasSelection(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
+    });
+
+    it("is selected if there are items", () => {
+      state.machine.selectedMachines = { items: ["abc123"] };
+      const store = mockStore(state);
+      const { result } = renderHook(() => useHasSelection(), {
+        wrapper: generateWrapper(store),
+      });
+      expect(result.current).toBe(true);
     });
   });
 });
