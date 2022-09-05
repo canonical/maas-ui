@@ -65,7 +65,6 @@ type Props = {
   selectedIDs?: Machine[MachineMeta.PK][];
   setCurrentPage: (currentPage: number) => void;
   setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
-  setSearchFilter?: (filter: string) => void;
   showActions?: boolean;
   sortDirection: ValueOf<typeof SortDirection>;
   sortKey: FetchGroupKey | null;
@@ -523,7 +522,6 @@ export const MachineListTable = ({
   selectedIDs = [],
   setCurrentPage,
   setHiddenGroups,
-  setSearchFilter,
   showActions = true,
   sortDirection,
   sortKey,

@@ -1,19 +1,22 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { VMS_PER_PAGE } from "../LXDVMsTable";
-
 import VMsTable from "./VMsTable";
 
+import { SortDirection } from "app/base/types";
+import { FetchGroupKey } from "app/store/machine/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -22,6 +25,7 @@ describe("VMsTable", () => {
   let getResources: jest.Mock;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     getResources = jest.fn().mockReturnValue({
       hugepagesBacked: false,
       pinnedCores: [],
@@ -30,11 +34,7 @@ describe("VMsTable", () => {
   });
 
   it("shows a spinner if machines are loading", () => {
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        loading: true,
-      }),
-    });
+    const state = rootStateFactory();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -45,7 +45,12 @@ describe("VMsTable", () => {
             <VMsTable
               currentPage={1}
               getResources={getResources}
+              machinesLoading={true}
               searchFilter=""
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
               vms={[]}
             />
           </CompatRouter>
@@ -57,6 +62,8 @@ describe("VMsTable", () => {
   });
 
   it("can change sort order", () => {
+    const setSortKey = jest.fn();
+    const setSortDirection = jest.fn();
     const vms = [
       machineFactory({ hostname: "b" }),
       machineFactory({ hostname: "c" }),
@@ -65,6 +72,16 @@ describe("VMsTable", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
+        lists: {
+          "123456": machineStateListFactory({
+            loaded: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: vms.map(({ system_id }) => system_id),
+              }),
+            ],
+          }),
+        },
       }),
     });
     const store = mockStore(state);
@@ -77,32 +94,22 @@ describe("VMsTable", () => {
             <VMsTable
               currentPage={1}
               getResources={getResources}
+              machinesLoading={false}
               searchFilter=""
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Status}
               vms={vms}
             />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    const getName = (index: number) =>
-      wrapper.find("[data-testid='name-col']").at(index).text();
-
-    // Sorted descending by hostname by default
-    expect(getName(0)).toBe("a");
-    expect(getName(1)).toBe("b");
-    expect(getName(2)).toBe("c");
-
     // Sorted ascending by hostname
     wrapper.find("[data-testid='name-header']").simulate("click");
-    expect(getName(0)).toBe("c");
-    expect(getName(1)).toBe("b");
-    expect(getName(2)).toBe("a");
-
-    // No sort
-    wrapper.find("[data-testid='name-header']").simulate("click");
-    expect(getName(0)).toBe("b");
-    expect(getName(1)).toBe("c");
-    expect(getName(2)).toBe("a");
+    expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.Hostname);
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
   });
 
   it("can dispatch an action to select all VMs", () => {
@@ -130,7 +137,12 @@ describe("VMsTable", () => {
             <VMsTable
               currentPage={1}
               getResources={getResources}
+              machinesLoading={false}
               searchFilter=""
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
               vms={vms}
             />
           </CompatRouter>
@@ -174,7 +186,12 @@ describe("VMsTable", () => {
             <VMsTable
               currentPage={1}
               getResources={getResources}
+              machinesLoading={false}
               searchFilter=""
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
               vms={vms}
             />
           </CompatRouter>
@@ -193,43 +210,6 @@ describe("VMsTable", () => {
     });
   });
 
-  it("paginates the VMs", () => {
-    // There is 1 more VM than what's shown per page.
-    const vms = Array.from(Array(VMS_PER_PAGE + 1)).map((_, i) =>
-      machineFactory({
-        system_id: `${i}`,
-      })
-    );
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: vms,
-      }),
-    });
-    const store = mockStore(state);
-    const Proxy = ({ currentPage }: { currentPage: number }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              currentPage={currentPage}
-              getResources={getResources}
-              searchFilter=""
-              vms={vms}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    const wrapper = mount(<Proxy currentPage={1} />);
-    expect(wrapper.find("tbody tr").length).toBe(VMS_PER_PAGE);
-
-    wrapper.setProps({ currentPage: 2 });
-    wrapper.update();
-    expect(wrapper.find("tbody tr").length).toBe(1);
-  });
-
   it("shows a message if no VMs in a KVM host match the search filter", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
@@ -246,7 +226,12 @@ describe("VMsTable", () => {
             <VMsTable
               currentPage={1}
               getResources={getResources}
+              machinesLoading={false}
               searchFilter="system_id:(=ghi789)"
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
               vms={[]}
             />
           </CompatRouter>
@@ -277,7 +262,12 @@ describe("VMsTable", () => {
               currentPage={1}
               displayForCluster
               getResources={getResources}
+              machinesLoading={false}
               searchFilter="system_id:(=ghi789)"
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
               vms={[]}
             />
           </CompatRouter>
@@ -304,7 +294,12 @@ describe("VMsTable", () => {
               currentPage={1}
               getHostColumn={jest.fn()}
               getResources={getResources}
+              machinesLoading={false}
               searchFilter=""
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
               vms={[]}
             />
           </CompatRouter>
@@ -328,7 +323,12 @@ describe("VMsTable", () => {
               currentPage={1}
               getHostColumn={undefined}
               getResources={getResources}
+              machinesLoading={false}
               searchFilter=""
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
               vms={[]}
             />
           </CompatRouter>
@@ -362,7 +362,12 @@ describe("VMsTable", () => {
             <VMsTable
               currentPage={1}
               getResources={getResources}
+              machinesLoading={false}
               searchFilter=""
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
               vms={vms}
             />
           </CompatRouter>

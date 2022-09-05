@@ -258,35 +258,6 @@ describe("pod selectors", () => {
     expect(pod.getVMs(state, podWithVMs.id)).toStrictEqual(machinesInPod);
   });
 
-  it("can filter a pod's VMs", () => {
-    const podWithVms = podFactory();
-    const vms = [
-      machineFactory({
-        hostname: "foo",
-        pod: { id: podWithVms.id, name: podWithVms.name },
-      }),
-      machineFactory({
-        hostname: "bar",
-        pod: { id: podWithVms.id, name: podWithVms.name },
-      }),
-    ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: vms,
-      }),
-      pod: podStateFactory({
-        items: [podWithVms],
-      }),
-    });
-    expect(
-      pod.filteredVMs(state, podWithVms.id, "hostname:(=foo)")
-    ).toStrictEqual([vms[0]]);
-    expect(
-      pod.filteredVMs(state, podWithVms.id, "hostname:(=bar)")
-    ).toStrictEqual([vms[1]]);
-    expect(pod.filteredVMs(state, podWithVms.id, "")).toStrictEqual(vms);
-  });
-
   it("can group LXD pods by LXD server address", () => {
     const items = [
       podFactory({ type: PodType.VIRSH }),
