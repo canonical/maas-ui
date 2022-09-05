@@ -287,12 +287,16 @@ type Filters = {
 
 type ExcludeFilters = {
   [FilterGroupKey.NotArch]: Filters["arch"];
+  [FilterGroupKey.NotCpuCount]: Machine["cpu_count"];
+  [FilterGroupKey.NotCpuSpeed]: Machine["cpu_speed"];
   [FilterGroupKey.NotDistroSeries]: Filters["distro_series"];
   [FilterGroupKey.NotFabricClasses]: Filters["fabric_classes"];
   [FilterGroupKey.NotFabrics]: Filters["fabrics"];
   [FilterGroupKey.NotInPool]: Filters["pool"];
   [FilterGroupKey.NotInZone]: Filters["zone"];
   [FilterGroupKey.NotIpAddresses]: Filters["ip_addresses"];
+  [FilterGroupKey.NotLinkSpeed]: Machine["link_speeds"][0];
+  [FilterGroupKey.NotMem]: Machine["memory"];
   [FilterGroupKey.NotOsystem]: Filters["osystem"];
   [FilterGroupKey.NotOwner]: Filters["owner"];
   [FilterGroupKey.NotPod]: Filters["pod"];
