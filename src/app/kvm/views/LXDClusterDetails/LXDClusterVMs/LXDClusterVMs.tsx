@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-
 import { Strip } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import LXDClusterSummaryCard from "../LXDClusterSummaryCard";
@@ -12,7 +10,6 @@ import urls from "app/base/urls";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import type { VMCluster } from "app/store/vmcluster/types";
 
@@ -33,18 +30,10 @@ const LXDClusterVMs = ({
   setHeaderContent,
   setSearchFilter,
 }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
   );
-  const clusterVMs = useSelector((state: RootState) =>
-    vmClusterSelectors.getFilteredVMs(state, clusterId, searchFilter)
-  );
   useWindowTitle(`${cluster?.name || "Cluster"} virtual machines`);
-
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
 
   if (!cluster) {
     return null;
@@ -83,10 +72,10 @@ const LXDClusterVMs = ({
             unpinnedCores: vmInCluster?.unpinned_cores || 0,
           };
         }}
+        pods={cluster.hosts.map(({ name }) => name)}
         searchFilter={searchFilter}
         setHeaderContent={setHeaderContent}
         setSearchFilter={setSearchFilter}
-        vms={clusterVMs}
       />
     </div>
   );

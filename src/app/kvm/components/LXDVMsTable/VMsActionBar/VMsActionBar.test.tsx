@@ -22,12 +22,13 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          machinesLoading={false}
           onAddVMClick={onAddVMClick}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setHeaderContent={jest.fn()}
           setSearchFilter={jest.fn()}
-          vms={[]}
+          vmCount={2}
         />
       </Provider>
     );
@@ -48,12 +49,13 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          machinesLoading={false}
           onAddVMClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setHeaderContent={jest.fn()}
           setSearchFilter={jest.fn()}
-          vms={[]}
+          vmCount={2}
         />
       </Provider>
     );
@@ -77,12 +79,13 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          machinesLoading={false}
           onAddVMClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setHeaderContent={jest.fn()}
           setSearchFilter={jest.fn()}
-          vms={vms}
+          vmCount={2}
         />
       </Provider>
     );

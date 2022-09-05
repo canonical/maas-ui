@@ -8,29 +8,29 @@ import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import { MachineHeaderViews } from "app/machines/constants";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
   currentPage: number;
+  machinesLoading: boolean;
   onAddVMClick?: () => void;
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
   setHeaderContent: KVMSetHeaderContent;
-  vms: Machine[];
+  vmCount: number;
 };
 
 const VMsActionBar = ({
   currentPage,
+  machinesLoading,
   onAddVMClick,
   searchFilter,
   setCurrentPage,
   setSearchFilter,
   setHeaderContent,
-  vms,
+  vmCount,
 }: Props): JSX.Element | null => {
-  const loading = useSelector(machineSelectors.loading);
   const selectedMachines = useSelector(machineSelectors.selected);
   const vmActionsDisabled = selectedMachines.length === 0;
 
@@ -93,8 +93,8 @@ const VMsActionBar = ({
         </>
       }
       currentPage={currentPage}
-      itemCount={vms.length}
-      loading={loading}
+      itemCount={vmCount}
+      loading={machinesLoading}
       onSearchChange={setSearchFilter}
       pageSize={VMS_PER_PAGE}
       searchFilter={searchFilter}

@@ -1,7 +1,5 @@
-import { useEffect } from "react";
-
 import { Spinner, Strip } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
 import LXDHostToolbar from "../LXDHostToolbar";
@@ -16,7 +14,6 @@ import type { KVMSetHeaderContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
 import type { VMCluster } from "app/store/vmcluster/types";
 
 type Props = {
@@ -35,12 +32,8 @@ const LXDHostVMs = ({
   setHeaderContent,
   ...wrapperProps
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
-  );
-  const vms = useSelector((state: RootState) =>
-    podSelectors.filteredVMs(state, hostId, searchFilter)
   );
   const [viewByNuma, setViewByNuma] = useStorageState(
     localStorage,
@@ -48,10 +41,6 @@ const LXDHostVMs = ({
     false
   );
   const isInCluster = !!clusterId || clusterId === 0;
-
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
 
   if (pod) {
     return (
@@ -88,10 +77,10 @@ const LXDHostVMs = ({
                 extras: { hostId },
               })
             }
+            pods={[pod.name]}
             searchFilter={searchFilter}
             setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
-            vms={vms}
           />
         </Strip>
       </div>

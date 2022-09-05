@@ -10,7 +10,9 @@ import LXDVMsTable from "../LXDVMsTable";
 import LXDHostVMs from "./LXDHostVMs";
 
 import { KVMHeaderViews } from "app/kvm/constants";
+import { actions as machineActions } from "app/store/machine";
 import { PodType } from "app/store/pod/constants";
+import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   pod as podFactory,
@@ -20,9 +22,12 @@ import {
   podVM as podVMFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  waitForComponentToPaint,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("LXDHostVMs", () => {
   it("shows a spinner if pod has not loaded yet", () => {
@@ -229,6 +234,34 @@ describe("LXDHostVMs", () => {
       extras: {
         hostId: 1,
       },
+    });
+  });
+
+  it("fetches VMs for the host", async () => {
+    const pod = podFactory({ id: 1, name: "cluster host" });
+    const state = rootStateFactory({
+      pod: podStateFactory({
+        items: [pod],
+      }),
+    });
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <LXDHostVMs
+        hostId={1}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { store } }
+    );
+    const expected = machineActions.fetch("123456", {
+      filter: { pod: [pod.name] },
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches[fetches.length - 1].payload.params.filter).toStrictEqual({
+      pod: [pod.name],
     });
   });
 });

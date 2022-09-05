@@ -1,10 +1,8 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 
+import type { ValueOf } from "@canonical/react-components";
 import { MainTable, Spinner, Strip } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
-
-import { VMS_PER_PAGE } from "../LXDVMsTable";
 
 import CoresColumn from "./CoresColumn";
 import HugepagesColumn from "./HugepagesColumn";
@@ -15,16 +13,15 @@ import StatusColumn from "./StatusColumn";
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { actions as tagActions } from "app/store/tag";
+import { FetchGroupKey } from "app/store/machine/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { getTagNamesForIds } from "app/store/tag/utils";
-import { formatBytes, generateCheckboxHandlers, isComparable } from "app/utils";
+import { formatBytes, generateCheckboxHandlers } from "app/utils";
 
 export type GetHostColumn = (vm: Machine) => ReactNode;
 
@@ -39,19 +36,13 @@ type Props = {
   displayForCluster?: boolean;
   getHostColumn?: GetHostColumn;
   getResources: GetResources;
+  machinesLoading: boolean;
   searchFilter: string;
+  sortDirection: ValueOf<typeof SortDirection>;
+  sortKey: FetchGroupKey | null;
+  setSortDirection: (sortDirection: ValueOf<typeof SortDirection>) => void;
+  setSortKey: (sortKey: FetchGroupKey | null) => void;
   vms: Machine[];
-};
-
-type SortKey = keyof Machine;
-
-const getSortValue = (sortKey: SortKey, vm: Machine) => {
-  switch (sortKey) {
-    case "pool":
-      return vm.pool?.name;
-  }
-  const value = vm[sortKey];
-  return isComparable(value) ? value : null;
 };
 
 const generateRows = (
@@ -135,47 +126,61 @@ const generateRows = (
   });
 
 const VMsTable = ({
-  currentPage,
   displayForCluster,
   getHostColumn,
   getResources,
+  machinesLoading,
   searchFilter,
+  setSortDirection,
+  setSortKey,
+  sortDirection,
+  sortKey,
   vms,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const loading = useSelector(machineSelectors.loading);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const tags = useSelector(tagSelectors.all);
   const machineIDs = vms.map((vm) => vm.system_id);
-  const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
-    getSortValue,
-    {
-      key: "hostname",
-      direction: SortDirection.DESCENDING,
-    }
-  );
-  const sortedVms = sortRows(vms);
-  const paginatedVms = sortedVms.slice(
-    (currentPage - 1) * VMS_PER_PAGE,
-    currentPage * VMS_PER_PAGE
-  );
   const { handleGroupCheckbox } = generateCheckboxHandlers<
     Machine["system_id"]
   >((machineIDs) => {
     dispatch(machineActions.setSelected(machineIDs));
   });
+  const currentSort = {
+    direction: sortDirection,
+    key: sortKey,
+  };
+  const updateSort = (newSortKey: Props["sortKey"]) => {
+    if (newSortKey === sortKey) {
+      if (sortDirection === SortDirection.ASCENDING) {
+        setSortKey(null);
+        setSortDirection(SortDirection.NONE);
+      } else {
+        setSortDirection(SortDirection.ASCENDING);
+      }
+    } else {
+      setSortKey(newSortKey);
+      setSortDirection(SortDirection.DESCENDING);
+    }
+  };
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
-
-  if (loading) {
+  if (machinesLoading) {
     return <Spinner text="Loading..." />;
   }
   return (
     <>
       <MainTable
         className="vms-table"
+        emptyStateMsg={
+          searchFilter && vms.length === 0 ? (
+            <Strip rowClassName="u-align--center" shallow>
+              <span data-testid="no-vms">
+                No VMs in this {displayForCluster ? "cluster" : "KVM host"}{" "}
+                match the search criteria.
+              </span>
+            </Strip>
+          ) : null
+        }
         headers={[
           {
             className: "name-col",
@@ -190,8 +195,8 @@ const VMsTable = ({
                   <TableHeader
                     currentSort={currentSort}
                     data-testid="name-header"
-                    onClick={() => updateSort("hostname")}
-                    sortKey="hostname"
+                    onClick={() => updateSort(FetchGroupKey.Hostname)}
+                    sortKey={FetchGroupKey.Hostname}
                   >
                     VM name
                   </TableHeader>
@@ -205,8 +210,8 @@ const VMsTable = ({
               <TableHeader
                 className="p-double-row__header-spacer"
                 currentSort={currentSort}
-                onClick={() => updateSort("status")}
-                sortKey="status"
+                onClick={() => updateSort(FetchGroupKey.Status)}
+                sortKey={FetchGroupKey.Status}
               >
                 Status
               </TableHeader>
@@ -246,8 +251,8 @@ const VMsTable = ({
               <>
                 <TableHeader
                   currentSort={currentSort}
-                  onClick={() => updateSort("memory")}
-                  sortKey="memory"
+                  onClick={() => updateSort(FetchGroupKey.Memory)}
+                  sortKey={FetchGroupKey.Memory}
                 >
                   RAM
                 </TableHeader>
@@ -261,8 +266,8 @@ const VMsTable = ({
               <>
                 <TableHeader
                   currentSort={currentSort}
-                  onClick={() => updateSort("pool")}
-                  sortKey="pool"
+                  onClick={() => updateSort(FetchGroupKey.Pool)}
+                  sortKey={FetchGroupKey.Pool}
                 >
                   Pool
                 </TableHeader>
@@ -271,16 +276,8 @@ const VMsTable = ({
             ),
           },
         ]}
-        rows={generateRows(paginatedVms, getResources, tags, getHostColumn)}
+        rows={generateRows(vms, getResources, tags, getHostColumn)}
       />
-      {searchFilter && vms.length === 0 ? (
-        <Strip rowClassName="u-align--center" shallow>
-          <span data-testid="no-vms">
-            No VMs in this {displayForCluster ? "cluster" : "KVM host"} match
-            the search criteria.
-          </span>
-        </Strip>
-      ) : null}
     </>
   );
 };

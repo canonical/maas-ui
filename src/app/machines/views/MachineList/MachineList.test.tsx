@@ -514,10 +514,12 @@ describe("MachineList", () => {
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
     expect(
-      store.getActions().find((action) => action.type === "machine/setSelected")
+      store
+        .getActions()
+        .find((action) => action.type === "machine/setSelectedMachines")
     ).toStrictEqual({
-      type: "machine/setSelected",
-      payload: [],
+      type: "machine/setSelectedMachines",
+      payload: null,
     });
   });
 

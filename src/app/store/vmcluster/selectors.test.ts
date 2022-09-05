@@ -90,39 +90,4 @@ describe("vmcluster selectors", () => {
     });
     expect(selectors.getVMs(state, cluster.id)).toStrictEqual(clusterVMs);
   });
-
-  it("can get a filtered list of cluster VMs", () => {
-    const cluster = vmClusterFactory({
-      virtual_machines: [
-        clusterVMFactory({ system_id: "abc123" }),
-        clusterVMFactory({ system_id: "def456" }),
-      ],
-    });
-    const clusterVMs = [
-      machineFactory({ system_id: "abc123", hostname: "foo" }),
-      machineFactory({ system_id: "def456", hostname: "bar" }),
-    ];
-    const otherMachine = machineFactory({
-      system_id: "ghi789",
-      hostname: "baz",
-    });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [...clusterVMs, otherMachine],
-      }),
-      vmcluster: vmClusterStateFactory({
-        items: [cluster],
-      }),
-    });
-    expect(
-      selectors.getFilteredVMs(state, cluster.id, "hostname:(=foo)")
-    ).toStrictEqual([clusterVMs[0]]);
-    expect(
-      selectors.getFilteredVMs(state, cluster.id, "hostname:(ba)")
-    ).toStrictEqual([clusterVMs[1]]);
-    expect(selectors.getFilteredVMs(state, cluster.id, "")).toStrictEqual([
-      clusterVMs[0],
-      clusterVMs[1],
-    ]);
-  });
 });

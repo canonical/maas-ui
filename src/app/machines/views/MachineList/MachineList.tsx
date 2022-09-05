@@ -65,7 +65,7 @@ const MachineList = ({
     () => () => {
       // Clear machine selected state and clean up any machine errors etc.
       // when closing the list.
-      dispatch(machineActions.setSelected([]));
+      dispatch(machineActions.setSelectedMachines(null));
       dispatch(machineActions.cleanup());
     },
     [dispatch]
@@ -100,7 +100,6 @@ const MachineList = ({
         selectedIDs={selectedIDs}
         setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
-        setSearchFilter={setSearchFilter}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection={sortDirection}
