@@ -20,7 +20,6 @@ import LXDClusterVMs from "./LXDClusterVMs";
 
 import ModelNotFound from "app/base/components/ModelNotFound";
 import Section from "app/base/components/Section";
-import { useCycled } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
@@ -46,11 +45,15 @@ const LXDClusterDetails = (): JSX.Element => {
     vmClusterSelectors.getById(state, clusterId)
   );
   const clustersLoaded = useSelector(vmClusterSelectors.loaded);
-  const getting = useSelector((state: RootState) =>
+  const gettingVmCluster = useSelector((state: RootState) =>
     vmClusterSelectors.status(state, "getting")
   );
-  const [fetched] = useCycled(getting);
-  const loaded = clustersLoaded || fetched;
+  const vmCluster = useSelector((state: RootState) =>
+    vmClusterSelectors.getById(state, clusterId)
+  );
+  const fetchedVmCluster = !gettingVmCluster && vmCluster;
+
+  const loaded = clustersLoaded || fetchedVmCluster;
   const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
     null
   );

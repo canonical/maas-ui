@@ -44,7 +44,15 @@ const LXDClusterHostVMs = ({
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   );
-  const clustersLoaded = useSelector(vmClusterSelectors.loaded);
+  const vmClustersLoaded = useSelector(vmClusterSelectors.loaded);
+  const gettingVmCluster = useSelector((state: RootState) =>
+    vmClusterSelectors.status(state, "getting")
+  );
+  const vmCluster = useSelector((state: RootState) =>
+    vmClusterSelectors.getById(state, clusterId)
+  );
+  const fetchedVmCluster = !gettingVmCluster && vmCluster;
+  const clustersLoaded = vmClustersLoaded || fetchedVmCluster;
   const hostsLoaded = useSelector(podSelectors.loaded);
   useWindowTitle(
     `${pod?.name || "Host"} in ${cluster?.name || "cluster"} virtual machines`
