@@ -73,7 +73,7 @@ describe("IntroSection", () => {
       </Router>,
       { state }
     );
-    expect(history.location.pathname).toBe(urls.dashboard.index);
+    expect(window.location.pathname).toBe(urls.dashboard.index);
   });
 
   it("redirects to the machine list for non-admins", () => {
