@@ -12,15 +12,20 @@ type Props = {
   groupName: MachineStateListGroup["name"];
 };
 
-const GroupCheckbox = ({ callId, groupName }: Props): JSX.Element => {
+const GroupCheckbox = ({ callId, groupName }: Props): JSX.Element | null => {
   const selected = useSelector(machineSelectors.selectedMachines);
   const group = useSelector((state: RootState) =>
     machineSelectors.listGroup(state, callId, groupName)
   );
   const allSelected = !!selected && "filter" in selected;
+  if (!group) {
+    return null;
+  }
   // Whether this group is currently selected.
   const groupSelected =
-    !!selected && "groups" in selected && selected.groups?.includes(groupName);
+    !!selected &&
+    "groups" in selected &&
+    selected.groups?.includes(group.value);
   // Whether some of the machines in the group are selected.
   const childrenSelected =
     !!selected &&
@@ -47,15 +52,15 @@ const GroupCheckbox = ({ callId, groupName }: Props): JSX.Element => {
             : cloneDeep(selected);
         newSelected.groups = newSelected.groups ?? [];
 
-        if (checked && !newSelected.groups?.includes(groupName)) {
+        if (checked && !newSelected.groups?.includes(group.value)) {
           // If the checkbox has been checked and the group is not in the list
           // then add it.
-          newSelected.groups.push(groupName);
-        } else if (!checked && newSelected.groups?.includes(groupName)) {
+          newSelected.groups.push(group.value);
+        } else if (!checked && newSelected.groups?.includes(group.value)) {
           // If the checkbox has been unchecked and the group is in the list
           // then remove it.
           newSelected.groups = newSelected.groups.filter(
-            (selectedGroup) => selectedGroup !== groupName
+            (selectedGroup) => selectedGroup !== group.value
           );
         }
         // Remove any individually selected machines that are in the group that has

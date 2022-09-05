@@ -52,7 +52,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn systemId="abc123" />
+            <NameColumn groupValue={null} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -68,7 +68,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn systemId="abc123" />
+            <NameColumn groupValue={null} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -85,7 +85,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn systemId="abc123" />
+            <NameColumn groupValue={null} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -109,7 +109,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn systemId="abc123" />
+            <NameColumn groupValue={null} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -131,7 +131,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn systemId="abc123" />
+            <NameColumn groupValue={null} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -153,7 +153,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn systemId="abc123" />
+            <NameColumn groupValue={null} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -173,7 +173,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn showMAC={true} systemId="abc123" />
+            <NameColumn groupValue={null} showMAC={true} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -190,7 +190,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn showMAC={true} systemId="abc123" />
+            <NameColumn groupValue={null} showMAC={true} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -215,7 +215,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn systemId="abc123" />
+            <NameColumn groupValue={null} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -239,7 +239,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn showMAC={true} systemId="abc123" />
+            <NameColumn groupValue={null} showMAC={true} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -255,7 +255,7 @@ describe("NameColumn", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <NameColumn systemId="abc123" />
+            <NameColumn groupValue={null} systemId="abc123" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

@@ -205,6 +205,7 @@ export type MachineStateListGroup = {
   count: number;
   items: Machine[MachineMeta.PK][];
   name: FilterGroupOption["label"] | null;
+  value: FilterGroupOption["key"] | null;
 };
 
 export type MachineStateList = {
@@ -320,7 +321,7 @@ export type MachineStateCounts = Record<string, MachineStateCount>;
 export type SelectedMachines =
   | {
       items?: Machine[MachineMeta.PK][];
-      groups?: MachineStateListGroup["name"][];
+      groups?: MachineStateListGroup["value"][];
     }
   | { filter: FetchFilters };
 

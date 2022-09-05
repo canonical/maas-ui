@@ -46,7 +46,7 @@ it("is disabled if all machines are selected", () => {
   renderWithMockStore(
     <MachineCheckbox
       callId={callId}
-      groupName="admin2"
+      groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
@@ -62,7 +62,7 @@ it("is checked and disabled if the machine's group is selected", () => {
   renderWithMockStore(
     <MachineCheckbox
       callId={callId}
-      groupName="admin2"
+      groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
@@ -79,7 +79,7 @@ it("is checked and disabled if the machine's group is selected and is nullish", 
   renderWithMockStore(
     <MachineCheckbox
       callId={callId}
-      groupName=""
+      groupValue=""
       label="spotted-handfish"
       systemId="abc123"
     />,
@@ -94,7 +94,7 @@ it("is unchecked and enabled if there are no filters or groups selected", () => 
   renderWithMockStore(
     <MachineCheckbox
       callId={callId}
-      groupName="admin2"
+      groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
@@ -111,7 +111,7 @@ it("is checked if the machine is selected", () => {
   renderWithMockStore(
     <MachineCheckbox
       callId={callId}
-      groupName="admin2"
+      groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
@@ -125,7 +125,7 @@ it("can dispatch an action to select the machine", async () => {
   renderWithMockStore(
     <MachineCheckbox
       callId={callId}
-      groupName="admin2"
+      groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,
@@ -149,7 +149,7 @@ it("can dispatch an action to unselect a machine", async () => {
   renderWithMockStore(
     <MachineCheckbox
       callId={callId}
-      groupName="admin2"
+      groupValue="admin2"
       label="spotted-handfish"
       systemId="abc123"
     />,

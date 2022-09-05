@@ -28,6 +28,7 @@ beforeEach(() => {
             machineStateListGroupFactory({
               count: 2,
               name: "admin2",
+              value: "admin-2",
             }),
           ],
         }),
@@ -53,6 +54,7 @@ it("is disabled if there are no machines in the group", () => {
     machineStateListGroupFactory({
       count: 0,
       name: "admin2",
+      value: "admin-2",
     }),
   ];
   renderWithMockStore(<GroupCheckbox callId={callId} groupName="admin2" />, {
@@ -65,6 +67,8 @@ it("is not disabled if there are machines in the group", () => {
   state.machine.lists[callId].groups = [
     machineStateListGroupFactory({
       count: 1,
+      name: "admin2",
+      value: "admin-2",
     }),
   ];
   renderWithMockStore(<GroupCheckbox callId={callId} groupName="admin2" />, {
@@ -95,7 +99,7 @@ it("is checked if all machines are selected", () => {
 
 it("is checked if the group is selected", () => {
   state.machine.selectedMachines = {
-    groups: ["admin2"],
+    groups: ["admin-2"],
   };
   renderWithMockStore(<GroupCheckbox callId={callId} groupName="admin2" />, {
     state,
@@ -109,6 +113,7 @@ it("is partially checked if a machine in the group is selected", () => {
       count: 2,
       items: ["abc123", "def456"],
       name: "admin2",
+      value: "admin-2",
     }),
   ];
   state.machine.selectedMachines = {
@@ -131,6 +136,7 @@ it("is not checked if a selected machine is in another group", () => {
       count: 2,
       items: ["abc123"],
       name: "admin2",
+      value: "admin-2",
     }),
   ];
   state.machine.selectedMachines = {
@@ -148,7 +154,7 @@ it("can dispatch an action to select the group", async () => {
     store,
   });
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines({ groups: ["admin2"] });
+  const expected = machineActions.setSelectedMachines({ groups: ["admin-2"] });
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);
@@ -160,6 +166,7 @@ it("removes selected machines that are in the group that was clicked", async () 
       count: 2,
       items: ["abc123"],
       name: "admin2",
+      value: "admin-2",
     }),
   ];
   state.machine.selectedMachines = {
@@ -190,6 +197,7 @@ it("does not overwrite selected machines in different groups", async () => {
       count: 2,
       items: ["abc123"],
       name: "admin2",
+      value: "admin-2",
     }),
   ];
   state.machine.selectedMachines = {
@@ -201,7 +209,7 @@ it("does not overwrite selected machines in different groups", async () => {
   });
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelectedMachines({
-    groups: ["admin2"],
+    groups: ["admin-2"],
     items: ["def456"],
   });
   expect(
@@ -215,15 +223,17 @@ it("can dispatch an action to unselect the group", async () => {
       count: 2,
       items: ["def456"],
       name: "admin1",
+      value: "admin-1",
     }),
     machineStateListGroupFactory({
       count: 2,
       items: ["abc123"],
       name: "admin2",
+      value: "admin-2",
     }),
   ];
   state.machine.selectedMachines = {
-    groups: ["admin1", "admin2"],
+    groups: ["admin-1", "admin-2"],
     items: ["def456"],
   };
   const store = mockStore(state);
@@ -232,7 +242,7 @@ it("can dispatch an action to unselect the group", async () => {
   });
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelectedMachines({
-    groups: ["admin1"],
+    groups: ["admin-1"],
     items: ["def456"],
   });
   expect(

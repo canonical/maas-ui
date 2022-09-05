@@ -78,7 +78,7 @@ type TableColumn = MainTableCell & { key: string };
 type GenerateRowParams = {
   callId?: string | null;
   activeRow: Machine[MachineMeta.PK] | null;
-  groupName?: MachineStateListGroup["name"];
+  groupValue: MachineStateListGroup["value"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
   onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
@@ -321,7 +321,7 @@ const generateSkeletonRows = (
 const generateRows = ({
   callId,
   activeRow,
-  groupName,
+  groupValue,
   hiddenColumns,
   machines,
   onToggleMenu,
@@ -338,7 +338,7 @@ const generateRows = ({
         <NameColumn
           callId={callId}
           data-testid="fqdn-column"
-          groupName={groupName}
+          groupValue={groupValue}
           showActions={showActions}
           showMAC={showMAC}
           systemId={row.system_id}
@@ -424,7 +424,7 @@ const generateGroupRows = ({
   groups: MachineStateListGroup[] | null;
   hiddenGroups: NonNullable<Props["hiddenGroups"]>;
   setHiddenGroups: Props["setHiddenGroups"];
-} & GenerateRowParams) => {
+} & Omit<GenerateRowParams, "groupValue">) => {
   let rows: MainTableRow[] = [];
 
   groups?.forEach((group) => {
@@ -498,7 +498,7 @@ const generateGroupRows = ({
       generateRows({
         ...rowProps,
         callId,
-        groupName: name,
+        groupValue: group.value,
         machines: visibleMachines,
         selectedIDs,
         showActions,
