@@ -1,10 +1,10 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
+import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import UserIntro from "./UserIntro";
+import UserIntro, { Labels as UserIntroLabels } from "./UserIntro";
 
 import * as baseHooks from "app/base/hooks/base";
 import urls from "app/base/urls";
@@ -19,8 +19,9 @@ import {
   userEventError as userEventErrorFactory,
   userState as userStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("UserIntro", () => {
   let state: RootState;
@@ -42,36 +43,24 @@ describe("UserIntro", () => {
   });
 
   it("displays a green tick icon when there are ssh keys", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("IntroCard").prop("complete")).toBe(true);
+    renderWithBrowserRouter(<UserIntro />, {
+      route: "/intro/user",
+      wrapperProps: { state },
+    });
+    const icon = screen.getByLabelText("success");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--success");
   });
 
   it("displays a grey tick icon when there are no ssh keys", async () => {
     state.sshkey.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("IntroCard").prop("complete")).toBe(false);
+    renderWithBrowserRouter(<UserIntro />, {
+      route: "/intro/user",
+      wrapperProps: { state },
+    });
+    const icon = screen.getByLabelText("success-grey");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--success-grey");
   });
 
   it("redirects if the user has already completed the intro", () => {
@@ -80,93 +69,58 @@ describe("UserIntro", () => {
         user: userFactory({ completed_intro: true }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.dashboard.index
-    );
+    renderWithBrowserRouter(<UserIntro />, {
+      route: "/intro/user",
+      wrapperProps: { state },
+    });
+    expect(window.location.pathname).toBe(urls.dashboard.index);
   });
 
   it("disables the continue button if there are no ssh keys", () => {
     state.sshkey.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<UserIntro />, {
+      route: "/intro/user",
+      wrapperProps: { state },
+    });
     expect(
-      wrapper
-        .find("ActionButton[data-testid='continue-button']")
-        .prop("disabled")
-    ).toBe(true);
+      screen.getByRole("button", { name: UserIntroLabels.Continue })
+    ).toBeDisabled();
   });
 
   it("hides the SSH list if there are no ssh keys", () => {
     state.sshkey.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("SSHKeyList").exists()).toBe(false);
+    renderWithBrowserRouter(<UserIntro />, {
+      route: "/intro/user",
+      wrapperProps: { state },
+    });
+    expect(
+      screen.queryByRole("grid", { name: "SSH keys" })
+    ).not.toBeInTheDocument();
   });
 
   it("shows the SSH list if there are ssh keys", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("SSHKeyList").exists()).toBe(true);
+    renderWithBrowserRouter(<UserIntro />, {
+      route: "/intro/user",
+      wrapperProps: { state },
+    });
+    expect(screen.getByRole("grid", { name: "SSH keys" })).toBeInTheDocument();
   });
 
-  it("marks the intro as completed when clicking the continue button", () => {
+  it("marks the intro as completed when clicking the continue button", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UserIntro />
+        </CompatRouter>
+      </MemoryRouter>,
+      { store }
     );
-    wrapper
-      .find("ActionButton[data-testid='continue-button']")
-      .simulate("click");
+    await userEvent.click(
+      screen.getByRole("button", { name: UserIntroLabels.Continue })
+    );
     expect(
       store
         .getActions()
@@ -178,19 +132,12 @@ describe("UserIntro", () => {
     state.user = userStateFactory({
       eventErrors: [userEventErrorFactory()],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Notification").exists()).toBe(true);
+    renderWithBrowserRouter(<UserIntro />, {
+      route: "/intro/user",
+      wrapperProps: { state },
+    });
+    expect(screen.getByText("Error:")).toBeInTheDocument();
+    expect(screen.getByText("Uh oh")).toBeInTheDocument();
   });
 
   it("redirects when the user has been updated", () => {
@@ -198,42 +145,36 @@ describe("UserIntro", () => {
     // Mock the markedIntroComplete state to simulate the markingIntroComplete
     // state having gone from true to false.
     markedIntroCompleteMock.mockImplementationOnce(() => [true, () => null]);
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.dashboard.index
-    );
+    renderWithBrowserRouter(<UserIntro />, {
+      route: "/intro/user",
+      wrapperProps: { state },
+    });
+    expect(window.location.pathname).toBe(urls.dashboard.index);
   });
 
-  it("can skip the user setup", () => {
+  it("can skip the user setup", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <UserIntro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <MemoryRouter
+        initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <UserIntro />
+        </CompatRouter>
+      </MemoryRouter>,
+      { store }
     );
-    expect(wrapper.find("[data-testid='skip-setup']").exists()).toBe(false);
     // Open the skip confirmation.
-    wrapper.find("button[data-testid='skip-button']").simulate("click");
-    expect(wrapper.find("[data-testid='skip-setup']").exists()).toBe(true);
+    await userEvent.click(
+      screen.getByRole("button", { name: UserIntroLabels.Skip })
+    );
     // Confirm skipping MAAS setup.
-    wrapper.find("button[data-testid='action-confirm']").simulate("click");
+    const confirm = screen.getByTestId("skip-setup");
+    expect(confirm).toBeInTheDocument();
+
+    await userEvent.click(
+      within(confirm).getByRole("button", { name: UserIntroLabels.Skip })
+    );
     const expectedAction = userActions.markIntroComplete();
     const actualAction = store
       .getActions()

@@ -1,10 +1,10 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
 
 import IntroCard from "./IntroCard";
 
 describe("IntroCard", () => {
   it("displays a title link if supplied", () => {
-    const wrapper = mount(
+    render(
       <IntroCard
         title="Setup MAAS"
         titleLink={
@@ -16,33 +16,39 @@ describe("IntroCard", () => {
         Card content
       </IntroCard>
     );
-    expect(wrapper.find("[data-testid='help-link']").exists()).toBe(true);
+    expect(screen.getByText("Help!")).toBeInTheDocument();
   });
 
   it("can display a green tick icon", () => {
-    const wrapper = mount(
+    render(
       <IntroCard complete title="Setup MAAS">
         Card content
       </IntroCard>
     );
-    expect(wrapper.find("Icon[name='success']").exists()).toBe(true);
+    const icon = screen.getByLabelText("success");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--success");
   });
 
   it("can display an error icon", () => {
-    const wrapper = mount(
+    render(
       <IntroCard hasErrors title="Setup MAAS">
         Card content
       </IntroCard>
     );
-    expect(wrapper.find("Icon[name='error']").exists()).toBe(true);
+    const icon = screen.getByLabelText("error");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--error");
   });
 
   it("can display a grey tick icon", () => {
-    const wrapper = mount(
+    render(
       <IntroCard complete={false} title="Setup MAAS">
         Card content
       </IntroCard>
     );
-    expect(wrapper.find("Icon[name='success-grey']").exists()).toBe(true);
+    const icon = screen.getByLabelText("success-grey");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--success-grey");
   });
 });
