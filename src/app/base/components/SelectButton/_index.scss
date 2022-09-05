@@ -1,0 +1,11 @@
+@mixin SelectButton {
+  .p-button--select {
+    display: flex;
+    width: 100%;
+    text-align: left;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0;
+    padding-left: 0.5rem;
+  }
+}

@@ -57,11 +57,7 @@ const CommissioningFormFields = (): JSX.Element => {
           formikProps.setFieldValue("default_min_hwe_kernel", kernelValue);
           formikProps.setFieldTouched("default_min_hwe_kernel", true, true);
         }}
-        options={
-          // This won't need to pass the empty array once this issue is fixed:
-          // https://github.com/canonical/react-components/issues/570
-          distroSeriesOptions || []
-        }
+        options={distroSeriesOptions}
       />
       <FormikField
         component={Select}

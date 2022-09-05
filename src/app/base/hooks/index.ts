@@ -11,6 +11,7 @@ export {
   useScrollOnRender,
   useScrollToTop,
   useWindowTitle,
+  usePreviousPersistent,
 } from "./base";
 export { useFormikFormDisabled, useFormikErrors } from "./forms";
 export { useCompletedIntro, useCompletedUserIntro } from "./intro";
