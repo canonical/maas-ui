@@ -43,7 +43,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={true}
               searchFilter=""
@@ -92,7 +91,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter=""
@@ -135,7 +133,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter=""
@@ -186,7 +183,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter=""
@@ -228,7 +224,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter="system_id:(=ghi789)"
@@ -263,7 +258,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               displayForCluster
               getResources={getResources}
               machinesLoading={false}
@@ -295,7 +289,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getHostColumn={jest.fn()}
               getResources={getResources}
               machinesLoading={false}
@@ -324,7 +317,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getHostColumn={undefined}
               getResources={getResources}
               machinesLoading={false}
@@ -364,7 +356,6 @@ describe("VMsTable", () => {
         >
           <CompatRouter>
             <VMsTable
-              currentPage={1}
               getResources={getResources}
               machinesLoading={false}
               searchFilter=""

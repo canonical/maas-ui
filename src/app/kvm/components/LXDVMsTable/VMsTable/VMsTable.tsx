@@ -44,13 +44,19 @@ type Props = {
   vms: Machine[];
 };
 
-const generateRows = (
-  vms: Machine[],
-  getResources: GetResources,
-  tags: Tag[],
-  getHostColumn?: GetHostColumn,
-  callId?: string | null
-) =>
+const generateRows = ({
+  vms,
+  getResources,
+  tags,
+  getHostColumn,
+  callId,
+}: {
+  vms: Machine[];
+  getResources: GetResources;
+  tags: Tag[];
+  getHostColumn?: GetHostColumn;
+  callId?: string | null;
+}) =>
   vms.map((vm) => {
     const memory = formatBytes(vm.memory, "GiB", { binary: true });
     const storage = formatBytes(vm.storage, "GB");
@@ -268,7 +274,7 @@ const VMsTable = ({
             ),
           },
         ]}
-        rows={generateRows(vms, getResources, tags, getHostColumn, callId)}
+        rows={generateRows({ vms, getResources, tags, getHostColumn, callId })}
       />
     </>
   );
