@@ -1,13 +1,9 @@
 import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ClearAllForm, { Labels as ClearAllFormLabels } from "./ClearAllForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -16,7 +12,7 @@ import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
