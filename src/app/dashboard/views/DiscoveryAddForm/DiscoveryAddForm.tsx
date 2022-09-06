@@ -21,12 +21,12 @@ import { actions as discoveryActions } from "app/store/discovery";
 import type { Discovery } from "app/store/discovery/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
-import machineSelectors from "app/store/machine/selectors";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import { actions as messageActions } from "app/store/message";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
+import { FetchNodeStatus } from "app/store/types/node";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";
@@ -129,7 +129,6 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   );
   const domainsLoaded = useSelector(domainSelectors.loaded);
   let errors = useSelector(deviceSelectors.errors);
-  const machinesLoaded = useSelector(machineSelectors.loaded);
   const saved = useSelector(deviceSelectors.saved);
   const saving = useSelector(deviceSelectors.saving);
   const creatingInterface = useSelector((state: RootState) =>
@@ -146,7 +145,9 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   const processing =
     deviceType === DeviceType.DEVICE ? saving : creatingInterface;
   const processed = deviceType === DeviceType.DEVICE ? saved : createdInterface;
-  useFetchMachines();
+  const { loaded: machinesLoaded } = useFetchMachines({
+    filters: { status: FetchNodeStatus.DEPLOYED },
+  });
 
   useEffect(() => {
     dispatch(deviceActions.fetch());
