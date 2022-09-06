@@ -23,6 +23,18 @@ import { NodeStatusCode } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 import { getVLANDisplay } from "app/store/vlan/utils";
 
+export enum Labels {
+  Type = "Type",
+  Domain = "Domain",
+  Hostname = "Hostname",
+  InterfaceName = "Interface name",
+  DeviceName = "Device name",
+  Parent = "Parent",
+  Fabric = "Fabric",
+  Vlan = "VLAN",
+  Subnet = "Subnet",
+}
+
 type Props = {
   discovery: Discovery;
   setDevice: (device: Device[DeviceMeta.PK] | null) => void;
@@ -59,7 +71,7 @@ const DiscoveryAddFormFields = ({
         <Col size={6}>
           <FormikField
             component={Select}
-            label="Type"
+            label={Labels.Type}
             name="type"
             onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
               setFieldValue("type", evt.target.value);
@@ -75,14 +87,16 @@ const DiscoveryAddFormFields = ({
             required
           />
           <FormikField
-            label={`${isDevice ? "Hostname" : "Interface name"} (optional)`}
+            label={`${
+              isDevice ? Labels.Hostname : Labels.InterfaceName
+            } (optional)`}
             name="hostname"
             type="text"
           />
           {isDevice ? (
             <FormikField
               component={Select}
-              label="Domain"
+              label={Labels.Domain}
               name="domain"
               options={[
                 { label: "Choose domain", value: "", disabled: true },
@@ -96,10 +110,11 @@ const DiscoveryAddFormFields = ({
           ) : null}
           {isInterface ? (
             <FormikField
+              aria-label={Labels.DeviceName}
               component={Select}
               label={
                 <>
-                  Device name{" "}
+                  {Labels.DeviceName}{" "}
                   <TooltipButton message="Create as an interface on the selected device." />
                 </>
               }
@@ -119,10 +134,11 @@ const DiscoveryAddFormFields = ({
             />
           ) : (
             <FormikField
+              aria-label={Labels.Parent}
               component={Select}
               label={
                 <>
-                  Parent{" "}
+                  {Labels.Parent}{" "}
                   <TooltipButton message="Assign this device as a child of the parent machine." />
                 </>
               }
@@ -144,7 +160,7 @@ const DiscoveryAddFormFields = ({
             required
           />
           <div className="">
-            <p>Fabric</p>
+            <p>{Labels.Fabric}</p>
             <p>
               <Link to={urls.subnets.fabric.index({ id: discovery.fabric })}>
                 {discovery.fabric_name}
@@ -152,7 +168,7 @@ const DiscoveryAddFormFields = ({
             </p>
           </div>
           <div className="u-nudge-down--small">
-            <p>VLAN</p>
+            <p>{Labels.Vlan}</p>
             <p>
               {vlanDisplay ? (
                 <Link to={urls.subnets.vlan.index({ id: discovery.vlan })}>
@@ -162,7 +178,7 @@ const DiscoveryAddFormFields = ({
             </p>
           </div>
           <div className="u-nudge-down--small">
-            <p>Subnet</p>
+            <p>{Labels.Subnet}</p>
             {discovery.subnet && subnetDisplay ? (
               <p>
                 <Link to={urls.subnets.subnet.index({ id: discovery.subnet })}>
