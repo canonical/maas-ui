@@ -1,122 +1,120 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import Routes from "./Routes";
+import type { RootState } from "./store/root/types";
 
 import urls from "app/base/urls";
 import { rootState as rootStateFactory } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
-const componentPaths: { component: string; path: string }[] = [
+const routes: { title: string; path: string }[] = [
+  // {
+  //   // Redirects to machines:
+  //   title: "Redirect",
+  //   path: urls.index,
+  // },
   {
-    // Redirects to machines:
-    component: "Redirect",
-    path: urls.index,
-  },
-  {
-    component: "Intro",
+    title: "Welcome",
     path: urls.intro.index,
   },
   {
-    component: "Preferences",
+    title: "Welcome",
     path: urls.preferences.index,
   },
   {
-    component: "ControllerList",
+    title: "Controllers",
     path: urls.controllers.index,
   },
   {
-    component: "ControllerDetails",
+    title: "Controllers",
     path: urls.controllers.controller.index({ id: "abc123" }),
   },
   {
-    component: "DeviceList",
+    title: "Devices",
     path: urls.devices.index,
   },
   {
-    component: "DeviceDetails",
+    title: "Devices",
     path: urls.devices.device.index({ id: "abc123" }),
   },
   {
-    component: "DomainsList",
+    title: "DNS",
     path: urls.domains.index,
   },
+  // {
+  //   title: "DomainDetails",
+  //   path: urls.domains.details({ id: 1 }),
+  // },
   {
-    component: "DomainDetails",
-    path: urls.domains.details({ id: 1 }),
-  },
-  {
-    component: "ImageList",
+    title: "Images",
     path: urls.images.index,
   },
   {
-    component: "KVM",
+    title: "KVM",
     path: urls.kvm.index,
   },
   {
-    component: "Machines",
+    title: "Machines",
     path: urls.machines.index,
   },
   {
-    component: "MachineDetails",
+    title: "Machines",
     path: urls.machines.machine.index({ id: "abc123" }),
   },
   {
-    component: "Pools",
+    title: "Pools",
     path: urls.pools.index,
   },
   {
-    component: "Settings",
+    title: "Pools",
     path: urls.settings.index,
   },
   {
-    component: "SubnetsList",
+    title: "Subnets",
     path: urls.subnets.index,
   },
   {
-    component: "FabricDetails",
+    title: "Fabric details",
     path: urls.subnets.fabric.index({ id: 1 }),
   },
   {
-    component: "SpaceDetails",
+    title: "Space details",
     path: urls.subnets.space.index({ id: 1 }),
   },
   {
-    component: "SubnetDetails",
+    title: "Subnet details",
     path: urls.subnets.subnet.index({ id: 1 }),
   },
   {
-    component: "VLANDetails",
+    title: "VLAN details",
     path: urls.subnets.vlan.index({ id: 1 }),
   },
   {
-    component: "Tags",
+    title: "Tags",
     path: urls.tags.index,
   },
   {
-    component: "Tags",
+    title: "Tag",
     path: urls.tags.tag.index({ id: 1 }),
   },
   {
-    component: "NotFound",
+    title: "Error: Page not found.",
     path: "/not/a/path",
   },
   {
-    component: "ZonesList",
+    title: "Zones",
     path: urls.zones.index,
   },
-  {
-    component: "ZoneDetails",
-    path: urls.zones.details({ id: 1 }),
-  },
-  {
-    component: "Dashboard",
-    path: urls.dashboard.index,
-  },
+  // {
+  //   title: "ZoneDetails",
+  //   path: urls.zones.details({ id: 1 }),
+  // },
+  // {
+  //   title: "Dashboard",
+  //   path: urls.dashboard.index,
+  // },
 ];
 
 describe("Routes", () => {
@@ -128,19 +126,14 @@ describe("Routes", () => {
     jest.restoreAllMocks();
   });
 
-  componentPaths.forEach(({ component, path }) => {
-    it(`Displays: ${component} at: ${path}`, () => {
+  routes.forEach(({ title, path }) => {
+    it(`Displays: ${title} at: ${path}`, () => {
       const store = mockStore(rootStateFactory());
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter initialEntries={[{ pathname: path }]}>
-            <CompatRouter>
-              <Routes />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(wrapper.find(component).exists()).toBe(true);
+      renderWithBrowserRouter(<Routes />, {
+        route: path,
+        wrapperProps: { store },
+      });
+      expect(document.title).toBe(`${title} | MAAS`);
     });
   });
 });
