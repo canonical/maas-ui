@@ -1,10 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import SyncedImages from "./SyncedImages";
+import SyncedImages, { Labels as SyncedImagesLabels } from "./SyncedImages";
 
 import { BootResourceSourceType } from "app/store/bootresource/types";
 import {
@@ -14,11 +11,10 @@ import {
   bootResourceUbuntu as ubuntuFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("SyncedImages", () => {
-  it("can render the form in a card", () => {
+  it("can render the form in a card", async () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         ubuntu: ubuntuFactory({
@@ -28,20 +24,14 @@ describe("SyncedImages", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SyncedImages formInCard />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<SyncedImages formInCard />, {
+      wrapperProps: { state },
+    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource })
     );
-    wrapper
-      .find("button[data-testid='change-source-button']")
-      .simulate("click");
-    expect(wrapper.find("ChangeSource").prop("inCard")).toBe(true);
+    expect(screen.getByText("Choose source")).toBeInTheDocument();
   });
 
   it("renders the change source form and disables closing it if no sources are detected", () => {
@@ -50,18 +40,11 @@ describe("SyncedImages", () => {
         ubuntu: ubuntuFactory({ sources: [] }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SyncedImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("ChangeSource").exists()).toBe(true);
-    expect(wrapper.find("ChangeSource").prop("closeForm")).toBe(null);
+    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    expect(screen.getByText("Choose source")).toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Cancel" })
+    ).not.toBeInTheDocument();
   });
 
   it("renders the correct text for a single default source", () => {
@@ -74,19 +57,9 @@ describe("SyncedImages", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SyncedImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
-      "Showing images synced from maas.io"
-    );
+    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    const images_from = screen.getByText(SyncedImagesLabels.SyncedFrom);
+    expect(within(images_from).getByText("maas.io")).toBeInTheDocument();
   });
 
   it("renders the correct text for a single custom source", () => {
@@ -102,19 +75,9 @@ describe("SyncedImages", () => {
         }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SyncedImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
-      "Showing images synced from www.url.com"
-    );
+    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    const images_from = screen.getByText(SyncedImagesLabels.SyncedFrom);
+    expect(within(images_from).getByText("www.url.com")).toBeInTheDocument();
   });
 
   it("renders the correct text for multiple sources", () => {
@@ -123,19 +86,9 @@ describe("SyncedImages", () => {
         ubuntu: ubuntuFactory({ sources: [sourceFactory(), sourceFactory()] }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SyncedImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='image-sync-text']").text()).toBe(
-      "Showing images synced from sources"
-    );
+    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    const images_from = screen.getByText(SyncedImagesLabels.SyncedFrom);
+    expect(within(images_from).getByText("sources")).toBeInTheDocument();
   });
 
   it("disables the button to change source if resources are downloading", () => {
@@ -145,25 +98,14 @@ describe("SyncedImages", () => {
         ubuntu: ubuntuFactory({ sources: [sourceFactory()] }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <SyncedImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
     expect(
-      wrapper
-        .find("button[data-testid='change-source-button']")
-        .prop("disabled")
-    ).toBe(true);
+      screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource })
+    ).toBeDisabled();
     expect(
-      wrapper
-        .find("[data-testid='change-source-button'] Tooltip")
-        .prop("message")
-    ).toBe("Cannot change source while images are downloading.");
+      screen.getByRole("tooltip", {
+        name: "Cannot change source while images are downloading.",
+      })
+    ).toBeInTheDocument();
   });
 });

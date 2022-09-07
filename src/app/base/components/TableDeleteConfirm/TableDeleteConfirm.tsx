@@ -15,6 +15,10 @@ type Props = {
   "errors" | "onClose" | "onConfirm" | "onSuccess" | "sidebar"
 >;
 
+export enum Labels {
+  ConfirmLabel = "Delete",
+}
+
 const TableDeleteConfirm = ({
   deleted,
   deleting,
@@ -26,7 +30,7 @@ const TableDeleteConfirm = ({
   return (
     <TableConfirm
       confirmAppearance="negative"
-      confirmLabel="Delete"
+      confirmLabel={Labels.ConfirmLabel}
       finished={deleted}
       inProgress={deleting}
       message={

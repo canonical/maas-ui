@@ -1,11 +1,10 @@
-import { mount } from "enzyme";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import { MaasIntroSchema } from "../MaasIntro";
 
-import NameCard from "./NameCard";
+import NameCard, { Labels as NameCardLabels } from "./NameCard";
 
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
@@ -17,9 +16,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("NameCard", () => {
   let state: RootState;
@@ -38,46 +35,34 @@ describe("NameCard", () => {
   });
 
   it("displays a tick when there are no name errors", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ name: "my new maas" }} onSubmit={jest.fn()}>
-          <NameCard />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ name: "my new maas" }} onSubmit={jest.fn()}>
+        <NameCard />
+      </Formik>,
+      { state }
     );
-    expect(
-      wrapper
-        .find("[data-testid='maas-name-form'] Icon[name='success']")
-        .exists()
-    ).toBe(true);
+    const icon = screen.getByLabelText("success");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--success");
   });
 
   it("displays an error icon when there are name errors", async () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik
-          initialValues={{ name: "my new maas" }}
-          onSubmit={jest.fn()}
-          validationSchema={MaasIntroSchema}
-        >
-          <NameCard />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik
+        initialValues={{ name: "my new maas" }}
+        onSubmit={jest.fn()}
+        validationSchema={MaasIntroSchema}
+      >
+        <NameCard />
+      </Formik>,
+      { state }
     );
-    wrapper
-      .find("[name='name']")
-      .last()
-      .simulate("change", {
-        target: {
-          name: "name",
-          value: "",
-        },
-      });
-    await waitForComponentToPaint(wrapper);
-    expect(
-      wrapper.find("[data-testid='maas-name-form'] Icon[name='error']").exists()
-    ).toBe(true);
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: NameCardLabels.Name })
+    );
+
+    const icon = screen.getByLabelText("error");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--error");
   });
 });

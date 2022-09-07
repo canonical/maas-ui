@@ -25,6 +25,10 @@ const FetchImagesSchema = Yup.object()
   })
   .defined();
 
+export enum Labels {
+  SubmitLabel = "Connect",
+}
+
 export type FetchImagesValues = {
   keyring_data: string;
   keyring_filename: string;
@@ -68,7 +72,7 @@ const FetchImagesForm = ({ closeForm, setSource }: Props): JSX.Element => {
       }}
       saved={saved}
       saving={saving}
-      submitLabel="Connect"
+      submitLabel={Labels.SubmitLabel}
       validationSchema={FetchImagesSchema}
     >
       <FetchImagesFormFields />

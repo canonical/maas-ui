@@ -37,6 +37,12 @@ export type UbuntuImagesValues = {
   images: ImageValue[];
 };
 
+export enum Labels {
+  MultipleSourceNotification = "More than one image source exists. The UI does not support updating synced images when more than one source has been defined. Use the API to adjust your sources.",
+  StopImport = "Stop import",
+  SubmitLabel = "Update selection",
+}
+
 type Props = {
   sources: BootResourceUbuntuSource[];
 };
@@ -90,9 +96,7 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
       <hr />
       {tooManySources && (
         <Notification data-testid="too-many-sources" severity="caution">
-          More than one image source exists. The UI does not support updating
-          synced images when more than one source has been defined. Use the API
-          to adjust your sources.
+          {Labels.MultipleSourceNotification}
         </Notification>
       )}
       <Strip shallow>
@@ -148,8 +152,8 @@ const UbuntuImages = ({ sources }: Props): JSX.Element | null => {
             dispatch(cleanup());
             dispatch(bootResourceActions.stopImport());
           }}
-          secondarySubmitLabel={canStopImport ? "Stop import" : null}
-          submitLabel="Update selection"
+          secondarySubmitLabel={canStopImport ? Labels.StopImport : null}
+          submitLabel={Labels.SubmitLabel}
           validationSchema={UbuntuImagesSchema}
         >
           <UbuntuImageSelect

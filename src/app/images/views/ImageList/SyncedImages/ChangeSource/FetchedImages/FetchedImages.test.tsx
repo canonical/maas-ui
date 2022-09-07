@@ -1,11 +1,12 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { mount } from "enzyme";
+import { screen, render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import FetchedImages from "./FetchedImages";
+import FetchedImages, { Labels as FetchedImagesLabels } from "./FetchedImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
 import { BootResourceSourceType } from "app/store/bootresource/types";
@@ -21,14 +22,13 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   ...jest.requireActual("@canonical/react-components/dist/hooks"),
   usePrevious: jest.fn(),
 }));
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("FetchedImages", () => {
   let state: RootState;
@@ -54,7 +54,7 @@ describe("FetchedImages", () => {
     jest.restoreAllMocks();
   });
 
-  it("can dispatch an action to save fetched ubuntu images", () => {
+  it("can dispatch an action to save fetched ubuntu images", async () => {
     const source = sourceFactory({
       keyring_data: "abcde",
       keyring_filename: "/path/to/file",
@@ -76,7 +76,7 @@ describe("FetchedImages", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -85,27 +85,20 @@ describe("FetchedImages", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      images: [
-        { arch: "amd64", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
-        { arch: "amd64", os: "ubuntu", release: "bionic", title: "18.04 LTS" },
-        { arch: "i386", os: "ubuntu", release: "xenial", title: "16.04 LTS" },
-      ],
-    });
+
+    await userEvent.click(screen.getByRole("radio", { name: "16.04 LTS" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: FetchedImagesLabels.SubmitLabel })
+    );
 
     const expectedAction = bootResourceActions.saveUbuntu({
       keyring_data: "abcde",
       keyring_filename: "/path/to/file",
       osystems: [
         {
-          arches: ["amd64", "i386"],
-          osystem: "ubuntu",
-          release: "xenial",
-        },
-        {
           arches: ["amd64"],
           osystem: "ubuntu",
-          release: "bionic",
+          release: "xenial",
         },
       ],
       source_type: BootResourceSourceType.CUSTOM,
@@ -117,7 +110,7 @@ describe("FetchedImages", () => {
     ).toStrictEqual(expectedAction);
   });
 
-  it("closes the fetched images form when successfully saved", () => {
+  it("closes the fetched images form when successfully saved", async () => {
     // Mock the transition from "saving" to "saved"
     jest
       .spyOn(reactComponentHooks, "usePrevious")
@@ -132,7 +125,7 @@ describe("FetchedImages", () => {
       }),
     });
     const store = mockStore(state);
-    const Proxy = () => (
+    const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -141,10 +134,23 @@ describe("FetchedImages", () => {
         </MemoryRouter>
       </Provider>
     );
-    const wrapper = mount(<Proxy />);
-    // Force the component to rerender to simulate the saved value changing.
-    wrapper.setProps({});
 
-    expect(closeForm).toHaveBeenCalled();
+    await userEvent.click(screen.getByRole("radio", { name: "16.04 LTS" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: FetchedImagesLabels.SubmitLabel })
+    );
+
+    // Force the component to rerender to simulate the saved value changing.
+    rerender(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <FetchedImages closeForm={closeForm} source={source} />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    await waitFor(() => expect(closeForm).toHaveBeenCalled());
   });
 });

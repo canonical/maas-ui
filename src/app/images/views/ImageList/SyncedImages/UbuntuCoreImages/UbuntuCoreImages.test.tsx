@@ -1,38 +1,36 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import UbuntuCoreImages from "./UbuntuCoreImages";
+import UbuntuCoreImages, {
+  Labels as UbuntuCoreImagesLabels,
+} from "./UbuntuCoreImages";
 
 import { actions as bootResourceActions } from "app/store/bootresource";
+import type { RootState } from "app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceUbuntuCoreImage as ubuntuCoreImageFactory,
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("UbuntuCoreImages", () => {
   it("does not render if there is no Ubuntu core image data", () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({ ubuntuCoreImages: [] }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UbuntuCoreImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("ImagesTable").exists()).toBe(false);
+
+    renderWithBrowserRouter(<UbuntuCoreImages />, { wrapperProps: { state } });
+    expect(
+      screen.queryByText(UbuntuCoreImagesLabels.CoreImages)
+    ).not.toBeInTheDocument();
   });
 
   it("correctly sets initial values based on resources", () => {
@@ -65,38 +63,46 @@ describe("UbuntuCoreImages", () => {
         ubuntuCoreImages,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UbuntuCoreImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Formik").prop("initialValues")).toStrictEqual({
-      images: [
-        {
-          arch: "amd64",
-          os: "ubuntu-core",
-          release: "20",
-          resourceId: resources[0].id,
-          subArch: "generic",
-          title: "Ubuntu Core 20",
-        },
-      ],
-    });
+
+    renderWithBrowserRouter(<UbuntuCoreImages />, { wrapperProps: { state } });
+
+    expect(
+      screen.getByRole("checkbox", { name: "Ubuntu Core 20" })
+    ).toBeChecked();
   });
 
-  it("can dispatch an action to save Ubuntu core images", () => {
+  it("can dispatch an action to save Ubuntu core images", async () => {
+    const ubuntuCoreImages = [
+      ubuntuCoreImageFactory({
+        name: "ubuntu-core/amd64/generic/20",
+        title: "Ubuntu Core 20",
+      }),
+    ];
+    const resources = [
+      bootResourceFactory({
+        name: "ubuntu-core/20",
+        arch: "amd64",
+        title: "Ubuntu Core 20",
+      }), // only this resource is an "Ubuntu core image"
+      bootResourceFactory({
+        name: "ubuntu/focal",
+        arch: "amd64",
+        title: "20.04 LTS",
+      }),
+      bootResourceFactory({
+        name: "centos/centos70",
+        arch: "amd64",
+        title: "CentOS 7",
+      }),
+    ];
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
-        ubuntuCoreImages: [ubuntuCoreImageFactory()],
+        resources,
+        ubuntuCoreImages,
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -105,17 +111,10 @@ describe("UbuntuCoreImages", () => {
         </MemoryRouter>
       </Provider>
     );
-    submitFormikForm(wrapper, {
-      images: [
-        {
-          arch: "amd64",
-          os: "ubuntu-core",
-          release: "20",
-          subArch: "generic",
-          title: "Ubuntu Core 20",
-        },
-      ],
-    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: UbuntuCoreImagesLabels.SubmitLabel })
+    );
 
     const expectedAction = bootResourceActions.saveUbuntuCore({
       images: ["ubuntu-core/amd64/generic/20"],
@@ -137,24 +136,16 @@ describe("UbuntuCoreImages", () => {
         ubuntuCoreImages: [ubuntuCoreImageFactory()],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <UbuntuCoreImages />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+
+    renderWithBrowserRouter(<UbuntuCoreImages />, { wrapperProps: { state } });
 
     expect(
-      wrapper.find("button[data-testid='secondary-submit']").exists()
-    ).toBe(false);
+      screen.queryByRole("button", { name: UbuntuCoreImagesLabels.StopImport })
+    ).not.toBeInTheDocument();
   });
 
   it(`can dispatch an action to stop importing Ubuntu core images if at least
-    one is downloading`, () => {
+    one is downloading`, async () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
         resources: [
@@ -164,7 +155,7 @@ describe("UbuntuCoreImages", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -173,7 +164,9 @@ describe("UbuntuCoreImages", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("button[data-testid='secondary-submit']").simulate("click");
+    await userEvent.click(
+      screen.getByRole("button", { name: UbuntuCoreImagesLabels.StopImport })
+    );
 
     const expectedAction = bootResourceActions.stopImport();
     const actualActions = store.getActions();

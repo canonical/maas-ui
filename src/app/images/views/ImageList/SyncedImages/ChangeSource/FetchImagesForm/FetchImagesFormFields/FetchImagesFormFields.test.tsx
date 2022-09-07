@@ -1,14 +1,16 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
-import FetchImagesFormFields from "./FetchImagesFormFields";
+import FetchImagesFormFields, {
+  Labels as FetchImagesFormFieldsLabels,
+} from "./FetchImagesFormFields";
 
 import { BootResourceSourceType } from "app/store/bootresource/types";
-import { waitForComponentToPaint } from "testing/utils";
 
 describe("FetchImagesFormFields", () => {
   it("does not show extra fields if maas.io source is selected", async () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           keyring_data: "",
@@ -21,13 +23,23 @@ describe("FetchImagesFormFields", () => {
         <FetchImagesFormFields />
       </Formik>
     );
-    expect(wrapper.find("input[name='url']").exists()).toBe(false);
-    expect(wrapper.find("input[name='keyring_filename']").exists()).toBe(false);
-    expect(wrapper.find("input[name='keyring_data']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("textbox", { name: FetchImagesFormFieldsLabels.Url })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringFilename,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringData,
+      })
+    ).not.toBeInTheDocument();
   });
 
   it("shows url fields if custom source is selected", async () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           keyring_data: "",
@@ -40,13 +52,23 @@ describe("FetchImagesFormFields", () => {
         <FetchImagesFormFields />
       </Formik>
     );
-    expect(wrapper.find("input[name='url']").exists()).toBe(true);
-    expect(wrapper.find("input[name='keyring_filename']").exists()).toBe(false);
-    expect(wrapper.find("input[name='keyring_data']").exists()).toBe(false);
+    expect(
+      screen.getByRole("textbox", { name: FetchImagesFormFieldsLabels.Url })
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringFilename,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringData,
+      })
+    ).not.toBeInTheDocument();
   });
 
   it("resets fields when switching to maas.io source", async () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           keyring_data: "data",
@@ -60,20 +82,21 @@ describe("FetchImagesFormFields", () => {
       </Formik>
     );
     // Switch to maas.io source and back
-    wrapper.find("input[id='maas-source']").simulate("change", {
-      target: { checked: "checked", id: "maas-source" },
-    });
-    await waitForComponentToPaint(wrapper);
-    wrapper.find("input[id='custom-source']").simulate("change", {
-      target: { checked: "checked", id: "custom-source" },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("input[name='url']").prop("value")).toBe("");
+    await userEvent.click(
+      screen.getByRole("radio", { name: FetchImagesFormFieldsLabels.MaasIo })
+    );
+    await userEvent.click(
+      screen.getByRole("radio", { name: FetchImagesFormFieldsLabels.Custom })
+    );
+
+    expect(
+      screen.getByRole("textbox", { name: FetchImagesFormFieldsLabels.Url })
+    ).toHaveValue("");
   });
 
   it(`shows advanced fields when using a custom source and the "Show advanced"
     button is clicked`, async () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           keyring_data: "",
@@ -86,24 +109,44 @@ describe("FetchImagesFormFields", () => {
         <FetchImagesFormFields />
       </Formik>
     );
-    expect(wrapper.find("input[name='keyring_filename']").exists()).toBe(false);
-    expect(wrapper.find("input[name='keyring_data']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringFilename,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringData,
+      })
+    ).not.toBeInTheDocument();
 
     // Click the "Show advanced" button
-    wrapper.find("button[data-testid='show-advanced']").simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("input[name='keyring_filename']").exists()).toBe(true);
-    expect(wrapper.find("textarea[name='keyring_data']").exists()).toBe(true);
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: FetchImagesFormFieldsLabels.ShowAdvanced,
+      })
+    );
+
+    expect(
+      screen.getByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringFilename,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringData,
+      })
+    ).toBeInTheDocument();
   });
 
   it("resets advanced field values when the Hide advanced button is clicked", async () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           keyring_data: "data",
           keyring_filename: "/path/to/file",
           source_type: BootResourceSourceType.CUSTOM,
-          url: "http://www.example.com",
+          url: "http://example.com",
         }}
         onSubmit={jest.fn()}
       >
@@ -111,20 +154,30 @@ describe("FetchImagesFormFields", () => {
       </Formik>
     );
     // Click the "Hide advanced" button
-    wrapper.find("button[data-testid='hide-advanced']").simulate("click");
-    await waitForComponentToPaint(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: FetchImagesFormFieldsLabels.HideAdvanced,
+      })
+    );
 
     // Click the "Show advanced" button - advanced fields should've been cleared
-    wrapper.find("button[data-testid='show-advanced']").simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("input[name='url']").prop("value")).toBe(
-      "http://www.example.com"
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: FetchImagesFormFieldsLabels.ShowAdvanced,
+      })
     );
-    expect(wrapper.find("input[name='keyring_filename']").prop("value")).toBe(
-      ""
-    );
-    expect(wrapper.find("textarea[name='keyring_data']").prop("value")).toBe(
-      ""
-    );
+    expect(
+      screen.getByRole("textbox", { name: FetchImagesFormFieldsLabels.Url })
+    ).toHaveValue("http://example.com");
+    expect(
+      screen.getByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringFilename,
+      })
+    ).toHaveValue("");
+    expect(
+      screen.getByRole("textbox", {
+        name: FetchImagesFormFieldsLabels.KeyringData,
+      })
+    ).toHaveValue("");
   });
 });

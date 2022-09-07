@@ -14,6 +14,10 @@ type Props = {
   resource: BootResource;
 };
 
+export enum Labels {
+  AreYouSure = "Are you sure you want to delete this image?",
+}
+
 const DeleteImageConfirm = ({
   closeForm,
   resource,
@@ -38,7 +42,7 @@ const DeleteImageConfirm = ({
       deleted={saved}
       deleting={saving}
       errors={error}
-      message="Are you sure you want to delete this image?"
+      message={Labels.AreYouSure}
       onClose={closeForm}
       onConfirm={() => {
         dispatch(bootResourceActions.cleanup());
