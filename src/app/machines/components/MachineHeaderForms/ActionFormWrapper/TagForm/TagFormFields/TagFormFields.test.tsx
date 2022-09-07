@@ -10,7 +10,6 @@ import { Label as TagFormChangesLabel } from "../TagFormChanges/TagFormChanges";
 
 import TagFormFields, { Label } from "./TagFormFields";
 
-import * as baseHooks from "app/base/hooks/base";
 import type { RootState } from "app/store/root/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import { Label as AddTagFormLabel } from "app/tags/components/AddTagForm/AddTagForm";
@@ -21,6 +20,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -44,13 +44,6 @@ beforeEach(() => {
       items: tags,
     }),
   });
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [false, () => null]);
-});
-
-afterEach(() => {
-  jest.restoreAllMocks();
 });
 
 it("displays available tags in the dropdown", async () => {
@@ -185,13 +178,7 @@ it("updates the new tags after creating a tag", async () => {
     screen.getByRole("textbox", { name: Label.TagInput }),
     "new-tag{enter}"
   );
-  // Simulate the state.tag.saved state going from `save: false` to `saved:
-  // true` which happens when the tag is successfully saved. This in turn will
-  // mean that the form `onSuccess` prop will get called so that the component
-  // knows that the tag was created.
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [true, () => null]);
+  mockFormikFormSaved();
   const newTag = tagFactory({ id: 8, name: "new-tag" });
   state.tag.saved = true;
   state.tag.items.push(newTag);

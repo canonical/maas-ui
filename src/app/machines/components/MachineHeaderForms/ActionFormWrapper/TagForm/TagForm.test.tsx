@@ -9,7 +9,6 @@ import TagForm, { Label } from "./TagForm";
 import { Label as TagFormChangesLabel } from "./TagFormChanges";
 import { Label as TagFormFieldsLabel } from "./TagFormFields";
 
-import * as baseHooks from "app/base/hooks/base";
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
@@ -18,6 +17,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 
 const mockStore = configureStore();
 
@@ -32,13 +32,6 @@ beforeEach(() => {
       loaded: true,
     }),
   });
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [false, () => null]);
-});
-
-afterEach(() => {
-  jest.restoreAllMocks();
 });
 
 it("dispatches action to fetch tags on load", () => {
@@ -264,9 +257,7 @@ it("shows a notification on success", async () => {
     </Provider>
   );
   // Mock state.tag.saved transitioning from "false" to "true"
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [true, () => null]);
+  mockFormikFormSaved();
   await userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
   await userEvent.click(screen.getByRole("option", { name: "tag2" }));
   await userEvent.click(
