@@ -31,6 +31,12 @@ import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";
 
+export enum Labels {
+  SubmitLabel = "Save",
+  SecondarySubmitParent = "Save and go to machine details",
+  SecondarySubmitNoParent = "Save and go to device listing",
+}
+
 type Props = {
   discovery: Discovery;
   onClose: () => void;
@@ -229,10 +235,10 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
       }}
       secondarySubmitLabel={(values) =>
         values.parent
-          ? "Save and go to machine details"
-          : "Save and go to device listing"
+          ? Labels.SecondarySubmitParent
+          : Labels.SecondarySubmitNoParent
       }
-      submitLabel="Save"
+      submitLabel={Labels.SubmitLabel}
       validationSchema={DiscoveryAddSchema}
     >
       <DiscoveryAddFormFields
