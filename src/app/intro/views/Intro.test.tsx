@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import Intro from "./Intro";
 
@@ -16,8 +12,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("Intro", () => {
   let state: RootState;
@@ -37,17 +32,11 @@ describe("Intro", () => {
 
   it("displays a spinner when loading", () => {
     state.user.auth.loading = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/intro" }]}>
-          <CompatRouter>
-            <Intro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<Intro />, {
+      route: "/intro",
+      wrapperProps: { state },
+    });
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a message if the user is not an admin", () => {
@@ -56,17 +45,15 @@ describe("Intro", () => {
         user: userFactory({ completed_intro: false, is_superuser: false }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/intro" }]}>
-          <CompatRouter>
-            <Intro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("IncompleteCard").exists()).toBe(true);
+    renderWithBrowserRouter(<Intro />, {
+      route: "/intro",
+      wrapperProps: { state },
+    });
+    expect(
+      screen.getByText(
+        "This MAAS has not be configured. Ask an admin to log in and finish the configuration."
+      )
+    ).toBeInTheDocument();
   });
 
   it("exits the intro if both intros have been completed", () => {
@@ -78,53 +65,29 @@ describe("Intro", () => {
         user: userFactory({ completed_intro: true, is_superuser: true }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: urls.intro.index }]}>
-          <CompatRouter>
-            <Intro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.dashboard.index
-    );
+    renderWithBrowserRouter(<Intro />, {
+      route: "/intro",
+      wrapperProps: { state },
+    });
+    expect(window.location.pathname).toBe(urls.dashboard.index);
   });
 
   it("returns to the start when loading the user intro and the main intro is incomplete", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: urls.intro.user }]}>
-          <CompatRouter>
-            <Intro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.intro.index
-    );
+    renderWithBrowserRouter(<Intro />, {
+      route: "/intro",
+      wrapperProps: { state },
+    });
+    expect(window.location.pathname).toBe(urls.intro.index);
   });
 
   it("skips to the user intro when loading the main intro when it is complete", () => {
     state.config = configStateFactory({
       items: [{ name: ConfigNames.COMPLETED_INTRO, value: true }],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: urls.intro.index }]}>
-          <CompatRouter>
-            <Intro />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.intro.user
-    );
+    renderWithBrowserRouter(<Intro />, {
+      route: "/intro",
+      wrapperProps: { state },
+    });
+    expect(window.location.pathname).toBe(urls.intro.user);
   });
 });

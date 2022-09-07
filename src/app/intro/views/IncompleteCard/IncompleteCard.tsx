@@ -4,23 +4,26 @@ import docsUrls from "app/base/docsUrls";
 import IntroCard from "app/intro/components/IntroCard";
 import IntroSection from "app/intro/components/IntroSection";
 
+export enum Labels {
+  Welcome = "Welcome to MAAS",
+  Help = "Help with configuring MAAS",
+  Incomplete = "This MAAS has not be configured. Ask an admin to log in and finish the configuration.",
+}
+
 const IncompleteCard = (): JSX.Element => {
   return (
     <IntroSection>
       <IntroCard
         data-testid="maas-name-form"
         hasErrors={true}
-        title="Welcome to MAAS"
+        title={Labels.Welcome}
         titleLink={
           <Link href={docsUrls.configurationJourney} target="_blank">
-            Help with configuring MAAS
+            {Labels.Help}
           </Link>
         }
       >
-        <p>
-          This MAAS has not be configured. Ask an admin to log in and finish the
-          configuration.
-        </p>
+        <p>{Labels.Incomplete}</p>
       </IntroCard>
     </IntroSection>
   );

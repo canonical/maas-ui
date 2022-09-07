@@ -21,6 +21,13 @@ import configSelectors from "app/store/config/selectors";
 import { actions as repoActions } from "app/store/packagerepository";
 import repoSelectors from "app/store/packagerepository/selectors";
 
+export enum Labels {
+  SecondarySubmit = "Skip setup",
+  SubmitLabel = "Save and continue",
+  AreYouSure = "Are you sure you want to skip the initial MAAS setup? You will still be able to find all configuration options in the Settings and Images tabs.",
+  SkipToUserSetup = "Skip to user setup",
+}
+
 export const MaasIntroSchema = Yup.object()
   .shape({
     httpProxy: UrlSchema,
@@ -121,8 +128,8 @@ const MaasIntro = (): JSX.Element => {
           secondarySubmit={() => {
             setShowSkip(true);
           }}
-          secondarySubmitLabel="Skip setup"
-          submitLabel="Save and continue"
+          secondarySubmitLabel={Labels.SecondarySubmit}
+          submitLabel={Labels.SubmitLabel}
           validationSchema={MaasIntroSchema}
         >
           <NameCard />
@@ -132,14 +139,14 @@ const MaasIntro = (): JSX.Element => {
           <Card data-testid="skip-setup" highlighted>
             <TableConfirm
               confirmLabel={
-                authUser?.completed_intro ? "Skip setup" : "Skip to user setup"
+                authUser?.completed_intro
+                  ? Labels.SecondarySubmit
+                  : Labels.SkipToUserSetup
               }
               message={
                 <>
                   <Icon className="is-inline" name="warning" />
-                  Are you sure you want to skip the initial MAAS setup? You will
-                  still be able to find all configuration options in the
-                  Settings and Images tabs.
+                  {Labels.AreYouSure}
                 </>
               }
               onClose={() => setShowSkip(false)}

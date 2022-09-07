@@ -1,8 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter, Router } from "react-router-dom";
+import { screen } from "@testing-library/react";
+import { createMemoryHistory } from "history";
+import { Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import IntroSection from "./IntroSection";
 
@@ -15,8 +14,7 @@ import {
   userEventError as userEventErrorFactory,
   userState as userStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
 describe("IntroSection", () => {
   let state: RootState;
@@ -31,19 +29,11 @@ describe("IntroSection", () => {
   });
 
   it("can display a loading spinner", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <IntroSection loading={true}>Intro content</IntroSection>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <IntroSection loading={true}>Intro content</IntroSection>,
+      { route: "/intro/user", wrapperProps: { state } }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("can redirect to close the intro", () => {
@@ -52,21 +42,18 @@ describe("IntroSection", () => {
         user: userFactory({ completed_intro: true }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const history = createMemoryHistory({
+      initialEntries: [{ pathname: "/intro/user", key: "testKey" }],
+    });
+    renderWithMockStore(
+      <Router history={history}>
+        <CompatRouter>
+          <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
+        </CompatRouter>
+      </Router>,
+      { state }
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.dashboard.index
-    );
+    expect(history.location.pathname).toBe(urls.dashboard.index);
   });
 
   it("redirects to the dashboard for admins", () => {
@@ -75,21 +62,11 @@ describe("IntroSection", () => {
         user: userFactory({ completed_intro: true, is_superuser: true }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <IntroSection shouldExitIntro={true}>Intro content</IntroSection>,
+      { route: "/intro/user", wrapperProps: { state } }
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.dashboard.index
-    );
+    expect(window.location.pathname).toBe(urls.dashboard.index);
   });
 
   it("redirects to the machine list for non-admins", () => {
@@ -98,39 +75,26 @@ describe("IntroSection", () => {
         user: userFactory({ completed_intro: true, is_superuser: false }),
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <IntroSection shouldExitIntro={true}>Intro content</IntroSection>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <IntroSection shouldExitIntro={true}>Intro content</IntroSection>,
+      { route: "/intro/user", wrapperProps: { state } }
     );
-    expect(wrapper.find(Router).prop("history").location.pathname).toBe(
-      urls.machines.index
-    );
+    expect(window.location.pathname).toBe(urls.machines.index);
   });
 
   it("can show errors", () => {
     state.user = userStateFactory({
       eventErrors: [userEventErrorFactory()],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/intro/user", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <IntroSection errors="Uh oh!">Intro content</IntroSection>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <IntroSection errors="Uh oh!">Intro content</IntroSection>,
+      { route: "/intro/user", wrapperProps: { state } }
     );
-    expect(wrapper.find("Notification").exists()).toBe(true);
+    const title = screen.getByText("Error:");
+    const message = screen.getByText("Uh oh!");
+    expect(title).toBeInTheDocument();
+    expect(message).toBeInTheDocument();
+    expect(title).toHaveClass("p-notification__title");
+    expect(message).toHaveClass("p-notification__message");
   });
 });
