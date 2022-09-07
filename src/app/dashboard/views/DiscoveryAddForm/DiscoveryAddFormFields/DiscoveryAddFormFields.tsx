@@ -15,11 +15,11 @@ import type { Device } from "app/store/device/types";
 import { DeviceMeta } from "app/store/device/types";
 import type { Discovery } from "app/store/discovery/types";
 import domainSelectors from "app/store/domain/selectors";
-import machineSelectors from "app/store/machine/selectors";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
 import { getSubnetDisplay } from "app/store/subnet/utils";
-import { NodeStatusCode } from "app/store/types/node";
+import { FetchNodeStatus } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 import { getVLANDisplay } from "app/store/vlan/utils";
 
@@ -36,9 +36,10 @@ const DiscoveryAddFormFields = ({
 }: Props): JSX.Element | null => {
   const devices = useSelector(deviceSelectors.all);
   const domains = useSelector(domainSelectors.all);
-  const machines = useSelector((state: RootState) =>
-    machineSelectors.getByStatusCode(state, NodeStatusCode.DEPLOYED)
-  );
+  const { machines } = useFetchMachines({
+    filters: { status: FetchNodeStatus.DEPLOYED },
+  });
+
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getByCIDR(state, discovery.subnet_cidr)
   );
