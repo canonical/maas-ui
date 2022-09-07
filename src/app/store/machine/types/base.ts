@@ -205,6 +205,7 @@ export type MachineStateListGroup = {
   count: number;
   items: Machine[MachineMeta.PK][];
   name: FilterGroupOption["label"] | null;
+  value: FilterGroupOption["key"] | null;
 };
 
 export type MachineStateList = {

@@ -47,8 +47,10 @@ import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
 
 export enum Label {
+  HideGroup = "Hide",
   Loading = "Loading machines",
   Machines = "Machines",
+  ShowGroup = "Show",
 }
 
 type Props = {
@@ -98,26 +100,6 @@ type RowContent = {
   [MachineColumns.MEMORY]: ReactNode;
   [MachineColumns.DISKS]: ReactNode;
   [MachineColumns.STORAGE]: ReactNode;
-};
-
-const getGroupSecondaryString = (
-  machineIDs: Machine[MachineMeta.PK][],
-  selectedIDs: NonNullable<Props["selectedIDs"]>
-) => {
-  let string = pluralize("machine", machineIDs.length, true);
-  const selectedCount = machineIDs.reduce(
-    (sum, machine) => (selectedIDs.includes(machine) ? sum + 1 : sum),
-    0
-  );
-
-  if (selectedCount) {
-    if (selectedCount === machineIDs.length) {
-      string = `${string} selected`;
-    } else {
-      string = `${string}, ${selectedCount} selected`;
-    }
-  }
-  return string;
 };
 
 /**
@@ -427,10 +409,11 @@ const generateGroupRows = ({
   let rows: MainTableRow[] = [];
 
   groups?.forEach((group) => {
-    const { collapsed, items: machineIDs, name } = group;
+    const { collapsed, count, items: machineIDs, name } = group;
     // When the table is set to ungrouped then there are no group headers.
     if (grouping) {
       rows.push({
+        "aria-label": `${name} machines group`,
         className: "machine-list__group",
         columns: [
           {
@@ -446,7 +429,7 @@ const generateGroupRows = ({
                       <strong>{name}</strong>
                     )
                   }
-                  secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
+                  secondary={pluralize("machine", count, true)}
                   secondaryClassName={
                     showActions ? "u-nudge--secondary-row u-align--left" : null
                   }
@@ -469,9 +452,9 @@ const generateGroupRows = ({
                     }}
                   >
                     {collapsed ? (
-                      <i className="p-icon--plus">Show</i>
+                      <i className="p-icon--plus">{Label.ShowGroup}</i>
                     ) : (
-                      <i className="p-icon--minus">Hide</i>
+                      <i className="p-icon--minus">{Label.HideGroup}</i>
                     )}
                   </Button>
                 </div>

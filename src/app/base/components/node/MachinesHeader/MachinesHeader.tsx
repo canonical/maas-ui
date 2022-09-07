@@ -8,10 +8,7 @@ import { matchPath, Link } from "react-router-dom-v5-compat";
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
-import {
-  useFetchMachineCount,
-  useFetchMachines,
-} from "app/store/machine/utils/hooks";
+import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as tagActions } from "app/store/tag";
@@ -25,7 +22,6 @@ export const MachinesHeader = (props: Props): JSX.Element => {
   const poolCount = useSelector(resourcePoolSelectors.count);
   const tagCount = useSelector(tagSelectors.count);
   const { machineCount } = useFetchMachineCount();
-  useFetchMachines();
 
   useEffect(() => {
     dispatch(resourcePoolActions.fetch());
