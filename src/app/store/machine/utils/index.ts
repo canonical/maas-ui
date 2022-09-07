@@ -11,6 +11,7 @@ export type { TagIdCountMap } from "./common";
 export {
   useCanAddVLAN,
   useCanEditStorage,
+  useFetchedCount,
   useFormattedOS,
   useHasInvalidArchitecture,
   useIsLimitedEditingAllowed,

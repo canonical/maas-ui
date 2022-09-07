@@ -186,18 +186,6 @@ const getHost = createSelector(
 );
 
 /**
- * Returns a pod's virtual machines.
- * @param state - The redux state.
- * @param pod - The pod whose virtual machines are to be returned.
- * @returns The pod's virtual machines.
- */
-const getVMs = createSelector(
-  [machine.all, (_: RootState, podId: Pod[PodMeta.PK] | null) => podId],
-  (machines: Machine[], podId: Pod[PodMeta.PK] | null): Machine[] =>
-    machines.filter((machine) => machine.pod?.id === podId)
-);
-
-/**
  * Returns the pods which are being deleted.
  * @param state - The redux state.
  * @returns Pods being deleted.
@@ -312,7 +300,6 @@ const selectors = {
   deleting,
   getAllHosts,
   getHost,
-  getVMs,
   getByLxdServer,
   getProjectsByLxdServer,
   getVmResource,
