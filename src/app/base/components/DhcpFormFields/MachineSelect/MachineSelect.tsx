@@ -8,6 +8,7 @@ import SelectButton from "../../SelectButton";
 
 import MachineSelectBox from "./MachineSelectBox";
 
+import OutsideClickHandler from "app/base/components/OutsideClickHandler";
 import type { Machine } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
@@ -66,7 +67,11 @@ export const MachineSelect = ({
           "machine-select-box-wrapper--is-open": isOpen,
         })}
       >
-        {isOpen ? <MachineSelectBox onSelect={handleSelect} /> : null}
+        {isOpen ? (
+          <OutsideClickHandler onClick={() => setIsOpen(false)}>
+            <MachineSelectBox onSelect={handleSelect} />
+          </OutsideClickHandler>
+        ) : null}
       </div>
     </div>
   );
