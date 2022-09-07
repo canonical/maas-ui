@@ -5,7 +5,11 @@ import { nanoid } from "@reduxjs/toolkit";
 import fastDeepEqual from "fast-deep-equal";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { FetchSortDirection, FetchParams } from "../types/actions";
+import type {
+  FetchGroupKey,
+  FetchSortDirection,
+  FetchParams,
+} from "../types/actions";
 
 import { useCanEdit } from "app/base/hooks";
 import type { APIError } from "app/base/types";
@@ -20,7 +24,6 @@ import type {
   FetchFilters,
   Machine,
   MachineMeta,
-  FetchGroupKey,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -36,7 +39,7 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { isId } from "app/utils";
 
 export const useFetchMachineCount = (
-  filters?: FetchFilters
+  filters?: FetchFilters | null
 ): {
   machineCount: number;
   machineCountLoading: boolean;

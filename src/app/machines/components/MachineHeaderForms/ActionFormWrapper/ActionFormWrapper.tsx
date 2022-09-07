@@ -1,3 +1,4 @@
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import CloneForm from "./CloneForm";
@@ -25,6 +26,8 @@ import type {
   MachineActions,
   MachineEventErrors,
 } from "app/store/machine/types";
+import { selectedToFilters } from "app/store/machine/utils";
+import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
@@ -81,6 +84,10 @@ export const ActionFormWrapper = ({
   const dispatch = useDispatch();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const processingMachines = useSelector(getProcessingSelector(action));
+  const selected = useSelector(machineSelectors.selectedMachines);
+  const { machineCount, machineCountLoading } = useFetchMachineCount(
+    selectedToFilters(selected)
+  );
   // When updating tags we want to surface both "tag" and "untag" errors.
   const errorEvents = isTagUpdateAction(action)
     ? [NodeActions.TAG, NodeActions.UNTAG]
@@ -113,6 +120,7 @@ export const ActionFormWrapper = ({
     modelName: "machine",
     nodes: machines,
     processingCount,
+    selectedCount: machineCount,
     viewingDetails,
   };
 
@@ -207,6 +215,10 @@ export const ActionFormWrapper = ({
         );
     }
   };
+
+  if (machineCountLoading) {
+    return <Spinner />;
+  }
 
   return <div ref={onRenderRef}>{getFormComponent()}</div>;
 };

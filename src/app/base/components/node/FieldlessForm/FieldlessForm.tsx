@@ -6,6 +6,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { EmptyObject } from "app/base/types";
 import type { actions as controllerActions } from "app/store/controller";
 import type { actions as machineActions } from "app/store/machine";
+import { selectedToFilters } from "app/store/machine/utils";
 import type { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "app/utils";
@@ -25,6 +26,8 @@ export const FieldlessForm = <E,>({
   modelName,
   nodes,
   processingCount,
+  selected,
+  selectedCount,
   viewingDetails,
 }: Props<E>): JSX.Element => {
   const dispatch = useDispatch();
@@ -48,18 +51,25 @@ export const FieldlessForm = <E,>({
       onSubmit={() => {
         dispatch(cleanup());
         const actionMethod = kebabToCamelCase(action);
-        nodes.forEach((node) => {
-          // Find the method for the function.
-          const [, actionFunction] =
-            Object.entries(actions).find(([key]) => key === actionMethod) || [];
-          if (actionFunction) {
-            dispatch(actionFunction({ system_id: node.system_id }));
+        // Find the method for the function.
+        const [, actionFunction] =
+          Object.entries(actions).find(([key]) => key === actionMethod) || [];
+        if (actionFunction) {
+          if (nodes) {
+            nodes.forEach((node) => {
+              dispatch(actionFunction({ system_id: node.system_id }));
+            });
           }
-        });
+        } else if (selected) {
+          const filter = selectedToFilters(selected);
+          if (filter) {
+            dispatch(actionFunction({ filter }));
+          }
+        }
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={nodes.length}
+      selectedCount={selectedCount}
     />
   );
 };
