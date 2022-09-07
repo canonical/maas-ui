@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import ClearAllForm, { Labels as ClearAllFormLabels } from "./ClearAllForm";
 
+import * as baseHooks from "app/base/hooks/base";
 import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -89,21 +90,25 @@ describe("ClearAllForm", () => {
     ).toBe(true);
   });
 
-  // TODO: Find a way to fix this
-  // it("shows a success message when completed", async () => {
-  //   const store = mockStore(state);
-  //   renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
-  //     route: "/dashboard",
-  //     wrapperProps: { store },
-  //   });
-  //   await userEvent.click(
-  //     screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
-  //   );
-  //   await waitFor(() => {
-  //     console.log(store.getActions());
-  //     expect(
-  //       store.getActions().some(({ type }) => type === "message/add")
-  //     ).toBe(true);
-  //   });
-  // });
+  it("shows a success message when completed", async () => {
+    jest
+      .spyOn(baseHooks, "useCycled")
+      .mockImplementation(() => [true, () => null]);
+
+    const store = mockStore(state);
+    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+      route: "/dashboard",
+      wrapperProps: { store },
+    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
+    );
+    await waitFor(() => {
+      console.log(store.getActions());
+      expect(
+        store.getActions().some(({ type }) => type === "message/add")
+      ).toBe(true);
+    });
+  });
 });
