@@ -35,7 +35,7 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -269,6 +269,38 @@ describe("MachineListTable", () => {
         name: Label.Loading,
       })
     ).toHaveClass("machine-list--loading");
+  });
+
+  it("displays a message if there are no search results", () => {
+    state.machine = machineStateFactory({
+      items: [],
+      lists: {
+        "123456": machineStateListFactory({
+          loading: false,
+          groups: [],
+        }),
+      },
+    });
+    renderWithBrowserRouter(
+      <MachineListTable
+        callId="123456"
+        currentPage={1}
+        filter="this does not match anything"
+        grouping={FetchGroupKey.Status}
+        hiddenGroups={[]}
+        machineCount={10}
+        machines={machines}
+        pageSize={20}
+        setCurrentPage={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection="none"
+        sortKey={null}
+      />,
+      { wrapperProps: { state } }
+    );
+    expect(screen.getByText(Label.NoResults)).toBeInTheDocument();
   });
 
   it("includes groups", () => {
