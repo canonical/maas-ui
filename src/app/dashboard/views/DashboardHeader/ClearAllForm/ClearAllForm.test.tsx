@@ -4,7 +4,6 @@ import configureStore from "redux-mock-store";
 
 import ClearAllForm, { Labels as ClearAllFormLabels } from "./ClearAllForm";
 
-import * as baseHooks from "app/base/hooks/base";
 import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -13,6 +12,7 @@ import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
@@ -91,9 +91,7 @@ describe("ClearAllForm", () => {
   });
 
   it("shows a success message when completed", async () => {
-    jest
-      .spyOn(baseHooks, "useCycled")
-      .mockImplementation(() => [true, () => null]);
+    mockFormikFormSaved();
 
     const store = mockStore(state);
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
@@ -105,7 +103,6 @@ describe("ClearAllForm", () => {
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
     await waitFor(() => {
-      console.log(store.getActions());
       expect(
         store.getActions().some(({ type }) => type === "message/add")
       ).toBe(true);
