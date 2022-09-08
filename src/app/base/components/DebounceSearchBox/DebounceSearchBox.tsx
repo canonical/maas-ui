@@ -22,6 +22,7 @@ const DebounceSearchBox = ({
   onDebounced,
   searchText,
   setSearchText,
+  autoFocus,
 }: Props): JSX.Element => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [debouncing, setDebouncing] = useState(false);
@@ -38,6 +39,7 @@ const DebounceSearchBox = ({
   return (
     <div className="debounce-search-box">
       <SearchBox
+        autoFocus={autoFocus}
         externallyControlled
         onChange={(text: string) => {
           setDebouncing(true);
