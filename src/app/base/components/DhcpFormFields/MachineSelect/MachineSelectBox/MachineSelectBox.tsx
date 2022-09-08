@@ -3,16 +3,18 @@ import { useState } from "react";
 import DebounceSearchBox from "app/base/components/DebounceSearchBox";
 import { MachineSelectTable } from "app/base/components/MachineSelectTable/MachineSelectTable";
 import MachineListPagination from "app/machines/views/MachineList/MachineListTable/MachineListPagination";
-import type { Machine } from "app/store/machine/types";
+import type { FetchFilters, Machine } from "app/store/machine/types";
 import { FilterGroupKey } from "app/store/machine/types";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 
 const MachineSelectBox = ({
   onSelect,
   pageSize = 15,
+  filters,
 }: {
   pageSize?: number;
   onSelect: (machine: Machine | null) => void;
+  filters?: FetchFilters;
 }): JSX.Element => {
   const [searchText, setSearchText] = useState("");
   const [debouncedText, setDebouncedText] = useState("");
@@ -20,7 +22,10 @@ const MachineSelectBox = ({
   const { machines, machineCount, loading } = useFetchMachines({
     currentPage,
     pageSize,
-    filters: { [FilterGroupKey.FreeText]: debouncedText },
+    filters: {
+      [FilterGroupKey.FreeText]: debouncedText,
+      ...(filters ? filters : {}),
+    },
   });
   return (
     <div className="machine-select-box" role="listbox">
