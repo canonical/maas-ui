@@ -11,7 +11,7 @@ import type {
   FetchParams,
 } from "../types/actions";
 
-import { useCanEdit, usePreviousPersistent } from "app/base/hooks";
+import { useCanEdit } from "app/base/hooks";
 import type { APIError } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import {
@@ -192,8 +192,7 @@ export const useFetchMachines = (
  * @param id - A machine's system id.
  */
 export const useFetchMachine = (
-  id?: Machine[MachineMeta.PK] | null,
-  options: { keepPreviousData?: boolean } = { keepPreviousData: false }
+  id?: Machine[MachineMeta.PK] | null
 ): { machine: Machine | null; loading?: boolean; loaded?: boolean } => {
   const [callId, setCallId] = useState<string | null>(null);
   const previousId = usePrevious(id, false);
@@ -208,7 +207,6 @@ export const useFetchMachine = (
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
   );
-  const previousMachine = usePreviousPersistent(machine);
   useCleanup(callId);
 
   useEffect(() => {
@@ -225,7 +223,7 @@ export const useFetchMachine = (
   }, [dispatch, id, callId, previousCallId]);
 
   return {
-    machine: machine || (options.keepPreviousData ? previousMachine : null),
+    machine,
     loading,
     loaded,
   };

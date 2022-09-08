@@ -9,6 +9,7 @@ import SelectButton from "../../SelectButton";
 import MachineSelectBox from "./MachineSelectBox";
 
 import OutsideClickHandler from "app/base/components/OutsideClickHandler";
+import { usePreviousPersistent } from "app/base/hooks";
 import type { Machine } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
@@ -37,10 +38,9 @@ export const MachineSelect = ({
     setIsOpen(false);
     onSelect(machine);
   };
-
-  const { machine: selectedMachine } = useFetchMachine(selected, {
-    keepPreviousData: true,
-  });
+  const { machine } = useFetchMachine(selected);
+  const previousMachine = usePreviousPersistent(machine);
+  const selectedMachine = machine || previousMachine;
 
   useEffect(() => {
     dispatch(tagActions.fetch());
