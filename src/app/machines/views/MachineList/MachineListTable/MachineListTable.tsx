@@ -33,12 +33,12 @@ import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
 import machineSelectors from "app/store/machine/selectors";
-import { FetchGroupKey } from "app/store/machine/types";
 import type {
   Machine,
   MachineMeta,
   MachineStateListGroup,
 } from "app/store/machine/types";
+import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachineItems } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
@@ -424,7 +424,11 @@ const generateGroupRows = ({
                   data-testid="group-cell"
                   primary={
                     showActions ? (
-                      <GroupCheckbox callId={callId} groupName={name} />
+                      <GroupCheckbox
+                        callId={callId}
+                        groupName={name}
+                        grouping={grouping}
+                      />
                     ) : (
                       <strong>{name}</strong>
                     )

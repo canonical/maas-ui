@@ -51,6 +51,7 @@ const Machines = (): JSX.Element => {
       header={
         <MachineListHeader
           headerContent={headerContent}
+          searchFilter={searchFilter}
           setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
         />

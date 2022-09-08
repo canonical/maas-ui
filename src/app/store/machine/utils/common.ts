@@ -2,8 +2,14 @@ import type { ValueOf } from "@canonical/react-components";
 
 import { SortDirection } from "app/base/types";
 import { PowerFieldScope } from "app/store/general/types";
-import type { Machine, MachineDetails } from "app/store/machine/types";
-import { FetchSortDirection } from "app/store/machine/types";
+import type {
+  FetchFilters,
+  Machine,
+  MachineDetails,
+  SelectedMachines,
+  FilterGroupOptionType,
+} from "app/store/machine/types";
+import { FetchSortDirection, FilterGroupKey } from "app/store/machine/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import { NodeStatus } from "app/store/types/node";
 
@@ -90,4 +96,41 @@ export const mapSortDirection = (
     default:
       return null;
   }
+};
+
+/**
+ * Convert selected machines state to filters that can be sent to the API.
+ */
+export const selectedToFilters = (
+  selected: SelectedMachines | null
+): FetchFilters | null => {
+  if (!selected) {
+    return null;
+  }
+  if ("filter" in selected) {
+    return selected.filter;
+  }
+  let filter: Record<
+    string,
+    FilterGroupOptionType | null | (FilterGroupOptionType | null)[]
+  > = {};
+  if ("items" in selected && selected.items?.length) {
+    filter[FilterGroupKey.Id] = selected.items;
+  }
+  if (
+    "groups" in selected &&
+    selected.groups?.length &&
+    "grouping" in selected &&
+    selected.grouping
+  ) {
+    const grouping = selected.grouping;
+    filter[grouping] = selected.groups.map((group) => {
+      if (typeof group === "string") {
+        // String filters should be exact matches.
+        return `=${group}`;
+      }
+      return group;
+    });
+  }
+  return Object.values(filter).length > 0 ? filter : null;
 };
