@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import ReleaseSelect from "./ReleaseSelect";
 
@@ -32,7 +33,7 @@ describe("ReleaseSelect", () => {
         title: "20.04 LTS",
       }),
     ];
-    const wrapper = mount(
+    render(
       <ReleaseSelect
         releases={releases}
         selectedRelease="focal"
@@ -40,18 +41,23 @@ describe("ReleaseSelect", () => {
       />
     );
 
-    const getLabel = (dataTest: string, pos: number) =>
-      wrapper.find(`[data-testid='${dataTest}'] Input`).at(pos).prop("label");
+    const screen_releases = screen.getAllByRole("radio");
 
-    expect(getLabel("lts-releases", 0)).toBe("20.04 LTS");
-    expect(getLabel("lts-releases", 1)).toBe("18.04 LTS");
-    expect(getLabel("lts-releases", 2)).toBe("16.04 LTS");
-    expect(getLabel("non-lts-releases", 0)).toBe("21.10");
-    expect(getLabel("non-lts-releases", 1)).toBe("21.04");
-    expect(getLabel("non-lts-releases", 2)).toBe("20.10");
+    expect(screen_releases[0]).toStrictEqual(
+      screen.getByLabelText("20.04 LTS")
+    );
+    expect(screen_releases[1]).toStrictEqual(
+      screen.getByLabelText("18.04 LTS")
+    );
+    expect(screen_releases[2]).toStrictEqual(
+      screen.getByLabelText("16.04 LTS")
+    );
+    expect(screen_releases[3]).toStrictEqual(screen.getByLabelText("21.10"));
+    expect(screen_releases[4]).toStrictEqual(screen.getByLabelText("21.04"));
+    expect(screen_releases[5]).toStrictEqual(screen.getByLabelText("20.10"));
   });
 
-  it("can set the selected release", () => {
+  it("can set the selected release", async () => {
     const setSelectedRelease = jest.fn();
     const releases = [
       bootResourceUbuntuReleaseFactory({
@@ -63,7 +69,7 @@ describe("ReleaseSelect", () => {
         title: "18.04",
       }),
     ];
-    const wrapper = mount(
+    render(
       <ReleaseSelect
         releases={releases}
         selectedRelease="focal"
@@ -71,9 +77,7 @@ describe("ReleaseSelect", () => {
       />
     );
 
-    wrapper
-      .find("input[id='release-bionic']")
-      .simulate("change", { target: { checked: true, id: "release-bionic" } });
+    await userEvent.click(screen.getByRole("radio", { name: "18.04" }));
 
     expect(setSelectedRelease).toHaveBeenCalledWith("bionic");
   });

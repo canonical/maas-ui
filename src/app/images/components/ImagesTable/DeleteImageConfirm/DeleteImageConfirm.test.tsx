@@ -1,22 +1,25 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import DeleteImageConfirm from "./DeleteImageConfirm";
 
+import { Labels as TableDeleteConfirmLabels } from "app/base/components/TableDeleteConfirm/TableDeleteConfirm";
 import { actions as bootResourceActions } from "app/store/bootresource";
+import type { RootState } from "app/store/root/types";
 import {
   bootResource as bootResourceFactory,
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("DeleteImageConfirm", () => {
-  it("calls closeForm on cancel click", () => {
+  it("calls closeForm on cancel click", async () => {
     const closeForm = jest.fn();
     const resource = bootResourceFactory();
     const state = rootStateFactory({
@@ -24,19 +27,18 @@ describe("DeleteImageConfirm", () => {
         resources: [resource],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-          <DeleteImageConfirm closeForm={closeForm} resource={resource} />
-        </Formik>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+        <DeleteImageConfirm closeForm={closeForm} resource={resource} />
+      </Formik>,
+      { wrapperProps: { state } }
     );
-    wrapper.find("button[data-testid='action-cancel']").simulate("click");
+
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("runs cleanup function on unmount", async () => {
+  it("runs cleanup function on unmount", () => {
     const resource = bootResourceFactory();
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({
@@ -44,15 +46,14 @@ describe("DeleteImageConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    const { unmount } = render(
       <Provider store={store}>
         <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
           <DeleteImageConfirm closeForm={jest.fn()} resource={resource} />
         </Formik>
       </Provider>
     );
-    wrapper.unmount();
-    await waitForComponentToPaint(wrapper);
+    unmount();
 
     const expectedAction = bootResourceActions.cleanup();
     const actualActions = store.getActions();
@@ -69,15 +70,19 @@ describe("DeleteImageConfirm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
           <DeleteImageConfirm closeForm={jest.fn()} resource={resource} />
         </Formik>
       </Provider>
     );
-    wrapper.find("button[data-testid='action-confirm']").simulate("click");
-    await waitForComponentToPaint(wrapper);
+
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: TableDeleteConfirmLabels.ConfirmLabel,
+      })
+    );
 
     const expectedAction = bootResourceActions.deleteImage({ id: 1 });
     const actualActions = store.getActions();

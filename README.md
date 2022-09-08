@@ -59,7 +59,7 @@ MAAS server source and issue tracking [can be found on Launchpad](https://launch
 
 ## Team Members
 
-[MAAS UI](https://github.com/orgs/canonical/teams/maas-ui/members) and [Canonical Web & Design](https://github.com/orgs/canonical/teams/web-and-design/members)
+[MAAS Tribe](https://discourse.canonical.com/t/maas-tribe/272) and [Canonical Web & Design](https://github.com/orgs/canonical/teams/web-and-design/members)
 
 ## Code of Conduct
 

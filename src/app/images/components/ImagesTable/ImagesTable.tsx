@@ -19,6 +19,19 @@ type Props = {
   resources: BootResource[];
 };
 
+export enum Labels {
+  Table = "Images",
+  Pending = "pending",
+  Success = "success",
+  Error = "error",
+  Selected = "Selected for download",
+  CannotBeCleared = "At least one architecture must be selected for the default commissioning release.",
+  WillBeDeleted = "Will be deleted",
+  CannotDelete = "Cannot delete images of the default commissioning release.",
+  EmptyState = "No images have been selected.",
+  DeleteImageConfirm = "Confirm image deletion",
+}
+
 /**
  * Check whether a given resource matches a form image value.
  * @param resource - the resource to check.
@@ -42,6 +55,7 @@ const generateImageRow = (
   canBeCleared: boolean
 ) => {
   return {
+    "aria-label": image.title,
     columns: [
       {
         content: image.title,
@@ -54,8 +68,8 @@ const generateImageRow = (
         content: (
           <DoubleRow
             data-testid="new-image-status"
-            icon={<Icon name="pending" />}
-            primary="Selected for download"
+            icon={<Icon aria-label={Labels.Pending} name={Labels.Pending} />}
+            primary={Labels.Selected}
           />
         ),
         className: "status-col",
@@ -64,11 +78,7 @@ const generateImageRow = (
         content: onClear ? (
           <TableActions
             clearDisabled={!canBeCleared}
-            clearTooltip={
-              !canBeCleared
-                ? "At least one architecture must be selected for the default commissioning release."
-                : null
-            }
+            clearTooltip={!canBeCleared ? Labels.CannotBeCleared : null}
             data-testid="image-clear"
             onClear={onClear}
           />
@@ -108,13 +118,14 @@ const generateResourceRow = (
   let statusText = resource.status;
 
   if (unchecked) {
-    statusIcon = <Icon name="error" />;
-    statusText = "Will be deleted";
+    statusIcon = <Icon aria-label={Labels.Error} name={Labels.Error} />;
+    statusText = Labels.WillBeDeleted;
   } else if (resource.complete) {
-    statusIcon = <Icon name="success" />;
+    statusIcon = <Icon aria-label={Labels.Success} name={Labels.Success} />;
   }
 
   return {
+    "aria-label": resource.title,
     className: classNames("p-table__row", {
       "is-active": isExpanded,
     }),
@@ -137,11 +148,7 @@ const generateResourceRow = (
           <TableActions
             data-testid="image-actions"
             deleteDisabled={!canBeDeleted}
-            deleteTooltip={
-              !canBeDeleted
-                ? "Cannot delete images of the default commissioning release."
-                : null
-            }
+            deleteTooltip={!canBeDeleted ? Labels.CannotDelete : null}
             onDelete={() => setExpanded(resource.id)}
           />
         ),
@@ -150,10 +157,12 @@ const generateResourceRow = (
     ],
     expanded: isExpanded,
     expandedContent: isExpanded ? (
-      <DeleteImageConfirm
-        closeForm={() => setExpanded(null)}
-        resource={resource}
-      />
+      <div aria-label={Labels.DeleteImageConfirm}>
+        <DeleteImageConfirm
+          closeForm={() => setExpanded(null)}
+          resource={resource}
+        />
+      </div>
     ) : null,
     key: `resource-${resource.id}`,
     sortData: {
@@ -217,10 +226,11 @@ const ImagesTable = ({
 
   return (
     <MainTable
+      aria-label={Labels.Table}
       className="images-table p-table-expanding--light"
       defaultSort="title"
       defaultSortDirection="descending"
-      emptyStateMsg="No images have been selected."
+      emptyStateMsg={Labels.EmptyState}
       expanding
       headers={[
         { content: "Release", className: "release-col", sortKey: "title" },

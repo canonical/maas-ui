@@ -144,13 +144,14 @@ const BrowserRouterWithProvider = ({
 const WithMockStoreProvider = ({
   children,
   state,
+  store,
 }: WrapperProps & { children: React.ReactElement }) => {
   const getMockStore = (state: RootState) => {
     const mockStore = configureStore();
     return mockStore(state);
   };
   return (
-    <Provider store={getMockStore(state || rootStateFactory())}>
+    <Provider store={store ?? getMockStore(state || rootStateFactory())}>
       {children}
     </Provider>
   );

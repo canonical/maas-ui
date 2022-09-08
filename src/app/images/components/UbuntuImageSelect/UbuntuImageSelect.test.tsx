@@ -1,7 +1,5 @@
-import { mount } from "enzyme";
+import { screen } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import UbuntuImageSelect from "./UbuntuImageSelect";
 
@@ -14,8 +12,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("UbuntuImageSelect", () => {
   let state: RootState;
@@ -36,55 +33,64 @@ describe("UbuntuImageSelect", () => {
 
   it("does not show a radio button for a release deleted from the source", () => {
     const [available, deleted] = [
-      bootResourceUbuntuReleaseFactory({ name: "available", deleted: false }),
-      bootResourceUbuntuReleaseFactory({ name: "deleted", deleted: true }),
+      bootResourceUbuntuReleaseFactory({
+        name: "available",
+        deleted: false,
+        title: "20.04 LTS",
+      }),
+      bootResourceUbuntuReleaseFactory({
+        name: "deleted",
+        deleted: true,
+        title: "20.10",
+      }),
     ];
     const arches = [bootResourceUbuntuArchFactory()];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-          <UbuntuImageSelect
-            arches={arches}
-            releases={[available, deleted]}
-            resources={[]}
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+        <UbuntuImageSelect
+          arches={arches}
+          releases={[available, deleted]}
+          resources={[]}
+        />
+      </Formik>,
+      { state }
     );
-    const radioExists = (id: string) =>
-      wrapper
-        .findWhere((n) => n.name() === "Input" && n.prop("id") === id)
-        .exists();
 
-    expect(radioExists("release-available")).toBe(true);
-    expect(radioExists("release-deleted")).toBe(false);
+    expect(
+      screen.queryByRole("radio", { name: "20.10" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("radio", { name: "20.04 LTS" })
+    ).toBeInTheDocument();
   });
 
   it("does not show a checkbox for an architecture delete from the source", () => {
     const releases = [bootResourceUbuntuReleaseFactory({ name: "focal" })];
     const [available, deleted] = [
-      bootResourceUbuntuArchFactory({ name: "available", deleted: false }),
-      bootResourceUbuntuArchFactory({ name: "delete", deleted: true }),
+      bootResourceUbuntuArchFactory({
+        name: "available",
+        deleted: false,
+      }),
+      bootResourceUbuntuArchFactory({
+        name: "delete",
+        deleted: true,
+      }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
-          <UbuntuImageSelect
-            arches={[available, deleted]}
-            releases={releases}
-            resources={[]}
-          />
-        </Formik>
-      </Provider>
-    );
-    const checkboxExists = (id: string) =>
-      wrapper
-        .findWhere((n) => n.name() === "Input" && n.prop("id") === id)
-        .exists();
 
-    expect(checkboxExists("arch-available")).toBe(true);
-    expect(checkboxExists("arch-deleted")).toBe(false);
+    renderWithMockStore(
+      <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
+        <UbuntuImageSelect
+          arches={[available, deleted]}
+          releases={releases}
+          resources={[]}
+        />
+      </Formik>,
+      { state }
+    );
+
+    const checkboxes = screen.getAllByRole("checkbox");
+
+    expect(checkboxes).toHaveLength(1);
+    expect(checkboxes[0]).toHaveProperty("id", "arch-available");
   });
 });

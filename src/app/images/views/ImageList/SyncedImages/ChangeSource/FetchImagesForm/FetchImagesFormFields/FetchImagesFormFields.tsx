@@ -8,6 +8,17 @@ import type { FetchImagesValues } from "../FetchImagesForm";
 import FormikField from "app/base/components/FormikField";
 import { BootResourceSourceType } from "app/store/bootresource/types";
 
+export enum Labels {
+  ChooseSource = "Choose source",
+  MaasIo = "maas.io",
+  Custom = "Custom",
+  Url = "URL",
+  KeyringFilename = "Keyring filename",
+  KeyringData = "Keyring data",
+  ShowAdvanced = "Show advanced...",
+  HideAdvanced = "Hide advanced...",
+}
+
 const FetchImagesFormFields = (): JSX.Element => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<FetchImagesValues>();
@@ -19,12 +30,12 @@ const FetchImagesFormFields = (): JSX.Element => {
   return (
     <Row>
       <Col size={6}>
-        <h4>Choose source</h4>
+        <h4>{Labels.ChooseSource}</h4>
         <ul className="p-inline-list">
           <li className="p-inline-list__item u-display--inline-block">
             <FormikField
               id="maas-source"
-              label="maas.io"
+              label={Labels.MaasIo}
               name="source_type"
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
                 handleChange(e);
@@ -39,7 +50,7 @@ const FetchImagesFormFields = (): JSX.Element => {
           <li className="p-inline-list__item u-display--inline-block u-nudge-right">
             <FormikField
               id="custom-source"
-              label="Custom"
+              label={Labels.Custom}
               name="source_type"
               type="radio"
               value={BootResourceSourceType.CUSTOM}
@@ -49,7 +60,7 @@ const FetchImagesFormFields = (): JSX.Element => {
         {source_type === BootResourceSourceType.CUSTOM && (
           <>
             <FormikField
-              label="URL"
+              label={Labels.Url}
               name="url"
               placeholder="e.g. http:// or https://"
               required
@@ -59,7 +70,7 @@ const FetchImagesFormFields = (): JSX.Element => {
               <>
                 <FormikField
                   help="Path to the keyring to validate the mirror path."
-                  label="Keyring filename"
+                  label={Labels.KeyringFilename}
                   name="keyring_filename"
                   placeholder="e.g. /usr/share/keyrings/ubuntu-clooudimage-keyring.gpg"
                   type="text"
@@ -67,7 +78,7 @@ const FetchImagesFormFields = (): JSX.Element => {
                 <FormikField
                   component={Textarea}
                   help="Contents on the keyring to validate the mirror path."
-                  label="Keyring data"
+                  label={Labels.KeyringData}
                   name="keyring_data"
                   placeholder="Contents of GPG key"
                 />
@@ -80,7 +91,7 @@ const FetchImagesFormFields = (): JSX.Element => {
                     setFieldValue("keyring_filename", "");
                   }}
                 >
-                  Hide advanced...
+                  {Labels.HideAdvanced}
                 </Button>
               </>
             ) : (
@@ -89,7 +100,7 @@ const FetchImagesFormFields = (): JSX.Element => {
                 data-testid="show-advanced"
                 onClick={() => setShowAdvanced(true)}
               >
-                Show advanced...
+                {Labels.ShowAdvanced}
               </Button>
             )}
           </>

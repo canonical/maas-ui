@@ -1,15 +1,16 @@
-import { mount } from "enzyme";
+import { screen, render } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
 import { MaasIntroSchema } from "../MaasIntro";
 
-import ConnectivityCard from "./ConnectivityCard";
-
-import { waitForComponentToPaint } from "testing/utils";
+import ConnectivityCard, {
+  Labels as ConnectivityCardLabels,
+} from "./ConnectivityCard";
 
 describe("ConnectivityCard", () => {
   it("displays a tick when there are no errors", () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           httpProxy: "http://www.website.com",
@@ -23,15 +24,13 @@ describe("ConnectivityCard", () => {
         <ConnectivityCard />
       </Formik>
     );
-    expect(
-      wrapper
-        .find("[data-testid='maas-connectivity-form'] Icon[name='success']")
-        .exists()
-    ).toBe(true);
+    const icon = screen.getByLabelText("success");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--success");
   });
 
   it("displays an error icon when there are errors", async () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           httpProxy: "http://www.website.com",
@@ -45,20 +44,13 @@ describe("ConnectivityCard", () => {
         <ConnectivityCard />
       </Formik>
     );
-    wrapper
-      .find("[name='mainArchiveUrl']")
-      .last()
-      .simulate("change", {
-        target: {
-          name: "mainArchiveUrl",
-          value: "",
-        },
-      });
-    await waitForComponentToPaint(wrapper);
-    expect(
-      wrapper
-        .find("[data-testid='maas-connectivity-form'] Icon[name='error']")
-        .exists()
-    ).toBe(true);
+    await userEvent.clear(
+      screen.getByRole("textbox", {
+        name: ConnectivityCardLabels.MainArchiveUrl,
+      })
+    );
+    const icon = screen.getByLabelText("error");
+    expect(icon).toBeInTheDocument();
+    expect(icon).toHaveClass("p-icon--error");
   });
 });

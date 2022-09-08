@@ -8,7 +8,6 @@ import configureStore from "redux-mock-store";
 
 import TagUpdate from "./TagUpdate";
 
-import * as baseHooks from "app/base/hooks/base";
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -20,6 +19,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 
 const mockStore = configureStore();
 let state: RootState;
@@ -35,13 +35,6 @@ beforeEach(() => {
       ],
     }),
   });
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [false, () => null]);
-});
-
-afterEach(() => {
-  jest.restoreAllMocks();
 });
 
 it("dispatches actions to fetch necessary data", () => {
@@ -164,13 +157,7 @@ it("can return to the previous page on save", async () => {
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
   );
-  // Simulate the state.tag.saved state going from `save: false` to `saved:
-  // true` which happens when the tag is successfully saved. This in turn will
-  // mean that the form `onSuccess` prop will get called so that the component
-  // knows that the tag was updated.
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [true, () => null]);
+  mockFormikFormSaved();
   await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
   await waitFor(() => expect(history.location.pathname).toBe(urls.tags.index));
 });
@@ -202,13 +189,7 @@ it("goes to the tag details page if it can't go back", async () => {
     screen.getByRole("textbox", { name: Label.Name }),
     "tag1"
   );
-  // Simulate the state.tag.saved state going from `save: false` to `saved:
-  // true` which happens when the tag is successfully saved. This in turn will
-  // mean that the form `onSuccess` prop will get called so that the component
-  // knows that the tag was updated.
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [true, () => null]);
+  mockFormikFormSaved();
   await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
   await waitFor(() =>
     expect(history.location.pathname).toBe(urls.tags.tag.index({ id: 1 }))
@@ -234,10 +215,7 @@ it("shows a confirmation when a tag's definition is updated", async () => {
   });
   await userEvent.clear(definitionInput);
   await userEvent.type(definitionInput, "def");
-  // Mock state.tag.saved transitioning from "false" to "true"
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [true, () => null]);
+  mockFormikFormSaved();
   await userEvent.click(screen.getByRole("button", { name: "Save changes" }));
 
   await waitFor(() => {

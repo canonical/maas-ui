@@ -11,6 +11,12 @@ import IntroSection from "app/intro/components/IntroSection";
 import { actions as bootResourceActions } from "app/store/bootresource";
 import bootResourceSelectors from "app/store/bootresource/selectors";
 
+export enum Labels {
+  Back = "Back",
+  Continue = "Continue",
+  CantContinue = "At least one image and source must be configured to continue.",
+}
+
 const ImagesIntro = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -46,10 +52,7 @@ const ImagesIntro = (): JSX.Element => {
         >
           Continue
           {incomplete && (
-            <Tooltip
-              className="u-nudge-right"
-              message="At least one image and source must be configured to continue."
-            >
+            <Tooltip className="u-nudge-right" message={Labels.CantContinue}>
               <Icon className="is-light" name="information" />
             </Tooltip>
           )}
