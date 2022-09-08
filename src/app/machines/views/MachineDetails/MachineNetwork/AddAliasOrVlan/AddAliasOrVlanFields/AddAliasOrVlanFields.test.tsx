@@ -1,16 +1,14 @@
-import { mount } from "enzyme";
+import { screen } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
 
 import AddAliasOrVlanFields from "./AddAliasOrVlanFields";
 
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { rootState as rootStateFactory } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const route = "/machines";
 
 describe("AddAliasOrVlanFields", () => {
   let state: RootState;
@@ -19,40 +17,30 @@ describe("AddAliasOrVlanFields", () => {
   });
 
   it("displays a tag field for a VLAN", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <AddAliasOrVlanFields
-              interfaceType={NetworkInterfaceTypes.VLAN}
-              systemId="abc123"
-            />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <AddAliasOrVlanFields
+          interfaceType={NetworkInterfaceTypes.VLAN}
+          systemId="abc123"
+        />
+      </Formik>,
+      { route: route, wrapperProps: { state } }
     );
-    expect(wrapper.find("TagNameField").exists()).toBe(true);
+    expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
   });
 
   it("does not display a tag field for an ALIAS", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <AddAliasOrVlanFields
-              interfaceType={NetworkInterfaceTypes.ALIAS}
-              systemId="abc123"
-            />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <AddAliasOrVlanFields
+          interfaceType={NetworkInterfaceTypes.ALIAS}
+          systemId="abc123"
+        />
+      </Formik>,
+      { route: route, wrapperProps: { state } }
     );
-    expect(wrapper.find("TagNameField").exists()).toBe(false);
+    expect(
+      screen.queryByRole("textbox", { name: "Tags" })
+    ).not.toBeInTheDocument();
   });
 });
