@@ -1,18 +1,20 @@
 import { useState } from "react";
 
-import { SearchBox, Pagination } from "@canonical/react-components";
+import { SearchBox } from "@canonical/react-components";
 
 import { MachineSelectTable } from "app/base/components/MachineSelectTable/MachineSelectTable";
+import MachineListPagination from "app/machines/views/MachineList/MachineListTable/MachineListPagination";
 import type { Machine } from "app/store/machine/types";
 import { FilterGroupKey } from "app/store/machine/types";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 
 const MachineSelectBox = ({
   onSelect,
+  pageSize = 15,
 }: {
+  pageSize?: number;
   onSelect: (machine: Machine | null) => void;
 }): JSX.Element => {
-  const pageSize = 15;
   const [searchText, setSearchText] = useState("");
   const [currentPage, setPage] = useState(1);
   const { machines, machineCount, loading } = useFetchMachines({
@@ -41,11 +43,12 @@ const MachineSelectBox = ({
         searchText={searchText}
         setSearchText={setSearchText}
       />
-      <Pagination
+      <MachineListPagination
         currentPage={currentPage}
         itemsPerPage={pageSize}
+        machineCount={machineCount}
+        machinesLoading={loading}
         paginate={setPage}
-        totalItems={machineCount || 0}
       />
     </div>
   );
