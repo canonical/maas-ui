@@ -148,23 +148,26 @@ describe("DiscoveryAddForm", () => {
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
-  // it("maps name errors to hostname", async () => {
-  //   state.device.errors = { name: "Name is invalid" };
-  //   const store = mockStore(state);
-  //   mockFormikFormSaved();
-  //   renderWithBrowserRouter(
-  //     <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-  //     { route: "/dashboard", wrapperProps: { store } }
-  //   );
-  //   // expect(wrapper.find("FormikForm").prop("errors")).toStrictEqual({
-  //   //   hostname: "Name is invalid",
-  //   // });
-  //   await userEvent.click(
-  //     screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })
-  //   );
+  it("maps name errors to hostname", async () => {
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
+      { route: "/dashboard", wrapperProps: { store } }
+    );
 
-  //   screen.debug();
-  // });
+    // Type an invalid hostname
+    await userEvent.type(
+      screen.getByRole("textbox", {
+        name: `${FormFieldLabels.Hostname} (optional)`,
+      }),
+      "!£$%^&*()"
+    );
+
+    // Save button should be disabled due to error from invalid hostname
+    expect(
+      screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })
+    ).toBeDisabled();
+  });
 
   it("can dispatch to create a device", async () => {
     const store = mockStore(state);
