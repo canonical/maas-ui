@@ -2,10 +2,10 @@ import { mount } from "enzyme";
 
 import NodeActionFormWrapper from "./NodeActionFormWrapper";
 
-import * as baseHooks from "app/base/hooks/base";
 import type { Node } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { machine as machineFactory } from "testing/factories";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 
 describe("NodeActionFormWrapper", () => {
   afterEach(() => {
@@ -65,9 +65,7 @@ describe("NodeActionFormWrapper", () => {
   it(`does not display a warning when action has started even if not all
       selected nodes can perform selected action`, async () => {
     // Mock that action has started.
-    jest
-      .spyOn(baseHooks, "useCycled")
-      .mockImplementation(() => [true, () => null]);
+    mockFormikFormSaved();
     const nodes = [
       machineFactory({ system_id: "abc123", actions: [NodeActions.ABORT] }),
       machineFactory({ system_id: "def456", actions: [] }),
