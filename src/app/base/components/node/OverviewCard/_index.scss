@@ -38,7 +38,7 @@
 
     .overview-card__test-warning {
       grid-area: test-warning;
-      padding: $spv--large 0 $spv--large $sph--large;
+      padding: $spv--small 0 $spv--small $sph--large;
     }
 
     .overview-card__test-text {
@@ -49,19 +49,19 @@
     .overview-card__cpu-tests {
       @include pseudo-border(left);
       grid-area: cpu-tests;
-      padding: $spv--large 0;
+      padding: $spv--small 0;
     }
 
     .overview-card__memory-tests {
       @include pseudo-border(left);
       grid-area: memory-tests;
-      padding: $spv--large 0;
+      padding: $spv--small 0;
     }
 
     .overview-card__storage-tests {
       @include pseudo-border(left);
       grid-area: storage-tests;
-      padding: $spv--large $sph--large $spv--large 0;
+      padding: $spv--small $sph--large $spv--small 0;
     }
 
     .overview-card__details {
@@ -71,8 +71,8 @@
       justify-content: space-between;
       gap: $sph--large;
       grid-area: details;
-      padding: $spv--large 0;
-      margin: 0 $spv--large 0 $spv--large ;
+      padding: $spv--small 0;
+      margin: 0 $spv--large;
 
       > * {
 
@@ -223,8 +223,11 @@
       .overview-card__details {
         &.for-controller,
         &.for-machine {
+          display: grid;
           grid-template-columns: repeat(2, minmax(0, 1fr));
         }
+
+        padding: $spv--large 0;
 
         > *:last-child {
           grid-column-end: 3;
