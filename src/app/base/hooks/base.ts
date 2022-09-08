@@ -176,9 +176,11 @@ export const useScrollToTop = (): void => {
   }, [pathname]);
 };
 
+/**
+ * Returns the previous value persisted across the render cycles.
+ */
 export const usePreviousPersistent = <T extends unknown>(
-  value: T,
-  isEqualFn?: (prev: T, next: T) => boolean
+  value: T
 ): T | null => {
   const ref = useRef<{ value: T; prev: T | null }>({
     value: value,
@@ -187,7 +189,7 @@ export const usePreviousPersistent = <T extends unknown>(
 
   const current = ref.current.value;
 
-  if (isEqualFn ? !isEqualFn(current, value) : value !== current) {
+  if (value !== current) {
     ref.current = {
       value: value,
       prev: current,
