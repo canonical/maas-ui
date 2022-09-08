@@ -1,52 +1,63 @@
-import configureStore from "redux-mock-store";
+import { waitFor } from "@testing-library/react";
 
 import Routes from "./Routes";
 import type { RootState } from "./store/root/types";
 
 import urls from "app/base/urls";
-import { rootState as rootStateFactory } from "testing/factories";
+import {
+  rootState as rootStateFactory,
+  controller as controllerFactory,
+  controllerState as controllerStateFactory,
+  deviceDetails as deviceDetailsFactory,
+  deviceState as deviceStateFactory,
+  authState as authStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
+  domain as domainFactory,
+  domainState as domainStateFactory,
+  zone as zoneFactory,
+  zoneState as zoneStateFactory,
+  machine as machineFactory,
+  machineState as machineStateFactory,
+} from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore<RootState, {}>();
+const nodeSummaryRoutes: { path: string; name: string }[] = [
+  {
+    path: urls.controllers.controller.index({ id: "abc123" }),
+    name: "Controller details",
+  },
+  {
+    name: "Device details",
+    path: urls.devices.device.index({ id: "abc123" }),
+  },
+  {
+    name: "Machine details",
+    path: urls.machines.machine.index({ id: "abc123" }),
+  },
+];
 
 const routes: { title: string; path: string }[] = [
-  // {
-  //   // Redirects to machines:
-  //   title: "Redirect",
-  //   path: urls.index,
-  // },
   {
     title: "Welcome",
     path: urls.intro.index,
-  },
-  {
-    title: "Welcome",
-    path: urls.preferences.index,
   },
   {
     title: "Controllers",
     path: urls.controllers.index,
   },
   {
-    title: "Controllers",
-    path: urls.controllers.controller.index({ id: "abc123" }),
-  },
-  {
     title: "Devices",
     path: urls.devices.index,
-  },
-  {
-    title: "Devices",
-    path: urls.devices.device.index({ id: "abc123" }),
   },
   {
     title: "DNS",
     path: urls.domains.index,
   },
-  // {
-  //   title: "DomainDetails",
-  //   path: urls.domains.details({ id: 1 }),
-  // },
+  {
+    title: "test-domain",
+    path: urls.domains.details({ id: 1 }),
+  },
   {
     title: "Images",
     path: urls.images.index,
@@ -60,16 +71,8 @@ const routes: { title: string; path: string }[] = [
     path: urls.machines.index,
   },
   {
-    title: "Machines",
-    path: urls.machines.machine.index({ id: "abc123" }),
-  },
-  {
     title: "Pools",
     path: urls.pools.index,
-  },
-  {
-    title: "Pools",
-    path: urls.settings.index,
   },
   {
     title: "Subnets",
@@ -107,18 +110,64 @@ const routes: { title: string; path: string }[] = [
     title: "Zones",
     path: urls.zones.index,
   },
-  // {
-  //   title: "ZoneDetails",
-  //   path: urls.zones.details({ id: 1 }),
-  // },
-  // {
-  //   title: "Dashboard",
-  //   path: urls.dashboard.index,
-  // },
+  {
+    title: "test-zone",
+    path: urls.zones.details({ id: 1 }),
+  },
+  {
+    title: "Dashboard",
+    path: urls.dashboard.index,
+  },
 ];
 
 describe("Routes", () => {
+  let state: RootState;
+
   beforeEach(() => {
+    state = rootStateFactory({
+      user: userStateFactory({
+        auth: authStateFactory({ user: userFactory({ is_superuser: true }) }),
+      }),
+      controller: controllerStateFactory({
+        items: [
+          controllerFactory({
+            system_id: "abc123",
+            hostname: "test-controller",
+          }),
+        ],
+        loaded: true,
+        loading: false,
+      }),
+      device: deviceStateFactory({
+        items: [
+          deviceDetailsFactory({
+            system_id: "abc123",
+            hostname: "test-device",
+          }),
+        ],
+        loaded: true,
+        loading: false,
+      }),
+      domain: domainStateFactory({
+        items: [domainFactory({ id: 1, name: "test-domain" })],
+      }),
+      machine: machineStateFactory({
+        items: [
+          machineFactory({
+            system_id: "abc123",
+            fqdn: "test-machine",
+          }),
+        ],
+      }),
+      zone: zoneStateFactory({
+        items: [
+          zoneFactory({
+            id: 1,
+            name: "test-zone",
+          }),
+        ],
+      }),
+    });
     global.scrollTo = jest.fn();
   });
 
@@ -127,13 +176,50 @@ describe("Routes", () => {
   });
 
   routes.forEach(({ title, path }) => {
-    it(`Displays: ${title} at: ${path}`, () => {
-      const store = mockStore(rootStateFactory());
+    it(`Displays: ${title} at: ${path}`, async () => {
       renderWithBrowserRouter(<Routes />, {
         route: path,
-        wrapperProps: { store },
+        wrapperProps: { state, routePattern: "/*" },
       });
-      expect(document.title).toBe(`${title} | MAAS`);
+      await waitFor(() => expect(document.title).toBe(`${title} | MAAS`));
     });
+  });
+
+  nodeSummaryRoutes.forEach(({ name, path }) => {
+    it(`Displays: ${name} at: ${path}`, async () => {
+      renderWithBrowserRouter(<Routes />, {
+        route: path,
+        wrapperProps: { state },
+      });
+      expect(window.location.pathname).toBe(`${path}/summary`);
+    });
+  });
+
+  it("redirects from index to machines", () => {
+    renderWithBrowserRouter(<Routes />, {
+      route: urls.index,
+      wrapperProps: { state },
+    });
+    expect(window.location.pathname).toBe(urls.machines.index);
+  });
+
+  it("redirects from Settings base URL to configuration", () => {
+    renderWithBrowserRouter(<Routes />, {
+      route: urls.settings.index,
+      wrapperProps: {
+        state,
+      },
+    });
+    expect(window.location.pathname).toBe(urls.settings.configuration.index);
+  });
+
+  it("redirects from Preferences base URL to Details", () => {
+    renderWithBrowserRouter(<Routes />, {
+      route: urls.preferences.index,
+      wrapperProps: {
+        state,
+      },
+    });
+    expect(window.location.pathname).toBe(urls.preferences.details);
   });
 });
