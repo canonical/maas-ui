@@ -132,16 +132,7 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
         ]}
       />
       {type === "machine" ? (
-        <MachineSelect
-          onSelect={(machine) => {
-            if (machine) {
-              formikProps.setFieldValue("entity", machine.system_id);
-            } else {
-              formikProps.setFieldValue("entity", "");
-            }
-          }}
-          selected={formikProps.values.entity}
-        />
+        <FormikField component={MachineSelect} name="entity" />
       ) : (
         type &&
         (isLoading || !hasLoaded ? (

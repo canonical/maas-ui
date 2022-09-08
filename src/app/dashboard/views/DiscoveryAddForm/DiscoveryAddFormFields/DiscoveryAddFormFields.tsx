@@ -6,6 +6,7 @@ import { Link } from "react-router-dom-v5-compat";
 import type { DiscoveryAddValues } from "../types";
 import { DeviceType } from "../types";
 
+import MachineSelect from "app/base/components/DhcpFormFields/MachineSelect";
 import FormikField from "app/base/components/FormikField";
 import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
 import TooltipButton from "app/base/components/TooltipButton";
@@ -15,7 +16,6 @@ import type { Device } from "app/store/device/types";
 import { DeviceMeta } from "app/store/device/types";
 import type { Discovery } from "app/store/discovery/types";
 import domainSelectors from "app/store/domain/selectors";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
 import { getSubnetDisplay } from "app/store/subnet/utils";
@@ -51,10 +51,6 @@ const DiscoveryAddFormFields = ({
 }: Props): JSX.Element | null => {
   const devices = useSelector(deviceSelectors.all);
   const domains = useSelector(domainSelectors.all);
-  const { machines } = useFetchMachines({
-    filters: { status: FetchNodeStatus.DEPLOYED },
-  });
-
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getByCIDR(state, discovery.subnet_cidr)
   );
@@ -135,7 +131,9 @@ const DiscoveryAddFormFields = ({
             />
           ) : (
             <FormikField
-              component={Select}
+              component={MachineSelect}
+              defaultOption={Label.SelectParent}
+              filters={{ status: FetchNodeStatus.DEPLOYED }}
               label={
                 <>
                   {Label.Parent}{" "}
@@ -143,13 +141,6 @@ const DiscoveryAddFormFields = ({
                 </>
               }
               name="parent"
-              options={[
-                { label: Label.SelectParent, value: "" },
-                ...machines.map((machine) => ({
-                  label: machine.fqdn,
-                  value: machine.system_id,
-                })),
-              ]}
             />
           )}
         </Col>
