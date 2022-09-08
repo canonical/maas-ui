@@ -23,6 +23,7 @@ const DebounceSearchBox = ({
   searchText,
   setSearchText,
   autoFocus,
+  placeholder,
 }: Props): JSX.Element => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [debouncing, setDebouncing] = useState(false);
@@ -53,6 +54,7 @@ const DebounceSearchBox = ({
             setDebouncing(false);
           }, debounceInterval);
         }}
+        placeholder={placeholder}
         value={searchText}
       />
       {debouncing && (
