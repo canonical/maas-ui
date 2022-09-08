@@ -1,7 +1,6 @@
 import { useState } from "react";
 
-import { SearchBox } from "@canonical/react-components";
-
+import DebounceSearchBox from "app/base/components/DebounceSearchBox";
 import { MachineSelectTable } from "app/base/components/MachineSelectTable/MachineSelectTable";
 import MachineListPagination from "app/machines/views/MachineList/MachineListTable/MachineListPagination";
 import type { Machine } from "app/store/machine/types";
@@ -16,23 +15,22 @@ const MachineSelectBox = ({
   onSelect: (machine: Machine | null) => void;
 }): JSX.Element => {
   const [searchText, setSearchText] = useState("");
+  const [deboucedText, setDebouncedText] = useState("");
   const [currentPage, setPage] = useState(1);
   const { machines, machineCount, loading } = useFetchMachines({
     currentPage,
     pageSize,
-    filters: { [FilterGroupKey.FreeText]: searchText },
+    filters: { [FilterGroupKey.FreeText]: deboucedText },
   });
   return (
     <div className="machine-select-box" role="listbox">
-      <SearchBox
+      <DebounceSearchBox
         autoComplete="off"
         autoFocus
-        externallyControlled
-        onChange={(searchText: string) => {
-          setSearchText(searchText);
-        }}
+        onDebounced={setDebouncedText}
         placeholder="Search by hostname, system ID or tags"
-        value={searchText}
+        searchText={searchText}
+        setSearchText={setSearchText}
       />
       <MachineSelectTable
         machines={machines}
@@ -53,4 +51,5 @@ const MachineSelectBox = ({
     </div>
   );
 };
+
 export default MachineSelectBox;

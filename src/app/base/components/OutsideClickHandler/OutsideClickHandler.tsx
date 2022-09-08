@@ -1,4 +1,4 @@
-import { useEffect, useRef } from "react";
+import { useClickOutside } from "@canonical/react-components";
 
 const OutsideClickHandler = ({
   children,
@@ -6,18 +6,8 @@ const OutsideClickHandler = ({
 }: React.PropsWithChildren<{
   onClick: () => void;
 }>): JSX.Element => {
-  const ref = useRef<HTMLDivElement>(null);
-  const handleClickOutside = ({ target }: MouseEvent) => {
-    if (ref.current && !ref.current?.contains(target as HTMLElement)) {
-      onClick();
-    }
-  };
-  useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  });
+  const [ref] = useClickOutside<HTMLDivElement>(onClick);
+
   return <div ref={ref}>{children}</div>;
 };
 

@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 
-import { Label, useId } from "@canonical/react-components";
+import { Label, useId, useOnEscapePressed } from "@canonical/react-components";
 import className from "classnames";
 import { useDispatch } from "react-redux";
 
 import SelectButton from "../../SelectButton";
 
-import MachineSelectBox from "./MachineSelectBox";
+import MachineSelectBox from "./MachineSelectBox/MachineSelectBox";
 
 import OutsideClickHandler from "app/base/components/OutsideClickHandler";
 import { usePreviousPersistent } from "app/base/hooks";
@@ -41,6 +41,7 @@ export const MachineSelect = ({
   const { machine } = useFetchMachine(selected);
   const previousMachine = usePreviousPersistent(machine);
   const selectedMachine = machine || previousMachine;
+  useOnEscapePressed(() => setIsOpen(false));
 
   useEffect(() => {
     dispatch(tagActions.fetch());
@@ -49,30 +50,28 @@ export const MachineSelect = ({
   return (
     <div className="machine-select">
       <Label id={selectId}>{label}</Label>
-      <SelectButton
-        aria-describedby={selectId}
-        aria-haspopup="listbox"
-        className="u-no-margin--bottom"
-        onClick={() => {
-          setIsOpen(!isOpen);
-          if (!isOpen) {
-            onSelect(null);
-          }
-        }}
-      >
-        {selectedMachine?.hostname || Labels.ChooseMachine}
-      </SelectButton>
-      <div
-        className={className("machine-select-box-wrapper", {
-          "machine-select-box-wrapper--is-open": isOpen,
-        })}
-      >
-        {isOpen ? (
-          <OutsideClickHandler onClick={() => setIsOpen(false)}>
-            <MachineSelectBox onSelect={handleSelect} />
-          </OutsideClickHandler>
-        ) : null}
-      </div>
+      <OutsideClickHandler onClick={() => setIsOpen(false)}>
+        <SelectButton
+          aria-describedby={selectId}
+          aria-haspopup="listbox"
+          className="u-no-margin--bottom"
+          onClick={() => {
+            setIsOpen(!isOpen);
+            if (!isOpen) {
+              onSelect(null);
+            }
+          }}
+        >
+          {selectedMachine?.hostname || Labels.ChooseMachine}
+        </SelectButton>
+        <div
+          className={className("machine-select-box-wrapper", {
+            "machine-select-box-wrapper--is-open": isOpen,
+          })}
+        >
+          {isOpen ? <MachineSelectBox onSelect={handleSelect} /> : null}
+        </div>
+      </OutsideClickHandler>
     </div>
   );
 };
