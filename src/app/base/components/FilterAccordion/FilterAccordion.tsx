@@ -23,6 +23,7 @@ type FilterValues = Map<FilterValue, number>;
 type FilterSections = Map<FilterKey, FilterValues>;
 
 export type Props<I, PK extends keyof I> = {
+  ariaLabel?: string;
   disabled?: boolean;
   filterNames: Map<FilterKey, string>;
   filterOrder: FilterKey[];
@@ -104,6 +105,7 @@ const sortByFilterKey = (
 };
 
 const FilterAccordion = <I, PK extends keyof I>({
+  ariaLabel,
   disabled,
   filterNames,
   filterOrder,
@@ -189,6 +191,7 @@ const FilterAccordion = <I, PK extends keyof I>({
 
   return (
     <ContextualMenu
+      aria-label={ariaLabel}
       className="filter-accordion filter-accordion--expanded"
       constrainPanelWidth
       hasToggleIcon

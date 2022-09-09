@@ -1,17 +1,17 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
-import DiscoveriesFilterAccordion from "./DiscoveriesFilterAccordion";
+import DiscoveriesFilterAccordion, {
+  Labels as DiscoveriesFilterAccordionLabels,
+} from "./DiscoveriesFilterAccordion";
 
 import type { RootState } from "app/store/root/types";
 import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const route = "/discoveries";
 
 describe("DiscoveriesFilterAccordion", () => {
   let state: RootState;
@@ -25,32 +25,20 @@ describe("DiscoveriesFilterAccordion", () => {
 
   it("button is disabled when loading discoveries", () => {
     state.discovery.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/discoveries", key: "testKey" }]}
-        >
-          <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      { route: route, wrapperProps: { state } }
     );
-    expect(
-      wrapper.find("Button.p-contextual-menu__toggle").prop("disabled")
-    ).toBe(true);
+    expect(screen.getByRole("button", { name: "Filters:" })).toBeDisabled();
   });
 
   it("displays a filter accordion", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/discoveries", key: "testKey" }]}
-        >
-          <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />,
+      { route: route, wrapperProps: { state } }
     );
-    expect(wrapper.find("FilterAccordion").exists()).toBe(true);
+    expect(
+      screen.getByLabelText(DiscoveriesFilterAccordionLabels.AccordionLabel)
+    ).toBeInTheDocument();
   });
 });
