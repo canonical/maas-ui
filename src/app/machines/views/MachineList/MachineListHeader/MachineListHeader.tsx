@@ -77,8 +77,7 @@ export const MachineListHeader = ({
   }
   const onlyHasItems =
     !!selectedMachines &&
-    "items" in selectedMachines &&
-    !!selectedMachines.items?.length &&
+    selectedCount > 0 &&
     (!("groups" in selectedMachines) || !selectedMachines?.groups?.length);
 
   useEffect(() => {

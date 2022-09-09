@@ -107,6 +107,7 @@ export const selectedToFilters = (
   if (!selected) {
     return null;
   }
+  // If the selected state is a filter then there's not manipulation required.
   if ("filter" in selected) {
     return selected.filter;
   }
@@ -114,17 +115,19 @@ export const selectedToFilters = (
     string,
     FilterGroupOptionType | null | (FilterGroupOptionType | null)[]
   > = {};
+  // Map items to the id filter.
   if ("items" in selected && selected.items?.length) {
     filter[FilterGroupKey.Id] = selected.items;
   }
+  // Map groups to their filter key.
   if (
     "groups" in selected &&
     selected.groups?.length &&
     "grouping" in selected &&
     selected.grouping
   ) {
-    const grouping = selected.grouping;
-    filter[grouping] = selected.groups.map((group) => {
+    // The grouping value is the key of the filter.
+    filter[selected.grouping] = selected.groups.map((group) => {
       if (typeof group === "string") {
         // String filters should be exact matches.
         return `=${group}`;

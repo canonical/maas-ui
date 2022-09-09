@@ -218,7 +218,10 @@ it("can dispatch an action to select the group", async () => {
     }
   );
   await userEvent.click(screen.getByRole("checkbox"));
-  const expected = machineActions.setSelectedMachines({ groups: ["admin-2"] });
+  const expected = machineActions.setSelectedMachines({
+    grouping: FetchGroupKey.AgentName,
+    groups: ["admin-2"],
+  });
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);
@@ -287,6 +290,7 @@ it("does not overwrite selected machines in different groups", async () => {
   );
   await userEvent.click(screen.getByRole("checkbox"));
   const expected = machineActions.setSelectedMachines({
+    grouping: FetchGroupKey.AgentName,
     groups: ["admin-2"],
     items: ["def456"],
   });
