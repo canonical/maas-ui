@@ -11,7 +11,7 @@
   "scripts": {
     "analyze": "npx -y source-map-explorer 'build/static/js/*.js'",
     "build-all": "yarn build",
-    "build": "CYPRESS_INSTALL_BINARY=0 yarn install && react-scripts build",
+    "build": "REACT_APP_GIT_SHA=$(git rev-parse HEAD) CYPRESS_INSTALL_BINARY=0 yarn install && react-scripts build",
     "clean-all": "yarn clean",
     "clean": "rm -rf node_modules build",
     "cleanbuild": "yarn clean-all && yarn build",
@@ -24,7 +24,7 @@
     "percy": "./cypress/percy.sh",
     "release": "yarn clean && yarn install && CI=true yarn test && yarn build && yarn version --new-version",
     "serve-proxy": "nodemon ./scripts/proxy.js",
-    "serve-react": "BROWSER=none PORT=8401 react-scripts start",
+    "serve-react": "BROWSER=none PORT=8401 REACT_APP_GIT_SHA=$(git rev-parse HEAD) react-scripts start",
     "serve-static-demo": "STATIC_DEMO=true PROXY_PORT=80 nodemon ./scripts/proxy.js",
     "serve": "yarn start",
     "show-ready": "wait-on http-get://0.0.0.0:8401 && nodemon ./scripts/proxy-ready.js",
