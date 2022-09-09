@@ -149,24 +149,22 @@ describe("DiscoveryAddForm", () => {
   });
 
   it("maps name errors to hostname", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
+    // Render the form with default state.
+    const { rerender } = renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { store } }
+      { route: "/dashboard", wrapperProps: { state } }
     );
-
-    // Type an invalid hostname
-    await userEvent.type(
+    const error = "Name is invalid";
+    // Change the device state to included the errors (as if it has changed via an API response).
+    state.device.errors = { name: error };
+    // Rerender the form to simulate the state change.
+    rerender(<DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />);
+    expect(
       screen.getByRole("textbox", {
         name: `${FormFieldLabels.Hostname} (optional)`,
-      }),
-      "!£$%^&*()"
-    );
-
-    // Save button should be disabled due to error from invalid hostname
-    expect(
-      screen.getByRole("button", { name: DiscoveryAddFormLabels.SubmitLabel })
-    ).toBeDisabled();
+      })
+      // react-components uses aria-errormessage to link the errors to the inputs so we can use the toHaveErrorMessage helper here.
+    ).toHaveErrorMessage(`Error: ${error}`);
   });
 
   it("can dispatch to create a device", async () => {
