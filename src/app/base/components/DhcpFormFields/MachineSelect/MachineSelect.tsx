@@ -1,7 +1,8 @@
 import type { HTMLProps } from "react";
 import { useEffect, useState } from "react";
 
-import { Label, useId, useOnEscapePressed } from "@canonical/react-components";
+import { useId, useOnEscapePressed } from "@canonical/react-components";
+import Field from "@canonical/react-components/dist/components/Field";
 import className from "classnames";
 import { useFormikContext } from "formik";
 import { useDispatch } from "react-redux";
@@ -37,10 +38,12 @@ export const MachineSelect = ({
   label = Labels.AppliesTo,
   defaultOption = Labels.ChooseMachine,
   value,
+  ...props
 }: Props): JSX.Element => {
   const { setFieldValue } = useFormikContext();
   const dispatch = useDispatch();
   const [isOpen, setIsOpen] = useState(false);
+  const labelId = useId();
   const selectId = useId();
   const handleSelect = (machine: Machine | null) => {
     setIsOpen(false);
@@ -55,33 +58,41 @@ export const MachineSelect = ({
     dispatch(tagActions.fetch());
   }, [dispatch]);
 
+  const buttonLabel = selectedMachine?.hostname || defaultOption;
+
   return (
     <div className="machine-select">
-      <Label id={selectId}>{label}</Label>
-      <OutsideClickHandler onClick={() => setIsOpen(false)}>
-        <SelectButton
-          aria-describedby={selectId}
-          aria-haspopup="listbox"
-          className="u-no-margin--bottom"
-          onClick={() => {
-            setIsOpen(!isOpen);
-            if (!isOpen) {
-              setFieldValue(name, "", false);
-            }
-          }}
-        >
-          {selectedMachine?.hostname || defaultOption}
-        </SelectButton>
-        <div
-          className={className("machine-select-box-wrapper", {
-            "machine-select-box-wrapper--is-open": isOpen,
-          })}
-        >
-          {isOpen ? (
-            <MachineSelectBox filters={filters} onSelect={handleSelect} />
-          ) : null}
-        </div>
-      </OutsideClickHandler>
+      {/* TODO: update once Field allows a custom label id
+      https://github.com/canonical/react-components/issues/820 */}
+      <Field label={<span id={labelId}>{label}</span>} {...props}>
+        <OutsideClickHandler onClick={() => setIsOpen(false)}>
+          <SelectButton
+            aria-describedby={labelId}
+            aria-expanded={isOpen ? "true" : "false"}
+            aria-haspopup="listbox"
+            aria-label={`${buttonLabel} - open list`}
+            className="u-no-margin--bottom"
+            id={selectId}
+            onClick={() => {
+              setIsOpen(!isOpen);
+              if (!isOpen) {
+                setFieldValue(name, "", false);
+              }
+            }}
+          >
+            {buttonLabel}
+          </SelectButton>
+          <div
+            className={className("machine-select-box-wrapper", {
+              "machine-select-box-wrapper--is-open": isOpen,
+            })}
+          >
+            {isOpen ? (
+              <MachineSelectBox filters={filters} onSelect={handleSelect} />
+            ) : null}
+          </div>
+        </OutsideClickHandler>
+      </Field>
     </div>
   );
 };

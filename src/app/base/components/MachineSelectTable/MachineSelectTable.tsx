@@ -73,6 +73,12 @@ const generateRows = (
     ],
     "data-testid": "machine-select-row",
     onClick: () => onRowClick(machine),
+    onKeyPress: (e: KeyboardEvent) => {
+      if (e.key === "Enter") {
+        e.preventDefault();
+        onRowClick(machine);
+      }
+    },
     tabIndex: 0,
   }));
 };

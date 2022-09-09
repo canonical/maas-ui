@@ -110,4 +110,25 @@ describe("MachineSelectTable", () => {
     });
     expect(within(ownerCols[0]).getByText("tagA")).toBeInTheDocument();
   });
+
+  it("can select machine by pressing Enter key", async () => {
+    const onMachineClick = jest.fn();
+    const machine = machines[0];
+    renderWithMockStore(
+      <MachineSelectTable
+        machines={machines}
+        onMachineClick={onMachineClick}
+        searchText=""
+        setSearchText={jest.fn()}
+      />,
+      { state }
+    );
+    screen
+      .getByRole("row", {
+        name: machine.hostname,
+      })
+      .focus();
+    await userEvent.keyboard("{enter}");
+    expect(onMachineClick).toHaveBeenCalledWith(machine);
+  });
 });

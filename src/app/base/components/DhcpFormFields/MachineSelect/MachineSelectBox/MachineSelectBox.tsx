@@ -28,31 +28,35 @@ const MachineSelectBox = ({
     },
   });
   return (
-    <div className="machine-select-box" role="listbox">
+    <div className="machine-select-box">
       <DebounceSearchBox
+        aria-label="Search by hostname, system ID or tags"
         autoComplete="off"
         autoFocus
         onDebounced={setDebouncedText}
         placeholder="Search by hostname, system ID or tags"
+        role="combobox"
         searchText={searchText}
         setSearchText={setSearchText}
       />
-      <MachineSelectTable
-        machines={machines}
-        machinesLoading={loading}
-        onMachineClick={(machine) => {
-          onSelect(machine);
-        }}
-        searchText={searchText}
-        setSearchText={setSearchText}
-      />
-      <MachineListPagination
-        currentPage={currentPage}
-        itemsPerPage={pageSize}
-        machineCount={machineCount}
-        machinesLoading={loading}
-        paginate={setPage}
-      />
+      <div role="listbox">
+        <MachineSelectTable
+          machines={machines}
+          machinesLoading={loading}
+          onMachineClick={(machine) => {
+            onSelect(machine);
+          }}
+          searchText={searchText}
+          setSearchText={setSearchText}
+        />
+        <MachineListPagination
+          currentPage={currentPage}
+          itemsPerPage={pageSize}
+          machineCount={machineCount}
+          machinesLoading={loading}
+          paginate={setPage}
+        />
+      </div>
     </div>
   );
 };

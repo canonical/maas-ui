@@ -183,7 +183,7 @@ describe("DhcpFormFields", () => {
     );
     within(screen.getByRole("grid")).getByText(machine.hostname).click();
     expect(
-      screen.getByRole("button", { name: machine.hostname })
+      screen.getByRole("button", { name: new RegExp(machine.hostname, "i") })
     ).toHaveAccessibleDescription(Labels.AppliesTo);
     // Change the type. The select value should be cleared.
     await userEvent.selectOptions(typeSelect, "subnet");
