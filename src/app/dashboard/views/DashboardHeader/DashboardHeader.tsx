@@ -13,6 +13,10 @@ import urls from "app/base/urls";
 import { actions as discoveryActions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
 
+export enum Labels {
+  ClearAll = "Clear all discoveries",
+}
+
 const DashboardHeader = (): JSX.Element => {
   const location = useLocation();
   const dispatch = useDispatch();
@@ -30,7 +34,7 @@ const DashboardHeader = (): JSX.Element => {
       key="clear-all"
       onClick={() => setFormOpen(true)}
     >
-      Clear all discoveries
+      {Labels.ClearAll}
     </Button>,
   ];
   let headerContent: JSX.Element | null = null;

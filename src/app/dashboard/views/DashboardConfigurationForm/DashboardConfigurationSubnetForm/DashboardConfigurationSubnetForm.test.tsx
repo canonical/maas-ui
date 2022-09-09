@@ -1,12 +1,13 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
-import DashboardConfigurationSubnetForm from "./DashboardConfigurationSubnetForm";
+import DashboardConfigurationSubnetForm, {
+  Labels as SubnetFormLabels,
+} from "./DashboardConfigurationSubnetForm";
 
 import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
+import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import {
   configState as configStateFactory,
@@ -16,45 +17,31 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("DashboardConfigurationSubnetForm", () => {
   it("displays a spinner if subnets have not loaded", () => {
     const state = rootStateFactory({
       subnet: subnetStateFactory({ loaded: false }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DashboardConfigurationSubnetForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(SubnetFormLabels.Loading)).toBeInTheDocument();
   });
 
   it("displays a spinner if fabrics have not loaded", () => {
     const state = rootStateFactory({
       fabric: fabricStateFactory({ loaded: false }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DashboardConfigurationSubnetForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(SubnetFormLabels.Loading)).toBeInTheDocument();
   });
 
   it("renders the form if fabrics and subnets have loaded", () => {
@@ -62,18 +49,13 @@ describe("DashboardConfigurationSubnetForm", () => {
       fabric: fabricStateFactory({ loaded: true }),
       subnet: subnetStateFactory({ loaded: true }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DashboardConfigurationSubnetForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("FormikForm").exists()).toBe(true);
+    expect(
+      screen.getByRole("form", { name: SubnetFormLabels.FormLabel })
+    ).toBeInTheDocument();
   });
 
   it("disables the form if discovery is disabled", () => {
@@ -89,18 +71,15 @@ describe("DashboardConfigurationSubnetForm", () => {
       fabric: fabricStateFactory({ loaded: true }),
       subnet: subnetStateFactory({ items: [subnetFactory()], loaded: true }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DashboardConfigurationSubnetForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
-    expect(wrapper.find("FormikField").first().prop("disabled")).toBe(true);
+    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+      wrapperProps: { state },
+    });
+
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+    const checkboxes = screen.getAllByRole("checkbox");
+    checkboxes.forEach((checkbox) => {
+      expect(checkbox).toBeDisabled();
+    });
   });
 
   it("displays links for the subnet and its fabric", () => {
@@ -110,26 +89,21 @@ describe("DashboardConfigurationSubnetForm", () => {
       fabric: fabricStateFactory({ items: [fabric], loaded: true }),
       subnet: subnetStateFactory({ items: [subnet], loaded: true }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DashboardConfigurationSubnetForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find("a[data-testid='subnet-link']").prop("href")).toBe(
-      "/subnet/1"
+    expect(screen.getByRole("link", { name: "172.16.1.0/24" })).toHaveProperty(
+      "href",
+      "http://example.com/subnet/1"
     );
-    expect(wrapper.find("a[data-testid='fabric-link']").prop("href")).toBe(
-      "/fabric/3"
+    expect(screen.getByRole("link", { name: "test-fabric-1" })).toHaveProperty(
+      "href",
+      "http://example.com/fabric/3"
     );
   });
 
-  it("dispatches actions to update subnet active discovery if they have changed", () => {
+  it("dispatches actions to update subnet active discovery if they have changed", async () => {
     const subnets = [
       subnetFactory({ id: 1, active_discovery: true }),
       subnetFactory({ id: 2, active_discovery: true }),
@@ -141,21 +115,15 @@ describe("DashboardConfigurationSubnetForm", () => {
       subnet: subnetStateFactory({ items: subnets, loaded: true }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DashboardConfigurationSubnetForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    submitFormikForm(wrapper, {
-      1: true, // true to true = unchanged
-      2: false, // true to false = changed
-      3: true, // false to true = changed
-      4: false, // false to false = unchanged
+    renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
+      wrapperProps: { store },
     });
+
+    const checkboxes = screen.getAllByRole("checkbox");
+
+    await userEvent.click(checkboxes[1]);
+    await userEvent.click(checkboxes[2]);
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
 
     const expectedActions = [
       subnetActions.update({ id: 2, active_discovery: false }),
