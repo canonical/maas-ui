@@ -62,7 +62,7 @@ it("requests machines filtered by the free text input value", async () => {
   });
 
   const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-  await user.type(screen.getByRole("searchbox"), "test-machine");
+  await user.type(screen.getByRole("combobox"), "test-machine");
   const expectedInitialAction = machineActions.fetch("mocked-nanoid-1", {
     filter: { free_text: "" },
     group_collapsed: undefined,

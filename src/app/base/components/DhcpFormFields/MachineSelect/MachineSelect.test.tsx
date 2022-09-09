@@ -15,7 +15,7 @@ it("can open select box on click", async () => {
 
   expect(screen.queryByRole("listbox")).not.toBeInTheDocument();
   await userEvent.click(
-    screen.getByRole("button", { name: Labels.ChooseMachine })
+    screen.getByRole("button", { name: new RegExp(Labels.ChooseMachine, "i") })
   );
   expect(screen.getByRole("listbox")).toBeInTheDocument();
 });
@@ -28,7 +28,7 @@ it("sets focus on the input field on open", async () => {
   );
 
   await userEvent.click(
-    screen.getByRole("button", { name: Labels.ChooseMachine })
+    screen.getByRole("button", { name: new RegExp(Labels.ChooseMachine, "i") })
   );
   expect(
     screen.getByPlaceholderText("Search by hostname, system ID or tags")
