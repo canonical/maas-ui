@@ -1,23 +1,85 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
-import DiscoveriesList from "./DiscoveriesList";
+import DiscoveriesList, {
+  Labels as DiscoveriesListLabels,
+} from "./DiscoveriesList";
 
 import type { RootState } from "app/store/root/types";
 import {
+  NodeStatus,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
+import {
   discovery as discoveryFactory,
+  domain as domainFactory,
+  device as deviceFactory,
+  machine as machineFactory,
+  testStatus as testStatusFactory,
+  modelRef as modelRefFactory,
   discoveryState as discoveryStateFactory,
+  deviceState as deviceStateFactory,
+  domainState as domainStateFactory,
+  machineState as machineStateFactory,
+  subnetState as subnetStateFactory,
+  vlanState as vlanStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
+const route = "/dashboard";
 
 describe("DiscoveriesList", () => {
   let state: RootState;
 
   beforeEach(() => {
+    const machines = [
+      machineFactory({
+        actions: [],
+        architecture: "amd64/generic",
+        cpu_count: 4,
+        cpu_test_status: testStatusFactory({
+          status: TestStatusStatus.RUNNING,
+        }),
+        distro_series: "bionic",
+        domain: modelRefFactory({
+          name: "example",
+        }),
+        extra_macs: [],
+        fqdn: "koala.example",
+        hostname: "koala",
+        ip_addresses: [],
+        memory: 8,
+        memory_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        network_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        osystem: "ubuntu",
+        owner: "admin",
+        permissions: ["edit", "delete"],
+        physical_disk_count: 1,
+        pool: modelRefFactory(),
+        pxe_mac: "00:11:22:33:44:55",
+        spaces: [],
+        status: NodeStatus.DEPLOYED,
+        status_code: NodeStatusCode.DEPLOYED,
+        status_message: "",
+        storage: 8,
+        storage_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        testing_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        system_id: "abc123",
+        zone: modelRefFactory(),
+      }),
+    ];
     state = rootStateFactory({
       discovery: discoveryStateFactory({
         loaded: true,
@@ -30,23 +92,33 @@ describe("DiscoveriesList", () => {
           }),
         ],
       }),
+      machine: machineStateFactory({
+        loaded: true,
+        items: machines,
+      }),
+      device: deviceStateFactory({
+        loaded: true,
+        items: [deviceFactory({ system_id: "abc123", fqdn: "abc123.example" })],
+      }),
+      subnet: subnetStateFactory({ loaded: true }),
+      vlan: vlanStateFactory({ loaded: true }),
+      domain: domainStateFactory({
+        loaded: true,
+        items: [domainFactory({ name: "local" })],
+      }),
     });
   });
 
   it("displays the discoveries", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <DiscoveriesList />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DiscoveriesList />, {
+      route: route,
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.text().includes("my-discovery-test")).toBe(true);
-    expect(wrapper.text().includes("another-test")).toBe(true);
+    // expect(wrapper.text().includes("my-discovery-test")).toBe(true);
+    // expect(wrapper.text().includes("another-test")).toBe(true);
+    expect(screen.getByText("my-discovery-test")).toBeInTheDocument();
+    expect(screen.getByText("another-test")).toBeInTheDocument();
   });
 
   it("displays a spinner within table when loading", () => {
@@ -55,17 +127,11 @@ describe("DiscoveriesList", () => {
         loading: true,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <DiscoveriesList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("MainTable Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<DiscoveriesList />, {
+      route: route,
+      wrapperProps: { state },
+    });
+    expect(screen.getByText(DiscoveriesListLabels.Loading)).toBeInTheDocument();
   });
 
   it("displays a message when there are no discoveries", () => {
@@ -75,96 +141,86 @@ describe("DiscoveriesList", () => {
         items: [],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <DiscoveriesList />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='no-discoveries']").exists()).toBe(true);
-    expect(wrapper.find("MainTable").exists()).toBe(false);
+    renderWithBrowserRouter(<DiscoveriesList />, {
+      route: route,
+      wrapperProps: { state },
+    });
+    expect(
+      screen.getByText(DiscoveriesListLabels.NoNewDiscoveries)
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(DiscoveriesListLabels.Title)
+    ).not.toBeInTheDocument();
   });
 
-  it("can display the add form", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <DiscoveriesList />
-        </MemoryRouter>
-      </Provider>
+  it("can display the add form", async () => {
+    renderWithBrowserRouter(<DiscoveriesList />, {
+      route: route,
+      wrapperProps: { state },
+    });
+    const row = screen.getByRole("row", { name: "my-discovery-test" });
+    expect(
+      screen.queryByRole("form", { name: "Add discovery form" })
+    ).not.toBeInTheDocument();
+    await userEvent.click(
+      within(within(row).getByTestId("row-menu")).getByRole("button")
     );
-    expect(wrapper.find("[data-testid='add-discovery']").exists()).toBe(false);
-    wrapper
-      .find("[data-testid='row-menu'] .row-menu-toggle")
-      .first()
-      .simulate("click");
-    wrapper
-      .find("button[data-testid='add-discovery-link']")
-      .first()
-      .simulate("click");
-    expect(wrapper.find("[data-testid='add-discovery']").exists()).toBe(true);
+    await userEvent.click(
+      screen.getByRole("button", { name: DiscoveriesListLabels.AddDiscovery })
+    );
+
+    expect(
+      screen.getByRole("form", { name: "Add discovery form" })
+    ).toBeInTheDocument();
   });
 
-  it("can display the delete form", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <DiscoveriesList />
-        </MemoryRouter>
-      </Provider>
+  it("can display the delete form", async () => {
+    renderWithBrowserRouter(<DiscoveriesList />, {
+      route: route,
+      wrapperProps: { state },
+    });
+    const row = screen.getByRole("row", { name: "my-discovery-test" });
+    expect(screen.queryByTestId("delete-discovery")).not.toBeInTheDocument();
+    await userEvent.click(
+      within(within(row).getByTestId("row-menu")).getByRole("button")
     );
-    expect(wrapper.find("[data-testid='delete-discovery']").exists()).toBe(
-      false
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: DiscoveriesListLabels.DeleteDiscovery,
+      })
     );
-    wrapper
-      .find("[data-testid='row-menu'] .row-menu-toggle")
-      .first()
-      .simulate("click");
-    wrapper
-      .find("button[data-testid='delete-discovery-link']")
-      .first()
-      .simulate("click");
-    expect(wrapper.find("[data-testid='delete-discovery']").exists()).toBe(
-      true
-    );
+
+    expect(
+      screen.getByText(
+        'Are you sure you want to delete discovery "my-discovery-test"?'
+      )
+    ).toBeInTheDocument();
+
+    expect(screen.getByRole("button", { name: "Delete" })).toBeInTheDocument();
   });
 
-  it("can delete a discovery", () => {
+  it("can delete a discovery", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <DiscoveriesList />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DiscoveriesList />, {
+      route: route,
+      wrapperProps: { store },
+    });
+    const row = screen.getByRole("row", { name: "my-discovery-test" });
+
     // Open the action menu.
-    wrapper
-      .find("[data-testid='row-menu'] .row-menu-toggle")
-      .first()
-      .simulate("click");
+    await userEvent.click(
+      within(within(row).getByTestId("row-menu")).getByRole("button")
+    );
+
     // Click on the delete link.
-    wrapper
-      .find("button[data-testid='delete-discovery-link']")
-      .first()
-      .simulate("click");
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: DiscoveriesListLabels.DeleteDiscovery,
+      })
+    );
+
     // Click on the confirm button.
-    wrapper
-      .find("[data-testid='delete-discovery'] [data-testid='action-confirm']")
-      .last()
-      .simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Delete" }));
     expect(
       store.getActions().some((action) => action.type === "discovery/delete")
     ).toBe(true);

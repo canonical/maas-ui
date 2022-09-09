@@ -27,8 +27,12 @@ import type { Discovery } from "app/store/discovery/types";
 import { DiscoveryMeta } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
 
-export enum Label {
+export enum Labels {
   Title = "Discoveries list",
+  Loading = "Loading...",
+  NoNewDiscoveries = "No new discoveries.",
+  AddDiscovery = "Add discovery...",
+  DeleteDiscovery = "Delete discovery...",
 }
 
 enum ExpandedType {
@@ -88,6 +92,7 @@ const generateRows = (
     }
     return {
       key: discovery[DiscoveryMeta.PK],
+      "aria-label": name,
       className: classNames("p-table__row", {
         "is-active": isExpanded,
       }),
@@ -130,7 +135,7 @@ const generateRows = (
               hasToggleIcon={true}
               links={[
                 {
-                  children: "Add discovery...",
+                  children: Labels.AddDiscovery,
                   "data-testid": "add-discovery-link",
                   onClick: () => {
                     setExpandedRow({
@@ -220,7 +225,7 @@ const DiscoveriesList = (): JSX.Element => {
   ];
 
   return (
-    <div aria-label={Label.Title}>
+    <div aria-label={Labels.Title}>
       <Row>
         <Col size={3}>
           <DiscoveriesFilterAccordion

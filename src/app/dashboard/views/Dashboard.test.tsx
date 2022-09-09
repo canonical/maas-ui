@@ -2,7 +2,7 @@ import { screen } from "@testing-library/react";
 
 import Dashboard, { Label } from "./Dashboard";
 import { Label as DashboardConfigurationFormLabel } from "./DashboardConfigurationForm/DashboardConfigurationForm";
-import { Label as DiscoveriesListLabel } from "./DiscoveriesList/DiscoveriesList";
+import { Labels as DiscoveriesListLabel } from "./DiscoveriesList/DiscoveriesList";
 
 import urls from "app/base/urls";
 import { Label as NotFoundLabel } from "app/base/views/NotFound/NotFound";
