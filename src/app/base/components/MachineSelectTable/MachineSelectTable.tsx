@@ -1,3 +1,4 @@
+import type { KeyboardEvent } from "react";
 import { useEffect } from "react";
 
 import { MainTable } from "@canonical/react-components";
@@ -73,7 +74,7 @@ const generateRows = (
     ],
     "data-testid": "machine-select-row",
     onClick: () => onRowClick(machine),
-    onKeyPress: (e: KeyboardEvent) => {
+    onKeyPress: (e: KeyboardEvent<HTMLTableRowElement>) => {
       if (e.key === "Enter") {
         e.preventDefault();
         onRowClick(machine);
