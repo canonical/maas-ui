@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, AriaAttributes } from "react";
 import { useMemo, useState } from "react";
 
 import {
@@ -23,7 +23,6 @@ type FilterValues = Map<FilterValue, number>;
 type FilterSections = Map<FilterKey, FilterValues>;
 
 export type Props<I, PK extends keyof I> = {
-  ariaLabel?: string;
   disabled?: boolean;
   filterNames: Map<FilterKey, string>;
   filterOrder: FilterKey[];
@@ -36,7 +35,7 @@ export type Props<I, PK extends keyof I> = {
   items: I[];
   onUpdateFilterString: (filterString: string) => void;
   toggleFilter: FilterItems<I, PK>["toggleFilter"];
-};
+} & Pick<AriaAttributes, "aria-label">;
 
 // An accordion section.
 type Section = {
@@ -105,7 +104,7 @@ const sortByFilterKey = (
 };
 
 const FilterAccordion = <I, PK extends keyof I>({
-  ariaLabel,
+  "aria-label": ariaLabel,
   disabled,
   filterNames,
   filterOrder,

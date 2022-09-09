@@ -27,7 +27,7 @@ describe("DiscoveriesFilterAccordion", () => {
     state.discovery.loaded = false;
     renderWithBrowserRouter(
       <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />,
-      { route: route, wrapperProps: { state } }
+      { route, wrapperProps: { state } }
     );
     expect(screen.getByRole("button", { name: "Filters:" })).toBeDisabled();
   });
@@ -35,10 +35,10 @@ describe("DiscoveriesFilterAccordion", () => {
   it("displays a filter accordion", () => {
     renderWithBrowserRouter(
       <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />,
-      { route: route, wrapperProps: { state } }
+      { route, wrapperProps: { state } }
     );
     expect(
-      screen.getByLabelText(DiscoveriesFilterAccordionLabels.AccordionLabel)
+      screen.getByLabelText(DiscoveriesFilterAccordionLabels.FilterDiscoveries)
     ).toBeInTheDocument();
   });
 });

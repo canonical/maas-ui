@@ -13,7 +13,7 @@ type Props = {
 };
 
 export enum Labels {
-  AccordionLabel = "Filter discoveries",
+  FilterDiscoveries = "Filter discoveries",
 }
 
 const filterOrder = ["fabric_name", "vlan", "observer_hostname", "subnet"];
@@ -34,7 +34,7 @@ const DiscoveriesFilterAccordion = ({
 
   return (
     <FilterAccordion
-      ariaLabel="Filter discoveries"
+      aria-label={Labels.FilterDiscoveries}
       disabled={!loaded}
       filterNames={filterNames}
       filterOrder={filterOrder}

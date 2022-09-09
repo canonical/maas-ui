@@ -115,8 +115,6 @@ describe("DiscoveriesList", () => {
       wrapperProps: { state },
     });
 
-    // expect(wrapper.text().includes("my-discovery-test")).toBe(true);
-    // expect(wrapper.text().includes("another-test")).toBe(true);
     expect(screen.getByText("my-discovery-test")).toBeInTheDocument();
     expect(screen.getByText("another-test")).toBeInTheDocument();
   });
@@ -160,7 +158,7 @@ describe("DiscoveriesList", () => {
     });
     const row = screen.getByRole("row", { name: "my-discovery-test" });
     expect(
-      screen.queryByRole("form", { name: "Add discovery form" })
+      screen.queryByRole("form", { name: "Add discovery" })
     ).not.toBeInTheDocument();
     await userEvent.click(
       within(within(row).getByTestId("row-menu")).getByRole("button")
@@ -170,7 +168,7 @@ describe("DiscoveriesList", () => {
     );
 
     expect(
-      screen.getByRole("form", { name: "Add discovery form" })
+      screen.getByRole("form", { name: "Add discovery" })
     ).toBeInTheDocument();
   });
 
