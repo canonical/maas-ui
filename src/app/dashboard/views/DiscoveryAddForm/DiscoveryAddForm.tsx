@@ -181,6 +181,7 @@ const DiscoveryAddForm = ({ discovery, onClose }: Props): JSX.Element => {
   return (
     <FormikForm<DiscoveryAddValues>
       allowUnchanged
+      aria-label="Add discovery"
       className="u-width--full"
       cleanup={discoveryActions.cleanup}
       errors={errors}

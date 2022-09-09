@@ -1,4 +1,4 @@
-import type { ReactNode } from "react";
+import type { ReactNode, AriaAttributes } from "react";
 import { useMemo, useState } from "react";
 
 import {
@@ -35,7 +35,7 @@ export type Props<I, PK extends keyof I> = {
   items: I[];
   onUpdateFilterString: (filterString: string) => void;
   toggleFilter: FilterItems<I, PK>["toggleFilter"];
-};
+} & Pick<AriaAttributes, "aria-label">;
 
 // An accordion section.
 type Section = {
@@ -104,6 +104,7 @@ const sortByFilterKey = (
 };
 
 const FilterAccordion = <I, PK extends keyof I>({
+  "aria-label": ariaLabel,
   disabled,
   filterNames,
   filterOrder,
@@ -189,6 +190,7 @@ const FilterAccordion = <I, PK extends keyof I>({
 
   return (
     <ContextualMenu
+      aria-label={ariaLabel}
       className="filter-accordion filter-accordion--expanded"
       constrainPanelWidth
       hasToggleIcon
