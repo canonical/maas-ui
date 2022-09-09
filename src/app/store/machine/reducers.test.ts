@@ -55,8 +55,8 @@ describe("machine reducer", () => {
     ).toEqual(
       machineStateFactory({
         items: fetchedMachines,
-        loading: true,
-        loaded: false,
+        loading: false,
+        loaded: true,
         statuses: {
           abc123: machineStatusFactory(),
           def456: machineStatusFactory(),
@@ -91,8 +91,8 @@ describe("machine reducer", () => {
     ).toEqual(
       machineStateFactory({
         items: [existingMachine, fetchedMachines[1]],
-        loading: true,
-        loaded: false,
+        loading: false,
+        loaded: true,
         statuses: {
           abc123: machineStatusFactory(),
           def456: machineStatusFactory(),

@@ -1,9 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import NumaCardDetails from "./NumaCardDetails";
+import NumaCardDetails, {
+  Labels as NumaCardDetailsLabels,
+} from "./NumaCardDetails";
 
 import type { RootState } from "app/store/root/types";
 import type { NodeNumaNode } from "app/store/types/node";
@@ -13,8 +13,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("NumaCardDetails", () => {
   let state: RootState;
@@ -34,85 +33,69 @@ describe("NumaCardDetails", () => {
   });
 
   it("can display as expanded", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NumaCardDetails
-            machineId="abc123"
-            numaNode={numaNode}
-            showExpanded
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NumaCardDetails machineId="abc123" numaNode={numaNode} showExpanded />,
+      { route: "/machine/abc123", wrapperProps: { state } }
     );
-    expect(wrapper.find(".numa-card__button").exists()).toBe(false);
-    expect(wrapper.find(".numa-card__collapsed-details").exists()).toBe(false);
-    expect(wrapper.find("NumaCard")).toMatchSnapshot();
+
+    expect(
+      screen.queryByRole("button", { name: "Node 1" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByLabelText(NumaCardDetailsLabels.Details)
+    ).not.toBeInTheDocument();
+
+    expect(screen.getByText("Node 1")).toBeInTheDocument();
+
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.CpuCores)
+    ).toHaveTextContent("0");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Memory)
+    ).toHaveTextContent("256 MiB");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Storage)
+    ).toHaveTextContent("0 B over 0 disks");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Network)
+    ).toHaveTextContent("0 interfaces");
   });
 
   it("can display as collapsed", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NumaCardDetails machineId="abc123" numaNode={numaNode} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NumaCardDetails machineId="abc123" numaNode={numaNode} />,
+      { route: "/machine/abc123", wrapperProps: { state } }
     );
-    expect(wrapper.find(".numa-card__button").exists()).toBe(true);
-    expect(wrapper.find(".numa-card__collapsed-details").exists()).toBe(true);
+
+    expect(screen.getByRole("button", { name: "Node 2" })).toBeInTheDocument();
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Details)
+    ).toBeInTheDocument();
   });
 
-  it("can be expanded", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NumaCardDetails machineId="abc123" numaNode={numaNode} />
-        </MemoryRouter>
-      </Provider>
+  it("can be expanded", async () => {
+    renderWithBrowserRouter(
+      <NumaCardDetails machineId="abc123" numaNode={numaNode} />,
+      { route: "/machine/abc123", wrapperProps: { state } }
     );
-    wrapper.find(".numa-card__button").simulate("click");
-    expect(wrapper.find("LabelledList").exists()).toBe(true);
-    expect(wrapper.find(".numa-card__collapsed-details").exists()).toBe(false);
-  });
 
-  it("shows a border if it is not the last item", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NumaCardDetails
-            isLast={false}
-            machineId="abc123"
-            numaNode={numaNode}
-          />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("hr").exists()).toBe(true);
-  });
+    await userEvent.click(screen.getByRole("button", { name: "Node 3" }));
 
-  it("does not show a border if it is the last item", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NumaCardDetails isLast machineId="abc123" numaNode={numaNode} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("hr").exists()).toBe(false);
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.CpuCores)
+    ).toHaveTextContent("0");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Memory)
+    ).toHaveTextContent("256 MiB");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Storage)
+    ).toHaveTextContent("0 B over 0 disks");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Network)
+    ).toHaveTextContent("0 interfaces");
+
+    expect(
+      screen.queryByLabelText(NumaCardDetailsLabels.Details)
+    ).not.toBeInTheDocument();
   });
 });

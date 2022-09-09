@@ -1,6 +1,21 @@
 @mixin NumaCard {
+
   .numa-card {
+    padding: $spv--small $sph--large $spv--large $sph--large;
+  }
+
+  .numa-card__list {
     position: relative;
+    padding-top: 0 !important;
+
+    .p-list__item-label {
+      text-align: left;
+      margin-right: 0;
+    }
+
+    .p-list__item {
+      padding: $spv--small 0 !important;
+    }
   }
 
   .numa-card__button {
