@@ -1022,6 +1022,8 @@ const machineSlice = createSlice({
           }
         });
       });
+      state.loading = false;
+      state.loaded = true;
     },
     get: {
       prepare: (machineID: Machine[MachineMeta.PK]) => ({
