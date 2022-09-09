@@ -33,7 +33,7 @@ describe("Dashboard", () => {
 
   [
     {
-      label: DiscoveriesListLabel.Title,
+      label: DiscoveriesListLabel.DiscoveriesList,
       path: urls.dashboard.index,
     },
     {

@@ -147,7 +147,7 @@ describe("DiscoveriesList", () => {
       screen.getByText(DiscoveriesListLabels.NoNewDiscoveries)
     ).toBeInTheDocument();
     expect(
-      screen.queryByLabelText(DiscoveriesListLabels.Title)
+      screen.queryByLabelText(DiscoveriesListLabels.DiscoveriesList)
     ).not.toBeInTheDocument();
   });
 

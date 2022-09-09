@@ -28,7 +28,7 @@ import { DiscoveryMeta } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
 
 export enum Labels {
-  Title = "Discoveries list",
+  DiscoveriesList = "Discoveries list",
   Loading = "Loading...",
   NoNewDiscoveries = "No new discoveries.",
   AddDiscovery = "Add discovery...",
@@ -225,7 +225,7 @@ const DiscoveriesList = (): JSX.Element => {
   ];
 
   return (
-    <div aria-label={Labels.Title}>
+    <div aria-label={Labels.DiscoveriesList}>
       <Row>
         <Col size={3}>
           <DiscoveriesFilterAccordion
