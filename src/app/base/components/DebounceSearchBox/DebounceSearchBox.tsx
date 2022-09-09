@@ -9,7 +9,7 @@ type Props = {
   onDebounced: (debouncedText: string) => void;
   searchText: string;
   setSearchText: (searchText: string) => void;
-} & Omit<SearchBoxProps, "externallyControlled" | "onChange" | "value">;
+} & Omit<SearchBoxProps, "externallyControlled" | "onChange" | "value" | "ref">;
 
 export const DEFAULT_DEBOUNCE_INTERVAL = 500;
 
@@ -22,8 +22,7 @@ const DebounceSearchBox = ({
   onDebounced,
   searchText,
   setSearchText,
-  autoFocus,
-  placeholder,
+  ...props
 }: Props): JSX.Element => {
   const intervalRef = useRef<NodeJS.Timeout | null>(null);
   const [debouncing, setDebouncing] = useState(false);
@@ -40,7 +39,7 @@ const DebounceSearchBox = ({
   return (
     <div className="debounce-search-box">
       <SearchBox
-        autoFocus={autoFocus}
+        {...props}
         externallyControlled
         onChange={(text: string) => {
           setDebouncing(true);
@@ -54,7 +53,6 @@ const DebounceSearchBox = ({
             setDebouncing(false);
           }, debounceInterval);
         }}
-        placeholder={placeholder}
         value={searchText}
       />
       {debouncing && (

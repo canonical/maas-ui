@@ -15,12 +15,12 @@ const MachineSelectBox = ({
   onSelect: (machine: Machine | null) => void;
 }): JSX.Element => {
   const [searchText, setSearchText] = useState("");
-  const [deboucedText, setDebouncedText] = useState("");
+  const [debouncedText, setDebouncedText] = useState("");
   const [currentPage, setPage] = useState(1);
   const { machines, machineCount, loading } = useFetchMachines({
     currentPage,
     pageSize,
-    filters: { [FilterGroupKey.FreeText]: deboucedText },
+    filters: { [FilterGroupKey.FreeText]: debouncedText },
   });
   return (
     <div className="machine-select-box" role="listbox">
