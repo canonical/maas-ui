@@ -10,7 +10,6 @@ import { Labels } from "./DhcpFormFields";
 
 import DhcpForm from "app/base/components/DhcpForm";
 import type { RootState } from "app/store/root/types";
-import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
   controllerState as controllerStateFactory,
   deviceState as deviceStateFactory,
