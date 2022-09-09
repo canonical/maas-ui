@@ -26,30 +26,7 @@ import {
 } from "testing/factories";
 
 const mockStore = configureStore();
-const machines = [
-  machineFactory({
-    actions: [],
-    architecture: "amd64/generic",
-    cpu_count: 4,
-    distro_series: "bionic",
-    extra_macs: [],
-    fqdn: "koala.example",
-    hostname: "koala",
-    ip_addresses: [],
-    memory: 8,
-    osystem: "ubuntu",
-    owner: "admin",
-    permissions: ["edit", "delete"],
-    physical_disk_count: 1,
-    pxe_mac: "00:11:22:33:44:55",
-    spaces: [],
-    status: NodeStatus.DEPLOYED,
-    status_code: NodeStatusCode.DEPLOYED,
-    status_message: "",
-    storage: 8,
-    system_id: "abc123",
-  }),
-];
+const machines = [machineFactory()];
 describe("DhcpFormFields", () => {
   let state: RootState;
 

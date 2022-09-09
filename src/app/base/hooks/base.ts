@@ -177,7 +177,9 @@ export const useScrollToTop = (): void => {
 };
 
 /**
- * Returns the previous value persisted across the render cycles.
+ * Returns the previous value reference persisted across the render cycles
+ * @param value - value to persist across the render cycles
+ * @returns previous value
  */
 export const usePreviousPersistent = <T extends unknown>(
   value: T
