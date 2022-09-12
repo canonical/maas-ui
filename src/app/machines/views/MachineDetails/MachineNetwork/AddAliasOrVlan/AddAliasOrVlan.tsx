@@ -30,6 +30,11 @@ import type { NetworkInterface } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";
 
+export enum Labels {
+  SubmitLabel = "Save interface",
+  SecondarySubmitLabel = "Save and add another",
+}
+
 type Props = {
   close: () => void;
   nic?: NetworkInterface | null;
@@ -129,13 +134,13 @@ const AddAliasOrVlan = ({
           submitForm();
         }}
         secondarySubmitDisabled={!canAddAnother}
-        secondarySubmitLabel="Save and add another"
+        secondarySubmitLabel={Labels.SecondarySubmitLabel}
         secondarySubmitTooltip={
           canAddAnother
             ? null
             : "There are no more unused VLANS for this interface."
         }
-        submitLabel="Save interface"
+        submitLabel={Labels.SubmitLabel}
         validationSchema={InterfaceSchema}
       >
         <AddAliasOrVlanFields
