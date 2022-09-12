@@ -16,6 +16,10 @@ import { actions as discoveryActions } from "app/store/discovery";
 import discoverySelectors from "app/store/discovery/selectors";
 import { actions as messageActions } from "app/store/message";
 
+export enum Labels {
+  SubmitLabel = "Clear all discoveries",
+}
+
 type Props = {
   closeForm: () => void;
 };
@@ -89,7 +93,7 @@ const ClearAllForm = ({ closeForm }: Props): JSX.Element => {
       saved={saved}
       saving={saving}
       secondarySubmitLabel="Save and add another"
-      submitLabel="Clear all discoveries"
+      submitLabel={Labels.SubmitLabel}
     >
       <Notification severity={NotificationSeverity.CAUTION} title="Warning:">
         Clearing all discoveries will remove all items from the list below.

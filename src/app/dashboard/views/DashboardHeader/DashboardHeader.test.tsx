@@ -1,10 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import DashboardHeader from "./DashboardHeader";
+import DashboardHeader, {
+  Labels as DashboardHeaderLabels,
+} from "./DashboardHeader";
 
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
@@ -13,8 +12,7 @@ import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("DashboardHeader", () => {
   let state: RootState;
@@ -36,54 +34,40 @@ describe("DashboardHeader", () => {
   });
 
   it("displays the discovery count in the header", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DashboardHeader />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DashboardHeader />, {
+      route: "/dashboard",
+      wrapperProps: { state },
+    });
 
-    expect(wrapper.find(`[to='${urls.dashboard.index}']`).text()).toBe(
-      "2 discoveries"
+    const indexLink = screen.getByText("2 discoveries");
+    expect(indexLink).toBeInTheDocument();
+    expect(indexLink).toHaveProperty(
+      "href",
+      `http://example.com${urls.dashboard.index}`
     );
   });
 
   it("has a button to clear discoveries", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DashboardHeader />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='clear-all']").exists()).toBe(true);
+    renderWithBrowserRouter(<DashboardHeader />, {
+      route: "/dashboard",
+      wrapperProps: { state },
+    });
+    expect(
+      screen.getByRole("button", { name: DashboardHeaderLabels.ClearAll })
+    ).toBeInTheDocument();
   });
 
-  it("hides the clear-all button when the form is visible", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DashboardHeader />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper.find("[data-testid='clear-all']").last().simulate("click");
-    expect(wrapper.find("[data-testid='clear-all']").exists()).toBe(false);
+  it("hides the clear-all button when the form is visible", async () => {
+    renderWithBrowserRouter(<DashboardHeader />, {
+      route: "/dashboard",
+      wrapperProps: { state },
+    });
+
+    const clearAllButton = screen.getByRole("button", {
+      name: DashboardHeaderLabels.ClearAll,
+    });
+
+    await userEvent.click(clearAllButton);
+    expect(clearAllButton).not.toBeInTheDocument();
   });
 });

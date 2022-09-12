@@ -12,6 +12,10 @@ type Props = {
   setSearchText: (searchText: string) => void;
 };
 
+export enum Labels {
+  FilterDiscoveries = "Filter discoveries",
+}
+
 const filterOrder = ["fabric_name", "vlan", "observer_hostname", "subnet"];
 
 const filterNames = new Map([
@@ -30,6 +34,7 @@ const DiscoveriesFilterAccordion = ({
 
   return (
     <FilterAccordion
+      aria-label={Labels.FilterDiscoveries}
       disabled={!loaded}
       filterNames={filterNames}
       filterOrder={filterOrder}

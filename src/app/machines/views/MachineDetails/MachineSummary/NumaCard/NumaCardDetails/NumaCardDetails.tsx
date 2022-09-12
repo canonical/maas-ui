@@ -20,6 +20,14 @@ type Props = {
   showExpanded?: boolean;
 };
 
+export enum Labels {
+  CpuCores = "CPU cores",
+  Memory = "Memory",
+  Storage = "Storage",
+  Network = "Network",
+  Details = "Node details",
+}
+
 const NumaCardDetails = ({
   isLast = false,
   machineId,
@@ -66,7 +74,7 @@ const NumaCardDetails = ({
         <LabelledList
           items={[
             {
-              label: "CPU cores",
+              label: Labels.CpuCores,
               value: (
                 <>
                   <span>{numaNode.cores.length}</span>
@@ -80,23 +88,26 @@ const NumaCardDetails = ({
               ),
             },
             {
-              label: "Memory",
+              label: Labels.Memory,
               value: `${formattedMemory.value} ${formattedMemory.unit}`,
             },
             {
-              label: "Storage",
+              label: Labels.Storage,
               value: `${totalStorage.value} ${
                 totalStorage.unit
               } over ${pluralize("disk", numaDisks.length, true)}`,
             },
             {
-              label: "Network",
+              label: Labels.Network,
               value: pluralize("interface", numaInterfaces.length, true),
             },
           ]}
         />
       ) : (
-        <span className="numa-card__collapsed-details">
+        <span
+          aria-label={Labels.Details}
+          className="numa-card__collapsed-details"
+        >
           {pluralize("core", numaNode.cores.length, true)},{" "}
           {`${formattedMemory.value} ${formattedMemory.unit}`},<br />
           {totalStorage.value} {totalStorage.unit},{" "}

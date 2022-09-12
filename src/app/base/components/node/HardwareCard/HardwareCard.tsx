@@ -8,60 +8,80 @@ type Props = {
   node: ControllerDetails | MachineDetails;
 };
 
+export enum Labels {
+  HardwareInfo = "Hardware Information",
+  System = "System",
+  SysVendor = "Vendor",
+  SysProduct = "Product",
+  SysVersion = "Version",
+  Serial = "Serial",
+  Unknown = "Unknown",
+  Mainboard = "Mainboard",
+  MainboardVendor = "Vendor",
+  MainboardProduct = "Product",
+  MainboardFirmware = "Firmware",
+  BiosBootMode = "Boot mode",
+  MainboardVersion = "Version",
+  Date = "Date",
+}
+
 const HardwareCard = ({ node }: Props): JSX.Element => {
   return (
-    <Card>
-      <strong className="p-muted-heading u-sv1">Hardware information</strong>
-      <hr />
-      <span className="u-sv1">System</span>
+    <Card aria-label={Labels.HardwareInfo} className="hardware-card">
+      <div className="u-sv1 p-muted-heading">{Labels.HardwareInfo}</div>
+      <span>{Labels.System}</span>
       <LabelledList
+        aria-label={Labels.System}
+        className="hardware-card__section p-list--divided"
         items={[
           {
-            label: "Vendor",
-            value: node.metadata.system_vendor || "Unknown",
+            label: Labels.SysVendor,
+            value: node.metadata.system_vendor || Labels.Unknown,
           },
           {
-            label: "Product",
-            value: node.metadata.system_product || "Unknown",
+            label: Labels.SysProduct,
+            value: node.metadata.system_product || Labels.Unknown,
           },
           {
-            label: "Version",
-            value: node.metadata.system_version || "Unknown",
+            label: Labels.SysVersion,
+            value: node.metadata.system_version || Labels.Unknown,
           },
           {
-            label: "Serial",
-            value: node.metadata.system_serial || "Unknown",
+            label: Labels.Serial,
+            value: node.metadata.system_serial || Labels.Unknown,
           },
         ]}
       />
-      <hr />
-      <span className="u-sv1">Mainboard</span>
+      <span>{Labels.Mainboard}</span>
       <LabelledList
-        className="u-no-margin--bottom"
+        aria-label={Labels.Mainboard}
+        className="hardware-card__section u-no-margin--bottom p-list--divided"
         items={[
           {
-            label: "Vendor",
-            value: node.metadata.mainboard_vendor || "Unknown",
+            label: Labels.MainboardVendor,
+            value: node.metadata.mainboard_vendor || Labels.Unknown,
           },
           {
-            label: "Product",
-            value: (
-              <div className="u-sv1">
-                {node.metadata.mainboard_product || "Unknown"}
-              </div>
-            ),
+            label: Labels.MainboardProduct,
+            value: node.metadata.mainboard_product || Labels.Unknown,
           },
           {
-            label: "Firmware",
-            value: node.metadata.mainboard_firmware_vendor || "Unknown",
+            label: Labels.MainboardFirmware,
+            value: node.metadata.mainboard_firmware_vendor || Labels.Unknown,
           },
           {
-            label: "Version",
-            value: node.metadata.mainboard_firmware_version || "Unknown",
+            label: Labels.BiosBootMode,
+            value: node.bios_boot_method
+              ? node.bios_boot_method.toUpperCase()
+              : Labels.Unknown,
           },
           {
-            label: "Date",
-            value: node.metadata.mainboard_firmware_date || "Unknown",
+            label: Labels.MainboardVersion,
+            value: node.metadata.mainboard_firmware_version || Labels.Unknown,
+          },
+          {
+            label: Labels.Date,
+            value: node.metadata.mainboard_firmware_date || Labels.Unknown,
           },
         ]}
       />

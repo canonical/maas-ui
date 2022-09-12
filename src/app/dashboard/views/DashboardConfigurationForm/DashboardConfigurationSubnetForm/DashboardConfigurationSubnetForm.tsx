@@ -20,6 +20,11 @@ type SubnetDiscoveryValues = {
   [x: number]: Subnet["active_discovery"];
 };
 
+export enum Labels {
+  Loading = "Loading...",
+  FormLabel = "Subnet mapping form",
+}
+
 const DashboardConfigurationSubnetForm = (): JSX.Element => {
   const dispatch = useDispatch();
   const subnets = useSelector(subnetSelectors.all);
@@ -37,7 +42,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
   }, [dispatch]);
 
   const loaded = subnetsLoaded && fabricsLoaded;
-  let content: JSX.Element = <Spinner text="Loading..." />;
+  let content: JSX.Element = <Spinner text={Labels.Loading} />;
 
   if (loaded) {
     const sortedSubnets = [...subnets].sort(simpleSortByKey("cidr"));
@@ -48,6 +53,7 @@ const DashboardConfigurationSubnetForm = (): JSX.Element => {
 
     content = (
       <FormikForm<SubnetDiscoveryValues>
+        aria-label={Labels.FormLabel}
         buttonsAlign="left"
         buttonsBordered={false}
         initialValues={initialValues}
