@@ -13,6 +13,7 @@ import { BondMode } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
 import {
+  fabric as fabricFactory,
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -35,10 +36,12 @@ const route = "/machines";
 
 describe("AddBondForm", () => {
   let state: RootState;
+  const fabric = fabricFactory();
   beforeEach(() => {
     state = rootStateFactory({
       fabric: fabricStateFactory({
         loaded: true,
+        items: [fabric],
       }),
       machine: machineStateFactory({
         items: [
@@ -56,6 +59,7 @@ describe("AddBondForm", () => {
       vlan: vlanStateFactory({
         items: [
           vlanFactory({
+            fabric: fabric.id,
             id: 1,
           }),
         ],
@@ -397,20 +401,18 @@ describe("AddBondForm", () => {
     // });
     // await waitForComponentToPaint(wrapper);
 
-    screen.debug(undefined, 30000);
+    // screen.debug(undefined, 30000);
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Bond name" }),
       "bond1"
     );
 
-    debugger;
-
     await userEvent.click(
       screen.getByRole("button", { name: "Save interface" })
     );
 
-    console.log(store.getActions());
+    // console.log(store.getActions());
 
     // await waitFor(() =>
     //   expect(
