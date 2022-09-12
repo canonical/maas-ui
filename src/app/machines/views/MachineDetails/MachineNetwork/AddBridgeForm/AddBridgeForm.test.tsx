@@ -1,15 +1,11 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import AddBridgeForm from "./AddBridgeForm";
 
 import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";
 import {
   machineDetails as machineDetailsFactory,
@@ -18,8 +14,12 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
+  vlan as vlanFactory,
+  vlanState as vlanStateFactory,
+  fabric as fabricFactory,
+  fabricState as fabricStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = "/machines";
@@ -27,6 +27,7 @@ const route = "/machines";
 describe("AddBridgeForm", () => {
   let nic: NetworkInterface;
   let state: RootState;
+  const fabric = fabricFactory();
   beforeEach(() => {
     nic = machineInterfaceFactory({
       type: NetworkInterfaceTypes.PHYSICAL,
@@ -42,6 +43,22 @@ describe("AddBridgeForm", () => {
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
         }),
+      }),
+      fabric: fabricStateFactory({
+        items: [fabric, fabricFactory()],
+        loaded: true,
+      }),
+      vlan: vlanStateFactory({
+        items: [
+          vlanFactory({
+            fabric: fabric.id,
+            vid: 2,
+            name: "vlan-name",
+            external_dhcp: null,
+            dhcp_on: true,
+          }),
+        ],
+        loaded: true,
       }),
     });
   });
@@ -107,50 +124,40 @@ describe("AddBridgeForm", () => {
       { route, wrapperProps: { store } }
     );
 
-    // act(() =>
-    //   submitFormikForm(wrapper, {
-    //     bridge_fd: 15,
-    //     bridge_stp: false,
-    //     fabric: 1,
-    //     ip_address: "1.2.3.4",
-    //     mac_address: "28:21:c6:b9:1b:22",
-    //     mode: NetworkLinkMode.LINK_UP,
-    //     name: "br1",
-    //     subnet: 1,
-    //     tags: ["a", "tag"],
-    //     vlan: 1,
-    //   })
-    // );
+    const macAddressField = screen.getByRole("textbox", {
+      name: "MAC address",
+    });
+
+    await userEvent.clear(macAddressField);
+    await userEvent.type(macAddressField, "28:21:c6:b9:1b:22");
 
     await userEvent.click(
       screen.getByRole("button", { name: "Save interface" })
     );
-    // expect(
-    //   store
-    //     .getActions()
-    //     .find((action) => action.type === "machine/createBridge")
-    // ).toStrictEqual({
-    //   type: "machine/createBridge",
-    //   meta: {
-    //     model: "machine",
-    //     method: "create_bridge",
-    //   },
-    //   payload: {
-    //     params: {
-    //       bridge_fd: 15,
-    //       bridge_stp: false,
-    //       fabric: 1,
-    //       ip_address: "1.2.3.4",
-    //       mac_address: "28:21:c6:b9:1b:22",
-    //       mode: NetworkLinkMode.LINK_UP,
-    //       name: "br1",
-    //       parents: [nic.id],
-    //       subnet: 1,
-    //       system_id: "abc123",
-    //       tags: ["a", "tag"],
-    //       vlan: 1,
-    //     },
-    //   },
-    // });
+
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/createBridge")
+    ).toStrictEqual({
+      type: "machine/createBridge",
+      meta: {
+        model: "machine",
+        method: "create_bridge",
+      },
+      payload: {
+        params: {
+          bridge_stp: false,
+          fabric: "1",
+          bridge_type: "standard",
+          mac_address: "28:21:c6:b9:1b:22",
+          name: "br0",
+          parents: [nic.id],
+          system_id: "abc123",
+          tags: [],
+          vlan: "39",
+        },
+      },
+    });
   });
 });
