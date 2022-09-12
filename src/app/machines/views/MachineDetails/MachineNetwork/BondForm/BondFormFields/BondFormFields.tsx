@@ -94,6 +94,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
           value={MacSource.NIC}
         />
         <FormikField
+          aria-label="Select bond member"
           component={Select}
           disabled={values.macSource !== MacSource.NIC}
           label={null}
@@ -113,6 +114,7 @@ const BondFormFields = ({ selected, systemId }: Props): JSX.Element | null => {
           value={MacSource.MANUAL}
         />
         <MacAddressField
+          aria-label="MAC address"
           disabled={values.macSource !== MacSource.MANUAL}
           label={null}
           name="mac_address"
