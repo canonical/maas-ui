@@ -182,24 +182,24 @@ describe("BondFormFields", () => {
     );
   });
 
-  // it("sets the mac address field when the nic field changes", async () => {
-  //   renderWithBrowserRouter(
-  //     <Formik initialValues={{ mac_address: "" }} onSubmit={jest.fn()}>
-  //       <BondFormFields selected={[]} systemId="abc123" />
-  //     </Formik>,
-  //     { route, wrapperProps: { state } }
-  //   );
-  //   await userEvent.click(
-  //     screen.getByRole("radio", { name: "Use MAC address from bond member" })
-  //   );
-  //   await userEvent.selectOptions(
-  //     screen.getByRole("combobox", { name: "Select bond member" }),
-  //     "6a:6e:4a:29:a5:42"
-  //   );
-  //   expect(screen.getByRole("textbox", { name: "MAC address" })).toHaveValue(
-  //     "6a:6e:4a:29:a5:42"
-  //   );
-  // });
+  it("sets the mac address field when the nic field changes", async () => {
+    renderWithBrowserRouter(
+      <Formik initialValues={{ mac_address: "" }} onSubmit={jest.fn()}>
+        <BondFormFields selected={[{ nicId: 17 }]} systemId="abc123" />
+      </Formik>,
+      { route, wrapperProps: { state } }
+    );
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Use MAC address from bond member" })
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Select bond member" }),
+      "6a:6e:4a:29:a5:42"
+    );
+    expect(screen.getByRole("textbox", { name: "MAC address" })).toHaveValue(
+      "6a:6e:4a:29:a5:42"
+    );
+  });
 
   it("enables the mac address field when the radio is changed to manual", async () => {
     renderWithBrowserRouter(
