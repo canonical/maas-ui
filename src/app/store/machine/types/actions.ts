@@ -283,7 +283,7 @@ type Filters = {
   [FilterGroupKey.Spaces]: Space["name"];
   [FilterGroupKey.Status]: FetchNodeStatus;
   [FilterGroupKey.Subnets]: Subnet["name"];
-  [FilterGroupKey.SystemId]: Machine["system_id"];
+  [FilterGroupKey.Id]: Machine["system_id"];
   [FilterGroupKey.Tags]: Tag["name"];
   [FilterGroupKey.Vlans]: NodeVlan["name"];
   [FilterGroupKey.Workloads]: string;
@@ -307,7 +307,7 @@ type ExcludeFilters = {
   [FilterGroupKey.NotPod]: Filters["pod"];
   [FilterGroupKey.NotPodType]: Filters["pod_type"];
   [FilterGroupKey.NotSubnets]: Filters["subnets"];
-  [FilterGroupKey.NotSystemId]: Filters["system_id"];
+  [FilterGroupKey.NotId]: Filters["id"];
   [FilterGroupKey.NotTags]: Filters["tags"];
   [FilterGroupKey.NotVlans]: Filters["vlans"];
 };

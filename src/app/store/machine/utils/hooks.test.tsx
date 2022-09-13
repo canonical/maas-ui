@@ -17,6 +17,7 @@ import {
   useFetchMachine,
   useFetchMachines,
   useFetchMachineCount,
+  useFetchedCount,
 } from "./hooks";
 
 import { actions as machineActions } from "app/store/machine";
@@ -787,6 +788,58 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(true);
+    });
+  });
+
+  describe("useFetchedCount", () => {
+    type Props = {
+      count: number | null;
+      loading?: boolean | null;
+    };
+    it("handles when no counts have loaded", () => {
+      const { result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: null, loading: false } }
+      );
+      expect(result.current).toBe(0);
+    });
+
+    it("handles when the initial count is loading", () => {
+      const { result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: null, loading: true } }
+      );
+      expect(result.current).toBe(0);
+    });
+
+    it("can display a count", () => {
+      const { result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: 1, loading: false } }
+      );
+      expect(result.current).toBe(1);
+    });
+
+    it("displays the previous count while loading a new one", () => {
+      const { rerender, result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: 1, loading: false } }
+      );
+      expect(result.current).toBe(1);
+      rerender({ count: null, loading: true });
+      expect(result.current).toBe(1);
+    });
+
+    it("displays the new count when it has loaded", () => {
+      const { rerender, result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: 1, loading: false } }
+      );
+      expect(result.current).toBe(1);
+      rerender({ count: null, loading: true });
+      expect(result.current).toBe(1);
+      rerender({ count: 2, loading: false });
+      expect(result.current).toBe(2);
     });
   });
 });

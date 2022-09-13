@@ -6,8 +6,6 @@ import RamResources from "../RamResources";
 import VfResources from "../VfResources";
 import VmResources from "../VmResources";
 
-import machineSelectors from "app/store/machine/selectors";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { resourceWithOverCommit } from "app/store/pod/utils";
@@ -19,11 +17,6 @@ const KVMResourcesCard = ({ id }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const podVMs = useSelector((state: RootState) =>
-    podSelectors.getVMs(state, id)
-  );
-  const machinesLoading = useSelector(machineSelectors.loading);
-  useFetchMachines();
 
   if (pod) {
     const {
@@ -60,7 +53,7 @@ const KVMResourcesCard = ({ id }: Props): JSX.Element => {
           />
           <VfResources dynamicLayout interfaces={interfaces} />
         </div>
-        <VmResources loading={machinesLoading} vms={podVMs} />
+        <VmResources podId={id} />
       </>
     );
   }
