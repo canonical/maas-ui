@@ -49,6 +49,7 @@ const TagMachines = (): JSX.Element => {
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       currentPage,
+      setCurrentPage,
       filters,
       pageSize: PAGE_SIZE,
       sortDirection: mapSortDirection(sortDirection),

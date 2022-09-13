@@ -44,6 +44,7 @@ const VmResources = ({ filters, podId }: Props): JSX.Element => {
     machines: vms,
   } = useFetchMachines({
     currentPage,
+    setCurrentPage,
     filters: {
       ...filters,
       [FilterGroupKey.Pod]: pod ? [pod.name] : [],

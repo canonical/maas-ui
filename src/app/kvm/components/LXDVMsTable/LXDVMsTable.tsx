@@ -59,6 +59,7 @@ const LXDVMsTable = ({
     machines: vms,
   } = useFetchMachines({
     currentPage,
+    setCurrentPage,
     filters: {
       ...FilterMachineItems.parseFetchFilters(searchFilter),
       // Set the filters to get results that belong to this single pod or pods in a cluster.

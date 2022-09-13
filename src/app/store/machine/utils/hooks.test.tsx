@@ -331,6 +331,27 @@ describe("machine hook utils", () => {
       expect(getDispatches).toHaveLength(2);
     });
 
+    it("resets the page number if the options change", () => {
+      const store = mockStore(state);
+      const handleSetCurrentPage = jest.fn();
+      const initialProps = {
+        filters: { hostname: "spotted-quoll" },
+        currentPage: 2,
+        setCurrentPage: handleSetCurrentPage,
+        pageSize: 10,
+      };
+      const { rerender } = renderHook(
+        (options: UseFetchMachinesOptions) => useFetchMachines(options),
+        {
+          initialProps,
+          wrapper: generateWrapper(store),
+        }
+      );
+      expect(handleSetCurrentPage).not.toHaveBeenCalled();
+      rerender({ ...initialProps, filters: { hostname: "eastern-quoll" } });
+      expect(handleSetCurrentPage).toHaveBeenCalledWith(1);
+    });
+
     it("cleans up list request on unmount", async () => {
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
       const store = mockStore(state);

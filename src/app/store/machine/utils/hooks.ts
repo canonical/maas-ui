@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { nanoid } from "@reduxjs/toolkit";
@@ -90,6 +90,7 @@ export type UseFetchMachinesOptions = {
   grouping?: FetchGroupKey | null;
   pageSize?: number;
   currentPage?: number;
+  setCurrentPage?: React.Dispatch<React.SetStateAction<number>>;
   sortKey?: FetchGroupKey | null;
   sortDirection?: FetchSortDirection | null;
   collapsedGroups?: FetchParams["group_collapsed"];
@@ -129,6 +130,26 @@ export const useFetchMachines = (
   );
   useCleanup(callId);
 
+  // reset pagination when filters change
+  const { filters, grouping, collapsedGroups, sortDirection, sortKey } =
+    options || {};
+  const filterOptions = useMemo(
+    () => ({
+      filters,
+      grouping,
+      collapsedGroups,
+      sortDirection,
+      sortKey,
+    }),
+    [filters, grouping, collapsedGroups, sortDirection, sortKey]
+  );
+  const previousFilterOptions = usePrevious(filterOptions);
+  useEffect(() => {
+    if (!fastDeepEqual(filterOptions, previousFilterOptions)) {
+      options?.setCurrentPage?.(1);
+    }
+  }, [options, filterOptions, previousFilterOptions]);
+
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
@@ -156,7 +177,7 @@ export const useFetchMachines = (
         )
       );
     }
-  }, [callId, dispatch, options, previousCallId]);
+  }, [callId, dispatch, options, previousOptions, previousCallId]);
 
   return { callId, loaded, loading, machineCount, machines, machinesErrors };
 };
