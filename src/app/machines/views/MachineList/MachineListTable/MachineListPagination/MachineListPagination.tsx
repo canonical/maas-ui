@@ -1,10 +1,10 @@
-import { useState, useEffect } from "react";
-
 import type {
   PaginationProps,
   PropsWithSpread,
 } from "@canonical/react-components";
 import { Pagination } from "@canonical/react-components";
+
+import { useFetchedCount } from "app/store/machine/utils";
 
 export enum Label {
   Pagination = "Table pagination",
@@ -26,19 +26,7 @@ const MachineListPagination = ({
   machinesLoading,
   ...props
 }: Props): JSX.Element | null => {
-  const [previousCount, setPreviousCount] = useState(machineCount);
-  const count = (machinesLoading ? previousCount : machineCount) ?? 0;
-
-  useEffect(() => {
-    // The pagination needs to be displayed while the new list is being fetched
-    // so this stores the previous machine count while the request is in progress.
-    if (
-      (machineCount || machineCount === 0) &&
-      previousCount !== machineCount
-    ) {
-      setPreviousCount(machineCount);
-    }
-  }, [machineCount, previousCount]);
+  const count = useFetchedCount(machineCount, machinesLoading);
 
   return count > 0 ? (
     <Pagination
