@@ -1,6 +1,6 @@
 import { ContextualMenu } from "@canonical/react-components";
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,6 +9,7 @@ import configureStore from "redux-mock-store";
 
 import MachineListHeader from "./MachineListHeader";
 
+import urls from "app/base/urls";
 import { MachineHeaderViews } from "app/machines/constants";
 import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -275,6 +276,37 @@ describe("MachineListHeader", () => {
         .find(ContextualMenu)
         .props().toggleDisabled
     ).toBe(true);
+  });
+
+  it("closes action form when all machines are deselected", async () => {
+    state.machine.selectedMachines = { items: ["abc123"] };
+    const allMachinesCount = 10;
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: allMachinesCount,
+      loaded: true,
+    });
+    const setHeaderContent = jest.fn();
+    const { rerender } = renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
+        searchFilter=""
+        setHeaderContent={setHeaderContent}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { state }, route: urls.machines.index }
+    );
+    expect(setHeaderContent).not.toHaveBeenCalled();
+    expect(screen.getByText("Deploy")).toBeInTheDocument();
+    state.machine.selectedMachines.items = [];
+    rerender(
+      <MachineListHeader
+        headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
+        searchFilter=""
+        setHeaderContent={setHeaderContent}
+        setSearchFilter={jest.fn()}
+      />
+    );
+    await waitFor(() => expect(setHeaderContent).toHaveBeenCalledWith(null));
   });
 
   it("displays the action title if an action is selected", () => {
