@@ -1,14 +1,19 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
-import AddAliasOrVlan from "./AddAliasOrVlan";
+import AddAliasOrVlan, {
+  Labels as AddAliasOrVlanLabels,
+} from "./AddAliasOrVlan";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import {
+  NodeStatus,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
 import type { NetworkInterface } from "app/store/types/node";
 import {
   fabric as fabricFactory,
@@ -18,13 +23,18 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  modelRef as modelRefFactory,
   rootState as rootStateFactory,
+  subnet as subnetFactory,
+  subnetState as subnetStateFactory,
+  testStatus as testStatusFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
+const route = urls.machines.index;
 
 describe("AddAliasOrVlan", () => {
   let state: RootState;
@@ -32,11 +42,54 @@ describe("AddAliasOrVlan", () => {
   beforeEach(() => {
     nic = machineInterfaceFactory();
     state = rootStateFactory({
+      fabric: fabricStateFactory({
+        items: [fabricFactory()],
+      }),
       machine: machineStateFactory({
+        loaded: true,
         items: [
           machineDetailsFactory({
+            actions: [],
+            architecture: "amd64/generic",
+            cpu_count: 4,
+            cpu_test_status: testStatusFactory({
+              status: TestStatusStatus.RUNNING,
+            }),
+            distro_series: "bionic",
+            domain: modelRefFactory({
+              name: "example",
+            }),
+            extra_macs: [],
+            fqdn: "koala.example",
+            hostname: "koala",
             interfaces: [nic],
+            ip_addresses: [],
+            memory: 8,
+            memory_test_status: testStatusFactory({
+              status: TestStatusStatus.PASSED,
+            }),
+            network_test_status: testStatusFactory({
+              status: TestStatusStatus.PASSED,
+            }),
+            osystem: "ubuntu",
+            owner: "admin",
+            permissions: ["edit", "delete"],
+            physical_disk_count: 1,
+            pool: modelRefFactory(),
+            pxe_mac: "00:11:22:33:44:55",
+            spaces: [],
+            status: NodeStatus.DEPLOYED,
+            status_code: NodeStatusCode.DEPLOYED,
+            status_message: "",
+            storage: 8,
+            storage_test_status: testStatusFactory({
+              status: TestStatusStatus.PASSED,
+            }),
+            testing_status: testStatusFactory({
+              status: TestStatusStatus.PASSED,
+            }),
             system_id: "abc123",
+            zone: modelRefFactory(),
           }),
         ],
         statuses: machineStatusesFactory({
@@ -48,49 +101,31 @@ describe("AddAliasOrVlan", () => {
 
   it("displays a spinner when data is loading", () => {
     state.machine.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddAliasOrVlan
-              close={jest.fn()}
-              interfaceType={NetworkInterfaceTypes.VLAN}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddAliasOrVlan
+        close={jest.fn()}
+        interfaceType={NetworkInterfaceTypes.VLAN}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a save-another button for aliases", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddAliasOrVlan
-              close={jest.fn()}
-              interfaceType={NetworkInterfaceTypes.ALIAS}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddAliasOrVlan
+        close={jest.fn()}
+        interfaceType={NetworkInterfaceTypes.ALIAS}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitDisabled")).toBe(
-      false
-    );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitLabel")).toBe(
-      "Save and add another"
-    );
+    const secondarySubmit = screen.getByRole("button", {
+      name: AddAliasOrVlanLabels.SaveAndAdd,
+    });
+    expect(secondarySubmit).not.toBeDisabled();
   });
 
   it("displays a save-another button when there are unused VLANS", () => {
@@ -108,56 +143,43 @@ describe("AddAliasOrVlan", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddAliasOrVlan
-              close={jest.fn()}
-              interfaceType={NetworkInterfaceTypes.VLAN}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddAliasOrVlan
+        close={jest.fn()}
+        interfaceType={NetworkInterfaceTypes.VLAN}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitDisabled")).toBe(
-      false
-    );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitTooltip")).toBe(
-      null
-    );
+    expect(
+      screen.getByRole("button", {
+        name: AddAliasOrVlanLabels.SaveAndAdd,
+      })
+    ).toBeInTheDocument();
   });
 
   it("disables the save-another button when there are no unused VLANS", () => {
     state.vlan.items = [];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddAliasOrVlan
-              close={jest.fn()}
-              interfaceType={NetworkInterfaceTypes.VLAN}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddAliasOrVlan
+        close={jest.fn()}
+        interfaceType={NetworkInterfaceTypes.VLAN}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitDisabled")).toBe(
-      true
-    );
-    expect(wrapper.find("FormikForm").prop("secondarySubmitTooltip")).toBe(
-      "There are no more unused VLANS for this interface."
-    );
+    expect(
+      screen.getByRole("button", {
+        name: AddAliasOrVlanLabels.SaveAndAdd,
+      })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "There are no more unused VLANS for this interface.",
+      })
+    ).toBeInTheDocument();
   });
 
   it("correctly initialises fabric and VLAN when adding an alias", () => {
@@ -186,74 +208,41 @@ describe("AddAliasOrVlan", () => {
         loading: false,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddAliasOrVlan
-              close={jest.fn()}
-              interfaceType={NetworkInterfaceTypes.ALIAS}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddAliasOrVlan
+        close={jest.fn()}
+        interfaceType={NetworkInterfaceTypes.ALIAS}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
 
-    expect(
-      wrapper
-        .findWhere(
-          (node) =>
-            node.name() === "select" &&
-            node.prop("name") === "fabric" &&
-            node.prop("value") === fabric.id
-        )
-        .exists()
-    ).toBe(true);
-    expect(
-      wrapper
-        .findWhere(
-          (node) =>
-            node.name() === "select" &&
-            node.prop("name") === "vlan" &&
-            node.prop("value") === vlan.id
-        )
-        .exists()
-    ).toBe(true);
+    expect(screen.getByRole("combobox", { name: "Fabric" })).toHaveValue(
+      `${fabric.id}`
+    );
+    expect(screen.getByRole("combobox", { name: "VLAN" })).toHaveValue(
+      `${vlan.id}`
+    );
   });
 
-  it("correctly dispatches actions to add a VLAN", () => {
+  it("correctly dispatches actions to add a VLAN", async () => {
     const nic = machineInterfaceFactory();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddAliasOrVlan
-              close={jest.fn()}
-              interfaceType={NetworkInterfaceTypes.VLAN}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddAliasOrVlan
+        close={jest.fn()}
+        interfaceType={NetworkInterfaceTypes.VLAN}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { store } }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        ip_address: "1.2.3.4",
-        mode: NetworkLinkMode.AUTO,
-        tags: ["koala", "tag"],
-        vlan: 9,
-      })
+    await userEvent.click(
+      screen.getByRole("button", { name: AddAliasOrVlanLabels.SaveInterface })
     );
+
     expect(
       store.getActions().find((action) => action.type === "machine/createVlan")
     ).toStrictEqual({
@@ -264,44 +253,64 @@ describe("AddAliasOrVlan", () => {
       },
       payload: {
         params: {
-          ip_address: "1.2.3.4",
-          mode: NetworkLinkMode.AUTO,
+          fabric: "54",
           parent: nic.id,
           system_id: "abc123",
-          tags: ["koala", "tag"],
-          vlan: 9,
+          tags: [],
+          vlan: 5001,
         },
       },
     });
   });
 
-  it("correctly dispatches actions to add an alias", () => {
+  it("correctly dispatches actions to add an alias", async () => {
+    const fabric = fabricFactory({ id: 1 });
+    const vlan = vlanFactory({ fabric: fabric.id, id: 5001 });
+    const nic = machineInterfaceFactory({ vlan_id: vlan.id });
+    const machine = machineDetailsFactory({
+      system_id: "abc123",
+      interfaces: [nic],
+    });
+    const state = rootStateFactory({
+      fabric: fabricStateFactory({
+        items: [fabric],
+        loaded: true,
+        loading: false,
+      }),
+      machine: machineStateFactory({
+        items: [machine],
+        statuses: machineStatusesFactory({
+          [machine.system_id]: machineStatusFactory(),
+        }),
+      }),
+      vlan: vlanStateFactory({
+        items: [vlan],
+        loaded: true,
+        loading: false,
+      }),
+      subnet: subnetStateFactory({
+        items: [
+          subnetFactory({ vlan: vlan.id }),
+          subnetFactory({ vlan: vlan.id }),
+        ],
+        loaded: true,
+      }),
+    });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddAliasOrVlan
-              close={jest.fn()}
-              interfaceType={NetworkInterfaceTypes.ALIAS}
-              nic={nic}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddAliasOrVlan
+        close={jest.fn()}
+        interfaceType={NetworkInterfaceTypes.ALIAS}
+        nic={nic}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { store } }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        ip_address: "1.2.3.4",
-        mode: NetworkLinkMode.AUTO,
-        subnet: 3,
-        system_id: "abc123",
-      })
+    await userEvent.click(
+      screen.getByRole("button", { name: AddAliasOrVlanLabels.SaveInterface })
     );
+
     expect(
       store.getActions().find((action) => action.type === "machine/linkSubnet")
     ).toStrictEqual({
@@ -312,11 +321,12 @@ describe("AddAliasOrVlan", () => {
       },
       payload: {
         params: {
+          fabric: 1,
           interface_id: nic.id,
-          ip_address: "1.2.3.4",
           mode: NetworkLinkMode.AUTO,
-          subnet: 3,
+          subnet: "76",
           system_id: "abc123",
+          vlan: 5001,
         },
       },
     });
