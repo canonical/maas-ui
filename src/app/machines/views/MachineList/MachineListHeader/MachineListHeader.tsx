@@ -1,5 +1,6 @@
 import { useCallback, useEffect } from "react";
 
+import { usePrevious } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
@@ -80,11 +81,21 @@ export const MachineListHeader = ({
     selectedCount > 0 &&
     (!("groups" in selectedMachines) || !selectedMachines?.groups?.length);
 
+  const previousSelectedCount = usePrevious(selectedCount);
+
   useEffect(() => {
-    if (location.pathname !== urls.machines.index) {
+    if (
+      location.pathname !== urls.machines.index ||
+      (selectedCount !== previousSelectedCount && selectedCount === 0)
+    ) {
       setHeaderContent(null);
     }
-  }, [location.pathname, setHeaderContent]);
+  }, [
+    location.pathname,
+    setHeaderContent,
+    selectedCount,
+    previousSelectedCount,
+  ]);
 
   const getTitle = useCallback(
     (action: NodeActions) => {
