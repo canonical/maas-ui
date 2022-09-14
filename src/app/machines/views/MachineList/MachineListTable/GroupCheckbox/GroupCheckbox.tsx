@@ -4,15 +4,23 @@ import { useSelector } from "react-redux";
 import TableCheckbox from "app/machines/components/TableCheckbox";
 import { Checked } from "app/machines/components/TableCheckbox/TableCheckbox";
 import machineSelectors from "app/store/machine/selectors";
-import type { MachineStateListGroup } from "app/store/machine/types";
+import type {
+  MachineStateListGroup,
+  FetchGroupKey,
+} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
   callId?: string | null;
+  grouping: FetchGroupKey | null;
   groupName: MachineStateListGroup["name"];
 };
 
-const GroupCheckbox = ({ callId, groupName }: Props): JSX.Element | null => {
+const GroupCheckbox = ({
+  callId,
+  grouping,
+  groupName,
+}: Props): JSX.Element | null => {
   const selected = useSelector(machineSelectors.selectedMachines);
   const group = useSelector((state: RootState) =>
     machineSelectors.listGroup(state, callId, groupName)
@@ -56,6 +64,7 @@ const GroupCheckbox = ({ callId, groupName }: Props): JSX.Element | null => {
           // If the checkbox has been checked and the group is not in the list
           // then add it.
           newSelected.groups.push(group.value);
+          newSelected.grouping = grouping;
         } else if (!checked && newSelected.groups?.includes(group.value)) {
           // If the checkbox has been unchecked and the group is in the list
           // then remove it.

@@ -1,4 +1,4 @@
-import type { FetchFilters } from "./actions";
+import type { FetchFilters, FetchGroupKey } from "./actions";
 import type { MachineMeta } from "./enum";
 
 import type { APIError, Seconds } from "app/base/types";
@@ -195,6 +195,8 @@ export type MachineStateDetailsItem = {
 
 export type MachineStateDetails = Record<string, MachineStateDetailsItem>;
 
+export type FilterGroupOptionType = boolean | number | string;
+
 export type FilterGroupOption<K = FilterGroupOptionType> = {
   key: K;
   label: string;
@@ -219,8 +221,6 @@ export type MachineStateList = {
 };
 
 export type MachineStateLists = Record<string, MachineStateList>;
-
-export type FilterGroupOptionType = boolean | number | string;
 
 export enum FilterGroupType {
   Bool = "bool",
@@ -326,6 +326,7 @@ export type SelectedMachines =
   | {
       items?: Machine[MachineMeta.PK][];
       groups?: MachineStateListGroup["value"][];
+      grouping?: FetchGroupKey | null;
     }
   | { filter: FetchFilters };
 
