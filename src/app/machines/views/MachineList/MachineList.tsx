@@ -1,8 +1,6 @@
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
-import { usePrevious } from "@canonical/react-components";
-import fastDeepEqual from "fast-deep-equal";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
@@ -57,13 +55,11 @@ const MachineList = ({
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       collapsedGroups: hiddenGroups,
-      currentPage,
-      setCurrentPage,
       filters: FilterMachineItems.parseFetchFilters(searchFilter),
       grouping,
-      pageSize: PAGE_SIZE,
       sortDirection: mapSortDirection(sortDirection),
       sortKey,
+      pagination: { currentPage, setCurrentPage, pageSize: PAGE_SIZE },
     });
 
   useEffect(

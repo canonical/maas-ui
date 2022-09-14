@@ -88,12 +88,14 @@ export const useFetchMachineCount = (
 export type UseFetchMachinesOptions = {
   filters?: FetchFilters | null;
   grouping?: FetchGroupKey | null;
-  pageSize?: number;
-  currentPage?: number;
-  setCurrentPage?: React.Dispatch<React.SetStateAction<number>>;
   sortKey?: FetchGroupKey | null;
   sortDirection?: FetchSortDirection | null;
   collapsedGroups?: FetchParams["group_collapsed"];
+  pagination?: {
+    pageSize: number;
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  };
 };
 
 /**
@@ -146,7 +148,7 @@ export const useFetchMachines = (
   const previousFilterOptions = usePrevious(filterOptions);
   useEffect(() => {
     if (!fastDeepEqual(filterOptions, previousFilterOptions)) {
-      options?.setCurrentPage?.(1);
+      options?.pagination?.setCurrentPage?.(1);
     }
   }, [options, filterOptions, previousFilterOptions]);
 
@@ -168,8 +170,8 @@ export const useFetchMachines = (
                 filter: options.filters ?? null,
                 group_collapsed: options.collapsedGroups,
                 group_key: options.grouping ?? null,
-                page_number: options.currentPage,
-                page_size: options.pageSize,
+                page_number: options?.pagination?.currentPage,
+                page_size: options?.pagination?.pageSize,
                 sort_direction: options.sortDirection ?? null,
                 sort_key: options.sortKey ?? null,
               }
@@ -177,7 +179,7 @@ export const useFetchMachines = (
         )
       );
     }
-  }, [callId, dispatch, options, previousOptions, previousCallId]);
+  }, [callId, dispatch, options, previousCallId]);
 
   return { callId, loaded, loading, machineCount, machines, machinesErrors };
 };

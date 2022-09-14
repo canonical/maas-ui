@@ -58,16 +58,14 @@ const LXDVMsTable = ({
     machineCount,
     machines: vms,
   } = useFetchMachines({
-    currentPage,
-    setCurrentPage,
     filters: {
       ...FilterMachineItems.parseFetchFilters(searchFilter),
       // Set the filters to get results that belong to this single pod or pods in a cluster.
       [FilterGroupKey.Pod]: pods,
     },
-    pageSize: VMS_PER_PAGE,
     sortDirection: mapSortDirection(sortDirection),
     sortKey,
+    pagination: { currentPage, setCurrentPage, pageSize: VMS_PER_PAGE },
   });
   const count = useFetchedCount(machineCount, loading);
 

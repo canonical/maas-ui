@@ -336,9 +336,11 @@ describe("machine hook utils", () => {
       const handleSetCurrentPage = jest.fn();
       const initialProps = {
         filters: { hostname: "spotted-quoll" },
-        currentPage: 2,
-        setCurrentPage: handleSetCurrentPage,
-        pageSize: 10,
+        pagination: {
+          currentPage: 2,
+          setCurrentPage: handleSetCurrentPage,
+          pageSize: 10,
+        },
       };
       const { rerender } = renderHook(
         (options: UseFetchMachinesOptions) => useFetchMachines(options),

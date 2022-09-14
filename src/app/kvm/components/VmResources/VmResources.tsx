@@ -43,15 +43,17 @@ const VmResources = ({ filters, podId }: Props): JSX.Element => {
     machineCount,
     machines: vms,
   } = useFetchMachines({
-    currentPage,
-    setCurrentPage,
     filters: {
       ...filters,
       [FilterGroupKey.Pod]: pod ? [pod.name] : [],
     },
-    pageSize: VMS_PER_PAGE,
     sortDirection: mapSortDirection(sortDirection),
     sortKey,
+    pagination: {
+      currentPage,
+      setCurrentPage,
+      pageSize: VMS_PER_PAGE,
+    },
   });
   const count = useFetchedCount(machineCount, loading);
   return (
