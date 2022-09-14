@@ -68,7 +68,6 @@ describe("AddInterface", () => {
       <AddInterface close={jest.fn()} systemId="abc123" />,
       { route, wrapperProps: { store } }
     );
-    // await waitForComponentToPaint(wrapper);
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
       expect(
@@ -94,19 +93,6 @@ describe("AddInterface", () => {
       <AddInterface close={jest.fn()} systemId="abc123" />,
       { route, wrapperProps: { store } }
     );
-    // await waitForComponentToPaint(wrapper);
-    // act(() =>
-    //   submitFormikForm(wrapper, {
-    //     fabric: 1,
-    //     ip_address: "1.2.3.4",
-    //     mac_address: "28:21:c6:b9:1b:22",
-    //     mode: NetworkLinkMode.LINK_UP,
-    //     name: "eth1",
-    //     subnet: 1,
-    //     tags: ["a", "tag"],
-    //     vlan: 1,
-    //   })
-    // );
     await userEvent.type(
       screen.getByRole("textbox", { name: "MAC address" }),
       "28:21:c6:b9:1b:22"
