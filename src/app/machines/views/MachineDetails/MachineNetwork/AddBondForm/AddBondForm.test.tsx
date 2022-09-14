@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import AddBondForm from "./AddBondForm";
 
+import urls from "app/base/urls";
 import { BondMode } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -24,7 +25,7 @@ import {
 import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
-const route = "/machines";
+const route = urls.machines.index;
 
 describe("AddBondForm", () => {
   let state: RootState;

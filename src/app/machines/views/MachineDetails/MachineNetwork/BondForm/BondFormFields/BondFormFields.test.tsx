@@ -6,6 +6,7 @@ import { LinkMonitoring } from "../types";
 
 import BondFormFields from "./BondFormFields";
 
+import urls from "app/base/urls";
 import {
   BondLacpRate,
   BondMode,
@@ -24,7 +25,7 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-const route = "/machines";
+const route = urls.machines.index;
 
 describe("BondFormFields", () => {
   let state: RootState;

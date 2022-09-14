@@ -4,6 +4,7 @@ import configureStore from "redux-mock-store";
 
 import AddBridgeForm from "./AddBridgeForm";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { NetworkInterface } from "app/store/types/node";
@@ -22,7 +23,7 @@ import {
 import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
-const route = "/machines";
+const route = urls.machines.index;
 
 describe("AddBridgeForm", () => {
   let nic: NetworkInterface;

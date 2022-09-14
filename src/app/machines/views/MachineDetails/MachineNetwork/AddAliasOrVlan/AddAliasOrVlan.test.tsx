@@ -6,6 +6,7 @@ import AddAliasOrVlan, {
   Labels as AddAliasOrVlanLabels,
 } from "./AddAliasOrVlan";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
 import {
@@ -33,7 +34,7 @@ import {
 import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
-const route = "/machines";
+const route = urls.machines.index;
 
 describe("AddAliasOrVlan", () => {
   let state: RootState;

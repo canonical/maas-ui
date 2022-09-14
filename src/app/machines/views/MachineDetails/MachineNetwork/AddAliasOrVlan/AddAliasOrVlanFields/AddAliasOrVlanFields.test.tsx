@@ -3,12 +3,13 @@ import { Formik } from "formik";
 
 import AddAliasOrVlanFields from "./AddAliasOrVlanFields";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import { rootState as rootStateFactory } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-const route = "/machines";
+const route = urls.machines.index;
 
 describe("AddAliasOrVlanFields", () => {
   let state: RootState;
