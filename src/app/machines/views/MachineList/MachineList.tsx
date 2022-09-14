@@ -51,15 +51,15 @@ const MachineList = ({
     "hiddenGroups",
     []
   );
+
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       collapsedGroups: hiddenGroups,
-      currentPage,
       filters: FilterMachineItems.parseFetchFilters(searchFilter),
       grouping,
-      pageSize: PAGE_SIZE,
       sortDirection: mapSortDirection(sortDirection),
       sortKey,
+      pagination: { currentPage, setCurrentPage, pageSize: PAGE_SIZE },
     });
 
   useEffect(

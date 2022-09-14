@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { nanoid } from "@reduxjs/toolkit";
@@ -91,11 +91,14 @@ export const useFetchMachineCount = (
 export type UseFetchMachinesOptions = {
   filters?: FetchFilters | null;
   grouping?: FetchGroupKey | null;
-  pageSize?: number;
-  currentPage?: number;
   sortKey?: FetchGroupKey | null;
   sortDirection?: FetchSortDirection | null;
   collapsedGroups?: FetchParams["group_collapsed"];
+  pagination?: {
+    pageSize: number;
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  };
 };
 
 /**
@@ -132,6 +135,26 @@ export const useFetchMachines = (
   );
   useCleanup(callId);
 
+  // reset pagination when filters change
+  const { filters, grouping, collapsedGroups, sortDirection, sortKey } =
+    options || {};
+  const filterOptions = useMemo(
+    () => ({
+      filters,
+      grouping,
+      collapsedGroups,
+      sortDirection,
+      sortKey,
+    }),
+    [filters, grouping, collapsedGroups, sortDirection, sortKey]
+  );
+  const previousFilterOptions = usePrevious(filterOptions);
+  useEffect(() => {
+    if (!fastDeepEqual(filterOptions, previousFilterOptions)) {
+      options?.pagination?.setCurrentPage?.(1);
+    }
+  }, [options, filterOptions, previousFilterOptions]);
+
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
@@ -150,8 +173,8 @@ export const useFetchMachines = (
                 filter: options.filters ?? null,
                 group_collapsed: options.collapsedGroups,
                 group_key: options.grouping ?? null,
-                page_number: options.currentPage,
-                page_size: options.pageSize,
+                page_number: options?.pagination?.currentPage,
+                page_size: options?.pagination?.pageSize,
                 sort_direction: options.sortDirection ?? null,
                 sort_key: options.sortKey ?? null,
               }
