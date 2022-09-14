@@ -240,24 +240,6 @@ describe("pod selectors", () => {
     ]);
   });
 
-  it("can get a pod's VMs", () => {
-    const podWithVMs = podFactory();
-    const machinesInPod = [
-      machineFactory({ pod: { id: podWithVMs.id, name: podWithVMs.name } }),
-      machineFactory({ pod: { id: podWithVMs.id, name: podWithVMs.name } }),
-    ];
-    const otherMachines = [machineFactory(), machineFactory()];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [...machinesInPod, ...otherMachines],
-      }),
-      pod: podStateFactory({
-        items: [podWithVMs],
-      }),
-    });
-    expect(pod.getVMs(state, podWithVMs.id)).toStrictEqual(machinesInPod);
-  });
-
   it("can group LXD pods by LXD server address", () => {
     const items = [
       podFactory({ type: PodType.VIRSH }),

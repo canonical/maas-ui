@@ -5,7 +5,6 @@ import { generateBaseSelectors } from "../utils";
 import { VMClusterMeta } from "./types";
 import type { VMClusterState, VMCluster, VMClusterStatuses } from "./types";
 
-import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 
 const defaultSelectors = generateBaseSelectors<
@@ -66,32 +65,10 @@ const eventError = createSelector(
     eventErrors.filter((eventError) => eventError.event === eventName)
 );
 
-/**
- * Get the machines in state for a given cluster.
- * @param state - The redux state.
- * @param clusterId - The id of the cluster.
- * @returns The machines in state for a given cluster.
- */
-const getVMs = createSelector(
-  (state: RootState, clusterId: VMCluster[VMClusterMeta.PK]) => ({
-    cluster: defaultSelectors.getById(state, clusterId),
-    machines: machineSelectors.all(state),
-  }),
-  ({ cluster, machines }) => {
-    if (!cluster) {
-      return [];
-    }
-    return machines.filter((machine) =>
-      cluster.virtual_machines.some((vm) => vm.system_id === machine.system_id)
-    );
-  }
-);
-
 const selectors = {
   ...defaultSelectors,
   eventError,
   eventErrors,
-  getVMs,
   status,
   statuses,
 };

@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
-import { MainTable, Spinner, Strip } from "@canonical/react-components";
+import { MainTable, Strip } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import CoresColumn from "./CoresColumn";
@@ -11,6 +11,7 @@ import NameColumn from "./NameColumn";
 import StatusColumn from "./StatusColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import Placeholder from "app/base/components/Placeholder";
 import TableHeader from "app/base/components/TableHeader";
 import { SortDirection } from "app/base/types";
 import AllCheckbox from "app/machines/views/MachineList/MachineListTable/AllCheckbox";
@@ -21,6 +22,17 @@ import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { getTagNamesForIds } from "app/store/tag/utils";
 import { formatBytes } from "app/utils";
+
+export enum Label {
+  Name = "Name",
+  Status = "Status",
+  Ipv4 = "Ipv4",
+  Ipv6 = "Ipv6",
+  Hugepages = "Hugepages",
+  Cores = "Cores",
+  Ram = "Ram",
+  Pool = "Pool",
+}
 
 export type GetHostColumn = (vm: Machine) => ReactNode;
 
@@ -44,6 +56,99 @@ type Props = {
   vms: Machine[];
 };
 
+type RowContent = {
+  Name: ReactNode;
+  Status: ReactNode;
+  Host?: ReactNode;
+  Ipv4: ReactNode;
+  Ipv6: ReactNode;
+  Hugepages: ReactNode;
+  Cores: ReactNode;
+  Ram: ReactNode;
+  Pool: ReactNode;
+};
+
+const generateRow = (content: RowContent, key: number | string) => ({
+  columns: [
+    {
+      "aria-label": Label.Name,
+      className: "name-col",
+      content: content.Name,
+    },
+    {
+      "aria-label": Label.Status,
+      className: "status-col",
+      content: content.Status,
+    },
+    ...(content.Host ? [{ content: content.Host }] : []),
+    {
+      "aria-label": Label.Ipv4,
+      className: "ipv4-col",
+      content: content.Ipv4,
+    },
+    {
+      "aria-label": Label.Ipv6,
+      className: "ipv6-col",
+      content: content.Ipv6,
+    },
+    {
+      "aria-label": Label.Hugepages,
+      className: "hugepages-col",
+      content: content.Hugepages,
+    },
+    {
+      "aria-label": Label.Cores,
+      className: "cores-col u-align--right",
+      content: content.Cores,
+    },
+    {
+      "aria-label": Label.Ram,
+      className: "ram-col",
+      content: content.Ram,
+    },
+    {
+      "aria-label": Label.Pool,
+      className: "pool-col",
+      content: content.Pool,
+    },
+  ],
+  key,
+});
+
+const generateSkeletonRows = (showHostsColumn: boolean) =>
+  Array.from(Array(5)).map((_, i) =>
+    generateRow(
+      {
+        Name: <DoubleRow primary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>} />,
+        Status: <DoubleRow primary={<Placeholder>XXXXX XXXXX</Placeholder>} />,
+        Host: showHostsColumn ? (
+          <DoubleRow primary={<Placeholder>xxxxxxxxx</Placeholder>} />
+        ) : null,
+        Ipv4: <DoubleRow primary={<Placeholder>xxx.xxx.xx.x</Placeholder>} />,
+        Ipv6: (
+          <DoubleRow
+            primary={<Placeholder>xxxx:xxx::xxxx:xx:xxxx</Placeholder>}
+          />
+        ),
+        Hugepages: <DoubleRow primary={<Placeholder>Xxxxxxx</Placeholder>} />,
+        Cores: <DoubleRow primary={<Placeholder>XXX</Placeholder>} />,
+        Ram: (
+          <DoubleRow
+            primary={<Placeholder>XXXxxx</Placeholder>}
+            secondary={<Placeholder>Xxxx</Placeholder>}
+          />
+        ),
+        Pool: (
+          <DoubleRow
+            primary={<Placeholder>Xxxx</Placeholder>}
+            secondary={<Placeholder>Xxx, Xxxxxxx, Xxxxx</Placeholder>}
+          />
+        ),
+      },
+      i
+    )
+  );
+
 const generateRows = ({
   vms,
   getResources,
@@ -62,73 +167,75 @@ const generateRows = ({
     const storage = formatBytes(vm.storage, "GB");
     const resources = getResources(vm);
     const tagString = getTagNamesForIds(vm.tags, tags).join(", ");
-    return {
-      columns: [
-        {
-          className: "name-col",
-          content: <NameColumn callId={callId} systemId={vm.system_id} />,
-        },
-        {
-          className: "status-col",
-          content: <StatusColumn systemId={vm.system_id} />,
-        },
-        ...(getHostColumn ? [{ content: getHostColumn(vm) }] : []),
-        {
-          className: "ipv4-col",
-          content: <IPColumn systemId={vm.system_id} version={4} />,
-        },
-        {
-          className: "ipv6-col",
-          content: <IPColumn systemId={vm.system_id} version={6} />,
-        },
-        {
-          className: "hugepages-col",
-          content: (
-            <HugepagesColumn hugepagesBacked={resources.hugepagesBacked} />
-          ),
-        },
-        {
-          className: "cores-col u-align--right",
-          content: (
-            <CoresColumn
-              pinnedCores={resources.pinnedCores}
-              unpinnedCores={resources.unpinnedCores}
-            />
-          ),
-        },
-        {
-          className: "ram-col",
-          content: (
-            <DoubleRow
-              primary={
-                <>
-                  <span>{memory.value} </span>
-                  <small className="u-text--muted">{memory.unit}</small>
-                </>
-              }
-              secondary={
-                <>
-                  <span>{storage.value} </span>
-                  <small className="u-text--muted">{storage.unit}</small>
-                </>
-              }
-            />
-          ),
-        },
-        {
-          className: "pool-col",
-          content: (
-            <DoubleRow
-              data-testid="pool-col"
-              primary={vm.pool.name}
-              secondary={tagString}
-              secondaryTitle={tagString}
-            />
-          ),
-        },
-      ],
-      key: vm.system_id,
-    };
+    return generateRow(
+      {
+        Name: (
+          <NameColumn
+            aria-label={Label.Name}
+            callId={callId}
+            systemId={vm.system_id}
+          />
+        ),
+        Status: (
+          <StatusColumn aria-label={Label.Status} systemId={vm.system_id} />
+        ),
+        Host: getHostColumn?.(vm),
+        Ipv4: (
+          <IPColumn
+            aria-label={Label.Ipv4}
+            systemId={vm.system_id}
+            version={4}
+          />
+        ),
+        Ipv6: (
+          <IPColumn
+            aria-label={Label.Ipv6}
+            systemId={vm.system_id}
+            version={6}
+          />
+        ),
+        Hugepages: (
+          <HugepagesColumn
+            aria-label={Label.Hugepages}
+            hugepagesBacked={resources.hugepagesBacked}
+          />
+        ),
+        Cores: (
+          <CoresColumn
+            aria-label={Label.Cores}
+            pinnedCores={resources.pinnedCores}
+            unpinnedCores={resources.unpinnedCores}
+          />
+        ),
+        Ram: (
+          <DoubleRow
+            aria-label={Label.Ram}
+            primary={
+              <>
+                <span>{memory.value} </span>
+                <small className="u-text--muted">{memory.unit}</small>
+              </>
+            }
+            secondary={
+              <>
+                <span>{storage.value} </span>
+                <small className="u-text--muted">{storage.unit}</small>
+              </>
+            }
+          />
+        ),
+        Pool: (
+          <DoubleRow
+            aria-label={Label.Pool}
+            data-testid="pool-col"
+            primary={vm.pool.name}
+            secondary={tagString}
+            secondaryTitle={tagString}
+          />
+        ),
+      },
+      vm.system_id
+    );
   });
 
 const VMsTable = ({
@@ -163,9 +270,6 @@ const VMsTable = ({
     }
   };
 
-  if (machinesLoading) {
-    return <Spinner text="Loading..." />;
-  }
   return (
     <>
       <MainTable
@@ -274,7 +378,11 @@ const VMsTable = ({
             ),
           },
         ]}
-        rows={generateRows({ vms, getResources, tags, getHostColumn, callId })}
+        rows={
+          machinesLoading
+            ? generateSkeletonRows(!!getHostColumn)
+            : generateRows({ vms, getResources, tags, getHostColumn, callId })
+        }
       />
     </>
   );

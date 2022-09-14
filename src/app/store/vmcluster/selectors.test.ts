@@ -1,10 +1,7 @@
 import selectors from "./selectors";
 
 import {
-  machine as machineFactory,
-  machineState as machineStateFactory,
   rootState as rootStateFactory,
-  virtualMachine as clusterVMFactory,
   vmCluster as vmClusterFactory,
   vmClusterEventError as vmClusterEventErrorFactory,
   vmClusterState as vmClusterStateFactory,
@@ -66,28 +63,5 @@ describe("vmcluster selectors", () => {
     expect(selectors.eventError(state, "listByPhysicalCluster")).toStrictEqual([
       eventError,
     ]);
-  });
-
-  it("can get a cluster's VMs", () => {
-    const cluster = vmClusterFactory({
-      virtual_machines: [
-        clusterVMFactory({ system_id: "abc123" }),
-        clusterVMFactory({ system_id: "def456" }),
-      ],
-    });
-    const clusterVMs = [
-      machineFactory({ system_id: "abc123" }),
-      machineFactory({ system_id: "def456" }),
-    ];
-    const otherMachine = machineFactory({ system_id: "ghi789" });
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        items: [...clusterVMs, otherMachine],
-      }),
-      vmcluster: vmClusterStateFactory({
-        items: [cluster],
-      }),
-    });
-    expect(selectors.getVMs(state, cluster.id)).toStrictEqual(clusterVMs);
   });
 });

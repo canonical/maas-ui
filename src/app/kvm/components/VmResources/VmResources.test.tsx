@@ -1,42 +1,96 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import reduxToolkit from "@reduxjs/toolkit";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
-import VmResources from "./VmResources";
+import VmResources, { Label } from "./VmResources";
 
-import { rootState as rootStateFactory } from "testing/factories";
+import { Label as MachineListLabel } from "app/machines/views/MachineList/MachineListTable/MachineListTable";
+import { actions as machineActions } from "app/store/machine";
+import { PodType } from "app/store/pod/constants";
+import type { RootState } from "app/store/root/types";
+import {
+  rootState as rootStateFactory,
+  machineState as machineStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
+  machine as machineFactory,
+  pod as podFactory,
+  podState as podStateFactory,
+} from "testing/factories";
+import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("VmResources", () => {
-  it("shows a spinner id machines are loading", () => {
-    const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/2", key: "testKey" }]}>
-          <VmResources loading vms={[]} />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+  let state: RootState;
+
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    const machines = [machineFactory(), machineFactory()];
+    state = rootStateFactory({
+      machine: machineStateFactory({
+        items: machines,
+        lists: {
+          "123456": machineStateListFactory({
+            count: machines.length,
+            loaded: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: machines.map(({ system_id }) => system_id),
+                name: "Deployed",
+              }),
+            ],
+          }),
+        },
+      }),
+      pod: podStateFactory({
+        items: [podFactory({ id: 1, name: "pod1", type: PodType.LXD })],
+      }),
+    });
   });
 
   it("disables the dropdown if no VMs are provided", () => {
-    const state = rootStateFactory();
+    state.machine.lists["123456"].count = 0;
+    state.machine.lists["123456"].groups = [
+      machineStateListGroupFactory({
+        items: [],
+        name: "Deployed",
+      }),
+    ];
+    renderWithMockStore(<VmResources podId={1} />, { state });
+    expect(
+      screen.getByRole("button", { name: Label.ResourceVMs })
+    ).toBeDisabled();
+  });
+
+  it("can pass additional filters to the request", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/2", key: "testKey" }]}>
-          <VmResources vms={[]} />
-        </MemoryRouter>
-      </Provider>
+    renderWithMockStore(
+      <VmResources filters={{ id: ["abc123"] }} podId={1} />,
+      { store }
+    );
+    const expected = machineActions.fetch("123456");
+    const result = store
+      .getActions()
+      .find((action) => action.type === expected.type);
+    expect(result.payload.params.filter).toStrictEqual({
+      id: ["abc123"],
+      pod: ["pod1"],
+    });
+  });
+
+  it("can display a list of VMs", async () => {
+    renderWithBrowserRouter(<VmResources podId={1} />, {
+      wrapperProps: { state },
+    });
+    await userEvent.click(
+      screen.getByRole("button", { name: Label.ResourceVMs })
     );
     expect(
-      wrapper
-        .find("ContextualMenu[data-testid='vms-dropdown']")
-        .prop("toggleDisabled")
-    ).toBe(true);
+      screen.getByRole("grid", {
+        name: MachineListLabel.Machines,
+      })
+    ).toBeInTheDocument();
   });
 });

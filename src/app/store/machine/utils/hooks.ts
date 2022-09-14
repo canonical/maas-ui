@@ -362,3 +362,24 @@ export const useHasSelection = (): boolean => {
     "items" in selectedMachines && (selectedMachines.items ?? [])?.length > 0;
   return hasFilters || hasGroups || hasItems;
 };
+
+/**
+ * Return the previous count while a new fetch is in progress.
+ */
+export const useFetchedCount = (
+  newCount: number | null,
+  loading?: boolean | null
+): number => {
+  const [previousCount, setPreviousCount] = useState(newCount);
+  const count = (loading ? previousCount : newCount) ?? 0;
+
+  useEffect(() => {
+    // The pagination needs to be displayed while the new list is being fetched
+    // so this stores the previous machine count while the request is in progress.
+    if ((newCount || newCount === 0) && previousCount !== newCount) {
+      setPreviousCount(newCount);
+    }
+  }, [newCount, previousCount]);
+
+  return count;
+};

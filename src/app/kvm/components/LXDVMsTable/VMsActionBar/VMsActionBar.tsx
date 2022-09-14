@@ -11,7 +11,7 @@ import { NodeActions } from "app/store/types/node";
 
 type Props = {
   currentPage: number;
-  machinesLoading: boolean;
+  machinesLoading?: boolean;
   onAddVMClick?: () => void;
   searchFilter: string;
   setCurrentPage: (page: number) => void;
