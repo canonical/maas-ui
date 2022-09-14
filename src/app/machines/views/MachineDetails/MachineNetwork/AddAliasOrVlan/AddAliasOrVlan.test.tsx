@@ -122,7 +122,7 @@ describe("AddAliasOrVlan", () => {
       { route, wrapperProps: { state } }
     );
     const secondarySubmit = screen.getByRole("button", {
-      name: AddAliasOrVlanLabels.SecondarySubmitLabel,
+      name: AddAliasOrVlanLabels.SaveAndAdd,
     });
     expect(secondarySubmit).not.toBeDisabled();
   });
@@ -153,7 +153,7 @@ describe("AddAliasOrVlan", () => {
     );
     expect(
       screen.getByRole("button", {
-        name: AddAliasOrVlanLabels.SecondarySubmitLabel,
+        name: AddAliasOrVlanLabels.SaveAndAdd,
       })
     ).toBeInTheDocument();
   });
@@ -171,7 +171,7 @@ describe("AddAliasOrVlan", () => {
     );
     expect(
       screen.getByRole("button", {
-        name: AddAliasOrVlanLabels.SecondarySubmitLabel,
+        name: AddAliasOrVlanLabels.SaveAndAdd,
       })
     ).toBeDisabled();
     expect(
@@ -239,7 +239,7 @@ describe("AddAliasOrVlan", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: AddAliasOrVlanLabels.SubmitLabel })
+      screen.getByRole("button", { name: AddAliasOrVlanLabels.SaveInterface })
     );
 
     expect(
@@ -307,7 +307,7 @@ describe("AddAliasOrVlan", () => {
     );
 
     await userEvent.click(
-      screen.getByRole("button", { name: AddAliasOrVlanLabels.SubmitLabel })
+      screen.getByRole("button", { name: AddAliasOrVlanLabels.SaveInterface })
     );
 
     expect(

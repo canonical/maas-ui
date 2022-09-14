@@ -193,7 +193,7 @@ describe("BondFormFields", () => {
       screen.getByRole("radio", { name: "Use MAC address from bond member" })
     );
     await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: "Select bond member" }),
+      screen.getByRole("combobox", { name: "bond member" }),
       "6a:6e:4a:29:a5:42"
     );
     expect(screen.getByRole("textbox", { name: "MAC address" })).toHaveValue(
@@ -216,7 +216,7 @@ describe("BondFormFields", () => {
       screen.getByRole("textbox", { name: "MAC address" })
     ).not.toBeDisabled();
     expect(
-      screen.getByRole("combobox", { name: "Select bond member" })
+      screen.getByRole("combobox", { name: "bond member" })
     ).toBeDisabled();
   });
 
@@ -233,7 +233,7 @@ describe("BondFormFields", () => {
 
     expect(screen.getByRole("textbox", { name: "MAC address" })).toBeDisabled();
     expect(
-      screen.getByRole("combobox", { name: "Select bond member" })
+      screen.getByRole("combobox", { name: "bond member" })
     ).not.toBeDisabled();
   });
 

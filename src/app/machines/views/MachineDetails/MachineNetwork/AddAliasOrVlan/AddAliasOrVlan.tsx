@@ -31,8 +31,8 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { preparePayload } from "app/utils";
 
 export enum Labels {
-  SubmitLabel = "Save interface",
-  SecondarySubmitLabel = "Save and add another",
+  SaveInterface = "Save interface",
+  SaveAndAdd = "Save and add another",
 }
 
 type Props = {
@@ -134,13 +134,13 @@ const AddAliasOrVlan = ({
           submitForm();
         }}
         secondarySubmitDisabled={!canAddAnother}
-        secondarySubmitLabel={Labels.SecondarySubmitLabel}
+        secondarySubmitLabel={Labels.SaveAndAdd}
         secondarySubmitTooltip={
           canAddAnother
             ? null
             : "There are no more unused VLANS for this interface."
         }
-        submitLabel={Labels.SubmitLabel}
+        submitLabel={Labels.SaveInterface}
         validationSchema={InterfaceSchema}
       >
         <AddAliasOrVlanFields
