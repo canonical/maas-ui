@@ -17,6 +17,7 @@ import {
   useFetchMachine,
   useFetchMachines,
   useFetchMachineCount,
+  useFetchedCount,
 } from "./hooks";
 
 import { actions as machineActions } from "app/store/machine";
@@ -328,6 +329,29 @@ describe("machine hook utils", () => {
         .getActions()
         .filter((action) => action.type === expected.type);
       expect(getDispatches).toHaveLength(2);
+    });
+
+    it("resets the page number if the options change", () => {
+      const store = mockStore(state);
+      const handleSetCurrentPage = jest.fn();
+      const initialProps = {
+        filters: { hostname: "spotted-quoll" },
+        pagination: {
+          currentPage: 2,
+          setCurrentPage: handleSetCurrentPage,
+          pageSize: 10,
+        },
+      };
+      const { rerender } = renderHook(
+        (options: UseFetchMachinesOptions) => useFetchMachines(options),
+        {
+          initialProps,
+          wrapper: generateWrapper(store),
+        }
+      );
+      expect(handleSetCurrentPage).not.toHaveBeenCalled();
+      rerender({ ...initialProps, filters: { hostname: "eastern-quoll" } });
+      expect(handleSetCurrentPage).toHaveBeenCalledWith(1);
     });
 
     it("cleans up list request on unmount", async () => {
@@ -787,6 +811,58 @@ describe("machine hook utils", () => {
         wrapper: generateWrapper(store),
       });
       expect(result.current).toBe(true);
+    });
+  });
+
+  describe("useFetchedCount", () => {
+    type Props = {
+      count: number | null;
+      loading?: boolean | null;
+    };
+    it("handles when no counts have loaded", () => {
+      const { result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: null, loading: false } }
+      );
+      expect(result.current).toBe(0);
+    });
+
+    it("handles when the initial count is loading", () => {
+      const { result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: null, loading: true } }
+      );
+      expect(result.current).toBe(0);
+    });
+
+    it("can display a count", () => {
+      const { result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: 1, loading: false } }
+      );
+      expect(result.current).toBe(1);
+    });
+
+    it("displays the previous count while loading a new one", () => {
+      const { rerender, result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: 1, loading: false } }
+      );
+      expect(result.current).toBe(1);
+      rerender({ count: null, loading: true });
+      expect(result.current).toBe(1);
+    });
+
+    it("displays the new count when it has loaded", () => {
+      const { rerender, result } = renderHook<Props, unknown>(
+        ({ count, loading }: Props) => useFetchedCount(count, loading),
+        { initialProps: { count: 1, loading: false } }
+      );
+      expect(result.current).toBe(1);
+      rerender({ count: null, loading: true });
+      expect(result.current).toBe(1);
+      rerender({ count: 2, loading: false });
+      expect(result.current).toBe(2);
     });
   });
 });

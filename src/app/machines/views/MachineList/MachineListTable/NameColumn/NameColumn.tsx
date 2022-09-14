@@ -19,7 +19,7 @@ import type { RootState } from "app/store/root/types";
 
 type Props = {
   callId?: string | null;
-  groupName?: MachineStateListGroup["name"];
+  groupValue: MachineStateListGroup["value"];
   showActions?: boolean;
   showMAC?: boolean;
   systemId: Machine[MachineMeta.PK];
@@ -121,7 +121,7 @@ const generateMAC = (machine: Machine, machineURL: string) => {
 
 export const NameColumn = ({
   callId,
-  groupName,
+  groupValue,
   showActions,
   showMAC,
   systemId,
@@ -145,7 +145,7 @@ export const NameColumn = ({
         showActions ? (
           <MachineCheckbox
             callId={callId}
-            groupName={groupName}
+            groupValue={groupValue}
             label={primaryRow}
             systemId={systemId}
           />

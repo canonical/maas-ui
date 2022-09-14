@@ -7,7 +7,6 @@ import configureStore from "redux-mock-store";
 
 import AddTagForm, { Label } from "./AddTagForm";
 
-import * as baseHooks from "app/base/hooks/base";
 import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -17,6 +16,7 @@ import {
   rootState as rootStateFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 
 const mockStore = configureStore();
 
@@ -26,9 +26,6 @@ beforeEach(() => {
   state = rootStateFactory({
     tag: tagStateFactory(),
   });
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [false, () => null]);
 });
 
 afterEach(() => {
@@ -85,13 +82,8 @@ it("returns the newly created tag on save", async () => {
       </MemoryRouter>
     </Provider>
   );
-  // Simulate the state.tag.saved state going from `save: false` to `saved:
-  // true` which happens when the tag is successfully saved. This in turn will
-  // mean that the form `onSuccess` prop will get called so that the component
-  // knows that the tag was created.
-  jest
-    .spyOn(baseHooks, "useCycled")
-    .mockImplementation(() => [true, () => null]);
+
+  mockFormikFormSaved();
   const newTag = tagFactory({ id: 8, name: "new-tag" });
   state.tag = tagStateFactory({
     items: [newTag],

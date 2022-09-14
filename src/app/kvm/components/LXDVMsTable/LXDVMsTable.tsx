@@ -13,7 +13,11 @@ import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/consta
 import { actions as machineActions } from "app/store/machine";
 import type { FetchGroupKey } from "app/store/machine/types";
 import { FilterGroupKey } from "app/store/machine/types";
-import { mapSortDirection, FilterMachineItems } from "app/store/machine/utils";
+import {
+  mapSortDirection,
+  FilterMachineItems,
+  useFetchedCount,
+} from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { Pod } from "app/store/pod/types";
 
@@ -54,16 +58,16 @@ const LXDVMsTable = ({
     machineCount,
     machines: vms,
   } = useFetchMachines({
-    currentPage,
     filters: {
       ...FilterMachineItems.parseFetchFilters(searchFilter),
       // Set the filters to get results that belong to this single pod or pods in a cluster.
       [FilterGroupKey.Pod]: pods,
     },
-    pageSize: VMS_PER_PAGE,
     sortDirection: mapSortDirection(sortDirection),
     sortKey,
+    pagination: { currentPage, setCurrentPage, pageSize: VMS_PER_PAGE },
   });
+  const count = useFetchedCount(machineCount, loading);
 
   useEffect(
     () => () => {
@@ -77,13 +81,12 @@ const LXDVMsTable = ({
     <>
       <VMsActionBar
         currentPage={currentPage}
-        machinesLoading={loading}
         onAddVMClick={onAddVMClick}
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
         setHeaderContent={setHeaderContent}
         setSearchFilter={setSearchFilter}
-        vmCount={machineCount ?? 0}
+        vmCount={count}
       />
       <VMsTable
         callId={callId}

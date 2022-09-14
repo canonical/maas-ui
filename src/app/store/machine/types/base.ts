@@ -1,4 +1,4 @@
-import type { FetchFilters } from "./actions";
+import type { FetchFilters, FetchGroupKey } from "./actions";
 import type { MachineMeta } from "./enum";
 
 import type { APIError, Seconds } from "app/base/types";
@@ -195,6 +195,8 @@ export type MachineStateDetailsItem = {
 
 export type MachineStateDetails = Record<string, MachineStateDetailsItem>;
 
+export type FilterGroupOptionType = boolean | number | string;
+
 export type FilterGroupOption<K = FilterGroupOptionType> = {
   key: K;
   label: string;
@@ -205,6 +207,7 @@ export type MachineStateListGroup = {
   count: number;
   items: Machine[MachineMeta.PK][];
   name: FilterGroupOption["label"] | null;
+  value: FilterGroupOption["key"] | null;
 };
 
 export type MachineStateList = {
@@ -218,8 +221,6 @@ export type MachineStateList = {
 };
 
 export type MachineStateLists = Record<string, MachineStateList>;
-
-export type FilterGroupOptionType = boolean | number | string;
 
 export enum FilterGroupType {
   Bool = "bool",
@@ -245,6 +246,7 @@ export enum FilterGroupKey {
   Fabrics = "fabrics",
   FreeText = "free_text",
   Hostname = "hostname",
+  Id = "id",
   IpAddresses = "ip_addresses",
   LinkSpeed = "link_speed",
   MacAddress = "mac_address",
@@ -255,6 +257,7 @@ export enum FilterGroupKey {
   NotDistroSeries = "not_distro_series",
   NotFabricClasses = "not_fabric_classes",
   NotFabrics = "not_fabrics",
+  NotId = "not_id",
   NotInPool = "not_in_pool",
   NotInZone = "not_in_zone",
   NotIpAddresses = "not_ip_addresses",
@@ -265,7 +268,6 @@ export enum FilterGroupKey {
   NotPod = "not_pod",
   NotPodType = "not_pod_type",
   NotSubnets = "not_subnets",
-  NotSystemId = "not_system_id",
   NotTags = "not_tags",
   NotVlans = "not_vlans",
   Osystem = "osystem",
@@ -276,7 +278,6 @@ export enum FilterGroupKey {
   Spaces = "spaces",
   Status = "status",
   Subnets = "subnets",
-  SystemId = "system_id",
   Tags = "tags",
   Vlans = "vlans",
   Workloads = "workloads",
@@ -324,7 +325,8 @@ export type MachineStateCounts = Record<string, MachineStateCount>;
 export type SelectedMachines =
   | {
       items?: Machine[MachineMeta.PK][];
-      groups?: MachineStateListGroup["name"][];
+      groups?: MachineStateListGroup["value"][];
+      grouping?: FetchGroupKey | null;
     }
   | { filter: FetchFilters };
 

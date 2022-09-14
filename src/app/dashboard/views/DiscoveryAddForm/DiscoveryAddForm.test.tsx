@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -13,14 +14,24 @@ import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
 import type { Discovery } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
 import {
+  NodeStatus,
+  NodeStatusCode,
+  TestStatusStatus,
+} from "app/store/types/node";
+import {
   discovery as discoveryFactory,
   discoveryState as discoveryStateFactory,
   deviceState as deviceStateFactory,
   domainState as domainStateFactory,
+  machine as machineFactory,
+  testStatus as testStatusFactory,
   machineState as machineStateFactory,
+  modelRef as modelRefFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
   rootState as rootStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 import { submitFormikForm } from "testing/utils";
 
@@ -31,6 +42,51 @@ describe("DiscoveryAddForm", () => {
   let discovery: Discovery;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    const machines = [
+      machineFactory({
+        actions: [],
+        architecture: "amd64/generic",
+        cpu_count: 4,
+        cpu_test_status: testStatusFactory({
+          status: TestStatusStatus.RUNNING,
+        }),
+        distro_series: "bionic",
+        domain: modelRefFactory({
+          name: "example",
+        }),
+        extra_macs: [],
+        fqdn: "koala.example",
+        hostname: "koala",
+        ip_addresses: [],
+        memory: 8,
+        memory_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        network_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        osystem: "ubuntu",
+        owner: "admin",
+        permissions: ["edit", "delete"],
+        physical_disk_count: 1,
+        pool: modelRefFactory(),
+        pxe_mac: "00:11:22:33:44:55",
+        spaces: [],
+        status: NodeStatus.DEPLOYED,
+        status_code: NodeStatusCode.DEPLOYED,
+        status_message: "",
+        storage: 8,
+        storage_test_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        testing_status: testStatusFactory({
+          status: TestStatusStatus.PASSED,
+        }),
+        system_id: "abc123",
+        zone: modelRefFactory(),
+      }),
+    ];
     discovery = discoveryFactory({
       ip: "1.2.3.4",
       mac_address: "aa:bb:cc",
@@ -44,7 +100,21 @@ describe("DiscoveryAddForm", () => {
         items: [discovery],
       }),
       domain: domainStateFactory({ loaded: true }),
-      machine: machineStateFactory({ loaded: true }),
+      machine: machineStateFactory({
+        loaded: true,
+        items: machines,
+        lists: {
+          "123456": machineStateListFactory({
+            loaded: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: [machines[0].system_id],
+                name: "Deployed",
+              }),
+            ],
+          }),
+        },
+      }),
       subnet: subnetStateFactory({ loaded: true }),
       vlan: vlanStateFactory({ loaded: true }),
     });

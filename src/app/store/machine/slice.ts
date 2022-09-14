@@ -569,7 +569,7 @@ const machineSlice = createSlice({
       },
     },
     count: {
-      prepare: (callId: string, filters?: FetchFilters) => ({
+      prepare: (callId: string, filters?: FetchFilters | null) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "count",

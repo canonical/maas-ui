@@ -33,12 +33,12 @@ import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
 import machineSelectors from "app/store/machine/selectors";
-import { FetchGroupKey } from "app/store/machine/types";
 import type {
   Machine,
   MachineMeta,
   MachineStateListGroup,
 } from "app/store/machine/types";
+import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachineItems } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
@@ -47,9 +47,11 @@ import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
 
 export enum Label {
+  HideGroup = "Hide",
   Loading = "Loading machines",
   Machines = "Machines",
   NoResults = "No machines match the search criteria.",
+  ShowGroup = "Show",
 }
 
 type Props = {
@@ -78,7 +80,7 @@ type TableColumn = MainTableCell & { key: string };
 type GenerateRowParams = {
   callId?: string | null;
   activeRow: Machine[MachineMeta.PK] | null;
-  groupName?: MachineStateListGroup["name"];
+  groupValue: MachineStateListGroup["value"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
   onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
@@ -99,26 +101,6 @@ type RowContent = {
   [MachineColumns.MEMORY]: ReactNode;
   [MachineColumns.DISKS]: ReactNode;
   [MachineColumns.STORAGE]: ReactNode;
-};
-
-const getGroupSecondaryString = (
-  machineIDs: Machine[MachineMeta.PK][],
-  selectedIDs: NonNullable<Props["selectedIDs"]>
-) => {
-  let string = pluralize("machine", machineIDs.length, true);
-  const selectedCount = machineIDs.reduce(
-    (sum, machine) => (selectedIDs.includes(machine) ? sum + 1 : sum),
-    0
-  );
-
-  if (selectedCount) {
-    if (selectedCount === machineIDs.length) {
-      string = `${string} selected`;
-    } else {
-      string = `${string}, ${selectedCount} selected`;
-    }
-  }
-  return string;
 };
 
 /**
@@ -321,7 +303,7 @@ const generateSkeletonRows = (
 const generateRows = ({
   callId,
   activeRow,
-  groupName,
+  groupValue,
   hiddenColumns,
   machines,
   onToggleMenu,
@@ -338,7 +320,7 @@ const generateRows = ({
         <NameColumn
           callId={callId}
           data-testid="fqdn-column"
-          groupName={groupName}
+          groupValue={groupValue}
           showActions={showActions}
           showMAC={showMAC}
           systemId={row.system_id}
@@ -424,14 +406,15 @@ const generateGroupRows = ({
   groups: MachineStateListGroup[] | null;
   hiddenGroups: NonNullable<Props["hiddenGroups"]>;
   setHiddenGroups: Props["setHiddenGroups"];
-} & GenerateRowParams) => {
+} & Omit<GenerateRowParams, "groupValue">) => {
   let rows: MainTableRow[] = [];
 
   groups?.forEach((group) => {
-    const { collapsed, items: machineIDs, name } = group;
+    const { collapsed, count, items: machineIDs, name } = group;
     // When the table is set to ungrouped then there are no group headers.
     if (grouping) {
       rows.push({
+        "aria-label": `${name} machines group`,
         className: "machine-list__group",
         columns: [
           {
@@ -442,12 +425,16 @@ const generateGroupRows = ({
                   data-testid="group-cell"
                   primary={
                     showActions ? (
-                      <GroupCheckbox callId={callId} groupName={name} />
+                      <GroupCheckbox
+                        callId={callId}
+                        groupName={name}
+                        grouping={grouping}
+                      />
                     ) : (
                       <strong>{name}</strong>
                     )
                   }
-                  secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
+                  secondary={pluralize("machine", count, true)}
                   secondaryClassName={
                     showActions ? "u-nudge--secondary-row u-align--left" : null
                   }
@@ -470,9 +457,9 @@ const generateGroupRows = ({
                     }}
                   >
                     {collapsed ? (
-                      <i className="p-icon--plus">Show</i>
+                      <i className="p-icon--plus">{Label.ShowGroup}</i>
                     ) : (
-                      <i className="p-icon--minus">Hide</i>
+                      <i className="p-icon--minus">{Label.HideGroup}</i>
                     )}
                   </Button>
                 </div>
@@ -498,7 +485,7 @@ const generateGroupRows = ({
       generateRows({
         ...rowProps,
         callId,
-        groupName: name,
+        groupValue: group.value,
         machines: visibleMachines,
         selectedIDs,
         showActions,

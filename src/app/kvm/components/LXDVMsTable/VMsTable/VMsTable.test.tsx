@@ -1,11 +1,12 @@
 import reduxToolkit from "@reduxjs/toolkit";
+import { screen, within } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import VMsTable from "./VMsTable";
+import VMsTable, { Label } from "./VMsTable";
 
 import { SortDirection } from "app/base/types";
 import { FetchGroupKey } from "app/store/machine/types";
@@ -18,6 +19,7 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -33,31 +35,27 @@ describe("VMsTable", () => {
     });
   });
 
-  it("shows a spinner if machines are loading", () => {
-    const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getResources={getResources}
-              machinesLoading={true}
-              searchFilter=""
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={[]}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+  it("displays skeleton rows when loading", () => {
+    renderWithMockStore(
+      <VMsTable
+        getHostColumn={undefined}
+        getResources={getResources}
+        machinesLoading={true}
+        searchFilter=""
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={[]}
+      />
     );
-
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(
+      within(
+        screen.getAllByRole("gridcell", {
+          name: Label.Name,
+        })[0]
+      ).getByText("xxxxxxxxx.xxxx")
+    ).toBeInTheDocument();
   });
 
   it("can change sort order", () => {
@@ -372,5 +370,32 @@ describe("VMsTable", () => {
     expect(
       wrapper.find("DoubleRow[data-testid='pool-col']").at(0).prop("secondary")
     ).toBe("tag1, tag2");
+  });
+  it("renders a column for the host if function provided to render it", () => {
+    const state = rootStateFactory();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <VMsTable
+              getHostColumn={jest.fn()}
+              getResources={getResources}
+              machinesLoading={false}
+              searchFilter=""
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.Hostname}
+              vms={[]}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(wrapper.find("[data-testid='host-column']").exists()).toBe(true);
   });
 });

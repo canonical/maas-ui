@@ -15,25 +15,25 @@ import type {
 type Props = {
   callId?: string | null;
   label: ReactNode;
-  groupName?: MachineStateListGroup["name"];
+  groupValue?: MachineStateListGroup["value"];
   systemId: Machine[MachineMeta.PK];
 };
 
 const MachineCheckbox = ({
   callId,
   label,
-  groupName,
+  groupValue,
   systemId,
 }: Props): JSX.Element => {
   const selected = useSelector(machineSelectors.selectedMachines);
   const allSelected = !!selected && "filter" in selected;
   // Whether the group this machine appears in is selected.
   const groupSelected =
-    typeof groupName !== "undefined" &&
-    groupName !== null &&
+    typeof groupValue !== "undefined" &&
+    groupValue !== null &&
     !!selected &&
     "groups" in selected &&
-    selected.groups?.includes(groupName);
+    selected.groups?.includes(groupValue);
   // Display this machine as checked if it or the machine's group or all
   // machines are selected.
   const isChecked =

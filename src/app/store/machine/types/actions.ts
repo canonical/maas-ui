@@ -1,4 +1,9 @@
-import type { Machine, MachineStatus, FilterGroupKey } from "./base";
+import type {
+  Machine,
+  MachineStatus,
+  FilterGroupKey,
+  MachineStateListGroup,
+} from "./base";
 import type { MachineMeta } from "./enum";
 
 import type { Domain } from "app/store/domain/types";
@@ -263,7 +268,7 @@ type Filters = {
   [FilterGroupKey.Domain]: Domain["name"];
   [FilterGroupKey.ErrorDescription]: Machine["error_description"];
   [FilterGroupKey.FabricClasses]: Fabric["class_type"];
-  [FilterGroupKey.Fabrics]: Machine["fabrics"];
+  [FilterGroupKey.Fabrics]: Machine["fabrics"][0];
   [FilterGroupKey.FreeText]: string;
   [FilterGroupKey.Hostname]: Machine["hostname"];
   [FilterGroupKey.IpAddresses]: NodeIpAddress["ip"];
@@ -278,7 +283,7 @@ type Filters = {
   [FilterGroupKey.Spaces]: Space["name"];
   [FilterGroupKey.Status]: FetchNodeStatus;
   [FilterGroupKey.Subnets]: Subnet["name"];
-  [FilterGroupKey.SystemId]: Machine["system_id"];
+  [FilterGroupKey.Id]: Machine["system_id"];
   [FilterGroupKey.Tags]: Tag["name"];
   [FilterGroupKey.Vlans]: NodeVlan["name"];
   [FilterGroupKey.Workloads]: string;
@@ -286,25 +291,25 @@ type Filters = {
 };
 
 type ExcludeFilters = {
-  [FilterGroupKey.NotArch]: Filters["arch"];
-  [FilterGroupKey.NotCpuCount]: Machine["cpu_count"];
-  [FilterGroupKey.NotCpuSpeed]: Machine["cpu_speed"];
-  [FilterGroupKey.NotDistroSeries]: Filters["distro_series"];
-  [FilterGroupKey.NotFabricClasses]: Filters["fabric_classes"];
-  [FilterGroupKey.NotFabrics]: Filters["fabrics"];
-  [FilterGroupKey.NotInPool]: Filters["pool"];
-  [FilterGroupKey.NotInZone]: Filters["zone"];
-  [FilterGroupKey.NotIpAddresses]: Filters["ip_addresses"];
-  [FilterGroupKey.NotLinkSpeed]: Machine["link_speeds"][0];
-  [FilterGroupKey.NotMem]: Machine["memory"];
-  [FilterGroupKey.NotOsystem]: Filters["osystem"];
-  [FilterGroupKey.NotOwner]: Filters["owner"];
-  [FilterGroupKey.NotPod]: Filters["pod"];
-  [FilterGroupKey.NotPodType]: Filters["pod_type"];
-  [FilterGroupKey.NotSubnets]: Filters["subnets"];
-  [FilterGroupKey.NotSystemId]: Filters["system_id"];
-  [FilterGroupKey.NotTags]: Filters["tags"];
-  [FilterGroupKey.NotVlans]: Filters["vlans"];
+  [FilterGroupKey.NotArch]: Filters[FilterGroupKey.Arch];
+  [FilterGroupKey.NotCpuCount]: Filters[FilterGroupKey.CpuCount];
+  [FilterGroupKey.NotCpuSpeed]: Filters[FilterGroupKey.CpuSpeed];
+  [FilterGroupKey.NotDistroSeries]: Filters[FilterGroupKey.DistroSeries];
+  [FilterGroupKey.NotFabricClasses]: Filters[FilterGroupKey.FabricClasses];
+  [FilterGroupKey.NotFabrics]: Filters[FilterGroupKey.Fabrics];
+  [FilterGroupKey.NotInPool]: Filters[FilterGroupKey.Pool];
+  [FilterGroupKey.NotInZone]: Filters[FilterGroupKey.Zone];
+  [FilterGroupKey.NotIpAddresses]: Filters[FilterGroupKey.IpAddresses];
+  [FilterGroupKey.NotLinkSpeed]: Filters[FilterGroupKey.LinkSpeed];
+  [FilterGroupKey.NotMem]: Filters[FilterGroupKey.Mem];
+  [FilterGroupKey.NotOsystem]: Filters[FilterGroupKey.Osystem];
+  [FilterGroupKey.NotOwner]: Filters[FilterGroupKey.Owner];
+  [FilterGroupKey.NotPod]: Filters[FilterGroupKey.Pod];
+  [FilterGroupKey.NotPodType]: Filters[FilterGroupKey.PodType];
+  [FilterGroupKey.NotSubnets]: Filters[FilterGroupKey.Subnets];
+  [FilterGroupKey.NotId]: Filters[FilterGroupKey.Id];
+  [FilterGroupKey.NotTags]: Filters[FilterGroupKey.Tags];
+  [FilterGroupKey.NotVlans]: Filters[FilterGroupKey.Vlans];
 };
 
 export type FetchFilters = Partial<
@@ -422,7 +427,7 @@ export enum FetchGroupKey {
 export type FetchParams = {
   filter?: FetchFilters | null;
   group_key?: FetchGroupKey | null;
-  group_collapsed?: string[];
+  group_collapsed?: MachineStateListGroup["value"][] | null;
   page_size?: number;
   page_number?: number;
   sort_key?: FetchGroupKey | null;

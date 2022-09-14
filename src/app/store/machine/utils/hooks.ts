@@ -1,11 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { nanoid } from "@reduxjs/toolkit";
 import fastDeepEqual from "fast-deep-equal";
 import { useDispatch, useSelector } from "react-redux";
 
-import type { FetchSortDirection } from "../types/actions";
+import type {
+  FetchGroupKey,
+  FetchSortDirection,
+  FetchParams,
+} from "../types/actions";
 
 import { useCanEdit } from "app/base/hooks";
 import type { APIError } from "app/base/types";
@@ -20,7 +24,6 @@ import type {
   FetchFilters,
   Machine,
   MachineMeta,
-  FetchGroupKey,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -36,7 +39,7 @@ import vlanSelectors from "app/store/vlan/selectors";
 import { isId } from "app/utils";
 
 export const useFetchMachineCount = (
-  filters?: FetchFilters
+  filters?: FetchFilters | null
 ): {
   machineCount: number;
   machineCountLoading: boolean;
@@ -88,11 +91,14 @@ export const useFetchMachineCount = (
 export type UseFetchMachinesOptions = {
   filters?: FetchFilters | null;
   grouping?: FetchGroupKey | null;
-  pageSize?: number;
-  currentPage?: number;
   sortKey?: FetchGroupKey | null;
   sortDirection?: FetchSortDirection | null;
-  collapsedGroups?: string[];
+  collapsedGroups?: FetchParams["group_collapsed"];
+  pagination?: {
+    pageSize: number;
+    currentPage: number;
+    setCurrentPage: React.Dispatch<React.SetStateAction<number>>;
+  };
 };
 
 /**
@@ -129,6 +135,26 @@ export const useFetchMachines = (
   );
   useCleanup(callId);
 
+  // reset pagination when filters change
+  const { filters, grouping, collapsedGroups, sortDirection, sortKey } =
+    options || {};
+  const filterOptions = useMemo(
+    () => ({
+      filters,
+      grouping,
+      collapsedGroups,
+      sortDirection,
+      sortKey,
+    }),
+    [filters, grouping, collapsedGroups, sortDirection, sortKey]
+  );
+  const previousFilterOptions = usePrevious(filterOptions);
+  useEffect(() => {
+    if (!fastDeepEqual(filterOptions, previousFilterOptions)) {
+      options?.pagination?.setCurrentPage?.(1);
+    }
+  }, [options, filterOptions, previousFilterOptions]);
+
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
@@ -147,8 +173,8 @@ export const useFetchMachines = (
                 filter: options.filters ?? null,
                 group_collapsed: options.collapsedGroups,
                 group_key: options.grouping ?? null,
-                page_number: options.currentPage,
-                page_size: options.pageSize,
+                page_number: options?.pagination?.currentPage,
+                page_size: options?.pagination?.pageSize,
                 sort_direction: options.sortDirection ?? null,
                 sort_key: options.sortKey ?? null,
               }
@@ -358,4 +384,25 @@ export const useHasSelection = (): boolean => {
   const hasItems =
     "items" in selectedMachines && (selectedMachines.items ?? [])?.length > 0;
   return hasFilters || hasGroups || hasItems;
+};
+
+/**
+ * Return the previous count while a new fetch is in progress.
+ */
+export const useFetchedCount = (
+  newCount: number | null,
+  loading?: boolean | null
+): number => {
+  const [previousCount, setPreviousCount] = useState(newCount);
+  const count = (loading ? previousCount : newCount) ?? 0;
+
+  useEffect(() => {
+    // The pagination needs to be displayed while the new list is being fetched
+    // so this stores the previous machine count while the request is in progress.
+    if ((newCount || newCount === 0) && previousCount !== newCount) {
+      setPreviousCount(newCount);
+    }
+  }, [newCount, previousCount]);
+
+  return count;
 };

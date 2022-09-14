@@ -1,5 +1,6 @@
 import { ContextualMenu } from "@canonical/react-components";
 import reduxToolkit from "@reduxjs/toolkit";
+import { screen } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,6 +10,7 @@ import configureStore from "redux-mock-store";
 import MachineListHeader from "./MachineListHeader";
 
 import { MachineHeaderViews } from "app/machines/constants";
+import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
@@ -19,6 +21,7 @@ import {
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -26,12 +29,16 @@ describe("MachineListHeader", () => {
   let state: RootState;
 
   beforeEach(() => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    jest
+      .spyOn(reduxToolkit, "nanoid")
+      .mockReturnValueOnce("mocked-nanoid-1")
+      .mockReturnValueOnce("mocked-nanoid-2")
+      .mockReturnValueOnce("mocked-nanoid-3");
     state = rootStateFactory({
       machine: machineStateFactory({
         counts: machineStateCountsFactory({
-          "mocked-nanoid": machineStateCountFactory({
-            count: 2,
+          "mocked-nanoid-1": machineStateCountFactory({
+            count: 10,
             loaded: true,
             loading: false,
           }),
@@ -53,12 +60,8 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a loader if machines have not loaded", () => {
-    state.machine.counts = machineStateCountsFactory({
-      "mocked-nanoid": machineStateCountFactory({
-        count: 2,
-        loaded: false,
-        loading: true,
-      }),
+    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+      loading: true,
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -69,6 +72,7 @@ describe("MachineListHeader", () => {
           <CompatRouter>
             <MachineListHeader
               headerContent={null}
+              searchFilter=""
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -80,7 +84,10 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a machine count if machines have loaded", () => {
-    state.machine.loaded = true;
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 2,
+      loaded: true,
+    });
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -90,6 +97,7 @@ describe("MachineListHeader", () => {
           <CompatRouter>
             <MachineListHeader
               headerContent={null}
+              searchFilter=""
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -102,65 +110,144 @@ describe("MachineListHeader", () => {
     );
   });
 
-  it("displays a selected machine filter button if some machines have been selected", () => {
-    state.machine.loaded = true;
-    // TODO: This state can be remove once the count has been updated to use the
-    // new API:
-    // https://github.com/canonical/app-tribe/issues/1102
-    state.machine.selected = ["abc123"];
+  it("displays a spinner if the selected group count is loading", () => {
+    state.machine.selectedMachines = {
+      groups: ["admin"],
+      grouping: FetchGroupKey.Owner,
+    };
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+      loading: true,
+    });
+    renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { state } }
+    );
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
+  });
+
+  it("does not display a spinner if only machines are selected and the count is loading", () => {
     state.machine.selectedMachines = { items: ["abc123"] };
-    const setSearchFilter = jest.fn();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              setSearchFilter={setSearchFilter}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+      loading: true,
+    });
+    renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { state } }
     );
-    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
-      "1 of 2 machines selected"
+    expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
+  });
+
+  it("displays a selected count if some machines have been selected", () => {
+    state.machine.selectedMachines = { items: ["abc123"] };
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+      count: 2,
+      loaded: true,
+    });
+    renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { state } }
     );
-    wrapper
-      .find('[data-testid="section-header-subtitle"] Button')
-      .simulate("click");
-    expect(setSearchFilter).toHaveBeenCalledWith("in:(Selected)");
+    expect(screen.getByText("1 of 10 machines selected")).toBeInTheDocument();
+  });
+
+  it("displays a selected count if some groups have been selected", () => {
+    state.machine.selectedMachines = {
+      groups: ["admin"],
+      grouping: FetchGroupKey.Owner,
+    };
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+      count: 2,
+      loaded: true,
+    });
+    renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { state } }
+    );
+    expect(screen.getByText("2 of 10 machines selected")).toBeInTheDocument();
+  });
+
+  it("displays a selected count if some machines and groups have been selected", () => {
+    state.machine.selectedMachines = {
+      items: ["abc123"],
+      groups: ["admin"],
+      grouping: FetchGroupKey.Owner,
+    };
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+      count: 2,
+      loaded: true,
+    });
+    renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { state } }
+    );
+    expect(screen.getByText("3 of 10 machines selected")).toBeInTheDocument();
   });
 
   it("displays a message when all machines have been selected", () => {
-    state.machine.loaded = true;
-    // TODO: This state can be remove once the count has been updated to use the
-    // new API:
-    // https://github.com/canonical/app-tribe/issues/1102
-    state.machine.selected = ["abc123", "def456"];
-    state.machine.selectedMachines = { items: ["abc123", "def456"] };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    state.machine.selectedMachines = { filter: {} };
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { state } }
     );
-    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
-      "All machines selected"
-    );
+    expect(screen.getByText("All machines selected")).toBeInTheDocument();
   });
 
   it("disables the add hardware menu when machines are selected", () => {
@@ -174,6 +261,7 @@ describe("MachineListHeader", () => {
           <CompatRouter>
             <MachineListHeader
               headerContent={null}
+              searchFilter=""
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -199,6 +287,7 @@ describe("MachineListHeader", () => {
           <CompatRouter>
             <MachineListHeader
               headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
+              searchFilter=""
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -227,6 +316,7 @@ describe("MachineListHeader", () => {
           <CompatRouter>
             <MachineListHeader
               headerContent={null}
+              searchFilter=""
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />
@@ -264,6 +354,7 @@ describe("MachineListHeader", () => {
           <CompatRouter>
             <MachineListHeader
               headerContent={null}
+              searchFilter=""
               setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
             />

@@ -645,7 +645,7 @@ describe("MachineListTable", () => {
         .find("[data-testid='group-cell'] .p-double-row__secondary-row")
         .at(0)
         .text()
-    ).toEqual("2 machines, 1 selected");
+    ).toEqual("15 machines");
   });
 
   it("does not show checkboxes if showActions is false", () => {
