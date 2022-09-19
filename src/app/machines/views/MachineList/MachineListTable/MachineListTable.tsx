@@ -50,6 +50,7 @@ export enum Label {
   HideGroup = "Hide",
   Loading = "Loading machines",
   Machines = "Machines",
+  NoResults = "No machines match the search criteria.",
   ShowGroup = "Show",
 }
 
@@ -813,11 +814,7 @@ export const MachineListTable = ({
           "machine-list--grouped": grouping,
           "machine-list--loading": machinesLoading,
         })}
-        emptyStateMsg={
-          !machinesLoading && filter
-            ? "No machines match the search criteria."
-            : null
-        }
+        emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
         headers={filterColumns(headers, hiddenColumns, showActions)}
         rows={machinesLoading ? skeletonRows : rows}
         {...props}
