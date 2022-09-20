@@ -222,7 +222,11 @@ export const useFetchMachine = (
     }
   }, [dispatch, id, callId, previousCallId]);
 
-  return { machine, loading, loaded };
+  return {
+    machine,
+    loading,
+    loaded,
+  };
 };
 
 /**

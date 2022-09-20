@@ -3,6 +3,7 @@ import { act, renderHook } from "@testing-library/react-hooks";
 import {
   useCycled,
   useId,
+  usePreviousPersistent,
   useProcessing,
   useScrollOnRender,
   useScrollToTop,
@@ -270,6 +271,28 @@ describe("hooks", () => {
       rerender();
 
       expect(scrollToSpy).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe("usePreviousPersistent", () => {
+    it("should return null on initial render", () => {
+      const { result } = renderHook(() => usePreviousPersistent({ a: "b" }));
+
+      expect(result.current).toBeNull();
+    });
+
+    it("persists previous values on re-render", () => {
+      const { rerender, result } = renderHook(
+        (state) => usePreviousPersistent(state),
+        {
+          initialProps: 1,
+        }
+      );
+
+      rerender(2);
+      expect(result.current).toEqual(1);
+      rerender(3);
+      expect(result.current).toEqual(2);
     });
   });
 });

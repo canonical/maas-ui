@@ -46,7 +46,7 @@ describe("MachineSelectTable", () => {
     });
   });
 
-  it("shows a spinner while data is loading", () => {
+  it("shows a loading skeleton while data is loading", () => {
     state.machine.loading = true;
     renderWithMockStore(
       <MachineSelectTable
@@ -57,7 +57,7 @@ describe("MachineSelectTable", () => {
       />,
       { state }
     );
-    expect(screen.getByText(Label.Loading)).toBeInTheDocument();
+    expect(screen.getByRole("grid")).toHaveAttribute("aria-busy", "true");
   });
 
   it("highlights the substring that matches the search text", async () => {
@@ -109,5 +109,26 @@ describe("MachineSelectTable", () => {
       name: Label.Owner,
     });
     expect(within(ownerCols[0]).getByText("tagA")).toBeInTheDocument();
+  });
+
+  it("can select machine by pressing Enter key", async () => {
+    const onMachineClick = jest.fn();
+    const machine = machines[0];
+    renderWithMockStore(
+      <MachineSelectTable
+        machines={machines}
+        onMachineClick={onMachineClick}
+        searchText=""
+        setSearchText={jest.fn()}
+      />,
+      { state }
+    );
+    screen
+      .getByRole("row", {
+        name: machine.hostname,
+      })
+      .focus();
+    await userEvent.keyboard("{enter}");
+    expect(onMachineClick).toHaveBeenCalledWith(machine);
   });
 });

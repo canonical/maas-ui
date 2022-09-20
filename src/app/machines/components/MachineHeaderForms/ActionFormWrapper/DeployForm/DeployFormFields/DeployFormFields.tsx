@@ -100,11 +100,7 @@ export const DeployFormFields = (): JSX.Element => {
                   clearVmHostOptions();
                 }
               }}
-              options={
-                // This won't need to pass the empty array once this issue is fixed:
-                // https://github.com/canonical/react-components/issues/570
-                osOptions || []
-              }
+              options={osOptions}
             />
           </Col>
           <Col size={3}>
