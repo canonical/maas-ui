@@ -19,7 +19,6 @@ import { actions as tagActions } from "app/store/tag";
 
 export enum Labels {
   AppliesTo = "Applies to",
-  Loading = "Loading...",
   ChooseMachine = "Choose machine",
 }
 
