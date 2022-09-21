@@ -1,12 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
-import ClearAllForm from "./ClearAllForm";
+import ClearAllForm, { Labels as ClearAllFormLabels } from "./ClearAllForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import { ConfigNames, NetworkDiscovery } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -15,9 +12,10 @@ import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("ClearAllForm", () => {
   let state: RootState;
@@ -55,22 +53,14 @@ describe("ClearAllForm", () => {
         },
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ClearAllForm closeForm={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='enabled-message']").exists()).toBe(true);
+    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+      route: "/dashboard",
+      wrapperProps: { state },
+    });
+    expect(screen.getByTestId("enabled-message")).toBeInTheDocument();
   });
 
-  it("displays a message when discovery is enabled", () => {
+  it("displays a message when discovery is disabled", () => {
     state.config = configStateFactory({
       items: [
         {
@@ -79,59 +69,43 @@ describe("ClearAllForm", () => {
         },
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ClearAllForm closeForm={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("[data-testid='disabled-message']").exists()).toBe(
-      true
-    );
+    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+      route: "/dashboard",
+      wrapperProps: { state },
+    });
+    expect(screen.getByTestId("disabled-message")).toBeInTheDocument();
   });
 
-  it("dispatches an action to clear the discoveries", () => {
+  it("dispatches an action to clear the discoveries", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ClearAllForm closeForm={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+      route: "/dashboard",
+      wrapperProps: { store },
+    });
+    await userEvent.click(
+      screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
-    submitFormikForm(wrapper);
     expect(
       store.getActions().some(({ type }) => type === "discovery/clear")
     ).toBe(true);
   });
 
-  it("shows a success message when completed", () => {
+  it("shows a success message when completed", async () => {
+    mockFormikFormSaved();
+
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <ClearAllForm closeForm={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
+      route: "/dashboard",
+      wrapperProps: { store },
+    });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
     );
-    const onSuccess = wrapper.find(FormikForm).prop("onSuccess");
-    onSuccess && onSuccess({});
-    expect(store.getActions().some(({ type }) => type === "message/add")).toBe(
-      true
-    );
+    await waitFor(() => {
+      expect(
+        store.getActions().some(({ type }) => type === "message/add")
+      ).toBe(true);
+    });
   });
 });

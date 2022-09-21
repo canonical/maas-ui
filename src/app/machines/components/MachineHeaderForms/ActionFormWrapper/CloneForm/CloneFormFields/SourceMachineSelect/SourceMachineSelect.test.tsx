@@ -1,7 +1,7 @@
 import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
-import { Label as SourceMachineDetailsLabel } from "./SourceMachineDetails/SourceMachineDetails";
+import { Labels as SourceMachineDetailsLabel } from "./SourceMachineDetails/SourceMachineDetails";
 import SourceMachineSelect, { Label } from "./SourceMachineSelect";
 
 import { Label as MachineSelectTableLabel } from "app/base/components/MachineSelectTable/MachineSelectTable";

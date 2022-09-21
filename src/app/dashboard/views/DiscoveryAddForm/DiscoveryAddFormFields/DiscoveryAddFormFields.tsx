@@ -29,7 +29,7 @@ type Props = {
   setDeviceType: (deviceType: DeviceType) => void;
 };
 
-export enum Label {
+export enum Labels {
   ChooseType = "Choose type",
   ChooseDomain = "Choose domain",
   Type = "Type",
@@ -42,6 +42,9 @@ export enum Label {
   Domain = "Domain",
   SelectDeviceName = "Select device name",
   SelectParent = "Select parent (optional)",
+  Fabric = "Fabric",
+  Vlan = "VLAN",
+  Subnet = "Subnet",
 }
 
 const DiscoveryAddFormFields = ({
@@ -71,7 +74,7 @@ const DiscoveryAddFormFields = ({
         <Col size={6}>
           <FormikField
             component={Select}
-            label={Label.Type}
+            label={Labels.Type}
             name="type"
             onChange={(evt: React.ChangeEvent<HTMLSelectElement>) => {
               setFieldValue("type", evt.target.value);
@@ -80,24 +83,24 @@ const DiscoveryAddFormFields = ({
               setDevice(null);
             }}
             options={[
-              { label: Label.ChooseType, value: "", disabled: true },
-              { label: Label.Device, value: DeviceType.DEVICE },
-              { label: Label.Interface, value: DeviceType.INTERFACE },
+              { label: Labels.ChooseType, value: "", disabled: true },
+              { label: Labels.Device, value: DeviceType.DEVICE },
+              { label: Labels.Interface, value: DeviceType.INTERFACE },
             ]}
             required
           />
           <FormikField
-            label={isDevice ? Label.Hostname : Label.InterfaceName}
+            label={isDevice ? Labels.Hostname : Labels.InterfaceName}
             name="hostname"
             type="text"
           />
           {isDevice ? (
             <FormikField
               component={Select}
-              label={Label.Domain}
+              label={Labels.Domain}
               name="domain"
               options={[
-                { label: Label.ChooseDomain, value: "", disabled: true },
+                { label: Labels.ChooseDomain, value: "", disabled: true },
                 ...domains.map((domain) => ({
                   label: domain.name,
                   value: domain.name,
@@ -108,10 +111,11 @@ const DiscoveryAddFormFields = ({
           ) : null}
           {isInterface ? (
             <FormikField
+              aria-label={Labels.DeviceName}
               component={Select}
               label={
                 <>
-                  {Label.DeviceName}{" "}
+                  {Labels.DeviceName}{" "}
                   <TooltipButton message="Create as an interface on the selected device." />
                 </>
               }
@@ -121,7 +125,7 @@ const DiscoveryAddFormFields = ({
                 setDevice(evt.target.value as Device[DeviceMeta.PK]);
               }}
               options={[
-                { label: Label.SelectDeviceName, value: "", disabled: true },
+                { label: Labels.SelectDeviceName, value: "", disabled: true },
                 ...devices.map((device) => ({
                   label: device.fqdn,
                   value: device[DeviceMeta.PK],
@@ -132,11 +136,11 @@ const DiscoveryAddFormFields = ({
           ) : (
             <FormikField
               component={MachineSelect}
-              defaultOption={Label.SelectParent}
+              defaultOption={Labels.SelectParent}
               filters={{ status: FetchNodeStatus.DEPLOYED }}
               label={
                 <>
-                  {Label.Parent}{" "}
+                  {Labels.Parent}{" "}
                   <TooltipButton message="Assign this device as a child of the parent machine." />
                 </>
               }
@@ -151,7 +155,7 @@ const DiscoveryAddFormFields = ({
             required
           />
           <div className="">
-            <p>Fabric</p>
+            <p>{Labels.Fabric}</p>
             <p>
               <Link to={urls.subnets.fabric.index({ id: discovery.fabric })}>
                 {discovery.fabric_name}
@@ -159,7 +163,7 @@ const DiscoveryAddFormFields = ({
             </p>
           </div>
           <div className="u-nudge-down--small">
-            <p>VLAN</p>
+            <p>{Labels.Vlan}</p>
             <p>
               {vlanDisplay ? (
                 <Link to={urls.subnets.vlan.index({ id: discovery.vlan })}>
@@ -169,7 +173,7 @@ const DiscoveryAddFormFields = ({
             </p>
           </div>
           <div className="u-nudge-down--small">
-            <p>Subnet</p>
+            <p>{Labels.Subnet}</p>
             {discovery.subnet && subnetDisplay ? (
               <p>
                 <Link to={urls.subnets.subnet.index({ id: discovery.subnet })}>

@@ -1,9 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen, within } from "@testing-library/react";
 
-import NumaCard from "./NumaCard";
+import NumaCard, { Labels as NumaCardLabels } from "./NumaCard";
+import { Labels as NumaCardDetailsLabels } from "./NumaCardDetails/NumaCardDetails";
 
 import type { RootState } from "app/store/root/types";
 import {
@@ -12,8 +10,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("NumaCard", () => {
   let state: RootState;
@@ -37,33 +34,37 @@ describe("NumaCard", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NumaCard id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NumaCard .p-muted-heading").text()).toBe(
-      "0 NUMA nodes"
-    );
-    expect(wrapper.find("NumaCard List").exists()).toBe(false);
+    renderWithBrowserRouter(<NumaCard id="abc123" />, {
+      route: "/machine/abc123",
+      wrapperProps: { state },
+    });
+
+    const numa_card = screen.getByLabelText(NumaCardLabels.NumaCard);
+    expect(within(numa_card).getByText("0 NUMA nodes")).toBeInTheDocument();
+    expect(
+      within(numa_card).queryByRole("list", { name: NumaCardLabels.NumaList })
+    ).not.toBeInTheDocument();
   });
 
   it("renders with numa nodes", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NumaCard id="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NumaCard")).toMatchSnapshot();
+    renderWithBrowserRouter(<NumaCard id="abc123" />, {
+      route: "/machine/abc123",
+      wrapperProps: { state },
+    });
+    expect(screen.getByText("1 NUMA node")).toBeInTheDocument();
+    expect(screen.getByText("Node 2")).toBeInTheDocument();
+
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.CpuCores)
+    ).toHaveTextContent("0");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Memory)
+    ).toHaveTextContent("256 MiB");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Storage)
+    ).toHaveTextContent("0 B over 0 disks");
+    expect(
+      screen.getByLabelText(NumaCardDetailsLabels.Network)
+    ).toHaveTextContent("0 interfaces");
   });
 });

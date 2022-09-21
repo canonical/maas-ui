@@ -1,17 +1,14 @@
-import { Select } from "@canonical/react-components";
-import { mount } from "enzyme";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import { DeviceType } from "../types";
 
-import DiscoveryAddFormFields from "./DiscoveryAddFormFields";
+import DiscoveryAddFormFields, {
+  Labels as DiscoveryAddFormFieldsLabels,
+} from "./DiscoveryAddFormFields";
 
-import { DeviceIpAssignment, DeviceMeta } from "app/store/device/types";
+import { DeviceMeta } from "app/store/device/types";
 import type { Discovery } from "app/store/discovery/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -21,8 +18,7 @@ import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("DiscoveryAddFormFields", () => {
   let state: RootState;
@@ -39,115 +35,132 @@ describe("DiscoveryAddFormFields", () => {
   });
 
   it("shows fields for a device", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Formik
-              initialValues={{ type: DeviceType.DEVICE }}
-              onSubmit={jest.fn()}
-            >
-              <DiscoveryAddFormFields
-                discovery={discovery}
-                setDevice={jest.fn()}
-                setDeviceType={jest.fn()}
-              />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{ type: DeviceType.DEVICE }} onSubmit={jest.fn()}>
+        <DiscoveryAddFormFields
+          discovery={discovery}
+          setDevice={jest.fn()}
+          setDeviceType={jest.fn()}
+        />
+      </Formik>,
+      { route: "/dashboard", wrapperProps: { state } }
     );
-    expect(wrapper.find("[name='domain']").exists()).toBe(true);
-    expect(wrapper.find("[name='parent']").exists()).toBe(true);
-    expect(wrapper.find("[name='system_id']").exists()).toBe(false);
+    expect(
+      screen.getByRole("combobox", {
+        name: DiscoveryAddFormFieldsLabels.Domain,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("button", {
+        name: DiscoveryAddFormFieldsLabels.Parent,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", {
+        name: DiscoveryAddFormFieldsLabels.Hostname,
+      })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("textbox", {
+        name: DiscoveryAddFormFieldsLabels.InterfaceName,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("combobox", {
+        name: DiscoveryAddFormFieldsLabels.DeviceName,
+      })
+    ).not.toBeInTheDocument();
   });
 
   it("shows fields for an interface", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Formik
-              initialValues={{ type: DeviceType.INTERFACE }}
-              onSubmit={jest.fn()}
-            >
-              <DiscoveryAddFormFields
-                discovery={discovery}
-                setDevice={jest.fn()}
-                setDeviceType={jest.fn()}
-              />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik
+        initialValues={{ type: DeviceType.INTERFACE }}
+        onSubmit={jest.fn()}
+      >
+        <DiscoveryAddFormFields
+          discovery={discovery}
+          setDevice={jest.fn()}
+          setDeviceType={jest.fn()}
+        />
+      </Formik>,
+      { route: "/dashboard", wrapperProps: { state } }
     );
-    expect(wrapper.find("[name='system_id']").exists()).toBe(true);
-    expect(wrapper.find("[name='domain']").exists()).toBe(false);
-    expect(wrapper.find("[name='parent']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("combobox", {
+        name: DiscoveryAddFormFieldsLabels.Domain,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("combobox", {
+        name: DiscoveryAddFormFieldsLabels.Parent,
+      })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("textbox", {
+        name: DiscoveryAddFormFieldsLabels.Hostname,
+      })
+    ).not.toBeInTheDocument();
+
+    expect(
+      screen.getByRole("textbox", {
+        name: DiscoveryAddFormFieldsLabels.InterfaceName,
+      })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", {
+        name: DiscoveryAddFormFieldsLabels.DeviceName,
+      })
+    ).toBeInTheDocument();
   });
 
   it("includes static ip if there is a subnet", () => {
     discovery.subnet = 0;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <DiscoveryAddFormFields
-                discovery={discovery}
-                setDevice={jest.fn()}
-                setDeviceType={jest.fn()}
-              />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <DiscoveryAddFormFields
+          discovery={discovery}
+          setDevice={jest.fn()}
+          setDeviceType={jest.fn()}
+        />
+      </Formik>,
+      { route: "/dashboard", wrapperProps: { state } }
     );
+
+    const ipAssignment = screen.getByRole("combobox", {
+      name: "IP assignment",
+    });
+
     expect(
-      wrapper
-        .find("[name='ip_assignment']")
-        .find(Select)
-        .prop("options")
-        ?.some(({ value }) => value === DeviceIpAssignment.STATIC)
-    ).toBe(true);
+      within(ipAssignment).getByRole("option", {
+        name: "Static",
+      })
+    ).toBeInTheDocument();
   });
 
   it("does not includes static ip if there is no subnet", () => {
     discovery.subnet = null;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <DiscoveryAddFormFields
-                discovery={discovery}
-                setDevice={jest.fn()}
-                setDeviceType={jest.fn()}
-              />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <DiscoveryAddFormFields
+          discovery={discovery}
+          setDevice={jest.fn()}
+          setDeviceType={jest.fn()}
+        />
+      </Formik>,
+      { route: "/dashboard", wrapperProps: { state } }
     );
+
+    const ipAssignment = screen.getByRole("combobox", {
+      name: "IP assignment",
+    });
+
     expect(
-      wrapper
-        .find("[name='ip_assignment']")
-        .find(Select)
-        .prop("options")
-        ?.some(({ value }) => value === DeviceIpAssignment.STATIC)
-    ).toBe(false);
+      within(ipAssignment).queryByRole("option", {
+        name: "Static",
+      })
+    ).not.toBeInTheDocument();
   });
 
   it("calls the callback with the selected device type", async () => {
@@ -159,35 +172,30 @@ describe("DiscoveryAddFormFields", () => {
         deviceFactory({ [DeviceMeta.PK]: "def456" }),
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Formik
-              initialValues={{ type: DeviceType.INTERFACE }}
-              onSubmit={jest.fn()}
-            >
-              <DiscoveryAddFormFields
-                discovery={discovery}
-                setDevice={setDevice}
-                setDeviceType={setDeviceType}
-              />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik
+        initialValues={{ type: DeviceType.INTERFACE }}
+        onSubmit={jest.fn()}
+      >
+        <DiscoveryAddFormFields
+          discovery={discovery}
+          setDevice={setDevice}
+          setDeviceType={setDeviceType}
+        />
+      </Formik>,
+      { route: "/dashboard", wrapperProps: { state } }
     );
-    wrapper.find("select[name='type']").simulate("change", {
-      target: { name: "type", value: DeviceType.INTERFACE },
-    });
-    await act(async () => {
-      wrapper.find(`select[name='${DeviceMeta.PK}']`).simulate("change", {
-        target: { name: DeviceMeta.PK, value: "abc123" },
-      });
-    });
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: DiscoveryAddFormFieldsLabels.Type }),
+      DeviceType.INTERFACE
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", {
+        name: DiscoveryAddFormFieldsLabels.DeviceName,
+      }),
+      "abc123"
+    );
     expect(setDeviceType).toHaveBeenCalledWith(DeviceType.INTERFACE);
     // The device should get cleared.
     expect(setDevice).toHaveBeenCalledWith(null);
@@ -201,32 +209,25 @@ describe("DiscoveryAddFormFields", () => {
         deviceFactory({ [DeviceMeta.PK]: "def456" }),
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/dashboard", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Formik
-              initialValues={{ type: DeviceType.INTERFACE }}
-              onSubmit={jest.fn()}
-            >
-              <DiscoveryAddFormFields
-                discovery={discovery}
-                setDevice={setDevice}
-                setDeviceType={jest.fn()}
-              />
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik
+        initialValues={{ type: DeviceType.INTERFACE }}
+        onSubmit={jest.fn()}
+      >
+        <DiscoveryAddFormFields
+          discovery={discovery}
+          setDevice={setDevice}
+          setDeviceType={jest.fn()}
+        />
+      </Formik>,
+      { route: "/dashboard", wrapperProps: { state } }
     );
-    await act(async () => {
-      wrapper.find(`select[name='${DeviceMeta.PK}']`).simulate("change", {
-        target: { name: DeviceMeta.PK, value: "abc123" },
-      });
-    });
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", {
+        name: DiscoveryAddFormFieldsLabels.DeviceName,
+      }),
+      "abc123"
+    );
     expect(setDevice).toHaveBeenCalledWith("abc123");
   });
 });

@@ -150,7 +150,9 @@ export class WebSocketClient {
    * @returns {Object} The websocket that was created.
    */
   connect(): ReconnectingWebSocket {
-    this.socket = new ReconnectingWebSocket(this.buildURL());
+    this.socket = new ReconnectingWebSocket(this.buildURL(), undefined, {
+      debug: process.env.REACT_APP_WEBSOCKET_DEBUG === "true",
+    });
     return this.socket;
   }
 

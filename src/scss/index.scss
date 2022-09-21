@@ -84,6 +84,7 @@
 @import "~app/base/components/Login";
 @import "~app/base/components/MachineSelectTable";
 @import "~app/base/components/Meter";
+@import "~app/base/components/node/HardwareCard";
 @import "~app/base/components/node/networking/NetworkTable";
 @import "~app/base/components/node/NodeDevices";
 @import "~app/base/components/node/NodeLogs/DownloadMenu";
@@ -91,6 +92,7 @@
 @import "~app/base/components/node/NodeTestsTable";
 @import "~app/base/components/node/OverviewCard";
 @import "~app/base/components/NodeName";
+@import "~app/base/components/NodeSummaryNetworkCard";
 @import "~app/base/components/NodeSummaryNetworkCard/NetworkCardTable";
 @import "~app/base/components/NotificationGroup";
 @import "~app/base/components/Placeholder";
@@ -114,6 +116,7 @@
 @include FilterAccordion;
 @include FormCard;
 @include FormikFormButtons;
+@include HardwareCard;
 @include Header;
 @include LabelledList;
 @include Login;
@@ -123,6 +126,7 @@
 @include NetworkTable;
 @include NodeDevices;
 @include NodeName;
+@include NodeSummaryNetworkCard;
 @include NodeTestsTable;
 @include NotificationGroup;
 @include OverviewCard;

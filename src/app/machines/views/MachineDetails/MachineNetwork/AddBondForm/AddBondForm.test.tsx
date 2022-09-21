@@ -1,17 +1,15 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
-
-import { LinkMonitoring } from "../BondForm/types";
 
 import AddBondForm from "./AddBondForm";
 
+import urls from "app/base/urls";
 import { BondMode } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
-import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
+import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
+  fabric as fabricFactory,
   fabricState as fabricStateFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
@@ -19,20 +17,24 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   rootState as rootStateFactory,
+  subnet as subnetFactory,
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
+const route = urls.machines.index;
 
 describe("AddBondForm", () => {
   let state: RootState;
+  const fabric = fabricFactory();
   beforeEach(() => {
     state = rootStateFactory({
       fabric: fabricStateFactory({
         loaded: true,
+        items: [fabric],
       }),
       machine: machineStateFactory({
         items: [
@@ -46,10 +48,12 @@ describe("AddBondForm", () => {
       }),
       subnet: subnetStateFactory({
         loaded: true,
+        items: [subnetFactory()],
       }),
       vlan: vlanStateFactory({
         items: [
           vlanFactory({
+            fabric: fabric.id,
             id: 1,
           }),
         ],
@@ -58,7 +62,7 @@ describe("AddBondForm", () => {
     });
   });
 
-  it("displays a table", async () => {
+  it("displays a table", () => {
     state.machine.items = [
       machineDetailsFactory({
         interfaces: [
@@ -76,26 +80,19 @@ describe("AddBondForm", () => {
         system_id: "abc123",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddBondForm
-              close={jest.fn()}
-              selected={[{ nicId: 9 }, { nicId: 10 }]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddBondForm
+        close={jest.fn()}
+        selected={[{ nicId: 9 }, { nicId: 10 }]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    await waitForComponentToPaint(wrapper);
-    const table = wrapper.find("InterfaceFormTable");
-    expect(table.exists()).toBe(true);
+    expect(
+      screen.getByRole("heading", { name: "Create bond" })
+    ).toBeInTheDocument();
+    expect(screen.getByRole("grid")).toBeInTheDocument();
   });
 
   it("displays the selected interfaces when not editing members", async () => {
@@ -103,10 +100,12 @@ describe("AddBondForm", () => {
       machineInterfaceFactory({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
+        name: "test-interface-1",
       }),
       machineInterfaceFactory({
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
+        name: "test-interface-2",
       }),
     ];
     state.machine.items = [
@@ -115,62 +114,60 @@ describe("AddBondForm", () => {
         interfaces,
       }),
     ];
-    const store = mockStore(state);
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddBondForm
-              close={jest.fn()}
-              selected={selected}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddBondForm
+        close={jest.fn()}
+        selected={selected}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("InterfaceFormTable").prop("interfaces")).toStrictEqual(
-      selected
-    );
+    const table = screen.getByRole("grid");
+    expect(within(table).getByText("test-interface-1")).toBeInTheDocument();
+    expect(within(table).getByText("test-interface-2")).toBeInTheDocument();
   });
 
   it("displays all valid interfaces when editing members", async () => {
     const interfaces = [
       machineInterfaceFactory({
+        name: "test-interface-1",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
       machineInterfaceFactory({
+        name: "test-interface-2",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
       // VLANs are not valid.
       machineInterfaceFactory({
+        name: "test-interface-3",
         type: NetworkInterfaceTypes.VLAN,
         vlan_id: 1,
       }),
       // Bridges are not valid.
       machineInterfaceFactory({
+        name: "test-interface-4",
         type: NetworkInterfaceTypes.BRIDGE,
         vlan_id: 1,
       }),
       // Bonds are not valid.
       machineInterfaceFactory({
+        name: "test-interface-5",
         type: NetworkInterfaceTypes.BOND,
         vlan_id: 1,
       }),
       // Physical interfaces in other VLANs are not valid.
       machineInterfaceFactory({
+        name: "test-interface-6",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 2,
       }),
       // Physical interfaces in the same VLAN are valid.
       machineInterfaceFactory({
+        name: "test-interface-7",
         type: NetworkInterfaceTypes.PHYSICAL,
         vlan_id: 1,
       }),
@@ -181,35 +178,58 @@ describe("AddBondForm", () => {
         interfaces,
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddBondForm
-              close={jest.fn()}
-              selected={[
-                { nicId: interfaces[0].id },
-                { nicId: interfaces[1].id },
-              ]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
+    renderWithBrowserRouter(
+      <AddBondForm
+        close={jest.fn()}
+        selected={selected}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    wrapper.find("button[data-testid='edit-members']").simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("InterfaceFormTable").prop("interfaces")).toStrictEqual(
-      [
-        { linkId: undefined, nicId: interfaces[0].id },
-        { linkId: undefined, nicId: interfaces[1].id },
-        { linkId: undefined, nicId: interfaces[6].id },
-      ]
-    );
+    let table = screen.getByRole("grid");
+    // Check that selected interfaces are shown
+    expect(within(table).getByText("test-interface-1")).toBeInTheDocument();
+    expect(within(table).getByText("test-interface-2")).toBeInTheDocument();
+
+    // Check that unselected interfaces are not shown
+    expect(
+      within(table).queryByText("test-interface-3")
+    ).not.toBeInTheDocument();
+    expect(
+      within(table).queryByText("test-interface-4")
+    ).not.toBeInTheDocument();
+    expect(
+      within(table).queryByText("test-interface-5")
+    ).not.toBeInTheDocument();
+    expect(
+      within(table).queryByText("test-interface-6")
+    ).not.toBeInTheDocument();
+    expect(
+      within(table).queryByText("test-interface-7")
+    ).not.toBeInTheDocument();
+    await userEvent.click(screen.getByTestId("edit-members"));
+    table = screen.getByRole("grid");
+
+    // Check that only valid interfaces are shown
+    expect(within(table).getByText("test-interface-1")).toBeInTheDocument();
+    expect(within(table).getByText("test-interface-2")).toBeInTheDocument();
+    expect(within(table).getByText("test-interface-7")).toBeInTheDocument();
+
+    // Ensure invalid interfaces are not shown
+    expect(
+      within(table).queryByText("test-interface-3")
+    ).not.toBeInTheDocument();
+    expect(
+      within(table).queryByText("test-interface-4")
+    ).not.toBeInTheDocument();
+    expect(
+      within(table).queryByText("test-interface-5")
+    ).not.toBeInTheDocument();
+    expect(
+      within(table).queryByText("test-interface-6")
+    ).not.toBeInTheDocument();
   });
 
   it("disables the submit button if two interfaces aren't selected", async () => {
@@ -233,56 +253,44 @@ describe("AddBondForm", () => {
         interfaces,
       }),
     ];
-    const store = mockStore(state);
-    // Use a component to pass props to the form so that setProps can be used
-    // below.
-    const PassthroughComponent = ({ ...props }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddBondForm
-              close={jest.fn()}
-              selected={[
-                { nicId: interfaces[0].id },
-                { nicId: interfaces[1].id },
-              ]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-              {...props}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { rerender } = renderWithBrowserRouter(
+      <AddBondForm
+        close={jest.fn()}
+        selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      {
+        route,
+        wrapperProps: { state },
+      }
     );
-    const wrapper = mount(<PassthroughComponent />);
-    wrapper.find("button[data-testid='edit-members']").simulate("click");
-    await waitForComponentToPaint(wrapper);
-    wrapper.setProps({ selected: [] });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("submitDisabled")).toBe(true);
+    await userEvent.click(screen.getByTestId("edit-members"));
+
+    rerender(
+      <AddBondForm
+        close={jest.fn()}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />
+    );
+    expect(
+      screen.getByRole("button", { name: "Save interface" })
+    ).toBeDisabled();
   });
 
   it("fetches the necessary data on load", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddBondForm
-              close={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddBondForm
+        close={jest.fn()}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { store } }
     );
-    await waitForComponentToPaint(wrapper);
     expect(store.getActions().some((action) => action.type === "fabric/fetch"));
     expect(store.getActions().some((action) => action.type === "subnet/fetch"));
     expect(store.getActions().some((action) => action.type === "vlan/fetch"));
@@ -292,54 +300,32 @@ describe("AddBondForm", () => {
     state.fabric.loaded = false;
     state.subnet.loaded = false;
     state.vlan.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddBondForm
-              close={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddBondForm
+        close={jest.fn()}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Spinner[data-testid='data-loading']").exists()).toBe(
-      true
-    );
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("displays a spinner if the VLAN hasn't been set", async () => {
     state.fabric.loaded = true;
     state.subnet.loaded = true;
     state.vlan.loaded = true;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddBondForm
-              close={jest.fn()}
-              selected={[]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddBondForm
+        close={jest.fn()}
+        selected={[]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { state } }
     );
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Spinner[data-testid='data-loading']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("data-loading")).toBeInTheDocument();
   });
 
   it("can dispatch an action to add a bond", async () => {
@@ -361,39 +347,19 @@ describe("AddBondForm", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddBondForm
-              close={jest.fn()}
-              selected={[{ nicId: 9 }, { nicId: 10 }]}
-              setSelected={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddBondForm
+        close={jest.fn()}
+        selected={[{ nicId: 9 }, { nicId: 10 }]}
+        setSelected={jest.fn()}
+        systemId="abc123"
+      />,
+      { route, wrapperProps: { store } }
     );
-    submitFormikForm(wrapper, {
-      bond_downdelay: 10,
-      bond_lacp_rate: "fast",
-      bond_mode: BondMode.ACTIVE_BACKUP,
-      bond_miimon: 20,
-      bond_updelay: 30,
-      fabric: 1,
-      ip_address: "1.2.3.4",
-      linkMonitoring: LinkMonitoring.MII,
-      mac_address: "28:21:c6:b9:1b:22",
-      mode: NetworkLinkMode.LINK_UP,
-      name: "bond1",
-      subnet: 1,
-      tags: ["a", "tag"],
-      vlan: 1,
-    });
-    await waitForComponentToPaint(wrapper);
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save interface" })
+    );
     expect(
       store.getActions().find((action) => action.type === "machine/createBond")
     ).toStrictEqual({
@@ -404,20 +370,16 @@ describe("AddBondForm", () => {
       },
       payload: {
         params: {
-          bond_downdelay: 10,
-          bond_lacp_rate: "fast",
+          bond_downdelay: 0,
           bond_mode: BondMode.ACTIVE_BACKUP,
-          bond_miimon: 20,
-          bond_updelay: 30,
+          bond_miimon: 0,
+          bond_updelay: 0,
           fabric: 1,
-          ip_address: "1.2.3.4",
-          mac_address: "28:21:c6:b9:1b:22",
-          mode: NetworkLinkMode.LINK_UP,
-          name: "bond1",
+          mac_address: "00:00:00:00:00:15",
+          name: "bond0",
           parents: [9, 10],
-          subnet: 1,
           system_id: "abc123",
-          tags: ["a", "tag"],
+          tags: [],
           vlan: 1,
         },
       },

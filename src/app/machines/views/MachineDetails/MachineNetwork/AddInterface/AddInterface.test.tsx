@@ -1,12 +1,10 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import AddInterface from "./AddInterface";
 
+import urls from "app/base/urls";
 import type { RootState } from "app/store/root/types";
 import { NetworkLinkMode } from "app/store/types/enum";
 import {
@@ -22,16 +20,18 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
+const route = urls.machines.index;
 
 describe("AddInterface", () => {
   let state: RootState;
+  const fabric = fabricFactory();
   beforeEach(() => {
     state = rootStateFactory({
       fabric: fabricStateFactory({
-        items: [fabricFactory({}), fabricFactory()],
+        items: [fabric, fabricFactory()],
         loaded: true,
       }),
       machine: machineStateFactory({
@@ -49,7 +49,15 @@ describe("AddInterface", () => {
         loaded: true,
       }),
       vlan: vlanStateFactory({
-        items: [vlanFactory(), vlanFactory()],
+        items: [
+          vlanFactory({
+            fabric: fabric.id,
+            vid: 2,
+            name: "vlan-name",
+            external_dhcp: null,
+            dhcp_on: true,
+          }),
+        ],
         loaded: true,
       }),
     });
@@ -57,18 +65,10 @@ describe("AddInterface", () => {
 
   it("fetches the necessary data on load", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddInterface close={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddInterface close={jest.fn()} systemId="abc123" />,
+      { route, wrapperProps: { store } }
     );
-    await waitForComponentToPaint(wrapper);
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
       expect(
@@ -80,49 +80,39 @@ describe("AddInterface", () => {
   it("displays a spinner when data is loading", async () => {
     state.vlan.loaded = false;
     state.fabric.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddInterface close={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddInterface close={jest.fn()} systemId="abc123" />,
+      { route, wrapperProps: { state } }
     );
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("correctly dispatches actions to add a physical interface", async () => {
     state.machine.selected = ["abc123", "def456"];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <AddInterface close={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <AddInterface close={jest.fn()} systemId="abc123" />,
+      { route, wrapperProps: { store } }
     );
-    await waitForComponentToPaint(wrapper);
-    act(() =>
-      submitFormikForm(wrapper, {
-        fabric: 1,
-        ip_address: "1.2.3.4",
-        mac_address: "28:21:c6:b9:1b:22",
-        mode: NetworkLinkMode.LINK_UP,
-        name: "eth1",
-        subnet: 1,
-        tags: ["a", "tag"],
-        vlan: 1,
-      })
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "MAC address" }),
+      "28:21:c6:b9:1b:22"
     );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Fabric" }),
+      "1"
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Subnet" }),
+      ""
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save interface" })
+    );
+
     expect(
       store
         .getActions()
@@ -135,15 +125,13 @@ describe("AddInterface", () => {
       },
       payload: {
         params: {
-          fabric: 1,
-          ip_address: "1.2.3.4",
+          fabric: "1",
           mac_address: "28:21:c6:b9:1b:22",
           mode: NetworkLinkMode.LINK_UP,
-          name: "eth1",
-          subnet: 1,
+          name: "eth0",
           system_id: "abc123",
-          tags: ["a", "tag"],
-          vlan: 1,
+          tags: [],
+          vlan: "28",
         },
       },
     });

@@ -3,14 +3,16 @@ import type { ReactNode } from "react";
 import { List } from "@canonical/react-components";
 import classNames from "classnames";
 
-type LabelledListItem = {
+import LabelledListItem from "./LabelledListItem";
+
+export type ListItem = {
   label: ReactNode;
   value: ReactNode;
 };
 
 type Props = {
   className?: string;
-  items: LabelledListItem[];
+  items: ListItem[];
 };
 
 const LabelledList = ({ className, items, ...props }: Props): JSX.Element => {
@@ -18,11 +20,8 @@ const LabelledList = ({ className, items, ...props }: Props): JSX.Element => {
     <List
       {...props}
       className={classNames("p-list--labelled", className)}
-      items={items.map(({ label, value }) => (
-        <>
-          <div className="p-list__item-label">{label}</div>
-          <div className="p-list__item-value">{value}</div>
-        </>
+      items={items.map((item) => (
+        <LabelledListItem item={item} />
       ))}
     />
   );

@@ -8,8 +8,17 @@ type Props = {
   machine: MachineDetails | null;
 };
 
-export enum Label {
+export enum Labels {
   Title = "Source machine details",
+  Status = "Status",
+  Cpu = "CPU",
+  Storage = "Storage",
+  Memory = "Memory",
+  PowerType = "Power type",
+  Owner = "Owner",
+  Host = "Host",
+  Zone = "Zone",
+  Domain = "Domain",
 }
 
 export const SourceMachineDetails = ({ machine }: Props): JSX.Element => {
@@ -59,15 +68,15 @@ export const SourceMachineDetails = ({ machine }: Props): JSX.Element => {
 
   return (
     <LabelledList
-      aria-label={Label.Title}
+      aria-label={Labels.Title}
       data-testid="source-machine-details"
       items={[
         {
-          label: "Status",
+          label: Labels.Status,
           value: <Placeholder loading={!machine}>{content.status}</Placeholder>,
         },
         {
-          label: "CPU",
+          label: Labels.Cpu,
           value: (
             <>
               <Placeholder loading={!machine}>{content.cores}</Placeholder>
@@ -81,35 +90,35 @@ export const SourceMachineDetails = ({ machine }: Props): JSX.Element => {
           ),
         },
         {
-          label: "Memory",
+          label: Labels.Memory,
           value: <Placeholder loading={!machine}>{content.memory}</Placeholder>,
         },
         {
-          label: "Storage",
+          label: Labels.Storage,
           value: (
             <Placeholder loading={!machine}>{content.storage}</Placeholder>
           ),
         },
         {
-          label: "Power type",
+          label: Labels.PowerType,
           value: (
             <Placeholder loading={!machine}>{content.powerType}</Placeholder>
           ),
         },
         {
-          label: "Owner",
+          label: Labels.Owner,
           value: <Placeholder loading={!machine}>{content.owner}</Placeholder>,
         },
         {
-          label: "Host",
+          label: Labels.Host,
           value: <Placeholder loading={!machine}>{content.host}</Placeholder>,
         },
         {
-          label: "Zone",
+          label: Labels.Zone,
           value: <Placeholder loading={!machine}>{content.zone}</Placeholder>,
         },
         {
-          label: "Domain",
+          label: Labels.Domain,
           value: <Placeholder loading={!machine}>{content.domain}</Placeholder>,
         },
       ]}
