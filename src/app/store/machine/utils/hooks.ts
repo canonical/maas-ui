@@ -11,6 +11,8 @@ import type {
   FetchParams,
 } from "../types/actions";
 
+import { selectedToFilters } from "./common";
+
 import { useCanEdit } from "app/base/hooks";
 import type { APIError } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
@@ -24,6 +26,7 @@ import type {
   FetchFilters,
   Machine,
   MachineMeta,
+  SelectedMachines,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
@@ -37,6 +40,111 @@ import {
 } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 import { isId } from "app/utils";
+
+export const useMachineSelectedCount = (): {
+  selectedCount: number;
+  selectedCountLoading: boolean;
+} => {
+  let selectedState = useSelector(machineSelectors.selectedMachines);
+  let selectedCount = 0;
+  // Shallow clone the selected state so that object can be modified.
+  let selectedMachines = selectedState ? { ...selectedState } : null;
+  // Remove selected items from the filters to send to the API. We can count
+  // them client side and filters are combined with AND which we don't want to do when
+  // there are selected groups and items (otherwise it will be counting the
+  // machines that match both the groups and the items).
+  if (selectedMachines && "items" in selectedMachines) {
+    selectedCount += selectedMachines.items?.length ?? 0;
+    delete selectedMachines.items;
+  }
+  // Get the count of machines in selected groups or filters.
+  const filters = selectedToFilters(selectedMachines);
+  // refactor to use a separate count for groups and separate for items
+  const {
+    machineCount: fetchedSelectedCount,
+    machineCountLoading: selectedLoading,
+  } = useFetchMachineCount(filters);
+  // Only add the count if there are filters as sending `null` filters
+  // to the count API will return a count of all machines.
+  if (filters) {
+    selectedCount += fetchedSelectedCount;
+  }
+  const onlyHasItems =
+    !!selectedMachines &&
+    selectedCount > 0 &&
+    (!("groups" in selectedMachines) || !selectedMachines?.groups?.length);
+
+  return {
+    selectedCount,
+    selectedCountLoading:
+      // There's no need to wait for the selected count to respond if there
+      // are only items as we can count them client side.
+      onlyHasItems ? false : selectedLoading,
+  };
+};
+
+/**
+ * Fetch selected machines machines via the API
+ * This will ensure we have all data needed for selected machines
+ * (including those in collapsed groups or out of bounds of the currently visible page)
+ */
+export const useFetchSelectedMachines = (
+  queryOptions: UseFetchQueryOptions
+): UseFetchMachinesData => {
+  const { isEnabled } = queryOptions || { isEnabled: true };
+  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const getIsSingleFilter = (
+    selectedMachines: SelectedMachines | null
+  ): selectedMachines is { filter: FetchFilters } => {
+    if (selectedMachines && "filter" in selectedMachines) {
+      return true;
+    }
+    return false;
+  };
+  const isSingleFilter = getIsSingleFilter(selectedMachines);
+  // Fetch items and groups separately
+  // - otherwise the back-end will return machines
+  // matching both groups and items
+  const groupFilters = selectedToFilters(
+    isSingleFilter
+      ? { filter: selectedMachines?.filter }
+      : {
+          groups: selectedMachines?.groups,
+          grouping: selectedMachines?.grouping,
+        }
+  );
+  const itemFilters = selectedToFilters(
+    !isSingleFilter ? { items: selectedMachines?.items } : null
+  );
+  const groupData = useFetchMachines(
+    {
+      filters: groupFilters,
+    },
+    { isEnabled: isEnabled && groupFilters !== null }
+  );
+  const itemsData = useFetchMachines(
+    {
+      filters: itemFilters,
+    },
+    {
+      // skip separate items call if there is a single filter
+      isEnabled: isEnabled && !isSingleFilter,
+    }
+  );
+
+  return {
+    callId: null,
+    machines: [...groupData.machines, ...itemsData.machines],
+    loading: groupData.loading || itemsData.loading,
+    loaded: groupFilters
+      ? groupData.loaded
+      : true && itemFilters
+      ? itemsData.loaded
+      : true,
+    machineCount: groupData.machineCount || 0 + (itemsData?.machineCount || 0),
+    machinesErrors: groupData.machinesErrors || itemsData.machinesErrors,
+  };
+};
 
 export const useFetchMachineCount = (
   filters?: FetchFilters | null
@@ -101,19 +209,28 @@ export type UseFetchMachinesOptions = {
   };
 };
 
-/**
- * Fetch machines via the API.
- */
-export const useFetchMachines = (
-  options?: UseFetchMachinesOptions | null
-): {
+export type UseFetchQueryOptions = {
+  isEnabled?: boolean;
+};
+
+type UseFetchMachinesData = {
   callId: string | null;
   loaded: boolean;
   loading: boolean;
   machineCount: number | null;
   machines: Machine[];
   machinesErrors: APIError;
-} => {
+};
+
+/**
+ * Fetch machines via the API.
+ */
+export const useFetchMachines = (
+  options?: UseFetchMachinesOptions | null,
+  queryOptions?: UseFetchQueryOptions
+): UseFetchMachinesData => {
+  const { isEnabled } = queryOptions || { isEnabled: true };
+  const previousIsEnabled = usePrevious(isEnabled);
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
   const previousOptions = usePrevious(options, false);
@@ -158,13 +275,19 @@ export const useFetchMachines = (
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
-    if (!fastDeepEqual(options || {}, previousOptions || {}) || !callId) {
+    if (
+      (isEnabled && !fastDeepEqual(options || {}, previousOptions || {})) ||
+      !callId
+    ) {
       setCallId(nanoid());
     }
-  }, [callId, options, previousOptions]);
+  }, [callId, options, previousOptions, isEnabled]);
 
   useEffect(() => {
-    if (callId && callId !== previousCallId) {
+    if (
+      (isEnabled && callId && callId !== previousCallId) ||
+      (isEnabled !== previousIsEnabled && callId)
+    ) {
       dispatch(
         machineActions.fetch(
           callId,
@@ -182,7 +305,7 @@ export const useFetchMachines = (
         )
       );
     }
-  }, [callId, dispatch, options, previousCallId]);
+  }, [callId, dispatch, options, previousCallId, isEnabled, previousIsEnabled]);
 
   return { callId, loaded, loading, machineCount, machines, machinesErrors };
 };

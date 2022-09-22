@@ -67,7 +67,7 @@ const getErrorSentence = (
 type Props = {
   action: NodeActions;
   children: ReactNode;
-  clearHeaderContent: ClearHeaderContent;
+  clearHeaderContent?: ClearHeaderContent;
   nodes: Node[];
   nodeType: string;
   processingCount: number;
@@ -103,7 +103,7 @@ export const NodeActionFormWrapper = ({
   useEffect(() => {
     if (nodes.length === 0) {
       // All the nodes were deselected so close the form.
-      clearHeaderContent();
+      clearHeaderContent?.();
     }
   }, [clearHeaderContent, nodes.length]);
 

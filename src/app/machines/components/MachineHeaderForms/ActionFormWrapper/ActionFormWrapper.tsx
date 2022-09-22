@@ -1,3 +1,4 @@
+import { Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import CloneForm from "./CloneForm";
@@ -11,10 +12,10 @@ import TagForm from "./TagForm";
 
 import DeleteForm from "app/base/components/node/DeleteForm";
 import FieldlessForm from "app/base/components/node/FieldlessForm";
+import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
-import { useScrollOnRender } from "app/base/hooks";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import { actions as machineActions } from "app/store/machine";
@@ -35,6 +36,9 @@ type Props = {
   clearHeaderContent: ClearHeaderContent;
   hardwareType?: HardwareType;
   machines: Machine[];
+  machinesLoading?: boolean;
+  selectedCount?: number;
+  selectedCountLoading?: boolean;
   setSearchFilter?: SetSearchFilter;
   viewingDetails: boolean;
 };
@@ -75,11 +79,13 @@ export const ActionFormWrapper = ({
   clearHeaderContent,
   hardwareType,
   machines,
+  machinesLoading,
+  selectedCount,
+  selectedCountLoading,
   setSearchFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const processingMachines = useSelector(getProcessingSelector(action));
   // When updating tags we want to surface both "tag" and "untag" errors.
   const errorEvents = isTagUpdateAction(action)
@@ -113,6 +119,7 @@ export const ActionFormWrapper = ({
     modelName: "machine",
     nodes: machines,
     processingCount,
+    selectedCount,
     viewingDetails,
   };
 
@@ -208,7 +215,24 @@ export const ActionFormWrapper = ({
     }
   };
 
-  return <div ref={onRenderRef}>{getFormComponent()}</div>;
+  if (selectedCountLoading || machinesLoading) {
+    return <Spinner />;
+  }
+
+  return (
+    <NodeActionFormWrapper
+      action={action}
+      nodeType="machine"
+      nodes={machines}
+      onUpdateSelected={(machineIDs) =>
+        dispatch(machineActions.setSelectedMachines({ items: machineIDs }))
+      }
+      processingCount={processingCount}
+      viewingDetails={viewingDetails}
+    >
+      {getFormComponent()}
+    </NodeActionFormWrapper>
+  );
 };
 
 export default ActionFormWrapper;

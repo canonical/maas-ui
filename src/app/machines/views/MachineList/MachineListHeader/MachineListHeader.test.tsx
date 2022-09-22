@@ -20,6 +20,8 @@ import {
   machineStateCounts as machineStateCountsFactory,
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
@@ -35,6 +37,10 @@ describe("MachineListHeader", () => {
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2")
       .mockReturnValueOnce("mocked-nanoid-3");
+    const machines = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+    ];
     state = rootStateFactory({
       machine: machineStateFactory({
         counts: machineStateCountsFactory({
@@ -44,10 +50,7 @@ describe("MachineListHeader", () => {
             loading: false,
           }),
         }),
-        items: [
-          machineFactory({ system_id: "abc123" }),
-          machineFactory({ system_id: "def456" }),
-        ],
+        items: machines,
         statuses: {
           abc123: machineStatusFactory({}),
           def456: machineStatusFactory({}),
@@ -58,6 +61,7 @@ describe("MachineListHeader", () => {
 
   afterEach(() => {
     localStorage.clear();
+    jest.restoreAllMocks();
   });
 
   it("displays a loader if machines have not loaded", () => {
@@ -371,12 +375,25 @@ describe("MachineListHeader", () => {
   });
 
   it("hides the tag action's new label after it has been clicked", () => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     // Set a selected machine so the take action menu becomes enabled.
     state.machine.selectedMachines = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
-    state.machine.items = [
-      machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
-    ];
+    const machine = machineFactory({
+      system_id: "abc123",
+      actions: [NodeActions.TAG],
+    });
+    state.machine.items = [machine];
+    state.machine.lists = {
+      "mocked-nanoid": machineStateListFactory({
+        loaded: true,
+        groups: [
+          machineStateListGroupFactory({
+            items: [machine.system_id],
+          }),
+        ],
+      }),
+    };
     const store = mockStore(state);
     const Header = () => (
       <Provider store={store}>

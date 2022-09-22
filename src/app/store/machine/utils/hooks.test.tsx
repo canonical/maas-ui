@@ -6,8 +6,10 @@ import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
 
-import type { UseFetchMachinesOptions } from "./hooks";
+import { selectedToFilters } from "./common";
+import type { UseFetchMachinesOptions, UseFetchQueryOptions } from "./hooks";
 import {
+  useFetchSelectedMachines,
   useHasSelection,
   useCanAddVLAN,
   useCanEditStorage,
@@ -289,6 +291,29 @@ describe("machine hook utils", () => {
       expect(getDispatches).toHaveLength(1);
     });
 
+    it("does not fetch if isEnabled is false", async () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        (queryOptions: UseFetchQueryOptions) =>
+          useFetchMachines(
+            { filters: { hostname: "spotted-quoll" } },
+            queryOptions
+          ),
+        {
+          initialProps: { isEnabled: false },
+          wrapper: generateWrapper(store),
+        }
+      );
+      const expectedActionType = machineActions.fetch("mocked-nanoid-1").type;
+      const getDispatches = () =>
+        store
+          .getActions()
+          .filter((action) => action.type === expectedActionType);
+      expect(getDispatches()).toHaveLength(0);
+      rerender({ isEnabled: true });
+      expect(getDispatches()).toHaveLength(1);
+    });
+
     it("does not fetch again if the options haven't changed including empty objects", () => {
       const store = mockStore(state);
       const { rerender } = renderHook(
@@ -365,6 +390,34 @@ describe("machine hook utils", () => {
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
+    });
+  });
+
+  describe("useFetchSelectedMachines", () => {
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    const generateWrapper =
+      (store: MockStoreEnhanced<unknown>) =>
+      ({ children }: { children?: ReactNode }) =>
+        <Provider store={store}>{children}</Provider>;
+
+    it("can fetch selected machines", async () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      const selectedMachines = { items: ["abc123", "def456"] };
+      state.machine.selectedMachines = selectedMachines;
+      const store = mockStore(state);
+      renderHook(useFetchSelectedMachines, {
+        wrapper: generateWrapper(store),
+      });
+      const expected = machineActions.fetch("mocked-nanoid");
+      const actual = store
+        .getActions()
+        .find((action) => action.type === expected.type);
+      expect(actual.payload.params.filter).toStrictEqual(
+        selectedToFilters(selectedMachines)
+      );
     });
   });
 
