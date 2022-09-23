@@ -1,7 +1,6 @@
 import { useCallback, useEffect } from "react";
 
 import { usePrevious } from "@canonical/react-components";
-import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
 
@@ -19,11 +18,12 @@ import type {
   MachineSetHeaderContent,
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
-import machineSelectors from "app/store/machine/selectors";
-import { FilterMachineItems, selectedToFilters } from "app/store/machine/utils";
+import { FilterMachineItems } from "app/store/machine/utils";
 import {
   useFetchMachineCount,
+  useFetchSelectedMachines,
   useHasSelection,
+  useMachineSelectedCount,
 } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
@@ -42,8 +42,6 @@ export const MachineListHeader = ({
   setHeaderContent,
 }: Props): JSX.Element => {
   const location = useLocation();
-  const selected = useSelector(machineSelectors.selected);
-  let selectedState = useSelector(machineSelectors.selectedMachines);
   const hasSelection = useHasSelection();
   const [tagsSeen, setTagsSeen] = useStorageState(
     localStorage,
@@ -51,37 +49,18 @@ export const MachineListHeader = ({
     false
   );
   // Get the count of all machines that match the current filters.
-  const { machineCount, machineCountLoading } = useFetchMachineCount(
+  const { machineCount } = useFetchMachineCount(
     FilterMachineItems.parseFetchFilters(searchFilter)
   );
-  let selectedCount = 0;
-  // Shallow clone the selected state so that object can be modified.
-  let selectedMachines = selectedState ? { ...selectedState } : null;
-  // Remove selected items from the filters to send to the API. We can count
-  // them client side and filters are combined with AND which we don't want to do when
-  // there are selected groups and items (otherwise it will be counting the
-  // machines that match both the groups and the items).
-  if (selectedMachines && "items" in selectedMachines) {
-    selectedCount += selectedMachines.items?.length ?? 0;
-    delete selectedMachines.items;
-  }
-  // Get the count of machines in selected groups or filters.
-  const filters = selectedToFilters(selectedMachines);
-  const {
-    machineCount: fetchedSelectedCount,
-    machineCountLoading: selectedLoading,
-  } = useFetchMachineCount(filters);
-  // Only add the count if there are filters as sending `null` filters
-  // to the count API will return a count of all machines.
-  if (filters) {
-    selectedCount += fetchedSelectedCount;
-  }
-  const onlyHasItems =
-    !!selectedMachines &&
-    selectedCount > 0 &&
-    (!("groups" in selectedMachines) || !selectedMachines?.groups?.length);
-
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount();
   const previousSelectedCount = usePrevious(selectedCount);
+
+  // we need to make sure we have the data for all selected machines
+  // (including those in collapsed groups or out of bounds of the currently visible page)
+  const { machines: selectedMachines, loading: machinesLoading } =
+    useFetchSelectedMachines({
+      isEnabled: hasSelection,
+    });
 
   useEffect(() => {
     if (
@@ -129,6 +108,7 @@ export const MachineListHeader = ({
           hasSelection={hasSelection}
           key="machine-list-action-menu"
           nodeDisplay="machine"
+          nodes={selectedMachines}
           onActionClick={(action) => {
             if (action === NodeActions.TAG && !tagsSeen) {
               setTagsSeen(true);
@@ -140,13 +120,16 @@ export const MachineListHeader = ({
               setHeaderContent({ view });
             }
           }}
+          showCount
         />,
       ]}
       headerContent={
         headerContent && (
           <MachineHeaderForms
             headerContent={headerContent}
-            machines={selected}
+            machines={selectedMachines}
+            machinesLoading={machinesLoading}
+            selectedCountLoading={selectedCountLoading}
             setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
           />
@@ -159,11 +142,7 @@ export const MachineListHeader = ({
           selected={selectedCount}
         />
       }
-      subtitleLoading={
-        // There's no need to wait for the selected count to respond if there
-        // are only items as we can count them client side.
-        machineCountLoading || onlyHasItems ? false : selectedLoading
-      }
+      subtitleLoading={selectedCountLoading}
       title={getHeaderTitle("Machines", headerContent)}
     />
   );

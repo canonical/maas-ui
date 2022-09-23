@@ -18,6 +18,9 @@ import type { Machine } from "app/store/machine/types";
 type Props = {
   headerContent: MachineHeaderContent;
   machines: Machine[];
+  machinesLoading?: boolean;
+  selectedCount?: number;
+  selectedCountLoading?: boolean;
   setHeaderContent: MachineSetHeaderContent;
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
@@ -27,6 +30,8 @@ export const MachineHeaderForms = ({
   headerContent,
   machines,
   setHeaderContent,
+  machinesLoading,
+  selectedCountLoading,
   setSearchFilter,
   viewingDetails = false,
 }: Props): JSX.Element | null => {
@@ -57,6 +62,8 @@ export const MachineHeaderForms = ({
           clearHeaderContent={clearHeaderContent}
           hardwareType={extras?.hardwareType}
           machines={machines}
+          machinesLoading={machinesLoading}
+          selectedCountLoading={selectedCountLoading}
           setSearchFilter={setSearchFilter}
           viewingDetails={viewingDetails}
         />
