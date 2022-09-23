@@ -42,6 +42,7 @@ const GroupSelect = ({
 }: Props): JSX.Element => {
   return (
     <Select
+      aria-label="Group by"
       defaultValue={grouping ?? ""}
       name="machine-groupings"
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {

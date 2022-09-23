@@ -46,6 +46,13 @@ const MachineList = ({
     "grouping",
     FetchGroupKey.Status
   );
+  const handleSetGrouping = (group: FetchGroupKey | null) => {
+    setGrouping(group);
+    // clear selected machines on grouping change
+    // we cannot reliably preserve the selected state for individual machines
+    // as we are only fetching information about a group from the back-end
+    dispatch(machineActions.setSelectedMachines(null));
+  };
   const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
     localStorage,
     "hiddenGroups",
@@ -85,7 +92,7 @@ const MachineList = ({
         filter={searchFilter}
         grouping={grouping}
         setFilter={setSearchFilter}
-        setGrouping={setGrouping}
+        setGrouping={handleSetGrouping}
         setHiddenGroups={setHiddenGroups}
       />
       <MachineListTable

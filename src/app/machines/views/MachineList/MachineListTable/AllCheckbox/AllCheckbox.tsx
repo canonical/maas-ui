@@ -6,7 +6,7 @@ import machineSelectors from "app/store/machine/selectors";
 import type { FetchFilters } from "app/store/machine/types";
 
 export enum Label {
-  Name = "All machines",
+  AllMachines = "All machines",
 }
 
 type Props = {
@@ -26,7 +26,7 @@ const AllCheckbox = ({ callId, filter }: Props): JSX.Element => {
 
   return (
     <TableCheckbox
-      aria-label={Label.Name}
+      aria-label={Label.AllMachines}
       // Remove the labelled-by attribute so that the aria-label is used.
       aria-labelledby=""
       callId={callId}

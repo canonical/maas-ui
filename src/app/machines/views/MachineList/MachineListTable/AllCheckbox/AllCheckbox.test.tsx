@@ -31,7 +31,9 @@ beforeEach(() => {
 it("is unchecked if there are no filters, groups or items selected", () => {
   state.machine.selectedMachines = null;
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
-  expect(screen.getByRole("checkbox", { name: Label.Name })).not.toBeChecked();
+  expect(
+    screen.getByRole("checkbox", { name: Label.AllMachines })
+  ).not.toBeChecked();
 });
 
 it("is checked if there is a selected filter", () => {
@@ -41,7 +43,9 @@ it("is checked if there is a selected filter", () => {
     },
   };
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
-  expect(screen.getByRole("checkbox", { name: Label.Name })).toBeChecked();
+  expect(
+    screen.getByRole("checkbox", { name: Label.AllMachines })
+  ).toBeChecked();
 });
 
 it("is partially checked if a group is selected", () => {
@@ -50,7 +54,7 @@ it("is partially checked if a group is selected", () => {
   };
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
   expect(
-    screen.getByRole("checkbox", { name: Label.Name })
+    screen.getByRole("checkbox", { name: Label.AllMachines })
   ).toBePartiallyChecked();
 });
 
@@ -60,7 +64,7 @@ it("is partially checked if a machine is selected", () => {
   };
   renderWithMockStore(<AllCheckbox callId={callId} />, { state });
   expect(
-    screen.getByRole("checkbox", { name: Label.Name })
+    screen.getByRole("checkbox", { name: Label.AllMachines })
   ).toBePartiallyChecked();
 });
 
@@ -72,7 +76,9 @@ it("can dispatch an action to select all", async () => {
   renderWithMockStore(<AllCheckbox callId={callId} filter={filter} />, {
     store,
   });
-  await userEvent.click(screen.getByRole("checkbox", { name: Label.Name }));
+  await userEvent.click(
+    screen.getByRole("checkbox", { name: Label.AllMachines })
+  );
   const expected = machineActions.setSelectedMachines({
     filter,
   });
@@ -92,7 +98,9 @@ it("can dispatch an action to unselect all", async () => {
   renderWithMockStore(<AllCheckbox callId={callId} filter={filter} />, {
     store,
   });
-  await userEvent.click(screen.getByRole("checkbox", { name: Label.Name }));
+  await userEvent.click(
+    screen.getByRole("checkbox", { name: Label.AllMachines })
+  );
   const expected = machineActions.setSelectedMachines(null);
   expect(
     store.getActions().find((action) => action.type === expected.type)
