@@ -4,7 +4,7 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import ActionFormWrapper from "./ActionFormWrapper";
+import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
 import { NodeActions } from "app/store/types/node";
 import {
@@ -45,7 +45,7 @@ it("scrolls to the top of the window when opening the form", async () => {
     html.scrollTop = 10;
   }
   renderWithBrowserRouter(
-    <ActionFormWrapper
+    <MachineActionFormWrapper
       action={NodeActions.ABORT}
       clearHeaderContent={jest.fn()}
       machines={[]}
@@ -83,7 +83,7 @@ it("can show untag errors when the tag form is open", async () => {
         initialEntries={[{ pathname: "/machines", key: "testKey" }]}
       >
         <CompatRouter>
-          <ActionFormWrapper
+          <MachineActionFormWrapper
             action={NodeActions.TAG}
             clearHeaderContent={jest.fn()}
             machines={machines}
