@@ -2,9 +2,9 @@ import { useCallback } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 
-import ActionFormWrapper from "./ActionFormWrapper";
 import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
+import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
 import type { SetSearchFilter } from "app/base/types";
 import { MachineHeaderViews } from "app/machines/constants";
@@ -56,7 +56,7 @@ export const MachineHeaderForms = ({
       };
       const [, action] = view;
       return (
-        <ActionFormWrapper
+        <MachineActionFormWrapper
           action={action}
           applyConfiguredNetworking={extras?.applyConfiguredNetworking}
           clearHeaderContent={clearHeaderContent}

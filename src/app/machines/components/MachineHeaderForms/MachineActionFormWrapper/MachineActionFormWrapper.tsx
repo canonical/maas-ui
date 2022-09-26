@@ -73,7 +73,7 @@ const getProcessingSelector = (action: MachineActions) => {
   return actionStatus ? statusSelectors[actionStatus] : () => [];
 };
 
-export const ActionFormWrapper = ({
+export const MachineActionFormWrapper = ({
   action,
   applyConfiguredNetworking,
   clearHeaderContent,
@@ -235,4 +235,4 @@ export const ActionFormWrapper = ({
   );
 };
 
-export default ActionFormWrapper;
+export default MachineActionFormWrapper;
