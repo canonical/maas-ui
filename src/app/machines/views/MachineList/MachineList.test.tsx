@@ -9,6 +9,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
+import { Label as AllCheckboxLabel } from "./MachineListTable/AllCheckbox/AllCheckbox";
 import { Label } from "./MachineListTable/MachineListTable";
 import { DEFAULTS } from "./MachineListTable/constants";
 
@@ -535,6 +536,42 @@ describe("MachineList", () => {
     ).toStrictEqual({
       type: "machine/setSelectedMachines",
       payload: null,
+    });
+  });
+
+  it("resets the selected machines on grouping change", async () => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { store } }
+    );
+    const user = userEvent.setup({
+      advanceTimers: jest.advanceTimersByTime,
+    });
+    await user.click(
+      screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })
+    );
+    await user.click(
+      within(
+        screen.getByRole("row", { name: "Deployed machines group" })
+      ).getByRole("button", { name: Label.HideGroup })
+    );
+    await user.selectOptions(
+      screen.getByLabelText(/Group by/),
+      "Group by power state"
+    );
+
+    expect(
+      screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })
+    ).not.toBe("checked");
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/setSelectedMachines")
+    ).toStrictEqual({
+      type: "machine/setSelectedMachines",
+      payload: { filter: {} },
     });
   });
 
