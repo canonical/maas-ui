@@ -2,6 +2,7 @@
 
 exports[`GroupSelect  renders 1`] = `
 <Select
+  aria-label="Group by"
   defaultValue=""
   name="machine-groupings"
   onChange={[Function]}
