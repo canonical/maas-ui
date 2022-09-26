@@ -32,7 +32,7 @@
     "start": "concurrently \"yarn serve-proxy\" \"yarn serve-react\" \"yarn show-ready\"",
     "test-cypress": "start-server-and-test start '8401' serve-base 'tcp:8400' cypress-run",
     "test-ui": "TZ=UTC react-scripts test --testURL http://example.com/MAAS/r --watchAll=false",
-    "test-ui:debug": "react-scripts --inspect-brk test --runInBand --no-cache",
+    "test:debug": "react-scripts --inspect-brk test --runInBand --no-cache  --testTimeout=100000000",
     "test": "yarn test-ui",
     "unlink-components": "yarn unlink react && yarn unlink \"@canonical/react-components\"",
     "wait-on-ui": "wait-on http-get://0.0.0.0:8400/MAAS/r"
