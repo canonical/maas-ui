@@ -272,6 +272,7 @@ export enum FilterGroupKey {
   NotVlans = "not_vlans",
   Osystem = "osystem",
   Owner = "owner",
+  Parent = "parent",
   Pod = "pod",
   PodType = "pod_type",
   Pool = "pool",
