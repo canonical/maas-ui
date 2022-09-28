@@ -1,4 +1,5 @@
-import { screen, within } from "@testing-library/react";
+import reduxToolkit from "@reduxjs/toolkit";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
@@ -26,6 +27,8 @@ import {
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
   rootState as rootStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
@@ -36,6 +39,7 @@ describe("DiscoveriesList", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     const machines = [
       machineFactory({
         actions: [],
@@ -93,8 +97,19 @@ describe("DiscoveriesList", () => {
         ],
       }),
       machine: machineStateFactory({
-        loaded: true,
         items: machines,
+        lists: {
+          123456: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: [machines[0].system_id],
+              }),
+            ],
+            loading: false,
+            loaded: true,
+          }),
+        },
+        loaded: true,
       }),
       device: deviceStateFactory({
         loaded: true,
@@ -107,6 +122,10 @@ describe("DiscoveriesList", () => {
         items: [domainFactory({ name: "local" })],
       }),
     });
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   it("displays the discoveries", () => {
@@ -167,9 +186,11 @@ describe("DiscoveriesList", () => {
       screen.getByRole("button", { name: DiscoveriesListLabels.AddDiscovery })
     );
 
-    expect(
-      screen.getByRole("form", { name: "Add discovery" })
-    ).toBeInTheDocument();
+    await waitFor(() =>
+      expect(
+        screen.getByRole("form", { name: /Add discovery/ })
+      ).toBeInTheDocument()
+    );
   });
 
   it("can display the delete form", async () => {

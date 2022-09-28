@@ -1,15 +1,11 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
 import CoreResources from "../CoreResources";
 import RamResources from "../RamResources";
 import VfResources from "../VfResources";
 import VmResources from "../VmResources";
 
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { resourceWithOverCommit } from "app/store/pod/utils";
@@ -18,18 +14,9 @@ import type { RootState } from "app/store/root/types";
 type Props = { id: Pod["id"] };
 
 const KVMResourcesCard = ({ id }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, id)
   );
-  const podVMs = useSelector((state: RootState) =>
-    podSelectors.getVMs(state, id)
-  );
-  const machinesLoading = useSelector(machineSelectors.loading);
-
-  useEffect(() => {
-    dispatch(machineActions.fetch());
-  }, [dispatch]);
 
   if (pod) {
     const {
@@ -66,7 +53,7 @@ const KVMResourcesCard = ({ id }: Props): JSX.Element => {
           />
           <VfResources dynamicLayout interfaces={interfaces} />
         </div>
-        <VmResources loading={machinesLoading} vms={podVMs} />
+        <VmResources podId={id} />
       </>
     );
   }

@@ -1,7 +1,8 @@
+import type { FetchFilters, FetchGroupKey } from "./actions";
 import type { MachineMeta } from "./enum";
 
 import type { APIError, Seconds } from "app/base/types";
-import type { CloneError } from "app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults/CloneResults";
+import type { CloneError } from "app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { CertificateMetadata, PowerType } from "app/store/general/types";
 import type { PowerState, StorageLayout } from "app/store/types/enum";
 import type { ModelRef, TimestampFields } from "app/store/types/model";
@@ -175,6 +176,7 @@ export type MachineStatus = {
   unlocking: boolean;
   unlinkingSubnet: boolean;
   unmountingSpecial: boolean;
+  unsubscribing: boolean;
   untagging: boolean;
   updatingDisk: boolean;
   updatingFilesystem: boolean;
@@ -184,15 +186,165 @@ export type MachineStatus = {
 
 export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
+export type MachineStateDetailsItem = {
+  errors: APIError;
+  loaded: boolean;
+  loading: boolean;
+  system_id: Machine[MachineMeta.PK];
+};
+
+export type MachineStateDetails = Record<string, MachineStateDetailsItem>;
+
+export type FilterGroupOptionType = boolean | number | string;
+
+export type FilterGroupOption<K = FilterGroupOptionType> = {
+  key: K;
+  label: string;
+};
+
+export type MachineStateListGroup = {
+  collapsed: boolean;
+  count: number;
+  items: Machine[MachineMeta.PK][];
+  name: FilterGroupOption["label"] | null;
+  value: FilterGroupOption["key"] | null;
+};
+
+export type MachineStateList = {
+  count: number | null;
+  cur_page: number | null;
+  errors: APIError;
+  groups: MachineStateListGroup[] | null;
+  loaded: boolean;
+  loading: boolean;
+  num_pages: number | null;
+};
+
+export type MachineStateLists = Record<string, MachineStateList>;
+
+export enum FilterGroupType {
+  Bool = "bool",
+  Dict = "dict[str,str]",
+  Float = "float",
+  FloatList = "list[float]",
+  Int = "int",
+  IntList = "list[int]",
+  String = "str",
+  StringList = "list[str]",
+}
+
+export enum FilterGroupKey {
+  AgentName = "agent_name",
+  Arch = "arch",
+  CpuCount = "cpu_count",
+  CpuSpeed = "cpu_speed",
+  Description = "description",
+  DistroSeries = "distro_series",
+  Domain = "domain",
+  ErrorDescription = "error_description",
+  FabricClasses = "fabric_classes",
+  Fabrics = "fabrics",
+  FreeText = "free_text",
+  Hostname = "hostname",
+  Id = "id",
+  IpAddresses = "ip_addresses",
+  LinkSpeed = "link_speed",
+  MacAddress = "mac_address",
+  Mem = "mem",
+  NotArch = "not_arch",
+  NotCpuCount = "not_cpu_count",
+  NotCpuSpeed = "not_cpu_speed",
+  NotDistroSeries = "not_distro_series",
+  NotFabricClasses = "not_fabric_classes",
+  NotFabrics = "not_fabrics",
+  NotId = "not_id",
+  NotInPool = "not_in_pool",
+  NotInZone = "not_in_zone",
+  NotIpAddresses = "not_ip_addresses",
+  NotLinkSpeed = "not_link_speed",
+  NotMem = "not_mem",
+  NotOsystem = "not_osystem",
+  NotOwner = "not_owner",
+  NotPod = "not_pod",
+  NotPodType = "not_pod_type",
+  NotSubnets = "not_subnets",
+  NotTags = "not_tags",
+  NotVlans = "not_vlans",
+  Osystem = "osystem",
+  Owner = "owner",
+  Parent = "parent",
+  Pod = "pod",
+  PodType = "pod_type",
+  Pool = "pool",
+  Spaces = "spaces",
+  Status = "status",
+  Subnets = "subnets",
+  Tags = "tags",
+  Vlans = "vlans",
+  Workloads = "workloads",
+  Zone = "zone",
+}
+
+export type FilterGroup = {
+  errors: APIError;
+  key: FilterGroupKey;
+  label: string;
+  loaded: boolean;
+  loading: boolean;
+  dynamic: boolean;
+  for_grouping: boolean;
+} & (
+  | { options: FilterGroupOption<boolean>[] | null; type: FilterGroupType.Bool }
+  | {
+      options: FilterGroupOption<string>[] | null;
+      type:
+        | FilterGroupType.Dict
+        | FilterGroupType.StringList
+        | FilterGroupType.String;
+    }
+  | {
+      options: FilterGroupOption<number>[] | null;
+      type:
+        | FilterGroupType.Float
+        | FilterGroupType.Int
+        | FilterGroupType.FloatList
+        | FilterGroupType.IntList;
+    }
+);
+
 export type MachineEventErrors = CloneError;
+
+export type MachineStateCount = {
+  count: number | null;
+  errors: APIError;
+  loaded: boolean;
+  loading: boolean;
+};
+
+export type MachineStateCounts = Record<string, MachineStateCount>;
+
+export type SelectedMachines =
+  | {
+      items?: Machine[MachineMeta.PK][];
+      groups?: MachineStateListGroup["value"][];
+      grouping?: FetchGroupKey | null;
+    }
+  | { filter: FetchFilters };
 
 export type MachineState = {
   active: Machine[MachineMeta.PK] | null;
+  counts: MachineStateCounts;
+  details: MachineStateDetails;
   eventErrors: EventError<
     Machine,
     APIError<MachineEventErrors>,
     MachineMeta.PK
   >[];
+  filters: FilterGroup[];
+  filtersLoaded: boolean;
+  filtersLoading: boolean;
+  lists: MachineStateLists;
   selected: Machine[MachineMeta.PK][];
+  selectedMachines: SelectedMachines | null;
   statuses: MachineStatuses;
 } & GenericState<Machine, APIError>;

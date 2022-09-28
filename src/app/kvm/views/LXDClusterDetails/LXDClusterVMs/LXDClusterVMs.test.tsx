@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -8,6 +9,8 @@ import LXDClusterVMs from "./LXDClusterVMs";
 
 import urls from "app/base/urls";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
+import { actions as machineActions } from "app/store/machine";
+import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -15,11 +18,19 @@ import {
   virtualMachine as clusterVMFactory,
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
+  vmHost as vmHostFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("LXDClusterVMs", () => {
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+  });
+
   it("can get resources for a cluster VM", () => {
     const state = rootStateFactory({
       vmcluster: vmClusterStateFactory({
@@ -81,6 +92,16 @@ describe("LXDClusterVMs", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: [machine],
+        lists: {
+          "123456": machineStateListFactory({
+            loaded: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: [machine.system_id],
+              }),
+            ],
+          }),
+        },
       }),
       vmcluster: vmClusterStateFactory({
         items: [
@@ -118,5 +139,41 @@ describe("LXDClusterVMs", () => {
     expect(wrapper.find("Link[data-testid='host-link']").prop("to")).toBe(
       urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 11 })
     );
+  });
+
+  it("fetches VMs for the hosts", () => {
+    const state = rootStateFactory({
+      vmcluster: vmClusterStateFactory({
+        items: [
+          vmClusterFactory({
+            id: 1,
+            hosts: [
+              vmHostFactory({ name: "host 1" }),
+              vmHostFactory({ name: "host 2" }),
+            ],
+          }),
+        ],
+        loaded: true,
+      }),
+    });
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <LXDClusterVMs
+        clusterId={1}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { wrapperProps: { store } }
+    );
+    const expected = machineActions.fetch("123456", {
+      filter: { pod: ["host 1", "host 2"] },
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches[fetches.length - 1].payload.params.filter).toStrictEqual({
+      pod: ["host 1", "host 2"],
+    });
   });
 });

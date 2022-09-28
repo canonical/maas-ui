@@ -1,6 +1,5 @@
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 
-import { usePrevious } from "@canonical/react-components/dist/hooks";
 import { useLocation, useNavigate } from "react-router-dom-v5-compat";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
@@ -20,8 +19,6 @@ const Machines = (): JSX.Element => {
   );
   const [headerContent, setHeaderContent] =
     useState<MachineHeaderContent | null>(null);
-  const actionSelected = headerContent?.view[0] === "machineActionForm";
-  const previousActionSelected = usePrevious(actionSelected);
 
   const setSearchFilter = useCallback(
     (searchText) => {
@@ -32,25 +29,12 @@ const Machines = (): JSX.Element => {
     [navigate, setFilter]
   );
 
-  useEffect(() => {
-    if (actionSelected !== previousActionSelected) {
-      const filters = FilterMachines.getCurrentFilters(searchFilter);
-      const newFilters = FilterMachines.toggleFilter(
-        filters,
-        "in",
-        "selected",
-        false,
-        actionSelected
-      );
-      setSearchFilter(FilterMachines.filtersToString(newFilters));
-    }
-  }, [actionSelected, previousActionSelected, searchFilter, setSearchFilter]);
-
   return (
     <Section
       header={
         <MachineListHeader
           headerContent={headerContent}
+          searchFilter={searchFilter}
           setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
         />

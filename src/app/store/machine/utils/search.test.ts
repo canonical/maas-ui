@@ -1,4 +1,6 @@
-import { FilterMachines, getMachineValue } from "./search";
+import type { FetchFilters } from "../types/actions";
+
+import { FilterMachines, getMachineValue, FilterMachineItems } from "./search";
 
 import type { Filters } from "app/utils/search/filter-handlers";
 import {
@@ -6,7 +8,114 @@ import {
   tag as tagFactory,
 } from "testing/factories";
 
-describe("search", () => {
+const scenarios: {
+  filters: FetchFilters;
+  input: string;
+  output?: string;
+}[] = [
+  {
+    input: "cores:1",
+    filters: {
+      cpu_count: [1],
+    },
+  },
+  {
+    input: "cpu:1",
+    filters: {
+      cpu_count: [1],
+    },
+  },
+  {
+    input: "cpu:1 cores:2",
+    filters: {
+      cpu_count: [1, 2],
+    },
+  },
+  {
+    input: "mac:aa:bb:cc:dd",
+    filters: {
+      mac_address: ["aa:bb:cc:dd"],
+    },
+  },
+  {
+    input: "ram:1",
+    filters: {
+      mem: [1],
+    },
+  },
+  {
+    input: "release:ubuntu/jammy",
+    filters: {
+      osystem: ["ubuntu"],
+      distro_series: ["jammy"],
+    },
+  },
+  {
+    input: "vlan:vlan1",
+    filters: {
+      vlans: ["vlan1"],
+    },
+  },
+  {
+    input: "vlan:vlan1,!vlan2",
+    filters: {
+      vlans: ["vlan1"],
+      not_vlans: ["vlan2"],
+    },
+  },
+  {
+    input: "workload-type:()",
+    filters: {
+      workloads: ["type:"],
+    },
+  },
+  {
+    input: "workload-type:(qwerty)",
+    filters: {
+      workloads: ["type:qwerty"],
+    },
+  },
+  {
+    input: "free-text workload-type:(qwerty) workload-service:(dvorak)",
+    filters: {
+      free_text: ["free-text"],
+      workloads: ["type:qwerty", "service:dvorak"],
+    },
+  },
+  {
+    input: "workload-type:(query with spaces)",
+    filters: {
+      workloads: ["type:query with spaces"],
+    },
+  },
+];
+
+describe("parseFetchFilters", () => {
+  scenarios.forEach((scenario) => {
+    it(`can parse: ${scenario.input}`, () => {
+      expect(FilterMachineItems.parseFetchFilters(scenario.input)).toEqual(
+        scenario.filters
+      );
+    });
+  });
+});
+
+it("workload annotation is active if key exists in filter list", () => {
+  expect(
+    FilterMachineItems.isFilterActive(
+      {
+        "workload-type": ["type:production"],
+      },
+      "workloads",
+      "type"
+    )
+  ).toBe(true);
+});
+
+// TODO: remove these tests once all the machine lists have all been migrated to the
+// new search API and methods:
+// https://github.com/canonical/app-tribe/issues/1279
+describe("client side search", () => {
   describe("getMachineValue", () => {
     it("can get an attribute via a mapping function", () => {
       const machine = machineFactory({ hostname: "machine1" });

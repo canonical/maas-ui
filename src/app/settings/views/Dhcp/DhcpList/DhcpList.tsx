@@ -27,7 +27,6 @@ import type {
   DHCPSnippetMeta,
   DHCPSnippetState,
 } from "app/store/dhcpsnippet/types";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -226,7 +225,6 @@ const DhcpList = (): JSX.Element => {
     dispatch(subnetActions.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
-    dispatch(machineActions.fetch());
   }, [dispatch]);
 
   return (

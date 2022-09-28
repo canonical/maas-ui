@@ -1,6 +1,8 @@
-import { memo, useCallback, useEffect, useMemo, useState } from "react";
+import type { ReactNode } from "react";
+import { useMemo, memo, useCallback, useEffect, useState } from "react";
 
-import { Button, MainTable, Spinner } from "@canonical/react-components";
+import type { ValueOf } from "@canonical/react-components";
+import { Button, MainTable } from "@canonical/react-components";
 import type {
   MainTableCell,
   MainTableRow,
@@ -9,9 +11,12 @@ import classNames from "classnames";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
+import AllCheckbox from "./AllCheckbox";
 import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
+import GroupCheckbox from "./GroupCheckbox";
+import MachineListPagination from "./MachineListPagination";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
 import PoolColumn from "./PoolColumn";
@@ -22,102 +27,80 @@ import StorageColumn from "./StorageColumn";
 import ZoneColumn from "./ZoneColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import GroupCheckbox from "app/base/components/GroupCheckbox";
+import Placeholder from "app/base/components/Placeholder";
 import TableHeader from "app/base/components/TableHeader";
-import type { TableSort } from "app/base/hooks";
-import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineMeta } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
+import type {
+  Machine,
+  MachineMeta,
+  MachineStateListGroup,
+} from "app/store/machine/types";
+import { FetchGroupKey } from "app/store/machine/types";
+import { FilterMachineItems } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
+import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
-import { NodeStatusCode } from "app/store/types/node";
 import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
-import {
-  generateCheckboxHandlers,
-  groupAsMap,
-  isComparable,
-  simpleSortByKey,
-  someInArray,
-} from "app/utils";
-import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
+
+export enum Label {
+  HideGroup = "Hide",
+  Loading = "Loading machines",
+  Machines = "Machines",
+  NoResults = "No machines match the search criteria.",
+  ShowGroup = "Show",
+}
 
 type Props = {
+  callId?: string | null;
+  currentPage: number;
   filter?: string;
-  grouping?: string;
+  grouping?: FetchGroupKey | null;
   hiddenColumns?: string[];
-  hiddenGroups?: string[];
+  hiddenGroups?: (string | null)[];
+  machineCount: number | null;
   machines: Machine[];
-  paginateLimit?: number;
+  machinesLoading?: boolean | null;
+  pageSize: number;
   selectedIDs?: Machine[MachineMeta.PK][];
-  setHiddenGroups?: (hiddenGroups: string[]) => void;
-  setSearchFilter?: (filter: string) => void;
+  setCurrentPage: (currentPage: number) => void;
+  setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
   showActions?: boolean;
+  sortDirection: ValueOf<typeof SortDirection>;
+  sortKey: FetchGroupKey | null;
+  setSortDirection: (sortDirection: ValueOf<typeof SortDirection>) => void;
+  setSortKey: (sortKey: FetchGroupKey | null) => void;
 };
 
-type SortKey = keyof Machine | "fabric";
 type TableColumn = MainTableCell & { key: string };
 
-type Group = {
-  machines: Machine[];
-  label: string;
-};
-
 type GenerateRowParams = {
+  callId?: string | null;
   activeRow: Machine[MachineMeta.PK] | null;
-  handleRowCheckbox: CheckboxHandlers<
-    Machine[MachineMeta.PK]
-  >["handleRowCheckbox"];
+  groupValue: MachineStateListGroup["value"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
   onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
   selectedIDs: NonNullable<Props["selectedIDs"]>;
   showActions: Props["showActions"];
   showMAC: boolean;
-  sortRows: TableSort<Machine, SortKey>["sortRows"];
 };
 
-const getSortValue = (
-  sortKey: SortKey,
-  machine: Machine
-): string | number | null => {
-  switch (sortKey) {
-    case "domain":
-      return machine.domain?.name || null;
-    case "pool":
-      return machine.pool?.name || null;
-    case "zone":
-      return machine.zone?.name || null;
-    case "fabric":
-      return machine.vlan?.fabric_name || null;
-  }
-  const value = machine[sortKey];
-  return isComparable(value) ? value : null;
-};
-
-const getGroupSecondaryString = (
-  machineIDs: Machine[MachineMeta.PK][],
-  selectedIDs: NonNullable<Props["selectedIDs"]>
-) => {
-  let string = pluralize("machine", machineIDs.length, true);
-  const selectedCount = machineIDs.reduce(
-    (sum, machine) => (selectedIDs.includes(machine) ? sum + 1 : sum),
-    0
-  );
-
-  if (selectedCount) {
-    if (selectedCount === machineIDs.length) {
-      string = `${string} selected`;
-    } else {
-      string = `${string}, ${selectedCount} selected`;
-    }
-  }
-  return string;
+type RowContent = {
+  [MachineColumns.FQDN]: ReactNode;
+  [MachineColumns.POWER]: ReactNode;
+  [MachineColumns.STATUS]: ReactNode;
+  [MachineColumns.OWNER]: ReactNode;
+  [MachineColumns.POOL]: ReactNode;
+  [MachineColumns.ZONE]: ReactNode;
+  [MachineColumns.FABRIC]: ReactNode;
+  [MachineColumns.CPU]: ReactNode;
+  [MachineColumns.MEMORY]: ReactNode;
+  [MachineColumns.DISKS]: ReactNode;
+  [MachineColumns.STORAGE]: ReactNode;
 };
 
 /**
@@ -144,315 +127,294 @@ const filterColumns = (
   );
 };
 
+const generateRow = ({
+  key,
+  content,
+  hiddenColumns,
+  showActions,
+  classes,
+}: {
+  key: string | number;
+  content: RowContent;
+  hiddenColumns: NonNullable<Props["hiddenColumns"]>;
+  showActions: GenerateRowParams["showActions"];
+  classes: string;
+}) => {
+  const columns = [
+    {
+      "aria-label": columnLabels[MachineColumns.FQDN],
+      key: MachineColumns.FQDN,
+      className: "fqdn-col",
+      content: content[MachineColumns.FQDN],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.POWER],
+      key: MachineColumns.POWER,
+      className: "power-col",
+      content: content[MachineColumns.POWER],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.STATUS],
+      key: MachineColumns.STATUS,
+      className: "status-col",
+      content: content[MachineColumns.STATUS],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.OWNER],
+      key: MachineColumns.OWNER,
+      className: "owner-col",
+      content: content[MachineColumns.OWNER],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.POOL],
+      key: MachineColumns.POOL,
+      className: "pool-col",
+      content: content[MachineColumns.POOL],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.ZONE],
+      key: MachineColumns.ZONE,
+      className: "zone-col",
+      content: content[MachineColumns.ZONE],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.FABRIC],
+      key: MachineColumns.FABRIC,
+      className: "fabric-col",
+      content: content[MachineColumns.FABRIC],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.CPU],
+      key: MachineColumns.CPU,
+      className: "cores-col",
+      content: content[MachineColumns.CPU],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.MEMORY],
+      key: MachineColumns.MEMORY,
+      className: "ram-col",
+      content: content[MachineColumns.MEMORY],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.DISKS],
+      key: MachineColumns.DISKS,
+      className: "disks-col",
+      content: content[MachineColumns.DISKS],
+    },
+    {
+      "aria-label": columnLabels[MachineColumns.STORAGE],
+      key: MachineColumns.STORAGE,
+      className: "storage-col",
+      content: content[MachineColumns.STORAGE],
+    },
+  ];
+
+  return {
+    key,
+    className: classNames(
+      "machine-list__machine",
+      {
+        "truncated-border": showActions,
+      },
+      classes
+    ),
+    columns: filterColumns(columns, hiddenColumns, showActions),
+  };
+};
+
+const generateSkeletonRows = (
+  hiddenColumns: NonNullable<Props["hiddenColumns"]>,
+  showActions: GenerateRowParams["showActions"]
+) => {
+  return Array.from(Array(5)).map((_, i) => {
+    const content = {
+      [MachineColumns.FQDN]: (
+        <DoubleRow
+          primary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>}
+          secondary={<Placeholder>xxx.xxx.xx.x</Placeholder>}
+        />
+      ),
+      [MachineColumns.POWER]: (
+        <DoubleRow
+          primary={<Placeholder>Xxxxxxxxxxx</Placeholder>}
+          secondary={<Placeholder>Xxxxxxx</Placeholder>}
+        />
+      ),
+      [MachineColumns.STATUS]: (
+        <DoubleRow primary={<Placeholder>XXXXX XXXXX</Placeholder>} />
+      ),
+      [MachineColumns.OWNER]: (
+        <DoubleRow
+          primary={<Placeholder>Xxxx</Placeholder>}
+          secondary={<Placeholder>XXXX, XXX</Placeholder>}
+        />
+      ),
+      [MachineColumns.POOL]: (
+        <DoubleRow primary={<Placeholder>Xxxxx</Placeholder>} />
+      ),
+      [MachineColumns.ZONE]: (
+        <DoubleRow
+          primary={<Placeholder>Xxxxxxx</Placeholder>}
+          secondary={<Placeholder>Xxxxxxx</Placeholder>}
+        />
+      ),
+      [MachineColumns.FABRIC]: (
+        <DoubleRow
+          primary={<Placeholder>Xxxxxxx-X</Placeholder>}
+          secondary={<Placeholder>Xxxxx</Placeholder>}
+        />
+      ),
+      [MachineColumns.CPU]: (
+        <DoubleRow
+          primary={<Placeholder>XX</Placeholder>}
+          primaryClassName="u-align--right"
+          secondary={<Placeholder>xxxXX</Placeholder>}
+          secondaryClassName="u-align--right"
+        />
+      ),
+      [MachineColumns.MEMORY]: (
+        <DoubleRow
+          primary={<Placeholder>XX xxx</Placeholder>}
+          primaryClassName="u-align--right"
+        />
+      ),
+      [MachineColumns.DISKS]: (
+        <DoubleRow
+          primary={<Placeholder>XX</Placeholder>}
+          primaryClassName="u-align--right"
+        />
+      ),
+      [MachineColumns.STORAGE]: (
+        <DoubleRow
+          primary={<Placeholder>X.XX</Placeholder>}
+          primaryClassName="u-align--right"
+        />
+      ),
+    };
+    return generateRow({
+      key: i,
+      content,
+      hiddenColumns,
+      showActions,
+      classes: "machine-list__machine--inactive",
+    });
+  });
+};
 const generateRows = ({
+  callId,
   activeRow,
-  handleRowCheckbox,
+  groupValue,
   hiddenColumns,
   machines,
   onToggleMenu,
-  selectedIDs,
   showActions,
   showMAC,
-  sortRows,
 }: GenerateRowParams) => {
-  const sortedMachines = sortRows(machines);
   const menuCallback = showActions ? onToggleMenu : undefined;
 
-  return sortedMachines.map((row) => {
+  return machines.map((row) => {
     const isActive = activeRow === row.system_id;
 
-    const columns = [
-      {
-        "aria-label": columnLabels[MachineColumns.FQDN],
-        key: MachineColumns.FQDN,
-        className: "fqdn-col",
-        content: (
-          <NameColumn
-            data-testid="fqdn-column"
-            handleCheckbox={
-              showActions
-                ? () => handleRowCheckbox(row.system_id, selectedIDs)
-                : undefined
-            }
-            selected={selectedIDs}
-            showMAC={showMAC}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.POWER],
-        key: MachineColumns.POWER,
-        className: "power-col",
-        content: (
-          <PowerColumn
-            data-testid="power-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.STATUS],
-        key: MachineColumns.STATUS,
-        className: "status-col",
-        content: (
-          <StatusColumn
-            data-testid="status-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.OWNER],
-        key: MachineColumns.OWNER,
-        className: "owner-col",
-        content: (
-          <OwnerColumn
-            data-testid="owner-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.POOL],
-        key: MachineColumns.POOL,
-        className: "pool-col",
-        content: (
-          <PoolColumn
-            data-testid="pool-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.ZONE],
-        key: MachineColumns.ZONE,
-        className: "zone-col",
-        content: (
-          <ZoneColumn
-            data-testid="zone-column"
-            onToggleMenu={menuCallback}
-            systemId={row.system_id}
-          />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.FABRIC],
-        key: MachineColumns.FABRIC,
-        className: "fabric-col",
-        content: (
-          <FabricColumn data-testid="fabric-column" systemId={row.system_id} />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.CPU],
-        key: MachineColumns.CPU,
-        className: "cores-col",
-        content: (
-          <CoresColumn data-testid="cpu-column" systemId={row.system_id} />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.MEMORY],
-        key: MachineColumns.MEMORY,
-        className: "ram-col",
-        content: (
-          <RamColumn data-testid="memory-column" systemId={row.system_id} />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.DISKS],
-        key: MachineColumns.DISKS,
-        className: "disks-col",
-        content: (
-          <DisksColumn data-testid="disks-column" systemId={row.system_id} />
-        ),
-      },
-      {
-        "aria-label": columnLabels[MachineColumns.STORAGE],
-        key: MachineColumns.STORAGE,
-        className: "storage-col",
-        content: (
-          <StorageColumn
-            data-testid="storage-column"
-            systemId={row.system_id}
-          />
-        ),
-      },
-    ];
-
-    return {
-      key: row.system_id,
-      className: classNames("machine-list__machine", {
-        "machine-list__machine--active": isActive,
-        "truncated-border": showActions,
-      }),
-      columns: filterColumns(columns, hiddenColumns, showActions),
+    const content = {
+      [MachineColumns.FQDN]: (
+        <NameColumn
+          callId={callId}
+          data-testid="fqdn-column"
+          groupValue={groupValue}
+          showActions={showActions}
+          showMAC={showMAC}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.POWER]: (
+        <PowerColumn
+          data-testid="power-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.STATUS]: (
+        <StatusColumn
+          data-testid="status-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.OWNER]: (
+        <OwnerColumn
+          data-testid="owner-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.POOL]: (
+        <PoolColumn
+          data-testid="pool-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.ZONE]: (
+        <ZoneColumn
+          data-testid="zone-column"
+          onToggleMenu={menuCallback}
+          systemId={row.system_id}
+        />
+      ),
+      [MachineColumns.FABRIC]: (
+        <FabricColumn data-testid="fabric-column" systemId={row.system_id} />
+      ),
+      [MachineColumns.CPU]: (
+        <CoresColumn data-testid="cpu-column" systemId={row.system_id} />
+      ),
+      [MachineColumns.MEMORY]: (
+        <RamColumn data-testid="memory-column" systemId={row.system_id} />
+      ),
+      [MachineColumns.DISKS]: (
+        <DisksColumn data-testid="disks-column" systemId={row.system_id} />
+      ),
+      [MachineColumns.STORAGE]: (
+        <StorageColumn data-testid="storage-column" systemId={row.system_id} />
+      ),
     };
+    return generateRow({
+      key: row.system_id,
+      content,
+      hiddenColumns,
+      showActions,
+      classes: classNames({
+        "machine-list__machine--active": isActive,
+      }),
+    });
   });
 };
 
-const generateGroups = (
-  grouping: Props["grouping"],
-  machines: Machine[]
-): Group[] | null => {
-  if (grouping === "owner") {
-    const groupMap = groupAsMap(machines, (machine) => machine.owner);
-    return Array.from(groupMap)
-      .map(([label, machines]) => ({
-        label: label?.toString() || "No owner",
-        machines,
-      }))
-      .sort(simpleSortByKey("label"));
-  }
-
-  if (grouping === "pool") {
-    const groupMap = groupAsMap(machines, (machine) => machine.pool.name);
-    return Array.from(groupMap)
-      .map(([label, machines]) => ({
-        label: label?.toString() || "No pool",
-        machines,
-      }))
-      .sort(simpleSortByKey("label"));
-  }
-
-  if (grouping === "power_state") {
-    const groupMap = groupAsMap(machines, (machine) => machine.power_state);
-    return [
-      {
-        label: "Error",
-        machines: groupMap.get("error") || [],
-      },
-      {
-        label: "Off",
-        machines: groupMap.get("off") || [],
-      },
-      {
-        label: "On",
-        machines: groupMap.get("on") || [],
-      },
-      {
-        label: "Unknown",
-        machines: groupMap.get("unknown") || [],
-      },
-    ].filter((group) => group.machines.length);
-  }
-
-  if (grouping === "status") {
-    const groupMap = groupAsMap(machines, (machine) => machine.status_code);
-    return [
-      {
-        label: "Failed",
-        machines: [
-          ...(groupMap.get(NodeStatusCode.FAILED_COMMISSIONING) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_DEPLOYMENT) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_DISK_ERASING) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_ENTERING_RESCUE_MODE) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_EXITING_RESCUE_MODE) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_RELEASING) || []),
-          ...(groupMap.get(NodeStatusCode.FAILED_TESTING) || []),
-        ],
-      },
-      {
-        label: "New",
-        machines: groupMap.get(NodeStatusCode.NEW) || [],
-      },
-      {
-        label: "Commissioning",
-        machines: groupMap.get(NodeStatusCode.COMMISSIONING) || [],
-      },
-      {
-        label: "Testing",
-        machines: groupMap.get(NodeStatusCode.TESTING) || [],
-      },
-      {
-        label: "Ready",
-        machines: groupMap.get(NodeStatusCode.READY) || [],
-      },
-      {
-        label: "Allocated",
-        machines: groupMap.get(NodeStatusCode.ALLOCATED) || [],
-      },
-      {
-        label: "Deploying",
-        machines: groupMap.get(NodeStatusCode.DEPLOYING) || [],
-      },
-      {
-        label: "Deployed",
-        machines: groupMap.get(NodeStatusCode.DEPLOYED) || [],
-      },
-      {
-        label: "Rescue mode",
-        machines: [
-          ...(groupMap.get(NodeStatusCode.ENTERING_RESCUE_MODE) || []),
-          ...(groupMap.get(NodeStatusCode.EXITING_RESCUE_MODE) || []),
-          ...(groupMap.get(NodeStatusCode.RESCUE_MODE) || []),
-        ],
-      },
-      {
-        label: "Releasing",
-        machines: [
-          ...(groupMap.get(NodeStatusCode.DISK_ERASING) || []),
-          ...(groupMap.get(NodeStatusCode.RELEASING) || []),
-        ],
-      },
-      {
-        label: "Broken",
-        machines: groupMap.get(NodeStatusCode.BROKEN) || [],
-      },
-      {
-        label: "Other",
-        machines: [
-          ...(groupMap.get(NodeStatusCode.MISSING) || []),
-          ...(groupMap.get(NodeStatusCode.RESERVED) || []),
-          ...(groupMap.get(NodeStatusCode.RETIRED) || []),
-        ],
-      },
-    ].filter((group) => group.machines.length);
-  }
-
-  if (grouping === "zone") {
-    const groupMap = groupAsMap(machines, (machine) => machine.zone.name);
-    return Array.from(groupMap)
-      .map(([label, machines]) => ({
-        label: label?.toString() || "No zone",
-        machines,
-      }))
-      .sort(simpleSortByKey("label"));
-  }
-
-  return null;
-};
-
 const generateGroupRows = ({
+  callId,
+  grouping,
   groups,
-  handleGroupCheckbox,
   hiddenGroups,
+  machines,
   selectedIDs,
   setHiddenGroups,
   showActions,
   hiddenColumns,
   ...rowProps
 }: {
-  groups: Group[];
-  handleGroupCheckbox: CheckboxHandlers<
-    Machine[MachineMeta.PK]
-  >["handleGroupCheckbox"];
+  callId?: string | null;
+  grouping?: FetchGroupKey | null;
+  groups: MachineStateListGroup[] | null;
   hiddenGroups: NonNullable<Props["hiddenGroups"]>;
   setHiddenGroups: Props["setHiddenGroups"];
-} & Omit<GenerateRowParams, "machines">) => {
+} & Omit<GenerateRowParams, "groupValue">) => {
   let rows: MainTableRow[] = [];
 
-  groups.length &&
-    groups.forEach((group) => {
-      const { label, machines } = group;
-      const machineIDs = machines.map((machine) => machine.system_id);
-      const collapsed = hiddenGroups.includes(label);
+  groups?.forEach((group) => {
+    const { collapsed, count, items: machineIDs, name } = group;
+    // When the table is set to ungrouped then there are no group headers.
+    if (grouping) {
       rows.push({
+        "aria-label": `${name} machines group`,
         className: "machine-list__group",
         columns: [
           {
@@ -464,23 +426,15 @@ const generateGroupRows = ({
                   primary={
                     showActions ? (
                       <GroupCheckbox
-                        checkAllSelected={(_, selectedIDs) =>
-                          machineIDs.every((id) => selectedIDs.includes(id))
-                        }
-                        checkSelected={(_, selectedIDs) =>
-                          someInArray(selectedIDs, machineIDs)
-                        }
-                        handleGroupCheckbox={handleGroupCheckbox}
-                        inRow
-                        inputLabel={<strong>{label}</strong>}
-                        items={machineIDs}
-                        selectedItems={selectedIDs}
+                        callId={callId}
+                        groupName={name}
+                        grouping={grouping}
                       />
                     ) : (
-                      <strong>{label}</strong>
+                      <strong>{name}</strong>
                     )
                   }
-                  secondary={getGroupSecondaryString(machineIDs, selectedIDs)}
+                  secondary={pluralize("machine", count, true)}
                   secondaryClassName={
                     showActions ? "u-nudge--secondary-row u-align--left" : null
                   }
@@ -494,18 +448,18 @@ const generateGroupRows = ({
                       if (collapsed) {
                         setHiddenGroups &&
                           setHiddenGroups(
-                            hiddenGroups.filter((group) => group !== label)
+                            hiddenGroups.filter((group) => group !== name)
                           );
                       } else {
                         setHiddenGroups &&
-                          setHiddenGroups(hiddenGroups.concat([label]));
+                          setHiddenGroups(hiddenGroups.concat([name]));
                       }
                     }}
                   >
                     {collapsed ? (
-                      <i className="p-icon--plus">Show</i>
+                      <i className="p-icon--plus">{Label.ShowGroup}</i>
                     ) : (
-                      <i className="p-icon--minus">Hide</i>
+                      <i className="p-icon--minus">{Label.HideGroup}</i>
                     )}
                   </Button>
                 </div>
@@ -514,64 +468,80 @@ const generateGroupRows = ({
           },
         ],
       });
-      const visibleMachines = collapsed ? [] : machines;
-      rows = rows.concat(
-        generateRows({
-          ...rowProps,
-          machines: visibleMachines,
-          selectedIDs,
-          showActions,
-          hiddenColumns,
-        })
-      );
-    });
+    }
+    // Get the machines in this group using the list of machine ids provided by the group.
+    const visibleMachines = collapsed
+      ? []
+      : machineIDs.reduce<Machine[]>((groupMachines, systemId) => {
+          const machine = machines.find(
+            ({ system_id }) => system_id === systemId
+          );
+          if (machine) {
+            groupMachines.push(machine);
+          }
+          return groupMachines;
+        }, []);
+    rows = rows.concat(
+      generateRows({
+        ...rowProps,
+        callId,
+        groupValue: group.value,
+        machines: visibleMachines,
+        selectedIDs,
+        showActions,
+        hiddenColumns,
+      })
+    );
+  });
   return rows;
 };
 
 export const MachineListTable = ({
+  callId,
+  currentPage,
   filter = "",
-  grouping = "none",
+  grouping,
   hiddenColumns = [],
   hiddenGroups = [],
+  machineCount,
   machines,
-  paginateLimit = 50,
+  machinesLoading,
+  pageSize,
   selectedIDs = [],
+  setCurrentPage,
   setHiddenGroups,
-  setSearchFilter,
   showActions = true,
+  sortDirection,
+  sortKey,
+  setSortDirection,
+  setSortKey,
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
-  const machinesLoaded = useSelector(machineSelectors.loaded);
-  const machineIDs = machines.map((machine) => machine.system_id);
-  const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
-    getSortValue,
-    {
-      key: MachineColumns.FQDN,
-      direction: SortDirection.DESCENDING,
-    }
+  const groups = useSelector((state: RootState) =>
+    machineSelectors.listGroups(state, callId)
   );
-
+  const currentSort = {
+    direction: sortDirection,
+    key: sortKey,
+  };
+  const updateSort = (newSortKey: Props["sortKey"]) => {
+    if (newSortKey === sortKey) {
+      if (sortDirection === SortDirection.ASCENDING) {
+        setSortKey(null);
+        setSortDirection(SortDirection.NONE);
+      } else {
+        setSortDirection(SortDirection.ASCENDING);
+      }
+    } else {
+      setSortKey(newSortKey);
+      setSortDirection(SortDirection.DESCENDING);
+    }
+  };
   const [activeRow, setActiveRow] = useState<Machine[MachineMeta.PK] | null>(
     null
   );
   const [showMAC, setShowMAC] = useState(false);
-  const groups = useMemo(
-    () => generateGroups(grouping, machines),
-    [grouping, machines]
-  );
-  const removeSelectedFilter = () => {
-    const filters = FilterMachines.getCurrentFilters(filter);
-    const newFilters = FilterMachines.toggleFilter(
-      filters,
-      "in",
-      "selected",
-      false,
-      false
-    );
-    setSearchFilter &&
-      setSearchFilter(FilterMachines.filtersToString(newFilters));
-  };
 
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());
@@ -587,15 +557,6 @@ export const MachineListTable = ({
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  const { handleGroupCheckbox, handleRowCheckbox } = generateCheckboxHandlers<
-    Machine[MachineMeta.PK]
-  >((machineIDs) => {
-    if (machineIDs.length === 0) {
-      removeSelectedFilter();
-    }
-    dispatch(machineActions.setSelected(machineIDs));
-  });
-
   const onToggleMenu = useCallback(
     (systemId, open) => {
       if (open && !activeRow) {
@@ -608,12 +569,11 @@ export const MachineListTable = ({
   );
 
   const rowProps = {
+    callId,
     activeRow,
-    handleRowCheckbox,
     onToggleMenu,
     showActions,
     showMAC,
-    sortRows,
   };
 
   const headers = [
@@ -624,22 +584,23 @@ export const MachineListTable = ({
       content: (
         <div className="u-flex">
           {showActions && (
-            <GroupCheckbox
+            <AllCheckbox
+              callId={callId}
               data-testid="all-machines-checkbox"
-              handleGroupCheckbox={handleGroupCheckbox}
-              items={machineIDs}
-              selectedItems={selectedIDs}
+              filter={FilterMachineItems.parseFetchFilters(filter)}
             />
           )}
           <div>
             <TableHeader
               currentSort={currentSort}
               data-testid="fqdn-header"
+              // TODO: change this to "fqdn" when the API supports it:
+              // https://github.com/canonical/app-tribe/issues/1268
               onClick={() => {
                 setShowMAC(false);
-                updateSort("fqdn");
+                updateSort(FetchGroupKey.Hostname);
               }}
-              sortKey="fqdn"
+              sortKey={FetchGroupKey.Hostname}
             >
               {columnLabels[MachineColumns.FQDN]}
             </TableHeader>
@@ -647,11 +608,11 @@ export const MachineListTable = ({
             <TableHeader
               currentSort={currentSort}
               data-testid="mac-header"
+              // TODO: enable sorting by "pxe_mac" when the API supports it:
+              // https://github.com/canonical/app-tribe/issues/1268
               onClick={() => {
                 setShowMAC(true);
-                updateSort("pxe_mac");
               }}
-              sortKey="pxe_mac"
             >
               MAC
             </TableHeader>
@@ -669,8 +630,8 @@ export const MachineListTable = ({
           className="p-double-row__header-spacer"
           currentSort={currentSort}
           data-testid="power-header"
-          onClick={() => updateSort("power_state")}
-          sortKey="power_state"
+          onClick={() => updateSort(FetchGroupKey.PowerState)}
+          sortKey={FetchGroupKey.PowerState}
         >
           {columnLabels[MachineColumns.POWER]}
         </TableHeader>
@@ -685,8 +646,8 @@ export const MachineListTable = ({
           className="p-double-row__header-spacer"
           currentSort={currentSort}
           data-testid="status-header"
-          onClick={() => updateSort("status")}
-          sortKey="status"
+          onClick={() => updateSort(FetchGroupKey.Status)}
+          sortKey={FetchGroupKey.Status}
         >
           {columnLabels[MachineColumns.STATUS]}
         </TableHeader>
@@ -701,8 +662,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="owner-header"
-            onClick={() => updateSort("owner")}
-            sortKey="owner"
+            onClick={() => updateSort(FetchGroupKey.Owner)}
+            sortKey={FetchGroupKey.Owner}
           >
             {columnLabels[MachineColumns.OWNER]}
           </TableHeader>
@@ -719,8 +680,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="pool-header"
-            onClick={() => updateSort("pool")}
-            sortKey="pool"
+            onClick={() => updateSort(FetchGroupKey.Pool)}
+            sortKey={FetchGroupKey.Pool}
           >
             {columnLabels[MachineColumns.POOL]}
           </TableHeader>
@@ -737,8 +698,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="zone-header"
-            onClick={() => updateSort("zone")}
-            sortKey="zone"
+            onClick={() => updateSort(FetchGroupKey.Zone)}
+            sortKey={FetchGroupKey.Zone}
           >
             {columnLabels[MachineColumns.ZONE]}
           </TableHeader>
@@ -755,8 +716,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="fabric-header"
-            onClick={() => updateSort("fabric")}
-            sortKey="fabric"
+            // TODO: enable sorting by "fabric" when the API supports it:
+            // https://github.com/canonical/app-tribe/issues/1268
           >
             {columnLabels[MachineColumns.FABRIC]}
           </TableHeader>
@@ -773,8 +734,8 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="cores-header"
-            onClick={() => updateSort("cpu_count")}
-            sortKey="cpu_count"
+            onClick={() => updateSort(FetchGroupKey.CpuCount)}
+            sortKey={FetchGroupKey.CpuCount}
           >
             {columnLabels[MachineColumns.CPU]}
           </TableHeader>
@@ -790,8 +751,8 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="memory-header"
-          onClick={() => updateSort("memory")}
-          sortKey="memory"
+          onClick={() => updateSort(FetchGroupKey.Memory)}
+          sortKey={FetchGroupKey.Memory}
         >
           {columnLabels[MachineColumns.MEMORY]}
         </TableHeader>
@@ -805,8 +766,8 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="disks-header"
-          onClick={() => updateSort("physical_disk_count")}
-          sortKey="physical_disk_count"
+          // TODO: enable sorting by "physical_disk_count" when the API supports it:
+          // https://github.com/canonical/app-tribe/issues/1268
         >
           {columnLabels[MachineColumns.DISKS]}
         </TableHeader>
@@ -820,8 +781,8 @@ export const MachineListTable = ({
         <TableHeader
           currentSort={currentSort}
           data-testid="storage-header"
-          onClick={() => updateSort("storage")}
-          sortKey="storage"
+          // TODO: enable sorting by "storage" when the API supports it:
+          // https://github.com/canonical/app-tribe/issues/1268
         >
           {columnLabels[MachineColumns.STORAGE]}
         </TableHeader>
@@ -829,49 +790,41 @@ export const MachineListTable = ({
     },
   ];
 
-  let rows: MainTableRow[] | null = null;
+  const rows = generateGroupRows({
+    grouping,
+    groups,
+    hiddenGroups,
+    machines,
+    selectedIDs,
+    setHiddenGroups,
+    hiddenColumns,
+    ...rowProps,
+  });
 
-  if (grouping === "none") {
-    rows = generateRows({
-      machines,
-      selectedIDs,
-      hiddenColumns,
-      ...rowProps,
-    });
-  } else if (groups) {
-    rows = generateGroupRows({
-      groups,
-      handleGroupCheckbox,
-      hiddenGroups,
-      selectedIDs,
-      setHiddenGroups,
-      hiddenColumns,
-      ...rowProps,
-    });
-  }
+  const skeletonRows = useMemo(
+    () => generateSkeletonRows(hiddenColumns, showActions),
+    [hiddenColumns, showActions]
+  );
 
   return (
     <>
       <MainTable
-        aria-label="Machines"
+        aria-label={machinesLoading ? Label.Loading : Label.Machines}
         className={classNames("p-table-expanding--light", "machine-list", {
-          "machine-list--grouped": grouping !== "none",
+          "machine-list--grouped": grouping,
+          "machine-list--loading": machinesLoading,
         })}
-        emptyStateMsg={
-          !machinesLoaded ? (
-            <Spinner text="Loading..." />
-          ) : filter ? (
-            "No machines match the search criteria."
-          ) : null
-        }
+        emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
         headers={filterColumns(headers, hiddenColumns, showActions)}
-        paginate={paginateLimit}
-        rows={
-          // Pass undefined if there are no rows as the MainTable prop doesn't
-          // allow null.
-          rows ? rows : undefined
-        }
+        rows={machinesLoading ? skeletonRows : rows}
         {...props}
+      />
+      <MachineListPagination
+        currentPage={currentPage}
+        itemsPerPage={pageSize}
+        machineCount={machineCount}
+        machinesLoading={machinesLoading}
+        paginate={setCurrentPage}
       />
     </>
   );

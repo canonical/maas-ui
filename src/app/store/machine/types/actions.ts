@@ -1,13 +1,21 @@
-import type { Machine, MachineStatus } from "./base";
+import type {
+  Machine,
+  MachineStatus,
+  FilterGroupKey,
+  MachineStateListGroup,
+} from "./base";
 import type { MachineMeta } from "./enum";
 
 import type { Domain } from "app/store/domain/types";
+import type { Fabric } from "app/store/fabric/types";
 import type { LicenseKeys } from "app/store/licensekeys/types";
+import type { Pod } from "app/store/pod/types";
 import type {
   ResourcePool,
   ResourcePoolMeta,
 } from "app/store/resourcepool/types";
 import type { Script, ScriptName } from "app/store/script/types";
+import type { Space } from "app/store/space/types";
 import type { Subnet } from "app/store/subnet/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import type {
@@ -15,14 +23,21 @@ import type {
   NetworkLinkMode,
   StorageLayout,
 } from "app/store/types/enum";
+import type { ModelRef } from "app/store/types/model";
 import type {
+  Node,
   BaseNodeActionParams,
+  FetchNodeStatus,
   LinkParams,
   NetworkInterface,
   NetworkInterfaceParams,
   NetworkLink,
+  NodeIpAddress,
+  NodeVlan,
   PowerParameters,
   ScriptInputParam,
+  SetZoneParams as NodeSetZoneParams,
+  TestParams as NodeTestParams,
 } from "app/store/types/node";
 import type { Zone } from "app/store/zone/types";
 
@@ -36,13 +51,19 @@ export type ApplyStorageLayoutParams = {
   storageLayout: StorageLayout;
 };
 
-export type CloneParams = BaseNodeActionParams & {
+export type BaseMachineActionParams =
+  | BaseNodeActionParams
+  | {
+      filter: FetchFilters;
+    };
+
+export type CloneParams = BaseMachineActionParams & {
   destinations: Machine[MachineMeta.PK][];
   interfaces: boolean;
   storage: boolean;
 };
 
-export type CommissionParams = BaseNodeActionParams & {
+export type CommissionParams = BaseMachineActionParams & {
   commissioning_scripts?: Script["name"][];
   enable_ssh?: boolean;
   script_input?: ScriptInputParam;
@@ -221,7 +242,7 @@ export type DeleteVolumeGroupParams = {
   volumeGroupId: number;
 };
 
-export type DeployParams = BaseNodeActionParams & {
+export type DeployParams = BaseMachineActionParams & {
   distro_series?: Machine["distro_series"];
   enable_hw_sync?: boolean;
   hwe_kernel?: string;
@@ -229,6 +250,190 @@ export type DeployParams = BaseNodeActionParams & {
   osystem?: Machine["osystem"];
   register_vmhost?: boolean;
   user_data?: string;
+};
+
+export enum FetchSortDirection {
+  Ascending = "ascending",
+  Descending = "descending",
+}
+
+type ArrayOrValue<T> = { [P in keyof T]: T[P] | Array<T[P]> };
+
+type Filters = {
+  [FilterGroupKey.AgentName]: string;
+  [FilterGroupKey.Arch]: Machine["architecture"];
+  [FilterGroupKey.CpuCount]: Machine["cpu_count"];
+  [FilterGroupKey.CpuSpeed]: Machine["cpu_speed"];
+  [FilterGroupKey.Description]: Machine["description"];
+  [FilterGroupKey.DistroSeries]: Machine["distro_series"];
+  [FilterGroupKey.Domain]: Domain["name"];
+  [FilterGroupKey.ErrorDescription]: Machine["error_description"];
+  [FilterGroupKey.FabricClasses]: Fabric["class_type"];
+  [FilterGroupKey.Fabrics]: Machine["fabrics"][0];
+  [FilterGroupKey.FreeText]: string;
+  [FilterGroupKey.Hostname]: Machine["hostname"];
+  [FilterGroupKey.IpAddresses]: NodeIpAddress["ip"];
+  [FilterGroupKey.LinkSpeed]: Machine["link_speeds"][0];
+  [FilterGroupKey.MacAddress]: NetworkInterface["mac_address"];
+  [FilterGroupKey.Mem]: Machine["memory"];
+  [FilterGroupKey.Osystem]: Machine["osystem"];
+  [FilterGroupKey.Owner]: Machine["owner"];
+  [FilterGroupKey.Parent]: Node["system_id"];
+  [FilterGroupKey.Pod]: ModelRef["name"];
+  [FilterGroupKey.PodType]: Pod["type"];
+  [FilterGroupKey.Pool]: ResourcePool["name"];
+  [FilterGroupKey.Spaces]: Space["name"];
+  [FilterGroupKey.Status]: FetchNodeStatus;
+  [FilterGroupKey.Subnets]: Subnet["name"];
+  [FilterGroupKey.Id]: Machine["system_id"];
+  [FilterGroupKey.Tags]: Tag["name"];
+  [FilterGroupKey.Vlans]: NodeVlan["name"];
+  [FilterGroupKey.Workloads]: string;
+  [FilterGroupKey.Zone]: Machine["zone"]["name"];
+};
+
+type ExcludeFilters = {
+  [FilterGroupKey.NotArch]: Filters[FilterGroupKey.Arch];
+  [FilterGroupKey.NotCpuCount]: Filters[FilterGroupKey.CpuCount];
+  [FilterGroupKey.NotCpuSpeed]: Filters[FilterGroupKey.CpuSpeed];
+  [FilterGroupKey.NotDistroSeries]: Filters[FilterGroupKey.DistroSeries];
+  [FilterGroupKey.NotFabricClasses]: Filters[FilterGroupKey.FabricClasses];
+  [FilterGroupKey.NotFabrics]: Filters[FilterGroupKey.Fabrics];
+  [FilterGroupKey.NotInPool]: Filters[FilterGroupKey.Pool];
+  [FilterGroupKey.NotInZone]: Filters[FilterGroupKey.Zone];
+  [FilterGroupKey.NotIpAddresses]: Filters[FilterGroupKey.IpAddresses];
+  [FilterGroupKey.NotLinkSpeed]: Filters[FilterGroupKey.LinkSpeed];
+  [FilterGroupKey.NotMem]: Filters[FilterGroupKey.Mem];
+  [FilterGroupKey.NotOsystem]: Filters[FilterGroupKey.Osystem];
+  [FilterGroupKey.NotOwner]: Filters[FilterGroupKey.Owner];
+  [FilterGroupKey.NotPod]: Filters[FilterGroupKey.Pod];
+  [FilterGroupKey.NotPodType]: Filters[FilterGroupKey.PodType];
+  [FilterGroupKey.NotSubnets]: Filters[FilterGroupKey.Subnets];
+  [FilterGroupKey.NotId]: Filters[FilterGroupKey.Id];
+  [FilterGroupKey.NotTags]: Filters[FilterGroupKey.Tags];
+  [FilterGroupKey.NotVlans]: Filters[FilterGroupKey.Vlans];
+};
+
+export type FetchFilters = Partial<
+  ArrayOrValue<Filters> & ArrayOrValue<ExcludeFilters>
+>;
+
+export enum FetchGroupKey {
+  AddressTtl = "address_ttl",
+  AgentName = "agent_name",
+  Architecture = "architecture",
+  BiosBootMethod = "bios_boot_method",
+  Bmc = "bmc",
+  BmcId = "bmc_id",
+  BootClusterIp = "boot_cluster_ip",
+  BootDisk = "boot_disk",
+  BootDiskId = "boot_disk_id",
+  BootInterface = "boot_interface",
+  BootInterfaceId = "boot_interface_id",
+  Children = "children",
+  Connections = "connections",
+  Controllerinfo = "controllerinfo",
+  CpuCount = "cpu_count",
+  CpuSpeed = "cpu_speed",
+  Created = "created",
+  CurrentCommissioningScriptSet = "current_commissioning_script_set",
+  CurrentCommissioningScriptSetId = "current_commissioning_script_set_id",
+  CurrentConfig = "current_config",
+  CurrentConfigId = "current_config_id",
+  CurrentInstallationScriptSet = "current_installation_script_set",
+  CurrentInstallationScriptSetId = "current_installation_script_set_id",
+  CurrentTestingScriptSet = "current_testing_script_set",
+  CurrentTestingScriptSetId = "current_testing_script_set_id",
+  DefaultUser = "default_user",
+  Description = "description",
+  Dhcpsnippet = "dhcpsnippet",
+  Discovery = "discovery",
+  DistroSeries = "distro_series",
+  DnsProcess = "dns_process",
+  DnsProcessId = "dns_process_id",
+  Domain = "domain",
+  DomainId = "domain_id",
+  Dynamic = "dynamic",
+  EnableHwSync = "enable_hw_sync",
+  EnableSsh = "enable_ssh",
+  EphemeralDeploy = "ephemeral_deploy",
+  Error = "error",
+  ErrorDescription = "error_description",
+  Event = "event",
+  GatewayLinkIpv4 = "gateway_link_ipv4",
+  GatewayLinkIpv4Id = "gateway_link_ipv4_id",
+  GatewayLinkIpv6 = "gateway_link_ipv6",
+  GatewayLinkIpv6Id = "gateway_link_ipv6_id",
+  HardwareUuid = "hardware_uuid",
+  Hostname = "hostname",
+  HweKernel = "hwe_kernel",
+  Id = "id",
+  InstallKvm = "install_kvm",
+  InstallRackd = "install_rackd",
+  InstancePowerParameters = "instance_power_parameters",
+  LastAppliedStorageLayout = "last_applied_storage_layout",
+  LastImageSync = "last_image_sync",
+  LastSync = "last_sync",
+  LicenseKey = "license_key",
+  Locked = "locked",
+  ManagingProcess = "managing_process",
+  ManagingProcessId = "managing_process_id",
+  Memory = "memory",
+  MinHweKernel = "min_hwe_kernel",
+  Netboot = "netboot",
+  NodeType = "node_type",
+  Nodeconfig = "nodeconfig",
+  Nodekey = "nodekey",
+  Nodemetadata = "nodemetadata",
+  Nodeuserdata = "nodeuserdata",
+  NumaNodesCount = "numa_nodes_count",
+  Numanode = "numanode",
+  Osystem = "osystem",
+  Owner = "owner",
+  OwnerId = "owner_id",
+  Ownerdata = "ownerdata",
+  Parent = "parent",
+  ParentId = "parent_id",
+  Podhints = "podhints",
+  Pool = "pool",
+  PoolId = "pool_id",
+  PowerState = "power_state",
+  PowerStateQueried = "power_state_queried",
+  PowerStateUpdated = "power_state_updated",
+  PreviousStatus = "previous_status",
+  Processes = "processes",
+  Rdns = "rdns",
+  RegisterVmhost = "register_vmhost",
+  RoutableBmcRelationships = "routable_bmc_relationships",
+  RoutableBmcs = "routable_bmcs",
+  Scriptset = "scriptset",
+  Service = "service",
+  SkipNetworking = "skip_networking",
+  SkipStorage = "skip_storage",
+  SriovSupport = "sriov_support",
+  Status = "status",
+  StatusEventDescription = "status_event_description",
+  StatusEventTypeDescription = "status_event_type_description",
+  StatusExpires = "status_expires",
+  SwapSize = "swap_size",
+  SyncInterval = "sync_interval",
+  SystemId = "system_id",
+  Tags = "tags",
+  Updated = "updated",
+  Url = "url",
+  Virtualmachine = "virtualmachine",
+  Zone = "zone",
+  ZoneId = "zone_id",
+}
+
+export type FetchParams = {
+  filter?: FetchFilters | null;
+  group_key?: FetchGroupKey | null;
+  group_collapsed?: MachineStateListGroup["value"][] | null;
+  page_size?: number;
+  page_number?: number;
+  sort_key?: FetchGroupKey | null;
+  sort_direction?: FetchSortDirection | null;
 };
 
 export type GetSummaryXmlParams = {
@@ -250,7 +455,7 @@ export type LinkSubnetParams = {
   system_id: Machine[MachineMeta.PK];
 };
 
-export type MarkBrokenParams = BaseNodeActionParams & {
+export type MarkBrokenParams = BaseMachineActionParams & {
   message?: string;
 };
 
@@ -267,7 +472,7 @@ export type OptionalFilesystemParams = {
   mountPoint?: string;
 };
 
-export type ReleaseParams = BaseNodeActionParams & {
+export type ReleaseParams = BaseMachineActionParams & {
   erase?: boolean;
   quick_erase?: boolean;
   secure_erase?: boolean;
@@ -278,13 +483,19 @@ export type SetBootDiskParams = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export type SetPoolParams = BaseNodeActionParams & {
+export type SetPoolParams = BaseMachineActionParams & {
   pool_id: ResourcePool[ResourcePoolMeta.PK];
 };
 
-export type TagParams = BaseNodeActionParams & {
+export type SetZoneParams = BaseMachineActionParams &
+  Omit<NodeSetZoneParams, "system_id">;
+
+export type TagParams = BaseMachineActionParams & {
   tags: Tag[TagMeta.PK][];
 };
+
+export type TestParams = BaseMachineActionParams &
+  Omit<NodeTestParams, "system_id">;
 
 export type UnlinkSubnetParams = {
   interfaceId: NetworkInterface["id"];
@@ -297,7 +508,7 @@ export type UnmountSpecialParams = {
   systemId: Machine[MachineMeta.PK];
 };
 
-export type UntagParams = BaseNodeActionParams & {
+export type UntagParams = BaseMachineActionParams & {
   tags: Tag[TagMeta.PK][];
 };
 

@@ -22,12 +22,13 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          machinesLoading={false}
           onAddVMClick={onAddVMClick}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setHeaderContent={jest.fn()}
           setSearchFilter={jest.fn()}
-          vms={[]}
+          vmCount={2}
         />
       </Provider>
     );
@@ -40,7 +41,7 @@ describe("VMsActionBar", () => {
   it("disables VM actions if none are selected", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
-        selected: [],
+        selectedMachines: null,
       }),
     });
     const store = mockStore(state);
@@ -48,12 +49,13 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          machinesLoading={false}
           onAddVMClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setHeaderContent={jest.fn()}
           setSearchFilter={jest.fn()}
-          vms={[]}
+          vmCount={2}
         />
       </Provider>
     );
@@ -69,7 +71,7 @@ describe("VMsActionBar", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({
         items: vms,
-        selected: ["abc123"],
+        selectedMachines: { items: ["abc123"] },
       }),
     });
     const store = mockStore(state);
@@ -77,12 +79,13 @@ describe("VMsActionBar", () => {
       <Provider store={store}>
         <VMsActionBar
           currentPage={1}
+          machinesLoading={false}
           onAddVMClick={jest.fn()}
           searchFilter=""
           setCurrentPage={jest.fn()}
           setHeaderContent={jest.fn()}
           setSearchFilter={jest.fn()}
-          vms={vms}
+          vmCount={2}
         />
       </Provider>
     );

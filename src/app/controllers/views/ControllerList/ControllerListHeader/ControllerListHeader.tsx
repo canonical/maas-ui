@@ -42,6 +42,8 @@ const ControllerListHeader = ({
           Add rack controller
         </Button>,
         <NodeActionMenu
+          filterActions
+          hasSelection={selectedControllers.length > 0}
           nodeDisplay="controller"
           nodes={selectedControllers}
           onActionClick={(action) => {
@@ -52,6 +54,7 @@ const ControllerListHeader = ({
               setHeaderContent({ view });
             }
           }}
+          showCount
         />,
       ]}
       headerContent={

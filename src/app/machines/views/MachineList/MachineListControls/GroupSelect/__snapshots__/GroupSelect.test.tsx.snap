@@ -2,14 +2,15 @@
 
 exports[`GroupSelect  renders 1`] = `
 <Select
-  defaultValue="none"
+  aria-label="Group by"
+  defaultValue=""
   name="machine-groupings"
   onChange={[Function]}
   options={
     Array [
       Object {
         "label": "No grouping",
-        "value": "none",
+        "value": "",
       },
       Object {
         "label": "Group by owner",

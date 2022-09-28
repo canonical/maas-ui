@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -6,17 +7,28 @@ import configureStore from "redux-mock-store";
 import KVMResourcesCard from "./KVMResourcesCard";
 
 import { actions as machineActions } from "app/store/machine";
+import { PodType } from "app/store/pod/constants";
 import {
   podState as podStateFactory,
   rootState as rootStateFactory,
+  pod as podFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("KVMResourcesCard", () => {
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("fetches machines on load", () => {
     const state = rootStateFactory({
       pod: podStateFactory({
+        items: [podFactory({ id: 1, type: PodType.LXD })],
         loaded: true,
       }),
     });
@@ -31,10 +43,10 @@ describe("KVMResourcesCard", () => {
       </Provider>
     );
 
-    const expectedAction = machineActions.fetch();
+    const expectedAction = machineActions.fetch("mocked-nanoid");
     expect(
-      store.getActions().find((action) => action.type === expectedAction.type)
-    ).toStrictEqual(expectedAction);
+      store.getActions().some((action) => action.type === expectedAction.type)
+    ).toBe(true);
   });
 
   it("shows a spinner if pods have not loaded yet", () => {

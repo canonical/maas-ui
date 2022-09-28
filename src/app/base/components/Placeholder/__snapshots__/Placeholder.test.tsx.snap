@@ -2,6 +2,7 @@
 
 exports[`Placeholder renders 1`] = `
 <span
+  aria-hidden={true}
   className="p-placeholder"
   data-testid="placeholder"
   style={

@@ -183,8 +183,8 @@ describe("KVMHeaderForms", () => {
       </Provider>
     );
 
-    expect(wrapper.find("ActionFormWrapper CommissionForm").exists()).toBe(
-      true
-    );
+    expect(
+      wrapper.find("MachineActionFormWrapper CommissionForm").exists()
+    ).toBe(true);
   });
 });

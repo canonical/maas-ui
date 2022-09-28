@@ -1,10 +1,10 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import { MachineMeta } from "./types";
 import type {
   Action,
   ApplyStorageLayoutParams,
+  BaseMachineActionParams,
   CloneParams,
   CommissionParams,
   CreateBcacheParams,
@@ -26,17 +26,29 @@ import type {
   DeletePartitionParams,
   DeleteVolumeGroupParams,
   DeployParams,
+  FetchParams,
+  FetchResponse,
+  FetchResponseGroup,
+  FilterGroupOption,
+  FilterGroupOptionType,
+  FilterGroupResponse,
   GetSummaryXmlParams,
   GetSummaryYamlParams,
   LinkSubnetParams,
   Machine,
+  MachineDetails,
   MachineState,
+  MachineStateCount,
+  MachineStateDetailsItem,
+  MachineStateList,
   MarkBrokenParams,
   MountSpecialParams,
   ReleaseParams,
   SetBootDiskParams,
   SetPoolParams,
+  SetZoneParams,
   TagParams,
+  TestParams,
   UnlinkSubnetParams,
   UnmountSpecialParams,
   UntagParams,
@@ -44,22 +56,25 @@ import type {
   UpdateFilesystemParams,
   UpdateParams,
   UpdateVmfsDatastoreParams,
+  FetchFilters,
+  SelectedMachines,
+  FilterGroupKey,
 } from "./types";
+import { MachineMeta, FilterGroupType } from "./types";
 
 import type { ScriptResult } from "app/store/scriptresult/types";
-import type {
-  BaseNodeActionParams,
-  SetZoneParams,
-  TestParams,
-  UpdateInterfaceParams,
-} from "app/store/types/node";
+import type { UpdateInterfaceParams } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { generateStatusHandlers, updateErrors } from "app/store/utils";
+import type {
+  StatusHandlers,
+  GenericItemMeta,
+  GenericMeta,
+} from "app/store/utils/slice";
 import {
   generateCommonReducers,
   genericInitialState,
 } from "app/store/utils/slice";
-import type { StatusHandlers } from "app/store/utils/slice";
 import { preparePayloadParams, kebabToCamelCase } from "app/utils";
 
 export const ACTIONS: Action[] = [
@@ -316,12 +331,36 @@ export const DEFAULT_STATUSES = {
   unlocking: false,
   unlinkingSubnet: false,
   unmountingSpecial: false,
+  unsubscribing: false,
   untagging: false,
   updatingDisk: false,
   updatingFilesystem: false,
   updatingInterface: false,
   updatingVmfsDatastore: false,
 };
+
+const DEFAULT_LIST_STATE = {
+  count: null,
+  cur_page: null,
+  errors: null,
+  groups: null,
+  loaded: false,
+  loading: true,
+  num_pages: null,
+};
+
+const DEFAULT_COUNT_STATE = {
+  loading: false,
+  loaded: false,
+  count: null,
+  errors: null,
+};
+
+const isArrayOfOptionsType = <T extends FilterGroupOptionType>(
+  options: FilterGroupOption[],
+  typeString: string
+): options is FilterGroupOption<T>[] =>
+  options.every(({ key }) => typeof key === typeString);
 
 /**
  * Wrap the updateError call so that the call is made with the correct generics.
@@ -355,13 +394,60 @@ const statusHandlers = generateStatusHandlers<
   setErrors
 );
 
+const generateActionParams = <P extends BaseMachineActionParams>(
+  action: NodeActions
+) => ({
+  prepare: (params: P) => {
+    let actionParams: {
+      action: NodeActions;
+      extra: Omit<P, "filter"> | Omit<P, "system_id">;
+    } & BaseMachineActionParams;
+    if ("filter" in params) {
+      // Separate the filter and 'extra' params.
+      const { filter, ...extra } = params;
+      actionParams = {
+        action,
+        extra,
+        filter,
+      };
+    } else {
+      // Separate the id and 'extra' params.
+      const { system_id, ...extra } = params;
+      actionParams = {
+        action,
+        extra,
+        system_id,
+      };
+    }
+    return {
+      meta: {
+        model: MachineMeta.MODEL,
+        method: "action",
+      },
+      payload: {
+        params: actionParams,
+      },
+    };
+  },
+  reducer: () => {
+    // No state changes need to be handled for this action.
+  },
+});
+
 const machineSlice = createSlice({
   name: MachineMeta.MODEL,
   initialState: {
     ...genericInitialState,
     active: null,
+    counts: {},
+    details: {},
     eventErrors: [],
+    filters: [],
+    filtersLoaded: false,
+    filtersLoading: false,
+    lists: {},
     selected: [],
+    selectedMachines: null,
     statuses: {},
   } as MachineState,
   reducers: {
@@ -371,45 +457,15 @@ const machineSlice = createSlice({
       CreateParams,
       UpdateParams
     >(MachineMeta.MODEL, MachineMeta.PK, setErrors),
-    [NodeActions.ABORT]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ABORT,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.ABORT]: generateActionParams<BaseMachineActionParams>(
+      NodeActions.ABORT
+    ),
     [`${NodeActions.ABORT}Error`]: statusHandlers.abort.error,
     [`${NodeActions.ABORT}Start`]: statusHandlers.abort.start,
     [`${NodeActions.ABORT}Success`]: statusHandlers.abort.success,
-    [NodeActions.ACQUIRE]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ACQUIRE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.ACQUIRE]: generateActionParams<BaseMachineActionParams>(
+      NodeActions.ACQUIRE
+    ),
     [`${NodeActions.ACQUIRE}Error`]: statusHandlers.acquire.error,
     [`${NodeActions.ACQUIRE}Start`]: statusHandlers.acquire.start,
     [`${NodeActions.ACQUIRE}Success`]: statusHandlers.acquire.success,
@@ -480,59 +536,13 @@ const machineSlice = createSlice({
     checkPowerError: statusHandlers.checkPower.error,
     checkPowerStart: statusHandlers.checkPower.start,
     checkPowerSuccess: statusHandlers.checkPower.success,
-    [NodeActions.CLONE]: {
-      prepare: (params: CloneParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.CLONE,
-            extra: {
-              destinations: params.destinations,
-              interfaces: params.interfaces,
-              storage: params.storage,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.CLONE]: generateActionParams<CloneParams>(NodeActions.CLONE),
     cloneError: statusHandlers.clone.error,
     cloneStart: statusHandlers.clone.start,
     cloneSuccess: statusHandlers.clone.success,
-    [NodeActions.COMMISSION]: {
-      prepare: (params: CommissionParams) => {
-        return {
-          meta: {
-            model: MachineMeta.MODEL,
-            method: "action",
-          },
-          payload: {
-            params: {
-              action: NodeActions.COMMISSION,
-              extra: {
-                commissioning_scripts: params.commissioning_scripts,
-                enable_ssh: params.enable_ssh,
-                script_input: params.script_input,
-                skip_bmc_config: params.skip_bmc_config,
-                skip_networking: params.skip_networking,
-                skip_storage: params.skip_storage,
-                testing_scripts: params.testing_scripts,
-              },
-              system_id: params.system_id,
-            },
-          },
-        };
-      },
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.COMMISSION]: generateActionParams<CommissionParams>(
+      NodeActions.COMMISSION
+    ),
     [`${NodeActions.COMMISSION}Error`]: statusHandlers.commission.error,
     [`${NodeActions.COMMISSION}Start`]: statusHandlers.commission.start,
     [`${NodeActions.COMMISSION}Success`]: statusHandlers.commission.success,
@@ -556,6 +566,95 @@ const machineSlice = createSlice({
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
+      },
+    },
+    count: {
+      prepare: (callId: string, filters?: FetchFilters | null) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "count",
+          callId,
+        },
+        payload: filters
+          ? {
+              params: { filter: filters },
+            }
+          : null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    countError: {
+      prepare: (callId: string, errors: MachineStateCount["errors"]) => ({
+        meta: {
+          callId,
+        },
+        payload: errors,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<MachineStateCount["errors"], string, GenericMeta>
+      ) => {
+        if (action.meta.callId) {
+          state.counts[action.meta.callId] = {
+            ...(action.meta.callId in state.counts
+              ? state.counts[action.meta.callId]
+              : DEFAULT_COUNT_STATE),
+            errors: action.payload,
+            loading: false,
+          };
+        }
+        state = setErrors(state, action, "count");
+      },
+    },
+    countStart: {
+      prepare: (callId: string) => ({
+        meta: {
+          callId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<null, string, GenericMeta>
+      ) => {
+        if (action.meta.callId) {
+          if (action.meta.callId in state.counts) {
+            state.counts[action.meta.callId].loading = true;
+          } else {
+            state.counts[action.meta.callId] = {
+              ...DEFAULT_COUNT_STATE,
+              loading: true,
+            };
+          }
+        }
+      },
+    },
+    countSuccess: {
+      prepare: (callId: string, count: { count: number }) => ({
+        meta: {
+          callId,
+        },
+        payload: count,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<{ count: number }, string, GenericMeta>
+      ) => {
+        // Only update state if this call exists in the store. This check is required
+        // because the call may have been cleaned up in the time the API takes
+        // to respond.
+        if (action.meta.callId && action.meta.callId in state.counts) {
+          state.counts[action.meta.callId] = {
+            ...(action.meta.callId in state.counts
+              ? state.counts[action.meta.callId]
+              : DEFAULT_COUNT_STATE),
+            count: action.payload.count,
+            loading: false,
+            loaded: true,
+          };
+        }
       },
     },
     createBcacheError: statusHandlers.createBcache.error,
@@ -638,19 +737,6 @@ const machineSlice = createSlice({
     createLogicalVolumeError: statusHandlers.createLogicalVolume.error,
     createLogicalVolumeStart: statusHandlers.createLogicalVolume.start,
     createLogicalVolumeSuccess: statusHandlers.createLogicalVolume.success,
-    createNotify: (state: MachineState, action) => {
-      // In the event that the server erroneously attempts to create an existing machine,
-      // due to a race condition etc., ensure we update instead of creating duplicates.
-      const existingIdx = state.items.findIndex(
-        (draftItem: Machine) => draftItem.id === action.payload.id
-      );
-      if (existingIdx !== -1) {
-        state.items[existingIdx] = action.payload;
-      } else {
-        state.items.push(action.payload);
-        state.statuses[action.payload.system_id] = DEFAULT_STATUSES;
-      }
-    },
     createPartition: {
       prepare: (params: CreatePartitionParams) => ({
         meta: {
@@ -776,24 +862,9 @@ const machineSlice = createSlice({
     createVolumeGroupError: statusHandlers.createVolumeGroup.error,
     createVolumeGroupStart: statusHandlers.createVolumeGroup.start,
     createVolumeGroupSuccess: statusHandlers.createVolumeGroup.success,
-    [NodeActions.DELETE]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DELETE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.DELETE]: generateActionParams<BaseMachineActionParams>(
+      NodeActions.DELETE
+    ),
     [`${NodeActions.DELETE}Error`]: statusHandlers.delete.error,
     [`${NodeActions.DELETE}Start`]: statusHandlers.delete.start,
     [`${NodeActions.DELETE}Success`]: statusHandlers.delete.success,
@@ -930,106 +1001,308 @@ const machineSlice = createSlice({
     deleteVolumeGroupError: statusHandlers.deleteVolumeGroup.error,
     deleteVolumeGroupStart: statusHandlers.deleteVolumeGroup.start,
     deleteVolumeGroupSuccess: statusHandlers.deleteVolumeGroup.success,
-    [NodeActions.DEPLOY]: {
-      prepare: (params: DeployParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.DEPLOY,
-            extra: {
-              distro_series: params.distro_series,
-              enable_hw_sync: params.enable_hw_sync,
-              hwe_kernel: params.hwe_kernel,
-              install_kvm: params.install_kvm,
-              osystem: params.osystem,
-              register_vmhost: params.register_vmhost,
-              user_data: params.user_data,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.DEPLOY]: generateActionParams<DeployParams>(
+      NodeActions.DEPLOY
+    ),
     [`${NodeActions.DEPLOY}Error`]: statusHandlers.deploy.error,
     [`${NodeActions.DEPLOY}Start`]: statusHandlers.deploy.start,
     [`${NodeActions.DEPLOY}Success`]: statusHandlers.deploy.success,
-    exitRescueMode: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.EXIT_RESCUE_MODE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    exitRescueMode: generateActionParams<BaseMachineActionParams>(
+      NodeActions.EXIT_RESCUE_MODE
+    ),
     exitRescueModeError: statusHandlers.exitRescueMode.error,
     exitRescueModeStart: statusHandlers.exitRescueMode.start,
     exitRescueModeSuccess: statusHandlers.exitRescueMode.success,
     fetch: {
-      prepare: () => ({
+      prepare: (callId: string, params?: FetchParams | null) => ({
         meta: {
-          batch: true,
           model: MachineMeta.MODEL,
           method: "list",
-          subsequentLimit: 100,
+          nocache: true,
+          callId,
+        },
+        payload: params
+          ? {
+              params,
+            }
+          : null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    fetchError: {
+      prepare: (callId: string, errors: MachineStateList["errors"]) => ({
+        meta: {
+          callId,
+        },
+        payload: errors,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<MachineStateList["errors"], string, GenericMeta>
+      ) => {
+        if (action.meta.callId) {
+          if (action.meta.callId in state.lists) {
+            state.lists[action.meta.callId].errors = action.payload;
+            state.lists[action.meta.callId].loading = false;
+          } else {
+          }
+        }
+        state = setErrors(state, action, "fetch");
+      },
+    },
+    fetchStart: {
+      prepare: (callId: string) => ({
+        meta: {
+          callId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<null, string, GenericMeta>
+      ) => {
+        if (action.meta.callId) {
+          state.lists[action.meta.callId] = {
+            ...DEFAULT_LIST_STATE,
+            loading: true,
+          };
+        }
+      },
+    },
+    fetchSuccess: {
+      prepare: (callId: string, payload: FetchResponse) => ({
+        meta: {
+          callId,
+        },
+        payload,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<FetchResponse, string, GenericMeta>
+      ) => {
+        const { callId } = action.meta;
+        // Only update state if this call exists in the store. This check is required
+        // because the call may have been cleaned up in the time the API takes
+        // to respond.
+        if (callId && callId in state.lists) {
+          action.payload.groups.forEach((group: FetchResponseGroup) => {
+            group.items.forEach((newItem: Machine) => {
+              // Add items that don't already exist in the store. Existing items
+              // are probably MachineDetails so this would overwrite them with the
+              // simple machine. Existing items will be kept up to date via the
+              // notify (sync) messages.
+              const existing = state.items.find(
+                (draftItem: Machine) => draftItem.id === newItem.id
+              );
+              if (!existing) {
+                state.items.push(newItem);
+                // Set up the statuses for this machine.
+                state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+              }
+            });
+          });
+          const { payload } = action;
+          state.lists[callId].count = payload.count;
+          state.lists[callId].cur_page = payload.cur_page;
+          state.lists[callId].groups = payload.groups.map((group) => ({
+            ...group,
+            items: group.items.map(({ system_id }) => system_id),
+          }));
+          state.lists[callId].loaded = true;
+          state.lists[callId].loading = false;
+          state.lists[callId].num_pages = payload.num_pages;
+        }
+      },
+    },
+    filterGroups: {
+      prepare: () => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "filter_groups",
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
+    filterGroupsError: (
+      state: MachineState,
+      action: PayloadAction<MachineState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state = setErrors(state, action, "filterGroups");
+      state.filtersLoading = false;
+    },
+    filterGroupsStart: (state: MachineState) => {
+      state.filtersLoading = true;
+    },
+    filterGroupsSuccess: (
+      state: MachineState,
+      action: PayloadAction<FilterGroupResponse[]>
+    ) => {
+      state.filters = action.payload.map((response) => ({
+        ...response,
+        errors: null,
+        loaded: false,
+        loading: false,
+        options: null,
+      }));
+      state.filtersLoading = false;
+      state.filtersLoaded = true;
+    },
+    filterOptions: {
+      prepare: (groupKey: FilterGroupKey) => ({
+        meta: {
+          model: MachineMeta.MODEL,
+          method: "filter_options",
         },
         payload: {
-          params: { limit: 25 },
+          params: {
+            group_key: groupKey,
+          },
         },
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
       },
     },
-    fetchComplete: (state: MachineState) => {
-      state.loading = false;
-      state.loaded = true;
+    filterOptionsError: {
+      prepare: (
+        groupKey: FilterGroupKey,
+        errors: MachineStateDetailsItem["errors"]
+      ) => ({
+        meta: {
+          item: {
+            group_key: groupKey,
+          },
+        },
+        payload: errors,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          MachineStateDetailsItem["errors"],
+          string,
+          GenericItemMeta<{ group_key: FilterGroupKey }>
+        >
+      ) => {
+        // Find the group for the requested key.
+        const filterGroup = state.filters.find(
+          ({ key }) => key === action.meta.item.group_key
+        );
+        if (filterGroup) {
+          filterGroup.errors = action.payload;
+          filterGroup.loading = false;
+        }
+        state = setErrors(state, action, "filterOptions");
+      },
     },
-    fetchSuccess: (
-      state: MachineState,
-      // This is a partial type to get the machine list working while the server
-      // side machine list is being implemented.
-      action: PayloadAction<{ groups: { items: Machine[] }[] }>
-    ) => {
-      action.payload.groups.forEach(({ items }) => {
-        items.forEach((newItem: Machine) => {
-          // Add items that don't already exist in the store. Existing items
-          // are probably MachineDetails so this would overwrite them with the
-          // simple machine. Existing items will be kept up to date via the
-          // notify (sync) messages.
-          const existing = state.items.find(
-            (draftItem: Machine) => draftItem.id === newItem.id
+    filterOptionsStart: {
+      prepare: (groupKey: FilterGroupKey) => ({
+        meta: {
+          item: {
+            group_key: groupKey,
+          },
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          null,
+          string,
+          GenericItemMeta<{ group_key: FilterGroupKey }>
+        >
+      ) => {
+        // Find the group for the requested key.
+        const filterGroup = state.filters.find(
+          ({ key }) => key === action.meta.item.group_key
+        );
+        if (filterGroup) {
+          filterGroup.loading = true;
+        }
+      },
+    },
+    filterOptionsSuccess: {
+      prepare: (groupKey: FilterGroupKey, payload: FilterGroupOption[]) => ({
+        meta: {
+          item: {
+            group_key: groupKey,
+          },
+        },
+        payload,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          FilterGroupOption[],
+          string,
+          GenericItemMeta<{ group_key: FilterGroupKey }>
+        >
+      ) => {
+        // Find the group for the requested key.
+        const filterGroup = state.filters.find(
+          ({ key }) => key === action.meta.item.group_key
+        );
+        if (filterGroup) {
+          // Remove any blank options.
+          const options = action.payload.filter(
+            ({ key, label }) => key || label
           );
-          if (!existing) {
-            state.items.push(newItem);
-            // Set up the statuses for this machine.
-            state.statuses[newItem.system_id] = DEFAULT_STATUSES;
+          // Narrow the type of the response to match the expected options
+          // and instert the options inside the filter group.
+          if (
+            filterGroup.type === FilterGroupType.Bool &&
+            isArrayOfOptionsType<boolean>(options, "boolean")
+          ) {
+            filterGroup.options = options;
+          } else if (
+            [
+              FilterGroupType.Float,
+              FilterGroupType.FloatList,
+              FilterGroupType.Int,
+              FilterGroupType.IntList,
+            ].includes(filterGroup.type) &&
+            isArrayOfOptionsType<number>(options, "number")
+          ) {
+            filterGroup.options = options;
+          } else if (
+            [
+              FilterGroupType.String,
+              FilterGroupType.StringList,
+              FilterGroupType.Dict,
+            ].includes(filterGroup.type) &&
+            isArrayOfOptionsType<string>(options, "string")
+          ) {
+            filterGroup.options = options;
           }
-        });
-      });
-      state.loading = false;
-      state.loaded = true;
+          filterGroup.loading = false;
+          filterGroup.loaded = true;
+        }
+      },
+    },
+    cleanupRequest: {
+      prepare: (callId: string) => ({
+        meta: {
+          callId,
+          model: MachineMeta.MODEL,
+          unsubscribe: true,
+        },
+        payload: null,
+      }),
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
     },
     get: {
-      prepare: (machineID: Machine[MachineMeta.PK]) => ({
+      prepare: (machineID: Machine[MachineMeta.PK], callId: string) => ({
         meta: {
           model: MachineMeta.MODEL,
           method: "get",
+          callId,
         },
         payload: {
           params: { system_id: machineID },
@@ -1039,33 +1312,108 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    getError: (
-      state: MachineState,
-      action: PayloadAction<MachineState["errors"]>
-    ) => {
-      state.errors = action.payload;
-      state = setErrors(state, action, "get");
-      state.loading = false;
-      state.saving = false;
+    getError: {
+      prepare: (
+        item: { system_id: Machine[MachineMeta.PK] },
+        callId: string,
+        errors: MachineStateDetailsItem["errors"]
+      ) => ({
+        meta: {
+          item,
+          callId,
+        },
+        payload: errors,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          MachineStateDetailsItem["errors"],
+          string,
+          GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
+        >
+      ) => {
+        if (action.meta.callId && action.meta.callId in state.details) {
+          state.details[action.meta.callId].errors = action.payload;
+          state.details[action.meta.callId].loading = false;
+        }
+        state = setErrors(state, action, "get");
+      },
     },
-    getStart: (state: MachineState) => {
-      state.loading = true;
+    getStart: {
+      prepare: (
+        item: { system_id: Machine[MachineMeta.PK] },
+        callId: string
+      ) => ({
+        meta: {
+          item,
+          callId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          null,
+          string,
+          GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
+        >
+      ) => {
+        if (action.meta.callId) {
+          if (action.meta.callId in state.details) {
+            state.details[action.meta.callId].loading = true;
+          } else {
+            state.details[action.meta.callId] = {
+              errors: null,
+              loaded: false,
+              loading: true,
+              system_id: action.meta.item.system_id,
+            };
+          }
+        }
+      },
     },
-    getSuccess: (state: MachineState, action: PayloadAction<Machine>) => {
-      const machine = action.payload;
-      // If the item already exists, update it, otherwise
-      // add it to the store.
-      const i = state.items.findIndex(
-        (draftItem: Machine) => draftItem.system_id === machine.system_id
-      );
-      if (i !== -1) {
-        state.items[i] = machine;
-      } else {
-        state.items.push(machine);
-        // Set up the statuses for this machine.
-        state.statuses[machine.system_id] = DEFAULT_STATUSES;
-      }
-      state.loading = false;
+    getSuccess: {
+      prepare: (
+        item: { system_id: Machine[MachineMeta.PK] },
+        callId: string,
+        machine: MachineDetails
+      ) => ({
+        meta: {
+          item,
+          callId,
+        },
+        payload: machine,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          MachineDetails,
+          string,
+          GenericItemMeta<{ system_id: Machine[MachineMeta.PK] }>
+        >
+      ) => {
+        const { callId } = action.meta;
+        // Only update state if this call exists in the store. This check is required
+        // because the call may have been cleaned up in the time the API takes
+        // to respond.
+        if (callId && callId in state.details) {
+          const machine = action.payload;
+          // If the item already exists, update it, otherwise
+          // add it to the store.
+          const i = state.items.findIndex(
+            (draftItem: Machine) => draftItem.system_id === machine.system_id
+          );
+          if (i !== -1) {
+            state.items[i] = machine;
+          } else {
+            state.items.push(machine);
+            // Set up the statuses for this machine.
+            state.statuses[machine.system_id] = DEFAULT_STATUSES;
+          }
+          state.details[callId].loading = false;
+          state.details[callId].loaded = true;
+        }
+      },
     },
     getSummaryXml: {
       prepare: (params: GetSummaryXmlParams) => ({
@@ -1128,68 +1476,19 @@ const machineSlice = createSlice({
     linkSubnetError: statusHandlers.linkSubnet.error,
     linkSubnetStart: statusHandlers.linkSubnet.start,
     linkSubnetSuccess: statusHandlers.linkSubnet.success,
-    [NodeActions.LOCK]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.LOCK,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.LOCK]: generateActionParams<BaseMachineActionParams>(
+      NodeActions.LOCK
+    ),
     [`${NodeActions.LOCK}Error`]: statusHandlers.lock.error,
     [`${NodeActions.LOCK}Start`]: statusHandlers.lock.start,
     [`${NodeActions.LOCK}Success`]: statusHandlers.lock.success,
-    markBroken: {
-      prepare: (params: MarkBrokenParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.MARK_BROKEN,
-            extra: {
-              message: params.message,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    markBroken: generateActionParams<MarkBrokenParams>(NodeActions.MARK_BROKEN),
     markBrokenError: statusHandlers.markBroken.error,
     markBrokenStart: statusHandlers.markBroken.start,
     markBrokenSuccess: statusHandlers.markBroken.success,
-    markFixed: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.MARK_FIXED,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    markFixed: generateActionParams<BaseMachineActionParams>(
+      NodeActions.MARK_FIXED
+    ),
     markFixedError: statusHandlers.markFixed.error,
     markFixedStart: statusHandlers.markFixed.start,
     markFixedSuccess: statusHandlers.markFixed.success,
@@ -1215,112 +1514,56 @@ const machineSlice = createSlice({
     mountSpecialError: statusHandlers.mountSpecial.error,
     mountSpecialStart: statusHandlers.mountSpecial.start,
     mountSpecialSuccess: statusHandlers.mountSpecial.success,
-    [NodeActions.OFF]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.OFF,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.OFF]: generateActionParams<BaseMachineActionParams>(
+      NodeActions.OFF
+    ),
     [`${NodeActions.OFF}Error`]: statusHandlers.off.error,
     [`${NodeActions.OFF}Start`]: statusHandlers.off.start,
     [`${NodeActions.OFF}Success`]: statusHandlers.off.success,
-    [NodeActions.ON]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.ON,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.ON]: generateActionParams<BaseMachineActionParams>(
+      NodeActions.ON
+    ),
     [`${NodeActions.ON}Error`]: statusHandlers.on.error,
     [`${NodeActions.ON}Start`]: statusHandlers.on.start,
     [`${NodeActions.ON}Success`]: statusHandlers.on.success,
-    overrideFailedTesting: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.OVERRIDE_FAILED_TESTING,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    overrideFailedTesting: generateActionParams<BaseMachineActionParams>(
+      NodeActions.OVERRIDE_FAILED_TESTING
+    ),
     overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
     overrideFailedTestingStart: statusHandlers.overrideFailedTesting.start,
     overrideFailedTestingSuccess: statusHandlers.overrideFailedTesting.success,
-    [NodeActions.RELEASE]: {
-      prepare: (params: ReleaseParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.RELEASE,
-            extra: {
-              erase: params.erase,
-              quick_erase: params.quick_erase,
-              secure_erase: params.secure_erase,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.RELEASE]: generateActionParams<ReleaseParams>(
+      NodeActions.RELEASE
+    ),
     [`${NodeActions.RELEASE}Error`]: statusHandlers.release.error,
     [`${NodeActions.RELEASE}Start`]: statusHandlers.release.start,
     [`${NodeActions.RELEASE}Success`]: statusHandlers.release.success,
-    rescueMode: {
-      prepare: (params: BaseNodeActionParams) => ({
+    removeRequest: {
+      prepare: (callId: string) => ({
         meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
+          callId,
         },
-        payload: {
-          params: {
-            action: NodeActions.RESCUE_MODE,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
+        payload: null,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<null, string, GenericMeta>
+      ) => {
+        const { callId } = action.meta;
+        if (callId) {
+          if (callId in state.details) {
+            delete state.details[callId];
+          } else if (callId in state.lists) {
+            delete state.lists[callId];
+          } else if (callId in state.counts) {
+            delete state.counts[callId];
+          }
+        }
       },
     },
+    rescueMode: generateActionParams<BaseMachineActionParams>(
+      NodeActions.RESCUE_MODE
+    ),
     rescueModeError: statusHandlers.rescueMode.error,
     rescueModeStart: statusHandlers.rescueMode.start,
     rescueModeSuccess: statusHandlers.rescueMode.success,
@@ -1373,26 +1616,7 @@ const machineSlice = createSlice({
     setBootDiskError: statusHandlers.setBootDisk.error,
     setBootDiskStart: statusHandlers.setBootDisk.start,
     setBootDiskSuccess: statusHandlers.setBootDisk.success,
-    setPool: {
-      prepare: (params: SetPoolParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.SET_POOL,
-            extra: {
-              pool_id: params.pool_id,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    setPool: generateActionParams<SetPoolParams>(NodeActions.SET_POOL),
     setPoolError: statusHandlers.setPool.error,
     setPoolStart: statusHandlers.setPool.start,
     setPoolSuccess: statusHandlers.setPool.success,
@@ -1407,26 +1631,21 @@ const machineSlice = createSlice({
         state.selected = action.payload;
       },
     },
-    setZone: {
-      prepare: (params: SetZoneParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.SET_ZONE,
-            extra: {
-              zone_id: params.zone_id,
-            },
-            system_id: params.system_id,
-          },
-        },
+    // TODO: rename this to setSelected once everything has been migrated to the
+    // new selected type.
+    // https://github.com/canonical/app-tribe/issues/1256
+    setSelectedMachines: {
+      prepare: (selected: SelectedMachines | null) => ({
+        payload: selected,
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<SelectedMachines | null>
+      ) => {
+        state.selectedMachines = action.payload;
       },
     },
+    setZone: generateActionParams<SetZoneParams>(NodeActions.SET_ZONE),
     setZoneError: statusHandlers.setZone.error,
     setZoneStart: statusHandlers.setZone.start,
     setZoneSuccess: statusHandlers.setZone.success,
@@ -1450,72 +1669,17 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    [NodeActions.TAG]: {
-      prepare: (params: TagParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.TAG,
-            extra: {
-              tags: params.tags,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.TAG]: generateActionParams<TagParams>(NodeActions.TAG),
     [`${NodeActions.TAG}Error`]: statusHandlers.tag.error,
     [`${NodeActions.TAG}Start`]: statusHandlers.tag.start,
     [`${NodeActions.TAG}Success`]: statusHandlers.tag.success,
-    [NodeActions.TEST]: {
-      prepare: (params: TestParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.TEST,
-            extra: {
-              enable_ssh: params.enable_ssh,
-              script_input: params.script_input,
-              testing_scripts: params.testing_scripts,
-            },
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.TEST]: generateActionParams<TestParams>(NodeActions.TEST),
     [`${NodeActions.TEST}Error`]: statusHandlers.test.error,
     [`${NodeActions.TEST}Start`]: statusHandlers.test.start,
     [`${NodeActions.TEST}Success`]: statusHandlers.test.success,
-    [NodeActions.UNLOCK]: {
-      prepare: (params: BaseNodeActionParams) => ({
-        meta: {
-          model: MachineMeta.MODEL,
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.UNLOCK,
-            extra: {},
-            system_id: params.system_id,
-          },
-        },
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
+    [NodeActions.UNLOCK]: generateActionParams<BaseMachineActionParams>(
+      NodeActions.UNLOCK
+    ),
     [`${NodeActions.UNLOCK}Error`]: statusHandlers.unlock.error,
     [`${NodeActions.UNLOCK}Start`]: statusHandlers.unlock.start,
     [`${NodeActions.UNLOCK}Success`]: statusHandlers.unlock.success,
@@ -1580,26 +1744,64 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    [NodeActions.UNTAG]: {
-      prepare: (params: UntagParams) => ({
+    unsubscribe: {
+      prepare: (ids: Machine[MachineMeta.PK][]) => ({
         meta: {
           model: MachineMeta.MODEL,
-          method: "action",
+          method: "unsubscribe",
         },
         payload: {
-          params: {
-            action: NodeActions.UNTAG,
-            extra: {
-              tags: params.tags,
-            },
-            system_id: params.system_id,
-          },
+          params: { system_ids: ids },
         },
       }),
       reducer: () => {
         // No state changes need to be handled for this action.
       },
     },
+    unsubscribeError: (
+      state: MachineState,
+      action: PayloadAction<MachineState["errors"]>
+    ) => {
+      state.errors = action.payload;
+      state = setErrors(state, action, "unsubscribe");
+    },
+    unsubscribeStart: {
+      prepare: (ids: Machine[MachineMeta.PK][]) => ({
+        meta: {
+          item: { system_ids: ids },
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<
+          null,
+          string,
+          GenericItemMeta<{ system_ids: Machine[MachineMeta.PK][] }>
+        >
+      ) => {
+        action.meta.item.system_ids.forEach((id) => {
+          state.statuses[id].unsubscribing = true;
+        });
+      },
+    },
+    unsubscribeSuccess: (
+      state: MachineState,
+      action: PayloadAction<Machine[MachineMeta.PK][]>
+    ) => {
+      action.payload.forEach((id) => {
+        const index = state.items.findIndex(
+          (item: Machine) => item.system_id === id
+        );
+        state.items.splice(index, 1);
+        state.selected = state.selected.filter(
+          (machineId: Machine[MachineMeta.PK]) => machineId !== id
+        );
+        // Clean up the statuses for model.
+        delete state.statuses[id];
+      });
+    },
+    [NodeActions.UNTAG]: generateActionParams<UntagParams>(NodeActions.UNTAG),
     untagError: statusHandlers.untag.error,
     untagStart: statusHandlers.untag.start,
     untagSuccess: statusHandlers.untag.success,

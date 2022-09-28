@@ -4,12 +4,10 @@ import controller from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import machine from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
-import { FilterMachines } from "app/store/machine/utils";
 import { PodType } from "app/store/pod/constants";
 import type { LxdServerGroup, Pod, PodState } from "app/store/pod/types";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
 import type { Host } from "app/store/types/host";
 import { generateBaseSelectors } from "app/store/utils";
 import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
@@ -188,41 +186,6 @@ const getHost = createSelector(
 );
 
 /**
- * Returns a pod's virtual machines.
- * @param state - The redux state.
- * @param pod - The pod whose virtual machines are to be returned.
- * @returns The pod's virtual machines.
- */
-const getVMs = createSelector(
-  [machine.all, (_: RootState, podId: Pod[PodMeta.PK] | null) => podId],
-  (machines: Machine[], podId: Pod[PodMeta.PK] | null): Machine[] =>
-    machines.filter((machine) => machine.pod?.id === podId)
-);
-
-/**
- * Filter pod VMs to those that match terms.
- * @param {RootState} state - The redux state.
- * @param {String} terms - The terms to match against.
- * @returns A filtered list of VMs.
- */
-const filteredVMs = createSelector(
-  [
-    tagSelectors.all,
-    (state: RootState, podId: Pod[PodMeta.PK], terms: string) => ({
-      terms,
-      selectedIDs: machine.selectedIDs(state),
-      vms: getVMs(state, podId),
-    }),
-  ],
-  (tags, { terms, selectedIDs, vms }) => {
-    if (!terms) {
-      return vms;
-    }
-    return FilterMachines.filterItems(vms, terms, selectedIDs, { tags });
-  }
-);
-
-/**
  * Returns the pods which are being deleted.
  * @param state - The redux state.
  * @returns Pods being deleted.
@@ -335,10 +298,8 @@ const selectors = {
   activeID,
   composing,
   deleting,
-  filteredVMs,
   getAllHosts,
   getHost,
-  getVMs,
   getByLxdServer,
   getProjectsByLxdServer,
   getVmResource,

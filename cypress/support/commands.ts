@@ -1,5 +1,7 @@
 import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
+import { nanoid } from "nanoid";
+import { generateMAASURL, generateMac } from "../e2e/utils";
 import type { A11yPageContext } from "./e2e";
 
 Cypress.Commands.add("login", (options) => {
@@ -33,6 +35,17 @@ Cypress.Commands.add("loginNonAdmin", () => {
     username: Cypress.env("nonAdminUsername"),
     password: Cypress.env("nonAdminPassword"),
   });
+});
+
+Cypress.Commands.add("addMachine", (hostname = `cypress-${nanoid()}`) => {
+  cy.visit(generateMAASURL("/machines"));
+  cy.get("[data-testid='add-hardware-dropdown'] button").click();
+  cy.get(".p-contextual-menu__link").contains("Machine").click();
+  cy.get("input[name='hostname']").type(hostname);
+  cy.get("input[name='pxe_mac']").type(generateMac());
+  cy.get("select[name='power_type']").select("manual").blur();
+  cy.get("button[type='submit']").click();
+  cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
 });
 
 function logViolations(violations: Result[], pageContext: A11yPageContext) {

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { Redirect, useLocation } from "react-router-dom";
 import { Route, Routes } from "react-router-dom-v5-compat";
 
@@ -26,9 +26,8 @@ import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import type { MachineHeaderContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
 import { getRelativeRoute, isId } from "app/utils";
 
@@ -36,10 +35,7 @@ const MachineDetails = (): JSX.Element => {
   const dispatch = useDispatch();
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, id)
-  );
-  const machinesLoading = useSelector(machineSelectors.loading);
+  const { machine, loaded: detailsLoaded } = useFetchMachine(id);
   const [headerContent, setHeaderContent] =
     useState<MachineHeaderContent | null>(null);
 
@@ -49,7 +45,6 @@ const MachineDetails = (): JSX.Element => {
 
   useEffect(() => {
     if (isId(id)) {
-      dispatch(machineActions.get(id));
       // Set machine as active to ensure all machine data is sent from the server.
       dispatch(machineActions.setActive(id));
       dispatch(tagActions.fetch());
@@ -62,7 +57,7 @@ const MachineDetails = (): JSX.Element => {
     };
   }, [dispatch, id]);
 
-  if (!isId(id) || (!machinesLoading && !machine)) {
+  if (!isId(id) || (detailsLoaded && !machine)) {
     return (
       <ModelNotFound
         id={id}

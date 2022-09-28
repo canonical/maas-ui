@@ -1,14 +1,9 @@
-import { useEffect } from "react";
-
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import urls from "app/base/urls";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 
 type Props = {
   systemId?: Machine[MachineMeta.PK] | null;
@@ -19,17 +14,9 @@ export enum Labels {
 }
 
 const MachineLink = ({ systemId }: Props): JSX.Element | null => {
-  const dispatch = useDispatch();
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, systemId)
-  );
-  const machinesLoading = useSelector(machineSelectors.loading);
+  const { machine, loading } = useFetchMachine(systemId);
 
-  useEffect(() => {
-    dispatch(machineActions.fetch());
-  }, [dispatch]);
-
-  if (machinesLoading) {
+  if (loading) {
     return <Spinner aria-label={Labels.Loading} />;
   }
   if (!machine) {

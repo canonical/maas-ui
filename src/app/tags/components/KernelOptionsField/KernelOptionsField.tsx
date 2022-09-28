@@ -4,8 +4,8 @@ import { useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import docsUrls from "app/base/docsUrls";
-import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type {
@@ -14,6 +14,7 @@ import type {
   TagMeta,
   UpdateParams,
 } from "app/store/tag/types";
+import { FetchNodeStatus } from "app/store/types/node";
 import { isId } from "app/utils";
 
 export enum Label {
@@ -39,12 +40,12 @@ export const KernelOptionsField = ({
   const tag = useSelector((state: RootState) =>
     tagSelectors.getById(state, id)
   );
-  const deployedMachinesForTag = useSelector((state: RootState) =>
-    machineSelectors.getDeployedWithTag(state, id)
-  );
-  const deployedMachines = suppliedDeployedMachines ?? deployedMachinesForTag;
+  const { machineCount } = useFetchMachineCount({
+    status: FetchNodeStatus.DEPLOYED,
+    ...(tag?.id ? { tags: [tag.name] } : {}),
+  });
+  const deployedCount = suppliedDeployedMachines?.length ?? machineCount;
   const { values } = useFormikContext<CreateParams | UpdateParams>();
-  const deployedCount = deployedMachines.length;
   const changedExistingOptions =
     isId(id) && values.kernel_opts !== tag?.kernel_opts;
   const setNewOptions = !isId(id) && values.kernel_opts;

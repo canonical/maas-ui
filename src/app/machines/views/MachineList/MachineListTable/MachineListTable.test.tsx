@@ -1,12 +1,17 @@
+import reduxToolkit from "@reduxjs/toolkit";
+import { screen, within } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { MachineListTable } from "./MachineListTable";
+import { MachineListTable, Label } from "./MachineListTable";
 
+import { SortDirection } from "app/base/types";
+import { MachineColumns, columnLabels } from "app/machines/constants";
 import type { Machine } from "app/store/machine/types";
+import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
@@ -27,7 +32,10 @@ import {
   testStatus as testStatusFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -36,6 +44,7 @@ describe("MachineListTable", () => {
   let machines: Machine[] = [];
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     machines = [
       machineFactory({
         actions: [],
@@ -178,8 +187,22 @@ describe("MachineListTable", () => {
         }),
       }),
       machine: machineStateFactory({
-        loaded: true,
         items: machines,
+        lists: {
+          "123456": machineStateListFactory({
+            loading: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: [machines[0].system_id, machines[2].system_id],
+                name: "Deployed",
+              }),
+              machineStateListGroupFactory({
+                items: [machines[1].system_id],
+                name: "Releasing",
+              }),
+            ],
+          }),
+        },
       }),
       resourcepool: resourcePoolStateFactory({
         loaded: true,
@@ -213,6 +236,73 @@ describe("MachineListTable", () => {
     localStorage.clear();
   });
 
+  it("displays skeleton rows when loading", () => {
+    renderWithMockStore(
+      <MachineListTable
+        callId="123456"
+        currentPage={1}
+        filter=""
+        grouping={FetchGroupKey.Status}
+        hiddenGroups={[]}
+        machineCount={10}
+        machines={machines}
+        machinesLoading
+        pageSize={20}
+        setCurrentPage={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection="none"
+        sortKey={null}
+      />,
+      { state }
+    );
+    expect(
+      within(
+        screen.getAllByRole("gridcell", {
+          name: columnLabels[MachineColumns.FQDN],
+        })[0]
+      ).getByText("xxxxxxxxx.xxxx")
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("grid", {
+        name: Label.Loading,
+      })
+    ).toHaveClass("machine-list--loading");
+  });
+
+  it("displays a message if there are no search results", () => {
+    state.machine = machineStateFactory({
+      items: [],
+      lists: {
+        "123456": machineStateListFactory({
+          loading: false,
+          groups: [],
+        }),
+      },
+    });
+    renderWithBrowserRouter(
+      <MachineListTable
+        callId="123456"
+        currentPage={1}
+        filter="this does not match anything"
+        grouping={FetchGroupKey.Status}
+        hiddenGroups={[]}
+        machineCount={10}
+        machines={machines}
+        pageSize={20}
+        setCurrentPage={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection="none"
+        sortKey={null}
+      />,
+      { wrapperProps: { state } }
+    );
+    expect(screen.getByText(Label.NoResults)).toBeInTheDocument();
+  });
+
   it("includes groups", () => {
     const store = mockStore(state);
     const wrapper = mount(
@@ -222,12 +312,20 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
+              currentPage={1}
               filter=""
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -242,6 +340,37 @@ describe("MachineListTable", () => {
     ).toBe("Releasing");
   });
 
+  it("does not display a group header if the table is ungrouped", () => {
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              callId="123456"
+              currentPage={1}
+              filter=""
+              grouping={null}
+              hiddenGroups={[]}
+              machineCount={10}
+              machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
+              setHiddenGroups={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find(".machine-list__group")).toHaveLength(0);
+  });
+
   it("can change machines to display PXE MAC instead of FQDN", () => {
     const store = mockStore(state);
     const wrapper = mount(
@@ -251,12 +380,20 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
+              currentPage={1}
               filter=""
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -265,7 +402,11 @@ describe("MachineListTable", () => {
 
     const firstMachine = machines[0];
     expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
+      wrapper
+        .find(".machine-list__machine")
+        .at(0)
+        .find("MachineCheckbox")
+        .text()
     ).toEqual(firstMachine.fqdn);
     // Click the MAC table header
     wrapper.find('[data-testid="mac-header"]').find("button").simulate("click");
@@ -273,13 +414,15 @@ describe("MachineListTable", () => {
       wrapper
         .find(".machine-list__machine")
         .at(0)
-        .find("RowCheckbox")
+        .find("MachineCheckbox")
         .at(0)
         .text()
     ).toEqual(firstMachine.pxe_mac);
   });
 
   it("updates sort on header click", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -288,45 +431,36 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
+              currentPage={1}
               filter=""
-              grouping="none"
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    // First machine has more cores than second machine
-    const [firstMachine, secondMachine] = [machines[0], machines[1]];
-
-    expect(
-      wrapper.find('[data-testid="cores-header"]').find("i").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
-    ).toEqual(firstMachine.fqdn);
     // Click the cores table header
     wrapper
       .find('[data-testid="cores-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper.find('[data-testid="cores-header"]').find("i").exists()
-    ).toBe(true);
-    expect(
-      wrapper
-        .find(".machine-list__machine")
-        .at(0)
-        .find("RowCheckbox")
-        .at(0)
-        .text()
-    ).toEqual(secondMachine.fqdn);
+    expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.CpuCount);
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
   });
 
-  it("updates sort direction on multiple header clicks", () => {
+  it("clears the sort when the same header is clicked and is ascending", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -335,57 +469,145 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
+              currentPage={1}
               filter=""
-              grouping="none"
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.ASCENDING}
+              sortKey={FetchGroupKey.CpuCount}
             />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    const [firstMachine, secondMachine] = [machines[0], machines[1]];
-
-    // Click the status table header
+    // Click the cores table header
     wrapper
-      .find('[data-testid="status-header"]')
+      .find('[data-testid="cores-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper.find('[data-testid="status-header"]').find("i").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find('[data-testid="status-header"]').find("i").props().className
-    ).toBe("p-icon--chevron-down");
-    expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
-    ).toEqual(firstMachine.fqdn);
+    expect(setSortKey).toHaveBeenCalledWith(null);
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.NONE);
+  });
 
-    // Click the status table header again to reverse sort order
+  it("updates the sort when the same header is clicked and is descending", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              callId="123456"
+              currentPage={1}
+              filter=""
+              hiddenGroups={[]}
+              machineCount={10}
+              machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
+              setHiddenGroups={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.DESCENDING}
+              sortKey={FetchGroupKey.CpuCount}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click the cores table header
     wrapper
-      .find('[data-testid="status-header"]')
+      .find('[data-testid="cores-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper.find('[data-testid="status-header"]').find("i").props().className
-    ).toBe("p-icon--chevron-up");
-    expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
-    ).toEqual(secondMachine.fqdn);
+    expect(setSortKey).not.toHaveBeenCalled();
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.ASCENDING);
+  });
 
-    // Click the FQDN table header again to return to no sort
+  it("updates the sort when the same header is clicked and direction is not set", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              callId="123456"
+              currentPage={1}
+              filter=""
+              hiddenGroups={[]}
+              machineCount={10}
+              machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
+              setHiddenGroups={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.NONE}
+              sortKey={FetchGroupKey.CpuCount}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click the cores table header
     wrapper
-      .find('[data-testid="status-header"]')
+      .find('[data-testid="cores-header"]')
       .find("button")
       .simulate("click");
-    expect(
-      wrapper.find('[data-testid="status-header"]').find("i").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find(".machine-list__machine").at(0).find("RowCheckbox").text()
-    ).toEqual(firstMachine.fqdn);
+    expect(setSortKey).not.toHaveBeenCalled();
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.ASCENDING);
+  });
+
+  it("updates the sort when a different header is clicked", () => {
+    const setSortDirection = jest.fn();
+    const setSortKey = jest.fn();
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+        >
+          <CompatRouter>
+            <MachineListTable
+              callId="123456"
+              currentPage={1}
+              filter=""
+              hiddenGroups={[]}
+              machineCount={10}
+              machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
+              setHiddenGroups={jest.fn()}
+              setSortDirection={setSortDirection}
+              setSortKey={setSortKey}
+              sortDirection={SortDirection.NONE}
+              sortKey={FetchGroupKey.CpuCount}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    // Click the cores table header
+    wrapper
+      .find('[data-testid="power-header"]')
+      .find("button")
+      .simulate("click");
+    expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.PowerState);
+    expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
   });
 
   it("displays correct selected string in group header", () => {
@@ -398,13 +620,21 @@ describe("MachineListTable", () => {
         >
           <CompatRouter>
             <MachineListTable
+              callId="123456"
+              currentPage={1}
               filter=""
-              grouping="status"
+              grouping={FetchGroupKey.Status}
               hiddenGroups={[]}
+              machineCount={10}
               machines={machines}
+              pageSize={20}
               selectedIDs={[machines[0].system_id]}
+              setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              sortDirection="none"
+              sortKey={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -415,512 +645,7 @@ describe("MachineListTable", () => {
         .find("[data-testid='group-cell'] .p-double-row__secondary-row")
         .at(0)
         .text()
-    ).toEqual("3 machines, 1 selected");
-  });
-
-  describe("Machine selection", () => {
-    it("shows a checked checkbox in machine row if it is selected", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={["abc123"]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper.find("[data-testid='name-column'] input").at(0).props().checked
-      ).toBe(true);
-    });
-
-    it(`shows a checked checkbox in group row if all machines in the group
-      are selected`, () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={["abc123", "ghi789"]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper.find("[data-testid='group-cell'] input[checked=true]").length
-      ).toBe(1);
-      expect(
-        wrapper
-          .find("[data-testid='group-cell'] input")
-          .at(0)
-          .prop("aria-checked")
-      ).not.toBe("mixed");
-    });
-
-    it("shows a checked checkbox in header row if all machines are selected", () => {
-      machines[1].status_code = NodeStatusCode.DEPLOYED;
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={["abc123", "def456", "ghi789"]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper.find(
-          "[data-testid='all-machines-checkbox'] input[checked=true]"
-        ).length
-      ).toBe(1);
-      expect(
-        wrapper
-          .find("[data-testid='all-machines-checkbox'] input")
-          .prop("aria-checked")
-      ).not.toBe("mixed");
-    });
-
-    it("correctly dispatches action when unchecked machine checkbox clicked", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-testid='name-column'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: machines[0].system_id },
-        });
-      // Machine not selected => select machine
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "machine/setSelected")
-      ).toStrictEqual({
-        type: "machine/setSelected",
-        payload: ["abc123"],
-      });
-    });
-
-    it("correctly dispatches action when checked machine checkbox clicked", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={["abc123"]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-testid='name-column'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: machines[0].system_id },
-        });
-      // Machine selected => unselect machine
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "machine/setSelected")
-      ).toStrictEqual({
-        type: "machine/setSelected",
-        payload: [],
-      });
-    });
-
-    it("correctly dispatches action when unchecked group checkbox clicked", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={[]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-testid='group-cell'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: machines[0].system_id },
-        });
-      // No machines in group selected => select machines in group
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "machine/setSelected")
-      ).toStrictEqual({
-        type: "machine/setSelected",
-        payload: ["abc123", "ghi789"],
-      });
-    });
-
-    it("correctly dispatches action when checked group checkbox clicked", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={["abc123", "def456", "ghi789"]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-testid='group-cell'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: machines[0].system_id },
-        });
-      // All machines in group selected => unselect machines in group
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "machine/setSelected")
-      ).toStrictEqual({
-        type: "machine/setSelected",
-        payload: ["def456"],
-      });
-    });
-
-    it("shows group checkbox in mixed selection state if some machines selected", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={["abc123"]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper
-          .find("[data-testid='group-cell'] input")
-          .at(0)
-          .prop("aria-checked")
-      ).toBe("mixed");
-    });
-
-    it("correctly dispatches action when unchecked header checkbox clicked", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={[]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-testid='all-machines-checkbox'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: machines[0].system_id },
-        });
-      // No machines selected => select all machines
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "machine/setSelected")
-      ).toStrictEqual({
-        type: "machine/setSelected",
-        payload: ["abc123", "def456", "ghi789"],
-      });
-    });
-
-    it("correctly dispatches action when checked header checkbox clicked", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={machines}
-                selectedIDs={["abc123", "def456", "ghi789"]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      wrapper
-        .find("[data-testid='all-machines-checkbox'] input")
-        .at(0)
-        .simulate("change", {
-          target: { name: machines[0].system_id },
-        });
-      // All machines already selected => unselect all machines
-      expect(
-        store
-          .getActions()
-          .find((action) => action.type === "machine/setSelected")
-      ).toStrictEqual({
-        type: "machine/setSelected",
-        payload: [],
-      });
-    });
-
-    it("disables checkbox in header row if there are no machines", () => {
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineListTable
-                filter=""
-                grouping="status"
-                hiddenGroups={[]}
-                machines={[]}
-                setHiddenGroups={jest.fn()}
-                setSearchFilter={jest.fn()}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-      expect(
-        wrapper
-          .find("[data-testid='all-machines-checkbox'] input[checked=true]")
-          .exists()
-      ).toBe(false);
-      expect(
-        wrapper
-          .find("[data-testid='all-machines-checkbox'] input[disabled]")
-          .exists()
-      ).toBe(true);
-    });
-  });
-
-  it("shows header checkbox in mixed selection state if some machines selected", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListTable
-              filter=""
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper
-        .find("[data-testid='all-machines-checkbox'] input")
-        .at(0)
-        .prop("aria-checked")
-    ).toBe("mixed");
-  });
-
-  it("remove selected filter when unchecking the only checked machine", () => {
-    const store = mockStore(state);
-    const setSearchFilter = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListTable
-              filter="in:selected"
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={setSearchFilter}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper
-      .find("[data-testid='name-column'] input")
-      .at(0)
-      .simulate("change", {
-        target: { name: machines[0].system_id },
-      });
-    expect(setSearchFilter).toHaveBeenCalledWith("");
-  });
-
-  it("remove selected filter when unchecking the only checked group", () => {
-    const store = mockStore(state);
-    const setSearchFilter = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListTable
-              filter="in:selected"
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={setSearchFilter}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper
-      .find("[data-testid='group-cell'] input")
-      .at(0)
-      .simulate("change", {
-        target: { name: machines[0].system_id },
-      });
-    expect(setSearchFilter).toHaveBeenCalledWith("");
-  });
-
-  it("remove selected filter when unchecking the all machines checkbox", () => {
-    const store = mockStore(state);
-    const setSearchFilter = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListTable
-              filter="in:selected"
-              grouping="status"
-              hiddenGroups={[]}
-              machines={machines}
-              selectedIDs={["abc123", "def456", "ghi789"]}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={setSearchFilter}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    wrapper
-      .find("[data-testid='all-machines-checkbox'] input")
-      .at(0)
-      .simulate("change", {
-        target: { name: machines[0].system_id },
-      });
-    expect(setSearchFilter).toHaveBeenCalledWith("");
+    ).toEqual("15 machines");
   });
 
   it("does not show checkboxes if showActions is false", () => {
@@ -931,7 +656,19 @@ describe("MachineListTable", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineListTable machines={machines} showActions={false} />
+            <MachineListTable
+              callId="123456"
+              currentPage={1}
+              machineCount={10}
+              machines={machines}
+              pageSize={20}
+              setCurrentPage={jest.fn()}
+              setSortDirection={jest.fn()}
+              setSortKey={jest.fn()}
+              showActions={false}
+              sortDirection="none"
+              sortKey={null}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -957,8 +694,17 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
+                currentPage={1}
                 hiddenColumns={["power", "zone"]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
+                setCurrentPage={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -982,9 +728,18 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
+                currentPage={1}
                 hiddenColumns={["fqdn"]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
+                setCurrentPage={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
                 showActions
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>
@@ -1004,9 +759,18 @@ describe("MachineListTable", () => {
           >
             <CompatRouter>
               <MachineListTable
+                callId="123456"
+                currentPage={1}
                 hiddenColumns={["fqdn"]}
+                machineCount={10}
                 machines={machines}
+                pageSize={20}
+                setCurrentPage={jest.fn()}
+                setSortDirection={jest.fn()}
+                setSortKey={jest.fn()}
                 showActions={false}
+                sortDirection="none"
+                sortKey={null}
               />
             </CompatRouter>
           </MemoryRouter>

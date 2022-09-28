@@ -1,43 +1,96 @@
-import { ContextualMenu, Spinner } from "@canonical/react-components";
+import { useState } from "react";
 
+import type { ValueOf } from "@canonical/react-components";
+import { ContextualMenu } from "@canonical/react-components";
+import { useSelector } from "react-redux";
+
+import type { SortDirection } from "app/base/types";
 import MachineListTable from "app/machines/views/MachineList/MachineListTable";
-import type { Machine } from "app/store/machine/types";
+import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/constants";
+import type { FetchFilters, FetchGroupKey } from "app/store/machine/types";
+import { FilterGroupKey } from "app/store/machine/types";
+import { mapSortDirection, useFetchedCount } from "app/store/machine/utils";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
+import podSelectors from "app/store/pod/selectors";
+import type { Pod } from "app/store/pod/types";
+import type { RootState } from "app/store/root/types";
+
+export enum Label {
+  ResourceVMs = "Resource VMs",
+}
 
 export type Props = {
-  loading?: boolean;
-  vms: Machine[];
+  filters?: FetchFilters;
+  podId: Pod["id"];
 };
 
-const VmResources = ({ loading = false, vms }: Props): JSX.Element => {
+export const VMS_PER_PAGE = 5;
+
+const VmResources = ({ filters, podId }: Props): JSX.Element => {
+  const pod = useSelector((state: RootState) =>
+    podSelectors.getById(state, podId)
+  );
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
+    DEFAULTS.sortKey
+  );
+  const [sortDirection, setSortDirection] = useState<
+    ValueOf<typeof SortDirection>
+  >(DEFAULTS.sortDirection);
+  const {
+    callId,
+    loading,
+    machineCount,
+    machines: vms,
+  } = useFetchMachines({
+    filters: {
+      ...filters,
+      [FilterGroupKey.Pod]: pod ? [pod.name] : [],
+    },
+    sortDirection: mapSortDirection(sortDirection),
+    sortKey,
+    pagination: {
+      currentPage,
+      setCurrentPage,
+      pageSize: VMS_PER_PAGE,
+    },
+  });
+  const count = useFetchedCount(machineCount, loading);
   return (
     <div className="vm-resources">
       <div className="vm-resources__dropdown-container">
-        {loading ? (
-          <Spinner text="Loading..." />
-        ) : (
-          <ContextualMenu
-            data-testid="vms-dropdown"
-            dropdownClassName="vm-resources__dropdown"
-            toggleAppearance="link"
-            toggleClassName="vm-resources__toggle is-dense"
-            toggleDisabled={vms.length === 0}
-            toggleLabel={`Total VMs: ${vms.length}`}
-          >
-            <MachineListTable
-              hiddenColumns={[
-                "owner",
-                "pool",
-                "zone",
-                "fabric",
-                "disks",
-                "storage",
-              ]}
-              machines={vms}
-              paginateLimit={5}
-              showActions={false}
-            />
-          </ContextualMenu>
-        )}
+        <ContextualMenu
+          dropdownClassName="vm-resources__dropdown"
+          position="left"
+          toggleAppearance="link"
+          toggleClassName="vm-resources__toggle is-dense"
+          toggleDisabled={!count}
+          toggleLabel={`Total VMs: ${count ?? 0}`}
+          toggleProps={{ position: "left", "aria-label": Label.ResourceVMs }}
+        >
+          <MachineListTable
+            callId={callId}
+            currentPage={currentPage}
+            hiddenColumns={[
+              "owner",
+              "pool",
+              "zone",
+              "fabric",
+              "disks",
+              "storage",
+            ]}
+            machineCount={machineCount}
+            machines={vms}
+            machinesLoading={loading}
+            pageSize={VMS_PER_PAGE}
+            setCurrentPage={setCurrentPage}
+            setSortDirection={setSortDirection}
+            setSortKey={setSortKey}
+            showActions={false}
+            sortDirection={sortDirection}
+            sortKey={sortKey}
+          />
+        </ContextualMenu>
       </div>
     </div>
   );

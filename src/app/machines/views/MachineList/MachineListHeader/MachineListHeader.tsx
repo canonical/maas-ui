@@ -1,6 +1,6 @@
 import { useCallback, useEffect } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { usePrevious } from "@canonical/react-components";
 import { useLocation } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
 
@@ -18,42 +18,63 @@ import type {
   MachineSetHeaderContent,
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+import { FilterMachineItems } from "app/store/machine/utils";
+import {
+  useFetchMachineCount,
+  useFetchSelectedMachines,
+  useHasSelection,
+  useMachineSelectedCount,
+} from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
   headerContent: MachineHeaderContent | null;
+  searchFilter: string;
   setSearchFilter: SetSearchFilter;
   setHeaderContent: MachineSetHeaderContent;
 };
 
 export const MachineListHeader = ({
   headerContent,
+  searchFilter,
   setSearchFilter,
   setHeaderContent,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
   const location = useLocation();
-  const machines = useSelector(machineSelectors.all);
-  const machinesLoaded = useSelector(machineSelectors.loaded);
-  const selectedMachines = useSelector(machineSelectors.selected);
+  const hasSelection = useHasSelection();
   const [tagsSeen, setTagsSeen] = useStorageState(
     localStorage,
     "machineViewTagsSeen",
     false
   );
+  // Get the count of all machines that match the current filters.
+  const { machineCount } = useFetchMachineCount(
+    FilterMachineItems.parseFetchFilters(searchFilter)
+  );
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount();
+  const previousSelectedCount = usePrevious(selectedCount);
+
+  // we need to make sure we have the data for all selected machines
+  // (including those in collapsed groups or out of bounds of the currently visible page)
+  const { machines: selectedMachines, loading: machinesLoading } =
+    useFetchSelectedMachines({
+      isEnabled: hasSelection,
+    });
 
   useEffect(() => {
-    dispatch(machineActions.fetch());
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (location.pathname !== urls.machines.index) {
+    if (
+      location.pathname !== urls.machines.index ||
+      (selectedCount !== previousSelectedCount && selectedCount === 0)
+    ) {
       setHeaderContent(null);
     }
-  }, [location.pathname, setHeaderContent]);
+  }, [
+    location.pathname,
+    setHeaderContent,
+    selectedCount,
+    previousSelectedCount,
+  ]);
 
   const getTitle = useCallback(
     (action: NodeActions) => {
@@ -77,13 +98,14 @@ export const MachineListHeader = ({
     <MachinesHeader
       buttons={[
         <AddHardwareMenu
-          disabled={selectedMachines.length > 0}
+          disabled={hasSelection}
           key="add-hardware"
           setHeaderContent={setHeaderContent}
         />,
         <NodeActionMenu
           alwaysShowLifecycle
           getTitle={getTitle}
+          hasSelection={hasSelection}
           key="machine-list-action-menu"
           nodeDisplay="machine"
           nodes={selectedMachines}
@@ -98,6 +120,7 @@ export const MachineListHeader = ({
               setHeaderContent({ view });
             }
           }}
+          showCount
         />,
       ]}
       headerContent={
@@ -105,6 +128,8 @@ export const MachineListHeader = ({
           <MachineHeaderForms
             headerContent={headerContent}
             machines={selectedMachines}
+            machinesLoading={machinesLoading}
+            selectedCountLoading={selectedCountLoading}
             setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
           />
@@ -112,13 +137,12 @@ export const MachineListHeader = ({
       }
       subtitle={
         <ModelListSubtitle
-          available={machines.length}
-          filterSelected={() => setSearchFilter("in:(Selected)")}
+          available={machineCount}
           modelName="machine"
-          selected={selectedMachines.length}
+          selected={selectedCount}
         />
       }
-      subtitleLoading={!machinesLoaded}
+      subtitleLoading={selectedCountLoading}
       title={getHeaderTitle("Machines", headerContent)}
     />
   );

@@ -1,34 +1,36 @@
 import { Select } from "@canonical/react-components";
 
+import { FetchGroupKey } from "app/store/machine/types";
+
 type Props = {
-  grouping: string;
-  setGrouping: (group: string) => void;
+  grouping: FetchGroupKey | null;
+  setGrouping: (group: FetchGroupKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
 };
 
 const groupOptions = [
   {
-    value: "none",
+    value: "",
     label: "No grouping",
   },
   {
-    value: "owner",
+    value: FetchGroupKey.Owner,
     label: "Group by owner",
   },
   {
-    value: "pool",
+    value: FetchGroupKey.Pool,
     label: "Group by pool",
   },
   {
-    value: "power_state",
+    value: FetchGroupKey.PowerState,
     label: "Group by power state",
   },
   {
-    value: "status",
+    value: FetchGroupKey.Status,
     label: "Group by status",
   },
   {
-    value: "zone",
+    value: FetchGroupKey.Zone,
     label: "Group by zone",
   },
 ];
@@ -40,10 +42,11 @@ const GroupSelect = ({
 }: Props): JSX.Element => {
   return (
     <Select
-      defaultValue={grouping}
+      aria-label="Group by"
+      defaultValue={grouping ?? ""}
       name="machine-groupings"
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-        setGrouping(e.target.value);
+        setGrouping((e.target.value as FetchGroupKey) ?? null);
         setHiddenGroups([]);
       }}
       options={groupOptions}

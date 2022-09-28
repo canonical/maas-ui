@@ -1,10 +1,8 @@
 import type { ReactNode } from "react";
-import { useEffect } from "react";
 
-import { MainTable, Spinner, Strip } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
-
-import { VMS_PER_PAGE } from "../LXDVMsTable";
+import type { ValueOf } from "@canonical/react-components";
+import { MainTable, Strip } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 
 import CoresColumn from "./CoresColumn";
 import HugepagesColumn from "./HugepagesColumn";
@@ -13,18 +11,28 @@ import NameColumn from "./NameColumn";
 import StatusColumn from "./StatusColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import GroupCheckbox from "app/base/components/GroupCheckbox";
+import Placeholder from "app/base/components/Placeholder";
 import TableHeader from "app/base/components/TableHeader";
-import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
+import AllCheckbox from "app/machines/views/MachineList/MachineListTable/AllCheckbox";
 import type { Machine } from "app/store/machine/types";
-import { actions as tagActions } from "app/store/tag";
+import { FetchGroupKey } from "app/store/machine/types";
+import { FilterMachineItems } from "app/store/machine/utils";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
 import { getTagNamesForIds } from "app/store/tag/utils";
-import { formatBytes, generateCheckboxHandlers, isComparable } from "app/utils";
+import { formatBytes } from "app/utils";
+
+export enum Label {
+  Name = "Name",
+  Status = "Status",
+  Ipv4 = "Ipv4",
+  Ipv6 = "Ipv6",
+  Hugepages = "Hugepages",
+  Cores = "Cores",
+  Ram = "Ram",
+  Pool = "Pool",
+}
 
 export type GetHostColumn = (vm: Machine) => ReactNode;
 
@@ -35,163 +43,262 @@ export type GetResources = (vm: Machine) => {
 };
 
 type Props = {
-  currentPage: number;
+  callId?: string | null;
   displayForCluster?: boolean;
   getHostColumn?: GetHostColumn;
   getResources: GetResources;
+  machinesLoading: boolean;
   searchFilter: string;
+  sortDirection: ValueOf<typeof SortDirection>;
+  sortKey: FetchGroupKey | null;
+  setSortDirection: (sortDirection: ValueOf<typeof SortDirection>) => void;
+  setSortKey: (sortKey: FetchGroupKey | null) => void;
   vms: Machine[];
 };
 
-type SortKey = keyof Machine;
-
-const getSortValue = (sortKey: SortKey, vm: Machine) => {
-  switch (sortKey) {
-    case "pool":
-      return vm.pool?.name;
-  }
-  const value = vm[sortKey];
-  return isComparable(value) ? value : null;
+type RowContent = {
+  Name: ReactNode;
+  Status: ReactNode;
+  Host?: ReactNode;
+  Ipv4: ReactNode;
+  Ipv6: ReactNode;
+  Hugepages: ReactNode;
+  Cores: ReactNode;
+  Ram: ReactNode;
+  Pool: ReactNode;
 };
 
-const generateRows = (
-  vms: Machine[],
-  getResources: GetResources,
-  tags: Tag[],
-  getHostColumn?: GetHostColumn
-) =>
+const generateRow = (content: RowContent, key: number | string) => ({
+  columns: [
+    {
+      "aria-label": Label.Name,
+      className: "name-col",
+      content: content.Name,
+    },
+    {
+      "aria-label": Label.Status,
+      className: "status-col",
+      content: content.Status,
+    },
+    ...(content.Host ? [{ content: content.Host }] : []),
+    {
+      "aria-label": Label.Ipv4,
+      className: "ipv4-col",
+      content: content.Ipv4,
+    },
+    {
+      "aria-label": Label.Ipv6,
+      className: "ipv6-col",
+      content: content.Ipv6,
+    },
+    {
+      "aria-label": Label.Hugepages,
+      className: "hugepages-col",
+      content: content.Hugepages,
+    },
+    {
+      "aria-label": Label.Cores,
+      className: "cores-col u-align--right",
+      content: content.Cores,
+    },
+    {
+      "aria-label": Label.Ram,
+      className: "ram-col",
+      content: content.Ram,
+    },
+    {
+      "aria-label": Label.Pool,
+      className: "pool-col",
+      content: content.Pool,
+    },
+  ],
+  key,
+});
+
+const generateSkeletonRows = (showHostsColumn: boolean) =>
+  Array.from(Array(5)).map((_, i) =>
+    generateRow(
+      {
+        Name: <DoubleRow primary={<Placeholder>xxxxxxxxx.xxxx</Placeholder>} />,
+        Status: <DoubleRow primary={<Placeholder>XXXXX XXXXX</Placeholder>} />,
+        Host: showHostsColumn ? (
+          <DoubleRow primary={<Placeholder>xxxxxxxxx</Placeholder>} />
+        ) : null,
+        Ipv4: <DoubleRow primary={<Placeholder>xxx.xxx.xx.x</Placeholder>} />,
+        Ipv6: (
+          <DoubleRow
+            primary={<Placeholder>xxxx:xxx::xxxx:xx:xxxx</Placeholder>}
+          />
+        ),
+        Hugepages: <DoubleRow primary={<Placeholder>Xxxxxxx</Placeholder>} />,
+        Cores: <DoubleRow primary={<Placeholder>XXX</Placeholder>} />,
+        Ram: (
+          <DoubleRow
+            primary={<Placeholder>XXXxxx</Placeholder>}
+            secondary={<Placeholder>Xxxx</Placeholder>}
+          />
+        ),
+        Pool: (
+          <DoubleRow
+            primary={<Placeholder>Xxxx</Placeholder>}
+            secondary={<Placeholder>Xxx, Xxxxxxx, Xxxxx</Placeholder>}
+          />
+        ),
+      },
+      i
+    )
+  );
+
+const generateRows = ({
+  vms,
+  getResources,
+  tags,
+  getHostColumn,
+  callId,
+}: {
+  vms: Machine[];
+  getResources: GetResources;
+  tags: Tag[];
+  getHostColumn?: GetHostColumn;
+  callId?: string | null;
+}) =>
   vms.map((vm) => {
     const memory = formatBytes(vm.memory, "GiB", { binary: true });
     const storage = formatBytes(vm.storage, "GB");
     const resources = getResources(vm);
     const tagString = getTagNamesForIds(vm.tags, tags).join(", ");
-    return {
-      columns: [
-        {
-          className: "name-col",
-          content: <NameColumn systemId={vm.system_id} />,
-        },
-        {
-          className: "status-col",
-          content: <StatusColumn systemId={vm.system_id} />,
-        },
-        ...(getHostColumn ? [{ content: getHostColumn(vm) }] : []),
-        {
-          className: "ipv4-col",
-          content: <IPColumn systemId={vm.system_id} version={4} />,
-        },
-        {
-          className: "ipv6-col",
-          content: <IPColumn systemId={vm.system_id} version={6} />,
-        },
-        {
-          className: "hugepages-col",
-          content: (
-            <HugepagesColumn hugepagesBacked={resources.hugepagesBacked} />
-          ),
-        },
-        {
-          className: "cores-col u-align--right",
-          content: (
-            <CoresColumn
-              pinnedCores={resources.pinnedCores}
-              unpinnedCores={resources.unpinnedCores}
-            />
-          ),
-        },
-        {
-          className: "ram-col",
-          content: (
-            <DoubleRow
-              primary={
-                <>
-                  <span>{memory.value} </span>
-                  <small className="u-text--muted">{memory.unit}</small>
-                </>
-              }
-              secondary={
-                <>
-                  <span>{storage.value} </span>
-                  <small className="u-text--muted">{storage.unit}</small>
-                </>
-              }
-            />
-          ),
-        },
-        {
-          className: "pool-col",
-          content: (
-            <DoubleRow
-              data-testid="pool-col"
-              primary={vm.pool.name}
-              secondary={tagString}
-              secondaryTitle={tagString}
-            />
-          ),
-        },
-      ],
-      key: vm.system_id,
-    };
+    return generateRow(
+      {
+        Name: (
+          <NameColumn
+            aria-label={Label.Name}
+            callId={callId}
+            systemId={vm.system_id}
+          />
+        ),
+        Status: (
+          <StatusColumn aria-label={Label.Status} systemId={vm.system_id} />
+        ),
+        Host: getHostColumn?.(vm),
+        Ipv4: (
+          <IPColumn
+            aria-label={Label.Ipv4}
+            systemId={vm.system_id}
+            version={4}
+          />
+        ),
+        Ipv6: (
+          <IPColumn
+            aria-label={Label.Ipv6}
+            systemId={vm.system_id}
+            version={6}
+          />
+        ),
+        Hugepages: (
+          <HugepagesColumn
+            aria-label={Label.Hugepages}
+            hugepagesBacked={resources.hugepagesBacked}
+          />
+        ),
+        Cores: (
+          <CoresColumn
+            aria-label={Label.Cores}
+            pinnedCores={resources.pinnedCores}
+            unpinnedCores={resources.unpinnedCores}
+          />
+        ),
+        Ram: (
+          <DoubleRow
+            aria-label={Label.Ram}
+            primary={
+              <>
+                <span>{memory.value} </span>
+                <small className="u-text--muted">{memory.unit}</small>
+              </>
+            }
+            secondary={
+              <>
+                <span>{storage.value} </span>
+                <small className="u-text--muted">{storage.unit}</small>
+              </>
+            }
+          />
+        ),
+        Pool: (
+          <DoubleRow
+            aria-label={Label.Pool}
+            data-testid="pool-col"
+            primary={vm.pool.name}
+            secondary={tagString}
+            secondaryTitle={tagString}
+          />
+        ),
+      },
+      vm.system_id
+    );
   });
 
 const VMsTable = ({
-  currentPage,
+  callId,
   displayForCluster,
   getHostColumn,
   getResources,
+  machinesLoading,
   searchFilter,
+  setSortDirection,
+  setSortKey,
+  sortDirection,
+  sortKey,
   vms,
 }: Props): JSX.Element => {
-  const dispatch = useDispatch();
-  const loading = useSelector(machineSelectors.loading);
-  const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const tags = useSelector(tagSelectors.all);
-  const machineIDs = vms.map((vm) => vm.system_id);
-  const { currentSort, sortRows, updateSort } = useTableSort<Machine, SortKey>(
-    getSortValue,
-    {
-      key: "hostname",
-      direction: SortDirection.DESCENDING,
+  const currentSort = {
+    direction: sortDirection,
+    key: sortKey,
+  };
+  const updateSort = (newSortKey: Props["sortKey"]) => {
+    if (newSortKey === sortKey) {
+      if (sortDirection === SortDirection.ASCENDING) {
+        setSortKey(null);
+        setSortDirection(SortDirection.NONE);
+      } else {
+        setSortDirection(SortDirection.ASCENDING);
+      }
+    } else {
+      setSortKey(newSortKey);
+      setSortDirection(SortDirection.DESCENDING);
     }
-  );
-  const sortedVms = sortRows(vms);
-  const paginatedVms = sortedVms.slice(
-    (currentPage - 1) * VMS_PER_PAGE,
-    currentPage * VMS_PER_PAGE
-  );
-  const { handleGroupCheckbox } = generateCheckboxHandlers<
-    Machine["system_id"]
-  >((machineIDs) => {
-    dispatch(machineActions.setSelected(machineIDs));
-  });
+  };
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
-
-  if (loading) {
-    return <Spinner text="Loading..." />;
-  }
   return (
     <>
       <MainTable
         className="vms-table"
+        emptyStateMsg={
+          searchFilter && vms.length === 0 ? (
+            <Strip rowClassName="u-align--center" shallow>
+              <span data-testid="no-vms">
+                No VMs in this {displayForCluster ? "cluster" : "KVM host"}{" "}
+                match the search criteria.
+              </span>
+            </Strip>
+          ) : null
+        }
         headers={[
           {
             className: "name-col",
             content: (
               <div className="u-flex">
-                <GroupCheckbox
-                  handleGroupCheckbox={handleGroupCheckbox}
-                  items={machineIDs}
-                  selectedItems={selectedIDs}
+                <AllCheckbox
+                  callId={callId}
+                  filter={FilterMachineItems.parseFetchFilters(searchFilter)}
                 />
                 <div>
                   <TableHeader
                     currentSort={currentSort}
                     data-testid="name-header"
-                    onClick={() => updateSort("hostname")}
-                    sortKey="hostname"
+                    onClick={() => updateSort(FetchGroupKey.Hostname)}
+                    sortKey={FetchGroupKey.Hostname}
                   >
                     VM name
                   </TableHeader>
@@ -205,8 +312,8 @@ const VMsTable = ({
               <TableHeader
                 className="p-double-row__header-spacer"
                 currentSort={currentSort}
-                onClick={() => updateSort("status")}
-                sortKey="status"
+                onClick={() => updateSort(FetchGroupKey.Status)}
+                sortKey={FetchGroupKey.Status}
               >
                 Status
               </TableHeader>
@@ -246,8 +353,8 @@ const VMsTable = ({
               <>
                 <TableHeader
                   currentSort={currentSort}
-                  onClick={() => updateSort("memory")}
-                  sortKey="memory"
+                  onClick={() => updateSort(FetchGroupKey.Memory)}
+                  sortKey={FetchGroupKey.Memory}
                 >
                   RAM
                 </TableHeader>
@@ -261,8 +368,8 @@ const VMsTable = ({
               <>
                 <TableHeader
                   currentSort={currentSort}
-                  onClick={() => updateSort("pool")}
-                  sortKey="pool"
+                  onClick={() => updateSort(FetchGroupKey.Pool)}
+                  sortKey={FetchGroupKey.Pool}
                 >
                   Pool
                 </TableHeader>
@@ -271,16 +378,12 @@ const VMsTable = ({
             ),
           },
         ]}
-        rows={generateRows(paginatedVms, getResources, tags, getHostColumn)}
+        rows={
+          machinesLoading
+            ? generateSkeletonRows(!!getHostColumn)
+            : generateRows({ vms, getResources, tags, getHostColumn, callId })
+        }
       />
-      {searchFilter && vms.length === 0 ? (
-        <Strip rowClassName="u-align--center" shallow>
-          <span data-testid="no-vms">
-            No VMs in this {displayForCluster ? "cluster" : "KVM host"} match
-            the search criteria.
-          </span>
-        </Strip>
-      ) : null}
     </>
   );
 };

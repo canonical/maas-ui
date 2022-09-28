@@ -82,6 +82,7 @@
 @import "~app/base/components/Header";
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
+@import "~app/base/components/MachineSelectTable";
 @import "~app/base/components/Meter";
 @import "~app/base/components/node/HardwareCard";
 @import "~app/base/components/node/networking/NetworkTable";
@@ -98,6 +99,7 @@
 @import "~app/base/components/Popover";
 @import "~app/base/components/Section";
 @import "~app/base/components/SectionHeader";
+@import "~app/base/components/SelectButton";
 @import "~app/base/components/SSHKeyList";
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
@@ -118,6 +120,7 @@
 @include Header;
 @include LabelledList;
 @include Login;
+@include MachineSelectTable;
 @include Meter;
 @include NetworkCardTable;
 @include NetworkTable;
@@ -131,6 +134,7 @@
 @include Popover;
 @include Section;
 @include SectionHeader;
+@include SelectButton;
 @include SSHKeyList;
 @include Stepper;
 @include TableMenu;
@@ -164,6 +168,7 @@
 @import "~app/kvm/components/CoreResources";
 @import "~app/kvm/components/CPUColumn/CPUPopover";
 @import "~app/kvm/components/KVMDetailsHeader";
+@import "~app/base/components/DhcpFormFields/MachineSelect";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable";
@@ -203,6 +208,7 @@
 @include LXDHostToolbar;
 @include LxdKVMHostTable;
 @include LXDVMsSummaryCard;
+@include MachineSelect;
 @include NumaResources;
 @include NumaResourcesCard;
 @include RAMPopover;
@@ -221,11 +227,11 @@
 @include DiscoveriesList;
 
 // machines
-@import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneFormFields";
-@import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
-@import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/CloneForm/CloneResults";
-@import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
-@import "~app/machines/components/MachineHeaderForms/ActionFormWrapper/TagForm";
+@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneFormFields";
+@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneFormFields/SourceMachineSelect";
+@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneResults";
+@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
+@import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/TagForm";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineList";

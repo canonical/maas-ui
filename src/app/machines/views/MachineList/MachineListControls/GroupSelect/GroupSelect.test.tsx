@@ -6,7 +6,7 @@ describe("GroupSelect ", () => {
   it("renders", () => {
     const wrapper = shallow(
       <GroupSelect
-        grouping="none"
+        grouping={null}
         setGrouping={jest.fn()}
         setHiddenGroups={jest.fn()}
       />
@@ -19,7 +19,7 @@ describe("GroupSelect ", () => {
     const setHiddenGroups = jest.fn();
     const wrapper = shallow(
       <GroupSelect
-        grouping="none"
+        grouping={null}
         setGrouping={setGrouping}
         setHiddenGroups={setHiddenGroups}
       />

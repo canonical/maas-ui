@@ -2,9 +2,9 @@ import { useCallback } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 
-import ActionFormWrapper from "./ActionFormWrapper";
 import AddChassisForm from "./AddChassis/AddChassisForm";
 import AddMachineForm from "./AddMachine/AddMachineForm";
+import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
 import type { SetSearchFilter } from "app/base/types";
 import { MachineHeaderViews } from "app/machines/constants";
@@ -18,6 +18,9 @@ import type { Machine } from "app/store/machine/types";
 type Props = {
   headerContent: MachineHeaderContent;
   machines: Machine[];
+  machinesLoading?: boolean;
+  selectedCount?: number;
+  selectedCountLoading?: boolean;
   setHeaderContent: MachineSetHeaderContent;
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
@@ -27,6 +30,8 @@ export const MachineHeaderForms = ({
   headerContent,
   machines,
   setHeaderContent,
+  machinesLoading,
+  selectedCountLoading,
   setSearchFilter,
   viewingDetails = false,
 }: Props): JSX.Element | null => {
@@ -51,12 +56,14 @@ export const MachineHeaderForms = ({
       };
       const [, action] = view;
       return (
-        <ActionFormWrapper
+        <MachineActionFormWrapper
           action={action}
           applyConfiguredNetworking={extras?.applyConfiguredNetworking}
           clearHeaderContent={clearHeaderContent}
           hardwareType={extras?.hardwareType}
           machines={machines}
+          machinesLoading={machinesLoading}
+          selectedCountLoading={selectedCountLoading}
           setSearchFilter={setSearchFilter}
           viewingDetails={viewingDetails}
         />

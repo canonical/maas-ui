@@ -6,6 +6,7 @@ import { Link } from "react-router-dom-v5-compat";
 import type { DiscoveryAddValues } from "../types";
 import { DeviceType } from "../types";
 
+import MachineSelect from "app/base/components/DhcpFormFields/MachineSelect";
 import FormikField from "app/base/components/FormikField";
 import IpAssignmentSelect from "app/base/components/IpAssignmentSelect";
 import TooltipButton from "app/base/components/TooltipButton";
@@ -15,31 +16,36 @@ import type { Device } from "app/store/device/types";
 import { DeviceMeta } from "app/store/device/types";
 import type { Discovery } from "app/store/discovery/types";
 import domainSelectors from "app/store/domain/selectors";
-import machineSelectors from "app/store/machine/selectors";
 import type { RootState } from "app/store/root/types";
 import subnetSelectors from "app/store/subnet/selectors";
 import { getSubnetDisplay } from "app/store/subnet/utils";
-import { NodeStatusCode } from "app/store/types/node";
+import { FetchNodeStatus } from "app/store/types/node";
 import vlanSelectors from "app/store/vlan/selectors";
 import { getVLANDisplay } from "app/store/vlan/utils";
-
-export enum Labels {
-  Type = "Type",
-  Domain = "Domain",
-  Hostname = "Hostname",
-  InterfaceName = "Interface name",
-  DeviceName = "Device name",
-  Parent = "Parent",
-  Fabric = "Fabric",
-  Vlan = "VLAN",
-  Subnet = "Subnet",
-}
 
 type Props = {
   discovery: Discovery;
   setDevice: (device: Device[DeviceMeta.PK] | null) => void;
   setDeviceType: (deviceType: DeviceType) => void;
 };
+
+export enum Labels {
+  ChooseType = "Choose type",
+  ChooseDomain = "Choose domain",
+  Type = "Type",
+  Device = "Device",
+  DeviceName = "Device Name",
+  Interface = "Interface",
+  Parent = "Parent",
+  Hostname = "Hostname (optional)",
+  InterfaceName = "Interface name (optional)",
+  Domain = "Domain",
+  SelectDeviceName = "Select device name",
+  SelectParent = "Select parent (optional)",
+  Fabric = "Fabric",
+  Vlan = "VLAN",
+  Subnet = "Subnet",
+}
 
 const DiscoveryAddFormFields = ({
   discovery,
@@ -48,9 +54,6 @@ const DiscoveryAddFormFields = ({
 }: Props): JSX.Element | null => {
   const devices = useSelector(deviceSelectors.all);
   const domains = useSelector(domainSelectors.all);
-  const machines = useSelector((state: RootState) =>
-    machineSelectors.getByStatusCode(state, NodeStatusCode.DEPLOYED)
-  );
   const subnet = useSelector((state: RootState) =>
     subnetSelectors.getByCIDR(state, discovery.subnet_cidr)
   );
@@ -80,16 +83,14 @@ const DiscoveryAddFormFields = ({
               setDevice(null);
             }}
             options={[
-              { label: "Choose type", value: "", disabled: true },
-              { label: "Device", value: DeviceType.DEVICE },
-              { label: "Interface", value: DeviceType.INTERFACE },
+              { label: Labels.ChooseType, value: "", disabled: true },
+              { label: Labels.Device, value: DeviceType.DEVICE },
+              { label: Labels.Interface, value: DeviceType.INTERFACE },
             ]}
             required
           />
           <FormikField
-            label={`${
-              isDevice ? Labels.Hostname : Labels.InterfaceName
-            } (optional)`}
+            label={isDevice ? Labels.Hostname : Labels.InterfaceName}
             name="hostname"
             type="text"
           />
@@ -99,7 +100,7 @@ const DiscoveryAddFormFields = ({
               label={Labels.Domain}
               name="domain"
               options={[
-                { label: "Choose domain", value: "", disabled: true },
+                { label: Labels.ChooseDomain, value: "", disabled: true },
                 ...domains.map((domain) => ({
                   label: domain.name,
                   value: domain.name,
@@ -124,7 +125,7 @@ const DiscoveryAddFormFields = ({
                 setDevice(evt.target.value as Device[DeviceMeta.PK]);
               }}
               options={[
-                { label: "Select device name", value: "", disabled: true },
+                { label: Labels.SelectDeviceName, value: "", disabled: true },
                 ...devices.map((device) => ({
                   label: device.fqdn,
                   value: device[DeviceMeta.PK],
@@ -134,8 +135,9 @@ const DiscoveryAddFormFields = ({
             />
           ) : (
             <FormikField
-              aria-label={Labels.Parent}
-              component={Select}
+              component={MachineSelect}
+              defaultOption={Labels.SelectParent}
+              filters={{ status: FetchNodeStatus.DEPLOYED }}
               label={
                 <>
                   {Labels.Parent}{" "}
@@ -143,13 +145,6 @@ const DiscoveryAddFormFields = ({
                 </>
               }
               name="parent"
-              options={[
-                { label: "Select parent (optional)", value: "" },
-                ...machines.map((machine) => ({
-                  label: machine.fqdn,
-                  value: machine.system_id,
-                })),
-              ]}
             />
           )}
         </Col>

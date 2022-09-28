@@ -51,19 +51,19 @@ describe("DiscoveryAddFormFields", () => {
       })
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("combobox", {
+      screen.getByRole("button", {
         name: DiscoveryAddFormFieldsLabels.Parent,
       })
     ).toBeInTheDocument();
     expect(
       screen.getByRole("textbox", {
-        name: DiscoveryAddFormFieldsLabels.Hostname + " (optional)",
+        name: DiscoveryAddFormFieldsLabels.Hostname,
       })
     ).toBeInTheDocument();
 
     expect(
       screen.queryByRole("textbox", {
-        name: DiscoveryAddFormFieldsLabels.InterfaceName + " (optional)",
+        name: DiscoveryAddFormFieldsLabels.InterfaceName,
       })
     ).not.toBeInTheDocument();
     expect(
@@ -99,13 +99,13 @@ describe("DiscoveryAddFormFields", () => {
     ).not.toBeInTheDocument();
     expect(
       screen.queryByRole("textbox", {
-        name: DiscoveryAddFormFieldsLabels.Hostname + " (optional)",
+        name: DiscoveryAddFormFieldsLabels.Hostname,
       })
     ).not.toBeInTheDocument();
 
     expect(
       screen.getByRole("textbox", {
-        name: DiscoveryAddFormFieldsLabels.InterfaceName + " (optional)",
+        name: DiscoveryAddFormFieldsLabels.InterfaceName,
       })
     ).toBeInTheDocument();
     expect(
