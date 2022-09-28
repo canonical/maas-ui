@@ -25,6 +25,7 @@ import type {
 } from "app/store/types/enum";
 import type { ModelRef } from "app/store/types/model";
 import type {
+  Node,
   BaseNodeActionParams,
   FetchNodeStatus,
   LinkParams,
@@ -277,6 +278,7 @@ type Filters = {
   [FilterGroupKey.Mem]: Machine["memory"];
   [FilterGroupKey.Osystem]: Machine["osystem"];
   [FilterGroupKey.Owner]: Machine["owner"];
+  [FilterGroupKey.Parent]: Node["system_id"];
   [FilterGroupKey.Pod]: ModelRef["name"];
   [FilterGroupKey.PodType]: Pod["type"];
   [FilterGroupKey.Pool]: ResourcePool["name"];
