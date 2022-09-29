@@ -100,7 +100,27 @@ describe("NodeActionMenu", () => {
     expect(getActionButton(NodeActions.RELEASE)).toBeDisabled();
   });
 
-  it("shows all actions that can be performed when not showing counts", async () => {
+  it(`disables the actions that cannot be performed when nodes are provided`, async () => {
+    const nodes = [machineFactory({ actions: [NodeActions.DEPLOY] })];
+    render(
+      <NodeActionMenu
+        alwaysShowLifecycle
+        hasSelection
+        nodes={nodes}
+        onActionClick={jest.fn()}
+        showCount={false}
+      />
+    );
+
+    await openMenu();
+
+    expect(getActionButton(NodeActions.DEPLOY)).toBeInTheDocument();
+    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeDisabled();
+    expect(getActionButton(NodeActions.RELEASE)).toBeInTheDocument();
+    expect(getActionButton(NodeActions.RELEASE)).toBeDisabled();
+  });
+
+  it("shows all actions that can be performed when nodes are not provided", async () => {
     render(<NodeActionMenu hasSelection onActionClick={jest.fn()} />);
     await openMenu();
     expect(getActionButton(NodeActions.DELETE)).toBeInTheDocument();
