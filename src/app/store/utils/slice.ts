@@ -5,8 +5,7 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import { ACTION_STATUS } from "./../../base/constants";
-
+import { ACTION_STATUS } from "app/base/constants";
 import type { KeysOfUnion } from "app/base/types";
 import type { BootResourceMeta } from "app/store/bootresource/types";
 import type { ConfigMeta } from "app/store/config/types";
