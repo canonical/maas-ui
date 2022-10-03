@@ -564,7 +564,10 @@ export function* sendMessage(
         // Ensure server has synced before sending next message,
         // important for dependant config like commissioning_distro_series
         // and default_min_hwe_kernel.
-        yield* take(`${type}Success`);
+        // There is an edge case where a different CLI or server event could
+        // dispatch a NOTIFY of the same type which is received before our expected NOTIFY,
+        // but this _probably_ does not matter in practice.
+        yield* take(`${type}Notify`);
       }
     } else {
       const id = yield* call(

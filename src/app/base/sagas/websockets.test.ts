@@ -287,7 +287,7 @@ describe("websocket sagas", () => {
         params: { name: "foo", value: "bar" },
       })
     );
-    expect(saga.next().value).toEqual(take("test/actionSuccess"));
+    expect(saga.next().value).toEqual(take("test/actionNotify"));
 
     expect(saga.next().value).toEqual(
       call([socketClient, socketClient.send], action, {
@@ -296,7 +296,7 @@ describe("websocket sagas", () => {
         params: { name: "baz", value: "qux" },
       })
     );
-    expect(saga.next().value).toEqual(take("test/actionSuccess"));
+    expect(saga.next().value).toEqual(take("test/actionNotify"));
   });
 
   it("can handle errors when sending a WebSocket message", () => {
