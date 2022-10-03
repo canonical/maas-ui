@@ -22,9 +22,11 @@ export const FieldlessForm = <E,>({
   cleanup,
   clearHeaderContent,
   errors,
+  selectedFilter,
   modelName,
   nodes,
   processingCount,
+  selectedCount,
   viewingDetails,
 }: Props<E>): JSX.Element => {
   const dispatch = useDispatch();
@@ -48,18 +50,23 @@ export const FieldlessForm = <E,>({
       onSubmit={() => {
         dispatch(cleanup());
         const actionMethod = kebabToCamelCase(action);
-        nodes.forEach((node) => {
-          // Find the method for the function.
-          const [, actionFunction] =
-            Object.entries(actions).find(([key]) => key === actionMethod) || [];
-          if (actionFunction) {
-            dispatch(actionFunction({ system_id: node.system_id }));
+        // Find the method for the function.
+        const [, actionFunction] =
+          Object.entries(actions).find(([key]) => key === actionMethod) || [];
+
+        if (actionFunction) {
+          if (selectedFilter) {
+            dispatch(actionFunction({ filter: selectedFilter }));
+          } else {
+            nodes?.forEach((node) => {
+              dispatch(actionFunction({ system_id: node.system_id }));
+            });
           }
-        });
+        }
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={nodes.length}
+      selectedCount={nodes ? nodes.length : selectedCount ?? 0}
     />
   );
 };

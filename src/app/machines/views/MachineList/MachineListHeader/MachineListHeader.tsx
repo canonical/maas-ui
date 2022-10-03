@@ -1,6 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { usePrevious } from "@canonical/react-components";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
 
@@ -18,10 +19,10 @@ import type {
   MachineSetHeaderContent,
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
-import { FilterMachineItems } from "app/store/machine/utils";
+import machineSelectors from "app/store/machine/selectors";
+import { FilterMachineItems, selectedToFilters } from "app/store/machine/utils";
 import {
   useFetchMachineCount,
-  useFetchSelectedMachines,
   useHasSelection,
   useMachineSelectedCount,
 } from "app/store/machine/utils/hooks";
@@ -55,12 +56,8 @@ export const MachineListHeader = ({
   const { selectedCount, selectedCountLoading } = useMachineSelectedCount();
   const previousSelectedCount = usePrevious(selectedCount);
 
-  // we need to make sure we have the data for all selected machines
-  // (including those in collapsed groups or out of bounds of the currently visible page)
-  const { machines: selectedMachines, loading: machinesLoading } =
-    useFetchSelectedMachines({
-      isEnabled: hasSelection,
-    });
+  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedFilter = selectedToFilters(selectedMachines);
 
   useEffect(() => {
     if (
@@ -108,7 +105,6 @@ export const MachineListHeader = ({
           hasSelection={hasSelection}
           key="machine-list-action-menu"
           nodeDisplay="machine"
-          nodes={selectedMachines}
           onActionClick={(action) => {
             if (action === NodeActions.TAG && !tagsSeen) {
               setTagsSeen(true);
@@ -120,16 +116,15 @@ export const MachineListHeader = ({
               setHeaderContent({ view });
             }
           }}
-          showCount
         />,
       ]}
       headerContent={
         headerContent && (
           <MachineHeaderForms
             headerContent={headerContent}
-            machines={selectedMachines}
-            machinesLoading={machinesLoading}
+            selectedCount={selectedCount}
             selectedCountLoading={selectedCountLoading}
+            selectedFilter={selectedFilter}
             setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
           />

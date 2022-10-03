@@ -4,7 +4,7 @@ import type { RouterState } from "redux-first-history";
 import { bondOptions } from "./general";
 
 import { ACTION_STATUS } from "app/base/constants";
-import type { APIError } from "app/base/types";
+import type { APIError, ActionState } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
 import { DEFAULT_STATUSES as DEFAULT_CONTROLLER_STATUSES } from "app/store/controller/slice";
@@ -267,6 +267,11 @@ export const machineStateList = define<MachineStateList>({
   num_pages: null,
 });
 
+export const machineStateAction = define<ActionState>({
+  status: ACTION_STATUS.idle,
+  errors: null,
+});
+
 export const machineStateLists = define<MachineStateLists>({
   testNode: machineStateList,
 });
@@ -321,6 +326,7 @@ export const machineEventError = define<
 
 export const machineState = define<MachineState>({
   ...defaultState,
+  actions: () => ({}),
   active: null,
   counts: () => ({}),
   details: () => ({}),

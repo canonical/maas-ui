@@ -18,6 +18,7 @@ import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
 import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors, { statusSelectors } from "app/store/machine/selectors";
 import { ACTIONS } from "app/store/machine/slice";
@@ -26,6 +27,7 @@ import type {
   MachineActions,
   MachineEventErrors,
 } from "app/store/machine/types";
+import { useDispatchWithCallId } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
@@ -35,19 +37,16 @@ type Props = {
   applyConfiguredNetworking?: boolean;
   clearHeaderContent: ClearHeaderContent;
   hardwareType?: HardwareType;
-  machines: Machine[];
-  machinesLoading?: boolean;
-  selectedCount?: number;
   selectedCountLoading?: boolean;
   setSearchFilter?: SetSearchFilter;
   viewingDetails: boolean;
-};
+} & Omit<MachineActionFormProps, "processingCount">;
 
 const isTagUpdateAction = (action: MachineActions) =>
   [NodeActions.TAG, NodeActions.UNTAG].includes(action);
 
 const getProcessingCount = (
-  selectedMachines: Machine[],
+  selectedMachineIds: string[] | [],
   processingMachines: Machine[],
   action: MachineActions
 ) => {
@@ -58,8 +57,8 @@ const getProcessingCount = (
     return processingMachines.length;
   }
   return processingMachines.reduce<number>((count, processingMachine) => {
-    const machineInSelection = selectedMachines.some(
-      (machine) => machine.system_id === processingMachine.system_id
+    const machineInSelection = selectedMachineIds.some(
+      (system_id) => system_id === processingMachine.system_id
     );
     return machineInSelection ? count + 1 : count;
   }, 0);
@@ -79,13 +78,14 @@ export const MachineActionFormWrapper = ({
   clearHeaderContent,
   hardwareType,
   machines,
-  machinesLoading,
   selectedCount,
   selectedCountLoading,
+  selectedFilter,
   setSearchFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+
   const processingMachines = useSelector(getProcessingSelector(action));
   // When updating tags we want to surface both "tag" and "untag" errors.
   const errorEvents = isTagUpdateAction(action)
@@ -96,31 +96,49 @@ export const MachineActionFormWrapper = ({
   const errors = useSelector((state: RootState) =>
     machineSelectors.eventErrorsForIds(
       state,
-      machines.map(({ system_id }) => system_id),
+      machines?.map(({ system_id }) => system_id) || [],
       errorEvents
     )
   )[0]?.error;
   const processingCount = getProcessingCount(
-    machines,
+    machines?.map((machine) => machine.system_id) || [],
     processingMachines,
     action
   );
+  const { callId: dispatchCallId, dispatch: dispatchWithCallId } =
+    useDispatchWithCallId();
+  const actionState = useSelector((state: RootState) =>
+    machineSelectors.getActionState(state, dispatchCallId)
+  );
+
   const commonMachineFormProps = {
     clearHeaderContent,
-    errors,
-    machines,
-    processingCount,
     viewingDetails,
+    ...(machines
+      ? { machines, processingCount, errors }
+      : {
+          selectedFilter,
+          actionStatus: actionState?.status,
+          errors: actionState?.errors,
+          selectedCount,
+          selectedCountLoading,
+        }),
   };
   const commonNodeFormProps = {
     cleanup: machineActions.cleanup,
     clearHeaderContent,
     errors,
     modelName: "machine",
-    nodes: machines,
-    processingCount,
-    selectedCount,
     viewingDetails,
+    ...(machines
+      ? { nodes: machines, processingCount }
+      : {
+          selectedFilter,
+          actionStatus: actionState?.status,
+          errors: actionState?.errors,
+          selectedCount,
+          selectedCountLoading,
+        }),
   };
 
   const getFormComponent = () => {
@@ -138,11 +156,19 @@ export const MachineActionFormWrapper = ({
         return (
           <DeleteForm
             onSubmit={() => {
-              machines.forEach((machine) => {
-                dispatch(
-                  machineActions.delete({ system_id: machine.system_id })
+              if (selectedFilter) {
+                dispatchWithCallId(
+                  machineActions.delete({ filter: selectedFilter })
                 );
-              });
+              } else {
+                machines?.forEach((machine) => {
+                  dispatch(
+                    machineActions.delete({
+                      system_id: machine.system_id,
+                    })
+                  );
+                });
+              }
             }}
             redirectURL={urls.machines.index}
             {...commonNodeFormProps}
@@ -163,14 +189,23 @@ export const MachineActionFormWrapper = ({
           <SetZoneForm<MachineEventErrors>
             onSubmit={(zoneID) => {
               dispatch(machineActions.cleanup());
-              machines.forEach((machine) => {
-                dispatch(
+              if (selectedFilter) {
+                dispatchWithCallId(
                   machineActions.setZone({
-                    system_id: machine.system_id,
+                    filter: selectedFilter,
                     zone_id: zoneID,
                   })
                 );
-              });
+              } else {
+                machines?.forEach((machine) => {
+                  dispatch(
+                    machineActions.setZone({
+                      system_id: machine.system_id,
+                      zone_id: zoneID,
+                    })
+                  );
+                });
+              }
             }}
             {...commonNodeFormProps}
           />
@@ -184,11 +219,13 @@ export const MachineActionFormWrapper = ({
             applyConfiguredNetworking={applyConfiguredNetworking}
             hardwareType={hardwareType}
             onTest={(args) => {
-              dispatch(
+              dispatchWithCallId(
                 machineActions.test({
                   enable_ssh: args.enableSSH,
                   script_input: args.scriptInputs,
-                  system_id: args.systemId,
+                  ...(args.filter
+                    ? { filter: args.filter }
+                    : { system_id: args.systemId }),
                   testing_scripts: args.scripts.map((script) => script.name),
                 })
               );
@@ -215,15 +252,15 @@ export const MachineActionFormWrapper = ({
     }
   };
 
-  if (selectedCountLoading || machinesLoading) {
+  if (selectedCountLoading) {
     return <Spinner />;
   }
 
-  return (
+  return machines ? (
     <NodeActionFormWrapper
       action={action}
       nodeType="machine"
-      nodes={machines}
+      nodes={machines || []}
       onUpdateSelected={(machineIDs) =>
         dispatch(machineActions.setSelectedMachines({ items: machineIDs }))
       }
@@ -232,6 +269,8 @@ export const MachineActionFormWrapper = ({
     >
       {getFormComponent()}
     </NodeActionFormWrapper>
+  ) : (
+    getFormComponent()
   );
 };
 

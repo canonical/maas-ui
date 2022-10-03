@@ -100,7 +100,7 @@ export const useProcessing = ({
   hasErrors?: boolean;
   onComplete?: () => void;
   onError?: () => void;
-  processingCount: number;
+  processingCount?: number;
 }): boolean => {
   const [processingStarted] = useCycled(processingCount !== 0);
   const [processingComplete, setProcessingComplete] = useState(false);

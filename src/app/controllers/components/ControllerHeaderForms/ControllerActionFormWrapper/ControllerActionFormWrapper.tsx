@@ -118,7 +118,7 @@ export const ControllerActionFormWrapper = ({
                 controllerActions.test({
                   enable_ssh: args.enableSSH,
                   script_input: args.scriptInputs,
-                  system_id: args.systemId,
+                  system_id: args.systemId as string,
                   testing_scripts: args.scripts.map((script) => script.name),
                 })
               );

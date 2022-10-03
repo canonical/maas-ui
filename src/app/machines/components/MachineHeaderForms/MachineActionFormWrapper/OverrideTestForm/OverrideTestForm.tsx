@@ -27,11 +27,16 @@ export type OverrideTestFormValues = {
   suppressResults: boolean;
 };
 
-const generateFailedTestsMessage = (
-  numFailedTests: number,
-  selectedMachines: Machine[]
-) => {
-  const singleMachine = selectedMachines.length === 1 && selectedMachines[0];
+const generateFailedTestsMessage = ({
+  numFailedTests,
+  selectedCount,
+  machines,
+}: {
+  numFailedTests: number;
+  selectedCount: number;
+  machines?: Machine[];
+}) => {
+  const singleMachine = selectedCount === 1 && machines?.[0];
   if (numFailedTests > 0) {
     const numFailedTestsString = `failed ${numFailedTests} ${pluralize(
       "test",
@@ -51,8 +56,7 @@ const generateFailedTestsMessage = (
     }
     return (
       <span>
-        <strong>{selectedMachines.length} machines</strong> have{" "}
-        {numFailedTestsString}
+        <strong>{selectedCount} machines</strong> have {numFailedTestsString}
       </span>
     );
   }
@@ -64,7 +68,7 @@ const generateFailedTestsMessage = (
         </span>
       ) : (
         <span>
-          <strong>{selectedMachines.length} machines</strong> have
+          <strong>{selectedCount} machines</strong> have
         </span>
       )}{" "}
       not failed any tests. This can occur if the test suite failed to start.
@@ -81,6 +85,8 @@ export const OverrideTestForm = ({
   errors,
   machines,
   processingCount,
+  selectedCount,
+  selectedFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -89,9 +95,12 @@ export const OverrideTestForm = ({
   >([]);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
   const scriptResultsLoading = useSelector(scriptResultsSelectors.loading);
-  const machineIDs = machines.map((machine) => machine.system_id);
+  const machineIDs = machines?.map((machine) => machine.system_id);
   const scriptResults = useSelector((state: RootState) =>
-    scriptResultsSelectors.getFailedTestingResultsByNodeIds(state, machineIDs)
+    scriptResultsSelectors.getFailedTestingResultsByNodeIds(
+      state,
+      machineIDs || []
+    )
   );
   // Get the number of results for all machines.
   const numFailedTests =
@@ -103,7 +112,7 @@ export const OverrideTestForm = ({
 
   useEffect(() => {
     const newRequests: Machine[MachineMeta.PK][] = [];
-    machineIDs.forEach((id) => {
+    machineIDs?.forEach((id) => {
       // Check that the results haven't already been requested.
       // This fetches the results even if they've been loaded previously so that
       // we make sure the data is not stale.
@@ -139,15 +148,23 @@ export const OverrideTestForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         const { suppressResults } = values;
-        machines.forEach((machine) => {
+        if (selectedFilter) {
           dispatch(
             machineActions.overrideFailedTesting({
-              system_id: machine.system_id,
+              filter: selectedFilter,
             })
           );
-        });
+        } else {
+          machines?.forEach((machine) => {
+            dispatch(
+              machineActions.overrideFailedTesting({
+                system_id: machine.system_id,
+              })
+            );
+          });
+        }
         if (suppressResults) {
-          machines.forEach((machine) => {
+          machines?.forEach((machine) => {
             if (
               machine.system_id in scriptResults &&
               scriptResults[machine.system_id].length > 0
@@ -164,7 +181,7 @@ export const OverrideTestForm = ({
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machines.length}
+      selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={OverrideTestFormSchema}
     >
       <Row>
@@ -180,7 +197,13 @@ export const OverrideTestForm = ({
             <>
               <p data-testid-id="failed-results-message">
                 <i className="p-icon--warning is-inline"></i>
-                {generateFailedTestsMessage(numFailedTests, machines)}
+                {generateFailedTestsMessage({
+                  numFailedTests,
+                  selectedCount: machines
+                    ? machines.length
+                    : selectedCount ?? 0,
+                  machines,
+                })}
               </p>
               <p className="u-sv1">
                 Overriding will allow the machines to be deployed, marked with a
@@ -193,7 +216,7 @@ export const OverrideTestForm = ({
                       Suppress test-failure icons in the machines list. Results
                       remain visible in
                       <br />
-                      {machines.length === 1 ? (
+                      {machines?.length === 1 ? (
                         <Link
                           to={urls.machines.machine.index({
                             id: machines[0].system_id,

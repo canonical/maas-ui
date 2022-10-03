@@ -10,28 +10,25 @@ import type { SetSearchFilter } from "app/base/types";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineActionHeaderViews } from "app/machines/constants";
 import type {
+  MachineActionVariableProps,
   MachineHeaderContent,
   MachineSetHeaderContent,
 } from "app/machines/types";
-import type { Machine } from "app/store/machine/types";
 
 type Props = {
   headerContent: MachineHeaderContent;
-  machines: Machine[];
-  machinesLoading?: boolean;
-  selectedCount?: number;
-  selectedCountLoading?: boolean;
   setHeaderContent: MachineSetHeaderContent;
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
-};
+} & MachineActionVariableProps;
 
 export const MachineHeaderForms = ({
   headerContent,
   machines,
   setHeaderContent,
-  machinesLoading,
   selectedCountLoading,
+  selectedCount,
+  selectedFilter,
   setSearchFilter,
   viewingDetails = false,
 }: Props): JSX.Element | null => {
@@ -55,17 +52,18 @@ export const MachineHeaderForms = ({
         view: ValueOf<typeof MachineActionHeaderViews>;
       };
       const [, action] = view;
+      const conditionalProps = machines
+        ? { machines }
+        : { selectedCount, selectedCountLoading, selectedFilter };
       return (
         <MachineActionFormWrapper
           action={action}
           applyConfiguredNetworking={extras?.applyConfiguredNetworking}
           clearHeaderContent={clearHeaderContent}
           hardwareType={extras?.hardwareType}
-          machines={machines}
-          machinesLoading={machinesLoading}
-          selectedCountLoading={selectedCountLoading}
           setSearchFilter={setSearchFilter}
           viewingDetails={viewingDetails}
+          {...conditionalProps}
         />
       );
   }

@@ -83,6 +83,20 @@ ACTIONS.forEach(({ status }) => {
 });
 
 /**
+ * Returns a machine's action details by callId
+ */
+const getActionState = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState: MachineState, callId) =>
+    callId && callId in machineState.actions
+      ? machineState.actions[callId]
+      : null
+);
+
+/**
  * Get the machines that are either tagging or untagging.
  * @param state - The redux state.
  * @returns Machines that are either tagging or untagging.
@@ -215,7 +229,9 @@ const eventErrorsForIds = createSelector(
     const idArray = Array.isArray(ids) ? ids : [ids];
     return errors.reduce<MachineState["eventErrors"][0][]>((matches, error) => {
       let match = false;
-      const matchesId = !!error.id && idArray.includes(error.id);
+      const matchesId = !!error.id
+        ? !!error.id && idArray.includes(error.id)
+        : !!error.callId && idArray.includes(error.callId);
       // If an event has been provided as `null` then filter for errors with
       // a null event.
       if (event || event === null) {
@@ -626,6 +642,7 @@ const selectors = {
   filtersLoaded,
   filtersLoading,
   getByStatusCode,
+  getActionState,
   count,
   countLoaded,
   countLoading,

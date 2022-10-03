@@ -9,6 +9,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import { selectedToFilters } from "./common";
 import type { UseFetchMachinesOptions, UseFetchQueryOptions } from "./hooks";
 import {
+  useDispatchWithCallId,
   useFetchSelectedMachines,
   useHasSelection,
   useCanAddVLAN,
@@ -418,6 +419,31 @@ describe("machine hook utils", () => {
       expect(actual.payload.params.filter).toStrictEqual(
         selectedToFilters(selectedMachines)
       );
+    });
+  });
+
+  describe("useDispatchWithCallId", () => {
+    const generateWrapper =
+      (store: MockStoreEnhanced<unknown>) =>
+      ({ children }: { children?: ReactNode }) =>
+        <Provider store={store}>{children}</Provider>;
+
+    it("adds a callId to redux dispatch function", async () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      const store = mockStore(state);
+      const { result } = renderHook(() => useDispatchWithCallId(), {
+        wrapper: generateWrapper(store),
+      });
+      const { dispatch } = result.current;
+      const testAction = { type: "test" };
+      dispatch(testAction);
+      const actual = store
+        .getActions()
+        .find((action) => action.type === testAction.type);
+      expect(actual).toStrictEqual({
+        type: "test",
+        meta: { callId: "mocked-nanoid" },
+      });
     });
   });
 

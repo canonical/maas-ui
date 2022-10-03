@@ -33,6 +33,8 @@ export const ReleaseForm = ({
   errors,
   machines,
   processingCount,
+  selectedCount,
+  selectedFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -70,24 +72,35 @@ export const ReleaseForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         const { enableErase, quickErase, secureErase } = values;
-        machines.forEach((machine) => {
+        if (selectedFilter) {
           dispatch(
             machineActions.release({
               erase: enableErase,
               quick_erase: enableErase && quickErase,
               secure_erase: enableErase && secureErase,
-              system_id: machine.system_id,
+              filter: selectedFilter,
             })
           );
-        });
+        } else {
+          machines?.forEach((machine) => {
+            dispatch(
+              machineActions.release({
+                erase: enableErase,
+                quick_erase: enableErase && quickErase,
+                secure_erase: enableErase && secureErase,
+                system_id: machine.system_id,
+              })
+            );
+          });
+        }
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machines.length}
+      selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={ReleaseSchema}
     >
       <Strip shallow>
-        <ReleaseFormFields machines={machines} />
+        <ReleaseFormFields machines={machines ?? []} />
       </Strip>
     </ActionForm>
   ) : (

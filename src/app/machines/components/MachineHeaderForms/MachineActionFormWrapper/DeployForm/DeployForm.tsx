@@ -45,6 +45,8 @@ export const DeployForm = ({
   errors,
   machines,
   processingCount,
+  selectedCount,
+  selectedFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -120,13 +122,13 @@ export const DeployForm = ({
             "Cloud-init user data"
           );
         }
-        machines.forEach((machine) => {
+        if (selectedFilter) {
           dispatch(
             machineActions.deploy({
               distro_series: values.release,
               hwe_kernel: values.kernel,
               osystem: values.oSystem,
-              system_id: machine.system_id,
+              filter: selectedFilter,
               ...(values.enableHwSync && { enable_hw_sync: true }),
               ...(values.vmHostType === PodType.LXD && {
                 register_vmhost: true,
@@ -137,11 +139,30 @@ export const DeployForm = ({
               ...(hasUserData && { user_data: values.userData }),
             })
           );
-        });
+        } else {
+          machines?.forEach((machine) => {
+            dispatch(
+              machineActions.deploy({
+                distro_series: values.release,
+                hwe_kernel: values.kernel,
+                osystem: values.oSystem,
+                system_id: machine.system_id,
+                ...(values.enableHwSync && { enable_hw_sync: true }),
+                ...(values.vmHostType === PodType.LXD && {
+                  register_vmhost: true,
+                }),
+                ...(values.vmHostType === PodType.VIRSH && {
+                  install_kvm: true,
+                }),
+                ...(hasUserData && { user_data: values.userData }),
+              })
+            );
+          });
+        }
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machines.length}
+      selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={DeploySchema}
     >
       <DeployFormFields />

@@ -18,6 +18,7 @@ import {
 describe("machine reducer", () => {
   it("should return the initial state", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
+      actions: {},
       active: null,
       errors: null,
       counts: {},

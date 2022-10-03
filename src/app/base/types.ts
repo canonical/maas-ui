@@ -68,7 +68,6 @@ export type DataTestElement<E> = E & { "data-testid"?: string };
 export type CommonActionFormProps<E = null> = {
   clearHeaderContent: ClearHeaderContent;
   errors?: APIError<E>;
-  processingCount: number;
   viewingDetails: boolean;
 };
 
@@ -81,6 +80,10 @@ type UsabillaConfig =
 export type UsabillaLive = (type: string, config?: UsabillaConfig) => void;
 
 export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
+export type ActionState = {
+  status: ActionStatuses;
+  errors: APIError;
+};
 
 export type ModelAction<PK> = {
   [ACTION_STATUS.error]: PK[];

@@ -24,6 +24,7 @@ export const DeleteForm = <E,>({
   nodes,
   onSubmit,
   processingCount,
+  selectedCount,
   redirectURL,
   viewingDetails,
 }: Props<E>): JSX.Element => {
@@ -55,16 +56,16 @@ export const DeleteForm = <E,>({
         } action form`,
         label: "Delete",
       }}
-      onSubmit={() => onSubmit()}
+      onSubmit={onSubmit}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={nodes.length}
+      selectedCount={nodes ? nodes.length : selectedCount ?? 0}
       submitAppearance="negative"
     >
       <NodeActionConfirmationText
         action={NodeActions.DELETE}
         modelName={modelName}
-        nodes={nodes}
+        selectedCount={nodes ? nodes.length : selectedCount ?? 0}
       />
     </ActionForm>
   );

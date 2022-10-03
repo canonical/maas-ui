@@ -42,6 +42,7 @@ export const SetZoneForm = <E,>({
   onSubmit,
   processingCount,
   viewingDetails,
+  selectedCount,
 }: Props<E>): JSX.Element => {
   return (
     <ActionForm<SetZoneFormValues, E>
@@ -49,7 +50,7 @@ export const SetZoneForm = <E,>({
       cleanup={cleanup}
       errors={errors}
       initialValues={{
-        zone: getInitialZoneValue(nodes),
+        zone: nodes ? getInitialZoneValue(nodes) : "",
       }}
       modelName={modelName}
       onCancel={clearHeaderContent}
@@ -67,7 +68,7 @@ export const SetZoneForm = <E,>({
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={nodes.length}
+      selectedCount={nodes ? nodes.length : selectedCount ?? 0}
       validationSchema={SetZoneSchema}
     >
       <Row>

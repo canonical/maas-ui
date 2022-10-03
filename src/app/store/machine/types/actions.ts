@@ -55,6 +55,7 @@ export type BaseMachineActionParams =
   | BaseNodeActionParams
   | {
       filter: FetchFilters;
+      callId?: string;
     };
 
 export type CloneParams = BaseMachineActionParams & {
