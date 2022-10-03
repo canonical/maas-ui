@@ -26,6 +26,8 @@ export const MarkBrokenForm = ({
   errors,
   machines,
   processingCount,
+  selectedCount,
+  selectedFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -55,21 +57,32 @@ export const MarkBrokenForm = ({
       }}
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
-        machines.forEach((machine) => {
+        if (selectedFilter) {
           dispatch(
             machineActions.markBroken({
               message: values.comment,
-              system_id: machine.system_id,
+              filter: selectedFilter,
             })
           );
-        });
+        } else {
+          machines?.forEach((machine) => {
+            dispatch(
+              machineActions.markBroken({
+                message: values.comment,
+                system_id: machine.system_id,
+              })
+            );
+          });
+        }
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machines.length}
+      selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={MarkBrokenSchema}
     >
-      <MarkBrokenFormFields selectedCount={machines.length} />
+      <MarkBrokenFormFields
+        selectedCount={machines ? machines.length : selectedCount ?? 0}
+      />
     </ActionForm>
   );
 };

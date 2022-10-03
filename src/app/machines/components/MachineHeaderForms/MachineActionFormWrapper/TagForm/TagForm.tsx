@@ -33,6 +33,8 @@ export const TagForm = ({
   errors,
   machines,
   processingCount,
+  selectedCount,
+  selectedFilter,
   viewingDetails,
   viewingMachineConfig = false,
 }: Props): JSX.Element => {
@@ -73,24 +75,42 @@ export const TagForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         if (values.added.length) {
-          machines.forEach((machine) => {
+          if (selectedFilter) {
             dispatch(
               machineActions.tag({
-                system_id: machine.system_id,
+                filter: selectedFilter,
                 tags: values.added.map((id) => Number(id)),
               })
             );
-          });
+          } else {
+            machines?.forEach((machine) => {
+              dispatch(
+                machineActions.tag({
+                  system_id: machine.system_id,
+                  tags: values.added.map((id) => Number(id)),
+                })
+              );
+            });
+          }
         }
         if (values.removed.length) {
-          machines.forEach((machine) => {
+          if (selectedFilter) {
             dispatch(
               machineActions.untag({
-                system_id: machine.system_id,
+                filter: selectedFilter,
                 tags: values.removed.map((id) => Number(id)),
               })
             );
-          });
+          } else {
+            machines?.forEach((machine) => {
+              dispatch(
+                machineActions.untag({
+                  system_id: machine.system_id,
+                  tags: values.removed.map((id) => Number(id)),
+                })
+              );
+            });
+          }
         }
       }}
       onSuccess={() => {
@@ -100,13 +120,13 @@ export const TagForm = ({
         );
       }}
       processingCount={processingCount}
-      selectedCount={machines.length}
+      selectedCount={machines ? machines.length : selectedCount ?? 0}
       showProcessingCount={!viewingMachineConfig}
       submitLabel="Save"
       validationSchema={TagFormSchema}
     >
       <TagFormFields
-        machines={machines}
+        machines={machines || []}
         newTags={newTags}
         setNewTags={setNewTags}
         viewingDetails={viewingDetails}

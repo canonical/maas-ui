@@ -131,8 +131,8 @@ const getTakeActionLinks = (
               </div>
             ),
             "data-testid": `action-link-${action}`,
-            // When not showing the counts the actions should always be enabled.
-            disabled: (showCount && count === 0) || false,
+            // When nodes are not provided actions should always be enabled.
+            disabled: nodes ? count === 0 : false,
             onClick: () => onActionClick(action),
           });
         }

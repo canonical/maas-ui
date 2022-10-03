@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 import { usePrevious } from "@canonical/react-components/dist/hooks";
+import type { AnyAction } from "@reduxjs/toolkit";
 import { nanoid } from "@reduxjs/toolkit";
 import fastDeepEqual from "fast-deep-equal";
 import { useDispatch, useSelector } from "react-redux";
@@ -40,6 +41,37 @@ import {
 } from "app/store/utils";
 import vlanSelectors from "app/store/vlan/selectors";
 import { isId } from "app/utils";
+
+export const useDispatchWithCallId = <A extends AnyAction>(): {
+  callId: string | null;
+  dispatch: (args: A) => A & { meta: { callId: string } };
+} => {
+  const [callId, setCallId] = useState<string | null>(null);
+  const dispatch = useDispatch();
+
+  const handleDispatch = useCallback(
+    (args: A) => {
+      const callId = nanoid();
+      setCallId(callId);
+      return dispatch({ ...args, meta: { ...args.meta, callId } });
+    },
+    [dispatch, setCallId]
+  );
+
+  useEffect(() => {
+    return () => {
+      if (callId) {
+        dispatch(machineActions.removeRequest(callId));
+      }
+    };
+  }, [callId, dispatch]);
+
+  return {
+    callId,
+    dispatch: (args: A) =>
+      handleDispatch({ ...args, meta: { ...args.meta, callId } }),
+  };
+};
 
 export const useMachineSelectedCount = (): {
   selectedCount: number;

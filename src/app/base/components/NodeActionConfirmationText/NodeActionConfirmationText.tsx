@@ -1,12 +1,12 @@
-import type { Node, NodeActions } from "app/store/types/node";
+import type { NodeActions } from "app/store/types/node";
 import { getNodeActionLabel } from "app/store/utils";
 
 const NodeActionConfirmationText = ({
-  nodes,
+  selectedCount,
   action,
   modelName,
 }: {
-  nodes: Node[];
+  selectedCount: number;
   action: NodeActions;
   modelName: string;
 }): JSX.Element => (
@@ -14,7 +14,7 @@ const NodeActionConfirmationText = ({
     <p>
       Are you sure you want to{" "}
       {getNodeActionLabel(
-        nodes.length > 1 ? `${nodes.length} ${modelName}s` : nodes[0].fqdn,
+        selectedCount > 1 ? `${selectedCount} ${modelName}s` : `a ${modelName}`,
         action,
         false
       ).toLowerCase()}

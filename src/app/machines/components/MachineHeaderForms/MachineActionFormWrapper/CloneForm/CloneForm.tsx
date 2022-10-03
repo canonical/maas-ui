@@ -57,7 +57,7 @@ export const CloneForm = ({
     null
   );
   const [showResults, setShowResults] = useState(false);
-  const destinations = machines.map((machine) => machine.system_id);
+  const destinations = machines?.map((machine) => machine.system_id);
 
   // Run cleanup function here rather than in the ActionForm otherwise errors
   // get cleared before the results are shown.
@@ -70,7 +70,7 @@ export const CloneForm = ({
   return showResults ? (
     <CloneResults
       closeForm={clearHeaderContent}
-      destinations={destinations}
+      destinations={destinations || []}
       setSearchFilter={setSearchFilter}
       sourceMachine={selectedMachine}
       viewingDetails={viewingDetails}
@@ -109,7 +109,7 @@ export const CloneForm = ({
         dispatch(machineActions.cleanup());
         dispatch(
           machineActions.clone({
-            destinations,
+            destinations: destinations ?? [],
             interfaces: values.interfaces,
             storage: values.storage,
             system_id: values.source,
@@ -118,7 +118,7 @@ export const CloneForm = ({
       }}
       onSuccess={() => setShowResults(true)}
       processingCount={processingCount}
-      selectedCount={destinations.length}
+      selectedCount={destinations?.length ?? 0}
       validationSchema={CloneFormSchema}
     >
       <CloneFormFields

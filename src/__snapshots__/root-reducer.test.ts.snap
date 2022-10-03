@@ -201,6 +201,7 @@ Object {
     "saving": false,
   },
   "machine": Object {
+    "actions": Object {},
     "active": null,
     "counts": Object {},
     "details": Object {},

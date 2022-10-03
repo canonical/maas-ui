@@ -5,6 +5,7 @@ import { Spinner, Strip } from "@canonical/react-components";
 import type { FormikFormProps } from "app/base/components/FormikForm";
 import FormikForm from "app/base/components/FormikForm";
 import { useProcessing } from "app/base/hooks";
+import type { ActionState } from "app/base/types";
 import { getNodeActionLabel } from "app/store/utils";
 
 const getLabel = (
@@ -37,10 +38,11 @@ export type Props<V, E = null> = Omit<
   actionName: string;
   loaded?: boolean;
   modelName: string;
-  processingCount: number;
+  processingCount?: number;
   selectedCount: number;
   showProcessingCount?: boolean;
   submitLabel?: string;
+  actionStatus?: ActionState["status"];
 };
 
 export enum Labels {
@@ -59,6 +61,7 @@ const ActionForm = <V, E = null>({
   selectedCount,
   showProcessingCount = true,
   submitLabel,
+  actionStatus,
   ...formikFormProps
 }: Props<V, E>): JSX.Element | null => {
   const [selectedOnSubmit, setSelectedOnSubmit] = useState(selectedCount);
@@ -74,12 +77,24 @@ const ActionForm = <V, E = null>({
       </Strip>
     );
   }
+  // TODO: remove processingComplete once actionStatus has been implemented across all forms
+  // github.com/canonical/app-tribe/issues/1289
+  const statusProps = actionStatus
+    ? {
+        saving: actionStatus === "loading",
+        saved: actionStatus === "success",
+        errors,
+      }
+    : {
+        saved: processingComplete,
+        saving: !!processingCount && processingCount > 0,
+        errors,
+      };
 
   return (
     <FormikForm<V, E>
       buttonsAlign="right"
       buttonsBordered={buttonsBordered}
-      errors={errors}
       onSubmit={(values?, formikHelpers?) => {
         onSubmit(values, formikHelpers);
         // Set selected count in component state once form is submitted, so
@@ -87,8 +102,6 @@ const ActionForm = <V, E = null>({
         // selectedCount prop, e.g. unselecting or deleting items.
         setSelectedOnSubmit(selectedCount);
       }}
-      saved={processingComplete}
-      saving={processingCount > 0}
       savingLabel={
         showProcessingCount
           ? `${getLabel(
@@ -102,6 +115,7 @@ const ActionForm = <V, E = null>({
       submitLabel={
         submitLabel ?? getLabel(modelName, actionName, selectedCount)
       }
+      {...statusProps}
       {...formikFormProps}
     >
       {children}

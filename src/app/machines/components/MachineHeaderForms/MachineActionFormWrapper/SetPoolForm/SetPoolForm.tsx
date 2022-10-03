@@ -27,6 +27,8 @@ export const SetPoolForm = ({
   errors,
   machines,
   processingCount,
+  selectedCount,
+  selectedFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -72,21 +74,30 @@ export const SetPoolForm = ({
         if (values.poolSelection === "create") {
           dispatch(
             resourcePoolActions.createWithMachines({
-              machineIDs: machines.map(({ system_id }) => system_id),
+              machineIDs: machines?.map(({ system_id }) => system_id) || [],
               pool: values,
             })
           );
         } else {
           const pool = resourcePools.find((pool) => pool.name === values.name);
           if (pool) {
-            machines.forEach((machine) => {
+            if (selectedFilter) {
               dispatch(
                 machineActions.setPool({
                   pool_id: pool.id,
-                  system_id: machine.system_id,
+                  filter: selectedFilter,
                 })
               );
-            });
+            } else {
+              machines?.forEach((machine) => {
+                dispatch(
+                  machineActions.setPool({
+                    pool_id: pool.id,
+                    system_id: machine.system_id,
+                  })
+                );
+              });
+            }
           }
         }
         // Store the values in case there are errors and the form needs to be
@@ -95,7 +106,7 @@ export const SetPoolForm = ({
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machines.length}
+      selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={SetPoolSchema}
     >
       <SetPoolFormFields />

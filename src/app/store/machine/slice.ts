@@ -397,7 +397,7 @@ const statusHandlers = generateStatusHandlers<
 const generateActionParams = <P extends BaseMachineActionParams>(
   action: NodeActions
 ) => ({
-  prepare: (params: P) => {
+  prepare: (params: P, callId?: string) => {
     let actionParams: {
       action: NodeActions;
       extra: Omit<P, "filter"> | Omit<P, "system_id">;
@@ -423,6 +423,7 @@ const generateActionParams = <P extends BaseMachineActionParams>(
       meta: {
         model: MachineMeta.MODEL,
         method: "action",
+        ...(callId ? { callId } : {}),
       },
       payload: {
         params: actionParams,
@@ -438,6 +439,7 @@ const machineSlice = createSlice({
   name: MachineMeta.MODEL,
   initialState: {
     ...genericInitialState,
+    actions: {},
     active: null,
     counts: {},
     details: {},
@@ -1557,6 +1559,8 @@ const machineSlice = createSlice({
             delete state.lists[callId];
           } else if (callId in state.counts) {
             delete state.counts[callId];
+          } else if (callId in state.actions) {
+            delete state.actions[callId];
           }
         }
       },

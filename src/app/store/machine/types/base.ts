@@ -1,7 +1,7 @@
 import type { FetchFilters, FetchGroupKey } from "./actions";
 import type { MachineMeta } from "./enum";
 
-import type { APIError, Seconds } from "app/base/types";
+import type { ActionState, APIError, Seconds } from "app/base/types";
 import type { CloneError } from "app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneResults/CloneResults";
 import type { CertificateMetadata, PowerType } from "app/store/general/types";
 import type { PowerState, StorageLayout } from "app/store/types/enum";
@@ -331,7 +331,10 @@ export type SelectedMachines =
     }
   | { filter: FetchFilters };
 
+export type MachineStateActions = Record<string, ActionState>;
+
 export type MachineState = {
+  actions: MachineStateActions;
   active: Machine[MachineMeta.PK] | null;
   counts: MachineStateCounts;
   details: MachineStateDetails;

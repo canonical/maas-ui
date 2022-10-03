@@ -53,6 +53,7 @@ export const CommissionForm = ({
   errors,
   machines,
   processingCount,
+  selectedCount,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -142,7 +143,7 @@ export const CommissionForm = ({
         const testingScriptsParam = testingScripts.length
           ? testingScripts.map((script) => script.name)
           : [ScriptName.NONE];
-        machines.forEach((machine) => {
+        machines?.forEach((machine) => {
           dispatch(
             machineActions.commission({
               commissioning_scripts: commissioningScriptsParam,
@@ -159,7 +160,7 @@ export const CommissionForm = ({
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machines.length}
+      selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={CommissionFormSchema}
     >
       <CommissionFormFields

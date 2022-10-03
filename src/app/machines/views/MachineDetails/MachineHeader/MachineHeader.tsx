@@ -73,6 +73,7 @@ const MachineHeader = ({
           hasSelection={true}
           key="action-dropdown"
           nodeDisplay="machine"
+          nodes={[machine]}
           onActionClick={(action) => {
             const view = Object.values(MachineHeaderViews).find(
               ([, actionName]) => actionName === action
