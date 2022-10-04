@@ -62,6 +62,7 @@ import type {
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
 
+import { ACTION_STATUS } from "app/base/constants";
 import type { ScriptResult } from "app/store/scriptresult/types";
 import type { UpdateInterfaceParams } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
@@ -386,6 +387,39 @@ const statusHandlers = generateStatusHandlers<
   ACTIONS.map((action) => {
     const handler: StatusHandlers<MachineState, Machine> = {
       status: kebabToCamelCase(action.name),
+      start: (state, action) => {
+        if (action.meta.callId) {
+          if (action.meta.callId in state.actions) {
+            state.actions[action.meta.callId].status = ACTION_STATUS.loading;
+          } else {
+            state.actions[action.meta.callId] = {
+              status: ACTION_STATUS.loading,
+              errors: null,
+              count: 0,
+            };
+          }
+        }
+      },
+      success: (state, action) => {
+        if (action.meta.callId) {
+          if (action.meta.callId in state.actions) {
+            const actionsItem = state.actions[action.meta.callId];
+            actionsItem.status = ACTION_STATUS.success;
+            if (typeof action.payload === "number") {
+              actionsItem.count = action.payload;
+            }
+          }
+        }
+      },
+      error: (state, action) => {
+        if (action.meta.callId) {
+          if (action.meta.callId in state.actions) {
+            const actionsItem = state.actions[action.meta.callId];
+            actionsItem.status = "error";
+            actionsItem.errors = action.payload;
+          }
+        }
+      },
       method: "action",
       statusKey: action.status,
     };
