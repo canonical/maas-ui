@@ -5,7 +5,6 @@ import type {
   SliceCaseReducers,
 } from "@reduxjs/toolkit";
 
-import { ACTION_STATUS } from "app/base/constants";
 import type { KeysOfUnion } from "app/base/types";
 import type { BootResourceMeta } from "app/store/bootresource/types";
 import type { ConfigMeta } from "app/store/config/types";
@@ -426,14 +425,7 @@ export const generateStatusHandlers = <
           ) => {
             // Call the reducer handler if supplied.
             status.start && status.start(state, action);
-            if (action.meta.callId && "actions" in state) {
-              state.actions[action.meta.callId] = {
-                status: ACTION_STATUS.idle,
-                errors: null,
-              };
-              const actionsItem = state.actions[action.meta.callId];
-              actionsItem.status = "loading";
-            } else {
+            if (action.meta.item) {
               const statusItem =
                 state.statuses[String(action.meta.item[indexKey])];
               const statusKey = status.statusKey;
@@ -457,10 +449,7 @@ export const generateStatusHandlers = <
           ) => {
             // Call the reducer handler if supplied.
             status.success && status.success(state, action);
-            if (action.meta.callId && "actions" in state) {
-              const actionsItem = state.actions[action.meta.callId];
-              actionsItem.status = "success";
-            } else {
+            if (action.meta.item) {
               const statusItem =
                 state.statuses[String(action.meta.item[indexKey])];
               // Sometimes the server will respond with "machine/deleteNotify"
@@ -488,19 +477,16 @@ export const generateStatusHandlers = <
             // Call the reducer handler if supplied.
             status.error && status.error(state, action);
             state.errors = action.payload;
-            if (action.meta.callId && "actions" in state) {
-              const actionsItem = state.actions[action.meta.callId];
-              actionsItem.status = "error";
-              actionsItem.errors = action.payload;
-            }
             if (setErrors) {
               state = setErrors(state, action, status.status);
             }
-            const statusItem =
-              state.statuses[String(action.meta.item[indexKey])];
-            const statusKey = status.statusKey;
-            if (objectHasKey(statusKey as string, statusItem)) {
-              statusItem[statusKey] = false;
+            if (action.meta.item) {
+              const statusItem =
+                state.statuses[String(action.meta.item[indexKey])];
+              const statusKey = status.statusKey;
+              if (objectHasKey(statusKey as string, statusItem)) {
+                statusItem[statusKey] = false;
+              }
             }
           },
         },

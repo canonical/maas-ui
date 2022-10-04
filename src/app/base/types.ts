@@ -83,6 +83,7 @@ export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
 export type ActionState = {
   status: ActionStatuses;
   errors: APIError;
+  count: number;
 };
 
 export type ModelAction<PK> = {
