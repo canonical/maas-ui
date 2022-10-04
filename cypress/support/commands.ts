@@ -1,8 +1,10 @@
 import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
-import { nanoid } from "nanoid";
+import { customAlphabet } from "nanoid";
 import { generateMAASURL, generateMac } from "../e2e/utils";
 import type { A11yPageContext } from "./e2e";
+
+const nanoid = customAlphabet("1234567890abcdefghi", 10);
 
 Cypress.Commands.add("login", (options) => {
   const defaultOptions = {
