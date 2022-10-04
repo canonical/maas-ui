@@ -15,7 +15,7 @@ import type {
 import { selectedToFilters } from "./common";
 
 import { useCanEdit } from "app/base/hooks";
-import type { APIError } from "app/base/types";
+import type { ActionState, APIError } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import {
   architectures as architecturesSelectors,
@@ -46,7 +46,7 @@ export const useDispatchWithCallId = <A extends AnyAction>(): {
   callId: string | null;
   dispatch: (args: A) => A & { meta: { callId: string } };
 } => {
-  const [callId, setCallId] = useState<string | null>(null);
+  const [callId, setCallId] = useState<string | null>(nanoid());
   const dispatch = useDispatch();
 
   const handleDispatch = useCallback(
@@ -70,6 +70,24 @@ export const useDispatchWithCallId = <A extends AnyAction>(): {
     callId,
     dispatch: (args: A) =>
       handleDispatch({ ...args, meta: { ...args.meta, callId } }),
+  };
+};
+
+export const useMachineActionDispatch = <A extends AnyAction>(): {
+  dispatch: (args: A) => void;
+  actionStatus: ActionState["status"];
+  actionErrors: ActionState["errors"];
+} => {
+  const { callId: dispatchCallId, dispatch: dispatchWithCallId } =
+    useDispatchWithCallId();
+  const actionState = useSelector((state: RootState) =>
+    machineSelectors.getActionState(state, dispatchCallId)
+  );
+  const actionStatus = actionState?.status || "idle";
+  return {
+    dispatch: dispatchWithCallId,
+    actionStatus: actionStatus,
+    actionErrors: actionState?.errors || null,
   };
 };
 

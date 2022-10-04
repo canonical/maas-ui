@@ -28,6 +28,7 @@ export {
   ipRangeState,
   licenseKeysState,
   locationState,
+  machineActionState,
   machineActionsState,
   machineEventError,
   machineFilterGroup,

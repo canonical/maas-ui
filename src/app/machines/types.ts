@@ -25,21 +25,13 @@ export type MachineHeaderContent = HeaderContent<
 
 export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
 
-export type MachineActionVariableProps =
-  | {
-      machines?: Machine[];
-      processingCount?: number;
-      selectedFilter?: never;
-      selectedCount?: never;
-      selectedCountLoading?: never;
-    }
-  | {
-      machines?: never;
-      selectedFilter?: FetchFilters | null;
-      selectedCount?: number;
-      processingCount?: never;
-      selectedCountLoading?: boolean;
-    };
+export type MachineActionVariableProps = {
+  machines?: Machine[];
+  selectedFilter?: FetchFilters | null;
+  selectedCount?: number;
+  processingCount?: number;
+  selectedCountLoading?: boolean;
+};
 
 export type MachineActionFormProps = Omit<
   CommonActionFormProps<MachineEventErrors>,
