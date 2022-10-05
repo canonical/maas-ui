@@ -45,6 +45,9 @@ context("Machine details", () => {
   it("displays machine commissioning details", () => {
     const { name } = completeAddMachineForm();
 
+    cy.findByLabelText("Search").type(name);
+    cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
+
     cy.findByRole("link", { name: new RegExp(name, "i") }).click();
 
     cy.waitForPageToLoad();
