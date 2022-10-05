@@ -1,7 +1,6 @@
 import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
-import { nanoid } from "nanoid";
-import { generateMAASURL, generateMac } from "../e2e/utils";
+import { generateMAASURL, generateMac, generateName } from "../e2e/utils";
 import type { A11yPageContext } from "./e2e";
 
 Cypress.Commands.add("login", (options) => {
@@ -37,7 +36,7 @@ Cypress.Commands.add("loginNonAdmin", () => {
   });
 });
 
-Cypress.Commands.add("addMachine", (hostname = `cypress-${nanoid()}`) => {
+Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.visit(generateMAASURL("/machines"));
   cy.get("[data-testid='add-hardware-dropdown'] button").click();
   cy.get(".p-contextual-menu__link").contains("Machine").click();
