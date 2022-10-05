@@ -21,6 +21,9 @@ context("Machine details", () => {
   };
 
   it("hides the subnet column on small screens", () => {
+    cy.waitForPageToLoad();
+    cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
+
     cy.findByRole("grid").within(() => {
       cy.findAllByRole("gridcell", { name: /FQDN/i })
         .first()
@@ -41,6 +44,9 @@ context("Machine details", () => {
 
   it("displays machine commissioning details", () => {
     const { name } = completeAddMachineForm();
+
+    cy.findByLabelText("Search").type(name);
+    cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
 
     cy.findByRole("link", { name: new RegExp(name, "i") }).click();
 
