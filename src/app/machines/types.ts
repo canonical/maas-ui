@@ -28,7 +28,7 @@ export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
 export type MachineActionVariableProps = {
   machines?: Machine[];
   selectedMachines?: SelectedMachines | null;
-  selectedCount?: number;
+  selectedCount?: number | null;
   processingCount?: number;
   selectedCountLoading?: boolean;
 };

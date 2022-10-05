@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -14,6 +15,8 @@ import {
   machineDetails as machineDetailsFactory,
   machineInterface as nicFactory,
   machineState as machineStateFactory,
+  machineStateList,
+  machineStateListGroup,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   nodeDisk as diskFactory,
@@ -24,6 +27,7 @@ import { submitFormikForm, waitForComponentToPaint } from "testing/utils";
 const mockStore = configureStore();
 
 describe("CloneForm", () => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   it("should be submittable only when a machine and cloning config are selected", async () => {
     const machines = [
       machineFactory({ system_id: "abc123" }),
@@ -39,6 +43,17 @@ describe("CloneForm", () => {
         items: machines,
         loaded: true,
         selected: ["abc123"],
+
+        lists: {
+          "123456": machineStateList({
+            groups: [
+              machineStateListGroup({
+                items: [machines[1].system_id],
+              }),
+            ],
+            loaded: true,
+          }),
+        },
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
           def456: machineStatusFactory(),
@@ -151,8 +166,9 @@ describe("CloneForm", () => {
           <CompatRouter>
             <CloneForm
               clearHeaderContent={jest.fn()}
-              machines={[machines[0], machines[1]]}
-              processingCount={0}
+              selectedMachines={{
+                items: [machines[0].system_id, machines[1].system_id],
+              }}
               viewingDetails={false}
             />
           </CompatRouter>
@@ -166,12 +182,15 @@ describe("CloneForm", () => {
       storage: false,
     });
 
-    const expectedAction = machineActions.clone({
-      destinations: ["abc123", "def456"],
-      interfaces: true,
-      storage: false,
-      system_id: "ghi789",
-    });
+    const expectedAction = machineActions.clone(
+      {
+        filter: { id: ["abc123", "def456"] },
+        interfaces: true,
+        storage: false,
+        system_id: "ghi789",
+      },
+      "123456"
+    );
     const actualAction = store
       .getActions()
       .find((action) => action.type === expectedAction.type);

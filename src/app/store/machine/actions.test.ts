@@ -1137,7 +1137,7 @@ describe("machine actions", () => {
   it("can handle cloning a machine", () => {
     expect(
       actions.clone({
-        destinations: ["def456", "ghi789"],
+        filter: { id: ["def456", "ghi789"] },
         interfaces: true,
         storage: false,
         system_id: "abc123",
@@ -1151,8 +1151,8 @@ describe("machine actions", () => {
       payload: {
         params: {
           action: NodeActions.CLONE,
+          filter: { id: ["def456", "ghi789"] },
           extra: {
-            destinations: ["def456", "ghi789"],
             interfaces: true,
             storage: false,
           },
@@ -1165,10 +1165,10 @@ describe("machine actions", () => {
   it("can handle cloning a selection of machines", () => {
     expect(
       actions.clone({
-        destinations: ["def456", "ghi789"],
+        system_id: "abc123",
         interfaces: true,
         storage: false,
-        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        filter: { id: ["def456", "ghi789"] },
       })
     ).toEqual({
       type: "machine/clone",
@@ -1178,13 +1178,13 @@ describe("machine actions", () => {
       },
       payload: {
         params: {
+          system_id: "abc123",
           action: NodeActions.CLONE,
           extra: {
-            destinations: ["def456", "ghi789"],
             interfaces: true,
             storage: false,
           },
-          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+          filter: { id: ["def456", "ghi789"] },
         },
       },
     });

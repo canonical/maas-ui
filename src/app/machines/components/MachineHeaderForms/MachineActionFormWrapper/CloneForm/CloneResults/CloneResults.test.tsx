@@ -40,7 +40,7 @@ describe("CloneResults", () => {
           <CompatRouter>
             <CloneResults
               closeForm={jest.fn()}
-              destinations={["def456", "ghi789"]}
+              selectedCount={2}
               sourceMachine={machine}
             />
           </CompatRouter>
@@ -72,7 +72,7 @@ describe("CloneResults", () => {
           <CompatRouter>
             <CloneResults
               closeForm={jest.fn()}
-              destinations={["def456", "ghi789"]}
+              selectedCount={2}
               sourceMachine={machine}
             />
           </CompatRouter>
@@ -85,9 +85,6 @@ describe("CloneResults", () => {
     expect(wrapper.find("[data-testid='error-description']").text()).toBe(
       "Cloning was unsuccessful: it didn't work"
     );
-    expect(
-      wrapper.find("Link[data-testid='error-filter-link']").prop("to")
-    ).toBe("/machines?system_id=def456%2Cghi789");
   });
 
   it("handles non-invalid item destination errors", () => {
@@ -115,7 +112,7 @@ describe("CloneResults", () => {
           <CompatRouter>
             <CloneResults
               closeForm={jest.fn()}
-              destinations={["def456", "ghi789"]}
+              selectedCount={2}
               sourceMachine={machine}
             />
           </CompatRouter>
@@ -137,8 +134,8 @@ describe("CloneResults", () => {
           destinations: [
             {
               code: CloneErrorCodes.ITEM_INVALID,
-              message: "Invalid item",
-              system_id: "def456",
+              message:
+                "Machine 1 is invalid: Select a valid choice. def456 is not one of the available choices.",
             },
           ],
         },
@@ -155,7 +152,7 @@ describe("CloneResults", () => {
           <CompatRouter>
             <CloneResults
               closeForm={jest.fn()}
-              destinations={["def456", "ghi789"]}
+              selectedCount={2}
               sourceMachine={machine}
             />
           </CompatRouter>
@@ -207,7 +204,7 @@ describe("CloneResults", () => {
           <CompatRouter>
             <CloneResults
               closeForm={jest.fn()}
-              destinations={["def456", "ghi789"]}
+              selectedCount={2}
               sourceMachine={machine}
             />
           </CompatRouter>
@@ -251,7 +248,6 @@ describe("CloneResults", () => {
           <CompatRouter>
             <CloneResults
               closeForm={jest.fn()}
-              destinations={["def456", "ghi789"]}
               setSearchFilter={setSearchFilter}
               sourceMachine={machine}
             />
@@ -294,7 +290,6 @@ describe("CloneResults", () => {
           <CompatRouter>
             <CloneResults
               closeForm={jest.fn()}
-              destinations={["def456", "ghi789"]}
               setSearchFilter={setSearchFilter}
               sourceMachine={machine}
               viewingDetails

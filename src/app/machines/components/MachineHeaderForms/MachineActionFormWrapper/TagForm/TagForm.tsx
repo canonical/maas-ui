@@ -85,10 +85,12 @@ export const TagForm = ({
             });
           } else {
             machines?.forEach((machine) => {
-              dispatchForSelectedMachines(machineActions.tag, {
-                system_id: machine.system_id,
-                tags: values.added.map((id) => Number(id)),
-              });
+              dispatch(
+                machineActions.tag({
+                  system_id: machine.system_id,
+                  tags: values.added.map((id) => Number(id)),
+                })
+              );
             });
           }
         }

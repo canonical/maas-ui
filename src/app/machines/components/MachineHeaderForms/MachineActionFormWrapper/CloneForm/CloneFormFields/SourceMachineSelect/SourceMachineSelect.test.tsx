@@ -1,10 +1,10 @@
-import { screen, within } from "@testing-library/react";
+import reduxToolkit from "@reduxjs/toolkit";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { Labels as SourceMachineDetailsLabel } from "./SourceMachineDetails/SourceMachineDetails";
 import SourceMachineSelect, { Label } from "./SourceMachineSelect";
 
-import { Label as MachineSelectTableLabel } from "app/base/components/MachineSelectTable/MachineSelectTable";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -14,6 +14,8 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
   machineState as machineStateFactory,
+  machineStateList,
+  machineStateListGroup,
 } from "testing/factories";
 import { renderWithMockStore } from "testing/utils";
 
@@ -22,6 +24,7 @@ describe("SourceMachineSelect", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     machines = [
       machineFactory({
         system_id: "abc123",
@@ -39,6 +42,16 @@ describe("SourceMachineSelect", () => {
     state = rootStateFactory({
       machine: machineStateFactory({
         items: machines,
+        lists: {
+          "123456": machineStateList({
+            groups: [
+              machineStateListGroup({
+                items: machines.map(({ system_id }) => system_id),
+              }),
+            ],
+            loaded: true,
+          }),
+        },
         loaded: true,
       }),
       tag: tagStateFactory({
@@ -50,73 +63,37 @@ describe("SourceMachineSelect", () => {
     });
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("shows a spinner while data is loading", () => {
     renderWithMockStore(
-      <SourceMachineSelect
-        loadingData
-        machines={machines}
-        onMachineClick={jest.fn()}
-      />,
+      <SourceMachineSelect loadingData onMachineClick={jest.fn()} />,
       { state }
     );
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
   });
 
   it("shows an error if no machines are available to select", () => {
-    renderWithMockStore(
-      <SourceMachineSelect machines={[]} onMachineClick={jest.fn()} />,
-      { state }
-    );
-    expect(
-      screen.getByRole("heading", { name: Label.NoSourceMachines })
-    ).toBeInTheDocument();
+    state.machine.lists["123456"] = machineStateList({
+      loaded: true,
+      loading: false,
+      count: 0,
+    });
+    renderWithMockStore(<SourceMachineSelect onMachineClick={jest.fn()} />, {
+      state,
+    });
+    expect(screen.getByText(Label.NoSourceMachines)).toBeInTheDocument();
   });
 
-  it("does not shows an error if machines are available to select", () => {
-    renderWithMockStore(
-      <SourceMachineSelect
-        machines={[machineFactory()]}
-        onMachineClick={jest.fn()}
-      />,
-      { state }
-    );
+  it("does not show an error if machines are available to select", () => {
+    renderWithMockStore(<SourceMachineSelect onMachineClick={jest.fn()} />, {
+      state,
+    });
     expect(
       screen.queryByRole("heading", { name: Label.NoSourceMachines })
     ).not.toBeInTheDocument();
-  });
-
-  it("can filter machines by hostname, system_id and/or tags", async () => {
-    renderWithMockStore(
-      <SourceMachineSelect machines={machines} onMachineClick={jest.fn()} />,
-      { state }
-    );
-    const searchbox = screen.getByRole("searchbox");
-    // Filter by "first" which matches the hostname of the first machine
-    await userEvent.clear(searchbox);
-    await userEvent.type(searchbox, "first");
-    let hostnameCols = screen.getAllByRole("gridcell", {
-      name: MachineSelectTableLabel.Hostname,
-    });
-    expect(hostnameCols).toHaveLength(1);
-    expect(within(hostnameCols[0]).getByText("first")).toBeInTheDocument();
-    // Filter by "def" which matches the system_id of the second machine
-    await userEvent.clear(searchbox);
-    await userEvent.type(searchbox, "def");
-    hostnameCols = screen.getAllByRole("gridcell", {
-      name: MachineSelectTableLabel.Hostname,
-    });
-    expect(hostnameCols).toHaveLength(1);
-    expect(within(hostnameCols[0]).getByText("def")).toBeInTheDocument();
-
-    // Filter by "tag" which matches the tags of the first and second machine
-    await userEvent.clear(searchbox);
-    await userEvent.type(searchbox, "tag");
-    const ownerCols = screen.getAllByRole("gridcell", {
-      name: MachineSelectTableLabel.Owner,
-    });
-    expect(ownerCols).toHaveLength(2);
-    expect(within(ownerCols[0]).getByText("tag")).toBeInTheDocument();
-    expect(within(ownerCols[1]).getByText("tag")).toBeInTheDocument();
   });
 
   it("shows the machine's details when selected", () => {
@@ -124,7 +101,6 @@ describe("SourceMachineSelect", () => {
 
     renderWithMockStore(
       <SourceMachineSelect
-        machines={machines}
         onMachineClick={jest.fn()}
         selectedMachine={selectedMachine}
       />,
@@ -142,14 +118,16 @@ describe("SourceMachineSelect", () => {
 
     renderWithMockStore(
       <SourceMachineSelect
-        machines={machines}
         onMachineClick={onMachineClick}
         selectedMachine={selectedMachine}
       />,
       { state }
     );
 
-    await userEvent.type(screen.getByRole("searchbox"), " ");
+    await userEvent.type(
+      screen.getByRole("combobox", { name: /Search/i }),
+      " "
+    );
     expect(onMachineClick).toHaveBeenCalledWith(null);
   });
 });
