@@ -50,4 +50,15 @@
     color: $color-dark !important;
     font-size: #{map-get($font-sizes, small)}rem;
   }
+
+  // Override checkbox labels when the text should not appear as
+  // disabled when the input is disabled.
+  .p-checkbox--non-disabled-label {
+    .p-checkbox__input:disabled + .p-checkbox__label {
+      opacity: 1;
+      &:before {
+        opacity: 0.33;
+      }
+    }
+  }
 }

@@ -1,88 +1,137 @@
-import type { ReactWrapper } from "enzyme";
-import { mount } from "enzyme";
+import { render, screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import NodeActionMenu from "./NodeActionMenu";
+import NodeActionMenu, { Label } from "./NodeActionMenu";
 
 import { NodeActions } from "app/store/types/node";
+import { getNodeActionTitle } from "app/store/utils";
 import { machine as machineFactory } from "testing/factories";
 
 describe("NodeActionMenu", () => {
-  const openMenu = (wrapper: ReactWrapper) =>
-    wrapper
-      .find("[data-testid='take-action-dropdown'] button")
-      .simulate("click");
+  const openMenu = async () =>
+    await userEvent.click(
+      screen.getByRole("button", { name: Label.TakeAction })
+    );
 
-  const getActionButton = (wrapper: ReactWrapper, action: NodeActions) =>
-    wrapper.find(`button[data-testid='action-link-${action}']`);
+  const getActionButton = (action: NodeActions) =>
+    screen.getByRole("button", {
+      name: new RegExp(getNodeActionTitle(action)),
+    });
 
-  const getActionCount = (wrapper: ReactWrapper, action: NodeActions) =>
-    wrapper.find(`[data-testid='action-count-${action}']`);
+  const queryActionButton = (action: NodeActions) =>
+    screen.queryByRole("button", {
+      name: new RegExp(getNodeActionTitle(action)),
+    });
 
-  it("is disabled if no nodes are provided", () => {
-    const wrapper = mount(
-      <NodeActionMenu nodes={[]} onActionClick={jest.fn()} />
+  const getActionCount = (action: NodeActions) =>
+    screen.getByTestId(`action-count-${action}`);
+
+  it("is disabled if no nodes are selected", async () => {
+    render(
+      <NodeActionMenu
+        hasSelection={false}
+        nodes={[]}
+        onActionClick={jest.fn()}
+        showCount
+      />
     );
 
     expect(
-      wrapper
-        .find('[data-testid="take-action-dropdown"] button')
-        .prop("disabled")
-    ).toBe(true);
+      screen.getByRole("button", { name: Label.TakeAction })
+    ).toBeDisabled();
   });
 
-  it("is enabled if at least one node is provided", () => {
+  it("is enabled if nodes are selected", async () => {
     const nodes = [machineFactory()];
-    const wrapper = mount(
-      <NodeActionMenu nodes={nodes} onActionClick={jest.fn()} />
+    render(
+      <NodeActionMenu
+        hasSelection
+        nodes={nodes}
+        onActionClick={jest.fn()}
+        showCount
+      />
     );
 
     expect(
-      wrapper
-        .find('[data-testid="take-action-dropdown"] button')
-        .prop("disabled")
-    ).toBe(false);
+      screen.getByRole("button", { name: Label.TakeAction })
+    ).not.toBeDisabled();
   });
 
-  it("only shows actions that can be performed by the nodes", () => {
+  it("can only shows actions that can be performed by the nodes", async () => {
     const nodes = [
       machineFactory({ actions: [NodeActions.DELETE] }),
       machineFactory({ actions: [NodeActions.SET_ZONE] }),
     ];
-    const wrapper = mount(
-      <NodeActionMenu nodes={nodes} onActionClick={jest.fn()} />
-    );
-
-    openMenu(wrapper);
-
-    expect(getActionButton(wrapper, NodeActions.DELETE).exists()).toBe(true);
-    expect(getActionButton(wrapper, NodeActions.SET_ZONE).exists()).toBe(true);
-    expect(getActionButton(wrapper, NodeActions.TEST).exists()).toBe(false);
-  });
-
-  it(`can be made to always show lifecycle actions, disabling the actions that
-      cannot be performed`, () => {
-    const nodes = [machineFactory({ actions: [NodeActions.DEPLOY] })];
-    const wrapper = mount(
+    render(
       <NodeActionMenu
-        alwaysShowLifecycle
+        filterActions
+        hasSelection
         nodes={nodes}
         onActionClick={jest.fn()}
+        showCount
       />
     );
 
-    openMenu(wrapper);
+    await openMenu();
 
-    expect(getActionButton(wrapper, NodeActions.DEPLOY).exists()).toBe(true);
-    expect(getActionButton(wrapper, NodeActions.DEPLOY).prop("disabled")).toBe(
-      false
-    );
-    expect(getActionButton(wrapper, NodeActions.RELEASE).exists()).toBe(true);
-    expect(getActionButton(wrapper, NodeActions.RELEASE).prop("disabled")).toBe(
-      true
-    );
+    expect(getActionButton(NodeActions.DELETE)).toBeInTheDocument();
+    expect(getActionButton(NodeActions.SET_ZONE)).toBeInTheDocument();
+    expect(queryActionButton(NodeActions.TEST)).not.toBeInTheDocument();
   });
 
-  it("correctly calculates number of nodes that can perform each action", () => {
+  it(`can be made to always show lifecycle actions, disabling the actions that
+      cannot be performed`, async () => {
+    const nodes = [machineFactory({ actions: [NodeActions.DEPLOY] })];
+    render(
+      <NodeActionMenu
+        alwaysShowLifecycle
+        hasSelection
+        nodes={nodes}
+        onActionClick={jest.fn()}
+        showCount
+      />
+    );
+
+    await openMenu();
+
+    expect(getActionButton(NodeActions.DEPLOY)).toBeInTheDocument();
+    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeDisabled();
+    expect(getActionButton(NodeActions.RELEASE)).toBeInTheDocument();
+    expect(getActionButton(NodeActions.RELEASE)).toBeDisabled();
+  });
+
+  it(`disables the actions that cannot be performed when nodes are provided`, async () => {
+    const nodes = [machineFactory({ actions: [NodeActions.DEPLOY] })];
+    render(
+      <NodeActionMenu
+        alwaysShowLifecycle
+        hasSelection
+        nodes={nodes}
+        onActionClick={jest.fn()}
+        showCount={false}
+      />
+    );
+
+    await openMenu();
+
+    expect(getActionButton(NodeActions.DEPLOY)).toBeInTheDocument();
+    expect(queryActionButton(NodeActions.DEPLOY)).not.toBeDisabled();
+    expect(getActionButton(NodeActions.RELEASE)).toBeInTheDocument();
+    expect(getActionButton(NodeActions.RELEASE)).toBeDisabled();
+  });
+
+  it("shows all actions that can be performed when nodes are not provided", async () => {
+    render(<NodeActionMenu hasSelection onActionClick={jest.fn()} />);
+    await openMenu();
+    expect(getActionButton(NodeActions.DELETE)).toBeInTheDocument();
+    expect(queryActionButton(NodeActions.DELETE)).not.toBeDisabled();
+    expect(getActionButton(NodeActions.SET_ZONE)).toBeInTheDocument();
+    expect(queryActionButton(NodeActions.SET_ZONE)).not.toBeDisabled();
+    expect(getActionButton(NodeActions.TEST)).toBeInTheDocument();
+    expect(queryActionButton(NodeActions.TEST)).not.toBeDisabled();
+  });
+
+  it("correctly calculates number of nodes that can perform each action", async () => {
     const nodes = [
       machineFactory({
         actions: [
@@ -98,137 +147,134 @@ describe("NodeActionMenu", () => {
         actions: [NodeActions.COMMISSION],
       }),
     ];
-    const wrapper = mount(
-      <NodeActionMenu nodes={nodes} onActionClick={jest.fn()} />
+    render(
+      <NodeActionMenu
+        hasSelection
+        nodes={nodes}
+        onActionClick={jest.fn()}
+        showCount
+      />
     );
 
-    openMenu(wrapper);
+    await openMenu();
 
-    expect(getActionCount(wrapper, NodeActions.COMMISSION).text()).toBe("3");
-    expect(getActionCount(wrapper, NodeActions.RELEASE).text()).toBe("2");
-    expect(getActionCount(wrapper, NodeActions.DEPLOY).text()).toBe("1");
+    expect(within(getActionCount(NodeActions.COMMISSION)).getByText("3"));
+    expect(within(getActionCount(NodeActions.RELEASE)).getByText("2"));
+    expect(within(getActionCount(NodeActions.DEPLOY)).getByText("1"));
   });
 
-  it("does not display count if only one node provided", () => {
-    const nodes = [
-      machineFactory({
-        actions: [NodeActions.DEPLOY],
-      }),
-    ];
-    const wrapper = mount(
-      <NodeActionMenu nodes={nodes} onActionClick={jest.fn()} />
-    );
-
-    openMenu(wrapper);
-
-    expect(getActionCount(wrapper, NodeActions.DEPLOY).exists()).toBe(false);
-  });
-
-  it("fires onActionClick function on action button click", () => {
+  it("fires onActionClick function on action button click", async () => {
     const nodes = [
       machineFactory({
         actions: [NodeActions.DEPLOY],
       }),
     ];
     const onActionClick = jest.fn();
-    const wrapper = mount(
-      <NodeActionMenu nodes={nodes} onActionClick={onActionClick} />
+    render(
+      <NodeActionMenu
+        hasSelection
+        nodes={nodes}
+        onActionClick={onActionClick}
+        showCount
+      />
     );
 
-    openMenu(wrapper);
-    getActionButton(wrapper, NodeActions.DEPLOY).simulate("click");
+    await openMenu();
+    await userEvent.click(getActionButton(NodeActions.DEPLOY));
 
     expect(onActionClick).toHaveBeenCalledWith(NodeActions.DEPLOY);
   });
 
-  it("can exclude actions from being shown", () => {
+  it("can exclude actions from being shown", async () => {
     const nodes = [
       machineFactory({
         actions: [NodeActions.DEPLOY, NodeActions.DELETE],
       }),
     ];
-    const wrapper = mount(
+    render(
       <NodeActionMenu
         excludeActions={[NodeActions.DELETE]}
+        hasSelection
         nodes={nodes}
         onActionClick={jest.fn()}
+        showCount
       />
     );
 
-    openMenu(wrapper);
+    await openMenu();
 
-    expect(getActionButton(wrapper, NodeActions.DEPLOY).exists()).toBe(true);
-    expect(getActionButton(wrapper, NodeActions.DELETE).exists()).toBe(false);
+    expect(getActionButton(NodeActions.DEPLOY)).toBeInTheDocument();
+    expect(queryActionButton(NodeActions.DELETE)).not.toBeInTheDocument();
   });
 
-  it("can change the display text of the nodes in the disabled tooltip", () => {
-    const wrapper = mount(
+  it("can change the display text of the nodes in the disabled tooltip", async () => {
+    render(
       <NodeActionMenu
+        hasSelection={false}
         nodeDisplay="foobar"
         nodes={[]}
         onActionClick={jest.fn()}
+        showCount
       />
     );
 
-    expect(wrapper.find("Tooltip").prop("message")).toBe(
-      "Select foobars below to perform an action."
-    );
+    expect(
+      screen.getByRole("tooltip", {
+        name: "Select foobars below to perform an action.",
+      })
+    ).toBeInTheDocument();
   });
 
-  it("can change the position of the disabled tooltip", () => {
-    const wrapper = mount(
+  it("can change the position of the disabled tooltip", async () => {
+    render(
       <NodeActionMenu
         disabledTooltipPosition="top-left"
+        hasSelection={false}
         nodes={[]}
         onActionClick={jest.fn()}
+        showCount
       />
     );
 
-    expect(wrapper.find("Tooltip").prop("position")).toBe("top-left");
-  });
-
-  it("can change the position of the menu dropdown", () => {
-    const wrapper = mount(
-      <NodeActionMenu
-        menuPosition="left"
-        nodes={[]}
-        onActionClick={jest.fn()}
-      />
+    expect(screen.getByTestId("tooltip-portal")).toHaveClass(
+      "p-tooltip--top-left"
     );
-
-    expect(wrapper.find("ContextualMenu").prop("position")).toBe("left");
   });
 
-  it("can change the appearance of the menu toggle", () => {
-    const wrapper = mount(
+  it("can change the appearance of the menu toggle", async () => {
+    render(
       <NodeActionMenu
+        hasSelection
         nodes={[]}
         onActionClick={jest.fn()}
+        showCount
         toggleAppearance="negative"
       />
     );
 
-    expect(wrapper.find("ContextualMenu").prop("toggleAppearance")).toBe(
-      "negative"
+    expect(screen.getByRole("button", { name: Label.TakeAction })).toHaveClass(
+      "p-button--negative"
     );
   });
 
-  it("can override action titles", () => {
+  it("can override action titles", async () => {
     const nodes = [
       machineFactory({
         actions: [NodeActions.TAG],
       }),
     ];
-    const wrapper = mount(
+    render(
       <NodeActionMenu
         getTitle={() => "Overridden"}
+        hasSelection
         nodes={nodes}
         onActionClick={jest.fn()}
+        showCount
       />
     );
-    openMenu(wrapper);
+    await openMenu();
     expect(
-      getActionButton(wrapper, NodeActions.TAG).text().includes("Overridden")
-    ).toBe(true);
+      within(screen.getByTestId("action-link-tag")).getByText(/Overridden/)
+    ).toBeInTheDocument();
   });
 });

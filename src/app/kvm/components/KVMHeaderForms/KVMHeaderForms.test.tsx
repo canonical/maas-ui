@@ -169,6 +169,7 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders machine action forms if a machine action is selected", () => {
+    state.machine.selectedMachines = { items: ["abc123"] };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -183,8 +184,8 @@ describe("KVMHeaderForms", () => {
       </Provider>
     );
 
-    expect(wrapper.find("ActionFormWrapper CommissionForm").exists()).toBe(
-      true
-    );
+    expect(
+      wrapper.find("MachineActionFormWrapper CommissionForm").exists()
+    ).toBe(true);
   });
 });

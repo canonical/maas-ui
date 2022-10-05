@@ -4,9 +4,13 @@ import {
   getTagCountsForMachines,
   isMachineDetails,
   isDeployedWithHardwareSync,
+  mapSortDirection,
+  selectedToFilters,
 } from "./common";
 
+import { SortDirection } from "app/base/types";
 import { PowerFieldScope } from "app/store/general/types";
+import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
 import { NodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
@@ -117,6 +121,51 @@ describe("common machine utils", () => {
           })
         )
       ).toBe(false);
+    });
+  });
+
+  describe("mapSortDirection", () => {
+    it("maps ascending", () => {
+      expect(mapSortDirection(SortDirection.ASCENDING)).toBe(
+        FetchSortDirection.Ascending
+      );
+    });
+
+    it("maps descending", () => {
+      expect(mapSortDirection(SortDirection.DESCENDING)).toBe(
+        FetchSortDirection.Descending
+      );
+    });
+
+    it("maps none", () => {
+      expect(mapSortDirection(SortDirection.NONE)).toBeNull();
+    });
+  });
+
+  describe("selectedToFilters", () => {
+    it("converts filter", () => {
+      expect(
+        selectedToFilters({ filter: { free_text: "some filter" } })
+      ).toStrictEqual({ free_text: "some filter" });
+    });
+
+    it("converts items", () => {
+      expect(selectedToFilters({ items: ["abc123", "def456"] })).toStrictEqual({
+        id: ["abc123", "def456"],
+      });
+    });
+
+    it("converts groups", () => {
+      expect(
+        selectedToFilters({
+          groups: ["admin", "admin3"],
+          grouping: FetchGroupKey.Owner,
+        })
+      ).toStrictEqual({ owner: ["=admin", "=admin3"] });
+    });
+
+    it("handles no filters", () => {
+      expect(selectedToFilters({ items: [], groups: [] })).toBeNull();
     });
   });
 });

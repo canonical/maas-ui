@@ -46,6 +46,8 @@ const DeviceDetailsHeader = ({
     <SectionHeader
       buttons={[
         <NodeActionMenu
+          filterActions
+          hasSelection={true}
           nodeDisplay="device"
           nodes={[device]}
           onActionClick={(action) => {

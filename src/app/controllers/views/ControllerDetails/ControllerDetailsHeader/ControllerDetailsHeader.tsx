@@ -48,6 +48,8 @@ const ControllerDetailsHeader = ({
     <SectionHeader
       buttons={[
         <NodeActionMenu
+          filterActions
+          hasSelection={true}
           key="action-dropdown"
           nodeDisplay="controller"
           nodes={[controller]}

@@ -1,6 +1,6 @@
 import { generateMAASURL } from "../../../utils";
 
-context("Settings - General", () => {
+context("Settings - General - Theme", () => {
   beforeEach(() => {
     cy.login();
     cy.visit(generateMAASURL("/settings/configuration/general"));
@@ -63,5 +63,24 @@ context("Settings - General", () => {
     cy.findByRole("link", { name: "Deploy" }).click();
 
     cy.findByRole("banner").should("have.class", "p-navigation--default");
+  });
+});
+
+context("Settings - General", () => {
+  beforeEach(() => {
+    cy.login();
+    cy.visit(generateMAASURL("/settings/configuration/general"));
+  });
+
+  it("resets to initial values on cancel", () => {
+    const getNotificationsCheckbox = () =>
+      cy.findByLabelText(/Enable new release notifications/);
+
+    getNotificationsCheckbox().should("be.checked");
+    getNotificationsCheckbox().click({ force: true });
+    getNotificationsCheckbox().should("not.be.checked");
+
+    cy.findByRole("button", { name: "Cancel" }).click();
+    getNotificationsCheckbox().should("be.checked");
   });
 });

@@ -1,32 +1,34 @@
 import type { Selector } from "@reduxjs/toolkit";
 import { createSelector } from "@reduxjs/toolkit";
 
-import type { Tag, TagMeta } from "../tag/types";
-
 import { ACTIONS } from "app/store/machine/slice";
-import { MachineMeta } from "app/store/machine/types";
 import type {
+  FilterGroupKey,
   Machine,
   MachineState,
+  MachineStateCount,
   MachineStatus,
   MachineStatuses,
+  MachineStateListGroup,
 } from "app/store/machine/types";
-import { FilterMachines, isMachineDetails } from "app/store/machine/utils";
+import { MachineMeta } from "app/store/machine/types";
+import { isMachineDetails } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
 import type { NetworkInterface } from "app/store/types/node";
-import { NodeStatus } from "app/store/types/node";
 import {
   generateBaseSelectors,
   getInterfaceById as getInterfaceByIdUtil,
 } from "app/store/utils";
-import { isId } from "app/utils";
+import { simpleSortByKey } from "app/utils";
 
 const defaultSelectors = generateBaseSelectors<
   MachineState,
   Machine,
   MachineMeta.PK
 >(MachineMeta.MODEL, MachineMeta.PK);
+
+const machineState = (state: RootState): MachineState =>
+  state[MachineMeta.MODEL];
 
 /**
  * Returns currently active machine's system_id.
@@ -81,6 +83,20 @@ ACTIONS.forEach(({ status }) => {
 });
 
 /**
+ * Returns a machine's action details by callId
+ */
+const getActionState = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState: MachineState, callId) =>
+    callId && callId in machineState.actions
+      ? machineState.actions[callId]
+      : null
+);
+
+/**
  * Get the machines that are either tagging or untagging.
  * @param state - The redux state.
  * @returns Machines that are either tagging or untagging.
@@ -127,33 +143,6 @@ const getStatusForMachine = createSelector(
 );
 
 /**
- * Get machines that match terms.
- * @param {RootState} state - The redux state.
- * @param {String} terms - The terms to match against.
- * @returns {Machine[]} A filtered list of machines.
- */
-const search = createSelector(
-  [
-    defaultSelectors.all,
-    tagSelectors.all,
-    (
-      _state: RootState,
-      terms: string | null,
-      selectedIDs: Machine[MachineMeta.PK][]
-    ) => ({
-      terms,
-      selectedIDs,
-    }),
-  ],
-  (items: Machine[], tags, { terms, selectedIDs }) => {
-    if (!terms) {
-      return items;
-    }
-    return FilterMachines.filterItems(items, terms, selectedIDs, { tags });
-  }
-);
-
-/**
  * Returns currently active machine.
  * @param {RootState} state - The redux state.
  * @returns {Machine} Active machine.
@@ -181,6 +170,16 @@ const selected = createSelector(
       }
       return selectedMachines;
     }, [])
+);
+
+/**
+ * Returns selected machines.
+ * @param {RootState} state - The redux state.
+ * @returns {Machine[]} Selected machines.
+ */
+const selectedMachines = createSelector(
+  [machineState],
+  ({ selectedMachines }) => selectedMachines
 );
 
 /**
@@ -230,7 +229,9 @@ const eventErrorsForIds = createSelector(
     const idArray = Array.isArray(ids) ? ids : [ids];
     return errors.reduce<MachineState["eventErrors"][0][]>((matches, error) => {
       let match = false;
-      const matchesId = !!error.id && idArray.includes(error.id);
+      const matchesId = !!error.id
+        ? !!error.id && idArray.includes(error.id)
+        : !!error.callId && idArray.includes(error.callId);
       // If an event has been provided as `null` then filter for errors with
       // a null event.
       if (event || event === null) {
@@ -293,25 +294,324 @@ const getByStatusCode = createSelector(
     machines.filter(({ status_code }) => status_code === statusCode)
 );
 
-/**
- * Get the deployed machines with the provided tag.
- * @param state - The redux state.
- * @param tagId - The tag id.
- * @returns The deployed machines with the tag.
- */
-const getDeployedWithTag = createSelector(
+const getCount = (
+  machine: MachineState,
+  callId: string | null | undefined
+): MachineStateCount | null =>
+  callId && callId in machine.counts ? machine.counts[callId] : null;
+
+const count = createSelector(
   [
-    defaultSelectors.all,
-    (_state: RootState, tagId: Tag[TagMeta.PK] | null | undefined) => tagId,
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
   ],
-  (machines, tagId) => {
-    if (!isId(tagId)) {
-      return [];
-    }
-    return machines.filter(
-      ({ status, tags }) =>
-        status === NodeStatus.DEPLOYED && tags.includes(tagId)
+  (machineState, callId) => getCount(machineState, callId)?.count
+);
+
+const countLoaded = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => !!getCount(machineState, callId)?.loaded
+);
+
+const countLoading = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => !!getCount(machineState, callId)?.loading
+);
+
+const getDetails = (
+  machineState: MachineState,
+  callId: string | null | undefined
+) =>
+  callId && callId in machineState.details
+    ? machineState.details[callId]
+    : null;
+
+/**
+ * Get the loaded state for a details request.
+ * @param state - The redux state.
+ * @param callId - A details request id.
+ * @returns Whether the details are loaded.
+ */
+const detailsLoaded = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getDetails(machineState, callId)?.loaded
+);
+
+/**
+ * Get the loading state for a details request.
+ * @param state - The redux state.
+ * @param callId - A details request id.
+ * @returns Whether the details are loading.
+ */
+const detailsLoading = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getDetails(machineState, callId)?.loading
+);
+
+/**
+ * Get the machine filters.
+ * @param state - The redux state.
+ * @returns The machine filters.
+ */
+const filters = createSelector(
+  [machineState],
+  (machineState) => machineState.filters
+);
+
+/**
+ * Get the loaded state for the machine filters.
+ * @param state - The redux state.
+ * @returns The machine filters loaded state.
+ */
+const filtersLoaded = createSelector(
+  [machineState],
+  (machineState) => machineState.filtersLoaded
+);
+
+/**
+ * Get the loading state for the machine filters.
+ * @param state - The redux state.
+ * @returns The machine filters loading state.
+ */
+const filtersLoading = createSelector(
+  [machineState],
+  (machineState) => machineState.filtersLoading
+);
+
+const getFilterGroup = (
+  machineState: MachineState,
+  groupKey: FilterGroupKey | null | undefined
+) =>
+  groupKey ? machineState.filters?.find(({ key }) => key === groupKey) : null;
+
+/**
+ * Get the options for a filter group.
+ * @param state - The redux state.
+ * @param groupKey - A filter group key.
+ * @returns The filter group options.
+ */
+const filterOptions = createSelector(
+  [
+    machineState,
+    (_state: RootState, groupKey: FilterGroupKey | null | undefined) =>
+      groupKey,
+  ],
+  (machineState, groupKey) =>
+    [...(getFilterGroup(machineState, groupKey)?.options ?? [])].sort(
+      simpleSortByKey("label")
+    )
+);
+
+/**
+ * Get the loaded state for a filter group.
+ * @param state - The redux state.
+ * @param groupKey - A filter group key.
+ * @returns The filter group loaded state.
+ */
+const filterOptionsLoaded = createSelector(
+  [
+    machineState,
+    (_state: RootState, groupKey: FilterGroupKey | null | undefined) =>
+      groupKey,
+  ],
+  (machineState, groupKey) => getFilterGroup(machineState, groupKey)?.loaded
+);
+
+/**
+ * Get the loading state for a filter group.
+ * @param state - The redux state.
+ * @param groupKey - A filter group key.
+ * @returns The filter group loading state.
+ */
+const filterOptionsLoading = createSelector(
+  [
+    machineState,
+    (_state: RootState, groupKey: FilterGroupKey | null | undefined) =>
+      groupKey,
+  ],
+  (machineState, groupKey) => getFilterGroup(machineState, groupKey)?.loading
+);
+
+const getList = (
+  machineState: MachineState,
+  callId: string | null | undefined
+) =>
+  callId && callId in machineState.lists ? machineState.lists[callId] : null;
+
+/**
+ * Get the errors for a machine list request with a given callId
+ */
+const listErrors = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.errors || null
+);
+
+/**
+ * Get the count for a machine list request with a given callId.
+ */
+const listCount = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.count ?? null
+);
+
+/**
+ * Get a group in a machine list request with a given callId.
+ */
+const listGroup = createSelector(
+  [
+    machineState,
+    (
+      _state: RootState,
+      callId: string | null | undefined,
+      name: MachineStateListGroup["name"] | null | undefined
+    ) => ({
+      callId,
+      name,
+    }),
+  ],
+  (machineState, { callId, name }) =>
+    (callId &&
+      getList(machineState, callId)?.groups?.find(
+        (group) => group.name === name
+      )) ||
+    null
+);
+
+/**
+ * Get the groups for a machine list request with a given callId.
+ */
+const listGroups = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.groups || null
+);
+
+/**
+ * Get the loaded state for a machine list request with a given callId.
+ */
+const listLoaded = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.loaded ?? false
+);
+
+/**
+ * Get the loading stateo for a machine list request with a given callId.
+ */
+const listLoading = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.loading ?? false
+);
+
+/**
+ * Get machines in a list request.
+ * @param state - The redux state.
+ * @param callId - A list request id.
+ * @param selected - Whether to filter for selected machines.
+ * @returns A list of machines.
+ */
+const list = createSelector(
+  [
+    machineState,
+    defaultSelectors.all,
+    (_state: RootState, callId: string | null | undefined) => ({
+      callId,
+    }),
+  ],
+  (machineState, allMachines, { callId }) => {
+    const machines: Machine[] = [];
+    getList(machineState, callId)?.groups?.forEach((group) => {
+      group.items.forEach((systemId) => {
+        const machine = allMachines.find(
+          ({ system_id }) => system_id === systemId
+        );
+        if (machine) {
+          machines.push(machine);
+        }
+      });
+    });
+    return machines;
+  }
+);
+
+/**
+ * Get the ids of machines in a list or details call that are not being used
+ * by other calls.
+ * @param state - The redux state.
+ * @param callId - A list request id.
+ * @returns A list of unused machine ids.
+ */
+const unusedIdsInCall = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => {
+    const usedIds: Machine[MachineMeta.PK][] = [];
+    // Get the ids for all machines in list and details requests, ignoring the
+    // current request.
+    Object.entries(machineState.details).forEach(
+      ([detailsCallId, { system_id }]) => {
+        if (detailsCallId !== callId) {
+          usedIds.push(system_id);
+        }
+      }
     );
+    Object.entries(machineState.lists).forEach(
+      ([detailsCallId, { groups }]) => {
+        if (detailsCallId !== callId) {
+          groups?.forEach((group) => {
+            group.items.forEach((systemId) => {
+              usedIds.push(systemId);
+            });
+          });
+        }
+      }
+    );
+    const unusedIds: Machine[MachineMeta.PK][] = [];
+    const details = getDetails(machineState, callId);
+    const list = getList(machineState, callId);
+    if (details) {
+      // Check if the machine in the details request is used by any other requests.
+      if (!usedIds.includes(details.system_id)) {
+        unusedIds.push(details.system_id);
+      }
+    } else if (list) {
+      // Find any machines in the list request that are not used by any other requests.
+      list.groups?.forEach((group) => {
+        group.items.forEach((systemId) => {
+          if (!usedIds.includes(systemId)) {
+            unusedIds.push(systemId);
+          }
+        });
+      });
+    }
+    return unusedIds;
   }
 );
 
@@ -329,25 +629,43 @@ const selectors = {
   deleting: statusSelectors["deleting"],
   deletingInterface: statusSelectors["deletingInterface"],
   deploying: statusSelectors["deploying"],
+  detailsLoaded,
+  detailsLoading,
   enteringRescueMode: statusSelectors["enteringRescueMode"],
   eventErrors,
   eventErrorsForIds,
   exitingRescueMode: statusSelectors["exitingRescueMode"],
+  filterOptions,
+  filterOptionsLoaded,
+  filterOptionsLoading,
+  filters,
+  filtersLoaded,
+  filtersLoading,
   getByStatusCode,
-  getDeployedWithTag,
+  getActionState,
+  count,
+  countLoaded,
+  countLoading,
   getInterfaceById,
   getStatuses,
   getStatusForMachine,
   linkingSubnet: statusSelectors["linkingSubnet"],
+  list,
+  listCount,
+  listErrors,
+  listGroup,
+  listGroups,
+  listLoaded,
+  listLoading,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],
   overridingFailedTesting: statusSelectors["overridingFailedTesting"],
   processing,
   releasing: statusSelectors["releasing"],
-  search,
   selected,
   selectedIDs,
+  selectedMachines,
   settingPool: statusSelectors["settingPool"],
   settingZone: statusSelectors["settingZone"],
   statuses,
@@ -357,8 +675,9 @@ const selectors = {
   turningOn: statusSelectors["turningOn"],
   unlocking: statusSelectors["unlocking"],
   unlinkingSubnet: statusSelectors["unlinkingSubnet"],
-  untagging: statusSelectors["untagging"],
   unselected,
+  untagging: statusSelectors["untagging"],
+  unusedIdsInCall,
   updatingTags,
 };
 

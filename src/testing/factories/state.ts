@@ -4,7 +4,7 @@ import type { RouterState } from "redux-first-history";
 import { bondOptions } from "./general";
 
 import { ACTION_STATUS } from "app/base/constants";
-import type { APIError } from "app/base/types";
+import type { APIError, ActionState } from "app/base/types";
 import type { BootResourceState } from "app/store/bootresource/types";
 import type { ConfigState } from "app/store/config/types";
 import { DEFAULT_STATUSES as DEFAULT_CONTROLLER_STATUSES } from "app/store/controller/slice";
@@ -51,13 +51,22 @@ import type { IPRangeState } from "app/store/iprange/types";
 import type { LicenseKeysState } from "app/store/licensekeys/types";
 import { DEFAULT_STATUSES as DEFAULT_MACHINE_STATUSES } from "app/store/machine";
 import type {
+  FilterGroup,
   Machine,
+  MachineEventErrors,
   MachineMeta,
   MachineState,
+  MachineStateCount,
+  MachineStateCounts,
+  MachineStateDetails,
+  MachineStateDetailsItem,
+  MachineStateList,
+  MachineStateListGroup,
+  MachineStateLists,
   MachineStatus,
   MachineStatuses,
 } from "app/store/machine/types";
-import type { MachineEventErrors } from "app/store/machine/types/base";
+import { FilterGroupKey, FilterGroupType } from "app/store/machine/types";
 import type { MessageState } from "app/store/message/types";
 import type { NodeDeviceState } from "app/store/nodedevice/types";
 import type { NodeScriptResultState } from "app/store/nodescriptresult/types";
@@ -240,10 +249,72 @@ export const licenseKeysState = define<LicenseKeysState>({
   ...defaultState,
 });
 
+export const machineStateListGroup = define<MachineStateListGroup>({
+  collapsed: false,
+  count: 15,
+  items: () => [],
+  name: null,
+  value: null,
+});
+
+export const machineStateList = define<MachineStateList>({
+  count: null,
+  cur_page: null,
+  errors: null,
+  groups: null,
+  loaded: false,
+  loading: false,
+  num_pages: null,
+});
+
+export const machineActionState = define<ActionState>({
+  status: ACTION_STATUS.idle,
+  errors: null,
+  count: 0,
+});
+
+export const machineStateLists = define<MachineStateLists>({
+  testNode: machineStateList,
+});
+
 export const machineStatus = define<MachineStatus>(DEFAULT_MACHINE_STATUSES);
 
 export const machineStatuses = define<MachineStatuses>({
   testNode: machineStatus,
+});
+
+export const machineStateCount = define<MachineStateCount>({
+  count: null,
+  errors: null,
+  loaded: false,
+  loading: false,
+});
+
+export const machineFilterGroup = define<FilterGroup>({
+  dynamic: false,
+  errors: null,
+  for_grouping: false,
+  key: FilterGroupKey.AgentName,
+  label: "filter group",
+  loaded: false,
+  loading: false,
+  options: () => [],
+  type: FilterGroupType.String,
+});
+
+export const machineStateCounts = define<MachineStateCounts>({
+  testId: machineStateCount,
+});
+
+export const machineStateDetailsItem = define<MachineStateDetailsItem>({
+  errors: null,
+  loaded: false,
+  loading: false,
+  system_id: () => random().toString(),
+});
+
+export const machineStateDetails = define<MachineStateDetails>({
+  testNode: machineStateDetailsItem,
 });
 
 export const machineEventError = define<
@@ -256,9 +327,17 @@ export const machineEventError = define<
 
 export const machineState = define<MachineState>({
   ...defaultState,
+  actions: () => ({}),
   active: null,
+  counts: () => ({}),
+  details: () => ({}),
   eventErrors: () => [],
+  filters: () => [],
+  filtersLoaded: false,
+  filtersLoading: false,
+  lists: () => ({}),
   selected: () => [],
+  selectedMachines: null,
   statuses: () => ({}),
 });
 

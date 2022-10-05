@@ -8,6 +8,7 @@ import type { EventChannel } from "redux-saga";
 import { eventChannel } from "redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 import {
+  select,
   all,
   call,
   cancel,
@@ -36,6 +37,9 @@ import type {
 import type { MessageHandler, NextActionCreator } from "./actions";
 
 import { fileContextStore } from "app/base/file-context";
+import { actions as machineActions } from "app/store/machine";
+import machineSelectors from "app/store/machine/selectors";
+import { MachineMeta } from "app/store/machine/types";
 
 const DEFAULT_POLL_INTERVAL = 10000;
 
@@ -56,13 +60,6 @@ let loadedEndpoints: WebSocketEndpoint[] = [];
 export const nextActions = new Map<
   WebSocketRequest["request_id"],
   NextActionCreator[]
->();
-
-// A store of websocket requests that need to be called to fetch the next batch
-// of data. The map is between request id and redux action object.
-export const batchRequests = new Map<
-  WebSocketRequest["request_id"],
-  WebSocketAction
 >();
 
 // A store of websocket requests that need to store their responses in the file
@@ -193,90 +190,6 @@ export function* handleNotifyMessage({
 }
 
 /**
- * Store batch requests, if this is a batch action.
- *
- * @param {Object} action - A Redux action.
- * @param {Array} requestIDs - A list of ids for the requests associated with
- * this action.
- */
-function queueBatch(
-  action: WebSocketAction,
-  requestIDs: WebSocketRequest["request_id"][]
-) {
-  // If the action has a limit then it is a batch request. An action can send
-  // multiple requests so each one needs to be mapped to the action.
-  if (
-    !Array.isArray(action?.payload?.params) &&
-    action?.payload?.params?.limit &&
-    action?.meta?.batch
-  ) {
-    requestIDs.forEach((id) => {
-      batchRequests.set(id, action);
-    });
-  }
-}
-
-/**
- * Handle sending the next batch request, if required.
- *
- * @param {Object} response - A websocket response.
- */
-export function* handleBatch({
-  request_id,
-  result,
-}: WebSocketResponseResult): SagaGenerator<void> {
-  const batchRequest = yield* call(
-    [batchRequests, batchRequests.get],
-    request_id
-  );
-  if (batchRequest && Array.isArray(result)) {
-    if (!batchRequest.payload) {
-      batchRequest.payload = {
-        params: {},
-      };
-    }
-    if (!batchRequest.payload?.params) {
-      batchRequest.payload.params = {};
-    }
-    // This is a batch request so check if we received a full batch, if so
-    // then send another request.
-    if (
-      !Array.isArray(batchRequest.payload.params) &&
-      batchRequest.payload.params.limit === result.length
-    ) {
-      // Clean up the previous request.
-      batchRequests.delete(request_id);
-      // Set the next batch to start at the last id we received.
-      const nextBatch = { ...batchRequest };
-      // If the action has a subsequentLimit then we need to raise the limit
-      // after the first request.
-      if (nextBatch?.meta?.subsequentLimit) {
-        // Set the limit to the subsequentLimit value.
-        batchRequest.payload.params.limit = nextBatch.meta.subsequentLimit;
-        // Remove the subsequentLimit attribute as we've already raised the
-        // limit and further actions should remain at this value.
-        delete nextBatch.meta.subsequentLimit;
-      }
-      if (!nextBatch.payload) {
-        nextBatch.payload = {
-          params: {},
-        };
-      }
-      if (!nextBatch.payload?.params) {
-        nextBatch.payload.params = {};
-      }
-      if (!Array.isArray(nextBatch.payload.params)) {
-        nextBatch.payload.params.start = result[result.length - 1].id;
-      }
-      // Send the new request.
-      yield* put(nextBatch);
-    } else {
-      yield* put({ type: `${batchRequest.type}Complete` });
-    }
-  }
-}
-
-/**
  * Store the actions to dispatch when the response is received.
  *
  * @param {Object} action - A Redux action.
@@ -354,7 +267,7 @@ export function* handleFileContextRequest({
     // Store the file in the context.
     fileContextStore.add(fileContextRequest.meta.fileContextKey, result);
     // Clean up the previous request.
-    batchRequests.delete(request_id);
+    fileContextRequests.delete(request_id);
   }
   return !!fileContextRequest;
 }
@@ -409,6 +322,33 @@ export function* handlePolling(action: WebSocketAction): SagaGenerator<void> {
     yield* cancel(pollingTask);
     // Exit the while loop.
     poll = false;
+  }
+}
+
+/**
+ * Handle unsubscribing from unused entities and cleaning up the request.
+ * @param action - A websocket action.
+ */
+export function* handleUnsubscribe(
+  action: WebSocketAction
+): SagaGenerator<void> {
+  const callId = action.meta.callId;
+  if (callId) {
+    // Unsubscribing is only supported for machines.
+    if (action.meta.model === MachineMeta.MODEL) {
+      const unusedIds = yield* select(
+        machineSelectors.unusedIdsInCall,
+        action.meta.callId
+      );
+      if (unusedIds.length > 0) {
+        yield* put(machineActions.unsubscribe(unusedIds));
+      }
+      // Remove the machines after unsubscribing so that the request is still in
+      // Redux when the selector above runs.
+      // The request should always be removed, as the unsubscribe happens when
+      // the last request that references the machine is removed.
+      yield* put(machineActions.removeRequest(callId));
+    }
   }
 }
 
@@ -481,19 +421,25 @@ export function* handleMessage(
         // can be 0 when requesting a model with an id of 0.
         if (error || error === 0) {
           yield* put({
-            meta: { item, identifier: action.meta?.identifier },
+            meta: {
+              item,
+              identifier: action.meta?.identifier,
+              callId: action.meta?.callId,
+            },
             type: `${action.type}Error`,
             error: true,
             payload: error,
           });
         } else {
           yield* put({
-            meta: { item, identifier: action.meta?.identifier },
+            meta: {
+              item,
+              identifier: action.meta?.identifier,
+              callId: action.meta?.callId,
+            },
             type: `${action.type}Success`,
             payload: result,
           });
-          // Handle batching, if required.
-          yield* call(handleBatch, response);
           // Handle dispatching next actions, if required.
           yield* call(handleNextActions, response);
         }
@@ -519,6 +465,14 @@ const isStartPollingAction = (action: AnyAction): boolean =>
   Boolean(action?.meta?.poll) &&
   // Ignore actions that are already being polled.
   !isPolling(action);
+
+/**
+ * Whether this is an action that stops polling a websocket request.
+ * @param {Object} action.
+ * @returns {Bool} - action is a request action.
+ */
+const isUnsubscribeAction = (action: AnyAction): boolean =>
+  Boolean(action?.meta?.unsubscribe);
 
 /**
  * Whether this is an action that stops polling a websocket request.
@@ -573,10 +527,10 @@ export function* sendMessage(
   const endpoint = `${model}.${method}`;
   const hasMultipleDispatches = meta.dispatchMultiple && Array.isArray(params);
   // If method is 'list' and data has loaded/is loading, do not fetch again
-  // unless this is fetching a new batch or 'nocache' is specified.
+  // unless 'nocache' is specified.
   if (
     cache ||
-    (method.endsWith("list") &&
+    (method?.endsWith("list") &&
       (!params ||
         hasMultipleDispatches ||
         (!Array.isArray(params) && !params.start)) &&
@@ -588,7 +542,11 @@ export function* sendMessage(
     setLoaded(endpoint);
   }
   yield* put({
-    meta: { item: params || payload, identifier },
+    meta: {
+      item: params || payload,
+      identifier,
+      callId: action.meta?.callId,
+    },
     type: `${type}Start`,
   });
   const requestIDs = [];
@@ -621,8 +579,6 @@ export function* sendMessage(
     }
     // Store the actions to dispatch when the response is received.
     yield* call(storeNextActions, requestIDs, nextActionCreators);
-    // Queue batching, if required.
-    yield* call(queueBatch, action, requestIDs);
     // Store the actions that need to use the file context.
     yield* call(storeFileContextActions, action, requestIDs);
   } catch (error) {
@@ -668,6 +624,11 @@ export function* setupWebSocket({
             takeEvery<WebSocketAction, (action: WebSocketAction) => void>(
               isStartPollingAction,
               handlePolling
+            ),
+            // Take actions that should unsubscribe from entities.
+            takeEvery<WebSocketAction, (action: WebSocketAction) => void>(
+              isUnsubscribeAction,
+              handleUnsubscribe
             ),
           ].concat(
             // Attach the additional actions that should be taken by the

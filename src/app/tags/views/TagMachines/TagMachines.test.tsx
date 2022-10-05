@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,9 +10,10 @@ import TagMachines, { Label } from "./TagMachines";
 import urls from "app/base/urls";
 import { columnLabels, MachineColumns } from "app/machines/constants";
 import { actions as machineActions } from "app/store/machine";
+import { FetchGroupKey, FetchSortDirection } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
-import { NodeStatus } from "app/store/types/node";
+import { NodeStatus, FetchNodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -19,22 +21,37 @@ import {
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
 let state: RootState;
 
 beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  const machines = [
+    machineFactory({
+      domain: modelRefFactory({ id: 1, name: "test" }),
+      hostname: "deployed",
+      status: NodeStatus.DEPLOYED,
+      tags: [1],
+    }),
+  ];
   state = rootStateFactory({
     machine: machineStateFactory({
-      items: [
-        machineFactory({
-          domain: modelRefFactory({ id: 1, name: "test" }),
-          hostname: "deployed",
-          status: NodeStatus.DEPLOYED,
-          tags: [1],
+      items: machines,
+      lists: {
+        "mocked-nanoid": machineStateListFactory({
+          loaded: true,
+          groups: [
+            machineStateListGroupFactory({
+              items: machines.map(({ system_id }) => system_id),
+              name: "Deployed",
+            }),
+          ],
         }),
-      ],
+      },
     }),
     tag: tagStateFactory({
       items: [
@@ -46,6 +63,10 @@ beforeEach(() => {
       ],
     }),
   });
+});
+
+afterEach(() => {
+  jest.restoreAllMocks();
 });
 
 it("dispatches actions to fetch necessary data", () => {
@@ -63,7 +84,21 @@ it("dispatches actions to fetch necessary data", () => {
       </MemoryRouter>
     </Provider>
   );
-  const expectedActions = [machineActions.fetch(), tagActions.fetch()];
+  const expectedActions = [
+    machineActions.fetch("mocked-nanoid", {
+      filter: {
+        status: FetchNodeStatus.DEPLOYED,
+        tags: ["rad"],
+      },
+      group_collapsed: undefined,
+      group_key: null,
+      page_number: 1,
+      page_size: 50,
+      sort_direction: FetchSortDirection.Descending,
+      sort_key: FetchGroupKey.Hostname,
+    }),
+    tagActions.fetch(),
+  ];
   const actualActions = store.getActions();
   expectedActions.forEach((expectedAction) => {
     expect(

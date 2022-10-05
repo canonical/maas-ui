@@ -12,10 +12,9 @@ import WebSocketClient, {
   WebSocketResponseType,
 } from "../../../websocket-client";
 
+import type { WebSocketChannel } from "./websockets";
 import {
-  batchRequests,
   createConnection,
-  handleBatch,
   handleFileContextRequest,
   handleMessage,
   handleNextActions,
@@ -27,12 +26,22 @@ import {
   storeFileContextActions,
   watchMessages,
   watchWebSockets,
+  handleUnsubscribe,
 } from "./websockets";
-import type { WebSocketChannel } from "./websockets";
 
+import { actions as machineActions } from "app/store/machine";
 import { getCookie } from "app/utils";
+import {
+  machineState as machineStateFactory,
+  rootState as rootStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
+} from "testing/factories";
 
-jest.mock("app/utils");
+jest.mock("app/utils", () => ({
+  ...jest.requireActual("app/utils"),
+  getCookie: jest.fn(),
+}));
 
 describe("websocket sagas", () => {
   let socketChannel: WebSocketChannel;
@@ -135,6 +144,35 @@ describe("websocket sagas", () => {
     );
   });
 
+  it("can send a WebSocket message with a request id", () => {
+    const action = {
+      type: "test/action",
+      meta: {
+        model: "test",
+        method: "method",
+        callId: "123456",
+        type: WebSocketMessageType.REQUEST,
+      },
+      payload: {
+        params: { foo: "bar" },
+      },
+    };
+    const saga = sendMessage(socketClient, action);
+    expect(saga.next().value).toEqual(
+      put({
+        meta: { item: { foo: "bar" }, callId: "123456" },
+        type: "test/actionStart",
+      })
+    );
+    expect(saga.next().value).toEqual(
+      call([socketClient, socketClient.send], action, {
+        method: "test.method",
+        type: WebSocketMessageType.REQUEST,
+        params: { foo: "bar" },
+      })
+    );
+  });
+
   it("can store a next action when sending a WebSocket message", () => {
     const action = {
       type: "test/action",
@@ -211,37 +249,6 @@ describe("websocket sagas", () => {
     const saga = sendMessage(socketClient, action);
     // The saga should not have finished.
     expect(saga.next().done).toBe(false);
-  });
-
-  it("allows batch messages even if data has already been fetched", () => {
-    const action = {
-      type: "test/fetch",
-      meta: {
-        model: "test",
-        method: "test.list",
-        type: WebSocketMessageType.REQUEST,
-      },
-      payload: {
-        params: {
-          limit: 25,
-          start: 808,
-        },
-      },
-    };
-    const previous = sendMessage(socketClient, action);
-    previous.next();
-    const saga = sendMessage(socketClient, action);
-    expect(saga.next().value).toEqual(
-      put({
-        meta: {
-          item: {
-            limit: 25,
-            start: 808,
-          },
-        },
-        type: "test/fetchStart",
-      })
-    );
   });
 
   it("can handle dispatching for each param in an array", () => {
@@ -337,116 +344,26 @@ describe("websocket sagas", () => {
     );
   });
 
-  it("can handle a batch response", () => {
+  it("can handle a WebSocket response message with a request id", () => {
     const saga = handleMessage(socketChannel, socketClient);
-    saga.next();
-    const response: WebSocketResponseResult = {
-      rtype: WebSocketResponseType.SUCCESS,
-      type: WebSocketMessageType.RESPONSE,
-      request_id: 99,
-      result: [{ id: 11 }],
-    };
-    saga.next({ data: JSON.stringify(response) });
-    saga.next({ type: "test/action" });
-    saga.next();
-    expect(saga.next().value).toEqual(call(handleBatch, response));
-  });
-
-  it("can send the next batch message", () => {
-    const response: WebSocketResponseResult = {
-      rtype: WebSocketResponseType.SUCCESS,
-      type: WebSocketMessageType.RESPONSE,
-      request_id: 99,
-      result: [{ id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }],
-    };
-    return expectSaga(handleBatch, response)
-      .provide([
-        [
-          call([batchRequests, batchRequests.get], 99),
-          {
-            type: "test/fetch",
-            meta: {
-              model: "test",
-              method: "test.list",
-              type: WebSocketMessageType.REQUEST,
-            },
-            payload: { params: { limit: 5 } },
-          },
-        ],
-      ])
-      .put({
-        type: "test/fetch",
-        meta: {
-          model: "test",
-          method: "test.list",
-          type: WebSocketMessageType.REQUEST,
-        },
-        payload: { params: { limit: 5, start: 15 } },
+    expect(saga.next().value).toEqual(take(socketChannel));
+    expect(
+      saga.next({
+        data: JSON.stringify({ request_id: 99, result: { response: "here" } }),
+      }).value
+    ).toStrictEqual(call([socketClient, socketClient.getRequest], 99));
+    saga.next({
+      type: "test/action",
+      payload: { id: 808 },
+      meta: { identifier: 123, callId: "456" },
+    });
+    expect(saga.next(false).value).toEqual(
+      put({
+        meta: { item: { id: 808 }, identifier: 123, callId: "456" },
+        type: "test/actionSuccess",
+        payload: { response: "here" },
       })
-      .run();
-  });
-
-  it("can modify the limit of subsequent batch messages", () => {
-    const response: WebSocketResponseResult = {
-      rtype: WebSocketResponseType.SUCCESS,
-      type: WebSocketMessageType.RESPONSE,
-      request_id: 99,
-      result: [{ id: 11 }, { id: 12 }, { id: 13 }, { id: 14 }, { id: 15 }],
-    };
-    return expectSaga(handleBatch, response)
-      .provide([
-        [
-          call([batchRequests, batchRequests.get], 99),
-          {
-            type: "test/fetch",
-            meta: {
-              model: "test",
-              method: "test.list",
-              type: WebSocketMessageType.REQUEST,
-              subsequentLimit: 100,
-            },
-            payload: { params: { limit: 5 } },
-          },
-        ],
-      ])
-      .put({
-        type: "test/fetch",
-        meta: {
-          model: "test",
-          method: "test.list",
-          type: WebSocketMessageType.REQUEST,
-        },
-        payload: { params: { limit: 100, start: 15 } },
-      })
-      .run();
-  });
-
-  it("can dispatch the complete action when receiving the last batch", () => {
-    const response: WebSocketResponseResult = {
-      rtype: WebSocketResponseType.SUCCESS,
-      type: WebSocketMessageType.RESPONSE,
-      request_id: 99,
-      result: [{ id: 11 }],
-    };
-    return expectSaga(handleBatch, response)
-      .provide([
-        [
-          call([batchRequests, batchRequests.get], 99),
-          {
-            type: "test/fetch",
-            meta: {
-              model: "test",
-              method: "test.list",
-              type: WebSocketMessageType.REQUEST,
-            },
-            payload: { params: { limit: 5 } },
-          },
-        ],
-      ])
-      .put({
-        type: "test/fetchComplete",
-      })
-      .run();
+    );
   });
 
   it("can dispatch a next action", () => {
@@ -618,6 +535,53 @@ describe("websocket sagas", () => {
         payload: null,
       })
     );
+  });
+
+  it("can unsubscribe from unused machines", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          123456: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["abc123"],
+              }),
+            ],
+          }),
+        },
+      }),
+    });
+    return expectSaga(
+      handleUnsubscribe,
+      machineActions.cleanupRequest("123456")
+    )
+      .withState(state)
+      .put(machineActions.unsubscribe(["abc123"]))
+      .put(machineActions.removeRequest("123456"))
+      .run();
+  });
+
+  it("removes request when machines are in use", () => {
+    const state = rootStateFactory({
+      machine: machineStateFactory({
+        lists: {
+          123456: machineStateListFactory({
+            groups: [
+              machineStateListGroupFactory({
+                items: ["abc123"],
+              }),
+            ],
+          }),
+        },
+      }),
+    });
+    return expectSaga(
+      handleUnsubscribe,
+      machineActions.cleanupRequest("123456")
+    )
+      .withState(state)
+      .put(machineActions.removeRequest("123456"))
+      .run();
   });
 
   describe("polling", () => {

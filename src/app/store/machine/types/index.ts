@@ -1,6 +1,7 @@
 export type {
   Action,
   ApplyStorageLayoutParams,
+  BaseMachineActionParams,
   CloneParams,
   CommissionParams,
   CreateBcacheParams,
@@ -22,6 +23,8 @@ export type {
   DeletePartitionParams,
   DeleteVolumeGroupParams,
   DeployParams,
+  FetchFilters,
+  FetchParams,
   GetSummaryXmlParams,
   GetSummaryYamlParams,
   LinkSubnetParams,
@@ -30,7 +33,9 @@ export type {
   ReleaseParams,
   SetBootDiskParams,
   SetPoolParams,
+  SetZoneParams,
   TagParams,
+  TestParams,
   UnlinkSubnetParams,
   UnmountSpecialParams,
   UntagParams,
@@ -40,15 +45,35 @@ export type {
   UpdateVmfsDatastoreParams,
 } from "./actions";
 
+export { FetchGroupKey, FetchSortDirection } from "./actions";
+
 export type {
   BaseMachine,
+  FilterGroup,
+  FilterGroupOption,
+  FilterGroupOptionType,
   Machine,
   MachineActions,
   MachineDetails,
   MachineEventErrors,
   MachineState,
+  MachineStateCount,
+  MachineStateCounts,
+  MachineStateDetails,
+  MachineStateDetailsItem,
+  MachineStateList,
+  MachineStateListGroup,
+  MachineStateLists,
   MachineStatus,
   MachineStatuses,
+  SelectedMachines,
 } from "./base";
+export { FilterGroupKey, FilterGroupType } from "./base";
 
 export { BcacheModes, MachineMeta } from "./enum";
+
+export type {
+  FilterGroupResponse,
+  FetchResponse,
+  FetchResponseGroup,
+} from "./responses";

@@ -146,7 +146,9 @@ describe("PoolList", () => {
       ).getByRole("button", { name: "Delete" })
     );
 
-    expect(store.getActions()[2]).toEqual({
+    expect(
+      store.getActions().find(({ type }) => type === "resourcepool/delete")
+    ).toStrictEqual({
       type: "resourcepool/delete",
       payload: {
         params: {

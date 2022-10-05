@@ -1,4 +1,5 @@
-import { screen, waitFor } from "@testing-library/react";
+import reduxToolkit from "@reduxjs/toolkit";
+import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
@@ -31,6 +32,8 @@ import {
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
   rootState as rootStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 import { renderWithBrowserRouter } from "testing/utils";
@@ -42,6 +45,7 @@ describe("DiscoveryAddForm", () => {
   let discovery: Discovery;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     const machines = [
       machineFactory({
         actions: [],
@@ -108,10 +112,25 @@ describe("DiscoveryAddForm", () => {
       machine: machineStateFactory({
         loaded: true,
         items: machines,
+        lists: {
+          "123456": machineStateListFactory({
+            loaded: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: [machines[0].system_id],
+                name: "Deployed",
+              }),
+            ],
+          }),
+        },
       }),
       subnet: subnetStateFactory({ loaded: true }),
       vlan: vlanStateFactory({ loaded: true }),
     });
+  });
+
+  afterAll(() => {
+    jest.restoreAllMocks();
   });
 
   it("fetches the necessary data on load", () => {
@@ -161,7 +180,7 @@ describe("DiscoveryAddForm", () => {
     rerender(<DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />);
     expect(
       screen.getByRole("textbox", {
-        name: `${FormFieldLabels.Hostname} (optional)`,
+        name: `${FormFieldLabels.Hostname}`,
       })
       // react-components uses aria-errormessage to link the errors to the inputs so we can use the toHaveErrorMessage helper here.
     ).toHaveErrorMessage(`Error: ${error}`);
@@ -179,20 +198,24 @@ describe("DiscoveryAddForm", () => {
       "local"
     );
 
-    await userEvent.selectOptions(
-      screen.getByRole("combobox", { name: FormFieldLabels.Parent }),
-      "abc123"
+    await userEvent.click(
+      screen.getByRole("button", {
+        name: "Select parent (optional) - open list",
+      })
+    );
+    await userEvent.click(
+      within(screen.getByRole("listbox")).getByText("abc123")
     );
 
     await userEvent.clear(
       screen.getByRole("textbox", {
-        name: `${FormFieldLabels.Hostname} (optional)`,
+        name: `${FormFieldLabels.Hostname}`,
       })
     );
 
     await userEvent.type(
       screen.getByRole("textbox", {
-        name: `${FormFieldLabels.Hostname} (optional)`,
+        name: `${FormFieldLabels.Hostname}`,
       }),
       "koala"
     );
@@ -236,13 +259,13 @@ describe("DiscoveryAddForm", () => {
 
     await userEvent.clear(
       screen.getByRole("textbox", {
-        name: `${FormFieldLabels.InterfaceName} (optional)`,
+        name: `${FormFieldLabels.InterfaceName}`,
       })
     );
 
     await userEvent.type(
       screen.getByRole("textbox", {
-        name: `${FormFieldLabels.InterfaceName} (optional)`,
+        name: `${FormFieldLabels.InterfaceName}`,
       }),
       "koala"
     );
@@ -309,7 +332,7 @@ describe("DiscoveryAddForm", () => {
 
     await userEvent.clear(
       screen.getByRole("textbox", {
-        name: `${FormFieldLabels.Hostname} (optional)`,
+        name: `${FormFieldLabels.Hostname}`,
       })
     );
 

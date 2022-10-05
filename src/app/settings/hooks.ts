@@ -9,9 +9,8 @@ import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
-import { actions as machineActions } from "app/store/machine";
-import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -43,23 +42,24 @@ export const useDhcpTarget = (
   const device = useSelector((state: RootState) =>
     deviceSelectors.getById(state, nodeId)
   );
-  const machineLoading = useSelector(machineSelectors.loading);
-  const machineLoaded = useSelector(machineSelectors.loaded);
-  const machine = useSelector((state: RootState) =>
-    machineSelectors.getById(state, nodeId)
-  );
+  const {
+    machine,
+    loaded: machineLoaded = false,
+    loading: machineLoading = false,
+  } = useFetchMachine(nodeId);
+
   const isLoading =
     (!!subnetId && subnetLoading) ||
     (!!nodeId && (controllerLoading || deviceLoading || machineLoading));
   const hasLoaded =
     (!!subnetId && subnetLoaded) ||
-    (!!nodeId && controllerLoaded && deviceLoaded && machineLoaded);
+    // The machine loaded state will only be true if a machine was found.
+    (!!nodeId && ((controllerLoaded && deviceLoaded) || machineLoaded));
 
   useEffect(() => {
     dispatch(subnetActions.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
-    dispatch(machineActions.fetch());
   }, [dispatch]);
 
   return {

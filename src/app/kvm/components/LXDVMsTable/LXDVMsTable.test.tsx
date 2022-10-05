@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -6,11 +7,20 @@ import configureStore from "redux-mock-store";
 import LXDVMsTable from "./LXDVMsTable";
 
 import { actions as machineActions } from "app/store/machine";
+import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
 import { rootState as rootStateFactory } from "testing/factories";
 
 const mockStore = configureStore();
 
 describe("LXDVMsTable", () => {
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  });
+
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("fetches machines on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
@@ -21,16 +31,24 @@ describe("LXDVMsTable", () => {
         >
           <LXDVMsTable
             getResources={jest.fn()}
+            pods={["pod1"]}
             searchFilter=""
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
-            vms={[]}
           />
         </MemoryRouter>
       </Provider>
     );
 
-    const expectedAction = machineActions.fetch();
+    const expectedAction = machineActions.fetch("mocked-nanoid", {
+      filter: { pod: ["pod1"] },
+      group_collapsed: undefined,
+      group_key: null,
+      page_number: 1,
+      page_size: 10,
+      sort_direction: FetchSortDirection.Descending,
+      sort_key: FetchGroupKey.Hostname,
+    });
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
@@ -46,10 +64,10 @@ describe("LXDVMsTable", () => {
         >
           <LXDVMsTable
             getResources={jest.fn()}
+            pods={["pod1"]}
             searchFilter=""
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
-            vms={[]}
           />
         </MemoryRouter>
       </Provider>
@@ -57,7 +75,7 @@ describe("LXDVMsTable", () => {
 
     unmount();
 
-    const expectedAction = machineActions.setSelected([]);
+    const expectedAction = machineActions.setSelectedMachines(null);
     expect(
       store.getActions().find((action) => action.type === expectedAction.type)
     ).toStrictEqual(expectedAction);
@@ -74,10 +92,10 @@ describe("LXDVMsTable", () => {
           <LXDVMsTable
             getResources={jest.fn()}
             onAddVMClick={jest.fn()}
+            pods={["pod1"]}
             searchFilter=""
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
-            vms={[]}
           />
         </MemoryRouter>
       </Provider>
@@ -96,10 +114,10 @@ describe("LXDVMsTable", () => {
         >
           <LXDVMsTable
             getResources={jest.fn()}
+            pods={["pod1"]}
             searchFilter=""
             setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
-            vms={[]}
           />
         </MemoryRouter>
       </Provider>

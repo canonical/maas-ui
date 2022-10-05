@@ -6,10 +6,8 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
-import MachineListHeader from "./MachineList/MachineListHeader";
 import Machines from "./Machines";
 
-import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import {
   generalState as generalStateFactory,
@@ -110,60 +108,5 @@ describe("Machines", () => {
       wrapper.find(MachineList).props().setSearchFilter("status:new");
     });
     expect(search).toBe("?status=new");
-  });
-
-  it("adds the selected filter when an action is selected", () => {
-    state.machine.selected = ["abc123"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Machines />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper
-        .find(MachineListHeader)
-        .props()
-        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
-    );
-    wrapper.update();
-    expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
-      "in:(selected)"
-    );
-  });
-
-  it("removes the selected filter when the selected action is cleared", () => {
-    state.machine.selected = ["abc123"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Machines />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    act(() =>
-      wrapper
-        .find(MachineListHeader)
-        .props()
-        .setHeaderContent({ view: MachineHeaderViews.SET_POOL_MACHINE })
-    );
-    wrapper.update();
-    expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
-      "in:(selected)"
-    );
-    act(() => wrapper.find(MachineListHeader).props().setHeaderContent(null));
-    wrapper.update();
-    expect(wrapper.find("MachineList").prop("searchFilter")).toBe("");
   });
 });

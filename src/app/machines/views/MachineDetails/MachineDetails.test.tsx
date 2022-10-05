@@ -132,7 +132,7 @@ describe("MachineDetails", () => {
             <Routes>
               <Route
                 element={<MachineDetails />}
-                path={urls.machines.machine.index(null)}
+                path={`${urls.machines.machine.index(null)}/*`}
               />
             </Routes>
           </CompatRouter>
@@ -155,7 +155,7 @@ describe("MachineDetails", () => {
             <Routes>
               <Route
                 element={<MachineDetails />}
-                path={urls.machines.machine.index(null)}
+                path={`${urls.machines.machine.index(null)}/*`}
               />
             </Routes>
           </CompatRouter>
@@ -209,7 +209,7 @@ describe("MachineDetails", () => {
             <Routes>
               <Route
                 element={<MachineDetails />}
-                path={urls.machines.machine.index(null)}
+                path={`${urls.machines.machine.index(null)}/*`}
               />
             </Routes>
           </CompatRouter>
@@ -238,7 +238,7 @@ describe("MachineDetails", () => {
                     <MachineDetails />
                   </>
                 }
-                path={urls.machines.machine.index(null)}
+                path={`${urls.machines.machine.index(null)}/*`}
               />
             </Routes>
           </CompatRouter>

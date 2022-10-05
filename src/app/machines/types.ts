@@ -8,7 +8,11 @@ import type {
   HeaderContent,
   SetHeaderContent,
 } from "app/base/types";
-import type { Machine, MachineEventErrors } from "app/store/machine/types";
+import type {
+  FetchFilters,
+  Machine,
+  MachineEventErrors,
+} from "app/store/machine/types";
 import type { Script } from "app/store/script/types";
 
 export type MachineHeaderContent = HeaderContent<
@@ -21,5 +25,16 @@ export type MachineHeaderContent = HeaderContent<
 
 export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
 
-export type MachineActionFormProps =
-  CommonActionFormProps<MachineEventErrors> & { machines: Machine[] };
+export type MachineActionVariableProps = {
+  machines?: Machine[];
+  selectedFilter?: FetchFilters | null;
+  selectedCount?: number;
+  processingCount?: number;
+  selectedCountLoading?: boolean;
+};
+
+export type MachineActionFormProps = Omit<
+  CommonActionFormProps<MachineEventErrors>,
+  "processingCount"
+> &
+  MachineActionVariableProps;

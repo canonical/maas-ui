@@ -1,25 +1,29 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-import { Notification } from "@canonical/react-components";
+import type { ValueOf } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
+import ErrorsNotification from "./ErrorsNotification";
 import MachineListControls from "./MachineListControls";
 import MachineListTable from "./MachineListTable";
+import { DEFAULTS } from "./MachineListTable/constants";
 
 import { useWindowTitle } from "app/base/hooks";
-import type { SetSearchFilter } from "app/base/types";
+import type { SetSearchFilter, SortDirection } from "app/base/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { RootState } from "app/store/root/types";
-import { actions as tagActions } from "app/store/tag";
-import { formatErrors } from "app/utils";
+import { FetchGroupKey } from "app/store/machine/types";
+import { mapSortDirection, FilterMachineItems } from "app/store/machine/utils";
+import { useFetchMachines } from "app/store/machine/utils/hooks";
 
 type Props = {
   headerFormOpen?: boolean;
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
 };
+
+const PAGE_SIZE = DEFAULTS.pageSize;
 
 const MachineList = ({
   headerFormOpen,
@@ -30,30 +34,46 @@ const MachineList = ({
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
   const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const filteredMachines = useSelector((state: RootState) =>
-    machineSelectors.search(state, searchFilter || null, selectedIDs)
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
+    DEFAULTS.sortKey
   );
-  const errorMessage = formatErrors(errors);
-  const [grouping, setGrouping] = useStorageState(
+  const [sortDirection, setSortDirection] = useState<
+    ValueOf<typeof SortDirection>
+  >(DEFAULTS.sortDirection);
+  const [grouping, setGrouping] = useStorageState<FetchGroupKey | null>(
     localStorage,
     "grouping",
-    "status"
+    FetchGroupKey.Status
   );
-  const [hiddenGroups, setHiddenGroups] = useStorageState<string[]>(
+  const handleSetGrouping = (group: FetchGroupKey | null) => {
+    setGrouping(group);
+    // clear selected machines on grouping change
+    // we cannot reliably preserve the selected state for individual machines
+    // as we are only fetching information about a group from the back-end
+    dispatch(machineActions.setSelectedMachines(null));
+  };
+  const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
     localStorage,
     "hiddenGroups",
     []
   );
 
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
+  const { callId, loading, machineCount, machines, machinesErrors } =
+    useFetchMachines({
+      collapsedGroups: hiddenGroups,
+      filters: FilterMachineItems.parseFetchFilters(searchFilter),
+      grouping,
+      sortDirection: mapSortDirection(sortDirection),
+      sortKey,
+      pagination: { currentPage, setCurrentPage, pageSize: PAGE_SIZE },
+    });
 
   useEffect(
     () => () => {
       // Clear machine selected state and clean up any machine errors etc.
       // when closing the list.
-      dispatch(machineActions.setSelected([]));
+      dispatch(machineActions.setSelectedMachines(null));
       dispatch(machineActions.cleanup());
     },
     [dispatch]
@@ -61,29 +81,37 @@ const MachineList = ({
 
   return (
     <>
-      {errorMessage && !headerFormOpen ? (
-        <Notification
-          onDismiss={() => dispatch(machineActions.cleanup())}
-          severity="negative"
-        >
-          {errorMessage}
-        </Notification>
+      {errors && !headerFormOpen ? (
+        <ErrorsNotification
+          errors={errors}
+          onAfterDismiss={() => dispatch(machineActions.cleanup())}
+        />
       ) : null}
+      {!headerFormOpen ? <ErrorsNotification errors={machinesErrors} /> : null}
       <MachineListControls
         filter={searchFilter}
         grouping={grouping}
         setFilter={setSearchFilter}
-        setGrouping={setGrouping}
+        setGrouping={handleSetGrouping}
         setHiddenGroups={setHiddenGroups}
       />
       <MachineListTable
+        callId={callId}
+        currentPage={currentPage}
         filter={searchFilter}
         grouping={grouping}
         hiddenGroups={hiddenGroups}
-        machines={filteredMachines}
+        machineCount={machineCount}
+        machines={machines}
+        machinesLoading={loading}
+        pageSize={PAGE_SIZE}
         selectedIDs={selectedIDs}
+        setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
-        setSearchFilter={setSearchFilter}
+        setSortDirection={setSortDirection}
+        setSortKey={setSortKey}
+        sortDirection={sortDirection}
+        sortKey={sortKey}
       />
     </>
   );

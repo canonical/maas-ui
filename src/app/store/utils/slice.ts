@@ -27,6 +27,11 @@ import { objectHasKey } from "app/utils";
 
 export type GenericItemMeta<I> = {
   item: I;
+} & GenericMeta;
+
+export type GenericMeta = {
+  callId?: string;
+  identifier?: number | string;
 };
 
 // Get the models that follow the generic shape. The following models are excluded:
@@ -420,11 +425,13 @@ export const generateStatusHandlers = <
           ) => {
             // Call the reducer handler if supplied.
             status.start && status.start(state, action);
-            const statusItem =
-              state.statuses[String(action.meta.item[indexKey])];
-            const statusKey = status.statusKey;
-            if (objectHasKey(statusKey as string, statusItem)) {
-              statusItem[statusKey] = true;
+            if (action.meta.item) {
+              const statusItem =
+                state.statuses[String(action.meta.item[indexKey])];
+              const statusKey = status.statusKey;
+              if (objectHasKey(statusKey as string, statusItem)) {
+                statusItem[statusKey] = true;
+              }
             }
           },
         },
@@ -442,14 +449,16 @@ export const generateStatusHandlers = <
           ) => {
             // Call the reducer handler if supplied.
             status.success && status.success(state, action);
-            const statusItem =
-              state.statuses[String(action.meta.item[indexKey])];
-            // Sometimes the server will respond with "machine/deleteNotify"
-            // before "machine/deleteSuccess", which removes the machine
-            // system_id from statuses so check the item exists, to be safe.
-            const statusKey = status.statusKey;
-            if (objectHasKey(statusKey as string, statusItem)) {
-              statusItem[statusKey] = false;
+            if (action.meta.item) {
+              const statusItem =
+                state.statuses[String(action.meta.item[indexKey])];
+              // Sometimes the server will respond with "machine/deleteNotify"
+              // before "machine/deleteSuccess", which removes the machine
+              // system_id from statuses so check the item exists, to be safe.
+              const statusKey = status.statusKey;
+              if (objectHasKey(statusKey as string, statusItem)) {
+                statusItem[statusKey] = false;
+              }
             }
           },
         },
@@ -471,11 +480,13 @@ export const generateStatusHandlers = <
             if (setErrors) {
               state = setErrors(state, action, status.status);
             }
-            const statusItem =
-              state.statuses[String(action.meta.item[indexKey])];
-            const statusKey = status.statusKey;
-            if (objectHasKey(statusKey as string, statusItem)) {
-              statusItem[statusKey] = false;
+            if (action.meta.item) {
+              const statusItem =
+                state.statuses[String(action.meta.item[indexKey])];
+              const statusKey = status.statusKey;
+              if (objectHasKey(statusKey as string, statusItem)) {
+                statusItem[statusKey] = false;
+              }
             }
           },
         },

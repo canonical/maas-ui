@@ -6,12 +6,13 @@ import GroupSelect from "./GroupSelect";
 import MachinesFilterAccordion from "./MachinesFilterAccordion";
 
 import DebounceSearchBox from "app/base/components/DebounceSearchBox";
+import type { FetchGroupKey } from "app/store/machine/types";
 
 type Props = {
   filter: string;
-  grouping: string;
+  grouping: FetchGroupKey | null;
   setFilter: (filter: string) => void;
-  setGrouping: (group: string) => void;
+  setGrouping: (group: FetchGroupKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
   hiddenColumns?: string[];
   toggleHiddenColumn?: (column: string) => void;

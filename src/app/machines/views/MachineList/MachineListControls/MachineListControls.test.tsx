@@ -37,7 +37,7 @@ describe("MachineListControls", () => {
         >
           <MachineListControls
             filter=""
-            grouping="none"
+            grouping={null}
             hiddenColumns={[]}
             setFilter={setFilter}
             setGrouping={jest.fn()}

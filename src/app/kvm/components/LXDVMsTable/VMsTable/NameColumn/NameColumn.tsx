@@ -1,30 +1,22 @@
 import { Spinner } from "@canonical/react-components";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
 
 import DoubleRow from "app/base/components/DoubleRow";
-import RowCheckbox from "app/base/components/RowCheckbox";
 import urls from "app/base/urls";
-import { actions as machineActions } from "app/store/machine";
+import MachineCheckbox from "app/machines/views/MachineList/MachineListTable/MachineCheckbox";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import { generateCheckboxHandlers } from "app/utils";
 
 type Props = {
+  callId?: string | null;
   systemId: Machine["system_id"];
 };
 
-const NameColumn = ({ systemId }: Props): JSX.Element => {
-  const dispatch = useDispatch();
+const NameColumn = ({ callId, systemId }: Props): JSX.Element => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
-  );
-  const selectedIDs = useSelector(machineSelectors.selectedIDs);
-  const { handleRowCheckbox } = generateCheckboxHandlers<Machine["system_id"]>(
-    (machineIDs) => {
-      dispatch(machineActions.setSelected(machineIDs));
-    }
   );
 
   if (!machine) {
@@ -34,18 +26,14 @@ const NameColumn = ({ systemId }: Props): JSX.Element => {
     <DoubleRow
       data-testid="name-col"
       primary={
-        <RowCheckbox
-          checked={selectedIDs.includes(machine.system_id)}
-          handleRowCheckbox={() =>
-            handleRowCheckbox(machine.system_id, selectedIDs)
-          }
-          inputLabel={
+        <MachineCheckbox
+          callId={callId}
+          label={
             <Link to={urls.machines.machine.index({ id: machine.system_id })}>
               <strong>{machine.hostname}</strong>
             </Link>
           }
-          item={systemId}
-          items={[]}
+          systemId={systemId}
         />
       }
       primaryTitle={machine.hostname}

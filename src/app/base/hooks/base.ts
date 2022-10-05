@@ -100,7 +100,7 @@ export const useProcessing = ({
   hasErrors?: boolean;
   onComplete?: () => void;
   onError?: () => void;
-  processingCount: number;
+  processingCount?: number;
 }): boolean => {
   const [processingStarted] = useCycled(processingCount !== 0);
   const [processingComplete, setProcessingComplete] = useState(false);
@@ -174,4 +174,29 @@ export const useScrollToTop = (): void => {
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [pathname]);
+};
+
+/**
+ * Returns the previous value reference persisted across the render cycles
+ * @param value - value to persist across the render cycles
+ * @returns previous value
+ */
+export const usePreviousPersistent = <T extends unknown>(
+  value: T
+): T | null => {
+  const ref = useRef<{ value: T; prev: T | null }>({
+    value: value,
+    prev: null,
+  });
+
+  const current = ref.current.value;
+
+  if (value !== current) {
+    ref.current = {
+      value: value,
+      prev: current,
+    };
+  }
+
+  return ref.current.prev;
 };

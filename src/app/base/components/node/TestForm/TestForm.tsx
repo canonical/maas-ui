@@ -9,6 +9,7 @@ import TestFormFields from "./TestFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { HardwareType } from "app/base/enum";
+import type { FetchFilters } from "app/store/machine/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -44,26 +45,34 @@ type Props<E = null> = NodeActionFormProps<E> & {
   applyConfiguredNetworking?: Script["apply_configured_networking"];
   cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
   hardwareType?: HardwareType;
-  onTest: (args: FormValues & { systemId: Node["system_id"] }) => void;
+  onTest: (
+    args: FormValues &
+      (
+        | { systemId: Node["system_id"]; filter?: never }
+        | { systemId?: never; filter: FetchFilters }
+      )
+  ) => void;
 };
 
 export const TestForm = <E,>({
   applyConfiguredNetworking,
   cleanup,
   clearHeaderContent,
+  actionStatus,
   errors,
   hardwareType,
   modelName,
   nodes,
   onTest,
   processingCount,
+  selectedFilter,
+  selectedCount,
   viewingDetails,
 }: Props<E>): JSX.Element => {
   const dispatch = useDispatch();
   const scripts = useSelector(scriptSelectors.testing);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const urlScripts = useSelector(scriptSelectors.testingWithUrl);
-
   type FormattedScript = Script & {
     displayName: string;
   };
@@ -118,6 +127,7 @@ export const TestForm = <E,>({
   return (
     <ActionForm<FormValues, E>
       actionName={NodeActions.TEST}
+      actionStatus={actionStatus}
       allowUnchanged
       cleanup={cleanup}
       errors={errors}
@@ -139,18 +149,27 @@ export const TestForm = <E,>({
       onSubmit={(values) => {
         dispatch(cleanup());
         const { enableSSH, scripts, scriptInputs } = values;
-        nodes.forEach((node) => {
+        if (selectedFilter) {
           onTest({
-            systemId: node.system_id,
+            filter: selectedFilter,
             scripts,
             enableSSH,
             scriptInputs,
           });
-        });
+        } else {
+          nodes?.forEach((node) => {
+            onTest({
+              systemId: node.system_id,
+              scripts,
+              enableSSH,
+              scriptInputs,
+            });
+          });
+        }
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={nodes.length}
+      selectedCount={nodes ? nodes.length : selectedCount ?? 0}
       validationSchema={TestFormSchema}
     >
       <TestFormFields

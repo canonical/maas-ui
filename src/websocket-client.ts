@@ -59,11 +59,9 @@ export type WebSocketActionParams = AnyObject | AnyObject[];
 export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
   {
     params: P;
-  },
+  } | null,
   string,
   {
-    // Whether the request should be fetched in batches.
-    batch?: boolean;
     // Whether the request should only be fetched the first time.
     cache?: boolean;
     // Whether each item in the params should be dispatched separately. The
@@ -75,7 +73,7 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     // key of a model in order to track a its loading/success/error states.
     identifier?: number | string;
     // The endpoint method e.g. "list".
-    method: string;
+    method?: string;
     // The endpoint model e.g. "machine".
     model: string;
     // Whether the request should be fetched every time.
@@ -87,12 +85,12 @@ export type WebSocketAction<P = WebSocketActionParams> = PayloadAction<
     pollId?: string;
     // The amount of time in milliseconds between requests.
     pollInterval?: number;
+    // An id to identify this request.
+    callId?: string;
     // Whether polling should be stopped for the request.
     pollStop?: boolean;
-    // Batch requests may set a limit for all requests after the first (i.e. the
-    // first action may set a limit of 5 and then use subsequentLimit to set all
-    // following requests to 10).
-    subsequentLimit?: number;
+    // Whether the request should unsubscribe from unused entities.
+    unsubscribe?: boolean;
     // Whether the response should be stored in the file context.
     useFileContext?: boolean;
   }
@@ -152,7 +150,9 @@ export class WebSocketClient {
    * @returns {Object} The websocket that was created.
    */
   connect(): ReconnectingWebSocket {
-    this.socket = new ReconnectingWebSocket(this.buildURL());
+    this.socket = new ReconnectingWebSocket(this.buildURL(), undefined, {
+      debug: process.env.REACT_APP_WEBSOCKET_DEBUG === "true",
+    });
     return this.socket;
   }
 

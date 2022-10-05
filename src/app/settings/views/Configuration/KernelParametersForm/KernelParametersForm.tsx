@@ -43,10 +43,10 @@ const KernelParametersForm = (): JSX.Element => {
         category: "Configuration settings",
         label: "Kernel parameters form",
       }}
-      onSubmit={(values) => {
+      onSubmit={(values, { resetForm }) => {
         dispatch(updateConfig(values));
+        resetForm({ values });
       }}
-      resetOnSave
       saved={saved}
       saving={saving}
       validationSchema={KernelParametersSchema}

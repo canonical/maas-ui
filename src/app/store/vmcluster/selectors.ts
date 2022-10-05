@@ -5,10 +5,7 @@ import { generateBaseSelectors } from "../utils";
 import { VMClusterMeta } from "./types";
 import type { VMClusterState, VMCluster, VMClusterStatuses } from "./types";
 
-import machineSelectors from "app/store/machine/selectors";
-import { FilterMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
-import tagSelectors from "app/store/tag/selectors";
 
 const defaultSelectors = generateBaseSelectors<
   VMClusterState,
@@ -68,61 +65,10 @@ const eventError = createSelector(
     eventErrors.filter((eventError) => eventError.event === eventName)
 );
 
-/**
- * Get the machines in state for a given cluster.
- * @param state - The redux state.
- * @param clusterId - The id of the cluster.
- * @returns The machines in state for a given cluster.
- */
-const getVMs = createSelector(
-  (state: RootState, clusterId: VMCluster[VMClusterMeta.PK]) => ({
-    cluster: defaultSelectors.getById(state, clusterId),
-    machines: machineSelectors.all(state),
-  }),
-  ({ cluster, machines }) => {
-    if (!cluster) {
-      return [];
-    }
-    return machines.filter((machine) =>
-      cluster.virtual_machines.some((vm) => vm.system_id === machine.system_id)
-    );
-  }
-);
-
-/**
- * Get a filtered list of machines in state for a given cluster and search terms.
- * @param state - The redux state.
- * @param clusterId - The id of the cluster.
- * @param terms - The terms to match against.
- * @returns A filtered list of machines in state for a given cluster.
- */
-const getFilteredVMs = createSelector(
-  [
-    tagSelectors.all,
-    (
-      state: RootState,
-      clusterId: VMCluster[VMClusterMeta.PK],
-      terms: string
-    ) => ({
-      clusterVMs: getVMs(state, clusterId),
-      selectedIDs: machineSelectors.selectedIDs(state),
-      terms,
-    }),
-  ],
-  (tags, { clusterVMs, selectedIDs, terms }) => {
-    if (!terms) {
-      return clusterVMs;
-    }
-    return FilterMachines.filterItems(clusterVMs, terms, selectedIDs, { tags });
-  }
-);
-
 const selectors = {
   ...defaultSelectors,
   eventError,
   eventErrors,
-  getFilteredVMs,
-  getVMs,
   status,
   statuses,
 };

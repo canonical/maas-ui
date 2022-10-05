@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
@@ -24,6 +24,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
@@ -54,10 +55,7 @@ const MachineHeader = ({
     NodeActions.ON,
   ]);
   const isDetails = isMachineDetails(machine);
-
-  useEffect(() => {
-    dispatch(machineActions.get(systemId));
-  }, [dispatch, systemId]);
+  useFetchMachine(systemId);
 
   if (!machine || !isDetails) {
     return <SectionHeader loading />;
@@ -71,6 +69,8 @@ const MachineHeader = ({
       buttons={[
         <NodeActionMenu
           alwaysShowLifecycle
+          filterActions
+          hasSelection={true}
           key="action-dropdown"
           nodeDisplay="machine"
           nodes={[machine]}
@@ -88,7 +88,8 @@ const MachineHeader = ({
         headerContent ? (
           <MachineHeaderForms
             headerContent={headerContent}
-            machines={[machine]}
+            selectedCount={1}
+            selectedFilter={{ id: machine.system_id }}
             setHeaderContent={setHeaderContent}
             viewingDetails
           />

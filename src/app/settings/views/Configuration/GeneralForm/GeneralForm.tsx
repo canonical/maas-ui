@@ -77,7 +77,8 @@ const GeneralForm = (): JSX.Element => {
         enable_analytics: analyticsEnabled || false,
         release_notifications: releaseNotifications || false,
       }}
-      onCancel={(values) => {
+      onCancel={(values, { resetForm }) => {
+        resetForm();
         setTheme(maasTheme ? maasTheme : "default");
         values.theme = maasTheme ? maasTheme : "default";
       }}

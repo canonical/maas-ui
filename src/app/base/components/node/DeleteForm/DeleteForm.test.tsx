@@ -48,8 +48,10 @@ describe("DeleteForm", () => {
     );
 
     submitFormikForm(wrapper);
-
-    expect(onSubmit).toHaveBeenCalledWith();
+    expect(onSubmit).toHaveBeenCalledWith(
+      {},
+      expect.objectContaining({ resetForm: expect.any(Function) })
+    );
   });
 
   it("redirects when a node is deleted from details view", () => {
