@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -8,7 +9,7 @@ import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
 import { NodeActions } from "app/store/types/node";
 import {
-  machineEventError as machineEventErrorFactory,
+  machineActionState as machineActionStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
@@ -22,6 +23,7 @@ let html: HTMLHtmlElement | null;
 const originalScrollTo = global.scrollTo;
 
 beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
   global.innerHeight = 500;
   // eslint-disable-next-line testing-library/no-node-access
   html = document.querySelector("html");
@@ -48,7 +50,7 @@ it("scrolls to the top of the window when opening the form", async () => {
     <MachineActionFormWrapper
       action={NodeActions.ABORT}
       clearHeaderContent={jest.fn()}
-      machines={[]}
+      selectedFilter={{}}
       viewingDetails={false}
     />
   );
@@ -58,13 +60,12 @@ it("scrolls to the top of the window when opening the form", async () => {
 it("can show untag errors when the tag form is open", async () => {
   const state = rootStateFactory({
     machine: machineStateFactory({
-      eventErrors: [
-        machineEventErrorFactory({
-          id: "abc123",
-          error: "Untagging failed",
-          event: NodeActions.UNTAG,
+      actions: {
+        "123456": machineActionStateFactory({
+          status: "error",
+          errors: "Untagging failed",
         }),
-      ],
+      },
     }),
     tag: tagStateFactory({
       loaded: true,
@@ -86,7 +87,7 @@ it("can show untag errors when the tag form is open", async () => {
           <MachineActionFormWrapper
             action={NodeActions.TAG}
             clearHeaderContent={jest.fn()}
-            machines={machines}
+            selectedFilter={{ id: machines[0].system_id }}
             viewingDetails={false}
           />
         </CompatRouter>

@@ -6,6 +6,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { EmptyObject } from "app/base/types";
 import type { actions as controllerActions } from "app/store/controller";
 import type { actions as machineActions } from "app/store/machine";
+import { useMachineActionDispatch } from "app/store/machine/utils/hooks";
 import type { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "app/utils";
@@ -30,13 +31,19 @@ export const FieldlessForm = <E,>({
   viewingDetails,
 }: Props<E>): JSX.Element => {
   const dispatch = useDispatch();
+  const {
+    dispatch: dispatchWithCallId,
+    actionStatus,
+    actionErrors,
+  } = useMachineActionDispatch();
 
   return (
     <ActionForm<EmptyObject, E>
       actionName={action}
+      actionStatus={actionStatus}
       allowUnchanged
       cleanup={cleanup}
-      errors={errors}
+      errors={errors || actionErrors}
       initialValues={{}}
       modelName={modelName}
       onCancel={clearHeaderContent}
@@ -56,7 +63,7 @@ export const FieldlessForm = <E,>({
 
         if (actionFunction) {
           if (selectedFilter) {
-            dispatch(actionFunction({ filter: selectedFilter }));
+            dispatchWithCallId(actionFunction({ filter: selectedFilter }));
           } else {
             nodes?.forEach((node) => {
               dispatch(actionFunction({ system_id: node.system_id }));

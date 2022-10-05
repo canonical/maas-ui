@@ -15,7 +15,8 @@ import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import type { MachineHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine } from "app/store/machine/types";
+import type { FetchFilters } from "app/store/machine/types";
+import { selectedToFilters } from "app/store/machine/utils";
 
 type Props = {
   headerContent: KVMHeaderContent | null;
@@ -27,7 +28,7 @@ const getFormComponent = (
   headerContent: KVMHeaderContent,
   setHeaderContent: KVMSetHeaderContent,
   clearHeaderContent: ClearHeaderContent,
-  machines: Machine[],
+  selectedFilter: FetchFilters | null,
   setSearchFilter?: SetSearchFilter
 ) => {
   if (!headerContent) {
@@ -93,7 +94,7 @@ const getFormComponent = (
   return (
     <MachineHeaderForms
       headerContent={machineHeaderContent}
-      machines={machines}
+      selectedFilter={selectedFilter}
       setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
       viewingDetails={false}
@@ -106,7 +107,8 @@ const KVMHeaderForms = ({
   setHeaderContent,
   setSearchFilter,
 }: Props): JSX.Element | null => {
-  const selectedMachines = useSelector(machineSelectors.selected);
+  const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const selectedFilter = selectedToFilters(selectedMachines);
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const clearHeaderContent = useCallback(
     () => setHeaderContent(null),
@@ -122,7 +124,7 @@ const KVMHeaderForms = ({
         headerContent,
         setHeaderContent,
         clearHeaderContent,
-        selectedMachines,
+        selectedFilter,
         setSearchFilter
       )}
     </div>

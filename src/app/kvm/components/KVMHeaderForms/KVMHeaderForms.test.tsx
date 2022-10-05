@@ -169,6 +169,7 @@ describe("KVMHeaderForms", () => {
   });
 
   it("renders machine action forms if a machine action is selected", () => {
+    state.machine.selectedMachines = { items: ["abc123"] };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

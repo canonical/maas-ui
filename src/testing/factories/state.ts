@@ -267,7 +267,7 @@ export const machineStateList = define<MachineStateList>({
   num_pages: null,
 });
 
-export const machineStateAction = define<ActionState>({
+export const machineActionState = define<ActionState>({
   status: ACTION_STATUS.idle,
   errors: null,
   count: 0,

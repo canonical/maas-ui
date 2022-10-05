@@ -9,6 +9,7 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import { selectedToFilters } from "./common";
 import type { UseFetchMachinesOptions, UseFetchQueryOptions } from "./hooks";
 import {
+  useMachineActionDispatch,
   useDispatchWithCallId,
   useFetchSelectedMachines,
   useHasSelection,
@@ -47,6 +48,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
+  machineActionState,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -444,6 +446,49 @@ describe("machine hook utils", () => {
         type: "test",
         meta: { callId: "mocked-nanoid" },
       });
+    });
+
+    it("cleans up request on unmount", async () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid-1");
+      const store = mockStore(state);
+      renderHook(() => useDispatchWithCallId(), {
+        wrapper: generateWrapper(store),
+      });
+      cleanup();
+      const expected = machineActions.removeRequest("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+    });
+  });
+
+  describe("useMachineActionDispatch", () => {
+    const generateWrapper =
+      (store: MockStoreEnhanced<unknown>) =>
+      ({ children }: { children?: ReactNode }) =>
+        <Provider store={store}>{children}</Provider>;
+
+    it("adds a callId to redux dispatch function and returns action state", async () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      state.machine.actions["mocked-nanoid"] = machineActionState({
+        status: "success",
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useMachineActionDispatch(), {
+        wrapper: generateWrapper(store),
+      });
+      const { dispatch } = result.current;
+      const testAction = { type: "test" };
+      dispatch(testAction);
+      const actual = store
+        .getActions()
+        .find((action) => action.type === testAction.type);
+      expect(actual).toStrictEqual({
+        type: "test",
+        meta: { callId: "mocked-nanoid" },
+      });
+      expect(result.current.actionStatus).toEqual("success");
+      expect(result.current.actionErrors).toEqual(null);
     });
   });
 
