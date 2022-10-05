@@ -1,11 +1,8 @@
-import { mount } from "enzyme";
+import { screen, within } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import BondModeSelect from "./BondModeSelect";
 
-import DynamicSelect from "app/base/components/DynamicSelect";
 import { BondMode } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -14,8 +11,7 @@ import {
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("BondModeSelect", () => {
   let state: RootState;
@@ -42,27 +38,26 @@ describe("BondModeSelect", () => {
 
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <BondModeSelect name="mode" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <BondModeSelect name="mode" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("displays the options", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <BondModeSelect name="mode" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <BondModeSelect name="mode" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+
+    const bondModeSelect = screen.getByRole("combobox", { name: "Bond mode" });
+    const bondModeOptions = within(bondModeSelect).getAllByRole("option");
+    const expectedOptions = [
       { label: "Select bond mode", value: "" },
       {
         label: BondMode.BALANCE_RR,
@@ -92,25 +87,31 @@ describe("BondModeSelect", () => {
         label: BondMode.BALANCE_ALB,
         value: BondMode.BALANCE_ALB,
       },
-    ]);
+    ];
+
+    for (var i = 0; i < expectedOptions.length; i++) {
+      expect(bondModeOptions[i]).toHaveValue(expectedOptions[i].value);
+      expect(bondModeOptions[i]).toHaveTextContent(expectedOptions[i].label);
+    }
   });
 
   it("can display a default option", () => {
-    const store = mockStore(state);
     const defaultOption = {
       label: "Default",
       value: "99",
     };
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <BondModeSelect defaultOption={defaultOption} name="mode" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <BondModeSelect defaultOption={defaultOption} name="mode" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
-      defaultOption
-    );
+
+    const bondModeSelect = screen.getByRole("combobox", { name: "Bond mode" });
+    const bondModeOptions = within(bondModeSelect).getAllByRole("option");
+
+    expect(bondModeOptions[0]).toHaveValue(defaultOption.value);
+    expect(bondModeOptions[0]).toHaveTextContent(defaultOption.label);
   });
 
   it("can hide the default option", () => {
@@ -118,14 +119,15 @@ describe("BondModeSelect", () => {
       data: undefined,
       loaded: true,
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <BondModeSelect defaultOption={null} name="mode" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <BondModeSelect defaultOption={null} name="mode" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
+    const bondModeSelect = screen.getByRole("combobox", { name: "Bond mode" });
+    const bondModeOptions = within(bondModeSelect).queryAllByRole("option");
+
+    expect(bondModeOptions).toHaveLength(0);
   });
 });
