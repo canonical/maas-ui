@@ -21,6 +21,9 @@ context("Machine details", () => {
   };
 
   it("hides the subnet column on small screens", () => {
+    cy.waitForPageToLoad();
+    cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
+
     cy.findByRole("grid").within(() => {
       cy.findAllByRole("gridcell", { name: /FQDN/i })
         .first()
