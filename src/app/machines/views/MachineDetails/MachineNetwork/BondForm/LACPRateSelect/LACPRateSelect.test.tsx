@@ -1,11 +1,8 @@
-import { mount } from "enzyme";
+import { screen, within } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import LACPRateSelect from "./LACPRateSelect";
 
-import DynamicSelect from "app/base/components/DynamicSelect";
 import { BondLacpRate } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -14,8 +11,7 @@ import {
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("LACPRateSelect", () => {
   let state: RootState;
@@ -37,27 +33,26 @@ describe("LACPRateSelect", () => {
 
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LACPRateSelect name="lacp_rate" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LACPRateSelect name="lacp_rate" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("displays the options", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LACPRateSelect name="lacp_rate" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LACPRateSelect name="lacp_rate" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+
+    const lacpRateSelect = screen.getByRole("combobox", { name: "LACP rate" });
+    const lacpRateOptions = within(lacpRateSelect).getAllByRole("option");
+    const expectedOptions = [
       { label: "Select LACP rate", value: "" },
       {
         label: BondLacpRate.FAST,
@@ -67,25 +62,31 @@ describe("LACPRateSelect", () => {
         label: BondLacpRate.SLOW,
         value: BondLacpRate.SLOW,
       },
-    ]);
+    ];
+
+    for (var i = 0; i < expectedOptions.length; i++) {
+      expect(lacpRateOptions[i]).toHaveValue(expectedOptions[i].value);
+      expect(lacpRateOptions[i]).toHaveTextContent(expectedOptions[i].label);
+    }
   });
 
   it("can display a default option", () => {
-    const store = mockStore(state);
     const defaultOption = {
       label: "Default",
       value: "99",
     };
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LACPRateSelect defaultOption={defaultOption} name="lacp_rate" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LACPRateSelect defaultOption={defaultOption} name="lacp_rate" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
-      defaultOption
-    );
+
+    const lacpRateSelect = screen.getByRole("combobox", { name: "LACP rate" });
+    const lacpRateOptions = within(lacpRateSelect).getAllByRole("option");
+
+    expect(lacpRateOptions[0]).toHaveValue(defaultOption.value);
+    expect(lacpRateOptions[0]).toHaveTextContent(defaultOption.label);
   });
 
   it("can hide the default option", () => {
@@ -93,14 +94,15 @@ describe("LACPRateSelect", () => {
       data: undefined,
       loaded: true,
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <LACPRateSelect defaultOption={null} name="lacp_rate" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <LACPRateSelect defaultOption={null} name="lacp_rate" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
+    const lacpRateSelect = screen.getByRole("combobox", { name: "LACP rate" });
+    const lacpRateOptions = within(lacpRateSelect).queryAllByRole("option");
+
+    expect(lacpRateOptions).toHaveLength(0);
   });
 });
