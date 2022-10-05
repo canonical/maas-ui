@@ -1,53 +1,42 @@
-import { mount } from "enzyme";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import BridgeFormFields from "./BridgeFormFields";
 
+import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("BridgeFormFields", () => {
   it("does not display the fd field if stp isn't on", async () => {
     const store = mockStore(rootStateFactory());
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <BridgeFormFields />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <BridgeFormFields />
+      </Formik>,
+      { route: "/machines", wrapperProps: { store } }
     );
-    expect(wrapper.find("FormikField[name='bridge_fd']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("textbox", { name: "Forward delay (ms)" })
+    ).not.toBeInTheDocument();
   });
 
   it("displays the fd field if stp is on", async () => {
     const store = mockStore(rootStateFactory());
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <Formik initialValues={{}} onSubmit={jest.fn()}>
-            <BridgeFormFields />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <BridgeFormFields />
+      </Formik>,
+      { route: "/machines", wrapperProps: { store } }
     );
-    wrapper.find("input[name='bridge_stp']").simulate("change", {
-      target: {
-        name: "bridge_stp",
-        checked: true,
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikField[name='bridge_fd']").exists()).toBe(true);
+
+    await userEvent.click(screen.getByRole("checkbox", { name: "STP" }));
+    expect(
+      screen.getByRole("textbox", { name: "Forward delay (ms)" })
+    ).toBeInTheDocument();
   });
 });
