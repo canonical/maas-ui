@@ -14,6 +14,7 @@ import type {
 
 import { selectedToFilters } from "./common";
 
+import { ACTION_STATUS } from "app/base/constants";
 import { useCanEdit } from "app/base/hooks";
 import type { ActionState, APIError } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
@@ -77,17 +78,29 @@ export const useMachineActionDispatch = <A extends AnyAction>(): {
   dispatch: (args: A) => void;
   actionStatus: ActionState["status"];
   actionErrors: ActionState["errors"];
+  failedSystemIds: ActionState["failedSystemIds"];
 } => {
   const { callId: dispatchCallId, dispatch: dispatchWithCallId } =
     useDispatchWithCallId();
   const actionState = useSelector((state: RootState) =>
     machineSelectors.getActionState(state, dispatchCallId)
   );
-  const actionStatus = actionState?.status || "idle";
+  const actionStatus = actionState?.status || ACTION_STATUS.idle;
+  const failedSystemIds = actionState?.failedSystemIds || [];
+  const { machines: failedMachines } = useFetchMachines(
+    { filters: { id: failedSystemIds } },
+    { isEnabled: failedSystemIds.length > 0 }
+  );
+  const actionErrors =
+    actionState?.errors ||
+    `Action failed on the following machines: ${failedMachines
+      .map((machine) => machine.hostname)
+      .join(", ")}`;
   return {
     dispatch: dispatchWithCallId,
     actionStatus: actionStatus,
-    actionErrors: actionState?.errors || null,
+    actionErrors: actionState?.errors || actionErrors || null,
+    failedSystemIds,
   };
 };
 

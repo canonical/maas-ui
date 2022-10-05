@@ -3,6 +3,8 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 import type { ACTION_STATUS } from "./constants";
 
+import type { Machine } from "app/store/machine/types";
+
 export type TSFixMe = any; // eslint-disable-line @typescript-eslint/no-explicit-any
 
 export type Seconds = number;
@@ -83,7 +85,8 @@ export type ActionStatuses = ValueOf<typeof ACTION_STATUS>;
 export type ActionState = {
   status: ActionStatuses;
   errors: APIError;
-  count: number;
+  failedSystemIds?: Machine["system_id"][];
+  successCount: number;
 };
 
 export type ModelAction<PK> = {

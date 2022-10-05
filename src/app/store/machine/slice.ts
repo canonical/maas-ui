@@ -380,7 +380,7 @@ const setErrors = (
 
 const statusHandlers = generateStatusHandlers<
   MachineState,
-  Machine,
+  Machine, // { success_count: number; failed_ids: Machine[MachineMeta.PK][] }
   MachineMeta.PK
 >(
   MachineMeta.PK,
@@ -395,7 +395,8 @@ const statusHandlers = generateStatusHandlers<
             state.actions[action.meta.callId] = {
               status: ACTION_STATUS.loading,
               errors: null,
-              count: 0,
+              successCount: 0,
+              failedSystemIds: [],
             };
           }
         }
@@ -405,8 +406,14 @@ const statusHandlers = generateStatusHandlers<
           if (action.meta.callId in state.actions) {
             const actionsItem = state.actions[action.meta.callId];
             actionsItem.status = ACTION_STATUS.success;
-            if (typeof action.payload === "number") {
-              actionsItem.count = action.payload;
+            if (typeof action.payload?.success_count === "number") {
+              actionsItem.successCount = action.payload.success_count as number;
+            }
+            if (action.payload?.failed_system_ids?.length > 0) {
+              actionsItem.status = ACTION_STATUS.error;
+              actionsItem.failedSystemIds = [
+                ...action.payload.failed_system_ids,
+              ] as Machine[MachineMeta.PK][];
             }
           }
         }
