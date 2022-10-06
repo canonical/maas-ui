@@ -5,6 +5,7 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import type { AnyAction } from "@reduxjs/toolkit";
 import { nanoid } from "@reduxjs/toolkit";
 import fastDeepEqual from "fast-deep-equal";
+import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import type {
@@ -81,7 +82,6 @@ type MachineActionData = {
   successCount: ActionState["successCount"];
   failedSystemIds: ActionState["failedSystemIds"];
 };
-
 export const useMachineActionDispatch = <
   A extends AnyAction
 >(): MachineActionData & {
@@ -94,7 +94,20 @@ export const useMachineActionDispatch = <
   );
   const actionStatus = actionState?.status || ACTION_STATUS.idle;
   const failedSystemIds = actionState?.failedSystemIds || [];
-  const actionErrors = actionState?.errors || null;
+  const { machines: failedMachines, machineCount: failedMachinesCount } =
+    useFetchMachines(
+      { filters: { id: failedSystemIds } },
+      { isEnabled: failedSystemIds.length > 0 }
+    );
+
+  const actionErrors =
+    actionState?.errors || (failedMachinesCount && failedMachinesCount > 0)
+      ? `Action failed for ${pluralize(
+          "machine",
+          failedMachinesCount as number,
+          true
+        )}: ${failedMachines.map((machine) => machine.hostname).join(", ")}`
+      : null;
 
   return {
     dispatch: dispatchWithCallId,
