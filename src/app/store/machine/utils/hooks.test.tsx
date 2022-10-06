@@ -498,6 +498,32 @@ describe("machine hook utils", () => {
       expect(result.current.actionStatus).toEqual("success");
       expect(result.current.actionErrors).toEqual(null);
     });
+
+    it("can return an error message", async () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      state.machine.actions["mocked-nanoid"] = machineActionState({
+        status: "success",
+        failedSystemIds: ["abc123"],
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useMachineActionDispatch(), {
+        wrapper: generateWrapper(store),
+      });
+      const { dispatch } = result.current;
+      const testAction = { type: "test" };
+      dispatch(testAction);
+      const actual = store
+        .getActions()
+        .find((action) => action.type === testAction.type);
+      expect(actual).toStrictEqual({
+        type: "test",
+        meta: { callId: "mocked-nanoid" },
+      });
+      expect(result.current.actionStatus).toEqual("success");
+      expect(result.current.actionErrors).toEqual(
+        "Action failed for 1 machine"
+      );
+    });
   });
 
   describe("useSelectedMachinesActionsDispatch", () => {

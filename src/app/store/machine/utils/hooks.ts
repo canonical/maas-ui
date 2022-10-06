@@ -94,19 +94,24 @@ export const useMachineActionDispatch = <
   );
   const actionStatus = actionState?.status || ACTION_STATUS.idle;
   const failedSystemIds = actionState?.failedSystemIds || [];
-  const { machines: failedMachines, machineCount: failedMachinesCount } =
-    useFetchMachines(
-      { filters: { id: failedSystemIds } },
-      { isEnabled: failedSystemIds.length > 0 }
-    );
+  const failedMachinesCount = failedSystemIds.length;
+  const { machines: failedMachines } = useFetchMachines(
+    { filters: { id: failedSystemIds } },
+    { isEnabled: failedMachinesCount > 0 }
+  );
+
+  const failedMachinesDescription =
+    failedMachines.length > 0
+      ? `: ${failedMachines.map((machine) => machine.hostname).join(", ")}`
+      : "";
 
   const actionErrors =
-    actionState?.errors || (failedMachinesCount && failedMachinesCount > 0)
+    actionState?.errors || failedMachinesCount > 0
       ? `Action failed for ${pluralize(
           "machine",
-          failedMachinesCount as number,
+          failedMachinesCount,
           true
-        )}: ${failedMachines.map((machine) => machine.hostname).join(", ")}`
+        )}${failedMachinesDescription}`
       : null;
 
   return {
