@@ -16,6 +16,7 @@ import {
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { PodType } from "app/store/pod/constants";
 import { NodeActions } from "app/store/types/node";
 
@@ -46,10 +47,15 @@ export const DeployForm = ({
   machines,
   processingCount,
   selectedCount,
-  selectedFilter,
+  selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const {
+    dispatch: dispatchForSelectedMachines,
+    actionStatus,
+    actionErrors,
+  } = useSelectedMachinesActionsDispatch(selectedMachines);
   const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
   const { default_osystem, default_release, osystems, releases } =
     useSelector(osInfoSelectors.get) || {};
@@ -92,9 +98,10 @@ export const DeployForm = ({
   return (
     <ActionForm<DeployFormValues, MachineEventErrors>
       actionName={NodeActions.DEPLOY}
+      actionStatus={actionStatus}
       allowUnchanged={osystems?.length !== 0 && releases?.length !== 0}
       cleanup={machineActions.cleanup}
-      errors={errors}
+      errors={errors || actionErrors}
       initialValues={{
         oSystem: initialOS,
         release: initialRelease,
@@ -122,23 +129,20 @@ export const DeployForm = ({
             "Cloud-init user data"
           );
         }
-        if (selectedFilter) {
-          dispatch(
-            machineActions.deploy({
-              distro_series: values.release,
-              hwe_kernel: values.kernel,
-              osystem: values.oSystem,
-              filter: selectedFilter,
-              ...(values.enableHwSync && { enable_hw_sync: true }),
-              ...(values.vmHostType === PodType.LXD && {
-                register_vmhost: true,
-              }),
-              ...(values.vmHostType === PodType.VIRSH && {
-                install_kvm: true,
-              }),
-              ...(hasUserData && { user_data: values.userData }),
-            })
-          );
+        if (selectedMachines) {
+          dispatchForSelectedMachines(machineActions.deploy, {
+            distro_series: values.release,
+            hwe_kernel: values.kernel,
+            osystem: values.oSystem,
+            ...(values.enableHwSync && { enable_hw_sync: true }),
+            ...(values.vmHostType === PodType.LXD && {
+              register_vmhost: true,
+            }),
+            ...(values.vmHostType === PodType.VIRSH && {
+              install_kvm: true,
+            }),
+            ...(hasUserData && { user_data: values.userData }),
+          });
         } else {
           machines?.forEach((machine) => {
             dispatch(

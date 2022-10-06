@@ -44,7 +44,7 @@ const statusHandlers = generateStatusHandlers<PodState, Pod, PodMeta.PK>(
       statusKey: "refreshing",
       success: (state, action) => {
         for (const i in state.items) {
-          if (state.items[i].id === action.payload.id) {
+          if (state.items[i].id === action.payload?.id) {
             state.items[i] = action.payload;
             return;
           }

@@ -6,7 +6,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { EmptyObject } from "app/base/types";
 import type { actions as controllerActions } from "app/store/controller";
 import type { actions as machineActions } from "app/store/machine";
-import { useMachineActionDispatch } from "app/store/machine/utils/hooks";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import type { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 import { capitaliseFirst, kebabToCamelCase } from "app/utils";
@@ -23,7 +23,7 @@ export const FieldlessForm = <E,>({
   cleanup,
   clearHeaderContent,
   errors,
-  selectedFilter,
+  selectedMachines,
   modelName,
   nodes,
   processingCount,
@@ -31,19 +31,15 @@ export const FieldlessForm = <E,>({
   viewingDetails,
 }: Props<E>): JSX.Element => {
   const dispatch = useDispatch();
-  const {
-    dispatch: dispatchWithCallId,
-    actionStatus,
-    actionErrors,
-  } = useMachineActionDispatch();
+  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
+    useSelectedMachinesActionsDispatch(selectedMachines);
 
   return (
     <ActionForm<EmptyObject, E>
       actionName={action}
-      actionStatus={actionStatus}
       allowUnchanged
       cleanup={cleanup}
-      errors={errors || actionErrors}
+      errors={errors}
       initialValues={{}}
       modelName={modelName}
       onCancel={clearHeaderContent}
@@ -62,8 +58,8 @@ export const FieldlessForm = <E,>({
           Object.entries(actions).find(([key]) => key === actionMethod) || [];
 
         if (actionFunction) {
-          if (selectedFilter) {
-            dispatchWithCallId(actionFunction({ filter: selectedFilter }));
+          if (selectedMachines) {
+            dispatchForSelectedMachines(actionFunction);
           } else {
             nodes?.forEach((node) => {
               dispatch(actionFunction({ system_id: node.system_id }));
@@ -74,6 +70,7 @@ export const FieldlessForm = <E,>({
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={nodes ? nodes.length : selectedCount ?? 0}
+      {...actionProps}
     />
   );
 };

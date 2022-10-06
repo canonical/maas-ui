@@ -24,7 +24,8 @@ import type {
   MachineActions,
   MachineEventErrors,
 } from "app/store/machine/types";
-import { useMachineActionDispatch } from "app/store/machine/utils/hooks";
+import { selectedToFilters } from "app/store/machine/utils";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 type Props = {
   action: MachineActions;
@@ -43,22 +44,22 @@ export const MachineActionFormWrapper = ({
   hardwareType,
   selectedCount,
   selectedCountLoading,
-  selectedFilter,
+  selectedMachines,
   setSearchFilter,
   viewingDetails,
 }: Props): JSX.Element | null => {
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const dispatch = useDispatch();
   const {
-    dispatch: dispatchWithCallId,
+    dispatch: dispatchForSelectedMachines,
     actionStatus,
     actionErrors,
-  } = useMachineActionDispatch();
+  } = useSelectedMachinesActionsDispatch(selectedMachines);
 
   const commonMachineFormProps = {
     clearHeaderContent,
     viewingDetails,
-    selectedFilter,
+    selectedMachines,
     actionStatus,
     errors: actionErrors,
     selectedCount,
@@ -69,18 +70,19 @@ export const MachineActionFormWrapper = ({
     clearHeaderContent,
     modelName: "machine",
     viewingDetails,
-    selectedFilter,
+    selectedMachines,
     actionStatus,
     errors: actionErrors,
     selectedCount,
     selectedCountLoading,
   };
 
-  if (!selectedFilter) {
-    return null;
-  }
+  const filter = selectedToFilters(selectedMachines || null);
 
   const getFormComponent = () => {
+    if (!filter) {
+      return null;
+    }
     switch (action) {
       case NodeActions.CLONE:
         return (
@@ -95,9 +97,7 @@ export const MachineActionFormWrapper = ({
         return (
           <DeleteForm
             onSubmit={() => {
-              dispatchWithCallId(
-                machineActions.delete({ filter: selectedFilter })
-              );
+              dispatchForSelectedMachines(machineActions.delete);
             }}
             redirectURL={urls.machines.index}
             {...commonNodeFormProps}
@@ -118,12 +118,9 @@ export const MachineActionFormWrapper = ({
           <SetZoneForm<MachineEventErrors>
             onSubmit={(zoneID) => {
               dispatch(machineActions.cleanup());
-              dispatchWithCallId(
-                machineActions.setZone({
-                  filter: selectedFilter,
-                  zone_id: zoneID,
-                })
-              );
+              dispatchForSelectedMachines(machineActions.setZone, {
+                zone_id: zoneID,
+              });
             }}
             {...commonNodeFormProps}
           />
@@ -137,16 +134,11 @@ export const MachineActionFormWrapper = ({
             applyConfiguredNetworking={applyConfiguredNetworking}
             hardwareType={hardwareType}
             onTest={(args) => {
-              dispatchWithCallId(
-                machineActions.test({
-                  enable_ssh: args.enableSSH,
-                  script_input: args.scriptInputs,
-                  ...(args.filter
-                    ? { filter: args.filter }
-                    : { system_id: args.systemId }),
-                  testing_scripts: args.scripts.map((script) => script.name),
-                })
-              );
+              dispatchForSelectedMachines(machineActions.test, {
+                enable_ssh: args.enableSSH,
+                script_input: args.scriptInputs,
+                testing_scripts: args.scripts.map((script) => script.name),
+              });
             }}
             {...commonNodeFormProps}
           />

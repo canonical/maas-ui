@@ -28,7 +28,7 @@ export const MachineHeaderForms = ({
   setHeaderContent,
   selectedCountLoading,
   selectedCount,
-  selectedFilter,
+  selectedMachines,
   setSearchFilter,
   viewingDetails = false,
 }: Props): JSX.Element | null => {
@@ -54,7 +54,7 @@ export const MachineHeaderForms = ({
       const [, action] = view;
       const conditionalProps = machines
         ? { machines }
-        : { selectedCount, selectedCountLoading, selectedFilter };
+        : { selectedCount, selectedCountLoading, selectedMachines };
       return (
         <MachineActionFormWrapper
           action={action}

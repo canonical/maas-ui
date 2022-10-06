@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 
+import type { ValueOf } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import type { AnyAction } from "@reduxjs/toolkit";
 import { nanoid } from "@reduxjs/toolkit";
@@ -16,7 +17,7 @@ import { selectedToFilters } from "./common";
 
 import { ACTION_STATUS } from "app/base/constants";
 import { useCanEdit } from "app/base/hooks";
-import type { ActionState, APIError } from "app/base/types";
+import type { ActionStatuses, ActionState, APIError } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import {
   architectures as architecturesSelectors,
@@ -74,11 +75,17 @@ export const useDispatchWithCallId = <A extends AnyAction>(): {
   };
 };
 
-export const useMachineActionDispatch = <A extends AnyAction>(): {
-  dispatch: (args: A) => void;
+type MachineActionData = {
   actionStatus: ActionState["status"];
   actionErrors: ActionState["errors"];
+  successCount: ActionState["successCount"];
   failedSystemIds: ActionState["failedSystemIds"];
+};
+
+export const useMachineActionDispatch = <
+  A extends AnyAction
+>(): MachineActionData & {
+  dispatch: (args: A) => void;
 } => {
   const { callId: dispatchCallId, dispatch: dispatchWithCallId } =
     useDispatchWithCallId();
@@ -87,20 +94,137 @@ export const useMachineActionDispatch = <A extends AnyAction>(): {
   );
   const actionStatus = actionState?.status || ACTION_STATUS.idle;
   const failedSystemIds = actionState?.failedSystemIds || [];
-  const { machines: failedMachines } = useFetchMachines(
-    { filters: { id: failedSystemIds } },
-    { isEnabled: failedSystemIds.length > 0 }
-  );
-  const actionErrors =
-    actionState?.errors ||
-    `Action failed on the following machines: ${failedMachines
-      .map((machine) => machine.hostname)
-      .join(", ")}`;
+  const actionErrors = actionState?.errors || null;
+
   return {
     dispatch: dispatchWithCallId,
     actionStatus: actionStatus,
     actionErrors: actionState?.errors || actionErrors || null,
+    successCount: actionState?.successCount || 0,
     failedSystemIds,
+  };
+};
+
+export const getCombinedActionStatus = (
+  ...statuses: ActionStatuses[]
+): ActionStatuses => {
+  // if either is loading, return loading
+  if (statuses.some((status) => status === ACTION_STATUS.loading)) {
+    return ACTION_STATUS.loading;
+  }
+
+  // if either has failed and the other is not loading, return failed
+  if (
+    statuses.some((status) => status === ACTION_STATUS.error) &&
+    statuses.every((status) => status !== ACTION_STATUS.loading)
+  ) {
+    return ACTION_STATUS.error;
+  }
+
+  // if either has succeeded and the other is not loading, return succeeded
+  if (
+    statuses.some((status) => status === ACTION_STATUS.success) &&
+    statuses.every((status) => status !== ACTION_STATUS.loading)
+  ) {
+    return ACTION_STATUS.success;
+  }
+
+  return ACTION_STATUS.idle;
+};
+
+/**
+ * Dispatch machine action(s) for selected machines
+ * Will dispatch multiple  actions when there are selected both groups and items
+ */
+export const useSelectedMachinesActionsDispatch = (
+  selectedMachines?: SelectedMachines | null
+): MachineActionData & {
+  dispatch: (
+    a: ValueOf<typeof machineActions>,
+    args?: Record<string, unknown> & { filter?: never }
+  ) => void;
+} => {
+  const {
+    dispatch: groupsDispatch,
+    actionStatus: groupsActionStatus,
+    successCount: groupsSuccessCount,
+    actionErrors: groupsActionErrors,
+    failedSystemIds: groupsFailedSystemIds,
+  } = useMachineActionDispatch();
+  const {
+    dispatch: itemsDispatch,
+    actionStatus: itemsActionStatus,
+    successCount: itemsSuccessCount,
+    actionErrors: itemsActionErrors,
+    failedSystemIds: itemsFailedSystemIds,
+  } = useMachineActionDispatch();
+  const getIsSingleFilter = (
+    selectedMachines?: SelectedMachines | null
+  ): selectedMachines is { filter: FetchFilters } => {
+    if (selectedMachines && "filter" in selectedMachines) {
+      return true;
+    }
+    return false;
+  };
+  const isSingleFilter = getIsSingleFilter(selectedMachines);
+
+  // Dispatch items and groups actions separately
+  // - otherwise the action would only be run on machines
+  // matching both groups and items selected
+  const groupFilters = selectedToFilters(
+    isSingleFilter
+      ? { filter: selectedMachines?.filter }
+      : {
+          groups: selectedMachines?.groups,
+          grouping: selectedMachines?.grouping,
+        }
+  );
+  const itemFilters = selectedToFilters(
+    !isSingleFilter ? { items: selectedMachines?.items } : null
+  );
+
+  const dispatch = useCallback(
+    (action, args) => {
+      if (groupFilters) {
+        groupsDispatch(
+          action({
+            ...args,
+            filter: groupFilters,
+          })
+        );
+      }
+      if (itemFilters) {
+        itemsDispatch(
+          action({
+            ...args,
+            filter: itemFilters,
+          })
+        );
+      }
+    },
+    [groupsDispatch, itemsDispatch, groupFilters, itemFilters]
+  );
+
+  let actionStatus: ActionStatuses = ACTION_STATUS.idle;
+
+  if (groupFilters && itemFilters) {
+    actionStatus = getCombinedActionStatus(
+      groupsActionStatus,
+      itemsActionStatus
+    );
+  } else {
+    actionStatus = groupFilters ? groupsActionStatus : itemsActionStatus;
+  }
+
+  return {
+    dispatch,
+    actionStatus,
+    actionErrors: groupsActionErrors || itemsActionErrors,
+    successCount: groupsSuccessCount + itemsSuccessCount,
+    failedSystemIds: [
+      ...(groupsFailedSystemIds || []),
+      ...(itemsFailedSystemIds || []),
+    ],
   };
 };
 

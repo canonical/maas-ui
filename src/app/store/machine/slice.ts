@@ -61,6 +61,7 @@ import type {
   FilterGroupKey,
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
+import type { MachineActionStatus } from "./types/base";
 
 import { ACTION_STATUS } from "app/base/constants";
 import type { ScriptResult } from "app/store/scriptresult/types";
@@ -380,56 +381,62 @@ const setErrors = (
 
 const statusHandlers = generateStatusHandlers<
   MachineState,
-  Machine, // { success_count: number; failed_ids: Machine[MachineMeta.PK][] }
-  MachineMeta.PK
+  Machine,
+  MachineMeta.PK,
+  MachineActionStatus
 >(
   MachineMeta.PK,
   ACTIONS.map((action) => {
-    const handler: StatusHandlers<MachineState, Machine> = {
-      status: kebabToCamelCase(action.name),
-      start: (state, action) => {
-        if (action.meta.callId) {
-          if (action.meta.callId in state.actions) {
-            state.actions[action.meta.callId].status = ACTION_STATUS.loading;
-          } else {
-            state.actions[action.meta.callId] = {
-              status: ACTION_STATUS.loading,
-              errors: null,
-              successCount: 0,
-              failedSystemIds: [],
-            };
-          }
-        }
-      },
-      success: (state, action) => {
-        if (action.meta.callId) {
-          if (action.meta.callId in state.actions) {
-            const actionsItem = state.actions[action.meta.callId];
-            actionsItem.status = ACTION_STATUS.success;
-            if (typeof action.payload?.success_count === "number") {
-              actionsItem.successCount = action.payload.success_count as number;
-            }
-            if (action.payload?.failed_system_ids?.length > 0) {
-              actionsItem.status = ACTION_STATUS.error;
-              actionsItem.failedSystemIds = [
-                ...action.payload.failed_system_ids,
-              ] as Machine[MachineMeta.PK][];
+    const handler: StatusHandlers<MachineState, Machine, MachineActionStatus> =
+      {
+        status: kebabToCamelCase(action.name),
+        start: (state, action) => {
+          if (action.meta.callId) {
+            if (action.meta.callId in state.actions) {
+              state.actions[action.meta.callId].status = ACTION_STATUS.loading;
+            } else {
+              state.actions[action.meta.callId] = {
+                status: ACTION_STATUS.loading,
+                errors: null,
+                successCount: 0,
+                failedSystemIds: [],
+              };
             }
           }
-        }
-      },
-      error: (state, action) => {
-        if (action.meta.callId) {
-          if (action.meta.callId in state.actions) {
-            const actionsItem = state.actions[action.meta.callId];
-            actionsItem.status = "error";
-            actionsItem.errors = action.payload;
+        },
+        success: (state, action) => {
+          if (action.meta.callId) {
+            if (action.meta.callId in state.actions) {
+              const actionsItem = state.actions[action.meta.callId];
+              actionsItem.status = ACTION_STATUS.success;
+              if ("success_count" in action.payload) {
+                actionsItem.successCount = action.payload
+                  .success_count as number;
+              }
+              if (
+                "failed_system_ids" in action.payload &&
+                action.payload.failed_system_ids?.length > 0
+              ) {
+                actionsItem.status = ACTION_STATUS.error;
+                actionsItem.failedSystemIds = [
+                  ...action.payload.failed_system_ids,
+                ] as Machine[MachineMeta.PK][];
+              }
+            }
           }
-        }
-      },
-      method: "action",
-      statusKey: action.status,
-    };
+        },
+        error: (state, action) => {
+          if (action.meta.callId) {
+            if (action.meta.callId in state.actions) {
+              const actionsItem = state.actions[action.meta.callId];
+              actionsItem.status = "error";
+              actionsItem.errors = action.payload;
+            }
+          }
+        },
+        method: "action",
+        statusKey: action.status,
+      };
     return handler;
   }),
   setErrors

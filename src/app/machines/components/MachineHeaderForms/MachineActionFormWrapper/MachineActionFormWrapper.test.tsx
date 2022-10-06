@@ -50,7 +50,7 @@ it("scrolls to the top of the window when opening the form", async () => {
     <MachineActionFormWrapper
       action={NodeActions.ABORT}
       clearHeaderContent={jest.fn()}
-      selectedFilter={{}}
+      selectedMachines={{}}
       viewingDetails={false}
     />
   );
@@ -87,7 +87,7 @@ it("can show untag errors when the tag form is open", async () => {
           <MachineActionFormWrapper
             action={NodeActions.TAG}
             clearHeaderContent={jest.fn()}
-            selectedFilter={{ id: machines[0].system_id }}
+            selectedMachines={{ items: [machines[0].system_id] }}
             viewingDetails={false}
           />
         </CompatRouter>

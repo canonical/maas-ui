@@ -10,6 +10,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { NodeActions } from "app/store/types/node";
@@ -28,10 +29,12 @@ export const SetPoolForm = ({
   machines,
   processingCount,
   selectedCount,
-  selectedFilter,
+  selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
+    useSelectedMachinesActionsDispatch(selectedMachines);
   const [initialValues, setInitialValues] = useState<SetPoolFormValues>({
     poolSelection: "select",
     description: "",
@@ -81,13 +84,10 @@ export const SetPoolForm = ({
         } else {
           const pool = resourcePools.find((pool) => pool.name === values.name);
           if (pool) {
-            if (selectedFilter) {
-              dispatch(
-                machineActions.setPool({
-                  pool_id: pool.id,
-                  filter: selectedFilter,
-                })
-              );
+            if (selectedMachines) {
+              dispatchForSelectedMachines(machineActions.setPool, {
+                pool_id: pool.id,
+              });
             } else {
               machines?.forEach((machine) => {
                 dispatch(
@@ -108,6 +108,7 @@ export const SetPoolForm = ({
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={SetPoolSchema}
+      {...actionProps}
     >
       <SetPoolFormFields />
     </ActionForm>

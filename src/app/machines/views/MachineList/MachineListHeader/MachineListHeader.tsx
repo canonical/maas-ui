@@ -20,7 +20,7 @@ import type {
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import machineSelectors from "app/store/machine/selectors";
-import { FilterMachineItems, selectedToFilters } from "app/store/machine/utils";
+import { FilterMachineItems } from "app/store/machine/utils";
 import {
   useFetchMachineCount,
   useHasSelection,
@@ -57,7 +57,6 @@ export const MachineListHeader = ({
   const previousSelectedCount = usePrevious(selectedCount);
 
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
-  const selectedFilter = selectedToFilters(selectedMachines);
 
   useEffect(() => {
     if (
@@ -124,7 +123,7 @@ export const MachineListHeader = ({
             headerContent={headerContent}
             selectedCount={selectedCount}
             selectedCountLoading={selectedCountLoading}
-            selectedFilter={selectedFilter}
+            selectedMachines={selectedMachines}
             setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
           />

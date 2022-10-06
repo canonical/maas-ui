@@ -11,6 +11,8 @@ import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
+import { selectedToFilters } from "app/store/machine/utils";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { actions as messageActions } from "app/store/message";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
@@ -34,13 +36,16 @@ export const TagForm = ({
   machines,
   processingCount,
   selectedCount,
-  selectedFilter,
+  selectedMachines,
   viewingDetails,
   viewingMachineConfig = false,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
+    useSelectedMachinesActionsDispatch(selectedMachines);
   const tagsLoaded = useSelector(tagSelectors.loaded);
   const [newTags, setNewTags] = useState<Tag[TagMeta.PK][]>([]);
+  const filter = selectedToFilters(selectedMachines || null);
 
   let formErrors: Record<string, string | string[]> | null = null;
   if (errors && typeof errors === "object" && "name" in errors) {
@@ -50,7 +55,6 @@ export const TagForm = ({
     } as Record<string, string | string[]>;
     delete formErrors.name;
   }
-
   useEffect(() => {
     dispatch(tagActions.fetch());
   }, [dispatch]);
@@ -75,13 +79,10 @@ export const TagForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         if (values.added.length) {
-          if (selectedFilter) {
-            dispatch(
-              machineActions.tag({
-                filter: selectedFilter,
-                tags: values.added.map((id) => Number(id)),
-              })
-            );
+          if (filter) {
+            dispatchForSelectedMachines(machineActions.tag, {
+              tags: values.added.map((id) => Number(id)),
+            });
           } else {
             machines?.forEach((machine) => {
               dispatch(
@@ -94,13 +95,10 @@ export const TagForm = ({
           }
         }
         if (values.removed.length) {
-          if (selectedFilter) {
-            dispatch(
-              machineActions.untag({
-                filter: selectedFilter,
-                tags: values.removed.map((id) => Number(id)),
-              })
-            );
+          if (selectedMachines) {
+            dispatchForSelectedMachines(machineActions.untag, {
+              tags: values.removed.map((id) => Number(id)),
+            });
           } else {
             machines?.forEach((machine) => {
               dispatch(
@@ -124,6 +122,7 @@ export const TagForm = ({
       showProcessingCount={!viewingMachineConfig}
       submitLabel="Save"
       validationSchema={TagFormSchema}
+      {...actionProps}
     >
       <TagFormFields
         machines={machines || []}

@@ -270,7 +270,7 @@ export const machineStateList = define<MachineStateList>({
 export const machineActionState = define<ActionState>({
   status: ACTION_STATUS.idle,
   errors: null,
-  count: 0,
+  successCount: 0,
 });
 
 export const machineStateLists = define<MachineStateLists>({
