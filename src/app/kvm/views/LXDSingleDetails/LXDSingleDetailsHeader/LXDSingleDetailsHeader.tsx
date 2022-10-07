@@ -122,7 +122,7 @@ const LXDSingleDetailsHeader = ({
               },
               {
                 title: "LXD project:",
-                subtitle: pod.power_parameters.project,
+                subtitle: pod.power_parameters?.project,
               },
             ]
           : []

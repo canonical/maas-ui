@@ -41,7 +41,7 @@ const generatePowerParameters = (
       {baseParameters}
       {certificate ? (
         <CertificateDetails
-          certificate={power_parameters.certificate as string}
+          certificate={power_parameters?.certificate as string}
           eventCategory={
             nodeIsMachine(node)
               ? "Machine configuration"

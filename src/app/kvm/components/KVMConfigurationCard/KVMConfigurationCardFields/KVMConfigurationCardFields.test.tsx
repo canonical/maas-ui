@@ -55,10 +55,10 @@ describe("KVMConfigurationCardFields", () => {
       pod.tags
     );
     expect(wrapper.find("Input[name='power_address']").props().value).toBe(
-      pod.power_parameters.power_address
+      pod.power_parameters?.power_address
     );
     expect(wrapper.find("Input[name='power_pass']").props().value).toBe(
-      pod.power_parameters.power_pass
+      pod.power_parameters?.power_pass
     );
     expect(
       wrapper.find("Slider[name='cpu_over_commit_ratio']").props().value
@@ -96,7 +96,7 @@ describe("KVMConfigurationCardFields", () => {
       pod.tags
     );
     expect(wrapper.find("Input[name='power_address']").props().value).toBe(
-      pod.power_parameters.power_address
+      pod.power_parameters?.power_address
     );
     expect(wrapper.find("Input[name='power_pass']").exists()).toBe(false);
     expect(

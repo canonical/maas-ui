@@ -86,7 +86,7 @@ const generateRows = (
           content: (
             <NameColumn
               name={host.name}
-              secondary={host.power_parameters.power_address}
+              secondary={host.power_parameters?.power_address}
               url={urls.kvm.lxd.cluster.vms.host({
                 clusterId,
                 hostId: host.id,

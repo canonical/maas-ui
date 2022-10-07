@@ -100,7 +100,7 @@ export type PodResources = {
 export type PodPowerParameters = {
   certificate?: CertificateData["certificate"];
   key?: CertificateData["private_key"];
-  power_address: string;
+  power_address?: string;
   power_pass?: string;
   project?: string;
 };
@@ -127,7 +127,7 @@ export type BasePod = TimestampedModel & {
   name: string;
   permissions: string[];
   pool: number;
-  power_parameters: PodPowerParameters;
+  power_parameters?: PodPowerParameters;
   resources: PodResources;
   storage_pools: PodStoragePool[];
   tags: string[];

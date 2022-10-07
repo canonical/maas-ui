@@ -35,7 +35,7 @@ describe("NameColumn", () => {
           <CompatRouter>
             <NameColumn
               name={pod.name}
-              secondary={pod.power_parameters.project}
+              secondary={pod.power_parameters?.project}
               url={urls.kvm.virsh.details.index({ id: 1 })}
             />
           </CompatRouter>
@@ -60,7 +60,7 @@ describe("NameColumn", () => {
           <CompatRouter>
             <NameColumn
               name={pod.name}
-              secondary={pod.power_parameters.project}
+              secondary={pod.power_parameters?.project}
               url={urls.kvm.lxd.single.index({ id: 1 })}
             />
           </CompatRouter>
@@ -92,7 +92,7 @@ describe("NameColumn", () => {
           <CompatRouter>
             <NameColumn
               name={pod.name}
-              secondary={pod.power_parameters.project}
+              secondary={pod.power_parameters?.project}
               url={urls.kvm.virsh.details.index({ id: 1 })}
             />
           </CompatRouter>

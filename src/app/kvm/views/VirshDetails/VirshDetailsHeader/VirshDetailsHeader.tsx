@@ -93,7 +93,7 @@ const VirshDetailsHeader = ({
           ? [
               {
                 title: "Power address:",
-                subtitle: pod.power_parameters.power_address,
+                subtitle: pod.power_parameters?.power_address,
               },
               {
                 title: "VMs:",

@@ -35,7 +35,9 @@ export const SelectProjectFormFields = ({
   const [newProject, setNewProject] = useState(true);
   const freeProjects = projects.filter(
     (project) =>
-      !podsInServer.some((pod) => pod.power_parameters.project === project.name)
+      !podsInServer.some(
+        (pod) => pod.power_parameters?.project === project.name
+      )
   );
 
   return (
@@ -98,7 +100,7 @@ export const SelectProjectFormFields = ({
         />
         {projects.map((project) => {
           const projectPod = podsInServer.find(
-            (pod) => pod.power_parameters.project === project.name
+            (pod) => pod.power_parameters?.project === project.name
           );
           return (
             <div className="u-flex" key={project.name}>
