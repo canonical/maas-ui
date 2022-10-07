@@ -64,7 +64,7 @@ describe("LACPRateSelect", () => {
       },
     ];
 
-    for (var i = 0; i < expectedOptions.length; i++) {
+    for (let i in expectedOptions) {
       expect(lacpRateOptions[i]).toHaveValue(expectedOptions[i].value);
       expect(lacpRateOptions[i]).toHaveTextContent(expectedOptions[i].label);
     }
