@@ -43,6 +43,7 @@ export type Props<V, E = null> = Omit<
   showProcessingCount?: boolean;
   submitLabel?: string;
   actionStatus?: ActionState["status"];
+  actionErrors?: ActionState["errors"];
 };
 
 export enum Labels {
@@ -50,6 +51,7 @@ export enum Labels {
 }
 
 const ActionForm = <V, E = null>({
+  actionErrors,
   actionName,
   buttonsBordered = false,
   children,
@@ -83,12 +85,12 @@ const ActionForm = <V, E = null>({
     ? {
         saving: actionStatus === "loading",
         saved: actionStatus === "success",
-        errors,
+        errors: errors || actionErrors,
       }
     : {
         saved: processingComplete,
         saving: !!processingCount && processingCount > 0,
-        errors,
+        errors: errors || actionErrors,
       };
 
   return (

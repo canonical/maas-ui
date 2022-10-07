@@ -9,6 +9,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 
 const MarkBrokenSchema = Yup.object().shape({
@@ -27,10 +28,12 @@ export const MarkBrokenForm = ({
   machines,
   processingCount,
   selectedCount,
-  selectedFilter,
+  selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
+    useSelectedMachinesActionsDispatch(selectedMachines);
 
   useEffect(
     () => () => {
@@ -57,13 +60,10 @@ export const MarkBrokenForm = ({
       }}
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
-        if (selectedFilter) {
-          dispatch(
-            machineActions.markBroken({
-              message: values.comment,
-              filter: selectedFilter,
-            })
-          );
+        if (selectedMachines) {
+          dispatchForSelectedMachines(machineActions.markBroken, {
+            message: values.comment,
+          });
         } else {
           machines?.forEach((machine) => {
             dispatch(
@@ -79,6 +79,7 @@ export const MarkBrokenForm = ({
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={MarkBrokenSchema}
+      {...actionProps}
     >
       <MarkBrokenFormFields
         selectedCount={machines ? machines.length : selectedCount ?? 0}

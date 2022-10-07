@@ -12,6 +12,7 @@ import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 
 export type ReleaseFormValues = {
@@ -34,10 +35,12 @@ export const ReleaseForm = ({
   machines,
   processingCount,
   selectedCount,
-  selectedFilter,
+  selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
+    useSelectedMachinesActionsDispatch(selectedMachines);
   const configLoaded = useSelector(configSelectors.loaded);
   const enableErase = useSelector(configSelectors.enableDiskErasing);
   const quickErase = useSelector(configSelectors.diskEraseWithQuick);
@@ -72,15 +75,12 @@ export const ReleaseForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         const { enableErase, quickErase, secureErase } = values;
-        if (selectedFilter) {
-          dispatch(
-            machineActions.release({
-              erase: enableErase,
-              quick_erase: enableErase && quickErase,
-              secure_erase: enableErase && secureErase,
-              filter: selectedFilter,
-            })
-          );
+        if (selectedMachines) {
+          dispatchForSelectedMachines(machineActions.release, {
+            erase: enableErase,
+            quick_erase: enableErase && quickErase,
+            secure_erase: enableErase && secureErase,
+          });
         } else {
           machines?.forEach((machine) => {
             dispatch(
@@ -98,6 +98,7 @@ export const ReleaseForm = ({
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={ReleaseSchema}
+      {...actionProps}
     >
       <Strip shallow>
         <ReleaseFormFields machines={machines ?? []} />

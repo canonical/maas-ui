@@ -9,9 +9,9 @@ import type {
   SetHeaderContent,
 } from "app/base/types";
 import type {
-  FetchFilters,
   Machine,
   MachineEventErrors,
+  SelectedMachines,
 } from "app/store/machine/types";
 import type { Script } from "app/store/script/types";
 
@@ -27,7 +27,7 @@ export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
 
 export type MachineActionVariableProps = {
   machines?: Machine[];
-  selectedFilter?: FetchFilters | null;
+  selectedMachines?: SelectedMachines | null;
   selectedCount?: number;
   processingCount?: number;
   selectedCountLoading?: boolean;

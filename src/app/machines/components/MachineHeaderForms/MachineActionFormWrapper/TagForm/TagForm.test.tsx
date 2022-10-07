@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
@@ -13,6 +14,7 @@ import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import {
   machine as machineFactory,
+  machineActionState,
   rootState as rootStateFactory,
   tag as tagFactory,
   tagState as tagStateFactory,
@@ -184,10 +186,14 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
 });
 
 it("shows saving label if not viewing from machine config page", () => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   const machines = [
     machineFactory({ system_id: "abc123", tags: [] }),
     machineFactory({ system_id: "def456", tags: [] }),
   ];
+  state.machine.actions["mocked-nanoid"] = machineActionState({
+    status: "loading",
+  });
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -208,6 +214,7 @@ it("shows saving label if not viewing from machine config page", () => {
   );
 
   expect(screen.getByTestId("saving-label")).toBeInTheDocument();
+  jest.restoreAllMocks();
 });
 
 it("does not show saving label if viewing from machine config page", () => {

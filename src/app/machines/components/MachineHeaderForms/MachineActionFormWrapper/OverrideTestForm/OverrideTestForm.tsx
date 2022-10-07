@@ -16,6 +16,7 @@ import type {
   MachineEventErrors,
   MachineMeta,
 } from "app/store/machine/types";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
@@ -86,10 +87,12 @@ export const OverrideTestForm = ({
   machines,
   processingCount,
   selectedCount,
-  selectedFilter,
+  selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
+    useSelectedMachinesActionsDispatch(selectedMachines);
   const [requestedScriptResults, setRequestedScriptResults] = useState<
     Machine[MachineMeta.PK][]
   >([]);
@@ -148,12 +151,8 @@ export const OverrideTestForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         const { suppressResults } = values;
-        if (selectedFilter) {
-          dispatch(
-            machineActions.overrideFailedTesting({
-              filter: selectedFilter,
-            })
-          );
+        if (selectedMachines) {
+          dispatchForSelectedMachines(machineActions.overrideFailedTesting);
         } else {
           machines?.forEach((machine) => {
             dispatch(
@@ -183,6 +182,7 @@ export const OverrideTestForm = ({
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={OverrideTestFormSchema}
+      {...actionProps}
     >
       <Row>
         <Col size={6}>

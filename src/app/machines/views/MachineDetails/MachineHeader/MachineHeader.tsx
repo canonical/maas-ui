@@ -89,7 +89,7 @@ const MachineHeader = ({
           <MachineHeaderForms
             headerContent={headerContent}
             selectedCount={1}
-            selectedFilter={{ id: machine.system_id }}
+            selectedMachines={{ items: [machine.system_id] }}
             setHeaderContent={setHeaderContent}
             viewingDetails
           />

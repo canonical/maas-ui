@@ -9,7 +9,6 @@ import TestFormFields from "./TestFormFields";
 
 import ActionForm from "app/base/components/ActionForm";
 import type { HardwareType } from "app/base/enum";
-import type { FetchFilters } from "app/store/machine/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -45,13 +44,7 @@ type Props<E = null> = NodeActionFormProps<E> & {
   applyConfiguredNetworking?: Script["apply_configured_networking"];
   cleanup: NonNullable<NodeActionFormProps<E>["cleanup"]>;
   hardwareType?: HardwareType;
-  onTest: (
-    args: FormValues &
-      (
-        | { systemId: Node["system_id"]; filter?: never }
-        | { systemId?: never; filter: FetchFilters }
-      )
-  ) => void;
+  onTest: (args: FormValues & { systemId?: Node["system_id"] }) => void;
 };
 
 export const TestForm = <E,>({
@@ -65,7 +58,7 @@ export const TestForm = <E,>({
   nodes,
   onTest,
   processingCount,
-  selectedFilter,
+  selectedMachines,
   selectedCount,
   viewingDetails,
 }: Props<E>): JSX.Element => {
@@ -149,9 +142,8 @@ export const TestForm = <E,>({
       onSubmit={(values) => {
         dispatch(cleanup());
         const { enableSSH, scripts, scriptInputs } = values;
-        if (selectedFilter) {
+        if (selectedMachines) {
           onTest({
-            filter: selectedFilter,
             scripts,
             enableSSH,
             scriptInputs,

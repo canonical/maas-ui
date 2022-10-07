@@ -9,6 +9,8 @@ import type { MockStoreEnhanced } from "redux-mock-store";
 import { selectedToFilters } from "./common";
 import type { UseFetchMachinesOptions, UseFetchQueryOptions } from "./hooks";
 import {
+  getCombinedActionStatus,
+  useSelectedMachinesActionsDispatch,
   useMachineActionDispatch,
   useDispatchWithCallId,
   useFetchSelectedMachines,
@@ -25,9 +27,15 @@ import {
 } from "./hooks";
 
 import { actions as machineActions } from "app/store/machine";
-import type { FetchFilters, Machine } from "app/store/machine/types";
+import type {
+  FetchFilters,
+  FetchGroupKey,
+  Machine,
+  SelectedMachines,
+} from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
+import type { FetchNodeStatus, TestParams } from "app/store/types/node";
 import { NodeStatus, NodeStatusCode } from "app/store/types/node";
 import {
   architecturesState as architecturesStateFactory,
@@ -489,6 +497,164 @@ describe("machine hook utils", () => {
       });
       expect(result.current.actionStatus).toEqual("success");
       expect(result.current.actionErrors).toEqual(null);
+    });
+
+    it("can return an error message", async () => {
+      jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+      state.machine.actions["mocked-nanoid"] = machineActionState({
+        status: "success",
+        failedSystemIds: ["abc123"],
+      });
+      const store = mockStore(state);
+      const { result } = renderHook(() => useMachineActionDispatch(), {
+        wrapper: generateWrapper(store),
+      });
+      const { dispatch } = result.current;
+      const testAction = { type: "test" };
+      dispatch(testAction);
+      const actual = store
+        .getActions()
+        .find((action) => action.type === testAction.type);
+      expect(actual).toStrictEqual({
+        type: "test",
+        meta: { callId: "mocked-nanoid" },
+      });
+      expect(result.current.actionStatus).toEqual("success");
+      expect(result.current.actionErrors).toEqual(
+        "Action failed for 1 machine"
+      );
+    });
+  });
+
+  describe("useSelectedMachinesActionsDispatch", () => {
+    const generateWrapper =
+      (store: MockStoreEnhanced<unknown>) =>
+      ({ children }: { children?: ReactNode }) =>
+        <Provider store={store}>{children}</Provider>;
+
+    it("dispatches separate calls when there are selected both groups and items", async () => {
+      jest
+        .spyOn(reduxToolkit, "nanoid")
+        .mockReturnValueOnce("mocked-nanoid")
+        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce("mocked-nanoid-2");
+      state.machine.actions["mocked-nanoid"] = machineActionState({
+        status: "success",
+      });
+      const store = mockStore(state);
+      const selectedMachines: SelectedMachines = {
+        groups: ["new", "broken"],
+        grouping: "status" as FetchGroupKey,
+        items: ["abcd123"],
+      };
+      const { result } = renderHook(
+        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      const { dispatch } = result.current;
+      dispatch(machineActions.test);
+      const expectedGroupsDispatch = machineActions.test({
+        filter: {
+          status: ["=new" as FetchNodeStatus, "=broken" as FetchNodeStatus],
+        },
+      });
+      const expectedItemsDispatch = machineActions.test({
+        filter: { id: ["abcd123"] },
+      });
+      const actual = store
+        .getActions()
+        .filter(
+          (action) => action.type === machineActions.test({} as TestParams).type
+        );
+      expect(actual[0].payload).toStrictEqual(expectedGroupsDispatch.payload);
+      expect(actual[1].payload).toStrictEqual(expectedItemsDispatch.payload);
+      expect(result.current.actionErrors).toEqual(null);
+    });
+
+    it("dispatches a single call when there are only items selected", async () => {
+      jest
+        .spyOn(reduxToolkit, "nanoid")
+        .mockReturnValueOnce("mocked-nanoid")
+        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce("mocked-nanoid-2");
+      state.machine.actions["mocked-nanoid"] = machineActionState({
+        status: "success",
+      });
+      const store = mockStore(state);
+      const selectedMachines: SelectedMachines = {
+        items: ["abcd123"],
+      };
+      const { result } = renderHook(
+        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      const { dispatch } = result.current;
+      dispatch(machineActions.test);
+      const expectedItemsDispatch = machineActions.test({
+        filter: { id: ["abcd123"] },
+      });
+      const actual = store
+        .getActions()
+        .filter(
+          (action) => action.type === machineActions.test({} as TestParams).type
+        );
+      expect(actual).toHaveLength(1);
+      expect(actual[0].payload).toStrictEqual(expectedItemsDispatch.payload);
+    });
+
+    it("dispatches a single call when there are only groups selected", async () => {
+      jest
+        .spyOn(reduxToolkit, "nanoid")
+        .mockReturnValueOnce("mocked-nanoid")
+        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce("mocked-nanoid-2");
+      state.machine.actions["mocked-nanoid"] = machineActionState({
+        status: "success",
+      });
+      const store = mockStore(state);
+      const selectedMachines: SelectedMachines = {
+        groups: ["new", "broken"],
+        grouping: "status" as FetchGroupKey,
+      };
+      const { result } = renderHook(
+        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      const { dispatch } = result.current;
+      dispatch(machineActions.test);
+      const expectedItemsDispatch = machineActions.test({
+        filter: {
+          status: ["=new" as FetchNodeStatus, "=broken" as FetchNodeStatus],
+        },
+      });
+      const actual = store
+        .getActions()
+        .filter(
+          (action) => action.type === machineActions.test({} as TestParams).type
+        );
+      expect(actual).toHaveLength(1);
+      expect(actual[0].payload).toStrictEqual(expectedItemsDispatch.payload);
+    });
+  });
+
+  describe("getCombinedActionStatus", () => {
+    it("returns success when all actions are successful", () => {
+      getCombinedActionStatus("success", "success", "success");
+    });
+    it("returns error when at least one action is in error", () => {
+      getCombinedActionStatus("success", "error", "success");
+    });
+    it("returns loading when at least one action is loading", () => {
+      getCombinedActionStatus("success", "error", "loading");
+    });
+    it("returns idle when there are no actions", () => {
+      getCombinedActionStatus();
     });
   });
 

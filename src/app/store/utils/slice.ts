@@ -366,7 +366,9 @@ export const generateCommonReducers = <
  */
 export type StatusHandlers<
   S extends StatusStateTypes,
-  I extends S["items"][0]
+  I extends S["items"][0],
+  // alternative success payload type
+  A = void
 > = {
   method?: string;
   status: string;
@@ -379,7 +381,7 @@ export type StatusHandlers<
   // The handler for when the action has started.
   start?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
   // The handler for when the action has successfully completed.
-  success?: CaseReducer<S, PayloadAction<I, string, GenericItemMeta<I>>>;
+  success?: CaseReducer<S, PayloadAction<I | A, string, GenericItemMeta<I>>>;
 };
 
 /**
@@ -398,10 +400,12 @@ export const generateStatusHandlers = <
   S extends StatusStateTypes,
   I extends S["items"][0],
   // A model key as a reference to the supplied state item.
-  K extends keyof I
+  K extends keyof I,
+  // optional alternative success payload type
+  A = void
 >(
   indexKey: K,
-  handlers: StatusHandlers<S, I>[],
+  handlers: StatusHandlers<S, I, A>[],
   setErrors?: (
     state: Draft<S>,
     action: PayloadAction<S["errors"]>,
@@ -445,7 +449,7 @@ export const generateStatusHandlers = <
           }),
           reducer: (
             state: Draft<S>,
-            action: PayloadAction<I, string, GenericItemMeta<I>>
+            action: PayloadAction<I | A, string, GenericItemMeta<I>>
           ) => {
             // Call the reducer handler if supplied.
             status.success && status.success(state, action);

@@ -10,6 +10,7 @@ import ActionForm from "app/base/components/ActionForm";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { MachineEventErrors } from "app/store/machine/types";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
@@ -55,8 +56,11 @@ export const CommissionForm = ({
   processingCount,
   selectedCount,
   viewingDetails,
+  selectedMachines,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
+    useSelectedMachinesActionsDispatch(selectedMachines);
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const preselectedCommissioningScripts = useSelector(
@@ -143,25 +147,38 @@ export const CommissionForm = ({
         const testingScriptsParam = testingScripts.length
           ? testingScripts.map((script) => script.name)
           : [ScriptName.NONE];
-        machines?.forEach((machine) => {
-          dispatch(
-            machineActions.commission({
-              commissioning_scripts: commissioningScriptsParam,
-              enable_ssh: enableSSH,
-              script_input: scriptInputs,
-              skip_bmc_config: skipBMCConfig,
-              skip_networking: skipNetworking,
-              skip_storage: skipStorage,
-              system_id: machine.system_id,
-              testing_scripts: testingScriptsParam,
-            })
-          );
-        });
+        if (selectedMachines) {
+          dispatchForSelectedMachines(machineActions.commission, {
+            commissioning_scripts: commissioningScriptsParam,
+            enable_ssh: enableSSH,
+            script_input: scriptInputs,
+            skip_bmc_config: skipBMCConfig,
+            skip_networking: skipNetworking,
+            skip_storage: skipStorage,
+            testing_scripts: testingScriptsParam,
+          });
+        } else {
+          machines?.forEach((machine) => {
+            dispatch(
+              machineActions.commission({
+                commissioning_scripts: commissioningScriptsParam,
+                enable_ssh: enableSSH,
+                script_input: scriptInputs,
+                skip_bmc_config: skipBMCConfig,
+                skip_networking: skipNetworking,
+                skip_storage: skipStorage,
+                system_id: machine.system_id,
+                testing_scripts: testingScriptsParam,
+              })
+            );
+          });
+        }
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={CommissionFormSchema}
+      {...actionProps}
     >
       <CommissionFormFields
         commissioningScripts={formatScripts(commissioningScripts)}

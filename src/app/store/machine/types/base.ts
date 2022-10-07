@@ -184,6 +184,12 @@ export type MachineStatus = {
   updatingVmfsDatastore: boolean;
 };
 
+export type MachineActionStatus = {
+  errors: APIError;
+  failed_system_ids: Machine["system_id"][];
+  success_count: number;
+};
+
 export type MachineStatuses = Record<Machine[MachineMeta.PK], MachineStatus>;
 
 export type MachineStateDetailsItem = {

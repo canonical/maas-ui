@@ -1,7 +1,7 @@
 import type { AnyAction } from "redux";
 
 import type { ActionState, CommonActionFormProps } from "app/base/types";
-import type { FetchFilters } from "app/store/machine/types";
+import type { SelectedMachines } from "app/store/machine/types";
 import type { Node } from "app/store/types/node";
 
 export type NodeActionFormProps<E = null> = CommonActionFormProps<E> & {
@@ -13,11 +13,11 @@ export type NodeActionFormProps<E = null> = CommonActionFormProps<E> & {
     | {
         nodes: Node[];
         processingCount: number;
-        selectedFilter?: never;
+        selectedMachines?: never;
         selectedCount?: never;
       }
     | {
-        selectedFilter?: FetchFilters | null;
+        selectedMachines?: SelectedMachines | null;
         processingCount?: never;
         selectedCount?: number;
         nodes?: never;
