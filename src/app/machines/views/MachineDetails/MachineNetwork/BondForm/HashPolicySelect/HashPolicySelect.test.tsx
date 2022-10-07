@@ -1,11 +1,8 @@
-import { mount } from "enzyme";
+import { screen, within } from "@testing-library/react";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import HashPolicySelect from "./HashPolicySelect";
 
-import DynamicSelect from "app/base/components/DynamicSelect";
 import { BondXmitHashPolicy } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -14,8 +11,7 @@ import {
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithMockStore } from "testing/utils";
 
 describe("HashPolicySelect", () => {
   let state: RootState;
@@ -40,27 +36,27 @@ describe("HashPolicySelect", () => {
 
   it("shows a spinner if the bond options haven't loaded", () => {
     state.general.bondOptions.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <HashPolicySelect name="xmitHashPolicy" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <HashPolicySelect name="xmitHashPolicy" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("displays the options", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <HashPolicySelect name="xmitHashPolicy" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <HashPolicySelect name="xmitHashPolicy" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find("FormikField").prop("options")).toStrictEqual([
+    const hashPolicySelect = screen.getByRole("combobox", {
+      name: "Hash policy",
+    });
+    const hashPolicyOptions = within(hashPolicySelect).getAllByRole("option");
+    const expectedOptions = [
       { label: "Select XMIT hash policy", value: "" },
       {
         label: BondXmitHashPolicy.LAYER2,
@@ -82,28 +78,32 @@ describe("HashPolicySelect", () => {
         label: BondXmitHashPolicy.ENCAP3_4,
         value: BondXmitHashPolicy.ENCAP3_4,
       },
-    ]);
+    ];
+
+    for (var i = 0; i < expectedOptions.length; i++) {
+      expect(hashPolicyOptions[i]).toHaveValue(expectedOptions[i].value);
+      expect(hashPolicyOptions[i]).toHaveTextContent(expectedOptions[i].label);
+    }
   });
 
   it("can display a default option", () => {
-    const store = mockStore(state);
     const defaultOption = {
       label: "Default",
       value: "99",
     };
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <HashPolicySelect
-            defaultOption={defaultOption}
-            name="xmitHashPolicy"
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <HashPolicySelect defaultOption={defaultOption} name="xmitHashPolicy" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options")[0]).toStrictEqual(
-      defaultOption
-    );
+    const hashPolicySelect = screen.getByRole("combobox", {
+      name: "Hash policy",
+    });
+    const hashPolicyOptions = within(hashPolicySelect).getAllByRole("option");
+
+    expect(hashPolicyOptions[0]).toHaveValue(defaultOption.value);
+    expect(hashPolicyOptions[0]).toHaveTextContent(defaultOption.label);
   });
 
   it("can hide the default option", () => {
@@ -111,14 +111,17 @@ describe("HashPolicySelect", () => {
       data: undefined,
       loaded: true,
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <HashPolicySelect defaultOption={null} name="xmitHashPolicy" />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <HashPolicySelect defaultOption={null} name="xmitHashPolicy" />
+      </Formik>,
+      { state }
     );
-    expect(wrapper.find(DynamicSelect).prop("options").length).toBe(0);
+    const hashPolicySelect = screen.getByRole("combobox", {
+      name: "Hash policy",
+    });
+    const hashPolicyOptions = within(hashPolicySelect).queryAllByRole("option");
+
+    expect(hashPolicyOptions).toHaveLength(0);
   });
 });

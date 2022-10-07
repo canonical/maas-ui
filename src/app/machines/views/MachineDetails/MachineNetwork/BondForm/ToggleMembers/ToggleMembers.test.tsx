@@ -1,21 +1,20 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import ToggleMembers from "./ToggleMembers";
 
+import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   machineInterface as machineInterfaceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ToggleMembers", () => {
-  it("disables the edit button if there are no additional valid interfaces", async () => {
+  it("disables the edit button if there are no additional valid interfaces", () => {
     const interfaces = [
       machineInterfaceFactory({
         type: NetworkInterfaceTypes.PHYSICAL,
@@ -28,26 +27,19 @@ describe("ToggleMembers", () => {
     ];
     const selected = [{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }];
     const store = mockStore(rootStateFactory());
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <ToggleMembers
-            selected={selected}
-            setEditingMembers={jest.fn()}
-            validNics={interfaces}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ToggleMembers
+        selected={selected}
+        setEditingMembers={jest.fn()}
+        validNics={interfaces}
+      />,
+      { route: "/machines", wrapperProps: { store } }
     );
-    await waitForComponentToPaint(wrapper);
-    expect(
-      wrapper.find("Button[data-testid='edit-members']").prop("disabled")
-    ).toBe(true);
+
+    expect(screen.getByTestId("edit-members")).toBeDisabled();
   });
 
-  it("disables the update button if two interfaces aren't selected", async () => {
+  it("disables the update button if two interfaces aren't selected", () => {
     const interfaces = [
       machineInterfaceFactory({
         type: NetworkInterfaceTypes.PHYSICAL,
@@ -63,31 +55,29 @@ describe("ToggleMembers", () => {
       }),
     ];
     const store = mockStore(rootStateFactory());
-    const PassProps = ({ ...props }) => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <ToggleMembers
-            editingMembers
-            selected={[
-              { nicId: interfaces[0].id },
-              { nicId: interfaces[1].id },
-            ]}
-            setEditingMembers={jest.fn()}
-            validNics={interfaces}
-            {...props}
-          />
-        </MemoryRouter>
-      </Provider>
+    const { unmount } = renderWithBrowserRouter(
+      <ToggleMembers
+        editingMembers
+        selected={[{ nicId: interfaces[0].id }, { nicId: interfaces[1].id }]}
+        setEditingMembers={jest.fn()}
+        validNics={interfaces}
+      />,
+      { route: "/machines", wrapperProps: { store } }
     );
-    const wrapper = mount(<PassProps />);
-    wrapper.find("button[data-testid='edit-members']").simulate("click");
-    await waitForComponentToPaint(wrapper);
-    wrapper.setProps({ selected: [] });
-    await waitForComponentToPaint(wrapper);
-    expect(
-      wrapper.find("Button[data-testid='edit-members']").prop("disabled")
-    ).toBe(true);
+
+    expect(screen.getByTestId("edit-members")).not.toBeDisabled();
+
+    unmount();
+
+    renderWithBrowserRouter(
+      <ToggleMembers
+        editingMembers
+        selected={[]}
+        setEditingMembers={jest.fn()}
+        validNics={interfaces}
+      />,
+      { route: "/machines", wrapperProps: { store } }
+    );
+    expect(screen.getByTestId("edit-members")).toBeDisabled();
   });
 });
