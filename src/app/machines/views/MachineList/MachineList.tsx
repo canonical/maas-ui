@@ -56,6 +56,23 @@ const MachineList = ({
     Object.values(FetchGroupKey).includes(storedGrouping)
       ? storedGrouping
       : DEFAULTS.grouping;
+  const [hiddenColumns, setHiddenColumns] = useStorageState<string[]>(
+    localStorage,
+    "machineListHiddenColumns",
+    []
+  );
+  const toggleHiddenColumn = (column: string): void => {
+    if (hiddenColumns.includes(column)) {
+      setHiddenColumns(hiddenColumns.filter((c) => c !== column));
+    } else {
+      setHiddenColumns([...hiddenColumns, column]);
+    }
+  };
+  const [itemsPerPage, setItemsPerPage] = useStorageState<number>(
+    localStorage,
+    "machineListItemsPerPage",
+    PAGE_SIZE
+  );
   const handleSetGrouping = (group: FetchGroupKey | null) => {
     setStoredGrouping(group);
     // clear selected machines on grouping change
@@ -84,7 +101,7 @@ const MachineList = ({
       grouping,
       sortDirection: mapSortDirection(sortDirection),
       sortKey,
-      pagination: { currentPage, setCurrentPage, pageSize: PAGE_SIZE },
+      pagination: { currentPage, setCurrentPage, pageSize: itemsPerPage },
     });
 
   useEffect(
@@ -116,20 +133,25 @@ const MachineList = ({
       <MachineListControls
         filter={searchFilter}
         grouping={grouping}
+        hiddenColumns={hiddenColumns}
+        itemsPerPage={itemsPerPage}
         setFilter={handleSetSearchFilter}
         setGrouping={handleSetGrouping}
         setHiddenGroups={setHiddenGroups}
+        setItemsPerPage={setItemsPerPage}
+        toggleHiddenColumn={toggleHiddenColumn}
       />
       <MachineListTable
         callId={callId}
         currentPage={currentPage}
         filter={searchFilter}
         grouping={grouping}
+        hiddenColumns={hiddenColumns}
         hiddenGroups={hiddenGroups}
         machineCount={machineCount}
         machines={machines}
         machinesLoading={loading}
-        pageSize={PAGE_SIZE}
+        pageSize={itemsPerPage}
         selectedIDs={selectedIDs}
         setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}

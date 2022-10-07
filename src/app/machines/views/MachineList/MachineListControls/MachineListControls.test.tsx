@@ -4,6 +4,8 @@ import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
+import { DEFAULTS } from "../MachineListTable/constants";
+
 import MachineListControls from "./MachineListControls";
 import MachinesFilterAccordion from "./MachinesFilterAccordion";
 
@@ -39,9 +41,11 @@ describe("MachineListControls", () => {
             filter=""
             grouping={null}
             hiddenColumns={[]}
+            itemsPerPage={DEFAULTS.pageSize}
             setFilter={setFilter}
             setGrouping={jest.fn()}
             setHiddenGroups={jest.fn()}
+            setItemsPerPage={jest.fn()}
             toggleHiddenColumn={jest.fn()}
           />
         </MemoryRouter>

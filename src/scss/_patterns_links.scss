@@ -9,6 +9,10 @@
     }
   }
 
+  .p-contextual-menu__link.is-active {
+    background-color: $colors--light-theme--background-active;
+  }
+
   // Make skip link work with the custom MAAS layout
   .p-link--skip:focus {
     position: absolute;
