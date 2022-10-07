@@ -1,6 +1,7 @@
 import { Component } from "react";
 import type { ReactNode, ErrorInfo } from "react";
 
+import { Notification } from "@canonical/react-components";
 import * as Sentry from "@sentry/browser";
 import { connect } from "react-redux";
 
@@ -49,12 +50,9 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="p-notification--negative">
-          <p className="p-notification__response u-no-max-width">
-            <span className="p-notification__status">Error:</span>
-            {Labels.ErrorMessage}
-          </p>
-        </div>
+        <Notification severity="negative" title="Error:">
+          {Labels.ErrorMessage}
+        </Notification>
       );
     }
     return this.props.children;
