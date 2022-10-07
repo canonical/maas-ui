@@ -33,7 +33,7 @@ const AuthenticationCard = ({ hostId, objectName }: Props): JSX.Element => {
     const { certificate: certificateMetadata, power_parameters } = pod;
     const hasCertificateData = !!(
       certificateMetadata &&
-      power_parameters.certificate &&
+      power_parameters?.certificate &&
       power_parameters.key
     );
     if (showUpdateCertificate || !hasCertificateData) {

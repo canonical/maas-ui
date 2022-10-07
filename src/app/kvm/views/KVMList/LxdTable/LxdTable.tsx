@@ -24,7 +24,7 @@ export const generateSingleHostRows = (pods: Pod[]): LxdKVMHostTableRow[] =>
       name: pod.name,
       podId: pod.id,
       pool: pod.pool,
-      project: pod.power_parameters.project,
+      project: pod.power_parameters?.project,
       storage: pod.resources.storage,
       storagePools: pod.resources.storage_pools,
       tags: pod.tags,

@@ -7,7 +7,7 @@ import configureStore from "redux-mock-store";
 import AuthenticationCard from "./AuthenticationCard";
 
 import { PodType } from "app/store/pod/constants";
-import type { PodDetails } from "app/store/pod/types";
+import type { PodDetails, PodPowerParameters } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   certificateMetadata as certificateFactory,
@@ -78,8 +78,9 @@ describe("AuthenticationCard", () => {
 
   it("opens the update certificate form automatically if pod has no certificate", () => {
     pod.certificate = undefined;
-    pod.power_parameters.certificate = undefined;
-    pod.power_parameters.key = undefined;
+    const power_parameters = pod.power_parameters as PodPowerParameters;
+    power_parameters.certificate = undefined;
+    power_parameters.key = undefined;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

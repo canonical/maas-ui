@@ -54,7 +54,7 @@ const generateRows = (kvms: Pod[]) =>
         content: (
           <NameColumn
             name={kvm.name}
-            secondary={kvm.power_parameters.power_address}
+            secondary={kvm.power_parameters?.power_address}
             url={urls.kvm.virsh.details.index({ id: kvm.id })}
           />
         ),
