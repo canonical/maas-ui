@@ -32,3 +32,11 @@ export const getOwnerDisplay = (ipRange: IPRange): string =>
  */
 export const getTypeDisplay = (ipRange: IPRange): string =>
   isDynamic(ipRange) ? "Dynamic" : "Reserved";
+
+/**
+ * Get display name for an IP range.
+ * @param ipRange - The IP range to check.
+ * @returns Display name text for an IP range.
+ */
+export const getIpRangeDisplayName = (ipRange?: IPRange): string =>
+  ipRange ? `${ipRange?.start_ip} - ${ipRange?.end_ip}` : "";

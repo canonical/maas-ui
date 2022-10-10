@@ -6,5 +6,5 @@ export type DHCPFormValues = {
   entity: string;
   name: DHCPSnippet["name"];
   value: DHCPSnippet["value"];
-  type: string;
+  type: "" | "controller" | "device" | "machine" | "subnet" | "iprange";
 };

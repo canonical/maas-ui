@@ -22,6 +22,7 @@ export const dhcpSnippet = extend<TimestampedModel, DHCPSnippet>(
     name: "test snippet",
     node: null,
     subnet: null,
+    iprange: null,
     value: "test value",
   }
 );

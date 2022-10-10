@@ -15,6 +15,8 @@ import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
+import ipRangeSelectors from "app/store/iprange/selectors";
+import type { IPRange } from "app/store/iprange/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import subnetSelectors from "app/store/subnet/selectors";
@@ -22,30 +24,40 @@ import type { Subnet } from "app/store/subnet/types";
 
 type Option = { label: string; value: string };
 
-type ModelType = Subnet | Controller | Machine | Device;
+type ModelType = Subnet | Controller | Machine | Device | IPRange;
 
 type Props = {
   editing: boolean;
 };
 
+const modelTypeLabel: Record<Exclude<DHCPFormValues["type"], "">, string> = {
+  controller: "controller",
+  device: "device",
+  machine: "machine",
+  subnet: "subnet",
+  iprange: "IP range",
+};
+
 const generateOptions = (
-  type: DHCPFormValues["type"],
+  type: Exclude<DHCPFormValues["type"], "">,
   models: ModelType[] | null
 ): Option[] | null =>
   !!models
     ? [
         {
           value: "",
-          label: `Choose ${type}`,
+          label: `Choose ${modelTypeLabel[type]}`,
         },
       ].concat(
         models.map((model) => ({
           value:
-            type === "subnet"
+            type === "subnet" || type === "iprange"
               ? model.id.toString()
               : ("system_id" in model && model.system_id) || "",
           label:
-            type === "subnet"
+            type === "iprange" && "start_ip" in model
+              ? `${model?.start_ip} - ${model?.end_ip}`
+              : type === "subnet"
               ? ("name" in model && model.name) || ""
               : ("fqdn" in model && model.fqdn) || "",
         }))
@@ -69,14 +81,19 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
   const controllers = useSelector(controllerSelectors.all);
   const devices = useSelector(deviceSelectors.all);
   const machines = useSelector(machineSelectors.all);
+  const ipRanges = useSelector(ipRangeSelectors.all);
   const subnetLoading = useSelector(subnetSelectors.loading);
   const subnetLoaded = useSelector(subnetSelectors.loaded);
   const controllerLoading = useSelector(controllerSelectors.loading);
   const controllerLoaded = useSelector(controllerSelectors.loaded);
   const deviceLoading = useSelector(deviceSelectors.loading);
   const deviceLoaded = useSelector(deviceSelectors.loaded);
-  const isLoading = subnetLoading || controllerLoading || deviceLoading;
-  const hasLoaded = subnetLoaded && controllerLoaded && deviceLoaded;
+  const ipRangesLoading = useSelector(ipRangeSelectors.loading);
+  const ipRangesLoaded = useSelector(ipRangeSelectors.loaded);
+  const isLoading =
+    subnetLoading || controllerLoading || deviceLoading || ipRangesLoading;
+  const hasLoaded =
+    subnetLoaded && controllerLoaded && deviceLoaded && ipRangesLoaded;
   const { enabled, type } = formikProps.values;
   let models: ModelType[] | null;
   switch (type) {
@@ -91,6 +108,9 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
       break;
     case "device":
       models = devices;
+      break;
+    case "iprange":
+      models = ipRanges;
       break;
     default:
       models = null;
@@ -129,6 +149,7 @@ export const DhcpFormFields = ({ editing }: Props): JSX.Element => {
           { value: "controller", label: "Controller" },
           { value: "machine", label: "Machine" },
           { value: "device", label: "Device" },
+          { value: "iprange", label: "IP Range" },
         ]}
       />
       {type === "machine" ? (

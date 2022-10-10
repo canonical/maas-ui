@@ -16,6 +16,8 @@ import { actions as deviceActions } from "app/store/device";
 import { actions as dhcpsnippetActions } from "app/store/dhcpsnippet";
 import dhcpsnippetSelectors from "app/store/dhcpsnippet/selectors";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
+import { actions as ipRangeActions } from "app/store/iprange";
+import ipRangeSelectors from "app/store/iprange/selectors";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
@@ -63,13 +65,15 @@ export const DhcpForm = ({
   const saved = useSelector(dhcpsnippetSelectors.saved);
   const saving = useSelector(dhcpsnippetSelectors.saving);
   const editing = !!dhcpSnippet;
+  const ipRanges = useSelector(ipRangeSelectors.all);
   const {
     loading,
     loaded,
     type: targetType,
   } = useDhcpTarget(
     editing ? dhcpSnippet?.node : null,
-    editing ? dhcpSnippet?.subnet : null
+    editing ? dhcpSnippet?.subnet : null,
+    editing ? dhcpSnippet?.iprange : null
   );
   useFetchMachines();
 
@@ -84,6 +88,7 @@ export const DhcpForm = ({
     dispatch(subnetActions.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
+    dispatch(ipRangeActions.fetch());
   }, [dispatch]);
 
   if (
@@ -103,7 +108,9 @@ export const DhcpForm = ({
         description: dhcpSnippet ? dhcpSnippet.description : "",
         enabled: dhcpSnippet ? dhcpSnippet.enabled : false,
         entity: dhcpSnippet
-          ? dhcpSnippet.node || `${dhcpSnippet.subnet}` || ""
+          ? dhcpSnippet.node ||
+            `${dhcpSnippet.iprange || dhcpSnippet.subnet}` ||
+            ""
           : "",
         name: dhcpSnippet ? dhcpSnippet.name : "",
         type: (dhcpSnippet && targetType) || "",
@@ -120,6 +127,7 @@ export const DhcpForm = ({
           enabled: DHCPFormValues["enabled"];
           name: DHCPFormValues["name"];
           node?: DHCPSnippet["node"];
+          iprange?: DHCPSnippet["iprange"];
           subnet?: DHCPSnippet["subnet"];
           value: DHCPFormValues["value"];
         } = {
@@ -128,7 +136,12 @@ export const DhcpForm = ({
           name: values.name,
           value: values.value,
         };
-        if (values.type === "subnet") {
+        if (values.type === "iprange") {
+          params.iprange = parseInt(values.entity, 10);
+          params.subnet = ipRanges.filter(
+            (iprange) => iprange.id === params.iprange
+          )[0]?.subnet;
+        } else if (values.type === "subnet") {
           params.subnet = parseInt(values.entity, 10);
         } else if (values.type) {
           params.node = values.entity;

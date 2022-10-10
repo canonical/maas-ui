@@ -9,8 +9,11 @@ import configureStore from "redux-mock-store";
 import { Labels } from "./DhcpFormFields";
 
 import DhcpForm from "app/base/components/DhcpForm";
+import { getIpRangeDisplayName } from "app/store/iprange/utils";
 import type { RootState } from "app/store/root/types";
 import {
+  ipRange as ipRangeFactory,
+  ipRangeState as ipRangeStateFactory,
   controllerState as controllerStateFactory,
   deviceState as deviceStateFactory,
   dhcpSnippet as dhcpSnippetFactory,
@@ -26,6 +29,7 @@ import {
 
 const mockStore = configureStore();
 const machines = [machineFactory()];
+const ipRange = ipRangeFactory();
 describe("DhcpFormFields", () => {
   let state: RootState;
 
@@ -75,6 +79,10 @@ describe("DhcpFormFields", () => {
             name: "test.local",
           }),
         ],
+        loaded: true,
+      }),
+      iprange: ipRangeStateFactory({
+        items: [ipRange],
         loaded: true,
       }),
     });
@@ -150,6 +158,32 @@ describe("DhcpFormFields", () => {
     expect(
       screen.getByRole("combobox", { name: Labels.AppliesTo })
     ).toBeInTheDocument();
+  });
+
+  it("allows to select an IP Range", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <CompatRouter>
+            <DhcpForm analyticsCategory="settings" />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    const select = screen.getByRole("combobox", { name: Labels.Type });
+
+    await userEvent.selectOptions(select, "iprange");
+
+    expect(
+      screen.queryByRole("alert", { name: Labels.LoadingData })
+    ).not.toBeInTheDocument();
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", {
+        name: Labels.AppliesTo,
+      }),
+      getIpRangeDisplayName(ipRange)
+    );
   });
 
   it("resets the entity if the type changes", async () => {
