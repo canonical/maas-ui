@@ -244,6 +244,25 @@ describe("MachineList", () => {
     ).toStrictEqual(["Deployed"]);
   });
 
+  it("uses the default fallback value for invalid stored grouping values", () => {
+    localStorage.setItem("grouping", '"invalid_value"');
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { store } }
+    );
+    expect(screen.getByLabelText(/Group by/)).toHaveValue(DEFAULTS.grouping);
+    const expected = machineActions.fetch("123456", {
+      group_key: DEFAULTS.grouping,
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches).toHaveLength(1);
+    expect(fetches.at(-1).payload.params.group_key).toBe(DEFAULTS.grouping);
+  });
+
   it("can change groups", () => {
     jest
       .spyOn(reduxToolkit, "nanoid")

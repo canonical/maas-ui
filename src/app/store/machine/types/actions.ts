@@ -389,6 +389,7 @@ export enum FetchGroupKey {
   Nodeuserdata = "nodeuserdata",
   NumaNodesCount = "numa_nodes_count",
   Numanode = "numanode",
+  None = "",
   Osystem = "osystem",
   Owner = "owner",
   OwnerId = "owner_id",

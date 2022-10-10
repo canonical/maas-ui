@@ -41,13 +41,20 @@ const MachineList = ({
   const [sortDirection, setSortDirection] = useState<
     ValueOf<typeof SortDirection>
   >(DEFAULTS.sortDirection);
-  const [grouping, setGrouping] = useStorageState<FetchGroupKey | null>(
-    localStorage,
-    "grouping",
-    FetchGroupKey.Status
-  );
+  const [storedGrouping, setStoredGrouping] =
+    useStorageState<FetchGroupKey | null>(
+      localStorage,
+      "grouping",
+      DEFAULTS.grouping
+    );
+  // fallback to "None" if the stored grouping is not valid
+  const grouping: FetchGroupKey =
+    typeof storedGrouping === "string" &&
+    Object.values(FetchGroupKey).includes(storedGrouping)
+      ? storedGrouping
+      : DEFAULTS.grouping;
   const handleSetGrouping = (group: FetchGroupKey | null) => {
-    setGrouping(group);
+    setStoredGrouping(group);
     // clear selected machines on grouping change
     // we cannot reliably preserve the selected state for individual machines
     // as we are only fetching information about a group from the back-end

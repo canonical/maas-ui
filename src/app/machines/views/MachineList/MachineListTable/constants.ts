@@ -6,4 +6,5 @@ export const DEFAULTS = {
   // TODO: change this to fqdn when the API supports it:
   // https://github.com/canonical/app-tribe/issues/1268
   sortKey: FetchGroupKey.Hostname,
+  grouping: FetchGroupKey.Status,
 };
