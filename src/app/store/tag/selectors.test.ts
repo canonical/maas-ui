@@ -5,6 +5,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { tagStateListFactory } from "testing/factories/state";
 
 describe("tag selectors", () => {
   it("can get all items", () => {
@@ -15,6 +16,52 @@ describe("tag selectors", () => {
       }),
     });
     expect(tag.all(state)).toEqual(items);
+  });
+
+  it("can get items in a list", () => {
+    const items = [tagFactory(), tagFactory()];
+    const state = rootStateFactory({
+      tag: tagStateFactory({
+        lists: {
+          "mock-call-id": tagStateListFactory({
+            items,
+          }),
+        },
+      }),
+    });
+    expect(tag.list(state, "mock-call-id")).toStrictEqual(items);
+  });
+
+  it("can get the loading state for a list", () => {
+    const items = [tagFactory(), tagFactory()];
+    const state = rootStateFactory({
+      tag: tagStateFactory({
+        lists: {
+          "mock-call-id": tagStateListFactory({
+            items,
+            loading: true,
+            loaded: false,
+          }),
+        },
+      }),
+    });
+    expect(tag.listLoading(state, "mock-call-id")).toBe(true);
+  });
+
+  it("can get the loaded state for a list", () => {
+    const items = [tagFactory(), tagFactory()];
+    const state = rootStateFactory({
+      tag: tagStateFactory({
+        lists: {
+          "mock-call-id": tagStateListFactory({
+            items,
+            loaded: true,
+            loading: false,
+          }),
+        },
+      }),
+    });
+    expect(tag.listLoaded(state, "mock-call-id")).toBe(true);
   });
 
   it("can get all manual tags", () => {

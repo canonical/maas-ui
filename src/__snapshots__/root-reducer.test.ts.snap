@@ -355,6 +355,7 @@ Object {
   "tag": Object {
     "errors": null,
     "items": Array [],
+    "lists": Object {},
     "loaded": false,
     "loading": false,
     "saved": false,

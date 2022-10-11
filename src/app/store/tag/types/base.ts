@@ -12,4 +12,15 @@ export type Tag = TimestampedModel & {
   name: string;
 };
 
-export type TagState = GenericState<Tag, APIError>;
+export type TagStateList = {
+  items: Tag[] | null;
+  errors: APIError;
+  loaded: boolean;
+  loading: boolean;
+};
+
+export type TagStateLists = Record<string, TagStateList>;
+
+export type TagState = {
+  lists: TagStateLists;
+} & GenericState<Tag, APIError>;

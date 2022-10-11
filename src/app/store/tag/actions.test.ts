@@ -12,6 +12,19 @@ describe("tag actions", () => {
     });
   });
 
+  it("returns an action for fetching tags with a filter", () => {
+    expect(actions.fetch({ filter: { id: "abc123" } }, "123456")).toEqual({
+      type: "tag/fetch",
+      meta: {
+        model: "tag",
+        method: "list",
+        callId: "123456",
+        nocache: true,
+      },
+      payload: { params: { filter: { id: "abc123" } } },
+    });
+  });
+
   it("can create an action for creating a tag", () => {
     const params = {
       comment: "It's a tag",
