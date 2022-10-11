@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import TLSDisabled from "./TLSDisabled";
 import TLSEnabled from "./TLSEnabled";
+import VaultSettings from "./VaultSettings";
 
 import { useWindowTitle } from "app/base/hooks";
 import { actions as generalActions } from "app/store/general";
@@ -25,9 +26,16 @@ const Security = (): JSX.Element => {
   }
 
   return (
-    <Row>
-      <Col size={6}>{tlsCertificate ? <TLSEnabled /> : <TLSDisabled />}</Col>
-    </Row>
+    <>
+      <Row>
+        <Col size={6}>{tlsCertificate ? <TLSEnabled /> : <TLSDisabled />}</Col>
+      </Row>
+      <Row>
+        <Col size={6}>
+          <VaultSettings />
+        </Col>
+      </Row>
+    </>
   );
 };
 
