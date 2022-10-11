@@ -15,19 +15,19 @@ import type { TagFormValues } from "../types";
 
 import { NULL_EVENT } from "app/base/constants";
 import urls from "app/base/urls";
-import type { Machine } from "app/store/machine/types";
+import type { MachineActionFormProps } from "app/machines/types";
 import type { TagIdCountMap } from "app/store/machine/utils";
-import { getTagCountsForMachines } from "app/store/machine/utils";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
+import { getTagCounts } from "app/store/tag/utils";
 import TagDetails from "app/tags/components/TagDetails";
 import { toFormikNumber } from "app/utils";
 
 type Props = {
-  machines: Machine[];
+  tags: Tag[];
   newTags: Tag[TagMeta.PK][];
-};
+} & Pick<MachineActionFormProps, "selectedCount">;
 
 export enum Label {
   Added = "To be added",
@@ -67,7 +67,7 @@ const generateRows = (
   rowType: string,
   tags: Tag[],
   machineCount: number,
-  tagIdsAndCounts: TagIdCountMap,
+  tagIdsAndCounts: TagIdCountMap | null,
   label: ReactNode,
   toggleTagDetails: (tag: Tag | null) => void,
   newTags: Tag[TagMeta.PK][],
@@ -113,7 +113,8 @@ const generateRows = (
 };
 
 export const TagFormChanges = ({
-  machines,
+  tags,
+  selectedCount,
   newTags,
 }: Props): JSX.Element | null => {
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
@@ -127,18 +128,18 @@ export const TagFormChanges = ({
       closePortal(NULL_EVENT);
     }
   };
-  const tagIdsAndCounts = getTagCountsForMachines(machines);
-  const tagIds = Array.from(tagIdsAndCounts.keys());
+  const tagIdsAndCounts = getTagCounts(tags);
+  const tagIds = tagIdsAndCounts ? Array.from(tagIdsAndCounts?.keys()) : [];
   const automaticTags = useSelector((state: RootState) =>
     tagSelectors.getAutomaticByIDs(state, tagIds)
   );
   const allManualTags = useSelector((state: RootState) =>
     tagSelectors.getManualByIDs(state, tagIds)
   );
+  const machineCount = selectedCount ?? 0;
   const manualTags = useUnchangedTags(allManualTags);
   const addedTags = useSelectedTags("added");
   const removedTags = useSelectedTags("removed");
-  const machineCount = machines.length;
   const hasAutomaticTags = automaticTags.length > 0;
   const hasManualTags = manualTags.length > 0;
   const hasAddedTags = addedTags.length > 0;
@@ -176,7 +177,7 @@ export const TagFormChanges = ({
   }
   addedTags.forEach((tag) => {
     // Added tags will be applied to all machines.
-    tagIdsAndCounts.set(tag.id, machineCount);
+    tagIdsAndCounts?.set(tag.id, machineCount);
   });
   return (
     <>

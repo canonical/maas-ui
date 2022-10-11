@@ -29,6 +29,7 @@ export const AddTagForm = ({
       deployedMachines={machines.filter(
         ({ status }) => status === NodeStatus.DEPLOYED
       )}
+      // TODO: refactor to use selectedMachines https://github.com/canonical/app-tribe/issues/1417
       generateDeployedMessage={(count: number) =>
         count === 1
           ? `${count} selected machine is deployed. The new kernel options will not be applied to this machine until it is redeployed.`

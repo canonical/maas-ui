@@ -65,7 +65,7 @@ const listLoaded = createSelector(
 );
 
 /**
- * Get the loading stateo for a tag list request with a given callId.
+ * Get the loading state for a tag list request with a given callId.
  */
 const listLoading = createSelector(
   [tagState, (_state: RootState, callId: string | null | undefined) => callId],

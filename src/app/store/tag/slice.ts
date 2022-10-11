@@ -116,6 +116,25 @@ const tagSlice = createSlice({
         }
       },
     },
+    removeRequest: {
+      prepare: (callId: string) => ({
+        meta: {
+          callId,
+        },
+        payload: null,
+      }),
+      reducer: (
+        state: TagState,
+        action: PayloadAction<null, string, GenericMeta>
+      ) => {
+        const { callId } = action.meta;
+        if (callId) {
+          if (callId in state.lists) {
+            delete state.lists[callId];
+          }
+        }
+      },
+    },
   },
 });
 

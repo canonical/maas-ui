@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
@@ -20,6 +21,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { tagStateListFactory } from "testing/factories/state";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 
 const mockStore = configureStore();
@@ -27,6 +29,7 @@ let state: RootState;
 let tags: Tag[];
 
 beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   tags = [
     tagFactory({ id: 1, name: "tag1" }),
     tagFactory({ id: 2, name: "tag2" }),
@@ -42,12 +45,21 @@ beforeEach(() => {
     }),
     tag: tagStateFactory({
       items: tags,
+      lists: {
+        "mocked-nanoid": tagStateListFactory({
+          loaded: true,
+          items: tags,
+        }),
+      },
     }),
   });
 });
 
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
 it("displays available tags in the dropdown", async () => {
-  state.machine.items[0].tags = [3];
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -58,8 +70,12 @@ it("displays available tags in the dropdown", async () => {
             onSubmit={jest.fn()}
           >
             <TagFormFields
-              machines={state.machine.items}
+              machines={[]}
               newTags={[]}
+              selectedCount={state.machine.items.length}
+              selectedMachines={{
+                items: state.machine.items.map((item) => item.system_id),
+              }}
               setNewTags={jest.fn()}
             />
           </Formik>
@@ -102,8 +118,12 @@ it("displays the tags to be added", () => {
             onSubmit={jest.fn()}
           >
             <TagFormFields
-              machines={state.machine.items}
+              machines={[]}
               newTags={[]}
+              selectedCount={state.machine.items.length}
+              selectedMachines={{
+                items: state.machine.items.map((item) => item.system_id),
+              }}
               setNewTags={jest.fn()}
             />
           </Formik>
@@ -132,7 +152,12 @@ it("can open a create tag form", async () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormFields machines={[]} newTags={[]} setNewTags={jest.fn()} />
+            <TagFormFields
+              machines={[]}
+              newTags={[]}
+              selectedCount={state.machine.items.length}
+              setNewTags={jest.fn()}
+            />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -163,6 +188,7 @@ it("updates the new tags after creating a tag", async () => {
             <TagFormFields
               machines={state.machine.items}
               newTags={[]}
+              selectedCount={state.machine.items.length}
               setNewTags={setNewTags}
             />
           </Formik>

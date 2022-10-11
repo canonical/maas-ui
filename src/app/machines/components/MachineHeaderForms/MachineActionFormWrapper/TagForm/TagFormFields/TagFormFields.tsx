@@ -1,23 +1,27 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { Col, Icon, Modal, Row } from "@canonical/react-components";
+import { Col, Icon, Modal, Row, Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 import usePortal from "react-useportal";
 
 import AddTagForm from "../AddTagForm";
 import TagFormChanges from "../TagFormChanges";
-import { useSelectedTags, useUnchangedTags } from "../hooks";
+import {
+  useFetchTagsForSelected,
+  useSelectedTags,
+  useUnchangedTags,
+} from "../hooks";
 import type { TagFormValues } from "../types";
 
 import TagField from "app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "app/base/components/TagSelector/TagSelector";
 import { NULL_EVENT } from "app/base/constants";
-import type { Machine } from "app/store/machine/types";
-import { getTagCountsForMachines } from "app/store/machine/utils";
+import type { Machine, SelectedMachines } from "app/store/machine/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
+import { getManual, getTagCounts } from "app/store/tag/utils";
 
 const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
   !!tags.find(({ id }) => tag.id === id)?.kernel_opts;
@@ -28,6 +32,8 @@ type Props = {
   setNewTags: (tags: Tag[TagMeta.PK][]) => void;
   viewingDetails?: boolean;
   viewingMachineConfig?: boolean;
+  selectedMachines?: SelectedMachines | null;
+  selectedCount?: number | null;
 };
 
 export enum Label {
@@ -39,6 +45,8 @@ export const TagFormFields = ({
   machines,
   newTags,
   setNewTags,
+  selectedMachines,
+  selectedCount,
   viewingDetails = false,
   viewingMachineConfig = false,
 }: Props): JSX.Element => {
@@ -46,13 +54,18 @@ export const TagFormFields = ({
   const [newTagName, setNewTagName] = useState<string | null>(null);
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const selectedTags = useSelectedTags("added");
-  const tags = useSelector(tagSelectors.getManual);
-  const tagIdsAndCounts = getTagCountsForMachines(machines);
+  const { tags: tagsForSelected, loading: tagsLoading } =
+    useFetchTagsForSelected({
+      selectedMachines,
+    });
+  const tags = getManual(tagsForSelected);
+  const allManualTags = useSelector(tagSelectors.getManual);
+  const tagIdsAndCounts = getTagCounts(tags);
   // Tags can't be added if they already exist on all machines or already in
   // the added/removed lists.
-  const unchangedTags = useUnchangedTags(tags);
+  const unchangedTags = useUnchangedTags(allManualTags);
   const availableTags = unchangedTags.filter(
-    (tag) => tagIdsAndCounts.get(tag.id) !== machines.length
+    (tag) => tagIdsAndCounts?.get(tag.id) !== selectedCount
   );
   return (
     <>
@@ -93,7 +106,15 @@ export const TagFormFields = ({
             storedValue="id"
             tags={availableTags.map(({ id, name }) => ({ id, name }))}
           />
-          <TagFormChanges machines={machines} newTags={newTags} />
+          {tags.length === 0 && tagsLoading ? (
+            <Spinner text="Loading tags..." />
+          ) : (
+            <TagFormChanges
+              newTags={newTags}
+              selectedCount={selectedCount}
+              tags={tags}
+            />
+          )}
         </Col>
       </Row>
       {isOpen ? (

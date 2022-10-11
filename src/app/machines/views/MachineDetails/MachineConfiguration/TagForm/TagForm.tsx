@@ -53,8 +53,9 @@ const TagForm = ({ systemId }: Props): JSX.Element | null => {
           <TagActionForm
             clearHeaderContent={() => setEditing(false)}
             errors={errors}
-            machines={[machine]}
             processingCount={taggingMachines.length}
+            selectedCount={1}
+            selectedMachines={{ items: [machine.system_id] }}
             viewingDetails
             viewingMachineConfig
           />
