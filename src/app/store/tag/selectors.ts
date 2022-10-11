@@ -13,6 +13,8 @@ const defaultSelectors = generateBaseSelectors<TagState, Tag, TagMeta.PK>(
   searchFunction
 );
 
+const tagState = (state: RootState): TagState => state[TagMeta.MODEL];
+
 const getTagsFromIds = (
   tags: Tag[],
   tagIDs: Tag[TagMeta.PK][] | null
@@ -41,6 +43,50 @@ const getByIDs = createSelector(
     (_state: RootState, tagIDs: Tag[TagMeta.PK][] | null) => tagIDs,
   ],
   (allTags, tagIDs) => getTagsFromIds(allTags, tagIDs)
+);
+
+const getList = (tagState: TagState, callId: string | null | undefined) =>
+  callId && callId in tagState.lists ? tagState.lists[callId] : null;
+
+/**
+ * Get the errors for a tag list request with a given callId
+ */
+const listErrors = createSelector(
+  [tagState, (_state: RootState, callId: string | null | undefined) => callId],
+  (tagState, callId) => getList(tagState, callId)?.errors || null
+);
+
+/**
+ * Get the loaded state for a tag list request with a given callId.
+ */
+const listLoaded = createSelector(
+  [tagState, (_state: RootState, callId: string | null | undefined) => callId],
+  (tagState, callId) => getList(tagState, callId)?.loaded ?? false
+);
+
+/**
+ * Get the loading stateo for a tag list request with a given callId.
+ */
+const listLoading = createSelector(
+  [tagState, (_state: RootState, callId: string | null | undefined) => callId],
+  (tagState, callId) => getList(tagState, callId)?.loading ?? false
+);
+
+/**
+ * Get tags in a list request.
+ * @param state - The redux state.
+ * @param callId - A list request id.
+ * @param selected - Whether to filter for selected tags.
+ * @returns A list of tags.
+ */
+const list = createSelector(
+  [
+    tagState,
+    (_state: RootState, callId: string | null | undefined) => ({
+      callId,
+    }),
+  ],
+  (tagState, { callId }) => getList(tagState, callId)?.items ?? null
 );
 
 /**
@@ -110,11 +156,11 @@ export enum TagSearchFilter {
 }
 
 /**
- * Get machines that match search terms and filters.
+ * Get tags that match search terms and filters.
  * @param state - The redux state.
  * @param terms - The terms to match against.
  * @param filter - A .
- * @returns A filtered list of machines.
+ * @returns A filtered list of tags.
  */
 const search = createSelector(
   [
@@ -149,6 +195,10 @@ const selectors = {
   getAutomaticByIDs,
   getManual,
   getManualByIDs,
+  list,
+  listErrors,
+  listLoaded,
+  listLoading,
   search,
 };
 

@@ -10,6 +10,7 @@ describe("tag reducer", () => {
     expect(reducers(undefined, { type: "" })).toEqual({
       errors: null,
       items: [],
+      lists: {},
       loaded: false,
       loading: false,
       saved: false,
@@ -21,6 +22,7 @@ describe("tag reducer", () => {
     expect(reducers(undefined, actions.fetchStart())).toEqual({
       errors: null,
       items: [],
+      lists: {},
       loaded: false,
       loading: true,
       saved: false,
@@ -35,6 +37,7 @@ describe("tag reducer", () => {
     expect(reducers(state, actions.fetchSuccess(tags))).toEqual({
       errors: null,
       items: tags,
+      lists: {},
       loading: false,
       loaded: true,
       saved: false,
@@ -49,6 +52,7 @@ describe("tag reducer", () => {
       {
         errors: "Could not fetch tags",
         items: [],
+        lists: {},
         loaded: false,
         loading: false,
         saved: false,
@@ -113,6 +117,7 @@ describe("tag reducer", () => {
       expect(reducers(tagState, actions.updateStart())).toEqual({
         errors: null,
         items: [],
+        lists: {},
         loaded: false,
         loading: false,
         saved: false,
@@ -128,6 +133,7 @@ describe("tag reducer", () => {
       expect(reducers(tagState, actions.updateSuccess())).toEqual({
         errors: null,
         items: [],
+        lists: {},
         loaded: false,
         loading: false,
         saved: true,
@@ -145,6 +151,7 @@ describe("tag reducer", () => {
       ).toEqual({
         errors: "Could not update tag",
         items: [],
+        lists: {},
         loaded: false,
         loading: false,
         saved: false,
@@ -169,6 +176,7 @@ describe("tag reducer", () => {
       expect(reducers(tagState, actions.updateNotify(updatedTag))).toEqual({
         errors: null,
         items: [updatedTag],
+        lists: {},
         loaded: false,
         loading: false,
         saved: false,

@@ -93,6 +93,7 @@ import type {
   SubnetStatuses,
 } from "app/store/subnet/types";
 import type { TagState } from "app/store/tag/types";
+import type { TagStateList } from "app/store/tag/types/base";
 import type { TokenState } from "app/store/token/types";
 import type { EventError } from "app/store/types/state";
 import type { AuthState, UserState } from "app/store/user/types";
@@ -552,8 +553,16 @@ export const subnetState = define<SubnetState>({
   statuses: () => ({}),
 });
 
+export const tagStateListFactory = define<TagStateList>({
+  errors: null,
+  items: null,
+  loaded: false,
+  loading: false,
+});
+
 export const tagState = define<TagState>({
   ...defaultState,
+  lists: () => ({}),
   errors: null,
 });
 
