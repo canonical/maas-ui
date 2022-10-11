@@ -462,6 +462,7 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     testing_start_time: "Thu, 15 Oct. 2020 07:25:10",
     testing_status: testStatus,
     updated: "Fri, 23 Oct. 2020 05:24:41",
+    vault_configured: false,
     vlan: null,
     vlan_ids: () => [],
     workload_annotations: () => ({}),

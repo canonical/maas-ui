@@ -136,6 +136,7 @@ export type ControllerDetails = BaseController &
     swap_size: number | null;
     testing_start_time: string;
     testing_status: TestStatus;
+    vault_configured?: boolean;
     vlan_ids: VLAN[VLANMeta.PK][];
     vlan?: NodeVlan | null;
     workload_annotations: WorkloadAnnotations;
