@@ -89,6 +89,7 @@ const generateRows = (
     const type =
       (dhcpsnippet.node && "Node") ||
       (dhcpsnippet.subnet && "Subnet") ||
+      (dhcpsnippet.iprange && "IP Range") ||
       "Global";
     return {
       className: expanded ? "p-table__row is-active" : null,
@@ -110,6 +111,7 @@ const generateRows = (
         {
           content: (
             <DhcpSnippetType
+              ipRangeId={dhcpsnippet.iprange}
               nodeId={dhcpsnippet.node}
               subnetId={dhcpsnippet.subnet}
             />

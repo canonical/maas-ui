@@ -6,6 +6,7 @@ import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
 type Props = {
   nodeId?: DHCPSnippet["node"];
   subnetId?: DHCPSnippet["subnet"];
+  ipRangeId?: DHCPSnippet["iprange"];
 };
 
 const dhcpTypeLabels = {
@@ -14,10 +15,19 @@ const dhcpTypeLabels = {
   global: "Global",
   machine: "Machine",
   subnet: "Subnet",
+  iprange: "IP Range",
 };
 
-const DhcpSnippetType = ({ nodeId, subnetId }: Props): JSX.Element | null => {
-  const { loading, loaded, type } = useDhcpTarget(nodeId || null, subnetId);
+const DhcpSnippetType = ({
+  nodeId,
+  subnetId,
+  ipRangeId,
+}: Props): JSX.Element | null => {
+  const { loading, loaded, type } = useDhcpTarget(
+    nodeId || null,
+    subnetId,
+    ipRangeId
+  );
 
   if (!nodeId && !subnetId) return <>{dhcpTypeLabels.global}</>;
 

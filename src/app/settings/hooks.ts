@@ -9,6 +9,8 @@ import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import type { Device } from "app/store/device/types";
 import type { DHCPSnippet } from "app/store/dhcpsnippet/types";
+import { actions as ipRangeActions } from "app/store/iprange";
+import ipRangeSelectors from "app/store/iprange/selectors";
 import type { Machine } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
@@ -18,15 +20,19 @@ import type { Subnet } from "app/store/subnet/types";
 
 export const useDhcpTarget = (
   nodeId?: DHCPSnippet["node"],
-  subnetId?: DHCPSnippet["subnet"]
+  subnetId?: DHCPSnippet["subnet"],
+  ipRangeId?: DHCPSnippet["iprange"]
 ): {
   loading: boolean;
   loaded: boolean;
   target: Subnet | Machine | Device | Controller | null;
-  type: "subnet" | "controller" | "device" | "machine" | null;
+  type: "iprange" | "subnet" | "controller" | "device" | "machine" | null;
 } => {
   const dispatch = useDispatch();
 
+  const iprange = useSelector((state: RootState) =>
+    ipRangeSelectors.getById(state, ipRangeId)
+  );
   const subnetLoading = useSelector(subnetSelectors.loading);
   const subnetLoaded = useSelector(subnetSelectors.loaded);
   const subnet = useSelector((state: RootState) =>
@@ -58,6 +64,7 @@ export const useDhcpTarget = (
 
   useEffect(() => {
     dispatch(subnetActions.fetch());
+    dispatch(ipRangeActions.fetch());
     dispatch(controllerActions.fetch());
     dispatch(deviceActions.fetch());
   }, [dispatch]);
@@ -67,6 +74,7 @@ export const useDhcpTarget = (
     loaded: hasLoaded,
     target: subnet || machine || device || controller,
     type:
+      (iprange && "iprange") ||
       (subnet && "subnet") ||
       (controller && "controller") ||
       (device && "device") ||
