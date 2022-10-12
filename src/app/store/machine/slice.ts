@@ -387,56 +387,61 @@ const statusHandlers = generateStatusHandlers<
 >(
   MachineMeta.PK,
   ACTIONS.map((action) => {
-    const handler: StatusHandlers<MachineState, Machine, MachineActionStatus> =
-      {
-        status: kebabToCamelCase(action.name),
-        start: (state, action) => {
-          if (action.meta.callId) {
-            if (action.meta.callId in state.actions) {
-              state.actions[action.meta.callId].status = ACTION_STATUS.loading;
-            } else {
-              state.actions[action.meta.callId] = {
-                status: ACTION_STATUS.loading,
-                errors: null,
-                successCount: 0,
-                failedSystemIds: [],
-              };
-            }
+    const handler: StatusHandlers<
+      MachineState,
+      Machine,
+      MachineActionStatus | null
+    > = {
+      status: kebabToCamelCase(action.name),
+      start: (state, action) => {
+        if (action.meta.callId) {
+          if (action.meta.callId in state.actions) {
+            state.actions[action.meta.callId].status = ACTION_STATUS.loading;
+          } else {
+            state.actions[action.meta.callId] = {
+              status: ACTION_STATUS.loading,
+              errors: null,
+              successCount: 0,
+              failedSystemIds: [],
+            };
           }
-        },
-        success: (state, action) => {
-          if (action.meta.callId) {
-            if (action.meta.callId in state.actions) {
-              const actionsItem = state.actions[action.meta.callId];
-              actionsItem.status = ACTION_STATUS.success;
-              if ("success_count" in action.payload) {
-                actionsItem.successCount = action.payload
-                  .success_count as number;
-              }
-              if (
-                "failed_system_ids" in action.payload &&
-                action.payload.failed_system_ids?.length > 0
-              ) {
-                actionsItem.status = ACTION_STATUS.error;
-                actionsItem.failedSystemIds = [
-                  ...action.payload.failed_system_ids,
-                ] as Machine[MachineMeta.PK][];
-              }
+        }
+      },
+      success: (state, action) => {
+        if (action.meta.callId) {
+          const actionsItem = state.actions[action.meta.callId];
+
+          if (action.meta.callId in state.actions && action?.payload) {
+            actionsItem.status = ACTION_STATUS.success;
+            if (action?.payload && "success_count" in action.payload) {
+              actionsItem.successCount = action.payload.success_count as number;
             }
-          }
-        },
-        error: (state, action) => {
-          if (action.meta.callId) {
-            if (action.meta.callId in state.actions) {
-              const actionsItem = state.actions[action.meta.callId];
-              actionsItem.status = "error";
-              actionsItem.errors = action.payload;
+            if (
+              "failed_system_ids" in action?.payload &&
+              action.payload.failed_system_ids?.length > 0
+            ) {
+              actionsItem.status = ACTION_STATUS.error;
+              actionsItem.failedSystemIds = [
+                ...action.payload.failed_system_ids,
+              ] as Machine[MachineMeta.PK][];
             }
+          } else {
+            actionsItem.status = ACTION_STATUS.error;
           }
-        },
-        method: "action",
-        statusKey: action.status,
-      };
+        }
+      },
+      error: (state, action) => {
+        if (action.meta.callId) {
+          if (action.meta.callId in state.actions) {
+            const actionsItem = state.actions[action.meta.callId];
+            actionsItem.status = "error";
+            actionsItem.errors = action.payload;
+          }
+        }
+      },
+      method: "action",
+      statusKey: action.status,
+    };
     return handler;
   }),
   setErrors
@@ -448,14 +453,15 @@ const generateActionParams = <P extends BaseMachineActionParams>(
   prepare: (params: P, callId?: string) => {
     let actionParams: {
       action: NodeActions;
-      extra: Omit<P, "filter"> | Omit<P, "system_id">;
+      extra: Omit<P, "filter" | "system_id"> | Omit<P, "system_id">;
     } & BaseMachineActionParams;
     if ("filter" in params) {
       // Separate the filter and 'extra' params.
-      const { filter, ...extra } = params;
+      const { filter, system_id, ...extra } = params;
       actionParams = {
         action,
         extra,
+        system_id,
         filter,
       };
     } else {

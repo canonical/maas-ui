@@ -11,19 +11,13 @@ import SourceMachineSelect from "./SourceMachineSelect";
 
 import FormikField from "app/base/components/FormikField";
 import { actions as fabricActions } from "app/store/fabric";
-import fabricSelectors from "app/store/fabric/selectors";
 import machineSelectors from "app/store/machine/selectors";
 import type { MachineDetails } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
-import {
-  useFetchMachine,
-  useFetchMachines,
-} from "app/store/machine/utils/hooks";
+import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as subnetActions } from "app/store/subnet";
-import subnetSelectors from "app/store/subnet/selectors";
 import { actions as vlanActions } from "app/store/vlan";
-import vlanSelectors from "app/store/vlan/selectors";
 
 type Props = {
   selectedMachine: MachineDetails | null;
@@ -39,15 +33,7 @@ export const CloneFormFields = ({
   const machineInState = useSelector((state: RootState) =>
     machineSelectors.getById(state, values.source)
   );
-  const unselectedMachines = useSelector(machineSelectors.unselected);
-  const loadingFabrics = !useSelector(fabricSelectors.loaded);
-  const loadingMachines = !useSelector(machineSelectors.loaded);
-  const loadingSubnets = !useSelector(subnetSelectors.loaded);
-  const loadingVlans = !useSelector(vlanSelectors.loaded);
-  const loadingData =
-    loadingFabrics || loadingMachines || loadingSubnets || loadingVlans;
   const { loading: loadingMachineDetails } = useFetchMachine(values.source);
-  useFetchMachines();
 
   useEffect(() => {
     dispatch(fabricActions.fetch());
@@ -70,10 +56,6 @@ export const CloneFormFields = ({
     <div className="clone-form-fields">
       <p className="source-label">1. Select the source machine</p>
       <SourceMachineSelect
-        className="source-select"
-        loadingData={loadingData}
-        loadingMachineDetails={loadingMachineDetails}
-        machines={unselectedMachines}
         onMachineClick={(machine) => {
           if (machine) {
             setFieldValue("source", machine.system_id);

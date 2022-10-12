@@ -55,11 +55,12 @@ export type BaseMachineActionParams =
   | BaseNodeActionParams
   | {
       filter: FetchFilters;
+      system_id?: Machine[MachineMeta.PK];
       callId?: string;
     };
 
 export type CloneParams = BaseMachineActionParams & {
-  destinations: Machine[MachineMeta.PK][];
+  system_id: Machine[MachineMeta.PK];
   interfaces: boolean;
   storage: boolean;
 };

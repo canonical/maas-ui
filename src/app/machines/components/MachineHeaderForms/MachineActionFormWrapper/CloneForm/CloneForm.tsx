@@ -12,6 +12,7 @@ import type { SetSearchFilter } from "app/base/types";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import type { Machine, MachineDetails } from "app/store/machine/types";
+import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
@@ -47,17 +48,22 @@ const CloneFormSchema = Yup.object()
 
 export const CloneForm = ({
   clearHeaderContent,
-  machines,
+  selectedMachines,
+  selectedCount,
   processingCount,
   setSearchFilter,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const {
+    dispatch: dispatchForSelectedMachines,
+    actionErrors,
+    ...actionProps
+  } = useSelectedMachinesActionsDispatch(selectedMachines);
   const [selectedMachine, setSelectedMachine] = useState<MachineDetails | null>(
     null
   );
   const [showResults, setShowResults] = useState(false);
-  const destinations = machines?.map((machine) => machine.system_id);
 
   // Run cleanup function here rather than in the ActionForm otherwise errors
   // get cleared before the results are shown.
@@ -67,10 +73,10 @@ export const CloneForm = ({
     };
   }, [dispatch]);
 
-  return showResults ? (
+  return showResults || actionErrors ? (
     <CloneResults
       closeForm={clearHeaderContent}
-      destinations={destinations || []}
+      selectedCount={selectedCount}
       setSearchFilter={setSearchFilter}
       sourceMachine={selectedMachine}
       viewingDetails={viewingDetails}
@@ -107,19 +113,19 @@ export const CloneForm = ({
       }}
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
-        dispatch(
-          machineActions.clone({
-            destinations: destinations ?? [],
+        if (selectedMachines) {
+          dispatchForSelectedMachines(machineActions.clone, {
             interfaces: values.interfaces,
             storage: values.storage,
             system_id: values.source,
-          })
-        );
+          });
+        }
       }}
       onSuccess={() => setShowResults(true)}
       processingCount={processingCount}
-      selectedCount={destinations?.length ?? 0}
+      selectedCount={selectedCount}
       validationSchema={CloneFormSchema}
+      {...actionProps}
     >
       <CloneFormFields
         selectedMachine={selectedMachine}

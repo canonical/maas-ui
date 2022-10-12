@@ -149,6 +149,7 @@ const searchAPIMappings: SearchAPIMappings = {
     });
     return newFilters;
   },
+  system_id: "id",
   q: (query) => (query.length > 0 ? { free_text: [query.join(" ")] } : null),
   vlan: "vlans",
 };

@@ -11,7 +11,7 @@ import { getNodeActionLabel } from "app/store/utils";
 const getLabel = (
   modelName: string,
   actionName: string,
-  selectedCount: number,
+  selectedCount?: number | null,
   processingCount?: number
 ) => {
   const processing =
@@ -19,12 +19,12 @@ const getLabel = (
 
   // e.g. "machine"
   let modelString = modelName;
-  if (processing && selectedCount > 1) {
+  if (processing && typeof selectedCount === "number" && selectedCount > 1) {
     // e.g.  "1 of 2 machines"
     modelString = `${
       selectedCount - (processingCount || 0)
     } of ${selectedCount} ${modelName}s`;
-  } else if (selectedCount > 1) {
+  } else if (typeof selectedCount === "number" && selectedCount > 1) {
     // e.g. "2 machines"
     modelString = `${selectedCount} ${modelName}s`;
   }
@@ -39,7 +39,7 @@ export type Props<V, E = null> = Omit<
   loaded?: boolean;
   modelName: string;
   processingCount?: number;
-  selectedCount: number;
+  selectedCount?: number | null;
   showProcessingCount?: boolean;
   submitLabel?: string;
   actionStatus?: ActionState["status"];

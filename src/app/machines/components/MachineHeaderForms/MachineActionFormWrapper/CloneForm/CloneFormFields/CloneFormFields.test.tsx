@@ -12,6 +12,8 @@ import {
   fabricState as fabricStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
+  machineStateList as machineStateListFactory,
+  machineStateListGroup as machineStateListGroupFactory,
   rootState as rootStateFactory,
   subnetState as subnetStateFactory,
   vlanState as vlanStateFactory,
@@ -22,12 +24,29 @@ const mockStore = configureStore();
 
 describe("CloneFormFields", () => {
   let state: RootState;
-
+  const machine = machineFactory({
+    pod: { id: 11, name: "podrick" },
+    system_id: "abc123",
+  });
   beforeEach(() => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+
     state = rootStateFactory({
       fabric: fabricStateFactory({ loaded: true }),
-      machine: machineStateFactory({ loaded: true }),
+
+      machine: machineStateFactory({
+        loaded: true,
+        lists: {
+          "mocked-nanoid": machineStateListFactory({
+            loaded: true,
+            groups: [
+              machineStateListGroupFactory({
+                items: [machine.system_id],
+              }),
+            ],
+          }),
+        },
+      }),
       subnet: subnetStateFactory({ loaded: true }),
       vlan: vlanStateFactory({ loaded: true }),
     });

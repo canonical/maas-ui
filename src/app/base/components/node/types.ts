@@ -19,7 +19,7 @@ export type NodeActionFormProps<E = null> = CommonActionFormProps<E> & {
     | {
         selectedMachines?: SelectedMachines | null;
         processingCount?: never;
-        selectedCount?: number;
+        selectedCount?: number | null;
         nodes?: never;
       }
   );
