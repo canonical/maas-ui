@@ -6,7 +6,7 @@ import type { Controller } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
 import { NodeType } from "app/store/types/node";
 import {
-  controllerDetails as controllerDetailsFactory,
+  controller as controllerFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
@@ -17,13 +17,13 @@ describe("VaultSettings", () => {
   let state: RootState;
   beforeEach(() => {
     controllers = [
-      controllerDetailsFactory({
+      controllerFactory({
         fqdn: "testcontroller1",
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         system_id: "abc123",
         vault_configured: false,
       }),
-      controllerDetailsFactory({
+      controllerFactory({
         fqdn: "testcontroller2",
         node_type: NodeType.REGION_CONTROLLER,
         system_id: "def456",
@@ -33,6 +33,7 @@ describe("VaultSettings", () => {
     state = rootStateFactory({
       controller: controllerStateFactory({
         loaded: true,
+        loading: false,
         items: controllers,
       }),
     });
@@ -40,6 +41,7 @@ describe("VaultSettings", () => {
 
   it("displays a spinner while loading controllers", () => {
     state.controller.loaded = false;
+    state.controller.loading = true;
     renderWithMockStore(<VaultSettings />, { state });
 
     expect(screen.getByText(VaultSettingsLabels.Loading)).toBeInTheDocument();
@@ -52,19 +54,19 @@ describe("VaultSettings", () => {
       screen.getByText(VaultSettingsLabels.IntegrateWithVault)
     ).toBeInTheDocument();
     expect(
-      screen.getByRole("list", { name: VaultSettingsLabels.SetupInstructions })
+      screen.getByLabelText(VaultSettingsLabels.SetupInstructions)
     ).toBeInTheDocument();
   });
 
   it("displays the vault setup instructions a warning if vault is not configured on all controllers", () => {
     const controllers = [
-      controllerDetailsFactory({
+      controllerFactory({
         fqdn: "testcontroller1",
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         system_id: "abc123",
         vault_configured: true,
       }),
-      controllerDetailsFactory({
+      controllerFactory({
         fqdn: "testcontroller2",
         node_type: NodeType.REGION_CONTROLLER,
         system_id: "def456",
@@ -82,19 +84,19 @@ describe("VaultSettings", () => {
       )
     );
     expect(
-      screen.getByRole("list", { name: VaultSettingsLabels.SetupInstructions })
+      screen.getByLabelText(VaultSettingsLabels.SetupInstructions)
     ).toBeInTheDocument();
   });
 
   it("displays 'Vault enabled' and hides setup instructions if Vault is configured on all controllers", () => {
     const controllers = [
-      controllerDetailsFactory({
+      controllerFactory({
         fqdn: "testcontroller1",
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         system_id: "abc123",
         vault_configured: true,
       }),
-      controllerDetailsFactory({
+      controllerFactory({
         fqdn: "testcontroller2",
         node_type: NodeType.REGION_CONTROLLER,
         system_id: "def456",
@@ -110,9 +112,7 @@ describe("VaultSettings", () => {
       screen.getByText(VaultSettingsLabels.VaultEnabled)
     ).toBeInTheDocument();
     expect(
-      screen.queryByRole("list", {
-        name: VaultSettingsLabels.SetupInstructions,
-      })
+      screen.queryByLabelText(VaultSettingsLabels.SetupInstructions)
     ).not.toBeInTheDocument();
   });
 });
