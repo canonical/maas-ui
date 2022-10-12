@@ -380,6 +380,7 @@ export const controller = extend<BaseNode, Controller>(node, {
   node_type_display: NodeTypeDisplay.REGION_AND_RACK_CONTROLLER,
   node_type: 4,
   service_ids,
+  vault_configured: false,
   versions: null,
 });
 

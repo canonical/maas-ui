@@ -76,6 +76,7 @@ export type BaseController = BaseNode & {
     | NodeType.REGION_CONTROLLER
     | NodeType.REGION_AND_RACK_CONTROLLER;
   service_ids: number[];
+  vault_configured?: boolean;
   versions: ControllerVersions | null;
   vlans_ha?: ControllerVlansHA;
 };
@@ -136,7 +137,6 @@ export type ControllerDetails = BaseController &
     swap_size: number | null;
     testing_start_time: string;
     testing_status: TestStatus;
-    vault_configured?: boolean;
     vlan_ids: VLAN[VLANMeta.PK][];
     vlan?: NodeVlan | null;
     workload_annotations: WorkloadAnnotations;
