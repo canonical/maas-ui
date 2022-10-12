@@ -41,7 +41,7 @@ const VaultSettings = (): JSX.Element => {
             <Icon name="warning" />
             <span className="u-nudge-right--small">
               Incomplete vault integration, configure {numberUnconfigured} other{" "}
-              {numberConfigured > 1 ? "controllers" : "controller"} with Vault
+              {numberUnconfigured > 1 ? "controllers" : "controller"} with Vault
               to complete this operation.
             </span>
           </p>
