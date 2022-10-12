@@ -26,8 +26,10 @@ const VaultSettings = (): JSX.Element => {
   if (numberUnconfigured === 0 && numberConfigured >= 1) {
     return (
       <>
-        <Icon name="lock-locked-active" />
-        <p>Vault enabled</p>
+        <p>
+          <Icon name="lock-locked-active" />
+          <span className="u-nudge-right--small">Vault enabled</span>
+        </p>
         <a href={docsUrls.aboutNativeTLS}>More about Vault integration</a>
       </>
     );
