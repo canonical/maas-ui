@@ -28,10 +28,14 @@ const Security = (): JSX.Element => {
   return (
     <>
       <Row>
-        <Col size={6}>{tlsCertificate ? <TLSEnabled /> : <TLSDisabled />}</Col>
+        <Col size={6}>
+          <h4>Security protocols</h4>
+          {tlsCertificate ? <TLSEnabled /> : <TLSDisabled />}
+        </Col>
       </Row>
       <Row>
         <Col size={6}>
+          <h4>Secret storage</h4>
           <VaultSettings />
         </Col>
       </Row>
