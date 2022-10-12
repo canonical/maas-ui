@@ -13,7 +13,7 @@ describe("tag actions", () => {
   });
 
   it("returns an action for fetching tags with a filter", () => {
-    expect(actions.fetch({ filter: { id: "abc123" } }, "123456")).toEqual({
+    expect(actions.fetch({ node_filter: { id: "abc123" } }, "123456")).toEqual({
       type: "tag/fetch",
       meta: {
         model: "tag",
@@ -21,7 +21,7 @@ describe("tag actions", () => {
         callId: "123456",
         nocache: true,
       },
-      payload: { params: { filter: { id: "abc123" } } },
+      payload: { params: { node_filter: { id: "abc123" } } },
     });
   });
 
