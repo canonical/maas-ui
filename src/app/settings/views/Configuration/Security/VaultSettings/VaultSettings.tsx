@@ -51,38 +51,41 @@ const VaultSettings = (): JSX.Element => {
             <span className="u-nudge-right--small">Integrate with Vault</span>
           </p>
         )}
-        <p>
-          1. Get the $wrapped_token and $role_id from Vault.{" "}
-          <a
-            href="https://learn.hashicorp.com/tutorials/vault/approle-best-practices?in=vault/auth-methods#approle-response-wrapping"
-            rel="noreferrer noopener"
-            target="_blank"
-          >
-            Find out more from Hashicorp Vault
-          </a>
-          .
-        </p>
-        <p>2. SSH into each region controller and configure Vault.</p>
-        <CodeSnippet
-          blocks={[
-            {
-              appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
-              code: "sudo maas config-vault configure $url $approle_id $wrapped_token $secrets_path --secrets-mount $secret_mount",
-            },
-          ]}
-        />
-        <p>
-          3. After Vault is configured on all region controllers, migrate
-          secrets on one of the region controllers.
-        </p>
-        <CodeSnippet
-          blocks={[
-            {
-              appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
-              code: "sudo maas config-vault migrate-secrets",
-            },
-          ]}
-        />
+        <div aria-label={Labels.SetupInstructions}>
+          <p>
+            1. Get the $wrapped_token and $role_id from Vault.{" "}
+            <a
+              href="https://learn.hashicorp.com/tutorials/vault/approle-best-practices?in=vault/auth-methods#approle-response-wrapping"
+              rel="noreferrer noopener"
+              target="_blank"
+            >
+              Find out more from Hashicorp Vault
+            </a>
+            .
+          </p>
+          <p>2. SSH into each region controller and configure Vault.</p>
+          <CodeSnippet
+            blocks={[
+              {
+                appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
+                code: "sudo maas config-vault configure $url $approle_id $wrapped_token $secrets_path --secrets-mount $secret_mount",
+              },
+            ]}
+          />
+          <p>
+            3. After Vault is configured on all region controllers, migrate
+            secrets on one of the region controllers.
+          </p>
+          <CodeSnippet
+            blocks={[
+              {
+                appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
+                code: "sudo maas config-vault migrate",
+              },
+            ]}
+          />
+        </div>
+
         <a href={docsUrls.aboutNativeTLS}>More about Vault integration</a>
       </>
     );
