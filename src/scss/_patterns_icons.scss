@@ -44,6 +44,11 @@
     @extend .p-icon--lock-locked-active;
   }
 
+  .p-icon--secured {
+    @extend %icon;
+    @include vf-icon-security($color-mid-dark);
+  }
+
   // TODO: Remove alias and replace with .p-icon--status-waiting
   .p-icon--pending {
     @extend .p-icon--status-waiting;
