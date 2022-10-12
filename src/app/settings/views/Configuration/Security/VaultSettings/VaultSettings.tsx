@@ -112,7 +112,7 @@ const VaultSettings = (): JSX.Element => {
           />
         </div>
 
-        <a href={docsUrls.aboutNativeTLS}>More about Vault integration</a>
+        <a href={docsUrls.vaultIntegration}>More about Vault integration</a>
       </>
     );
 };
