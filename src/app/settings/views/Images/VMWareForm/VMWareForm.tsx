@@ -73,7 +73,7 @@ const VMWareForm = (): JSX.Element => {
         help="VMware vCenter server password which is passed to a deployed VMware ESXi host."
         label={Labels.PasswordLabel}
         name="vcenter_password"
-        type="text"
+        type="password"
       />
       <FormikField
         help="VMware vCenter datacenter which is passed to a deployed VMware ESXi host."
