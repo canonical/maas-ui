@@ -18,6 +18,10 @@ const groupOptions = [
     label: "Group by owner",
   },
   {
+    value: FetchGroupKey.Parent,
+    label: "Group by parent",
+  },
+  {
     value: FetchGroupKey.Pool,
     label: "Group by pool",
   },
