@@ -1,3 +1,5 @@
+import { NodeType } from "../types/node";
+
 import controller from "./selectors";
 import { ImageSyncStatus } from "./types/enum";
 
@@ -186,5 +188,31 @@ describe("controller selectors", () => {
       }),
     });
     expect(controller.search(state, "echidna", [])).toStrictEqual([items[0]]);
+  });
+
+  it("can get region controllers separated by vault configuration status", () => {
+    const items = [
+      controllerFactory({
+        vault_configured: false,
+        node_type: NodeType.REGION_CONTROLLER,
+      }),
+      controllerFactory({
+        vault_configured: true,
+        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+      }),
+      controllerFactory({
+        node_type: NodeType.RACK_CONTROLLER,
+      }),
+    ];
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        items,
+      }),
+    });
+
+    expect(controller.getVaultConfiguredControllers(state)).toStrictEqual([
+      [items[0]],
+      [items[1]],
+    ]);
   });
 });
