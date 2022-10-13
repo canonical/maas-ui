@@ -14,28 +14,9 @@ import { useWindowTitle } from "app/base/hooks";
 import type { ControllerHeaderContent } from "app/controllers/types";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
-import type { Controller } from "app/store/controller/types";
 import { FilterControllers } from "app/store/controller/utils";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
-import { NodeType } from "app/store/types/node";
-
-const getVaultConfiguredControllers = (controllers: Controller[]) => {
-  const regionControllers = controllers.filter((controller) => {
-    return (
-      controller.node_type === NodeType.REGION_CONTROLLER ||
-      controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER
-    );
-  });
-  const unconfiguredControllers = regionControllers.filter((controller) => {
-    return controller.vault_configured === false;
-  }).length;
-  const configuredControllers = regionControllers.filter((controller) => {
-    return controller.vault_configured === true;
-  }).length;
-
-  return [unconfiguredControllers, configuredControllers];
-};
 
 const ControllerList = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -52,15 +33,11 @@ const ControllerList = (): JSX.Element => {
     FilterControllers.filtersToString(currentFilters)
   );
   const selectedIDs = useSelector(controllerSelectors.selectedIDs);
-  const regionControllers = useSelector((state: RootState) =>
-    controllerSelectors.search(
-      state,
-      `node_type:(=${NodeType.REGION_CONTROLLER},${NodeType.REGION_AND_RACK_CONTROLLER})`,
-      selectedIDs
-    )
+
+  const [unconfiguredControllers, configuredControllers] = useSelector(
+    (state: RootState) =>
+      controllerSelectors.getVaultConfiguredControllers(state)
   );
-  const [unconfiguredControllers, configuredControllers] =
-    getVaultConfiguredControllers(regionControllers);
   const filteredControllers = useSelector((state: RootState) =>
     controllerSelectors.search(state, searchFilter || null, selectedIDs)
   );
@@ -92,11 +69,12 @@ const ControllerList = (): JSX.Element => {
         />
       }
     >
-      {configuredControllers >= 1 && unconfiguredControllers >= 1 ? (
+      {configuredControllers.length >= 1 &&
+      unconfiguredControllers.length >= 1 ? (
         <Notification severity="caution" title="Incomplete Vault integration">
           Configure {unconfiguredControllers} other{" "}
           <a href="/controllers">
-            {unconfiguredControllers > 1 ? "controllers" : "controller"}
+            {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
           </a>{" "}
           with Vault to complete this operation. Check the{" "}
           <a href="/settings/configuration/security">security settings</a> for

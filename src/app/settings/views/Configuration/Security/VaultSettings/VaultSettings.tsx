@@ -12,7 +12,6 @@ import docsUrls from "app/base/docsUrls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import type { RootState } from "app/store/root/types";
-import { NodeType } from "app/store/types/node";
 
 export enum Labels {
   Loading = "Loading...",
@@ -23,24 +22,13 @@ export enum Labels {
 
 const VaultSettings = (): JSX.Element => {
   const dispatch = useDispatch();
-
-  const selectedIDs = useSelector(controllerSelectors.selectedIDs);
-  const controllers = useSelector((state: RootState) =>
-    controllerSelectors.search(
-      state,
-      `node_type:(=${NodeType.REGION_CONTROLLER},${NodeType.REGION_AND_RACK_CONTROLLER})`,
-      selectedIDs
-    )
-  );
   const controllersLoading = useSelector(controllerSelectors.loading);
   const controllersLoaded = useSelector(controllerSelectors.loaded);
 
-  const unconfiguredControllers = controllers.filter((controller) => {
-    return controller.vault_configured === false;
-  }).length;
-  const configuredControllers = controllers.filter((controller) => {
-    return controller.vault_configured === true;
-  }).length;
+  const [unconfiguredControllers, configuredControllers] = useSelector(
+    (state: RootState) =>
+      controllerSelectors.getVaultConfiguredControllers(state)
+  );
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
@@ -49,7 +37,10 @@ const VaultSettings = (): JSX.Element => {
   if (controllersLoading && !controllersLoaded)
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;
 
-  if (unconfiguredControllers === 0 && configuredControllers >= 1) {
+  if (
+    unconfiguredControllers.length === 0 &&
+    configuredControllers.length >= 1
+  ) {
     return (
       <>
         <p>
@@ -62,12 +53,16 @@ const VaultSettings = (): JSX.Element => {
   } else
     return (
       <>
-        {configuredControllers >= 1 && unconfiguredControllers >= 1 ? (
+        {configuredControllers.length >= 1 &&
+        unconfiguredControllers.length >= 1 ? (
           <p>
             <Icon name="warning" />
             <span className="u-nudge-right--small">
               Incomplete vault integration, configure {unconfiguredControllers}{" "}
-              other {unconfiguredControllers > 1 ? "controllers" : "controller"}{" "}
+              other{" "}
+              {unconfiguredControllers.length > 1
+                ? "controllers"
+                : "controller"}{" "}
               with Vault to complete this operation.
             </span>
           </p>
