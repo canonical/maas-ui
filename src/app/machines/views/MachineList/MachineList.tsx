@@ -88,11 +88,12 @@ const MachineList = ({
     []
   );
 
+  const selectedControllerIDs = useSelector(controllerSelectors.selectedIDs);
   const controllers = useSelector((state: RootState) =>
     controllerSelectors.search(
       state,
       `node_type:(=${NodeType.REGION_CONTROLLER},${NodeType.REGION_AND_RACK_CONTROLLER})`,
-      selectedIDs
+      selectedControllerIDs
     )
   );
   const [unconfiguredControllers, configuredControllers] =
