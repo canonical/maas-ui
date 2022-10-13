@@ -208,6 +208,17 @@ describe("machine reducer", () => {
     );
   });
 
+  it("reduces machine action with filter", () => {
+    const initialState = machineStateFactory();
+
+    expect(
+      reducers(
+        initialState,
+        actions.delete({ filter: { id: "abc123" }, callId: "123456" })
+      )
+    ).toEqual(initialState);
+  });
+
   it("ignores calls that don't exist when reducing fetchSuccess", () => {
     const initialState = machineStateFactory({
       items: [],

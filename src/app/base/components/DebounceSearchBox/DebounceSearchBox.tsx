@@ -9,6 +9,7 @@ type Props = {
   onDebounced: (debouncedText: string) => void;
   searchText: string;
   setSearchText: (searchText: string) => void;
+  onChange?: SearchBoxProps["onChange"];
 } & Omit<SearchBoxProps, "externallyControlled" | "onChange" | "value" | "ref">;
 
 export const DEFAULT_DEBOUNCE_INTERVAL = 500;
@@ -20,6 +21,7 @@ export enum Labels {
 const DebounceSearchBox = ({
   debounceInterval = DEFAULT_DEBOUNCE_INTERVAL,
   onDebounced,
+  onChange,
   searchText,
   setSearchText,
   ...props
@@ -42,6 +44,7 @@ const DebounceSearchBox = ({
         {...props}
         externallyControlled
         onChange={(text: string) => {
+          onChange?.(text);
           setDebouncing(true);
           setSearchText(text);
           // Clear the previous timeout.

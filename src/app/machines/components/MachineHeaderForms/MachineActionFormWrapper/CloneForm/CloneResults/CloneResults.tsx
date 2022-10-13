@@ -46,9 +46,9 @@ type FormattedCloneError = {
 
 type Props = {
   closeForm: () => void;
-  destinations: Machine["system_id"][];
   // This is optional because it can show in a machine's details page.
   setSearchFilter?: SetSearchFilter;
+  selectedCount?: number | null;
   sourceMachine: MachineDetails | null;
   viewingDetails?: boolean;
 };
@@ -88,8 +88,7 @@ const getSystemId = (error: CloneError["destinations"][0]) => {
 };
 
 const formatCloneError = (
-  error: APIError<CloneError>,
-  destinations: Machine["system_id"][]
+  error: APIError<CloneError>
 ): FormattedCloneError[] => {
   if (!error) {
     return [];
@@ -123,14 +122,14 @@ const formatCloneError = (
     {
       code: "global",
       description: `Cloning was unsuccessful: ${formatErrors(error)}`,
-      destinations,
+      destinations: [],
     },
   ];
 };
 
 export const CloneResults = ({
   closeForm,
-  destinations,
+  selectedCount,
   setSearchFilter,
   sourceMachine,
   viewingDetails,
@@ -148,10 +147,10 @@ export const CloneResults = ({
   useEffect(() => {
     // We set destination count in local state otherwise the user could unselect
     // machines and change the results.
-    if (!destinationCount) {
-      setDestinationCount(destinations.length);
+    if (!destinationCount && selectedCount) {
+      setDestinationCount(selectedCount);
     }
-  }, [destinationCount, destinations.length]);
+  }, [destinationCount, selectedCount]);
 
   if (!sourceMachine) {
     return null;
@@ -160,12 +159,14 @@ export const CloneResults = ({
   const apiError: APIError<CloneError> = cloneErrors.length
     ? cloneErrors[0].error
     : null;
-  const formattedCloneErrors = formatCloneError(apiError, destinations);
+  const formattedCloneErrors = formatCloneError(apiError);
   // Item invalid errors short circuit the clone operation, so even though only
   // a subset of destination return an item invalid error, none of the
   // destinations actually get cloned to.
   const failedCount = formattedCloneErrors.some(
-    (error) => error.code === CloneErrorCodes.ITEM_INVALID
+    (error) =>
+      error.code === CloneErrorCodes.ITEM_INVALID ||
+      error.destinations.length === 0
   )
     ? destinationCount
     : formattedCloneErrors.reduce<Machine["system_id"][]>(
@@ -219,9 +220,9 @@ export const CloneResults = ({
                 </thead>
                 <tbody>
                   {formattedCloneErrors.map((error) => {
-                    const filters = { system_id: error.destinations };
-                    const queryString =
-                      FilterMachines.filtersToQueryString(filters);
+                    const filters = error.destinations
+                      ? { system_id: error.destinations }
+                      : null;
                     return (
                       <TableRow data-testid="error-row" key={error.code}>
                         <TableCell className="error-col">
@@ -236,21 +237,25 @@ export const CloneResults = ({
                         {!viewingDetails && (
                           <TableCell className="affected-col u-align--right">
                             <span className="u-nudge-left--small">
-                              {error.destinations.length}
+                              {failedCount}
                             </span>
-                            <Link
-                              data-testid="error-filter-link"
-                              onClick={() => {
-                                if (setSearchFilter) {
-                                  setSearchFilter(
-                                    FilterMachines.filtersToString(filters)
-                                  );
-                                }
-                              }}
-                              to={`${pathname}${queryString}`}
-                            >
-                              Show
-                            </Link>
+                            {filters ? (
+                              <Link
+                                data-testid="error-filter-link"
+                                onClick={() => {
+                                  if (setSearchFilter) {
+                                    setSearchFilter(
+                                      FilterMachines.filtersToString(filters)
+                                    );
+                                  }
+                                }}
+                                to={`${pathname}${FilterMachines.filtersToQueryString(
+                                  filters
+                                )}`}
+                              >
+                                Show
+                              </Link>
+                            ) : null}
                           </TableCell>
                         )}
                       </TableRow>

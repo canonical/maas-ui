@@ -13,6 +13,7 @@ const scenarios: {
   input: string;
   output?: string;
 }[] = [
+  { input: "system_id:abc123", filters: { id: ["abc123"] } },
   {
     input: "cores:1",
     filters: {
