@@ -89,9 +89,9 @@ describe("VMWareForm", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      screen.getByRole("textbox", { name: VMWareFormLabels.PasswordLabel })
-    ).toHaveValue("passwd");
+    expect(screen.getByLabelText(VMWareFormLabels.PasswordLabel)).toHaveValue(
+      "passwd"
+    );
   });
 
   it("sets vcenter_datacenter value", () => {
