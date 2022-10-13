@@ -1,11 +1,11 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import { createSlice } from "@reduxjs/toolkit";
 
-import type { FetchFilters } from "./../machine/types/actions";
 import { TagMeta } from "./types";
 import type { TagState, CreateParams, UpdateParams } from "./types";
 import type { Tag, TagStateList } from "./types/base";
 
+import type { FetchFilters } from "app/store/machine/types/actions";
 import type { GenericMeta } from "app/store/utils/slice";
 import {
   generateCommonReducers,
@@ -28,7 +28,7 @@ const tagSlice = createSlice({
       TagMeta.PK
     ),
     fetch: {
-      prepare: (params?: { filter: FetchFilters }, callId?: string) => {
+      prepare: (params?: { node_filter: FetchFilters }, callId?: string) => {
         return {
           meta: {
             model: TagMeta.MODEL,
