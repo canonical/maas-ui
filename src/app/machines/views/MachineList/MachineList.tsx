@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
@@ -11,11 +12,15 @@ import { DEFAULTS } from "./MachineListTable/constants";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter, SortDirection } from "app/base/types";
+import controllerSelectors from "app/store/controller/selectors";
+import type { Controller } from "app/store/controller/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { FetchGroupKey } from "app/store/machine/types";
 import { mapSortDirection, FilterMachineItems } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
+import type { RootState } from "app/store/root/types";
+import { NodeType } from "app/store/types/node";
 
 type Props = {
   headerFormOpen?: boolean;
@@ -24,6 +29,23 @@ type Props = {
 };
 
 const PAGE_SIZE = DEFAULTS.pageSize;
+
+const getVaultConfiguredControllers = (controllers: Controller[]) => {
+  const regionControllers = controllers.filter((controller) => {
+    return (
+      controller.node_type === NodeType.REGION_CONTROLLER ||
+      controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER
+    );
+  });
+  const unconfiguredControllers = regionControllers.filter((controller) => {
+    return controller.vault_configured === false;
+  }).length;
+  const configuredControllers = regionControllers.filter((controller) => {
+    return controller.vault_configured === true;
+  }).length;
+
+  return [unconfiguredControllers, configuredControllers];
+};
 
 const MachineList = ({
   headerFormOpen,
@@ -66,6 +88,16 @@ const MachineList = ({
     []
   );
 
+  const controllers = useSelector((state: RootState) =>
+    controllerSelectors.search(
+      state,
+      `node_type:(=${NodeType.REGION_CONTROLLER},${NodeType.REGION_AND_RACK_CONTROLLER})`,
+      selectedIDs
+    )
+  );
+  const [unconfiguredControllers, configuredControllers] =
+    getVaultConfiguredControllers(controllers);
+
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       collapsedGroups: hiddenGroups,
@@ -95,6 +127,17 @@ const MachineList = ({
         />
       ) : null}
       {!headerFormOpen ? <ErrorsNotification errors={machinesErrors} /> : null}
+      {configuredControllers >= 1 && unconfiguredControllers >= 1 ? (
+        <Notification severity="caution" title="Incomplete Vault integration">
+          Configure {unconfiguredControllers} other{" "}
+          <a href="/controllers">
+            {unconfiguredControllers > 1 ? "controllers" : "controller"}
+          </a>{" "}
+          with Vault to complete this operation. Check the{" "}
+          <a href="/settings/configuration/security">security settings</a> for
+          more information.
+        </Notification>
+      ) : null}
       <MachineListControls
         filter={searchFilter}
         grouping={grouping}
