@@ -106,7 +106,7 @@ const MachineList = ({
       {configuredControllers.length >= 1 &&
       unconfiguredControllers.length >= 1 ? (
         <Notification severity="caution" title="Incomplete Vault integration">
-          Configure {unconfiguredControllers} other{" "}
+          Configure {unconfiguredControllers.length} other{" "}
           <a href="/controllers">
             {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
           </a>{" "}

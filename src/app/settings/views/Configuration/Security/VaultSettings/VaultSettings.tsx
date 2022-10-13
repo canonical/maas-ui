@@ -58,8 +58,8 @@ const VaultSettings = (): JSX.Element => {
           <p>
             <Icon name="warning" />
             <span className="u-nudge-right--small">
-              Incomplete vault integration, configure {unconfiguredControllers}{" "}
-              other{" "}
+              Incomplete vault integration, configure{" "}
+              {unconfiguredControllers.length} other{" "}
               {unconfiguredControllers.length > 1
                 ? "controllers"
                 : "controller"}{" "}
