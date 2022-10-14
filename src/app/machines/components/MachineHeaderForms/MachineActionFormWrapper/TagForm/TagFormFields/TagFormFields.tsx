@@ -21,7 +21,7 @@ import { NULL_EVENT } from "app/base/constants";
 import type { Machine, SelectedMachines } from "app/store/machine/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
-import { getManual, getTagCounts } from "app/store/tag/utils";
+import { getTagCounts } from "app/store/tag/utils";
 
 const hasKernelOptions = (tags: Tag[], tag: TagSelectorTag) =>
   !!tags.find(({ id }) => tag.id === id)?.kernel_opts;
@@ -54,11 +54,9 @@ export const TagFormFields = ({
   const [newTagName, setNewTagName] = useState<string | null>(null);
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const selectedTags = useSelectedTags("added");
-  const { tags: tagsForSelected, loading: tagsLoading } =
-    useFetchTagsForSelected({
-      selectedMachines,
-    });
-  const tags = getManual(tagsForSelected);
+  const { tags, loading: tagsLoading } = useFetchTagsForSelected({
+    selectedMachines,
+  });
   const allManualTags = useSelector(tagSelectors.getManual);
   const tagIdsAndCounts = getTagCounts(tags);
   // Tags can't be added if they already exist on all machines or already in
