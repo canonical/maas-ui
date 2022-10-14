@@ -193,11 +193,11 @@ describe("controller selectors", () => {
   it("can get region controllers separated by vault configuration status", () => {
     const items = [
       controllerFactory({
-        vault_configured: false,
+        vault_enabled: false,
         node_type: NodeType.REGION_CONTROLLER,
       }),
       controllerFactory({
-        vault_configured: true,
+        vault_enabled: true,
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
       controllerFactory({

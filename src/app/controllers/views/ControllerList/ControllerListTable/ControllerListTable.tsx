@@ -45,10 +45,10 @@ const getVaultConfiguredControllers = (controllers: Controller[]) => {
     );
   });
   const unconfiguredControllers = regionControllers.filter((controller) => {
-    return controller.vault_configured === false;
+    return controller.vault_enabled === false;
   }).length;
   const configuredControllers = regionControllers.filter((controller) => {
-    return controller.vault_configured === true;
+    return controller.vault_enabled === true;
   }).length;
 
   return [unconfiguredControllers, configuredControllers];
@@ -102,7 +102,7 @@ const generateRows = (
                 (controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER &&
                   (configuredControllers >= 1 &&
                   unconfiguredControllers >= 1 ? (
-                    controller.vault_configured === true ? (
+                    controller.vault_enabled === true ? (
                       <Tooltip
                         children={<Icon name="secured" />}
                         message={
