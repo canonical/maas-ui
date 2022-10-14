@@ -140,12 +140,17 @@ const isSelected = (path: string, link: NavItem) => {
   );
 };
 
-const generateItems = (
-  links: NavItem[],
-  path: string,
-  forHardwareMenu: boolean,
-  vaultIncomplete: boolean
-) => {
+const generateItems = ({
+  links,
+  path,
+  forHardwareMenu,
+  vaultIncomplete,
+}: {
+  links: NavItem[];
+  path: string;
+  forHardwareMenu: boolean;
+  vaultIncomplete: boolean;
+}) => {
   if (forHardwareMenu) {
     // Only include the items for the hardware menu.
     links = links.filter((link) => link.inHardwareMenu);
@@ -258,10 +263,20 @@ export const Header = (): JSX.Element => {
             ? [
                 {
                   className: "p-navigation__hardware-menu",
-                  items: generateItems(links, path, true, vaultIncomplete),
+                  items: generateItems({
+                    links: links,
+                    path: path,
+                    forHardwareMenu: true,
+                    vaultIncomplete: vaultIncomplete,
+                  }),
                   label: "Hardware",
                 },
-                ...generateItems(links, path, false, vaultIncomplete),
+                ...generateItems({
+                  links: links,
+                  path: path,
+                  forHardwareMenu: false,
+                  vaultIncomplete: vaultIncomplete,
+                }),
               ]
             : null
         }
