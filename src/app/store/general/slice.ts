@@ -69,6 +69,7 @@ const generalSlice = createSlice({
     pocketsToDisable: generateInitialState([]),
     powerTypes: generateInitialState([]),
     tlsCertificate: generateInitialState(null),
+    vaultEnabled: generateInitialState(null),
     version: generateInitialState(""),
   } as GeneralState,
   reducers: {
@@ -142,6 +143,10 @@ const generalSlice = createSlice({
     fetchTlsCertificateStart: generateStartReducer("tlsCertificate"),
     fetchTlsCertificateError: generateErrorReducer("tlsCertificate"),
     fetchTlsCertificateSuccess: generateSuccessReducer("tlsCertificate"),
+    fetchVaultEnabled: generatePrepareReducer("vault_enabled"),
+    fetchVaultEnabledStart: generateStartReducer("vaultEnabled"),
+    fetchVaultEnabledError: generateErrorReducer("vaultEnabled"),
+    fetchVaultEnabledSuccess: generateSuccessReducer("vaultEnabled"),
     fetchVersion: generatePrepareReducer("version"),
     fetchVersionStart: generateStartReducer("version"),
     fetchVersionError: generateErrorReducer("version"),
