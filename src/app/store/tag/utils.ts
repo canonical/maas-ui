@@ -1,3 +1,4 @@
+import type { TagIdCountMap } from "app/store/machine/utils";
 import type { Tag, TagMeta } from "app/store/tag/types";
 
 export const getTagsDisplay = (tags: Tag[]): string => {
@@ -21,3 +22,21 @@ export const getTagNamesForIds = (
     }
     return tagNames;
   }, []);
+
+export const getManual = (tags: Tag[]): Tag[] =>
+  tags.filter(({ definition }) => !definition);
+
+export const getTagCounts = (tags: Tag[]): TagIdCountMap | null => {
+  if (tags) {
+    const tagCounts = new Map();
+    tags.forEach((tag) => {
+      if (!tagCounts.has(tag.id)) {
+        tagCounts.set(tag.id, tag.machine_count);
+      } else {
+        tagCounts.set(tag.id, tagCounts.get(tag.id) + tag.machine_count);
+      }
+    });
+    return tagCounts;
+  }
+  return null;
+};

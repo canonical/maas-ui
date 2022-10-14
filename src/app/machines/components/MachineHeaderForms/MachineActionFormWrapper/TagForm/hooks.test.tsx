@@ -1,12 +1,15 @@
 import type { ReactNode } from "react";
 
+import reduxToolkit from "@reduxjs/toolkit";
+import { waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
-import { useSelectedTags, useUnchangedTags } from "./hooks";
+import { useFetchTags, useSelectedTags, useUnchangedTags } from "./hooks";
 
+import { actions as tagActions } from "app/store/tag";
 import {
   tag as tagFactory,
   tagState as tagStateFactory,
@@ -83,5 +86,41 @@ describe("useUnchangedTags", () => {
       ),
     });
     expect(result.current).toStrictEqual([tags[2]]);
+  });
+});
+
+describe("useFetchTags", () => {
+  beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mock-call-id");
+  });
+  it("cleans up request on unmount", async () => {
+    const tags = [tagFactory(), tagFactory(), tagFactory()];
+    const state = rootStateFactory({
+      tag: tagStateFactory({
+        items: tags,
+        loading: false,
+      }),
+    });
+    const store = mockStore(state);
+    const { result, unmount } = renderHook(() => useFetchTags(), {
+      wrapper: ({ children }: { children: ReactNode }) => (
+        <Provider store={store}>
+          <Formik initialValues={{ added: [] }} onSubmit={jest.fn()}>
+            {children}
+          </Formik>
+        </Provider>
+      ),
+    });
+    await waitFor(() =>
+      expect(result.current.callId).toStrictEqual("mock-call-id")
+    );
+    const expectedAction = tagActions.removeRequest(
+      result.current.callId as string
+    );
+    const actualActions = store.getActions();
+    unmount();
+    expect(
+      actualActions.find((action) => action.type === "tag/removeRequest")
+    ).toStrictEqual(expectedAction);
   });
 });

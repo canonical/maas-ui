@@ -1,3 +1,4 @@
+import reduxToolkit from "@reduxjs/toolkit";
 import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
@@ -9,6 +10,7 @@ import configureStore from "redux-mock-store";
 import TagFormChanges, { Label, RowType } from "./TagFormChanges";
 
 import type { RootState } from "app/store/root/types";
+import type { Tag } from "app/store/tag/types";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -16,28 +18,42 @@ import {
   tagState as tagStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { tagStateListFactory } from "testing/factories/state";
 
 const mockStore = configureStore();
 
 let state: RootState;
+let tags: Tag[];
 
 beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  tags = [
+    tagFactory({ id: 1, name: "tag1" }),
+    tagFactory({ id: 2, name: "tag2" }),
+  ];
+
   state = rootStateFactory({
     machine: machineStateFactory({
       items: [machineFactory({ tags: [1] }), machineFactory({ tags: [1, 2] })],
     }),
     tag: tagStateFactory({
-      items: [
-        tagFactory({ id: 1, name: "tag1" }),
-        tagFactory({ id: 2, name: "tag2" }),
-      ],
+      items: tags,
+      lists: {
+        "mocked-nanoid": tagStateListFactory({
+          items: [
+            tagFactory({ id: 1, name: "tag1" }),
+            tagFactory({ id: 2, name: "tag2" }),
+          ],
+          loaded: true,
+        }),
+      },
     }),
   });
 });
 
 it("displays manual tags", () => {
-  state.tag.items[0].definition = "";
-  state.tag.items[1].definition = "";
+  tags[0].definition = "";
+  tags[1].definition = "";
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -47,7 +63,7 @@ it("displays manual tags", () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges machines={state.machine.items} newTags={[]} />
+            <TagFormChanges newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -67,8 +83,8 @@ it("displays manual tags", () => {
 });
 
 it("displays automatic tags", () => {
-  state.tag.items[0].definition = "def1";
-  state.tag.items[1].definition = "def2";
+  tags[0].definition = "def1";
+  tags[1].definition = "def2";
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -78,7 +94,7 @@ it("displays automatic tags", () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges machines={state.machine.items} newTags={[]} />
+            <TagFormChanges newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -100,8 +116,6 @@ it("displays automatic tags", () => {
 });
 
 it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
-  state.machine.items[0].tags = [];
-  const tags = state.tag.items;
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -111,10 +125,7 @@ it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
             initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges
-              machines={[state.machine.items[0]]}
-              newTags={[tags[1].id]}
-            />
+            <TagFormChanges newTags={[tags[1].id]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -134,8 +145,6 @@ it("displays added tags, with a 'NEW' prefix for newly created tags", () => {
 });
 
 it("discards added tags", async () => {
-  state.machine.items[0].tags = [];
-  const tags = state.tag.items;
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -145,7 +154,7 @@ it("discards added tags", async () => {
             initialValues={{ added: [tags[0].id, tags[1].id], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
+            <TagFormChanges newTags={[]} tags={[]} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -162,7 +171,8 @@ it("discards added tags", async () => {
 });
 
 it("displays a tag details modal when chips are clicked", async () => {
-  state.tag.items[0].name = "tag1";
+  tags[0].name = "tag1";
+  tags[0].machine_count = 2;
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -172,7 +182,7 @@ it("displays a tag details modal when chips are clicked", async () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges machines={state.machine.items} newTags={[]} />
+            <TagFormChanges newTags={[]} selectedCount={2} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -192,7 +202,7 @@ it("can remove manual tags", async () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges machines={state.machine.items} newTags={[]} />
+            <TagFormChanges newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -212,7 +222,6 @@ it("can remove manual tags", async () => {
 });
 
 it("displays removed tags", () => {
-  state.machine.items[0].tags = [];
   const tags = state.tag.items;
   const store = mockStore(state);
   render(
@@ -223,7 +232,7 @@ it("displays removed tags", () => {
             initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
+            <TagFormChanges newTags={[]} tags={[]} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -245,7 +254,6 @@ it("displays removed tags", () => {
 });
 
 it("discards removed tags", async () => {
-  const tags = state.tag.items;
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -255,7 +263,7 @@ it("discards removed tags", async () => {
             initialValues={{ added: [], removed: [tags[0].id, tags[1].id] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges machines={[state.machine.items[0]]} newTags={[]} />
+            <TagFormChanges newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>
@@ -296,7 +304,7 @@ it("shows a message if no tags are assigned to the selected machines", () => {
             initialValues={{ added: [], removed: [] }}
             onSubmit={jest.fn()}
           >
-            <TagFormChanges machines={state.machine.items} newTags={[]} />
+            <TagFormChanges newTags={[]} tags={tags} />
           </Formik>
         </CompatRouter>
       </MemoryRouter>

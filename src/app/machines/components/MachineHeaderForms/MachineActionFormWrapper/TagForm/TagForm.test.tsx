@@ -19,24 +19,40 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { tagStateListFactory } from "testing/factories/state";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 
 const mockStore = configureStore();
 
 let state: RootState;
 beforeEach(() => {
+  jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+  const tags = [
+    tagFactory({ id: 1, name: "tag1" }),
+    tagFactory({ id: 2, name: "tag2" }),
+  ];
   state = rootStateFactory({
     tag: tagStateFactory({
-      items: [
-        tagFactory({ id: 1, name: "tag1" }),
-        tagFactory({ id: 2, name: "tag2" }),
-      ],
+      items: tags,
       loaded: true,
+      lists: {
+        "mocked-nanoid": tagStateListFactory({
+          items: [
+            tagFactory({ id: 1, name: "tag1" }),
+            tagFactory({ id: 2, name: "tag2" }),
+          ],
+          loaded: true,
+        }),
+      },
     }),
   });
 });
 
-it("dispatches action to fetch tags on load", () => {
+afterEach(() => {
+  jest.restoreAllMocks();
+});
+
+it("dispatches action to fetch tags on load", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -48,6 +64,7 @@ it("dispatches action to fetch tags on load", () => {
             clearHeaderContent={jest.fn()}
             machines={[]}
             processingCount={0}
+            selectedMachines={{ items: ["abc123"] }}
             viewingDetails={false}
           />
         </CompatRouter>
@@ -76,6 +93,9 @@ it("correctly dispatches actions to tag machines", async () => {
             clearHeaderContent={jest.fn()}
             machines={machines}
             processingCount={0}
+            selectedMachines={{
+              items: machines.map((machine) => machine.system_id),
+            }}
             viewingDetails={false}
           />
         </CompatRouter>
@@ -90,8 +110,10 @@ it("correctly dispatches actions to tag machines", async () => {
 
   await waitFor(() => {
     const expectedActions = [
-      machineActions.tag({ system_id: "abc123", tags: [1, 2] }),
-      machineActions.tag({ system_id: "def456", tags: [1, 2] }),
+      machineActions.tag(
+        { filter: { id: ["abc123", "def456"] }, tags: [1, 2] },
+        "mocked-nanoid"
+      ),
     ];
     const actualActions = store
       .getActions()
@@ -105,6 +127,15 @@ it("correctly dispatches actions to untag machines", async () => {
     machineFactory({ system_id: "abc123", tags: [1, 2] }),
     machineFactory({ system_id: "def456", tags: [1, 2] }),
   ];
+  state.tag.lists = {
+    "mocked-nanoid": tagStateListFactory({
+      items: [
+        tagFactory({ id: 1, name: "tag1", machine_count: 1 }),
+        tagFactory({ id: 2, name: "tag2", machine_count: 1 }),
+      ],
+      loaded: true,
+    }),
+  };
   const store = mockStore(state);
   render(
     <Provider store={store}>
@@ -116,6 +147,9 @@ it("correctly dispatches actions to untag machines", async () => {
             clearHeaderContent={jest.fn()}
             machines={machines}
             processingCount={0}
+            selectedMachines={{
+              items: machines.map((machine) => machine.system_id),
+            }}
             viewingDetails={false}
           />
         </CompatRouter>
@@ -132,8 +166,13 @@ it("correctly dispatches actions to untag machines", async () => {
 
   await waitFor(() => {
     const expectedActions = [
-      machineActions.untag({ system_id: "abc123", tags: [1, 2] }),
-      machineActions.untag({ system_id: "def456", tags: [1, 2] }),
+      machineActions.untag(
+        {
+          filter: { id: ["abc123", "def456"] },
+          tags: [1, 2],
+        },
+        "mocked-nanoid"
+      ),
     ];
     const actualActions = store
       .getActions()
@@ -155,6 +194,7 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
             clearHeaderContent={jest.fn()}
             machines={machines}
             processingCount={0}
+            selectedMachines={{ items: machines.map((item) => item.system_id) }}
             viewingDetails={false}
           />
         </CompatRouter>
@@ -171,8 +211,14 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
 
   await waitFor(() => {
     const expectedActions = [
-      machineActions.tag({ system_id: "abc123", tags: [2] }),
-      machineActions.untag({ system_id: "abc123", tags: [1] }),
+      machineActions.tag(
+        { filter: { id: ["abc123"] }, tags: [2] },
+        "mocked-nanoid"
+      ),
+      machineActions.untag(
+        { filter: { id: ["abc123"] }, tags: [1] },
+        "mocked-nanoid"
+      ),
     ];
     const actualActions = store
       .getActions()
@@ -257,6 +303,8 @@ it("shows a notification on success", async () => {
             clearHeaderContent={jest.fn()}
             machines={machines}
             processingCount={0}
+            selectedCount={machines.length}
+            selectedMachines={{ items: machines.map((item) => item.system_id) }}
             viewingDetails={false}
           />
         </CompatRouter>

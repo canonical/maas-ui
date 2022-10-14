@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 
 import { NotificationSeverity } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -14,7 +14,6 @@ import type { MachineEventErrors } from "app/store/machine/types";
 import { selectedToFilters } from "app/store/machine/utils";
 import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { actions as messageActions } from "app/store/message";
-import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import { NodeActions } from "app/store/types/node";
@@ -55,9 +54,6 @@ export const TagForm = ({
     } as Record<string, string | string[]>;
     delete formErrors.name;
   }
-  useEffect(() => {
-    dispatch(tagActions.fetch());
-  }, [dispatch]);
 
   return (
     <ActionForm<TagFormValues, MachineEventErrors>
@@ -127,6 +123,8 @@ export const TagForm = ({
       <TagFormFields
         machines={machines || []}
         newTags={newTags}
+        selectedCount={selectedCount}
+        selectedMachines={selectedMachines}
         setNewTags={setNewTags}
         viewingDetails={viewingDetails}
         viewingMachineConfig={viewingMachineConfig}

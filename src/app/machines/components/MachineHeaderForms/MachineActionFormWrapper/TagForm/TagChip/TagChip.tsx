@@ -8,7 +8,7 @@ type Props = PropsWithSpread<
   {
     machineCount: number;
     tag: Tag;
-    tagIdsAndCounts: TagIdCountMap;
+    tagIdsAndCounts: TagIdCountMap | null;
   },
   Partial<ChipProps>
 >;
@@ -19,7 +19,7 @@ export const TagChip = ({
   tagIdsAndCounts,
   ...props
 }: Props): JSX.Element => {
-  const tagCount = tagIdsAndCounts.get(tag.id);
+  const tagCount = tagIdsAndCounts?.get(tag.id);
   return (
     <Chip
       className="is-inline"
