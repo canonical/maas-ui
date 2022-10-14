@@ -3,6 +3,7 @@ import { useEffect, useContext } from "react";
 
 import type { NavLink } from "@canonical/react-components";
 import {
+  Icon,
   isNavigationButton,
   Theme,
   Navigation,
@@ -26,6 +27,8 @@ import ThemePreviewContext from "app/base/theme-preview-context";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
+import controllerSelectors from "app/store/controller/selectors";
+import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 
 type NavItem = {
@@ -140,7 +143,8 @@ const isSelected = (path: string, link: NavItem) => {
 const generateItems = (
   links: NavItem[],
   path: string,
-  forHardwareMenu: boolean
+  forHardwareMenu: boolean,
+  vaultIncomplete: boolean
 ) => {
   if (forHardwareMenu) {
     // Only include the items for the hardware menu.
@@ -155,7 +159,20 @@ const generateItems = (
     }),
     isSelected: isSelected(path, link),
     key: link.url,
-    label: link.label,
+    label:
+      link.label === "Controllers" && vaultIncomplete ? ( // check if vault is set up on all controllers
+        <>
+          <Icon
+            className="p-navigation--item-icon"
+            data-testid="warning-icon"
+            name="warning-grey"
+          />
+          {link.label}
+          {/** Display a warning icon if setup is incomplete */}
+        </>
+      ) : (
+        link.label
+      ),
     url: link.url,
   }));
 };
@@ -203,6 +220,14 @@ export const Header = (): JSX.Element => {
     setTheme(maasTheme ? maasTheme : "default");
   }, [location, maasTheme, setTheme]);
 
+  const [unconfiguredControllers, configuredControllers] = useSelector(
+    (state: RootState) =>
+      controllerSelectors.getVaultConfiguredControllers(state)
+  );
+
+  const vaultIncomplete =
+    unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
+
   // Hide the navigation items when the user is not authenticated or hasn't been
   // through the intro process.
   const showLinks = isAuthenticated && completedIntro && completedUserIntro;
@@ -233,10 +258,10 @@ export const Header = (): JSX.Element => {
             ? [
                 {
                   className: "p-navigation__hardware-menu",
-                  items: generateItems(links, path, true),
+                  items: generateItems(links, path, true, vaultIncomplete),
                   label: "Hardware",
                 },
-                ...generateItems(links, path, false),
+                ...generateItems(links, path, false, vaultIncomplete),
               ]
             : null
         }

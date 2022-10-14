@@ -49,6 +49,11 @@
     @include vf-icon-security($color-mid-dark);
   }
 
+  .p-icon--warning-grey {
+    @extend %icon;
+    @include vf-icon-warning-grey(#FFFFFF)
+  }
+
   // TODO: Remove alias and replace with .p-icon--status-waiting
   .p-icon--pending {
     @extend .p-icon--status-waiting;
