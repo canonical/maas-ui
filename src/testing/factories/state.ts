@@ -45,6 +45,7 @@ import type {
   PocketsToDisableState,
   PowerTypesState,
   TLSCertificateState,
+  VaultEnabledState,
   VersionState,
 } from "app/store/general/types";
 import type { IPRangeState } from "app/store/iprange/types";
@@ -468,6 +469,10 @@ export const tlsCertificateState = define<TLSCertificateState>({
   data: null,
 });
 
+export const vaultEnabledState = define<VaultEnabledState>({
+  ...defaultGeneralState,
+});
+
 export const versionState = define<VersionState>({
   ...defaultGeneralState,
   data: "",
@@ -487,6 +492,7 @@ export const generalState = define<GeneralState>({
   pocketsToDisable: pocketsToDisableState,
   powerTypes: powerTypesState,
   tlsCertificate: tlsCertificateState,
+  vaultEnabled: vaultEnabledState,
   version: versionState,
 });
 

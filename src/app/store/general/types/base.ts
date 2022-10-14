@@ -234,6 +234,17 @@ export type TLSCertificateState = {
   loading: boolean;
 };
 
+export type VaultEnabled = {
+  vault_enabled: boolean;
+};
+
+export type VaultEnabledState = {
+  errors: APIError;
+  data: VaultEnabled | null;
+  loaded: boolean;
+  loading: boolean;
+};
+
 export type Version = string;
 
 export type VersionState = {
@@ -257,5 +268,6 @@ export type GeneralState = {
   pocketsToDisable: PocketsToDisableState;
   powerTypes: PowerTypesState;
   tlsCertificate: TLSCertificateState;
+  vaultEnabled: VaultEnabledState;
   version: VersionState;
 };

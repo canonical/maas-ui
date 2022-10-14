@@ -72,6 +72,7 @@ export {
   tlsCertificateState,
   tokenState,
   userState,
+  vaultEnabledState,
   versionState,
   vlanEventError,
   vlanState,
@@ -169,6 +170,7 @@ export {
   powerFieldChoice,
   powerType,
   tlsCertificate,
+  vaultEnabled,
   version,
 } from "./general";
 export { ipRange } from "./iprange";
