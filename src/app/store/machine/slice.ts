@@ -1839,7 +1839,9 @@ const machineSlice = createSlice({
         >
       ) => {
         action.meta.item.system_ids.forEach((id) => {
-          state.statuses[id].unsubscribing = true;
+          if (state.statuses[id]) {
+            state.statuses[id].unsubscribing = true;
+          }
         });
       },
     },
