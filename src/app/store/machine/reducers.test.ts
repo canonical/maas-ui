@@ -1409,6 +1409,31 @@ describe("machine reducer", () => {
     );
   });
 
+  it("reduces unsubscribeStart for removed statuses", () => {
+    const items = [
+      machineFactory({ system_id: "abc123" }),
+      machineFactory({ system_id: "def456" }),
+    ];
+    expect(
+      reducers(
+        machineStateFactory({
+          items,
+          statuses: {
+            def456: machineStatusFactory(),
+          },
+        }),
+        actions.unsubscribeStart(["abc123"])
+      )
+    ).toEqual(
+      machineStateFactory({
+        items,
+        statuses: {
+          def456: machineStatusFactory(),
+        },
+      })
+    );
+  });
+
   it("reduces unsubscribeSuccess", () => {
     const initialState = machineStateFactory({
       items: [
