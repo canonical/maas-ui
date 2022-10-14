@@ -88,5 +88,8 @@ context("Machine details", () => {
       cy.findByRole("button", { name: /Delete/i }).click();
     });
     cy.findByRole("button", { name: /Delete machine/i }).click();
+    cy.waitForPageToLoad();
+    // verify the user has been redirected to the machine list
+    cy.url().should("include", generateMAASURL("/machines"));
   });
 });
