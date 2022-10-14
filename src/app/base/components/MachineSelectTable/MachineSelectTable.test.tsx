@@ -131,4 +131,18 @@ describe("MachineSelectTable", () => {
     await userEvent.keyboard("{enter}");
     expect(onMachineClick).toHaveBeenCalledWith(machine);
   });
+
+  it("renders with partial search string", async () => {
+    const onMachineClick = jest.fn();
+    renderWithMockStore(
+      <MachineSelectTable
+        machines={machines}
+        onMachineClick={onMachineClick}
+        searchText="id:("
+        setSearchText={jest.fn()}
+      />,
+      { state }
+    );
+    expect(screen.getByRole("grid")).toBeInTheDocument();
+  });
 });

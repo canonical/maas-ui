@@ -2,7 +2,7 @@ import type { KeyboardEvent } from "react";
 import { useEffect } from "react";
 
 import { MainTable } from "@canonical/react-components";
-import { highlightSubString } from "@canonical/react-components/dist/utils";
+import { highlightSubString as baseHighlightSubString } from "@canonical/react-components/dist/utils";
 import { useDispatch, useSelector } from "react-redux";
 
 import Placeholder from "../Placeholder";
@@ -29,6 +29,17 @@ type Props = {
   machinesLoading?: boolean;
   setSearchText: (searchText: string) => void;
 };
+
+const safeGetRegexString = (searchText: string): string => {
+  try {
+    new RegExp(searchText, "i");
+    return searchText;
+  } catch {
+    return "";
+  }
+};
+const highlightSubString = (text: string, highlight: string) =>
+  baseHighlightSubString(text, safeGetRegexString(highlight));
 
 const generateRows = (
   machines: Machine[],
