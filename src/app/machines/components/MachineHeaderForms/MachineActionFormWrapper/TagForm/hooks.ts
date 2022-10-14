@@ -1,11 +1,23 @@
+import { useEffect, useState } from "react";
+
+import { usePrevious } from "@canonical/react-components";
+import { nanoid } from "@reduxjs/toolkit";
+import fastDeepEqual from "fast-deep-equal";
 import { useFormikContext } from "formik";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 import type { TagFormValues } from "./types";
 
+import type { APIError } from "app/base/types";
+import type { FetchFilters } from "app/store/machine/types";
+import type { SelectedMachines } from "app/store/machine/types/base";
+import { selectedToFilters } from "app/store/machine/utils";
+import type { UseFetchQueryOptions } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
+import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
+import type { TagStateList } from "app/store/tag/types/base";
 import { toFormikNumber } from "app/utils";
 
 /**
@@ -44,3 +56,155 @@ export const useUnchangedTags = (tags: Tag[]): Tag[] => {
       !values.removed.find((tagId) => toFormikNumber(tagId) === tag.id)
   );
 };
+
+const selectedToSeparateFilters = (
+  selectedMachines: SelectedMachines | null
+) => {
+  const getIsSingleFilter = (
+    selectedMachines: SelectedMachines | null
+  ): selectedMachines is { filter: FetchFilters } => {
+    if (selectedMachines && "filter" in selectedMachines) {
+      return true;
+    }
+    return false;
+  };
+  const isSingleFilter = getIsSingleFilter(selectedMachines);
+  // Fetch items and groups separately
+  // - otherwise the back-end will return machines
+  // matching both groups and items
+  const groupFilters = selectedToFilters(
+    isSingleFilter
+      ? { filter: selectedMachines?.filter }
+      : {
+          groups: selectedMachines?.groups,
+          grouping: selectedMachines?.grouping,
+        }
+  );
+  const itemFilters = selectedToFilters(
+    !isSingleFilter ? { items: selectedMachines?.items } : null
+  );
+  return {
+    groupFilters,
+    itemFilters,
+  };
+};
+
+export const useFetchTags = (
+  options?: {
+    filters: FetchFilters | null;
+  },
+  queryOptions?: UseFetchQueryOptions
+): {
+  callId: string | null;
+  loaded: boolean;
+  loading: boolean;
+  errors: APIError;
+  tags: TagStateList["items"];
+} => {
+  const { isEnabled } = queryOptions || { isEnabled: true };
+  const previousIsEnabled = usePrevious(isEnabled);
+  const [callId, setCallId] = useState<string | null>(null);
+  const previousCallId = usePrevious(callId);
+  const previousOptions = usePrevious(options, false);
+  const dispatch = useDispatch();
+  const tagsList = useSelector((state: RootState) =>
+    tagSelectors.list(state, callId)
+  );
+  const errors = useSelector((state: RootState) =>
+    tagSelectors.listErrors(state, callId)
+  );
+  const loaded = useSelector((state: RootState) =>
+    tagSelectors.listLoaded(state, callId)
+  );
+  const loading = useSelector((state: RootState) =>
+    tagSelectors.listLoading(state, callId)
+  );
+
+  useEffect(() => {
+    return () => {
+      if (callId) {
+        dispatch(tagActions.removeRequest(callId));
+      }
+    };
+  }, [callId, dispatch]);
+
+  useEffect(() => {
+    // undefined, null and {} are all equivalent i.e. no filters so compare the
+    // current and previous filters using an empty object if the filters are falsy.
+    if (
+      (isEnabled && !fastDeepEqual(options || {}, previousOptions || {})) ||
+      !callId
+    ) {
+      setCallId(nanoid());
+    }
+  }, [callId, options, previousOptions, isEnabled]);
+
+  useEffect(() => {
+    if (
+      (isEnabled && callId && callId !== previousCallId) ||
+      (isEnabled !== previousIsEnabled && callId)
+    ) {
+      dispatch(
+        tagActions.fetch(
+          options?.filters
+            ? {
+                node_filter: options.filters,
+              }
+            : undefined,
+          callId
+        )
+      );
+    }
+  }, [callId, dispatch, options, previousCallId, isEnabled, previousIsEnabled]);
+
+  return {
+    callId,
+    loaded,
+    loading,
+    errors,
+    tags: isEnabled ? tagsList || [] : [],
+  };
+};
+
+export const useFetchTagsForSelected = (options: {
+  selectedMachines?: SelectedMachines | null;
+}): {
+  loaded: boolean;
+  loading: boolean;
+  errors: APIError;
+  tags: Tag[];
+} => {
+  const { itemFilters, groupFilters } = selectedToSeparateFilters(
+    options.selectedMachines || null
+  );
+  const {
+    loading: loadingForItemFilters,
+    loaded: tagsForItemFiltersLoaded,
+    tags: tagsForItemFilters,
+    errors: errorsForItemFilters,
+  } = useFetchTags(
+    { filters: itemFilters },
+    {
+      isEnabled: itemFilters !== null,
+    }
+  );
+  const { loading, loaded, tags, errors } = useFetchTags(
+    { filters: groupFilters },
+    {
+      isEnabled: groupFilters !== null,
+    }
+  );
+
+  return {
+    loaded: tagsForItemFiltersLoaded && loaded,
+    loading: loadingForItemFilters || loading,
+    errors:
+      errorsForItemFilters || errors ? errorsForItemFilters || errors : null,
+    tags: [
+      ...(tags ? tags : []),
+      ...(tagsForItemFilters ? tagsForItemFilters : []),
+    ],
+  };
+};
+
+export type TagIdCountMap = Map<Tag[TagMeta.PK], number>;

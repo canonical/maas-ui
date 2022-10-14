@@ -4,6 +4,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { tagStateListFactory } from "testing/factories/state";
 
 describe("tag reducer", () => {
   it("returns the initial state", () => {
@@ -58,6 +59,20 @@ describe("tag reducer", () => {
         saved: false,
         saving: false,
       }
+    );
+  });
+
+  it("reduces removeRequest for a list request", () => {
+    const initialState = tagStateFactory({
+      lists: { "mock-call-id": tagStateListFactory() },
+    });
+
+    expect(
+      reducers(initialState, actions.removeRequest("mock-call-id"))
+    ).toEqual(
+      tagStateFactory({
+        lists: {},
+      })
     );
   });
 

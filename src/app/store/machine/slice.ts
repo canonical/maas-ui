@@ -425,7 +425,7 @@ const statusHandlers = generateStatusHandlers<
                 ...action.payload.failed_system_ids,
               ] as Machine[MachineMeta.PK][];
             }
-          } else {
+          } else if (actionsItem) {
             actionsItem.status = ACTION_STATUS.error;
           }
         }
