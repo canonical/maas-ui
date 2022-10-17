@@ -46,7 +46,7 @@ const VaultSettings = (): JSX.Element => {
     return (
       <>
         <p>
-          <Icon name="secured" />
+          <Icon name="security" />
           <span className="u-nudge-right--small">Vault enabled</span>
         </p>
         <a href={docsUrls.aboutNativeTLS}>More about Vault integration</a>
@@ -71,7 +71,7 @@ const VaultSettings = (): JSX.Element => {
               </p>
             ) : (
               <p>
-                <Icon name="secured" />
+                <Icon name="security" />
                 <span className="u-nudge-right--small">
                   Integrate with Vault
                 </span>

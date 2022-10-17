@@ -92,7 +92,7 @@ const generateRows = (
                   (controller.vault_configured === true ? (
                     unconfiguredControllers >= 1 ? (
                       <Tooltip
-                        children={<Icon name="secured" />}
+                        children={<Icon name="security" />}
                         message={
                           <p>
                             Vault is configured on this controller. <br />
@@ -106,7 +106,7 @@ const generateRows = (
                       />
                     ) : (
                       <Tooltip
-                        children={<Icon name="secured" />}
+                        children={<Icon name="security" />}
                         message={
                           <p>
                             Vault is configured on this region controller for
