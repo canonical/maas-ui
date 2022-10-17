@@ -64,16 +64,12 @@ const SubnetSummary = ({ id }: Props): JSX.Element | null => {
                 description={subnet.description}
                 label="Description"
               />
-              <Definition
-                label={<ManagedAllocationLabel managed={subnet.managed} />}
-              >
+              <Definition label={<ManagedAllocationLabel />}>
                 {subnet.managed ? "Enabled" : "Disabled"}
               </Definition>
             </Col>
             <Col size={6}>
-              <Definition
-                label={<ActiveDiscoveryLabel managed={subnet.managed} />}
-              >
+              <Definition label={<ActiveDiscoveryLabel />}>
                 {subnet.active_discovery ? "Enabled" : "Disabled"}
               </Definition>
               <Definition
