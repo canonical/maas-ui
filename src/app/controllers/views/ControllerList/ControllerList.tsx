@@ -45,6 +45,7 @@ const ControllerList = (): JSX.Element => {
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
   const vaultEnabledLoading = useSelector(vaultEnabledSelectors.loading);
+  const vaultEnabled = useSelector(vaultEnabledSelectors.get);
   useWindowTitle("Controllers");
 
   useEffect(() => {
@@ -81,6 +82,13 @@ const ControllerList = (): JSX.Element => {
             {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
           </a>{" "}
           with Vault to complete this operation. Check the{" "}
+          <a href="/settings/configuration/security">security settings</a> for
+          more information.
+        </Notification>
+      ) : unconfiguredControllers.length === 0 &&
+        vaultEnabled?.vault_enabled === false ? (
+        <Notification severity="caution" title="Incomplete Vault integration">
+          Migrate your secrets to Vault to complete this operation. Check the{" "}
           <a href="/settings/configuration/security">security settings</a> for
           more information.
         </Notification>

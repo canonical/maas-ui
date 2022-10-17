@@ -13,6 +13,8 @@ import { DEFAULTS } from "./MachineListTable/constants";
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter, SortDirection } from "app/base/types";
 import controllerSelectors from "app/store/controller/selectors";
+import { actions as generalActions } from "app/store/general";
+import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { FetchGroupKey } from "app/store/machine/types";
@@ -73,6 +75,7 @@ const MachineList = ({
     (state: RootState) =>
       controllerSelectors.getVaultConfiguredControllers(state)
   );
+  const vaultEnabled = useSelector(vaultEnabledSelectors.get);
 
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
@@ -94,6 +97,11 @@ const MachineList = ({
     [dispatch]
   );
 
+  // Fetch vault enabled status on page load
+  useEffect(() => {
+    dispatch(generalActions.fetchVaultEnabled());
+  }, [dispatch]);
+
   return (
     <>
       {errors && !headerFormOpen ? (
@@ -111,6 +119,13 @@ const MachineList = ({
             {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
           </a>{" "}
           with Vault to complete this operation. Check the{" "}
+          <a href="/settings/configuration/security">security settings</a> for
+          more information.
+        </Notification>
+      ) : unconfiguredControllers.length === 0 &&
+        vaultEnabled?.vault_enabled === false ? (
+        <Notification severity="caution" title="Incomplete Vault integration">
+          Migrate your secrets to Vault to complete this operation. Check the{" "}
           <a href="/settings/configuration/security">security settings</a> for
           more information.
         </Notification>
