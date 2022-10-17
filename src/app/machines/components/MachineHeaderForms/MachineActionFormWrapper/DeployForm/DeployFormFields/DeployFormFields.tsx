@@ -47,7 +47,8 @@ export const DeployFormFields = (): JSX.Element => {
     osInfoSelectors.getUbuntuKernelOptions(state, values.release)
   );
   const canBeKVMHost =
-    values.oSystem === "ubuntu" && ["bionic", "focal"].includes(values.release);
+    values.oSystem === "ubuntu" &&
+    ["bionic", "focal", "jammy"].includes(values.release);
   const noImages = osystems.length === 0 || releases.length === 0;
   const clearVmHostOptions = () => {
     setDeployVmHost(false);
