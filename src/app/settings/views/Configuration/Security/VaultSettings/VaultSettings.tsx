@@ -20,6 +20,7 @@ export enum Labels {
   IntegrateWithVault = "Integrate with Vault",
   VaultEnabled = "Vault enabled",
   SetupInstructions = "Vault setup instructions",
+  SecretMigrationInsctructions = "Secret migration instructions",
 }
 
 const VaultSettings = (): JSX.Element => {
@@ -120,7 +121,7 @@ const VaultSettings = (): JSX.Element => {
                 controller to complete setup.
               </span>
             </p>
-            <div aria-label={Labels.SetupInstructions}>
+            <div aria-label={Labels.SecretMigrationInsctructions}>
               <CodeSnippet
                 blocks={[
                   {
