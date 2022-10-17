@@ -46,7 +46,7 @@ const VaultSettings = (): JSX.Element => {
     return (
       <>
         <p>
-          <Icon name="security" />
+          <Icon name="security-tick" />
           <span className="u-nudge-right--small">Vault enabled</span>
         </p>
         <a href={docsUrls.aboutNativeTLS}>More about Vault integration</a>
@@ -59,7 +59,7 @@ const VaultSettings = (): JSX.Element => {
           <>
             {configuredControllers.length >= 1 ? (
               <p>
-                <Icon name="warning" />
+                <Icon name="security-warning" />
                 <span className="u-nudge-right--small">
                   Incomplete Vault integration, configure{" "}
                   {unconfiguredControllers.length} other{" "}
@@ -115,7 +115,7 @@ const VaultSettings = (): JSX.Element => {
         ) : (
           <>
             <p>
-              <Icon name="warning" />
+              <Icon name="security-warning" />
               <span className="u-nudge-right--small">
                 Incomplete Vault integration, migrate secrets on one region
                 controller to complete setup.

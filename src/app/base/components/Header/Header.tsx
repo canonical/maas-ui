@@ -170,7 +170,7 @@ const generateItems = ({
           <Icon
             className="p-navigation--item-icon"
             data-testid="warning-icon"
-            name="warning-grey"
+            name="security-warning-grey"
           />
           {link.label}
           {/** Display a warning icon if setup is incomplete */}
