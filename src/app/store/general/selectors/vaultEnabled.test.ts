@@ -3,21 +3,19 @@ import vaultEnabled from "./vaultEnabled";
 import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
-  vaultEnabled as vaultEnabledFactory,
   vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
 
 describe("get", () => {
   it("returns vaultEnabled", () => {
-    const data = vaultEnabledFactory();
     const state = rootStateFactory({
       general: generalStateFactory({
         vaultEnabled: vaultEnabledStateFactory({
-          data,
+          data: false,
         }),
       }),
     });
-    expect(vaultEnabled.get(state)).toStrictEqual(data);
+    expect(vaultEnabled.get(state)).toStrictEqual(false);
   });
 });
 

@@ -21,7 +21,6 @@ import type {
   PowerField,
   PowerType,
   TLSCertificate,
-  VaultEnabled,
   Version,
 } from "app/store/general/types";
 import {
@@ -124,10 +123,6 @@ export const powerType = define<PowerType>({
 export const tlsCertificate = define<TLSCertificate>({
   certificate: "certificate",
   ...certificateMetadata(),
-});
-
-export const vaultEnabled = define<VaultEnabled>({
-  vault_enabled: true,
 });
 
 export const version = define<Version>("test version");

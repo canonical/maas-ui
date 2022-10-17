@@ -234,13 +234,9 @@ export type TLSCertificateState = {
   loading: boolean;
 };
 
-export type VaultEnabled = {
-  vault_enabled: boolean;
-};
-
 export type VaultEnabledState = {
   errors: APIError;
-  data: VaultEnabled | null;
+  data: boolean;
   loaded: boolean;
   loading: boolean;
 };

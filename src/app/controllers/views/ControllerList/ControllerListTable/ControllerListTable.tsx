@@ -20,7 +20,6 @@ import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import { actions as generalActions } from "app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
-import type { VaultEnabled } from "app/store/general/types";
 import type { RootState } from "app/store/root/types";
 import { NodeType } from "app/store/types/node";
 import { generateCheckboxHandlers, isComparable } from "app/utils";
@@ -53,7 +52,7 @@ const generateRows = (
   handleRowCheckbox: CheckboxHandlers<
     Controller[ControllerMeta.PK]
   >["handleRowCheckbox"],
-  vaultEnabled: VaultEnabled | null
+  vaultEnabled: boolean
 ) =>
   controllers.map((controller) => {
     const { fqdn, system_id } = controller;
@@ -92,7 +91,7 @@ const generateRows = (
             <span className="u-truncate">
               {controller.node_type === NodeType.REGION_CONTROLLER ||
                 (controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER &&
-                vaultEnabled?.vault_enabled ? (
+                vaultEnabled ? (
                   <Tooltip
                     children={<Icon name="security-tick" />}
                     message={
@@ -204,7 +203,7 @@ const ControllerListTable = ({
     dispatch(generalActions.fetchVaultEnabled());
   }, [dispatch]);
 
-  console.log(`vault_enabled is: ${vaultEnabled?.vault_enabled}`);
+  console.log(`vault_enabled is: ${vaultEnabled}`);
 
   return (
     <MainTable

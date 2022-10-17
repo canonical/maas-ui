@@ -9,7 +9,6 @@ import {
   tlsCertificateState as tlsCertificateStateFactory,
   controller as controllerFactory,
   controllerState as controllerStateFactory,
-  vaultEnabled as vaultEnabledFactory,
   vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
@@ -22,7 +21,7 @@ it("displays loading text if TLS certificate or Vault Status has not loaded", ()
         loaded: false,
       }),
       vaultEnabled: vaultEnabledStateFactory({
-        data: null,
+        data: false,
         loaded: false,
       }),
     }),
@@ -40,7 +39,7 @@ it("renders TLS disabled section if no TLS certificate is present", () => {
         loaded: true,
       }),
       vaultEnabled: vaultEnabledStateFactory({
-        data: null,
+        data: false,
         loaded: true,
       }),
     }),
@@ -59,7 +58,7 @@ it("renders TLS enabled section if TLS certificate is present", () => {
         loaded: true,
       }),
       vaultEnabled: vaultEnabledStateFactory({
-        data: null,
+        data: false,
         loaded: true,
       }),
     }),
@@ -78,7 +77,7 @@ it("renders the Vault section", () => {
         loaded: true,
       }),
       vaultEnabled: vaultEnabledStateFactory({
-        data: vaultEnabledFactory({ vault_enabled: false }),
+        data: false,
         loaded: true,
       }),
     }),

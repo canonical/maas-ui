@@ -170,7 +170,6 @@ export {
   powerFieldChoice,
   powerType,
   tlsCertificate,
-  vaultEnabled,
   version,
 } from "./general";
 export { ipRange } from "./iprange";

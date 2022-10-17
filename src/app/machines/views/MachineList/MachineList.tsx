@@ -122,8 +122,7 @@ const MachineList = ({
           <a href="/settings/configuration/security">security settings</a> for
           more information.
         </Notification>
-      ) : unconfiguredControllers.length === 0 &&
-        vaultEnabled?.vault_enabled === false ? (
+      ) : unconfiguredControllers.length === 0 && vaultEnabled === false ? (
         <Notification severity="caution" title="Incomplete Vault integration">
           Migrate your secrets to Vault to complete this operation. Check the{" "}
           <a href="/settings/configuration/security">security settings</a> for

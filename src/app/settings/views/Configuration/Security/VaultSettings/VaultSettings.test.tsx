@@ -10,7 +10,6 @@ import {
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
-  vaultEnabled as vaultEnabledFactory,
   vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
 import { renderWithMockStore } from "testing/utils";
@@ -41,7 +40,7 @@ describe("VaultSettings", () => {
       }),
       general: generalStateFactory({
         vaultEnabled: vaultEnabledStateFactory({
-          data: vaultEnabledFactory({ vault_enabled: false }),
+          data: false,
           loaded: true,
         }),
       }),
@@ -144,9 +143,7 @@ describe("VaultSettings", () => {
     ];
 
     state.controller.items = controllers;
-    state.general.vaultEnabled.data = vaultEnabledFactory({
-      vault_enabled: true,
-    });
+    state.general.vaultEnabled.data = true;
 
     renderWithMockStore(<VaultSettings />, { state });
 

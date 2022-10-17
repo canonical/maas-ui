@@ -40,7 +40,6 @@ export type {
   PowerTypesState,
   TLSCertificate,
   TLSCertificateState,
-  VaultEnabled,
   VaultEnabledState,
   Version,
   VersionState,

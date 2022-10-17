@@ -27,7 +27,11 @@ const VaultSettings = (): JSX.Element => {
   const dispatch = useDispatch();
   const controllersLoading = useSelector(controllerSelectors.loading);
   const vaultEnabledLoading = useSelector(vaultEnabledSelectors.loading);
-  const vaultEnabled = useSelector(vaultEnabledSelectors.get);
+  const vaultEnabled = useSelector((state: RootState) =>
+    vaultEnabledSelectors.get(state)
+  );
+
+  console.log(`On settings, vault_enabled is ${vaultEnabled}`);
 
   const [unconfiguredControllers, configuredControllers] = useSelector(
     (state: RootState) =>
@@ -42,7 +46,7 @@ const VaultSettings = (): JSX.Element => {
   if (controllersLoading || vaultEnabledLoading)
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;
 
-  if (vaultEnabled?.vault_enabled) {
+  if (vaultEnabled) {
     return (
       <>
         <p>

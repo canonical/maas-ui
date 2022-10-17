@@ -471,6 +471,7 @@ export const tlsCertificateState = define<TLSCertificateState>({
 
 export const vaultEnabledState = define<VaultEnabledState>({
   ...defaultGeneralState,
+  data: false,
 });
 
 export const versionState = define<VersionState>({
