@@ -19,7 +19,7 @@ context("Machine listing", () => {
   });
 
   it("can group machines by all supported keys", () => {
-    const groupByOptions = [
+    const GROUP_BY_OPTIONS = [
       "No grouping",
       "Group by owner",
       "Group by parent",
@@ -31,13 +31,11 @@ context("Machine listing", () => {
     const getGroupBySelect = () =>
       cy.findByRole("combobox", { name: "Group by" });
     getGroupBySelect().within(() => {
-      cy.findAllByRole("option").should("have.length", groupByOptions.length);
+      cy.findAllByRole("option").should("have.length", GROUP_BY_OPTIONS.length);
     });
-    groupByOptions.forEach((option) => {
+    GROUP_BY_OPTIONS.forEach((option) => {
       getGroupBySelect().select(option);
-      cy.findByRole("grid", { name: /Loading/i }).should("exist");
-      cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
-      cy.findByRole("grid", { name: "Machines" }).should("exist");
+      cy.waitForTableToLoad({ name: "Machines" });
     });
   });
 
