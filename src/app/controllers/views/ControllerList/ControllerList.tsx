@@ -15,6 +15,8 @@ import type { ControllerHeaderContent } from "app/controllers/types";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { FilterControllers } from "app/store/controller/utils";
+import { actions as generalActions } from "app/store/general";
+import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 
@@ -42,11 +44,13 @@ const ControllerList = (): JSX.Element => {
     controllerSelectors.search(state, searchFilter || null, selectedIDs)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
+  const vaultEnabledLoading = useSelector(vaultEnabledSelectors.loading);
   useWindowTitle("Controllers");
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
     dispatch(tagActions.fetch());
+    dispatch(generalActions.fetchVaultEnabled());
   }, [dispatch]);
 
   // Update the URL when filters are changed.
@@ -88,7 +92,7 @@ const ControllerList = (): JSX.Element => {
       <ControllerListTable
         controllers={filteredControllers}
         hasFilter={!!searchFilter}
-        loading={controllersLoading}
+        loading={controllersLoading || vaultEnabledLoading}
         onSelectedChange={(controllerIDs) => {
           dispatch(controllerActions.setSelected(controllerIDs));
         }}
