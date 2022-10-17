@@ -232,7 +232,9 @@ it("displays a warning icon next to controllers if vault is not fully configured
 
   const controllerLink = screen.getByRole("link", { name: "Controllers" });
   const warningIcon = within(controllerLink).getByTestId("warning-icon");
-  expect(warningIcon).toHaveClass("p-icon--warning-grey");
+  expect(warningIcon).toHaveClass(
+    "p-navigation--item-icon p-icon--security-warning-grey"
+  );
 });
 
 it("does not display a warning icon next to controllers if vault is fully configured", () => {
