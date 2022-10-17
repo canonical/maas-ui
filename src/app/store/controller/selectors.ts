@@ -390,12 +390,12 @@ const getVaultConfiguredControllers = createSelector(
     });
     const unconfiguredControllers = regionControllers.filter((controller) => {
       return (
-        controller.vault_enabled === false ||
-        controller.vault_enabled === undefined
+        controller.vault_configured === false ||
+        controller.vault_configured === undefined
       );
     });
     const configuredControllers = regionControllers.filter((controller) => {
-      return controller.vault_enabled === true;
+      return controller.vault_configured === true;
     });
 
     return [unconfiguredControllers, configuredControllers];

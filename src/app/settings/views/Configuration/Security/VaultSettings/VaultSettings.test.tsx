@@ -21,13 +21,13 @@ describe("VaultSettings", () => {
         fqdn: "testcontroller1",
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         system_id: "abc123",
-        vault_enabled: false,
+        vault_configured: false,
       }),
       controllerFactory({
         fqdn: "testcontroller2",
         node_type: NodeType.REGION_CONTROLLER,
         system_id: "def456",
-        vault_enabled: false,
+        vault_configured: false,
       }),
     ];
     state = rootStateFactory({
@@ -64,13 +64,13 @@ describe("VaultSettings", () => {
         fqdn: "testcontroller1",
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         system_id: "abc123",
-        vault_enabled: true,
+        vault_configured: true,
       }),
       controllerFactory({
         fqdn: "testcontroller2",
         node_type: NodeType.REGION_CONTROLLER,
         system_id: "def456",
-        vault_enabled: false,
+        vault_configured: false,
       }),
     ];
 
@@ -94,13 +94,13 @@ describe("VaultSettings", () => {
         fqdn: "testcontroller1",
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
         system_id: "abc123",
-        vault_enabled: true,
+        vault_configured: true,
       }),
       controllerFactory({
         fqdn: "testcontroller2",
         node_type: NodeType.REGION_CONTROLLER,
         system_id: "def456",
-        vault_enabled: true,
+        vault_configured: true,
       }),
     ];
 

@@ -225,8 +225,8 @@ it("highlights sub-urls", () => {
 
 it("displays a warning icon next to controllers if vault is not fully configured", () => {
   state.controller.items = [
-    controllerFactory({ vault_enabled: true }),
-    controllerFactory({ vault_enabled: false }),
+    controllerFactory({ vault_configured: true }),
+    controllerFactory({ vault_configured: false }),
   ];
   renderWithBrowserRouter(<Header />, { route: "/", wrapperProps: { state } });
 
@@ -237,8 +237,8 @@ it("displays a warning icon next to controllers if vault is not fully configured
 
 it("does not display a warning icon next to controllers if vault is fully configured", () => {
   state.controller.items = [
-    controllerFactory({ vault_enabled: true }),
-    controllerFactory({ vault_enabled: true }),
+    controllerFactory({ vault_configured: true }),
+    controllerFactory({ vault_configured: true }),
   ];
   renderWithBrowserRouter(<Header />, { route: "/", wrapperProps: { state } });
 

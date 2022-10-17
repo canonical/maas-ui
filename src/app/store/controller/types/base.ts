@@ -76,7 +76,7 @@ export type BaseController = BaseNode & {
     | NodeType.REGION_CONTROLLER
     | NodeType.REGION_AND_RACK_CONTROLLER;
   service_ids: number[];
-  vault_enabled?: boolean;
+  vault_configured?: boolean;
   versions: ControllerVersions | null;
   vlans_ha?: ControllerVlansHA;
 };

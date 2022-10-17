@@ -380,7 +380,7 @@ export const controller = extend<BaseNode, Controller>(node, {
   node_type_display: NodeTypeDisplay.REGION_AND_RACK_CONTROLLER,
   node_type: 4,
   service_ids,
-  vault_enabled: false,
+  vault_configured: false,
   versions: null,
 });
 
@@ -463,7 +463,7 @@ export const controllerDetails = extend<Controller, ControllerDetails>(
     testing_start_time: "Thu, 15 Oct. 2020 07:25:10",
     testing_status: testStatus,
     updated: "Fri, 23 Oct. 2020 05:24:41",
-    vault_enabled: false,
+    vault_configured: false,
     vlan: null,
     vlan_ids: () => [],
     workload_annotations: () => ({}),
