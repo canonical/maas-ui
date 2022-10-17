@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 
 import ManagedAllocationLabel from "./ManagedAllocationLabel";
 
-it("shows a tooltip when the subnet is not managed", async () => {
-  render(<ManagedAllocationLabel managed={false} />);
+it("shows a tooltip", async () => {
+  render(<ManagedAllocationLabel />);
 
   await userEvent.click(screen.getByRole("button"));
 
@@ -13,10 +13,4 @@ it("shows a tooltip when the subnet is not managed", async () => {
       name: /MAAS allocates IP addresses from this subnet/,
     })
   ).toBeInTheDocument();
-});
-
-it("does not show a tooltip when the subnet is managed", () => {
-  render(<ManagedAllocationLabel managed />);
-
-  expect(screen.queryByRole("button")).not.toBeInTheDocument();
 });

@@ -73,12 +73,12 @@ const SubnetSummaryFormFields = (): JSX.Element => {
       </Col>
       <Col size={6}>
         <FormikField
-          label={<ManagedAllocationLabel managed={values.managed} />}
+          label={<ManagedAllocationLabel />}
           name="managed"
           type="checkbox"
         />
         <FormikField
-          label={<ActiveDiscoveryLabel managed={values.managed} />}
+          label={<ActiveDiscoveryLabel />}
           name="active_discovery"
           type="checkbox"
         />
