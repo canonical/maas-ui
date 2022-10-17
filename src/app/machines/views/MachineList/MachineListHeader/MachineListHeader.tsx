@@ -100,6 +100,7 @@ export const MachineListHeader = ({
         />,
         <NodeActionMenu
           alwaysShowLifecycle
+          excludeActions={[NodeActions.IMPORT_IMAGES]}
           getTitle={getTitle}
           hasSelection={hasSelection}
           key="machine-list-action-menu"

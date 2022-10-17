@@ -19,6 +19,7 @@ declare global {
       loginNonAdmin(): void;
       testA11y(pageContext: A11yPageContext): void;
       waitForPageToLoad(): void;
+      waitForTableToLoad(options?: { name?: string | RegExp }): void;
     }
   }
 }

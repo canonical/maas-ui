@@ -95,3 +95,9 @@ Cypress.Commands.add("waitForPageToLoad", () => {
   cy.findByText("Failed to connect").should("not.exist");
   cy.get("[data-testid='section-header-title']").should("be.visible");
 });
+
+Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
+  cy.findByRole("grid", { name: /Loading/i }).should("exist");
+  cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
+  cy.findByRole("grid", { name }).should("exist");
+});
