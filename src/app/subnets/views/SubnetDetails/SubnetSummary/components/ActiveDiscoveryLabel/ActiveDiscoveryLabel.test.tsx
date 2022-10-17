@@ -3,8 +3,8 @@ import userEvent from "@testing-library/user-event";
 
 import ActiveDiscoveryLabel from "./ActiveDiscoveryLabel";
 
-it("shows a tooltip when the subnet is managed", async () => {
-  render(<ActiveDiscoveryLabel managed />);
+it("displays a tooltip", async () => {
+  render(<ActiveDiscoveryLabel />);
 
   await userEvent.click(screen.getByRole("button"));
 
@@ -13,10 +13,4 @@ it("shows a tooltip when the subnet is managed", async () => {
       name: /When enabled, MAAS will scan this subnet/,
     })
   ).toBeInTheDocument();
-});
-
-it("does not show a tooltip when the subnet is not managed", () => {
-  render(<ActiveDiscoveryLabel managed={false} />);
-
-  expect(screen.queryByRole("button")).not.toBeInTheDocument();
 });

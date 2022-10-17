@@ -1,12 +1,7 @@
-import { useEffect } from "react";
-
-import { useNavigate } from "react-router-dom-v5-compat";
-
 import NodeActionConfirmationText from "../../NodeActionConfirmationText";
 import type { NodeActionFormProps } from "../types";
 
 import ActionForm from "app/base/components/ActionForm";
-import { useProcessing } from "app/base/hooks";
 import type { EmptyObject } from "app/base/types";
 import { NodeActions } from "app/store/types/node";
 import { capitaliseFirst } from "app/utils";
@@ -27,22 +22,12 @@ export const DeleteForm = <E,>({
   selectedCount,
   redirectURL,
   viewingDetails,
+  actionStatus,
 }: Props<E>): JSX.Element => {
-  const navigate = useNavigate();
-  const deleteComplete = useProcessing({
-    hasErrors: !!errors,
-    processingCount,
-  });
-
-  useEffect(() => {
-    if (deleteComplete && viewingDetails) {
-      navigate(redirectURL, { replace: true });
-    }
-  }, [navigate, deleteComplete, redirectURL, viewingDetails]);
-
   return (
     <ActionForm<EmptyObject, E>
       actionName={NodeActions.DELETE}
+      actionStatus={actionStatus}
       allowUnchanged
       cleanup={cleanup}
       errors={errors}
@@ -59,6 +44,7 @@ export const DeleteForm = <E,>({
       onSubmit={onSubmit}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
+      savedRedirect={viewingDetails ? redirectURL : undefined}
       selectedCount={nodes ? nodes.length : selectedCount ?? 0}
       submitAppearance="negative"
     >

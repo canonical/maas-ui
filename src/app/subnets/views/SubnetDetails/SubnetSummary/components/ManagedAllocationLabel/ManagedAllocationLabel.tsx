@@ -1,21 +1,14 @@
 import TooltipButton from "app/base/components/TooltipButton";
-import type { Subnet } from "app/store/subnet/types";
 
-type Props = {
-  managed: Subnet["managed"];
-};
-
-const ManagedAllocationLabel = ({ managed }: Props): JSX.Element => (
+const ManagedAllocationLabel = (): JSX.Element => (
   <>
     Managed allocation{" "}
-    {managed ? null : (
-      <TooltipButton
-        message={`MAAS allocates IP addresses from this subnet, excluding the
+    <TooltipButton
+      message={`When enabled, MAAS allocates IP addresses from this subnet, excluding the
         reserved and dynamic ranges.`}
-        position="btm-right"
-        positionElementClassName="u-display--inline"
-      />
-    )}
+      position="btm-right"
+      positionElementClassName="u-display--inline"
+    />
   </>
 );
 
