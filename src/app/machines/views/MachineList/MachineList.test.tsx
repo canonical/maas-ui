@@ -31,6 +31,9 @@ import {
   testStatus as testStatusFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
+  vaultEnabledState as vaultEnabledStateFactory,
+  controllerState as controllerStateFactory,
+  controller as controllerFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
@@ -179,6 +182,7 @@ describe("MachineList", () => {
           loaded: false,
           loading: false,
         },
+        vaultEnabled: vaultEnabledStateFactory({ data: false, loaded: true }),
         osInfo: {
           data: osInfoFactory({
             osystems: [["ubuntu", "Ubuntu"]],
@@ -188,6 +192,10 @@ describe("MachineList", () => {
           loaded: true,
           loading: false,
         },
+      }),
+      controller: controllerStateFactory({
+        loaded: true,
+        items: [controllerFactory({ vault_configured: false })],
       }),
       machine: machineStateFactory({
         items: machines,
