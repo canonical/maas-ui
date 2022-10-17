@@ -177,6 +177,12 @@ Object {
       "loaded": false,
       "loading": false,
     },
+    "vaultEnabled": Object {
+      "data": null,
+      "errors": null,
+      "loaded": false,
+      "loading": false,
+    },
     "version": Object {
       "data": "",
       "errors": null,
