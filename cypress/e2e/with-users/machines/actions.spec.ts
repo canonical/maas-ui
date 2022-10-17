@@ -20,7 +20,6 @@ const MACHINE_ACTIONS = [
   "Tag",
   "Set zone",
   "Set pool",
-  "Import images",
   "Delete",
 ];
 

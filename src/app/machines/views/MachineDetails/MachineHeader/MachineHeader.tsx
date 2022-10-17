@@ -69,6 +69,7 @@ const MachineHeader = ({
       buttons={[
         <NodeActionMenu
           alwaysShowLifecycle
+          excludeActions={[NodeActions.IMPORT_IMAGES]}
           filterActions
           hasSelection={true}
           key="action-dropdown"
