@@ -8,8 +8,10 @@ import configureStore from "redux-mock-store";
 
 import KernelOptionsField, { Label } from "./KernelOptionsField";
 
+import { actions as machineActions } from "app/store/machine";
+import type { FetchFilters } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
-import { NodeStatus } from "app/store/types/node";
+import { FetchNodeStatus, NodeStatus } from "app/store/types/node";
 import {
   machine as machineFactory,
   machineState as machineStateFactory,
@@ -26,6 +28,14 @@ let state: RootState;
 beforeEach(() => {
   jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
   state = rootStateFactory({
+    machine: machineStateFactory({
+      counts: machineStateCountsFactory({
+        "mocked-nanoid": machineStateCountFactory({
+          count: 1,
+          loaded: true,
+        }),
+      }),
+    }),
     tag: tagStateFactory({
       items: [
         tagFactory({
@@ -101,19 +111,13 @@ it("displays a deployed machines message when updating a tag", async () => {
   ).toBeInTheDocument();
 });
 
-it("displays a deployed machines message when passed machines", async () => {
-  const machines = [
-    machineFactory({
-      status: NodeStatus.DEPLOYED,
-      tags: [1],
-    }),
-  ];
+it("displays a deployed machines message when passed deployedMachinesCount", async () => {
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <KernelOptionsField deployedMachines={machines} />
+          <KernelOptionsField deployedMachinesCount={1} />
         </Formik>
       </MemoryRouter>
     </Provider>
@@ -127,20 +131,42 @@ it("displays a deployed machines message when passed machines", async () => {
   ).toBeInTheDocument();
 });
 
+it("fetches deployed machine count for selected tag when not passed deployedMachinesCount", async () => {
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter>
+        <Formik initialValues={{}} onSubmit={jest.fn()}>
+          <KernelOptionsField id={state.tag.items[0].id} />
+        </Formik>
+      </MemoryRouter>
+    </Provider>
+  );
+  const expected = machineActions.count("mocked-nanoid", {
+    status: FetchNodeStatus.DEPLOYED,
+    tags: [state.tag.items[0].name],
+  } as FetchFilters);
+  const actual = store
+    .getActions()
+    .find((action) => action.type === expected.type);
+  expect(actual).toStrictEqual(expected);
+  await userEvent.type(
+    screen.getByRole("textbox", { name: Label.KernelOptions }),
+    "options2"
+  );
+  expect(
+    screen.getByText(/The new kernel options will not be applied/i)
+  ).toBeInTheDocument();
+});
+
 it("can display a provided deployed machines message", async () => {
-  const machines = [
-    machineFactory({
-      status: NodeStatus.DEPLOYED,
-      tags: [1],
-    }),
-  ];
   const store = mockStore(state);
   render(
     <Provider store={store}>
       <MemoryRouter>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <KernelOptionsField
-            deployedMachines={machines}
+            deployedMachinesCount={1}
             generateDeployedMessage={(count) => `${count} deployed machine`}
           />
         </Formik>

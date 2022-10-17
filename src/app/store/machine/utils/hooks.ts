@@ -352,12 +352,15 @@ export const useFetchSelectedMachines = (
 };
 
 export const useFetchMachineCount = (
-  filters?: FetchFilters | null
+  filters?: FetchFilters | null,
+  queryOptions?: UseFetchQueryOptions
 ): {
   machineCount: number;
   machineCountLoading: boolean;
   machineCountLoaded: boolean;
 } => {
+  const { isEnabled } = queryOptions || { isEnabled: true };
+  const previousIsEnabled = usePrevious(isEnabled);
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
   const previousFilters = usePrevious(filters);
@@ -375,10 +378,13 @@ export const useFetchMachineCount = (
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
-    if (!fastDeepEqual(filters || {}, previousFilters || {}) || !callId) {
+    if (
+      (isEnabled && !fastDeepEqual(filters || {}, previousFilters || {})) ||
+      (isEnabled && !callId)
+    ) {
       setCallId(nanoid());
     }
-  }, [callId, dispatch, filters, previousFilters]);
+  }, [callId, dispatch, filters, previousFilters, isEnabled]);
 
   useEffect(() => {
     return () => {
@@ -389,10 +395,10 @@ export const useFetchMachineCount = (
   }, [callId, dispatch]);
 
   useEffect(() => {
-    if (callId && callId !== previousCallId) {
+    if (isEnabled && callId && callId !== previousCallId) {
       dispatch(machineActions.count(callId, filters));
     }
-  }, [dispatch, filters, callId, previousCallId]);
+  }, [dispatch, filters, callId, previousCallId, isEnabled, previousIsEnabled]);
 
   return {
     machineCount: machineCount || 0,

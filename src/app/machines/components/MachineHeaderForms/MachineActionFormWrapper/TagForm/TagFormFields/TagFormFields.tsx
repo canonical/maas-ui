@@ -134,6 +134,7 @@ export const TagFormFields = ({
                 setNewTags([...newTags, tag.id]);
                 closePortal(NULL_EVENT);
               }}
+              selectedMachines={selectedMachines}
               viewingDetails={viewingDetails}
               viewingMachineConfig={viewingMachineConfig}
             />

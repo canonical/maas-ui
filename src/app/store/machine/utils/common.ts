@@ -137,3 +137,39 @@ export const selectedToFilters = (
   }
   return Object.values(filter).length > 0 ? filter : null;
 };
+
+/**
+ * Convert selected machines state to separate filters to the API
+ * which allows to get a match for items OR groups
+ */
+export const selectedToSeparateFilters = (
+  selectedMachines: SelectedMachines | null
+): { groupFilters: FetchFilters | null; itemFilters: FetchFilters | null } => {
+  const getIsSingleFilter = (
+    selectedMachines: SelectedMachines | null
+  ): selectedMachines is { filter: FetchFilters } => {
+    if (selectedMachines && "filter" in selectedMachines) {
+      return true;
+    }
+    return false;
+  };
+  const isSingleFilter = getIsSingleFilter(selectedMachines);
+  // Fetch items and groups separately
+  // - otherwise the back-end will return machines
+  // matching both groups and items
+  const groupFilters = selectedToFilters(
+    isSingleFilter
+      ? { filter: selectedMachines?.filter }
+      : {
+          groups: selectedMachines?.groups,
+          grouping: selectedMachines?.grouping,
+        }
+  );
+  const itemFilters = selectedToFilters(
+    !isSingleFilter ? { items: selectedMachines?.items } : null
+  );
+  return {
+    groupFilters,
+    itemFilters,
+  };
+};
