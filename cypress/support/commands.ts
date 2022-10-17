@@ -47,6 +47,23 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
 });
 
+Cypress.Commands.add("addMachines", (hostnames: string[]) => {
+  cy.visit(generateMAASURL("/machines"));
+  cy.get("[data-testid='add-hardware-dropdown'] button").click();
+  cy.get(".p-contextual-menu__link").contains("Machine").click();
+  hostnames.forEach((hostname, index) => {
+    cy.get("input[name='hostname']").type(hostname);
+    cy.get("input[name='pxe_mac']").type(generateMac());
+    cy.get("select[name='power_type']").select("manual").blur();
+    if (index < hostnames.length - 1) {
+      cy.findByRole("button", { name: /Save and add another/i }).click();
+    } else {
+      cy.findByRole("button", { name: /Save machine/i }).click();
+    }
+    cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
+  });
+});
+
 function logViolations(violations: Result[], pageContext: A11yPageContext) {
   const divider =
     "\n====================================================================================================\n";
@@ -99,5 +116,5 @@ Cypress.Commands.add("waitForPageToLoad", () => {
 Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
   cy.findByRole("grid", { name: /Loading/i }).should("exist");
   cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
-  cy.findByRole("grid", { name }).should("exist");
+  return cy.findByRole("grid", { name }).should("exist");
 });

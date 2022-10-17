@@ -18,7 +18,9 @@ import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
 import { NodeActions } from "app/store/types/node";
 
-type Props = MachineActionFormProps & { viewingMachineConfig?: boolean };
+type Props = MachineActionFormProps & {
+  viewingMachineConfig?: boolean;
+};
 
 export enum Label {
   Saved = "Saved all tag changes.",
@@ -34,6 +36,7 @@ export const TagForm = ({
   errors,
   machines,
   processingCount,
+  searchFilter,
   selectedCount,
   selectedMachines,
   viewingDetails,
@@ -41,7 +44,7 @@ export const TagForm = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch(selectedMachines);
+    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const tagsLoaded = useSelector(tagSelectors.loaded);
   const [newTags, setNewTags] = useState<Tag[TagMeta.PK][]>([]);
   const filter = selectedToFilters(selectedMachines || null);
@@ -123,6 +126,7 @@ export const TagForm = ({
       <TagFormFields
         machines={machines || []}
         newTags={newTags}
+        searchFilter={searchFilter}
         selectedCount={selectedCount}
         selectedMachines={selectedMachines}
         setNewTags={setNewTags}

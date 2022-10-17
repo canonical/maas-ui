@@ -10,6 +10,7 @@ declare global {
   namespace Cypress {
     interface Chainable {
       addMachine(hostname?: string): void;
+      addMachines(hostname: string[]): void;
       login(options?: {
         username?: string;
         password?: string;
@@ -19,7 +20,9 @@ declare global {
       loginNonAdmin(): void;
       testA11y(pageContext: A11yPageContext): void;
       waitForPageToLoad(): void;
-      waitForTableToLoad(options?: { name?: string | RegExp }): void;
+      waitForTableToLoad(options?: {
+        name?: string | RegExp;
+      }): Cypress.Chainable<JQuery<HTMLElement>>;
     }
   }
 }

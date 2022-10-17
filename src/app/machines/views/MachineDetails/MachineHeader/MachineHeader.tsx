@@ -89,6 +89,7 @@ const MachineHeader = ({
         headerContent ? (
           <MachineHeaderForms
             headerContent={headerContent}
+            searchFilter=""
             selectedCount={1}
             selectedMachines={{ items: [machine.system_id] }}
             setHeaderContent={setHeaderContent}

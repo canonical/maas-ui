@@ -34,13 +34,14 @@ export const ReleaseForm = ({
   errors,
   machines,
   processingCount,
+  searchFilter,
   selectedCount,
   selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch(selectedMachines);
+    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const configLoaded = useSelector(configSelectors.loaded);
   const enableErase = useSelector(configSelectors.enableDiskErasing);
   const quickErase = useSelector(configSelectors.diskEraseWithQuick);

@@ -60,6 +60,14 @@ const MachineList = ({
     // as we are only fetching information about a group from the back-end
     dispatch(machineActions.setSelectedMachines(null));
   };
+  const handleSetSearchFilter = (filter: string) => {
+    setSearchFilter(filter);
+    // clear selected machines on filters change
+    // we cannot reliably preserve the selected state for groups of machines
+    // as we are only fetching information about a group from the back-end
+    // and the contents of a group may change when different filters are applied
+    dispatch(machineActions.setSelectedMachines(null));
+  };
   const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
     localStorage,
     "hiddenGroups",
@@ -98,7 +106,7 @@ const MachineList = ({
       <MachineListControls
         filter={searchFilter}
         grouping={grouping}
-        setFilter={setSearchFilter}
+        setFilter={handleSetSearchFilter}
         setGrouping={handleSetGrouping}
         setHiddenGroups={setHiddenGroups}
       />

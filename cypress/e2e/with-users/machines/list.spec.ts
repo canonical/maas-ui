@@ -39,6 +39,31 @@ context("Machine listing", () => {
     });
   });
 
+  it("displays machine counts with active filters", () => {
+    const searchFilter = "status:(=commissioning) hostname:(machine-)";
+    cy.addMachines(["machine-1", "machine-2"]);
+    cy.findByRole("combobox", { name: "Group by" }).select("Group by status");
+    cy.findByRole("searchbox").type(searchFilter);
+    cy.findByText(/2 machines available/).should("exist");
+    cy.waitForTableToLoad({ name: "Machines" }).within(() =>
+      // eslint-disable-next-line cypress/no-force
+      cy
+        .findByRole("checkbox", { name: /Commissioning/i })
+        .click({ force: true })
+    );
+    cy.findByText(/All machines selected/).should("exist");
+    cy.findByRole("button", { name: /Take action/i }).click();
+    cy.findByLabelText("submenu").within(() => {
+      cy.findAllByRole("button", { name: /Delete/i }).click();
+    });
+    cy.findByRole("button", { name: /Delete 2 machines/ }).should("exist");
+    cy.findByRole("button", { name: /Delete 2 machines/ }).click();
+    // TODO: enable once https://github.com/canonical/maas-ui/issues/4487 is fixed
+    // cy.findByRole("searchbox").should("have.value", searchFilter);
+    // cy.findByText(/All machines selected/).should("not.exist");
+    // cy.findByText(/No machines match the search criteria./).should("exist");
+  });
+
   it.skip("can hide machine table columns", () => {
     cy.findAllByRole("columnheader").should("have.length", 8);
 
