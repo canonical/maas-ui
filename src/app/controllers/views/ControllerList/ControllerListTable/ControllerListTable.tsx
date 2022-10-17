@@ -203,8 +203,6 @@ const ControllerListTable = ({
     dispatch(generalActions.fetchVaultEnabled());
   }, [dispatch]);
 
-  console.log(`vault_enabled is: ${vaultEnabled}`);
-
   return (
     <MainTable
       aria-label="controllers list"

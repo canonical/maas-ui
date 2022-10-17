@@ -31,8 +31,6 @@ const VaultSettings = (): JSX.Element => {
     vaultEnabledSelectors.get(state)
   );
 
-  console.log(`On settings, vault_enabled is ${vaultEnabled}`);
-
   const [unconfiguredControllers, configuredControllers] = useSelector(
     (state: RootState) =>
       controllerSelectors.getVaultConfiguredControllers(state)
