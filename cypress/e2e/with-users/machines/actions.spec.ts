@@ -7,7 +7,7 @@ const MACHINE_ACTIONS = [
   "Release",
   "Abort",
   "Clone from",
-  "Power On",
+  "Power on",
   "Power off",
   "Test",
   "Enter rescue mode",
@@ -31,6 +31,10 @@ const selectFirstMachine = () =>
   });
 
 context("Machine listing - actions", () => {
+  before(() => {
+    cy.login();
+    cy.addMachine();
+  });
   beforeEach(() => {
     cy.login();
     cy.visit(generateMAASURL("/machines"));
@@ -50,19 +54,22 @@ context("Machine listing - actions", () => {
 
   MACHINE_ACTIONS.forEach((action) =>
     it(`loads machine ${action} form`, () => {
+      const actionLabel = new RegExp(`${action}...`, "i"); // case insensitive
       selectFirstMachine();
       cy.findByRole("button", { name: /Take action/i }).click();
       cy.findByLabelText("submenu").within(() => {
-        cy.findAllByRole("button", { name: new RegExp(action, "i") }).click();
+        cy.findAllByRole("button", { name: actionLabel }).click();
       });
-      cy.findByTestId("section-header-title").contains(action).should("exist");
+      cy.findByTestId("section-header-title")
+        .contains(actionLabel)
+        .should("exist");
       cy.get("[data-testid='section-header-content']").within(() => {
         cy.findAllByText(/Loading/).should("have.length", 0);
         cy.findByRole("button", { name: /Cancel/i }).click();
       });
       // expect the action form to be closed
       cy.findByTestId("section-header-title")
-        .contains(action)
+        .contains(actionLabel)
         .should("not.exist");
     })
   );
