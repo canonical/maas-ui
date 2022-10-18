@@ -145,6 +145,18 @@ describe("general actions", () => {
     });
   });
 
+  it("should handle fetching Vault enabled status", () => {
+    expect(general.fetchVaultEnabled()).toEqual({
+      type: "general/fetchVaultEnabled",
+      meta: {
+        cache: true,
+        model: "general",
+        method: "vault_enabled",
+      },
+      payload: null,
+    });
+  });
+
   it("should handle fetching version", () => {
     expect(general.fetchVersion()).toEqual({
       type: "general/fetchVersion",

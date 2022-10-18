@@ -72,6 +72,7 @@ export {
   tlsCertificateState,
   tokenState,
   userState,
+  vaultEnabledState,
   versionState,
   vlanEventError,
   vlanState,

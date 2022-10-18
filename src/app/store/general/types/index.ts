@@ -40,6 +40,7 @@ export type {
   PowerTypesState,
   TLSCertificate,
   TLSCertificateState,
+  VaultEnabledState,
   Version,
   VersionState,
 } from "./base";
