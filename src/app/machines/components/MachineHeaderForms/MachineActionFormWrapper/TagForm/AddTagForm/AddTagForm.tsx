@@ -1,18 +1,21 @@
-import type { Machine } from "app/store/machine/types";
+import fastDeepEqual from "fast-deep-equal";
+
+import type { MachineActionFormProps } from "app/machines/types";
+import { selectedToSeparateFilters } from "app/store/machine/utils/common";
+import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import type { Tag } from "app/store/tag/types";
-import { NodeStatus } from "app/store/types/node";
+import { FetchNodeStatus } from "app/store/types/node";
 import BaseAddTagForm from "app/tags/components/AddTagForm";
 
 export type Props = {
-  machines: Machine[];
   name: string | null;
   onTagCreated: (tag: Tag) => void;
   viewingDetails?: boolean;
   viewingMachineConfig?: boolean;
-};
+} & Partial<MachineActionFormProps>;
 
 export const AddTagForm = ({
-  machines,
+  selectedMachines,
   name,
   onTagCreated,
   viewingDetails,
@@ -24,12 +27,40 @@ export const AddTagForm = ({
   } else if (viewingDetails) {
     location = "details";
   }
+
+  const { groupFilters, itemFilters } = selectedMachines
+    ? selectedToSeparateFilters(selectedMachines)
+    : { groupFilters: null, itemFilters: null };
+
+  const { machineCount: deployedSelectedItemsMachineCount } =
+    useFetchMachineCount(
+      {
+        ...itemFilters,
+        status: FetchNodeStatus.DEPLOYED,
+      },
+      { isEnabled: !!itemFilters }
+    );
+  const { machineCount: deployedSelectedGroupsMachineCount } =
+    useFetchMachineCount(
+      {
+        ...groupFilters,
+        status: FetchNodeStatus.DEPLOYED,
+      },
+      // Assume count as 0 if grouping by status and group other than deployed is selected
+      {
+        isEnabled:
+          selectedMachines && "groups" in selectedMachines
+            ? selectedMachines?.groups?.includes(FetchNodeStatus.DEPLOYED)
+            : // if all machines are selected, fetch deployed machine count for all machines
+              fastDeepEqual(groupFilters, {}),
+      }
+    );
+  const deployedSelectedMachineCount =
+    deployedSelectedGroupsMachineCount + deployedSelectedItemsMachineCount;
+
   return (
     <BaseAddTagForm
-      deployedMachines={machines.filter(
-        ({ status }) => status === NodeStatus.DEPLOYED
-      )}
-      // TODO: refactor to use selectedMachines https://github.com/canonical/app-tribe/issues/1417
+      deployedMachinesCount={deployedSelectedMachineCount}
       generateDeployedMessage={(count: number) =>
         count === 1
           ? `${count} selected machine is deployed. The new kernel options will not be applied to this machine until it is redeployed.`
