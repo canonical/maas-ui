@@ -48,6 +48,7 @@ const CloneFormSchema = Yup.object()
 
 export const CloneForm = ({
   clearHeaderContent,
+  searchFilter,
   selectedMachines,
   selectedCount,
   processingCount,
@@ -59,7 +60,7 @@ export const CloneForm = ({
     dispatch: dispatchForSelectedMachines,
     actionErrors,
     ...actionProps
-  } = useSelectedMachinesActionsDispatch(selectedMachines);
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const [selectedMachine, setSelectedMachine] = useState<MachineDetails | null>(
     null
   );

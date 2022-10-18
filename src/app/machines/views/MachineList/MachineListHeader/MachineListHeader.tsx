@@ -53,7 +53,9 @@ export const MachineListHeader = ({
   const { machineCount } = useFetchMachineCount(
     FilterMachineItems.parseFetchFilters(searchFilter)
   );
-  const { selectedCount, selectedCountLoading } = useMachineSelectedCount();
+  const { selectedCount, selectedCountLoading } = useMachineSelectedCount(
+    FilterMachineItems.parseFetchFilters(searchFilter)
+  );
   const previousSelectedCount = usePrevious(selectedCount);
 
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
@@ -122,6 +124,7 @@ export const MachineListHeader = ({
         headerContent && (
           <MachineHeaderForms
             headerContent={headerContent}
+            searchFilter={searchFilter}
             selectedCount={selectedCount}
             selectedCountLoading={selectedCountLoading}
             selectedMachines={selectedMachines}

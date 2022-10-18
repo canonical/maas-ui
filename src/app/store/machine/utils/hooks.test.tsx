@@ -568,7 +568,11 @@ describe("machine hook utils", () => {
         items: ["abcd123"],
       };
       const { result } = renderHook(
-        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        () =>
+          useSelectedMachinesActionsDispatch({
+            selectedMachines,
+            searchFilter: "",
+          }),
         {
           wrapper: generateWrapper(store),
         }
@@ -607,7 +611,11 @@ describe("machine hook utils", () => {
         items: ["abcd123"],
       };
       const { result } = renderHook(
-        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        () =>
+          useSelectedMachinesActionsDispatch({
+            selectedMachines,
+            searchFilter: "",
+          }),
         {
           wrapper: generateWrapper(store),
         }
@@ -641,7 +649,11 @@ describe("machine hook utils", () => {
         grouping: "status" as FetchGroupKey,
       };
       const { result } = renderHook(
-        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        () =>
+          useSelectedMachinesActionsDispatch({
+            selectedMachines,
+            searchFilter: "",
+          }),
         {
           wrapper: generateWrapper(store),
         }

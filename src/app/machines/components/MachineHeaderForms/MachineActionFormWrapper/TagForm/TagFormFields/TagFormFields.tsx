@@ -18,6 +18,7 @@ import type { TagFormValues } from "../types";
 import TagField from "app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "app/base/components/TagSelector/TagSelector";
 import { NULL_EVENT } from "app/base/constants";
+import type { MachineActionFormProps } from "app/machines/types";
 import type { Machine, SelectedMachines } from "app/store/machine/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag, TagMeta } from "app/store/tag/types";
@@ -34,7 +35,7 @@ type Props = {
   viewingMachineConfig?: boolean;
   selectedMachines?: SelectedMachines | null;
   selectedCount?: number | null;
-};
+} & Pick<MachineActionFormProps, "searchFilter">;
 
 export enum Label {
   AddTag = "Create a new tag",
@@ -45,6 +46,7 @@ export const TagFormFields = ({
   machines,
   newTags,
   setNewTags,
+  searchFilter,
   selectedMachines,
   selectedCount,
   viewingDetails = false,
@@ -56,6 +58,7 @@ export const TagFormFields = ({
   const selectedTags = useSelectedTags("added");
   const { tags, loading: tagsLoading } = useFetchTagsForSelected({
     selectedMachines,
+    searchFilter,
   });
   const allManualTags = useSelector(tagSelectors.getManual);
   const tagIdsAndCounts = getTagCounts(tags);
@@ -134,6 +137,7 @@ export const TagFormFields = ({
                 setNewTags([...newTags, tag.id]);
                 closePortal(NULL_EVENT);
               }}
+              searchFilter={searchFilter}
               selectedMachines={selectedMachines}
               viewingDetails={viewingDetails}
               viewingMachineConfig={viewingMachineConfig}

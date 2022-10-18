@@ -55,12 +55,13 @@ export const CommissionForm = ({
   machines,
   processingCount,
   selectedCount,
+  searchFilter,
   viewingDetails,
   selectedMachines,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch(selectedMachines);
+    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const scriptsLoaded = useSelector(scriptSelectors.loaded);
   const commissioningScripts = useSelector(scriptSelectors.commissioning);
   const preselectedCommissioningScripts = useSelector(

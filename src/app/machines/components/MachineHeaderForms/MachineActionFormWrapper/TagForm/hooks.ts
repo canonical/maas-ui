@@ -11,7 +11,7 @@ import type { TagFormValues } from "./types";
 import type { APIError } from "app/base/types";
 import type { FetchFilters } from "app/store/machine/types";
 import type { SelectedMachines } from "app/store/machine/types/base";
-import { selectedToFilters } from "app/store/machine/utils";
+import { FilterMachineItems, selectedToFilters } from "app/store/machine/utils";
 import type { UseFetchQueryOptions } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -168,6 +168,7 @@ export const useFetchTags = (
 
 export const useFetchTagsForSelected = (options: {
   selectedMachines?: SelectedMachines | null;
+  searchFilter?: string;
 }): {
   loaded: boolean;
   loading: boolean;
@@ -177,19 +178,32 @@ export const useFetchTagsForSelected = (options: {
   const { itemFilters, groupFilters } = selectedToSeparateFilters(
     options.selectedMachines || null
   );
+  const searchFilter = options.searchFilter
+    ? FilterMachineItems.parseFetchFilters(options.searchFilter)
+    : {};
   const {
     loading: loadingForItemFilters,
     loaded: tagsForItemFiltersLoaded,
     tags: tagsForItemFilters,
     errors: errorsForItemFilters,
   } = useFetchTags(
-    { filters: itemFilters },
+    {
+      filters: {
+        ...itemFilters,
+        ...searchFilter,
+      },
+    },
     {
       isEnabled: itemFilters !== null,
     }
   );
   const { loading, loaded, tags, errors } = useFetchTags(
-    { filters: groupFilters },
+    {
+      filters: {
+        ...groupFilters,
+        ...searchFilter,
+      },
+    },
     {
       isEnabled: groupFilters !== null,
     }

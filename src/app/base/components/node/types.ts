@@ -14,12 +14,14 @@ export type NodeActionFormProps<E = null> = CommonActionFormProps<E> & {
         nodes: Node[];
         processingCount: number;
         selectedMachines?: never;
+        searchFilter?: never;
         selectedCount?: never;
       }
     | {
         selectedMachines?: SelectedMachines | null;
         processingCount?: never;
         selectedCount?: number | null;
+        searchFilter?: string;
         nodes?: never;
       }
   );

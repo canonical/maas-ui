@@ -86,13 +86,14 @@ export const OverrideTestForm = ({
   errors,
   machines,
   processingCount,
+  searchFilter,
   selectedCount,
   selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch(selectedMachines);
+    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const [requestedScriptResults, setRequestedScriptResults] = useState<
     Machine[MachineMeta.PK][]
   >([]);
