@@ -97,7 +97,7 @@ const generateRows = ({
           content: (
             <span className="u-truncate">
               {controller.node_type === NodeType.REGION_CONTROLLER ||
-                (controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER &&
+              controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER ? (
                 vaultEnabled ? (
                   <Tooltip
                     children={<Icon name="security-tick" />}
@@ -143,7 +143,8 @@ const generateRows = ({
                       }
                     />
                   )
-                ))}
+                )
+              ) : null}
               {` ${controller.node_type_display}`}
             </span>
           ),
