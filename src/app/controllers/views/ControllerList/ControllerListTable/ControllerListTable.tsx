@@ -44,16 +44,23 @@ const getSortValue = (sortKey: SortKey, controller: Controller) => {
   return isComparable(value) ? value : null;
 };
 
-const generateRows = (
-  controllers: Controller[],
-  unconfiguredControllers: number,
-  configuredControllers: number,
-  selectedIDs: Controller[ControllerMeta.PK][],
+const generateRows = ({
+  controllers,
+  unconfiguredControllers,
+  configuredControllers,
+  selectedIDs,
+  handleRowCheckbox,
+  vaultEnabled,
+}: {
+  controllers: Controller[];
+  unconfiguredControllers: number;
+  configuredControllers: number;
+  selectedIDs: Controller[ControllerMeta.PK][];
   handleRowCheckbox: CheckboxHandlers<
     Controller[ControllerMeta.PK]
-  >["handleRowCheckbox"],
-  vaultEnabled: boolean
-) =>
+  >["handleRowCheckbox"];
+  vaultEnabled: boolean;
+}) =>
   controllers.map((controller) => {
     const { fqdn, system_id } = controller;
 
@@ -298,14 +305,14 @@ const ControllerListTable = ({
           ),
         },
       ]}
-      rows={generateRows(
-        sortedControllers,
-        unconfiguredControllers.length,
-        configuredControllers.length,
+      rows={generateRows({
+        controllers: sortedControllers,
+        unconfiguredControllers: unconfiguredControllers.length,
+        configuredControllers: configuredControllers.length,
         selectedIDs,
         handleRowCheckbox,
-        vaultEnabled
-      )}
+        vaultEnabled,
+      })}
     />
   );
 };
