@@ -375,11 +375,11 @@ const getByFabricId = createSelector(
 );
 
 /**
- * Get all region controllers and separate by their vault configuration status.
+ * Get all region/region-and-rack controllers.
  * @param state - The redux state.
- * @returns Two lists of region controllers - one where none are configured with vault, the other where all are configured with vault.
+ * @returns A list of all region/region-and-rack controllers.
  */
-const getVaultConfiguredControllers = createSelector(
+const getRegionControllers = createSelector(
   [defaultSelectors.all],
   (controllers: Controller[]) => {
     const regionControllers = controllers.filter((controller) => {
@@ -388,17 +388,30 @@ const getVaultConfiguredControllers = createSelector(
         controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER
       );
     });
-    const unconfiguredControllers = regionControllers.filter((controller) => {
+
+    return regionControllers;
+  }
+);
+
+/**
+ * Get controllers separated by their vault configuration status.
+ * @param state - The redux state.
+ * @returns Two lists of region controllers - one where none are configured with vault, the other where all are configured with vault.
+ */
+const getVaultConfiguredControllers = createSelector(
+  [getRegionControllers],
+  (controllers: Controller[]) => {
+    const unconfiguredControllers = controllers.filter((controller) => {
       return (
         controller.vault_configured === false ||
         controller.vault_configured === undefined
       );
     });
-    const configuredControllers = regionControllers.filter((controller) => {
+    const configuredControllers = controllers.filter((controller) => {
       return controller.vault_configured === true;
     });
 
-    return [unconfiguredControllers, configuredControllers];
+    return { unconfiguredControllers, configuredControllers };
   }
 );
 
@@ -412,6 +425,7 @@ const selectors = {
   getStatuses,
   getStatusForController,
   getVaultConfiguredControllers,
+  getRegionControllers,
   imageSyncStatuses,
   imageSyncStatusesForController,
   processing,

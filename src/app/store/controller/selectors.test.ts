@@ -190,14 +190,12 @@ describe("controller selectors", () => {
     expect(controller.search(state, "echidna", [])).toStrictEqual([items[0]]);
   });
 
-  it("can get region controllers separated by vault configuration status", () => {
+  it("can get all region/region-and-rack controllers", () => {
     const items = [
       controllerFactory({
-        vault_configured: false,
         node_type: NodeType.REGION_CONTROLLER,
       }),
       controllerFactory({
-        vault_configured: true,
         node_type: NodeType.REGION_AND_RACK_CONTROLLER,
       }),
       controllerFactory({
@@ -210,9 +208,36 @@ describe("controller selectors", () => {
       }),
     });
 
-    expect(controller.getVaultConfiguredControllers(state)).toStrictEqual([
-      [items[0]],
-      [items[1]],
+    expect(controller.getRegionControllers(state)).toStrictEqual([
+      items[0],
+      items[1],
     ]);
+  });
+
+  it("can separate region controllers by their Vault configuration status", () => {
+    const items = [
+      controllerFactory({
+        vault_configured: true,
+        node_type: NodeType.REGION_CONTROLLER,
+      }),
+      controllerFactory({
+        vault_configured: false,
+        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+      }),
+      controllerFactory({
+        node_type: NodeType.RACK_CONTROLLER,
+      }),
+    ];
+    const state = rootStateFactory({
+      controller: controllerStateFactory({
+        items,
+      }),
+    });
+
+    const { unconfiguredControllers, configuredControllers } =
+      controller.getVaultConfiguredControllers(state);
+
+    expect(unconfiguredControllers).toStrictEqual([items[1]]);
+    expect(configuredControllers).toStrictEqual([items[0]]);
   });
 });
