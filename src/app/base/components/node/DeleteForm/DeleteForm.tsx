@@ -8,6 +8,7 @@ import { capitaliseFirst } from "app/utils";
 
 type Props<E = null> = NodeActionFormProps<E> & {
   onSubmit: () => void;
+  onAfterSuccess?: () => void;
   redirectURL: string;
 };
 
@@ -17,6 +18,7 @@ export const DeleteForm = <E,>({
   errors,
   modelName,
   nodes,
+  onAfterSuccess,
   onSubmit,
   processingCount,
   selectedCount,
@@ -42,7 +44,10 @@ export const DeleteForm = <E,>({
         label: "Delete",
       }}
       onSubmit={onSubmit}
-      onSuccess={clearHeaderContent}
+      onSuccess={() => {
+        clearHeaderContent();
+        onAfterSuccess?.();
+      }}
       processingCount={processingCount}
       savedRedirect={viewingDetails ? redirectURL : undefined}
       selectedCount={nodes ? nodes.length : selectedCount ?? 0}

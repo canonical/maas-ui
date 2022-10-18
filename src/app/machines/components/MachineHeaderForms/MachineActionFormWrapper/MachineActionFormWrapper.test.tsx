@@ -15,6 +15,7 @@ import {
   rootState as rootStateFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
@@ -96,4 +97,37 @@ it("can show untag errors when the tag form is open", async () => {
   );
 
   expect(screen.getByText("Untagging failed")).toBeInTheDocument();
+});
+
+it("clears selected machines on delete success", async () => {
+  mockFormikFormSaved();
+  const state = rootStateFactory();
+  const machines = [
+    machineFactory({
+      system_id: "abc123",
+    }),
+  ];
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <MachineActionFormWrapper
+            action={NodeActions.DELETE}
+            clearHeaderContent={jest.fn()}
+            selectedMachines={{ items: [machines[0].system_id] }}
+            viewingDetails={false}
+          />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+
+  expect(
+    store
+      .getActions()
+      .find((action) => action.type === "machine/setSelectedMachines").payload
+  ).toEqual(null);
 });
