@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+/* eslint-disable react/no-multi-comp */
+import { useEffect, useMemo, useState } from "react";
 
 import { Col, Row, Spinner } from "@canonical/react-components";
 import pluralize from "pluralize";
@@ -16,7 +17,10 @@ import type {
   MachineEventErrors,
   MachineMeta,
 } from "app/store/machine/types";
-import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
+import {
+  useFetchMachine,
+  useSelectedMachinesActionsDispatch,
+} from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as scriptResultActions } from "app/store/scriptresult";
 import scriptResultsSelectors from "app/store/scriptresult/selectors";
@@ -28,16 +32,14 @@ export type OverrideTestFormValues = {
   suppressResults: boolean;
 };
 
-const generateFailedTestsMessage = ({
+const FailedTestsMessage = ({
   numFailedTests,
   selectedCount,
-  machines,
+  singleMachine,
 }: {
   numFailedTests: number;
-  selectedCount: number;
-  machines?: Machine[];
-}) => {
-  const singleMachine = selectedCount === 1 && machines?.[0];
+  singleMachine: Machine | null;
+} & Pick<MachineActionFormProps, "selectedCount">): JSX.Element => {
   if (numFailedTests > 0) {
     const numFailedTestsString = `failed ${numFailedTests} ${pluralize(
       "test",
@@ -84,13 +86,13 @@ const OverrideTestFormSchema = Yup.object().shape({
 export const OverrideTestForm = ({
   clearHeaderContent,
   errors,
-  machines,
   processingCount,
   searchFilter,
   selectedCount,
   selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
+  const isSingleMachine = selectedCount === 1;
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
@@ -99,12 +101,22 @@ export const OverrideTestForm = ({
   >([]);
   const scriptResultsLoaded = useSelector(scriptResultsSelectors.loaded);
   const scriptResultsLoading = useSelector(scriptResultsSelectors.loading);
-  const machineIDs = machines?.map((machine) => machine.system_id);
+  // TODO: allow suppressing results for multiple machines via filter once the API supports it
+  // https://github.com/canonical/app-tribe/issues/1427
+  const machineIDs = useMemo(
+    () =>
+      isSingleMachine
+        ? (selectedMachines &&
+            "items" in selectedMachines &&
+            selectedMachines?.items) ||
+          []
+        : [],
+    [isSingleMachine, selectedMachines]
+  );
+  const { machine } = useFetchMachine(isSingleMachine ? machineIDs[0] : null);
+
   const scriptResults = useSelector((state: RootState) =>
-    scriptResultsSelectors.getFailedTestingResultsByNodeIds(
-      state,
-      machineIDs || []
-    )
+    scriptResultsSelectors.getFailedTestingResultsByNodeIds(state, machineIDs)
   );
   // Get the number of results for all machines.
   const numFailedTests =
@@ -140,8 +152,6 @@ export const OverrideTestForm = ({
       initialValues={{
         suppressResults: false,
       }}
-      loaded={scriptResultsLoaded}
-      loading={scriptResultsLoading}
       modelName="machine"
       onCancel={clearHeaderContent}
       onSaveAnalytics={{
@@ -154,25 +164,17 @@ export const OverrideTestForm = ({
         const { suppressResults } = values;
         if (selectedMachines) {
           dispatchForSelectedMachines(machineActions.overrideFailedTesting);
-        } else {
-          machines?.forEach((machine) => {
-            dispatch(
-              machineActions.overrideFailedTesting({
-                system_id: machine.system_id,
-              })
-            );
-          });
         }
         if (suppressResults) {
-          machines?.forEach((machine) => {
+          machineIDs?.forEach((system_id) => {
             if (
-              machine.system_id in scriptResults &&
-              scriptResults[machine.system_id].length > 0
+              system_id in scriptResults &&
+              scriptResults[system_id].length > 0
             ) {
               dispatch(
                 machineActions.suppressScriptResults(
-                  machine.system_id,
-                  scriptResults[machine.system_id]
+                  system_id,
+                  scriptResults[system_id]
                 )
               );
             }
@@ -181,62 +183,64 @@ export const OverrideTestForm = ({
       }}
       onSuccess={clearHeaderContent}
       processingCount={processingCount}
-      selectedCount={machines ? machines.length : selectedCount ?? 0}
+      selectedCount={selectedCount}
       validationSchema={OverrideTestFormSchema}
       {...actionProps}
     >
       <Row>
         <Col size={6}>
-          {!scriptResultsLoaded ? (
-            <p>
-              <Spinner
-                className="u-no-padding u-no-margin"
-                text="Loading script results..."
-              />
-            </p>
-          ) : (
-            <>
-              <p data-testid-id="failed-results-message">
+          <>
+            {/* TODO: display failed tests message for multiple machines
+              once the API supports it https://github.com/canonical/app-tribe/issues/1427 */}
+            {isSingleMachine ? (
+              <p data-testid="failed-results-message">
                 <i className="p-icon--warning is-inline"></i>
-                {generateFailedTestsMessage({
-                  numFailedTests,
-                  selectedCount: machines
-                    ? machines.length
-                    : selectedCount ?? 0,
-                  machines,
-                })}
-              </p>
-              <p className="u-sv1">
-                Overriding will allow the machines to be deployed, marked with a
-                warning.
-              </p>
-              {numFailedTests > 0 && (
-                <FormikField
-                  label={
-                    <span>
-                      Suppress test-failure icons in the machines list. Results
-                      remain visible in
-                      <br />
-                      {machines?.length === 1 ? (
-                        <Link
-                          to={urls.machines.machine.index({
-                            id: machines[0].system_id,
-                          })}
-                        >
-                          Machine &gt; Hardware tests
-                        </Link>
-                      ) : (
-                        "Machine > Hardware tests"
-                      )}
-                      .
-                    </span>
-                  }
-                  name="suppressResults"
-                  type="checkbox"
+
+                <FailedTestsMessage
+                  numFailedTests={numFailedTests}
+                  selectedCount={selectedCount}
+                  singleMachine={machine}
                 />
-              )}
-            </>
-          )}
+              </p>
+            ) : null}
+            <p className="u-sv1">
+              Overriding will allow the machines to be deployed, marked with a
+              warning.
+            </p>
+            {isSingleMachine && !scriptResultsLoaded ? (
+              <p>
+                <Spinner
+                  className="u-no-padding u-no-margin"
+                  text="Loading script results..."
+                />
+              </p>
+            ) : null}
+            {numFailedTests > 0 && (
+              <FormikField
+                label={
+                  <span>
+                    Suppress test-failure icons in the machines list. Results
+                    remain visible in
+                    <br />
+                    {machine ? (
+                      <Link
+                        to={urls.machines.machine.index({
+                          id: machine.system_id,
+                        })}
+                      >
+                        Machine &gt; Hardware tests
+                      </Link>
+                    ) : (
+                      "Machine > Hardware tests"
+                    )}
+                    .
+                  </span>
+                }
+                name="suppressResults"
+                type="checkbox"
+              />
+            )}
+          </>
         </Col>
       </Row>
     </ActionForm>
