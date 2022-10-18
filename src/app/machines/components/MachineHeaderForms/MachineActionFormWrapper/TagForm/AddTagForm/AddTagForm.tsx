@@ -1,3 +1,5 @@
+import fastDeepEqual from "fast-deep-equal";
+
 import type { MachineActionFormProps } from "app/machines/types";
 import { selectedToSeparateFilters } from "app/store/machine/utils/common";
 import { useFetchMachineCount } from "app/store/machine/utils/hooks";
@@ -49,7 +51,8 @@ export const AddTagForm = ({
         isEnabled:
           selectedMachines && "groups" in selectedMachines
             ? selectedMachines?.groups?.includes(FetchNodeStatus.DEPLOYED)
-            : false,
+            : // if all machines are selected, fetch deployed machine count for all machines
+              fastDeepEqual(groupFilters, {}),
       }
     );
   const deployedSelectedMachineCount =
