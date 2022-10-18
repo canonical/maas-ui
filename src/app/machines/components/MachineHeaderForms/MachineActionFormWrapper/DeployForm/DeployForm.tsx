@@ -46,6 +46,7 @@ export const DeployForm = ({
   errors,
   machines,
   processingCount,
+  searchFilter,
   selectedCount,
   selectedMachines,
   viewingDetails,
@@ -55,7 +56,7 @@ export const DeployForm = ({
     dispatch: dispatchForSelectedMachines,
     actionStatus,
     actionErrors,
-  } = useSelectedMachinesActionsDispatch(selectedMachines);
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const defaultMinHweKernel = useSelector(defaultMinHweKernelSelectors.get);
   const { default_osystem, default_release, osystems, releases } =
     useSelector(osInfoSelectors.get) || {};

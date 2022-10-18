@@ -29,12 +29,13 @@ export const SetPoolForm = ({
   machines,
   processingCount,
   selectedCount,
+  searchFilter,
   selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch(selectedMachines);
+    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const [initialValues, setInitialValues] = useState<SetPoolFormValues>({
     poolSelection: "select",
     description: "",

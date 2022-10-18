@@ -8,17 +8,16 @@ import fastDeepEqual from "fast-deep-equal";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
-import type {
-  FetchGroupKey,
-  FetchSortDirection,
-  FetchParams,
-} from "../types/actions";
+import { FetchGroupKey } from "../types/actions";
+import type { FetchSortDirection, FetchParams } from "../types/actions";
 
-import { selectedToFilters } from "./common";
+import { selectedToFilters, selectedToSeparateFilters } from "./common";
+import { FilterMachineItems } from "./search";
 
 import { ACTION_STATUS } from "app/base/constants";
 import { useCanEdit } from "app/base/hooks";
 import type { ActionStatuses, ActionState, APIError } from "app/base/types";
+import type { MachineActionFormProps } from "app/machines/types";
 import { actions as generalActions } from "app/store/general";
 import {
   architectures as architecturesSelectors,
@@ -36,7 +35,7 @@ import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { Host } from "app/store/types/host";
 import type { NetworkInterface, NetworkLink } from "app/store/types/node";
-import { NodeStatus } from "app/store/types/node";
+import { FetchNodeStatus, NodeStatus } from "app/store/types/node";
 import {
   getLinkInterface,
   hasInterfaceType,
@@ -154,9 +153,13 @@ export const getCombinedActionStatus = (
  * Dispatch machine action(s) for selected machines
  * Will dispatch multiple  actions when there are selected both groups and items
  */
-export const useSelectedMachinesActionsDispatch = (
-  selectedMachines?: SelectedMachines | null
-): MachineActionData & {
+export const useSelectedMachinesActionsDispatch = ({
+  selectedMachines,
+  searchFilter,
+}: {
+  selectedMachines?: SelectedMachines | null;
+  searchFilter?: string;
+}): MachineActionData & {
   dispatch: (
     a: ValueOf<typeof machineActions>,
     args?: Record<string, unknown> & { filter?: never }
@@ -176,6 +179,11 @@ export const useSelectedMachinesActionsDispatch = (
     actionErrors: itemsActionErrors,
     failedSystemIds: itemsFailedSystemIds,
   } = useMachineActionDispatch();
+  const searchFilters: FetchFilters = useMemo(
+    () =>
+      searchFilter ? FilterMachineItems.parseFetchFilters(searchFilter) : {},
+    [searchFilter]
+  );
   const getIsSingleFilter = (
     selectedMachines?: SelectedMachines | null
   ): selectedMachines is { filter: FetchFilters } => {
@@ -207,7 +215,7 @@ export const useSelectedMachinesActionsDispatch = (
         groupsDispatch(
           action({
             ...args,
-            filter: groupFilters,
+            filter: { ...groupFilters, ...searchFilters },
           })
         );
       }
@@ -215,12 +223,12 @@ export const useSelectedMachinesActionsDispatch = (
         itemsDispatch(
           action({
             ...args,
-            filter: itemFilters,
+            filter: { ...itemFilters, ...searchFilters },
           })
         );
       }
     },
-    [groupsDispatch, itemsDispatch, groupFilters, itemFilters]
+    [groupsDispatch, itemsDispatch, groupFilters, itemFilters, searchFilters]
   );
 
   let actionStatus: ActionStatuses = ACTION_STATUS.idle;
@@ -246,7 +254,9 @@ export const useSelectedMachinesActionsDispatch = (
   };
 };
 
-export const useMachineSelectedCount = (): {
+export const useMachineSelectedCount = (
+  filters?: FetchFilters | null
+): {
   selectedCount: number;
   selectedCountLoading: boolean;
 } => {
@@ -263,15 +273,15 @@ export const useMachineSelectedCount = (): {
     delete selectedMachines.items;
   }
   // Get the count of machines in selected groups or filters.
-  const filters = selectedToFilters(selectedMachines);
+  const filtersFromSelected = selectedToFilters(selectedMachines);
   // refactor to use a separate count for groups and separate for items
   const {
     machineCount: fetchedSelectedCount,
     machineCountLoading: selectedLoading,
-  } = useFetchMachineCount(filters);
+  } = useFetchMachineCount({ ...filters, ...filtersFromSelected });
   // Only add the count if there are filters as sending `null` filters
   // to the count API will return a count of all machines.
-  if (filters) {
+  if (filtersFromSelected) {
     selectedCount += fetchedSelectedCount;
   }
   const onlyHasItems =
@@ -352,12 +362,15 @@ export const useFetchSelectedMachines = (
 };
 
 export const useFetchMachineCount = (
-  filters?: FetchFilters | null
+  filters?: FetchFilters | null,
+  queryOptions?: UseFetchQueryOptions
 ): {
   machineCount: number;
   machineCountLoading: boolean;
   machineCountLoaded: boolean;
 } => {
+  const { isEnabled } = queryOptions || { isEnabled: true };
+  const previousIsEnabled = usePrevious(isEnabled);
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
   const previousFilters = usePrevious(filters);
@@ -375,10 +388,13 @@ export const useFetchMachineCount = (
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
-    if (!fastDeepEqual(filters || {}, previousFilters || {}) || !callId) {
+    if (
+      (isEnabled && !fastDeepEqual(filters || {}, previousFilters || {})) ||
+      (isEnabled && !callId)
+    ) {
       setCallId(nanoid());
     }
-  }, [callId, dispatch, filters, previousFilters]);
+  }, [callId, dispatch, filters, previousFilters, isEnabled]);
 
   useEffect(() => {
     return () => {
@@ -389,15 +405,73 @@ export const useFetchMachineCount = (
   }, [callId, dispatch]);
 
   useEffect(() => {
-    if (callId && callId !== previousCallId) {
+    if (isEnabled && callId && callId !== previousCallId) {
       dispatch(machineActions.count(callId, filters));
     }
-  }, [dispatch, filters, callId, previousCallId]);
+  }, [dispatch, filters, callId, previousCallId, isEnabled, previousIsEnabled]);
 
   return {
     machineCount: machineCount || 0,
     machineCountLoading,
     machineCountLoaded,
+  };
+};
+
+/**
+ * Fetch a count of deployed machines for a given filter and selected machines via the API
+ */
+export const useFetchDeployedMachineCount = ({
+  selectedMachines,
+  searchFilter,
+}: Pick<MachineActionFormProps, "selectedMachines" | "searchFilter">): {
+  machineCount: number;
+} => {
+  const searchFilters = searchFilter
+    ? FilterMachineItems.parseFetchFilters(searchFilter)
+    : {};
+  const { groupFilters, itemFilters } = selectedMachines
+    ? selectedToSeparateFilters(selectedMachines)
+    : { groupFilters: null, itemFilters: null };
+  const { machineCount: itemsMachineCount } = useFetchMachineCount(
+    {
+      ...itemFilters,
+      ...searchFilters,
+      status: FetchNodeStatus.DEPLOYED,
+    },
+    { isEnabled: !!itemFilters }
+  );
+
+  // Assume count as 0 if grouping by status and group other than deployed is selected
+  let isGroupCountEnabled = false;
+  if (
+    selectedMachines &&
+    "groups" in selectedMachines &&
+    selectedMachines?.groups?.includes(FetchNodeStatus.DEPLOYED)
+  ) {
+    isGroupCountEnabled = true;
+  } else if (
+    selectedMachines &&
+    "grouping" in selectedMachines &&
+    selectedMachines?.grouping !== FetchGroupKey.Status
+  ) {
+    isGroupCountEnabled = true;
+    // if all machines are selected, fetch deployed machine count for all machines
+  } else if (selectedMachines && "filter" in selectedMachines) {
+    isGroupCountEnabled = true;
+  }
+  const { machineCount: groupsMachineCount } = useFetchMachineCount(
+    {
+      ...groupFilters,
+      ...searchFilters,
+      status: FetchNodeStatus.DEPLOYED,
+    },
+    {
+      isEnabled: isGroupCountEnabled,
+    }
+  );
+
+  return {
+    machineCount: groupsMachineCount + itemsMachineCount,
   };
 };
 

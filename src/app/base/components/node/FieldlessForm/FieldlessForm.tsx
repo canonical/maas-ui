@@ -23,6 +23,7 @@ export const FieldlessForm = <E,>({
   cleanup,
   clearHeaderContent,
   errors,
+  searchFilter,
   selectedMachines,
   modelName,
   nodes,
@@ -32,7 +33,7 @@ export const FieldlessForm = <E,>({
 }: Props<E>): JSX.Element => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch(selectedMachines);
+    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
 
   return (
     <ActionForm<EmptyObject, E>

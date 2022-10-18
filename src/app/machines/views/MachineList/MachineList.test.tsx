@@ -13,8 +13,9 @@ import { Label as AllCheckboxLabel } from "./MachineListTable/AllCheckbox/AllChe
 import { Label } from "./MachineListTable/MachineListTable";
 import { DEFAULTS } from "./MachineListTable/constants";
 
+import { Label as MachinesFilterLabels } from "app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion/MachinesFilterAccordion";
 import { actions as machineActions } from "app/store/machine";
-import { FetchGroupKey } from "app/store/machine/types";
+import { FetchGroupKey, FilterGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
@@ -24,6 +25,7 @@ import {
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
+  machineFilterGroup as machineFilterGroupFactory,
   machineState as machineStateFactory,
   modelRef as modelRefFactory,
   osInfo as osInfoFactory,
@@ -214,6 +216,8 @@ describe("MachineList", () => {
             ],
           }),
         },
+        filters: [machineFilterGroupFactory()],
+        filtersLoaded: true,
       }),
     });
   });
@@ -588,6 +592,47 @@ describe("MachineList", () => {
       screen.getByLabelText(/Group by/),
       "Group by power state"
     );
+
+    expect(
+      screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })
+    ).not.toBe("checked");
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/setSelectedMachines")
+    ).toStrictEqual({
+      type: "machine/setSelectedMachines",
+      payload: { filter: {} },
+    });
+  });
+
+  it("resets the selected machines on filter change", async () => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
+    state.machine.filters = [
+      machineFilterGroupFactory({
+        key: FilterGroupKey.Status,
+        loaded: true,
+        options: [{ key: "status1", label: "Status 1" }],
+      }),
+    ];
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { store } }
+    );
+    const user = userEvent.setup({
+      advanceTimers: jest.advanceTimersByTime,
+    });
+    await user.click(
+      screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })
+    );
+    await user.click(
+      screen.getByRole("button", { name: MachinesFilterLabels.Toggle })
+    );
+    await user.click(
+      screen.getByRole("tab", { name: MachinesFilterLabels.Status })
+    );
+    await user.click(screen.getByRole("checkbox", { name: "Status 1" }));
 
     expect(
       screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })

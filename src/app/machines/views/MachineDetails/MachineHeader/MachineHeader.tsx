@@ -69,6 +69,7 @@ const MachineHeader = ({
       buttons={[
         <NodeActionMenu
           alwaysShowLifecycle
+          excludeActions={[NodeActions.IMPORT_IMAGES]}
           filterActions
           hasSelection={true}
           key="action-dropdown"
@@ -88,6 +89,7 @@ const MachineHeader = ({
         headerContent ? (
           <MachineHeaderForms
             headerContent={headerContent}
+            searchFilter=""
             selectedCount={1}
             selectedMachines={{ items: [machine.system_id] }}
             setHeaderContent={setHeaderContent}

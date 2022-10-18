@@ -27,6 +27,7 @@ export const MachineHeaderForms = ({
   machines,
   setHeaderContent,
   selectedCountLoading,
+  searchFilter,
   selectedCount,
   selectedMachines,
   setSearchFilter,
@@ -54,7 +55,12 @@ export const MachineHeaderForms = ({
       const [, action] = view;
       const conditionalProps = machines
         ? { machines }
-        : { selectedCount, selectedCountLoading, selectedMachines };
+        : {
+            selectedCount,
+            selectedCountLoading,
+            selectedMachines,
+            searchFilter,
+          };
       return (
         <MachineActionFormWrapper
           action={action}

@@ -17,7 +17,7 @@ import type { Props as KernelOptionsFieldProps } from "app/tags/components/Kerne
 
 type Props = PropsWithSpread<
   {
-    deployedMachines?: KernelOptionsFieldProps["deployedMachines"];
+    deployedMachinesCount?: number;
     generateDeployedMessage?: KernelOptionsFieldProps["generateDeployedMessage"];
     name: string | null;
     onTagCreated: (tag: Tag) => void;
@@ -39,7 +39,7 @@ const AddTagFormSchema = Yup.object().shape({
 });
 
 export const AddTagForm = ({
-  deployedMachines,
+  deployedMachinesCount,
   generateDeployedMessage,
   name,
   onTagCreated,
@@ -105,7 +105,7 @@ export const AddTagForm = ({
             type="text"
           />
           <KernelOptionsField
-            deployedMachines={deployedMachines}
+            deployedMachinesCount={deployedMachinesCount}
             generateDeployedMessage={generateDeployedMessage}
           />
         </Col>

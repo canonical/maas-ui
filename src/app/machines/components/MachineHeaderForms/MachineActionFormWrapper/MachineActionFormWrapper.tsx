@@ -27,7 +27,8 @@ import type {
 import { selectedToFilters } from "app/store/machine/utils";
 import { useSelectedMachinesActionsDispatch } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
-type Props = {
+
+type Props = Omit<MachineActionFormProps, "processingCount"> & {
   action: MachineActions;
   applyConfiguredNetworking?: boolean;
   clearHeaderContent: ClearHeaderContent;
@@ -35,13 +36,14 @@ type Props = {
   selectedCountLoading?: boolean;
   setSearchFilter?: SetSearchFilter;
   viewingDetails: boolean;
-} & Omit<MachineActionFormProps, "processingCount">;
+};
 
 export const MachineActionFormWrapper = ({
   action,
   applyConfiguredNetworking,
   clearHeaderContent,
   hardwareType,
+  searchFilter,
   selectedCount,
   selectedCountLoading,
   selectedMachines,
@@ -54,9 +56,10 @@ export const MachineActionFormWrapper = ({
     dispatch: dispatchForSelectedMachines,
     actionStatus,
     actionErrors,
-  } = useSelectedMachinesActionsDispatch(selectedMachines);
+  } = useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
 
   const commonMachineFormProps = {
+    searchFilter,
     clearHeaderContent,
     viewingDetails,
     selectedMachines,
@@ -70,6 +73,7 @@ export const MachineActionFormWrapper = ({
     clearHeaderContent,
     modelName: "machine",
     viewingDetails,
+    searchFilter,
     selectedMachines,
     actionStatus,
     errors: actionErrors,

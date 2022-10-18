@@ -129,6 +129,26 @@ describe("machine hook utils", () => {
       ).toStrictEqual(expected);
     });
 
+    it("does not fetch if isEnabled is false", async () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        (queryOptions: UseFetchQueryOptions) =>
+          useFetchMachineCount({ hostname: "spotted-quoll" }, queryOptions),
+        {
+          initialProps: { isEnabled: false },
+          wrapper: generateWrapper(store),
+        }
+      );
+      const expectedActionType = machineActions.count("mocked-nanoid-1").type;
+      const getDispatches = () =>
+        store
+          .getActions()
+          .filter((action) => action.type === expectedActionType);
+      expect(getDispatches()).toHaveLength(0);
+      rerender({ isEnabled: true });
+      expect(getDispatches()).toHaveLength(1);
+    });
+
     it("returns the machine count", async () => {
       jest.restoreAllMocks();
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
@@ -548,7 +568,11 @@ describe("machine hook utils", () => {
         items: ["abcd123"],
       };
       const { result } = renderHook(
-        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        () =>
+          useSelectedMachinesActionsDispatch({
+            selectedMachines,
+            searchFilter: "",
+          }),
         {
           wrapper: generateWrapper(store),
         }
@@ -587,7 +611,11 @@ describe("machine hook utils", () => {
         items: ["abcd123"],
       };
       const { result } = renderHook(
-        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        () =>
+          useSelectedMachinesActionsDispatch({
+            selectedMachines,
+            searchFilter: "",
+          }),
         {
           wrapper: generateWrapper(store),
         }
@@ -621,7 +649,11 @@ describe("machine hook utils", () => {
         grouping: "status" as FetchGroupKey,
       };
       const { result } = renderHook(
-        () => useSelectedMachinesActionsDispatch(selectedMachines),
+        () =>
+          useSelectedMachinesActionsDispatch({
+            selectedMachines,
+            searchFilter: "",
+          }),
         {
           wrapper: generateWrapper(store),
         }

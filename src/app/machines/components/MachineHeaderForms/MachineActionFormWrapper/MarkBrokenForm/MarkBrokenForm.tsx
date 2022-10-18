@@ -27,13 +27,14 @@ export const MarkBrokenForm = ({
   errors,
   machines,
   processingCount,
+  searchFilter,
   selectedCount,
   selectedMachines,
   viewingDetails,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const { dispatch: dispatchForSelectedMachines, ...actionProps } =
-    useSelectedMachinesActionsDispatch(selectedMachines);
+    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
 
   useEffect(
     () => () => {
