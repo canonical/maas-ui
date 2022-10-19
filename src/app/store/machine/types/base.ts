@@ -51,7 +51,6 @@ export type BaseMachine = BaseNode & {
   pool: ModelRef;
   power_state: PowerState;
   power_type: PowerType["name"] | "";
-  pxe_mac_vendor?: string;
   pxe_mac?: string;
   spaces: string[];
   sriov_support: boolean;

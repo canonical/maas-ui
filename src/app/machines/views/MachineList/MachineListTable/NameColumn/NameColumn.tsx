@@ -109,7 +109,7 @@ const generateIPAddresses = (machine: Machine) => {
 const generateMAC = (machine: Machine, machineURL: string) => {
   return (
     <>
-      <Link title={machine.pxe_mac_vendor} to={machineURL}>
+      <Link title={machine.fqdn} to={machineURL}>
         {machine.pxe_mac}
       </Link>
       {machine.extra_macs && machine.extra_macs.length > 0 ? (

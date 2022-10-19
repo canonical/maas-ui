@@ -1,6 +1,7 @@
 import { Button } from "@canonical/react-components";
 
 import MachinesHeader from "app/base/components/node/MachinesHeader";
+import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import TagHeaderForms from "app/tags/components/TagsHeader/TagHeaderForms";
 import { TagHeaderViews } from "app/tags/constants";
 import type { TagHeaderContent, TagSetHeaderContent } from "app/tags/types";
@@ -37,6 +38,7 @@ export const TagsHeader = ({
   setHeaderContent,
   tagViewState,
 }: Props): JSX.Element => {
+  const { machineCount } = useFetchMachineCount();
   return (
     <MachinesHeader
       aria-label={Label.Header}
@@ -62,6 +64,7 @@ export const TagsHeader = ({
           />
         )
       }
+      machineCount={machineCount}
       title={getHeaderTitle(headerContent)}
     />
   );

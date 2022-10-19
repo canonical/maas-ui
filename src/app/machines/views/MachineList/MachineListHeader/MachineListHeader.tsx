@@ -49,15 +49,17 @@ export const MachineListHeader = ({
     "machineViewTagsSeen",
     false
   );
-  // Get the count of all machines that match the current filters.
-  const { machineCount } = useFetchMachineCount(
-    FilterMachineItems.parseFetchFilters(searchFilter)
-  );
-  const { selectedCount, selectedCountLoading } = useMachineSelectedCount(
-    FilterMachineItems.parseFetchFilters(searchFilter)
-  );
+  const filter = FilterMachineItems.parseFetchFilters(searchFilter);
+  // Get the count of all machines
+  const { machineCount: allMachineCount } = useFetchMachineCount();
+  // Get the count of all machines that match the current filter
+  const { machineCount: availableMachineCount } = useFetchMachineCount(filter, {
+    isEnabled: FilterMachineItems.isNonEmptyFilter(searchFilter),
+  });
+  // Get the count of selected machines that match the current filter
+  const { selectedCount, selectedCountLoading } =
+    useMachineSelectedCount(filter);
   const previousSelectedCount = usePrevious(selectedCount);
-
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
 
   useEffect(() => {
@@ -133,9 +135,10 @@ export const MachineListHeader = ({
           />
         )
       }
+      machineCount={allMachineCount}
       subtitle={
         <ModelListSubtitle
-          available={machineCount}
+          available={availableMachineCount || allMachineCount}
           modelName="machine"
           selected={selectedCount}
         />
