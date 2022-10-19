@@ -12,6 +12,7 @@ import { DEFAULTS } from "./MachineListTable/constants";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter, SortDirection } from "app/base/types";
+import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { actions as generalActions } from "app/store/general";
 import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
@@ -105,8 +106,9 @@ const MachineList = ({
     [dispatch]
   );
 
-  // Fetch vault enabled status on page load
+  // Fetch vault enabled status and controllers on page load
   useEffect(() => {
+    dispatch(controllerActions.fetch());
     dispatch(generalActions.fetchVaultEnabled());
   }, [dispatch]);
 
@@ -119,7 +121,7 @@ const MachineList = ({
         />
       ) : null}
       {!headerFormOpen ? <ErrorsNotification errors={machinesErrors} /> : null}
-      {configuredControllers.length >= 1 &&
+      {configuredControllers.length >= 0 &&
       unconfiguredControllers.length >= 1 ? (
         <Notification severity="caution" title="Incomplete Vault integration">
           Configure {unconfiguredControllers.length} other{" "}
