@@ -9,10 +9,12 @@ import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import PoolAdd from "app/pools/views/PoolAdd";
 import PoolEdit from "app/pools/views/PoolEdit";
+import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import { getRelativeRoute } from "app/utils";
 
 const Pools = (): JSX.Element => {
   const base = urls.pools.index;
+  const { machineCount } = useFetchMachineCount();
   return (
     <Section
       header={
@@ -22,6 +24,7 @@ const Pools = (): JSX.Element => {
               Add pool
             </Button>,
           ]}
+          machineCount={machineCount}
         />
       }
     >

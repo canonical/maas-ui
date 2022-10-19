@@ -1,3 +1,5 @@
+import fastDeepEqual from "fast-deep-equal";
+
 import { MachineMeta } from "app/store/machine/types";
 import type { Machine, FetchFilters } from "app/store/machine/types";
 import type { Tag } from "app/store/tag/types";
@@ -240,6 +242,10 @@ class FilterMachineHandlers extends FilterHandlers {
       },
       {}
     );
+  };
+
+  isNonEmptyFilter = (filter: string) => {
+    return !fastDeepEqual(this.parseFetchFilters(filter), {});
   };
 
   /**

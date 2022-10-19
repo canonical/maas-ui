@@ -149,6 +149,28 @@ describe("machine hook utils", () => {
       expect(getDispatches()).toHaveLength(1);
     });
 
+    it("fetches if isEnabled changes back to true", async () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        (queryOptions: UseFetchQueryOptions) =>
+          useFetchMachineCount({ hostname: "spotted-quoll" }, queryOptions),
+        {
+          initialProps: { isEnabled: true },
+          wrapper: generateWrapper(store),
+        }
+      );
+      const expectedActionType = machineActions.count("mocked-nanoid-1").type;
+      const getDispatches = () =>
+        store
+          .getActions()
+          .filter((action) => action.type === expectedActionType);
+      expect(getDispatches()).toHaveLength(1);
+      rerender({ isEnabled: false });
+      expect(getDispatches()).toHaveLength(1);
+      rerender({ isEnabled: true });
+      expect(getDispatches()).toHaveLength(2);
+    });
+
     it("returns the machine count", async () => {
       jest.restoreAllMocks();
       jest.spyOn(reduxToolkit, "nanoid").mockReturnValueOnce("mocked-nanoid");
@@ -343,6 +365,28 @@ describe("machine hook utils", () => {
       expect(getDispatches()).toHaveLength(0);
       rerender({ isEnabled: true });
       expect(getDispatches()).toHaveLength(1);
+    });
+
+    it("fetches again if isEnabled changes back to true", async () => {
+      const store = mockStore(state);
+      const { rerender } = renderHook(
+        (queryOptions: UseFetchQueryOptions) =>
+          useFetchMachines(undefined, queryOptions),
+        {
+          initialProps: { isEnabled: true },
+          wrapper: generateWrapper(store),
+        }
+      );
+      const expectedActionType = machineActions.fetch("mocked-nanoid-1").type;
+      const getDispatches = () =>
+        store
+          .getActions()
+          .filter((action) => action.type === expectedActionType);
+      expect(getDispatches()).toHaveLength(1);
+      rerender({ isEnabled: false });
+      expect(getDispatches()).toHaveLength(1);
+      rerender({ isEnabled: true });
+      expect(getDispatches()).toHaveLength(2);
     });
 
     it("does not fetch again if the options haven't changed including empty objects", () => {

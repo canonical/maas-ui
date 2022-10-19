@@ -8,20 +8,21 @@ import { matchPath, Link } from "react-router-dom-v5-compat";
 import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
-import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { actions as tagActions } from "app/store/tag";
 import tagSelectors from "app/store/tag/selectors";
 
-type Props = SectionHeaderProps;
+type Props = SectionHeaderProps & { machineCount: number };
 
-export const MachinesHeader = (props: Props): JSX.Element => {
+export const MachinesHeader = ({
+  machineCount,
+  ...props
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
   const poolCount = useSelector(resourcePoolSelectors.count);
   const tagCount = useSelector(tagSelectors.count);
-  const { machineCount } = useFetchMachineCount();
 
   useEffect(() => {
     dispatch(resourcePoolActions.fetch());
