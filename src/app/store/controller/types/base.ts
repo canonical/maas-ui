@@ -124,7 +124,6 @@ export type ControllerDetails = BaseController &
     power_state: PowerState;
     power_type: PowerType["name"];
     previous_status: NodeStatus;
-    pxe_mac_vendor?: string;
     pxe_mac?: string;
     register_vmhost: boolean;
     show_os_info: boolean;
