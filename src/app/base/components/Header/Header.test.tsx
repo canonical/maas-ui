@@ -230,7 +230,9 @@ it("displays a warning icon next to controllers if vault is not fully configured
   ];
   renderWithBrowserRouter(<Header />, { route: "/", wrapperProps: { state } });
 
-  const controllerLink = screen.getByRole("link", { name: "Controllers" });
+  const controllerLink = screen.getByRole("link", {
+    name: "warning Controllers",
+  });
   const warningIcon = within(controllerLink).getByTestId("warning-icon");
   expect(warningIcon).toHaveClass(
     "p-navigation--item-icon p-icon--security-warning-grey"

@@ -169,6 +169,7 @@ const generateItems = ({
       link.label === "Controllers" && vaultIncomplete ? ( // check if vault is set up on all controllers
         <>
           <Icon
+            aria-label="warning"
             className="p-navigation--item-icon"
             data-testid="warning-icon"
             name="security-warning-grey"
