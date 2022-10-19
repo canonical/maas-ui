@@ -30,7 +30,8 @@ const docsUrls = {
   tagsXpathExpressions:
     "https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions",
   vaultIntegration:
-    "https://maas.io/docs/how-to-integrate-with-vault#heading--enabling-vault",
+    // "https://maas.io/docs/how-to-integrate-with-vault#heading--enabling-vault", <-- TODO: Enable this link when the page is ready
+    "https://maas.io/docs",
 } as const;
 
 export default docsUrls;
