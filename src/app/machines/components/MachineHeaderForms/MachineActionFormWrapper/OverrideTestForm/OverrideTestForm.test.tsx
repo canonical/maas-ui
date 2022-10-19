@@ -1,3 +1,6 @@
+import reduxToolkit from "@reduxjs/toolkit";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -22,19 +25,27 @@ import {
   rootState as rootStateFactory,
   scriptResult as scriptResultFactory,
   scriptResultResult as scriptResultResultFactory,
+  machineStateDetails as machineStateDetailsFactory,
+  machineStateDetailsItem as machineStateDetailsItemFactory,
   scriptResultState as scriptResultStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState, {}>();
 
 describe("OverrideTestForm", () => {
   let state: RootState;
 
   beforeEach(() => {
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
+        details: machineStateDetailsFactory({
+          "123456": machineStateDetailsItemFactory({
+            system_id: "abc123",
+          }),
+        }),
         items: [
           machineFactory({ hostname: "host1", system_id: "abc123" }),
           machineFactory({ hostname: "host2", system_id: "def456" }),
@@ -79,92 +90,75 @@ describe("OverrideTestForm", () => {
     machine with no failed tests`, () => {
     state.scriptresult.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <OverrideTestForm
-              clearHeaderContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <OverrideTestForm
+        clearHeaderContent={jest.fn()}
+        selectedCount={1}
+        selectedMachines={{
+          items: state.machine.items.map((item) => item.system_id),
+        }}
+        viewingDetails={true}
+      />,
+      { wrapperProps: { store }, route: "/machines" }
     );
 
-    expect(
-      wrapper.find('[data-testid-id="failed-results-message"]').text()
-    ).toBe(
+    expect(screen.getByTestId("failed-results-message")).toHaveTextContent(
       "Machine host1 has not failed any tests. This can occur if the test suite failed to start."
     );
-    expect(wrapper.find('FormikField[name="suppressTests"]').exists()).toBe(
-      false
-    );
+    expect(
+      screen.queryByLabelText(/Suppress test-failure/)
+    ).not.toBeInTheDocument();
   });
 
   it(`displays failed tests warning without suppress tests checkbox for multiple
     machines with no failed tests`, () => {
     state.scriptresult.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <OverrideTestForm
-              clearHeaderContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <OverrideTestForm
+        clearHeaderContent={jest.fn()}
+        selectedCount={1}
+        selectedMachines={{
+          items: state.machine.items.map((item) => item.system_id),
+        }}
+        viewingDetails={true}
+      />,
+      { wrapperProps: { store }, route: "/machines" }
     );
 
+    expect(screen.getByTestId("failed-results-message")).toHaveTextContent(
+      "Machine host1 has not failed any tests. This can occur if the test suite failed to start."
+    );
     expect(
-      wrapper.find('[data-testid-id="failed-results-message"]').text()
-    ).toBe(
-      "2 machines have not failed any tests. This can occur if the test suite failed to start."
-    );
-    expect(wrapper.find('FormikField[name="suppressTests"]').exists()).toBe(
-      false
-    );
+      screen.queryByLabelText(/Suppress test-failure/)
+    ).not.toBeInTheDocument();
   });
 
   it("displays message with link for a single machine with failed tests", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <OverrideTestForm
-              clearHeaderContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <OverrideTestForm
+        clearHeaderContent={jest.fn()}
+        selectedCount={1}
+        selectedMachines={{
+          items: [state.machine.items[0].system_id],
+        }}
+        viewingDetails={false}
+      />,
+      { wrapperProps: { store }, route: "/machines" }
     );
 
-    expect(
-      wrapper.find('[data-testid-id="failed-results-message"]').text()
-    ).toBe("Machine host1 has failed 1 test.");
-    expect(
-      wrapper.find('[data-testid-id="failed-results-message"] a').props().href
-    ).toBe("/machine/abc123");
+    expect(screen.getByTestId("failed-results-message")).toHaveTextContent(
+      "Machine host1 has failed 1 test."
+    );
+    expect(screen.getByRole("link", { name: /failed 1 test/ })).toHaveAttribute(
+      "href",
+      "/machine/abc123"
+    );
   });
 
-  it("displays message for multiple machines with failed tests", () => {
+  // TODO: allow suppressing results for multiple machines via filter once the API supports it https://github.com/canonical/app-tribe/issues/1427
+  it.skip("displays message for multiple machines with failed tests", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -174,8 +168,9 @@ describe("OverrideTestForm", () => {
           <CompatRouter>
             <OverrideTestForm
               clearHeaderContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
+              selectedMachines={{
+                items: state.machine.items.map((item) => item.system_id),
+              }}
               viewingDetails={false}
             />
           </CompatRouter>
@@ -188,29 +183,23 @@ describe("OverrideTestForm", () => {
     ).toBe("2 machines have failed 2 tests.");
   });
 
-  it("dispatches actions to override tests for given machines", () => {
+  it("dispatches actions to override tests for given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <OverrideTestForm
-              clearHeaderContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <OverrideTestForm
+        clearHeaderContent={jest.fn()}
+        selectedCount={1}
+        selectedMachines={{
+          items: state.machine.items.map((item) => item.system_id),
+        }}
+        viewingDetails={false}
+      />,
+      { wrapperProps: { store }, route: "/machines" }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        suppressResults: false,
-      })
+    await userEvent.click(
+      screen.getByRole("button", { name: /Override failed tests/i })
     );
     expect(
       store
@@ -220,6 +209,7 @@ describe("OverrideTestForm", () => {
       {
         type: "machine/overrideFailedTesting",
         meta: {
+          callId: "123456",
           model: "machine",
           method: "action",
         },
@@ -227,77 +217,84 @@ describe("OverrideTestForm", () => {
           params: {
             action: NodeActions.OVERRIDE_FAILED_TESTING,
             extra: {},
-            system_id: "abc123",
-          },
-        },
-      },
-      {
-        type: "machine/overrideFailedTesting",
-        meta: {
-          model: "machine",
-          method: "action",
-        },
-        payload: {
-          params: {
-            action: NodeActions.OVERRIDE_FAILED_TESTING,
-            extra: {},
-            system_id: "def456",
+            filter: { id: ["abc123", "def456"] },
+            system_id: undefined,
           },
         },
       },
     ]);
   });
 
-  it("dispatches actions to fetch script results", () => {
+  it("dispatches actions to fetch script results", async () => {
     state.scriptresult.items = [];
     state.nodescriptresult.items = {};
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <OverrideTestForm
-              clearHeaderContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <OverrideTestForm
+        clearHeaderContent={jest.fn()}
+        selectedCount={1}
+        selectedMachines={{
+          items: [state.machine.items[0].system_id],
+        }}
+        viewingDetails={false}
+      />,
+      { wrapperProps: { store }, route: "/machines" }
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Override failed tests/i })
     );
     expect(
       store
         .getActions()
+        .filter((action) => action.type === "machine/overrideFailedTesting")
+    ).toStrictEqual([
+      {
+        type: "machine/overrideFailedTesting",
+        meta: {
+          callId: "123456",
+          model: "machine",
+          method: "action",
+        },
+        payload: {
+          params: {
+            action: NodeActions.OVERRIDE_FAILED_TESTING,
+            extra: {},
+            filter: { id: ["abc123"] },
+            system_id: undefined,
+          },
+        },
+      },
+    ]);
+    expect(
+      store
+        .getActions()
         .filter((action) => action.type === "scriptresult/getByNodeId").length
-    ).toBe(2);
+    ).toBe(1);
   });
 
-  it("does not dispatch actions once script results have been requested", () => {
-    state.nodescriptresult.items = { abc123: [1], def456: [2] };
+  it("does not dispatch actions once script results have been requested", async () => {
+    state.nodescriptresult.items = { abc123: [1] };
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <OverrideTestForm
-              clearHeaderContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <OverrideTestForm
+        clearHeaderContent={jest.fn()}
+        selectedCount={1}
+        selectedMachines={{
+          items: [state.machine.items[0].system_id],
+        }}
+        viewingDetails={false}
+      />,
+      { wrapperProps: { store }, route: "/machines" }
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: /Override failed tests/i })
     );
     const origionalDispatches = store
       .getActions()
       .filter((action) => action.type === "scriptresult/getByNodeId").length;
-    expect(origionalDispatches).toBe(2);
+    expect(origionalDispatches).toBe(1);
     act(() => {
       // Fire a fake action so that the useEffect runs again.
       store.dispatch({ type: "" });
@@ -310,29 +307,26 @@ describe("OverrideTestForm", () => {
     ).toBe(origionalDispatches);
   });
 
-  it("dispatches actions to suppress script results for given machines", () => {
+  it("dispatches actions to suppress script results for given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <OverrideTestForm
-              clearHeaderContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <OverrideTestForm
+        clearHeaderContent={jest.fn()}
+        selectedCount={1}
+        selectedMachines={{
+          items: [state.machine.items[0].system_id],
+        }}
+        viewingDetails={false}
+      />,
+      { wrapperProps: { store }, route: "/machines" }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        suppressResults: true,
-      })
+    await userEvent.click(
+      screen.getByRole("button", { name: /Override failed tests/i })
+    );
+    await userEvent.click(screen.getByLabelText(/Suppress test-failure/));
+    await userEvent.click(
+      screen.getByRole("button", { name: /Override failed tests/i })
     );
     expect(
       store
@@ -348,19 +342,6 @@ describe("OverrideTestForm", () => {
           params: {
             script_result_ids: [1],
             system_id: "abc123",
-          },
-        },
-        type: "machine/suppressScriptResults",
-      },
-      {
-        meta: {
-          method: "set_script_result_suppressed",
-          model: "machine",
-        },
-        payload: {
-          params: {
-            script_result_ids: [2],
-            system_id: "def456",
           },
         },
         type: "machine/suppressScriptResults",
