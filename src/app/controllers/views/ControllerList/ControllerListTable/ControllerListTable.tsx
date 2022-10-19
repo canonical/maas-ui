@@ -16,6 +16,7 @@ import docsUrls from "app/base/docsUrls";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import ImageStatus from "app/controllers/components/ImageStatus";
+import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
 import { actions as generalActions } from "app/store/general";
@@ -209,6 +210,7 @@ const ControllerListTable = ({
 
   useEffect(() => {
     dispatch(generalActions.fetchVaultEnabled());
+    dispatch(controllerActions.fetch());
   }, [dispatch]);
 
   return (
