@@ -91,6 +91,12 @@ describe("general reducer", () => {
         loaded: false,
         loading: false,
       },
+      vaultEnabled: {
+        data: null,
+        errors: null,
+        loaded: false,
+        loading: false,
+      },
       version: {
         data: "",
         errors: null,
