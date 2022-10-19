@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from "react-redux";
 
 import docsUrls from "app/base/docsUrls";
+import { useId } from "app/base/hooks/base";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { actions as generalActions } from "app/store/general";
@@ -20,7 +21,7 @@ export enum Labels {
   IntegrateWithVault = "Integrate with Vault",
   VaultEnabled = "Vault enabled",
   SetupInstructions = "Vault setup instructions",
-  SecretMigrationInsctructions = "Secret migration instructions",
+  SecretMigrationInstructions = "Incomplete Vault integration, migrate secrets on one region controller to complete setup.",
 }
 
 const VaultSettings = (): JSX.Element => {
@@ -30,6 +31,7 @@ const VaultSettings = (): JSX.Element => {
   const vaultEnabled = useSelector((state: RootState) =>
     vaultEnabledSelectors.get(state)
   );
+  const id = useId();
 
   const { unconfiguredControllers, configuredControllers } = useSelector(
     (state: RootState) =>
@@ -62,7 +64,7 @@ const VaultSettings = (): JSX.Element => {
             {configuredControllers.length >= 1 ? (
               <p>
                 <Icon name="security-warning" />
-                <span className="u-nudge-right--small">
+                <span className="u-nudge-right--small" id={id}>
                   Incomplete Vault integration, configure{" "}
                   {unconfiguredControllers.length} other{" "}
                   {unconfiguredControllers.length > 1
@@ -72,14 +74,14 @@ const VaultSettings = (): JSX.Element => {
                 </span>
               </p>
             ) : (
-              <p>
+              <h5>
                 <Icon name="security" />
-                <span className="u-nudge-right--small">
-                  Integrate with Vault
+                <span className="u-nudge-right--small" id={id}>
+                  {Labels.IntegrateWithVault}
                 </span>
-              </p>
+              </h5>
             )}
-            <div aria-label={Labels.SetupInstructions}>
+            <section aria-labelledby={id}>
               <p>
                 1. Get the $wrapped_token and $role_id from Vault.{" "}
                 <a
@@ -112,18 +114,17 @@ const VaultSettings = (): JSX.Element => {
                   },
                 ]}
               />
-            </div>
+            </section>
           </>
         ) : (
           <>
             <p>
               <Icon name="security-warning" />
-              <span className="u-nudge-right--small">
-                Incomplete Vault integration, migrate secrets on one region
-                controller to complete setup.
+              <span className="u-nudge-right--small" id={id}>
+                {Labels.SecretMigrationInstructions}
               </span>
             </p>
-            <div aria-label={Labels.SecretMigrationInsctructions}>
+            <section aria-labelledby={id}>
               <CodeSnippet
                 blocks={[
                   {
@@ -132,7 +133,7 @@ const VaultSettings = (): JSX.Element => {
                   },
                 ]}
               />
-            </div>
+            </section>
           </>
         )}
 

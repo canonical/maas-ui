@@ -26,7 +26,7 @@ const Security = (): JSX.Element => {
     dispatch(generalActions.fetchVaultEnabled());
   }, [dispatch]);
 
-  if (!tlsCertificateLoaded || !vaultEnabledLoaded) {
+  if (!tlsCertificateLoaded && !vaultEnabledLoaded) {
     return <Spinner text="Loading..." />;
   }
 
@@ -35,7 +35,13 @@ const Security = (): JSX.Element => {
       <Row>
         <Col size={6}>
           <h4>Security protocols</h4>
-          {tlsCertificate ? <TLSEnabled /> : <TLSDisabled />}
+          {!tlsCertificateLoaded ? (
+            <Spinner text="Loading..." />
+          ) : tlsCertificate ? (
+            <TLSEnabled />
+          ) : (
+            <TLSDisabled />
+          )}
         </Col>
       </Row>
       <Row>

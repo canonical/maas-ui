@@ -64,26 +64,12 @@ describe("VaultSettings", () => {
       screen.getByText(VaultSettingsLabels.IntegrateWithVault)
     ).toBeInTheDocument();
     expect(
-      screen.getByLabelText(VaultSettingsLabels.SetupInstructions)
+      screen.getByLabelText(VaultSettingsLabels.IntegrateWithVault)
     ).toBeInTheDocument();
   });
 
   it("displays the vault setup instructions a warning if vault is not configured on all controllers", () => {
-    const controllers = [
-      controllerFactory({
-        fqdn: "testcontroller1",
-        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
-        system_id: "abc123",
-        vault_configured: true,
-      }),
-      controllerFactory({
-        fqdn: "testcontroller2",
-        node_type: NodeType.REGION_CONTROLLER,
-        system_id: "def456",
-        vault_configured: false,
-      }),
-    ];
-
+    controllers[0].vault_configured = true;
     state.controller.items = controllers;
 
     renderWithMockStore(<VaultSettings />, { state });
@@ -94,54 +80,30 @@ describe("VaultSettings", () => {
       )
     );
     expect(
-      screen.getByLabelText(VaultSettingsLabels.SetupInstructions)
+      screen.getByLabelText(
+        /Incomplete Vault integration, configure 1 other controller with Vault to complete this operation./
+      )
     ).toBeInTheDocument();
   });
 
   it("displays only the secret migration instruction if all controllers are set up but secrets are not migrated", () => {
-    const controllers = [
-      controllerFactory({
-        fqdn: "testcontroller1",
-        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
-        system_id: "abc123",
-        vault_configured: true,
-      }),
-      controllerFactory({
-        fqdn: "testcontroller2",
-        node_type: NodeType.REGION_CONTROLLER,
-        system_id: "def456",
-        vault_configured: true,
-      }),
-    ];
-
+    controllers[0].vault_configured = true;
+    controllers[1].vault_configured = true;
     state.controller.items = controllers;
 
     renderWithMockStore(<VaultSettings />, { state });
 
     expect(
-      screen.getByLabelText(VaultSettingsLabels.SecretMigrationInsctructions)
+      screen.getByText(VaultSettingsLabels.SecretMigrationInstructions)
     ).toBeInTheDocument();
     expect(
-      screen.queryByLabelText(VaultSettingsLabels.SetupInstructions)
-    ).not.toBeInTheDocument();
+      screen.getByLabelText(VaultSettingsLabels.SecretMigrationInstructions)
+    ).toBeInTheDocument();
   });
 
   it("displays 'Vault enabled' and hides setup instructions if Vault is configured on all controllers", () => {
-    const controllers = [
-      controllerFactory({
-        fqdn: "testcontroller1",
-        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
-        system_id: "abc123",
-        vault_configured: true,
-      }),
-      controllerFactory({
-        fqdn: "testcontroller2",
-        node_type: NodeType.REGION_CONTROLLER,
-        system_id: "def456",
-        vault_configured: true,
-      }),
-    ];
-
+    controllers[0].vault_configured = true;
+    controllers[1].vault_configured = true;
     state.controller.items = controllers;
     state.general.vaultEnabled.data = true;
 

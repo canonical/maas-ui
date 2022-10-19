@@ -13,16 +13,36 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-it("displays loading text if TLS certificate or Vault Status has not loaded", () => {
+it("displays loading text if TLS certificate has not loaded", () => {
   const state = rootStateFactory({
     general: generalStateFactory({
       tlsCertificate: tlsCertificateStateFactory({
         data: null,
         loaded: false,
+        loading: true,
+      }),
+      vaultEnabled: vaultEnabledStateFactory({
+        data: false,
+        loaded: true,
+      }),
+    }),
+  });
+  renderWithBrowserRouter(<Security />, { wrapperProps: { state } });
+
+  expect(screen.getByText(/Loading.../)).toBeInTheDocument();
+});
+
+it("displays loading text if Vault Status has not loaded", () => {
+  const state = rootStateFactory({
+    general: generalStateFactory({
+      tlsCertificate: tlsCertificateStateFactory({
+        data: null,
+        loaded: true,
       }),
       vaultEnabled: vaultEnabledStateFactory({
         data: false,
         loaded: false,
+        loading: true,
       }),
     }),
   });
