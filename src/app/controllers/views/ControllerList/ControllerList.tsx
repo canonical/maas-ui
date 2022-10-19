@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
+import { Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom-v5-compat";
@@ -14,6 +15,8 @@ import type { ControllerHeaderContent } from "app/controllers/types";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { FilterControllers } from "app/store/controller/utils";
+import { actions as generalActions } from "app/store/general";
+import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 
@@ -24,6 +27,7 @@ const ControllerList = (): JSX.Element => {
   const currentFilters = FilterControllers.queryStringToFilters(
     location.search
   );
+
   const [headerContent, setHeaderContent] =
     useState<ControllerHeaderContent | null>(null);
   const [searchFilter, setFilter] = useState(
@@ -31,15 +35,23 @@ const ControllerList = (): JSX.Element => {
     FilterControllers.filtersToString(currentFilters)
   );
   const selectedIDs = useSelector(controllerSelectors.selectedIDs);
+
+  const { unconfiguredControllers, configuredControllers } = useSelector(
+    (state: RootState) =>
+      controllerSelectors.getVaultConfiguredControllers(state)
+  );
   const filteredControllers = useSelector((state: RootState) =>
     controllerSelectors.search(state, searchFilter || null, selectedIDs)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
+  const vaultEnabledLoading = useSelector(vaultEnabledSelectors.loading);
+  const vaultEnabled = useSelector(vaultEnabledSelectors.get);
   useWindowTitle("Controllers");
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
     dispatch(tagActions.fetch());
+    dispatch(generalActions.fetchVaultEnabled());
   }, [dispatch]);
 
   // Update the URL when filters are changed.
@@ -62,6 +74,24 @@ const ControllerList = (): JSX.Element => {
         />
       }
     >
+      {configuredControllers.length >= 1 &&
+      unconfiguredControllers.length >= 1 ? (
+        <Notification severity="caution" title="Incomplete Vault integration">
+          Configure {unconfiguredControllers.length} other{" "}
+          <a href="/controllers">
+            {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
+          </a>{" "}
+          with Vault to complete this operation. Check the{" "}
+          <a href="/settings/configuration/security">security settings</a> for
+          more information.
+        </Notification>
+      ) : unconfiguredControllers.length === 0 && vaultEnabled === false ? (
+        <Notification severity="caution" title="Incomplete Vault integration">
+          Migrate your secrets to Vault to complete this operation. Check the{" "}
+          <a href="/settings/configuration/security">security settings</a> for
+          more information.
+        </Notification>
+      ) : null}
       <ControllerListControls
         filter={searchFilter}
         setFilter={setSearchFilter}
@@ -69,7 +99,7 @@ const ControllerList = (): JSX.Element => {
       <ControllerListTable
         controllers={filteredControllers}
         hasFilter={!!searchFilter}
-        loading={controllersLoading}
+        loading={controllersLoading || vaultEnabledLoading}
         onSelectedChange={(controllerIDs) => {
           dispatch(controllerActions.setSelected(controllerIDs));
         }}
