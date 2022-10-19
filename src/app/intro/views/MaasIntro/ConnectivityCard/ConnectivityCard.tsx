@@ -10,7 +10,7 @@ export enum Labels {
   UpstreamDns = "DNS forwarder",
   MainArchiveUrl = "Ubuntu archive",
   PortsArchiveUrl = "Ubuntu extra architectures",
-  HttpProxy = "APT &amp; HTTP/HTTPS proxy server",
+  HttpProxy = "APT \u0026 HTTP/HTTPS proxy server",
 }
 
 const ConnectivityCard = (): JSX.Element => {
