@@ -255,11 +255,13 @@ export const useSelectedMachinesActionsDispatch = ({
 };
 
 export const useMachineSelectedCount = (
-  filters?: FetchFilters | null
+  filters?: FetchFilters | null,
+  queryOptions?: UseFetchQueryOptions
 ): {
   selectedCount: number;
   selectedCountLoading: boolean;
 } => {
+  const { isEnabled } = queryOptions || { isEnabled: true };
   let selectedState = useSelector(machineSelectors.selectedMachines);
   let selectedCount = 0;
   // Shallow clone the selected state so that object can be modified.
@@ -274,11 +276,13 @@ export const useMachineSelectedCount = (
   }
   // Get the count of machines in selected groups or filters.
   const filtersFromSelected = selectedToFilters(selectedMachines);
-  // refactor to use a separate count for groups and separate for items
   const {
     machineCount: fetchedSelectedCount,
     machineCountLoading: selectedLoading,
-  } = useFetchMachineCount({ ...filters, ...filtersFromSelected });
+  } = useFetchMachineCount(
+    { ...filters, ...filtersFromSelected },
+    { isEnabled: isEnabled && filtersFromSelected !== null }
+  );
   // Only add the count if there are filters as sending `null` filters
   // to the count API will return a count of all machines.
   if (filtersFromSelected) {
@@ -388,13 +392,23 @@ export const useFetchMachineCount = (
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
-    if (
-      (isEnabled && !fastDeepEqual(filters || {}, previousFilters || {})) ||
-      (isEnabled && !callId)
-    ) {
-      setCallId(nanoid());
+    if (isEnabled) {
+      if (
+        !fastDeepEqual(filters || {}, previousFilters || {}) ||
+        !callId ||
+        isEnabled !== previousIsEnabled
+      ) {
+        setCallId(nanoid());
+      }
     }
-  }, [callId, dispatch, filters, previousFilters, isEnabled]);
+  }, [
+    callId,
+    dispatch,
+    filters,
+    previousFilters,
+    isEnabled,
+    previousIsEnabled,
+  ]);
 
   useEffect(() => {
     return () => {
@@ -554,19 +568,26 @@ export const useFetchMachines = (
   useEffect(() => {
     // undefined, null and {} are all equivalent i.e. no filters so compare the
     // current and previous filters using an empty object if the filters are falsy.
-    if (
-      (isEnabled && !fastDeepEqual(options || {}, previousOptions || {})) ||
-      !callId
-    ) {
-      setCallId(nanoid());
+    if (isEnabled) {
+      if (
+        !fastDeepEqual(options || {}, previousOptions || {}) ||
+        !callId ||
+        isEnabled !== previousIsEnabled
+      ) {
+        setCallId(nanoid());
+      }
     }
-  }, [callId, options, previousOptions, isEnabled]);
+  }, [
+    callId,
+    dispatch,
+    options,
+    previousOptions,
+    isEnabled,
+    previousIsEnabled,
+  ]);
 
   useEffect(() => {
-    if (
-      (isEnabled && callId && callId !== previousCallId) ||
-      (isEnabled !== previousIsEnabled && callId)
-    ) {
+    if (isEnabled && callId && callId !== previousCallId) {
       dispatch(
         machineActions.fetch(
           callId,

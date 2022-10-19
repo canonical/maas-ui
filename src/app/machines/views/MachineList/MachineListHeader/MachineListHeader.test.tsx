@@ -65,7 +65,11 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a loader if machines have not loaded", () => {
-    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+    state.machine.selectedMachines = {
+      groups: ["admin"],
+      grouping: FetchGroupKey.Owner,
+    };
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
       loading: true,
     });
     const store = mockStore(state);
@@ -89,7 +93,7 @@ describe("MachineListHeader", () => {
   });
 
   it("displays a machine count if machines have loaded", () => {
-    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+    state.machine.counts["mocked-nanoid-1"] = machineStateCountFactory({
       count: 2,
       loaded: true,
     });
@@ -121,10 +125,6 @@ describe("MachineListHeader", () => {
       grouping: FetchGroupKey.Owner,
     };
     state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
-      count: 10,
-      loaded: true,
-    });
-    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
       loading: true,
     });
     renderWithBrowserRouter(
@@ -188,10 +188,6 @@ describe("MachineListHeader", () => {
       grouping: FetchGroupKey.Owner,
     };
     state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
-      count: 10,
-      loaded: true,
-    });
-    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
       count: 2,
       loaded: true,
     });
@@ -214,10 +210,6 @@ describe("MachineListHeader", () => {
       grouping: FetchGroupKey.Owner,
     };
     state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
-      count: 10,
-      loaded: true,
-    });
-    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
       count: 2,
       loaded: true,
     });
@@ -235,11 +227,11 @@ describe("MachineListHeader", () => {
 
   it("displays a message when all machines have been selected", () => {
     state.machine.selectedMachines = { filter: {} };
-    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+    state.machine.counts["mocked-nanoid-1"] = machineStateCountFactory({
       count: 10,
       loaded: true,
     });
-    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
       count: 10,
       loaded: true,
     });

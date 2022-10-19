@@ -218,3 +218,11 @@ describe("client side search", () => {
     });
   });
 });
+
+it("isNonEmptyFilter returns false for empty search string", () => {
+  expect(FilterMachineItems.isNonEmptyFilter("")).toBe(false);
+});
+
+it("isNonEmptyFilter returns true for defined search string", () => {
+  expect(FilterMachineItems.isNonEmptyFilter("status:(=broken)")).toBe(true);
+});
