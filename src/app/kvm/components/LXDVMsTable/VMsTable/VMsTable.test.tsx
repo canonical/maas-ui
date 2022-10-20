@@ -11,6 +11,8 @@ import VMsTable, { Label } from "./VMsTable";
 import { SortDirection } from "app/base/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import {
+  pod as podFactory,
+  podState as podStateFactory,
   machine as machineFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
@@ -41,6 +43,7 @@ describe("VMsTable", () => {
         getHostColumn={undefined}
         getResources={getResources}
         machinesLoading={true}
+        pods={[]}
         searchFilter=""
         setSortDirection={jest.fn()}
         setSortKey={jest.fn()}
@@ -91,6 +94,7 @@ describe("VMsTable", () => {
             <VMsTable
               getResources={getResources}
               machinesLoading={false}
+              pods={[]}
               searchFilter=""
               setSortDirection={setSortDirection}
               setSortKey={setSortKey}
@@ -109,6 +113,7 @@ describe("VMsTable", () => {
   });
 
   it("can dispatch an action to select all VMs", () => {
+    const pod = podFactory({ id: 1, name: "pod-1" });
     const vms = [
       machineFactory({
         system_id: "abc123",
@@ -122,6 +127,7 @@ describe("VMsTable", () => {
         items: vms,
         selectedMachines: null,
       }),
+      pod: podStateFactory({ items: [pod], loaded: true }),
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -133,6 +139,7 @@ describe("VMsTable", () => {
             <VMsTable
               getResources={getResources}
               machinesLoading={false}
+              pods={[pod.name]}
               searchFilter=""
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}
@@ -154,11 +161,12 @@ describe("VMsTable", () => {
         .find((action) => action.type === "machine/setSelectedMachines")
     ).toStrictEqual({
       type: "machine/setSelectedMachines",
-      payload: { filter: {} },
+      payload: { filter: { pod: [pod.name] } },
     });
   });
 
   it("can dispatch an action to unselect all VMs", () => {
+    const pod = podFactory({ id: 1, name: "pod-1" });
     const vms = [
       machineFactory({
         system_id: "abc123",
@@ -172,6 +180,7 @@ describe("VMsTable", () => {
         items: vms,
         selectedMachines: { filter: {} },
       }),
+      pod: podStateFactory({ items: [pod], loaded: true }),
     });
     const store = mockStore(state);
     const wrapper = mount(
@@ -183,6 +192,7 @@ describe("VMsTable", () => {
             <VMsTable
               getResources={getResources}
               machinesLoading={false}
+              pods={[pod.name]}
               searchFilter=""
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}
@@ -224,6 +234,7 @@ describe("VMsTable", () => {
             <VMsTable
               getResources={getResources}
               machinesLoading={false}
+              pods={[]}
               searchFilter="system_id:(=ghi789)"
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}
@@ -259,6 +270,7 @@ describe("VMsTable", () => {
               displayForCluster
               getResources={getResources}
               machinesLoading={false}
+              pods={[]}
               searchFilter="system_id:(=ghi789)"
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}
@@ -290,6 +302,7 @@ describe("VMsTable", () => {
               getHostColumn={jest.fn()}
               getResources={getResources}
               machinesLoading={false}
+              pods={[]}
               searchFilter=""
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}
@@ -318,6 +331,7 @@ describe("VMsTable", () => {
               getHostColumn={undefined}
               getResources={getResources}
               machinesLoading={false}
+              pods={[]}
               searchFilter=""
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}
@@ -356,6 +370,7 @@ describe("VMsTable", () => {
             <VMsTable
               getResources={getResources}
               machinesLoading={false}
+              pods={[]}
               searchFilter=""
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}
@@ -384,6 +399,7 @@ describe("VMsTable", () => {
               getHostColumn={jest.fn()}
               getResources={getResources}
               machinesLoading={false}
+              pods={[]}
               searchFilter=""
               setSortDirection={jest.fn()}
               setSortKey={jest.fn()}

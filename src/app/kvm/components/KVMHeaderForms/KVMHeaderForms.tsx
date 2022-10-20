@@ -20,16 +20,25 @@ import type { SelectedMachines } from "app/store/machine/types";
 type Props = {
   headerContent: KVMHeaderContent | null;
   setHeaderContent: KVMSetHeaderContent;
+  searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
 };
 
-const getFormComponent = (
-  headerContent: KVMHeaderContent,
-  setHeaderContent: KVMSetHeaderContent,
-  clearHeaderContent: ClearHeaderContent,
-  selectedMachines: SelectedMachines | null,
-  setSearchFilter?: SetSearchFilter
-) => {
+const getFormComponent = ({
+  headerContent,
+  setHeaderContent,
+  clearHeaderContent,
+  selectedMachines,
+  searchFilter,
+  setSearchFilter,
+}: {
+  headerContent: KVMHeaderContent;
+  setHeaderContent: KVMSetHeaderContent;
+  clearHeaderContent: ClearHeaderContent;
+  selectedMachines: SelectedMachines | null;
+  searchFilter?: string;
+  setSearchFilter?: SetSearchFilter;
+}) => {
   if (!headerContent) {
     return null;
   }
@@ -93,6 +102,7 @@ const getFormComponent = (
   return (
     <MachineHeaderForms
       headerContent={machineHeaderContent}
+      searchFilter={searchFilter}
       selectedMachines={selectedMachines}
       setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
@@ -104,6 +114,7 @@ const getFormComponent = (
 const KVMHeaderForms = ({
   headerContent,
   setHeaderContent,
+  searchFilter,
   setSearchFilter,
 }: Props): JSX.Element | null => {
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
@@ -118,13 +129,14 @@ const KVMHeaderForms = ({
   }
   return (
     <div ref={onRenderRef}>
-      {getFormComponent(
+      {getFormComponent({
         headerContent,
         setHeaderContent,
         clearHeaderContent,
         selectedMachines,
-        setSearchFilter
-      )}
+        searchFilter,
+        setSearchFilter,
+      })}
     </div>
   );
 };
