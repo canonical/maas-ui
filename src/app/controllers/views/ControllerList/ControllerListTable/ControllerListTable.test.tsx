@@ -65,7 +65,7 @@ describe("ControllerListTable", () => {
         { wrapperProps: { state } }
       );
 
-      var rows = screen.getAllByRole("row");
+      let rows = screen.getAllByRole("row");
 
       // Table is sorted be descending FQDN by default
       expect(rows[1]).toStrictEqual(screen.getByTestId("controller-a"));
@@ -354,6 +354,14 @@ describe("ControllerListTable", () => {
       );
 
       const rows = screen.getAllByRole("row");
+      expect(within(rows[1]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-tick"
+      );
+
+      expect(within(rows[2]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-tick"
+      );
+
       expect(
         within(rows[3]).queryByTestId("vault-icon")
       ).not.toBeInTheDocument();
