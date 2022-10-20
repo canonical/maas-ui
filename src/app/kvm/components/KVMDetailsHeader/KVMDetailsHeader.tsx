@@ -23,6 +23,7 @@ type Props = {
   headerContent: KVMHeaderContent | null;
   loading?: SectionHeaderProps["loading"];
   setHeaderContent: KVMSetHeaderContent;
+  searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
   tabLinks: SectionHeaderProps["tabLinks"];
   title: ReactNode;
@@ -35,6 +36,7 @@ const KVMDetailsHeader = ({
   headerContent,
   loading,
   setHeaderContent,
+  searchFilter,
   setSearchFilter,
   tabLinks,
   title,
@@ -59,6 +61,7 @@ const KVMDetailsHeader = ({
         headerContent ? (
           <KVMHeaderForms
             headerContent={headerContent}
+            searchFilter={searchFilter}
             setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
           />

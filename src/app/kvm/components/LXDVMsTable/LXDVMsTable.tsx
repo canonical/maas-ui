@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
+import { usePrevious } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import VMsActionBar from "./VMsActionBar";
@@ -68,6 +69,15 @@ const LXDVMsTable = ({
     pagination: { currentPage, setCurrentPage, pageSize: VMS_PER_PAGE },
   });
   const count = useFetchedCount(machineCount, loading);
+  const previousSearchFilter = usePrevious(searchFilter);
+
+  useEffect(() => {
+    // Clear machine selection and close the action form on filters change
+    if (searchFilter !== previousSearchFilter) {
+      setHeaderContent(null);
+      dispatch(machineActions.setSelectedMachines(null));
+    }
+  }, [searchFilter, previousSearchFilter, setHeaderContent, dispatch]);
 
   useEffect(
     () => () => {
@@ -94,6 +104,7 @@ const LXDVMsTable = ({
         getHostColumn={getHostColumn}
         getResources={getResources}
         machinesLoading={loading}
+        pods={pods}
         searchFilter={searchFilter}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
