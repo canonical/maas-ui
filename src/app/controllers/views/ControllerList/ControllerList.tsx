@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Notification } from "@canonical/react-components";
+import { Link, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom-v5-compat";
@@ -74,22 +74,22 @@ const ControllerList = (): JSX.Element => {
         />
       }
     >
-      {configuredControllers.length >= 1 &&
+      {configuredControllers.length >= 0 &&
       unconfiguredControllers.length >= 1 ? (
         <Notification severity="caution" title="Incomplete Vault integration">
           Configure {unconfiguredControllers.length} other{" "}
-          <a href="/controllers">
+          <Link href="/controllers">
             {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
-          </a>{" "}
+          </Link>{" "}
           with Vault to complete this operation. Check the{" "}
-          <a href="/settings/configuration/security">security settings</a> for
-          more information.
+          <Link href="/settings/configuration/security">security settings</Link>{" "}
+          for more information.
         </Notification>
       ) : unconfiguredControllers.length === 0 && vaultEnabled === false ? (
         <Notification severity="caution" title="Incomplete Vault integration">
           Migrate your secrets to Vault to complete this operation. Check the{" "}
-          <a href="/settings/configuration/security">security settings</a> for
-          more information.
+          <Link href="/settings/configuration/security">security settings</Link>{" "}
+          for more information.
         </Notification>
       ) : null}
       <ControllerListControls
