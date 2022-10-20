@@ -20,6 +20,7 @@ import type { RootState } from "app/store/root/types";
 import {
   NodeStatus,
   NodeStatusCode,
+  NodeType,
   TestStatusStatus,
 } from "app/store/types/node";
 import {
@@ -712,5 +713,107 @@ describe("MachineList", () => {
       .filter((action) => action.type === expected.type);
     expect(fetches).toHaveLength(2);
     expect(fetches[fetches.length - 1].payload.params.page_number).toBe(2);
+  });
+
+  it("shows a warning notification if not all controllers are configured with Vault", async () => {
+    const controllers = [
+      controllerFactory({
+        system_id: "abc123",
+        vault_configured: true,
+        node_type: NodeType.REGION_CONTROLLER,
+      }),
+      controllerFactory({
+        system_id: "def456",
+        vault_configured: false,
+        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+      }),
+    ];
+    state.controller.items = controllers;
+
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { state } }
+    );
+
+    expect(screen.getByTestId("vault-notification")).toHaveTextContent(
+      "Configure 1 other controller with Vault to complete this operation."
+    );
+  });
+
+  it("shows a warning notification if  all controllers are configured with Vault but secrets are not migrated", async () => {
+    const controllers = [
+      controllerFactory({
+        system_id: "abc123",
+        vault_configured: true,
+        node_type: NodeType.REGION_CONTROLLER,
+      }),
+      controllerFactory({
+        system_id: "def456",
+        vault_configured: true,
+        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+      }),
+    ];
+    state.controller.items = controllers;
+
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { state } }
+    );
+
+    expect(screen.getByTestId("vault-notification")).toHaveTextContent(
+      "Migrate your secrets to Vault to complete this operation."
+    );
+  });
+
+  it("doesn't show a warning notification if Vault setup has not been started", async () => {
+    const controllers = [
+      controllerFactory({
+        system_id: "abc123",
+        vault_configured: false,
+        node_type: NodeType.REGION_CONTROLLER,
+      }),
+      controllerFactory({
+        system_id: "def456",
+        vault_configured: false,
+        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+      }),
+    ];
+    state.controller.items = controllers;
+
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { state } }
+    );
+
+    expect(screen.queryByTestId("vault-notification")).not.toBeInTheDocument();
+  });
+
+  it("doesn't show a warning notification if Vault is fully configured", async () => {
+    const controllers = [
+      controllerFactory({
+        system_id: "abc123",
+        vault_configured: true,
+        node_type: NodeType.REGION_CONTROLLER,
+      }),
+      controllerFactory({
+        system_id: "def456",
+        vault_configured: true,
+        node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+      }),
+    ];
+    state.controller.items = controllers;
+    state.general = generalStateFactory({
+      vaultEnabled: vaultEnabledStateFactory({
+        data: true,
+        loaded: true,
+      }),
+    });
+
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { wrapperProps: { state } }
+    );
+
+    expect(screen.queryByTestId("vault-notification")).not.toBeInTheDocument();
   });
 });
