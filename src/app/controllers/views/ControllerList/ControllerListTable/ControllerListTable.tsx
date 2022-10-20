@@ -101,9 +101,14 @@ const generateRows = ({
               controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER ? (
                 vaultEnabled ? (
                   <Tooltip
-                    children={<Icon name="security-tick" />}
+                    children={
+                      <Icon
+                        aria-describedby="tooltip-description"
+                        name="security-tick"
+                      />
+                    }
                     message={
-                      <p>
+                      <p id="tooltip-description">
                         Vault is configured on this region controller for secret
                         storage.
                         <br />
@@ -116,9 +121,14 @@ const generateRows = ({
                 ) : controller.vault_configured === true ? (
                   unconfiguredControllers >= 1 && (
                     <Tooltip
-                      children={<Icon name="security" />}
+                      children={
+                        <Icon
+                          aria-describedby="tooltip-description"
+                          name="security"
+                        />
+                      }
                       message={
-                        <p>
+                        <p id="tooltip-description">
                           Vault is configured on this controller. <br />
                           Once all controllers are configured, migrate the
                           secrets. <br />
@@ -132,9 +142,14 @@ const generateRows = ({
                 ) : (
                   configuredControllers >= 1 && (
                     <Tooltip
-                      children={<Icon name="security-warning" />}
+                      children={
+                        <Icon
+                          aria-describedby="tooltip-description"
+                          name="security-warning"
+                        />
+                      }
                       message={
-                        <p>
+                        <p id="tooltip-description">
                           Missing Vault configuration.
                           <br />
                           <a href={docsUrls.vaultIntegration}>
