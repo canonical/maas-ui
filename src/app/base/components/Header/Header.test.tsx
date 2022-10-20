@@ -16,6 +16,8 @@ import {
   authState as authStateFactory,
   config as configFactory,
   configState as configStateFactory,
+  controller as controllerFactory,
+  controllerState as controllerStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
@@ -38,6 +40,9 @@ beforeEach(() => {
         configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
       ],
       loaded: true,
+    }),
+    controller: controllerStateFactory({
+      items: [controllerFactory()],
     }),
     user: userStateFactory({
       auth: authStateFactory({
@@ -216,6 +221,35 @@ it("highlights sub-urls", () => {
   const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
   expect(currentMenuItem).toBeInTheDocument();
   expect(currentMenuItem).toHaveTextContent("Machines");
+});
+
+it("displays a warning icon next to controllers if vault is not fully configured", () => {
+  state.controller.items = [
+    controllerFactory({ vault_configured: true }),
+    controllerFactory({ vault_configured: false }),
+  ];
+  renderWithBrowserRouter(<Header />, { route: "/", wrapperProps: { state } });
+
+  const controllerLink = screen.getByRole("link", {
+    name: "warning Controllers",
+  });
+  const warningIcon = within(controllerLink).getByTestId("warning-icon");
+  expect(warningIcon).toHaveClass(
+    "p-navigation--item-icon p-icon--security-warning-grey"
+  );
+});
+
+it("does not display a warning icon next to controllers if vault is fully configured", () => {
+  state.controller.items = [
+    controllerFactory({ vault_configured: true }),
+    controllerFactory({ vault_configured: true }),
+  ];
+  renderWithBrowserRouter(<Header />, { route: "/", wrapperProps: { state } });
+
+  const controllerLink = screen.getByRole("link", { name: "Controllers" });
+  expect(
+    within(controllerLink).queryByTestId("warning-icon")
+  ).not.toBeInTheDocument();
 });
 
 it("links from the logo to the dashboard for admins", () => {
