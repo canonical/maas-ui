@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import ControllerListTable from "./ControllerListTable";
@@ -6,11 +6,14 @@ import ControllerListTable from "./ControllerListTable";
 import urls from "app/base/urls";
 import type { Controller } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
+import { NodeType } from "app/store/types/node";
 import {
+  generalState as generalStateFactory,
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   controllerVersions as controllerVersionsFactory,
   rootState as rootStateFactory,
+  vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
@@ -192,6 +195,168 @@ describe("ControllerListTable", () => {
       await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
 
       expect(onSelectedChange).toHaveBeenCalledWith([]);
+    });
+  });
+
+  describe("vault status icons", () => {
+    it("shows no icons by default", () => {
+      const controllers = [
+        controllerFactory({ system_id: "abc123" }),
+        controllerFactory({ system_id: "def456" }),
+      ];
+      state.controller.items = controllers;
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
+      );
+
+      expect(screen.queryByTestId("vault-icon")).not.toBeInTheDocument();
+    });
+
+    it("shows icons with appropriate tooltips based on vault status for each controller", () => {
+      const controllers = [
+        controllerFactory({
+          system_id: "abc123",
+          vault_configured: true,
+          node_type: NodeType.REGION_CONTROLLER,
+        }),
+        controllerFactory({
+          system_id: "def456",
+          vault_configured: false,
+          node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+        }),
+      ];
+      state.controller.items = controllers;
+
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
+      );
+
+      const rows = screen.getAllByRole("row");
+
+      expect(within(rows[1]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security"
+      );
+      expect(
+        within(rows[1]).getByTestId("vault-icon")
+      ).toHaveAccessibleDescription(
+        "Vault is configured on this controller. Once all controllers are configured, migrate the secrets. Read more about Vault integration"
+      );
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Vault is configured on this controller. Once all controllers are configured, migrate the secrets. Read more about Vault integration",
+        })
+      ).toBeInTheDocument();
+
+      expect(within(rows[2]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-warning"
+      );
+      expect(
+        within(rows[2]).getByTestId("vault-icon")
+      ).toHaveAccessibleDescription(
+        "Missing Vault configuration. Read more about Vault integration"
+      );
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Missing Vault configuration. Read more about Vault integration",
+        })
+      ).toBeInTheDocument();
+    });
+
+    it("displays a security-tick with appropriate tooltip on controllers once they are all configured and vault is enabled", () => {
+      const controllers = [
+        controllerFactory({
+          system_id: "abc123",
+          vault_configured: true,
+          node_type: NodeType.REGION_CONTROLLER,
+        }),
+        controllerFactory({
+          system_id: "def456",
+          vault_configured: true,
+          node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+        }),
+      ];
+      state.controller.items = controllers;
+      state.general = generalStateFactory({
+        vaultEnabled: vaultEnabledStateFactory({
+          data: true,
+          loaded: true,
+        }),
+      });
+
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
+      );
+
+      const rows = screen.getAllByRole("row");
+      const tooltips = screen.getAllByRole("tooltip", {
+        name: "Vault is configured on this region controller for secret storage. Read more about Vault integration",
+      });
+
+      expect(within(rows[1]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-tick"
+      );
+      expect(tooltips[0]).toBeInTheDocument();
+
+      expect(within(rows[2]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-tick"
+      );
+      expect(tooltips[1]).toBeInTheDocument();
+    });
+
+    it("does not show icons on rack controllers", () => {
+      const controllers = [
+        controllerFactory({
+          system_id: "abc123",
+          vault_configured: true,
+          node_type: NodeType.REGION_CONTROLLER,
+        }),
+        controllerFactory({
+          system_id: "def456",
+          vault_configured: true,
+          node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+        }),
+        controllerFactory({
+          system_id: "ghi789",
+          vault_configured: true,
+          node_type: NodeType.RACK_CONTROLLER,
+        }),
+      ];
+      state.controller.items = controllers;
+      state.general = generalStateFactory({
+        vaultEnabled: vaultEnabledStateFactory({
+          data: true,
+          loaded: true,
+        }),
+      });
+
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
+      );
+
+      const rows = screen.getAllByRole("row");
+      expect(
+        within(rows[3]).queryByTestId("vault-icon")
+      ).not.toBeInTheDocument();
     });
   });
 });

@@ -104,6 +104,7 @@ const generateRows = ({
                     children={
                       <Icon
                         aria-describedby="tooltip-description"
+                        data-testid="vault-icon"
                         name="security-tick"
                       />
                     }
@@ -124,6 +125,7 @@ const generateRows = ({
                       children={
                         <Icon
                           aria-describedby="tooltip-description"
+                          data-testid="vault-icon"
                           name="security"
                         />
                       }
@@ -145,6 +147,7 @@ const generateRows = ({
                       children={
                         <Icon
                           aria-describedby="tooltip-description"
+                          data-testid="vault-icon"
                           name="security-warning"
                         />
                       }
