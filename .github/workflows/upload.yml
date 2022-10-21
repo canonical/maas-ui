@@ -6,7 +6,7 @@ jobs:
   upload-build:
     if: github.event.pull_request.merged == true
     name: Upload build artifacts
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     env:
       PACKAGE_NAME: maas-ui-${{ github.sha }}.tar.gz
     strategy:

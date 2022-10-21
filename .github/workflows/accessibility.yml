@@ -3,7 +3,7 @@ on: [push]
 jobs:
   cypress-axe:
     name: cypress-axe
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       MAAS_URL: http://localhost:5240
     steps:
