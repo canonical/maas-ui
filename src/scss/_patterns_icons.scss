@@ -77,12 +77,12 @@
 
   .p-icon--security-tick {
     @extend %icon;
-    @include maas-icon-security-tick($color-positive)
+    @include maas-icon-security-tick($color-mid-dark)
   }
 
   .p-icon--security-warning {
     @extend %icon;
-    @include maas-icon-security-warning($color-warning);
+    @include maas-icon-security-warning($color-mid-dark);
   }
 
   .p-icon--security-warning-grey {
