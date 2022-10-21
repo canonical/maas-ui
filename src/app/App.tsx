@@ -6,6 +6,8 @@ import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
 import { useDispatch, useSelector } from "react-redux";
 
+import packageInfo from "../../package.json";
+
 import ThemePreviewContext from "./base/theme-preview-context";
 
 import Routes from "app/Routes";
@@ -91,6 +93,7 @@ export const App = (): JSX.Element => {
   if (analyticsEnabled && process.env.REACT_APP_SENTRY_DSN) {
     Sentry.init({
       dsn: process.env.REACT_APP_SENTRY_DSN,
+      release: packageInfo.version,
     });
   }
 
