@@ -1,8 +1,8 @@
 name: Cypress
 on: [push]
 jobs:
-  cypress:
-    name: Cypress
+  cypress-without-users:
+    name: Cypress - without users
     runs-on: ubuntu-22.04
     env:
       MAAS_URL: http://localhost:5240
@@ -28,6 +28,59 @@ jobs:
           install: false
           spec: "cypress/e2e/no-users/**/*.spec.ts"
           wait-on: "${{env.MAAS_URL}}/MAAS/r/machines"
+      - uses: actions/upload-artifact@v3
+        if: failure()
+        with:
+          name: cypress-screenshots
+          path: cypress/screenshots
+      - name: Create issue on failure
+        if: failure()
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        with:
+          filename: .github/ISSUE_TEMPLATE/cypress-failure.md
+          update_existing: true
+  cypress-with-test-maasdb:
+    name: Cypress - with test maasdb
+    runs-on: ubuntu-22.04
+    env:
+      MAAS_URL: http://localhost:5240
+    steps:
+      - uses: actions/checkout@main
+      - name: Get branch name
+        uses: nelonoel/branch-name@v1.0.1
+      - name: Install MAAS
+        run: |
+          sudo systemctl enable snapd
+          sudo snap install maas --channel=latest/edge
+          sudo snap install maas-test-db --channel=latest/edge
+      - name: Install Cypress
+        uses: cypress-io/github-action@v4
+        with:
+          runTests: false
+      - name: Fetch database dump
+        uses: wei/wget@v1
+        with:
+          args: -O maasdb.dump https://github.com/canonical/maas-ui-testing/raw/main/db/maasdb-22.04-master-100.dump
+      - name: Set up MAAS with database dump
+        run: |
+          sudo sed -i "s/dynamic_shared_memory_type = posix/dynamic_shared_memory_type = sysv/" /var/snap/maas-test-db/common/postgres/data/postgresql.conf
+          sudo snap restart maas-test-db
+          sudo mv maasdb.dump /var/snap/maas-test-db/common/maasdb.dump
+          sudo snap run --shell maas-test-db.psql -c 'db-dump restore /var/snap/maas-test-db/common/maasdb.dump maassampledata'
+          sudo maas init region+rack --maas-url=${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
+          sudo sed -i "s/database_name: maasdb/database_name: maassampledata/" /var/snap/maas/current/regiond.conf
+          sudo snap restart maas
+      - name: Wait for MAAS
+        uses: nev7n/wait_for_response@v1
+        with:
+          url: "${{env.MAAS_URL}}/MAAS/r"
+          responseCode: 200
+          timeout: 200000
+          interval: 500
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Create MAAS non-admin user

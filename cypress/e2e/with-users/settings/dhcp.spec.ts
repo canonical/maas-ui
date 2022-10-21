@@ -5,27 +5,24 @@ context("Settings - DHCP Snippets", () => {
     cy.login();
     cy.addMachine();
     cy.visit(generateMAASURL("/settings/dhcp/add"));
+    cy.waitForPageToLoad();
   });
 
-  it("can add a Global DHCP snippet", () => {
+  it("can request adding a Global DHCP snippet", () => {
     const snippetName = generateName("dhcp-snippet");
-    cy.get("[data-testid='section-header-title']").contains("Settings");
     cy.findByLabelText("Snippet name").type(snippetName);
+    // eslint-disable-next-line cypress/no-force
+    cy.findByLabelText("Enabled").click({ force: true });
     cy.findByLabelText("Type").select("Global");
     cy.findByLabelText("DHCP snippet").type("ddns-update-style none;");
+    cy.findByText(/Connection set empty/).should("not.exist");
     cy.findByRole("button", { name: "Save snippet" }).click();
-    // expect to be redirected to the list page
-    cy.findByLabelText("Search DHCP snippets").type(snippetName);
-    cy.findByRole("grid").within(() => {
-      cy.findByText(snippetName).should("be.visible");
-      cy.findByRole("button", { name: /Delete/ }).click();
-      cy.get("[data-testid='action-confirm']").click();
-    });
+    // expect an error
+    cy.findByText(/Connection set empty/).should("exist");
   });
 
   it("can request adding of a DHCP snippet to a machine", () => {
     const snippetName = generateName("dhcp-snippet");
-    cy.get("[data-testid='section-header-title']").contains("Settings");
     cy.findByLabelText("Snippet name").type(snippetName);
     cy.findByLabelText("Type").select("Machine");
     cy.findByRole("button", { name: /Choose machine/ }).click();

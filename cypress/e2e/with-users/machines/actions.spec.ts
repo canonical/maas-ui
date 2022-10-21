@@ -33,7 +33,6 @@ const selectFirstMachine = () =>
 context("Machine listing - actions", () => {
   before(() => {
     cy.login();
-    cy.addMachine();
   });
   beforeEach(() => {
     cy.login();

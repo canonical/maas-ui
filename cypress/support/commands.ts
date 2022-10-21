@@ -43,7 +43,7 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.get("input[name='hostname']").type(hostname);
   cy.get("input[name='pxe_mac']").type(generateMac());
   cy.get("select[name='power_type']").select("manual").blur();
-  cy.get("button[type='submit']").click();
+  cy.findByRole("button", { name: /Save machine/i }).click();
   cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
 });
 
