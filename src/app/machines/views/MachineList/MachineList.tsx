@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
+import { Link, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useStorageState } from "react-storage-hooks";
 
@@ -11,11 +12,16 @@ import { DEFAULTS } from "./MachineListTable/constants";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter, SortDirection } from "app/base/types";
+import { actions as controllerActions } from "app/store/controller";
+import controllerSelectors from "app/store/controller/selectors";
+import { actions as generalActions } from "app/store/general";
+import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { FetchGroupKey } from "app/store/machine/types";
 import { mapSortDirection, FilterMachineItems } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
+import type { RootState } from "app/store/root/types";
 
 type Props = {
   headerFormOpen?: boolean;
@@ -74,6 +80,12 @@ const MachineList = ({
     []
   );
 
+  const { unconfiguredControllers, configuredControllers } = useSelector(
+    (state: RootState) =>
+      controllerSelectors.getVaultConfiguredControllers(state)
+  );
+  const vaultEnabled = useSelector(vaultEnabledSelectors.get);
+
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       collapsedGroups: hiddenGroups,
@@ -94,6 +106,12 @@ const MachineList = ({
     [dispatch]
   );
 
+  // Fetch vault enabled status and controllers on page load
+  useEffect(() => {
+    dispatch(controllerActions.fetch());
+    dispatch(generalActions.fetchVaultEnabled());
+  }, [dispatch]);
+
   return (
     <>
       {errors && !headerFormOpen ? (
@@ -103,6 +121,32 @@ const MachineList = ({
         />
       ) : null}
       {!headerFormOpen ? <ErrorsNotification errors={machinesErrors} /> : null}
+      {configuredControllers.length >= 1 &&
+      unconfiguredControllers.length >= 1 ? (
+        <Notification
+          data-testid="vault-notification"
+          severity="caution"
+          title="Incomplete Vault integration"
+        >
+          Configure {unconfiguredControllers.length} other{" "}
+          <Link href="/controllers">
+            {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
+          </Link>{" "}
+          with Vault to complete this operation. Check the{" "}
+          <Link href="/settings/configuration/security">security settings</Link>{" "}
+          for more information.
+        </Notification>
+      ) : unconfiguredControllers.length === 0 && vaultEnabled === false ? (
+        <Notification
+          data-testid="vault-notification"
+          severity="caution"
+          title="Incomplete Vault integration"
+        >
+          Migrate your secrets to Vault to complete this operation. Check the{" "}
+          <Link href="/settings/configuration/security">security settings</Link>{" "}
+          for more information.
+        </Notification>
+      ) : null}
       <MachineListControls
         filter={searchFilter}
         grouping={grouping}
