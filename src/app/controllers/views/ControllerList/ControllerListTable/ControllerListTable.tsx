@@ -1,4 +1,7 @@
-import { MainTable, Spinner } from "@canonical/react-components";
+import { useEffect } from "react";
+
+import { MainTable, Spinner, Icon, Tooltip } from "@canonical/react-components";
+import { useDispatch, useSelector } from "react-redux";
 
 import StatusColumn from "./StatusColumn";
 import VLANsColumn from "./VLANsColumn";
@@ -9,10 +12,17 @@ import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
+import docsUrls from "app/base/docsUrls";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import ImageStatus from "app/controllers/components/ImageStatus";
+import { actions as controllerActions } from "app/store/controller";
+import controllerSelectors from "app/store/controller/selectors";
 import type { Controller, ControllerMeta } from "app/store/controller/types";
+import { actions as generalActions } from "app/store/general";
+import { vaultEnabled as vaultEnabledSelectors } from "app/store/general/selectors";
+import type { RootState } from "app/store/root/types";
+import { NodeType } from "app/store/types/node";
 import { generateCheckboxHandlers, isComparable } from "app/utils";
 import type { CheckboxHandlers } from "app/utils/generateCheckboxHandlers";
 
@@ -35,13 +45,23 @@ const getSortValue = (sortKey: SortKey, controller: Controller) => {
   return isComparable(value) ? value : null;
 };
 
-const generateRows = (
-  controllers: Controller[],
-  selectedIDs: Controller[ControllerMeta.PK][],
+const generateRows = ({
+  controllers,
+  unconfiguredControllers,
+  configuredControllers,
+  selectedIDs,
+  handleRowCheckbox,
+  vaultEnabled,
+}: {
+  controllers: Controller[];
+  unconfiguredControllers: number;
+  configuredControllers: number;
+  selectedIDs: Controller[ControllerMeta.PK][];
   handleRowCheckbox: CheckboxHandlers<
     Controller[ControllerMeta.PK]
-  >["handleRowCheckbox"]
-) =>
+  >["handleRowCheckbox"];
+  vaultEnabled: boolean;
+}) =>
   controllers.map((controller) => {
     const { fqdn, system_id } = controller;
 
@@ -76,7 +96,76 @@ const generateRows = (
           "aria-label": "Type",
           className: "type-col",
           content: (
-            <span className="u-truncate">{controller.node_type_display}</span>
+            <span className="u-truncate">
+              {controller.node_type === NodeType.REGION_CONTROLLER ||
+              controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER ? (
+                vaultEnabled ? (
+                  <Tooltip
+                    children={
+                      <Icon
+                        aria-describedby="tooltip-description"
+                        data-testid="vault-icon"
+                        name="security-tick"
+                      />
+                    }
+                    message={
+                      <p id="tooltip-description">
+                        Vault is configured on this region controller for secret
+                        storage.
+                        <br />
+                        <a href={docsUrls.vaultIntegration}>
+                          Read more about Vault integration
+                        </a>
+                      </p>
+                    }
+                  />
+                ) : controller.vault_configured === true ? (
+                  unconfiguredControllers >= 1 && (
+                    <Tooltip
+                      children={
+                        <Icon
+                          aria-describedby="tooltip-description"
+                          data-testid="vault-icon"
+                          name="security"
+                        />
+                      }
+                      message={
+                        <p id="tooltip-description">
+                          Vault is configured on this controller. <br />
+                          Once all controllers are configured, migrate the
+                          secrets. <br />
+                          <a href={docsUrls.vaultIntegration}>
+                            Read more about Vault integration
+                          </a>
+                        </p>
+                      }
+                    />
+                  )
+                ) : (
+                  configuredControllers >= 1 && (
+                    <Tooltip
+                      children={
+                        <Icon
+                          aria-describedby="tooltip-description"
+                          data-testid="vault-icon"
+                          name="security-warning"
+                        />
+                      }
+                      message={
+                        <p id="tooltip-description">
+                          Missing Vault configuration.
+                          <br />
+                          <a href={docsUrls.vaultIntegration}>
+                            Read more about Vault integration
+                          </a>
+                        </p>
+                      }
+                    />
+                  )
+                )
+              ) : null}
+              {` ${controller.node_type_display}`}
+            </span>
           ),
         },
         {
@@ -130,6 +219,17 @@ const ControllerListTable = ({
   const { handleGroupCheckbox, handleRowCheckbox } =
     generateCheckboxHandlers<Controller[ControllerMeta.PK]>(onSelectedChange);
   const controllerIDs = controllers.map((controller) => controller.system_id);
+  const { unconfiguredControllers, configuredControllers } = useSelector(
+    (state: RootState) =>
+      controllerSelectors.getVaultConfiguredControllers(state)
+  );
+  const dispatch = useDispatch();
+  const vaultEnabled = useSelector(vaultEnabledSelectors.get);
+
+  useEffect(() => {
+    dispatch(generalActions.fetchVaultEnabled());
+    dispatch(controllerActions.fetch());
+  }, [dispatch]);
 
   return (
     <MainTable
@@ -226,7 +326,14 @@ const ControllerListTable = ({
           ),
         },
       ]}
-      rows={generateRows(sortedControllers, selectedIDs, handleRowCheckbox)}
+      rows={generateRows({
+        controllers: sortedControllers,
+        unconfiguredControllers: unconfiguredControllers.length,
+        configuredControllers: configuredControllers.length,
+        selectedIDs,
+        handleRowCheckbox,
+        vaultEnabled,
+      })}
     />
   );
 };

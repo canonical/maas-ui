@@ -1,23 +1,21 @@
-import type { ReactWrapper } from "enzyme";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import ControllerListTable from "./ControllerListTable";
 
 import urls from "app/base/urls";
 import type { Controller } from "app/store/controller/types";
 import type { RootState } from "app/store/root/types";
+import { NodeType } from "app/store/types/node";
 import {
+  generalState as generalStateFactory,
   controller as controllerFactory,
   controllerState as controllerStateFactory,
   controllerVersions as controllerVersionsFactory,
   rootState as rootStateFactory,
+  vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("ControllerListTable", () => {
   let controller: Controller;
@@ -34,64 +32,55 @@ describe("ControllerListTable", () => {
 
   it("links to a controller's details page", () => {
     controller.system_id = "def456";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <ControllerListTable
-              controllers={[controller]}
-              onSelectedChange={jest.fn()}
-              selectedIDs={[]}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ControllerListTable
+        controllers={[controller]}
+        onSelectedChange={jest.fn()}
+        selectedIDs={[]}
+      />,
+      { wrapperProps: { state } }
     );
 
-    expect(wrapper.find("Link").at(0).prop("to")).toBe(
-      urls.controllers.controller.index({ id: controller.system_id })
+    expect(screen.getAllByRole("link")[0]).toHaveProperty(
+      "href",
+      `http://example.com${urls.controllers.controller.index({
+        id: controller.system_id,
+      })}`
     );
   });
 
   describe("controller list sorting", () => {
-    const getRowTestId = (wrapper: ReactWrapper, index: number) =>
-      wrapper.find("tbody tr").at(index).prop("data-testid");
-
-    it("can sort by FQDN", () => {
+    it("can sort by FQDN", async () => {
       const controllers = [
         controllerFactory({ fqdn: "b", system_id: "b" }),
         controllerFactory({ fqdn: "c", system_id: "c" }),
         controllerFactory({ fqdn: "a", system_id: "a" }),
       ];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <ControllerListTable
-                controllers={controllers}
-                onSelectedChange={jest.fn()}
-                selectedIDs={[]}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
       );
 
+      let rows = screen.getAllByRole("row");
+
       // Table is sorted be descending FQDN by default
-      expect(getRowTestId(wrapper, 0)).toBe("controller-a");
-      expect(getRowTestId(wrapper, 1)).toBe("controller-b");
-      expect(getRowTestId(wrapper, 2)).toBe("controller-c");
+      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-a"));
+      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
+      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));
 
       // Change sort to ascending FQDN
-      wrapper.find("[data-testid='fqdn-header']").simulate("click");
-      expect(getRowTestId(wrapper, 0)).toBe("controller-c");
-      expect(getRowTestId(wrapper, 1)).toBe("controller-b");
-      expect(getRowTestId(wrapper, 2)).toBe("controller-a");
+      await userEvent.click(screen.getByRole("button", { name: "Name" }));
+      rows = screen.getAllByRole("row");
+      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-c"));
+      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
+      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-a"));
     });
 
-    it("can sort by version", () => {
+    it("can sort by version", async () => {
       const controllers = [
         controllerFactory({
           versions: controllerVersionsFactory({ origin: "3" }),
@@ -106,142 +95,276 @@ describe("ControllerListTable", () => {
           system_id: "b",
         }),
       ];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <ControllerListTable
-                controllers={controllers}
-                onSelectedChange={jest.fn()}
-                selectedIDs={[]}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
       );
 
       // Change sort to descending version
-      wrapper.find("[data-testid='version-header']").simulate("click");
-      expect(getRowTestId(wrapper, 0)).toBe("controller-a");
-      expect(getRowTestId(wrapper, 1)).toBe("controller-b");
-      expect(getRowTestId(wrapper, 2)).toBe("controller-c");
+      await userEvent.click(screen.getByRole("button", { name: "Version" }));
+
+      var rows = screen.getAllByRole("row");
+      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-a"));
+      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
+      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-c"));
 
       // Change sort to ascending version
-      wrapper.find("[data-testid='version-header']").simulate("click");
-      expect(getRowTestId(wrapper, 0)).toBe("controller-c");
-      expect(getRowTestId(wrapper, 1)).toBe("controller-b");
-      expect(getRowTestId(wrapper, 2)).toBe("controller-a");
+      await userEvent.click(screen.getByRole("button", { name: "Version" }));
+
+      rows = screen.getAllByRole("row");
+      expect(rows[1]).toStrictEqual(screen.getByTestId("controller-c"));
+      expect(rows[2]).toStrictEqual(screen.getByTestId("controller-b"));
+      expect(rows[3]).toStrictEqual(screen.getByTestId("controller-a"));
     });
   });
 
   describe("controller selection", () => {
-    it("handles selecting a single controller", () => {
+    it("handles selecting a single controller", async () => {
       const controllers = [controllerFactory({ system_id: "abc123" })];
       const onSelectedChange = jest.fn();
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <ControllerListTable
-                controllers={controllers}
-                onSelectedChange={onSelectedChange}
-                selectedIDs={[]}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={onSelectedChange}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
       );
 
-      wrapper
-        .find("[data-testid='controller-checkbox'] input")
-        .at(0)
-        .simulate("change");
+      await userEvent.click(screen.getAllByTestId("controller-checkbox")[0]);
 
       expect(onSelectedChange).toHaveBeenCalledWith(["abc123"]);
     });
 
-    it("handles unselecting a single controller", () => {
+    it("handles unselecting a single controller", async () => {
       const controllers = [controllerFactory({ system_id: "abc123" })];
       const onSelectedChange = jest.fn();
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <ControllerListTable
-                controllers={controllers}
-                onSelectedChange={onSelectedChange}
-                selectedIDs={["abc123"]}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={onSelectedChange}
+          selectedIDs={["abc123"]}
+        />,
+        { wrapperProps: { state } }
       );
 
-      wrapper
-        .find("[data-testid='controller-checkbox'] input")
-        .at(0)
-        .simulate("change");
+      await userEvent.click(screen.getAllByTestId("controller-checkbox")[0]);
 
       expect(onSelectedChange).toHaveBeenCalledWith([]);
     });
 
-    it("handles selecting all controllers", () => {
+    it("handles selecting all controllers", async () => {
       const controllers = [
         controllerFactory({ system_id: "abc123" }),
         controllerFactory({ system_id: "def456" }),
       ];
       const onSelectedChange = jest.fn();
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <ControllerListTable
-                controllers={controllers}
-                onSelectedChange={onSelectedChange}
-                selectedIDs={[]}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={onSelectedChange}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
       );
 
-      wrapper
-        .find("[data-testid='all-controllers-checkbox'] input")
-        .simulate("change");
+      await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
 
       expect(onSelectedChange).toHaveBeenCalledWith(["abc123", "def456"]);
     });
 
-    it("handles unselecting all controllers", () => {
+    it("handles unselecting all controllers", async () => {
       const controllers = [
         controllerFactory({ system_id: "abc123" }),
         controllerFactory({ system_id: "def456" }),
       ];
       const onSelectedChange = jest.fn();
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <ControllerListTable
-                controllers={controllers}
-                onSelectedChange={onSelectedChange}
-                selectedIDs={["abc123", "def456"]}
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={onSelectedChange}
+          selectedIDs={["abc123", "def456"]}
+        />,
+        { wrapperProps: { state } }
       );
 
-      wrapper
-        .find("[data-testid='all-controllers-checkbox'] input")
-        .simulate("change");
+      await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
 
       expect(onSelectedChange).toHaveBeenCalledWith([]);
+    });
+  });
+
+  describe("vault status icons", () => {
+    it("shows no icons by default", () => {
+      const controllers = [
+        controllerFactory({ system_id: "abc123" }),
+        controllerFactory({ system_id: "def456" }),
+      ];
+      state.controller.items = controllers;
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
+      );
+
+      expect(screen.queryByTestId("vault-icon")).not.toBeInTheDocument();
+    });
+
+    it("shows icons with appropriate tooltips based on vault status for each controller", () => {
+      const controllers = [
+        controllerFactory({
+          system_id: "abc123",
+          vault_configured: true,
+          node_type: NodeType.REGION_CONTROLLER,
+        }),
+        controllerFactory({
+          system_id: "def456",
+          vault_configured: false,
+          node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+        }),
+      ];
+      state.controller.items = controllers;
+
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
+      );
+
+      const rows = screen.getAllByRole("row");
+
+      expect(within(rows[1]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security"
+      );
+      expect(
+        within(rows[1]).getByTestId("vault-icon")
+      ).toHaveAccessibleDescription(
+        "Vault is configured on this controller. Once all controllers are configured, migrate the secrets. Read more about Vault integration"
+      );
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Vault is configured on this controller. Once all controllers are configured, migrate the secrets. Read more about Vault integration",
+        })
+      ).toBeInTheDocument();
+
+      expect(within(rows[2]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-warning"
+      );
+      expect(
+        within(rows[2]).getByTestId("vault-icon")
+      ).toHaveAccessibleDescription(
+        "Missing Vault configuration. Read more about Vault integration"
+      );
+      expect(
+        screen.getByRole("tooltip", {
+          name: "Missing Vault configuration. Read more about Vault integration",
+        })
+      ).toBeInTheDocument();
+    });
+
+    it("displays a security-tick with appropriate tooltip on controllers once they are all configured and vault is enabled", () => {
+      const controllers = [
+        controllerFactory({
+          system_id: "abc123",
+          vault_configured: true,
+          node_type: NodeType.REGION_CONTROLLER,
+        }),
+        controllerFactory({
+          system_id: "def456",
+          vault_configured: true,
+          node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+        }),
+      ];
+      state.controller.items = controllers;
+      state.general = generalStateFactory({
+        vaultEnabled: vaultEnabledStateFactory({
+          data: true,
+          loaded: true,
+        }),
+      });
+
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
+      );
+
+      const rows = screen.getAllByRole("row");
+      const tooltips = screen.getAllByRole("tooltip", {
+        name: "Vault is configured on this region controller for secret storage. Read more about Vault integration",
+      });
+
+      expect(within(rows[1]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-tick"
+      );
+      expect(tooltips[0]).toBeInTheDocument();
+
+      expect(within(rows[2]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-tick"
+      );
+      expect(tooltips[1]).toBeInTheDocument();
+    });
+
+    it("does not show icons on rack controllers", () => {
+      const controllers = [
+        controllerFactory({
+          system_id: "abc123",
+          vault_configured: true,
+          node_type: NodeType.REGION_CONTROLLER,
+        }),
+        controllerFactory({
+          system_id: "def456",
+          vault_configured: true,
+          node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+        }),
+        controllerFactory({
+          system_id: "ghi789",
+          vault_configured: true,
+          node_type: NodeType.RACK_CONTROLLER,
+        }),
+      ];
+      state.controller.items = controllers;
+      state.general = generalStateFactory({
+        vaultEnabled: vaultEnabledStateFactory({
+          data: true,
+          loaded: true,
+        }),
+      });
+
+      renderWithBrowserRouter(
+        <ControllerListTable
+          controllers={controllers}
+          onSelectedChange={jest.fn()}
+          selectedIDs={[]}
+        />,
+        { wrapperProps: { state } }
+      );
+
+      const rows = screen.getAllByRole("row");
+      expect(within(rows[1]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-tick"
+      );
+
+      expect(within(rows[2]).getByTestId("vault-icon")).toHaveClass(
+        "p-icon--security-tick"
+      );
+
+      expect(
+        within(rows[3]).queryByTestId("vault-icon")
+      ).not.toBeInTheDocument();
     });
   });
 });
