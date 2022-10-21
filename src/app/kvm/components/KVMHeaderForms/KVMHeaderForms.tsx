@@ -16,6 +16,7 @@ import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import type { MachineHeaderContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { SelectedMachines } from "app/store/machine/types";
+import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 
 type Props = {
   headerContent: KVMHeaderContent | null;
@@ -29,6 +30,7 @@ const getFormComponent = ({
   setHeaderContent,
   clearHeaderContent,
   selectedMachines,
+  selectedCount,
   searchFilter,
   setSearchFilter,
 }: {
@@ -36,6 +38,7 @@ const getFormComponent = ({
   setHeaderContent: KVMSetHeaderContent;
   clearHeaderContent: ClearHeaderContent;
   selectedMachines: SelectedMachines | null;
+  selectedCount: number;
   searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
 }) => {
@@ -103,6 +106,7 @@ const getFormComponent = ({
     <MachineHeaderForms
       headerContent={machineHeaderContent}
       searchFilter={searchFilter}
+      selectedCount={selectedCount}
       selectedMachines={selectedMachines}
       setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
@@ -118,6 +122,7 @@ const KVMHeaderForms = ({
   setSearchFilter,
 }: Props): JSX.Element | null => {
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const { selectedCount } = useMachineSelectedCount();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
   const clearHeaderContent = useCallback(
     () => setHeaderContent(null),
@@ -134,6 +139,7 @@ const KVMHeaderForms = ({
         setHeaderContent,
         clearHeaderContent,
         selectedMachines,
+        selectedCount,
         searchFilter,
         setSearchFilter,
       })}
