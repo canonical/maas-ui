@@ -1,3 +1,4 @@
+import { screen } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -15,6 +16,7 @@ import {
   podStatus as podStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -187,5 +189,20 @@ describe("KVMHeaderForms", () => {
     expect(
       wrapper.find("MachineActionFormWrapper CommissionForm").exists()
     ).toBe(true);
+  });
+
+  it("renders machine action forms with selected machine count", () => {
+    state.machine.selectedMachines = { items: ["abc123", "def456"] };
+    renderWithBrowserRouter(
+      <KVMHeaderForms
+        headerContent={{ view: MachineHeaderViews.DELETE_MACHINE }}
+        setHeaderContent={jest.fn()}
+      />,
+      { route: "/kvm", wrapperProps: { state } }
+    );
+
+    expect(
+      screen.getByRole("button", { name: /Delete 2 machines/i })
+    ).toBeInTheDocument();
   });
 });
