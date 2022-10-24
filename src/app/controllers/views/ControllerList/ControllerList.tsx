@@ -74,7 +74,7 @@ const ControllerList = (): JSX.Element => {
         />
       }
     >
-      {configuredControllers.length >= 0 &&
+      {configuredControllers.length >= 1 &&
       unconfiguredControllers.length >= 1 ? (
         <Notification severity="caution" title="Incomplete Vault integration">
           Configure {unconfiguredControllers.length} other{" "}
