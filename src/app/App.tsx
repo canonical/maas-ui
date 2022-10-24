@@ -32,6 +32,7 @@ export const App = (): JSX.Element => {
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
   const authLoading = useSelector(authSelectors.loading);
+  const authLoaded = useSelector(authSelectors.loaded);
   const connected = useSelector(status.connected);
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
@@ -82,7 +83,7 @@ export const App = (): JSX.Element => {
         </Notification>
       </Section>
     );
-  } else if (connected) {
+  } else if (connected && authLoaded && authenticated) {
     content = (
       <FileContext.Provider value={fileContextStore}>
         <Routes />
