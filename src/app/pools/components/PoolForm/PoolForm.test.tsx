@@ -36,7 +36,7 @@ describe("PoolForm", () => {
   it("can render", () => {
     renderWithBrowserRouter(<PoolForm />, {
       route: "/",
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByRole("form", { name: PoolFormLabels.AddPoolTitle }));
@@ -64,10 +64,8 @@ describe("PoolForm", () => {
     state.resourcepool.saved = true;
     renderWithBrowserRouter(<PoolForm />, {
       route: urls.pools.add,
-      wrapperProps: {
-        state,
-        routePattern: `${urls.pools.index}/*`,
-      },
+      state,
+      routePattern: `${urls.pools.index}/*`,
     });
     expect(window.location.pathname).toBe(urls.pools.index);
   });

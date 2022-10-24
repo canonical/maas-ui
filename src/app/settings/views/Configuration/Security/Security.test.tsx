@@ -27,7 +27,7 @@ it("displays loading text if TLS certificate has not loaded", () => {
       }),
     }),
   });
-  renderWithBrowserRouter(<Security />, { wrapperProps: { state } });
+  renderWithBrowserRouter(<Security />, { state });
 
   expect(screen.getByText(/Loading.../)).toBeInTheDocument();
 });
@@ -46,7 +46,7 @@ it("displays loading text if Vault Status has not loaded", () => {
       }),
     }),
   });
-  renderWithBrowserRouter(<Security />, { wrapperProps: { state } });
+  renderWithBrowserRouter(<Security />, { state });
 
   expect(screen.getByText(/Loading.../)).toBeInTheDocument();
 });
@@ -64,7 +64,7 @@ it("renders TLS disabled section if no TLS certificate is present", () => {
       }),
     }),
   });
-  renderWithBrowserRouter(<Security />, { wrapperProps: { state } });
+  renderWithBrowserRouter(<Security />, { state });
 
   expect(screen.getByText(/TLS disabled/)).toBeInTheDocument();
   expect(screen.queryByText(/TLS enabled/)).not.toBeInTheDocument();
@@ -83,7 +83,7 @@ it("renders TLS enabled section if TLS certificate is present", () => {
       }),
     }),
   });
-  renderWithBrowserRouter(<Security />, { wrapperProps: { state } });
+  renderWithBrowserRouter(<Security />, { state });
 
   expect(screen.getByText(/TLS enabled/)).toBeInTheDocument();
   expect(screen.queryByText(/TLS disabled/)).not.toBeInTheDocument();
@@ -107,7 +107,7 @@ it("renders the Vault section", () => {
     }),
   });
 
-  renderWithBrowserRouter(<Security />, { wrapperProps: { state } });
+  renderWithBrowserRouter(<Security />, { state });
 
   expect(screen.getByText(/Integrate with Vault/)).toBeInTheDocument();
 });

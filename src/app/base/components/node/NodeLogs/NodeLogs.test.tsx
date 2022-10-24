@@ -53,7 +53,7 @@ describe("NodeLogs", () => {
         />,
         {
           route: path,
-          wrapperProps: { state },
+          state,
         }
       );
       expect(screen.getByLabelText(label)).toBeInTheDocument();

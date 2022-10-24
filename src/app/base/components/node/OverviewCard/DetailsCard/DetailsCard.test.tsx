@@ -48,7 +48,7 @@ it("renders a link to zone configuration with edit permissions", () => {
 
   renderWithBrowserRouter(<DetailsCard node={machine} />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   expect(
@@ -66,7 +66,7 @@ it("renders a zone label without edit permissions", () => {
 
   renderWithBrowserRouter(<DetailsCard node={machine} />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   expect(
@@ -89,7 +89,7 @@ it("renders a formatted power type", () => {
 
   renderWithBrowserRouter(<DetailsCard node={machine} />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   expect(
@@ -112,7 +112,7 @@ it("shows a spinner if tags are not loaded", () => {
 
   renderWithBrowserRouter(<DetailsCard node={machine} />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   expect(screen.getByText("Loading")).toBeInTheDocument();
@@ -137,7 +137,7 @@ it("renders a list of tags once loaded", () => {
 
   renderWithBrowserRouter(<DetailsCard node={machine} />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   expect(screen.getByText("lxd, test, virtual")).toBeInTheDocument();
@@ -149,7 +149,7 @@ describe("node is a controller", () => {
     state.controller.items = [controller];
 
     renderWithBrowserRouter(<DetailsCard node={controller} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.queryByText(DetailsCardLabels.Owner)).not.toBeInTheDocument();
@@ -167,7 +167,7 @@ describe("node is a machine", () => {
 
     renderWithBrowserRouter(<DetailsCard node={machine} />, {
       route: "/machine/abc123",
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
@@ -190,7 +190,7 @@ describe("node is a machine", () => {
 
     renderWithBrowserRouter(<DetailsCard node={machine} />, {
       route: "/machine/abc123",
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText(DetailsCardLabels.Owner)).toBeInTheDocument();
@@ -216,7 +216,7 @@ describe("node is a machine", () => {
 
     renderWithBrowserRouter(<DetailsCard node={machine} />, {
       route: "/machine/abc123",
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText(DetailsCardLabels.Host)).toBeInTheDocument();
@@ -235,7 +235,7 @@ describe("node is a machine", () => {
 
     renderWithBrowserRouter(<DetailsCard node={machine} />, {
       route: "/machine/abc123",
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -253,7 +253,7 @@ describe("node is a machine", () => {
 
     renderWithBrowserRouter(<DetailsCard node={machine} />, {
       route: "/machine/abc123",
-      wrapperProps: { state },
+      state,
     });
 
     expect(

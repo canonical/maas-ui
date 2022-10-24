@@ -25,7 +25,7 @@ describe("SyncedImages", () => {
       }),
     });
     renderWithBrowserRouter(<SyncedImages formInCard />, {
-      wrapperProps: { state },
+      state,
     });
 
     await userEvent.click(
@@ -40,7 +40,7 @@ describe("SyncedImages", () => {
         ubuntu: ubuntuFactory({ sources: [] }),
       }),
     });
-    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<SyncedImages />, { state });
     expect(screen.getByText("Choose source")).toBeInTheDocument();
     expect(
       screen.queryByRole("button", { name: "Cancel" })
@@ -57,7 +57,7 @@ describe("SyncedImages", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<SyncedImages />, { state });
     const images_from = screen.getByText(SyncedImagesLabels.SyncedFrom);
     expect(within(images_from).getByText("maas.io")).toBeInTheDocument();
   });
@@ -75,7 +75,7 @@ describe("SyncedImages", () => {
         }),
       }),
     });
-    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<SyncedImages />, { state });
     const images_from = screen.getByText(SyncedImagesLabels.SyncedFrom);
     expect(within(images_from).getByText("www.url.com")).toBeInTheDocument();
   });
@@ -86,7 +86,7 @@ describe("SyncedImages", () => {
         ubuntu: ubuntuFactory({ sources: [sourceFactory(), sourceFactory()] }),
       }),
     });
-    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<SyncedImages />, { state });
     const images_from = screen.getByText(SyncedImagesLabels.SyncedFrom);
     expect(within(images_from).getByText("sources")).toBeInTheDocument();
   });
@@ -98,7 +98,7 @@ describe("SyncedImages", () => {
         ubuntu: ubuntuFactory({ sources: [sourceFactory()] }),
       }),
     });
-    renderWithBrowserRouter(<SyncedImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<SyncedImages />, { state });
     expect(
       screen.getByRole("button", { name: SyncedImagesLabels.ChangeSource })
     ).toBeDisabled();

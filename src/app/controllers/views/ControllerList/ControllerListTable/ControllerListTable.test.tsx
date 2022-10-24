@@ -38,7 +38,7 @@ describe("ControllerListTable", () => {
         onSelectedChange={jest.fn()}
         selectedIDs={[]}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
 
     expect(screen.getAllByRole("link")[0]).toHaveProperty(
@@ -62,7 +62,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={jest.fn()}
           selectedIDs={[]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       let rows = screen.getAllByRole("row");
@@ -101,7 +101,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={jest.fn()}
           selectedIDs={[]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       // Change sort to descending version
@@ -132,7 +132,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={onSelectedChange}
           selectedIDs={[]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       await userEvent.click(screen.getAllByTestId("controller-checkbox")[0]);
@@ -149,7 +149,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={onSelectedChange}
           selectedIDs={["abc123"]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       await userEvent.click(screen.getAllByTestId("controller-checkbox")[0]);
@@ -169,7 +169,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={onSelectedChange}
           selectedIDs={[]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
@@ -189,7 +189,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={onSelectedChange}
           selectedIDs={["abc123", "def456"]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       await userEvent.click(screen.getByTestId("all-controllers-checkbox"));
@@ -211,7 +211,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={jest.fn()}
           selectedIDs={[]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       expect(screen.queryByTestId("vault-icon")).not.toBeInTheDocument();
@@ -238,7 +238,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={jest.fn()}
           selectedIDs={[]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       const rows = screen.getAllByRole("row");
@@ -299,7 +299,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={jest.fn()}
           selectedIDs={[]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       const rows = screen.getAllByRole("row");
@@ -350,7 +350,7 @@ describe("ControllerListTable", () => {
           onSelectedChange={jest.fn()}
           selectedIDs={[]}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       const rows = screen.getAllByRole("row");

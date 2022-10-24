@@ -55,7 +55,7 @@ describe("ClearAllForm", () => {
     });
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
       route: "/dashboard",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByTestId("enabled-message")).toBeInTheDocument();
   });
@@ -71,7 +71,7 @@ describe("ClearAllForm", () => {
     });
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
       route: "/dashboard",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByTestId("disabled-message")).toBeInTheDocument();
   });
@@ -80,7 +80,7 @@ describe("ClearAllForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
       route: "/dashboard",
-      wrapperProps: { store },
+      store,
     });
     await userEvent.click(
       screen.getByRole("button", { name: ClearAllFormLabels.SubmitLabel })
@@ -96,7 +96,7 @@ describe("ClearAllForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<ClearAllForm closeForm={jest.fn()} />, {
       route: "/dashboard",
-      wrapperProps: { store },
+      store,
     });
 
     await userEvent.click(

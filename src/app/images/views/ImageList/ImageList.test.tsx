@@ -61,7 +61,7 @@ describe("ImageList", () => {
     });
     renderWithBrowserRouter(<ImageList />, {
       route: "/images",
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText(ImageListLabels.SyncDisabled)).toBeInTheDocument();

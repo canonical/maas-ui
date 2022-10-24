@@ -185,7 +185,8 @@ describe("Routes", () => {
   routes.forEach(({ title, path }) => {
     it(`Displays: ${title} at: ${path}`, () => {
       renderWithBrowserRouter(<Routes />, {
-        wrapperProps: { routePattern: `${urls.settings.index}/*`, state },
+        routePattern: `${urls.settings.index}/*`,
+        state,
         route: path,
       });
       expect(document.title).toBe(`${title} | MAAS`);
@@ -195,10 +196,8 @@ describe("Routes", () => {
   it("redirects from base URL to configuration", () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.settings.index,
-      wrapperProps: {
-        state,
-        routePattern: `${urls.settings.index}/*`,
-      },
+      state,
+      routePattern: `${urls.settings.index}/*`,
     });
     expect(window.location.pathname).toBe(urls.settings.configuration.index);
   });
@@ -206,10 +205,8 @@ describe("Routes", () => {
   it("redirects from configuration index to general", () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.settings.configuration.index,
-      wrapperProps: {
-        state,
-        routePattern: `${urls.settings.index}/*`,
-      },
+      state,
+      routePattern: `${urls.settings.index}/*`,
     });
     expect(window.location.pathname).toBe(urls.settings.configuration.general);
   });
@@ -217,10 +214,8 @@ describe("Routes", () => {
   it("redirects from network index to proxy", () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.settings.network.index,
-      wrapperProps: {
-        state,
-        routePattern: `${urls.settings.index}/*`,
-      },
+      state,
+      routePattern: `${urls.settings.index}/*`,
     });
     expect(window.location.pathname).toBe(urls.settings.network.proxy);
   });

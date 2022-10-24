@@ -13,7 +13,7 @@ describe("APIKeyAdd", () => {
   it("can render", () => {
     renderWithBrowserRouter(<APIKeyAdd />, {
       route: "/",
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByRole("form", { name: APIKeyFormLabels.AddFormLabel })

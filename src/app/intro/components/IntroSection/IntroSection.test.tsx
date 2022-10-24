@@ -31,7 +31,7 @@ describe("IntroSection", () => {
   it("can display a loading spinner", () => {
     renderWithBrowserRouter(
       <IntroSection loading={true}>Intro content</IntroSection>,
-      { route: "/intro/user", wrapperProps: { state } }
+      { route: "/intro/user", state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -64,7 +64,7 @@ describe("IntroSection", () => {
     });
     renderWithBrowserRouter(
       <IntroSection shouldExitIntro={true}>Intro content</IntroSection>,
-      { route: "/intro/user", wrapperProps: { state } }
+      { route: "/intro/user", state }
     );
     expect(window.location.pathname).toBe(urls.dashboard.index);
   });
@@ -77,7 +77,7 @@ describe("IntroSection", () => {
     });
     renderWithBrowserRouter(
       <IntroSection shouldExitIntro={true}>Intro content</IntroSection>,
-      { route: "/intro/user", wrapperProps: { state } }
+      { route: "/intro/user", state }
     );
     expect(window.location.pathname).toBe(urls.machines.index);
   });
@@ -88,7 +88,7 @@ describe("IntroSection", () => {
     });
     renderWithBrowserRouter(
       <IntroSection errors="Uh oh!">Intro content</IntroSection>,
-      { route: "/intro/user", wrapperProps: { state } }
+      { route: "/intro/user", state }
     );
     const title = screen.getByText("Error:");
     const message = screen.getByText("Uh oh!");

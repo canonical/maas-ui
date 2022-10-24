@@ -45,7 +45,7 @@ describe("NetworkActionRow", () => {
         node={state.machine.items[0]}
         setExpanded={jest.fn()}
       />,
-      { route: "/machine/abc123", wrapperProps: { store } }
+      { route: "/machine/abc123", store }
     );
     expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
   });
@@ -60,7 +60,7 @@ describe("NetworkActionRow", () => {
           node={state.machine.items[0]}
           setExpanded={setExpanded}
         />,
-        { route: "/machine/abc123", wrapperProps: { store } }
+        { route: "/machine/abc123", store }
       );
       await userEvent.click(
         screen.getByRole("button", { name: "Add interface" })
@@ -79,7 +79,7 @@ describe("NetworkActionRow", () => {
           node={state.machine.items[0]}
           setExpanded={jest.fn()}
         />,
-        { route: "/machine/abc123", wrapperProps: { store } }
+        { route: "/machine/abc123", store }
       );
       expect(
         screen.getByRole("button", { name: "Add interface" })
@@ -100,7 +100,7 @@ describe("NetworkActionRow", () => {
           node={state.machine.items[0]}
           setExpanded={jest.fn()}
         />,
-        { route: "/machine/abc123", wrapperProps: { store } }
+        { route: "/machine/abc123", store }
       );
       expect(
         screen.getByRole("button", { name: "Add interface" })

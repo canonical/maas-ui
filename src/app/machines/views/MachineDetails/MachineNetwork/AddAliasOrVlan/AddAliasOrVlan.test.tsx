@@ -107,7 +107,7 @@ describe("AddAliasOrVlan", () => {
         interfaceType={NetworkInterfaceTypes.VLAN}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -120,7 +120,7 @@ describe("AddAliasOrVlan", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     const secondarySubmit = screen.getByRole("button", {
       name: AddAliasOrVlanLabels.SaveAndAdd,
@@ -150,7 +150,7 @@ describe("AddAliasOrVlan", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     expect(
       screen.getByRole("button", {
@@ -168,7 +168,7 @@ describe("AddAliasOrVlan", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     expect(
       screen.getByRole("button", {
@@ -215,7 +215,7 @@ describe("AddAliasOrVlan", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
 
     expect(screen.getByRole("combobox", { name: "Fabric" })).toHaveValue(
@@ -236,7 +236,7 @@ describe("AddAliasOrVlan", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route, wrapperProps: { store } }
+      { route, store }
     );
 
     await userEvent.click(
@@ -304,7 +304,7 @@ describe("AddAliasOrVlan", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route, wrapperProps: { store } }
+      { route, store }
     );
 
     await userEvent.click(

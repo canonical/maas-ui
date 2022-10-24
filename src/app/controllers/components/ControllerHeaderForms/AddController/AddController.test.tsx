@@ -32,7 +32,7 @@ describe("AddController", () => {
 
   it("includes the config in the instructions", () => {
     renderWithBrowserRouter(<AddController clearHeaderContent={jest.fn()} />, {
-      wrapperProps: { state },
+      state,
     });
     const instructions = screen.getByTestId("register-snippet");
     expect(
@@ -48,7 +48,7 @@ describe("AddController", () => {
     renderWithBrowserRouter(
       <AddController clearHeaderContent={clearHeaderContent} />,
       {
-        wrapperProps: { state },
+        state,
       }
     );
     userEvent.click(screen.getByRole("button", { name: "Close" }));
@@ -57,7 +57,7 @@ describe("AddController", () => {
 
   it("uses a fixed version in both snap and packages instructions", async () => {
     renderWithBrowserRouter(<AddController clearHeaderContent={jest.fn()} />, {
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByText(/sudo snap install maas --channel=3.2/)

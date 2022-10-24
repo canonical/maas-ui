@@ -252,7 +252,7 @@ describe("LXDHostVMs", () => {
         setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { store } }
+      { store }
     );
     const expected = machineActions.fetch("123456", {
       filter: { pod: [pod.name] },

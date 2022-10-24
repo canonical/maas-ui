@@ -47,7 +47,7 @@ describe("MaasIntroSuccess", () => {
     });
     renderWithBrowserRouter(<MaasIntroSuccess />, {
       route: "/intro/success",
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
@@ -60,7 +60,7 @@ describe("MaasIntroSuccess", () => {
     });
     renderWithBrowserRouter(<MaasIntroSuccess />, {
       route: "/intro/success",
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })
@@ -73,7 +73,7 @@ describe("MaasIntroSuccess", () => {
     });
     renderWithBrowserRouter(<MaasIntroSuccess />, {
       route: "/intro/success",
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByRole("link", { name: MaasIntroSuccessLabels.FinishSetup })

@@ -31,7 +31,7 @@ describe("DeleteImageConfirm", () => {
       <Formik initialValues={{ images: [] }} onSubmit={jest.fn()}>
         <DeleteImageConfirm closeForm={closeForm} resource={resource} />
       </Formik>,
-      { wrapperProps: { state } }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));

@@ -20,7 +20,7 @@ describe("ResourceRecords", () => {
     });
 
     renderWithBrowserRouter(<ResourceRecords id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -36,7 +36,7 @@ describe("ResourceRecords", () => {
       }),
     });
     renderWithBrowserRouter(<ResourceRecords id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();

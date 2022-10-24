@@ -33,7 +33,7 @@ describe("ToggleMembers", () => {
         setEditingMembers={jest.fn()}
         validNics={interfaces}
       />,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
 
     expect(screen.getByTestId("edit-members")).toBeDisabled();
@@ -62,7 +62,7 @@ describe("ToggleMembers", () => {
         setEditingMembers={jest.fn()}
         validNics={interfaces}
       />,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
 
     expect(screen.getByTestId("edit-members")).not.toBeDisabled();
@@ -76,7 +76,7 @@ describe("ToggleMembers", () => {
         setEditingMembers={jest.fn()}
         validNics={interfaces}
       />,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
     expect(screen.getByTestId("edit-members")).toBeDisabled();
   });

@@ -52,10 +52,8 @@ describe("VirshDetails", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<VirshDetails />, {
         route: path,
-        wrapperProps: {
-          state,
-          routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
-        },
+        state,
+        routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
@@ -64,10 +62,8 @@ describe("VirshDetails", () => {
   it("redirects to resources", () => {
     renderWithBrowserRouter(<VirshDetails />, {
       route: urls.kvm.virsh.details.index({ id: 1 }),
-      wrapperProps: {
-        state,
-        routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
-      },
+      state,
+      routePattern: `${urls.kvm.virsh.details.index(null)}/*`,
     });
     expect(window.location.pathname).toBe(
       urls.kvm.virsh.details.resources({ id: 1 })

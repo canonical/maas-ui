@@ -34,7 +34,7 @@ describe("Intro", () => {
     state.user.auth.loading = true;
     renderWithBrowserRouter(<Intro />, {
       route: "/intro",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -47,7 +47,7 @@ describe("Intro", () => {
     });
     renderWithBrowserRouter(<Intro />, {
       route: "/intro",
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByText(
@@ -67,7 +67,7 @@ describe("Intro", () => {
     });
     renderWithBrowserRouter(<Intro />, {
       route: "/intro",
-      wrapperProps: { state },
+      state,
     });
     expect(window.location.pathname).toBe(urls.dashboard.index);
   });
@@ -75,7 +75,7 @@ describe("Intro", () => {
   it("returns to the start when loading the user intro and the main intro is incomplete", () => {
     renderWithBrowserRouter(<Intro />, {
       route: "/intro",
-      wrapperProps: { state },
+      state,
     });
     expect(window.location.pathname).toBe(urls.intro.index);
   });
@@ -86,7 +86,7 @@ describe("Intro", () => {
     });
     renderWithBrowserRouter(<Intro />, {
       route: "/intro",
-      wrapperProps: { state },
+      state,
     });
     expect(window.location.pathname).toBe(urls.intro.user);
   });

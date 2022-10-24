@@ -33,7 +33,7 @@ describe("ImagesIntro", () => {
     state.bootresource.ubuntu = null;
     renderWithBrowserRouter(<ImagesIntro />, {
       route: "/intro/images",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -65,7 +65,7 @@ describe("ImagesIntro", () => {
     state.bootresource.resources = [];
     renderWithBrowserRouter(<ImagesIntro />, {
       route: "/intro/images",
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -83,7 +83,7 @@ describe("ImagesIntro", () => {
     state.bootresource.resources = [bootResourceFactory()];
     renderWithBrowserRouter(<ImagesIntro />, {
       route: "/intro/images",
-      wrapperProps: { state },
+      state,
     });
 
     expect(

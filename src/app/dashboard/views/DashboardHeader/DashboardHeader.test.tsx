@@ -36,7 +36,7 @@ describe("DashboardHeader", () => {
   it("displays the discovery count in the header", () => {
     renderWithBrowserRouter(<DashboardHeader />, {
       route: "/dashboard",
-      wrapperProps: { state },
+      state,
     });
 
     const indexLink = screen.getByText("2 discoveries");
@@ -50,7 +50,7 @@ describe("DashboardHeader", () => {
   it("has a button to clear discoveries", () => {
     renderWithBrowserRouter(<DashboardHeader />, {
       route: "/dashboard",
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByRole("button", { name: DashboardHeaderLabels.ClearAll })
@@ -60,7 +60,7 @@ describe("DashboardHeader", () => {
   it("hides the clear-all button when the form is visible", async () => {
     renderWithBrowserRouter(<DashboardHeader />, {
       route: "/dashboard",
-      wrapperProps: { state },
+      state,
     });
 
     const clearAllButton = screen.getByRole("button", {
