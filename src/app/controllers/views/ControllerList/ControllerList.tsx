@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Link, Notification } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router";
 import { useNavigate } from "react-router-dom-v5-compat";
@@ -10,6 +9,7 @@ import ControllerListHeader from "./ControllerListHeader";
 import ControllerListTable from "./ControllerListTable";
 
 import Section from "app/base/components/Section";
+import VaultNotification from "app/base/components/VaultNotification";
 import { useWindowTitle } from "app/base/hooks";
 import type { ControllerHeaderContent } from "app/controllers/types";
 import { actions as controllerActions } from "app/store/controller";
@@ -36,16 +36,11 @@ const ControllerList = (): JSX.Element => {
   );
   const selectedIDs = useSelector(controllerSelectors.selectedIDs);
 
-  const { unconfiguredControllers, configuredControllers } = useSelector(
-    (state: RootState) =>
-      controllerSelectors.getVaultConfiguredControllers(state)
-  );
   const filteredControllers = useSelector((state: RootState) =>
     controllerSelectors.search(state, searchFilter || null, selectedIDs)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
   const vaultEnabledLoading = useSelector(vaultEnabledSelectors.loading);
-  const vaultEnabled = useSelector(vaultEnabledSelectors.get);
   useWindowTitle("Controllers");
 
   useEffect(() => {
@@ -74,24 +69,7 @@ const ControllerList = (): JSX.Element => {
         />
       }
     >
-      {configuredControllers.length >= 1 &&
-      unconfiguredControllers.length >= 1 ? (
-        <Notification severity="caution" title="Incomplete Vault integration">
-          Configure {unconfiguredControllers.length} other{" "}
-          <Link href="/controllers">
-            {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
-          </Link>{" "}
-          with Vault to complete this operation. Check the{" "}
-          <Link href="/settings/configuration/security">security settings</Link>{" "}
-          for more information.
-        </Notification>
-      ) : unconfiguredControllers.length === 0 && vaultEnabled === false ? (
-        <Notification severity="caution" title="Incomplete Vault integration">
-          Migrate your secrets to Vault to complete this operation. Check the{" "}
-          <Link href="/settings/configuration/security">security settings</Link>{" "}
-          for more information.
-        </Notification>
-      ) : null}
+      <VaultNotification />
       <ControllerListControls
         filter={searchFilter}
         setFilter={setSearchFilter}
