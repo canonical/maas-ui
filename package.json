@@ -37,6 +37,7 @@
     "lint-root": "cd root && yarn run lint",
     "lint-cypress": "cd integration && yarn run lint",
     "lint": "yarn build-shared && yarn lint-legacy && yarn lint-ui && yarn lint-shared && yarn lint-root && yarn lint-cypress",
+    "sitespeed": "docker run -v \"$(pwd)/sitespeed.io:/sitespeed.io\" --network=host sitespeedio/sitespeed.io:25.2.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --spa",
     "test-cypress": "yarn --cwd integration run cypress-test",
     "test-legacy": "cd legacy && yarn run test",
     "test-ui": "cd ui && yarn run test --watchAll=false",
