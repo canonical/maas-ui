@@ -80,6 +80,8 @@ export const MachineActionFormWrapper = ({
     selectedCount,
     selectedCountLoading,
   };
+  const clearSelectedMachines = () =>
+    dispatch(machineActions.setSelectedMachines(null));
 
   const filter = selectedToFilters(selectedMachines || null);
 
@@ -100,6 +102,7 @@ export const MachineActionFormWrapper = ({
       case NodeActions.DELETE:
         return (
           <DeleteForm
+            onAfterSuccess={clearSelectedMachines}
             onSubmit={() => {
               dispatchForSelectedMachines(machineActions.delete);
             }}
