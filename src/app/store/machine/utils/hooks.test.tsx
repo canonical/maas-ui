@@ -243,6 +243,25 @@ describe("machine hook utils", () => {
         .filter((action) => action.type === expected.type);
       expect(getDispatches).toHaveLength(2);
     });
+
+    it("fetches again if the query has been marked as stale", async () => {
+      state.machine.counts = {
+        "mocked-nanoid-1": machineStateCountFactory({
+          stale: true,
+        }),
+      };
+      const store = mockStore(state);
+      renderHook(() => useFetchMachineCount(), {
+        wrapper: generateWrapper(store),
+      });
+      const expected = machineActions.count("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+      const getDispatches = () =>
+        store.getActions().filter((action) => action.type === expected.type);
+      expect(getDispatches()).toHaveLength(2);
+    });
   });
 
   describe("useFetchMachines", () => {
@@ -272,6 +291,25 @@ describe("machine hook utils", () => {
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
+    });
+
+    it("fetches again if the query has been marked as stale", async () => {
+      state.machine.lists = {
+        "mocked-nanoid-1": machineStateListFactory({
+          stale: true,
+        }),
+      };
+      const store = mockStore(state);
+      renderHook(() => useFetchMachines(), {
+        wrapper: generateWrapper(store),
+      });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+      const getDispatches = () =>
+        store.getActions().filter((action) => action.type === expected.type);
+      expect(getDispatches()).toHaveLength(2);
     });
 
     it("returns the fetched machines", () => {

@@ -81,6 +81,40 @@ describe("machine reducer", () => {
     );
   });
 
+  it("reduces invalidateQueries", () => {
+    const initialState = machineStateFactory({
+      loading: false,
+      counts: {
+        "1234": machineStateCountFactory({
+          loaded: true,
+          stale: false,
+        }),
+      },
+      lists: {
+        "5678": machineStateListFactory({
+          loaded: true,
+          stale: false,
+        }),
+      },
+    });
+    expect(reducers(initialState, actions.invalidateQueries())).toEqual(
+      machineStateFactory({
+        counts: {
+          "1234": machineStateCountFactory({
+            loaded: true,
+            stale: true,
+          }),
+        },
+        lists: {
+          "5678": machineStateListFactory({
+            loaded: true,
+            stale: true,
+          }),
+        },
+      })
+    );
+  });
+
   it("ignores calls that don't exist when reducing countSuccess", () => {
     const initialState = machineStateFactory({
       counts: {},

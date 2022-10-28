@@ -348,12 +348,14 @@ const DEFAULT_LIST_STATE = {
   groups: null,
   loaded: false,
   loading: true,
+  stale: false,
   num_pages: null,
 };
 
 const DEFAULT_COUNT_STATE = {
   loading: false,
   loaded: false,
+  stale: false,
   count: null,
   errors: null,
 };
@@ -1171,6 +1173,15 @@ const machineSlice = createSlice({
           state.lists[callId].num_pages = payload.num_pages;
         }
       },
+    },
+    // marks all queries as stale which will trigger a re-fetch
+    invalidateQueries: (state) => {
+      Object.keys(state.lists).forEach((callId) => {
+        state.lists[callId].stale = true;
+      });
+      Object.keys(state.counts).forEach((callId) => {
+        state.counts[callId].stale = true;
+      });
     },
     filterGroups: {
       prepare: () => ({

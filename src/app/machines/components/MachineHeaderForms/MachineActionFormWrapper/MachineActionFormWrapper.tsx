@@ -80,8 +80,10 @@ export const MachineActionFormWrapper = ({
     selectedCount,
     selectedCountLoading,
   };
-  const clearSelectedMachines = () =>
+  const clearSelectedMachines = () => {
     dispatch(machineActions.setSelectedMachines(null));
+    dispatch(machineActions.invalidateQueries());
+  };
 
   const filter = selectedToFilters(selectedMachines || null);
 

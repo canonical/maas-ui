@@ -14,6 +14,7 @@ import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
 import type { ClearHeaderContent } from "app/base/types";
 import urls from "app/base/urls";
+import { actions as machineActions } from "app/store/machine";
 import { actions as messageActions } from "app/store/message";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -120,6 +121,7 @@ const DeleteForm = ({
         );
         navigate({ pathname: urls.kvm.index });
         clearHeaderContent();
+        dispatch(machineActions.invalidateQueries());
       }}
       processingCount={deletingCount}
       selectedCount={deletingCount}

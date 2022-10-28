@@ -58,10 +58,9 @@ context("Machine listing", () => {
     });
     cy.findByRole("button", { name: /Delete 2 machines/ }).should("exist");
     cy.findByRole("button", { name: /Delete 2 machines/ }).click();
-    // TODO: enable once https://github.com/canonical/maas-ui/issues/4487 is fixed
-    // cy.findByRole("searchbox").should("have.value", searchFilter);
-    // cy.findByText(/All machines selected/).should("not.exist");
-    // cy.findByText(/No machines match the search criteria./).should("exist");
+    cy.findByRole("searchbox").should("have.value", searchFilter);
+    cy.findByText(/All machines selected/).should("not.exist");
+    cy.findByText(/No machines match the search criteria./).should("exist");
   });
 
   it.skip("can hide machine table columns", () => {
