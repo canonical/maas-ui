@@ -222,6 +222,7 @@ export type MachineStateList = {
   groups: MachineStateListGroup[] | null;
   loaded: boolean;
   loading: boolean;
+  stale: boolean;
   num_pages: number | null;
 };
 
@@ -324,6 +325,7 @@ export type MachineStateCount = {
   errors: APIError;
   loaded: boolean;
   loading: boolean;
+  stale: boolean;
 };
 
 export type MachineStateCounts = Record<string, MachineStateCount>;

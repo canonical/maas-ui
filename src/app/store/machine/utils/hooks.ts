@@ -378,6 +378,14 @@ export const useFetchMachineCount = (
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
   const previousFilters = usePrevious(filters);
+  const isStale = useSelector((state: RootState) =>
+    machineSelectors.countStale(state, callId)
+  );
+  useEffect(() => {
+    if (isStale) {
+      setCallId(nanoid());
+    }
+  }, [isStale]);
   const dispatch = useDispatch();
   const machineCount = useSelector((state: RootState) =>
     machineSelectors.count(state, callId)
@@ -527,6 +535,14 @@ export const useFetchMachines = (
   const [callId, setCallId] = useState<string | null>(null);
   const previousCallId = usePrevious(callId);
   const previousOptions = usePrevious(options, false);
+  const isStale = useSelector((state: RootState) =>
+    machineSelectors.listStale(state, callId)
+  );
+  useEffect(() => {
+    if (isStale) {
+      setCallId(nanoid());
+    }
+  }, [isStale]);
   const dispatch = useDispatch();
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId)

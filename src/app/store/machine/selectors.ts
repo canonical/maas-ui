@@ -473,6 +473,28 @@ const listCount = createSelector(
 );
 
 /**
+ * Get the stale value for a machine count request with a given callId
+ */
+const countStale = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getCount(machineState, callId)?.stale ?? null
+);
+
+/**
+ * Get the stale value for a machine list request with a given callId
+ */
+const listStale = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.stale ?? null
+);
+
+/**
  * Get a group in a machine list request with a given callId.
  */
 const listGroup = createSelector(
@@ -646,6 +668,7 @@ const selectors = {
   count,
   countLoaded,
   countLoading,
+  countStale,
   getInterfaceById,
   getStatuses,
   getStatusForMachine,
@@ -657,6 +680,7 @@ const selectors = {
   listGroups,
   listLoaded,
   listLoading,
+  listStale,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],
   markingFixed: statusSelectors["markingFixed"],

@@ -7,6 +7,7 @@ import configureStore from "redux-mock-store";
 
 import MachineActionFormWrapper from "./MachineActionFormWrapper";
 
+import { actions as machineActions } from "app/store/machine";
 import { NodeActions } from "app/store/types/node";
 import {
   machineActionState as machineActionStateFactory,
@@ -99,7 +100,7 @@ it("can show untag errors when the tag form is open", async () => {
   expect(screen.getByText("Untagging failed")).toBeInTheDocument();
 });
 
-it("clears selected machines on delete success", async () => {
+it("clears selected machines and invalidates queries on delete success", async () => {
   mockFormikFormSaved();
   const state = rootStateFactory();
   const machines = [
@@ -130,4 +131,11 @@ it("clears selected machines on delete success", async () => {
       .getActions()
       .find((action) => action.type === "machine/setSelectedMachines").payload
   ).toEqual(null);
+  expect(
+    store
+      .getActions()
+      .filter(
+        (action) => action.type === machineActions.invalidateQueries().type
+      )
+  ).toHaveLength(1);
 });
