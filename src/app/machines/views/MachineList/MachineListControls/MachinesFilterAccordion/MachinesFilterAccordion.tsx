@@ -10,7 +10,7 @@ import machineSelectors from "app/store/machine/selectors";
 import { FilterGroupKey } from "app/store/machine/types";
 
 export enum Label {
-  Toggle = "Filters:",
+  Toggle = "Filters",
   Arch = "Architecture",
   Fabrics = "Fabric",
   Owner = "Owner",
