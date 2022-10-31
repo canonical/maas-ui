@@ -45,7 +45,7 @@ type Section = {
 };
 
 export enum Labels {
-  Toggle = "Filters:",
+  Toggle = "Filters",
 }
 
 const getFilters = <I, PK extends keyof I>(

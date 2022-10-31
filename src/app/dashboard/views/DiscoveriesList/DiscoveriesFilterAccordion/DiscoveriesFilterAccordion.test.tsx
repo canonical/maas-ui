@@ -29,7 +29,7 @@ describe("DiscoveriesFilterAccordion", () => {
       <DiscoveriesFilterAccordion searchText="" setSearchText={jest.fn()} />,
       { route, wrapperProps: { state } }
     );
-    expect(screen.getByRole("button", { name: "Filters:" })).toBeDisabled();
+    expect(screen.getByRole("button", { name: "Filters" })).toBeDisabled();
   });
 
   it("displays a filter accordion", () => {
