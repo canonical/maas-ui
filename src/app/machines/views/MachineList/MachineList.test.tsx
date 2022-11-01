@@ -736,7 +736,7 @@ describe("MachineList", () => {
     );
 
     expect(screen.getByTestId("vault-notification")).toHaveTextContent(
-      "Configure 1 other controller with Vault to complete this operation."
+      "Configure 1 other controller with Vault to complete integration with Vault."
     );
   });
 
@@ -761,7 +761,7 @@ describe("MachineList", () => {
     );
 
     expect(screen.getByTestId("vault-notification")).toHaveTextContent(
-      "Migrate your secrets to Vault to complete this operation."
+      "Migrate your secrets to Vault to complete integration with Vault."
     );
   });
 
