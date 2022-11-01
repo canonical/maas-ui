@@ -30,7 +30,7 @@ const VaultNotification = (): JSX.Element | null => {
       <Link to="/controllers">
         {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
       </Link>{" "}
-      with Vault to complete this operation. Check the{" "}
+      with Vault to complete integration with Vault. Check the{" "}
       <Link to="/settings/configuration/security">security settings</Link> for
       more information.
     </Notification>
@@ -40,9 +40,9 @@ const VaultNotification = (): JSX.Element | null => {
       severity="caution"
       title="Incomplete Vault integration"
     >
-      Migrate your secrets to Vault to complete this operation. Check the{" "}
-      <Link to="/settings/configuration/security">security settings</Link> for
-      more information.
+      Migrate your secrets to Vault to complete integration with Vault. Check
+      the <Link to="/settings/configuration/security">security settings</Link>{" "}
+      for more information.
     </Notification>
   ) : null;
 };
