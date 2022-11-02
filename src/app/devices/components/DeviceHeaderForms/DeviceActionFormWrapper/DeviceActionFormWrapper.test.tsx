@@ -33,7 +33,6 @@ describe("DeviceActionFormWrapper", () => {
       { route: "/devices", wrapperProps: { store } }
     );
 
-    // wrapper.find('button[data-testid="on-update-selected"]').simulate("click");
     await userEvent.click(screen.getByTestId("on-update-selected"));
 
     const expectedAction = deviceActions.setSelected(["abc123"]);
