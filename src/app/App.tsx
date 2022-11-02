@@ -103,6 +103,7 @@ export const App = (): JSX.Element => {
       <ThemePreviewContext.Provider value={{ theme, setTheme }}>
         <Header />
         <main id="main-content">{content}</main>
+        <hr />
         <Footer />
         <StatusBar />
       </ThemePreviewContext.Provider>
