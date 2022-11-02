@@ -1,6 +1,5 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import NetworkActionRow from "./NetworkActionRow";
@@ -13,8 +12,9 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("NetworkActionRow", () => {
   let state: RootState;
@@ -32,47 +32,39 @@ describe("NetworkActionRow", () => {
 
   it("can include extra actions", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-        >
-          <NetworkActionRow
-            expanded={null}
-            extraActions={[
-              {
-                disabled: [[false]],
-                label: "Edit",
-                state: ExpandedState.EDIT,
-              },
-            ]}
-            node={state.machine.items[0]}
-            setExpanded={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NetworkActionRow
+        expanded={null}
+        extraActions={[
+          {
+            disabled: [[false]],
+            label: "Edit",
+            state: ExpandedState.EDIT,
+          },
+        ]}
+        node={state.machine.items[0]}
+        setExpanded={jest.fn()}
+      />,
+      { route: "/machine/abc123", wrapperProps: { store } }
     );
-    expect(wrapper.find("Button[data-testid='edit']").exists()).toBe(true);
+    expect(screen.getByRole("button", { name: "Edit" })).toBeInTheDocument();
   });
 
   describe("add physical", () => {
-    it("sets the state to show the form when clicking the button", () => {
+    it("sets the state to show the form when clicking the button", async () => {
       const store = mockStore(state);
       const setExpanded = jest.fn();
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <NetworkActionRow
-              expanded={null}
-              node={state.machine.items[0]}
-              setExpanded={setExpanded}
-            />
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkActionRow
+          expanded={null}
+          node={state.machine.items[0]}
+          setExpanded={setExpanded}
+        />,
+        { route: "/machine/abc123", wrapperProps: { store } }
       );
-      wrapper.find("Button[data-testid='addPhysical']").simulate("click");
+      await userEvent.click(
+        screen.getByRole("button", { name: "Add interface" })
+      );
       expect(setExpanded).toHaveBeenCalledWith({
         content: ExpandedState.ADD_PHYSICAL,
       });
@@ -81,46 +73,38 @@ describe("NetworkActionRow", () => {
     it("disables the button when networking is disabled", () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <NetworkActionRow
-              expanded={null}
-              node={state.machine.items[0]}
-              setExpanded={jest.fn()}
-            />
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkActionRow
+          expanded={null}
+          node={state.machine.items[0]}
+          setExpanded={jest.fn()}
+        />,
+        { route: "/machine/abc123", wrapperProps: { store } }
       );
       expect(
-        wrapper.find("Button[data-testid='addPhysical']").prop("disabled")
-      ).toBe(true);
+        screen.getByRole("button", { name: "Add interface" })
+      ).toBeDisabled();
       expect(
-        wrapper.find("Tooltip[data-testid='addPhysical-tooltip']").exists()
-      ).toBe(true);
+        screen.getByRole("tooltip", {
+          name: "Network can't be modified for this machine.",
+        })
+      ).toBeInTheDocument();
     });
 
     it("disables the button when the form is expanded", () => {
       state.machine.items[0].status = NodeStatus.DEPLOYED;
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <NetworkActionRow
-              expanded={{ content: ExpandedState.ADD_PHYSICAL }}
-              node={state.machine.items[0]}
-              setExpanded={jest.fn()}
-            />
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkActionRow
+          expanded={{ content: ExpandedState.ADD_PHYSICAL }}
+          node={state.machine.items[0]}
+          setExpanded={jest.fn()}
+        />,
+        { route: "/machine/abc123", wrapperProps: { store } }
       );
       expect(
-        wrapper.find("Button[data-testid='addPhysical']").prop("disabled")
-      ).toBe(true);
+        screen.getByRole("button", { name: "Add interface" })
+      ).toBeDisabled();
     });
   });
 });
