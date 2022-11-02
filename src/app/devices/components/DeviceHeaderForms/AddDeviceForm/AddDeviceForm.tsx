@@ -95,6 +95,7 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
 
   return (
     <FormikForm<AddDeviceValues>
+      aria-label="Add device"
       cleanup={deviceActions.cleanup}
       errors={devicesErrors}
       initialValues={{
