@@ -9,6 +9,7 @@ import AddHardwareMenu from "./AddHardwareMenu";
 import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import MachinesHeader from "app/base/components/node/MachinesHeader";
+import { useSendAnalytics } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
@@ -59,6 +60,7 @@ export const MachineListHeader = ({
   const { selectedCount, selectedCountLoading } =
     useMachineSelectedCount(filter);
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const sendAnalytics = useSendAnalytics();
 
   // Clear the header when there are no selected machines
   useEffect(() => {
@@ -113,6 +115,11 @@ export const MachineListHeader = ({
             if (view) {
               setHeaderContent({ view });
             }
+            sendAnalytics(
+              "Machine list action form",
+              getNodeActionTitle(action),
+              "Open"
+            );
           }}
         />,
       ]}

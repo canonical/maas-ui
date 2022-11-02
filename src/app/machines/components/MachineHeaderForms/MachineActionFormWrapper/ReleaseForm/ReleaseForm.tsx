@@ -69,9 +69,9 @@ export const ReleaseForm = ({
       modelName="machine"
       onCancel={clearHeaderContent}
       onSaveAnalytics={{
-        action: "Release machine",
+        action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
-        label: "Release",
+        label: "Release machine",
       }}
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
