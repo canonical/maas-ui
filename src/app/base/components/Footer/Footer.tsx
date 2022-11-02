@@ -6,7 +6,7 @@ export const Footer = (): JSX.Element => {
   const allowUsabilla = useUsabilla();
 
   return (
-    <footer className="p-strip--light is-shallow p-footer">
+    <footer className="p-strip--light p-footer">
       <div className="row">
         <div className="col-10 p-footer__nav">
           <ul className="p-inline-list--middot">
