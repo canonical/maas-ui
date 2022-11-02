@@ -209,7 +209,7 @@ export const TagSelector = ({
   disabledTags = [],
   ...props
 }: Props): JSX.Element => {
-  const [wrapperRef, wrapperId] = useClickOutside<HTMLDivElement>(() =>
+  const wrapperRef = useClickOutside<HTMLDivElement>(() =>
     setDropdownOpen(false)
   );
   const inputId = useId();
@@ -246,7 +246,7 @@ export const TagSelector = ({
   });
 
   return (
-    <div id={wrapperId} ref={wrapperRef}>
+    <div ref={wrapperRef}>
       <Field
         error={error}
         forId={inputId}
