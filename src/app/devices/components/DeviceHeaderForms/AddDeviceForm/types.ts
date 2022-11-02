@@ -20,6 +20,6 @@ export type AddDeviceInterface = {
 export type AddDeviceValues = {
   domain: Domain["name"];
   hostname: Device["hostname"];
-  interfaces: AddDeviceInterface[];
+  interfaces: (Omit<AddDeviceInterface, "subnet"> & { subnet: string })[];
   zone: Zone["name"];
 };

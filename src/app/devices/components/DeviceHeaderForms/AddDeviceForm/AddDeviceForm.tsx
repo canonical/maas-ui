@@ -120,13 +120,16 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
       }}
       onSubmit={(values) => {
         const { domain, hostname, interfaces, zone } = values;
-        const normalisedInterfaces = interfaces.map((iface) => ({
-          ip_address: iface.ip_address || null,
-          ip_assignment: iface.ip_assignment,
-          mac: iface.mac,
-          name: iface.name,
-          subnet: iface.subnet || iface.subnet === 0 ? iface.subnet : null,
-        }));
+        const normalisedInterfaces = interfaces.map((iface) => {
+          const subnet = parseInt(iface.subnet);
+          return {
+            ip_address: iface.ip_address || null,
+            ip_assignment: iface.ip_assignment,
+            mac: iface.mac,
+            name: iface.name,
+            subnet: subnet || subnet === 0 ? subnet : null,
+          };
+        });
         // We determine the MAC addresses of the device based on the defined
         // interfaces.
         const { primary_mac, extra_macs } = normalisedInterfaces.reduce<{
