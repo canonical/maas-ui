@@ -6,7 +6,7 @@ const OutsideClickHandler = ({
 }: React.PropsWithChildren<{
   onClick: () => void;
 }>): JSX.Element => {
-  const [ref] = useClickOutside<HTMLDivElement>(onClick);
+  const ref = useClickOutside<HTMLDivElement>(onClick);
 
   return <div ref={ref}>{children}</div>;
 };
