@@ -1,7 +1,6 @@
-import { mount } from "enzyme";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import AddDeviceInterfaces from "../AddDeviceInterfaces";
@@ -14,9 +13,9 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("AddDeviceInterfaces", () => {
   let interfaces: AddDeviceInterface[];
@@ -44,96 +43,74 @@ describe("AddDeviceInterfaces", () => {
   it("does not show subnet or IP address fields for dynamic IP assignment", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
-            <AddDeviceInterfaces />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
+        <AddDeviceInterfaces />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
-      false
-    );
+    expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("ip-address-field")).not.toBeInTheDocument();
   });
 
   it("shows the IP address field for external IP assignment", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.EXTERNAL;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
-            <AddDeviceInterfaces />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
+        <AddDeviceInterfaces />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
-      true
-    );
+    expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
+    expect(screen.getByTestId("ip-address-field")).toBeInTheDocument();
   });
 
   it("shows both the subnet and IP address fields for static IP assignment", () => {
     interfaces[0].ip_assignment = DeviceIpAssignment.STATIC;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
-            <AddDeviceInterfaces />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
+        <AddDeviceInterfaces />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("subnet-field")).toBeInTheDocument();
+    expect(screen.getByTestId("ip-address-field")).toBeInTheDocument();
   });
 
   it("can add and remove interfaces", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
-            <AddDeviceInterfaces />
-          </Formik>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
+        <AddDeviceInterfaces />
+      </Formik>,
+      { store }
     );
 
-    const getRowCount = () =>
-      wrapper.find("tr[data-testid='interface-row']").length;
-    const getAddButton = () =>
-      wrapper.find("button[data-testid='add-interface']");
+    const getRowCount = () => screen.getAllByTestId("interface-row").length;
+    const getAddButton = () => screen.getByTestId("add-interface");
     const getRemoveButton = () =>
-      wrapper.find("button[data-testid='table-actions-delete']").at(0);
+      screen.getAllByTestId("table-actions-delete")[0];
 
     // There is only one interface by default. Since at least one interface must
     // be defined, the remove button should be disabled.
     expect(getRowCount()).toBe(1);
-    expect(getRemoveButton().prop("disabled")).toBe(true);
+    expect(getRemoveButton()).toBeDisabled();
 
     // Add an interface.
-    getAddButton().simulate("click");
-    await waitForComponentToPaint(wrapper);
+    await userEvent.click(getAddButton());
 
     expect(getRowCount()).toBe(2);
-    expect(getRemoveButton().prop("disabled")).toBe(false);
+    expect(getRemoveButton()).not.toBeDisabled();
 
     // Remove an interface.
-    getRemoveButton().simulate("click");
-    await waitForComponentToPaint(wrapper);
+    await userEvent.click(getRemoveButton());
 
     expect(getRowCount()).toBe(1);
-    expect(getRemoveButton().prop("disabled")).toBe(true);
+    expect(getRemoveButton()).toBeDisabled();
   });
 });

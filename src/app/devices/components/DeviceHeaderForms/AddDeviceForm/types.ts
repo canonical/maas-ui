@@ -14,12 +14,12 @@ export type AddDeviceInterface = {
   ip_assignment: DeviceIpAssignment;
   mac: CreateParamsInterface["mac"];
   name: NonNullable<CreateParamsInterface["name"]>;
-  subnet: NonNullable<CreateParamsInterface["subnet"]> | "";
+  subnet: string;
 };
 
 export type AddDeviceValues = {
   domain: Domain["name"];
   hostname: Device["hostname"];
-  interfaces: AddDeviceInterface[];
+  interfaces: (Omit<AddDeviceInterface, "subnet"> & { subnet: string })[];
   zone: Zone["name"];
 };
