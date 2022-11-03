@@ -47,7 +47,7 @@ describe("AddDeviceForm", () => {
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
-      wrapperProps: { store },
+      store,
     });
 
     const expectedActions = [
@@ -69,7 +69,7 @@ describe("AddDeviceForm", () => {
     state.zone.genericActions.fetch = "idle";
     const store = mockStore(state);
     renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
-      wrapperProps: { store },
+      store,
     });
 
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
@@ -78,7 +78,7 @@ describe("AddDeviceForm", () => {
   it("can handle saving a device", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
-      wrapperProps: { store },
+      store,
     });
 
     await userEvent.type(

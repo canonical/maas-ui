@@ -30,7 +30,7 @@ describe("DeviceActionFormWrapper", () => {
         devices={devices}
         viewingDetails={false}
       />,
-      { route: "/devices", wrapperProps: { store } }
+      { route: "/devices", store }
     );
 
     await userEvent.click(screen.getByTestId("on-update-selected"));

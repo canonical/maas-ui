@@ -47,7 +47,7 @@ describe("AddDeviceInterfaces", () => {
       <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { wrapperProps: { store } }
+      { store }
     );
 
     expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
@@ -61,7 +61,7 @@ describe("AddDeviceInterfaces", () => {
       <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { wrapperProps: { store } }
+      { store }
     );
 
     expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
@@ -75,7 +75,7 @@ describe("AddDeviceInterfaces", () => {
       <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { wrapperProps: { store } }
+      { store }
     );
 
     expect(screen.getByTestId("subnet-field")).toBeInTheDocument();
@@ -88,7 +88,7 @@ describe("AddDeviceInterfaces", () => {
       <Formik initialValues={{ interfaces }} onSubmit={jest.fn()}>
         <AddDeviceInterfaces />
       </Formik>,
-      { wrapperProps: { store } }
+      { store }
     );
 
     const getRowCount = () => screen.getAllByTestId("interface-row").length;

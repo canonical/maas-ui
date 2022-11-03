@@ -42,7 +42,7 @@ describe("DeviceHeaderForms", () => {
         headerContent={{ view: DeviceHeaderViews.ADD_DEVICE }}
         setHeaderContent={jest.fn()}
       />,
-      { wrapperProps: { store } }
+      { store }
     );
 
     expect(screen.getByLabelText("Add device")).toBeInTheDocument();
