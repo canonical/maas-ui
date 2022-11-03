@@ -1,7 +1,5 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen, within } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import AddDeviceForm from "./AddDeviceForm";
@@ -22,9 +20,9 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("AddDeviceForm", () => {
   let state: RootState;
@@ -48,15 +46,9 @@ describe("AddDeviceForm", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddDeviceForm clearHeaderContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
+      store,
+    });
 
     const expectedActions = [
       domainActions.fetch(),
@@ -76,61 +68,97 @@ describe("AddDeviceForm", () => {
   it("displays a spinner if data has not loaded", () => {
     state.zone.genericActions.fetch = "idle";
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddDeviceForm clearHeaderContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
+      store,
+    });
+
+    expect(screen.getByText(/Loading/)).toBeInTheDocument();
   });
 
-  it("can handle saving a device", () => {
+  it("can handle saving a device", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <AddDeviceForm clearHeaderContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
+      store,
+    });
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Device name" }),
+      "plot-device"
     );
 
-    submitFormikForm(wrapper, {
-      domain: "maas",
-      hostname: "plot-device",
-      interfaces: [
-        {
-          id: 0,
-          ip_address: "192.168.1.1",
-          ip_assignment: DeviceIpAssignment.STATIC,
-          mac: "11:11:11:11:11:11",
-          name: "eth0",
-          subnet: 0,
-        },
-        {
-          id: 1,
-          ip_address: "192.168.1.2",
-          ip_assignment: DeviceIpAssignment.EXTERNAL,
-          mac: "22:22:22:22:22:22",
-          name: "eth1",
-          subnet: "",
-        },
-        {
-          id: 2,
-          ip_address: "",
-          ip_assignment: DeviceIpAssignment.DYNAMIC,
-          mac: "33:33:33:33:33:33",
-          name: "eth2",
-          subnet: "",
-        },
-      ],
-      zone: "default",
-    });
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Domain" }),
+      "maas"
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Zone" }),
+      "default"
+    );
+
+    // Add interfaces
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add interface" })
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Add interface" })
+    );
+
+    const rows = screen.getAllByTestId("interface-row");
+
+    const getFieldFromRow = (index: number, name: string, type: string) => {
+      return within(
+        within(rows[index]).getByRole("gridcell", { name: name })
+      ).getByRole(type);
+    };
+
+    await userEvent.type(
+      getFieldFromRow(0, "* MAC address", "textbox"),
+      "11:11:11:11:11:11"
+    );
+
+    await userEvent.selectOptions(
+      getFieldFromRow(0, "* IP assignment", "combobox"),
+      DeviceIpAssignment.STATIC
+    );
+
+    await userEvent.selectOptions(
+      getFieldFromRow(0, "Subnet", "combobox"),
+      "0"
+    );
+
+    await userEvent.type(
+      getFieldFromRow(0, "IP address", "textbox"),
+      "192.168.1.1"
+    );
+
+    await userEvent.type(
+      getFieldFromRow(1, "* MAC address", "textbox"),
+      "22:22:22:22:22:22"
+    );
+
+    await userEvent.selectOptions(
+      getFieldFromRow(1, "* IP assignment", "combobox"),
+      DeviceIpAssignment.EXTERNAL
+    );
+
+    await userEvent.type(
+      getFieldFromRow(1, "IP address", "textbox"),
+      "192.168.1.2"
+    );
+
+    await userEvent.type(
+      getFieldFromRow(2, "* MAC address", "textbox"),
+      "33:33:33:33:33:33"
+    );
+
+    await userEvent.selectOptions(
+      getFieldFromRow(2, "* IP assignment", "combobox"),
+      DeviceIpAssignment.DYNAMIC
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Save device" }));
 
     const expectedAction = deviceActions.create({
       domain: { name: "maas" },
