@@ -1,8 +1,5 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import DeviceName from "./DeviceName";
@@ -18,9 +15,9 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DeviceName", () => {
   let state: RootState;
@@ -28,6 +25,7 @@ describe("DeviceName", () => {
   beforeEach(() => {
     state = rootStateFactory({
       domain: domainStateFactory({
+        loaded: true,
         items: [domain],
       }),
       general: generalStateFactory({
@@ -49,29 +47,27 @@ describe("DeviceName", () => {
     });
   });
 
-  it("can update a device with the new name and domain", () => {
+  it("can update a device with the new name and domain", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/device/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeviceName
-              editingName={true}
-              id="abc123"
-              setEditingName={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceName editingName={true} id="abc123" setEditingName={jest.fn()} />,
+      { route: "/device/abc123", store }
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        hostname: "new-lease",
-        domain: "99",
-      })
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "Hostname" }));
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Hostname" }),
+      "new-lease"
     );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Domain" }),
+      "99"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Save" }));
+
     expect(
       store.getActions().find((action) => action.type === "device/update")
     ).toStrictEqual({
