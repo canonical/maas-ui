@@ -80,7 +80,7 @@ const formSubmit = (
             ip_assignment: values.ip_assignment,
             mac_address: discovery.mac_address,
             name: values.hostname,
-            subnet: discovery.subnet,
+            subnet: discovery.subnet?.toString(),
             vlan: discovery.vlan,
           },
           [],
