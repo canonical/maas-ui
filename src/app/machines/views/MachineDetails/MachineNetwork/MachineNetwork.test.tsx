@@ -17,7 +17,7 @@ it("displays a spinner if machine is loading", () => {
   });
   renderWithBrowserRouter(
     <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />,
-    { wrapperProps: { state } }
+    { state }
   );
   expect(screen.getByLabelText("Loading machine")).toBeInTheDocument();
   expect(screen.queryByLabelText("Machine network")).not.toBeInTheDocument();
@@ -31,7 +31,7 @@ it("displays the network tab when loaded", () => {
   });
   renderWithBrowserRouter(
     <MachineNetwork id="abc123" setHeaderContent={jest.fn()} />,
-    { wrapperProps: { state } }
+    { state }
   );
   expect(screen.queryByLabelText("Loading machine")).not.toBeInTheDocument();
   expect(screen.getByLabelText("Machine network")).toBeInTheDocument();

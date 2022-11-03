@@ -65,7 +65,7 @@ afterEach(() => {
 it("renders", () => {
   renderWithBrowserRouter(<Header />, {
     route: "/",
-    wrapperProps: { state },
+    state,
   });
 
   // header has a role of banner in this context
@@ -91,7 +91,7 @@ it("can handle a logged out user", () => {
   state.user.auth.user = null;
   renderWithBrowserRouter(<Header />, {
     route: "/",
-    wrapperProps: { state },
+    state,
   });
 
   expect(screen.getByRole("banner")).toBeInTheDocument();
@@ -135,7 +135,7 @@ it("hides nav links if not completed intro", () => {
   state.user.auth.user = userFactory({ completed_intro: false });
   renderWithBrowserRouter(<Header />, {
     route: "/",
-    wrapperProps: { state },
+    state,
   });
 
   const mainNav = screen.getByRole("list", { name: "main" });
@@ -150,7 +150,7 @@ it("hides nav links if not completed intro", () => {
 it("can highlight active URL", () => {
   renderWithBrowserRouter(<Header />, {
     route: "/settings",
-    wrapperProps: { state },
+    state,
   });
 
   const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
@@ -161,7 +161,7 @@ it("can highlight active URL", () => {
 it("highlights machines when active", () => {
   renderWithBrowserRouter(<Header />, {
     route: "/machines",
-    wrapperProps: { state },
+    state,
   });
 
   const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
@@ -172,7 +172,7 @@ it("highlights machines when active", () => {
 it("highlights machines viewing pools", () => {
   renderWithBrowserRouter(<Header />, {
     route: "/pools",
-    wrapperProps: { state },
+    state,
   });
 
   const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
@@ -183,7 +183,7 @@ it("highlights machines viewing pools", () => {
 it("highlights machines viewing tags", () => {
   renderWithBrowserRouter(<Header />, {
     route: "/tags",
-    wrapperProps: { state },
+    state,
   });
 
   const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
@@ -194,7 +194,7 @@ it("highlights machines viewing tags", () => {
 it("highlights machines viewing a tag", () => {
   renderWithBrowserRouter(<Header />, {
     route: "/tag/1",
-    wrapperProps: { state },
+    state,
   });
 
   const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
@@ -205,7 +205,7 @@ it("highlights machines viewing a tag", () => {
 it("can highlight a url with a query param", () => {
   renderWithBrowserRouter(<Header />, {
     route: "/networks?by=fabric",
-    wrapperProps: { state },
+    state,
   });
 
   const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
@@ -216,7 +216,7 @@ it("can highlight a url with a query param", () => {
 it("highlights sub-urls", () => {
   renderWithBrowserRouter(<Header />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
   const currentMenuItem = screen.getAllByRole("link", { current: "page" })[0];
   expect(currentMenuItem).toBeInTheDocument();
@@ -228,7 +228,7 @@ it("displays a warning icon next to controllers if vault is not fully configured
     controllerFactory({ vault_configured: true }),
     controllerFactory({ vault_configured: false }),
   ];
-  renderWithBrowserRouter(<Header />, { route: "/", wrapperProps: { state } });
+  renderWithBrowserRouter(<Header />, { route: "/", state });
 
   const controllerLink = screen.getByRole("link", {
     name: "warning Controllers",
@@ -244,7 +244,7 @@ it("does not display a warning icon next to controllers if vault is fully config
     controllerFactory({ vault_configured: true }),
     controllerFactory({ vault_configured: true }),
   ];
-  renderWithBrowserRouter(<Header />, { route: "/", wrapperProps: { state } });
+  renderWithBrowserRouter(<Header />, { route: "/", state });
 
   const controllerLink = screen.getByRole("link", { name: "Controllers" });
   expect(
@@ -256,7 +256,7 @@ it("links from the logo to the dashboard for admins", () => {
   state.user.auth.user = userFactory({ is_superuser: true });
   renderWithBrowserRouter(<Header />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
@@ -269,7 +269,7 @@ it("links from the logo to the machine list for non admins", () => {
   state.user.auth.user = userFactory({ is_superuser: false });
   renderWithBrowserRouter(<Header />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
@@ -285,7 +285,7 @@ it("redirects to the intro page if intro not completed", () => {
   state.user.auth.user = userFactory({ completed_intro: true });
   renderWithBrowserRouter(<Header />, {
     route: "/machines",
-    wrapperProps: { state },
+    state,
   });
 
   expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.index);
@@ -298,7 +298,7 @@ it("redirects to the user intro page if user intro not completed", () => {
   state.user.auth.user = userFactory({ completed_intro: false });
   renderWithBrowserRouter(<Header />, {
     route: "/machines",
-    wrapperProps: { state },
+    state,
   });
 
   expect(mockUseNavigate.mock.calls[0][0].pathname).toBe(urls.intro.user);

@@ -48,7 +48,7 @@ describe("DomainsList", () => {
     });
     renderWithBrowserRouter(<DomainsList />, {
       route: "/",
-      wrapperProps: { state },
+      state,
     });
 
     expect(

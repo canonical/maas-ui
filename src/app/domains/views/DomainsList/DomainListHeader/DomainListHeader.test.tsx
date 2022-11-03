@@ -37,7 +37,7 @@ describe("DomainListHeader", () => {
 
     renderWithBrowserRouter(<DomainListHeader />, {
       route: "/domains",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -47,7 +47,7 @@ describe("DomainListHeader", () => {
     state.domain.loaded = true;
     renderWithBrowserRouter(<DomainListHeader />, {
       route: "/domains",
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText("2 domains available")).toBeInTheDocument();
@@ -57,7 +57,7 @@ describe("DomainListHeader", () => {
     const state = { ...initialState };
     renderWithBrowserRouter(<DomainListHeader />, {
       route: "/domains",
-      wrapperProps: { state },
+      state,
     });
 
     expect(

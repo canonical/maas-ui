@@ -67,7 +67,7 @@ it("set the analytics category for the machine list", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
     <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -89,7 +89,7 @@ it("set the analytics category for the machine details", async () => {
       onTagCreated={jest.fn()}
       viewingDetails
     />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -111,7 +111,7 @@ it("set the analytics category for the machine config", async () => {
       onTagCreated={jest.fn()}
       viewingMachineConfig
     />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   expect(mockBaseAddTagForm).toHaveBeenCalledWith(
     expect.objectContaining({
@@ -128,7 +128,7 @@ it("generates a deployed message for a single machine", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
     <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   expect(
     mockBaseAddTagForm.mock.calls[0][0]
@@ -141,7 +141,7 @@ it("generates a deployed message for multiple machines", async () => {
   const store = mockStore(state);
   renderWithBrowserRouter(
     <AddTagForm machines={[]} name="new-tag" onTagCreated={jest.fn()} />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   expect(
     mockBaseAddTagForm.mock.calls[0][0]
@@ -159,7 +159,7 @@ it("fetches deployed machine count for selected machines", async () => {
       onTagCreated={jest.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   const expected = machineActions.count("mocked-nanoid", {
     status: FetchNodeStatus.DEPLOYED,
@@ -188,7 +188,7 @@ it("fetches deployed machine count separately for deployed group when selected",
       onTagCreated={jest.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   const expected = [
     machineActions.count("mocked-nanoid-1", {
@@ -223,7 +223,7 @@ it("fetches deployed machine count when all machines are selected", async () => 
       onTagCreated={jest.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   const expected = machineActions.count("mocked-nanoid-1", {
     status: FetchNodeStatus.DEPLOYED,
@@ -250,7 +250,7 @@ it(`fetches deployed machine count only for selected items
       onTagCreated={jest.fn()}
       selectedMachines={selectedMachines}
     />,
-    { route: "/tags", wrapperProps: { store } }
+    { route: "/tags", store }
   );
   const expected = machineActions.count("mocked-nanoid-1", {
     status: FetchNodeStatus.DEPLOYED,

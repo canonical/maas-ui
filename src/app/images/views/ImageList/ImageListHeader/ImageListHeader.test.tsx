@@ -33,7 +33,7 @@ describe("ImageListHeader", () => {
     });
     renderWithBrowserRouter(<ImageListHeader />, {
       route: "/images",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -51,7 +51,7 @@ describe("ImageListHeader", () => {
     });
     renderWithBrowserRouter(<ImageListHeader />, {
       route: "/images",
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -109,7 +109,7 @@ describe("ImageListHeader", () => {
     });
     renderWithBrowserRouter(<ImageListHeader />, {
       route: "/images",
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -128,7 +128,7 @@ describe("ImageListHeader", () => {
     });
     renderWithBrowserRouter(<ImageListHeader />, {
       route: "/images",
-      wrapperProps: { state },
+      state,
     });
 
     expect(

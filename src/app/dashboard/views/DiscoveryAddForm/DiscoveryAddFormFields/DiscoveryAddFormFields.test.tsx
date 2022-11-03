@@ -43,7 +43,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={jest.fn()}
         />
       </Formik>,
-      { route: "/dashboard", wrapperProps: { state } }
+      { route: "/dashboard", state }
     );
     expect(
       screen.getByRole("combobox", {
@@ -85,7 +85,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={jest.fn()}
         />
       </Formik>,
-      { route: "/dashboard", wrapperProps: { state } }
+      { route: "/dashboard", state }
     );
     expect(
       screen.queryByRole("combobox", {
@@ -125,7 +125,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={jest.fn()}
         />
       </Formik>,
-      { route: "/dashboard", wrapperProps: { state } }
+      { route: "/dashboard", state }
     );
 
     const ipAssignment = screen.getByRole("combobox", {
@@ -149,7 +149,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={jest.fn()}
         />
       </Formik>,
-      { route: "/dashboard", wrapperProps: { state } }
+      { route: "/dashboard", state }
     );
 
     const ipAssignment = screen.getByRole("combobox", {
@@ -183,7 +183,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={setDeviceType}
         />
       </Formik>,
-      { route: "/dashboard", wrapperProps: { state } }
+      { route: "/dashboard", state }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: DiscoveryAddFormFieldsLabels.Type }),
@@ -220,7 +220,7 @@ describe("DiscoveryAddFormFields", () => {
           setDeviceType={jest.fn()}
         />
       </Formik>,
-      { route: "/dashboard", wrapperProps: { state } }
+      { route: "/dashboard", state }
     );
     await userEvent.selectOptions(
       screen.getByRole("combobox", {

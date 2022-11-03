@@ -24,7 +24,7 @@ describe("OtherImages", () => {
     const state = rootStateFactory({
       bootresource: bootResourceStateFactory({ otherImages: [] }),
     });
-    renderWithBrowserRouter(<OtherImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<OtherImages />, { state });
     expect(
       screen.queryByText(OtherImagesLabels.OtherImages)
     ).not.toBeInTheDocument();
@@ -60,7 +60,7 @@ describe("OtherImages", () => {
         resources,
       }),
     });
-    renderWithBrowserRouter(<OtherImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<OtherImages />, { state });
 
     expect(screen.getByRole("checkbox", { name: "CentOS 7" })).toBeChecked();
   });
@@ -106,7 +106,7 @@ describe("OtherImages", () => {
         ],
       }),
     });
-    renderWithBrowserRouter(<OtherImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<OtherImages />, { state });
 
     expect(
       screen.queryByRole("button", { name: OtherImagesLabels.StopImport })

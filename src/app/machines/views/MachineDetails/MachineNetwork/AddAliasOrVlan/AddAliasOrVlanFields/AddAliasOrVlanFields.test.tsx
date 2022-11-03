@@ -25,7 +25,7 @@ describe("AddAliasOrVlanFields", () => {
           systemId="abc123"
         />
       </Formik>,
-      { route: route, wrapperProps: { state } }
+      { route: route, state }
     );
     expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
   });
@@ -38,7 +38,7 @@ describe("AddAliasOrVlanFields", () => {
           systemId="abc123"
         />
       </Formik>,
-      { route: route, wrapperProps: { state } }
+      { route: route, state }
     );
     expect(
       screen.queryByRole("textbox", { name: "Tags" })

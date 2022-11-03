@@ -27,7 +27,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       subnet: subnetStateFactory({ loaded: false }),
     });
     renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText(SubnetFormLabels.Loading)).toBeInTheDocument();
@@ -38,7 +38,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       fabric: fabricStateFactory({ loaded: false }),
     });
     renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText(SubnetFormLabels.Loading)).toBeInTheDocument();
@@ -50,7 +50,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       subnet: subnetStateFactory({ loaded: true }),
     });
     renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -72,7 +72,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       subnet: subnetStateFactory({ items: [subnetFactory()], loaded: true }),
     });
     renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
@@ -90,7 +90,7 @@ describe("DashboardConfigurationSubnetForm", () => {
       subnet: subnetStateFactory({ items: [subnet], loaded: true }),
     });
     renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByRole("link", { name: "172.16.1.0/24" })).toHaveProperty(
@@ -116,7 +116,7 @@ describe("DashboardConfigurationSubnetForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(<DashboardConfigurationSubnetForm />, {
-      wrapperProps: { store },
+      store,
     });
 
     const checkboxes = screen.getAllByRole("checkbox");

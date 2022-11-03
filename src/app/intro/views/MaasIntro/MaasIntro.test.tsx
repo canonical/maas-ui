@@ -68,7 +68,7 @@ describe("MaasIntro", () => {
     state.user.auth.loading = true;
     renderWithBrowserRouter(<MaasIntro />, {
       route: "/intro",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });

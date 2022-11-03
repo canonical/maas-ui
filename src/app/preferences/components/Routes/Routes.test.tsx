@@ -77,10 +77,8 @@ describe("Routes", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<Routes />, {
         route: path,
-        wrapperProps: {
-          routePattern: `${urls.preferences.index}/*`,
-          state,
-        },
+        routePattern: `${urls.preferences.index}/*`,
+        state,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
@@ -89,9 +87,7 @@ describe("Routes", () => {
   it("redirects to details", () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.preferences.index,
-      wrapperProps: {
-        routePattern: `${urls.preferences.index}/*`,
-      },
+      routePattern: `${urls.preferences.index}/*`,
     });
     expect(window.location.pathname).toBe(urls.preferences.details);
   });

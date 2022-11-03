@@ -16,7 +16,7 @@ it("displays a spinner if controller is loading", () => {
     }),
   });
   renderWithBrowserRouter(<ControllerNetwork systemId="abc123" />, {
-    wrapperProps: { state },
+    state,
   });
   expect(screen.getByLabelText("Loading controller")).toBeInTheDocument();
   expect(screen.queryByLabelText("Controller network")).not.toBeInTheDocument();
@@ -29,7 +29,7 @@ it("displays the network tab when loaded", () => {
     }),
   });
   renderWithBrowserRouter(<ControllerNetwork systemId="abc123" />, {
-    wrapperProps: { state },
+    state,
   });
   expect(screen.queryByLabelText("Loading controller")).not.toBeInTheDocument();
   expect(screen.getByLabelText("Controller network")).toBeInTheDocument();

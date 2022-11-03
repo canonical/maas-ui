@@ -60,7 +60,8 @@ describe("Tags", () => {
   ].forEach(({ label, path, pattern = `${urls.tags.tag.index(null)}/*` }) => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<Tags />, {
-        wrapperProps: { routePattern: pattern, state },
+        routePattern: pattern,
+        state,
         route: path,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
@@ -69,7 +70,8 @@ describe("Tags", () => {
 
   it("shows buttons when not displaying forms", () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { routePattern: `${urls.tags.tag.index(null)}/*`, state },
+      routePattern: `${urls.tags.tag.index(null)}/*`,
+      state,
       route: urls.tags.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
@@ -89,7 +91,8 @@ describe("Tags", () => {
 
   it("hides buttons when deleting tags", async () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: { routePattern: `${urls.tags.tag.index(null)}/*`, state },
+      routePattern: `${urls.tags.tag.index(null)}/*`,
+      state,
       route: urls.tags.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
@@ -116,10 +119,8 @@ describe("Tags", () => {
 
   it("hides buttons when updating tags", () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: {
-        routePattern: `${urls.tags.tag.index(null)}/*`,
-        state,
-      },
+      routePattern: `${urls.tags.tag.index(null)}/*`,
+      state,
       route: urls.tags.tag.update({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);
@@ -141,10 +142,8 @@ describe("Tags", () => {
 
   it("hides buttons when creating tags", async () => {
     renderWithBrowserRouter(<Tags />, {
-      wrapperProps: {
-        routePattern: `${urls.tags.tag.index(null)}/*`,
-        state,
-      },
+      routePattern: `${urls.tags.tag.index(null)}/*`,
+      state,
       route: urls.tags.tag.index({ id: 1 }),
     });
     const header = screen.getByLabelText(TagsHeaderLabel.Header);

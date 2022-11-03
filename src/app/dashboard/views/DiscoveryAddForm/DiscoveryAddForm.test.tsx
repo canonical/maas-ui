@@ -137,7 +137,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { store } }
+      { route: "/dashboard", store }
     );
     const expectedActions = [
       "device/fetch",
@@ -162,7 +162,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { store } }
+      { route: "/dashboard", store }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
@@ -171,7 +171,7 @@ describe("DiscoveryAddForm", () => {
     // Render the form with default state.
     const { rerender } = renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { state } }
+      { route: "/dashboard", state }
     );
     const error = "Name is invalid";
     // Change the device state to included the errors (as if it has changed via an API response).
@@ -190,7 +190,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { store } }
+      { route: "/dashboard", store }
     );
 
     await userEvent.selectOptions(
@@ -249,7 +249,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { store } }
+      { route: "/dashboard", store }
     );
 
     await userEvent.selectOptions(
@@ -308,7 +308,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { store } }
+      { route: "/dashboard", store }
     );
 
     await userEvent.click(
@@ -327,7 +327,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { store } }
+      { route: "/dashboard", store }
     );
 
     await userEvent.clear(
@@ -351,7 +351,7 @@ describe("DiscoveryAddForm", () => {
     const store = mockStore(state);
     const { rerender } = renderWithBrowserRouter(
       <DiscoveryAddForm discovery={discovery} onClose={jest.fn()} />,
-      { route: "/dashboard", wrapperProps: { store } }
+      { route: "/dashboard", store }
     );
 
     await userEvent.selectOptions(

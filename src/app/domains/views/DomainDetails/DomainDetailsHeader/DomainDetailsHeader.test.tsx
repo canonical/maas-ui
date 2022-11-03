@@ -19,7 +19,7 @@ describe("DomainDetailsHeader", () => {
     });
 
     renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText("Loading...")).toBeInTheDocument();
@@ -32,7 +32,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -55,7 +55,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText("5 hosts; 9 resource records")).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText("9 resource records")).toBeInTheDocument();
@@ -97,7 +97,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -120,7 +120,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(<DomainDetailsHeader id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText("No resource records")).toBeInTheDocument();
@@ -138,7 +138,7 @@ describe("DomainDetailsHeader", () => {
       }),
     });
     renderWithBrowserRouter(<DomainDetailsHeader id={0} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(

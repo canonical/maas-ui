@@ -70,7 +70,7 @@ describe("EditAliasOrVlanForm", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
     const expectedActions = ["fabric/fetch", "subnet/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
@@ -92,7 +92,7 @@ describe("EditAliasOrVlanForm", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", wrapperProps: { state } }
+      { route: "/machines", state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -106,7 +106,7 @@ describe("EditAliasOrVlanForm", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
     expect(screen.getByRole("textbox", { name: "Tags" })).toBeInTheDocument();
   });
@@ -123,7 +123,7 @@ describe("EditAliasOrVlanForm", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save Alias" }));
@@ -162,7 +162,7 @@ describe("EditAliasOrVlanForm", () => {
         nic={nic}
         systemId="abc123"
       />,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Save Alias" }));

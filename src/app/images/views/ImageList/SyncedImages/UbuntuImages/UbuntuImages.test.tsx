@@ -76,7 +76,7 @@ describe("UbuntuImages", () => {
     });
 
     renderWithBrowserRouter(<UbuntuImages sources={[source]} />, {
-      wrapperProps: { state },
+      state,
     });
 
     const row_18_04_LTS = screen.getByRole("row", { name: "18.04 LTS" });
@@ -185,7 +185,7 @@ describe("UbuntuImages", () => {
       }),
     });
     renderWithBrowserRouter(<UbuntuImages sources={[source]} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -236,7 +236,7 @@ describe("UbuntuImages", () => {
       }),
     });
     renderWithBrowserRouter(<UbuntuImages sources={sources} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(

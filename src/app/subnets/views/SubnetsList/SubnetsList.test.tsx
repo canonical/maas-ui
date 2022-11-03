@@ -28,7 +28,7 @@ it("displays loading text", async () => {
   const state = getMockState();
   state.fabric.loaded = false;
   renderWithBrowserRouter(<SubnetsList />, {
-    wrapperProps: { state },
+    state,
     route: urls.index,
   });
 
@@ -42,7 +42,7 @@ it("displays loading text", async () => {
 it("displays correct text when there are no results for the search criteria", async () => {
   const state = getMockState();
   renderWithBrowserRouter(<SubnetsList />, {
-    wrapperProps: { state },
+    state,
     route: urls.index,
   });
 
@@ -60,7 +60,7 @@ it("displays correct text when there are no results for the search criteria", as
 it("sets the options from the URL on load", async () => {
   const state = getMockState();
   renderWithBrowserRouter(<SubnetsList />, {
-    wrapperProps: { state },
+    state,
     route: urls.indexWithParams({ by: "space", q: "fabric-1" }),
   });
 
@@ -80,7 +80,7 @@ it("sets the options from the URL on load", async () => {
 it("updates the URL on search", async () => {
   const state = getMockState();
   renderWithBrowserRouter(<SubnetsList />, {
-    wrapperProps: { state },
+    state,
     route: urls.index,
   });
 
@@ -94,7 +94,7 @@ it("updates the URL on search", async () => {
 it("updates the URL 'by' param once a new group by option is selected", async () => {
   const state = getMockState();
   renderWithBrowserRouter(<SubnetsList />, {
-    wrapperProps: { state },
+    state,
     route: urls.index,
   });
 

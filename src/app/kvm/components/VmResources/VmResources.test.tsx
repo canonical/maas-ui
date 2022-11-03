@@ -82,7 +82,7 @@ describe("VmResources", () => {
 
   it("can display a list of VMs", async () => {
     renderWithBrowserRouter(<VmResources podId={1} />, {
-      wrapperProps: { state },
+      state,
     });
     await userEvent.click(
       screen.getByRole("button", { name: Label.ResourceVMs })

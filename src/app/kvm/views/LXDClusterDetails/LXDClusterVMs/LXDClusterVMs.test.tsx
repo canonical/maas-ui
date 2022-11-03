@@ -164,7 +164,7 @@ describe("LXDClusterVMs", () => {
         setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { store } }
+      { store }
     );
     const expected = machineActions.fetch("123456", {
       filter: { pod: ["host 1", "host 2"] },

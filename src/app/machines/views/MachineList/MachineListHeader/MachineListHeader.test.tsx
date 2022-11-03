@@ -134,7 +134,7 @@ describe("MachineListHeader", () => {
         setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
@@ -155,7 +155,7 @@ describe("MachineListHeader", () => {
         setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
@@ -177,7 +177,7 @@ describe("MachineListHeader", () => {
         setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     expect(screen.getByText("1 of 10 machines selected")).toBeInTheDocument();
   });
@@ -198,7 +198,7 @@ describe("MachineListHeader", () => {
         setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     expect(screen.getByText("2 of 10 machines selected")).toBeInTheDocument();
   });
@@ -220,7 +220,7 @@ describe("MachineListHeader", () => {
         setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     expect(screen.getByText("3 of 10 machines selected")).toBeInTheDocument();
   });
@@ -242,7 +242,7 @@ describe("MachineListHeader", () => {
         setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     expect(screen.getByText("All machines selected")).toBeInTheDocument();
   });
@@ -289,7 +289,7 @@ describe("MachineListHeader", () => {
         setHeaderContent={setHeaderContent}
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { state }, route: urls.machines.index }
+      { state, route: urls.machines.index }
     );
     expect(setHeaderContent).not.toHaveBeenCalled();
     expect(screen.getByText("Deploy")).toBeInTheDocument();

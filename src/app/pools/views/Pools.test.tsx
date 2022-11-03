@@ -47,10 +47,8 @@ describe("Pools", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<Pools />, {
         route: path,
-        wrapperProps: {
-          routePattern: `${urls.pools.index}/*`,
-          state,
-        },
+        routePattern: `${urls.pools.index}/*`,
+        state,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });

@@ -25,7 +25,7 @@ describe("DomainSummary", () => {
   it("render nothing if domain doesn't exist", () => {
     const state = rootStateFactory();
     renderWithBrowserRouter(<DomainSummary id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -47,7 +47,7 @@ describe("DomainSummary", () => {
     });
 
     renderWithBrowserRouter(<DomainSummary id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -74,7 +74,7 @@ describe("DomainSummary", () => {
     });
 
     renderWithBrowserRouter(<DomainSummary id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(
@@ -105,7 +105,7 @@ describe("DomainSummary", () => {
 
     it("renders the Edit button", () => {
       renderWithBrowserRouter(<DomainSummary id={1} />, {
-        wrapperProps: { state },
+        state,
       });
 
       expect(
@@ -117,7 +117,7 @@ describe("DomainSummary", () => {
 
     it("renders the form when Edit button is clicked", async () => {
       renderWithBrowserRouter(<DomainSummary id={1} />, {
-        wrapperProps: { state },
+        state,
       });
 
       await userEvent.click(
@@ -136,7 +136,7 @@ describe("DomainSummary", () => {
 
     it("closes the form when Cancel button is clicked", async () => {
       renderWithBrowserRouter(<DomainSummary id={1} />, {
-        wrapperProps: { state },
+        state,
       });
 
       await userEvent.click(

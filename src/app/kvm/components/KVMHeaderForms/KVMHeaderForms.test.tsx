@@ -198,7 +198,7 @@ describe("KVMHeaderForms", () => {
         headerContent={{ view: MachineHeaderViews.DELETE_MACHINE }}
         setHeaderContent={jest.fn()}
       />,
-      { route: "/kvm", wrapperProps: { state } }
+      { route: "/kvm", state }
     );
 
     expect(

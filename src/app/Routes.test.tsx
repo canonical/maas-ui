@@ -179,7 +179,8 @@ describe("Routes", () => {
     it(`Displays: ${title} at: ${path}`, async () => {
       renderWithBrowserRouter(<Routes />, {
         route: path,
-        wrapperProps: { state, routePattern: "/*" },
+        state,
+        routePattern: "/*",
       });
       await waitFor(() => expect(document.title).toBe(`${title} | MAAS`));
     });
@@ -189,7 +190,7 @@ describe("Routes", () => {
     it(`Displays: ${name} at: ${path}`, async () => {
       renderWithBrowserRouter(<Routes />, {
         route: path,
-        wrapperProps: { state },
+        state,
       });
       expect(window.location.pathname).toBe(`${path}/summary`);
     });
@@ -198,7 +199,7 @@ describe("Routes", () => {
   it("redirects from index to machines", () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.index,
-      wrapperProps: { state },
+      state,
     });
     expect(window.location.pathname).toBe(urls.machines.index);
   });
@@ -206,9 +207,7 @@ describe("Routes", () => {
   it("redirects from Settings base URL to configuration", () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.settings.index,
-      wrapperProps: {
-        state,
-      },
+      state,
     });
     expect(window.location.pathname).toBe(urls.settings.configuration.index);
   });
@@ -216,9 +215,7 @@ describe("Routes", () => {
   it("redirects from Preferences base URL to Details", () => {
     renderWithBrowserRouter(<Routes />, {
       route: urls.preferences.index,
-      wrapperProps: {
-        state,
-      },
+      state,
     });
     expect(window.location.pathname).toBe(urls.preferences.details);
   });

@@ -46,10 +46,8 @@ describe("LXDClusterHostVMs", () => {
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
-        wrapperProps: {
-          state,
-          routePattern: urls.kvm.lxd.cluster.vms.host(null),
-        },
+        state,
+        routePattern: urls.kvm.lxd.cluster.vms.host(null),
       }
     );
     expect(screen.getByText("VMs on pod1")).toBeInTheDocument();
@@ -66,10 +64,8 @@ describe("LXDClusterHostVMs", () => {
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
-        wrapperProps: {
-          state,
-          routePattern: urls.kvm.lxd.cluster.vms.host(null),
-        },
+        state,
+        routePattern: urls.kvm.lxd.cluster.vms.host(null),
       }
     );
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
@@ -86,10 +82,8 @@ describe("LXDClusterHostVMs", () => {
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
-        wrapperProps: {
-          state,
-          routePattern: urls.kvm.lxd.cluster.vms.host(null),
-        },
+        state,
+        routePattern: urls.kvm.lxd.cluster.vms.host(null),
       }
     );
     expect(screen.getByText("LXD host not found")).toBeInTheDocument();

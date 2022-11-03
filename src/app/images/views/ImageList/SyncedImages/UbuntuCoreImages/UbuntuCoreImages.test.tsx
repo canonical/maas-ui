@@ -27,7 +27,7 @@ describe("UbuntuCoreImages", () => {
       bootresource: bootResourceStateFactory({ ubuntuCoreImages: [] }),
     });
 
-    renderWithBrowserRouter(<UbuntuCoreImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<UbuntuCoreImages />, { state });
     expect(
       screen.queryByText(UbuntuCoreImagesLabels.CoreImages)
     ).not.toBeInTheDocument();
@@ -64,7 +64,7 @@ describe("UbuntuCoreImages", () => {
       }),
     });
 
-    renderWithBrowserRouter(<UbuntuCoreImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<UbuntuCoreImages />, { state });
 
     expect(
       screen.getByRole("checkbox", { name: "Ubuntu Core 20" })
@@ -137,7 +137,7 @@ describe("UbuntuCoreImages", () => {
       }),
     });
 
-    renderWithBrowserRouter(<UbuntuCoreImages />, { wrapperProps: { state } });
+    renderWithBrowserRouter(<UbuntuCoreImages />, { state });
 
     expect(
       screen.queryByRole("button", { name: UbuntuCoreImagesLabels.StopImport })

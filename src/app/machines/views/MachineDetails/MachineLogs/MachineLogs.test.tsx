@@ -31,7 +31,7 @@ describe("MachineLogs", () => {
       }),
     });
     renderWithBrowserRouter(<MachineLogs systemId="abc123" />, {
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
   });
@@ -53,7 +53,7 @@ describe("MachineLogs", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<MachineLogs systemId="abc123" />, {
         route: path,
-        wrapperProps: { state },
+        state,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
