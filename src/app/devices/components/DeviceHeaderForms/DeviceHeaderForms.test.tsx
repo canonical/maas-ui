@@ -45,6 +45,8 @@ describe("DeviceHeaderForms", () => {
       { store }
     );
 
-    expect(screen.getByLabelText("Add device")).toBeInTheDocument();
+    expect(
+      screen.getByRole("form", { name: "Add device" })
+    ).toBeInTheDocument();
   });
 });

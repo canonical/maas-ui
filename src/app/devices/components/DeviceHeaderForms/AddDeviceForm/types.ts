@@ -14,7 +14,7 @@ export type AddDeviceInterface = {
   ip_assignment: DeviceIpAssignment;
   mac: CreateParamsInterface["mac"];
   name: NonNullable<CreateParamsInterface["name"]>;
-  subnet: NonNullable<CreateParamsInterface["subnet"]> | "";
+  subnet: string;
 };
 
 export type AddDeviceValues = {
