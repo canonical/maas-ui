@@ -48,10 +48,8 @@ describe("Dashboard", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<Dashboard />, {
         route: path,
-        wrapperProps: {
-          state,
-          routePattern: `${urls.dashboard.index}/*`,
-        },
+        state,
+        routePattern: `${urls.dashboard.index}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
@@ -63,9 +61,7 @@ describe("Dashboard", () => {
     });
     renderWithBrowserRouter(<Dashboard />, {
       route: urls.dashboard.index,
-      wrapperProps: {
-        state,
-      },
+      state,
     });
     expect(screen.getByText(Label.Disabled)).toBeInTheDocument();
   });
@@ -76,9 +72,7 @@ describe("Dashboard", () => {
     });
     renderWithBrowserRouter(<Dashboard />, {
       route: urls.dashboard.index,
-      wrapperProps: {
-        state,
-      },
+      state,
     });
     expect(screen.queryByText(Label.Disabled)).not.toBeInTheDocument();
   });
@@ -89,9 +83,7 @@ describe("Dashboard", () => {
     });
     renderWithBrowserRouter(<Dashboard />, {
       route: urls.dashboard.index,
-      wrapperProps: {
-        state,
-      },
+      state,
     });
     expect(screen.getByText(Label.Permissions)).toBeInTheDocument();
   });

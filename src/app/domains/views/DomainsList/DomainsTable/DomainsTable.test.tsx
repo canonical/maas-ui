@@ -46,7 +46,7 @@ describe("DomainsTable", () => {
   it("can update the sort order", async () => {
     renderWithBrowserRouter(<DomainsTable />, {
       route: "/domains",
-      wrapperProps: { state },
+      state,
     });
 
     const sortButton = screen.getByRole("columnheader", { name: "Domain" });
@@ -75,7 +75,7 @@ describe("DomainsTable", () => {
   it("has a (defaut) next to the default domain's title", () => {
     renderWithBrowserRouter(<DomainsTable />, {
       route: "/domains",
-      wrapperProps: { state },
+      state,
     });
 
     expect(

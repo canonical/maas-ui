@@ -16,7 +16,7 @@ it("renders with system data", () => {
   });
   renderWithBrowserRouter(<HardwareCard node={machine} />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   const system = screen.getByRole("list", { name: HardwareCardLabels.System });
@@ -71,7 +71,7 @@ it("renders when system data is not available", () => {
   });
   renderWithBrowserRouter(<HardwareCard node={machine} />, {
     route: "/machine/abc123",
-    wrapperProps: { state },
+    state,
   });
 
   // Machine still has a BIOS boot mode, so we're looking for 9 instead of 10

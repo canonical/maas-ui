@@ -67,10 +67,8 @@ describe("KVM", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<KVM />, {
         route: path,
-        wrapperProps: {
-          state,
-          routePattern: `${urls.kvm.index}/*`,
-        },
+        state,
+        routePattern: `${urls.kvm.index}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });

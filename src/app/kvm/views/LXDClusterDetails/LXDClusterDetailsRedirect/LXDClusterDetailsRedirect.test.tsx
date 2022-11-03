@@ -38,7 +38,7 @@ it("displays a spinner while loading", () => {
   state.pod.loaded = false;
   renderWithBrowserRouter(<LXDClusterDetailsRedirect clusterId={1} />, {
     route: urls.kvm.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
-    wrapperProps: { state },
+    state,
   });
   expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
 });
@@ -47,7 +47,7 @@ it("displays a message if the host is not found", () => {
   state.pod.items = [];
   renderWithBrowserRouter(<LXDClusterDetailsRedirect clusterId={1} />, {
     route: urls.kvm.lxd.cluster.host.index({ clusterId: 1, hostId: 2 }),
-    wrapperProps: { state },
+    state,
   });
   expect(screen.getByText("LXD host not found")).toBeInTheDocument();
 });

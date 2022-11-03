@@ -27,7 +27,7 @@ describe("DeleteDomainForm", () => {
       }),
     });
     renderWithBrowserRouter(<DeleteDomainForm closeForm={closeForm} id={1} />, {
-      wrapperProps: { state },
+      state,
     });
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
     expect(closeForm).toHaveBeenCalled();
@@ -96,7 +96,7 @@ describe("DeleteDomainForm", () => {
     });
 
     renderWithBrowserRouter(<DeleteDomainForm closeForm={closeForm} id={1} />, {
-      wrapperProps: { state },
+      state,
     });
 
     expect(

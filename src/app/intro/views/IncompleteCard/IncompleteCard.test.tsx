@@ -17,7 +17,7 @@ describe("IncompleteCard", () => {
   it("renders", () => {
     renderWithBrowserRouter(<IncompleteCard />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText(IncompleteCardLabels.Welcome)).toBeInTheDocument();
     expect(screen.getByText(IncompleteCardLabels.Help)).toBeInTheDocument();

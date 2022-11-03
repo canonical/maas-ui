@@ -35,7 +35,7 @@ describe("NumaCardDetails", () => {
   it("can display as expanded", () => {
     renderWithBrowserRouter(
       <NumaCardDetails machineId="abc123" numaNode={numaNode} showExpanded />,
-      { route: "/machine/abc123", wrapperProps: { state } }
+      { route: "/machine/abc123", state }
     );
 
     expect(
@@ -64,7 +64,7 @@ describe("NumaCardDetails", () => {
   it("can display as collapsed", () => {
     renderWithBrowserRouter(
       <NumaCardDetails machineId="abc123" numaNode={numaNode} />,
-      { route: "/machine/abc123", wrapperProps: { state } }
+      { route: "/machine/abc123", state }
     );
 
     expect(screen.getByRole("button", { name: "Node 2" })).toBeInTheDocument();
@@ -76,7 +76,7 @@ describe("NumaCardDetails", () => {
   it("can be expanded", async () => {
     renderWithBrowserRouter(
       <NumaCardDetails machineId="abc123" numaNode={numaNode} />,
-      { route: "/machine/abc123", wrapperProps: { state } }
+      { route: "/machine/abc123", state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Node 3" }));

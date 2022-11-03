@@ -9,7 +9,7 @@ it("does not display a notification when data has not loaded", async () => {
   const state = rootStateFactory();
   state.controller.loaded = false;
   renderWithBrowserRouter(<VaultNotification />, {
-    wrapperProps: { state },
+    state,
   });
   expect(
     screen.queryByText(/Incomplete Vault integration/)
@@ -21,7 +21,7 @@ it("displays a notification when data has loaded", async () => {
   state.controller.loaded = true;
   state.general.vaultEnabled.loaded = true;
   renderWithBrowserRouter(<VaultNotification />, {
-    wrapperProps: { state },
+    state,
   });
   expect(screen.getByText(/Incomplete Vault integration/)).toBeInTheDocument();
 });

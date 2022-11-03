@@ -67,7 +67,7 @@ describe("AddInterface", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddInterface close={jest.fn()} systemId="abc123" />,
-      { route, wrapperProps: { store } }
+      { route, store }
     );
     const expectedActions = ["fabric/fetch", "vlan/fetch"];
     expectedActions.forEach((expectedAction) => {
@@ -82,7 +82,7 @@ describe("AddInterface", () => {
     state.fabric.loaded = false;
     renderWithBrowserRouter(
       <AddInterface close={jest.fn()} systemId="abc123" />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
@@ -92,7 +92,7 @@ describe("AddInterface", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <AddInterface close={jest.fn()} systemId="abc123" />,
-      { route, wrapperProps: { store } }
+      { route, store }
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: "MAC address" }),

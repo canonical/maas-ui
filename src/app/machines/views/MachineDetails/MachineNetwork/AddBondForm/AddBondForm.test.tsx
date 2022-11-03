@@ -87,7 +87,7 @@ describe("AddBondForm", () => {
         setSelected={jest.fn()}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     expect(
       screen.getByRole("heading", { name: "Create bond" })
@@ -122,7 +122,7 @@ describe("AddBondForm", () => {
         setSelected={jest.fn()}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     const table = screen.getByRole("grid");
     expect(within(table).getByText("test-interface-1")).toBeInTheDocument();
@@ -186,7 +186,7 @@ describe("AddBondForm", () => {
         setSelected={jest.fn()}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     let table = screen.getByRole("grid");
     // Check that selected interfaces are shown
@@ -262,7 +262,7 @@ describe("AddBondForm", () => {
       />,
       {
         route,
-        wrapperProps: { state },
+        state,
       }
     );
     await userEvent.click(screen.getByTestId("edit-members"));
@@ -289,7 +289,7 @@ describe("AddBondForm", () => {
         setSelected={jest.fn()}
         systemId="abc123"
       />,
-      { route, wrapperProps: { store } }
+      { route, store }
     );
     expect(store.getActions().some((action) => action.type === "fabric/fetch"));
     expect(store.getActions().some((action) => action.type === "subnet/fetch"));
@@ -307,7 +307,7 @@ describe("AddBondForm", () => {
         setSelected={jest.fn()}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
@@ -323,7 +323,7 @@ describe("AddBondForm", () => {
         setSelected={jest.fn()}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     expect(screen.getByTestId("data-loading")).toBeInTheDocument();
   });
@@ -354,7 +354,7 @@ describe("AddBondForm", () => {
         setSelected={jest.fn()}
         systemId="abc123"
       />,
-      { route, wrapperProps: { store } }
+      { route, store }
     );
 
     await userEvent.click(

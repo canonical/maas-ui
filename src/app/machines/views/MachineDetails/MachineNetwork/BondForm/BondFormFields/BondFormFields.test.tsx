@@ -81,7 +81,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
 
     expect(
@@ -94,7 +94,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
 
     await userEvent.selectOptions(
@@ -112,7 +112,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
 
     expect(
@@ -125,7 +125,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
 
     await userEvent.selectOptions(
@@ -143,7 +143,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
 
     const monitoringFieldNames = [
@@ -164,7 +164,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
 
     await userEvent.selectOptions(
@@ -188,7 +188,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{ mac_address: "" }} onSubmit={jest.fn()}>
         <BondFormFields selected={[{ nicId: 17 }]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     await userEvent.click(
       screen.getByRole("radio", { name: "Use MAC address from bond member" })
@@ -207,7 +207,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{ mac_address: "" }} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     await userEvent.click(
       screen.getByRole("radio", { name: "Manual MAC address" })
@@ -226,7 +226,7 @@ describe("BondFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     await userEvent.click(
       screen.getByRole("radio", { name: "Use MAC address from bond member" })
@@ -246,7 +246,7 @@ describe("BondFormFields", () => {
       >
         <BondFormFields selected={[]} systemId="abc123" />
       </Formik>,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     // Enable the mac address field so it can be changed.
     await userEvent.click(

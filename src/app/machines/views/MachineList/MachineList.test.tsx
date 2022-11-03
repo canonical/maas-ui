@@ -236,7 +236,7 @@ describe("MachineList", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { store } }
+      { store }
     );
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
     // Click the button to toggle the group.
@@ -263,7 +263,7 @@ describe("MachineList", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { store } }
+      { store }
     );
     expect(screen.getByLabelText(/Group by/)).toHaveValue(DEFAULTS.grouping);
     const expected = machineActions.fetch("123456", {
@@ -372,7 +372,7 @@ describe("MachineList", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { store } }
+      { store }
     );
     const expected = machineActions.fetch("123456", {
       group_collapsed: [],
@@ -395,7 +395,7 @@ describe("MachineList", () => {
     const store2 = mockStore(state);
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { store: store2 } }
+      { store: store2 }
     );
     const expected2 = machineActions.fetch("123456", {
       group_collapsed: ["Deployed"],
@@ -576,7 +576,7 @@ describe("MachineList", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { store } }
+      { store }
     );
     const user = userEvent.setup({
       advanceTimers: jest.advanceTimersByTime,
@@ -619,7 +619,7 @@ describe("MachineList", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { store } }
+      { store }
     );
     const user = userEvent.setup({
       advanceTimers: jest.advanceTimersByTime,
@@ -655,7 +655,7 @@ describe("MachineList", () => {
         searchFilter="free text workload-service:prod"
         setSearchFilter={jest.fn()}
       />,
-      { wrapperProps: { store } }
+      { store }
     );
     const filter = {
       free_text: ["free text"],
@@ -732,7 +732,7 @@ describe("MachineList", () => {
 
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { state } }
+      { state }
     );
 
     expect(screen.getByTestId("vault-notification")).toHaveTextContent(
@@ -757,7 +757,7 @@ describe("MachineList", () => {
 
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { state } }
+      { state }
     );
 
     expect(screen.getByTestId("vault-notification")).toHaveTextContent(
@@ -782,7 +782,7 @@ describe("MachineList", () => {
 
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { state } }
+      { state }
     );
 
     expect(screen.queryByTestId("vault-notification")).not.toBeInTheDocument();
@@ -811,7 +811,7 @@ describe("MachineList", () => {
 
     renderWithBrowserRouter(
       <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
-      { wrapperProps: { state } }
+      { state }
     );
 
     expect(screen.queryByTestId("vault-notification")).not.toBeInTheDocument();

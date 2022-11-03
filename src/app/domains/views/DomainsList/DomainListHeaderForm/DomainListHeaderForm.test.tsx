@@ -24,7 +24,7 @@ describe("DomainListHeaderForm", () => {
   it("runs closeForm function when the cancel button is clicked", async () => {
     const closeForm = jest.fn();
     renderWithBrowserRouter(<DomainListHeaderForm closeForm={closeForm} />, {
-      wrapperProps: { state },
+      state,
     });
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));

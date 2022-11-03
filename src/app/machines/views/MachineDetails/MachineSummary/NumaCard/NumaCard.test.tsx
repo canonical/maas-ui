@@ -36,7 +36,7 @@ describe("NumaCard", () => {
     ];
     renderWithBrowserRouter(<NumaCard id="abc123" />, {
       route: "/machine/abc123",
-      wrapperProps: { state },
+      state,
     });
 
     const numa_card = screen.getByLabelText(NumaCardLabels.NumaCard);
@@ -49,7 +49,7 @@ describe("NumaCard", () => {
   it("renders with numa nodes", () => {
     renderWithBrowserRouter(<NumaCard id="abc123" />, {
       route: "/machine/abc123",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText("1 NUMA node")).toBeInTheDocument();
     expect(screen.getByText("Node 2")).toBeInTheDocument();

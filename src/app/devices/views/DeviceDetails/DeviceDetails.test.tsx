@@ -58,10 +58,8 @@ describe("DeviceDetails", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<DeviceDetails />, {
         route: path,
-        wrapperProps: {
-          state,
-          routePattern: `${urls.devices.device.index(null)}/*`,
-        },
+        state,
+        routePattern: `${urls.devices.device.index(null)}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
@@ -70,10 +68,8 @@ describe("DeviceDetails", () => {
   it("redirects to summary", () => {
     renderWithBrowserRouter(<DeviceDetails />, {
       route: urls.devices.device.index({ id: "abc123" }),
-      wrapperProps: {
-        state,
-        routePattern: `${urls.devices.device.index(null)}/*`,
-      },
+      state,
+      routePattern: `${urls.devices.device.index(null)}/*`,
     });
     expect(window.location.pathname).toBe(
       urls.devices.device.summary({ id: "abc123" })

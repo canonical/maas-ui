@@ -37,7 +37,7 @@ describe("DeleteRecordForm", () => {
         id={domain.id}
         resource={resource}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));

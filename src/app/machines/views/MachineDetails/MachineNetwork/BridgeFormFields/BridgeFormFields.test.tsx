@@ -18,7 +18,7 @@ describe("BridgeFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BridgeFormFields />
       </Formik>,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
     expect(
       screen.queryByRole("textbox", { name: "Forward delay (ms)" })
@@ -31,7 +31,7 @@ describe("BridgeFormFields", () => {
       <Formik initialValues={{}} onSubmit={jest.fn()}>
         <BridgeFormFields />
       </Formik>,
-      { route: "/machines", wrapperProps: { store } }
+      { route: "/machines", store }
     );
 
     await userEvent.click(screen.getByRole("checkbox", { name: "STP" }));

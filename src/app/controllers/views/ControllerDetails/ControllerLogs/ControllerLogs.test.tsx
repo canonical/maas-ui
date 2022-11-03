@@ -31,7 +31,7 @@ describe("ControllerLogs", () => {
       }),
     });
     renderWithBrowserRouter(<ControllerLogs systemId="abc123" />, {
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
   });
@@ -55,7 +55,7 @@ describe("ControllerLogs", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<ControllerLogs systemId="abc123" />, {
         route: path,
-        wrapperProps: { state },
+        state,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });

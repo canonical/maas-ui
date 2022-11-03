@@ -35,10 +35,8 @@ describe("LXDClusterHostSettings", () => {
     state.pod.loading = true;
     renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
       route: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
-      wrapperProps: {
-        state,
-        routePattern: urls.kvm.lxd.cluster.host.edit(null),
-      },
+      state,
+      routePattern: urls.kvm.lxd.cluster.host.edit(null),
     });
     expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
   });
@@ -47,10 +45,8 @@ describe("LXDClusterHostSettings", () => {
     state.pod.items = [];
     renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
       route: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
-      wrapperProps: {
-        state,
-        routePattern: urls.kvm.lxd.cluster.host.edit(null),
-      },
+      state,
+      routePattern: urls.kvm.lxd.cluster.host.edit(null),
     });
     expect(screen.getByText("LXD host not found")).toBeInTheDocument();
   });
@@ -58,10 +54,8 @@ describe("LXDClusterHostSettings", () => {
   it("has a disabled zone field", () => {
     renderWithBrowserRouter(<LXDClusterHostSettings clusterId={2} />, {
       route: urls.kvm.lxd.cluster.host.edit({ clusterId: 1, hostId: 2 }),
-      wrapperProps: {
-        state,
-        routePattern: urls.kvm.lxd.cluster.host.edit(null),
-      },
+      state,
+      routePattern: urls.kvm.lxd.cluster.host.edit(null),
     });
     expect(screen.getByRole("combobox", { name: "Zone" })).toBeDisabled();
   });

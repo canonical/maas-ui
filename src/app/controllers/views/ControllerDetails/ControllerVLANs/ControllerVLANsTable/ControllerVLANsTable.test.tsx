@@ -69,7 +69,7 @@ it("displays correct text when loading", function () {
   renderWithBrowserRouter(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
-      wrapperProps: { state },
+      state,
       route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
@@ -96,7 +96,7 @@ it("displays correct text for no VLANs", function () {
   renderWithBrowserRouter(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
-      wrapperProps: { state },
+      state,
       route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
@@ -123,7 +123,7 @@ it("displays a VLANs table with a single row", function () {
   renderWithBrowserRouter(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
-      wrapperProps: { state },
+      state,
       route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
@@ -166,7 +166,7 @@ it("displays no duplicate vlans", function () {
   renderWithBrowserRouter(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
-      wrapperProps: { state },
+      state,
       route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),
@@ -194,7 +194,7 @@ it("displays correct text within each cell", () => {
   renderWithBrowserRouter(
     <ControllerVLANsTable systemId={net.controller.system_id} />,
     {
-      wrapperProps: { state },
+      state,
       route: urls.controllers.controller.vlans({
         id: net.controller.system_id,
       }),

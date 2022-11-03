@@ -99,7 +99,7 @@ describe("OverrideTestForm", () => {
         }}
         viewingDetails={true}
       />,
-      { wrapperProps: { store }, route: "/machines" }
+      { store, route: "/machines" }
     );
 
     expect(screen.getByTestId("failed-results-message")).toHaveTextContent(
@@ -123,7 +123,7 @@ describe("OverrideTestForm", () => {
         }}
         viewingDetails={true}
       />,
-      { wrapperProps: { store }, route: "/machines" }
+      { store, route: "/machines" }
     );
 
     expect(screen.getByTestId("failed-results-message")).toHaveTextContent(
@@ -145,7 +145,7 @@ describe("OverrideTestForm", () => {
         }}
         viewingDetails={false}
       />,
-      { wrapperProps: { store }, route: "/machines" }
+      { store, route: "/machines" }
     );
 
     expect(screen.getByTestId("failed-results-message")).toHaveTextContent(
@@ -195,7 +195,7 @@ describe("OverrideTestForm", () => {
         }}
         viewingDetails={false}
       />,
-      { wrapperProps: { store }, route: "/machines" }
+      { store, route: "/machines" }
     );
 
     await userEvent.click(
@@ -238,7 +238,7 @@ describe("OverrideTestForm", () => {
         }}
         viewingDetails={false}
       />,
-      { wrapperProps: { store }, route: "/machines" }
+      { store, route: "/machines" }
     );
 
     await userEvent.click(
@@ -285,7 +285,7 @@ describe("OverrideTestForm", () => {
         }}
         viewingDetails={false}
       />,
-      { wrapperProps: { store }, route: "/machines" }
+      { store, route: "/machines" }
     );
 
     await userEvent.click(
@@ -318,7 +318,7 @@ describe("OverrideTestForm", () => {
         }}
         viewingDetails={false}
       />,
-      { wrapperProps: { store }, route: "/machines" }
+      { store, route: "/machines" }
     );
 
     await userEvent.click(

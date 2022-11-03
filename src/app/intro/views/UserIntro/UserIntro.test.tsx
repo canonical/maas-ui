@@ -45,7 +45,7 @@ describe("UserIntro", () => {
   it("displays a green tick icon when there are ssh keys", () => {
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     const icon = screen.getByLabelText("success");
     expect(icon).toBeInTheDocument();
@@ -56,7 +56,7 @@ describe("UserIntro", () => {
     state.sshkey.items = [];
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     const icon = screen.getByLabelText("success-grey");
     expect(icon).toBeInTheDocument();
@@ -71,7 +71,7 @@ describe("UserIntro", () => {
     });
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     expect(window.location.pathname).toBe(urls.dashboard.index);
   });
@@ -80,7 +80,7 @@ describe("UserIntro", () => {
     state.sshkey.items = [];
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByRole("button", { name: UserIntroLabels.Continue })
@@ -91,7 +91,7 @@ describe("UserIntro", () => {
     state.sshkey.items = [];
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.queryByRole("grid", { name: "SSH keys" })
@@ -101,7 +101,7 @@ describe("UserIntro", () => {
   it("shows the SSH list if there are ssh keys", () => {
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByRole("grid", { name: "SSH keys" })).toBeInTheDocument();
   });
@@ -134,7 +134,7 @@ describe("UserIntro", () => {
     });
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText("Error:")).toBeInTheDocument();
     expect(screen.getByText("Uh oh")).toBeInTheDocument();
@@ -147,7 +147,7 @@ describe("UserIntro", () => {
     markedIntroCompleteMock.mockImplementationOnce(() => [true, () => null]);
     renderWithBrowserRouter(<UserIntro />, {
       route: "/intro/user",
-      wrapperProps: { state },
+      state,
     });
     expect(window.location.pathname).toBe(urls.dashboard.index);
   });

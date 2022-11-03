@@ -18,7 +18,7 @@ describe("DomainDetails", () => {
     });
     renderWithBrowserRouter(<DomainDetails />, {
       route: "/domain/1",
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText("Domain not found")).toBeInTheDocument();

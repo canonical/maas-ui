@@ -57,10 +57,8 @@ describe("LXDSingleDetails", () => {
     it(`Displays: ${label} at: ${path}`, () => {
       renderWithBrowserRouter(<LXDSingleDetails />, {
         route: path,
-        wrapperProps: {
-          state,
-          routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
-        },
+        state,
+        routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
       });
       expect(screen.getByLabelText(label)).toBeInTheDocument();
     });
@@ -69,10 +67,8 @@ describe("LXDSingleDetails", () => {
   it("redirects to vms", () => {
     renderWithBrowserRouter(<LXDSingleDetails />, {
       route: urls.kvm.lxd.single.index({ id: 1 }),
-      wrapperProps: {
-        state,
-        routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
-      },
+      state,
+      routePattern: `${urls.kvm.lxd.single.index(null)}/*`,
     });
     expect(window.location.pathname).toBe(urls.kvm.lxd.single.vms({ id: 1 }));
   });

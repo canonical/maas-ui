@@ -77,7 +77,7 @@ describe("AddBridgeForm", () => {
     const selected = [{ nicId: nic.id }];
     renderWithBrowserRouter(
       <AddBridgeForm close={jest.fn()} selected={selected} systemId="abc123" />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
     const table = screen.getByRole("grid");
     expect(within(table).getAllByRole("row")).toHaveLength(2);
@@ -92,7 +92,7 @@ describe("AddBridgeForm", () => {
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,
-      { route, wrapperProps: { store } }
+      { route, store }
     );
     expect(store.getActions().some((action) => action.type === "vlan/fetch"));
   });
@@ -106,7 +106,7 @@ describe("AddBridgeForm", () => {
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,
-      { route, wrapperProps: { state } }
+      { route, state }
     );
 
     // Multiple spinners are displayed, so we have to check that there is at least one
@@ -122,7 +122,7 @@ describe("AddBridgeForm", () => {
         selected={[{ nicId: nic.id }]}
         systemId="abc123"
       />,
-      { route, wrapperProps: { store } }
+      { route, store }
     );
 
     const macAddressField = screen.getByRole("textbox", {

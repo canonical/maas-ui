@@ -59,7 +59,7 @@ describe("EditRecordForm", () => {
 
     renderWithBrowserRouter(
       <EditRecordForm closeForm={closeForm} id={1} resource={resourceA} />,
-      { wrapperProps: { state } }
+      { state }
     );
 
     await userEvent.click(screen.getByRole("button", { name: "Cancel" }));

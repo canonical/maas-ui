@@ -81,7 +81,7 @@ describe("NetworkTable", () => {
         setExpanded={jest.fn()}
         setSelected={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     const subnetCol = screen.getByRole("gridcell", { name: Label.Subnet });
     const subnetPrimary = within(subnetCol).getByTestId("primary");
@@ -123,7 +123,7 @@ describe("NetworkTable", () => {
         setExpanded={jest.fn()}
         setSelected={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     const subnetCol = screen.getByRole("gridcell", { name: Label.Subnet });
     expect(
@@ -174,7 +174,7 @@ describe("NetworkTable", () => {
         setExpanded={jest.fn()}
         setSelected={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     const alias = screen.getByTestId("alias:1");
     expect(alias).toBeInTheDocument();
@@ -210,7 +210,7 @@ describe("NetworkTable", () => {
         setExpanded={jest.fn()}
         setSelected={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     const alias = screen.getByTestId("alias:1");
     expect(alias.className.includes("is-active")).toBe(true);
@@ -238,7 +238,7 @@ describe("NetworkTable", () => {
         setExpanded={jest.fn()}
         setSelected={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     const alias = screen.getByTestId("eth0");
     expect(alias.className.includes("is-active")).toBe(true);
@@ -278,7 +278,7 @@ describe("NetworkTable", () => {
         setExpanded={jest.fn()}
         setSelected={jest.fn()}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     expect(
       screen.getByRole("grid").className.includes("network-table--has-actions")
@@ -329,7 +329,7 @@ describe("NetworkTable", () => {
     });
     state.controller.items = [controller];
     renderWithBrowserRouter(<NetworkTable node={controller} />, {
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByRole("grid").className.includes("network-table--has-actions")
@@ -382,7 +382,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       // There should be one checkbox for the child interface.
       expect(
@@ -402,7 +402,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={setSelected}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       await userEvent.click(
         within(
@@ -423,7 +423,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       const row = screen.getByTestId("eth0");
       expect(
@@ -440,7 +440,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       const row = screen.getByTestId("eth0");
       expect(
@@ -459,7 +459,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       const row = screen.getByTestId("eth0");
       expect(
@@ -478,7 +478,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       const row = screen.getByTestId("eth0");
       expect(
@@ -497,7 +497,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       const row = screen.getByTestId("eth0");
       expect(
@@ -516,7 +516,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       const row = screen.getByTestId("eth0");
       expect(
@@ -581,7 +581,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
       const names = screen
         .getAllByRole("row")
@@ -612,7 +612,7 @@ describe("NetworkTable", () => {
           setExpanded={jest.fn()}
           setSelected={jest.fn()}
         />,
-        { wrapperProps: { state } }
+        { state }
       );
 
       await userEvent.click(

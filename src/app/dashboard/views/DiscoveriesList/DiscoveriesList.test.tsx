@@ -131,7 +131,7 @@ describe("DiscoveriesList", () => {
   it("displays the discoveries", () => {
     renderWithBrowserRouter(<DiscoveriesList />, {
       route: route,
-      wrapperProps: { state },
+      state,
     });
 
     expect(screen.getByText("my-discovery-test")).toBeInTheDocument();
@@ -146,7 +146,7 @@ describe("DiscoveriesList", () => {
     });
     renderWithBrowserRouter(<DiscoveriesList />, {
       route: route,
-      wrapperProps: { state },
+      state,
     });
     expect(screen.getByText(DiscoveriesListLabels.Loading)).toBeInTheDocument();
   });
@@ -160,7 +160,7 @@ describe("DiscoveriesList", () => {
     });
     renderWithBrowserRouter(<DiscoveriesList />, {
       route: route,
-      wrapperProps: { state },
+      state,
     });
     expect(
       screen.getByText(DiscoveriesListLabels.NoNewDiscoveries)
@@ -173,7 +173,7 @@ describe("DiscoveriesList", () => {
   it("can display the add form", async () => {
     renderWithBrowserRouter(<DiscoveriesList />, {
       route: route,
-      wrapperProps: { state },
+      state,
     });
     const row = screen.getByRole("row", { name: "my-discovery-test" });
     expect(
@@ -196,7 +196,7 @@ describe("DiscoveriesList", () => {
   it("can display the delete form", async () => {
     renderWithBrowserRouter(<DiscoveriesList />, {
       route: route,
-      wrapperProps: { state },
+      state,
     });
     const row = screen.getByRole("row", { name: "my-discovery-test" });
     expect(screen.queryByTestId("delete-discovery")).not.toBeInTheDocument();
@@ -222,7 +222,7 @@ describe("DiscoveriesList", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(<DiscoveriesList />, {
       route: route,
-      wrapperProps: { store },
+      store,
     });
     const row = screen.getByRole("row", { name: "my-discovery-test" });
 

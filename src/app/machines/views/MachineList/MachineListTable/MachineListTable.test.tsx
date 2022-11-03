@@ -298,7 +298,7 @@ describe("MachineListTable", () => {
         sortDirection="none"
         sortKey={null}
       />,
-      { wrapperProps: { state } }
+      { state }
     );
     expect(screen.getByText(Label.NoResults)).toBeInTheDocument();
   });
