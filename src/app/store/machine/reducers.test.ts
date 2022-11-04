@@ -115,6 +115,39 @@ describe("machine reducer", () => {
     );
   });
 
+  it("marks count requests as stale on delete notify", () => {
+    const initialState = machineStateFactory({
+      loading: false,
+      counts: {
+        "1234": machineStateCountFactory({
+          loaded: true,
+          stale: false,
+        }),
+      },
+    });
+    expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
+      machineStateFactory({
+        counts: {
+          "1234": machineStateCountFactory({
+            loaded: true,
+            stale: true,
+          }),
+        },
+      })
+    );
+  });
+
+  it("updates selected machines on delete notify", () => {
+    const initialState = machineStateFactory({
+      selectedMachines: { items: ["abc123"] },
+    });
+    expect(reducers(initialState, actions.deleteNotify("abc123"))).toEqual(
+      machineStateFactory({
+        selectedMachines: { items: [] },
+      })
+    );
+  });
+
   it("ignores calls that don't exist when reducing countSuccess", () => {
     const initialState = machineStateFactory({
       counts: {},

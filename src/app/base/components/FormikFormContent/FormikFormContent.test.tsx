@@ -62,6 +62,30 @@ describe("FormikFormContent", () => {
     expect(screen.getByTestId(TestIds.CancelButton)).toBeDisabled();
   });
 
+  it("can disable the submit button", async () => {
+    const store = mockStore(state);
+    const onSubmit = jest.fn();
+    render(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
+          <CompatRouter>
+            <Formik initialValues={{}} onSubmit={onSubmit}>
+              <FormikFormContent
+                aria-label="example"
+                submitDisabled
+                submitLabel="Save"
+              >
+                Content
+              </FormikFormContent>
+            </Formik>
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+  });
+
   it("can override disabling cancel button while saving", () => {
     const store = mockStore(state);
     render(

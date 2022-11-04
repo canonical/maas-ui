@@ -1,4 +1,4 @@
-import { Spinner } from "@canonical/react-components";
+import { Notification, Spinner } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import CloneForm from "./CloneForm";
@@ -175,7 +175,16 @@ export const MachineActionFormWrapper = ({
     return <Spinner />;
   }
 
-  return <div ref={onRenderRef}>{getFormComponent()}</div>;
+  return (
+    <div ref={onRenderRef}>
+      {selectedCount === 0 ? (
+        <Notification severity="caution">
+          No machines have been selected. Update your selection to continue.
+        </Notification>
+      ) : null}
+      {getFormComponent()}
+    </div>
+  );
 };
 
 export default MachineActionFormWrapper;
