@@ -83,7 +83,7 @@
     "@types/clone-deep": "4.0.1",
     "@types/enzyme": "3.10.12",
     "@types/jest": "27.5.2",
-    "@types/node": "16.11.47",
+    "@types/node": "18.11.9",
     "@types/path-parse": "1.0.19",
     "@types/pluralize": "0.0.29",
     "@types/react": "17.0.48",
