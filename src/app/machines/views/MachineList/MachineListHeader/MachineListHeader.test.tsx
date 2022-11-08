@@ -282,7 +282,7 @@ describe("MachineListHeader", () => {
       loaded: true,
     });
     const setHeaderContent = jest.fn();
-    const { rerender } = renderWithBrowserRouter(
+    renderWithBrowserRouter(
       <MachineListHeader
         headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
         searchFilter=""
@@ -294,7 +294,7 @@ describe("MachineListHeader", () => {
     expect(setHeaderContent).not.toHaveBeenCalled();
     expect(screen.getByText("Deploy")).toBeInTheDocument();
     state.machine.selectedMachines.items = [];
-    rerender(
+    renderWithBrowserRouter(
       <MachineListHeader
         headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
         searchFilter=""

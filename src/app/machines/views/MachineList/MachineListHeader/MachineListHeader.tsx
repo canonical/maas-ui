@@ -1,6 +1,5 @@
 import { useCallback, useEffect } from "react";
 
-import { usePrevious } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { useStorageState } from "react-storage-hooks";
@@ -20,7 +19,7 @@ import type {
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import machineSelectors from "app/store/machine/selectors";
-import { FilterMachineItems } from "app/store/machine/utils";
+import { FilterMachineItems, selectedToFilters } from "app/store/machine/utils";
 import {
   useFetchMachineCount,
   useHasSelection,
@@ -59,22 +58,17 @@ export const MachineListHeader = ({
   // Get the count of selected machines that match the current filter
   const { selectedCount, selectedCountLoading } =
     useMachineSelectedCount(filter);
-  const previousSelectedCount = usePrevious(selectedCount);
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
 
+  // Clear the header when there are no selected machines
   useEffect(() => {
     if (
       location.pathname !== urls.machines.index ||
-      (selectedCount !== previousSelectedCount && selectedCount === 0)
+      selectedToFilters(selectedMachines) === null
     ) {
       setHeaderContent(null);
     }
-  }, [
-    location.pathname,
-    setHeaderContent,
-    selectedCount,
-    previousSelectedCount,
-  ]);
+  }, [location.pathname, selectedMachines, setHeaderContent]);
 
   const getTitle = useCallback(
     (action: NodeActions) => {
