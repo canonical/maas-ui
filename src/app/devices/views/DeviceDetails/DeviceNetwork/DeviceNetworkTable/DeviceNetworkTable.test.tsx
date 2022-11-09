@@ -1,7 +1,4 @@
 import { screen } from "@testing-library/react";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeviceNetworkTable from "./DeviceNetworkTable";
@@ -61,7 +58,6 @@ describe("DeviceNetworkTable", () => {
       />,
       { store }
     );
-    // expect(wrapper.find("Spinner").exists()).toBe(true);
     expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
@@ -148,76 +144,65 @@ describe("DeviceNetworkTable", () => {
       />,
       { store }
     );
-    // expect(wrapper.find("SubnetColumn Link").at(0).text()).toBe("subnet-cidr");
-    // expect(wrapper.find("[data-testid='ip-address']").text()).toBe("1.2.3.99");
+    expect(
+      screen.getByRole("link", { name: "subnet-cidr" })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("ip-address")).toHaveTextContent("1.2.3.99");
   });
 
-  // it("expands a row when a matching link is found", () => {
-  //   state.device.items = [
-  //     deviceDetailsFactory({
-  //       interfaces: [
-  //         deviceInterfaceFactory({
-  //           discovered: null,
-  //           links: [networkLinkFactory(), networkLinkFactory({ id: 2 })],
-  //           name: "alias",
-  //           type: NetworkInterfaceTypes.ALIAS,
-  //         }),
-  //       ],
-  //       system_id: "abc123",
-  //     }),
-  //   ];
-  //   const store = mockStore(state);
-  //   const wrapper = mount(
-  //     <Provider store={store}>
-  //       <MemoryRouter>
-  //         <CompatRouter>
-  //           <DeviceNetworkTable
-  //             expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
-  //             setExpanded={jest.fn()}
-  //             systemId="abc123"
-  //           />
-  //         </CompatRouter>
-  //       </MemoryRouter>
-  //     </Provider>
-  //   );
-  //   const row = wrapper.findWhere(
-  //     (n) => n.name() === "TableRow" && n.key() === "alias:1"
-  //   );
-  //   expect(row.hasClass("is-active")).toBe(true);
-  // });
+  it("expands a row when a matching link is found", () => {
+    state.device.items = [
+      deviceDetailsFactory({
+        interfaces: [
+          deviceInterfaceFactory({
+            discovered: null,
+            links: [networkLinkFactory(), networkLinkFactory({ id: 2 })],
+            name: "alias",
+            type: NetworkInterfaceTypes.ALIAS,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <DeviceNetworkTable
+        expanded={{ content: ExpandedState.REMOVE, linkId: 2 }}
+        setExpanded={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
+    );
+    const rows = screen.getAllByRole("row");
+    expect(rows[1]).not.toHaveClass("is-active");
+    expect(rows[2]).toHaveClass("is-active");
+  });
 
-  // it("expands a row when a matching nic is found", () => {
-  //   state.device.items = [
-  //     deviceDetailsFactory({
-  //       interfaces: [
-  //         deviceInterfaceFactory({
-  //           id: 2,
-  //           discovered: null,
-  //           links: [],
-  //           name: "eth0",
-  //           type: NetworkInterfaceTypes.PHYSICAL,
-  //         }),
-  //       ],
-  //       system_id: "abc123",
-  //     }),
-  //   ];
-  //   const store = mockStore(state);
-  //   const wrapper = mount(
-  //     <Provider store={store}>
-  //       <MemoryRouter>
-  //         <CompatRouter>
-  //           <DeviceNetworkTable
-  //             expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
-  //             setExpanded={jest.fn()}
-  //             systemId="abc123"
-  //           />
-  //         </CompatRouter>
-  //       </MemoryRouter>
-  //     </Provider>
-  //   );
-  //   const row = wrapper.findWhere(
-  //     (n) => n.name() === "TableRow" && n.key() === "eth0"
-  //   );
-  //   expect(row.hasClass("is-active")).toBe(true);
-  // });
+  it("expands a row when a matching nic is found", () => {
+    state.device.items = [
+      deviceDetailsFactory({
+        interfaces: [
+          deviceInterfaceFactory({
+            id: 2,
+            discovered: null,
+            links: [],
+            name: "eth0",
+            type: NetworkInterfaceTypes.PHYSICAL,
+          }),
+        ],
+        system_id: "abc123",
+      }),
+    ];
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <DeviceNetworkTable
+        expanded={{ content: ExpandedState.REMOVE, nicId: 2 }}
+        setExpanded={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
+    );
+    const rows = screen.getAllByRole("row");
+    expect(rows[1]).toHaveClass("is-active");
+  });
 });
