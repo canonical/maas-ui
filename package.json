@@ -99,7 +99,7 @@
     "colors": "1.4.0",
     "concurrently": "7.3.0",
     "cooky-cutter": "1.5.4",
-    "cypress": "10.3.1",
+    "cypress": "11.0.1",
     "cypress-axe": "1.0.0",
     "cypress-wait-until": "1.7.2",
     "cz-conventional-changelog": "3.3.0",
