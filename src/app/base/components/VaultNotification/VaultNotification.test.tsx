@@ -2,7 +2,11 @@ import { screen } from "@testing-library/react";
 
 import VaultNotification from "./VaultNotification";
 
-import { rootState as rootStateFactory } from "testing/factories";
+import { NodeType } from "app/store/types/node";
+import {
+  rootState as rootStateFactory,
+  controller as controllerFactory,
+} from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
 it("does not display a notification when data has not loaded", async () => {
@@ -20,6 +24,17 @@ it("displays a notification when data has loaded", async () => {
   const state = rootStateFactory();
   state.controller.loaded = true;
   state.general.vaultEnabled.loaded = true;
+  state.general.vaultEnabled.data = false;
+  state.controller.items = [
+    controllerFactory({
+      vault_configured: false,
+      node_type: NodeType.REGION_AND_RACK_CONTROLLER,
+    }),
+    controllerFactory({
+      vault_configured: true,
+      node_type: NodeType.REGION_CONTROLLER,
+    }),
+  ];
   renderWithBrowserRouter(<VaultNotification />, {
     state,
   });

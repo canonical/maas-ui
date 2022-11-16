@@ -19,31 +19,33 @@ const VaultNotification = (): JSX.Element | null => {
     return null;
   }
 
-  return configuredControllers.length >= 1 &&
-    unconfiguredControllers.length >= 1 ? (
-    <Notification
-      data-testid="vault-notification"
-      severity="caution"
-      title="Incomplete Vault integration"
-    >
-      Configure {unconfiguredControllers.length} other{" "}
-      <Link to="/controllers">
-        {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
-      </Link>{" "}
-      with Vault to complete integration with Vault. Check the{" "}
-      <Link to="/settings/configuration/security">security settings</Link> for
-      more information.
-    </Notification>
-  ) : unconfiguredControllers.length === 0 && vaultEnabled === false ? (
-    <Notification
-      data-testid="vault-notification"
-      severity="caution"
-      title="Incomplete Vault integration"
-    >
-      Migrate your secrets to Vault to complete integration with Vault. Check
-      the <Link to="/settings/configuration/security">security settings</Link>{" "}
-      for more information.
-    </Notification>
+  return !vaultEnabled ? (
+    configuredControllers.length >= 1 && unconfiguredControllers.length >= 1 ? (
+      <Notification
+        data-testid="vault-notification"
+        severity="caution"
+        title="Incomplete Vault integration"
+      >
+        Configure {unconfiguredControllers.length} other{" "}
+        <Link to="/controllers">
+          {unconfiguredControllers.length > 1 ? "controllers" : "controller"}
+        </Link>{" "}
+        with Vault to complete integration with Vault. Check the{" "}
+        <Link to="/settings/configuration/security">security settings</Link> for
+        more information.
+      </Notification>
+    ) : unconfiguredControllers.length === 0 &&
+      configuredControllers.length >= 1 ? (
+      <Notification
+        data-testid="vault-notification"
+        severity="caution"
+        title="Incomplete Vault integration"
+      >
+        Migrate your secrets to Vault to complete integration with Vault. Check
+        the <Link to="/settings/configuration/security">security settings</Link>{" "}
+        for more information.
+      </Notification>
+    ) : null
   ) : null;
 };
 
