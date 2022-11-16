@@ -1,6 +1,6 @@
-import { mount } from "enzyme";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import type { InterfaceFormValues } from "../InterfaceForm";
@@ -14,9 +14,9 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("InterfaceFormFields", () => {
   let initialValues: InterfaceFormValues;
@@ -41,84 +41,73 @@ describe("InterfaceFormFields", () => {
   it("can render without headings", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <InterfaceFormFields />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+        <InterfaceFormFields />
+      </Formik>,
+      { store }
     );
 
     expect(
-      wrapper.find("[data-testid='interface-form-heading']").exists()
-    ).toBe(false);
+      screen.queryByTestId("interface-form-heading")
+    ).not.toBeInTheDocument();
   });
 
   it("can render with headings", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <InterfaceFormFields showTitles />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+        <InterfaceFormFields showTitles />
+      </Formik>,
+      { store }
     );
 
-    expect(
-      wrapper.find("[data-testid='interface-form-heading']").exists()
-    ).toBe(true);
+    const titles = screen.getAllByTestId("interface-form-heading");
+    expect(titles[0]).toBeInTheDocument();
+    expect(titles[1]).toBeInTheDocument();
   });
 
   it("does not show subnet or IP address fields for dynamic IP assignment", () => {
     initialValues.ip_assignment = DeviceIpAssignment.DYNAMIC;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <InterfaceFormFields />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+        <InterfaceFormFields />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
-      false
-    );
+    expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
+    expect(screen.queryByTestId("ip-address-field")).not.toBeInTheDocument();
   });
 
   it("shows the IP address field for external IP assignment", () => {
     initialValues.ip_assignment = DeviceIpAssignment.EXTERNAL;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <InterfaceFormFields />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+        <InterfaceFormFields />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
-      true
-    );
+    expect(screen.queryByTestId("subnet-field")).not.toBeInTheDocument();
+    expect(screen.getByTestId("ip-address-field")).toBeInTheDocument();
   });
 
   it("shows both the subnet and IP address fields for static IP assignment", () => {
     initialValues.ip_assignment = DeviceIpAssignment.STATIC;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <InterfaceFormFields />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+        <InterfaceFormFields />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("[data-testid='subnet-field']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='ip-address-field']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("subnet-field")).toBeInTheDocument();
+    expect(screen.getByTestId("ip-address-field")).toBeInTheDocument();
   });
 
   it("clears subnet and IP address values when changing IP assignment", async () => {
@@ -126,40 +115,27 @@ describe("InterfaceFormFields", () => {
     initialValues.subnet = 1;
     initialValues.ip_address = "192.168.1.1";
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={initialValues} onSubmit={jest.fn()}>
-          <InterfaceFormFields />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
+        <InterfaceFormFields />
+      </Formik>,
+      { store }
     );
 
-    expect(
-      wrapper.find("select[data-testid='subnet-field']").prop("value")
-    ).toBe(1);
-    expect(
-      wrapper.find("input[data-testid='ip-address-field']").prop("value")
-    ).toBe("192.168.1.1");
+    expect(screen.getByTestId("subnet-field")).toHaveValue("1");
+    expect(screen.getByTestId("ip-address-field")).toHaveValue("192.168.1.1");
 
     // Change IP assignment to something else then back to the original value.
-    wrapper
-      .find("select[data-testid='ip-assignment-field']")
-      .simulate("change", {
-        target: { name: "ip_assignment", value: DeviceIpAssignment.DYNAMIC },
-      });
-    await waitForComponentToPaint(wrapper);
-    wrapper
-      .find("select[data-testid='ip-assignment-field']")
-      .simulate("change", {
-        target: { name: "ip_assignment", value: DeviceIpAssignment.STATIC },
-      });
-    await waitForComponentToPaint(wrapper);
+    await userEvent.selectOptions(
+      screen.getByTestId("ip-assignment-field"),
+      DeviceIpAssignment.DYNAMIC
+    );
+    await userEvent.selectOptions(
+      screen.getByTestId("ip-assignment-field"),
+      DeviceIpAssignment.STATIC
+    );
 
-    expect(
-      wrapper.find("select[data-testid='subnet-field']").prop("value")
-    ).toBe("");
-    expect(
-      wrapper.find("input[data-testid='ip-address-field']").prop("value")
-    ).toBe("");
+    expect(screen.getByTestId("subnet-field")).toHaveValue("");
+    expect(screen.getByTestId("ip-address-field")).toHaveValue("");
   });
 });
