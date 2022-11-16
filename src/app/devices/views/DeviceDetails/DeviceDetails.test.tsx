@@ -1,8 +1,4 @@
 import { screen } from "@testing-library/react";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { Label as DeviceConfigurationLabel } from "./DeviceConfiguration/DeviceConfiguration";
@@ -22,7 +18,7 @@ import {
 } from "testing/factories";
 import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DeviceDetails", () => {
   const device = deviceDetailsFactory({ system_id: "abc123" });
@@ -78,24 +74,11 @@ describe("DeviceDetails", () => {
 
   it("gets and sets the device as active", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.devices.device.index({ id: device.system_id }) },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<DeviceDetails />}
-                path={`${urls.devices.device.index(null)}/*`}
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DeviceDetails />, {
+      route: urls.devices.device.index({ id: device.system_id }),
+      store,
+      routePattern: `${urls.devices.device.index(null)}/*`,
+    });
 
     const expectedActions = [
       deviceActions.get(device.system_id),
@@ -113,26 +96,13 @@ describe("DeviceDetails", () => {
 
   it("unsets active device and cleans up when unmounting", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.devices.device.index({ id: device.system_id }) },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<DeviceDetails />}
-                path={`${urls.devices.device.index(null)}/*`}
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    const { unmount } = renderWithBrowserRouter(<DeviceDetails />, {
+      route: urls.devices.device.index({ id: device.system_id }),
+      store,
+      routePattern: `${urls.devices.device.index(null)}/*`,
+    });
 
-    wrapper.unmount();
+    unmount();
 
     const expectedActions = [
       deviceActions.setActive(null),
@@ -154,25 +124,13 @@ describe("DeviceDetails", () => {
   it("displays a message if the device does not exist", () => {
     state.device.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.devices.device.index({ id: device.system_id }) },
-          ]}
-        >
-          <CompatRouter>
-            <Routes>
-              <Route
-                element={<DeviceDetails />}
-                path={`${urls.devices.device.index(null)}/*`}
-              />
-            </Routes>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DeviceDetails />, {
+      route: urls.devices.device.index({ id: device.system_id }),
+      store,
+      routePattern: `${urls.devices.device.index(null)}/*`,
+    });
 
-    expect(wrapper.find("[data-testid='not-found']").exists()).toBe(true);
+    // expect(wrapper.find("[data-testid='not-found']").exists()).toBe(true);
+    expect(screen.getByTestId("not-found")).toBeInTheDocument();
   });
 });
