@@ -1,12 +1,8 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import InterfaceForm from "./InterfaceForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import type { DeviceNetworkInterface } from "app/store/device/types";
 import { DeviceIpAssignment } from "app/store/device/types";
 import type { RootState } from "app/store/root/types";
@@ -25,8 +21,9 @@ import {
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("InterfaceForm", () => {
   let state: RootState;
@@ -59,24 +56,17 @@ describe("InterfaceForm", () => {
   it("displays a spinner if device is not detailed version", () => {
     state.device.items[0] = deviceFactory({ system_id: "abc123" });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <InterfaceForm
-              closeForm={jest.fn()}
-              nicId={nic.id}
-              onSubmit={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <InterfaceForm
+        closeForm={jest.fn()}
+        nicId={nic.id}
+        onSubmit={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    expect(
-      wrapper.find("[data-testid='loading-device-details']").exists()
-    ).toBe(true);
+    expect(screen.getByTestId("loading-device-details")).toBeInTheDocument();
   });
 
   it("prefills the initial data if an existing nic is provided", () => {
@@ -108,25 +98,34 @@ describe("InterfaceForm", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <InterfaceForm
-              closeForm={jest.fn()}
-              linkId={link.id}
-              nicId={nic.id}
-              onSubmit={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <InterfaceForm
+        closeForm={jest.fn()}
+        linkId={link.id}
+        nicId={nic.id}
+        onSubmit={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find(FormikForm).prop("initialValues")).toStrictEqual({
-      ...nicData,
-      subnet: subnet.id,
-    });
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("eth123");
+    expect(screen.getByRole("textbox", { name: "Type" })).toHaveValue(
+      "Physical"
+    );
+    expect(screen.getByRole("textbox", { name: "MAC address" })).toHaveValue(
+      "11:22:33:44:55:66"
+    );
+    const tags = screen.getAllByTestId("selected-tag");
+    expect(tags[0]).toHaveTextContent("tag1");
+    expect(tags[1]).toHaveTextContent("tag2");
+
+    expect(screen.getByRole("combobox", { name: "IP assignment" })).toHaveValue(
+      DeviceIpAssignment.STATIC
+    );
+    expect(screen.getByRole("combobox", { name: "Subnet" })).toHaveValue("20");
+    expect(screen.getByRole("textbox", { name: "IP address" })).toHaveValue(
+      "192.168.1.1"
+    );
   });
 
   it("sets the initial data if no nic is provided", () => {
@@ -135,26 +134,24 @@ describe("InterfaceForm", () => {
       system_id: "abc123",
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <InterfaceForm
-              closeForm={jest.fn()}
-              onSubmit={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <InterfaceForm
+        closeForm={jest.fn()}
+        onSubmit={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find(FormikForm).prop("initialValues")).toStrictEqual({
-      ip_address: "",
-      ip_assignment: DeviceIpAssignment.DYNAMIC,
-      mac_address: "",
-      name: "eth21",
-      subnet: "",
-      tags: [],
-    });
+    expect(screen.getByRole("textbox", { name: "Name" })).toHaveValue("eth21");
+    expect(screen.getByRole("textbox", { name: "Type" })).toHaveValue(
+      "Physical"
+    );
+    expect(screen.getByRole("textbox", { name: "MAC address" })).toHaveValue(
+      ""
+    );
+    expect(screen.getByRole("combobox", { name: "IP assignment" })).toHaveValue(
+      DeviceIpAssignment.DYNAMIC
+    );
+    expect(screen.queryByTestId("selected-tags")).not.toBeInTheDocument();
   });
 });
