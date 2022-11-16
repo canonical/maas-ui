@@ -1,18 +1,17 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import DeviceNetwork from "./DeviceNetwork";
 
+import type { RootState } from "app/store/root/types";
 import {
   deviceDetails as deviceDetailsFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DeviceNetwork", () => {
   it("displays a spinner if device is loading", () => {
@@ -22,19 +21,13 @@ describe("DeviceNetwork", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/device/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeviceNetwork systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
-    expect(wrapper.find("NodeNetworkTab").exists()).toBe(false);
+    renderWithBrowserRouter(<DeviceNetwork systemId="abc123" />, {
+      route: "/device/abc123",
+      store,
+    });
+    expect(screen.queryByLabelText("Device network")).not.toBeInTheDocument();
+    expect(screen.queryByRole("grid")).not.toBeInTheDocument();
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays the network tab when loaded", () => {
@@ -44,19 +37,12 @@ describe("DeviceNetwork", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/device/abc123", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeviceNetwork systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NodeNetworkTab").exists()).toBe(true);
-    expect(wrapper.find("DHCPTable").exists()).toBe(true);
-    expect(wrapper.find("Spinner").exists()).toBe(false);
+    renderWithBrowserRouter(<DeviceNetwork systemId="abc123" />, {
+      route: "/device/abc123",
+      store,
+    });
+    expect(screen.getByLabelText("Device network")).toBeInTheDocument();
+    expect(screen.getAllByRole("grid")).toHaveLength(2);
+    expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 });
