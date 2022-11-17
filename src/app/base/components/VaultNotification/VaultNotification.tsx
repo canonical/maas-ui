@@ -15,7 +15,7 @@ const VaultNotification = (): JSX.Element | null => {
   const vaultEnabledLoaded = useSelector(vaultEnabledSelectors.loaded);
   const controllersLoaded = useSelector(controllerSelectors.loaded);
 
-  if (!vaultEnabledLoaded || !controllersLoaded) {
+  if (vaultEnabled || !vaultEnabledLoaded || !controllersLoaded) {
     return null;
   }
 
@@ -34,7 +34,8 @@ const VaultNotification = (): JSX.Element | null => {
       <Link to="/settings/configuration/security">security settings</Link> for
       more information.
     </Notification>
-  ) : unconfiguredControllers.length === 0 && vaultEnabled === false ? (
+  ) : unconfiguredControllers.length === 0 &&
+    configuredControllers.length >= 1 ? (
     <Notification
       data-testid="vault-notification"
       severity="caution"
