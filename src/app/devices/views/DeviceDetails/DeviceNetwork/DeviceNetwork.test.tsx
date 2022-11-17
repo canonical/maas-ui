@@ -42,7 +42,10 @@ describe("DeviceNetwork", () => {
       store,
     });
     expect(screen.getByLabelText("Device network")).toBeInTheDocument();
-    expect(screen.getAllByRole("grid")).toHaveLength(2);
+    expect(screen.getByRole("grid", { name: /DHCP/ })).toBeInTheDocument();
+    expect(
+      screen.getByRole("grid", { name: /Interfaces/ })
+    ).toBeInTheDocument();
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 });

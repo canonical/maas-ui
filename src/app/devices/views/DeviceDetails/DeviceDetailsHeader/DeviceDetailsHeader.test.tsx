@@ -38,7 +38,9 @@ describe("DeviceDetailsHeader", () => {
       { store }
     );
 
-    expect(screen.getByRole("heading")).toHaveTextContent("Loading...");
+    expect(
+      screen.getByTestId("section-header-title-spinner")
+    ).toHaveTextContent("Loading...");
   });
 
   it("displays a spinner as the subtitle if loaded device is not the detailed type", () => {

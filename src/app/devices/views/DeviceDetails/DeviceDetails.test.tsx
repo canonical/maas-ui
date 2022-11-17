@@ -130,7 +130,6 @@ describe("DeviceDetails", () => {
       routePattern: `${urls.devices.device.index(null)}/*`,
     });
 
-    // expect(wrapper.find("[data-testid='not-found']").exists()).toBe(true);
     expect(screen.getByTestId("not-found")).toBeInTheDocument();
   });
 });
