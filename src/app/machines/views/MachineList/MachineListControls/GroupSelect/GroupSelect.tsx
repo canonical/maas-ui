@@ -14,24 +14,24 @@ const groupOptions = [
     label: "No grouping",
   },
   {
-    value: FetchGroupKey.Owner,
-    label: "Group by owner",
+    value: FetchGroupKey.Status,
+    label: "Group by status",
   },
   {
-    value: FetchGroupKey.Parent,
-    label: "Group by parent",
+    value: FetchGroupKey.Owner,
+    label: "Group by owner",
   },
   {
     value: FetchGroupKey.Pool,
     label: "Group by pool",
   },
   {
-    value: FetchGroupKey.PowerState,
-    label: "Group by power state",
+    value: FetchGroupKey.Parent,
+    label: "Group by parent",
   },
   {
-    value: FetchGroupKey.Status,
-    label: "Group by status",
+    value: FetchGroupKey.PowerState,
+    label: "Group by power state",
   },
   {
     value: FetchGroupKey.Zone,
