@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useMatch } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
 
 import AddHardwareMenu from "./AddHardwareMenu";
@@ -42,7 +42,7 @@ export const MachineListHeader = ({
   setSearchFilter,
   setHeaderContent,
 }: Props): JSX.Element => {
-  const location = useLocation();
+  const machinesPathMatch = useMatch(urls.machines.index);
   const hasSelection = useHasSelection();
   const [tagsSeen, setTagsSeen] = useStorageState(
     localStorage,
@@ -64,13 +64,10 @@ export const MachineListHeader = ({
 
   // Clear the header when there are no selected machines
   useEffect(() => {
-    if (
-      location.pathname !== urls.machines.index ||
-      selectedToFilters(selectedMachines) === null
-    ) {
+    if (!machinesPathMatch || selectedToFilters(selectedMachines) === null) {
       setHeaderContent(null);
     }
-  }, [location.pathname, selectedMachines, setHeaderContent]);
+  }, [machinesPathMatch, selectedMachines, setHeaderContent]);
 
   const getTitle = useCallback(
     (action: NodeActions) => {
