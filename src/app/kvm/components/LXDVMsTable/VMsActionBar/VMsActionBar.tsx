@@ -2,12 +2,14 @@ import { Button, Icon, Tooltip } from "@canonical/react-components";
 
 import ActionBar from "app/base/components/ActionBar";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
+import { useSendAnalytics } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
 import type { KVMSetHeaderContent } from "app/kvm/types";
 import { MachineHeaderViews } from "app/machines/constants";
 import { useHasSelection } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
+import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
   currentPage: number;
@@ -30,6 +32,7 @@ const VMsActionBar = ({
   setHeaderContent,
   vmCount,
 }: Props): JSX.Element | null => {
+  const sendAnalytics = useSendAnalytics();
   const hasSelection = useHasSelection();
   const vmActionsDisabled = !hasSelection;
 
@@ -52,6 +55,11 @@ const VMsActionBar = ({
               if (view) {
                 setHeaderContent({ view });
               }
+              sendAnalytics(
+                "LXD VMs list action form",
+                getNodeActionTitle(action),
+                "Open"
+              );
             }}
             toggleClassName="u-no-margin--bottom"
           />

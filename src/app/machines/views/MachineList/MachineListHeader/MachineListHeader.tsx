@@ -1,7 +1,7 @@
 import { useCallback, useEffect } from "react";
 
 import { useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useMatch } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
 
 import AddHardwareMenu from "./AddHardwareMenu";
@@ -9,6 +9,7 @@ import AddHardwareMenu from "./AddHardwareMenu";
 import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import MachinesHeader from "app/base/components/node/MachinesHeader";
+import { useSendAnalytics } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
@@ -41,7 +42,7 @@ export const MachineListHeader = ({
   setSearchFilter,
   setHeaderContent,
 }: Props): JSX.Element => {
-  const location = useLocation();
+  const machinesPathMatch = useMatch(urls.machines.index);
   const hasSelection = useHasSelection();
   const [tagsSeen, setTagsSeen] = useStorageState(
     localStorage,
@@ -59,16 +60,14 @@ export const MachineListHeader = ({
   const { selectedCount, selectedCountLoading } =
     useMachineSelectedCount(filter);
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
+  const sendAnalytics = useSendAnalytics();
 
   // Clear the header when there are no selected machines
   useEffect(() => {
-    if (
-      location.pathname !== urls.machines.index ||
-      selectedToFilters(selectedMachines) === null
-    ) {
+    if (!machinesPathMatch || selectedToFilters(selectedMachines) === null) {
       setHeaderContent(null);
     }
-  }, [location.pathname, selectedMachines, setHeaderContent]);
+  }, [machinesPathMatch, selectedMachines, setHeaderContent]);
 
   const getTitle = useCallback(
     (action: NodeActions) => {
@@ -113,6 +112,11 @@ export const MachineListHeader = ({
             if (view) {
               setHeaderContent({ view });
             }
+            sendAnalytics(
+              "Machine list action form",
+              getNodeActionTitle(action),
+              "Open"
+            );
           }}
         />,
       ]}

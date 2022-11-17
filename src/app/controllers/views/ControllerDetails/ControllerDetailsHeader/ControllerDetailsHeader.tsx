@@ -8,6 +8,7 @@ import ControllerName from "./ControllerName";
 
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import SectionHeader from "app/base/components/SectionHeader";
+import { useSendAnalytics } from "app/base/hooks";
 import urls from "app/base/urls";
 import ControllerHeaderForms from "app/controllers/components/ControllerHeaderForms";
 import {
@@ -22,6 +23,7 @@ import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
 import type { RootState } from "app/store/root/types";
+import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
   systemId: Controller["system_id"];
@@ -39,6 +41,7 @@ const ControllerDetailsHeader = ({
   );
   const { pathname } = useLocation();
   const [isEditing, setIsEditing] = useState(false);
+  const sendAnalytics = useSendAnalytics();
 
   if (!controller) {
     return <SectionHeader loading />;
@@ -54,6 +57,11 @@ const ControllerDetailsHeader = ({
           nodeDisplay="controller"
           nodes={[controller]}
           onActionClick={(action) => {
+            sendAnalytics(
+              "Controller details action form",
+              getNodeActionTitle(action),
+              "Open"
+            );
             const view = Object.values(ControllerHeaderViews).find(
               ([, actionName]) => actionName === action
             );
