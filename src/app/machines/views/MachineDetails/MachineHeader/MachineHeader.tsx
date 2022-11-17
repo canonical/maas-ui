@@ -12,7 +12,7 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import TooltipButton from "app/base/components/TooltipButton";
-import { useMachineActions } from "app/base/hooks";
+import { useMachineActions, useSendAnalytics } from "app/base/hooks";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
 import type {
@@ -28,6 +28,7 @@ import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
 import { NodeActions } from "app/store/types/node";
+import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
   headerContent: MachineHeaderContent | null;
@@ -43,6 +44,7 @@ const MachineHeader = ({
   const [editingName, setEditingName] = useState(false);
   const dispatch = useDispatch();
   const { pathname } = useLocation();
+  const sendAnalytics = useSendAnalytics();
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
@@ -76,6 +78,11 @@ const MachineHeader = ({
           nodeDisplay="machine"
           nodes={[machine]}
           onActionClick={(action) => {
+            sendAnalytics(
+              "Machine details action form",
+              getNodeActionTitle(action),
+              "Open"
+            );
             const view = Object.values(MachineHeaderViews).find(
               ([, actionName]) => actionName === action
             );
