@@ -1,4 +1,4 @@
-import { Notification, Spinner } from "@canonical/react-components";
+import { Spinner } from "@canonical/react-components";
 import { useDispatch } from "react-redux";
 
 import CloneForm from "./CloneForm";
@@ -12,6 +12,7 @@ import TagForm from "./TagForm";
 
 import DeleteForm from "app/base/components/node/DeleteForm";
 import FieldlessForm from "app/base/components/node/FieldlessForm";
+import NodeActionWarning from "app/base/components/node/NodeActionWarning";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
@@ -178,9 +179,11 @@ export const MachineActionFormWrapper = ({
   return (
     <div ref={onRenderRef}>
       {selectedCount === 0 ? (
-        <Notification severity="caution">
-          No machines have been selected. Update your selection to continue.
-        </Notification>
+        <NodeActionWarning
+          action={action}
+          nodeType={commonNodeFormProps.modelName}
+          selectedCount={selectedCount}
+        />
       ) : null}
       {getFormComponent()}
     </div>

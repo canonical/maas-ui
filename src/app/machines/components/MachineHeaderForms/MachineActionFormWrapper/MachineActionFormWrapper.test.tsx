@@ -161,9 +161,7 @@ it("displays a warning message and disabled submit button when selectedCount equ
     </Provider>
   );
   expect(
-    screen.getByText(
-      /No machines have been selected. Update your selection to continue./
-    )
+    screen.getByText(/No machines have been selected./)
   ).toBeInTheDocument();
   expect(screen.getByRole("button", { name: "Delete machine" })).toBeDisabled();
 });
