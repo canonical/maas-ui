@@ -76,7 +76,7 @@
     "@percy/cypress": "3.1.2",
     "@testing-library/cypress": "8.0.7",
     "@testing-library/jest-dom": "5.16.5",
-    "@testing-library/react": "12.1.5",
+    "@testing-library/react": "13.4.0",
     "@testing-library/react-hooks": "8.0.1",
     "@testing-library/user-event": "14.4.3",
     "@types/classnames": "2.3.0",
