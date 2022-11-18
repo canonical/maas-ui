@@ -18,8 +18,9 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom-v5-compat", () => ({
   ...jest.requireActual("react-router-dom-v5-compat"),
@@ -44,139 +45,111 @@ describe("FormikFormContent", () => {
   });
 
   it("disables cancel button while saving", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent onCancel={jest.fn()} saving>
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent onCancel={jest.fn()} saving>
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(screen.getByTestId(TestIds.CancelButton)).toBeDisabled();
   });
 
+  it("can disable the submit button", async () => {
+    const onSubmit = jest.fn();
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={onSubmit}>
+        <FormikFormContent
+          aria-label="example"
+          submitDisabled
+          submitLabel="Save"
+        >
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
+    );
+
+    expect(screen.getByRole("button", { name: "Save" })).toBeDisabled();
+  });
+
   it("can override disabling cancel button while saving", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent
-                cancelDisabled={false}
-                onCancel={jest.fn()}
-                saving
-              >
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent cancelDisabled={false} onCancel={jest.fn()} saving>
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(screen.getByTestId(TestIds.CancelButton)).not.toBeDisabled();
   });
 
   it("can display non-field errors from a string", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent errors="Uh oh!">Content</FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(screen.getByText("Uh oh!")).toBeInTheDocument();
   });
 
   it("can display non-field errors from the __all__ key", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent errors={{ __all__: ["Uh oh!"] }}>
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent errors={{ __all__: ["Uh oh!"] }}>
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(screen.getByText("Uh oh!")).toBeInTheDocument();
   });
 
   it("can display non-field errors from the unknown keys with strings", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent errors={{ username: "Wrong username" }}>
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent errors={{ username: "Wrong username" }}>
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(screen.getByText("Wrong username")).toBeInTheDocument();
   });
 
   it("does not display non-field errors for fields", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{ username: "" }} onSubmit={jest.fn()}>
-              <FormikFormContent errors={{ username: "Wrong username" }}>
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{ username: "" }} onSubmit={jest.fn()}>
+        <FormikFormContent errors={{ username: "Wrong username" }}>
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(screen.queryByText("Wrong username")).not.toBeInTheDocument();
   });
 
   it("can display non-field errors from the unknown keys with arrays", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent
-                errors={{
-                  username: ["Wrong username", "Username must be provided"],
-                }}
-              >
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent
+          errors={{
+            username: ["Wrong username", "Username must be provided"],
+          }}
+        >
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
     expect(
       screen.getByText("Wrong username, Username must be provided")
@@ -184,77 +157,54 @@ describe("FormikFormContent", () => {
   });
 
   it("can be inline", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent aria-label="Fake form" inline>
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent aria-label="Fake form" inline>
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
-
     expect(screen.getByRole("form", { name: "Fake form" })).toHaveClass(
       "p-form--inline"
     );
   });
 
   it("does not render buttons if editable is set to false", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent editable={false}>Content</FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent editable={false}>Content</FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(screen.queryByRole("button")).not.toBeInTheDocument();
   });
 
   it("can redirect when saved", () => {
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent saved={true} savedRedirect="/success">
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent saved={true} savedRedirect="/success">
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(mockUseNavigate.mock.calls[0][0]).toBe("/success");
   });
 
   it("can clean up when unmounted", async () => {
+    const store = mockStore(state);
     const cleanup = jest.fn(() => ({
       type: "CLEANUP",
     }));
-    const store = mockStore(state);
-    const { unmount } = render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent cleanup={cleanup}>Content</FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    const { unmount } = renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent cleanup={cleanup}>Content</FormikFormContent>
+      </Formik>,
+      { store }
     );
 
     unmount();
@@ -269,23 +219,18 @@ describe("FormikFormContent", () => {
       label: "Form",
     };
     const useSendMock = jest.spyOn(hooks, "useSendAnalyticsWhen");
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent
-                onSaveAnalytics={eventData}
-                saved={true}
-                savedRedirect="/success"
-              >
-                Content
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent
+          onSaveAnalytics={eventData}
+          saved={true}
+          savedRedirect="/success"
+        >
+          Content
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(useSendMock).toHaveBeenCalled();
@@ -399,23 +344,13 @@ describe("FormikFormContent", () => {
 
   it("does not run onSuccess on first render", async () => {
     const onSuccess = jest.fn();
-    const store = mockStore(state);
-    render(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/", key: "testKey" }]}>
-          <CompatRouter>
-            <Formik initialValues={{}} onSubmit={jest.fn()}>
-              <FormikFormContent
-                errors={null}
-                onSuccess={onSuccess}
-                saved={true}
-              >
-                <Field name="val1" />
-              </FormikFormContent>
-            </Formik>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <FormikFormContent errors={null} onSuccess={onSuccess} saved={true}>
+          <Field name="val1" />
+        </FormikFormContent>
+      </Formik>,
+      { state }
     );
 
     expect(onSuccess).not.toHaveBeenCalled();

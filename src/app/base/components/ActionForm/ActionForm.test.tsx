@@ -120,6 +120,27 @@ describe("ActionForm", () => {
     expect(screen.getByRole("button")).toBeDisabled();
   });
 
+  it("disables the submit button when selectedCount equals 0", async () => {
+    const store = mockStore(state);
+    render(
+      <Provider store={store}>
+        <MemoryRouter>
+          <CompatRouter>
+            <ActionForm
+              actionName="action"
+              initialValues={{}}
+              modelName="machine"
+              onSubmit={jest.fn()}
+              selectedCount={0}
+            />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(screen.getByRole("button")).toBeDisabled();
+  });
+
   it("shows correct saving label if selectedCount changes after submit", async () => {
     const store = mockStore(state);
     const Proxy = ({ selectedCount }: { selectedCount: number }) => (

@@ -934,6 +934,20 @@ const machineSlice = createSlice({
       state.selected = state.selected.filter(
         (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
       );
+      if (
+        state.selectedMachines &&
+        "items" in state.selectedMachines &&
+        state.selectedMachines.items &&
+        state.selectedMachines.items.length > 0
+      ) {
+        state.selectedMachines.items = state.selectedMachines.items.filter(
+          (machineId: Machine[MachineMeta.PK]) => machineId !== action.payload
+        );
+      }
+      // mark all machine count queries as stale and in need of re-fetch
+      Object.keys(state.counts).forEach((callId) => {
+        state.counts[callId].stale = true;
+      });
       // Clean up the statuses for model.
       delete state.statuses[action.payload];
     },

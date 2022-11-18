@@ -12,6 +12,7 @@ import TagForm from "./TagForm";
 
 import DeleteForm from "app/base/components/node/DeleteForm";
 import FieldlessForm from "app/base/components/node/FieldlessForm";
+import NodeActionWarning from "app/base/components/node/NodeActionWarning";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
@@ -175,7 +176,18 @@ export const MachineActionFormWrapper = ({
     return <Spinner />;
   }
 
-  return <div ref={onRenderRef}>{getFormComponent()}</div>;
+  return (
+    <div ref={onRenderRef}>
+      {selectedCount === 0 ? (
+        <NodeActionWarning
+          action={action}
+          nodeType={commonNodeFormProps.modelName}
+          selectedCount={selectedCount}
+        />
+      ) : null}
+      {getFormComponent()}
+    </div>
+  );
 };
 
 export default MachineActionFormWrapper;

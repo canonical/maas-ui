@@ -114,6 +114,7 @@ const ActionForm = <V, E = null>({
             )}...`
           : null
       }
+      submitDisabled={selectedCount === 0}
       submitLabel={
         submitLabel ?? getLabel(modelName, actionName, selectedCount)
       }

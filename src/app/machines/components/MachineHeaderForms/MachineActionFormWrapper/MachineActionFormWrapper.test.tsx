@@ -139,3 +139,29 @@ it("clears selected machines and invalidates queries on delete success", async (
       )
   ).toHaveLength(1);
 });
+
+it("displays a warning message and disabled submit button when selectedCount equals 0", () => {
+  const state = rootStateFactory();
+  const store = mockStore(state);
+  render(
+    <Provider store={store}>
+      <MemoryRouter
+        initialEntries={[{ pathname: "/machines", key: "testKey" }]}
+      >
+        <CompatRouter>
+          <MachineActionFormWrapper
+            action={NodeActions.DELETE}
+            clearHeaderContent={jest.fn()}
+            selectedCount={0}
+            selectedMachines={{ filter: {} }}
+            viewingDetails={false}
+          />
+        </CompatRouter>
+      </MemoryRouter>
+    </Provider>
+  );
+  expect(
+    screen.getByText(/No machines have been selected./)
+  ).toBeInTheDocument();
+  expect(screen.getByRole("button", { name: "Delete machine" })).toBeDisabled();
+});
