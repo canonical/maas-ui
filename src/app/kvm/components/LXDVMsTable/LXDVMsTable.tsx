@@ -16,7 +16,7 @@ import type { FetchGroupKey } from "app/store/machine/types";
 import { FilterGroupKey } from "app/store/machine/types";
 import {
   mapSortDirection,
-  FilterMachineItems,
+  FilterMachines,
   useFetchedCount,
 } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
@@ -60,7 +60,7 @@ const LXDVMsTable = ({
     machines: vms,
   } = useFetchMachines({
     filters: {
-      ...FilterMachineItems.parseFetchFilters(searchFilter),
+      ...FilterMachines.parseFetchFilters(searchFilter),
       // Set the filters to get results that belong to this single pod or pods in a cluster.
       [FilterGroupKey.Pod]: pods,
     },

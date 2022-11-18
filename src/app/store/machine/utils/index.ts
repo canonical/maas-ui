@@ -18,11 +18,6 @@ export {
   useIsLimitedEditingAllowed,
 } from "./hooks";
 
-export {
-  FilterMachines,
-  getMachineValue,
-  WORKLOAD_FILTER_PREFIX,
-  FilterMachineItems,
-} from "./search";
+export { FilterMachines, WORKLOAD_FILTER_PREFIX } from "./search";
 
 export { isTransientStatus } from "./status";

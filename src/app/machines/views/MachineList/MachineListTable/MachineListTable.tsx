@@ -39,7 +39,7 @@ import type {
   MachineStateListGroup,
 } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
-import { FilterMachineItems } from "app/store/machine/utils";
+import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -587,7 +587,7 @@ export const MachineListTable = ({
             <AllCheckbox
               callId={callId}
               data-testid="all-machines-checkbox"
-              filter={FilterMachineItems.parseFetchFilters(filter)}
+              filter={FilterMachines.parseFetchFilters(filter)}
             />
           )}
           <div>

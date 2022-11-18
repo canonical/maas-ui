@@ -11,7 +11,7 @@ import DebounceSearchBox from "app/base/components/DebounceSearchBox";
 import { MachineSelectTable } from "app/base/components/MachineSelectTable/MachineSelectTable";
 import MachineListPagination from "app/machines/views/MachineList/MachineListTable/MachineListPagination";
 import type { Machine, MachineDetails } from "app/store/machine/types";
-import { FilterMachineItems } from "app/store/machine/utils";
+import { FilterMachines } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import { actions as tagActions } from "app/store/tag";
 
@@ -45,7 +45,7 @@ export const SourceMachineSelect = ({
   // selector, because the search selector will match parameters that aren't
   // included in the clone source table.
   const { machines, machineCount, loading } = useFetchMachines({
-    filters: FilterMachineItems.parseFetchFilters(debouncedText),
+    filters: FilterMachines.parseFetchFilters(debouncedText),
     pagination: {
       currentPage,
       pageSize,

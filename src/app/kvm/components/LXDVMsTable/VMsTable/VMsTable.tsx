@@ -17,7 +17,7 @@ import { SortDirection } from "app/base/types";
 import AllCheckbox from "app/machines/views/MachineList/MachineListTable/AllCheckbox";
 import type { Machine } from "app/store/machine/types";
 import { FilterGroupKey, FetchGroupKey } from "app/store/machine/types";
-import { FilterMachineItems } from "app/store/machine/utils";
+import { FilterMachines } from "app/store/machine/utils";
 import type { Pod } from "app/store/pod/types";
 import tagSelectors from "app/store/tag/selectors";
 import type { Tag } from "app/store/tag/types";
@@ -295,7 +295,7 @@ const VMsTable = ({
                 <AllCheckbox
                   callId={callId}
                   filter={{
-                    ...FilterMachineItems.parseFetchFilters(searchFilter),
+                    ...FilterMachines.parseFetchFilters(searchFilter),
                     // Set the filters to get results that belong to this single pod or pods in a cluster.
                     [FilterGroupKey.Pod]: pods,
                   }}

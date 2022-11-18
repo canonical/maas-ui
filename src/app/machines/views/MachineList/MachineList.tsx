@@ -17,7 +17,7 @@ import { actions as generalActions } from "app/store/general";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { FetchGroupKey } from "app/store/machine/types";
-import { mapSortDirection, FilterMachineItems } from "app/store/machine/utils";
+import { mapSortDirection, FilterMachines } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 
 type Props = {
@@ -80,7 +80,7 @@ const MachineList = ({
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       collapsedGroups: hiddenGroups,
-      filters: FilterMachineItems.parseFetchFilters(searchFilter),
+      filters: FilterMachines.parseFetchFilters(searchFilter),
       grouping,
       sortDirection: mapSortDirection(sortDirection),
       sortKey,
