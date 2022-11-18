@@ -6,7 +6,7 @@
  * @param removeAdditional
  * @returns
  */
-export const preparePayload = <P, K extends keyof P>(
+export const preparePayload = <P extends {}, K extends keyof P>(
   payload: P,
   validEmpty: K[] = [],
   removeAdditional: K[] = [],

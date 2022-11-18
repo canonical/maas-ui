@@ -248,7 +248,7 @@ export const Header = (): JSX.Element => {
   const homepageLink = isAdmin
     ? { url: urls.dashboard.index, label: "Homepage" }
     : { url: urls.machines.index, label: "Homepage" };
-  const path = location.pathname + location.search;
+  const path = location.pathname;
 
   return (
     <>
@@ -271,7 +271,7 @@ export const Header = (): JSX.Element => {
                   className: "p-navigation__hardware-menu",
                   items: generateItems({
                     links: links,
-                    path: path,
+                    path,
                     forHardwareMenu: true,
                     vaultIncomplete: vaultIncomplete,
                   }),
@@ -279,7 +279,7 @@ export const Header = (): JSX.Element => {
                 },
                 ...generateItems({
                   links: links,
-                  path: path,
+                  path,
                   forHardwareMenu: false,
                   vaultIncomplete: vaultIncomplete,
                 }),
@@ -294,7 +294,7 @@ export const Header = (): JSX.Element => {
                       {
                         isSelected: !!matchPath(
                           { path: urls.preferences.index, end: false },
-                          location.pathname
+                          path
                         ),
                         label: authUser.username,
                         url: urls.preferences.index,

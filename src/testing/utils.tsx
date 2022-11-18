@@ -87,12 +87,12 @@ export const waitForComponentToPaint = async (
 export const submitFormikForm = (
   wrapper: ReactWrapper,
   values: AnyObject = {},
-  helpers: Partial<FormikHelpers<unknown>> = {}
+  helpers: Partial<FormikHelpers<object>> = {}
 ): void => {
   const formikHelpers = {
     resetForm: jest.fn(),
     ...helpers,
-  } as FormikHelpers<unknown>;
+  } as FormikHelpers<object>;
   const onSubmit = wrapper.find(FormikForm).prop("onSubmit");
   // In strict mode this is correctly inferred as a function so can be use with
   // `.invoke("onSubmit")` but with strict mode turned off we first have to be
