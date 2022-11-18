@@ -18,7 +18,7 @@ import {
 } from "app/base/hooks";
 import type { APIError } from "app/base/types";
 
-export type Props<V, E> = {
+export type Props<V extends object, E> = {
   allowAllEmpty?: boolean;
   allowUnchanged?: boolean;
   children?: ReactNode;
@@ -45,7 +45,7 @@ export type Props<V, E> = {
 } & Pick<AriaAttributes, "aria-label"> &
   FormikFormButtonsProps<V>;
 
-const generateNonFieldError = <V, E = null>(
+const generateNonFieldError = <V extends object, E = null>(
   values: V,
   errors?: APIError<E>
 ) => {
@@ -71,7 +71,7 @@ const generateNonFieldError = <V, E = null>(
   return null;
 };
 
-const FormikFormContent = <V, E = null>({
+const FormikFormContent = <V extends object, E = null>({
   allowAllEmpty,
   allowUnchanged,
   cancelDisabled,

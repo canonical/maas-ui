@@ -4,9 +4,10 @@ import type { FormikConfig } from "formik";
 import FormikFormContent from "app/base/components/FormikFormContent";
 import type { Props as ContentProps } from "app/base/components/FormikFormContent/FormikFormContent";
 
-export type Props<V, E = null> = ContentProps<V, E> & FormikConfig<V>;
+export type Props<V extends object, E = null> = ContentProps<V, E> &
+  FormikConfig<V>;
 
-const FormikForm = <V, E = null>({
+const FormikForm = <V extends object, E = null>({
   allowAllEmpty,
   allowUnchanged,
   buttonsAlign,

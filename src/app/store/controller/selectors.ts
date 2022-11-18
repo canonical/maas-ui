@@ -46,7 +46,7 @@ const statuses = createSelector(
   (controllerState) => controllerState.statuses
 );
 
-const statusKeys = <T>(statuses: T): (keyof T)[] =>
+const statusKeys = <T extends {}>(statuses: T): (keyof T)[] =>
   Object.keys(statuses) as (keyof T)[];
 
 /**

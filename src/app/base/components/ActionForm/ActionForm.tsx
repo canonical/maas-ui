@@ -31,7 +31,7 @@ const getLabel = (
   return getNodeActionLabel(modelString, actionName, processing);
 };
 
-export type Props<V, E = null> = Omit<
+export type Props<V extends object, E = null> = Omit<
   FormikFormProps<V, E>,
   "buttonsAlign" | "saved" | "saving" | "savingLabel" | "submitLabel"
 > & {
@@ -50,7 +50,7 @@ export enum Labels {
   LoadingForm = "Loading form",
 }
 
-const ActionForm = <V, E = null>({
+const ActionForm = <V extends object, E = null>({
   actionErrors,
   actionName,
   buttonsBordered = false,

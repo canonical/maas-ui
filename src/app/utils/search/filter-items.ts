@@ -106,59 +106,61 @@ export default class FilterItems<
       let exclude = false;
       // Loop through the attributes to check. If this is for the
       // generic "q" filter then check against all item attributes.
-      (attr === "q" ? Object.keys(item) : [attr]).some((filterAttribute) => {
-        if (filterAttribute === "in") {
-          // "in:" is used to filter the items by those that are
-          // currently selected.
-          const selected = selectedIDs.includes(item[this.primaryKey]);
-          // The terms will be an array, but it is invalid to have more than
-          // one of 'selected' or '!selected'.
-          const selectedValue = getSelectedValue(terms);
-          if (
-            (selected && selectedValue === FilterSelected.Selected) ||
-            (!selected && selectedValue === FilterSelected.NotSelected)
-          ) {
-            matched = true;
-          } else {
-            exclude = true;
+      (attr === "q" ? Object.keys(item || {}) : [attr]).some(
+        (filterAttribute) => {
+          if (filterAttribute === "in") {
+            // "in:" is used to filter the items by those that are
+            // currently selected.
+            const selected = selectedIDs.includes(item[this.primaryKey]);
+            // The terms will be an array, but it is invalid to have more than
+            // one of 'selected' or '!selected'.
+            const selectedValue = getSelectedValue(terms);
+            if (
+              (selected && selectedValue === FilterSelected.Selected) ||
+              (!selected && selectedValue === FilterSelected.NotSelected)
+            ) {
+              matched = true;
+            } else {
+              exclude = true;
+            }
+            return false;
           }
-          return false;
-        }
-        const itemAttribute = this.getValue(
-          item,
-          filterAttribute.toString(),
-          extraData
-        );
-        if (!itemAttribute && itemAttribute !== 0) {
-          // Unable to get value for this node. So skip it.
-          return false;
-        }
-        return terms.some((term) => {
-          let cleanTerm = term.toString().toLowerCase();
-          // Get the first two characters, to check for ! or =.
-          const special = cleanTerm.substring(0, 2);
-          const exact = special.includes("=");
-          const negate = special.includes("!") && special !== "!!";
-          // Remove the special characters to get the term.
-          cleanTerm = cleanTerm.replace(/^[!|=]+/, "");
-          return (
-            Array.isArray(itemAttribute) ? itemAttribute : [itemAttribute]
-          ).some((attribute) => {
-            const match = this.matches(attribute, cleanTerm, exact, false);
-            if (match) {
-              if (negate) {
-                exclude = true;
-              } else {
+          const itemAttribute = this.getValue(
+            item,
+            filterAttribute.toString(),
+            extraData
+          );
+          if (!itemAttribute && itemAttribute !== 0) {
+            // Unable to get value for this node. So skip it.
+            return false;
+          }
+          return terms.some((term) => {
+            let cleanTerm = term.toString().toLowerCase();
+            // Get the first two characters, to check for ! or =.
+            const special = cleanTerm.substring(0, 2);
+            const exact = special.includes("=");
+            const negate = special.includes("!") && special !== "!!";
+            // Remove the special characters to get the term.
+            cleanTerm = cleanTerm.replace(/^[!|=]+/, "");
+            return (
+              Array.isArray(itemAttribute) ? itemAttribute : [itemAttribute]
+            ).some((attribute) => {
+              const match = this.matches(attribute, cleanTerm, exact, false);
+              if (match) {
+                if (negate) {
+                  exclude = true;
+                } else {
+                  matched = true;
+                }
+              } else if (negate) {
                 matched = true;
               }
-            } else if (negate) {
-              matched = true;
-            }
-            // If an exclude was found then exit the loop.
-            return exclude;
+              // If an exclude was found then exit the loop.
+              return exclude;
+            });
           });
-        });
-      });
+        }
+      );
       return matched && !exclude;
     });
 

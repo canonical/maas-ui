@@ -53,7 +53,7 @@ const selectedIDs = (state: RootState): Machine[MachineMeta.PK][] =>
  */
 const statuses = (state: RootState): MachineStatuses => state.machine.statuses;
 
-const statusKeys = <T>(statuses: T): (keyof T)[] =>
+const statusKeys = <T extends {}>(statuses: T): (keyof T)[] =>
   Object.keys(statuses) as (keyof T)[];
 
 /**

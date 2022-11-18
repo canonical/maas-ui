@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
 
-import type { ClassName, TabsProps } from "@canonical/react-components";
+import type { ClassName } from "@canonical/react-components";
 import { List, Spinner, Tabs } from "@canonical/react-components";
+import type { TabLink } from "@canonical/react-components/dist/components/Tabs/Tabs";
 import classNames from "classnames";
 import type { LinkProps } from "react-router-dom";
 
@@ -15,7 +16,7 @@ export type Props<P = LinkProps> = {
   subtitle?: ReactNode;
   subtitleClassName?: string;
   subtitleLoading?: boolean;
-  tabLinks?: DataTestElement<TabsProps<P>["links"]>;
+  tabLinks?: DataTestElement<TabLink<P>>[];
   title?: ReactNode;
   titleClassName?: string;
   titleElement?: keyof JSX.IntrinsicElements;

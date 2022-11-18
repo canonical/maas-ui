@@ -1,6 +1,5 @@
 import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import type { UserEvent } from "@testing-library/user-event/dist/types/setup";
 import * as fileDownload from "js-file-download";
 
 import DownloadMenu, { Label } from "./DownloadMenu";
@@ -33,7 +32,7 @@ jest.mock("js-file-download", () => jest.fn());
 
 describe("DownloadMenu", () => {
   let state: RootState;
-  let userEvt: UserEvent;
+  let userEvt: ReturnType<typeof userEvent.setup>;
   let machine: MachineDetails;
   let controller: ControllerDetails;
 
