@@ -1,18 +1,17 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import DeviceSummary from "./DeviceSummary";
 
+import type { RootState } from "app/store/root/types";
 import {
   device as deviceFactory,
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DeviceSummary", () => {
   it("shows a spinner if device has not loaded yet", () => {
@@ -20,18 +19,10 @@ describe("DeviceSummary", () => {
       device: deviceStateFactory({ items: [] }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeviceSummary systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DeviceSummary systemId="abc123" />, { store });
 
-    expect(wrapper.find("[data-testid='loading-device']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='device-summary']").exists()).toBe(false);
+    expect(screen.getByTestId("loading-device")).toBeInTheDocument();
+    expect(screen.queryByTestId("device-summary")).not.toBeInTheDocument();
   });
 
   it("shows device summary once loaded", () => {
@@ -41,17 +32,9 @@ describe("DeviceSummary", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeviceSummary systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<DeviceSummary systemId="abc123" />, { store });
 
-    expect(wrapper.find("[data-testid='device-summary']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='loading-device']").exists()).toBe(false);
+    expect(screen.getByTestId("device-summary")).toBeInTheDocument();
+    expect(screen.queryByTestId("loading-device")).not.toBeInTheDocument();
   });
 });

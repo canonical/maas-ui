@@ -41,7 +41,7 @@ export type CreateInterfaceParams = {
   mac_address: NetworkInterface["mac_address"];
   name?: NetworkInterface["name"];
   numa_node?: NetworkInterface["numa_node"];
-  subnet?: Subnet[SubnetMeta.PK];
+  subnet?: string;
   tags?: NetworkInterface["tags"];
   vlan?: NetworkInterface["vlan_id"];
 };

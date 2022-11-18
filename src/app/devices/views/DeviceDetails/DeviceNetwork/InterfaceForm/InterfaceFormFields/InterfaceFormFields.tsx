@@ -50,6 +50,7 @@ const InterfaceFormFields = ({ showTitles = false }: Props): JSX.Element => {
             </>
           ) : null}
           <Input
+            aria-label="Type"
             disabled
             label="Type"
             name="type"

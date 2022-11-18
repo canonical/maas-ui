@@ -1,7 +1,5 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import EditInterface from "./EditInterface";
@@ -23,9 +21,10 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("EditInterface", () => {
   let state: RootState;
@@ -59,48 +58,51 @@ describe("EditInterface", () => {
   it("displays a spinner if device is not detailed version", () => {
     state.device.items[0] = deviceFactory({ system_id: "abc123" });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditInterface
-              closeForm={jest.fn()}
-              nicId={nic.id}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface closeForm={jest.fn()} nicId={nic.id} systemId="abc123" />,
+      { store }
     );
-    expect(
-      wrapper.find("Spinner[data-testid='loading-device-details']").exists()
-    ).toBe(true);
+    expect(screen.getByTestId("loading-device-details")).toBeInTheDocument();
   });
 
-  it("dispatches an action to update an interface", () => {
+  it("dispatches an action to update an interface", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditInterface
-              closeForm={jest.fn()}
-              nicId={nic.id}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface closeForm={jest.fn()} nicId={nic.id} systemId="abc123" />,
+      { store }
     );
     const formValues = {
       ip_address: "192.168.1.1",
-      ip_assignment: DeviceIpAssignment.STATIC,
+      ip_assignment: DeviceIpAssignment.EXTERNAL,
       mac_address: "11:22:33:44:55:66",
       name: "eth123",
-      subnet: 2,
-      tags: ["tag1", "tag2"],
+      tags: [],
     };
-    submitFormikForm(wrapper, formValues);
+    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "eth123"
+    );
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "MAC address" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "MAC address" }),
+      "11:22:33:44:55:66"
+    );
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "IP assignment" }),
+      DeviceIpAssignment.EXTERNAL
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "IP address" }),
+      "192.168.1.1"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save interface" })
+    );
+
     const expectedAction = deviceActions.updateInterface({
       ...formValues,
       interface_id: nic.id,
@@ -112,72 +114,48 @@ describe("EditInterface", () => {
     expect(actualAction).toStrictEqual(expectedAction);
   });
 
-  it("closes the form if there are no errors when updating the interface", () => {
+  it("closes the form if there are no errors when updating the interface", async () => {
     const closeForm = jest.fn();
     state.device.errors = null;
     const store = mockStore(state);
-    const Proxy = ({ systemId = "abc123" }) => (
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditInterface
-              closeForm={closeForm}
-              nicId={nic.id}
-              systemId={systemId}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface
+        closeForm={closeForm}
+        nicId={nic.id}
+        systemId={"abc123"}
+      />,
+      { store }
     );
-    const wrapper = mount(<Proxy />);
-    const formValues = {
-      ip_address: "192.168.1.1",
-      ip_assignment: DeviceIpAssignment.STATIC,
-      mac_address: "11:22:33:44:55:66",
-      name: "eth123",
-      subnet: 2,
-      tags: ["tag1", "tag2"],
-    };
-    submitFormikForm(wrapper, formValues);
-    const updatingInterface = jest.spyOn(deviceSelectors, "getStatusForDevice");
-    updatingInterface.mockReturnValue(true);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
-    wrapper.setProps({});
-    updatingInterface.mockReturnValue(false);
-    // Make the component rerender with the new value.
-    store.dispatch({ type: "" });
-    wrapper.setProps({});
+    mockFormikFormSaved();
+    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "eth123"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Save interface" })
+    );
     expect(closeForm).toHaveBeenCalled();
   });
 
-  it("does not close the form if there is an error when updating the interface", () => {
+  it("does not close the form if there is an error when updating the interface", async () => {
     const closeForm = jest.fn();
     state.device.errors = null;
     const store = mockStore(state);
-    const Proxy = ({ systemId = "abc123" }) => (
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditInterface
-              closeForm={closeForm}
-              nicId={nic.id}
-              systemId={systemId}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface
+        closeForm={closeForm}
+        nicId={nic.id}
+        systemId={"abc123"}
+      />,
+      { store }
     );
-    const wrapper = mount(<Proxy />);
-    const formValues = {
-      ip_address: "192.168.1.1",
-      ip_assignment: DeviceIpAssignment.STATIC,
-      mac_address: "11:22:33:44:55:66",
-      name: "eth123",
-      subnet: 2,
-      tags: ["tag1", "tag2"],
-    };
-    submitFormikForm(wrapper, formValues);
+    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "eth123"
+    );
     const errors = jest.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
       deviceEventErrorFactory({
@@ -186,43 +164,29 @@ describe("EditInterface", () => {
     ]);
     const updatingInterface = jest.spyOn(deviceSelectors, "getStatusForDevice");
     updatingInterface.mockReturnValue(true);
-    // Make the component rerender with the new value.
     store.dispatch({ type: "" });
-    wrapper.setProps({});
     updatingInterface.mockReturnValue(false);
-    // Make the component rerender with the new value.
     store.dispatch({ type: "" });
-    wrapper.setProps({});
     expect(closeForm).not.toHaveBeenCalled();
   });
 
-  it("does not close the form if there is an error when submitting the form multiple times", () => {
+  it("does not close the form if there is an error when submitting the form multiple times", async () => {
     const closeForm = jest.fn();
     state.device.errors = null;
     const store = mockStore(state);
-    const Proxy = ({ systemId = "abc123" }) => (
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditInterface
-              closeForm={closeForm}
-              nicId={nic.id}
-              systemId={systemId}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterface
+        closeForm={closeForm}
+        nicId={nic.id}
+        systemId={"abc123"}
+      />,
+      { store }
     );
-    const wrapper = mount(<Proxy />);
-    const formValues = {
-      ip_address: "192.168.1.1",
-      ip_assignment: DeviceIpAssignment.STATIC,
-      mac_address: "11:22:33:44:55:66",
-      name: "eth123",
-      subnet: 2,
-      tags: ["tag1", "tag2"],
-    };
-    submitFormikForm(wrapper, formValues);
+    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "eth123"
+    );
     const errors = jest.spyOn(deviceSelectors, "eventErrorsForDevices");
     errors.mockReturnValue([
       deviceEventErrorFactory({
@@ -231,19 +195,18 @@ describe("EditInterface", () => {
     ]);
     const updatingInterface = jest.spyOn(deviceSelectors, "getStatusForDevice");
     updatingInterface.mockReturnValue(true);
-    // Make the component rerender with the new value.
     store.dispatch({ type: "" });
-    wrapper.setProps({});
     updatingInterface.mockReturnValue(false);
-    // Make the component rerender with the new value.
     store.dispatch({ type: "" });
-    wrapper.setProps({});
     errors.mockReturnValue([]);
-    submitFormikForm(wrapper, formValues);
+
+    await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Name" }),
+      "eth123"
+    );
     updatingInterface.mockReturnValue(true);
-    // Make the component rerender with the new value.
     store.dispatch({ type: "" });
-    wrapper.setProps({});
     updatingInterface.mockReturnValue(false);
     // Mock an error for the second submission.
     errors.mockReturnValue([
@@ -251,9 +214,7 @@ describe("EditInterface", () => {
         event: "updateInterface",
       }),
     ]);
-    // Make the component rerender with the new value.
     store.dispatch({ type: "" });
-    wrapper.setProps({});
     expect(closeForm).not.toHaveBeenCalled();
   });
 });

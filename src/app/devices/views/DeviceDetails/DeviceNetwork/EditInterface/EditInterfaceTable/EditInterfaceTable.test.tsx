@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import EditInterfaceTable from "./EditInterfaceTable";
@@ -22,8 +19,9 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("EditInterfaceTable", () => {
   let state: RootState;
@@ -55,30 +53,20 @@ describe("EditInterfaceTable", () => {
   it("displays a spinner when loading", () => {
     state.device.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditInterfaceTable nicId={nic.id} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterfaceTable nicId={nic.id} systemId="abc123" />,
+      { store }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a table when loaded", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditInterfaceTable nicId={nic.id} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterfaceTable nicId={nic.id} systemId="abc123" />,
+      { store }
     );
-    expect(wrapper.find("MainTable").exists()).toBe(true);
+    expect(screen.getByRole("grid")).toBeInTheDocument();
   });
 
   it("can display an interface", () => {
@@ -104,18 +92,10 @@ describe("EditInterfaceTable", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <EditInterfaceTable nicId={nic.id} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <EditInterfaceTable nicId={nic.id} systemId="abc123" />,
+      { store }
     );
-    expect(wrapper.find("SubnetColumn DoubleRow").prop("primary")).toBe(
-      "Unconfigured"
-    );
-    expect(wrapper.find("[data-testid='ip-mode']").text()).toBe("Unconfigured");
+    expect(screen.getByTestId("ip-mode")).toHaveTextContent("Unconfigured");
   });
 });

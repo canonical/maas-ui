@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
@@ -14,8 +11,9 @@ import {
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DeviceDetailsHeader", () => {
   let state: RootState;
@@ -31,45 +29,38 @@ describe("DeviceDetailsHeader", () => {
   it("displays a spinner as the title if device has not loaded yet", () => {
     state.device.items = [];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeviceDetailsHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceDetailsHeader
+        headerContent={null}
+        setHeaderContent={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    expect(wrapper.find("SectionHeader").prop("loading")).toBe(true);
-    expect(wrapper.find("SectionHeader").prop("subtitleLoading")).not.toBe(
-      true
-    );
+    expect(
+      screen.getByTestId("section-header-title-spinner")
+    ).toHaveTextContent("Loading...");
   });
 
   it("displays a spinner as the subtitle if loaded device is not the detailed type", () => {
     state.device.items = [deviceFactory({ system_id: "abc123" })];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeviceDetailsHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceDetailsHeader
+        headerContent={null}
+        setHeaderContent={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
 
-    expect(wrapper.find("SectionHeader").prop("subtitleLoading")).toBe(true);
-    expect(wrapper.find("SectionHeader").prop("loading")).not.toBe(true);
+    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
+      "Loading..."
+    );
+    expect(screen.getByTestId("section-header-title")).not.toHaveTextContent(
+      "Loading..."
+    );
   });
 
   it("displays the device's FQDN once loaded", () => {
@@ -77,59 +68,50 @@ describe("DeviceDetailsHeader", () => {
       deviceDetailsFactory({ fqdn: "plot-device", system_id: "abc123" }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeviceDetailsHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceDetailsHeader
+        headerContent={null}
+        setHeaderContent={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "plot-device"
     );
   });
 
   it("displays action title if an action is selected", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeviceDetailsHeader
-              headerContent={{ view: DeviceHeaderViews.DELETE_DEVICE }}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceDetailsHeader
+        headerContent={{ view: DeviceHeaderViews.DELETE_DEVICE }}
+        setHeaderContent={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "Delete"
     );
   });
 
   it("displays the device name if an action is not selected", () => {
+    state.device.items = [
+      deviceDetailsFactory({ fqdn: "plot-device", system_id: "abc123" }),
+    ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <DeviceDetailsHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeviceDetailsHeader
+        headerContent={null}
+        setHeaderContent={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("[data-testid='DeviceName']").exists()).toBe(true);
+
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
+      "plot-device"
+    );
   });
 });

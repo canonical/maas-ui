@@ -1,9 +1,9 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import DeviceOverviewCard from "./DeviceOverviewCard";
 
+import type { RootState } from "app/store/root/types";
 import {
   device as deviceFactory,
   deviceDetails as deviceDetailsFactory,
@@ -12,8 +12,9 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DeviceOverviewCard", () => {
   it("shows a spinner for the note if not device details", () => {
@@ -22,13 +23,11 @@ describe("DeviceOverviewCard", () => {
       device: deviceStateFactory({ items: [device] }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DeviceOverviewCard systemId={device.system_id} />
-      </Provider>
-    );
+    renderWithMockStore(<DeviceOverviewCard systemId={device.system_id} />, {
+      store,
+    });
 
-    expect(wrapper.find("[data-testid='loading-note']").exists()).toBe(true);
+    expect(screen.getByTestId("loading-note")).toBeInTheDocument();
   });
 
   it("shows note if device is device details", () => {
@@ -37,16 +36,12 @@ describe("DeviceOverviewCard", () => {
       device: deviceStateFactory({ items: [device] }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DeviceOverviewCard systemId={device.system_id} />
-      </Provider>
-    );
+    renderWithMockStore(<DeviceOverviewCard systemId={device.system_id} />, {
+      store,
+    });
 
-    expect(wrapper.find("[data-testid='loading-note']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='device-note']").text()).toBe(
-      "description"
-    );
+    expect(screen.queryByTestId("loading-note")).not.toBeInTheDocument();
+    expect(screen.getByTestId("device-note")).toHaveTextContent("description");
   });
 
   it("shows a spinner for the tags if tags have not loaded", () => {
@@ -56,13 +51,11 @@ describe("DeviceOverviewCard", () => {
       tag: tagStateFactory({ loaded: false }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DeviceOverviewCard systemId={device.system_id} />
-      </Provider>
-    );
+    renderWithMockStore(<DeviceOverviewCard systemId={device.system_id} />, {
+      store,
+    });
 
-    expect(wrapper.find("[data-testid='loading-tags']").exists()).toBe(true);
+    expect(screen.getByTestId("loading-tags")).toBeInTheDocument();
   });
 
   it("shows tag names if tags have loaded", () => {
@@ -76,15 +69,11 @@ describe("DeviceOverviewCard", () => {
       tag: tagStateFactory({ items: tags, loaded: true }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <DeviceOverviewCard systemId={device.system_id} />
-      </Provider>
-    );
+    renderWithMockStore(<DeviceOverviewCard systemId={device.system_id} />, {
+      store,
+    });
 
-    expect(wrapper.find("[data-testid='loading-tags']").exists()).toBe(false);
-    expect(wrapper.find("[data-testid='device-tags']").text()).toBe(
-      "tag1, tag2"
-    );
+    expect(screen.queryByTestId("loading-tags")).not.toBeInTheDocument();
+    expect(screen.getByTestId("device-tags")).toHaveTextContent("tag1, tag2");
   });
 });

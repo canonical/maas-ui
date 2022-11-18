@@ -263,6 +263,7 @@ const DeviceNetworkTable = ({
   const sortedRows = sortRows(rows);
   return (
     <MainTable
+      aria-label="Interfaces"
       className="p-table-expanding--light device-network-table"
       defaultSort="name"
       defaultSortDirection="descending"

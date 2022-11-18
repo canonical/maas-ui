@@ -296,7 +296,7 @@ describe("DiscoveryAddForm", () => {
           ip_assignment: DeviceIpAssignment.DYNAMIC,
           mac_address: "aa:bb:cc",
           name: "koala",
-          subnet: 9,
+          subnet: "9",
           vlan: 8,
         })
       )

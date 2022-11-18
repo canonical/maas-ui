@@ -1,5 +1,5 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import RemoveInterface from "./RemoveInterface";
@@ -16,8 +16,9 @@ import {
   deviceStatuses as deviceStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("RemoveInterface", () => {
   let state: RootState;
@@ -43,14 +44,13 @@ describe("RemoveInterface", () => {
     // Mock interface successfully being deleted.
     jest.spyOn(baseHooks, "useCycled").mockReturnValue([true, () => null]);
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <RemoveInterface
-          closeExpanded={closeExpanded}
-          nicId={1}
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <RemoveInterface
+        closeExpanded={closeExpanded}
+        nicId={1}
+        systemId="abc123"
+      />,
+      { store }
     );
 
     expect(closeExpanded).toHaveBeenCalled();
@@ -86,34 +86,24 @@ describe("RemoveInterface", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RemoveInterface
-          closeExpanded={jest.fn()}
-          nicId={1}
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <RemoveInterface closeExpanded={jest.fn()} nicId={1} systemId="abc123" />,
+      { store }
     );
 
-    expect(wrapper.find("[data-testid='error-message']").text()).toBe(
+    expect(screen.getByTestId("error-message")).toHaveTextContent(
       "Delete interface error for this device"
     );
   });
 
-  it("correctly dispatches an action to delete an interface", () => {
+  it("correctly dispatches an action to delete an interface", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <RemoveInterface
-          closeExpanded={jest.fn()}
-          nicId={1}
-          systemId="abc123"
-        />
-      </Provider>
+    renderWithMockStore(
+      <RemoveInterface closeExpanded={jest.fn()} nicId={1} systemId="abc123" />,
+      { store }
     );
 
-    wrapper.find("button[data-testid='confirm-delete']").simulate("click");
+    await userEvent.click(screen.getByTestId("confirm-delete"));
 
     const expectedAction = deviceActions.deleteInterface({
       interface_id: 1,
