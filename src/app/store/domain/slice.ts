@@ -412,14 +412,21 @@ const domainSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
+    updateDNSResourceStart: (state: DomainState) => {
+      state.saving = true;
+      state.saved = false;
+    },
+    updateDNSResourceSuccess: (state: DomainState) => {
+      state.saving = false;
+      state.saved = true;
+      state.errors = null;
+    },
     updateDNSResourceError: (
       state: DomainState,
       action: PayloadAction<APIError>
     ) => {
+      state.saving = false;
       state.errors = action.payload;
-    },
-    updateDNSResourceSuccess: (state: DomainState) => {
-      state.errors = null;
     },
     updateRecord: {
       prepare: (params: UpdateRecordParams) => ({
