@@ -79,12 +79,12 @@ describe("EditRecordForm", () => {
       </Provider>
     );
 
-    const data_box = screen.getByRole("textbox", {
+    const dataInputField = screen.getByRole("textbox", {
       name: RecordFieldsLabels.Data,
     });
 
-    await userEvent.clear(data_box);
-    await userEvent.type(data_box, "testing");
+    await userEvent.clear(dataInputField);
+    await userEvent.type(dataInputField, "testing");
 
     await userEvent.type(
       screen.getByRole("spinbutton", { name: RecordFieldsLabels.Ttl }),

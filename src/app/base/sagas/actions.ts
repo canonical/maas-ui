@@ -121,7 +121,8 @@ export function* updateDomainRecord(
   { payload }: PayloadAction<{ params: UpdateRecordParams }>
 ): SagaGenerator<void> {
   const { domain, name, rrdata, rrset, ttl } = payload.params;
-  const initialAction = isAddressRecord(rrset.rrtype)
+  const shouldUpdateAddressRecord = rrset.rrdata !== rrdata;
+  const addressRecordAction = shouldUpdateAddressRecord
     ? domainActions.updateAddressRecord({
         address_ttl: ttl,
         domain,
@@ -130,6 +131,13 @@ export function* updateDomainRecord(
         previous_name: rrset.name,
         previous_rrdata: rrset.rrdata,
       })
+    : domainActions.updateDNSResource({
+        dnsresource_id: rrset.dnsresource_id,
+        domain,
+        name,
+      });
+  const initialAction = isAddressRecord(rrset.rrtype)
+    ? addressRecordAction
     : domainActions.updateDNSData({
         dnsdata_id: rrset.dnsdata_id,
         dnsresource_id: rrset.dnsresource_id,
