@@ -398,6 +398,8 @@ export enum FetchGroupKey {
   Parent = "parent",
   ParentId = "parent_id",
   Podhints = "podhints",
+  Pod = "pod",
+  PodType = "pod_type",
   Pool = "pool",
   PoolId = "pool_id",
   PowerState = "power_state",

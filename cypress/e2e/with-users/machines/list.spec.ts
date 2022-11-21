@@ -21,11 +21,15 @@ context("Machine listing", () => {
   it("can group machines by all supported keys", () => {
     const GROUP_BY_OPTIONS = [
       "No grouping",
-      "Group by owner",
-      "Group by parent",
-      "Group by pool",
-      "Group by power state",
       "Group by status",
+      "Group by owner",
+      "Group by resource pool",
+      "Group by architecture",
+      "Group by domain",
+      "Group by parent",
+      "Group by KVM",
+      "Group by KVM type",
+      "Group by power state",
       "Group by zone",
     ];
     const getGroupBySelect = () =>

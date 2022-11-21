@@ -23,11 +23,27 @@ const groupOptions = [
   },
   {
     value: FetchGroupKey.Pool,
-    label: "Group by pool",
+    label: "Group by resource pool",
+  },
+  {
+    value: FetchGroupKey.Architecture,
+    label: "Group by architecture",
+  },
+  {
+    value: FetchGroupKey.Domain,
+    label: "Group by domain",
   },
   {
     value: FetchGroupKey.Parent,
     label: "Group by parent",
+  },
+  {
+    value: FetchGroupKey.Pod,
+    label: "Group by KVM",
+  },
+  {
+    value: FetchGroupKey.PodType,
+    label: "Group by KVM type",
   },
   {
     value: FetchGroupKey.PowerState,
