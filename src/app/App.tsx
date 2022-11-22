@@ -37,6 +37,8 @@ export const App = (): JSX.Element => {
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const maasTheme = useSelector(configSelectors.theme);
+  const configLoading = useSelector(configSelectors.loading);
+  const configErrors = useSelector(configSelectors.errors);
   const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
   const previousAuthenticated = usePrevious(authenticated, false);
 
@@ -70,7 +72,7 @@ export const App = (): JSX.Element => {
   }, [dispatch, connected]);
 
   let content: ReactNode = null;
-  if (authLoading || connecting || authenticating) {
+  if (authLoading || connecting || authenticating || configLoading) {
     content = <Section header={<SectionHeader loading />} />;
   } else if (!authenticated && !connectionError) {
     content = <Login />;
@@ -80,6 +82,15 @@ export const App = (): JSX.Element => {
         <Notification severity="negative" title="Error:">
           The server connection failed
           {connectionError ? ` with the error "${connectionError}"` : ""}.
+        </Notification>
+      </Section>
+    );
+  } else if (configErrors) {
+    content = (
+      <Section header={<SectionHeader title="Failed to connect" />}>
+        <Notification severity="negative" title="Error:">
+          The server connection failed
+          {configErrors ? ` with the error "${configErrors}"` : ""}.
         </Notification>
       </Section>
     );
