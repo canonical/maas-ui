@@ -87,7 +87,8 @@ export const useGoogleAnalytics = (): boolean => {
     analyticsEnabled &&
     authUser &&
     uuid &&
-    version
+    version &&
+    !debug
   );
 
   useEffect(() => {

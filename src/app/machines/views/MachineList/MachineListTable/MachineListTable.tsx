@@ -77,13 +77,17 @@ type Props = {
 
 type TableColumn = MainTableCell & { key: string };
 
+type GetToggleHandler = (
+  eventLabel: string
+) => (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+
 type GenerateRowParams = {
   callId?: string | null;
   activeRow: Machine[MachineMeta.PK] | null;
   groupValue: MachineStateListGroup["value"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
-  onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+  getToggleHandler: GetToggleHandler;
   showActions: Props["showActions"];
   showMAC: boolean;
 };
@@ -305,18 +309,12 @@ const generateRows = ({
   groupValue,
   hiddenColumns,
   machines,
-  onToggleMenu,
+  getToggleHandler,
   showActions,
   showMAC,
 }: GenerateRowParams) => {
-  const sendAnalytics = useSendAnalytics();
-  const getToggleHandler =
-    (eventLabel: string) =>
-    (systemId: Machine[MachineMeta.PK], open: boolean) => {
-      sendAnalytics(eventLabel);
-      onToggleMenu(systemId, open);
-    };
-  const menuCallback = showActions ? getToggleHandler : undefined;
+  const getMenuHandler: GetToggleHandler = (...args) =>
+    showActions ? getToggleHandler(...args) : () => undefined;
 
   return machines.map((row) => {
     const isActive = activeRow === row.system_id;
@@ -335,35 +333,35 @@ const generateRows = ({
       [MachineColumns.POWER]: (
         <PowerColumn
           data-testid="power-column"
-          onToggleMenu={menuCallback("power")}
+          onToggleMenu={getMenuHandler(MachineColumns.POWER)}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.STATUS]: (
         <StatusColumn
           data-testid="status-column"
-          onToggleMenu={menuCallback("status")}
+          onToggleMenu={getMenuHandler(MachineColumns.STATUS)}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.OWNER]: (
         <OwnerColumn
           data-testid="owner-column"
-          onToggleMenu={menuCallback("other")}
+          onToggleMenu={getMenuHandler(MachineColumns.OWNER)}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.POOL]: (
         <PoolColumn
           data-testid="pool-column"
-          onToggleMenu={menuCallback("pool")}
+          onToggleMenu={getMenuHandler(MachineColumns.POOL)}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.ZONE]: (
         <ZoneColumn
           data-testid="zone-column"
-          onToggleMenu={menuCallback("zone")}
+          onToggleMenu={getMenuHandler(MachineColumns.ZONE)}
           systemId={row.system_id}
         />
       ),
@@ -561,23 +559,35 @@ export const MachineListTable = ({
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  const onToggleMenu = useCallback(
-    (systemId, open) => {
+  const toggleHandler = useCallback(
+    (columnName: string, systemId: Machine[MachineMeta.PK], open: boolean) => {
       if (open && !activeRow) {
-        sendAnalytics("Machine list", "Inline action", "Open");
+        sendAnalytics(
+          "Machine list",
+          "Inline actions open",
+          `${columnName} column`
+        );
         setActiveRow(systemId);
       } else if (!open || (open && activeRow)) {
-        sendAnalytics("Machine list", "Inline action", "Close");
+        sendAnalytics(
+          "Machine list",
+          "Inline actions close",
+          `${columnName} column`
+        );
         setActiveRow(null);
       }
     },
     [activeRow, sendAnalytics]
   );
+  const getToggleHandler =
+    (columnName: string) =>
+    (systemId: Machine[MachineMeta.PK], open: boolean) =>
+      toggleHandler(columnName, systemId, open);
 
   const rowProps = {
     callId,
     activeRow,
-    onToggleMenu,
+    getToggleHandler,
     showActions,
     showMAC,
   };

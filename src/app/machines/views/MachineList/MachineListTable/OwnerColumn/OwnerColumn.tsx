@@ -26,11 +26,7 @@ export const OwnerColumn = ({ onToggleMenu, systemId }: Props): JSX.Element => {
   const machineTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, machine?.tags || null)
   );
-  const toggleMenu = useToggleMenu(
-    onToggleMenu || null,
-    systemId,
-    "owner column"
-  );
+  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
   const ownerDisplay = machine?.owner || "-";
   const tagsDisplay = getTagsDisplay(machineTags);
 
