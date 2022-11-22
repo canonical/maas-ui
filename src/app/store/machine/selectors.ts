@@ -39,14 +39,6 @@ const activeID = (state: RootState): Machine[MachineMeta.PK] | null =>
   state.machine.active;
 
 /**
- * Returns selected machine system_ids.
- * @param {RootState} state - The redux state.
- * @returns {Machine["system_id"][]} Selected machine system_ids.
- */
-const selectedIDs = (state: RootState): Machine[MachineMeta.PK][] =>
-  state.machine.selected;
-
-/**
  * Returns all machine statuses.
  * @param {RootState} state - The redux state.
  * @returns {MachineStatuses} A list of all statuses.
@@ -158,41 +150,9 @@ const active = createSelector(
  * @param {RootState} state - The redux state.
  * @returns {Machine[]} Selected machines.
  */
-const selected = createSelector(
-  [defaultSelectors.all, selectedIDs],
-  (machines: Machine[], selectedIDs: Machine[MachineMeta.PK][]) =>
-    selectedIDs.reduce<Machine[]>((selectedMachines, id) => {
-      const selectedMachine = machines.find(
-        (machine) => id === machine.system_id
-      );
-      if (selectedMachine) {
-        selectedMachines.push(selectedMachine);
-      }
-      return selectedMachines;
-    }, [])
-);
-
-/**
- * Returns selected machines.
- * @param {RootState} state - The redux state.
- * @returns {Machine[]} Selected machines.
- */
 const selectedMachines = createSelector(
   [machineState],
   ({ selectedMachines }) => selectedMachines
-);
-
-/**
- * Returns machines that are neither active nor selected.
- * @param state - The redux state.
- * @returns Unselected machines.
- */
-const unselected = createSelector(
-  [defaultSelectors.all, selectedIDs, activeID],
-  (machines, selectedIDs, activeID) =>
-    machines.filter(
-      (machine) => ![...selectedIDs, activeID].includes(machine.system_id)
-    )
 );
 
 /**
@@ -687,8 +647,6 @@ const selectors = {
   overridingFailedTesting: statusSelectors["overridingFailedTesting"],
   processing,
   releasing: statusSelectors["releasing"],
-  selected,
-  selectedIDs,
   selectedMachines,
   settingPool: statusSelectors["settingPool"],
   settingZone: statusSelectors["settingZone"],
@@ -699,7 +657,6 @@ const selectors = {
   turningOn: statusSelectors["turningOn"],
   unlocking: statusSelectors["unlocking"],
   unlinkingSubnet: statusSelectors["unlinkingSubnet"],
-  unselected,
   untagging: statusSelectors["untagging"],
   unusedIdsInCall,
   updatingTags,

@@ -36,7 +36,6 @@ const MachineList = ({
   useWindowTitle("Machines");
   const dispatch = useDispatch();
   const errors = useSelector(machineSelectors.errors);
-  const selectedIDs = useSelector(machineSelectors.selectedIDs);
   const [currentPage, setCurrentPage] = useState(1);
   const [sortKey, setSortKey] = useState<FetchGroupKey | null>(
     DEFAULTS.sortKey
@@ -130,7 +129,6 @@ const MachineList = ({
         machines={machines}
         machinesLoading={loading}
         pageSize={PAGE_SIZE}
-        selectedIDs={selectedIDs}
         setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
         setSortDirection={setSortDirection}

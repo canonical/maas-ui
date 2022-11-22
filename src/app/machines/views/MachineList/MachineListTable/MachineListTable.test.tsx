@@ -628,7 +628,6 @@ describe("MachineListTable", () => {
               machineCount={10}
               machines={machines}
               pageSize={20}
-              selectedIDs={[machines[0].system_id]}
               setCurrentPage={jest.fn()}
               setHiddenGroups={jest.fn()}
               setSortDirection={jest.fn()}
