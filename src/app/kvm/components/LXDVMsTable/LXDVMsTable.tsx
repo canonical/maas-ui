@@ -14,11 +14,7 @@ import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/consta
 import { actions as machineActions } from "app/store/machine";
 import type { FetchGroupKey } from "app/store/machine/types";
 import { FilterGroupKey } from "app/store/machine/types";
-import {
-  mapSortDirection,
-  FilterMachines,
-  useFetchedCount,
-} from "app/store/machine/utils";
+import { FilterMachines, useFetchedCount } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { Pod } from "app/store/pod/types";
 
@@ -64,7 +60,7 @@ const LXDVMsTable = ({
       // Set the filters to get results that belong to this single pod or pods in a cluster.
       [FilterGroupKey.Pod]: pods,
     },
-    sortDirection: mapSortDirection(sortDirection),
+    sortDirection,
     sortKey,
     pagination: { currentPage, setCurrentPage, pageSize: VMS_PER_PAGE },
   });

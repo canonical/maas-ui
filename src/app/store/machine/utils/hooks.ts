@@ -9,14 +9,23 @@ import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 
 import { FetchGroupKey } from "../types/actions";
-import type { FetchSortDirection, FetchParams } from "../types/actions";
+import type { FetchParams } from "../types/actions";
 
-import { selectedToFilters, selectedToSeparateFilters } from "./common";
+import {
+  mapSortDirection,
+  selectedToFilters,
+  selectedToSeparateFilters,
+} from "./common";
 import { FilterMachines } from "./search";
 
 import { ACTION_STATUS } from "app/base/constants";
 import { useCanEdit } from "app/base/hooks";
-import type { ActionStatuses, ActionState, APIError } from "app/base/types";
+import type {
+  ActionStatuses,
+  ActionState,
+  APIError,
+  SortDirection,
+} from "app/base/types";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as generalActions } from "app/store/general";
 import {
@@ -500,7 +509,7 @@ export type UseFetchMachinesOptions = {
   filters?: FetchFilters | null;
   grouping?: FetchGroupKey | null;
   sortKey?: FetchGroupKey | null;
-  sortDirection?: FetchSortDirection | null;
+  sortDirection?: ValueOf<typeof SortDirection> | null;
   collapsedGroups?: FetchParams["group_collapsed"];
   pagination?: {
     pageSize: number;
@@ -613,7 +622,7 @@ export const useFetchMachines = (
                 group_key: options.grouping ?? null,
                 page_number: options?.pagination?.currentPage,
                 page_size: options?.pagination?.pageSize,
-                sort_direction: options.sortDirection ?? null,
+                sort_direction: mapSortDirection(options.sortDirection),
                 sort_key: options.sortKey ?? null,
               }
             : null

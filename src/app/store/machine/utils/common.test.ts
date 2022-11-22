@@ -140,6 +140,11 @@ describe("common machine utils", () => {
     it("maps none", () => {
       expect(mapSortDirection(SortDirection.NONE)).toBeNull();
     });
+
+    it("maps nullish values", () => {
+      expect(mapSortDirection(undefined)).toBeNull();
+      expect(mapSortDirection(null)).toBeNull();
+    });
   });
 
   describe("selectedToFilters", () => {
