@@ -29,6 +29,7 @@ import ZoneColumn from "./ZoneColumn";
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import TableHeader from "app/base/components/TableHeader";
+import { useSendAnalytics } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
@@ -308,7 +309,14 @@ const generateRows = ({
   showActions,
   showMAC,
 }: GenerateRowParams) => {
-  const menuCallback = showActions ? onToggleMenu : undefined;
+  const sendAnalytics = useSendAnalytics();
+  const getToggleHandler =
+    (eventLabel: string) =>
+    (systemId: Machine[MachineMeta.PK], open: boolean) => {
+      sendAnalytics(eventLabel);
+      onToggleMenu(systemId, open);
+    };
+  const menuCallback = showActions ? getToggleHandler : undefined;
 
   return machines.map((row) => {
     const isActive = activeRow === row.system_id;
@@ -327,35 +335,35 @@ const generateRows = ({
       [MachineColumns.POWER]: (
         <PowerColumn
           data-testid="power-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={menuCallback("power")}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.STATUS]: (
         <StatusColumn
           data-testid="status-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={menuCallback("status")}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.OWNER]: (
         <OwnerColumn
           data-testid="owner-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={menuCallback("other")}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.POOL]: (
         <PoolColumn
           data-testid="pool-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={menuCallback("pool")}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.ZONE]: (
         <ZoneColumn
           data-testid="zone-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={menuCallback("zone")}
           systemId={row.system_id}
         />
       ),
@@ -513,6 +521,7 @@ export const MachineListTable = ({
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const sendAnalytics = useSendAnalytics();
   const groups = useSelector((state: RootState) =>
     machineSelectors.listGroups(state, callId)
   );
@@ -555,12 +564,14 @@ export const MachineListTable = ({
   const onToggleMenu = useCallback(
     (systemId, open) => {
       if (open && !activeRow) {
+        sendAnalytics("Machine list", "Inline action", "Open");
         setActiveRow(systemId);
       } else if (!open || (open && activeRow)) {
+        sendAnalytics("Machine list", "Inline action", "Close");
         setActiveRow(null);
       }
     },
-    [activeRow]
+    [activeRow, sendAnalytics]
   );
 
   const rowProps = {
