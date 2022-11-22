@@ -29,6 +29,7 @@ import ZoneColumn from "./ZoneColumn";
 import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import TableHeader from "app/base/components/TableHeader";
+import { useSendAnalytics } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
@@ -76,13 +77,17 @@ type Props = {
 
 type TableColumn = MainTableCell & { key: string };
 
+type GetToggleHandler = (
+  eventLabel: string
+) => (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+
 type GenerateRowParams = {
   callId?: string | null;
   activeRow: Machine[MachineMeta.PK] | null;
   groupValue: MachineStateListGroup["value"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
-  onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+  getToggleHandler: GetToggleHandler;
   showActions: Props["showActions"];
   showMAC: boolean;
 };
@@ -304,11 +309,12 @@ const generateRows = ({
   groupValue,
   hiddenColumns,
   machines,
-  onToggleMenu,
+  getToggleHandler,
   showActions,
   showMAC,
 }: GenerateRowParams) => {
-  const menuCallback = showActions ? onToggleMenu : undefined;
+  const getMenuHandler: GetToggleHandler = (...args) =>
+    showActions ? getToggleHandler(...args) : () => undefined;
 
   return machines.map((row) => {
     const isActive = activeRow === row.system_id;
@@ -327,35 +333,35 @@ const generateRows = ({
       [MachineColumns.POWER]: (
         <PowerColumn
           data-testid="power-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={getMenuHandler(MachineColumns.POWER)}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.STATUS]: (
         <StatusColumn
           data-testid="status-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={getMenuHandler(MachineColumns.STATUS)}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.OWNER]: (
         <OwnerColumn
           data-testid="owner-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={getMenuHandler(MachineColumns.OWNER)}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.POOL]: (
         <PoolColumn
           data-testid="pool-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={getMenuHandler(MachineColumns.POOL)}
           systemId={row.system_id}
         />
       ),
       [MachineColumns.ZONE]: (
         <ZoneColumn
           data-testid="zone-column"
-          onToggleMenu={menuCallback}
+          onToggleMenu={getMenuHandler(MachineColumns.ZONE)}
           systemId={row.system_id}
         />
       ),
@@ -513,6 +519,7 @@ export const MachineListTable = ({
   ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
+  const sendAnalytics = useSendAnalytics();
   const groups = useSelector((state: RootState) =>
     machineSelectors.listGroups(state, callId)
   );
@@ -552,21 +559,35 @@ export const MachineListTable = ({
     dispatch(zoneActions.fetch());
   }, [dispatch]);
 
-  const onToggleMenu = useCallback(
-    (systemId, open) => {
+  const toggleHandler = useCallback(
+    (columnName: string, systemId: Machine[MachineMeta.PK], open: boolean) => {
       if (open && !activeRow) {
+        sendAnalytics(
+          "Machine list",
+          "Inline actions open",
+          `${columnName} column`
+        );
         setActiveRow(systemId);
       } else if (!open || (open && activeRow)) {
+        sendAnalytics(
+          "Machine list",
+          "Inline actions close",
+          `${columnName} column`
+        );
         setActiveRow(null);
       }
     },
-    [activeRow]
+    [activeRow, sendAnalytics]
   );
+  const getToggleHandler =
+    (columnName: string) =>
+    (systemId: Machine[MachineMeta.PK], open: boolean) =>
+      toggleHandler(columnName, systemId, open);
 
   const rowProps = {
     callId,
     activeRow,
-    onToggleMenu,
+    getToggleHandler,
     showActions,
     showMAC,
   };
