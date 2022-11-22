@@ -99,22 +99,6 @@ describe("machine selectors", () => {
     });
   });
 
-  it("can get the unselected machines", () => {
-    const [selectedMachine, activeMachine, unselectedMachine] = [
-      machineFactory(),
-      machineFactory(),
-      machineFactory(),
-    ];
-    const state = rootStateFactory({
-      machine: machineStateFactory({
-        active: activeMachine.system_id,
-        items: [activeMachine, selectedMachine, unselectedMachine],
-        selected: [selectedMachine.system_id],
-      }),
-    });
-    expect(machine.unselected(state)).toEqual([unselectedMachine]);
-  });
-
   it("can get the errors state", () => {
     const state = rootStateFactory({
       machine: machineStateFactory({

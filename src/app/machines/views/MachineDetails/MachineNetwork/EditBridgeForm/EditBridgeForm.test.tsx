@@ -96,7 +96,7 @@ describe("EditBridgeForm", () => {
   });
 
   it("can dispatch an action to update a bridge", () => {
-    state.machine.selected = ["abc123", "def456"];
+    state.machine.selectedMachines = { items: ["abc123", "def456"] };
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>

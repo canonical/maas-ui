@@ -65,7 +65,6 @@ type Props = {
   machines: Machine[];
   machinesLoading?: boolean | null;
   pageSize: number;
-  selectedIDs?: Machine[MachineMeta.PK][];
   setCurrentPage: (currentPage: number) => void;
   setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
   showActions?: boolean;
@@ -84,7 +83,6 @@ type GenerateRowParams = {
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
   onToggleMenu: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
-  selectedIDs: NonNullable<Props["selectedIDs"]>;
   showActions: Props["showActions"];
   showMAC: boolean;
 };
@@ -395,7 +393,6 @@ const generateGroupRows = ({
   groups,
   hiddenGroups,
   machines,
-  selectedIDs,
   setHiddenGroups,
   showActions,
   hiddenColumns,
@@ -487,7 +484,6 @@ const generateGroupRows = ({
         callId,
         groupValue: group.value,
         machines: visibleMachines,
-        selectedIDs,
         showActions,
         hiddenColumns,
       })
@@ -507,7 +503,6 @@ export const MachineListTable = ({
   machines,
   machinesLoading,
   pageSize,
-  selectedIDs = [],
   setCurrentPage,
   setHiddenGroups,
   showActions = true,
@@ -795,7 +790,6 @@ export const MachineListTable = ({
     groups,
     hiddenGroups,
     machines,
-    selectedIDs,
     setHiddenGroups,
     hiddenColumns,
     ...rowProps,
