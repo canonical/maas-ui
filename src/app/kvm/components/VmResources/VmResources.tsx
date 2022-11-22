@@ -9,7 +9,7 @@ import MachineListTable from "app/machines/views/MachineList/MachineListTable";
 import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/constants";
 import type { FetchFilters, FetchGroupKey } from "app/store/machine/types";
 import { FilterGroupKey } from "app/store/machine/types";
-import { mapSortDirection, useFetchedCount } from "app/store/machine/utils";
+import { useFetchedCount } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -47,7 +47,7 @@ const VmResources = ({ filters, podId }: Props): JSX.Element => {
       ...filters,
       [FilterGroupKey.Pod]: pod ? [pod.name] : [],
     },
-    sortDirection: mapSortDirection(sortDirection),
+    sortDirection,
     sortKey,
     pagination: {
       currentPage,

@@ -13,7 +13,6 @@ import ErrorsNotification from "app/machines/views/MachineList/ErrorsNotificatio
 import MachineListTable from "app/machines/views/MachineList/MachineListTable";
 import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/constants";
 import type { FetchGroupKey, FetchFilters } from "app/store/machine/types";
-import { mapSortDirection } from "app/store/machine/utils";
 import { useFetchMachines } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -49,7 +48,7 @@ const TagMachines = (): JSX.Element => {
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
       filters,
-      sortDirection: mapSortDirection(sortDirection),
+      sortDirection,
       sortKey,
       pagination: {
         currentPage,

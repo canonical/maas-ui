@@ -86,7 +86,7 @@ export const getHasSyncFailed = (machine?: Machine | null): boolean => {
  * Map the table sort direction to the value to send to the fetch request.
  */
 export const mapSortDirection = (
-  sortDirection: ValueOf<typeof SortDirection>
+  sortDirection?: ValueOf<typeof SortDirection> | null
 ): FetchSortDirection | null => {
   switch (sortDirection) {
     case SortDirection.ASCENDING:
