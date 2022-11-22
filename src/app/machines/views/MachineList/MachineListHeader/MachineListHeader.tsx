@@ -20,7 +20,7 @@ import type {
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import machineSelectors from "app/store/machine/selectors";
-import { FilterMachineItems, selectedToFilters } from "app/store/machine/utils";
+import { FilterMachines, selectedToFilters } from "app/store/machine/utils";
 import {
   useFetchMachineCount,
   useHasSelection,
@@ -49,12 +49,12 @@ export const MachineListHeader = ({
     "machineViewTagsSeen",
     false
   );
-  const filter = FilterMachineItems.parseFetchFilters(searchFilter);
+  const filter = FilterMachines.parseFetchFilters(searchFilter);
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();
   // Get the count of all machines that match the current filter
   const { machineCount: availableMachineCount } = useFetchMachineCount(filter, {
-    isEnabled: FilterMachineItems.isNonEmptyFilter(searchFilter),
+    isEnabled: FilterMachines.isNonEmptyFilter(searchFilter),
   });
   // Get the count of selected machines that match the current filter
   const { selectedCount, selectedCountLoading } =

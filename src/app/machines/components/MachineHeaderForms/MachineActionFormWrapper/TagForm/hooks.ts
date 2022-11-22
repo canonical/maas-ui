@@ -11,7 +11,7 @@ import type { TagFormValues } from "./types";
 import type { APIError } from "app/base/types";
 import type { FetchFilters } from "app/store/machine/types";
 import type { SelectedMachines } from "app/store/machine/types/base";
-import { FilterMachineItems, selectedToFilters } from "app/store/machine/utils";
+import { FilterMachines, selectedToFilters } from "app/store/machine/utils";
 import type { UseFetchQueryOptions } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
@@ -179,7 +179,7 @@ export const useFetchTagsForSelected = (options: {
     options.selectedMachines || null
   );
   const searchFilter = options.searchFilter
-    ? FilterMachineItems.parseFetchFilters(options.searchFilter)
+    ? FilterMachines.parseFetchFilters(options.searchFilter)
     : {};
   const {
     loading: loadingForItemFilters,

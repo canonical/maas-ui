@@ -12,7 +12,7 @@ import { FetchGroupKey } from "../types/actions";
 import type { FetchSortDirection, FetchParams } from "../types/actions";
 
 import { selectedToFilters, selectedToSeparateFilters } from "./common";
-import { FilterMachineItems } from "./search";
+import { FilterMachines } from "./search";
 
 import { ACTION_STATUS } from "app/base/constants";
 import { useCanEdit } from "app/base/hooks";
@@ -180,8 +180,7 @@ export const useSelectedMachinesActionsDispatch = ({
     failedSystemIds: itemsFailedSystemIds,
   } = useMachineActionDispatch();
   const searchFilters: FetchFilters = useMemo(
-    () =>
-      searchFilter ? FilterMachineItems.parseFetchFilters(searchFilter) : {},
+    () => (searchFilter ? FilterMachines.parseFetchFilters(searchFilter) : {}),
     [searchFilter]
   );
   const getIsSingleFilter = (
@@ -449,7 +448,7 @@ export const useFetchDeployedMachineCount = ({
   machineCount: number;
 } => {
   const searchFilters = searchFilter
-    ? FilterMachineItems.parseFetchFilters(searchFilter)
+    ? FilterMachines.parseFetchFilters(searchFilter)
     : {};
   const { groupFilters, itemFilters } = selectedMachines
     ? selectedToSeparateFilters(selectedMachines)
