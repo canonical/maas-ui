@@ -22,7 +22,10 @@ import {
   race,
 } from "typed-redux-saga/macro";
 
-import { WebSocketMessageType } from "../../../websocket-client";
+import {
+  WebSocketMessageType,
+  WebSocketResponseType,
+} from "../../../websocket-client";
 import type {
   WebSocketAction,
   WebSocketClient,
@@ -32,6 +35,7 @@ import type {
   WebSocketResponseNotify,
   WebSocketResponseResult,
   WebSocketActionParams,
+  WebSocketResponseError,
 } from "../../../websocket-client";
 
 import type { MessageHandler, NextActionCreator } from "./actions";
@@ -40,6 +44,7 @@ import { fileContextStore } from "app/base/file-context";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
+import { actions as messageActions } from "app/store/message";
 
 const DEFAULT_POLL_INTERVAL = 10000;
 
@@ -352,6 +357,25 @@ export function* handleUnsubscribe(
   }
 }
 
+// List of websocket response errors triggering connection failure
+const WEBSOCKET_RESPONSE_CONNECTION_ERRORS = [
+  "Vault connection failed",
+  "Vault request failed",
+];
+
+export function* handleResponseError(
+  response: WebSocketResponseError
+): SagaGenerator<void> {
+  if (WEBSOCKET_RESPONSE_CONNECTION_ERRORS.includes(response.error)) {
+    yield* put({
+      error: true,
+      payload: response.error,
+      type: "status/websocketError",
+    });
+  } else {
+    yield* put(messageActions.add(response.error, "negative"));
+  }
+}
 /**
  * Handle messages received over the WebSocket.
  */
@@ -376,7 +400,11 @@ export function* handleMessage(
       resetLoaded();
     } else if ("data" in websocketEvent) {
       const response = JSON.parse(websocketEvent.data);
-      if (response.type === WebSocketMessageType.NOTIFY) {
+
+      // Handle websocket response errors
+      if (response.rtype === WebSocketResponseType.ERROR) {
+        yield* handleResponseError(response);
+      } else if (response.type === WebSocketMessageType.NOTIFY) {
         yield* call(handleNotifyMessage, response);
       } else {
         // This is a response message, fetch the corresponding action for the
