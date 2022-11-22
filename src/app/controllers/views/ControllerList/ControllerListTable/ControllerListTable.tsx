@@ -47,14 +47,12 @@ const getSortValue = (sortKey: SortKey, controller: Controller) => {
 
 const generateRows = ({
   controllers,
-  unconfiguredControllers,
   configuredControllers,
   selectedIDs,
   handleRowCheckbox,
   vaultEnabled,
 }: {
   controllers: Controller[];
-  unconfiguredControllers: number;
   configuredControllers: number;
   selectedIDs: Controller[ControllerMeta.PK][];
   handleRowCheckbox: CheckboxHandlers<
@@ -99,7 +97,7 @@ const generateRows = ({
             <span className="u-truncate">
               {controller.node_type === NodeType.REGION_CONTROLLER ||
               controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER ? (
-                vaultEnabled ? (
+                vaultEnabled === true ? (
                   <Tooltip
                     children={
                       <Icon
@@ -120,27 +118,25 @@ const generateRows = ({
                     }
                   />
                 ) : controller.vault_configured === true ? (
-                  unconfiguredControllers >= 1 && (
-                    <Tooltip
-                      children={
-                        <Icon
-                          aria-describedby="tooltip-description"
-                          data-testid="vault-icon"
-                          name="security"
-                        />
-                      }
-                      message={
-                        <p id="tooltip-description">
-                          Vault is configured on this controller. <br />
-                          Once all controllers are configured, migrate the
-                          secrets. <br />
-                          <a href={docsUrls.vaultIntegration}>
-                            Read more about Vault integration
-                          </a>
-                        </p>
-                      }
-                    />
-                  )
+                  <Tooltip
+                    children={
+                      <Icon
+                        aria-describedby="tooltip-description"
+                        data-testid="vault-icon"
+                        name="security"
+                      />
+                    }
+                    message={
+                      <p id="tooltip-description">
+                        Vault is configured on this controller. <br />
+                        Once all controllers are configured, migrate the
+                        secrets. <br />
+                        <a href={docsUrls.vaultIntegration}>
+                          Read more about Vault integration
+                        </a>
+                      </p>
+                    }
+                  />
                 ) : (
                   configuredControllers >= 1 && (
                     <Tooltip
@@ -219,9 +215,8 @@ const ControllerListTable = ({
   const { handleGroupCheckbox, handleRowCheckbox } =
     generateCheckboxHandlers<Controller[ControllerMeta.PK]>(onSelectedChange);
   const controllerIDs = controllers.map((controller) => controller.system_id);
-  const { unconfiguredControllers, configuredControllers } = useSelector(
-    (state: RootState) =>
-      controllerSelectors.getVaultConfiguredControllers(state)
+  const { configuredControllers } = useSelector((state: RootState) =>
+    controllerSelectors.getVaultConfiguredControllers(state)
   );
   const dispatch = useDispatch();
   const vaultEnabled = useSelector(vaultEnabledSelectors.get);
@@ -328,7 +323,6 @@ const ControllerListTable = ({
       ]}
       rows={generateRows({
         controllers: sortedControllers,
-        unconfiguredControllers: unconfiguredControllers.length,
         configuredControllers: configuredControllers.length,
         selectedIDs,
         handleRowCheckbox,
