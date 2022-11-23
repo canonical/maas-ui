@@ -81,6 +81,42 @@ describe("websocket sagas", () => {
       .run();
   });
 
+  it("can send a message to update a DNS resource for 'A record' when rrdata is unchanged", () => {
+    const socketClient = new WebSocketClient();
+    const sendMessage = jest.fn();
+    const actionCreators = [jest.fn()];
+    const resource = resourceFactory({
+      dnsdata_id: 1,
+      dnsresource_id: 2,
+      name: "old-name",
+      rrdata: "old-rrdata",
+      rrtype: RecordType.A,
+    });
+    const params = {
+      domain: 3,
+      name: "new-name",
+      rrset: resource,
+      rrdata: resource.rrdata,
+      ttl: resource.ttl,
+    };
+    const action = { payload: { params }, type: "domain/updateRecord" };
+    return expectSaga(updateDomainRecord, socketClient, sendMessage, action)
+      .provide([
+        [matchers.call.fn(generateNextUpdateRecordAction), actionCreators],
+      ])
+      .call(
+        sendMessage,
+        socketClient,
+        domainActions.updateDNSResource({
+          dnsresource_id: 2,
+          domain: 3,
+          name: "new-name",
+        }),
+        actionCreators
+      )
+      .run();
+  });
+
   it("can send a message to update a non-address record then update the DNS resource", () => {
     const socketClient = new WebSocketClient();
     const sendMessage = jest.fn();
