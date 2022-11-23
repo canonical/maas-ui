@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { MainTable, Spinner, Icon, Tooltip } from "@canonical/react-components";
+import { MainTable, Spinner, Link } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import StatusColumn from "./StatusColumn";
@@ -12,6 +12,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
+import TooltipButton from "app/base/components/TooltipButton";
 import docsUrls from "app/base/docsUrls";
 import { useTableSort } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
@@ -47,14 +48,12 @@ const getSortValue = (sortKey: SortKey, controller: Controller) => {
 
 const generateRows = ({
   controllers,
-  unconfiguredControllers,
   configuredControllers,
   selectedIDs,
   handleRowCheckbox,
   vaultEnabled,
 }: {
   controllers: Controller[];
-  unconfiguredControllers: number;
   configuredControllers: number;
   selectedIDs: Controller[ControllerMeta.PK][];
   handleRowCheckbox: CheckboxHandlers<
@@ -100,64 +99,71 @@ const generateRows = ({
               {controller.node_type === NodeType.REGION_CONTROLLER ||
               controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER ? (
                 vaultEnabled ? (
-                  <Tooltip
-                    children={
-                      <Icon
-                        aria-describedby="tooltip-description"
-                        data-testid="vault-icon"
-                        name="security-tick"
-                      />
-                    }
+                  <TooltipButton
+                    iconName="security-tick"
+                    iconProps={{
+                      "data-testid": "vault-icon",
+                      "aria-describedby": "tooltip-description-tick",
+                    }}
                     message={
-                      <p id="tooltip-description">
+                      <p id="tooltip-description-tick">
                         Vault is configured on this region controller for secret
                         storage.
                         <br />
-                        <a href={docsUrls.vaultIntegration}>
+                        <Link
+                          className="is-on-dark"
+                          href={docsUrls.vaultIntegration}
+                          rel="noreferrer noopener"
+                          target="_blank"
+                        >
                           Read more about Vault integration
-                        </a>
+                        </Link>
                       </p>
                     }
                   />
                 ) : controller.vault_configured === true ? (
-                  unconfiguredControllers >= 1 && (
-                    <Tooltip
-                      children={
-                        <Icon
-                          aria-describedby="tooltip-description"
-                          data-testid="vault-icon"
-                          name="security"
-                        />
-                      }
-                      message={
-                        <p id="tooltip-description">
-                          Vault is configured on this controller. <br />
-                          Once all controllers are configured, migrate the
-                          secrets. <br />
-                          <a href={docsUrls.vaultIntegration}>
-                            Read more about Vault integration
-                          </a>
-                        </p>
-                      }
-                    />
-                  )
+                  <TooltipButton
+                    iconName="security"
+                    iconProps={{
+                      "data-testid": "vault-icon",
+                      "aria-describedby": "tooltip-description",
+                    }}
+                    message={
+                      <p id="tooltip-description">
+                        Vault is configured on this controller. <br />
+                        Once all controllers are configured, migrate the
+                        secrets. <br />
+                        <Link
+                          className="is-on-dark"
+                          href={docsUrls.vaultIntegration}
+                          rel="noreferrer noopener"
+                          target="_blank"
+                        >
+                          Read more about Vault integration
+                        </Link>
+                      </p>
+                    }
+                  />
                 ) : (
                   configuredControllers >= 1 && (
-                    <Tooltip
-                      children={
-                        <Icon
-                          aria-describedby="tooltip-description"
-                          data-testid="vault-icon"
-                          name="security-warning"
-                        />
-                      }
+                    <TooltipButton
+                      iconName="security-warning"
+                      iconProps={{
+                        "data-testid": "vault-icon",
+                        "aria-describedby": "tooltip-description-warning",
+                      }}
                       message={
-                        <p id="tooltip-description">
+                        <p id="tooltip-description-warning">
                           Missing Vault configuration.
                           <br />
-                          <a href={docsUrls.vaultIntegration}>
+                          <Link
+                            className="is-on-dark"
+                            href={docsUrls.vaultIntegration}
+                            rel="noreferrer noopener"
+                            target="_blank"
+                          >
                             Read more about Vault integration
-                          </a>
+                          </Link>
                         </p>
                       }
                     />
@@ -219,9 +225,8 @@ const ControllerListTable = ({
   const { handleGroupCheckbox, handleRowCheckbox } =
     generateCheckboxHandlers<Controller[ControllerMeta.PK]>(onSelectedChange);
   const controllerIDs = controllers.map((controller) => controller.system_id);
-  const { unconfiguredControllers, configuredControllers } = useSelector(
-    (state: RootState) =>
-      controllerSelectors.getVaultConfiguredControllers(state)
+  const { configuredControllers } = useSelector((state: RootState) =>
+    controllerSelectors.getVaultConfiguredControllers(state)
   );
   const dispatch = useDispatch();
   const vaultEnabled = useSelector(vaultEnabledSelectors.get);
@@ -328,7 +333,6 @@ const ControllerListTable = ({
       ]}
       rows={generateRows({
         controllers: sortedControllers,
-        unconfiguredControllers: unconfiguredControllers.length,
         configuredControllers: configuredControllers.length,
         selectedIDs,
         handleRowCheckbox,
