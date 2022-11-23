@@ -1752,6 +1752,12 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
+    suppressFailedScriptResults: generateActionParams<BaseMachineActionParams>(
+      NodeActions.SUPPRESS_FAILED_SCRIPT_RESULTS
+    ),
+    suppressFailedScriptResultsError: statusHandlers.delete.error,
+    suppressFailedScriptResultsStart: statusHandlers.delete.start,
+    suppressFailedScriptResultsSuccess: statusHandlers.delete.success,
     [NodeActions.TAG]: generateActionParams<TagParams>(NodeActions.TAG),
     [`${NodeActions.TAG}Error`]: statusHandlers.tag.error,
     [`${NodeActions.TAG}Start`]: statusHandlers.tag.start,
