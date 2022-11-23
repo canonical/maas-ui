@@ -82,13 +82,11 @@ export const useGoogleAnalytics = (): boolean => {
   const authUser = useSelector(authSelectors.get);
   const uuid = useSelector(configSelectors.uuid);
   const version = useSelector(versionSelectors.get);
-  const debug = process.env.NODE_ENV === "development";
   const allowGoogleAnalytics = !!(
     analyticsEnabled &&
     authUser &&
     uuid &&
-    version &&
-    !debug
+    version
   );
 
   useEffect(() => {
@@ -117,7 +115,7 @@ export const useGoogleAnalytics = (): boolean => {
           // @ts-ignore
           f.parentNode.insertBefore(j, f);
         }
-      })(window, document, "script", "dataLayer", "GTM-P4TGJR9");
+      })(window, document, "script", "dataLayer", process.env.REACT_APP_GTM_ID);
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       window.ga =
