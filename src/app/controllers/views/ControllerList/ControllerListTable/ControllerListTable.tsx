@@ -98,7 +98,7 @@ const generateRows = ({
             <span className="u-truncate">
               {controller.node_type === NodeType.REGION_CONTROLLER ||
               controller.node_type === NodeType.REGION_AND_RACK_CONTROLLER ? (
-                vaultEnabled === true ? (
+                vaultEnabled ? (
                   <TooltipButton
                     iconName="security-tick"
                     iconProps={{
