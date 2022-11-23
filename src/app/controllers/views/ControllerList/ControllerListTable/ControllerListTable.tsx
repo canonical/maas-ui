@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { MainTable, Spinner } from "@canonical/react-components";
+import { MainTable, Spinner, Link } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
 import StatusColumn from "./StatusColumn";
@@ -110,9 +110,14 @@ const generateRows = ({
                         Vault is configured on this region controller for secret
                         storage.
                         <br />
-                        <a href={docsUrls.vaultIntegration}>
+                        <Link
+                          className="is-on-dark"
+                          href={docsUrls.vaultIntegration}
+                          rel="noreferrer noopener"
+                          target="_blank"
+                        >
                           Read more about Vault integration
-                        </a>
+                        </Link>
                       </p>
                     }
                   />
@@ -128,9 +133,14 @@ const generateRows = ({
                         Vault is configured on this controller. <br />
                         Once all controllers are configured, migrate the
                         secrets. <br />
-                        <a href={docsUrls.vaultIntegration}>
+                        <Link
+                          className="is-on-dark"
+                          href={docsUrls.vaultIntegration}
+                          rel="noreferrer noopener"
+                          target="_blank"
+                        >
                           Read more about Vault integration
-                        </a>
+                        </Link>
                       </p>
                     }
                   />
@@ -146,9 +156,14 @@ const generateRows = ({
                         <p id="tooltip-description-warning">
                           Missing Vault configuration.
                           <br />
-                          <a href={docsUrls.vaultIntegration}>
+                          <Link
+                            className="is-on-dark"
+                            href={docsUrls.vaultIntegration}
+                            rel="noreferrer noopener"
+                            target="_blank"
+                          >
                             Read more about Vault integration
-                          </a>
+                          </Link>
                         </p>
                       }
                     />
