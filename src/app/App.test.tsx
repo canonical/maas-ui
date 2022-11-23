@@ -67,6 +67,24 @@ describe("App", () => {
     );
   });
 
+  it("displays an error if vault is unreachable (sealed)", () => {
+    state.config.errors = ["Error!"];
+    state.status.authenticated = true;
+    const store = mockStore(state);
+    const wrapper = mount(
+      <Provider store={store}>
+        <MemoryRouter initialEntries={[{ pathname: "/settings" }]}>
+          <CompatRouter>
+            <App />
+          </CompatRouter>
+        </MemoryRouter>
+      </Provider>
+    );
+    expect(wrapper.find("SectionHeader").prop("title")).toBe(
+      "Failed to connect"
+    );
+  });
+
   it("displays a loading message if connecting", () => {
     state.status.connecting = true;
     const store = mockStore(state);
