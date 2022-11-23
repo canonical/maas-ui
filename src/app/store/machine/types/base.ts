@@ -28,7 +28,10 @@ import type {
 } from "app/store/types/node";
 import type { EventError, GenericState } from "app/store/types/state";
 
-export type MachineActions = Exclude<NodeActions, NodeActions.IMPORT_IMAGES>;
+export type MachineActions = Exclude<
+  NodeActions,
+  NodeActions.IMPORT_IMAGES | NodeActions.SUPPRESS_FAILED_SCRIPT_RESULTS
+>;
 
 // BaseMachine is returned from the server when using "machine.list", and is
 // used in the machine list. This type is missing some properties due to an
