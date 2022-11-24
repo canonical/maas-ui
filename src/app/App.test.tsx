@@ -70,13 +70,16 @@ describe("App", () => {
   });
 
   it("displays an error if vault is unreachable (sealed)", () => {
-    state.config.errors = "Error!!!!";
+    state.config.errors = "Vault request failed";
     state.status.authenticated = true;
-    const store = mockStore(state);
-    renderWithBrowserRouter(<App />, { route: "/settings", store });
+    state.status.error = null;
+    state.status.connected = true;
+    renderWithBrowserRouter(<App />, { route: "/settings", state });
     expect(screen.getByText("Failed to connect")).toBeInTheDocument();
     expect(
-      screen.getByText(/The server connection failed./)
+      screen.getByText(
+        /The server connection failed with the error "Vault request failed"/
+      )
     ).toBeInTheDocument();
   });
 

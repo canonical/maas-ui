@@ -85,12 +85,11 @@ export const App = (): JSX.Element => {
         </Notification>
       </Section>
     );
-  } else if (configErrors) {
+  } else if (configErrors === "Vault request failed") {
     content = (
       <Section header={<SectionHeader title="Failed to connect" />}>
         <Notification severity="negative" title="Error:">
-          The server connection failed
-          {configErrors ? ` with the error "${configErrors}"` : ""}.
+          The server connection failed with the error "{configErrors}".
         </Notification>
       </Section>
     );
