@@ -1,4 +1,5 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
+import { screen } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -14,8 +15,9 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   ...jest.requireActual("@canonical/react-components/dist/hooks"),
@@ -65,6 +67,34 @@ describe("App", () => {
     expect(wrapper.find("SectionHeader").prop("title")).toBe(
       "Failed to connect"
     );
+  });
+
+  it("displays an error if vault is sealed", () => {
+    state.config.errors = "Vault request failed";
+    state.status.authenticated = true;
+    state.status.error = null;
+    state.status.connected = true;
+    renderWithBrowserRouter(<App />, { route: "/settings", state });
+    expect(screen.getByText("Failed to connect")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /The server connection failed with the error "Vault request failed"/
+      )
+    ).toBeInTheDocument();
+  });
+
+  it("displays an error if vault is unreachable", () => {
+    state.config.errors = "Vault connection failed";
+    state.status.authenticated = true;
+    state.status.error = null;
+    state.status.connected = true;
+    renderWithBrowserRouter(<App />, { route: "/settings", state });
+    expect(screen.getByText("Failed to connect")).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        /The server connection failed with the error "Vault connection failed"/
+      )
+    ).toBeInTheDocument();
   });
 
   it("displays a loading message if connecting", () => {

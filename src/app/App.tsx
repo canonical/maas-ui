@@ -26,6 +26,11 @@ import { actions as generalActions } from "app/store/general";
 import { actions as statusActions } from "app/store/status";
 import status from "app/store/status/selectors";
 
+export enum VaultErrors {
+  REQUEST_FAILED = "Vault request failed",
+  CONNECTION_FAILED = "Vault connection failed",
+}
+
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
@@ -37,6 +42,8 @@ export const App = (): JSX.Element => {
   const connecting = useSelector(status.connecting);
   const connectionError = useSelector(status.error);
   const maasTheme = useSelector(configSelectors.theme);
+  const configLoading = useSelector(configSelectors.loading);
+  const configErrors = useSelector(configSelectors.errors);
   const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
   const previousAuthenticated = usePrevious(authenticated, false);
 
@@ -70,7 +77,7 @@ export const App = (): JSX.Element => {
   }, [dispatch, connected]);
 
   let content: ReactNode = null;
-  if (authLoading || connecting || authenticating) {
+  if (authLoading || connecting || authenticating || configLoading) {
     content = <Section header={<SectionHeader loading />} />;
   } else if (!authenticated && !connectionError) {
     content = <Login />;
@@ -80,6 +87,17 @@ export const App = (): JSX.Element => {
         <Notification severity="negative" title="Error:">
           The server connection failed
           {connectionError ? ` with the error "${connectionError}"` : ""}.
+        </Notification>
+      </Section>
+    );
+  } else if (
+    configErrors === VaultErrors.REQUEST_FAILED ||
+    configErrors === VaultErrors.CONNECTION_FAILED
+  ) {
+    content = (
+      <Section header={<SectionHeader title="Failed to connect" />}>
+        <Notification severity="negative" title="Error:">
+          The server connection failed with the error "{configErrors}".
         </Notification>
       </Section>
     );
