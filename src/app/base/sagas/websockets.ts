@@ -646,6 +646,7 @@ export function* setupWebSocket({
       }
     }
   } catch (error) {
+    console.error(error);
     yield* put({
       type: "status/websocketError",
       error: true,
