@@ -26,6 +26,11 @@ import { actions as generalActions } from "app/store/general";
 import { actions as statusActions } from "app/store/status";
 import status from "app/store/status/selectors";
 
+export enum VaultErrors {
+  REQUEST_FAILED = "Vault request failed",
+  CONNECTION_FAILED = "Vault connection failed",
+}
+
 export const App = (): JSX.Element => {
   const dispatch = useDispatch();
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
@@ -86,8 +91,8 @@ export const App = (): JSX.Element => {
       </Section>
     );
   } else if (
-    configErrors === "Vault request failed" ||
-    configErrors === "Vault connection failed"
+    configErrors === VaultErrors.REQUEST_FAILED ||
+    configErrors === VaultErrors.CONNECTION_FAILED
   ) {
     content = (
       <Section header={<SectionHeader title="Failed to connect" />}>
