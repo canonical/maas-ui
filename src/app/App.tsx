@@ -97,7 +97,7 @@ export const App = (): JSX.Element => {
     content = (
       <Section
         header={<SectionHeader title="Failed to connect" />}
-        hideNotifications={true}
+        isNotificationListHidden={true}
       >
         <Notification severity="negative" title="Error:">
           The server connection failed with the error "{configErrors}".
