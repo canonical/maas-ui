@@ -10,12 +10,14 @@ export type Props = {
   children?: ReactNode;
   header?: ReactNode;
   sidebar?: ReactNode;
+  isNotificationListHidden?: boolean;
 } & HTMLProps<HTMLDivElement>;
 
 const Section = ({
   children,
   header,
   sidebar,
+  isNotificationListHidden = false,
   ...props
 }: Props): JSX.Element => {
   const { SIDEBAR, TOTAL } = COL_SIZES;
@@ -43,7 +45,7 @@ const Section = ({
           className="section__content"
           size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}
         >
-          <NotificationList />
+          {!isNotificationListHidden && <NotificationList />}
           {children}
         </Col>
       </Strip>
