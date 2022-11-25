@@ -95,7 +95,10 @@ export const App = (): JSX.Element => {
     configErrors === VaultErrors.CONNECTION_FAILED
   ) {
     content = (
-      <Section header={<SectionHeader title="Failed to connect" />}>
+      <Section
+        header={<SectionHeader title="Failed to connect" />}
+        hideNotifications={true}
+      >
         <Notification severity="negative" title="Error:">
           The server connection failed with the error "{configErrors}".
         </Notification>
