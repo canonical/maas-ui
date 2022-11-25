@@ -225,6 +225,96 @@ describe("MachineListHeader", () => {
     expect(screen.getByText("3 of 10 machines selected")).toBeInTheDocument();
   });
 
+  it("displays correct count for selected machines", () => {
+    state.machine.selectedMachines = { items: ["abc123", "def456"] };
+    state.machine.counts["mocked-nanoid-1"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { state }
+    );
+    expect(screen.getByText("2 of 10 machines selected")).toBeInTheDocument();
+  });
+
+  it("displays correct machine counts when clearing an active filter", () => {
+    state.machine.counts["mocked-nanoid-1"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 5,
+      loaded: true,
+    });
+    const { rerender } = renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter="owner:(admin)"
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { state }
+    );
+    expect(
+      screen.getByRole("link", { name: /10 Machines/i })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
+      /5 machines available/i
+    );
+    rerender(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter=""
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />
+    );
+    expect(
+      screen.getByRole("link", { name: /10 Machines/i })
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
+      /10 machines available/i
+    );
+  });
+
+  it("displays correct machine counts for selected groups with an active filter", () => {
+    state.machine.selectedMachines = {
+      groups: ["admin"],
+      grouping: FetchGroupKey.Owner,
+    };
+    state.machine.counts["mocked-nanoid-1"] = machineStateCountFactory({
+      count: 10,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
+      count: 5,
+      loaded: true,
+    });
+    state.machine.counts["mocked-nanoid-3"] = machineStateCountFactory({
+      count: 2,
+      loaded: true,
+    });
+    renderWithBrowserRouter(
+      <MachineListHeader
+        headerContent={null}
+        searchFilter="owner:(admin)"
+        setHeaderContent={jest.fn()}
+        setSearchFilter={jest.fn()}
+      />,
+      { state }
+    );
+    expect(
+      screen.getByRole("link", { name: /10 Machines/i })
+    ).toBeInTheDocument();
+    expect(screen.getByText("2 of 5 machines selected")).toBeInTheDocument();
+  });
+
   it("displays a message when all machines have been selected", () => {
     state.machine.selectedMachines = { filter: {} };
     state.machine.counts["mocked-nanoid-1"] = machineStateCountFactory({
