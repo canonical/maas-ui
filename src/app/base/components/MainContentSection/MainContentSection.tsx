@@ -13,7 +13,7 @@ export type Props = {
   isNotificationListHidden?: boolean;
 } & HTMLProps<HTMLDivElement>;
 
-const Section = ({
+const MainContentSection = ({
   children,
   header,
   sidebar,
@@ -53,4 +53,4 @@ const Section = ({
   );
 };
 
-export default Section;
+export default MainContentSection;

@@ -50,19 +50,12 @@ export const MachineListHeader = ({
     false
   );
   const filter = FilterMachines.parseFetchFilters(searchFilter);
-  const hasActiveFilter = FilterMachines.isNonEmptyFilter(searchFilter);
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();
   // Get the count of all machines that match the current filter
-  const { machineCount: activeFilterMachineCount } = useFetchMachineCount(
-    filter,
-    {
-      isEnabled: hasActiveFilter,
-    }
-  );
-  const availableMachineCount = hasActiveFilter
-    ? activeFilterMachineCount
-    : allMachineCount;
+  const { machineCount: availableMachineCount } = useFetchMachineCount(filter, {
+    isEnabled: FilterMachines.isNonEmptyFilter(searchFilter),
+  });
   // Get the count of selected machines that match the current filter
   const { selectedCount, selectedCountLoading } =
     useMachineSelectedCount(filter);

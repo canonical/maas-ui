@@ -4,8 +4,8 @@ import { useEffect } from "react";
 import { Notification, Spinner } from "@canonical/react-components";
 import { useNavigate } from "react-router-dom-v5-compat";
 
-import Section from "app/base/components/Section";
-import type { Props as SectionProps } from "app/base/components/Section/Section";
+import MainContentSection from "app/base/components/MainContentSection";
+import type { Props as SectionProps } from "app/base/components/MainContentSection/MainContentSection";
 import { useWindowTitle } from "app/base/hooks";
 import type { APIError } from "app/base/types";
 import { useExitURL } from "app/intro/hooks";
@@ -44,14 +44,14 @@ const IntroSection = ({
   }, [navigate, exitURL, shouldExitIntro]);
 
   return (
-    <Section {...props}>
+    <MainContentSection {...props}>
       {errorMessage && (
         <Notification severity="negative" title="Error:">
           {errorMessage}
         </Notification>
       )}
       {loading ? <Spinner text="Loading..." /> : children}
-    </Section>
+    </MainContentSection>
   );
 };
 

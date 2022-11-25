@@ -97,7 +97,7 @@
 @import "~app/base/components/NotificationGroup";
 @import "~app/base/components/Placeholder";
 @import "~app/base/components/Popover";
-@import "~app/base/components/Section";
+@import "~app/base/components/MainContentSection";
 @import "~app/base/components/SectionHeader";
 @import "~app/base/components/SelectButton";
 @import "~app/base/components/SSHKeyList";
@@ -132,7 +132,7 @@
 @include OverviewCard;
 @include Placeholder;
 @include Popover;
-@include Section;
+@include MainContentSection;
 @include SectionHeader;
 @include SelectButton;
 @include SSHKeyList;

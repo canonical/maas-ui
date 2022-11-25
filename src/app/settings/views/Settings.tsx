@@ -2,7 +2,7 @@ import { useEffect } from "react";
 
 import { useDispatch, useSelector } from "react-redux";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import SectionHeader from "app/base/components/SectionHeader";
 import SettingsNav from "app/settings/components/Nav";
 import Routes from "app/settings/components/Routes";
@@ -19,7 +19,7 @@ const Settings = (): JSX.Element => {
 
   if (!isAdmin) {
     return (
-      <Section
+      <MainContentSection
         header={
           <SectionHeader title="You do not have permission to view this page." />
         }
@@ -28,12 +28,12 @@ const Settings = (): JSX.Element => {
   }
 
   return (
-    <Section
+    <MainContentSection
       header={<SectionHeader title="Settings" />}
       sidebar={<SettingsNav />}
     >
       <Routes />
-    </Section>
+    </MainContentSection>
   );
 };
 

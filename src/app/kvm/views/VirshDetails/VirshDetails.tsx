@@ -8,8 +8,8 @@ import VirshDetailsHeader from "./VirshDetailsHeader";
 import VirshResources from "./VirshResources";
 import VirshSettings from "./VirshSettings";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
@@ -54,7 +54,7 @@ const VirshDetails = (): JSX.Element => {
   }
   const base = urls.kvm.virsh.details.index(null);
   return (
-    <Section
+    <MainContentSection
       aria-label={Label.Title}
       header={
         <VirshDetailsHeader
@@ -83,7 +83,7 @@ const VirshDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </Section>
+    </MainContentSection>
   );
 };
 

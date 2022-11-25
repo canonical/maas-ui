@@ -18,8 +18,8 @@ import LXDClusterResources from "./LXDClusterResources";
 import LXDClusterSettings from "./LXDClusterSettings";
 import LXDClusterVMs from "./LXDClusterVMs";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
@@ -93,7 +93,7 @@ const LXDClusterDetails = (): JSX.Element => {
 
   const base = urls.kvm.lxd.cluster.index(null);
   return (
-    <Section
+    <MainContentSection
       aria-label={Label.Title}
       header={
         <LXDClusterDetailsHeader
@@ -162,7 +162,7 @@ const LXDClusterDetails = (): JSX.Element => {
           path={getRelativeRoute(urls.kvm.lxd.cluster.host.index(null), base)}
         />
       </Routes>
-    </Section>
+    </MainContentSection>
   );
 };
 

@@ -8,7 +8,7 @@ import ControllerListControls from "./ControllerListControls";
 import ControllerListHeader from "./ControllerListHeader";
 import ControllerListTable from "./ControllerListTable";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import VaultNotification from "app/base/components/VaultNotification";
 import { useWindowTitle } from "app/base/hooks";
 import type { ControllerHeaderContent } from "app/controllers/types";
@@ -60,7 +60,7 @@ const ControllerList = (): JSX.Element => {
   );
 
   return (
-    <Section
+    <MainContentSection
       header={
         <ControllerListHeader
           headerContent={headerContent}
@@ -83,7 +83,7 @@ const ControllerList = (): JSX.Element => {
         }}
         selectedIDs={selectedIDs}
       />
-    </Section>
+    </MainContentSection>
   );
 };
 

@@ -17,7 +17,7 @@ import TagDetails from "./TagDetails";
 import TagList from "./TagList";
 import TagMachines from "./TagMachines";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
 import type { Tag, TagMeta } from "app/store/tag/types";
@@ -61,7 +61,7 @@ const Tags = (): JSX.Element => {
     });
   const base = urls.tags.tag.index(null);
   return (
-    <Section
+    <MainContentSection
       header={
         <TagsHeader
           headerContent={headerContent}
@@ -93,7 +93,7 @@ const Tags = (): JSX.Element => {
         />
         <Route element={<NotFound />} path="*" />
       </Routes>
-    </Section>
+    </MainContentSection>
   );
 };
 

@@ -19,8 +19,8 @@ import SummaryNotifications from "./MachineSummary/SummaryNotifications";
 import MachineTests from "./MachineTests";
 import MachineUSBDevices from "./MachineUSBDevices";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
@@ -70,7 +70,7 @@ const MachineDetails = (): JSX.Element => {
   const base = urls.machines.machine.index(null);
 
   return (
-    <Section
+    <MainContentSection
       header={
         <MachineHeader
           headerContent={headerContent}
@@ -196,7 +196,7 @@ const MachineDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </Section>
+    </MainContentSection>
   );
 };
 

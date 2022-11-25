@@ -3,7 +3,7 @@ import { Link, Route, Routes } from "react-router-dom-v5-compat";
 
 import PoolList from "./PoolList";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import MachinesHeader from "app/base/components/node/MachinesHeader";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
@@ -16,7 +16,7 @@ const Pools = (): JSX.Element => {
   const base = urls.pools.index;
   const { machineCount } = useFetchMachineCount();
   return (
-    <Section
+    <MainContentSection
       header={
         <MachinesHeader
           buttons={[
@@ -43,7 +43,7 @@ const Pools = (): JSX.Element => {
         />
         <Route element={<NotFound />} path="*" />
       </Routes>
-    </Section>
+    </MainContentSection>
   );
 };
 

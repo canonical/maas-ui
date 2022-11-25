@@ -9,7 +9,7 @@ import KVMListHeader from "./KVMListHeader";
 import LxdTable from "./LxdTable";
 import VirshTable from "./VirshTable";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import { useWindowTitle } from "app/base/hooks";
 import urls from "app/base/urls";
 import type { KVMHeaderContent } from "app/kvm/types";
@@ -90,7 +90,7 @@ const KVMList = (): JSX.Element => {
     );
   }
   return (
-    <Section
+    <MainContentSection
       aria-label={Label.Title}
       header={
         <KVMListHeader
@@ -100,7 +100,7 @@ const KVMList = (): JSX.Element => {
       }
     >
       {content}
-    </Section>
+    </MainContentSection>
   );
 };
 

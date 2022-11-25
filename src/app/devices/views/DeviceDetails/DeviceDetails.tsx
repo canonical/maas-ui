@@ -9,8 +9,8 @@ import DeviceDetailsHeader from "./DeviceDetailsHeader";
 import DeviceNetwork from "./DeviceNetwork";
 import DeviceSummary from "./DeviceSummary";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import type { DeviceHeaderContent } from "app/devices/types";
@@ -54,7 +54,7 @@ const DeviceDetails = (): JSX.Element => {
 
   const base = urls.devices.device.index(null);
   return (
-    <Section
+    <MainContentSection
       header={
         <DeviceDetailsHeader
           headerContent={headerContent}
@@ -86,7 +86,7 @@ const DeviceDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </Section>
+    </MainContentSection>
   );
 };
 

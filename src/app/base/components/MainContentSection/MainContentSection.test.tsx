@@ -1,19 +1,21 @@
 import { shallow } from "enzyme";
 
-import Section from "./Section";
+import MainContentSection from "./MainContentSection";
 
-describe("Section", () => {
+describe("MainContentSection", () => {
   it("renders", () => {
     const wrapper = shallow(
-      <Section header="Settings" sidebar={<div>Sidebar</div>}>
+      <MainContentSection header="Settings" sidebar={<div>Sidebar</div>}>
         content
-      </Section>
+      </MainContentSection>
     );
     expect(wrapper).toMatchSnapshot();
   });
 
   it("renders without a sidebar", () => {
-    const wrapper = shallow(<Section header="Settings">content</Section>);
+    const wrapper = shallow(
+      <MainContentSection header="Settings">content</MainContentSection>
+    );
     expect(wrapper.find(".section__sidebar").length).toEqual(0);
     expect(wrapper.find(".section__content").at(0).hasClass("col-10")).toBe(
       false
@@ -22,9 +24,9 @@ describe("Section", () => {
 
   it("can render a node as a title", () => {
     const wrapper = shallow(
-      <Section header={<span data-testid="test">Node title</span>}>
+      <MainContentSection header={<span data-testid="test">Node title</span>}>
         content
-      </Section>
+      </MainContentSection>
     );
     expect(wrapper.find('[data-testid="test"]').text()).toEqual("Node title");
   });

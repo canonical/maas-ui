@@ -8,8 +8,8 @@ import VLANDetailsHeader from "./VLANDetailsHeader";
 import VLANSubnets from "./VLANSubnets";
 import VLANSummary from "./VLANSummary";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
@@ -60,11 +60,11 @@ const VLANDetails = (): JSX.Element => {
         />
       );
     }
-    return <Section header={<SectionHeader loading />} />;
+    return <MainContentSection header={<SectionHeader loading />} />;
   }
 
   return (
-    <Section header={<VLANDetailsHeader id={id} />}>
+    <MainContentSection header={<VLANDetailsHeader id={id} />}>
       {showDHCPForm ? (
         <ConfigureDHCP closeForm={() => setShowDHCPForm(false)} id={id} />
       ) : (
@@ -79,7 +79,7 @@ const VLANDetails = (): JSX.Element => {
         modelName={VLANMeta.MODEL}
         subnetIds={subnets.map(({ id }) => id)}
       />
-    </Section>
+    </MainContentSection>
   );
 };
 
