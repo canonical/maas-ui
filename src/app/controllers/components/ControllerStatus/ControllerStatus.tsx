@@ -57,9 +57,15 @@ export const ControllerStatus = ({ systemId }: Props): JSX.Element | null => {
   }
 
   if (message) {
-    return <TooltipButton iconName={icon} message={message} />;
+    return (
+      <TooltipButton
+        iconName={icon}
+        iconProps={{ "data-testid": "controller-status-icon" }}
+        message={message}
+      />
+    );
   }
-  return <Icon name={icon} />;
+  return <Icon data-testid="controller-status-icon" name={icon} />;
 };
 
 export default ControllerStatus;

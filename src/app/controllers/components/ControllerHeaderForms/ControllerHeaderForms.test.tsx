@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import ControllerHeaderForms from "./ControllerHeaderForms";
 
@@ -10,41 +7,40 @@ import {
   controller as controllerFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("ControllerHeaderForms", () => {
-  it("can render the action form wrapper", () => {
+  it("can render an action form", () => {
     const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ControllerHeaderForms
-            controllers={[controllerFactory()]}
-            headerContent={{ view: ControllerHeaderViews.SET_ZONE_CONTROLLER }}
-            setHeaderContent={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ControllerHeaderForms
+        controllers={[controllerFactory()]}
+        headerContent={{ view: ControllerHeaderViews.SET_ZONE_CONTROLLER }}
+        setHeaderContent={jest.fn()}
+      />,
+      { state }
     );
-    expect(wrapper.find("ControllerActionFormWrapper").exists()).toBe(true);
+
+    expect(
+      screen.getByText(/Cannot set zone of 1 controller/)
+    ).toBeInTheDocument();
   });
 
   it("can render add controller instructions", () => {
     const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <ControllerHeaderForms
-            controllers={[controllerFactory()]}
-            headerContent={{ view: ControllerHeaderViews.ADD_CONTROLLER }}
-            setHeaderContent={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ControllerHeaderForms
+        controllers={[controllerFactory()]}
+        headerContent={{ view: ControllerHeaderViews.ADD_CONTROLLER }}
+        setHeaderContent={jest.fn()}
+      />,
+      { state }
     );
-    expect(wrapper.find("AddController").exists()).toBe(true);
+
+    expect(
+      screen.getByText(
+        /To add a new rack controller, SSH into the rack controller and run the commands below. Confirm that the MAAS version is the same as the main rack controller./
+      )
+    ).toBeInTheDocument();
   });
 });

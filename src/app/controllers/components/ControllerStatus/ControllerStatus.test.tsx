@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import { ControllerStatus } from "./ControllerStatus";
 
@@ -14,8 +11,9 @@ import {
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const getIcon = () => screen.getByTestId("controller-status-icon");
 
 describe("ControllerStatus", () => {
   let state: RootState;
@@ -45,18 +43,12 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ControllerStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Icon").prop("name")).toEqual("power-error");
-    expect(wrapper.find("Tooltip").prop("message")).toEqual("2 dead");
+    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(getIcon()).toHaveClass("p-icon--power-error");
+    expect(screen.getByRole("tooltip")).toHaveTextContent("2 dead");
   });
 
   it("handles a degraded controller", () => {
@@ -72,18 +64,12 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ControllerStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Icon").prop("name")).toEqual("warning");
-    expect(wrapper.find("Tooltip").prop("message")).toEqual("2 degraded");
+    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(getIcon()).toHaveClass("p-icon--warning");
+    expect(screen.getByRole("tooltip")).toHaveTextContent("2 degraded");
   });
 
   it("handles a running controller", () => {
@@ -99,18 +85,12 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ControllerStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Icon").prop("name")).toEqual("success");
-    expect(wrapper.find("Tooltip").prop("message")).toEqual("2 running");
+    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(getIcon()).toHaveClass("p-icon--success");
+    expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
   });
 
   it("handles a powered off controller", () => {
@@ -126,18 +106,12 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ControllerStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Icon").prop("name")).toEqual("power-off");
-    expect(wrapper.find("Tooltip").prop("message")).toEqual("2 off");
+    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(getIcon()).toHaveClass("p-icon--power-off");
+    expect(screen.getByRole("tooltip")).toHaveTextContent("2 off");
   });
 
   it("handles a controller with unknown status", () => {
@@ -153,17 +127,11 @@ describe("ControllerStatus", () => {
         }),
       ],
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ControllerStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Icon").prop("name")).toEqual("power-unknown");
-    expect(wrapper.find("Tooltip").exists()).toBe(false);
+    renderWithBrowserRouter(<ControllerStatus systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(getIcon()).toHaveClass("p-icon--power-unknown");
+    expect(screen.queryByRole("tooltip")).not.toBeInTheDocument();
   });
 });
