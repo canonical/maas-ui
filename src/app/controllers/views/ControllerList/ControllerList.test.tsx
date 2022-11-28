@@ -1,5 +1,5 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
+import { screen, render, waitFor } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { useLocation } from "react-router";
 import { MemoryRouter, Route } from "react-router-dom";
@@ -7,7 +7,6 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ControllerList from "./ControllerList";
-import ControllerListControls from "./ControllerListControls";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
@@ -22,7 +21,7 @@ describe("ControllerList", () => {
 
   it("sets the search text from the URL on load", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -40,12 +39,10 @@ describe("ControllerList", () => {
       </Provider>
     );
 
-    expect(wrapper.find(ControllerListControls).prop("filter")).toBe(
-      "test search"
-    );
+    expect(screen.getByRole("searchbox")).toHaveValue("test search");
   });
 
-  it("changes the URL when the search text changes", () => {
+  it("changes the URL when the search text changes", async () => {
     let search: string | null = null;
     const store = mockStore(state);
     const FetchRoute = () => {
@@ -53,7 +50,7 @@ describe("ControllerList", () => {
       search = location.search;
       return null;
     };
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -68,10 +65,10 @@ describe("ControllerList", () => {
       </Provider>
     );
 
-    act(() => {
-      wrapper.find(ControllerListControls).prop("setFilter")("hostname:foo");
-    });
+    await userEvent.clear(screen.getByRole("searchbox"));
 
-    expect(search).toBe("?hostname=foo");
+    await userEvent.type(screen.getByRole("searchbox"), "hostname:foo");
+
+    await waitFor(() => expect(search).toBe("?hostname=foo"));
   });
 });

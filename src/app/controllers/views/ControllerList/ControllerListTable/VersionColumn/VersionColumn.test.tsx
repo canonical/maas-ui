@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import { VersionColumn } from "./VersionColumn";
 
@@ -14,8 +11,7 @@ import {
   controllerVersionInfo as controllerVersionInfoFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("VersionColumn", () => {
   let state: RootState;
@@ -36,51 +32,33 @@ describe("VersionColumn", () => {
     state.controller.items[0].versions = controllerVersionsFactory({
       current: controllerVersionInfoFactory({ version: "1.2.3" }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <VersionColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-testid="version"]').text()).toEqual("1.2.3");
+    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(screen.getByTestId("version")).toHaveTextContent("1.2.3");
   });
 
   it("can display an unknown version", () => {
     state.controller.items[0].versions = controllerVersionsFactory({
       current: controllerVersionInfoFactory({ version: undefined }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <VersionColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-testid="version"]').text()).toBe("Unknown ");
+    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(screen.getByTestId("version")).toHaveTextContent(/Unknown/);
   });
 
   it("can display the origin", () => {
     state.controller.items[0].versions = controllerVersionsFactory({
       origin: "latest/edge",
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <VersionColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-testid="origin"]').text()).toBe("latest/edge ");
+    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(screen.getByTestId("origin")).toHaveTextContent("latest/edge");
   });
 
   it("can display the origin when it is a deb", () => {
@@ -88,18 +66,12 @@ describe("VersionColumn", () => {
       install_type: ControllerInstallType.DEB,
       origin: "stable",
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <VersionColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-testid="origin"]').text()).toBe("Deb ");
-    expect(wrapper.find('[role="tooltip"]').text()).toBe("stable");
+    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(screen.getByTestId("origin")).toHaveTextContent(/Deb/);
+    expect(screen.getByRole("tooltip")).toHaveTextContent("stable");
   });
 
   it("can display a cohort tooltip", () => {
@@ -107,18 +79,12 @@ describe("VersionColumn", () => {
       snap_cohort:
         "MSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViMUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNTI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjVhM2ViNzQwZGZmYzk5OWFiYWU=",
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <VersionColumn systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[role="tooltip"]').text()).toBe(
-      "Cohort key: \nMSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM \nUppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT \nI3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV \nhM2ViNzQwZGZmYzk5OWFiYWU="
+    renderWithBrowserRouter(<VersionColumn systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(screen.getByRole("tooltip")).toHaveTextContent(
+      "Cohort key: MSBzaFkyMllUWjNSaEpKRE9qME1mbVNoVE5aVEViM UppcSAxNjE3MTgyOTcxIGJhM2VlYzQ2NDc5ZDdmNT I3NzIzNTUyMmRlOTc1MGIzZmNhYTI0MDE1MTQ3ZjV hM2ViNzQwZGZmYzk5OWFiYWU="
     );
   });
 });

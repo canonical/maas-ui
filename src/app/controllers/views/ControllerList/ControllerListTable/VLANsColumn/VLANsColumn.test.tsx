@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import { VLANsColumn } from "./VLANsColumn";
 
@@ -13,8 +9,7 @@ import {
   controllerVlansHA as controllerVlansHAFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("VLANsColumn", () => {
   let state: RootState;
@@ -36,35 +31,19 @@ describe("VLANsColumn", () => {
   });
 
   it("displays total number of vlans", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VLANsColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-testid="vlan-count"]').text()).toEqual("3");
+    renderWithBrowserRouter(<VLANsColumn systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(screen.getByTestId("vlan-count")).toHaveTextContent("3");
   });
 
   it("displays ha details", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VLANsColumn systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find('[data-testid="ha-vlans"]').text()).toEqual(
+    renderWithBrowserRouter(<VLANsColumn systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(screen.getByTestId("ha-vlans")).toHaveTextContent(
       "Non-HA(1), HA(2)"
     );
   });
