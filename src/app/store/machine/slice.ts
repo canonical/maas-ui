@@ -1752,12 +1752,21 @@ const machineSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    suppressFailedScriptResults: generateActionParams<BaseMachineActionParams>(
-      NodeActions.SUPPRESS_FAILED_SCRIPT_RESULTS
-    ),
-    suppressFailedScriptResultsError: statusHandlers.delete.error,
-    suppressFailedScriptResultsStart: statusHandlers.delete.start,
-    suppressFailedScriptResultsSuccess: statusHandlers.delete.success,
+    suppressFailedScriptResults: {
+      prepare: (params: { filter: FetchFilters } | null, callId?: string) => {
+        return {
+          meta: {
+            model: MachineMeta.MODEL,
+            method: "suppress_failed_script_results",
+            callId,
+          },
+          payload: { params: { filter: params?.filter } },
+        };
+      },
+      reducer: () => {
+        // No state changes need to be handled for this action.
+      },
+    },
     [NodeActions.TAG]: generateActionParams<TagParams>(NodeActions.TAG),
     [`${NodeActions.TAG}Error`]: statusHandlers.tag.error,
     [`${NodeActions.TAG}Start`]: statusHandlers.tag.start,
