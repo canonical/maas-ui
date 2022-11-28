@@ -36,7 +36,10 @@ export const OverrideTestForm = ({
   const sendAnalytics = useSendAnalytics();
   const isSingleMachine = selectedCount === 1;
   const dispatch = useDispatch();
-  const { dispatch: dispatchForSelectedMachines, ...actionProps } =
+  const { dispatch: dispatchOverrideForSelectedMachines, ...actionProps } =
+    useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
+  // separate dispatch for the suppress failed script results as we are not tracking the action status
+  const { dispatch: dispatchSuppressForSelectedMachines } =
     useSelectedMachinesActionsDispatch({ selectedMachines, searchFilter });
   const machineID = isSingleMachine
     ? selectedMachines &&
@@ -63,9 +66,11 @@ export const OverrideTestForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         const { suppressResults } = values;
-        dispatchForSelectedMachines(machineActions.overrideFailedTesting);
+        dispatchOverrideForSelectedMachines(
+          machineActions.overrideFailedTesting
+        );
         if (suppressResults) {
-          dispatchForSelectedMachines(
+          dispatchSuppressForSelectedMachines(
             machineActions.suppressFailedScriptResults
           );
         }

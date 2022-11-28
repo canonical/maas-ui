@@ -174,7 +174,6 @@ export enum NodeActions {
   RESCUE_MODE = "rescue-mode",
   SET_POOL = "set-pool",
   SET_ZONE = "set-zone",
-  SUPPRESS_FAILED_SCRIPT_RESULTS = "suppress_failed_script_results",
   TAG = "tag",
   TEST = "test",
   UNLOCK = "unlock",
