@@ -15,8 +15,8 @@ import ControllerSummary from "./ControllerSummary";
 import ControllerUSBDevices from "./ControllerUSBDevices";
 import ControllerVLANs from "./ControllerVLANs";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
@@ -66,7 +66,7 @@ const ControllerDetails = (): JSX.Element => {
   const base = urls.controllers.controller.index(null);
 
   return (
-    <Section
+    <MainContentSection
       header={
         <ControllerDetailsHeader
           headerContent={headerContent}
@@ -175,7 +175,7 @@ const ControllerDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </Section>
+    </MainContentSection>
   );
 };
 

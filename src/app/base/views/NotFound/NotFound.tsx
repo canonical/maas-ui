@@ -1,4 +1,4 @@
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import { useWindowTitle } from "app/base/hooks";
 
 type Props = {
@@ -14,9 +14,9 @@ const NotFound = ({ includeSection = false }: Props): JSX.Element => {
   const message = `The requested URL ${window.location.pathname} was not found on this server.`;
   if (includeSection) {
     return (
-      <Section aria-label={Label.Title} header={Label.Title}>
+      <MainContentSection aria-label={Label.Title} header={Label.Title}>
         <h2 className="p-heading--4">{message}</h2>
-      </Section>
+      </MainContentSection>
     );
   }
   return (

@@ -4,7 +4,7 @@ import { useLocation, useNavigate } from "react-router-dom-v5-compat";
 
 import MachineListHeader from "./MachineList/MachineListHeader";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import type { MachineHeaderContent } from "app/machines/types";
 import MachineList from "app/machines/views/MachineList";
 import { FilterMachines } from "app/store/machine/utils";
@@ -30,7 +30,7 @@ const Machines = (): JSX.Element => {
   );
 
   return (
-    <Section
+    <MainContentSection
       header={
         <MachineListHeader
           headerContent={headerContent}
@@ -45,7 +45,7 @@ const Machines = (): JSX.Element => {
         searchFilter={searchFilter}
         setSearchFilter={setSearchFilter}
       />
-    </Section>
+    </MainContentSection>
   );
 };
 

@@ -14,7 +14,7 @@ import Routes from "app/Routes";
 import Footer from "app/base/components/Footer";
 import Header from "app/base/components/Header";
 import Login from "app/base/components/Login";
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import SectionHeader from "app/base/components/SectionHeader";
 import StatusBar from "app/base/components/StatusBar";
 import FileContext, { fileContextStore } from "app/base/file-context";
@@ -78,31 +78,31 @@ export const App = (): JSX.Element => {
 
   let content: ReactNode = null;
   if (authLoading || connecting || authenticating || configLoading) {
-    content = <Section header={<SectionHeader loading />} />;
+    content = <MainContentSection header={<SectionHeader loading />} />;
   } else if (!authenticated && !connectionError) {
     content = <Login />;
   } else if (connectionError || !connected) {
     content = (
-      <Section header={<SectionHeader title="Failed to connect" />}>
+      <MainContentSection header={<SectionHeader title="Failed to connect" />}>
         <Notification severity="negative" title="Error:">
           The server connection failed
           {connectionError ? ` with the error "${connectionError}"` : ""}.
         </Notification>
-      </Section>
+      </MainContentSection>
     );
   } else if (
     configErrors === VaultErrors.REQUEST_FAILED ||
     configErrors === VaultErrors.CONNECTION_FAILED
   ) {
     content = (
-      <Section
+      <MainContentSection
         header={<SectionHeader title="Failed to connect" />}
         isNotificationListHidden={true}
       >
         <Notification severity="negative" title="Error:">
           The server connection failed with the error "{configErrors}".
         </Notification>
-      </Section>
+      </MainContentSection>
     );
   } else if (connected && authLoaded && authenticated) {
     content = (

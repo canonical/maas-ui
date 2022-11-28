@@ -8,8 +8,8 @@ import SubnetSummary from "./SubnetSummary";
 import SubnetUsedIPs from "./SubnetUsedIPs";
 import Utilisation from "./Utilisation";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
@@ -47,7 +47,7 @@ const SubnetDetails = (): JSX.Element => {
   }, [dispatch, id, isValidID]);
 
   if (subnetsLoading) {
-    return <Section header={<SectionHeader loading />} />;
+    return <MainContentSection header={<SectionHeader loading />} />;
   }
 
   if (!subnet || !isValidID) {
@@ -61,14 +61,14 @@ const SubnetDetails = (): JSX.Element => {
   }
 
   return (
-    <Section header={<SubnetDetailsHeader subnet={subnet} />}>
+    <MainContentSection header={<SubnetDetailsHeader subnet={subnet} />}>
       <SubnetSummary id={id} />
       <Utilisation statistics={subnet.statistics} />
       <StaticRoutes subnetId={id} />
       <ReservedRanges subnetId={id} />
       <DHCPSnippets modelName={SubnetMeta.MODEL} subnetIds={[id]} />
       <SubnetUsedIPs subnetId={id} />
-    </Section>
+    </MainContentSection>
   );
 };
 

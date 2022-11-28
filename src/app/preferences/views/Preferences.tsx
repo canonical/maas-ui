@@ -1,4 +1,4 @@
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import SectionHeader from "app/base/components/SectionHeader";
 import Nav from "app/preferences/components/Nav";
 import Routes from "app/preferences/components/Routes";
@@ -8,13 +8,13 @@ export enum Labels {
 }
 
 const Preferences = (): JSX.Element => (
-  <Section
+  <MainContentSection
     aria-label={Labels.Title}
     header={<SectionHeader title={Labels.Title} />}
     sidebar={<Nav />}
   >
     <Routes />
-  </Section>
+  </MainContentSection>
 );
 
 export default Preferences;

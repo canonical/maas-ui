@@ -18,7 +18,7 @@ import MaasIntro from "./MaasIntro";
 import MaasIntroSuccess from "./MaasIntroSuccess";
 import UserIntro from "./UserIntro";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import { useCompletedIntro, useCompletedUserIntro } from "app/base/hooks";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -73,7 +73,7 @@ const Intro = (): JSX.Element => {
     content = <IncompleteCard />;
   }
   if (content) {
-    return <Section>{content}</Section>;
+    return <MainContentSection>{content}</MainContentSection>;
   }
   const base = `${urls.intro.index}`;
   return (

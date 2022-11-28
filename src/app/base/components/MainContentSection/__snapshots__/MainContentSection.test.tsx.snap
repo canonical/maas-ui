@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`Section renders 1`] = `
+exports[`MainContentSection renders 1`] = `
 <div
   className="section"
 >

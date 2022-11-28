@@ -6,8 +6,8 @@ import SpaceDetailsHeader from "./SpaceDetailsHeader";
 import SpaceSubnets from "./SpaceSubnets";
 import SpaceSummary from "./SpaceSummary";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
 import type { RootState } from "app/store/root/types";
@@ -52,14 +52,14 @@ const SpaceDetails = (): JSX.Element => {
         />
       );
     }
-    return <Section header={<SectionHeader loading />} />;
+    return <MainContentSection header={<SectionHeader loading />} />;
   }
 
   return (
-    <Section header={<SpaceDetailsHeader space={space} />}>
+    <MainContentSection header={<SpaceDetailsHeader space={space} />}>
       <SpaceSummary space={space} />
       <SpaceSubnets space={space} />
-    </Section>
+    </MainContentSection>
   );
 };
 

@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DomainListHeader from "./DomainListHeader";
 import DomainsTable from "./DomainsTable";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import { useWindowTitle } from "app/base/hooks";
 import { actions } from "app/store/domain";
 import domainsSelectors from "app/store/domain/selectors";
@@ -21,9 +21,9 @@ const DomainsList = (): JSX.Element => {
   }, [dispatch]);
 
   return (
-    <Section header={<DomainListHeader />}>
+    <MainContentSection header={<DomainListHeader />}>
       {domains.length > 0 && <DomainsTable />}
-    </Section>
+    </MainContentSection>
   );
 };
 

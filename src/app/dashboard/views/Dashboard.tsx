@@ -6,7 +6,7 @@ import DashboardConfigurationForm from "./DashboardConfigurationForm";
 import DashboardHeader from "./DashboardHeader";
 import DiscoveriesList from "./DiscoveriesList";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
 import NotFound from "app/base/views/NotFound";
@@ -24,12 +24,16 @@ const Dashboard = (): JSX.Element => {
   const isAdmin = useSelector(authSelectors.isAdmin);
 
   if (!isAdmin) {
-    return <Section header={<SectionHeader title={Label.Permissions} />} />;
+    return (
+      <MainContentSection
+        header={<SectionHeader title={Label.Permissions} />}
+      />
+    );
   }
 
   const base = urls.dashboard.index;
   return (
-    <Section header={<DashboardHeader />}>
+    <MainContentSection header={<DashboardHeader />}>
       {networkDiscovery === "disabled" && (
         <Notification severity="caution">{Label.Disabled}</Notification>
       )}
@@ -41,7 +45,7 @@ const Dashboard = (): JSX.Element => {
         />
         <Route element={<NotFound />} path="*" />
       </Routes>
-    </Section>
+    </MainContentSection>
   );
 };
 

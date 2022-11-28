@@ -6,8 +6,8 @@ import DomainDetailsHeader from "./DomainDetailsHeader";
 import DomainSummary from "./DomainSummary/DomainSummary";
 import ResourceRecords from "./ResourceRecords";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
@@ -45,10 +45,10 @@ const DomainDetails = (): JSX.Element => {
     );
   }
   return (
-    <Section header={<DomainDetailsHeader id={id} />}>
+    <MainContentSection header={<DomainDetailsHeader id={id} />}>
       <DomainSummary id={id} />
       <ResourceRecords id={id} />
-    </Section>
+    </MainContentSection>
   );
 };
 

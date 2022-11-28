@@ -38,6 +38,6 @@ describe("NotFound ", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Section").exists()).toBe(true);
+    expect(wrapper.find("MainContentSection").exists()).toBe(true);
   });
 });

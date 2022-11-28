@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ZonesListHeader from "./ZonesListHeader";
 import ZonesListTable from "./ZonesListTable";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import { useWindowTitle } from "app/base/hooks";
 import { actions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
@@ -21,9 +21,9 @@ const ZonesList = (): JSX.Element => {
   }, [dispatch]);
 
   return (
-    <Section header={<ZonesListHeader />}>
+    <MainContentSection header={<ZonesListHeader />}>
       {zonesCount > 0 && <ZonesListTable />}
-    </Section>
+    </MainContentSection>
   );
 };
 

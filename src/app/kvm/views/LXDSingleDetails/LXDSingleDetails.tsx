@@ -14,8 +14,8 @@ import LXDSingleResources from "./LXDSingleResources";
 import LXDSingleSettings from "./LXDSingleSettings";
 import LXDSingleVMs from "./LXDSingleVMs";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
@@ -76,7 +76,7 @@ const LXDSingleDetails = (): JSX.Element => {
   }
   const base = urls.kvm.lxd.single.index(null);
   return (
-    <Section
+    <MainContentSection
       aria-label={Label.Title}
       header={
         <LXDSingleDetailsHeader
@@ -116,7 +116,7 @@ const LXDSingleDetails = (): JSX.Element => {
           />
         </Routes>
       )}
-    </Section>
+    </MainContentSection>
   );
 };
 

@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom-v5-compat";
 import SubnetsTable from "./SubnetsTable";
 import type { GroupByKey } from "./SubnetsTable/types";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useWindowTitle } from "app/base/hooks";
 import { useQuery } from "app/base/hooks/urls";
@@ -53,7 +53,7 @@ const SubnetsList = (): JSX.Element => {
   }, [groupBy, setGroupBy, hasValidGroupBy]);
 
   return (
-    <Section
+    <MainContentSection
       header={
         <>
           <SectionHeader
@@ -95,7 +95,7 @@ const SubnetsList = (): JSX.Element => {
           setSearchText={setSearchText}
         />
       ) : null}
-    </Section>
+    </MainContentSection>
   );
 };
 

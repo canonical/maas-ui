@@ -8,7 +8,7 @@ import DeviceListControls from "./DeviceListControls";
 import DeviceListHeader from "./DeviceListHeader";
 import DeviceListTable from "./DeviceListTable";
 
-import Section from "app/base/components/Section";
+import MainContentSection from "app/base/components/MainContentSection";
 import { useWindowTitle } from "app/base/hooks";
 import type { DeviceHeaderContent } from "app/devices/types";
 import { actions as deviceActions } from "app/store/device";
@@ -51,7 +51,7 @@ const DeviceList = (): JSX.Element => {
   );
 
   return (
-    <Section
+    <MainContentSection
       header={
         <DeviceListHeader
           headerContent={headerContent}
@@ -70,7 +70,7 @@ const DeviceList = (): JSX.Element => {
         }}
         selectedIDs={selectedIDs}
       />
-    </Section>
+    </MainContentSection>
   );
 };
 

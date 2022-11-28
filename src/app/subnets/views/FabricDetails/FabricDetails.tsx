@@ -6,8 +6,8 @@ import FabricDetailsHeader from "./FabricDetailsHeader";
 import FabricSummary from "./FabricSummary";
 import FabricVLANs from "./FabricVLANs";
 
+import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
-import Section from "app/base/components/Section";
 import SectionHeader from "app/base/components/SectionHeader";
 import { useGetURLId, useWindowTitle } from "app/base/hooks";
 import { actions as fabricActions } from "app/store/fabric";
@@ -54,14 +54,14 @@ const FabricDetails = (): JSX.Element => {
         />
       );
     }
-    return <Section header={<SectionHeader loading />} />;
+    return <MainContentSection header={<SectionHeader loading />} />;
   }
 
   return (
-    <Section header={<FabricDetailsHeader fabric={fabric} />}>
+    <MainContentSection header={<FabricDetailsHeader fabric={fabric} />}>
       <FabricSummary fabric={fabric} />
       <FabricVLANs fabric={fabric} />
-    </Section>
+    </MainContentSection>
   );
 };
 
