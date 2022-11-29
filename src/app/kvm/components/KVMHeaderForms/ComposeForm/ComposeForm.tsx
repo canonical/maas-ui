@@ -429,6 +429,7 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
       <ActionForm<ComposeFormValues>
         actionName="compose"
         allowUnchanged
+        aria-label="Compose VM"
         cleanup={cleanup}
         errors={errors}
         initialTouched={{

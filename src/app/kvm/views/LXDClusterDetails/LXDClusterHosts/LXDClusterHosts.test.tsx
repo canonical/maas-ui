@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
+import { screen } from "@testing-library/react";
 
 import LXDClusterHosts from "./LXDClusterHosts";
 
@@ -17,8 +13,7 @@ import {
   vmHost as vmHostFactory,
   vmClusterState as vmClusterStateFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter } from "testing/utils";
 
 describe("LXDClusterHosts", () => {
   let state: RootState;
@@ -46,20 +41,14 @@ describe("LXDClusterHosts", () => {
 
   it("displays a spinner if pods haven't loaded", () => {
     state.pod.loaded = false;
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }) },
-          ]}
-        >
-          <CompatRouter>
-            <LXDClusterHosts clusterId={1} setHeaderContent={jest.fn()} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <LXDClusterHosts clusterId={1} setHeaderContent={jest.fn()} />,
+      {
+        route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
+        routePattern: `${urls.kvm.index}/*`,
+        state,
+      }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 });
