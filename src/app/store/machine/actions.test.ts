@@ -745,31 +745,6 @@ describe("machine actions", () => {
     });
   });
 
-  it("can suppress failed script results for a selection of machines", () => {
-    expect(
-      actions.suppressFailedScriptResults(
-        {
-          filter: { id: ["abc123"] },
-        },
-        "mock-call-id"
-      )
-    ).toStrictEqual({
-      type: "machine/suppressFailedScriptResults",
-      meta: {
-        model: "machine",
-        method: "suppress_failed_script_results",
-        callId: "mock-call-id",
-      },
-      payload: {
-        params: {
-          filter: {
-            id: ["abc123"],
-          },
-        },
-      },
-    });
-  });
-
   it("can putting a machine into rescue mode", () => {
     expect(actions.rescueMode({ system_id: "abc123" })).toEqual({
       type: "machine/rescueMode",
@@ -941,6 +916,28 @@ describe("machine actions", () => {
           action: NodeActions.OVERRIDE_FAILED_TESTING,
           extra: {},
           system_id: "abc123",
+        },
+      },
+    });
+  });
+
+  it("can handle suppressing script results for a selection of machines", () => {
+    expect(
+      actions.overrideFailedTesting({
+        filter: { hostname: ["ringtail-possum", "easter-rosella"] },
+        suppress_failed_script_results: true,
+      })
+    ).toEqual({
+      type: "machine/overrideFailedTesting",
+      meta: {
+        model: "machine",
+        method: "action",
+      },
+      payload: {
+        params: {
+          action: NodeActions.OVERRIDE_FAILED_TESTING,
+          extra: { suppress_failed_script_results: true },
+          filter: { hostname: ["ringtail-possum", "easter-rosella"] },
         },
       },
     });

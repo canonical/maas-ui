@@ -118,7 +118,9 @@ describe("OverrideTestForm", () => {
         payload: {
           params: {
             action: NodeActions.OVERRIDE_FAILED_TESTING,
-            extra: {},
+            extra: {
+              suppress_failed_script_results: false,
+            },
             filter: { id: ["abc123", "def456"] },
             system_id: undefined,
           },
@@ -141,9 +143,6 @@ describe("OverrideTestForm", () => {
       { store, route: "/machines" }
     );
 
-    await userEvent.click(
-      screen.getByRole("button", { name: /Override failed tests/i })
-    );
     await userEvent.click(screen.getByLabelText(/Suppress test-failure/));
     await userEvent.click(
       screen.getByRole("button", { name: /Override failed tests/i })
@@ -151,13 +150,12 @@ describe("OverrideTestForm", () => {
     expect(
       store
         .getActions()
-        .filter(
-          (action) => action.type === "machine/suppressFailedScriptResults"
-        )
+        .filter((action) => action.type === "machine/overrideFailedTesting")
     ).toStrictEqual([
-      machineActions.suppressFailedScriptResults(
+      machineActions.overrideFailedTesting(
         {
           filter: { id: ["abc123"] },
+          suppress_failed_script_results: true,
         },
         "123456"
       ),
@@ -180,9 +178,6 @@ describe("OverrideTestForm", () => {
       { store, route: "/machines" }
     );
 
-    await userEvent.click(
-      screen.getByRole("button", { name: /Override failed tests/i })
-    );
     await userEvent.click(screen.getByLabelText(/Suppress test-failure/));
     await userEvent.click(
       screen.getByRole("button", { name: /Override failed tests/i })
@@ -190,22 +185,24 @@ describe("OverrideTestForm", () => {
     expect(
       store
         .getActions()
-        .filter(
-          (action) => action.type === "machine/suppressFailedScriptResults"
-        )
+        .filter((action) => action.type === "machine/overrideFailedTesting")
     ).toStrictEqual([
-      machineActions.suppressFailedScriptResults(
+      machineActions.overrideFailedTesting(
         {
           filter: selectedToFilters({
             groups: ["admin"],
             grouping: FetchGroupKey.Owner,
           }) as FetchFilters,
+          suppress_failed_script_results: true,
         },
         "123456"
       ),
-      machineActions.suppressFailedScriptResults(
+      machineActions.overrideFailedTesting(
         {
-          filter: { id: ["abc123"] },
+          filter: selectedToFilters({
+            items: ["abc123"],
+          }) as FetchFilters,
+          suppress_failed_script_results: true,
         },
         "123456"
       ),

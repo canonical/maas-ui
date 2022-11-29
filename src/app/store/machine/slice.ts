@@ -61,6 +61,7 @@ import type {
   FilterGroupKey,
 } from "./types";
 import { MachineMeta, FilterGroupType } from "./types";
+import type { OverrideFailedTesting } from "./types/actions";
 import type { MachineActionStatus } from "./types/base";
 
 import { ACTION_STATUS } from "app/base/constants";
@@ -1607,7 +1608,7 @@ const machineSlice = createSlice({
     [`${NodeActions.ON}Error`]: statusHandlers.on.error,
     [`${NodeActions.ON}Start`]: statusHandlers.on.start,
     [`${NodeActions.ON}Success`]: statusHandlers.on.success,
-    overrideFailedTesting: generateActionParams<BaseMachineActionParams>(
+    overrideFailedTesting: generateActionParams<OverrideFailedTesting>(
       NodeActions.OVERRIDE_FAILED_TESTING
     ),
     overrideFailedTestingError: statusHandlers.overrideFailedTesting.error,
@@ -1748,21 +1749,6 @@ const machineSlice = createSlice({
           },
         },
       }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    suppressFailedScriptResults: {
-      prepare: (params: { filter: FetchFilters } | null, callId?: string) => {
-        return {
-          meta: {
-            model: MachineMeta.MODEL,
-            method: "suppress_failed_script_results",
-            callId,
-          },
-          payload: { params: { filter: params?.filter } },
-        };
-      },
       reducer: () => {
         // No state changes need to be handled for this action.
       },
