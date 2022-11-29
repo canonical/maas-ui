@@ -15,7 +15,26 @@ import configureStore from "redux-mock-store";
 import FormikForm from "app/base/components/FormikForm";
 import type { AnyObject } from "app/base/types";
 import type { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
+import {
+  domainState as domainStateFactory,
+  fabric as fabricFactory,
+  fabricState as fabricStateFactory,
+  generalState as generalStateFactory,
+  podDetails as podDetailsFactory,
+  podState as podStateFactory,
+  podStatus as podStatusFactory,
+  powerType as powerTypeFactory,
+  powerTypesState as powerTypesStateFactory,
+  resourcePoolState as resourcePoolStateFactory,
+  rootState as rootStateFactory,
+  spaceState as spaceStateFactory,
+  subnet as subnetFactory,
+  subnetState as subnetStateFactory,
+  vlan as vlanFactory,
+  vlanState as vlanStateFactory,
+  zoneGenericActions as zoneGenericActionsFactory,
+  zoneState as zoneStateFactory,
+} from "testing/factories";
 
 /**
  * Assert that some JSX from Enzyme is equal to some provided JSX.
@@ -196,3 +215,54 @@ export const renderWithMockStore = (
 
 export const getUrlParam: URLSearchParams["get"] = (param: string) =>
   new URLSearchParams(window.location.search).get(param);
+
+// Complete initial test state with all data loaded and no errors
+export const getTestState = (): RootState => {
+  const fabric = fabricFactory({ name: "pxe-fabric" });
+  const nonBootVlan = vlanFactory({ fabric: fabric.id });
+  const bootVlan = vlanFactory({ fabric: fabric.id, name: "pxe-vlan" });
+  const nonBootSubnet = subnetFactory({ vlan: nonBootVlan.id });
+  const bootSubnet = subnetFactory({ name: "pxe-subnet", vlan: bootVlan.id });
+  const pod = podDetailsFactory({
+    attached_vlans: [nonBootVlan.id, bootVlan.id],
+    boot_vlans: [bootVlan.id],
+    id: 1,
+  });
+  return rootStateFactory({
+    domain: domainStateFactory({
+      loaded: true,
+    }),
+    fabric: fabricStateFactory({
+      items: [fabric],
+      loaded: true,
+    }),
+    general: generalStateFactory({
+      powerTypes: powerTypesStateFactory({
+        data: [powerTypeFactory()],
+        loaded: true,
+      }),
+    }),
+    pod: podStateFactory({
+      items: [pod],
+      loaded: true,
+      statuses: { [pod.id]: podStatusFactory() },
+    }),
+    resourcepool: resourcePoolStateFactory({
+      loaded: true,
+    }),
+    space: spaceStateFactory({
+      loaded: true,
+    }),
+    subnet: subnetStateFactory({
+      items: [nonBootSubnet, bootSubnet],
+      loaded: true,
+    }),
+    vlan: vlanStateFactory({
+      items: [nonBootVlan, bootVlan],
+      loaded: true,
+    }),
+    zone: zoneStateFactory({
+      genericActions: zoneGenericActionsFactory({ fetch: "success" }),
+    }),
+  });
+};
