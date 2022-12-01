@@ -13,3 +13,5 @@ export const pages: Page[] = [
   { heading: "Settings", url: "/settings/configuration/general" },
   { heading: "My preferences", url: "/account/prefs/details" },
 ];
+// longer timeout that can be useful for slow commands
+export const LONG_TIMEOUT = 30000;

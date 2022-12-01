@@ -1,3 +1,4 @@
+import { LONG_TIMEOUT } from "../../../constants";
 import { generateMAASURL, generateId } from "../../utils";
 
 context("Controller details", () => {
@@ -84,7 +85,7 @@ context("Controller details", () => {
     cy.findByRole("link", { name: "Commissioning" }).click();
     cy.findByRole("grid").within(() => {
       cy.findAllByRole("button", { name: /Take action/i })
-        .first()
+        .last({ timeout: LONG_TIMEOUT })
         .click();
     });
     cy.findByLabelText("submenu").within(() => {
