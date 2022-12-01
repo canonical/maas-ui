@@ -1,5 +1,5 @@
 import pluralize from "pluralize";
-import { Link } from "react-router-dom-v5-compat";
+import { Link, useLocation } from "react-router-dom-v5-compat";
 
 import urls from "app/base/urls";
 import { ControllerMeta } from "app/store/controller/types";
@@ -20,6 +20,8 @@ const NodesTagsLink = ({
   nodeType,
   tags,
 }: Props): JSX.Element | null => {
+  const { pathname } = useLocation();
+
   let url: string | null = null;
   let nodeName: string | null = null;
   switch (nodeType) {
@@ -39,11 +41,22 @@ const NodesTagsLink = ({
   if (!url || !nodeName) {
     return null;
   }
+
   const filters = FilterMachines.filtersToQueryString({
     tags: [`=${tags.join(",")}`],
   });
+
   return (
-    <Link className="u-display--block" to={`${url}${filters}`}>
+    <Link
+      className="u-display--block"
+      reloadDocument={
+        // reload the document if it's a machine list link clicked from machine listing page
+        // this is a hack to get around the fact that the machine listing page doesn't update when the URL changes
+        // TODO: remove the workaround below once https://github.com/canonical/maas-ui/issues/4603 is fixed
+        pathname.startsWith(url) && pathname.startsWith(urls.machines.index)
+      }
+      to={`${url}${filters}`}
+    >
       {pluralize(nodeName, count, true)}
     </Link>
   );
