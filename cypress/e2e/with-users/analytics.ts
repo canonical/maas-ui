@@ -7,8 +7,8 @@ context("Google Analytics", () => {
     Cypress.on("window:before:load", (win) => {
       Object.defineProperty(win, "ga", {
         configurable: false,
-        get: () => ga, // always return the stub
-        set: () => {}, // don't allow actual google analytics to overwrite this property
+        get: () => ga,
+        set: () => {},
       });
     });
     cy.login();
