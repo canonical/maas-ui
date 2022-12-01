@@ -1,0 +1,40 @@
+name: Playwright Tests
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+jobs:
+  test:
+    timeout-minutes: 15
+    runs-on: ubuntu-latest
+    env:
+      MAAS_URL: localhost:5240
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - name: Install dependencies
+        run: yarn
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+      - name: Install MAAS
+        run: |
+          sudo systemctl enable snapd
+          sudo snap install maas --channel=latest/edge
+          sudo snap install maas-test-db --channel=latest/edge
+      - name: Initialise MAAS
+        run: sudo maas init region+rack --maas-url=http://${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
+      - name: Create MAAS admin
+        run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
+      - name: Wait for MAAS UI to be ready
+        run: yarn run wait-on http-get://${{env.MAAS_URL}}/MAAS/r
+      - name: Run Playwright tests
+        run: yarn playwright test
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: playwright-report/
+          retention-days: 30
