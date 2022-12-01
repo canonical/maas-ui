@@ -3,6 +3,12 @@ import { defineConfig } from "cypress";
 export default defineConfig({
   defaultCommandTimeout: 10000,
   e2e: {
+    // block analytics
+    blockHosts: [
+      "www.googletagmanager.com",
+      "www.google-analytics.com",
+      "sentry.is.canonical.com",
+    ],
     // We've imported your old cypress plugins here.
     // You may want to clean this up later by importing these.
     setupNodeEvents(on, config) {
