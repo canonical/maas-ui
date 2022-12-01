@@ -46,6 +46,76 @@ describe("tag reducer", () => {
     });
   });
 
+  it("ignores calls that don't exist when reducing fetchSuccess", () => {
+    const initialState = tagStateFactory({
+      items: [],
+      lists: {},
+    });
+    const fetchedTags = [
+      tagFactory({ name: "tag1" }),
+      tagFactory({ name: "tag2" }),
+    ];
+
+    expect(
+      reducers(initialState, actions.fetchSuccess(fetchedTags, "123456"))
+    ).toEqual(
+      tagStateFactory({
+        items: [],
+        lists: {},
+      })
+    );
+  });
+
+  it("can handle fetchSuccess with callId", () => {
+    const initialState = tagStateFactory({
+      items: [],
+      lists: { 123456: tagStateListFactory({ loading: true }) },
+    });
+    const fetchedTags = [
+      tagFactory({ name: "tag1" }),
+      tagFactory({ name: "tag2" }),
+    ];
+
+    expect(
+      reducers(initialState, actions.fetchSuccess(fetchedTags, "123456"))
+    ).toEqual(
+      tagStateFactory({
+        items: [],
+        loaded: false,
+        loading: false,
+        lists: {
+          123456: tagStateListFactory({
+            loading: false,
+            loaded: true,
+            items: fetchedTags,
+          }),
+        },
+      })
+    );
+  });
+
+  it("can handle fetchSuccess without callId", () => {
+    const initialState = tagStateFactory({
+      items: [],
+      loading: true,
+      loaded: false,
+      lists: {},
+    });
+    const fetchedTags = [
+      tagFactory({ name: "tag1" }),
+      tagFactory({ name: "tag2" }),
+    ];
+
+    expect(reducers(initialState, actions.fetchSuccess(fetchedTags))).toEqual(
+      tagStateFactory({
+        items: fetchedTags,
+        loading: false,
+        loaded: true,
+        lists: {},
+      })
+    );
+  });
+
   it("reduces fetchError", () => {
     const state = tagStateFactory();
 
