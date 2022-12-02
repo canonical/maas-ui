@@ -10,7 +10,7 @@ import {
 import { renderWithBrowserRouter } from "testing/utils";
 
 describe("ControllerHeaderForms", () => {
-  it("can render an action form", () => {
+  it("can render a warning if an action cannot be taken", () => {
     const state = rootStateFactory();
     renderWithBrowserRouter(
       <ControllerHeaderForms
