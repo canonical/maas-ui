@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 import reduxToolkit from "@reduxjs/toolkit";
-import { renderHook, cleanup } from "@testing-library/react-hooks";
+import { renderHook, cleanup, act } from "@testing-library/react-hooks";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 import type { MockStoreEnhanced } from "redux-mock-store";
@@ -546,9 +546,10 @@ describe("machine hook utils", () => {
       const { result } = renderHook(() => useDispatchWithCallId(), {
         wrapper: generateWrapper(store),
       });
-      const { dispatch } = result.current;
       const testAction = { type: "test" };
-      dispatch(testAction);
+      act(() => {
+        result.current.dispatch(testAction);
+      });
       const actual = store
         .getActions()
         .find((action) => action.type === testAction.type);
@@ -587,9 +588,10 @@ describe("machine hook utils", () => {
       const { result } = renderHook(() => useMachineActionDispatch(), {
         wrapper: generateWrapper(store),
       });
-      const { dispatch } = result.current;
       const testAction = { type: "test" };
-      dispatch(testAction);
+      act(() => {
+        result.current.dispatch(testAction);
+      });
       const actual = store
         .getActions()
         .find((action) => action.type === testAction.type);
@@ -611,9 +613,10 @@ describe("machine hook utils", () => {
       const { result } = renderHook(() => useMachineActionDispatch(), {
         wrapper: generateWrapper(store),
       });
-      const { dispatch } = result.current;
       const testAction = { type: "test" };
-      dispatch(testAction);
+      act(() => {
+        result.current.dispatch(testAction);
+      });
       const actual = store
         .getActions()
         .find((action) => action.type === testAction.type);
@@ -659,8 +662,9 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      const { dispatch } = result.current;
-      dispatch(machineActions.test);
+      act(() => {
+        result.current.dispatch(machineActions.test);
+      });
       const expectedGroupsDispatch = machineActions.test({
         filter: {
           status: ["=new" as FetchNodeStatus, "=broken" as FetchNodeStatus],
@@ -702,8 +706,9 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      const { dispatch } = result.current;
-      dispatch(machineActions.test);
+      act(() => {
+        result.current.dispatch(machineActions.test);
+      });
       const expectedItemsDispatch = machineActions.test({
         filter: { id: ["abcd123"] },
       });
@@ -740,8 +745,9 @@ describe("machine hook utils", () => {
           wrapper: generateWrapper(store),
         }
       );
-      const { dispatch } = result.current;
-      dispatch(machineActions.test);
+      act(() => {
+        result.current.dispatch(machineActions.test);
+      });
       const expectedItemsDispatch = machineActions.test({
         filter: {
           status: ["=new" as FetchNodeStatus, "=broken" as FetchNodeStatus],
