@@ -60,6 +60,8 @@ describe("StatusColumn", () => {
       state,
     });
     expect(screen.getByRole("tooltip")).toHaveTextContent("2 running");
-    // TODO: Add check for status icon once https://github.com/canonical/maas-ui/pull/4594 is merged
+    expect(screen.getByTestId("controller-status-icon")).toHaveClass(
+      "p-icon--success"
+    );
   });
 });
