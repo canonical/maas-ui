@@ -1,5 +1,8 @@
 name: accessibility
-on: [push]
+on:
+  push:
+    branches:
+      - "3.3"
 jobs:
   cypress-axe:
     name: cypress-axe
