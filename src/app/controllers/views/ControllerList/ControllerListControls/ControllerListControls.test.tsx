@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -19,22 +19,31 @@ describe("ControllerListControls", () => {
 
   it("changes the search text when the filters change", () => {
     const store = mockStore(initialState);
-    const Proxy = ({ filter }: { filter: string }) => (
+    const { rerender } = render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
             { pathname: "/machines", search: "?q=test+search", key: "testKey" },
           ]}
         >
-          <ControllerListControls filter={filter} setFilter={jest.fn()} />
+          <ControllerListControls filter={""} setFilter={jest.fn()} />
         </MemoryRouter>
       </Provider>
     );
-    const wrapper = mount(<Proxy filter="" />);
-    expect(wrapper.find("SearchBox").prop("value")).toBe("");
+    expect(screen.getByRole("searchbox")).toHaveValue("");
 
-    wrapper.setProps({ filter: "free-text" });
-    wrapper.update();
-    expect(wrapper.find("SearchBox").prop("value")).toBe("free-text");
+    rerender(
+      <Provider store={store}>
+        <MemoryRouter
+          initialEntries={[
+            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
+          ]}
+        >
+          <ControllerListControls filter={"free-text"} setFilter={jest.fn()} />
+        </MemoryRouter>
+      </Provider>
+    );
+
+    expect(screen.getByRole("searchbox")).toHaveValue("free-text");
   });
 });

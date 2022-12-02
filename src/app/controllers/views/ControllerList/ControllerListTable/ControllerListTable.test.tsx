@@ -318,7 +318,7 @@ describe("ControllerListTable", () => {
       expect(tooltips[1]).toBeInTheDocument();
     });
 
-    it("does not show icons on rack controllers", () => {
+    it("does not show vault icons on rack controllers", () => {
       const controllers = [
         controllerFactory({
           system_id: "abc123",
