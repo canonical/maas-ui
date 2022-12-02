@@ -42,3 +42,6 @@ cypress.env.json
 *.fuse*
 
 sitespeed.io/results
+/test-results/
+/playwright-report/
+/playwright/.cache/

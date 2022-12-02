@@ -100,8 +100,6 @@ const tagSlice = createSlice({
         state: TagState,
         action: PayloadAction<Tag[], string, GenericMeta>
       ) => {
-        state.loaded = true;
-        state.loading = false;
         const { payload } = action;
         const { callId } = action.meta;
         if (callId && callId in state.lists) {
@@ -111,8 +109,11 @@ const tagSlice = createSlice({
           state.lists[callId].items = payload;
           state.lists[callId].loaded = true;
           state.lists[callId].loading = false;
-        } else {
+          // This is a regular fetch without a callId - update the main items state
+        } else if (!callId) {
           state.items = payload;
+          state.loaded = true;
+          state.loading = false;
         }
       },
     },

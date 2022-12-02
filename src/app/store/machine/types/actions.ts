@@ -471,6 +471,10 @@ export type MountSpecialParams = {
   systemId: Machine[MachineMeta.PK];
 };
 
+export type OverrideFailedTesting = BaseMachineActionParams & {
+  suppress_failed_script_results?: boolean;
+};
+
 export type OptionalFilesystemParams = {
   fstype?: string;
   mountOptions?: string;

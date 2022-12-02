@@ -1,7 +1,4 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import { ImageStatus } from "./ImageStatus";
@@ -16,8 +13,9 @@ import {
   controllerStatuses as controllerStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ImageStatus", () => {
   let state: RootState;
@@ -36,15 +34,10 @@ describe("ImageStatus", () => {
 
   it("starts polling the image status", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ImageStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<ImageStatus systemId="abc123" />, {
+      route: "/controllers",
+      store,
+    });
     expect(
       store
         .getActions()
@@ -52,18 +45,13 @@ describe("ImageStatus", () => {
     ).toBe(true);
   });
 
-  it("stops polling when unmounting", async () => {
+  it("stops polling when unmounting", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={["/"]}>
-          <ImageStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    const { unmount } = renderWithBrowserRouter(
+      <ImageStatus systemId="abc123" />,
+      { route: "/", store }
     );
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
     expect(
       store
         .getActions()
@@ -75,17 +63,11 @@ describe("ImageStatus", () => {
     state.controller.statuses = controllerStatusesFactory({
       abc123: controllerStatusFactory({ checkingImages: true }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ImageStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    renderWithBrowserRouter(<ImageStatus systemId="abc123" />, {
+      route: "/controllers",
+      state,
+    });
+    expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("shows the synced state", () => {
@@ -93,17 +75,14 @@ describe("ImageStatus", () => {
       abc123: ImageSyncStatus.Synced,
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ImageStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<ImageStatus systemId="abc123" />, {
+      route: "/controllers",
+      store,
+    });
+    expect(screen.getByTestId("sync-success-icon")).toHaveClass(
+      "p-icon--success-grey"
     );
-    expect(wrapper.find("Icon").exists()).toBe(true);
-    expect(wrapper.find('[data-testid="status"]').text()).toEqual(
+    expect(screen.getByTestId("status")).toHaveTextContent(
       ImageSyncStatus.Synced
     );
   });
@@ -113,17 +92,12 @@ describe("ImageStatus", () => {
       abc123: ImageSyncStatus.Syncing,
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ImageStatus systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("Icon").exists()).toBe(false);
-    expect(wrapper.find('[data-testid="status"]').text()).toEqual(
+    renderWithBrowserRouter(<ImageStatus systemId="abc123" />, {
+      route: "/controllers",
+      store,
+    });
+    expect(screen.queryByTestId("sync-success-icon")).not.toBeInTheDocument();
+    expect(screen.getByTestId("status")).toHaveTextContent(
       ImageSyncStatus.Syncing
     );
   });

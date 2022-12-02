@@ -1,5 +1,6 @@
 import "@testing-library/cypress/add-commands";
 import type { Result } from "axe-core";
+import { LONG_TIMEOUT } from "../constants";
 import { generateMAASURL, generateMac, generateName } from "../e2e/utils";
 import type { A11yPageContext } from "./e2e";
 
@@ -44,7 +45,9 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   cy.get("input[name='pxe_mac']").type(generateMac());
   cy.get("select[name='power_type']").select("manual").blur();
   cy.get("button[type='submit']").click();
-  cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`);
+  cy.get(`[data-testid='message']:contains(${hostname} added successfully.)`, {
+    timeout: LONG_TIMEOUT,
+  });
 });
 
 Cypress.Commands.add("addMachines", (hostnames: string[]) => {

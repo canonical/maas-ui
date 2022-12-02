@@ -1,43 +1,39 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 
 import { actions as controllerActions } from "app/store/controller";
+import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
   controller as controllerFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ControllerActionFormWrapper", () => {
-  it("can set selected controllers to those that can perform action", () => {
+  it("can set selected controllers to those that can perform action", async () => {
     const state = rootStateFactory();
     const controllers = [
       controllerFactory({ system_id: "abc123", actions: [NodeActions.DELETE] }),
       controllerFactory({ system_id: "def456", actions: [] }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/controllers", key: "testKey" }]}
-        >
-          <ControllerActionFormWrapper
-            action={NodeActions.DELETE}
-            clearHeaderContent={jest.fn()}
-            controllers={controllers}
-            viewingDetails={false}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ControllerActionFormWrapper
+        action={NodeActions.DELETE}
+        clearHeaderContent={jest.fn()}
+        controllers={controllers}
+        viewingDetails={false}
+      />,
+      { route: "/controllers", store }
     );
 
-    wrapper.find('button[data-testid="on-update-selected"]').simulate("click");
+    await userEvent.click(screen.getByTestId("on-update-selected"));
 
     const expectedAction = controllerActions.setSelected(["abc123"]);
     const actualActions = store.getActions();
