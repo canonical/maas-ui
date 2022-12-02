@@ -56,7 +56,7 @@ export const ImageStatus = ({ systemId }: Props): JSX.Element | null => {
     <>
       {status === ImageSyncStatus.Synced && (
         <>
-          <Icon name="success-grey" />{" "}
+          <Icon data-testid="sync-success-icon" name="success-grey" />{" "}
         </>
       )}
       <span data-testid="status">{status ?? "Asking for status..."}</span>
