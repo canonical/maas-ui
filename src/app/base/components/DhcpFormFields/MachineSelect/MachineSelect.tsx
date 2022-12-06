@@ -1,5 +1,5 @@
 import type { HTMLProps } from "react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import { useId, useOnEscapePressed } from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
@@ -44,11 +44,12 @@ export const MachineSelect = ({
   const [isOpen, setIsOpen] = useState(false);
   const labelId = useId();
   const selectId = useId();
+  const handleClose = useCallback(() => () => setIsOpen(false), []);
   const handleSelect = (machine: Machine | null) => {
-    setIsOpen(false);
+    handleClose();
     setFieldValue(name, machine?.system_id || null);
   };
-  useOnEscapePressed(() => setIsOpen(false));
+  useOnEscapePressed(handleClose);
   const { machine } = useFetchMachine(value as string);
   const previousMachine = usePreviousPersistent(machine);
   const selectedMachine = machine || previousMachine;
@@ -64,7 +65,7 @@ export const MachineSelect = ({
       {/* TODO: update once Field allows a custom label id
       https://github.com/canonical/react-components/issues/820 */}
       <Field label={<span id={labelId}>{label}</span>} {...props}>
-        <OutsideClickHandler onClick={() => setIsOpen(false)}>
+        <OutsideClickHandler onClick={handleClose}>
           <SelectButton
             aria-describedby={labelId}
             aria-expanded={isOpen ? "true" : "false"}
