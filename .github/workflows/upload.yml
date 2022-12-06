@@ -2,6 +2,10 @@ name: Upload
 on:
   pull_request_target:
     types: [closed]
+  pull_request:
+    branches:
+      - main
+
 jobs:
   upload-build:
     if: github.event.pull_request.merged == true
