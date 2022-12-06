@@ -37,7 +37,17 @@ test("machines list loads", async ({ page }) => {
   await expect(page.getByTestId("subtitle-string")).toHaveText(
     /machines available/
   );
+  await expect(page.getByRole("grid", { name: /Loading/i })).not.toBeVisible();
   // expect a single machine.list and machine.count request
   await expect(machineListRequests.length).toBe(1);
   await expect(machineCountRequests.length).toBe(1);
+  // perform machine search
+  await page.getByLabel("Search").type("doesnotexist");
+  await expect(page.getByRole("grid", { name: /Loading/i })).not.toBeVisible();
+  await expect(
+    page.getByText(/No machines match the search criteria/)
+  ).toBeVisible();
+  // expect additional single machine.list and machine.count requests
+  await expect(machineListRequests.length).toBe(2);
+  await expect(machineCountRequests.length).toBe(2);
 });
