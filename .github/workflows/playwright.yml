@@ -19,13 +19,10 @@ jobs:
         run: yarn
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
-      - name: Install MAAS
-        run: |
-          sudo systemctl enable snapd
-          sudo snap install maas --channel=latest/edge
-          sudo snap install maas-test-db --channel=latest/edge
-      - name: Initialise MAAS
-        run: sudo maas init region+rack --maas-url=http://${{env.MAAS_URL}}/MAAS --database-uri maas-test-db:///
+      - name: Setup MAAS
+        uses: canonical/setup-maas@main
+        with:
+          maas-url: ${{env.MAAS_URL}}/MAAS
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS UI to be ready
