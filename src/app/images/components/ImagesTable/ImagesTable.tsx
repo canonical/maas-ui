@@ -12,6 +12,7 @@ import type { ImageValue } from "app/images/types";
 import type { BootResource } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
 import configSelectors from "app/store/config/selectors";
+import { getTimeDistanceString } from "app/utils/time";
 
 type Props = {
   handleClear?: (image: ImageValue) => void;
@@ -30,6 +31,8 @@ export enum Labels {
   CannotDelete = "Cannot delete images of the default commissioning release.",
   EmptyState = "No images have been selected.",
   DeleteImageConfirm = "Confirm image deletion",
+  LastDeployed = "Last deployed",
+  MachineCount = "Machine count",
 }
 
 /**
@@ -75,6 +78,14 @@ const generateImageRow = (
         className: "status-col",
       },
       {
+        content: "—",
+        className: "last-deployed-col",
+      },
+      {
+        content: "—",
+        className: "machine-count-col",
+      },
+      {
         content: onClear ? (
           <TableActions
             clearDisabled={!canBeCleared}
@@ -104,13 +115,19 @@ const generateImageRow = (
  * @param unchecked - whether the resource checkbox is unchecked.
  * @returns row generated from resource.
  */
-const generateResourceRow = (
-  resource: BootResource,
-  commissioningRelease: string | null,
-  expanded: BootResource["id"] | null,
-  setExpanded: (id: BootResource["id"] | null) => void,
-  unchecked = false
-) => {
+const generateResourceRow = ({
+  resource,
+  commissioningRelease,
+  expanded,
+  setExpanded,
+  unchecked,
+}: {
+  resource: BootResource;
+  commissioningRelease: string | null;
+  expanded: BootResource["id"] | null;
+  setExpanded: (id: BootResource["id"] | null) => void;
+  unchecked: boolean;
+}) => {
   const { os, release } = splitResourceName(resource.name);
   const canBeDeleted = !(os === "ubuntu" && release === commissioningRelease);
   const isExpanded = expanded === resource.id;
@@ -123,7 +140,6 @@ const generateResourceRow = (
   } else if (resource.complete) {
     statusIcon = <Icon aria-label={Labels.Success} name={Labels.Success} />;
   }
-
   return {
     "aria-label": resource.title,
     className: classNames("p-table__row", {
@@ -142,6 +158,21 @@ const generateResourceRow = (
           />
         ),
         className: "status-col",
+      },
+      {
+        content: resource?.last_deployed ? (
+          <DoubleRow
+            primary={getTimeDistanceString(resource?.last_deployed)}
+            secondary={resource?.last_deployed}
+          />
+        ) : (
+          "—"
+        ),
+        className: "last-deployed-col",
+      },
+      {
+        content: `${resource.numberOfNodes || "—"}`,
+        className: "machine-count-col",
       },
       {
         content: (
@@ -170,6 +201,10 @@ const generateResourceRow = (
       arch: resource.arch,
       size: resource.size,
       status: resource.status,
+      lastDeployed: resource?.last_deployed
+        ? new Date(resource?.last_deployed).getTime() || 0
+        : 0,
+      machineCount: resource.numberOfNodes,
     },
   };
 };
@@ -196,13 +231,13 @@ const ImagesTable = ({
         resourceMatchesImage(resource, image)
       );
       if (resource) {
-        return generateResourceRow(
+        return generateResourceRow({
           resource,
           commissioningRelease,
           expanded,
           setExpanded,
-          false
-        );
+          unchecked: false,
+        });
       } else {
         const commissioningImages = images.filter(isCommissioningImage);
         const canBeCleared = !(
@@ -214,13 +249,13 @@ const ImagesTable = ({
     })
     .concat(
       uncheckedResources.map((resource) =>
-        generateResourceRow(
+        generateResourceRow({
           resource,
           commissioningRelease,
           expanded,
           setExpanded,
-          true
-        )
+          unchecked: true,
+        })
       )
     );
 
@@ -241,8 +276,19 @@ const ImagesTable = ({
           className: "status-col",
           sortKey: "status",
         },
+        {
+          content: "Last deployed",
+          className: "last-deployed-col",
+          sortKey: "lastDeployed",
+        },
+        {
+          content: "Machines",
+          className: "machine-count-col",
+          sortKey: "machineCount",
+        },
         { content: "Actions", className: "actions-col u-align--right" },
       ]}
+      responsive
       rows={rows}
       sortable
     />
