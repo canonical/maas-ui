@@ -31,11 +31,11 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build
-        run: REACT_APP_GIT_SHA=${{env.REACT_APP_GIT_SHA}} yarn build
+        run: REACT_APP_GIT_SHA=${{env.REACT_APP_GIT_SHA}} GENERATE_SOURCEMAP=false yarn build
         env:
           CI: false
       - name: Compress
-        run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./
+        run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./ && ls -hs ../${{env.PACKAGE_NAME}}
       - name: Install upload-assets snap
         run: sudo snap install upload-assets
       - name: Upload to assets server
