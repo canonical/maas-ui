@@ -53,10 +53,18 @@ Propose this against the appropriate version branch and merge once approved.
 Email the MAAS & Design list with a link to the new branch in GitHub and include
 the latest hash to include for ui Git submodule.
 
-#### Update main version
+#### Update main version to the next expected version
 
 Create a new branch of main and update the version in all package.jsons to the next expected version.
 
 #### Add branch protection
 
 Create new branch protection rules for the new version branch, copying the rules from the previous branch: https://github.com/canonical/maas-ui/settings/branches.
+
+#### Update Usabilla ID
+
+Usabilla ids can be found in the Usabilla dashboard.
+
+Update the `REACT_APP_USABILLA_ID` on the new release branch with a Usabilla button id that matches the new (e.g. "MAAS 3.3"). You may need to create a new button in Usabilla.
+
+Update the `REACT_APP_USABILLA_ID` on the main branch with a Usabilla "MAAS latest/edge" button id.
