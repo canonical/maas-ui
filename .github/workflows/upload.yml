@@ -31,7 +31,7 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: CYPRESS_INSTALL_BINARY=0 yarn install
       - name: Build
-        run: REACT_APP_GIT_SHA=${{env.REACT_APP_GIT_SHA}} GENERATE_SOURCEMAP=false yarn build
+        run: REACT_APP_GIT_SHA=${{env.REACT_APP_GIT_SHA}} yarn build
         env:
           CI: false
       - name: Compress
