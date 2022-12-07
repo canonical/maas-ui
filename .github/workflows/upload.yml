@@ -1,10 +1,11 @@
 name: Upload
 on:
-  pull_request_target:
-    types: [closed]
+  pull_request:
+    branches:
+      - main
+
 jobs:
   upload-build:
-    if: github.event.pull_request.merged == true
     name: Upload build artifacts
     runs-on: ubuntu-22.04
     env:
@@ -35,7 +36,7 @@ jobs:
         env:
           CI: false
       - name: Compress
-        run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./
+        run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./ && ls -hs ../${{env.PACKAGE_NAME}}
       - name: Install upload-assets snap
         run: sudo snap install upload-assets
       - name: Upload to assets server
