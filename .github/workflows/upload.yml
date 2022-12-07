@@ -35,7 +35,7 @@ jobs:
         env:
           CI: false
       - name: Compress
-        run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./
+        run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./ && ls -hs ../${{env.PACKAGE_NAME}}
       - name: Install upload-assets snap
         run: sudo snap install upload-assets
       - name: Upload to assets server
