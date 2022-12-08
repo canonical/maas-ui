@@ -242,7 +242,7 @@ describe("ImagesTable", () => {
       resourceFactory({
         arch: "amd64",
         name: "ubuntu/focal",
-        last_deployed: "Fri, 18 Nov. 2022 09:55:21",
+        lastDeployed: "Fri, 18 Nov. 2022 09:55:21",
         numberOfNodes: 768,
       }),
     ];
@@ -296,7 +296,7 @@ describe("ImagesTable", () => {
       resourceFactory({
         arch: "amd64",
         name: "ubuntu/focal",
-        last_deployed: "",
+        lastDeployed: "",
         numberOfNodes: 768,
       }),
     ];
@@ -346,20 +346,20 @@ describe("ImagesTable", () => {
         name: "ubuntu/xenial",
         arch: "amd64",
         title: "16.04 LTS",
-        last_deployed: "Tue, 16 Nov. 2022 09:55:21",
+        lastDeployed: "Tue, 16 Nov. 2022 09:55:21",
       }),
       resourceFactory({
         arch: "amd64",
         name: "ubuntu/focal",
         title: "20.04 LTS",
-        last_deployed: "Thu, 17 Nov. 2022 09:55:21",
+        lastDeployed: "Thu, 17 Nov. 2022 09:55:21",
         numberOfNodes: 768,
       }),
       resourceFactory({
         name: "ubuntu/bionic",
         arch: "i386",
         title: "18.04 LTS",
-        last_deployed: "Wed, 18 Nov. 2022 08:55:21",
+        lastDeployed: "Wed, 18 Nov. 2022 08:55:21",
       }),
     ];
     const state = rootStateFactory({
@@ -410,20 +410,20 @@ describe("ImagesTable", () => {
         arch: "amd64",
         name: "ubuntu/focal",
         title: "20.04 LTS",
-        last_deployed: "Thu, 17 Nov. 2022 09:55:21",
+        lastDeployed: "Thu, 17 Nov. 2022 09:55:21",
         numberOfNodes: 768,
       }),
       resourceFactory({
         name: "ubuntu/bionic",
         arch: "i386",
         title: "18.04 LTS",
-        last_deployed: "Wed, 18 Nov. 2022 08:55:21",
+        lastDeployed: "Wed, 18 Nov. 2022 08:55:21",
       }),
       resourceFactory({
         name: "ubuntu/xenial",
         arch: "amd64",
         title: "16.04 LTS",
-        last_deployed: "Tue, 16 Nov. 2022 09:55:21",
+        lastDeployed: "Tue, 16 Nov. 2022 09:55:21",
       }),
     ];
     const state = rootStateFactory({

@@ -83,7 +83,7 @@ const generateImageRow = (
       },
       {
         content: "—",
-        className: "machine-count-col",
+        className: "machines-col",
       },
       {
         content: onClear ? (
@@ -160,10 +160,10 @@ const generateResourceRow = ({
         className: "status-col",
       },
       {
-        content: resource?.last_deployed ? (
+        content: resource.lastDeployed ? (
           <DoubleRow
-            primary={getTimeDistanceString(resource?.last_deployed)}
-            secondary={resource?.last_deployed}
+            primary={getTimeDistanceString(resource.lastDeployed)}
+            secondary={resource.lastDeployed}
           />
         ) : (
           "—"
@@ -172,7 +172,7 @@ const generateResourceRow = ({
       },
       {
         content: `${resource.numberOfNodes || "—"}`,
-        className: "machine-count-col",
+        className: "machines-col",
       },
       {
         content: (
@@ -201,8 +201,8 @@ const generateResourceRow = ({
       arch: resource.arch,
       size: resource.size,
       status: resource.status,
-      lastDeployed: resource?.last_deployed
-        ? new Date(resource?.last_deployed).getTime() || 0
+      lastDeployed: resource.lastDeployed
+        ? new Date(resource.lastDeployed).getTime() || 0
         : 0,
       machineCount: resource.numberOfNodes,
     },
@@ -272,7 +272,7 @@ const ImagesTable = ({
         { content: "Architecture", className: "arch-col", sortKey: "arch" },
         { content: "Size", className: "size-col", sortKey: "size" },
         {
-          content: <span className="u-nudge-right--large">Status</span>,
+          content: <span className="p-double-row__header-spacer">Status</span>,
           className: "status-col",
           sortKey: "status",
         },
@@ -283,12 +283,11 @@ const ImagesTable = ({
         },
         {
           content: "Machines",
-          className: "machine-count-col",
+          className: "machines-col",
           sortKey: "machineCount",
         },
         { content: "Actions", className: "actions-col u-align--right" },
       ]}
-      responsive
       rows={rows}
       sortable
     />
