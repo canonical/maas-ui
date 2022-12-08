@@ -2,9 +2,9 @@ const docsUrls = {
   aboutNativeTLS:
     "https://maas.io/docs/how-to-enable-tls-encryption#heading--about-maas-native-tls",
   addMachines:
-    "https://maas.io/docs/how-to-manage-machines#heading--how-to-create-delete-and-configure-machines",
+    "https://maas.io/docs/how-to-make-machines-available#heading--how-to-create-delete-and-configure-machines",
   addNodesViaChassis:
-    "https://maas.io/docs/how-to-manage-machines#heading--how-to-add-machines-via-a-chassis",
+    "https://maas.io/docs/how-to-make-machines-available#heading--how-to-add-machines-via-a-chassis",
   autoRenewTLSCert:
     "https://maas.io/docs/how-to-enable-tls-encryption#heading--about-auto-renewal-for-certificates",
   cloudInit:
@@ -13,22 +13,22 @@ const docsUrls = {
     "https://maas.io/docs/how-to-install-maas#heading--configure-maas",
   customisingDeployedMachines:
     "https://maas.io/docs/about-customising-machines#heading--about-customising-deployed-machines",
-  dhcp: "https://maas.io/docs/how-to-manage-ip-addresses#heading--how-to-manage-maas-dhcp",
+  dhcp: "https://maas.io/docs/how-to-enable-dhcp#heading--how-to-manage-maas-dhcp",
   images: "https://maas.io/docs/about-images",
   ipmi: "https://maas.io/docs/power-management-reference#heading--ipmi",
   ipRanges:
-    "https://maas.io/docs/how-to-manage-ip-addresses#heading--how-to-manage-ip-ranges",
+    "https://maas.io/docs/how-to-enable-dhcp#heading--how-to-manage-ip-ranges",
   kvmIntroduction: "https://maas.io/docs/about-vm-hosting",
   networkDiscovery:
     "https://maas.io/docs/about-networking#heading--about-network-discovery",
-  rackController: "https://maas.io/docs/how-to-manage-controllers",
+  rackController: "https://maas.io/docs/how-to-adjust-your-controllers",
   sshKeys: "https://maas.io/docs/how-to-manage-user-accounts#heading--ssh-keys",
   tagsAutomatic:
-    "https://maas.io/docs/how-to-work-with-tags#heading--automatic-tags",
+    "https://maas.io/docs/how-to-tag-machines#heading--automatic-tags",
   tagsKernelOptions:
-    "https://maas.io/docs/how-to-work-with-tags#heading--kernel-options",
+    "https://maas.io/docs/how-to-tag-machines#heading--kernel-options",
   tagsXpathExpressions:
-    "https://maas.io/docs/how-to-work-with-tags#heading--xpath-expressions",
+    "https://maas.io/docs/how-to-tag-machines#heading--xpath-expressions",
   vaultIntegration:
     // "https://maas.io/docs/how-to-integrate-with-vault#heading--enabling-vault", <-- TODO: Enable this link when the page is ready
     "https://maas.io/docs",
