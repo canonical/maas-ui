@@ -1,12 +1,12 @@
 const docsUrls = {
   aboutNativeTLS:
-    "https://maas.io/docs/how-to-enable-tls-encryption#heading--about-maas-native-tls",
+    "https://maas.io/docs/how-to-enable-maas-native-tls#heading--about-maas-native-tls",
   addMachines:
     "https://maas.io/docs/how-to-make-machines-available#heading--how-to-create-delete-and-configure-machines",
   addNodesViaChassis:
     "https://maas.io/docs/how-to-make-machines-available#heading--how-to-add-machines-via-a-chassis",
   autoRenewTLSCert:
-    "https://maas.io/docs/how-to-enable-tls-encryption#heading--about-auto-renewal-for-certificates",
+    "https://maas.io/docs/how-to-enable-maas-native-tls#heading--about-auto-renewal-for-certificates",
   cloudInit:
     "https://maas.io/docs/how-to-customise-machines#heading--cloud-init",
   configurationJourney:
