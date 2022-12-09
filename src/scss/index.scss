@@ -256,6 +256,7 @@
 @import "~app/settings/components/SettingsTable";
 @import "~app/settings/views/Configuration/GeneralForm";
 @import "~app/settings/views/Configuration/GeneralForm/ThemedRadioButton";
+@import "~app/settings/views/Configuration/Security/SessionTimeout";
 @import "~app/settings/views/Configuration/Security/TLSEnabled/TLSEnabledFields";
 @import "~app/settings/views/Dhcp/DhcpList";
 @import "~app/settings/views/LicenseKeys/LicenseKeyList";
@@ -271,6 +272,7 @@
 @include RepositoryFormFields;
 @include ScriptsList;
 @include ScriptsUpload;
+@include SessionTimeout;
 @include TLSEnabledFields;
 @include UsersList;
 @include GeneralForm;

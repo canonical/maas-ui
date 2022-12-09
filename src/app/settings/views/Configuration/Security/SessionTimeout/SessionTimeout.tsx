@@ -67,19 +67,21 @@ const SessionTimeout = (): JSX.Element => {
         saved={saved}
         saving={saving}
       >
-        <span className="">
+        <span className="p-form__group">
           <FormikField
+            className="p-form__session-length-input"
             label={Labels.Expiration}
             name="session_length"
             required
             type="number"
-            wrapperClassName="u-sv2"
+            wrapperClassName="p-form__session-length-input"
           />
           <FormikField
-            aria-label={Labels.TimeUnit}
             component={Select}
+            label={Labels.TimeUnit}
             name="time_unit"
             options={timeUnitOptions}
+            wrapperClassName="p-form__time-unit-input"
           />
         </span>
       </FormikForm>
