@@ -111,3 +111,25 @@ it("renders the Vault section", () => {
 
   expect(screen.getByText(/Integrate with Vault/)).toBeInTheDocument();
 });
+
+it("renders the Session Timeout section", () => {
+  const state = rootStateFactory({
+    general: generalStateFactory({
+      tlsCertificate: tlsCertificateStateFactory({
+        data: tlsCertificateFactory(),
+        loaded: true,
+      }),
+      vaultEnabled: vaultEnabledStateFactory({
+        data: false,
+        loaded: true,
+      }),
+    }),
+    controller: controllerStateFactory({
+      loaded: true,
+      items: [controllerFactory({ vault_configured: false })],
+    }),
+  });
+
+  renderWithBrowserRouter(<Security />, { state });
+  expect(screen.getByText(/Session timeout expiration/)).toBeInTheDocument();
+});

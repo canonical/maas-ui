@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Col, Row, Spinner } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 
+import SessionTimeout from "./SessionTimeout";
 import TLSDisabled from "./TLSDisabled";
 import TLSEnabled from "./TLSEnabled";
 import VaultSettings from "./VaultSettings";
@@ -42,6 +43,12 @@ const Security = (): JSX.Element => {
           ) : (
             <TLSDisabled />
           )}
+        </Col>
+      </Row>
+      <Row>
+        <Col size={6}>
+          <h4>Session timeout</h4>
+          <SessionTimeout />
         </Col>
       </Row>
       <Row>
