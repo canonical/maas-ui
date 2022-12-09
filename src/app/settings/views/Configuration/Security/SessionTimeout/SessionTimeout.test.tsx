@@ -1,4 +1,4 @@
-import { screen } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
@@ -102,16 +102,45 @@ describe("SessionTimeout", () => {
       screen.getByRole("button", { name: SessionTimeoutLabels.Cancel })
     );
 
-    expect(
-      screen.queryByRole("form", {
-        name: SessionTimeoutLabels.ConfigureSessionTimeout,
-      })
-    ).not.toBeInTheDocument();
+    await waitFor(() => {
+      expect(
+        screen.queryByRole("form", {
+          name: SessionTimeoutLabels.ConfigureSessionTimeout,
+        })
+      ).not.toBeInTheDocument();
+    });
+
+    expect(screen.getByText(/3 days/)).toBeInTheDocument();
+  });
+
+  it("displays the updated timeout length when the value is saved", async () => {
+    renderWithMockStore(<SessionTimeout />, { state });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: SessionTimeoutLabels.Edit })
+    );
+
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
+      "3"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: SessionTimeoutLabels.Save })
+    );
   });
 
   it("correctly converts days values to seconds and dispatches an action to update the session timeout on save", async () => {
     const store = mockStore(state);
     renderWithMockStore(<SessionTimeout />, { store });
+
+    await userEvent.click(
+      screen.getByRole("button", { name: SessionTimeoutLabels.Edit })
+    );
 
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
@@ -138,6 +167,10 @@ describe("SessionTimeout", () => {
     const store = mockStore(state);
     renderWithMockStore(<SessionTimeout />, { store });
 
+    await userEvent.click(
+      screen.getByRole("button", { name: SessionTimeoutLabels.Edit })
+    );
+
     await userEvent.clear(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
     );
@@ -157,7 +190,7 @@ describe("SessionTimeout", () => {
 
     const actualActions = store.getActions();
     const expectedAction = configActions.update({
-      session_length: 259200,
+      session_length: 10800,
     });
 
     expect(
