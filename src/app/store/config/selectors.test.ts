@@ -274,6 +274,22 @@ describe("config selectors", () => {
     });
   });
 
+  describe("theme", () => {
+    it("returns MAAS config for maas theme", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({
+              name: ConfigNames.THEME,
+              value: "default",
+            }),
+          ],
+        }),
+      });
+      expect(config.theme(state)).toBe("default");
+    });
+  });
+
   describe("analyticsEnabled", () => {
     it("returns MAAS config for enable analytics", () => {
       const state = rootStateFactory({
@@ -585,6 +601,22 @@ describe("config selectors", () => {
         }),
       });
       expect(config.rpcSharedSecret(state)).toBe("veryverysecret");
+    });
+  });
+
+  describe("sessionLength", () => {
+    it("returns MAAS config for sessionLength", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({
+              name: ConfigNames.SESSION_LENGTH,
+              value: 42069,
+            }),
+          ],
+        }),
+      });
+      expect(config.sessionLength(state)).toBe(42069);
     });
   });
 
