@@ -7,14 +7,14 @@ import SessionTimeout, {
 } from "./SessionTimeout";
 
 import { actions as configActions } from "app/store/config";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
   configState as configStateFactory,
-  generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -24,20 +24,28 @@ describe("SessionTimeout", () => {
   beforeEach(() => {
     state = rootStateFactory({
       config: configStateFactory({
-        items: [configFactory()],
+        loaded: true,
+        loading: false,
+        items: [
+          configFactory({
+            name: ConfigNames.SESSION_LENGTH,
+            value: 1209600,
+          }),
+        ],
       }),
-      general: generalStateFactory(),
     });
   });
 
   it("displays a spinner while loading", () => {
-    renderWithMockStore(<SessionTimeout />, { state });
+    state.config.loaded = false;
+    state.config.loading = true;
+    renderWithBrowserRouter(<SessionTimeout />, { state });
 
     expect(screen.getByText(SessionTimeoutLabels.Loading)).toBeInTheDocument();
   });
 
   it("shows the current value in read-only mode by default", () => {
-    renderWithMockStore(<SessionTimeout />, { state });
+    renderWithBrowserRouter(<SessionTimeout />, { state });
 
     expect(
       screen.queryByText(SessionTimeoutLabels.Loading)
@@ -56,7 +64,7 @@ describe("SessionTimeout", () => {
   });
 
   it("displays the form when the 'Edit' button is clicked", async () => {
-    renderWithMockStore(<SessionTimeout />, { state });
+    renderWithBrowserRouter(<SessionTimeout />, { state });
 
     expect(
       screen.queryByRole("form", {
@@ -75,12 +83,12 @@ describe("SessionTimeout", () => {
     ).toBeInTheDocument();
 
     expect(
-      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
-    ).toHaveValue("14");
+      screen.getByRole("spinbutton", { name: SessionTimeoutLabels.Expiration })
+    ).toHaveValue(14);
   });
 
   it("hides the form when the 'Cancel' button is clicked", async () => {
-    renderWithMockStore(<SessionTimeout />, { state });
+    renderWithBrowserRouter(<SessionTimeout />, { state });
 
     expect(
       screen.queryByRole("form", {
@@ -110,22 +118,22 @@ describe("SessionTimeout", () => {
       ).not.toBeInTheDocument();
     });
 
-    expect(screen.getByText(/3 days/)).toBeInTheDocument();
+    expect(screen.getByText(/14 days/)).toBeInTheDocument();
   });
 
   it("displays the updated timeout length when the value is saved", async () => {
-    renderWithMockStore(<SessionTimeout />, { state });
+    renderWithBrowserRouter(<SessionTimeout />, { state });
 
     await userEvent.click(
       screen.getByRole("button", { name: SessionTimeoutLabels.Edit })
     );
 
     await userEvent.clear(
-      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+      screen.getByRole("spinbutton", { name: SessionTimeoutLabels.Expiration })
     );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
+      screen.getByRole("spinbutton", { name: SessionTimeoutLabels.Expiration }),
       "3"
     );
 
@@ -136,17 +144,17 @@ describe("SessionTimeout", () => {
 
   it("correctly converts days values to seconds and dispatches an action to update the session timeout on save", async () => {
     const store = mockStore(state);
-    renderWithMockStore(<SessionTimeout />, { store });
+    renderWithBrowserRouter(<SessionTimeout />, { store });
 
     await userEvent.click(
       screen.getByRole("button", { name: SessionTimeoutLabels.Edit })
     );
 
     await userEvent.clear(
-      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+      screen.getByRole("spinbutton", { name: SessionTimeoutLabels.Expiration })
     );
     await userEvent.type(
-      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
+      screen.getByRole("spinbutton", { name: SessionTimeoutLabels.Expiration }),
       "3"
     );
     await userEvent.click(
@@ -165,14 +173,14 @@ describe("SessionTimeout", () => {
 
   it("correctly converts hours values to seconds and dispatches an action to update the session timeout on save", async () => {
     const store = mockStore(state);
-    renderWithMockStore(<SessionTimeout />, { store });
+    renderWithBrowserRouter(<SessionTimeout />, { store });
 
     await userEvent.click(
       screen.getByRole("button", { name: SessionTimeoutLabels.Edit })
     );
 
     await userEvent.clear(
-      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration })
+      screen.getByRole("spinbutton", { name: SessionTimeoutLabels.Expiration })
     );
 
     await userEvent.selectOptions(
@@ -181,7 +189,7 @@ describe("SessionTimeout", () => {
     );
 
     await userEvent.type(
-      screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
+      screen.getByRole("spinbutton", { name: SessionTimeoutLabels.Expiration }),
       "3"
     );
     await userEvent.click(
