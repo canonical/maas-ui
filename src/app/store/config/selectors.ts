@@ -216,6 +216,15 @@ const theme = createSelector([all], (configs) =>
 );
 
 /**
+ * Returns the MAAS config for session length.
+ * @param - The redux state
+ * @returns The MAAS session length.
+ */
+const sessionLength = createSelector([all], (configs) =>
+  getValueFromName<number>(configs, ConfigNames.SESSION_LENGTH)
+);
+
+/**
  * Returns the MAAS config for MAAS uuid.
  * @param - The redux state.
  * @returns Then MAAS uuid.
@@ -594,6 +603,7 @@ const config = {
   rpcSharedSecret,
   saved,
   saving,
+  sessionLength,
   storageLayoutOptions,
   theme,
   thirdPartyDriversEnabled,
