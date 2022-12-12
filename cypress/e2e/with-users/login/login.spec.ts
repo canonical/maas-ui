@@ -29,9 +29,8 @@ context("Login page", () => {
   });
 
   it("displays an error notification if wrong credentials provided", () => {
-    cy.server();
     cy.get("input[name='username']").type("username");
-    cy.get("input[name='password']").type("password{enter}");
+    cy.get("input[name='password']").type("incorrect-password{enter}");
     cy.get(".p-notification--negative").should("exist");
   });
 
