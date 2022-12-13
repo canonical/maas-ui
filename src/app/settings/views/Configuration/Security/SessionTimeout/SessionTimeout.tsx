@@ -7,6 +7,7 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
+import { durationToSeconds, durationToDays } from "app/utils/timeSpan";
 
 type SessionTimeoutFormValues = {
   session_length: number;
@@ -56,7 +57,7 @@ const SessionTimeout = (): JSX.Element => {
             Edit
           </Button>
         </span>
-        <p>{sessionLength / 24 / 3600} days</p>
+        <p>{durationToDays({ seconds: sessionLength })} days</p>
       </>
     );
   } else
@@ -68,27 +69,23 @@ const SessionTimeout = (): JSX.Element => {
           buttonsBordered
           cleanup={configActions.cleanup}
           initialValues={{
-            session_length: sessionLength / 24 / 3600,
+            session_length: durationToDays({ seconds: sessionLength }),
             time_unit: "days",
           }}
-          onCancel={(values, { resetForm }) => {
-            resetForm();
-            values.session_length = sessionLength / 24 / 3600;
-            values.time_unit = "days";
+          onCancel={() => {
             setFormOpen(false);
           }}
           onSubmit={(values) => {
             dispatch(configActions.cleanup());
             dispatch(
               configActions.update({
-                session_length: Number(
-                  values.time_unit === "hours"
-                    ? values.session_length * 3600
-                    : values.session_length * 3600 * 24
-                ),
+                session_length: durationToSeconds({
+                  [values.time_unit]: values.session_length,
+                }),
               })
             );
           }}
+          resetOnSave
           saved={saved}
           saving={saving}
         >
