@@ -124,7 +124,6 @@ const DeleteForm = ({
         dispatch(machineActions.invalidateQueries());
       }}
       processingCount={deletingCount}
-      selectedCount={deletingCount}
       submitAppearance="negative"
       validationSchema={DeleteFormSchema}
     >
