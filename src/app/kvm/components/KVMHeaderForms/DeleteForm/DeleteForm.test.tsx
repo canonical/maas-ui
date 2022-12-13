@@ -1,3 +1,5 @@
+import { screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -9,6 +11,7 @@ import DeleteForm from "./DeleteForm";
 import FormikForm from "app/base/components/FormikForm";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
+import type { RootState } from "app/store/root/types";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import {
   pod as podFactory,
@@ -21,9 +24,12 @@ import {
   vmClusterState as vmClusterStateFactory,
   vmClusterStatuses as vmClusterStatusesFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  waitForComponentToPaint,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DeleteForm", () => {
   afterEach(() => {
@@ -169,18 +175,18 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />,
+      { route: "/kvm", store }
     );
 
-    wrapper.find("Formik").simulate("submit");
-    await waitForComponentToPaint(wrapper);
+    expect(
+      screen.getByRole("button", { name: /Remove KVM Host/i })
+    ).toBeEnabled();
+    await userEvent.click(
+      screen.getByRole("button", { name: /Remove KVM Host/i })
+    );
+
     expect(
       store.getActions().find((action) => action.type === "pod/delete")
     ).toStrictEqual({
@@ -209,18 +215,17 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />,
+      { route: "/kvm", store }
     );
 
-    wrapper.find("Formik").simulate("submit");
-    await waitForComponentToPaint(wrapper);
+    expect(
+      screen.getByRole("button", { name: /Remove cluster/i })
+    ).toBeEnabled();
+    await userEvent.click(
+      screen.getByRole("button", { name: /Remove cluster/i })
+    );
     expect(
       store.getActions().find((action) => action.type === "vmcluster/delete")
     ).toStrictEqual({
