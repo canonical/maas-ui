@@ -218,7 +218,7 @@ const theme = createSelector([all], (configs) =>
 /**
  * Returns the MAAS config for session length.
  * @param - The redux state
- * @returns The MAAS session length.
+ * @returns The MAAS session length in seconds.
  */
 const sessionLength = createSelector([all], (configs) =>
   getValueFromName<number>(configs, ConfigNames.SESSION_LENGTH)
