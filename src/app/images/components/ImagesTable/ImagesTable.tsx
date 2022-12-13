@@ -13,7 +13,7 @@ import type { BootResource } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
 import configSelectors from "app/store/config/selectors";
 import { sizeStringToNumber } from "app/utils/formatBytes";
-import { getTimeDistanceString } from "app/utils/time";
+import { getTimeDistanceString, parseUtcDatetime } from "app/utils/time";
 
 type Props = {
   handleClear?: (image: ImageValue) => void;
@@ -202,9 +202,7 @@ const generateResourceRow = ({
       arch: resource.arch,
       size: sizeStringToNumber(resource.size),
       status: resource.status,
-      lastDeployed: resource.lastDeployed
-        ? new Date(resource.lastDeployed).getTime() || 0
-        : 0,
+      lastDeployed: parseUtcDatetime(resource.lastDeployed),
       machineCount: resource.numberOfNodes,
     },
   };
