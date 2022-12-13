@@ -12,6 +12,7 @@ import type { ImageValue } from "app/images/types";
 import type { BootResource } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
 import configSelectors from "app/store/config/selectors";
+import { sizeStringToNumber } from "app/utils/formatBytes";
 import { getTimeDistanceString } from "app/utils/time";
 
 type Props = {
@@ -199,7 +200,7 @@ const generateResourceRow = ({
     sortData: {
       title: resource.title,
       arch: resource.arch,
-      size: resource.size,
+      size: sizeStringToNumber(resource.size),
       status: resource.status,
       lastDeployed: resource.lastDeployed
         ? new Date(resource.lastDeployed).getTime() || 0
