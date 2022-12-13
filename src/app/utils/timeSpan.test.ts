@@ -3,6 +3,8 @@ import {
   timeSpanToSeconds,
   durationToSeconds,
   durationToDays,
+  secondsToDuration,
+  durationToHours,
 } from "./timeSpan";
 
 describe("timeSpanToSeconds", () => {
@@ -47,5 +49,36 @@ describe("durationToDays", () => {
     expect(durationToDays({ hours: 240 })).toEqual(10);
     expect(durationToDays({ seconds: 86400 })).toEqual(1);
     expect(durationToDays({ minutes: 1440 })).toEqual(1);
+  });
+});
+
+describe("durationToHours", () => {
+  it("converts a duration to a number of days", () => {
+    expect(durationToHours({ days: 1 })).toEqual(24);
+    expect(durationToHours({ days: 3 })).toEqual(72);
+    expect(durationToHours({ seconds: 86400 })).toEqual(24);
+    expect(durationToHours({ minutes: 60 })).toEqual(1);
+  });
+});
+
+describe("secondsToDuration", () => {
+  it("converts a number of seconds to a Duration", () => {
+    expect(secondsToDuration(60)).toEqual({
+      years: 0,
+      months: 0,
+      days: 0,
+      hours: 0,
+      minutes: 1,
+      seconds: 0,
+    });
+
+    expect(secondsToDuration(123456789)).toEqual({
+      years: 3,
+      months: 10,
+      days: 28,
+      hours: 21,
+      minutes: 33,
+      seconds: 9,
+    });
   });
 });

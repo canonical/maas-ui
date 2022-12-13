@@ -2,8 +2,10 @@ import type { Duration } from "date-fns";
 import {
   add,
   differenceInSeconds,
+  differenceInHours,
   secondsToMinutes,
   differenceInDays,
+  intervalToDuration,
 } from "date-fns";
 
 import type { Minutes, Seconds, TimeSpan, Days } from "app/base/types";
@@ -43,4 +45,17 @@ export const timeSpanToMinutes = (timeSpan: TimeSpan | null): Minutes =>
 export const durationToDays = (duration: Duration): Days => {
   const now = new Date();
   return differenceInDays(add(now, duration), now);
+};
+
+export const durationToHours = (duration: Duration): Days => {
+  const now = new Date();
+  return differenceInHours(add(now, duration), now);
+};
+
+export const secondsToDuration = (seconds: number | undefined): Duration => {
+  const now = new Date();
+  return intervalToDuration({
+    start: now,
+    end: add(now, { seconds: seconds }),
+  });
 };

@@ -1,13 +1,18 @@
 import { useState } from "react";
 
 import { Spinner, Select, Button, Icon } from "@canonical/react-components";
+import { formatDuration } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 
 import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import { actions as configActions } from "app/store/config";
 import configSelectors from "app/store/config/selectors";
-import { durationToSeconds, durationToDays } from "app/utils/timeSpan";
+import {
+  durationToSeconds,
+  durationToHours,
+  secondsToDuration,
+} from "app/utils/timeSpan";
 
 type SessionTimeoutFormValues = {
   session_length: number;
@@ -57,7 +62,7 @@ const SessionTimeout = (): JSX.Element => {
             Edit
           </Button>
         </span>
-        <p>{durationToDays({ seconds: sessionLength })} days</p>
+        <p>{formatDuration(secondsToDuration(sessionLength))}</p>
       </>
     );
   } else
@@ -69,8 +74,8 @@ const SessionTimeout = (): JSX.Element => {
           buttonsBordered
           cleanup={configActions.cleanup}
           initialValues={{
-            session_length: durationToDays({ seconds: sessionLength }),
-            time_unit: "days",
+            session_length: durationToHours({ seconds: sessionLength }),
+            time_unit: "hours",
           }}
           onCancel={() => {
             setFormOpen(false);
