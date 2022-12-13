@@ -1,4 +1,9 @@
-import { timeSpanToMinutes, timeSpanToSeconds } from "./timeSpan";
+import {
+  timeSpanToMinutes,
+  timeSpanToSeconds,
+  durationToSeconds,
+  durationToDays,
+} from "./timeSpan";
 
 describe("timeSpanToSeconds", () => {
   it("converts a partial timespan string to a number of seconds", () => {
@@ -25,5 +30,22 @@ describe("formatTimeSpanStringToMinutes", () => {
     expect(timeSpanToMinutes("1s")).toEqual(0);
     expect(timeSpanToMinutes("59s")).toEqual(0);
     expect(timeSpanToMinutes("60s")).toEqual(1);
+  });
+});
+
+describe("durationToSeconds", () => {
+  it("converts a duration to a number of seconds", () => {
+    expect(durationToSeconds({ days: 1 })).toEqual(86400);
+    expect(durationToSeconds({ hours: 1 })).toEqual(3600);
+    expect(durationToSeconds({ minutes: 1 })).toEqual(60);
+  });
+});
+
+describe("durationToDays", () => {
+  it("converts a duration to a number of days", () => {
+    expect(durationToDays({ hours: 24 })).toEqual(1);
+    expect(durationToDays({ hours: 240 })).toEqual(10);
+    expect(durationToDays({ seconds: 86400 })).toEqual(1);
+    expect(durationToDays({ minutes: 1440 })).toEqual(1);
   });
 });
