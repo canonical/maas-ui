@@ -7,14 +7,8 @@ import SessionTimeout, {
 } from "./SessionTimeout";
 
 import { actions as configActions } from "app/store/config";
-import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
-import {
-  config as configFactory,
-  configState as configStateFactory,
-  rootState as rootStateFactory,
-} from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { getTestState, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -22,18 +16,7 @@ describe("SessionTimeout", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = rootStateFactory({
-      config: configStateFactory({
-        loaded: true,
-        loading: false,
-        items: [
-          configFactory({
-            name: ConfigNames.SESSION_LENGTH,
-            value: 1209600,
-          }),
-        ],
-      }),
-    });
+    state = getTestState();
   });
 
   it("displays a spinner while loading", () => {
