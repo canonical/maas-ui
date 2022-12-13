@@ -67,7 +67,11 @@ describe("SessionTimeout", () => {
 
     expect(
       screen.getByRole("spinbutton", { name: SessionTimeoutLabels.Expiration })
-    ).toHaveValue(14);
+    ).toHaveValue(336);
+
+    expect(
+      screen.getByRole("combobox", { name: SessionTimeoutLabels.TimeUnit })
+    ).toHaveValue("hours");
   });
 
   it("hides the form when the 'Cancel' button is clicked", async () => {
@@ -131,6 +135,11 @@ describe("SessionTimeout", () => {
 
     await userEvent.click(
       screen.getByRole("button", { name: SessionTimeoutLabels.Edit })
+    );
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: SessionTimeoutLabels.TimeUnit }),
+      "days"
     );
 
     await userEvent.clear(
