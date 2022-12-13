@@ -29,7 +29,7 @@ export enum Labels {
 const SessionTimeout = (): JSX.Element => {
   const dispatch = useDispatch();
   const configLoading = useSelector(configSelectors.loading);
-  const sessionLength = useSelector(configSelectors.sessionLength) || 1209600; // fallback to default value of 14 days if none is set
+  const sessionLength = useSelector(configSelectors.sessionLength) || undefined;
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
 
