@@ -62,6 +62,7 @@ const urls = {
     index: "/settings/security",
     secretStorage: "/settings/security/secret-storage",
     securityProtocols: "/settings/security/security-protocols",
+    ipmiSettings: "/settings/security/ipmi-settings",
   },
   storage: "/settings/storage",
   users: {

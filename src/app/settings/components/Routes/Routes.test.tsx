@@ -70,6 +70,18 @@ const routes = [
     path: urls.settings.configuration.deploy,
   },
   {
+    title: "Security protocols",
+    path: urls.settings.security.securityProtocols,
+  },
+  {
+    title: "Secret storage",
+    path: urls.settings.security.secretStorage,
+  },
+  {
+    title: "IPMI settings",
+    path: urls.settings.security.ipmiSettings,
+  },
+  {
     title: "Users",
     path: urls.settings.users.index,
   },

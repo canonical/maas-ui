@@ -31,6 +31,10 @@ export const Nav = (): JSX.Element => (
             path: settingsURLs.security.secretStorage,
             label: "Secret storage",
           },
+          {
+            path: settingsURLs.security.ipmiSettings,
+            label: "IPMI settings",
+          },
         ],
       },
       {
