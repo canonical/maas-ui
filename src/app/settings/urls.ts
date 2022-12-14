@@ -12,7 +12,6 @@ const urls = {
     general: "/settings/configuration/general",
     index: "/settings/configuration",
     kernelParameters: "/settings/configuration/kernel-parameters",
-    security: "/settings/configuration/security",
   },
   dhcp: {
     add: "/settings/dhcp/add",
@@ -58,6 +57,11 @@ const urls = {
       index: "/settings/scripts/testing",
       upload: "/settings/scripts/testing/upload",
     },
+  },
+  security: {
+    index: "/settings/security",
+    secretStorage: "/settings/security/secret-storage",
+    securityProtocols: "/settings/security/security-protocols",
   },
   storage: "/settings/storage",
   users: {
