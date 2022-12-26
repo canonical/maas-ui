@@ -125,7 +125,7 @@
     "redux-saga-test-plan": "4.0.6",
     "sass": "1.56.2",
     "start-server-and-test": "1.15.2",
-    "wait-on": "6.0.1"
+    "wait-on": "7.0.1"
   },
   "browserslist": {
     "production": [
