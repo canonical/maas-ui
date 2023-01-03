@@ -9,7 +9,7 @@ export enum Labels {
   KGBMCKeyLabel = "Auto IPMI K_g BMC key",
   UserRadio = "User",
   AdminRadio = "Admin",
-  OperatorRadio = "operator",
+  OperatorRadio = "Operator",
 }
 
 const IpmiFormFields = (): JSX.Element => {
