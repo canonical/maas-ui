@@ -15,7 +15,6 @@ import {
   device as deviceFactory,
   generalState as generalStateFactory,
   machine as machineFactory,
-  machineEvent as machineEventFactory,
   machineState as machineStateFactory,
   powerType as powerTypeFactory,
   powerTypesState as powerTypesStateFactory,
@@ -36,7 +35,6 @@ describe("machine hook utils", () => {
   beforeEach(() => {
     machine = machineFactory({
       architecture: "amd64",
-      events: [machineEventFactory()],
       locked: false,
       permissions: ["edit"],
       system_id: "abc123",

@@ -10,7 +10,7 @@ import {
 } from "app/store/general/selectors";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
-import type { Machine, MachineActions } from "app/store/machine/types";
+import type { MachineActions, MachineDetails } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import type { Node, NodeActions } from "app/store/types/node";
 import { kebabToCamelCase } from "app/utils";
@@ -33,7 +33,7 @@ export type MachineMenuAction = Exclude<
  * @param onClick - A function to call when the item is clicked.
  */
 export const useMachineActions = (
-  systemId: Machine["system_id"],
+  systemId: MachineDetails["system_id"],
   actions: MachineMenuAction[],
   noneMessage?: string | null,
   onClick?: () => void

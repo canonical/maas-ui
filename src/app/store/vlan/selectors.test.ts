@@ -4,7 +4,6 @@ import { NetworkInterfaceTypes } from "app/store/types/enum";
 import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
-  machine as machineFactory,
   machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
@@ -194,7 +193,7 @@ describe("vlan selectors", () => {
       const nic = machineInterfaceFactory({
         vlan_id: items[0].id,
       });
-      const machine = machineFactory({
+      const machine = machineDetailsFactory({
         interfaces: [nic],
       });
       const state = rootStateFactory({

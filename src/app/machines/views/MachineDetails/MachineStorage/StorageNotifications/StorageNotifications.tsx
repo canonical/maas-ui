@@ -23,12 +23,13 @@ const StorageNotifications = ({ id }: Props): JSX.Element | null => {
   );
   const canEdit = useCanEdit(machine, true);
   const machineStorageConfigurable = isNodeStorageConfigurable(machine);
-  const osSupportsStorageConfig = canOsSupportStorageConfig(machine);
-  const osSupportsBcacheZFS = canOsSupportBcacheZFS(machine);
 
   if (!isMachineDetails(machine)) {
     return null;
   }
+
+  const osSupportsStorageConfig = canOsSupportStorageConfig(machine);
+  const osSupportsBcacheZFS = canOsSupportBcacheZFS(machine);
 
   // If the machine has not been commissioned just show the one notification.
   // Otherwise show all that are relevant.
