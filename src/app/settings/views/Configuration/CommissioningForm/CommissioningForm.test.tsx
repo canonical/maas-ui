@@ -5,8 +5,6 @@ import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import { Labels as FormFieldsLabels } from "../CommissioningFormFields/CommissioningFormFields";
-
 import CommissioningForm from "./CommissioningForm";
 
 import { Labels as FormikButtonLabels } from "app/base/components/FormikFormButtons/FormikFormButtons";
@@ -81,20 +79,11 @@ describe("CommissioningForm", () => {
       </Provider>
     );
 
-    const maasAutoIpmiUserInput = screen.getByRole("textbox", {
-      name: FormFieldsLabels.IPMIUsername,
-    });
-    await userEvent.clear(maasAutoIpmiUserInput);
-    await userEvent.type(maasAutoIpmiUserInput, "maas");
-
-    const maasAutoIpmiKGBmcKeyInput = screen.getByLabelText(
-      FormFieldsLabels.KGBMCKeyLabel
-    );
-    await userEvent.clear(maasAutoIpmiKGBmcKeyInput);
-    await userEvent.type(maasAutoIpmiKGBmcKeyInput, "password");
-
-    await userEvent.click(
-      screen.getByRole("radio", { name: FormFieldsLabels.UserRadio })
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", {
+        name: "Default Ubuntu release used for commissioning",
+      }),
+      "xenial"
     );
 
     await userEvent.click(
@@ -107,13 +96,7 @@ describe("CommissioningForm", () => {
     expect(updateConfigAction).toEqual({
       type: "config/update",
       payload: {
-        params: [
-          { name: "commissioning_distro_series", value: "bionic" },
-          { name: "default_min_hwe_kernel", value: "ga-16.04-lowlatency" },
-          { name: "maas_auto_ipmi_user", value: "maas" },
-          { name: "maas_auto_ipmi_k_g_bmc_key", value: "password" },
-          { name: "maas_auto_ipmi_user_privilege_level", value: "USER" },
-        ],
+        params: [{ name: "commissioning_distro_series", value: "xenial" }],
       },
       meta: {
         dispatchMultiple: true,

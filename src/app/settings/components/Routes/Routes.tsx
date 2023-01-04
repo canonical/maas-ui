@@ -7,7 +7,6 @@ import Commissioning from "app/settings/views/Configuration/Commissioning";
 import Deploy from "app/settings/views/Configuration/Deploy";
 import General from "app/settings/views/Configuration/General";
 import KernelParameters from "app/settings/views/Configuration/KernelParameters";
-import Security from "app/settings/views/Configuration/Security";
 import DhcpAdd from "app/settings/views/Dhcp/DhcpAdd";
 import DhcpEdit from "app/settings/views/Dhcp/DhcpEdit";
 import DhcpList from "app/settings/views/Dhcp/DhcpList";
@@ -27,6 +26,9 @@ import RepositoryAdd from "app/settings/views/Repositories/RepositoryAdd";
 import RepositoryEdit from "app/settings/views/Repositories/RepositoryEdit";
 import ScriptsList from "app/settings/views/Scripts/ScriptsList";
 import ScriptsUpload from "app/settings/views/Scripts/ScriptsUpload";
+import IpmiSettings from "app/settings/views/Security/IpmiSettings";
+import SecretStorage from "app/settings/views/Security/SecretStorage";
+import SecurityProtocols from "app/settings/views/Security/SecurityProtocols";
 import StorageForm from "app/settings/views/Storage/StorageForm";
 import UserAdd from "app/settings/views/Users/UserAdd";
 import UserEdit from "app/settings/views/Users/UserEdit";
@@ -40,10 +42,6 @@ const Routes = (): JSX.Element => {
       <Route
         element={<General />}
         path={getRelativeRoute(urls.settings.configuration.general, base)}
-      />
-      <Route
-        element={<Security />}
-        path={getRelativeRoute(urls.settings.configuration.security, base)}
       />
       <Route
         element={<Commissioning />}
@@ -67,6 +65,22 @@ const Routes = (): JSX.Element => {
       <Route
         element={<Redirect to={urls.settings.configuration.general} />}
         path={getRelativeRoute(urls.settings.configuration.index, base)}
+      />
+      <Route
+        element={<SecurityProtocols />}
+        path={getRelativeRoute(urls.settings.security.securityProtocols, base)}
+      />
+      <Route
+        element={<SecretStorage />}
+        path={getRelativeRoute(urls.settings.security.secretStorage, base)}
+      />
+      <Route
+        element={<IpmiSettings />}
+        path={getRelativeRoute(urls.settings.security.ipmiSettings, base)}
+      />
+      <Route
+        element={<Redirect to={urls.settings.security.securityProtocols} />}
+        path={getRelativeRoute(urls.settings.security.index, base)}
       />
       <Route
         element={<UsersList />}

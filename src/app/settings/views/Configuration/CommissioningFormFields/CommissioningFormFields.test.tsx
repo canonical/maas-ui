@@ -6,8 +6,6 @@ import configureStore from "redux-mock-store";
 
 import CommissioningForm from "../CommissioningForm";
 
-import { Labels as FormFieldsLabels } from "./CommissioningFormFields";
-
 import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -118,43 +116,5 @@ describe("CommissioningFormFields", () => {
       name: "bionic (hwe-18.04-lowlatency)",
     }) as HTMLOptionElement;
     expect(hwe_18_lowlatency_option.selected).toBe(true);
-  });
-
-  it("updates value for ipmi username", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CommissioningForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(
-      screen.getByRole("textbox", { name: FormFieldsLabels.IPMIUsername })
-    ).toHaveValue("maas");
-  });
-
-  it("updates value for ipmi user privilege level", () => {
-    const state = { ...initialState };
-    const store = mockStore(state);
-
-    render(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <CommissioningForm />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-
-    expect(
-      screen.getByRole("radio", { name: FormFieldsLabels.OperatorRadio })
-    ).toHaveProperty("checked", true);
   });
 });
