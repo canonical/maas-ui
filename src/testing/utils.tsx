@@ -14,8 +14,11 @@ import configureStore from "redux-mock-store";
 
 import FormikForm from "app/base/components/FormikForm";
 import type { AnyObject } from "app/base/types";
+import { ConfigNames } from "app/store/config/types";
 import type { RootState } from "app/store/root/types";
 import {
+  config as configFactory,
+  configState as configStateFactory,
   domainState as domainStateFactory,
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
@@ -218,6 +221,10 @@ export const getUrlParam: URLSearchParams["get"] = (param: string) =>
 
 // Complete initial test state with all data loaded and no errors
 export const getTestState = (): RootState => {
+  const config = configFactory({
+    name: ConfigNames.SESSION_LENGTH,
+    value: 1209600,
+  });
   const fabric = fabricFactory({ name: "pxe-fabric" });
   const nonBootVlan = vlanFactory({ fabric: fabric.id });
   const bootVlan = vlanFactory({ fabric: fabric.id, name: "pxe-vlan" });
@@ -229,6 +236,10 @@ export const getTestState = (): RootState => {
     id: 1,
   });
   return rootStateFactory({
+    config: configStateFactory({
+      loaded: true,
+      items: [config],
+    }),
     domain: domainStateFactory({
       loaded: true,
     }),
