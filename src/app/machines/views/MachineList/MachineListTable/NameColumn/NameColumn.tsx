@@ -9,6 +9,7 @@ import MachineCheckbox from "../MachineCheckbox";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import NonBreakingSpace from "app/base/components/NonBreakingSpace";
+import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
@@ -132,7 +133,7 @@ export const NameColumn = ({
   if (!machine) {
     return null;
   }
-  const machineURL = `/${machine.link_type}/${machine.system_id}`;
+  const machineURL = urls.machines.machine.index({ id: machine.system_id });
   const primaryRow = showMAC
     ? generateMAC(machine, machineURL)
     : generateFQDN(machine, machineURL);

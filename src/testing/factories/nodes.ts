@@ -17,7 +17,7 @@ import type {
 import { DeviceIpAssignment } from "app/store/device/types";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import { FilterGroupKey, FilterGroupType } from "app/store/machine/types/base";
-import type { FilterGroup } from "app/store/machine/types/base";
+import type { FilterGroup, BaseMachine } from "app/store/machine/types/base";
 import { PodType } from "app/store/pod/constants";
 import type {
   Pod,
@@ -252,18 +252,30 @@ export const filterGroup = define<FilterGroup>({
   type: FilterGroupType.String,
 });
 
-export const machine = extend<BaseNode, Machine>(node, {
+export const machine = extend<SimpleNode, Machine>(simpleNode, {
   actions,
+  architecture: "amd64/generic",
   description: "a test machine",
+  cpu_count: 1,
+  cpu_test_status: testStatus,
+  distro_series: "",
+  memory: 1,
+  memory_test_status: testStatus,
+  network_test_status: testStatus,
+  osystem: "ubuntu",
+  other_test_status: testStatus,
+  pool: modelRef,
+  status: NodeStatus.ALLOCATED,
+  status_message: "",
+  status_code: 10,
+  storage_test_status: testStatus,
+
   error_description: "",
   extra_macs,
   fabrics,
-  has_logs: false,
   ip_addresses,
-  link_speeds,
   link_type: NodeLinkType.MACHINE,
-  node_type_display: NodeTypeDisplay.MACHINE,
-  numa_nodes_count: 1,
+  locked: false,
   owner: "admin",
   physical_disk_count: 1,
   pod: modelRef,
@@ -271,12 +283,8 @@ export const machine = extend<BaseNode, Machine>(node, {
   power_type: "manual",
   pxe_mac: "de:ad:be:ef:aa:b1",
   spaces,
-  sriov_support: false,
-  storage_tags,
   storage: 8,
-  subnets,
   testing_status: testStatus,
-  workload_annotations: () => ({}),
   vlan: null,
   zone: modelRef,
 });
@@ -312,7 +320,14 @@ export const machineIpAddress = define<NodeIpAddress>({
   is_boot: false,
 });
 
-export const machineDetails = extend<Machine, MachineDetails>(machine, {
+export const machineDetails = extend<BaseMachine, MachineDetails>(machine, {
+  link_speeds,
+  node_type_display: NodeTypeDisplay.MACHINE,
+  numa_nodes_count: 1,
+  sriov_support: false,
+  storage_tags,
+  subnets,
+  workload_annotations: () => ({}),
   bios_boot_method: "uefi",
   bmc: 190,
   boot_disk: null,
@@ -332,8 +347,9 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   events: () => [],
   grouped_storages: () => [],
   hardware_uuid: "F5BB1CC9-45B2-46EA-B96A-7D528A902F4B",
+  has_logs: false,
   hwe_kernel: "groovy (ga-20.10)",
-  installation_start_time: "Thu, 15 Oct. 2020 07:25:10",
+  interface_test_status: testStatus,
   installation_status: 3,
   interfaces: () => [],
   license_key: "",
@@ -366,8 +382,8 @@ export const machineDetails = extend<Machine, MachineDetails>(machine, {
   special_filesystems: () => [],
   storage_layout_issues: () => [],
   supported_filesystems: () => [],
+  cpu_speed: 1000,
   swap_size: null,
-  testing_start_time: "Thu, 15 Oct. 2020 07:25:10",
   updated: "Fri, 23 Oct. 2020 05:24:41",
 });
 

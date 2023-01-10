@@ -34,17 +34,16 @@ export type MachineActions = Exclude<NodeActions, NodeActions.IMPORT_IMAGES>;
 // used in the machine list. This type is missing some properties due to an
 // optimisation on the backend to reduce the amount of database queries on list
 // pages.
-export type BaseMachine = BaseNode & {
+export type BaseMachine = Omit<
+  BaseNode,
+  "cpu_speed" | "interface_test_status"
+> & {
   actions: MachineActions[];
   error_description: string;
   extra_macs: string[];
   fabrics: string[];
-  has_logs: boolean;
   ip_addresses?: NodeIpAddress[];
-  link_speeds: number[];
   link_type: NodeLinkType.MACHINE;
-  node_type_display: NodeTypeDisplay.MACHINE;
-  numa_nodes_count: number;
   owner: string;
   physical_disk_count: number;
   pod?: ModelRef;
@@ -53,19 +52,14 @@ export type BaseMachine = BaseNode & {
   power_type: PowerType["name"] | "";
   pxe_mac?: string;
   spaces: string[];
-  sriov_support: boolean;
-  storage_tags: string[];
   storage: number;
-  subnets: string[];
   testing_status: TestStatus;
   vlan?: NodeVlan | null;
-  workload_annotations: WorkloadAnnotations;
   zone: ModelRef;
 };
 
-// MachineDetails is returned from the server when using "machine.get", and is
-// used in the machine details pages. This type contains all possible properties
-// of a machine model.
+// MachineDetails returned from the server when using "machine.get", and is
+// used in the machine details pages.
 export type MachineDetails = BaseMachine &
   TimestampFields &
   HardwareSyncFields & {
@@ -75,6 +69,7 @@ export type MachineDetails = BaseMachine &
     certificate?: CertificateMetadata;
     commissioning_start_time: string;
     commissioning_status: TestStatus;
+    cpu_speed: BaseNode["cpu_speed"];
     cpu_test_status: TestStatus;
     current_commissioning_script_set: number;
     current_installation_script_set: number;
@@ -87,29 +82,36 @@ export type MachineDetails = BaseMachine &
     events: NodeEvent[];
     grouped_storages: GroupedStorage[];
     hardware_uuid: string;
+    has_logs: boolean;
     hwe_kernel: string;
-    installation_start_time: string;
     installation_status: number;
     interface_test_status: TestStatus;
     interfaces: NetworkInterface[];
     license_key: string;
+    link_speeds: number[];
     memory_test_status: TestStatus;
     metadata: NodeMetadata;
     min_hwe_kernel: string;
     network_test_status: TestStatus;
     node_type: number;
+    node_type_display: NodeTypeDisplay.MACHINE;
     numa_nodes: NodeNumaNode[];
+    numa_nodes_count: number;
     on_network: boolean;
     other_test_status: TestStatus;
+    permissions: string[];
     power_bmc_node_count: number;
     power_parameters: PowerParameters;
     show_os_info: boolean;
     special_filesystems: Filesystem[];
+    sriov_support: boolean;
     storage_layout_issues: string[];
+    storage_tags: string[];
     storage_test_status: TestStatus;
+    subnets: string[];
     supported_filesystems: SupportedFilesystem[];
     swap_size: number | null;
-    testing_start_time: string;
+    workload_annotations: WorkloadAnnotations;
   };
 
 type HardwareSyncFields =

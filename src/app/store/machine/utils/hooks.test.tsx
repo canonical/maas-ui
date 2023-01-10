@@ -42,7 +42,7 @@ import {
   fabric as fabricFactory,
   generalState as generalStateFactory,
   machine as machineFactory,
-  machineEvent as machineEventFactory,
+  machineDetails as machineDetailsFactory,
   machineInterface as machineInterfaceFactory,
   machineState as machineStateFactory,
   machineStateDetailsItem as machineStateDetailsItemFactory,
@@ -73,9 +73,6 @@ describe("machine hook utils", () => {
   beforeEach(() => {
     machine = machineFactory({
       architecture: "amd64",
-      events: [machineEventFactory()],
-      locked: false,
-      permissions: ["edit"],
       system_id: "abc123",
     });
     state = rootStateFactory({
@@ -932,7 +929,7 @@ describe("machine hook utils", () => {
 
   describe("useCanEditStorage", () => {
     it("handles a machine with editable storage", () => {
-      const machine = machineFactory({
+      const machine = machineDetailsFactory({
         locked: false,
         status_code: NodeStatusCode.READY,
         permissions: ["edit"],
@@ -945,7 +942,7 @@ describe("machine hook utils", () => {
     });
 
     it("handles a machine without editable storage", () => {
-      const machine = machineFactory({
+      const machine = machineDetailsFactory({
         locked: false,
         status_code: NodeStatusCode.NEW,
         permissions: ["edit"],
@@ -1057,7 +1054,7 @@ describe("machine hook utils", () => {
 
   describe("useIsLimitedEditingAllowed", () => {
     it("allows limited editing", () => {
-      machine = machineFactory({
+      machine = machineDetailsFactory({
         locked: false,
         permissions: ["edit"],
         status: NodeStatus.DEPLOYED,
@@ -1077,7 +1074,7 @@ describe("machine hook utils", () => {
     });
 
     it("does not allow limited editing when the machine is not editable", () => {
-      machine = machineFactory({
+      machine = machineDetailsFactory({
         locked: false,
         permissions: [],
         status: NodeStatus.DEPLOYED,
@@ -1095,7 +1092,7 @@ describe("machine hook utils", () => {
     });
 
     it("does not allow limited editing when the machine is not deployed", () => {
-      machine = machineFactory({
+      machine = machineDetailsFactory({
         permissions: ["edit"],
         status: NodeStatus.NEW,
         system_id: "abc123",
