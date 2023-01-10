@@ -15,6 +15,7 @@ export type BootResource = Model & {
   downloading: boolean;
   icon: "in-progress" | "queued" | "succeeded" | "waiting";
   lastUpdate: string;
+  lastDeployed: string;
   name: string;
   numberOfNodes: number;
   rtype: BootResourceType;

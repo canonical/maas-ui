@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-import { formatDistance, parse } from "date-fns";
 import { useSelector } from "react-redux";
 
 import configSelectors from "app/store/config/selectors";
@@ -18,17 +17,7 @@ import {
   isMachineDetails,
 } from "app/store/machine/utils";
 import { NodeStatus } from "app/store/types/node";
-
-const getTimeDistanceString = (utcTimeString: string) =>
-  formatDistance(
-    parse(
-      `${utcTimeString} +00`, // let parse fn know it's UTC
-      "E, dd LLL. yyyy HH:mm:ss x",
-      new Date()
-    ),
-    new Date(),
-    { addSuffix: true }
-  );
+import { getTimeDistanceString } from "app/utils/time";
 
 const getLastCommissionedString = (machine: MachineDetails) => {
   if (machine.status === NodeStatus.COMMISSIONING) {
