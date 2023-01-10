@@ -10,10 +10,6 @@ export const Nav = (): JSX.Element => (
         subNav: [
           { path: settingsURLs.configuration.general, label: "General" },
           {
-            path: settingsURLs.configuration.security,
-            label: "Security",
-          },
-          {
             path: settingsURLs.configuration.commissioning,
             label: "Commissioning",
           },
@@ -21,6 +17,23 @@ export const Nav = (): JSX.Element => (
           {
             path: settingsURLs.configuration.kernelParameters,
             label: "Kernel parameters",
+          },
+        ],
+      },
+      {
+        label: "Security",
+        subNav: [
+          {
+            path: settingsURLs.security.securityProtocols,
+            label: "Security protocols",
+          },
+          {
+            path: settingsURLs.security.secretStorage,
+            label: "Secret storage",
+          },
+          {
+            path: settingsURLs.security.ipmiSettings,
+            label: "IPMI settings",
           },
         ],
       },

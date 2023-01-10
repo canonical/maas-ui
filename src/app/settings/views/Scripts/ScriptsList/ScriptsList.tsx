@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 
-import { format, parse } from "date-fns";
+import { format } from "date-fns";
 import { useDispatch, useSelector } from "react-redux";
 import type { Dispatch } from "redux";
 
@@ -15,6 +15,7 @@ import type { RootState } from "app/store/root/types";
 import { actions as scriptActions } from "app/store/script";
 import scriptSelectors from "app/store/script/selectors";
 import type { Script } from "app/store/script/types";
+import { parseUtcDatetime } from "app/utils/time";
 
 export enum Labels {
   Actions = "Table actions",
@@ -43,14 +44,7 @@ const generateRows = (
     // history timestamps are in the format: Mon, 02 Sep 2019 02:02:39 -0000
     let uploadedOn: string;
     try {
-      uploadedOn = format(
-        parse(
-          `${script.created} +00`, // let parse fn know it's UTC
-          "E, dd LLL. yyyy HH:mm:ss x",
-          new Date()
-        ),
-        "yyyy-LL-dd H:mm"
-      );
+      uploadedOn = format(parseUtcDatetime(script.created), "yyyy-LL-dd H:mm");
     } catch (error) {
       uploadedOn = "Never";
     }
