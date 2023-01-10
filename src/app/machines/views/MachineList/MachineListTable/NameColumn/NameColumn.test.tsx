@@ -31,7 +31,6 @@ describe("NameColumn", () => {
             extra_macs: [],
             hostname: "koala",
             ip_addresses: [],
-            permissions: ["edit", "delete"],
             pool: modelRefFactory(),
             pxe_mac: "00:11:22:33:44:55",
             status: NodeStatus.RELEASING,
@@ -205,7 +204,6 @@ describe("NameColumn", () => {
         name: "example",
       }),
       hostname: "koala",
-      permissions: ["edit", "delete"],
       system_id: "abc123",
     });
     const store = mockStore(state);
@@ -229,7 +227,6 @@ describe("NameColumn", () => {
         name: "example",
       }),
       hostname: "koala",
-      permissions: ["edit", "delete"],
       system_id: "abc123",
     });
     const store = mockStore(state);

@@ -3,6 +3,7 @@ import type {
   MachineStatus,
   FilterGroupKey,
   MachineStateListGroup,
+  MachineDetails,
 } from "./base";
 import type { MachineMeta } from "./enum";
 
@@ -141,7 +142,7 @@ export type CreateParams = {
   distro_series?: Machine["distro_series"];
   domain?: { name: Domain["name"] };
   ephemeral_deploy?: boolean;
-  extra_macs: Machine["extra_macs"];
+  extra_macs: MachineDetails["extra_macs"];
   hostname?: Machine["hostname"];
   hwe_kernel?: string;
   install_rackd?: boolean;
@@ -265,7 +266,7 @@ type Filters = {
   [FilterGroupKey.AgentName]: string;
   [FilterGroupKey.Arch]: Machine["architecture"];
   [FilterGroupKey.CpuCount]: Machine["cpu_count"];
-  [FilterGroupKey.CpuSpeed]: Machine["cpu_speed"];
+  [FilterGroupKey.CpuSpeed]: MachineDetails["cpu_speed"];
   [FilterGroupKey.Description]: Machine["description"];
   [FilterGroupKey.DistroSeries]: Machine["distro_series"];
   [FilterGroupKey.Domain]: Domain["name"];
@@ -275,7 +276,7 @@ type Filters = {
   [FilterGroupKey.FreeText]: string;
   [FilterGroupKey.Hostname]: Machine["hostname"];
   [FilterGroupKey.IpAddresses]: NodeIpAddress["ip"];
-  [FilterGroupKey.LinkSpeed]: Machine["link_speeds"][0];
+  [FilterGroupKey.LinkSpeed]: MachineDetails["link_speeds"][0];
   [FilterGroupKey.MacAddress]: NetworkInterface["mac_address"];
   [FilterGroupKey.Mem]: Machine["memory"];
   [FilterGroupKey.Osystem]: Machine["osystem"];

@@ -4,18 +4,24 @@ import userEvent from "@testing-library/user-event";
 import FilterAccordion, { Labels } from "./FilterAccordion";
 import type { Props as FilterAccordionProps } from "./FilterAccordion";
 
-import type { Machine, MachineMeta } from "app/store/machine/types";
+import type { MachineDetails, MachineMeta } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
-import { machine as machineFactory } from "testing/factories";
+import { machineDetails as machineDetailsFactory } from "testing/factories";
 
 describe("FilterAccordion", () => {
-  let items: Machine[];
-  let filterNames: FilterAccordionProps<Machine, MachineMeta.PK>["filterNames"];
+  let items: MachineDetails[];
+  let filterNames: FilterAccordionProps<
+    MachineDetails,
+    MachineMeta.PK
+  >["filterNames"];
   let filterOrder: string[];
-  let getValue: FilterAccordionProps<Machine, MachineMeta.PK>["getValue"];
+  let getValue: FilterAccordionProps<
+    MachineDetails,
+    MachineMeta.PK
+  >["getValue"];
   beforeEach(() => {
     items = [
-      machineFactory({
+      machineDetailsFactory({
         link_speeds: [100],
         pool: {
           id: 1,
@@ -35,7 +41,7 @@ describe("FilterAccordion", () => {
       ["zone", "Zone"],
     ]);
     filterOrder = ["pool", "link_speeds", "zone", "pxe_mac"];
-    getValue = (machine: Machine, filter: string) => {
+    getValue = (machine: MachineDetails, filter: string) => {
       switch (filter) {
         case "pool":
           return machine.pool.name;

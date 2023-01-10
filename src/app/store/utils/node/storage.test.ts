@@ -41,7 +41,7 @@ import { DiskTypes, StorageLayout } from "app/store/types/enum";
 import { NodeStatusCode } from "app/store/types/node";
 import {
   controller as controllerFactory,
-  machine as machineFactory,
+  machineDetails as machineDetailsFactory,
   nodeDisk as diskFactory,
   nodeFilesystem as fsFactory,
   nodePartition as partitionFactory,
@@ -449,28 +449,28 @@ describe("canCreateVolumeGroup", () => {
 
 describe("canOsSupportBcacheZFS", () => {
   it("handles a machine that supports bcache and ZFS", () => {
-    expect(canOsSupportBcacheZFS(machineFactory({ osystem: "ubuntu" }))).toBe(
-      true
-    );
+    expect(
+      canOsSupportBcacheZFS(machineDetailsFactory({ osystem: "ubuntu" }))
+    ).toBe(true);
   });
 
   it("handles a machine that does not support bcache and ZFS", () => {
-    expect(canOsSupportBcacheZFS(machineFactory({ osystem: "centos" }))).toBe(
-      false
-    );
+    expect(
+      canOsSupportBcacheZFS(machineDetailsFactory({ osystem: "centos" }))
+    ).toBe(false);
   });
 });
 
 describe("canOsSupportStorageConfig", () => {
   it("handles a machine that supports configurating storage layout", () => {
     expect(
-      canOsSupportStorageConfig(machineFactory({ osystem: "ubuntu" }))
+      canOsSupportStorageConfig(machineDetailsFactory({ osystem: "ubuntu" }))
     ).toBe(true);
   });
 
   it("handles a machine that does not support configurating storage layout", () => {
     expect(
-      canOsSupportStorageConfig(machineFactory({ osystem: "windows" }))
+      canOsSupportStorageConfig(machineDetailsFactory({ osystem: "windows" }))
     ).toBe(false);
   });
 });
@@ -729,12 +729,12 @@ describe("isNodeStorageConfigurable", () => {
   it("handles a machine in a configurable state", () => {
     expect(
       isNodeStorageConfigurable(
-        machineFactory({ status_code: NodeStatusCode.READY })
+        machineDetailsFactory({ status_code: NodeStatusCode.READY })
       )
     ).toBe(true);
     expect(
       isNodeStorageConfigurable(
-        machineFactory({ status_code: NodeStatusCode.ALLOCATED })
+        machineDetailsFactory({ status_code: NodeStatusCode.ALLOCATED })
       )
     ).toBe(true);
   });
@@ -742,7 +742,7 @@ describe("isNodeStorageConfigurable", () => {
   it("handles a machine in a non-configurable state", () => {
     expect(
       isNodeStorageConfigurable(
-        machineFactory({ status_code: NodeStatusCode.NEW })
+        machineDetailsFactory({ status_code: NodeStatusCode.NEW })
       )
     ).toBe(false);
   });

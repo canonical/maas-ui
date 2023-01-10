@@ -102,7 +102,7 @@ export const ReleaseForm = ({
       {...actionProps}
     >
       <Strip shallow>
-        <ReleaseFormFields machines={machines ?? []} />
+        <ReleaseFormFields />
       </Strip>
     </ActionForm>
   ) : (
