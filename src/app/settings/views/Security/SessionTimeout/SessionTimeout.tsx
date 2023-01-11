@@ -25,7 +25,7 @@ const SessionTimeoutSchema = Yup.object().shape({
   session_length: Yup.string()
     .required("Timeout length is required")
     .matches(
-      /^((\d)+ ?(hours|days|weeks|months|years) ?(and)? ?)+$/,
+      /^((\d)+ ?(hour|day|week|month|year)(s)? ?(and)? ?)+$/,
       "Unit must be `string` type with a value of years, months, weeks, days, and/or hours."
     ),
 });
