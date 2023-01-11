@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
+import MachineActionButtonGroup from "./MachineActionButtonGroup";
 import MachineName from "./MachineName";
 
 import NodeActionMenu from "app/base/components/NodeActionMenu";
@@ -68,6 +69,7 @@ const MachineHeader = ({
 
   return (
     <SectionHeader
+      actionButtonsGroup={<MachineActionButtonGroup />}
       buttons={[
         <NodeActionMenu
           alwaysShowLifecycle

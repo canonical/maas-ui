@@ -9,6 +9,7 @@ import type { LinkProps } from "react-router-dom";
 import type { DataTestElement } from "app/base/types";
 
 export type Props<P = LinkProps> = {
+  actionButtonsGroup?: JSX.Element | null;
   buttons?: JSX.Element[] | null;
   className?: ClassName;
   headerContent?: ReactNode | null;
@@ -58,6 +59,7 @@ const generateSubtitle = (
 };
 
 const SectionHeader = <P,>({
+  actionButtonsGroup,
   buttons = [],
   className,
   headerContent,
@@ -126,6 +128,7 @@ const SectionHeader = <P,>({
           {headerContent}
         </div>
       ) : null}
+      {actionButtonsGroup ? <>{actionButtonsGroup}</> : null}
       {tabLinks?.length ? (
         <div className="section-header__tabs" data-testid="section-header-tabs">
           <hr className="u-no-margin--bottom" />

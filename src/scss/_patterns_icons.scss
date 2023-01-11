@@ -70,6 +70,14 @@
     @extend .p-icon--lock-locked-active;
   }
 
+  .p-icon--lock {
+    @extend .p-icon--lock-locked;
+  }
+
+  .p-icon--unlock {
+    @extend .p-icon--lock-unlock;
+  }
+
   .p-icon--security {
     @extend %icon;
     @include maas-icon-security($color-mid-dark);

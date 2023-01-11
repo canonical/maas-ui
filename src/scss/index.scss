@@ -14,6 +14,8 @@
 @include vf-p-icon-change-version;
 @include vf-p-icon-edit;
 @include vf-p-icon-inspector-debug;
+@include vf-p-icon-lock-locked;
+@include vf-p-icon-lock-unlock;
 @include vf-p-icon-lock-locked-active;
 @include vf-p-icon-power-off;
 @include vf-p-icon-restart;
@@ -233,12 +235,14 @@
 @import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/TagForm";
 @import "~app/machines/views/MachineDetails/MachineSummary";
+@import "~app/machines/views/MachineDetails/MachineHeader/MachineActionButtonGroup";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineList";
 @include CloneFormFields;
 @include CloneResults;
 @include MachineList;
 @include MachineSummary;
+@include MachineActionButtonGroup;
 @include MarkBrokenFormFields;
 @include NumaCard;
 @include SourceMachineSelect;

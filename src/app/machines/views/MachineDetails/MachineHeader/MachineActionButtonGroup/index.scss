@@ -1,0 +1,31 @@
+@mixin MachineActionButtonGroup {
+  .p-button-group {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: $spv--large;
+
+    .p-muted-heading {
+      margin: 0;
+    }
+
+    .p-button-group__subgroup {
+      border: 1px solid #d9d9d9;
+      // border: 1px solid #757575; <-- This is the actual colour in Figma
+      border-radius: 0.125rem;
+      display: inline-flex;
+      justify-content: center;
+      padding: $spv--x-small $spv--small $spv--x-small $spv--small;
+
+      .p-button {
+        margin: 0 0 0 0;
+        padding: 0 $spv--small 0 $spv--small;
+        border: 0;
+      }
+
+      .p-button + .p-button {
+        border-left: 1px solid #d9d9d9;
+        border-radius: 0;
+      }
+    }
+  }
+}
