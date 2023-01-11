@@ -1,19 +1,17 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
 import MachineActionButtonGroup from "./MachineActionButtonGroup";
 import MachineName from "./MachineName";
 
-import NodeActionMenu from "app/base/components/NodeActionMenu";
 import PowerIcon from "app/base/components/PowerIcon";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
-import TableMenu from "app/base/components/TableMenu";
 import TooltipButton from "app/base/components/TooltipButton";
-import { useMachineActions, useSendAnalytics } from "app/base/hooks";
+import { useSendAnalytics } from "app/base/hooks";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
 import type {
@@ -21,14 +19,12 @@ import type {
   MachineSetHeaderContent,
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
-import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
 import type { RootState } from "app/store/root/types";
 import { ScriptResultStatus } from "app/store/scriptresult/types";
-import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
@@ -43,7 +39,6 @@ const MachineHeader = ({
   systemId,
 }: Props): JSX.Element => {
   const [editingName, setEditingName] = useState(false);
-  const dispatch = useDispatch();
   const { pathname } = useLocation();
   const sendAnalytics = useSendAnalytics();
   const machine = useSelector((state: RootState) =>
@@ -52,11 +47,6 @@ const MachineHeader = ({
   const statuses = useSelector((state: RootState) =>
     machineSelectors.getStatuses(state, systemId)
   );
-  const powerMenuRef = useRef<HTMLSpanElement>(null);
-  const powerMenuLinks = useMachineActions(systemId, [
-    NodeActions.OFF,
-    NodeActions.ON,
-  ]);
   const isDetails = isMachineDetails(machine);
   useFetchMachine(systemId);
 
@@ -69,16 +59,8 @@ const MachineHeader = ({
 
   return (
     <SectionHeader
-      actionButtonsGroup={<MachineActionButtonGroup />}
-      buttons={[
-        <NodeActionMenu
-          alwaysShowLifecycle
-          excludeActions={[NodeActions.IMPORT_IMAGES]}
-          filterActions
-          hasSelection={true}
-          key="action-dropdown"
-          nodeDisplay="machine"
-          nodes={[machine]}
+      actionButtonsGroup={
+        <MachineActionButtonGroup
           onActionClick={(action) => {
             sendAnalytics(
               "Machine details action form",
@@ -92,8 +74,9 @@ const MachineHeader = ({
               setHeaderContent({ view });
             }
           }}
-        />,
-      ]}
+          systemId={systemId}
+        />
+      }
       headerContent={
         headerContent ? (
           <MachineHeaderForms
@@ -130,22 +113,6 @@ const MachineHeader = ({
                   ? "Checking power"
                   : `Power ${machine.power_state}`}
               </PowerIcon>
-              <TableMenu
-                className="u-nudge-right--small"
-                links={[
-                  ...(Array.isArray(powerMenuLinks)
-                    ? powerMenuLinks
-                    : [powerMenuLinks]),
-                  {
-                    children: "Check power",
-                    onClick: () => {
-                      dispatch(machineActions.checkPower(systemId));
-                    },
-                  },
-                ]}
-                positionNode={powerMenuRef?.current}
-                title="Take action:"
-              />
             </div>
           </div>
         )

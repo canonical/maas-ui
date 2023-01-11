@@ -1,69 +1,104 @@
 import { Button, Icon } from "@canonical/react-components";
+import { useDispatch } from "react-redux";
 
 import PowerIcon from "app/base/components/PowerIcon";
+import { actions as machineActions } from "app/store/machine";
 import { PowerState } from "app/store/types/enum";
+import { NodeActions } from "app/store/types/node";
+import { getNodeActionTitle } from "app/store/utils";
 
-export const MachineActionButtonGroup = (): JSX.Element => {
+type Props = {
+  onActionClick: (action: NodeActions) => void;
+  systemId: string;
+};
+
+type ActionGroup = {
+  actions: NodeActions[];
+  title: string;
+  isIcons?: boolean;
+};
+
+const actionGroups: ActionGroup[] = [
+  {
+    title: "Actions",
+    actions: [
+      NodeActions.COMMISSION,
+      NodeActions.ACQUIRE,
+      NodeActions.DEPLOY,
+      NodeActions.RELEASE,
+      NodeActions.ABORT,
+      NodeActions.CLONE,
+    ],
+  },
+  {
+    title: "Power cycle",
+    actions: [NodeActions.ON],
+  },
+  {
+    title: "Troubleshoot",
+    actions: [
+      NodeActions.TEST,
+      NodeActions.RESCUE_MODE,
+      NodeActions.MARK_BROKEN,
+    ],
+  },
+  {
+    title: "Categorize",
+    actions: [NodeActions.TAG, NodeActions.SET_ZONE, NodeActions.SET_POOL],
+  },
+  {
+    title: "Lock/Unlock",
+    actions: [NodeActions.LOCK, NodeActions.UNLOCK],
+    isIcons: true,
+  },
+  {
+    title: "Delete",
+    actions: [NodeActions.DELETE],
+    isIcons: true,
+  },
+];
+
+export const MachineActionButtonGroup = ({
+  onActionClick,
+  systemId,
+}: Props): JSX.Element => {
+  const dispatch = useDispatch();
   return (
     <div className="p-button-group">
-      <div>
-        <div className="u-sv1 p-muted-heading">Actions</div>
-        <div className="p-button-group__subgroup">
-          <Button>Commission</Button>
-          <Button>Allocate</Button>
-          <Button>Deploy</Button>
-          <Button>Release</Button>
-          <Button>Abort</Button>
-          <Button>Clone from</Button>
+      {actionGroups.map((group) => (
+        <div>
+          <div className="u-sv1 p-muted-heading">{group.title}</div>
+          <div className="p-button-group__subgroup">
+            {group.actions.map((action) =>
+              group.title !== "Power cycle" ? (
+                <Button onClick={() => onActionClick(action)}>
+                  {group.isIcons ? (
+                    <Icon aria-label={action} name={action} />
+                  ) : (
+                    `${getNodeActionTitle(action)}`
+                  )}
+                </Button>
+              ) : (
+                <>
+                  <Button onClick={() => onActionClick(NodeActions.ON)}>
+                    <PowerIcon powerState={PowerState.ON}>On</PowerIcon>
+                  </Button>
+                  <Button onClick={() => onActionClick(NodeActions.OFF)}>
+                    <PowerIcon powerState={PowerState.ERROR}>Off</PowerIcon>
+                  </Button>
+                  <Button
+                    onClick={() => {
+                      dispatch(machineActions.checkPower(systemId));
+                    }}
+                  >
+                    Check
+                  </Button>
+                </>
+              )
+            )}
+          </div>
         </div>
-      </div>
-      <div>
-        <div className="u-sv1 p-muted-heading">Power cycle</div>
-        <div className="p-button-group__subgroup">
-          <Button>
-            <PowerIcon powerState={PowerState.ON}>On</PowerIcon>
-          </Button>
-          <Button>
-            <PowerIcon powerState={PowerState.ERROR}>Off</PowerIcon>
-          </Button>
-          <Button>Check</Button>
-        </div>
-      </div>
-      <div>
-        <div className="u-sv1 p-muted-heading">Troubleshoot</div>
-        <div className="p-button-group__subgroup">
-          <Button>Test</Button>
-          <Button>Rescue</Button>
-          <Button>Mark broken</Button>
-        </div>
-      </div>
-      <div>
-        <div className="u-sv1 p-muted-heading">Categorize</div>
-        <div className="p-button-group__subgroup">
-          <Button>Tag</Button>
-          <Button>Set zone</Button>
-          <Button>Set pool</Button>
-        </div>
-      </div>
-      <div>
-        <div className="u-sv1 p-muted-heading">Lock/Unlock</div>
-        <div className="p-button-group__subgroup">
-          <Button>
-            <Icon name="lock" />
-          </Button>
-          <Button>
-            <Icon name="unlock" />
-          </Button>
-        </div>
-      </div>
-      <div>
-        <div className="u-sv1 p-muted-heading">Delete</div>
-        <div className="p-button-group__subgroup">
-          <Button>
-            <Icon name="delete" />
-          </Button>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
