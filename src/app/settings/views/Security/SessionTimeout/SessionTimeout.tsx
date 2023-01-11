@@ -54,11 +54,13 @@ const SessionTimeout = (): JSX.Element => {
         }}
         onSubmit={(values) => {
           dispatch(configActions.cleanup());
-          const converted = humanReadableToSeconds(values.session_length);
-          converted &&
+          const sessionLengthInSeconds = humanReadableToSeconds(
+            values.session_length
+          );
+          sessionLengthInSeconds &&
             dispatch(
               configActions.update({
-                session_length: converted,
+                session_length: sessionLengthInSeconds,
               })
             );
         }}
