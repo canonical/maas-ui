@@ -1,12 +1,7 @@
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import {
-  Button,
-  Input,
-  useClickOutside,
-  useId,
-} from "@canonical/react-components";
+import { Button, Input, useClickOutside } from "@canonical/react-components";
 import Field from "@canonical/react-components/dist/components/Field";
 import classNames from "classnames";
 
@@ -212,7 +207,6 @@ export const TagSelector = ({
   const wrapperRef = useClickOutside<HTMLDivElement>(() =>
     setDropdownOpen(false)
   );
-  const inputId = useId();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [internalSelectedTags, setInternalSelectedTags] =
     useState(initialSelected);
@@ -249,7 +243,6 @@ export const TagSelector = ({
     <div ref={wrapperRef}>
       <Field
         error={error}
-        forId={inputId}
         help={help}
         label={
           label ? (
@@ -266,11 +259,11 @@ export const TagSelector = ({
           )}
           <Input
             aria-haspopup="listbox"
+            aria-label={label ?? undefined}
             className={classNames("tag-selector__input", {
               "tags-selected": hasSelectedTags,
             })}
             disabled={disabled}
-            id={inputId}
             onChange={(e) => setFilter(e.target.value)}
             onFocus={() => setDropdownOpen(true)}
             onKeyPress={(e) => {
