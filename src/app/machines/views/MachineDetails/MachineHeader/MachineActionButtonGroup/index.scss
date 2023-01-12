@@ -4,6 +4,9 @@
     justify-content: space-between;
     margin-bottom: $spv--large;
     flex-wrap: wrap;
+    @media screen and (max-width: ($breakpoint-small - 1)) {
+      overflow-x: scroll;
+    }
 
     .p-muted-heading {
       margin: 0;
