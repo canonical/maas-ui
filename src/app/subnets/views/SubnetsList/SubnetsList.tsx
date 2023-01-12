@@ -55,36 +55,35 @@ const SubnetsList = (): JSX.Element => {
   return (
     <MainContentSection
       header={
-        <>
-          <SectionHeader
-            buttons={[
-              <ContextualMenu
-                hasToggleIcon
-                links={[
-                  SubnetForms.Fabric,
-                  SubnetForms.VLAN,
-                  SubnetForms.Space,
-                  SubnetForms.Subnet,
-                ].map((children) => ({
-                  children,
-                  onClick: () => setActiveForm(children),
-                }))}
-                position="right"
-                toggleAppearance="positive"
-                toggleLabel="Add"
-              />,
-            ]}
-            headerContent={
-              activeForm ? (
-                <FormActions
-                  activeForm={activeForm}
-                  setActiveForm={setActiveForm}
-                />
-              ) : null
-            }
-            title={activeForm ? `Add ${activeForm}` : "Subnets"}
-          />
-        </>
+        <SectionHeader
+          buttons={[
+            <ContextualMenu
+              hasToggleIcon
+              links={[
+                SubnetForms.Fabric,
+                SubnetForms.VLAN,
+                SubnetForms.Space,
+                SubnetForms.Subnet,
+              ].map((children) => ({
+                children,
+                onClick: () => setActiveForm(children),
+              }))}
+              position="right"
+              toggleAppearance="positive"
+              toggleLabel="Add"
+            />,
+          ]}
+          headerContent={
+            activeForm ? (
+              <FormActions
+                activeForm={activeForm}
+                setActiveForm={setActiveForm}
+              />
+            ) : null
+          }
+          sidePanelTitle={activeForm ? `Add ${activeForm}` : ""}
+          title="Subnets"
+        />
       }
     >
       {hasValidGroupBy ? (

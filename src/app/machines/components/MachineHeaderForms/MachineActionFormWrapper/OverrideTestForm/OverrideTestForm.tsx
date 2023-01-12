@@ -74,7 +74,7 @@ export const OverrideTestForm = ({
       {...actionProps}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <>
             <p className="u-sv1">
               Overriding will allow the machines to be deployed, marked with a

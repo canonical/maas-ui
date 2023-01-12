@@ -31,7 +31,9 @@ describe("MachineHeader", () => {
     state = rootStateFactory({
       machine: machineStateFactory({
         loaded: true,
-        items: [machineDetailsFactory({ system_id: "abc123" })],
+        items: [
+          machineDetailsFactory({ fqdn: "test-machine", system_id: "abc123" }),
+        ],
         statuses: machineStatusesFactory({
           abc123: machineStatusFactory(),
         }),
@@ -81,7 +83,7 @@ describe("MachineHeader", () => {
     expect(wrapper.find("Spinner").exists()).toBe(true);
   });
 
-  it("displays action title if an action is selected", () => {
+  it("displays machine name if an action is selected", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -99,7 +101,7 @@ describe("MachineHeader", () => {
       </Provider>
     );
     expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
-      "Deploy"
+      "test-machine"
     );
   });
 

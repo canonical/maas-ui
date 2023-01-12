@@ -79,7 +79,7 @@ const EditFabric = ({ close, id }: Props): JSX.Element | null => {
       validationSchema={Schema}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField label="Name" name="name" type="text" />
           <FormikField
             component={Textarea}

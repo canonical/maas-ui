@@ -99,7 +99,7 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
       validationSchema={AddTagFormSchema}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             label={Label.Name}
             name="name"
@@ -115,7 +115,7 @@ export const AddTagForm = ({ onClose }: Props): JSX.Element => {
           />
           <KernelOptionsField />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <DefinitionField />
         </Col>
       </Row>

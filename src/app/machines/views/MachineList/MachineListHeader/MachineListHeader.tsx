@@ -141,6 +141,7 @@ export const MachineListHeader = ({
         )
       }
       machineCount={allMachineCount}
+      sidePanelTitle={getHeaderTitle("Machines", headerContent)}
       subtitle={
         <ModelListSubtitle
           available={availableMachineCount || allMachineCount}
@@ -149,7 +150,7 @@ export const MachineListHeader = ({
         />
       }
       subtitleLoading={selectedCountLoading}
-      title={getHeaderTitle("Machines", headerContent)}
+      title={"Machines"}
     />
   );
 };

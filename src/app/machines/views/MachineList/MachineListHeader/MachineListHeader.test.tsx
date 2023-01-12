@@ -413,8 +413,11 @@ describe("MachineListHeader", () => {
       </Provider>
     );
     expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
-      "Deploy"
+      "Machines"
     );
+    expect(
+      wrapper.find('[data-testid="section-header-content"] h3').text()
+    ).toBe("Deploy");
   });
 
   it("displays a new label for the tag action", () => {

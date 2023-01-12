@@ -1,63 +1,47 @@
-import { shallow } from "enzyme";
-
 import SectionHeader from "./SectionHeader";
 
-describe("SectionHeader", () => {
-  it("can render", () => {
-    const wrapper = shallow(
-      <SectionHeader subtitle="Subtitle" title="Title" />
-    );
-    expect(wrapper).toMatchSnapshot();
-  });
+import { render, screen } from "testing/utils";
 
+describe("SectionHeader", () => {
   it("can render title and subtitle", () => {
-    const wrapper = shallow(
-      <SectionHeader subtitle="Subtitle" title="Title" />
-    );
-    expect(wrapper.find("[data-testid='section-header-title']").text()).toBe(
+    render(<SectionHeader subtitle="Subtitle" title="Title" />);
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "Title"
     );
-    expect(wrapper.find("[data-testid='section-header-subtitle']").text()).toBe(
+    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
       "Subtitle"
     );
   });
 
   it("displays the title as a h1 by default", () => {
-    const wrapper = shallow(<SectionHeader title="Title" />);
-    const title = wrapper.find("h1[data-testid='section-header-title']");
-    expect(title.exists()).toBe(true);
-    expect(title.hasClass("p-heading--4")).toBe(true);
+    render(<SectionHeader title="Title" />);
+    const title = screen.getByRole("heading", { level: 1, name: "Title" });
+    expect(title).toBeInTheDocument();
+    expect(title.classList.contains("p-heading--4")).toBe(true);
   });
 
   it("can change the title element", () => {
-    const wrapper = shallow(<SectionHeader title="Title" titleElement="div" />);
-    const title = wrapper.find("div[data-testid='section-header-title']");
-    expect(title.exists()).toBe(true);
-    expect(title.hasClass("p-heading--4")).toBe(false);
+    render(<SectionHeader title="Title" titleElement="div" />);
+    const title = screen.getByTestId("section-header-title");
+    expect(title).toBeInTheDocument();
+    expect(title.classList.contains("p-heading--4")).toBe(false);
   });
 
   it("shows a spinner instead of title if loading", () => {
-    const wrapper = shallow(
-      <SectionHeader loading subtitle="Subtitle" title="Title" />
-    );
+    render(<SectionHeader loading subtitle="Subtitle" title="Title" />);
     expect(
-      wrapper.find("[data-testid='section-header-title-spinner']").exists()
-    ).toBe(true);
-    expect(wrapper.find("[data-testid='section-header-title']").exists()).toBe(
-      false
-    );
+      screen.getByTestId("section-header-title-spinner")
+    ).toBeInTheDocument();
+    expect(
+      screen.queryByTestId("section-header-title")
+    ).not.toBeInTheDocument();
   });
 
   it("shows a spinner instead of subtitle if subtitle loading", () => {
-    const wrapper = shallow(
-      <SectionHeader subtitle="Subtitle" subtitleLoading title="Title" />
+    render(<SectionHeader subtitle="Subtitle" subtitleLoading title="Title" />);
+    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
+      "Loading"
     );
-    expect(
-      wrapper.find("[data-testid='section-header-subtitle']").text()
-    ).not.toBe("Subtitle");
-    expect(
-      wrapper.find("[data-testid='section-header-subtitle'] Spinner").exists()
-    ).toBe(true);
   });
 
   it("can render buttons", () => {
@@ -65,10 +49,8 @@ describe("SectionHeader", () => {
       <button key="button-1">Button 1</button>,
       <button key="button-2">Button 2</button>,
     ];
-    const wrapper = shallow(<SectionHeader buttons={buttons} title="Title" />);
-    expect(
-      wrapper.find("[data-testid='section-header-buttons']").exists()
-    ).toBe(true);
+    render(<SectionHeader buttons={buttons} title="Title" />);
+    expect(screen.getByTestId("section-header-buttons")).toBeInTheDocument();
   });
 
   it("can render tabs", () => {
@@ -84,44 +66,46 @@ describe("SectionHeader", () => {
         path: "/path2",
       },
     ];
-    const wrapper = shallow(
-      <SectionHeader tabLinks={tabLinks} title="Title" />
-    );
-    expect(wrapper.find("[data-testid='section-header-tabs']").exists()).toBe(
-      true
-    );
+    render(<SectionHeader tabLinks={tabLinks} title="Title" />);
+    expect(screen.getByTestId("section-header-tabs")).toBeInTheDocument();
   });
 
-  it("can render extra header content", () => {
-    const wrapper = shallow(
-      <SectionHeader headerContent={<div>Header content</div>} title="Title" />
+  it("can render extra header content as a side panel", () => {
+    render(
+      <SectionHeader
+        headerContent={<div>Header content</div>}
+        sidePanelTitle="Header content title"
+        title="Title"
+      />
     );
+    expect(screen.getByTestId("section-header-content")).toBeInTheDocument();
     expect(
-      wrapper.find("[data-testid='section-header-content']").exists()
-    ).toBe(true);
+      screen.getByRole("complementary", { name: "Header content title" })
+    ).toBeInTheDocument();
   });
 
-  it("does not render subtitle or buttons if header content is present", () => {
-    const wrapper = shallow(
+  it("does not render buttons if header content is present", () => {
+    const { rerender } = render(
       <SectionHeader
         buttons={[<button key="button">Click me</button>]}
         subtitle="subtitle"
         title="Title"
       />
     );
-    expect(
-      wrapper.find("[data-testid='section-header-buttons']").exists()
-    ).toBe(true);
-    expect(
-      wrapper.find("[data-testid='section-header-subtitle']").exists()
-    ).toBe(true);
+    expect(screen.getByTestId("section-header-buttons")).toBeInTheDocument();
+    expect(screen.getByTestId("section-header-subtitle")).toBeInTheDocument();
 
-    wrapper.setProps({ headerContent: <div>Header content</div> });
+    rerender(
+      <SectionHeader
+        buttons={[<button key="button">Click me</button>]}
+        headerContent={<div>Header content</div>}
+        subtitle="subtitle"
+        title="Title"
+      />
+    );
     expect(
-      wrapper.find("[data-testid='section-header-buttons']").exists()
-    ).toBe(false);
-    expect(
-      wrapper.find("[data-testid='section-header-subtitle']").exists()
-    ).toBe(false);
+      screen.queryByTestId("section-header-buttons")
+    ).not.toBeInTheDocument();
+    expect(screen.getByTestId("section-header-subtitle")).toBeInTheDocument();
   });
 });

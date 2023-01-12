@@ -65,7 +65,8 @@ export const TagsHeader = ({
         )
       }
       machineCount={machineCount}
-      title={getHeaderTitle(headerContent)}
+      sidePanelTitle={getHeaderTitle(headerContent)}
+      title="Machines"
     />
   );
 };

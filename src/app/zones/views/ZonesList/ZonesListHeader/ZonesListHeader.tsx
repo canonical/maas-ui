@@ -51,6 +51,7 @@ const ZonesListHeader = (): JSX.Element => {
     <SectionHeader
       buttons={buttons}
       headerContent={headerContent}
+      sidePanelTitle="Add AZ"
       subtitle={`${zonesCount} AZs available`}
       subtitleLoading={!zonesLoaded}
       title={<ZonesListTitle />}

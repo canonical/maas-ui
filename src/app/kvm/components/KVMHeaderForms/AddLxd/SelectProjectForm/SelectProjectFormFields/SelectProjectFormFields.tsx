@@ -52,7 +52,7 @@ export const SelectProjectFormFields = ({
           </Notification>
         </Col>
       )}
-      <Col size={6}>
+      <Col size={12}>
         <p data-testid="lxd-host-details">
           <strong>
             LXD host: {newPodValues.name} ({newPodValues.power_address})
@@ -65,7 +65,7 @@ export const SelectProjectFormFields = ({
           </span>
         </p>
       </Col>
-      <Col size={6}>
+      <Col size={12}>
         <Input
           checked={newProject}
           id="new-project"

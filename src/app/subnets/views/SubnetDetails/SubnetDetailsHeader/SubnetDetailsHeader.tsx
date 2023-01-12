@@ -46,6 +46,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
           />
         ) : null
       }
+      sidePanelTitle={activeForm ? subnetActionLabels[activeForm] : ""}
       subtitleLoading={!isSubnetDetails(subnet)}
       title={subnet.name}
     />

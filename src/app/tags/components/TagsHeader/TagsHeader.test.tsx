@@ -42,10 +42,10 @@ it("can display the add tag form", () => {
   );
   expect(screen.getByRole("form", { name: "Create tag" })).toBeInTheDocument();
   expect(
-    screen.getByRole("heading", { name: "Create new tag" })
+    screen.getByRole("complementary", { name: "Create new tag" })
   ).toBeInTheDocument();
   expect(screen.getByTestId("section-header-title").textContent).toBe(
-    "Create new tag"
+    "Machines"
   );
 });
 
@@ -81,7 +81,7 @@ it("can display the delete tag form", () => {
     screen.getByRole("heading", { name: "Delete tag" })
   ).toBeInTheDocument();
   expect(screen.getByTestId("section-header-title").textContent).toBe(
-    "Delete tag"
+    "Machines"
   );
 });
 
@@ -96,7 +96,9 @@ it("displays the default title", () => {
       </MemoryRouter>
     </Provider>
   );
-  expect(screen.getByRole("heading", { name: "Machines" })).toBeInTheDocument();
+  expect(
+    screen.getByRole("heading", { level: 1, name: "Machines" })
+  ).toBeInTheDocument();
   expect(screen.getByTestId("section-header-title").textContent).toBe(
     "Machines"
   );

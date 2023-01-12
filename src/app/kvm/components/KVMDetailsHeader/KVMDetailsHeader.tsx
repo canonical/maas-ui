@@ -11,6 +11,7 @@ import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
+import { getFormTitle, getHeaderSize } from "app/kvm/utils";
 
 type TitleBlock = {
   title: ReactNode;
@@ -67,7 +68,9 @@ const KVMDetailsHeader = ({
           />
         ) : null
       }
+      headerSize={headerContent ? getHeaderSize(headerContent) : undefined}
       loading={loading}
+      sidePanelTitle={headerContent ? getFormTitle(headerContent) : ""}
       subtitle={
         <>
           {titleBlocks.map((block, i) => (

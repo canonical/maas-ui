@@ -19,6 +19,7 @@ import type {
   ControllerHeaderContent,
   ControllerSetHeaderContent,
 } from "app/controllers/types";
+import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import type { Controller } from "app/store/controller/types";
 import { isControllerDetails } from "app/store/controller/utils";
@@ -81,6 +82,7 @@ const ControllerDetailsHeader = ({
           />
         ) : null
       }
+      sidePanelTitle={getHeaderTitle("Controller", headerContent)}
       subtitleLoading={!isControllerDetails(controller)}
       tabLinks={[
         {

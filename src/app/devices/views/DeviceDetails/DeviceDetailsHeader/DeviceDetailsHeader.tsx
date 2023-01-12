@@ -70,6 +70,7 @@ const DeviceDetailsHeader = ({
           />
         )
       }
+      sidePanelTitle={getHeaderTitle(device.fqdn || "", headerContent)}
       subtitleLoading={!isDeviceDetails(device)}
       tabLinks={[
         {
@@ -98,16 +99,12 @@ const DeviceDetailsHeader = ({
         },
       ]}
       title={
-        headerContent ? (
-          getHeaderTitle(device.fqdn || "", headerContent)
-        ) : (
-          <DeviceName
-            data-testid="DeviceName"
-            editingName={editingName}
-            id={systemId}
-            setEditingName={setEditingName}
-          />
-        )
+        <DeviceName
+          data-testid="DeviceName"
+          editingName={editingName}
+          id={systemId}
+          setEditingName={setEditingName}
+        />
       }
     />
   );

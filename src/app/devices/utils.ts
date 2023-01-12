@@ -24,3 +24,18 @@ export const getHeaderTitle = (
   }
   return defaultTitle;
 };
+
+export const getHeaderSize = (
+  headerContent: DeviceHeaderContent | null
+): "wide" | undefined => {
+  if (headerContent) {
+    const [, name] = headerContent.view;
+    switch (name) {
+      case DeviceHeaderViews.ADD_DEVICE[1]:
+        return "wide";
+      default:
+        return undefined;
+    }
+  }
+  return undefined;
+};

@@ -22,7 +22,7 @@ export const SetPoolFormFields = (): JSX.Element => {
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <ul className="p-inline-list u-equal-height u-no-margin--bottom">
           <li className="p-inline-list__item">
             <FormikField

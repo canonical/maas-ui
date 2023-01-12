@@ -90,7 +90,7 @@ const DomainListHeaderForm = ({ closeForm }: Props): JSX.Element => {
       validationSchema={CreateDomainSchema}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             label={Labels.Name}
             name="name"

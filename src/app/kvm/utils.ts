@@ -48,6 +48,17 @@ export const getFormTitle = (headerContent: KVMHeaderContent): string => {
   }
 };
 
+export const getHeaderSize = (
+  headerContent: KVMHeaderContent
+): "wide" | undefined => {
+  switch (headerContent.view) {
+    case KVMHeaderViews.COMPOSE_VM:
+      return "wide";
+    default:
+      return undefined;
+  }
+};
+
 /**
  * Calculate the amount of free storage in a storage pool.
  * @param resource - The storage pool resource to calculate free storage.

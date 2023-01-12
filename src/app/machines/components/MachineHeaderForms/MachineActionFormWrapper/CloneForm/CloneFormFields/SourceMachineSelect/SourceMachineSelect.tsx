@@ -102,7 +102,6 @@ export const SourceMachineSelect = ({
       <DebounceSearchBox
         aria-label="Search by hostname, system ID or tags"
         autoComplete="off"
-        autoFocus
         onChange={() => {
           // Unset the selected machine if the search input changes - assume
           // the user wants to change it.

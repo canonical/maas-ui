@@ -11,7 +11,7 @@ import type {
   DeviceHeaderContent,
   DeviceSetHeaderContent,
 } from "app/devices/types";
-import { getHeaderTitle } from "app/devices/utils";
+import { getHeaderSize, getHeaderTitle } from "app/devices/utils";
 import deviceSelectors from "app/store/device/selectors";
 
 type Props = {
@@ -66,6 +66,8 @@ const DeviceListHeader = ({
           />
         )
       }
+      headerSize={headerContent ? getHeaderSize(headerContent) : undefined}
+      sidePanelTitle={getHeaderTitle("Devices", headerContent)}
       subtitle={
         <ModelListSubtitle
           available={devices.length}
@@ -75,7 +77,7 @@ const DeviceListHeader = ({
         />
       }
       subtitleLoading={!devicesLoaded}
-      title={getHeaderTitle("Devices", headerContent)}
+      title="Devices"
     />
   );
 };
