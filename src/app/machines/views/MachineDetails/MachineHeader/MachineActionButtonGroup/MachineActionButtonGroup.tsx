@@ -90,11 +90,13 @@ export const MachineActionButtonGroup = ({
         <div key={group.title}>
           <strong
             className="u-sv1 p-muted-heading"
+            id={group.title}
             key={`${group.title} heading`}
           >
             {group.title}
           </strong>
           <div
+            aria-labelledby={group.title}
             className="p-button-group__subgroup"
             key={`${group.title} group`}
           >
