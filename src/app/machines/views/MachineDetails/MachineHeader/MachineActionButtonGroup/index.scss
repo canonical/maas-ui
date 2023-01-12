@@ -3,6 +3,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: $spv--large;
+    flex-wrap: wrap;
 
     .p-muted-heading {
       margin: 0;
