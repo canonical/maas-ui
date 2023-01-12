@@ -18,7 +18,28 @@ type ActionGroup = {
   isIcons?: boolean;
 };
 
-const actionGroups: ActionGroup[] = [
+export enum Labels {
+  Commission = "Commission",
+  Allocate = "Allocate",
+  Deploy = "Deploy",
+  Release = "Release",
+  Abort = "Abort",
+  CloneFrom = "Clone from",
+  PowerOn = "On",
+  PowerOff = "Off",
+  CheckPower = "Check",
+  Test = "Test",
+  Rescue = "Rescue",
+  MarkBroken = "Mark broken",
+  Tag = "Tag",
+  SetZone = "Set zone",
+  SetPool = "Set pool",
+  Lock = "lock",
+  Unlock = "unlock",
+  Delete = "delete",
+}
+
+export const actionGroups: ActionGroup[] = [
   {
     title: "Actions",
     actions: [
@@ -66,20 +87,31 @@ export const MachineActionButtonGroup = ({
   return (
     <div className="p-button-group">
       {actionGroups.map((group) => (
-        <div>
-          <div className="u-sv1 p-muted-heading">{group.title}</div>
-          <div className="p-button-group__subgroup">
+        <div key={group.title}>
+          <strong
+            className="u-sv1 p-muted-heading"
+            key={`${group.title} heading`}
+          >
+            {group.title}
+          </strong>
+          <div
+            className="p-button-group__subgroup"
+            key={`${group.title} group`}
+          >
+            {/* <small>wee test innit</small> */}
             {group.actions.map((action) =>
               group.title !== "Power cycle" ? (
-                <Button onClick={() => onActionClick(action)}>
+                <Button key={action} onClick={() => onActionClick(action)}>
                   {group.isIcons ? (
                     <Icon aria-label={action} name={action} />
+                  ) : action === NodeActions.RESCUE_MODE ? (
+                    "Rescue"
                   ) : (
                     `${getNodeActionTitle(action)}`
                   )}
                 </Button>
               ) : (
-                <>
+                <span key={action}>
                   <Button onClick={() => onActionClick(NodeActions.ON)}>
                     <PowerIcon powerState={PowerState.ON}>On</PowerIcon>
                   </Button>
@@ -93,7 +125,7 @@ export const MachineActionButtonGroup = ({
                   >
                     Check
                   </Button>
-                </>
+                </span>
               )
             )}
           </div>
