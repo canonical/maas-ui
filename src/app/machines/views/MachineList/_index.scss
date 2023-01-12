@@ -134,7 +134,19 @@
     grid-gap: 0.5rem;
   }
 
-  .machines-list-hidden-columns-select {
+  .hidden-columns-select-wrapper {
     padding: $sph--small $sph--large;
+  }
+
+  .hidden-columns-toggle {
+    width: 100%;
+    padding-left: $spv--small;
+    text-align: left;
+
+    .p-contextual-menu__indicator {
+      position: absolute;
+      right: $spv--large;
+      top: calc(#{$spv--medium} - 1px);
+    }
   }
 }

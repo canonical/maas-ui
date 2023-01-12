@@ -67,11 +67,11 @@ context("Machine listing", () => {
     cy.findByText(/No machines match the search criteria./).should("exist");
   });
 
-  it.skip("can hide machine table columns", () => {
+  it("can hide machine table columns", () => {
     cy.findAllByRole("columnheader").should("have.length", 8);
 
-    cy.findAllByRole("button", { name: "Hidden columns" }).click();
-    cy.findByLabelText("hidden columns menu").within(() =>
+    cy.findAllByRole("button", { name: "Columns" }).click();
+    cy.findByLabelText("columns menu").within(() =>
       // eslint-disable-next-line cypress/no-force
       cy.findByRole("checkbox", { name: "Status" }).click({ force: true })
     );

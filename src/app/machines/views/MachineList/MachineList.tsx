@@ -55,6 +55,11 @@ const MachineList = ({
     Object.values(FetchGroupKey).includes(storedGrouping)
       ? storedGrouping
       : DEFAULTS.grouping;
+  const [hiddenColumns, setHiddenColumns] = useStorageState<string[]>(
+    localStorage,
+    "machineListHiddenColumns",
+    []
+  );
   const handleSetGrouping = (group: FetchGroupKey | null) => {
     setStoredGrouping(group);
     // clear selected machines on grouping change
@@ -115,8 +120,10 @@ const MachineList = ({
       <MachineListControls
         filter={searchFilter}
         grouping={grouping}
+        hiddenColumns={hiddenColumns}
         setFilter={handleSetSearchFilter}
         setGrouping={handleSetGrouping}
+        setHiddenColumns={setHiddenColumns}
         setHiddenGroups={setHiddenGroups}
       />
       <MachineListTable
@@ -124,6 +131,7 @@ const MachineList = ({
         currentPage={currentPage}
         filter={searchFilter}
         grouping={grouping}
+        hiddenColumns={hiddenColumns}
         hiddenGroups={hiddenGroups}
         machineCount={machineCount}
         machines={machines}

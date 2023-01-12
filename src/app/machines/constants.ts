@@ -1,3 +1,5 @@
+import type { ValueOf } from "@canonical/react-components";
+
 import { NodeActions } from "app/store/types/node";
 
 export const MachineActionHeaderViews = {
@@ -49,6 +51,14 @@ export const columns = [
   "disks",
   "storage",
 ] as const;
+export type MachineColumn = ValueOf<typeof columns>;
+export type MachineColumnToggle = Exclude<MachineColumn, "fqdn">;
+function isMachineColumnToggle(
+  column: MachineColumn
+): column is MachineColumnToggle {
+  return column !== "fqdn";
+}
+export const columnToggles = columns.filter(isMachineColumnToggle);
 
 export enum MachineColumns {
   FQDN = "fqdn",
