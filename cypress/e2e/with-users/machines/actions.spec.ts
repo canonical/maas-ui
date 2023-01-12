@@ -45,7 +45,9 @@ context("Machine listing - actions", () => {
 
   it("displays the correct actions in the action menu", () => {
     selectFirstMachine();
-    cy.findByRole("button", { name: /Take action/i }).click();
+    cy.findByTestId("section-header-buttons").within(() => {
+      cy.findByRole("button", { name: /Take action/i }).click();
+    });
     cy.findByLabelText("submenu").within(() => {
       cy.findAllByRole("button").should("have.length", MACHINE_ACTIONS.length);
       cy.findAllByRole("button").should("be.enabled");
@@ -55,7 +57,9 @@ context("Machine listing - actions", () => {
   MACHINE_ACTIONS.forEach((action) =>
     it(`loads machine ${action} form`, () => {
       selectFirstMachine();
-      cy.findByRole("button", { name: /Take action/i }).click();
+      cy.findByTestId("section-header-buttons").within(() => {
+        cy.findByRole("button", { name: /Take action/i }).click();
+      });
       cy.findByLabelText("submenu").within(() => {
         cy.findAllByRole("button", {
           name: new RegExp(`${action}...`),
