@@ -2,6 +2,7 @@
   $box-size: 1rem;
   $checkbox-offset: 0.1875rem; // Offset checkbox to prevent focus outline truncation
   $grouped-machines-indentation: $box-size + $sph--large - $checkbox-offset; // Checkbox + label - offset
+  $item-active-background: #dbedff;
 
   .machine-list {
     @include truncated-border($width: $grouped-machines-indentation);
@@ -76,9 +77,10 @@
     min-height: 1px;
   }
 
+  .machine-list__machine:focus-within,
   .machine-list__machine:hover:not(.machine-list__machine--inactive),
   .machine-list__machine--active {
-    background-color: $color-x-light;
+    background-color: $item-active-background;
 
     .p-table-menu {
       display: block;
