@@ -121,7 +121,7 @@ describe("TagForm", () => {
     );
 
     expect(
-      screen.getByLabelText(TagFormFieldsLabel.TagInput)
+      screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput })
     ).toBeInTheDocument();
     expect(screen.queryByRole("link")).not.toBeInTheDocument();
   });

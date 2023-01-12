@@ -110,7 +110,7 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
                     className="p-form__control u-clearfix"
                   >
                     <input
-                      aria-describedby={null}
+                      aria-describedby=""
                       aria-errormessage={null}
                       aria-haspopup="listbox"
                       aria-invalid={false}
@@ -216,7 +216,7 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
                     className="p-form__control u-clearfix"
                   >
                     <input
-                      aria-describedby={null}
+                      aria-describedby=""
                       aria-errormessage={null}
                       aria-haspopup="listbox"
                       aria-invalid={false}
