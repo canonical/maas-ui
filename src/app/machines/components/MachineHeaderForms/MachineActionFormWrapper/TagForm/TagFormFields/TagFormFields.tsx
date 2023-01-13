@@ -3,8 +3,8 @@ import { useState } from "react";
 
 import { Col, Icon, Modal, Row, Spinner } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import { Portal } from "react-portal";
 import { useSelector } from "react-redux";
-import usePortal from "react-useportal";
 
 import AddTagForm from "../AddTagForm";
 import TagFormChanges from "../TagFormChanges";
@@ -17,7 +17,6 @@ import type { TagFormValues } from "../types";
 
 import TagField from "app/base/components/TagField";
 import type { Tag as TagSelectorTag } from "app/base/components/TagSelector/TagSelector";
-import { NULL_EVENT } from "app/base/constants";
 import type { MachineActionFormProps } from "app/machines/types";
 import type { Machine, SelectedMachines } from "app/store/machine/types";
 import tagSelectors from "app/store/tag/selectors";
@@ -52,7 +51,9 @@ export const TagFormFields = ({
   viewingDetails = false,
   viewingMachineConfig = false,
 }: Props): JSX.Element => {
-  const { openPortal, closePortal, isOpen, Portal } = usePortal();
+  const [isOpen, setIsOpen] = useState(false);
+  const closePortal = () => setIsOpen(false);
+  const openPortal = () => setIsOpen(true);
   const [newTagName, setNewTagName] = useState<string | null>(null);
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const selectedTags = useSelectedTags("added");
@@ -100,7 +101,7 @@ export const TagFormFields = ({
             name="added"
             onAddNewTag={(name) => {
               setNewTagName(name);
-              openPortal(NULL_EVENT);
+              openPortal();
             }}
             placeholder=""
             showSelectedTags={false}
@@ -122,7 +123,7 @@ export const TagFormFields = ({
         <Portal>
           <Modal
             className="tag-form__modal"
-            close={() => closePortal(NULL_EVENT)}
+            close={() => closePortal()}
             title={Label.AddTag}
           >
             <AddTagForm
@@ -135,7 +136,7 @@ export const TagFormFields = ({
                 );
                 setNewTagName(null);
                 setNewTags([...newTags, tag.id]);
-                closePortal(NULL_EVENT);
+                closePortal();
               }}
               searchFilter={searchFilter}
               selectedMachines={selectedMachines}
