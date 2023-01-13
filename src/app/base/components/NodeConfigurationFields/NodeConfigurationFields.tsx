@@ -2,8 +2,8 @@ import { useState } from "react";
 
 import { Col, Modal, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import { Portal } from "react-portal";
 import { useSelector } from "react-redux";
-import usePortal from "react-useportal";
 import * as Yup from "yup";
 import type { SchemaOf } from "yup";
 
@@ -12,7 +12,6 @@ import type { NodeConfigurationValues } from "./types";
 import FormikField from "app/base/components/FormikField";
 import TagIdField from "app/base/components/TagIdField";
 import ZoneSelect from "app/base/components/ZoneSelect";
-import { NULL_EVENT } from "app/base/constants";
 import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import AddTagForm from "app/tags/components/AddTagForm";
@@ -36,7 +35,7 @@ const NodeConfigurationFields = (): JSX.Element => {
   const selectedTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, values.tags)
   );
-  const { openPortal, closePortal, isOpen, Portal } = usePortal();
+  const [isOpen, setIsOpen] = useState(false);
   const [newTagName, setNewTagName] = useState<string | null>(null);
   const manualTags = useSelector(tagSelectors.getManual);
 
@@ -58,7 +57,7 @@ const NodeConfigurationFields = (): JSX.Element => {
             name="tags"
             onAddNewTag={(name) => {
               setNewTagName(name);
-              openPortal(NULL_EVENT);
+              setIsOpen(true);
             }}
             placeholder="Create or remove tags"
             tagList={manualTags}
@@ -69,7 +68,7 @@ const NodeConfigurationFields = (): JSX.Element => {
         <Portal>
           <Modal
             className="tag-form__modal"
-            close={() => closePortal(NULL_EVENT)}
+            close={() => setIsOpen(false)}
             title={Label.AddTag}
           >
             <AddTagForm
@@ -82,7 +81,7 @@ const NodeConfigurationFields = (): JSX.Element => {
               onTagCreated={(tag) => {
                 setFieldValue("tags", values.tags.concat([tag.id]));
                 setNewTagName(null);
-                closePortal(NULL_EVENT);
+                setIsOpen(false);
               }}
             />
           </Modal>

@@ -5,15 +5,14 @@ import { useState, useMemo } from "react";
 import type { ChipProps } from "@canonical/react-components";
 import { Modal, Button, Icon, ModularTable } from "@canonical/react-components";
 import { useFormikContext } from "formik";
+import { Portal } from "react-portal";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom-v5-compat";
-import usePortal from "react-useportal";
 
 import TagChip from "../TagChip";
 import { useSelectedTags, useUnchangedTags } from "../hooks";
 import type { TagFormValues } from "../types";
 
-import { NULL_EVENT } from "app/base/constants";
 import urls from "app/base/urls";
 import type { MachineActionFormProps } from "app/machines/types";
 import type { TagIdCountMap } from "app/store/machine/utils";
@@ -119,13 +118,13 @@ export const TagFormChanges = ({
 }: Props): JSX.Element | null => {
   const { setFieldValue, values } = useFormikContext<TagFormValues>();
   const [tagDetails, setTagDetails] = useState<Tag | null>(null);
-  const { openPortal, closePortal, isOpen, Portal } = usePortal();
+  const [isOpen, setIsOpen] = useState(false);
   const toggleTagDetails = (tag: Tag | null) => {
     setTagDetails(tag);
     if (tag) {
-      openPortal(NULL_EVENT);
+      setIsOpen(true);
     } else {
-      closePortal(NULL_EVENT);
+      setIsOpen(false);
     }
   };
   const tagIdsAndCounts = getTagCounts(tags);

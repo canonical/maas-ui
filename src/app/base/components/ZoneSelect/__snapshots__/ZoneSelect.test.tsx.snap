@@ -2,7 +2,7 @@
 
 exports[`ZoneSelect renders a list of all zones in state 1`] = `
 <select
-  aria-describedby={null}
+  aria-describedby=""
   aria-errormessage={null}
   aria-invalid={false}
   aria-label="Zone"

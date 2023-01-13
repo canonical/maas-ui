@@ -2,7 +2,7 @@
 
 exports[`ResourcePoolSelect renders a list of all resource pools in state 1`] = `
 <select
-  aria-describedby={null}
+  aria-describedby=""
   aria-errormessage={null}
   aria-invalid={false}
   aria-label="Resource pool"

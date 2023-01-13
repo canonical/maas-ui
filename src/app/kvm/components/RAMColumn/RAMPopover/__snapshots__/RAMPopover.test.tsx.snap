@@ -135,7 +135,7 @@ exports[`RAMPopover renders 1`] = `
       onMouseOver={[Function]}
     >
       Child
-      <Component>
+      <Portal>
         <Portal
           containerInfo={
             <div>
@@ -356,7 +356,7 @@ exports[`RAMPopover renders 1`] = `
             </div>
           </div>
         </Portal>
-      </Component>
+      </Portal>
     </div>
   </Popover>
 </RAMPopover>

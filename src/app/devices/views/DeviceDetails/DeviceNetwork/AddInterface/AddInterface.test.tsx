@@ -23,7 +23,6 @@ import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 import { renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
-
 const createNewInterface = async () => {
   await userEvent.clear(screen.getByRole("textbox", { name: "Name" }));
   await userEvent.type(screen.getByRole("textbox", { name: "Name" }), "eth123");

@@ -336,7 +336,7 @@ exports[`NodeName can display the form 1`] = `
                           className="p-form__control u-clearfix"
                         >
                           <input
-                            aria-describedby={null}
+                            aria-describedby=""
                             aria-errormessage={null}
                             aria-invalid={false}
                             aria-label="Hostname"

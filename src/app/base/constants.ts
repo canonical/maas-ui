@@ -40,9 +40,3 @@ export const COLOURS = {
   POSITIVE_MID: "#4DAB4D",
   POSITIVE: "#0E8420",
 } as const;
-
-// usePortal was originally design to work with click events, so to open the
-// portal programmatically we need to fake the event. This workaround can be
-// removed when this issue is resolved:
-// https://github.com/alex-cory/react-useportal/issues/36
-export const NULL_EVENT = { currentTarget: { contains: (): boolean => false } };

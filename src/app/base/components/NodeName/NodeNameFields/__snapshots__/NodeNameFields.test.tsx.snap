@@ -93,7 +93,7 @@ exports[`NodeNameFields displays the fields 1`] = `
                 className="p-form__control u-clearfix"
               >
                 <input
-                  aria-describedby={null}
+                  aria-describedby=""
                   aria-errormessage={null}
                   aria-invalid={false}
                   aria-label="Hostname"
@@ -194,7 +194,7 @@ exports[`NodeNameFields displays the fields 1`] = `
                   className="p-form-validation__select-wrapper"
                 >
                   <select
-                    aria-describedby={null}
+                    aria-describedby=""
                     aria-errormessage={null}
                     aria-invalid={false}
                     aria-label="Domain"

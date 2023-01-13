@@ -1,9 +1,8 @@
-import { useRef } from "react";
-import * as React from "react";
+import { useState, useRef } from "react";
 import type { ReactNode } from "react";
 
 import classNames from "classnames";
-import usePortal from "react-useportal";
+import { Portal } from "react-portal";
 
 type Props = {
   children: ReactNode;
@@ -49,7 +48,9 @@ const Popover = ({
   position = "right",
 }: Props): JSX.Element => {
   const el = useRef(null);
-  const { openPortal, closePortal, isOpen, Portal } = usePortal();
+  const [isOpen, setIsOpen] = useState(false);
+  const closePortal = () => setIsOpen(false);
+  const openPortal = () => setIsOpen(true);
   const positionStyle = getPositionStyle(el, position);
 
   return (
