@@ -6,6 +6,7 @@
   }
 
   [class^="p-button"].has-icon.filter-accordion__toggle {
+    @extend %vf-input-elements;
     padding-left: $spv--small;
     text-align: left;
 

@@ -29,12 +29,11 @@ exports[`NotificationGroupNotification renders 1`] = `
           />
         </p>
         <button
-          aria-label="Close notification"
           className="p-notification__close"
           data-testid="notification-close-button"
           onClick={[Function]}
         >
-          Close
+          Close notification
         </button>
       </div>
     </div>

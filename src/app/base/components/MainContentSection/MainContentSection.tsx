@@ -24,11 +24,11 @@ const MainContentSection = ({
   return (
     <div className="section" {...props}>
       {header ? (
-        <div className="section__header-wrapper">
+        <header className="section__header-wrapper">
           <Row>
             <Col size={12}>{header}</Col>
           </Row>
-        </div>
+        </header>
       ) : null}
       <Strip
         element="section"

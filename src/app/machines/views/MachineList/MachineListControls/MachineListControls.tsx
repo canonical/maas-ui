@@ -3,19 +3,20 @@ import { useEffect, useState } from "react";
 import { Col, Row } from "@canonical/react-components";
 
 import GroupSelect from "./GroupSelect";
+import HiddenColumnsSelect from "./HiddenColumnsSelect";
 import MachinesFilterAccordion from "./MachinesFilterAccordion";
 
 import DebounceSearchBox from "app/base/components/DebounceSearchBox";
 import type { FetchGroupKey } from "app/store/machine/types";
 
-type Props = {
+export type MachineListControlsProps = {
   filter: string;
   grouping: FetchGroupKey | null;
   setFilter: (filter: string) => void;
   setGrouping: (group: FetchGroupKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
-  hiddenColumns?: string[];
-  toggleHiddenColumn?: (column: string) => void;
+  hiddenColumns: string[];
+  setHiddenColumns: React.Dispatch<React.SetStateAction<string[]>>;
 };
 
 const MachineListControls = ({
@@ -24,7 +25,9 @@ const MachineListControls = ({
   setFilter,
   setGrouping,
   setHiddenGroups,
-}: Props): JSX.Element => {
+  hiddenColumns,
+  setHiddenColumns,
+}: MachineListControlsProps): JSX.Element => {
   const [searchText, setSearchText] = useState(filter);
 
   useEffect(() => {
@@ -42,7 +45,7 @@ const MachineListControls = ({
           }}
         />
       </Col>
-      <Col size={6}>
+      <Col size={4}>
         <DebounceSearchBox
           onDebounced={(debouncedText) => setFilter(debouncedText)}
           searchText={searchText}
@@ -50,10 +53,20 @@ const MachineListControls = ({
         />
       </Col>
       <Col size={3}>
-        <GroupSelect
-          grouping={grouping}
-          setGrouping={setGrouping}
-          setHiddenGroups={setHiddenGroups}
+        <div className="u-flex--align-baseline">
+          <div className="u-flex--grow">
+            <GroupSelect
+              grouping={grouping}
+              setGrouping={setGrouping}
+              setHiddenGroups={setHiddenGroups}
+            />
+          </div>
+        </div>
+      </Col>
+      <Col size={2}>
+        <HiddenColumnsSelect
+          hiddenColumns={hiddenColumns}
+          setHiddenColumns={setHiddenColumns}
         />
       </Col>
     </Row>

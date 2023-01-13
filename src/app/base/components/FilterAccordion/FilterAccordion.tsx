@@ -119,7 +119,7 @@ const FilterAccordion = <I, PK extends keyof I>({
   toggleFilter,
 }: Props<I, PK>): JSX.Element => {
   const currentFilters = getCurrentFilters(filterString);
-  const [expandedSection, setExpandedSection] = useState();
+  const [expandedSection, setExpandedSection] = useState<string>();
   const sections = useMemo(() => {
     const filterOptions = getFilters<I, PK>(items, filterOrder, getValue);
     return filterOrder.reduce<Section[]>((options, filter) => {
@@ -203,7 +203,7 @@ const FilterAccordion = <I, PK extends keyof I>({
         className="filter-accordion__dropdown"
         expanded={expandedSection}
         externallyControlled
-        onExpandedChange={setExpandedSection}
+        onExpandedChange={(id, _title) => setExpandedSection(id)}
         sections={sections}
       />
     </ContextualMenu>

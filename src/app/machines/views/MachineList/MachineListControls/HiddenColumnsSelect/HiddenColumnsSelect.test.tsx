@@ -1,27 +1,57 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import HiddenColumnsSelect from "./HiddenColumnsSelect";
 
-import { rootState as rootStateFactory } from "testing/factories";
+import { columnToggles } from "app/machines/constants";
+import { renderWithMockStore } from "testing/utils";
 
-it("calls toggleHiddenColumn correctly on click of a checkbox", async () => {
-  const mockStore = configureStore();
+it("calls setHiddenColumns correctly on click of a checkbox", async () => {
   const hiddenColumns: Array<""> = [];
-  const store = mockStore(rootStateFactory());
-
-  const toggleHiddenColumn = jest.fn();
-  render(
-    <Provider store={store}>
-      <HiddenColumnsSelect
-        hiddenColumns={hiddenColumns}
-        toggleHiddenColumn={toggleHiddenColumn}
-      />
-    </Provider>
+  const setHiddenColumns = jest.fn();
+  renderWithMockStore(
+    <HiddenColumnsSelect
+      hiddenColumns={hiddenColumns}
+      setHiddenColumns={setHiddenColumns}
+    />
   );
-  await userEvent.click(screen.getByRole("button", { name: "Hidden columns" }));
+  await userEvent.click(screen.getByRole("button", { name: "Columns" }));
+  expect(
+    screen.getByRole("checkbox", { name: /10 out of 10 selected/ })
+  ).toBeInTheDocument();
   await userEvent.click(screen.getByRole("checkbox", { name: "RAM" }));
-  expect(toggleHiddenColumn).toHaveBeenCalledWith("memory");
+  expect(setHiddenColumns).toHaveBeenCalledWith(["memory"]);
+});
+
+it("displays a correct number of selected columns", async () => {
+  const hiddenColumns = ["memory"];
+  const setHiddenColumns = jest.fn();
+  renderWithMockStore(
+    <HiddenColumnsSelect
+      hiddenColumns={hiddenColumns}
+      setHiddenColumns={setHiddenColumns}
+    />
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Columns" }));
+  expect(
+    screen.getByRole("checkbox", { name: /9 out of 10 selected/ })
+  ).toBeInTheDocument();
+  await userEvent.click(screen.getByRole("checkbox", { name: "RAM" }));
+  expect(setHiddenColumns).toHaveBeenCalledWith([]);
+});
+
+it("group checkbox selects all columns on press", async () => {
+  const hiddenColumns: string[] = [];
+  const setHiddenColumns = jest.fn();
+  renderWithMockStore(
+    <HiddenColumnsSelect
+      hiddenColumns={hiddenColumns}
+      setHiddenColumns={setHiddenColumns}
+    />
+  );
+  await userEvent.click(screen.getByRole("button", { name: "Columns" }));
+  await userEvent.click(
+    screen.getByRole("checkbox", { name: /10 out of 10 selected/ })
+  );
+  expect(setHiddenColumns).toHaveBeenCalledWith([...columnToggles]);
 });
