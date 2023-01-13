@@ -235,7 +235,7 @@
 @import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/TagForm";
 @import "~app/machines/views/MachineDetails/MachineSummary";
-@import "~app/machines/views/MachineDetails/MachineHeader/MachineActionButtonGroup";
+@import "~app/machines/components/MachineActionButtonGroup";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineList";
 @include CloneFormFields;

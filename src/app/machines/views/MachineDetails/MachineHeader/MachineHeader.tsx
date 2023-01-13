@@ -4,7 +4,6 @@ import { useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
 import { Link } from "react-router-dom-v5-compat";
 
-import MachineActionButtonGroup from "./MachineActionButtonGroup";
 import MachineName from "./MachineName";
 
 import PowerIcon from "app/base/components/PowerIcon";
@@ -12,6 +11,7 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useSendAnalytics } from "app/base/hooks";
+import MachineActionButtonGroup from "app/machines/components/MachineActionButtonGroup";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
 import type {
