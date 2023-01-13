@@ -3,7 +3,6 @@
 exports[`TagSelector renders and matches the snapshot when closed 1`] = `
 <div>
   <Field
-    forId="mock-nanoid-1"
     label={
       <span
         onClick={[Function]}
@@ -17,8 +16,8 @@ exports[`TagSelector renders and matches the snapshot when closed 1`] = `
     >
       <Input
         aria-haspopup="listbox"
+        aria-label="Tags"
         className="tag-selector__input"
-        id="mock-nanoid-1"
         onChange={[Function]}
         onFocus={[Function]}
         onKeyPress={[Function]}
@@ -52,7 +51,6 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
 >
   <div>
     <Field
-      forId="mock-nanoid-1"
       label={
         <span
           onClick={[Function]}
@@ -64,12 +62,9 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
       <div
         className="p-form__group p-form-validation"
       >
-        <Label
-          forId="mock-nanoid-1"
-        >
+        <Label>
           <label
             className="p-form__label"
-            htmlFor="mock-nanoid-1"
           >
             <span
               onClick={[Function]}
@@ -86,8 +81,8 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
           >
             <Input
               aria-haspopup="listbox"
+              aria-label="Tags"
               className="tag-selector__input"
-              id="mock-nanoid-1"
               onChange={[Function]}
               onFocus={[Function]}
               onKeyPress={[Function]}
@@ -97,11 +92,10 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
               value=""
             >
               <Field
-                forId="mock-nanoid-1"
-                helpId="mock-nanoid-3"
+                helpId="mock-nanoid-2"
                 isTickElement={false}
                 required={false}
-                validationId="mock-nanoid-2"
+                validationId="mock-nanoid-1"
               >
                 <div
                   className="p-form__group p-form-validation"
@@ -110,12 +104,12 @@ exports[`TagSelector renders and matches the snapshot when opened 1`] = `
                     className="p-form__control u-clearfix"
                   >
                     <input
-                      aria-describedby={null}
+                      aria-describedby=""
                       aria-errormessage={null}
                       aria-haspopup="listbox"
                       aria-invalid={false}
+                      aria-label="Tags"
                       className="p-form-validation__input tag-selector__input"
-                      id="mock-nanoid-1"
                       onChange={[Function]}
                       onFocus={[Function]}
                       onKeyPress={[Function]}
@@ -158,7 +152,6 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
 >
   <div>
     <Field
-      forId="mock-nanoid-1"
       label={
         <span
           onClick={[Function]}
@@ -170,12 +163,9 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
       <div
         className="p-form__group p-form-validation"
       >
-        <Label
-          forId="mock-nanoid-1"
-        >
+        <Label>
           <label
             className="p-form__label"
-            htmlFor="mock-nanoid-1"
           >
             <span
               onClick={[Function]}
@@ -192,8 +182,8 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
           >
             <Input
               aria-haspopup="listbox"
+              aria-label="Tags"
               className="tag-selector__input"
-              id="mock-nanoid-1"
               onChange={[Function]}
               onFocus={[Function]}
               onKeyPress={[Function]}
@@ -203,11 +193,10 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
               value=""
             >
               <Field
-                forId="mock-nanoid-1"
-                helpId="mock-nanoid-3"
+                helpId="mock-nanoid-2"
                 isTickElement={false}
                 required={false}
-                validationId="mock-nanoid-2"
+                validationId="mock-nanoid-1"
               >
                 <div
                   className="p-form__group p-form-validation"
@@ -216,12 +205,12 @@ exports[`TagSelector renders and matches the snapshot with tag descriptions 1`] 
                     className="p-form__control u-clearfix"
                   >
                     <input
-                      aria-describedby={null}
+                      aria-describedby=""
                       aria-errormessage={null}
                       aria-haspopup="listbox"
                       aria-invalid={false}
+                      aria-label="Tags"
                       className="p-form-validation__input tag-selector__input"
-                      id="mock-nanoid-1"
                       onChange={[Function]}
                       onFocus={[Function]}
                       onKeyPress={[Function]}

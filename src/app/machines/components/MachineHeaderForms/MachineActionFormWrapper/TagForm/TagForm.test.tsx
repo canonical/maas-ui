@@ -103,7 +103,9 @@ it("correctly dispatches actions to tag machines", async () => {
     </Provider>
   );
 
-  await userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
+  await userEvent.click(
+    screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput })
+  );
   await userEvent.click(screen.getByRole("option", { name: "tag1" }));
   await userEvent.click(screen.getByRole("option", { name: "tag2" }));
   await userEvent.click(screen.getByRole("button", { name: "Save" }));
@@ -202,7 +204,9 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
     </Provider>
   );
 
-  await userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
+  await userEvent.click(
+    screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput })
+  );
   await userEvent.click(screen.getByRole("option", { name: "tag2" }));
   await userEvent.click(
     screen.getByRole("button", { name: TagFormChangesLabel.Remove })
@@ -313,7 +317,9 @@ it("shows a notification on success", async () => {
   );
   // Mock state.tag.saved transitioning from "false" to "true"
   mockFormikFormSaved();
-  await userEvent.click(screen.getByLabelText(TagFormFieldsLabel.TagInput));
+  await userEvent.click(
+    screen.getByRole("textbox", { name: TagFormFieldsLabel.TagInput })
+  );
   await userEvent.click(screen.getByRole("option", { name: "tag2" }));
   await userEvent.click(
     screen.getByRole("button", { name: TagFormChangesLabel.Remove })
