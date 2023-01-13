@@ -1,44 +1,74 @@
 import { CheckboxInput, ContextualMenu } from "@canonical/react-components";
 
+import type { MachineListControlsProps } from "../MachineListControls";
+
 import { useSendAnalytics } from "app/base/hooks";
-import { columnLabels, columns } from "app/machines/constants";
+import { columnLabels, columnToggles } from "app/machines/constants";
 
 type Props = {
   hiddenColumns: string[];
-  toggleHiddenColumn: (column: string) => void;
-};
+} & Pick<MachineListControlsProps, "setHiddenColumns">;
 
 const HiddenColumnsSelect = ({
   hiddenColumns,
-  toggleHiddenColumn,
+  setHiddenColumns,
 }: Props): JSX.Element => {
   const sendAnalytics = useSendAnalytics();
-
+  const selectedColumnsLength = columnToggles.length - hiddenColumns.length;
+  const someColumnsChecked =
+    selectedColumnsLength > 0 && selectedColumnsLength < columnToggles.length;
+  const toggleHiddenColumn = (column: string): void => {
+    if (hiddenColumns.includes(column)) {
+      setHiddenColumns(hiddenColumns.filter((c) => c !== column));
+    } else {
+      setHiddenColumns([...hiddenColumns, column]);
+    }
+  };
   return (
     <ContextualMenu
       className="filter-accordion"
       constrainPanelWidth
-      dropdownProps={{ "aria-label": "hidden columns menu" }}
+      dropdownProps={{ "aria-label": "columns menu" }}
       hasToggleIcon
       position="left"
       toggleClassName="filter-accordion__toggle"
-      toggleLabel={`Hidden columns ${
-        hiddenColumns.length > 0 ? `(${hiddenColumns.length})` : ""
-      }`}
+      /* TODO: add <Icon name="settings" /> after updating to latest react-components  */
+      toggleLabel="Columns"
     >
-      <div className="machines-list-hidden-columns-select">
-        {columns.map((column) => (
+      <div className="hidden-columns-select-wrapper u-no-padding--bottom">
+        <CheckboxInput
+          checked={hiddenColumns.length === 0}
+          indeterminate={someColumnsChecked}
+          label={`${selectedColumnsLength} out of ${columnToggles.length} selected`}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+            const isChecked = e.target.checked;
+            sendAnalytics(
+              "MachineListControls",
+              isChecked ? "select" : "deselect",
+              "all"
+            );
+            if (isChecked) {
+              setHiddenColumns([]);
+            } else {
+              setHiddenColumns(columnToggles);
+            }
+          }}
+        />
+      </div>
+      <hr />
+      <div className="hidden-columns-select-wrapper u-no-padding--top">
+        {columnToggles.map((column) => (
           <CheckboxInput
             aria-label={column}
-            checked={hiddenColumns.includes(column)}
-            disabled={column === "fqdn"}
+            checked={!hiddenColumns.includes(column)}
             key={column}
             label={columnLabels[column]}
-            onChange={() => {
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const isChecked = e.target.checked;
               sendAnalytics(
                 "MachineListControls",
-                hiddenColumns.includes(column) ? "unhide" : "hide",
-                column
+                isChecked ? "select" : "deselect",
+                columnLabels[column]
               );
               toggleHiddenColumn(column);
             }}
