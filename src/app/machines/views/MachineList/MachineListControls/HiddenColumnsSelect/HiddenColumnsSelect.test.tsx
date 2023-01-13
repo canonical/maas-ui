@@ -1,26 +1,19 @@
-import { render, screen } from "@testing-library/react";
+import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import { Provider } from "react-redux";
-import configureStore from "redux-mock-store";
 
 import HiddenColumnsSelect from "./HiddenColumnsSelect";
 
 import { columnToggles } from "app/machines/constants";
-import { rootState as rootStateFactory } from "testing/factories";
+import { renderWithMockStore } from "testing/utils";
 
 it("calls setHiddenColumns correctly on click of a checkbox", async () => {
-  const mockStore = configureStore();
   const hiddenColumns: Array<""> = [];
-  const store = mockStore(rootStateFactory());
-
   const setHiddenColumns = jest.fn();
-  render(
-    <Provider store={store}>
-      <HiddenColumnsSelect
-        hiddenColumns={hiddenColumns}
-        setHiddenColumns={setHiddenColumns}
-      />
-    </Provider>
+  renderWithMockStore(
+    <HiddenColumnsSelect
+      hiddenColumns={hiddenColumns}
+      setHiddenColumns={setHiddenColumns}
+    />
   );
   await userEvent.click(screen.getByRole("button", { name: "Columns" }));
   expect(
@@ -31,18 +24,13 @@ it("calls setHiddenColumns correctly on click of a checkbox", async () => {
 });
 
 it("displays a correct number of selected columns", async () => {
-  const mockStore = configureStore();
   const hiddenColumns = ["memory"];
-  const store = mockStore(rootStateFactory());
-
   const setHiddenColumns = jest.fn();
-  render(
-    <Provider store={store}>
-      <HiddenColumnsSelect
-        hiddenColumns={hiddenColumns}
-        setHiddenColumns={setHiddenColumns}
-      />
-    </Provider>
+  renderWithMockStore(
+    <HiddenColumnsSelect
+      hiddenColumns={hiddenColumns}
+      setHiddenColumns={setHiddenColumns}
+    />
   );
   await userEvent.click(screen.getByRole("button", { name: "Columns" }));
   expect(
@@ -53,18 +41,13 @@ it("displays a correct number of selected columns", async () => {
 });
 
 it("group checkbox selects all columns on press", async () => {
-  const mockStore = configureStore();
   const hiddenColumns: string[] = [];
-  const store = mockStore(rootStateFactory());
-
   const setHiddenColumns = jest.fn();
-  render(
-    <Provider store={store}>
-      <HiddenColumnsSelect
-        hiddenColumns={hiddenColumns}
-        setHiddenColumns={setHiddenColumns}
-      />
-    </Provider>
+  renderWithMockStore(
+    <HiddenColumnsSelect
+      hiddenColumns={hiddenColumns}
+      setHiddenColumns={setHiddenColumns}
+    />
   );
   await userEvent.click(screen.getByRole("button", { name: "Columns" }));
   await userEvent.click(
