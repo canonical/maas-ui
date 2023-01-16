@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
@@ -14,7 +13,7 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("RepositoryAdd", () => {
   let state: RootState;

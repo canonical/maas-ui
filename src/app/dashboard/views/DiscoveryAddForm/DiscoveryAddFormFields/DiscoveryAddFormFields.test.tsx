@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
@@ -18,7 +17,7 @@ import {
   discoveryState as discoveryStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 describe("DiscoveryAddFormFields", () => {
   let state: RootState;

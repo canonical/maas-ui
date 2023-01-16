@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-
 import ArrowPagination, { Labels, TestIds } from "./ArrowPagination";
+
+import { render, screen } from "testing/utils";
 
 describe("ArrowPagination", () => {
   it("disables both buttons when there are no items", () => {

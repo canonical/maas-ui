@@ -1,4 +1,3 @@
-import { render, screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import NodeActionMenu, { Label } from "./NodeActionMenu";
@@ -6,6 +5,7 @@ import NodeActionMenu, { Label } from "./NodeActionMenu";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 import { machine as machineFactory } from "testing/factories";
+import { render, screen, within } from "testing/utils";
 
 describe("NodeActionMenu", () => {
   const openMenu = async () =>

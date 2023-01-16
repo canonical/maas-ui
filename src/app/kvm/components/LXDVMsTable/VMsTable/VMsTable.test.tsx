@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen, within } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -21,7 +20,7 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, within, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore();
 

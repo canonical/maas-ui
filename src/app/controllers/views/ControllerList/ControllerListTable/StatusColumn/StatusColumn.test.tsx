@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import { StatusColumn } from "./StatusColumn";
 
 import { ControllerVersionIssues } from "app/store/controller/types";
@@ -13,7 +11,7 @@ import {
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("StatusColumn", () => {
   let state: RootState;

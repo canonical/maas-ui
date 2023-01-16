@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import ModelListSubtitle, { TestIds } from "./ModelListSubtitle";
+
+import { render, screen } from "testing/utils";
 
 describe("ModelListSubtitle", () => {
   it("correctly displays when one model is available and none selected", () => {

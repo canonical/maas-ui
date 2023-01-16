@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -12,6 +11,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;

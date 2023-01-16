@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -12,7 +11,7 @@ import {
   dhcpSnippetState as dhcpSnippetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("DhcpForm", () => {
   let state: RootState;

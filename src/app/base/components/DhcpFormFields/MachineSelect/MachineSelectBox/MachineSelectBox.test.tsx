@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
@@ -9,7 +8,7 @@ import { DEFAULT_DEBOUNCE_INTERVAL } from "app/base/components/DebounceSearchBox
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, waitFor, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 

@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import LXDClusterHosts from "./LXDClusterHosts";
 
 import urls from "app/base/urls";
@@ -13,7 +11,7 @@ import {
   vmHost as vmHostFactory,
   vmClusterState as vmClusterStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("LXDClusterHosts", () => {
   let state: RootState;

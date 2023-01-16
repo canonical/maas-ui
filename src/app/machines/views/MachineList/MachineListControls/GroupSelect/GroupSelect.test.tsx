@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import GroupSelect from "./GroupSelect";
+
+import { render, screen } from "testing/utils";
 
 it("executes setGrouping and setHiddenGroups functions on change", async () => {
   const setGrouping = jest.fn();

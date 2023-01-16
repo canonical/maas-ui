@@ -1,12 +1,10 @@
-import { screen } from "@testing-library/react";
-
 import IncompleteCard, {
   Labels as IncompleteCardLabels,
 } from "./IncompleteCard";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("IncompleteCard", () => {
   let state: RootState;

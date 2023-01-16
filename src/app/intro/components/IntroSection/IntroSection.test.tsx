@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -14,7 +13,11 @@ import {
   userEventError as userEventErrorFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  renderWithMockStore,
+} from "testing/utils";
 
 describe("IntroSection", () => {
   let state: RootState;

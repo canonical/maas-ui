@@ -1,5 +1,3 @@
-import { render, screen } from "@testing-library/react";
-
 import ServiceStatus from "./ServiceStatus";
 
 import {
@@ -7,6 +5,7 @@ import {
   ServiceStatus as ServiceStatusName,
 } from "app/store/service/types";
 import { service as serviceFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 it("correctly renders a running service", () => {
   const service = serviceFactory({ status: ServiceStatusName.RUNNING });

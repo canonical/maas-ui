@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import MockDate from "mockdate";
 
@@ -13,7 +12,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, within, renderWithMockStore } from "testing/utils";
 
 beforeEach(() => {
   MockDate.set("Fri, 18 Nov. 2022 10:55:00");

@@ -1,4 +1,3 @@
-import { render, screen, within, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
@@ -19,6 +18,7 @@ import {
   vlan as vlanFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen, within, waitFor } from "testing/utils";
 
 const subnetId = 1;
 const getRootState = () => {

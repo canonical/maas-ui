@@ -1,4 +1,3 @@
-import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
@@ -15,6 +14,7 @@ import {
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen, waitFor } from "testing/utils";
 
 const renderTestCase = (
   space = spaceFactory({

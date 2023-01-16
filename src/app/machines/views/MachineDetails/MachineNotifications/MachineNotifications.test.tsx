@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-
 import MachineNotifications from "./MachineNotifications";
+
+import { render, screen } from "testing/utils";
 
 it("ignores inactive notifications", () => {
   render(

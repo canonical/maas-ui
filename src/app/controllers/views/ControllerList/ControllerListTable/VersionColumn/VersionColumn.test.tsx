@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import { VersionColumn } from "./VersionColumn";
 
 import { ControllerInstallType } from "app/store/controller/types";
@@ -11,7 +9,7 @@ import {
   controllerVersionInfo as controllerVersionInfoFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("VersionColumn", () => {
   let state: RootState;

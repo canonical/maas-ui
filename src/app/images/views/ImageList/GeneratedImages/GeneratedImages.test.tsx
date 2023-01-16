@@ -1,5 +1,3 @@
-import { screen, within } from "@testing-library/react";
-
 import GeneratedImages from "./GeneratedImages";
 
 import { Labels as ImagesTableLabels } from "app/images/components/ImagesTable/ImagesTable";
@@ -9,7 +7,7 @@ import {
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, within, renderWithMockStore } from "testing/utils";
 
 describe("GeneratedImages", () => {
   it("does not render if there are no generated resources", () => {

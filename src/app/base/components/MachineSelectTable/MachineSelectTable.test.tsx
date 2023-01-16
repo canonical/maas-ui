@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import MachineSelectTable, { Label } from "./MachineSelectTable";
@@ -12,7 +11,7 @@ import {
   tagState as tagStateFactory,
   machineState as machineStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, within, renderWithMockStore } from "testing/utils";
 
 describe("MachineSelectTable", () => {
   let machines: Machine[];

@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -10,6 +9,7 @@ import {
   generalState as generalStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 

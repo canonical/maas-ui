@@ -1,4 +1,3 @@
-import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -15,6 +14,7 @@ import {
   fabricState as fabricSpaceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen, waitFor } from "testing/utils";
 
 it("correctly dispatches subnet cleanup and create actions on form submit", async () => {
   const vlan1 = vlanFactory({ id: 111, fabric: 5 });

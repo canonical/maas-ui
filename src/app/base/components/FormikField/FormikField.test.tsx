@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 
 import FormikField from "./FormikField";
+
+import { render, screen } from "testing/utils";
 
 describe("FormikField", () => {
   it("can set a different component", () => {

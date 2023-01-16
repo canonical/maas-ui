@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-
 import MachineListPagination, { Label } from "./MachineListPagination";
+
+import { render, screen } from "testing/utils";
 
 it("displays pagination if there are machines", () => {
   render(

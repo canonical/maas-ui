@@ -1,10 +1,8 @@
-import { screen } from "@testing-library/react";
-
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
 import urls from "app/base/urls";
 import { KVMHeaderViews } from "app/kvm/constants";
-import { getTestState, renderWithBrowserRouter } from "testing/utils";
+import { screen, getTestState, renderWithBrowserRouter } from "testing/utils";
 
 describe("KVMDetailsHeader", () => {
   let state: ReturnType<typeof getTestState>;

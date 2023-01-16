@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import DomainDetailsHeader, {
   Labels as DomainDetailsHeaderLabels,
 } from "./DomainDetailsHeader";
@@ -10,7 +8,7 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("DomainDetailsHeader", () => {
   it("shows a spinner if domain details has not loaded yet", () => {

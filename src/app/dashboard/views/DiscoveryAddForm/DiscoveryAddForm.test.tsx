@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
@@ -36,7 +35,12 @@ import {
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { renderWithBrowserRouter } from "testing/utils";
+import {
+  screen,
+  waitFor,
+  within,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

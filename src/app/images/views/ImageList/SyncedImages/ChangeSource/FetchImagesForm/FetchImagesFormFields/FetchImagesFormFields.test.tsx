@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
@@ -7,6 +6,7 @@ import FetchImagesFormFields, {
 } from "./FetchImagesFormFields";
 
 import { BootResourceSourceType } from "app/store/bootresource/types";
+import { render, screen } from "testing/utils";
 
 describe("FetchImagesFormFields", () => {
   it("does not show extra fields if maas.io source is selected", async () => {

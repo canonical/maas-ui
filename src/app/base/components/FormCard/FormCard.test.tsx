@@ -1,8 +1,7 @@
-import { render, screen } from "@testing-library/react";
-
 import FormCard, { TestIds } from "./FormCard";
 
 import { COL_SIZES } from "app/base/constants";
+import { render, screen } from "testing/utils";
 
 const { CARD_TITLE, SIDEBAR, TOTAL } = COL_SIZES;
 

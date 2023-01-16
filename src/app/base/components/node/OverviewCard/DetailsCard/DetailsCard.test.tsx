@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import DetailsCard, { Labels as DetailsCardLabels } from "./DetailsCard";
 
 import urls from "app/base/urls";
@@ -19,7 +17,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 let state: RootState;
 beforeEach(() => {

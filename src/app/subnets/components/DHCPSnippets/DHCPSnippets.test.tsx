@@ -1,4 +1,3 @@
-import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -13,6 +12,7 @@ import {
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render } from "testing/utils";
 
 const mockStore = configureStore();
 const mockDHCPTable = jest.fn();

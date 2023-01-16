@@ -1,4 +1,3 @@
-import { render, screen, within } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -13,6 +12,7 @@ import {
   knownBootArchitecturesState as knownBootArchitecturesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen, within } from "testing/utils";
 
 const mockStore = configureStore();
 let initialValues: FormValues;

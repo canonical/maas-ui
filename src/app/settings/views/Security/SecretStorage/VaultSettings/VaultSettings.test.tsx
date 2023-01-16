@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import VaultSettings, { Labels as VaultSettingsLabels } from "./VaultSettings";
 
 import type { Controller } from "app/store/controller/types";
@@ -12,7 +10,7 @@ import {
   rootState as rootStateFactory,
   vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("VaultSettings", () => {
   let controllers: Controller[];

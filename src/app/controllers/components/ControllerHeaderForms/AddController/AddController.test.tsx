@@ -1,4 +1,3 @@
-import { screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import AddController from "./AddController";
@@ -11,7 +10,12 @@ import {
   rootState as rootStateFactory,
   versionState as versionStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import {
+  screen,
+  waitFor,
+  within,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 describe("AddController", () => {
   let state: RootState;

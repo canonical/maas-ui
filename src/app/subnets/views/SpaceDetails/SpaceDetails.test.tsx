@@ -1,4 +1,3 @@
-import { render, screen, within } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -13,6 +12,7 @@ import {
   space as spaceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen, within } from "testing/utils";
 
 const mockStore = configureStore();
 

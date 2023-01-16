@@ -1,6 +1,6 @@
-import { render, screen, getDefaultNormalizer } from "@testing-library/react";
-
 import NonBreakingSpace from "./NonBreakingSpace";
+
+import { render, screen, getDefaultNormalizer } from "testing/utils";
 
 it("renders a non breaking space correctly", () => {
   render(

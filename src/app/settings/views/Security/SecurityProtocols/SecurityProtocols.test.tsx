@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import SecurityProtocols from "./SecurityProtocols";
 
 import {
@@ -8,7 +6,7 @@ import {
   tlsCertificate as tlsCertificateFactory,
   tlsCertificateState as tlsCertificateStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 it("displays loading text if TLS certificate has not loaded", () => {
   const state = rootStateFactory({

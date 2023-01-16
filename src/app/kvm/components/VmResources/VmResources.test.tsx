@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
@@ -18,7 +17,11 @@ import {
   pod as podFactory,
   podState as podStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  renderWithMockStore,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

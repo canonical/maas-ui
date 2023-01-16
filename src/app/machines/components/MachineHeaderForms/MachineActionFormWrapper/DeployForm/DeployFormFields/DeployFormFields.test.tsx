@@ -1,4 +1,3 @@
-import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -20,6 +19,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
+import { render, screen, waitFor } from "testing/utils";
 
 const mockStore = configureStore();
 

@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import * as fileDownload from "js-file-download";
 
@@ -6,6 +5,7 @@ import CertificateDownload, { Labels, TestIds } from "./CertificateDownload";
 
 import type { GeneratedCertificate } from "app/store/general/types";
 import { generatedCertificate as certFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 jest.mock("js-file-download", () => jest.fn());
 

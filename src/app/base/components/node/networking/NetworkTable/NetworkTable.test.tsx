@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import NetworkTable, { Label } from "./NetworkTable";
@@ -24,7 +23,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 describe("NetworkTable", () => {
   let state: RootState;
