@@ -78,9 +78,7 @@
   }
 
   .tag-selector__selected-list {
-    @extend %vf-bg--x-light;
-    @extend %vf-has-round-corners;
-    border: 1px solid $color-mid;
+    background-color: $colors--light-theme--background-inputs;
     border-bottom: 0;
     margin: 0;
     padding: $spv--x-small $sph--small;
