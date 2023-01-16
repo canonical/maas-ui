@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import IPColumn from "./IPColumn";
 
 import { HardwareType } from "app/base/enum";
@@ -24,7 +22,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("IPColumn", () => {
   let state: RootState;

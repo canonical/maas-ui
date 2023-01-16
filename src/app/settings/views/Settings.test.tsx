@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import Settings from "./Settings";
@@ -10,7 +9,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

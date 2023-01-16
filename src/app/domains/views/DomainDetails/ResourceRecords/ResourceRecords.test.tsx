@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import ResourceRecords, {
   Labels as ResourceRecordsLabels,
 } from "./ResourceRecords";
@@ -9,7 +7,7 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("ResourceRecords", () => {
   it("shows a message if domain has no records", () => {

@@ -1,6 +1,5 @@
 import type { ReactNode } from "react";
 
-import { render, screen } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
@@ -32,6 +31,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 

@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import ManagedAllocationLabel from "./ManagedAllocationLabel";
+
+import { render, screen } from "testing/utils";
 
 it("shows a tooltip", async () => {
   render(<ManagedAllocationLabel />);

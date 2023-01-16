@@ -1,5 +1,3 @@
-import { waitFor } from "@testing-library/react";
-
 import Routes from "./Routes";
 import type { RootState } from "./store/root/types";
 
@@ -20,7 +18,7 @@ import {
   machine as machineFactory,
   machineState as machineStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { waitFor, renderWithBrowserRouter } from "testing/utils";
 
 const nodeSummaryRoutes: { path: string; name: string }[] = [
   {

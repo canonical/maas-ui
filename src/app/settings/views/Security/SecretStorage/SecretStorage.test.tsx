@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import SecretStorage from "./SecretStorage";
 
 import {
@@ -9,7 +7,7 @@ import {
   controllerState as controllerStateFactory,
   vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 it("displays loading text if Vault Status has not loaded", () => {
   const state = rootStateFactory({

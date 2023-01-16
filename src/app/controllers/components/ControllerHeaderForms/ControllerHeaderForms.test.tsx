@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import ControllerHeaderForms from "./ControllerHeaderForms";
 
 import { ControllerHeaderViews } from "app/controllers/constants";
@@ -7,7 +5,7 @@ import {
   controller as controllerFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("ControllerHeaderForms", () => {
   it("can render a warning if an action cannot be taken", () => {

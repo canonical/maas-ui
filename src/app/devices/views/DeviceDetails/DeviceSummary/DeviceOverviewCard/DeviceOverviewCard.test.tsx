@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import DeviceOverviewCard from "./DeviceOverviewCard";
@@ -12,7 +11,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 

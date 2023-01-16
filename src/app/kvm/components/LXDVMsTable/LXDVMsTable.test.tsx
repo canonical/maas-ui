@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -9,6 +8,7 @@ import LXDVMsTable from "./LXDVMsTable";
 import { actions as machineActions } from "app/store/machine";
 import { FetchSortDirection, FetchGroupKey } from "app/store/machine/types";
 import { rootState as rootStateFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 

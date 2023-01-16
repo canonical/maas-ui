@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import ControllerNetwork from "./ControllerNetwork";
 
 import {
@@ -7,7 +5,7 @@ import {
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 it("displays a spinner if controller is loading", () => {
   const state = rootStateFactory({

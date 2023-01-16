@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -17,7 +16,7 @@ import {
   tagState as tagStateFactory,
 } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { renderWithBrowserRouter } from "testing/utils";
+import { render, screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 

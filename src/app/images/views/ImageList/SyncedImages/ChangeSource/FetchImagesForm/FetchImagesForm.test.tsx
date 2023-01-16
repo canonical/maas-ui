@@ -1,5 +1,4 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { screen, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -19,6 +18,7 @@ import {
   bootResourceStatuses as bootResourceStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { screen, render, waitFor } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

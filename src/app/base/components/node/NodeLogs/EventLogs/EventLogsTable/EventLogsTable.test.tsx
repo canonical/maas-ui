@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import EventLogsTable, { Label } from "./EventLogsTable";
 
 import type { RootState } from "app/store/root/types";
@@ -10,7 +8,7 @@ import {
   machineDetails as machineDetailsFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("EventLogsTable", () => {
   let state: RootState;

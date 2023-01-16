@@ -1,12 +1,10 @@
-import { screen } from "@testing-library/react";
-
 import DomainDetails from "./DomainDetails";
 
 import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("DomainDetails", () => {
   it("renders 'Not Found' header if domains loaded and domain not found", () => {

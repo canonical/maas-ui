@@ -1,4 +1,3 @@
-import { render, screen, waitFor, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -17,6 +16,7 @@ import {
   staticRoute as staticRouteFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
+import { render, screen, waitFor, within } from "testing/utils";
 
 it("displays loading text on load", async () => {
   const mockStore = configureStore();

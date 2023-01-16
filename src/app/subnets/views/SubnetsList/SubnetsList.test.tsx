@@ -1,4 +1,3 @@
-import { screen, within, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import SubnetsList from "./SubnetsList";
@@ -11,7 +10,13 @@ import {
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { getUrlParam, renderWithBrowserRouter } from "testing/utils";
+import {
+  screen,
+  within,
+  waitFor,
+  getUrlParam,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const getMockState = () => {
   return rootStateFactory({

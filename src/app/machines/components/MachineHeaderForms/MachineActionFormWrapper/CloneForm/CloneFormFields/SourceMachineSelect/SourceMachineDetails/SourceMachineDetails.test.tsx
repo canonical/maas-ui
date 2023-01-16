@@ -1,11 +1,10 @@
-import { screen, render } from "@testing-library/react";
-
 import SourceMachineDetails, {
   Labels as SourceMachineDetailsLabels,
 } from "./SourceMachineDetails";
 
 import { NodeStatus } from "app/store/types/node";
 import { machineDetails as machineDetailsFactory } from "testing/factories";
+import { screen, render } from "testing/utils";
 
 describe("SourceMachineDetails", () => {
   it("renders a list of the source machine's details", () => {

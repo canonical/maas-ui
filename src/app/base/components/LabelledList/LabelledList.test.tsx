@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-
 import LabelledList from "./LabelledList";
+
+import { render, screen } from "testing/utils";
 
 describe("LabelledList ", () => {
   it("can add additional classes", () => {

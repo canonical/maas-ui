@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -19,7 +18,12 @@ import {
   userEventError as userEventErrorFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, renderWithMockStore } from "testing/utils";
+import {
+  screen,
+  within,
+  renderWithBrowserRouter,
+  renderWithMockStore,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

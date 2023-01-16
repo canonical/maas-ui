@@ -1,5 +1,3 @@
-import { screen, within } from "@testing-library/react";
-
 import ControllerVLANsTable from "./ControllerVLANsTable";
 import { ControllerVLANsColumns } from "./constants";
 
@@ -17,7 +15,7 @@ import {
   controllerDetails as controllerDetailsFactory,
   controllerState as controllerStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 const createNetwork = () => {
   const systemId = "abc123";

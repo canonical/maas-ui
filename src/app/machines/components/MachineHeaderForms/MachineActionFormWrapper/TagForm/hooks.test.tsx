@@ -1,7 +1,6 @@
 import type { ReactNode } from "react";
 
 import reduxToolkit from "@reduxjs/toolkit";
-import { waitFor } from "@testing-library/react";
 import { renderHook } from "@testing-library/react-hooks";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -15,6 +14,7 @@ import {
   tagState as tagStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { waitFor } from "testing/utils";
 
 const mockStore = configureStore();
 

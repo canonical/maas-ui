@@ -1,4 +1,3 @@
-import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
@@ -7,6 +6,8 @@ import { MaasIntroSchema } from "../MaasIntro";
 import ConnectivityCard, {
   Labels as ConnectivityCardLabels,
 } from "./ConnectivityCard";
+
+import { screen, render } from "testing/utils";
 
 const renderTestCase = () =>
   render(

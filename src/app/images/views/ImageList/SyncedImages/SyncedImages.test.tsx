@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import SyncedImages, { Labels as SyncedImagesLabels } from "./SyncedImages";
@@ -11,7 +10,7 @@ import {
   bootResourceUbuntu as ubuntuFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 describe("SyncedImages", () => {
   it("can render the form in a card", async () => {

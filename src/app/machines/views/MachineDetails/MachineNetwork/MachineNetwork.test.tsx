@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import MachineNetwork from "./MachineNetwork";
 
 import {
@@ -7,7 +5,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 it("displays a spinner if machine is loading", () => {
   const state = rootStateFactory({

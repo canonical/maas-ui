@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import LXDClusterHostSettings, { Label } from "./LXDClusterHostSettings";
 
 import urls from "app/base/urls";
@@ -10,7 +8,7 @@ import {
   podState as podStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("LXDClusterHostSettings", () => {
   let state: RootState;

@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -19,6 +18,7 @@ import {
   vlanDetails as vlanDetailsFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 

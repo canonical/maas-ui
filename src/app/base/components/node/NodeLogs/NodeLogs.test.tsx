@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import { Label as EventLogsLabel } from "./EventLogs/EventLogs";
 import { Label as InstallationOutputLabel } from "./InstallationOutput/InstallationOutput";
 import NodeLogs from "./NodeLogs";
@@ -12,7 +10,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("NodeLogs", () => {
   let state: RootState;

@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import { Formik } from "formik";
 
 import LACPRateSelect from "./LACPRateSelect";
@@ -11,7 +10,7 @@ import {
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, within, renderWithMockStore } from "testing/utils";
 
 describe("LACPRateSelect", () => {
   let state: RootState;

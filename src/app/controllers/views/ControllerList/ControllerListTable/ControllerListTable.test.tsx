@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import ControllerListTable from "./ControllerListTable";
@@ -15,7 +14,7 @@ import {
   rootState as rootStateFactory,
   vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 describe("ControllerListTable", () => {
   let controller: Controller;

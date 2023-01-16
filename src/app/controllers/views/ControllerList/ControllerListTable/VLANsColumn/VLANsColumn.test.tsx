@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import { VLANsColumn } from "./VLANsColumn";
 
 import type { RootState } from "app/store/root/types";
@@ -9,7 +7,7 @@ import {
   controllerVlansHA as controllerVlansHAFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("VLANsColumn", () => {
   let state: RootState;

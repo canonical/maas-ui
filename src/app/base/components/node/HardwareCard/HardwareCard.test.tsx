@@ -1,5 +1,3 @@
-import { screen, within } from "@testing-library/react";
-
 import HardwareCard, { Labels as HardwareCardLabels } from "./HardwareCard";
 
 import {
@@ -7,7 +5,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 it("renders with system data", () => {
   const machine = machineDetailsFactory({ system_id: "abc123" });

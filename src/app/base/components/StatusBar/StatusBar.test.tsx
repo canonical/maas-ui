@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import StatusBar from "./StatusBar";
 
 import { ConfigNames } from "app/store/config/types";
@@ -16,7 +14,7 @@ import {
   rootState as rootStateFactory,
   versionState as versionStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 let state: RootState;
 beforeEach(() => {

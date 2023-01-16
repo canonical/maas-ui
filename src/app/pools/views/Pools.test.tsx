@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import { Label as PoolAddLabel } from "./PoolAdd/PoolAdd";
 import { Label as PoolEditLabel } from "./PoolEdit/PoolEdit";
 import { Label as PoolListLabel } from "./PoolList/PoolList";
@@ -13,7 +11,7 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("Pools", () => {
   let state: RootState;
