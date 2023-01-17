@@ -31,9 +31,8 @@ const VirshDetails = (): JSX.Element => {
     podSelectors.getById(state, id)
   );
   const loading = useSelector(podSelectors.loading);
-  const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
-    null
-  );
+  const [sidePanelContent, setSidePanelContent] =
+    useState<KVMHeaderContent | null>(null);
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 
@@ -58,9 +57,9 @@ const VirshDetails = (): JSX.Element => {
       aria-label={Label.Title}
       header={
         <VirshDetailsHeader
-          headerContent={headerContent}
           id={id}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
         />
       }
     >

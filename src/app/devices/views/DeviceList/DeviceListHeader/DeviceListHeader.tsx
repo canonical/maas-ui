@@ -9,20 +9,20 @@ import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
 import type {
   DeviceHeaderContent,
-  DeviceSetHeaderContent,
+  DeviceSetSidePanelContent,
 } from "app/devices/types";
 import { getHeaderSize, getHeaderTitle } from "app/devices/utils";
 import deviceSelectors from "app/store/device/selectors";
 
 type Props = {
-  headerContent: DeviceHeaderContent | null;
-  setHeaderContent: DeviceSetHeaderContent;
+  sidePanelContent: DeviceHeaderContent | null;
+  setSidePanelContent: DeviceSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };
 
 const DeviceListHeader = ({
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
   const devices = useSelector(deviceSelectors.all);
@@ -36,7 +36,7 @@ const DeviceListHeader = ({
           data-testid="add-device-button"
           disabled={selectedDevices.length > 0}
           onClick={() =>
-            setHeaderContent({ view: DeviceHeaderViews.ADD_DEVICE })
+            setSidePanelContent({ view: DeviceHeaderViews.ADD_DEVICE })
           }
         >
           Add device
@@ -51,23 +51,25 @@ const DeviceListHeader = ({
               ([, actionName]) => actionName === action
             );
             if (view) {
-              setHeaderContent({ view });
+              setSidePanelContent({ view });
             }
           }}
           showCount
         />,
       ]}
-      headerContent={
-        headerContent && (
+      headerSize={
+        sidePanelContent ? getHeaderSize(sidePanelContent) : undefined
+      }
+      sidePanelContent={
+        sidePanelContent && (
           <DeviceHeaderForms
             devices={selectedDevices}
-            headerContent={headerContent}
-            setHeaderContent={setHeaderContent}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
           />
         )
       }
-      headerSize={headerContent ? getHeaderSize(headerContent) : undefined}
-      sidePanelTitle={getHeaderTitle("Devices", headerContent)}
+      sidePanelTitle={getHeaderTitle("Devices", sidePanelContent)}
       subtitle={
         <ModelListSubtitle
           available={devices.length}

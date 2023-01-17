@@ -17,7 +17,7 @@ const Machines = (): JSX.Element => {
   const [searchFilter, setFilter] = useState(
     FilterMachines.filtersToString(currentFilters)
   );
-  const [headerContent, setHeaderContent] =
+  const [sidePanelContent, setSidePanelContent] =
     useState<MachineHeaderContent | null>(null);
 
   const setSearchFilter = useCallback(
@@ -33,15 +33,15 @@ const Machines = (): JSX.Element => {
     <MainContentSection
       header={
         <MachineListHeader
-          headerContent={headerContent}
           searchFilter={searchFilter}
-          setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
         />
       }
     >
       <MachineList
-        headerFormOpen={!!headerContent}
+        headerFormOpen={!!sidePanelContent}
         searchFilter={searchFilter}
         setSearchFilter={setSearchFilter}
       />

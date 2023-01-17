@@ -35,11 +35,11 @@ const DomainListHeader = (): JSX.Element => {
     </Button>,
   ];
 
-  let headerContent: JSX.Element | null = null;
+  let sidePanelContent: JSX.Element | null = null;
 
   if (isFormOpen) {
     buttons = null;
-    headerContent = (
+    sidePanelContent = (
       <DomainListHeaderForm
         closeForm={() => {
           setFormOpen(false);
@@ -50,7 +50,7 @@ const DomainListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      headerContent={headerContent}
+      sidePanelContent={sidePanelContent}
       sidePanelTitle="Add domains"
       subtitle={`${pluralize("domain", domainCount, true)} available`}
       subtitleLoading={!domainsLoaded}

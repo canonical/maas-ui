@@ -17,7 +17,7 @@ import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
 import type {
   MachineHeaderContent,
-  MachineSetHeaderContent,
+  MachineSetSidePanelContent,
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import { actions as machineActions } from "app/store/machine";
@@ -31,14 +31,14 @@ import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
-  headerContent: MachineHeaderContent | null;
-  setHeaderContent: MachineSetHeaderContent;
+  sidePanelContent: MachineHeaderContent | null;
+  setSidePanelContent: MachineSetSidePanelContent;
   systemId: Machine["system_id"];
 };
 
 const MachineHeader = ({
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
   systemId,
 }: Props): JSX.Element => {
   const [editingName, setEditingName] = useState(false);
@@ -87,24 +87,24 @@ const MachineHeader = ({
               ([, actionName]) => actionName === action
             );
             if (view) {
-              setHeaderContent({ view });
+              setSidePanelContent({ view });
             }
           }}
         />,
       ]}
-      headerContent={
-        headerContent ? (
+      sidePanelContent={
+        sidePanelContent ? (
           <MachineHeaderForms
-            headerContent={headerContent}
             searchFilter=""
             selectedCount={1}
             selectedMachines={{ items: [machine.system_id] }}
-            setHeaderContent={setHeaderContent}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
             viewingDetails
           />
         ) : null
       }
-      sidePanelTitle={getHeaderTitle(machine.hostname, headerContent)}
+      sidePanelTitle={getHeaderTitle(machine.hostname, sidePanelContent)}
       subtitle={
         editingName ? null : (
           <div className="u-flex--wrap">

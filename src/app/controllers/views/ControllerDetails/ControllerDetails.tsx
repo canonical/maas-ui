@@ -35,7 +35,7 @@ const ControllerDetails = (): JSX.Element => {
     controllerSelectors.getById(state, id)
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
-  const [headerContent, setHeaderContent] =
+  const [sidePanelContent, setSidePanelContent] =
     useState<ControllerHeaderContent | null>(null);
   useScrollToTop();
 
@@ -69,8 +69,8 @@ const ControllerDetails = (): JSX.Element => {
     <MainContentSection
       header={
         <ControllerDetailsHeader
-          headerContent={headerContent}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
           systemId={id}
         />
       }

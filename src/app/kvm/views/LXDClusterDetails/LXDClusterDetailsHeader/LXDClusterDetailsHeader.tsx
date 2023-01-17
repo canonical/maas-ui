@@ -11,7 +11,7 @@ import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
 import type { RootState } from "app/store/root/types";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import type { VMCluster } from "app/store/vmcluster/types";
@@ -20,15 +20,15 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   clusterId: VMCluster["id"];
-  headerContent: KVMHeaderContent | null;
-  setHeaderContent: KVMSetHeaderContent;
+  sidePanelContent: KVMHeaderContent | null;
+  setSidePanelContent: KVMSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };
 
 const LXDClusterDetailsHeader = ({
   clusterId,
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -59,7 +59,7 @@ const LXDClusterDetailsHeader = ({
           hasIcon
           onClick={() => {
             if (canRefresh) {
-              setHeaderContent({
+              setSidePanelContent({
                 view: KVMHeaderViews.REFRESH_KVM,
                 extras: { hostIds: cluster.hosts.map((host) => host.id) },
               });
@@ -71,10 +71,10 @@ const LXDClusterDetailsHeader = ({
         </Button>,
       ]}
       className="has-icon"
-      headerContent={headerContent}
       loading={!cluster}
-      setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
+      setSidePanelContent={setSidePanelContent}
+      sidePanelContent={sidePanelContent}
       tabLinks={[
         {
           active: location.pathname.endsWith(

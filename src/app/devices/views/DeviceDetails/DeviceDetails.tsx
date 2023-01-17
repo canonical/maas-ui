@@ -28,7 +28,7 @@ const DeviceDetails = (): JSX.Element => {
     deviceSelectors.getById(state, id)
   );
   const devicesLoading = useSelector(deviceSelectors.loading);
-  const [headerContent, setHeaderContent] =
+  const [sidePanelContent, setSidePanelContent] =
     useState<DeviceHeaderContent | null>(null);
 
   useEffect(() => {
@@ -57,8 +57,8 @@ const DeviceDetails = (): JSX.Element => {
     <MainContentSection
       header={
         <DeviceDetailsHeader
-          headerContent={headerContent}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
           systemId={id}
         />
       }

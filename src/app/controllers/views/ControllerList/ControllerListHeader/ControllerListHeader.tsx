@@ -10,21 +10,21 @@ import ControllerHeaderForms from "app/controllers/components/ControllerHeaderFo
 import { ControllerHeaderViews } from "app/controllers/constants";
 import type {
   ControllerHeaderContent,
-  ControllerSetHeaderContent,
+  ControllerSetSidePanelContent,
 } from "app/controllers/types";
 import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
 import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
-  headerContent: ControllerHeaderContent | null;
-  setHeaderContent: ControllerSetHeaderContent;
+  sidePanelContent: ControllerHeaderContent | null;
+  setSidePanelContent: ControllerSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };
 
 const ControllerListHeader = ({
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
   const controllers = useSelector(controllerSelectors.all);
@@ -39,7 +39,7 @@ const ControllerListHeader = ({
           data-testid="add-controller-button"
           disabled={selectedControllers.length > 0}
           onClick={() =>
-            setHeaderContent({ view: ControllerHeaderViews.ADD_CONTROLLER })
+            setSidePanelContent({ view: ControllerHeaderViews.ADD_CONTROLLER })
           }
         >
           Add rack controller
@@ -59,22 +59,22 @@ const ControllerListHeader = ({
               ([, actionName]) => actionName === action
             );
             if (view) {
-              setHeaderContent({ view });
+              setSidePanelContent({ view });
             }
           }}
           showCount
         />,
       ]}
-      headerContent={
-        headerContent && (
+      sidePanelContent={
+        sidePanelContent && (
           <ControllerHeaderForms
             controllers={selectedControllers}
-            headerContent={headerContent}
-            setHeaderContent={setHeaderContent}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
           />
         )
       }
-      sidePanelTitle={getHeaderTitle("Controllers", headerContent)}
+      sidePanelTitle={getHeaderTitle("Controllers", sidePanelContent)}
       subtitle={
         <ModelListSubtitle
           available={controllers.length}

@@ -1,6 +1,6 @@
 import type { KVMHeaderViews } from "./constants";
 
-import type { HeaderContent, SetHeaderContent } from "app/base/types";
+import type { HeaderContent, SetSidePanelContent } from "app/base/types";
 import type { MachineHeaderContent } from "app/machines/types";
 import type {
   Pod,
@@ -28,7 +28,7 @@ export type KVMHeaderContent =
   | HeaderContent<HeaderViews["REFRESH_KVM"], { hostIds?: Pod["id"][] }>
   | MachineHeaderContent;
 
-export type KVMSetHeaderContent = SetHeaderContent<KVMHeaderContent>;
+export type KVMSetSidePanelContent = SetSidePanelContent<KVMHeaderContent>;
 
 export type KVMResource = PodResource | VMClusterResource;
 

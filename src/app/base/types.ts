@@ -45,7 +45,7 @@ export type HeaderContent<V extends readonly [string, string], E = never> = {
   extras?: E;
 };
 
-export type SetHeaderContent<H> = (headerContent: H | null) => void;
+export type SetSidePanelContent<H> = (sidePanelContent: H | null) => void;
 
 export type ClearHeaderContent = () => void;
 

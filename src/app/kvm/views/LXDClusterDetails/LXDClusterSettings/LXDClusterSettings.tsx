@@ -3,7 +3,7 @@ import { useSelector } from "react-redux";
 
 import { useWindowTitle } from "app/base/hooks";
 import { useActivePod } from "app/kvm/hooks";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import AuthenticationCard from "app/kvm/views/LXDSingleDetails/LXDSingleSettings/AuthenticationCard";
 import DangerZoneCard from "app/kvm/views/LXDSingleDetails/LXDSingleSettings/DangerZoneCard";
 import type { RootState } from "app/store/root/types";
@@ -12,7 +12,7 @@ import type { VMCluster } from "app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster["id"];
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export enum Label {
@@ -21,7 +21,7 @@ export enum Label {
 
 const LXDClusterSettings = ({
   clusterId,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   const cluster = useSelector((state: RootState) =>
     vmClusterSelectors.getById(state, clusterId)
@@ -48,7 +48,7 @@ const LXDClusterSettings = ({
             </p>
           </>
         }
-        setHeaderContent={setHeaderContent}
+        setSidePanelContent={setSidePanelContent}
       />
     </Strip>
   );

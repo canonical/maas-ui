@@ -12,20 +12,20 @@ import type { MachineActionHeaderViews } from "app/machines/constants";
 import type {
   MachineActionVariableProps,
   MachineHeaderContent,
-  MachineSetHeaderContent,
+  MachineSetSidePanelContent,
 } from "app/machines/types";
 
 type Props = {
-  headerContent: MachineHeaderContent;
-  setHeaderContent: MachineSetHeaderContent;
+  sidePanelContent: MachineHeaderContent;
+  setSidePanelContent: MachineSetSidePanelContent;
   setSearchFilter?: SetSearchFilter;
   viewingDetails?: boolean;
 } & MachineActionVariableProps;
 
 export const MachineHeaderForms = ({
-  headerContent,
+  sidePanelContent,
   machines,
-  setHeaderContent,
+  setSidePanelContent,
   selectedCountLoading,
   searchFilter,
   selectedCount,
@@ -34,21 +34,21 @@ export const MachineHeaderForms = ({
   viewingDetails = false,
 }: Props): JSX.Element | null => {
   const clearHeaderContent = useCallback(
-    () => setHeaderContent(null),
-    [setHeaderContent]
+    () => setSidePanelContent(null),
+    [setSidePanelContent]
   );
 
-  switch (headerContent.view) {
+  switch (sidePanelContent.view) {
     case MachineHeaderViews.ADD_CHASSIS:
       return <AddChassisForm clearHeaderContent={clearHeaderContent} />;
     case MachineHeaderViews.ADD_MACHINE:
       return <AddMachineForm clearHeaderContent={clearHeaderContent} />;
     default:
-      // We need to explicitly cast headerContent.view here - TypeScript doesn't
+      // We need to explicitly cast sidePanelContent.view here - TypeScript doesn't
       // seem to be able to infer remaining object tuple values as with string
       // values.
       // https://github.com/canonical/maas-ui/issues/3040
-      const { extras, view } = headerContent as {
+      const { extras, view } = sidePanelContent as {
         extras: MachineHeaderContent["extras"];
         view: ValueOf<typeof MachineActionHeaderViews>;
       };

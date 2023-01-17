@@ -37,10 +37,10 @@ const DashboardHeader = (): JSX.Element => {
       {Labels.ClearAll}
     </Button>,
   ];
-  let headerContent: JSX.Element | null = null;
+  let sidePanelContent: JSX.Element | null = null;
   if (isFormOpen) {
     buttons = null;
-    headerContent = (
+    sidePanelContent = (
       <ClearAllForm
         closeForm={() => {
           setFormOpen(false);
@@ -52,7 +52,7 @@ const DashboardHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      headerContent={headerContent}
+      sidePanelContent={sidePanelContent}
       tabLinks={[
         {
           active: location.pathname === urls.dashboard.index,

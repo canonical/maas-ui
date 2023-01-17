@@ -44,9 +44,8 @@ const LXDSingleDetails = (): JSX.Element => {
   const [searchFilter, setFilter] = useState<string>(
     FilterMachines.filtersToString(currentFilters)
   );
-  const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
-    null
-  );
+  const [sidePanelContent, setSidePanelContent] =
+    useState<KVMHeaderContent | null>(null);
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 
@@ -80,10 +79,10 @@ const LXDSingleDetails = (): JSX.Element => {
       aria-label={Label.Title}
       header={
         <LXDSingleDetailsHeader
-          headerContent={headerContent}
           id={id}
-          setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
         />
       }
     >
@@ -94,8 +93,8 @@ const LXDSingleDetails = (): JSX.Element => {
               <LXDSingleVMs
                 id={id}
                 searchFilter={searchFilter}
-                setHeaderContent={setHeaderContent}
                 setSearchFilter={setSearchFilter}
+                setSidePanelContent={setSidePanelContent}
               />
             }
             path={getRelativeRoute(urls.kvm.lxd.single.vms(null), base)}
@@ -106,7 +105,10 @@ const LXDSingleDetails = (): JSX.Element => {
           />
           <Route
             element={
-              <LXDSingleSettings id={id} setHeaderContent={setHeaderContent} />
+              <LXDSingleSettings
+                id={id}
+                setSidePanelContent={setSidePanelContent}
+              />
             }
             path={getRelativeRoute(urls.kvm.lxd.single.edit(null), base)}
           />

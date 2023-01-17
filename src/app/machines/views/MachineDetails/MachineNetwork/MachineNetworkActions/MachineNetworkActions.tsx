@@ -11,7 +11,7 @@ import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab
 import type { Selected } from "app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled, useSendAnalytics } from "app/base/hooks";
 import { MachineHeaderViews } from "app/machines/constants";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineDetails } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -33,7 +33,7 @@ type Props = {
   expanded: Expanded | null;
   selected: Selected[];
   setExpanded: SetExpanded;
-  setHeaderContent: MachineSetHeaderContent;
+  setSidePanelContent: MachineSetSidePanelContent;
   systemId: Machine["system_id"];
 };
 
@@ -82,7 +82,7 @@ const MachineNetworkActions = ({
   expanded,
   setExpanded,
   selected,
-  setHeaderContent,
+  setSidePanelContent,
   systemId,
 }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
@@ -145,7 +145,7 @@ const MachineNetworkActions = ({
           className="u-no-margin--bottom"
           disabled={isAllNetworkingDisabled}
           onClick={() => {
-            setHeaderContent({
+            setSidePanelContent({
               view: MachineHeaderViews.TEST_MACHINE,
               extras: { applyConfiguredNetworking: true },
             });

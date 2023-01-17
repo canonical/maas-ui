@@ -77,7 +77,7 @@ const VLANDetailsHeader = ({ id }: Props): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      headerContent={
+      sidePanelContent={
         formOpen === null ? null : (
           <>
             {formOpen === HeaderForms.Delete && (

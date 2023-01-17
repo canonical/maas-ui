@@ -11,7 +11,7 @@ import LXDClusterHostsTable from "./LXDClusterHostsTable";
 
 import { useWindowTitle } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import { FilterMachines } from "app/store/machine/utils";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
@@ -21,7 +21,7 @@ import type { VMCluster } from "app/store/vmcluster/types";
 
 type Props = {
   clusterId: VMCluster["id"];
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export enum Label {
@@ -30,7 +30,7 @@ export enum Label {
 
 const LXDClusterHosts = ({
   clusterId,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -80,7 +80,7 @@ const LXDClusterHosts = ({
         currentPage={currentPage}
         hosts={hosts}
         searchFilter={searchFilter}
-        setHeaderContent={setHeaderContent}
+        setSidePanelContent={setSidePanelContent}
       />
     </div>
   );

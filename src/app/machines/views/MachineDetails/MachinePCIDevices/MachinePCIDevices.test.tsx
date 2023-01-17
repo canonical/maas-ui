@@ -37,7 +37,7 @@ describe("MachinePCIDevices", () => {
           <CompatRouter>
             <Routes>
               <Route
-                element={<MachinePCIDevices setHeaderContent={jest.fn()} />}
+                element={<MachinePCIDevices setSidePanelContent={jest.fn()} />}
                 path="/machine/:id/pci-devices"
               />
             </Routes>

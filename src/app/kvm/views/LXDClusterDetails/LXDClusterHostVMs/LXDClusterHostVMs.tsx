@@ -10,7 +10,7 @@ import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import LXDHostVMs from "app/kvm/components/LXDHostVMs";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -21,7 +21,7 @@ import { isId } from "app/utils";
 type Props = {
   clusterId: VMCluster["id"];
   searchFilter: string;
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };
 
@@ -33,7 +33,7 @@ export enum Label {
 const LXDClusterHostVMs = ({
   clusterId,
   searchFilter,
-  setHeaderContent,
+  setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
   const navigate = useNavigate();
@@ -86,8 +86,8 @@ const LXDClusterHostVMs = ({
       clusterId={clusterId}
       hostId={hostId}
       searchFilter={searchFilter}
-      setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
+      setSidePanelContent={setSidePanelContent}
     />
   );
 };

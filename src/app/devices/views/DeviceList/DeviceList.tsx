@@ -22,7 +22,7 @@ const DeviceList = (): JSX.Element => {
   const navigate = useNavigate();
   const location = useLocation();
   const currentFilters = FilterDevices.queryStringToFilters(location.search);
-  const [headerContent, setHeaderContent] =
+  const [sidePanelContent, setSidePanelContent] =
     useState<DeviceHeaderContent | null>(null);
   const [searchFilter, setFilter] = useState(
     // Initialise the filter state from the URL.
@@ -54,9 +54,9 @@ const DeviceList = (): JSX.Element => {
     <MainContentSection
       header={
         <DeviceListHeader
-          headerContent={headerContent}
-          setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
         />
       }
     >

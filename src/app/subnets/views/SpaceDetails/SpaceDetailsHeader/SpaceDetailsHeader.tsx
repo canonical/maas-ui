@@ -20,7 +20,7 @@ const SpaceDetailsHeader = ({ space }: Props): JSX.Element => {
           Delete space
         </Button>,
       ]}
-      headerContent={
+      sidePanelContent={
         isDeleteOpen ? (
           <SpaceDelete
             handleClose={() => setIsDeleteOpen(false)}

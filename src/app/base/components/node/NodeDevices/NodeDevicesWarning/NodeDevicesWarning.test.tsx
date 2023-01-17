@@ -14,7 +14,7 @@ import {
 describe("node is machine", () => {
   it(`prompts user to commission machine if no devices found and machine can be
     commissioned`, () => {
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     const machine = machineDetailsFactory({
       actions: [NodeActions.COMMISSION],
     });
@@ -23,7 +23,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setHeaderContent={setHeaderContent}
+        setSidePanelContent={setSidePanelContent}
       />
     );
 
@@ -33,7 +33,7 @@ describe("node is machine", () => {
 
     wrapper.find("[data-testid='commission-machine'] button").simulate("click");
 
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: MachineHeaderViews.COMMISSION_MACHINE,
     });
   });
@@ -45,7 +45,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />
     );
 
@@ -63,7 +63,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />
     );
 
@@ -81,7 +81,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />
     );
 
@@ -100,7 +100,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />
     );
 
@@ -120,7 +120,7 @@ describe("node is machine", () => {
         bus={NodeDeviceBus.PCIE}
         node={machine}
         nodeDevices={[]}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />
     );
 
@@ -138,7 +138,7 @@ describe("node is machine", () => {
         nodeDevices={[
           nodeDeviceFactory({ bus: NodeDeviceBus.PCIE, node_id: machine.id }),
         ]}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />
     );
 
@@ -154,7 +154,7 @@ describe("node is controller", () => {
         bus={NodeDeviceBus.USB}
         node={controller}
         nodeDevices={[]}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />
     );
 

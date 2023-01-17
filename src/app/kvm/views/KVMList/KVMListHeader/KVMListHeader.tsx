@@ -10,19 +10,19 @@ import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
 import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
 type Props = {
-  headerContent: KVMHeaderContent | null;
-  setHeaderContent: KVMSetHeaderContent;
+  sidePanelContent: KVMHeaderContent | null;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const KVMListHeader = ({
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -43,7 +43,7 @@ const KVMListHeader = ({
           data-testid="add-kvm"
           key="add-kvm"
           onClick={() =>
-            setHeaderContent({
+            setSidePanelContent({
               view: lxdTabActive
                 ? KVMHeaderViews.ADD_LXD_HOST
                 : KVMHeaderViews.ADD_VIRSH_HOST,
@@ -53,15 +53,15 @@ const KVMListHeader = ({
           Add {lxdTabActive ? "LXD" : "Virsh"} host
         </Button>,
       ]}
-      headerContent={
-        headerContent ? (
+      sidePanelContent={
+        sidePanelContent ? (
           <KVMHeaderForms
-            headerContent={headerContent}
-            setHeaderContent={setHeaderContent}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
           />
         ) : null
       }
-      sidePanelTitle={headerContent ? getFormTitle(headerContent) : "KVM"}
+      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : "KVM"}
       subtitle={`${pluralize("KVM host", kvms.length, true)} available`}
       subtitleLoading={!podsLoaded}
       tabLinks={[

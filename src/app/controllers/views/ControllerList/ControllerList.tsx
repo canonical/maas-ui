@@ -28,7 +28,7 @@ const ControllerList = (): JSX.Element => {
     location.search
   );
 
-  const [headerContent, setHeaderContent] =
+  const [sidePanelContent, setSidePanelContent] =
     useState<ControllerHeaderContent | null>(null);
   const [searchFilter, setFilter] = useState(
     // Initialise the filter state from the URL.
@@ -63,9 +63,9 @@ const ControllerList = (): JSX.Element => {
     <MainContentSection
       header={
         <ControllerListHeader
-          headerContent={headerContent}
-          setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
         />
       }
     >

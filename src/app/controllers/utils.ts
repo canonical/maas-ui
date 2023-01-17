@@ -11,10 +11,10 @@ import { getNodeActionTitle } from "app/store/utils";
  */
 export const getHeaderTitle = (
   defaultTitle: string,
-  headerContent: ControllerHeaderContent | null
+  sidePanelContent: ControllerHeaderContent | null
 ): string => {
-  if (headerContent) {
-    const [, name] = headerContent.view;
+  if (sidePanelContent) {
+    const [, name] = sidePanelContent.view;
     switch (name) {
       case ControllerHeaderViews.ADD_CONTROLLER[1]:
         return "Add controller";

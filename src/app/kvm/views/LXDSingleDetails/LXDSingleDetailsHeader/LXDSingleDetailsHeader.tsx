@@ -10,7 +10,7 @@ import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -20,15 +20,15 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
-  headerContent: KVMHeaderContent | null;
-  setHeaderContent: KVMSetHeaderContent;
+  sidePanelContent: KVMHeaderContent | null;
+  setSidePanelContent: KVMSetSidePanelContent;
   setSearchFilter?: SetSearchFilter;
 };
 
 const LXDSingleDetailsHeader = ({
   id,
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
   setSearchFilter,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
@@ -58,7 +58,7 @@ const LXDSingleDetailsHeader = ({
           disabled={!pod}
           hasIcon
           onClick={() => {
-            setHeaderContent({
+            setSidePanelContent({
               view: KVMHeaderViews.REFRESH_KVM,
               extras: { hostIds: [id] },
             });
@@ -69,10 +69,10 @@ const LXDSingleDetailsHeader = ({
         </Button>,
       ]}
       className="has-icon"
-      headerContent={headerContent}
       loading={!pod}
-      setHeaderContent={setHeaderContent}
       setSearchFilter={setSearchFilter}
+      setSidePanelContent={setSidePanelContent}
+      sidePanelContent={sidePanelContent}
       tabLinks={[
         {
           active: location.pathname.endsWith(urls.kvm.lxd.single.vms({ id })),

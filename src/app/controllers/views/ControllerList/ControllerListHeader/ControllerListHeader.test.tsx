@@ -30,9 +30,9 @@ describe("ControllerListHeader", () => {
     state.controller.loaded = false;
     renderWithBrowserRouter(
       <ControllerListHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -46,9 +46,9 @@ describe("ControllerListHeader", () => {
     state.controller.loaded = true;
     renderWithBrowserRouter(
       <ControllerListHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -61,9 +61,9 @@ describe("ControllerListHeader", () => {
     state.controller.selected = ["abc123"];
     renderWithBrowserRouter(
       <ControllerListHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -73,19 +73,19 @@ describe("ControllerListHeader", () => {
   });
 
   it("can open the add controller form", async () => {
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     renderWithBrowserRouter(
       <ControllerListHeader
-        headerContent={null}
-        setHeaderContent={setHeaderContent}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={setSidePanelContent}
+        sidePanelContent={null}
       />,
       { state }
     );
     await userEvent.click(
       screen.getByRole("button", { name: "Add rack controller" })
     );
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: ControllerHeaderViews.ADD_CONTROLLER,
     });
   });

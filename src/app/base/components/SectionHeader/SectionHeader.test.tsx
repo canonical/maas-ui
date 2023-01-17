@@ -73,7 +73,7 @@ describe("SectionHeader", () => {
   it("can render extra header content as a side panel", () => {
     render(
       <SectionHeader
-        headerContent={<div>Header content</div>}
+        sidePanelContent={<div>Header content</div>}
         sidePanelTitle="Header content title"
         title="Title"
       />
@@ -98,7 +98,7 @@ describe("SectionHeader", () => {
     rerender(
       <SectionHeader
         buttons={[<button key="button">Click me</button>]}
-        headerContent={<div>Header content</div>}
+        sidePanelContent={<div>Header content</div>}
         subtitle="subtitle"
         title="Title"
       />

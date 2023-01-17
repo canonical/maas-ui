@@ -6,7 +6,7 @@ import type { HardwareType } from "app/base/enum";
 import type {
   CommonActionFormProps,
   HeaderContent,
-  SetHeaderContent,
+  SetSidePanelContent,
 } from "app/base/types";
 import type {
   Machine,
@@ -23,7 +23,8 @@ export type MachineHeaderContent = HeaderContent<
   }
 >;
 
-export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
+export type MachineSetSidePanelContent =
+  SetSidePanelContent<MachineHeaderContent>;
 
 export type MachineActionVariableProps = {
   machines?: Machine[];

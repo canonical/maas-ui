@@ -73,7 +73,7 @@ const SubnetsList = (): JSX.Element => {
               toggleLabel="Add"
             />,
           ]}
-          headerContent={
+          sidePanelContent={
             activeForm ? (
               <FormActions
                 activeForm={activeForm}

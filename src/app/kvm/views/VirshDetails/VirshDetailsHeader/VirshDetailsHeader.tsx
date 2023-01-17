@@ -10,7 +10,7 @@ import VirshDetailsActionMenu from "./VirshDetailsActionMenu";
 
 import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
-import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -20,14 +20,14 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
-  headerContent: KVMHeaderContent | null;
-  setHeaderContent: KVMSetHeaderContent;
+  sidePanelContent: KVMHeaderContent | null;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const VirshDetailsHeader = ({
   id,
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -56,14 +56,14 @@ const VirshDetailsHeader = ({
               <VirshDetailsActionMenu
                 hostId={pod.id}
                 key="action-dropdown"
-                setHeaderContent={setHeaderContent}
+                setSidePanelContent={setSidePanelContent}
               />,
             ]
           : null
       }
-      headerContent={headerContent}
       loading={!pod}
-      setHeaderContent={setHeaderContent}
+      setSidePanelContent={setSidePanelContent}
+      sidePanelContent={sidePanelContent}
       tabLinks={[
         {
           active: location.pathname.endsWith(

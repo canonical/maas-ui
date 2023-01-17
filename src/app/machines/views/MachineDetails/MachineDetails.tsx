@@ -36,7 +36,7 @@ const MachineDetails = (): JSX.Element => {
   const id = useGetURLId(MachineMeta.PK);
   const { pathname } = useLocation();
   const { machine, loaded: detailsLoaded } = useFetchMachine(id);
-  const [headerContent, setHeaderContent] =
+  const [sidePanelContent, setSidePanelContent] =
     useState<MachineHeaderContent | null>(null);
 
   useEffect(() => {
@@ -73,8 +73,8 @@ const MachineDetails = (): JSX.Element => {
     <MainContentSection
       header={
         <MachineHeader
-          headerContent={headerContent}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
           systemId={id}
         />
       }
@@ -89,7 +89,7 @@ const MachineDetails = (): JSX.Element => {
             element={
               <>
                 <SummaryNotifications id={id} />
-                <MachineSummary setHeaderContent={setHeaderContent} />
+                <MachineSummary setSidePanelContent={setSidePanelContent} />
               </>
             }
             path={getRelativeRoute(urls.machines.machine.summary(null), base)}
@@ -102,7 +102,10 @@ const MachineDetails = (): JSX.Element => {
             element={
               <>
                 <NetworkNotifications id={id} />
-                <MachineNetwork id={id} setHeaderContent={setHeaderContent} />
+                <MachineNetwork
+                  id={id}
+                  setSidePanelContent={setSidePanelContent}
+                />
               </>
             }
             path={getRelativeRoute(urls.machines.machine.network(null), base)}
@@ -117,14 +120,18 @@ const MachineDetails = (): JSX.Element => {
             path={getRelativeRoute(urls.machines.machine.storage(null), base)}
           />
           <Route
-            element={<MachinePCIDevices setHeaderContent={setHeaderContent} />}
+            element={
+              <MachinePCIDevices setSidePanelContent={setSidePanelContent} />
+            }
             path={getRelativeRoute(
               urls.machines.machine.pciDevices(null),
               base
             )}
           />
           <Route
-            element={<MachineUSBDevices setHeaderContent={setHeaderContent} />}
+            element={
+              <MachineUSBDevices setSidePanelContent={setSidePanelContent} />
+            }
             path={getRelativeRoute(
               urls.machines.machine.usbDevices(null),
               base

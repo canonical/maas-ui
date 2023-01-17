@@ -34,7 +34,7 @@ describe("LXDClusterSettings", () => {
     const store = mockStore(state);
     mount(
       <Provider store={store}>
-        <LXDClusterSettings clusterId={1} setHeaderContent={jest.fn()} />
+        <LXDClusterSettings clusterId={1} setSidePanelContent={jest.fn()} />
       </Provider>
     );
 

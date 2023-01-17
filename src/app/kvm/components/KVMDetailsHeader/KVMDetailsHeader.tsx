@@ -10,7 +10,7 @@ import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
-import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
 import { getFormTitle, getHeaderSize } from "app/kvm/utils";
 
 type TitleBlock = {
@@ -21,9 +21,9 @@ type TitleBlock = {
 type Props = {
   buttons?: SectionHeaderProps["buttons"];
   className?: ClassName;
-  headerContent: KVMHeaderContent | null;
+  sidePanelContent: KVMHeaderContent | null;
   loading?: SectionHeaderProps["loading"];
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
   searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
   tabLinks: SectionHeaderProps["tabLinks"];
@@ -34,9 +34,9 @@ type Props = {
 const KVMDetailsHeader = ({
   buttons,
   className,
-  headerContent,
+  sidePanelContent,
   loading,
-  setHeaderContent,
+  setSidePanelContent,
   searchFilter,
   setSearchFilter,
   tabLinks,
@@ -50,27 +50,29 @@ const KVMDetailsHeader = ({
   // Close the action form if the pathname changes.
   useEffect(() => {
     if (previousPathname && pathname !== previousPathname) {
-      setHeaderContent(null);
+      setSidePanelContent(null);
     }
-  }, [pathname, previousPathname, setHeaderContent]);
+  }, [pathname, previousPathname, setSidePanelContent]);
 
   return (
     <SectionHeader
       buttons={buttons}
       className={classNames("kvm-details-header", className)}
-      headerContent={
-        headerContent ? (
+      headerSize={
+        sidePanelContent ? getHeaderSize(sidePanelContent) : undefined
+      }
+      loading={loading}
+      sidePanelContent={
+        sidePanelContent ? (
           <KVMHeaderForms
-            headerContent={headerContent}
             searchFilter={searchFilter}
-            setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
           />
         ) : null
       }
-      headerSize={headerContent ? getHeaderSize(headerContent) : undefined}
-      loading={loading}
-      sidePanelTitle={headerContent ? getFormTitle(headerContent) : ""}
+      sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : ""}
       subtitle={
         <>
           {titleBlocks.map((block, i) => (

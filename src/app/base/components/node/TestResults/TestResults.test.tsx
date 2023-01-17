@@ -42,7 +42,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.CPU}
               machine={machine}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -72,7 +72,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.Memory}
               machine={machine}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -101,7 +101,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.Storage}
               machine={machine}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -130,7 +130,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.CPU}
               machine={machine}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -157,7 +157,7 @@ describe("TestResults", () => {
             <TestResults
               hardwareType={HardwareType.Network}
               machine={machine}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>

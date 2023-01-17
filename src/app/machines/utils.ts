@@ -11,10 +11,10 @@ import { getNodeActionTitle } from "app/store/utils";
  */
 export const getHeaderTitle = (
   defaultTitle: string,
-  headerContent: MachineHeaderContent | null
+  sidePanelContent: MachineHeaderContent | null
 ): string => {
-  if (headerContent) {
-    const [, name] = headerContent.view;
+  if (sidePanelContent) {
+    const [, name] = sidePanelContent.view;
     switch (name) {
       case MachineHeaderViews.ADD_CHASSIS[1]:
         return "Add chassis";

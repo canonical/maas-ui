@@ -41,7 +41,7 @@ it("renders the cpu subtext", () => {
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
       >
         <CompatRouter>
-          <CpuCard node={machine} setHeaderContent={jest.fn()} />
+          <CpuCard node={machine} setSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -63,7 +63,7 @@ it("renders the cpu subtext for slower CPUs", () => {
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
       >
         <CompatRouter>
-          <CpuCard node={machine} setHeaderContent={jest.fn()} />
+          <CpuCard node={machine} setSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -101,7 +101,7 @@ it("renders test info if node is a machine", () => {
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
-          <CpuCard node={machine} setHeaderContent={jest.fn()} />
+          <CpuCard node={machine} setSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -125,7 +125,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <CpuCard node={machine} setHeaderContent={jest.fn()} />
+            <CpuCard node={machine} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -151,7 +151,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <CpuCard node={machine} setHeaderContent={jest.fn()} />
+            <CpuCard node={machine} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -176,7 +176,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <CpuCard node={machine} setHeaderContent={jest.fn()} />
+            <CpuCard node={machine} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -201,7 +201,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <CpuCard node={machine} setHeaderContent={jest.fn()} />
+            <CpuCard node={machine} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -224,7 +224,7 @@ describe("node is a machine", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <CpuCard node={machine} setHeaderContent={jest.fn()} />
+            <CpuCard node={machine} setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

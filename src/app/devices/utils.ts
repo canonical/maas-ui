@@ -11,10 +11,10 @@ import { getNodeActionTitle } from "app/store/utils";
  */
 export const getHeaderTitle = (
   defaultTitle: string,
-  headerContent: DeviceHeaderContent | null
+  sidePanelContent: DeviceHeaderContent | null
 ): string => {
-  if (headerContent) {
-    const [, name] = headerContent.view;
+  if (sidePanelContent) {
+    const [, name] = sidePanelContent.view;
     switch (name) {
       case DeviceHeaderViews.ADD_DEVICE[1]:
         return "Add device";
@@ -26,10 +26,10 @@ export const getHeaderTitle = (
 };
 
 export const getHeaderSize = (
-  headerContent: DeviceHeaderContent | null
+  sidePanelContent: DeviceHeaderContent | null
 ): "wide" | undefined => {
-  if (headerContent) {
-    const [, name] = headerContent.view;
+  if (sidePanelContent) {
+    const [, name] = sidePanelContent.view;
     switch (name) {
       case DeviceHeaderViews.ADD_DEVICE[1]:
         return "wide";
