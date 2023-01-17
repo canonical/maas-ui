@@ -79,10 +79,10 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
-              headerContent={null}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -104,10 +104,10 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
-              headerContent={null}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -128,10 +128,10 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -149,10 +149,10 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -171,10 +171,10 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -192,10 +192,10 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -214,10 +214,10 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -232,10 +232,10 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -253,10 +253,10 @@ describe("MachineListHeader", () => {
     });
     const { rerender } = renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter="owner:(admin)"
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -268,10 +268,10 @@ describe("MachineListHeader", () => {
     );
     rerender(
       <MachineListHeader
-        headerContent={null}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />
     );
     expect(
@@ -301,10 +301,10 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter="owner:(admin)"
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -326,10 +326,10 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={null}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
       />,
       { state }
     );
@@ -346,10 +346,10 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
-              headerContent={null}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -370,28 +370,28 @@ describe("MachineListHeader", () => {
       count: allMachinesCount,
       loaded: true,
     });
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
         searchFilter=""
-        setHeaderContent={setHeaderContent}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={setSidePanelContent}
+        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
       />,
       { state, route: urls.machines.index }
     );
-    expect(setHeaderContent).not.toHaveBeenCalled();
+    expect(setSidePanelContent).not.toHaveBeenCalled();
     expect(screen.getByText("Deploy")).toBeInTheDocument();
     state.machine.selectedMachines.items = [];
     renderWithBrowserRouter(
       <MachineListHeader
-        headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
         searchFilter=""
-        setHeaderContent={setHeaderContent}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={setSidePanelContent}
+        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
       />
     );
-    await waitFor(() => expect(setHeaderContent).toHaveBeenCalledWith(null));
+    await waitFor(() => expect(setSidePanelContent).toHaveBeenCalledWith(null));
   });
 
   it("displays the action title if an action is selected", () => {
@@ -403,10 +403,10 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
-              headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -435,10 +435,10 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
-              headerContent={null}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -486,10 +486,10 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
-              headerContent={null}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>

@@ -49,7 +49,7 @@ describe("AddChassisFormFields", () => {
           ]}
         >
           <CompatRouter>
-            <AddChassisForm clearHeaderContent={jest.fn()} />
+            <AddChassisForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -103,7 +103,7 @@ describe("AddChassisFormFields", () => {
           ]}
         >
           <CompatRouter>
-            <AddChassisForm clearHeaderContent={jest.fn()} />
+            <AddChassisForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

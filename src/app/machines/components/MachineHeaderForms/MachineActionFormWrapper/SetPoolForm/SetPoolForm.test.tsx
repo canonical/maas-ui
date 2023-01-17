@@ -63,7 +63,7 @@ describe("SetPoolForm", () => {
         >
           <CompatRouter>
             <SetPoolForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -87,7 +87,7 @@ describe("SetPoolForm", () => {
         >
           <CompatRouter>
             <SetPoolForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={state.machine.items}
               processingCount={0}
               viewingDetails={false}
@@ -151,7 +151,7 @@ describe("SetPoolForm", () => {
         >
           <CompatRouter>
             <SetPoolForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={state.machine.items}
               processingCount={0}
               viewingDetails={false}

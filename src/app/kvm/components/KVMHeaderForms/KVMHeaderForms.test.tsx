@@ -37,13 +37,16 @@ describe("KVMHeaderForms", () => {
     });
   });
 
-  it("does not render if headerContent is not defined", () => {
+  it("does not render if sidePanelContent is not defined", () => {
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <KVMHeaderForms headerContent={null} setHeaderContent={jest.fn()} />
+            <KVMHeaderForms
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -60,8 +63,8 @@ describe("KVMHeaderForms", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
             <KVMHeaderForms
-              headerContent={{ view: KVMHeaderViews.ADD_LXD_HOST }}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{ view: KVMHeaderViews.ADD_LXD_HOST }}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -78,8 +81,8 @@ describe("KVMHeaderForms", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
             <KVMHeaderForms
-              headerContent={{ view: KVMHeaderViews.ADD_VIRSH_HOST }}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{ view: KVMHeaderViews.ADD_VIRSH_HOST }}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -96,11 +99,11 @@ describe("KVMHeaderForms", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
             <KVMHeaderForms
-              headerContent={{
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{
                 view: KVMHeaderViews.COMPOSE_VM,
                 extras: { hostId: 1 },
               }}
-              setHeaderContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -116,11 +119,11 @@ describe("KVMHeaderForms", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
             <KVMHeaderForms
-              headerContent={{
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{
                 view: KVMHeaderViews.DELETE_KVM,
                 extras: { hostId: 1 },
               }}
-              setHeaderContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -136,11 +139,11 @@ describe("KVMHeaderForms", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
             <KVMHeaderForms
-              headerContent={{
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{
                 view: KVMHeaderViews.DELETE_KVM,
                 extras: { clusterId: 1 },
               }}
-              setHeaderContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -156,11 +159,11 @@ describe("KVMHeaderForms", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
             <KVMHeaderForms
-              headerContent={{
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{
                 view: KVMHeaderViews.REFRESH_KVM,
                 extras: { hostIds: [1] },
               }}
-              setHeaderContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -177,8 +180,8 @@ describe("KVMHeaderForms", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
             <KVMHeaderForms
-              headerContent={{ view: MachineHeaderViews.COMMISSION_MACHINE }}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{ view: MachineHeaderViews.COMMISSION_MACHINE }}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -194,8 +197,8 @@ describe("KVMHeaderForms", () => {
     state.machine.selectedMachines = { items: ["abc123", "def456"] };
     renderWithBrowserRouter(
       <KVMHeaderForms
-        headerContent={{ view: MachineHeaderViews.DELETE_MACHINE }}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: MachineHeaderViews.DELETE_MACHINE }}
       />,
       { route: "/kvm", state }
     );

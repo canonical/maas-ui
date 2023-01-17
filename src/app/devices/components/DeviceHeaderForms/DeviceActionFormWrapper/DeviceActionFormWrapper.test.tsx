@@ -25,7 +25,7 @@ describe("DeviceActionFormWrapper", () => {
     renderWithBrowserRouter(
       <DeviceActionFormWrapper
         action={NodeActions.DELETE}
-        clearHeaderContent={jest.fn()}
+        clearSidePanelContent={jest.fn()}
         devices={devices}
         viewingDetails={false}
       />,

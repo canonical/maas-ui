@@ -140,7 +140,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -164,7 +164,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -194,7 +194,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -226,7 +226,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -252,7 +252,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -288,7 +288,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -334,7 +334,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -371,7 +371,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -397,7 +397,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -426,7 +426,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -464,7 +464,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -505,7 +505,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -548,7 +548,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -581,7 +581,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -604,7 +604,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[state.machine.items[0]]}
               processingCount={0}
               viewingDetails={false}
@@ -640,7 +640,7 @@ describe("DeployFormFields", () => {
         >
           <CompatRouter>
             <DeployForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[state.machine.items[0]]}
               processingCount={0}
               viewingDetails={false}

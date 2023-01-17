@@ -16,8 +16,8 @@ import {
   ControllerHeaderViews,
 } from "app/controllers/constants";
 import type {
-  ControllerHeaderContent,
-  ControllerSetHeaderContent,
+  ControllerSidePanelContent,
+  ControllerSetSidePanelContent,
 } from "app/controllers/types";
 import { getHeaderTitle } from "app/controllers/utils";
 import controllerSelectors from "app/store/controller/selectors";
@@ -28,14 +28,14 @@ import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
   systemId: Controller["system_id"];
-  headerContent: ControllerHeaderContent | null;
-  setHeaderContent: ControllerSetHeaderContent;
+  sidePanelContent: ControllerSidePanelContent | null;
+  setSidePanelContent: ControllerSetSidePanelContent;
 };
 
 const ControllerDetailsHeader = ({
   systemId,
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   const controller = useSelector((state: RootState) =>
     controllerSelectors.getById(state, systemId)
@@ -67,22 +67,22 @@ const ControllerDetailsHeader = ({
               ([, actionName]) => actionName === action
             );
             if (view) {
-              setHeaderContent({ view });
+              setSidePanelContent({ view });
             }
           }}
         />,
       ]}
-      headerContent={
-        headerContent ? (
+      sidePanelContent={
+        sidePanelContent ? (
           <ControllerHeaderForms
             controllers={[controller]}
-            headerContent={headerContent}
-            setHeaderContent={setHeaderContent}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
             viewingDetails
           />
         ) : null
       }
-      sidePanelTitle={getHeaderTitle("Controller", headerContent)}
+      sidePanelTitle={getHeaderTitle("Controller", sidePanelContent)}
       subtitleLoading={!isControllerDetails(controller)}
       tabLinks={[
         {

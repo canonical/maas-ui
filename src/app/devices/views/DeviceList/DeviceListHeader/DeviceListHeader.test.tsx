@@ -37,9 +37,9 @@ describe("DeviceListHeader", () => {
       <Provider store={store}>
         <MemoryRouter>
           <DeviceListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
+            setSidePanelContent={jest.fn()}
+            sidePanelContent={null}
           />
         </MemoryRouter>
       </Provider>
@@ -56,9 +56,9 @@ describe("DeviceListHeader", () => {
       <Provider store={store}>
         <MemoryRouter>
           <DeviceListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
+            setSidePanelContent={jest.fn()}
+            sidePanelContent={null}
           />
         </MemoryRouter>
       </Provider>
@@ -75,9 +75,9 @@ describe("DeviceListHeader", () => {
       <Provider store={store}>
         <MemoryRouter>
           <DeviceListHeader
-            headerContent={null}
-            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
+            setSidePanelContent={jest.fn()}
+            sidePanelContent={null}
           />
         </MemoryRouter>
       </Provider>
@@ -88,21 +88,21 @@ describe("DeviceListHeader", () => {
   });
 
   it("can open the add device form", () => {
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
         <MemoryRouter>
           <DeviceListHeader
-            headerContent={null}
-            setHeaderContent={setHeaderContent}
             setSearchFilter={jest.fn()}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={null}
           />
         </MemoryRouter>
       </Provider>
     );
     wrapper.find("Button[data-testid='add-device-button']").simulate("click");
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: DeviceHeaderViews.ADD_DEVICE,
     });
   });

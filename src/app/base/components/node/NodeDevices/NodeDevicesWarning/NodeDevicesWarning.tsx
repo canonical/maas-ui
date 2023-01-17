@@ -1,7 +1,7 @@
 import { Button, Col, Icon, Row, Strip } from "@canonical/react-components";
 
 import { MachineHeaderViews } from "app/machines/constants";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { NodeDeviceBus } from "app/store/nodedevice/types";
@@ -13,14 +13,14 @@ type Props = {
   bus: NodeDeviceBus;
   node: ControllerDetails | MachineDetails;
   nodeDevices: NodeDevice[];
-  setHeaderContent?: MachineSetHeaderContent;
+  setSidePanelContent?: MachineSetSidePanelContent;
 };
 
 const NodeDevicesWarning = ({
   bus,
   node,
   nodeDevices,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element | null => {
   const isMachine = nodeIsMachine(node);
   const busDisplay = bus === NodeDeviceBus.PCIE ? "PCI" : "USB";
@@ -59,12 +59,14 @@ const NodeDevicesWarning = ({
             {warningMessage}
           </p>
         )}
-        {canBeCommissioned && setHeaderContent && (
+        {canBeCommissioned && setSidePanelContent && (
           <Button
             appearance="positive"
             data-testid="commission-machine"
             onClick={() =>
-              setHeaderContent({ view: MachineHeaderViews.COMMISSION_MACHINE })
+              setSidePanelContent({
+                view: MachineHeaderViews.COMMISSION_MACHINE,
+              })
             }
           >
             Commission

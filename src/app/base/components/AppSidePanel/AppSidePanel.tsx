@@ -14,7 +14,7 @@ type Props = {
 
 const AppSidePanel = ({ title, size, content }: Props): JSX.Element => (
   // display the app side panel as a child of #maas-ui DOM node no matter where it's rendered
-  // TODO: https://warthogs.atlassian.net/browse/MAASENG-1245 - move setHeaderContent to the App component and remove this Portal workaround
+  // TODO: https://warthogs.atlassian.net/browse/MAASENG-1245 - move setSidePanelContent to the App component and remove this Portal workaround
   <Portal node={document && document.getElementById(MAAS_UI_ID)}>
     <aside
       aria-label={title ?? undefined}

@@ -4,7 +4,7 @@ import { Link } from "react-router-dom-v5-compat";
 import { HardwareType } from "app/base/enum";
 import { useSendAnalytics } from "app/base/hooks";
 import { MachineHeaderViews } from "app/machines/constants";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import type { MachineDetails } from "app/store/machine/types";
 import type { TestStatus } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
@@ -13,7 +13,7 @@ import { capitaliseFirst } from "app/utils";
 type Props = {
   machine: MachineDetails;
   hardwareType: HardwareType;
-  setHeaderContent: MachineSetHeaderContent;
+  setSidePanelContent: MachineSetSidePanelContent;
 };
 
 const hasTestsRun = (testStatus: TestStatus) =>
@@ -26,7 +26,7 @@ const hasTestsRun = (testStatus: TestStatus) =>
 const TestResults = ({
   machine,
   hardwareType,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element | null => {
   const sendAnalytics = useSendAnalytics();
 
@@ -145,7 +145,7 @@ const TestResults = ({
                 className="u-no-margin--bottom"
                 disabled={!machine.actions.includes(NodeActions.TEST)}
                 onClick={() => {
-                  setHeaderContent({
+                  setSidePanelContent({
                     view: MachineHeaderViews.TEST_MACHINE,
                     extras: { hardwareType: hardwareType },
                   });

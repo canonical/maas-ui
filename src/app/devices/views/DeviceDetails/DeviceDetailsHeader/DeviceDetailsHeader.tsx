@@ -12,8 +12,8 @@ import urls from "app/base/urls";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
 import type {
-  DeviceHeaderContent,
-  DeviceSetHeaderContent,
+  DeviceSidePanelContent,
+  DeviceSetSidePanelContent,
 } from "app/devices/types";
 import { getHeaderTitle } from "app/devices/utils";
 import deviceSelectors from "app/store/device/selectors";
@@ -22,14 +22,14 @@ import { isDeviceDetails } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  headerContent: DeviceHeaderContent | null;
-  setHeaderContent: DeviceSetHeaderContent;
+  sidePanelContent: DeviceSidePanelContent | null;
+  setSidePanelContent: DeviceSetSidePanelContent;
   systemId: Device["system_id"];
 };
 
 const DeviceDetailsHeader = ({
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
   systemId,
 }: Props): JSX.Element => {
   const [editingName, setEditingName] = useState(false);
@@ -55,22 +55,22 @@ const DeviceDetailsHeader = ({
               ([, actionName]) => actionName === action
             );
             if (view) {
-              setHeaderContent({ view });
+              setSidePanelContent({ view });
             }
           }}
         />,
       ]}
-      headerContent={
-        headerContent && (
+      sidePanelContent={
+        sidePanelContent && (
           <DeviceHeaderForms
             devices={[device]}
-            headerContent={headerContent}
-            setHeaderContent={setHeaderContent}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
             viewingDetails
           />
         )
       }
-      sidePanelTitle={getHeaderTitle(device.fqdn || "", headerContent)}
+      sidePanelTitle={getHeaderTitle(device.fqdn || "", sidePanelContent)}
       subtitleLoading={!isDeviceDetails(device)}
       tabLinks={[
         {

@@ -1,11 +1,11 @@
 import { KVMHeaderViews } from "./constants";
 import type {
-  KVMHeaderContent,
+  KVMSidePanelContent,
   KVMStoragePoolResource,
   KVMStoragePoolResources,
 } from "./types";
 
-import type { MachineHeaderContent } from "app/machines/types";
+import type { MachineSidePanelContent } from "app/machines/types";
 import { getHeaderTitle as getMachineHeaderTitle } from "app/machines/utils";
 import type { Pod } from "app/store/pod/types";
 import { formatBytes } from "app/utils";
@@ -23,11 +23,11 @@ export const memoryWithUnit = (memory: number): string => {
 
 /**
  * Get header title depending on header content.
- * @param headerContent - The currently selected header content.
+ * @param sidePanelContent - The currently selected header content.
  * @returns Header title.
  */
-export const getFormTitle = (headerContent: KVMHeaderContent): string => {
-  switch (headerContent.view) {
+export const getFormTitle = (sidePanelContent: KVMSidePanelContent): string => {
+  switch (sidePanelContent.view) {
     case KVMHeaderViews.ADD_LXD_HOST:
       return "Add LXD host";
     case KVMHeaderViews.ADD_VIRSH_HOST:
@@ -39,19 +39,20 @@ export const getFormTitle = (headerContent: KVMHeaderContent): string => {
     case KVMHeaderViews.REFRESH_KVM:
       return "Refresh";
     default:
-      // We need to explicitly cast headerContent here - TypeScript doesn't
+      // We need to explicitly cast sidePanelContent here - TypeScript doesn't
       // seem to be able to infer remaining object tuple values as with string
       // values.
       // https://github.com/canonical/maas-ui/issues/3040
-      const machineHeaderContent = headerContent as MachineHeaderContent;
-      return getMachineHeaderTitle("", machineHeaderContent);
+      const machineSidePanelContent =
+        sidePanelContent as MachineSidePanelContent;
+      return getMachineHeaderTitle("", machineSidePanelContent);
   }
 };
 
 export const getHeaderSize = (
-  headerContent: KVMHeaderContent
+  sidePanelContent: KVMSidePanelContent
 ): "wide" | undefined => {
-  switch (headerContent.view) {
+  switch (sidePanelContent.view) {
     case KVMHeaderViews.COMPOSE_VM:
       return "wide";
     default:

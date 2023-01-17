@@ -12,7 +12,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import Placeholder from "app/base/components/Placeholder";
 import { HardwareType } from "app/base/enum";
 import urls from "app/base/urls";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { actions as nodeDeviceActions } from "app/store/nodedevice";
@@ -25,7 +25,7 @@ import { nodeIsMachine } from "app/store/utils";
 type Props = {
   bus: NodeDeviceBus;
   node: ControllerDetails | MachineDetails;
-  setHeaderContent?: MachineSetHeaderContent;
+  setSidePanelContent?: MachineSetSidePanelContent;
 };
 type NodeDeviceGroup = {
   hardwareTypes: HardwareType[];
@@ -126,7 +126,11 @@ const generateGroup = (
   });
 };
 
-const NodeDevices = ({ bus, node, setHeaderContent }: Props): JSX.Element => {
+const NodeDevices = ({
+  bus,
+  node,
+  setSidePanelContent,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const nodeDevices = useSelector((state: RootState) =>
     nodeDeviceSelectors.getByNodeId(state, node.id)
@@ -287,7 +291,7 @@ const NodeDevices = ({ bus, node, setHeaderContent }: Props): JSX.Element => {
           bus={bus}
           node={node}
           nodeDevices={nodeDevices}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
         />
       )}
     </>

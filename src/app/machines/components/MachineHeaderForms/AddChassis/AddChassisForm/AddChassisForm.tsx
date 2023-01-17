@@ -9,7 +9,7 @@ import AddChassisFormFields from "../AddChassisFormFields";
 import FormikForm from "app/base/components/FormikForm";
 import docsUrls from "app/base/docsUrls";
 import { useAddMessage } from "app/base/hooks";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
 import { actions as generalActions } from "app/store/general";
@@ -25,10 +25,12 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
 };
 
-export const AddChassisForm = ({ clearHeaderContent }: Props): JSX.Element => {
+export const AddChassisForm = ({
+  clearSidePanelContent,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const chassisPowerTypes = useSelector(powerTypesSelectors.canProbe);
   const domains = useSelector(domainSelectors.all);
@@ -90,7 +92,7 @@ export const AddChassisForm = ({ clearHeaderContent }: Props): JSX.Element => {
             power_parameters: initialPowerParameters,
             power_type: "",
           }}
-          onCancel={clearHeaderContent}
+          onCancel={clearSidePanelContent}
           onSaveAnalytics={{
             action: secondarySubmit ? "Save and add another" : "Save",
             category: "Chassis",
@@ -115,7 +117,7 @@ export const AddChassisForm = ({ clearHeaderContent }: Props): JSX.Element => {
           }}
           onSuccess={() => {
             if (!secondarySubmit) {
-              clearHeaderContent();
+              clearSidePanelContent();
             }
             setSecondarySubmit(false);
           }}

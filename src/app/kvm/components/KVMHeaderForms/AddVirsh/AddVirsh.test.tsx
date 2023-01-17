@@ -75,7 +75,7 @@ describe("AddVirsh", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddVirsh clearHeaderContent={jest.fn()} />
+            <AddVirsh clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -104,7 +104,7 @@ describe("AddVirsh", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddVirsh clearHeaderContent={jest.fn()} />
+            <AddVirsh clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -122,7 +122,7 @@ describe("AddVirsh", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddVirsh clearHeaderContent={jest.fn()} />
+            <AddVirsh clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -140,7 +140,7 @@ describe("AddVirsh", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddVirsh clearHeaderContent={jest.fn()} />
+            <AddVirsh clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

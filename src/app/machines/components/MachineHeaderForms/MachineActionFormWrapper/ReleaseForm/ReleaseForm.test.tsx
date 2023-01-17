@@ -80,7 +80,7 @@ describe("ReleaseForm", () => {
         >
           <CompatRouter>
             <ReleaseForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -105,7 +105,7 @@ describe("ReleaseForm", () => {
         >
           <CompatRouter>
             <ReleaseForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={state.machine.items}
               processingCount={0}
               viewingDetails={false}

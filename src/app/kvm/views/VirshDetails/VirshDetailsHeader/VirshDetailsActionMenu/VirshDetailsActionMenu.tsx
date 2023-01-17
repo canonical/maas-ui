@@ -1,17 +1,17 @@
 import { ContextualMenu } from "@canonical/react-components";
 
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import type { Pod } from "app/store/pod/types";
 
 type Props = {
   hostId: Pod["id"];
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const PodDetailsActionMenu = ({
   hostId,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   return (
     <ContextualMenu
@@ -21,7 +21,7 @@ const PodDetailsActionMenu = ({
         {
           children: "Compose",
           onClick: () =>
-            setHeaderContent({
+            setSidePanelContent({
               view: KVMHeaderViews.COMPOSE_VM,
               extras: { hostId },
             }),
@@ -29,7 +29,7 @@ const PodDetailsActionMenu = ({
         {
           children: "Refresh",
           onClick: () =>
-            setHeaderContent({
+            setSidePanelContent({
               view: KVMHeaderViews.REFRESH_KVM,
               extras: { hostIds: [hostId] },
             }),
@@ -37,7 +37,7 @@ const PodDetailsActionMenu = ({
         {
           children: "Delete",
           onClick: () =>
-            setHeaderContent({
+            setSidePanelContent({
               view: KVMHeaderViews.DELETE_KVM,
               extras: { hostId },
             }),

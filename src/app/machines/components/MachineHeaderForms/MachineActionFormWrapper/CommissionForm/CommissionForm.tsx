@@ -50,7 +50,7 @@ type ScriptInput = {
 type Props = MachineActionFormProps;
 
 export const CommissionForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   machines,
   processingCount,
@@ -117,7 +117,7 @@ export const CommissionForm = ({
       }}
       loaded={scriptsLoaded}
       modelName="machine"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
@@ -175,7 +175,7 @@ export const CommissionForm = ({
           });
         }
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={CommissionFormSchema}

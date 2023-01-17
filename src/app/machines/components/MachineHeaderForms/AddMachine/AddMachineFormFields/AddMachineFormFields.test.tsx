@@ -83,7 +83,7 @@ describe("AddMachineFormFields", () => {
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddMachineForm clearHeaderContent={jest.fn()} />
+            <AddMachineForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -101,7 +101,7 @@ describe("AddMachineFormFields", () => {
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddMachineForm clearHeaderContent={jest.fn()} />
+            <AddMachineForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -130,7 +130,7 @@ describe("AddMachineFormFields", () => {
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddMachineForm clearHeaderContent={jest.fn()} />
+            <AddMachineForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -155,7 +155,7 @@ describe("AddMachineFormFields", () => {
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddMachineForm clearHeaderContent={jest.fn()} />
+            <AddMachineForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

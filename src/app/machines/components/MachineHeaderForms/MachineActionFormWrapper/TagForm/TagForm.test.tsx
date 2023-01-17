@@ -61,7 +61,7 @@ it("dispatches action to fetch tags on load", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             machines={[]}
             processingCount={0}
             selectedMachines={{ items: ["abc123"] }}
@@ -90,7 +90,7 @@ it("correctly dispatches actions to tag machines", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             machines={machines}
             processingCount={0}
             selectedMachines={{
@@ -146,7 +146,7 @@ it("correctly dispatches actions to untag machines", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             machines={machines}
             processingCount={0}
             selectedMachines={{
@@ -193,7 +193,7 @@ it("correctly dispatches actions to tag and untag a machine", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             machines={machines}
             processingCount={0}
             selectedMachines={{ items: machines.map((item) => item.system_id) }}
@@ -252,7 +252,7 @@ it("shows saving label if not viewing from machine config page", () => {
       >
         <CompatRouter>
           <TagForm
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             machines={machines}
             processingCount={1}
             viewingDetails={false}
@@ -280,7 +280,7 @@ it("does not show saving label if viewing from machine config page", () => {
       >
         <CompatRouter>
           <TagForm
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             machines={machines}
             processingCount={1}
             viewingDetails
@@ -304,7 +304,7 @@ it("shows a notification on success", async () => {
       >
         <CompatRouter>
           <TagForm
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             machines={machines}
             processingCount={0}
             selectedCount={machines.length}

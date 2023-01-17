@@ -40,7 +40,7 @@ describe("LXDClusterHosts", () => {
   it("displays a spinner if pods haven't loaded", () => {
     state.pod.loaded = false;
     renderWithBrowserRouter(
-      <LXDClusterHosts clusterId={1} setHeaderContent={jest.fn()} />,
+      <LXDClusterHosts clusterId={1} setSidePanelContent={jest.fn()} />,
       {
         route: urls.kvm.lxd.cluster.hosts({ clusterId: 1 }),
         routePattern: `${urls.kvm.index}/*`,

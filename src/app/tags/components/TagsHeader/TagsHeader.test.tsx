@@ -33,8 +33,8 @@ it("can display the add tag form", () => {
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
           <TagsHeader
-            headerContent={{ view: TagHeaderViews.AddTag }}
-            setHeaderContent={jest.fn()}
+            setSidePanelContent={jest.fn()}
+            sidePanelContent={{ view: TagHeaderViews.AddTag }}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -66,11 +66,11 @@ it("can display the delete tag form", () => {
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
           <TagsHeader
-            headerContent={{
+            setSidePanelContent={jest.fn()}
+            sidePanelContent={{
               view: TagHeaderViews.DeleteTag,
               extras: { id: 1 },
             }}
-            setHeaderContent={jest.fn()}
           />
         </CompatRouter>
       </MemoryRouter>
@@ -91,7 +91,7 @@ it("displays the default title", () => {
     <Provider store={store}>
       <MemoryRouter initialEntries={[{ pathname: "/tags", key: "testKey" }]}>
         <CompatRouter>
-          <TagsHeader headerContent={null} setHeaderContent={jest.fn()} />
+          <TagsHeader setSidePanelContent={jest.fn()} sidePanelContent={null} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

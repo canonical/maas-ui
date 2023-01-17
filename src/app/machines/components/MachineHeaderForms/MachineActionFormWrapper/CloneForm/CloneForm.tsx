@@ -47,7 +47,7 @@ const CloneFormSchema = Yup.object()
   .defined();
 
 export const CloneForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   searchFilter,
   selectedMachines,
   selectedCount,
@@ -76,7 +76,7 @@ export const CloneForm = ({
 
   return showResults || actionErrors ? (
     <CloneResults
-      closeForm={clearHeaderContent}
+      closeForm={clearSidePanelContent}
       selectedCount={selectedCount}
       setSearchFilter={setSearchFilter}
       sourceMachine={selectedMachine}
@@ -106,7 +106,7 @@ export const CloneForm = ({
         storage: false,
       }}
       modelName="machine"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,

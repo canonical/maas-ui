@@ -46,7 +46,7 @@ describe("MarkBrokenForm", () => {
         >
           <CompatRouter>
             <MarkBrokenForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={state.machine.items}
               processingCount={0}
               viewingDetails={false}
@@ -111,7 +111,7 @@ describe("MarkBrokenForm", () => {
         >
           <CompatRouter>
             <MarkBrokenForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[state.machine.items[0]]}
               processingCount={0}
               viewingDetails={false}

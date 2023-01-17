@@ -10,7 +10,7 @@ import type { AddMachineValues } from "../types";
 import FormikForm from "app/base/components/FormikForm";
 import docsUrls from "app/base/docsUrls";
 import { useAddMessage } from "app/base/hooks";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as domainActions } from "app/store/domain";
 import domainSelectors from "app/store/domain/selectors";
@@ -36,10 +36,12 @@ import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
 };
 
-export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
+export const AddMachineForm = ({
+  clearSidePanelContent,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const architectures = useSelector(architecturesSelectors.get);
   const architecturesLoaded = useSelector(architecturesSelectors.loaded);
@@ -147,7 +149,7 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
             pxe_mac: "",
             zone: (zones.length && zones[0].name) || "",
           }}
-          onCancel={clearHeaderContent}
+          onCancel={clearSidePanelContent}
           onSaveAnalytics={{
             action: secondarySubmit ? "Save and add another" : "Save",
             category: "Machine",
@@ -174,7 +176,7 @@ export const AddMachineForm = ({ clearHeaderContent }: Props): JSX.Element => {
           }}
           onSuccess={() => {
             if (!secondarySubmit) {
-              clearHeaderContent();
+              clearSidePanelContent();
             }
             setSecondarySubmit(false);
           }}

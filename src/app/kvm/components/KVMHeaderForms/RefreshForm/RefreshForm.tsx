@@ -3,18 +3,18 @@ import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent, EmptyObject } from "app/base/types";
+import type { ClearSidePanelContent, EmptyObject } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   hostIds: Pod["id"][];
 };
 
 const RefreshForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   hostIds,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
@@ -29,7 +29,7 @@ const RefreshForm = ({
       errors={errors}
       initialValues={{}}
       modelName="KVM host"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
@@ -40,7 +40,7 @@ const RefreshForm = ({
           dispatch(podActions.refresh(id));
         });
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={refreshing.length}
       selectedCount={hostIds.length}
     >

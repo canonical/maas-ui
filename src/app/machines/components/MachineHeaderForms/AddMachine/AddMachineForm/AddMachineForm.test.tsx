@@ -108,7 +108,7 @@ it("fetches the necessary data on load if not already loaded", () => {
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
         <CompatRouter>
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <AddMachineForm clearSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -137,7 +137,7 @@ it("displays a spinner if data has not loaded", () => {
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
         <CompatRouter>
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <AddMachineForm clearSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -154,7 +154,7 @@ it("enables submit when a power type with no fields is chosen", async () => {
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
         <CompatRouter>
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <AddMachineForm clearSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -181,7 +181,7 @@ it("can handle saving a machine", async () => {
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
         <CompatRouter>
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <AddMachineForm clearSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -248,7 +248,7 @@ it("correctly trims power parameters before dispatching action", async () => {
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
         <CompatRouter>
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <AddMachineForm clearSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>
@@ -307,7 +307,7 @@ it("correctly filters empty extra mac fields", async () => {
         initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
       >
         <CompatRouter>
-          <AddMachineForm clearHeaderContent={jest.fn()} />
+          <AddMachineForm clearSidePanelContent={jest.fn()} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

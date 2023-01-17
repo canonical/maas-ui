@@ -40,14 +40,14 @@ export type AnalyticsEvent = {
   label: string;
 };
 
-export type HeaderContent<V extends readonly [string, string], E = never> = {
+export type SidePanelContent<V extends readonly [string, string], E = never> = {
   view: V;
   extras?: E;
 };
 
-export type SetHeaderContent<H> = (headerContent: H | null) => void;
+export type SetSidePanelContent<H> = (sidePanelContent: H | null) => void;
 
-export type ClearHeaderContent = () => void;
+export type ClearSidePanelContent = () => void;
 
 export type SetSearchFilter = (searchFilter: string) => void;
 
@@ -68,7 +68,7 @@ export type APIError<E = null> =
 export type DataTestElement<E> = E & { "data-testid"?: string };
 
 export type CommonActionFormProps<E = null> = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   errors?: APIError<E>;
   viewingDetails: boolean;
 };

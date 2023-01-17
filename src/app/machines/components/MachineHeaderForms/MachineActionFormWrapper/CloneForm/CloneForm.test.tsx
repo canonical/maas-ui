@@ -71,7 +71,7 @@ describe("CloneForm", () => {
         >
           <CompatRouter>
             <CloneForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -119,7 +119,7 @@ describe("CloneForm", () => {
         >
           <CompatRouter>
             <CloneForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}
@@ -165,7 +165,7 @@ describe("CloneForm", () => {
         >
           <CompatRouter>
             <CloneForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               selectedMachines={{
                 items: [machines[0].system_id, machines[1].system_id],
               }}

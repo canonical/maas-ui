@@ -35,7 +35,7 @@ describe("MachineSummary", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineSummary setHeaderContent={jest.fn()} />
+            <MachineSummary setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -51,7 +51,7 @@ describe("MachineSummary", () => {
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineSummary setHeaderContent={jest.fn()} />
+            <MachineSummary setSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -77,7 +77,7 @@ describe("MachineSummary", () => {
           <CompatRouter>
             <Routes>
               <Route
-                element={<MachineSummary setHeaderContent={jest.fn()} />}
+                element={<MachineSummary setSidePanelContent={jest.fn()} />}
                 path="/machine/:id/summary"
               />
             </Routes>
@@ -106,7 +106,7 @@ describe("MachineSummary", () => {
           <CompatRouter>
             <Routes>
               <Route
-                element={<MachineSummary setHeaderContent={jest.fn()} />}
+                element={<MachineSummary setSidePanelContent={jest.fn()} />}
                 path="/machine/:id/summary"
               />
             </Routes>
@@ -135,7 +135,7 @@ describe("MachineSummary", () => {
           <CompatRouter>
             <Routes>
               <Route
-                element={<MachineSummary setHeaderContent={jest.fn()} />}
+                element={<MachineSummary setSidePanelContent={jest.fn()} />}
                 path="/machine/:id/summary"
               />
             </Routes>

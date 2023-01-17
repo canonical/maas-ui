@@ -37,7 +37,7 @@ describe("MachineUSBDevices", () => {
           <CompatRouter>
             <Routes>
               <Route
-                element={<MachineUSBDevices setHeaderContent={jest.fn()} />}
+                element={<MachineUSBDevices setSidePanelContent={jest.fn()} />}
                 path="/machine/:id/usb-devices"
               />
             </Routes>

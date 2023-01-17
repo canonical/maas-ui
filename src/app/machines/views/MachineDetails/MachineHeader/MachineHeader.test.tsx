@@ -51,8 +51,8 @@ describe("MachineHeader", () => {
         >
           <CompatRouter>
             <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
               systemId="abc123"
             />
           </CompatRouter>
@@ -72,8 +72,8 @@ describe("MachineHeader", () => {
         >
           <CompatRouter>
             <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
               systemId="abc123"
             />
           </CompatRouter>
@@ -92,8 +92,8 @@ describe("MachineHeader", () => {
         >
           <CompatRouter>
             <MachineHeader
-              headerContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
               systemId="abc123"
             />
           </CompatRouter>
@@ -115,8 +115,8 @@ describe("MachineHeader", () => {
         >
           <CompatRouter>
             <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
               systemId="abc123"
             />
           </CompatRouter>
@@ -140,8 +140,8 @@ describe("MachineHeader", () => {
         >
           <CompatRouter>
             <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
               systemId="abc123"
             />
           </CompatRouter>
@@ -166,8 +166,8 @@ describe("MachineHeader", () => {
         >
           <CompatRouter>
             <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
               systemId="abc123"
             />
           </CompatRouter>
@@ -191,8 +191,8 @@ describe("MachineHeader", () => {
           >
             <CompatRouter>
               <MachineHeader
-                headerContent={null}
-                setHeaderContent={jest.fn()}
+                setSidePanelContent={jest.fn()}
+                sidePanelContent={null}
                 systemId="abc123"
               />
             </CompatRouter>
@@ -223,8 +223,8 @@ describe("MachineHeader", () => {
           >
             <CompatRouter>
               <MachineHeader
-                headerContent={null}
-                setHeaderContent={jest.fn()}
+                setSidePanelContent={jest.fn()}
+                sidePanelContent={null}
                 systemId="abc123"
               />
             </CompatRouter>
@@ -255,8 +255,8 @@ describe("MachineHeader", () => {
           >
             <CompatRouter>
               <MachineHeader
-                headerContent={null}
-                setHeaderContent={jest.fn()}
+                setSidePanelContent={jest.fn()}
+                sidePanelContent={null}
                 systemId="abc123"
               />
             </CompatRouter>
@@ -293,8 +293,8 @@ describe("MachineHeader", () => {
         >
           <CompatRouter>
             <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
               systemId="abc123"
             />
           </CompatRouter>
@@ -330,8 +330,8 @@ describe("MachineHeader", () => {
         >
           <CompatRouter>
             <MachineHeader
-              headerContent={null}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
               systemId="abc123"
             />
           </CompatRouter>

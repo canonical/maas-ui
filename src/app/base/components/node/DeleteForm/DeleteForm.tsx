@@ -14,7 +14,7 @@ type Props<E = null> = NodeActionFormProps<E> & {
 
 export const DeleteForm = <E,>({
   cleanup,
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   modelName,
   nodes,
@@ -35,7 +35,7 @@ export const DeleteForm = <E,>({
       errors={errors}
       initialValues={{}}
       modelName={modelName}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `${capitaliseFirst(modelName)} ${
@@ -45,7 +45,7 @@ export const DeleteForm = <E,>({
       }}
       onSubmit={onSubmit}
       onSuccess={() => {
-        clearHeaderContent();
+        clearSidePanelContent();
         onAfterSuccess?.();
       }}
       processingCount={processingCount}

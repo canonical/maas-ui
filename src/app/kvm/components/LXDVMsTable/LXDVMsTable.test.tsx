@@ -33,8 +33,8 @@ describe("LXDVMsTable", () => {
             getResources={jest.fn()}
             pods={["pod1"]}
             searchFilter=""
-            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
+            setSidePanelContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -66,8 +66,8 @@ describe("LXDVMsTable", () => {
             getResources={jest.fn()}
             pods={["pod1"]}
             searchFilter=""
-            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
+            setSidePanelContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -94,8 +94,8 @@ describe("LXDVMsTable", () => {
             onAddVMClick={jest.fn()}
             pods={["pod1"]}
             searchFilter=""
-            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
+            setSidePanelContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>
@@ -116,8 +116,8 @@ describe("LXDVMsTable", () => {
             getResources={jest.fn()}
             pods={["pod1"]}
             searchFilter=""
-            setHeaderContent={jest.fn()}
             setSearchFilter={jest.fn()}
+            setSidePanelContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

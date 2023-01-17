@@ -39,8 +39,8 @@ describe("LXDClusterHostVMs", () => {
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
@@ -57,8 +57,8 @@ describe("LXDClusterHostVMs", () => {
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),
@@ -75,8 +75,8 @@ describe("LXDClusterHostVMs", () => {
       <LXDClusterHostVMs
         clusterId={1}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />,
       {
         route: urls.kvm.lxd.cluster.vms.host({ clusterId: 1, hostId: 2 }),

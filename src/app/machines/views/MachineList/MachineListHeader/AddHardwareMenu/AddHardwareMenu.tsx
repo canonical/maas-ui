@@ -1,16 +1,16 @@
 import { ContextualMenu } from "@canonical/react-components";
 
 import { MachineHeaderViews } from "app/machines/constants";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 
 type Props = {
   disabled?: boolean;
-  setHeaderContent: MachineSetHeaderContent;
+  setSidePanelContent: MachineSetSidePanelContent;
 };
 
 export const AddHardwareMenu = ({
   disabled = false,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   return (
     <ContextualMenu
@@ -20,12 +20,12 @@ export const AddHardwareMenu = ({
         {
           children: "Machine",
           onClick: () =>
-            setHeaderContent({ view: MachineHeaderViews.ADD_MACHINE }),
+            setSidePanelContent({ view: MachineHeaderViews.ADD_MACHINE }),
         },
         {
           children: "Chassis",
           onClick: () =>
-            setHeaderContent({ view: MachineHeaderViews.ADD_CHASSIS }),
+            setSidePanelContent({ view: MachineHeaderViews.ADD_CHASSIS }),
         },
       ]}
       position="right"

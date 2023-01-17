@@ -25,7 +25,7 @@ import RAMColumn from "app/kvm/components/RAMColumn";
 import StorageColumn from "app/kvm/components/StorageColumn";
 import TagsColumn from "app/kvm/components/TagsColumn";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { actions as poolActions } from "app/store/resourcepool";
@@ -39,7 +39,7 @@ type Props = {
   clusterId: VMCluster["id"];
   hosts: Pod[];
   searchFilter: string;
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 type SortKey = keyof Pod | "cpu" | "pool" | "ram" | "storage" | "vms";
@@ -73,7 +73,7 @@ const generateRows = (
   clusterId: VMCluster["id"],
   clusterHosts: Pod[],
   pools: ResourcePool[],
-  setHeaderContent: KVMSetHeaderContent,
+  setSidePanelContent: KVMSetSidePanelContent,
   location: Location
 ) =>
   clusterHosts.map((host) => {
@@ -142,7 +142,7 @@ const generateRows = (
                 data-testid="vm-host-compose"
                 hasIcon
                 onClick={() =>
-                  setHeaderContent({
+                  setSidePanelContent({
                     view: KVMHeaderViews.COMPOSE_VM,
                     extras: { hostId: host.id },
                   })
@@ -177,7 +177,7 @@ const LXDClusterHostsTable = ({
   clusterId,
   hosts,
   searchFilter,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation<Location>();
@@ -309,7 +309,7 @@ const LXDClusterHostsTable = ({
                     clusterId,
                     paginatedClusterHosts,
                     pools,
-                    setHeaderContent,
+                    setSidePanelContent,
                     location
                   )
                 : []
