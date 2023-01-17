@@ -1,4 +1,3 @@
-import { screen, render, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
@@ -23,6 +22,7 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { screen, render, waitFor } from "testing/utils";
 
 const mockStore = configureStore();
 

@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import { Formik } from "formik";
 
 import ArchSelect, { Labels as ArchSelectLabels } from "./ArchSelect";
@@ -12,7 +11,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("ArchSelect", () => {
   let state: RootState;

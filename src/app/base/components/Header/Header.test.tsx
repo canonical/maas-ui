@@ -1,4 +1,3 @@
-import { screen, render, waitFor, within, act } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
@@ -22,7 +21,14 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import {
+  screen,
+  render,
+  waitFor,
+  within,
+  act,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockUseNavigate = jest.fn();
 jest.mock("react-router-dom-v5-compat", () => ({

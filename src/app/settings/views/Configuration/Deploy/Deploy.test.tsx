@@ -1,4 +1,3 @@
-import { render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -6,6 +5,7 @@ import Deploy from "./Deploy";
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
+import { render } from "testing/utils";
 
 const mockStore = configureStore();
 

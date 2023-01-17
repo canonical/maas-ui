@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import LXDSingleDetails from "./LXDSingleDetails";
 
 import urls from "app/base/urls";
@@ -17,7 +15,7 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("LXDSingleDetails", () => {
   let state: RootState;

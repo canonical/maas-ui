@@ -1,10 +1,8 @@
-import { screen } from "@testing-library/react";
-
 import KVMDetailsHeader from "./KVMDetailsHeader";
 
 import urls from "app/base/urls";
 import { KVMHeaderViews } from "app/kvm/constants";
-import { getTestState, renderWithBrowserRouter } from "testing/utils";
+import { screen, getTestState, renderWithBrowserRouter } from "testing/utils";
 
 describe("KVMDetailsHeader", () => {
   let state: ReturnType<typeof getTestState>;
@@ -13,7 +11,7 @@ describe("KVMDetailsHeader", () => {
     state = getTestState();
   });
 
-  it("renders header forms and no extra title blocks if header content has been selected", () => {
+  it("renders header forms with extra title blocks if header content has been selected", () => {
     renderWithBrowserRouter(
       <KVMDetailsHeader
         headerContent={{
@@ -35,7 +33,7 @@ describe("KVMDetailsHeader", () => {
     expect(
       screen.getByRole("form", { name: /Compose VM/i })
     ).toBeInTheDocument();
-    expect(screen.queryByTestId("extra-title-block")).not.toBeInTheDocument();
+    expect(screen.getByTestId("extra-title-block")).toBeInTheDocument();
   });
 
   it("renders extra title blocks if no header content has been selected", () => {

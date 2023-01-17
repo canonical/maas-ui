@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { Labels as SourceMachineDetailsLabel } from "./SourceMachineDetails/SourceMachineDetails";
@@ -17,7 +16,7 @@ import {
   machineStateList,
   machineStateListGroup,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("SourceMachineSelect", () => {
   let machines: Machine[];

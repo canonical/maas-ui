@@ -1,5 +1,3 @@
-import { screen, within } from "@testing-library/react";
-
 import NumaCard, { Labels as NumaCardLabels } from "./NumaCard";
 import { Labels as NumaCardDetailsLabels } from "./NumaCardDetails/NumaCardDetails";
 
@@ -10,7 +8,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 describe("NumaCard", () => {
   let state: RootState;

@@ -1,6 +1,5 @@
 import { NotificationSeverity } from "@canonical/react-components";
 import reduxToolkit from "@reduxjs/toolkit";
-import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
@@ -23,6 +22,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
+import { render, screen, waitFor } from "testing/utils";
 
 const mockStore = configureStore();
 

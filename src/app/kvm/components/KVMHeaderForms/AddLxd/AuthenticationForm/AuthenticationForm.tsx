@@ -135,7 +135,7 @@ export const AuthenticationForm = ({
       submitLabel="Check authentication"
       validationSchema={AuthenticationFormSchema}
     >
-      <div className="u-flex--between">
+      <div>
         <div>
           <p>
             <strong>

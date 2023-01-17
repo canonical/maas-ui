@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -7,6 +6,7 @@ import configureStore from "redux-mock-store";
 import MacAddressField from "./MacAddressField";
 
 import { rootState as rootStateFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 

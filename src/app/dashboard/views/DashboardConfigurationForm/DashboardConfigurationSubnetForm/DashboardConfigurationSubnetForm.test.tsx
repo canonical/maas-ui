@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
@@ -17,7 +16,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

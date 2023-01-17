@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
@@ -11,7 +10,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("UserEdit", () => {
   let state: RootState;

@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import IpmiSettings from "../IpmiSettings";
@@ -11,7 +10,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 

@@ -1,7 +1,8 @@
-import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 
 import CertificateFields, { Labels } from "./CertificateFields";
+
+import { render, screen } from "testing/utils";
 
 describe("CertificateFields", () => {
   it("does not render certificate and key fields if generating a certificate", () => {

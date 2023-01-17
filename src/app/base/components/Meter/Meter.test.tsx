@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-
 import Meter, { DEFAULT_SEPARATOR_COLOR, TestIds } from "./Meter";
+
+import { render, screen } from "testing/utils";
 
 const mockClientRect = ({
   bottom = 0,

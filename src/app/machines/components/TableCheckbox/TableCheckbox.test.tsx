@@ -1,4 +1,3 @@
-import { screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
@@ -11,7 +10,7 @@ import {
   machineStateList as machineStateListFactory,
   machineState as machineStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, waitFor, renderWithMockStore } from "testing/utils";
 
 let state: RootState;
 const callId = "123456";

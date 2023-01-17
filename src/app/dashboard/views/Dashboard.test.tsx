@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import Dashboard, { Label } from "./Dashboard";
 import { Label as DashboardConfigurationFormLabel } from "./DashboardConfigurationForm/DashboardConfigurationForm";
 import { Labels as DiscoveriesListLabel } from "./DiscoveriesList/DiscoveriesList";
@@ -15,7 +13,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("Dashboard", () => {
   let state: RootState;

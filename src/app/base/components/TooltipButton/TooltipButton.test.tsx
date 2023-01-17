@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import TooltipButton from "./TooltipButton";
 
 import { breakLines, unindentString } from "app/utils";
+import { render, screen } from "testing/utils";
 
 it("renders with default options correctly", async () => {
   render(<TooltipButton data-testid="tooltip-portal" message="Tooltip" />);

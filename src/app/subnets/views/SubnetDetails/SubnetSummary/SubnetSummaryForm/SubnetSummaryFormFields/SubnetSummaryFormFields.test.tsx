@@ -1,4 +1,3 @@
-import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
@@ -13,6 +12,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
+import { render, screen, waitFor } from "testing/utils";
 
 it("updates to use the fabric's default VLAN on fabric change", async () => {
   const fabrics = [

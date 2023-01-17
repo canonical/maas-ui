@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { MemoryRouter, Router } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -11,7 +10,7 @@ import {
   sshKeyState as sshKeyStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("AddSSHKey", () => {
   let state: RootState;

@@ -1,4 +1,3 @@
-import { screen, render } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -11,7 +10,7 @@ import DomainListHeaderForm, {
 
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, render, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 

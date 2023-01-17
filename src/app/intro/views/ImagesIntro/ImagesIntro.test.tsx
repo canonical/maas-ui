@@ -1,4 +1,3 @@
-import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -14,7 +13,7 @@ import {
   bootResourceUbuntuSource as bootResourceUbuntuSourceFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, render, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 

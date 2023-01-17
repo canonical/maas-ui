@@ -1,4 +1,3 @@
-import { screen, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -12,7 +11,7 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, render, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

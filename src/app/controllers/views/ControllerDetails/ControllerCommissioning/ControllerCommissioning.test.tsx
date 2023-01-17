@@ -1,5 +1,4 @@
 import * as reactComponentHooks from "@canonical/react-components/dist/hooks";
-import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -19,6 +18,7 @@ import {
   scriptResultState as scriptResultStateFactory,
   testStatus as testStatusFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 jest.mock("@canonical/react-components/dist/hooks", () => {
   const hooks = jest.requireActual("@canonical/react-components/dist/hooks");

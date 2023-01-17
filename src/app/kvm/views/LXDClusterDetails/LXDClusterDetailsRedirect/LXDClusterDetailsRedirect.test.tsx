@@ -1,4 +1,3 @@
-import { render, screen, waitFor } from "@testing-library/react";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router } from "react-router";
@@ -17,7 +16,12 @@ import {
   vmCluster as vmClusterFactory,
   vmClusterState as vmClusterStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import {
+  render,
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 let state: RootState;
 

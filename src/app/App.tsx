@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import packageInfo from "../../package.json";
 
 import ThemePreviewContext from "./base/theme-preview-context";
+import { MAAS_UI_ID } from "./constants";
 
 import Routes from "app/Routes";
 import Footer from "app/base/components/Footer";
@@ -120,13 +121,17 @@ export const App = (): JSX.Element => {
   }
 
   return (
-    <div id="maas-ui">
+    <div className="l-application" id={MAAS_UI_ID}>
       <ThemePreviewContext.Provider value={{ theme, setTheme }}>
-        <Header />
-        <main id="main-content">{content}</main>
-        <hr />
-        <Footer />
-        <StatusBar />
+        <main className="l-main">
+          <Header />
+          <div id="main-content">{content}</div>
+          <hr />
+          <Footer />
+        </main>
+        <aside className="l-status">
+          <StatusBar />
+        </aside>
       </ThemePreviewContext.Provider>
     </div>
   );

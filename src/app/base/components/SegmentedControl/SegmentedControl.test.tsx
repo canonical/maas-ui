@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-
 import SegmentedControl from "./SegmentedControl";
+
+import { render, screen } from "testing/utils";
 
 const options = [
   {

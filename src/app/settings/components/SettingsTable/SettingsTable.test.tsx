@@ -1,8 +1,6 @@
-import { screen } from "@testing-library/react";
-
 import SettingsTable from "./SettingsTable";
 
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("SettingsTable", () => {
   it("can render", () => {

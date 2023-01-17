@@ -72,7 +72,7 @@ export const SetZoneForm = <E,>({
       validationSchema={SetZoneSchema}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <ZoneSelect name="zone" required valueKey="id" />
         </Col>
       </Row>

@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import * as fileDownload from "js-file-download";
 
@@ -26,7 +25,7 @@ import {
   scriptResultState as scriptResultStateFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 jest.mock("js-file-download", () => jest.fn());
 

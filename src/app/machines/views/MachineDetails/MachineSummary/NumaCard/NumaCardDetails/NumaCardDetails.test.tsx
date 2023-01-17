@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import NumaCardDetails, {
@@ -13,7 +12,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("NumaCardDetails", () => {
   let state: RootState;

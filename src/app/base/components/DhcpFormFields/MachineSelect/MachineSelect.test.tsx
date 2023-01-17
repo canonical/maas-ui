@@ -1,10 +1,9 @@
-import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
 import MachineSelect, { Labels } from "./MachineSelect";
 
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 it("can open select box on click", async () => {
   renderWithMockStore(

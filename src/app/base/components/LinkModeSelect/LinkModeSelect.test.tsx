@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -8,6 +7,7 @@ import LinkModeSelect, { Label } from "./LinkModeSelect";
 import { NetworkInterfaceTypes, NetworkLinkMode } from "app/store/types/enum";
 import { LINK_MODE_DISPLAY } from "app/store/utils";
 import { rootState as rootStateFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 

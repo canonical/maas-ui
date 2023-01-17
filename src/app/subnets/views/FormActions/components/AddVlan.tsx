@@ -93,7 +93,7 @@ const AddVlan = ({
       validationSchema={vlanSchema}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             component={Input}
             disabled={isSaving}
@@ -101,11 +101,10 @@ const AddVlan = ({
             label="VID"
             name="vid"
             required
-            takeFocus
             type="text"
           />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             component={Input}
             disabled={isSaving}
@@ -116,10 +115,10 @@ const AddVlan = ({
         </Col>
       </Row>
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FabricSelect disabled={isSaving} name="fabric" required />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <SpaceSelect
             defaultOption={{ label: getSpaceDisplay(null), value: "" }}
             disabled={isSaving}

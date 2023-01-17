@@ -51,6 +51,7 @@ const DomainListHeader = (): JSX.Element => {
     <SectionHeader
       buttons={buttons}
       headerContent={headerContent}
+      sidePanelTitle="Add domains"
       subtitle={`${pluralize("domain", domainCount, true)} available`}
       subtitleLoading={!domainsLoaded}
       title="DNS"

@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import { ControllerStatus } from "./ControllerStatus";
 
 import type { RootState } from "app/store/root/types";
@@ -11,7 +9,7 @@ import {
   service as serviceFactory,
   serviceState as serviceStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 const getIcon = () => screen.getByTestId("controller-status-icon");
 

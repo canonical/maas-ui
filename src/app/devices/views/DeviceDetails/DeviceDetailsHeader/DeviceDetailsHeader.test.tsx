@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import configureStore from "redux-mock-store";
 
 import DeviceDetailsHeader from "./DeviceDetailsHeader";
@@ -11,7 +10,7 @@ import {
   deviceState as deviceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -63,25 +62,10 @@ describe("DeviceDetailsHeader", () => {
     );
   });
 
-  it("displays the device's FQDN once loaded", () => {
+  it("displays the device name if an action is selected", () => {
     state.device.items = [
       deviceDetailsFactory({ fqdn: "plot-device", system_id: "abc123" }),
     ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceDetailsHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
-    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
-      "plot-device"
-    );
-  });
-
-  it("displays action title if an action is selected", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeviceDetailsHeader
@@ -92,7 +76,7 @@ describe("DeviceDetailsHeader", () => {
       { store }
     );
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
-      "Delete"
+      "plot-device"
     );
   });
 

@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 
@@ -12,7 +11,7 @@ import {
   tokenState as tokenStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, within, renderWithMockStore } from "testing/utils";
 
 describe("APIKeyEdit", () => {
   let state: RootState;

@@ -1,4 +1,3 @@
-import { screen, within } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import { Label as TagsHeaderLabel } from "../components/TagsHeader/TagsHeader";
@@ -16,7 +15,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, within, renderWithBrowserRouter } from "testing/utils";
 
 describe("Tags", () => {
   let scrollToSpy: jest.Mock;

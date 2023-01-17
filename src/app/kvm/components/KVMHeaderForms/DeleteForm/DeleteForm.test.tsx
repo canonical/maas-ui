@@ -1,4 +1,3 @@
-import { screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -25,6 +24,7 @@ import {
   vmClusterStatuses as vmClusterStatusesFactory,
 } from "testing/factories";
 import {
+  screen,
   renderWithBrowserRouter,
   waitForComponentToPaint,
 } from "testing/utils";

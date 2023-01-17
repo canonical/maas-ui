@@ -1,6 +1,6 @@
-import { render, screen, within } from "@testing-library/react";
-
 import TitledSection from "./TitledSection";
+
+import { render, screen, within } from "testing/utils";
 
 it("displays the provided title and content", () => {
   const title = "echidna says";

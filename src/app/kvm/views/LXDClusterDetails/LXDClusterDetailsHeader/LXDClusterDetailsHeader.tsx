@@ -12,7 +12,6 @@ import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import { getFormTitle } from "app/kvm/utils";
 import type { RootState } from "app/store/root/types";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import type { VMCluster } from "app/store/vmcluster/types";
@@ -48,11 +47,7 @@ const LXDClusterDetailsHeader = ({
 
   let title: ReactNode = <Spinner text="Loading..." />;
   if (cluster) {
-    if (headerContent) {
-      title = getFormTitle(headerContent);
-    } else {
-      title = cluster.name;
-    }
+    title = cluster.name;
   }
 
   return (

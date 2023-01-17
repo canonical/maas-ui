@@ -6,12 +6,15 @@ import type { TabLink } from "@canonical/react-components/dist/components/Tabs/T
 import classNames from "classnames";
 import type { LinkProps } from "react-router-dom";
 
+import AppSidePanel from "app/base/components/AppSidePanel";
 import type { DataTestElement } from "app/base/types";
 
 export type Props<P = LinkProps> = {
   buttons?: JSX.Element[] | null;
   className?: ClassName;
   headerContent?: ReactNode | null;
+  sidePanelTitle?: string | null;
+  headerSize?: "wide";
   loading?: boolean;
   subtitle?: ReactNode;
   subtitleClassName?: string;
@@ -26,10 +29,9 @@ const generateSubtitle = (
   subtitle: Props["subtitle"],
   subtitleClassName: Props["subtitleClassName"],
   subtitleLoading: Props["subtitleLoading"],
-  titleLoading: Props["loading"],
-  headerContent: Props["headerContent"]
+  titleLoading: Props["loading"]
 ) => {
-  if (headerContent || titleLoading || !(subtitle || subtitleLoading)) {
+  if (titleLoading || !(subtitle || subtitleLoading)) {
     return null;
   }
   let content = subtitle;
@@ -61,6 +63,8 @@ const SectionHeader = <P,>({
   buttons = [],
   className,
   headerContent,
+  sidePanelTitle,
+  headerSize,
   loading,
   subtitle,
   subtitleClassName,
@@ -101,8 +105,7 @@ const SectionHeader = <P,>({
             subtitle,
             subtitleClassName,
             subtitleLoading,
-            loading,
-            headerContent
+            loading
           )}
         </div>
         {buttons?.length && !headerContent ? (
@@ -117,15 +120,11 @@ const SectionHeader = <P,>({
           />
         ) : null}
       </div>
-      {headerContent ? (
-        <div
-          className="section-header__content"
-          data-testid="section-header-content"
-        >
-          <hr />
-          {headerContent}
-        </div>
-      ) : null}
+      <AppSidePanel
+        content={headerContent}
+        size={headerSize}
+        title={sidePanelTitle}
+      />
       {tabLinks?.length ? (
         <div className="section-header__tabs" data-testid="section-header-tabs">
           <hr className="u-no-margin--bottom" />

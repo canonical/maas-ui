@@ -1,6 +1,6 @@
-import { render, screen } from "@testing-library/react";
-
 import DoughnutChart, { TestIds } from "./DoughnutChart";
+
+import { render, screen } from "testing/utils";
 
 describe("DoughnutChart", () => {
   it("renders", () => {

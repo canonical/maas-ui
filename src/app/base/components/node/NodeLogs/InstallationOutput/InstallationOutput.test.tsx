@@ -1,5 +1,3 @@
-import { screen } from "@testing-library/react";
-
 import InstallationOutput, { Label } from "./InstallationOutput";
 
 import type { MachineDetails } from "app/store/machine/types";
@@ -20,7 +18,7 @@ import {
   scriptResultState as scriptResultStateFactory,
   nodeScriptResultState as nodeScriptResultStateFactory,
 } from "testing/factories";
-import { renderWithMockStore } from "testing/utils";
+import { screen, renderWithMockStore } from "testing/utils";
 
 describe("InstallationOutput", () => {
   let state: RootState;

@@ -1,9 +1,8 @@
-import { render, screen } from "@testing-library/react";
-
 import PowerParameterDefinition from "./PowerParameterDefinition";
 
 import { PowerFieldType } from "app/store/general/types";
 import { powerField as powerFieldFactory } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 it("renders the value of a power parameter", () => {
   const field = powerFieldFactory({

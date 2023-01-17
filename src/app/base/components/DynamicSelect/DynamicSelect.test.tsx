@@ -1,9 +1,10 @@
-import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
 import DynamicSelect from "./DynamicSelect";
 import type { Props as DynamicSelectProps } from "./DynamicSelect";
+
+import { fireEvent, render, screen, waitFor } from "testing/utils";
 
 describe("DynamicSelect", () => {
   it("resets to the first option if the options change and the value no longer exists", async () => {

@@ -1,8 +1,5 @@
 @mixin MainContentSection {
   .section {
-    display: grid;
-    grid-template-rows: auto 1fr;
-    height: auto;
   }
 
   .section__header-wrapper {

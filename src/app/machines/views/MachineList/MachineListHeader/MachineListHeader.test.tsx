@@ -1,6 +1,5 @@
 import { ContextualMenu } from "@canonical/react-components";
 import reduxToolkit from "@reduxjs/toolkit";
-import { screen, waitFor } from "@testing-library/react";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -24,7 +23,7 @@ import {
   machineStateListGroup as machineStateListGroupFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter } from "testing/utils";
+import { screen, waitFor, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -414,8 +413,11 @@ describe("MachineListHeader", () => {
       </Provider>
     );
     expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
-      "Deploy"
+      "Machines"
     );
+    expect(
+      wrapper.find('[data-testid="section-header-content"] h3').text()
+    ).toBe("Deploy");
   });
 
   it("displays a new label for the tag action", () => {

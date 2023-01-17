@@ -1,4 +1,3 @@
-import { render, screen, waitFor } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -19,6 +18,7 @@ import {
   subnetState as subnetStateFactory,
   subnetStatistics,
 } from "testing/factories";
+import { render, screen, waitFor } from "testing/utils";
 
 const mockStore = configureStore();
 const getRootState = () =>

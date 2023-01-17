@@ -1,10 +1,10 @@
-import { screen, render } from "@testing-library/react";
 import { Formik } from "formik";
 
 import IpAssignmentSelect from "./IpAssignmentSelect";
 
 import { DeviceIpAssignment } from "app/store/device/types";
 import { getIpAssignmentDisplay } from "app/store/device/utils";
+import { screen, render } from "testing/utils";
 
 const staticDisplay = getIpAssignmentDisplay(DeviceIpAssignment.STATIC);
 

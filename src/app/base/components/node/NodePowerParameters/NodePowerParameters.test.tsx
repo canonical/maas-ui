@@ -1,4 +1,3 @@
-import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -18,6 +17,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 

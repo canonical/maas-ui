@@ -28,6 +28,7 @@ const SpaceDetailsHeader = ({ space }: Props): JSX.Element => {
           />
         ) : null
       }
+      sidePanelTitle="Delete space"
       title={space.name}
     />
   );
