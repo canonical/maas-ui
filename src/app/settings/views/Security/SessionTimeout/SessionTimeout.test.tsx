@@ -114,15 +114,16 @@ describe("SessionTimeout", () => {
     );
     await userEvent.type(
       screen.getByRole("textbox", { name: SessionTimeoutLabels.Expiration }),
-      "3 weeks 5 days 2 hours"
+      "1 week 5 days 2 hours"
     );
+
     await userEvent.click(
       screen.getByRole("button", { name: SessionTimeoutLabels.Save })
     );
 
     const actualActions = store.getActions();
     const expectedAction = configActions.update({
-      session_length: 2253600,
+      session_length: 1044000,
     });
 
     expect(
