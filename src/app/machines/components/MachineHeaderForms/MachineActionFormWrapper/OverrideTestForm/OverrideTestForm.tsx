@@ -25,7 +25,7 @@ const OverrideTestFormSchema = Yup.object().shape({
 });
 
 export const OverrideTestForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   processingCount,
   searchFilter,
@@ -54,7 +54,7 @@ export const OverrideTestForm = ({
         suppressResults: false,
       }}
       modelName="machine"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
@@ -67,7 +67,7 @@ export const OverrideTestForm = ({
           suppress_failed_script_results: suppressResults,
         });
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={selectedCount}
       validationSchema={OverrideTestFormSchema}

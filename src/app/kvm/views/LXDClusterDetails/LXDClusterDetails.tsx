@@ -23,7 +23,7 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
-import type { KVMHeaderContent } from "app/kvm/types";
+import type { KVMSidePanelContent } from "app/kvm/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import type { RootState } from "app/store/root/types";
@@ -54,9 +54,8 @@ const LXDClusterDetails = (): JSX.Element => {
   const fetchedVmCluster = !gettingVmCluster && vmCluster;
 
   const loaded = clustersLoaded || fetchedVmCluster;
-  const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
-    null
-  );
+  const [sidePanelContent, setSidePanelContent] =
+    useState<KVMSidePanelContent | null>(null);
 
   // Search filter is determined by the URL and used to initialise state.
   const currentFilters = FilterMachines.queryStringToFilters(location.search);
@@ -98,9 +97,9 @@ const LXDClusterDetails = (): JSX.Element => {
       header={
         <LXDClusterDetailsHeader
           clusterId={clusterId}
-          headerContent={headerContent}
-          setHeaderContent={setHeaderContent}
           setSearchFilter={setSearchFilter}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
         />
       }
     >
@@ -109,7 +108,7 @@ const LXDClusterDetails = (): JSX.Element => {
           element={
             <LXDClusterHosts
               clusterId={clusterId}
-              setHeaderContent={setHeaderContent}
+              setSidePanelContent={setSidePanelContent}
             />
           }
           path={getRelativeRoute(urls.kvm.lxd.cluster.hosts(null), base)}
@@ -119,8 +118,8 @@ const LXDClusterDetails = (): JSX.Element => {
             <LXDClusterVMs
               clusterId={clusterId}
               searchFilter={searchFilter}
-              setHeaderContent={setHeaderContent}
               setSearchFilter={setSearchFilter}
+              setSidePanelContent={setSidePanelContent}
             />
           }
           path={getRelativeRoute(urls.kvm.lxd.cluster.vms.index(null), base)}
@@ -133,7 +132,7 @@ const LXDClusterDetails = (): JSX.Element => {
           element={
             <LXDClusterSettings
               clusterId={clusterId}
-              setHeaderContent={setHeaderContent}
+              setSidePanelContent={setSidePanelContent}
             />
           }
           path={getRelativeRoute(urls.kvm.lxd.cluster.edit(null), base)}
@@ -143,8 +142,8 @@ const LXDClusterDetails = (): JSX.Element => {
             <LXDClusterHostVMs
               clusterId={clusterId}
               searchFilter={searchFilter}
-              setHeaderContent={setHeaderContent}
               setSearchFilter={setSearchFilter}
+              setSidePanelContent={setSidePanelContent}
             />
           }
           path={getRelativeRoute(urls.kvm.lxd.cluster.vms.host(null), base)}

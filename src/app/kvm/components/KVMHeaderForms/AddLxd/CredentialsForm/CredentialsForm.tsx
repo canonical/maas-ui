@@ -13,7 +13,7 @@ import type {
 import CredentialsFormFields from "./CredentialsFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
 import { splitCertificateName } from "app/store/general/utils";
@@ -23,7 +23,7 @@ import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   newPodValues: NewPodValues;
   setNewPodValues: (values: NewPodValues) => void;
   setStep: (step: AddLxdStepValues) => void;
@@ -31,7 +31,7 @@ type Props = {
 };
 
 export const CredentialsForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   newPodValues,
   setNewPodValues,
   setStep,
@@ -121,7 +121,7 @@ export const CredentialsForm = ({
         power_address: newPodValues.power_address,
         zone: newPodValues.zone,
       }}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSubmit={(values) => {
         cleanup();
         setSubmissionErrors(null);

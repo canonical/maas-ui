@@ -72,7 +72,7 @@ describe("LXDClusterHostsTable", () => {
               currentPage={1}
               hosts={state.pod.items}
               searchFilter=""
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -99,7 +99,7 @@ describe("LXDClusterHostsTable", () => {
               currentPage={1}
               hosts={state.pod.items}
               searchFilter=""
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -128,7 +128,7 @@ describe("LXDClusterHostsTable", () => {
               currentPage={1}
               hosts={state.pod.items}
               searchFilter=""
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -140,7 +140,7 @@ describe("LXDClusterHostsTable", () => {
   });
 
   it("can open the compose VM form for a host", () => {
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -158,14 +158,14 @@ describe("LXDClusterHostsTable", () => {
               currentPage={1}
               hosts={state.pod.items}
               searchFilter=""
-              setHeaderContent={setHeaderContent}
+              setSidePanelContent={setSidePanelContent}
             />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
     wrapper.find("button[data-testid='vm-host-compose']").simulate("click");
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.COMPOSE_VM,
       extras: { hostId: 22 },
     });
@@ -189,7 +189,7 @@ describe("LXDClusterHostsTable", () => {
               currentPage={1}
               hosts={state.pod.items}
               searchFilter=""
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -225,7 +225,7 @@ describe("LXDClusterHostsTable", () => {
               currentPage={1}
               hosts={[]}
               searchFilter="nothing"
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>

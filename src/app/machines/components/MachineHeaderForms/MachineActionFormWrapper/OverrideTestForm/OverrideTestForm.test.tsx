@@ -89,7 +89,7 @@ describe("OverrideTestForm", () => {
 
     renderWithBrowserRouter(
       <OverrideTestForm
-        clearHeaderContent={jest.fn()}
+        clearSidePanelContent={jest.fn()}
         selectedCount={1}
         selectedMachines={{
           items: state.machine.items.map((item) => item.system_id),
@@ -132,7 +132,7 @@ describe("OverrideTestForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <OverrideTestForm
-        clearHeaderContent={jest.fn()}
+        clearSidePanelContent={jest.fn()}
         selectedCount={1}
         selectedMachines={{
           items: [state.machine.items[0].system_id],
@@ -165,7 +165,7 @@ describe("OverrideTestForm", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <OverrideTestForm
-        clearHeaderContent={jest.fn()}
+        clearSidePanelContent={jest.fn()}
         selectedCount={1}
         selectedMachines={{
           items: ["abc123"],

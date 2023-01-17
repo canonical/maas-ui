@@ -5,15 +5,17 @@ import { Button, CodeSnippet, Col, Row } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
 import docsUrls from "app/base/docsUrls";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import configSelectors from "app/store/config/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
 };
 
-export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
+export const AddController = ({
+  clearSidePanelContent,
+}: Props): JSX.Element => {
   const maasUrl = useSelector(configSelectors.maasUrl);
   const rpcSharedSecret = useSelector(configSelectors.rpcSharedSecret);
   const minorVersion = useSelector(versionSelectors.minor);
@@ -107,7 +109,7 @@ export const AddController = ({ clearHeaderContent }: Props): JSX.Element => {
         <Col className="u-align--right" size={6}>
           <Button
             data-testid="add-controller-close"
-            onClick={clearHeaderContent}
+            onClick={clearSidePanelContent}
           >
             Close
           </Button>

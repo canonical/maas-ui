@@ -77,7 +77,7 @@ describe("AddLxd", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddLxd clearHeaderContent={jest.fn()} />
+            <AddLxd clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -101,7 +101,7 @@ describe("AddLxd", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddLxd clearHeaderContent={jest.fn()} />
+            <AddLxd clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -132,7 +132,7 @@ describe("AddLxd", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddLxd clearHeaderContent={jest.fn()} />
+            <AddLxd clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -160,7 +160,7 @@ describe("AddLxd", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddLxd clearHeaderContent={jest.fn()} />
+            <AddLxd clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -186,7 +186,7 @@ describe("AddLxd", () => {
           initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddLxd clearHeaderContent={jest.fn()} />
+            <AddLxd clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

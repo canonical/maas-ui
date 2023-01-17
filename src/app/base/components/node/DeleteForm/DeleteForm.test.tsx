@@ -34,7 +34,7 @@ describe("DeleteForm", () => {
         <MemoryRouter>
           <CompatRouter>
             <DeleteForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               modelName="machine"
               nodes={nodes}
               onSubmit={onSubmit}
@@ -62,7 +62,7 @@ describe("DeleteForm", () => {
         <MemoryRouter>
           <CompatRouter>
             <DeleteForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               modelName="machine"
               nodes={nodes}
               onSubmit={jest.fn()}
@@ -97,7 +97,7 @@ describe("DeleteForm", () => {
         <MemoryRouter initialEntries={["/"]}>
           <CompatRouter>
             <DeleteForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               errors={errors}
               modelName="machine"
               nodes={nodes}

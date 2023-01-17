@@ -10,7 +10,7 @@ import type { AddLxdStepValues, NewPodValues } from "../types";
 import AuthenticationFormFields from "./AuthenticationFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { generatedCertificate as generatedCertificateSelectors } from "app/store/general/selectors";
 import { actions as podActions } from "app/store/pod";
@@ -19,7 +19,7 @@ import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   newPodValues: NewPodValues;
   setNewPodValues: (podValues: NewPodValues) => void;
   setStep: (step: AddLxdStepValues) => void;
@@ -34,7 +34,7 @@ const AuthenticationFormSchema = Yup.object().shape({
 });
 
 export const AuthenticationForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   newPodValues,
   setNewPodValues,
   setStep,
@@ -98,7 +98,7 @@ export const AuthenticationForm = ({
       initialValues={{
         password: "",
       }}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSubmit={(values) => {
         dispatch(podActions.cleanup());
         setAuthenticating(true);

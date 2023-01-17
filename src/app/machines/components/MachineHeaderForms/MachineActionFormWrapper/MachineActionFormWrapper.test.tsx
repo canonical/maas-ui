@@ -50,7 +50,7 @@ it("scrolls to the top of the window when opening the form", async () => {
   renderWithBrowserRouter(
     <MachineActionFormWrapper
       action={NodeActions.ABORT}
-      clearHeaderContent={jest.fn()}
+      clearSidePanelContent={jest.fn()}
       selectedMachines={{}}
       viewingDetails={false}
     />
@@ -87,7 +87,7 @@ it("can show untag errors when the tag form is open", async () => {
         <CompatRouter>
           <MachineActionFormWrapper
             action={NodeActions.TAG}
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             selectedMachines={{ items: [machines[0].system_id] }}
             viewingDetails={false}
           />
@@ -116,7 +116,7 @@ it("clears selected machines and invalidates queries on delete success", async (
         <CompatRouter>
           <MachineActionFormWrapper
             action={NodeActions.DELETE}
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             selectedMachines={{ items: [machines[0].system_id] }}
             viewingDetails={false}
           />
@@ -150,7 +150,7 @@ it("displays a warning message and disabled submit button when selectedCount equ
         <CompatRouter>
           <MachineActionFormWrapper
             action={NodeActions.DELETE}
-            clearHeaderContent={jest.fn()}
+            clearSidePanelContent={jest.fn()}
             selectedCount={0}
             selectedMachines={{ filter: {} }}
             viewingDetails={false}

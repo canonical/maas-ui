@@ -13,7 +13,7 @@ import { HardwareType } from "app/base/enum";
 import { useWindowTitle } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -23,10 +23,10 @@ import { NodeStatusCode } from "app/store/types/node";
 import { isId } from "app/utils";
 
 type Props = {
-  setHeaderContent: MachineSetHeaderContent;
+  setSidePanelContent: MachineSetSidePanelContent;
 };
 
-const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
+const MachineSummary = ({ setSidePanelContent }: Props): JSX.Element => {
   const id = useGetURLId(MachineMeta.PK);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -47,7 +47,10 @@ const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
   return (
     <div className="machine-summary__cards">
       <div className="machine-summary__overview-card">
-        <OverviewCard node={machine} setHeaderContent={setHeaderContent} />
+        <OverviewCard
+          node={machine}
+          setSidePanelContent={setSidePanelContent}
+        />
       </div>
       <div className="machine-summary__hardware-card">
         <HardwareCard node={machine} />
@@ -66,7 +69,7 @@ const MachineSummary = ({ setHeaderContent }: Props): JSX.Element => {
             <TestResults
               hardwareType={HardwareType.Network}
               machine={machine}
-              setHeaderContent={setHeaderContent}
+              setSidePanelContent={setSidePanelContent}
             />
           )}
         </NodeSummaryNetworkCard>

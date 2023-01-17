@@ -65,8 +65,8 @@ describe("LXDClusterVMs", () => {
             <LXDClusterVMs
               clusterId={1}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -128,8 +128,8 @@ describe("LXDClusterVMs", () => {
             <LXDClusterVMs
               clusterId={1}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -161,8 +161,8 @@ describe("LXDClusterVMs", () => {
       <LXDClusterVMs
         clusterId={1}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />,
       { store }
     );

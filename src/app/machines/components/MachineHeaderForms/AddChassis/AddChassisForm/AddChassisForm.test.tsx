@@ -155,7 +155,7 @@ describe("AddChassisForm", () => {
           ]}
         >
           <CompatRouter>
-            <AddChassisForm clearHeaderContent={jest.fn()} />
+            <AddChassisForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -179,7 +179,7 @@ describe("AddChassisForm", () => {
           ]}
         >
           <CompatRouter>
-            <AddChassisForm clearHeaderContent={jest.fn()} />
+            <AddChassisForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -195,7 +195,7 @@ describe("AddChassisForm", () => {
           initialEntries={[{ pathname: "/machines/add", key: "testKey" }]}
         >
           <CompatRouter>
-            <AddChassisForm clearHeaderContent={jest.fn()} />
+            <AddChassisForm clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

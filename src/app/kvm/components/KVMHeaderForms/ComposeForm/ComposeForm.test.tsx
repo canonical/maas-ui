@@ -79,7 +79,7 @@ describe("ComposeForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
-            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -108,7 +108,7 @@ describe("ComposeForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
-            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -134,7 +134,7 @@ describe("ComposeForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
-            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -223,7 +223,7 @@ describe("ComposeForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
-            <ComposeForm clearHeaderContent={jest.fn()} hostId={1} />
+            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

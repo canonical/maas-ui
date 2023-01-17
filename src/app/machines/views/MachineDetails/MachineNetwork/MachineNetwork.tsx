@@ -15,7 +15,7 @@ import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab
 import NetworkTable from "app/base/components/node/networking/NetworkTable";
 import type { Selected } from "app/base/components/node/networking/types";
 import { useWindowTitle } from "app/base/hooks";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import { MachineMeta } from "app/store/machine/types";
 import type { Machine } from "app/store/machine/types";
@@ -24,10 +24,10 @@ import type { RootState } from "app/store/root/types";
 
 type Props = {
   id: Machine[MachineMeta.PK];
-  setHeaderContent: MachineSetHeaderContent;
+  setSidePanelContent: MachineSetSidePanelContent;
 };
 
-const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
+const MachineNetwork = ({ id, setSidePanelContent }: Props): JSX.Element => {
   const [selected, setSelected] = useState<Selected[]>([]);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, id)
@@ -46,7 +46,7 @@ const MachineNetwork = ({ id, setHeaderContent }: Props): JSX.Element => {
           expanded={expanded}
           selected={selected}
           setExpanded={setExpanded}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
           systemId={id}
         />
       )}

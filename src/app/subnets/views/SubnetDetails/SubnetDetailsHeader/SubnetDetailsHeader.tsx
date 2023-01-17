@@ -37,7 +37,7 @@ const SubnetDetailsHeader = ({ subnet }: Props): JSX.Element => {
           toggleLabel="Take action"
         />,
       ]}
-      headerContent={
+      sidePanelContent={
         activeForm ? (
           <SubnetActionForms
             activeForm={activeForm}

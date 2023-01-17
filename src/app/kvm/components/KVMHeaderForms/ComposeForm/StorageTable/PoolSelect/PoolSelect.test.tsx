@@ -41,7 +41,7 @@ const generateWrapper = (store: MockStore, pod: Pod) =>
         initialEntries={[{ pathname: `/kvm/${pod.id}`, key: "testKey" }]}
       >
         <CompatRouter>
-          <ComposeForm clearHeaderContent={jest.fn()} hostId={pod.id} />
+          <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />
         </CompatRouter>
       </MemoryRouter>
     </Provider>

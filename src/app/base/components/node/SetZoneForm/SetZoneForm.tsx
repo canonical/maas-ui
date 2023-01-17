@@ -34,7 +34,7 @@ const SetZoneSchema = Yup.object().shape({
 });
 
 export const SetZoneForm = <E,>({
-  clearHeaderContent,
+  clearSidePanelContent,
   cleanup,
   errors,
   nodes,
@@ -53,7 +53,7 @@ export const SetZoneForm = <E,>({
         zone: nodes ? getInitialZoneValue(nodes) : "",
       }}
       modelName={modelName}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `${capitaliseFirst(modelName)} ${
@@ -66,7 +66,7 @@ export const SetZoneForm = <E,>({
           onSubmit(values.zone);
         }
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={nodes ? nodes.length : selectedCount ?? 0}
       validationSchema={SetZoneSchema}

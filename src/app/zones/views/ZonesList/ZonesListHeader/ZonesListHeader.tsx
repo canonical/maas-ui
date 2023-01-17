@@ -33,11 +33,11 @@ const ZonesListHeader = (): JSX.Element => {
     </Button>,
   ];
 
-  let headerContent: JSX.Element | null = null;
+  let sidePanelContent: JSX.Element | null = null;
 
   if (showForm) {
     buttons = null;
-    headerContent = (
+    sidePanelContent = (
       <ZonesListForm
         closeForm={() => {
           setShowForm(false);
@@ -50,7 +50,7 @@ const ZonesListHeader = (): JSX.Element => {
   return (
     <SectionHeader
       buttons={buttons}
-      headerContent={headerContent}
+      sidePanelContent={sidePanelContent}
       sidePanelTitle="Add AZ"
       subtitle={`${zonesCount} AZs available`}
       subtitleLoading={!zonesLoaded}

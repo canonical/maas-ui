@@ -4,7 +4,7 @@ import { Button, Col, Row } from "@canonical/react-components";
 
 import FormCard from "app/base/components/FormCard";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import type { Pod, PodMeta } from "app/store/pod/types";
 import type { VMCluster, VMClusterMeta } from "app/store/vmcluster/types";
 
@@ -12,14 +12,14 @@ type Props = {
   clusterId?: VMCluster[VMClusterMeta.PK];
   hostId?: Pod[PodMeta.PK];
   message: ReactNode;
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const DangerZoneCard = ({
   clusterId,
   hostId,
   message,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   return (
     <FormCard highlighted={false} sidebar={false} title="Danger zone">
@@ -30,7 +30,7 @@ const DangerZoneCard = ({
             className="u-no-margin--bottom"
             data-testid="remove-kvm"
             onClick={() =>
-              setHeaderContent({
+              setSidePanelContent({
                 view: KVMHeaderViews.DELETE_KVM,
                 extras: { clusterId, hostId },
               })

@@ -32,7 +32,7 @@ const TagFormSchema = Yup.object().shape({
 });
 
 export const TagForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   machines,
   processingCount,
@@ -69,7 +69,7 @@ export const TagForm = ({
       }}
       loaded={tagsLoaded}
       modelName="machine"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
@@ -111,7 +111,7 @@ export const TagForm = ({
         }
       }}
       onSuccess={() => {
-        clearHeaderContent();
+        clearSidePanelContent();
         dispatch(
           messageActions.add(Label.Saved, NotificationSeverity.POSITIVE)
         );

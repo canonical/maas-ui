@@ -59,9 +59,9 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              headerContent={null}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -86,9 +86,9 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              headerContent={null}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -120,9 +120,9 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              headerContent={null}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -149,9 +149,9 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              headerContent={null}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -178,9 +178,9 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              headerContent={null}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -195,7 +195,7 @@ describe("LXDClusterDetailsHeader", () => {
   it("can open the refresh cluster form if it has hosts", async () => {
     const hosts = [vmHostFactory(), vmHostFactory()];
     state.vmcluster.items[0].hosts = hosts;
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -210,9 +210,9 @@ describe("LXDClusterDetailsHeader", () => {
           <CompatRouter>
             <LXDClusterDetailsHeader
               clusterId={1}
-              headerContent={null}
-              setHeaderContent={setHeaderContent}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={setSidePanelContent}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -223,7 +223,7 @@ describe("LXDClusterDetailsHeader", () => {
       screen.getByRole("button", { name: "Refresh cluster" })
     );
 
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.REFRESH_KVM,
       extras: { hostIds: hosts.map((host) => host.id) },
     });

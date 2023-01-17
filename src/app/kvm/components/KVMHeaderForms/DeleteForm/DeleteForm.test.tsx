@@ -51,7 +51,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -79,7 +79,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -107,7 +107,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -131,7 +131,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -155,7 +155,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -176,7 +176,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />,
+      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />,
       { route: "/kvm", store }
     );
 
@@ -216,7 +216,7 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />,
+      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />,
       { route: "/kvm", store }
     );
 
@@ -258,7 +258,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -293,7 +293,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -306,7 +306,7 @@ describe("DeleteForm", () => {
     // Mock the change from deleting the pod to no longer deleting the pod, then
     // rerender the component.
     jest.spyOn(podSelectors, "deleting").mockReturnValue([]);
-    wrapper.setProps({ clearHeaderContent: jest.fn() });
+    wrapper.setProps({ clearSidePanelContent: jest.fn() });
     wrapper.update();
 
     // Form should have saved successfully.
@@ -328,7 +328,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} clusterId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -369,7 +369,7 @@ describe("DeleteForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <DeleteForm clearHeaderContent={jest.fn()} hostId={1} />
+            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -383,7 +383,7 @@ describe("DeleteForm", () => {
     // including an error, then rerender the component.
     jest.spyOn(podSelectors, "deleting").mockReturnValue([]);
     jest.spyOn(podSelectors, "errors").mockReturnValue("Uh oh");
-    wrapper.setProps({ clearHeaderContent: jest.fn() });
+    wrapper.setProps({ clearSidePanelContent: jest.fn() });
     wrapper.update();
 
     // Form should not have saved successfully.

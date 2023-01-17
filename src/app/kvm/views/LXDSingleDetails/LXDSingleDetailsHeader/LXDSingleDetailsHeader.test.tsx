@@ -58,10 +58,10 @@ describe("LXDSingleDetailsHeader", () => {
         <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
           <CompatRouter>
             <LXDSingleDetailsHeader
-              headerContent={null}
               id={1}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -83,10 +83,10 @@ describe("LXDSingleDetailsHeader", () => {
         >
           <CompatRouter>
             <LXDSingleDetailsHeader
-              headerContent={null}
               id={1}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -110,10 +110,10 @@ describe("LXDSingleDetailsHeader", () => {
         >
           <CompatRouter>
             <LXDSingleDetailsHeader
-              headerContent={null}
               id={1}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -136,10 +136,10 @@ describe("LXDSingleDetailsHeader", () => {
         >
           <CompatRouter>
             <LXDSingleDetailsHeader
-              headerContent={null}
               id={1}
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -154,7 +154,7 @@ describe("LXDSingleDetailsHeader", () => {
   it("can open the refresh host form", async () => {
     state.zone.items = [zoneFactory({ id: 101, name: "danger" })];
     state.pod.items[0].zone = 101;
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     render(
       <Provider store={store}>
@@ -163,10 +163,10 @@ describe("LXDSingleDetailsHeader", () => {
         >
           <CompatRouter>
             <LXDSingleDetailsHeader
-              headerContent={null}
               id={1}
-              setHeaderContent={setHeaderContent}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={setSidePanelContent}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -175,7 +175,7 @@ describe("LXDSingleDetailsHeader", () => {
 
     await userEvent.click(screen.getByRole("button", { name: "Refresh host" }));
 
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.REFRESH_KVM,
       extras: { hostIds: [1] },
     });

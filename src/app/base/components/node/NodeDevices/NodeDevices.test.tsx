@@ -35,7 +35,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
           node={machine}
-          setHeaderContent={jest.fn()}
+          setSidePanelContent={jest.fn()}
         />
       </Provider>
     );
@@ -59,7 +59,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
           node={machine}
-          setHeaderContent={jest.fn()}
+          setSidePanelContent={jest.fn()}
         />
       </Provider>
     );
@@ -83,7 +83,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
           node={machine}
-          setHeaderContent={jest.fn()}
+          setSidePanelContent={jest.fn()}
         />
       </Provider>
     );
@@ -100,7 +100,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.PCIE}
           node={machine}
-          setHeaderContent={jest.fn()}
+          setSidePanelContent={jest.fn()}
         />
       </Provider>
     );
@@ -117,7 +117,7 @@ describe("NodeDevices", () => {
         <NodeDevices
           bus={NodeDeviceBus.USB}
           node={machine}
-          setHeaderContent={jest.fn()}
+          setSidePanelContent={jest.fn()}
         />
       </Provider>
     );
@@ -161,7 +161,7 @@ describe("NodeDevices", () => {
             <NodeDevices
               bus={NodeDeviceBus.PCIE}
               node={machine}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -227,7 +227,7 @@ describe("NodeDevices", () => {
             <NodeDevices
               bus={NodeDeviceBus.PCIE}
               node={machine}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -311,7 +311,7 @@ describe("NodeDevices", () => {
             <NodeDevices
               bus={NodeDeviceBus.PCIE}
               node={machine}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>

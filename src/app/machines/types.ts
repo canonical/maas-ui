@@ -5,8 +5,8 @@ import type { MachineHeaderViews } from "./constants";
 import type { HardwareType } from "app/base/enum";
 import type {
   CommonActionFormProps,
-  HeaderContent,
-  SetHeaderContent,
+  SidePanelContent,
+  SetSidePanelContent,
 } from "app/base/types";
 import type {
   Machine,
@@ -15,7 +15,7 @@ import type {
 } from "app/store/machine/types";
 import type { Script } from "app/store/script/types";
 
-export type MachineHeaderContent = HeaderContent<
+export type MachineSidePanelContent = SidePanelContent<
   ValueOf<typeof MachineHeaderViews>,
   {
     applyConfiguredNetworking?: Script["apply_configured_networking"];
@@ -23,7 +23,8 @@ export type MachineHeaderContent = HeaderContent<
   }
 >;
 
-export type MachineSetHeaderContent = SetHeaderContent<MachineHeaderContent>;
+export type MachineSetSidePanelContent =
+  SetSidePanelContent<MachineSidePanelContent>;
 
 export type MachineActionVariableProps = {
   machines?: Machine[];

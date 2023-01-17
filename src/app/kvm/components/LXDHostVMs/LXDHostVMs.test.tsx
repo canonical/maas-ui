@@ -47,8 +47,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -90,8 +90,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -128,8 +128,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -166,8 +166,8 @@ describe("LXDHostVMs", () => {
               clusterId={2}
               hostId={1}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -192,8 +192,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setHeaderContent={jest.fn()}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -210,7 +210,7 @@ describe("LXDHostVMs", () => {
         items: [pod],
       }),
     });
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -219,8 +219,8 @@ describe("LXDHostVMs", () => {
             <LXDHostVMs
               hostId={1}
               searchFilter=""
-              setHeaderContent={setHeaderContent}
               setSearchFilter={jest.fn()}
+              setSidePanelContent={setSidePanelContent}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -229,7 +229,7 @@ describe("LXDHostVMs", () => {
 
     wrapper.find("button[data-testid='add-vm']").simulate("click");
 
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.COMPOSE_VM,
       extras: {
         hostId: 1,
@@ -249,8 +249,8 @@ describe("LXDHostVMs", () => {
       <LXDHostVMs
         hostId={1}
         searchFilter=""
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
       />,
       { store }
     );

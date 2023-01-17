@@ -13,7 +13,7 @@ import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
-import type { DeviceHeaderContent } from "app/devices/types";
+import type { DeviceSidePanelContent } from "app/devices/types";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceMeta } from "app/store/device/types";
@@ -28,8 +28,8 @@ const DeviceDetails = (): JSX.Element => {
     deviceSelectors.getById(state, id)
   );
   const devicesLoading = useSelector(deviceSelectors.loading);
-  const [headerContent, setHeaderContent] =
-    useState<DeviceHeaderContent | null>(null);
+  const [sidePanelContent, setSidePanelContent] =
+    useState<DeviceSidePanelContent | null>(null);
 
   useEffect(() => {
     if (isId(id)) {
@@ -57,8 +57,8 @@ const DeviceDetails = (): JSX.Element => {
     <MainContentSection
       header={
         <DeviceDetailsHeader
-          headerContent={headerContent}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
           systemId={id}
         />
       }

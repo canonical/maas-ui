@@ -2,14 +2,14 @@ import pluralize from "pluralize";
 
 import TestResults from "app/base/components/node/TestResults";
 import { HardwareType } from "app/base/enum";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { nodeIsMachine } from "app/store/utils";
 
 type Props = {
   node: ControllerDetails | MachineDetails;
-  setHeaderContent?: MachineSetHeaderContent;
+  setSidePanelContent?: MachineSetSidePanelContent;
 };
 
 // Get the subtext for the CPU card. Only nodes commissioned after
@@ -30,7 +30,7 @@ const getCPUSubtext = (node: Props["node"]) => {
   return text;
 };
 
-const CpuCard = ({ node, setHeaderContent }: Props): JSX.Element => (
+const CpuCard = ({ node, setSidePanelContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__cpu">
       <div className="u-flex--between">
@@ -46,11 +46,11 @@ const CpuCard = ({ node, setHeaderContent }: Props): JSX.Element => (
         {node.metadata.cpu_model || "Unknown model"}
       </small>
     </div>
-    {nodeIsMachine(node) && setHeaderContent ? (
+    {nodeIsMachine(node) && setSidePanelContent ? (
       <TestResults
         hardwareType={HardwareType.CPU}
         machine={node}
-        setHeaderContent={setHeaderContent}
+        setSidePanelContent={setSidePanelContent}
       />
     ) : (
       <div className="overview-card__cpu-tests" />

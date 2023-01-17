@@ -47,7 +47,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -58,7 +58,7 @@ describe("MachineNetworkActions", () => {
 
     it("shows the test form when clicking the button", () => {
       const store = mockStore(state);
-      const setHeaderContent = jest.fn();
+      const setSidePanelContent = jest.fn();
       const wrapper = mount(
         <Provider store={store}>
           <MemoryRouter
@@ -68,14 +68,14 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setHeaderContent={setHeaderContent}
+              setSidePanelContent={setSidePanelContent}
               systemId="abc123"
             />
           </MemoryRouter>
         </Provider>
       );
       wrapper.find("Button").last().simulate("click");
-      expect(setHeaderContent).toHaveBeenCalledWith({
+      expect(setSidePanelContent).toHaveBeenCalledWith({
         view: MachineHeaderViews.TEST_MACHINE,
         extras: { applyConfiguredNetworking: true },
       });
@@ -112,7 +112,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={setExpanded}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -136,7 +136,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -161,7 +161,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -201,7 +201,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -247,7 +247,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -289,7 +289,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -328,7 +328,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }]}
               setExpanded={setExpanded}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -352,7 +352,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -377,7 +377,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -417,7 +417,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -463,7 +463,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1, linkId: 2 }]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>
@@ -503,7 +503,7 @@ describe("MachineNetworkActions", () => {
               expanded={null}
               selected={[{ nicId: 1 }, { nicId: 2 }]}
               setExpanded={jest.fn()}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               systemId="abc123"
             />
           </MemoryRouter>

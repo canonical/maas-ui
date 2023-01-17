@@ -45,9 +45,12 @@ describe("AddDeviceForm", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
-      store,
-    });
+    renderWithBrowserRouter(
+      <AddDeviceForm clearSidePanelContent={jest.fn()} />,
+      {
+        store,
+      }
+    );
 
     const expectedActions = [
       domainActions.fetch(),
@@ -67,18 +70,24 @@ describe("AddDeviceForm", () => {
   it("displays a spinner if data has not loaded", () => {
     state.zone.genericActions.fetch = "idle";
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
-      store,
-    });
+    renderWithBrowserRouter(
+      <AddDeviceForm clearSidePanelContent={jest.fn()} />,
+      {
+        store,
+      }
+    );
 
     expect(screen.getByText(/Loading/)).toBeInTheDocument();
   });
 
   it("can handle saving a device", async () => {
     const store = mockStore(state);
-    renderWithBrowserRouter(<AddDeviceForm clearHeaderContent={jest.fn()} />, {
-      store,
-    });
+    renderWithBrowserRouter(
+      <AddDeviceForm clearSidePanelContent={jest.fn()} />,
+      {
+        store,
+      }
+    );
 
     await userEvent.type(
       screen.getByRole("textbox", { name: "Device name" }),

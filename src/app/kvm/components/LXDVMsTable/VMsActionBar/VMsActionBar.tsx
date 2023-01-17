@@ -5,7 +5,7 @@ import NodeActionMenu from "app/base/components/NodeActionMenu";
 import { useSendAnalytics } from "app/base/hooks";
 import type { SetSearchFilter } from "app/base/types";
 import { VMS_PER_PAGE } from "app/kvm/components/LXDVMsTable";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import { MachineHeaderViews } from "app/machines/constants";
 import { useHasSelection } from "app/store/machine/utils/hooks";
 import { NodeActions } from "app/store/types/node";
@@ -18,7 +18,7 @@ type Props = {
   searchFilter: string;
   setCurrentPage: (page: number) => void;
   setSearchFilter: SetSearchFilter;
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
   vmCount: number;
 };
 
@@ -29,7 +29,7 @@ const VMsActionBar = ({
   searchFilter,
   setCurrentPage,
   setSearchFilter,
-  setHeaderContent,
+  setSidePanelContent,
   vmCount,
 }: Props): JSX.Element | null => {
   const sendAnalytics = useSendAnalytics();
@@ -53,7 +53,7 @@ const VMsActionBar = ({
                 ([, actionName]) => actionName === action
               );
               if (view) {
-                setHeaderContent({ view });
+                setSidePanelContent({ view });
               }
               sendAnalytics(
                 "LXD VMs list action form",
@@ -90,7 +90,7 @@ const VMsActionBar = ({
               disabled={vmActionsDisabled}
               hasIcon
               onClick={() =>
-                setHeaderContent({ view: MachineHeaderViews.DELETE_MACHINE })
+                setSidePanelContent({ view: MachineHeaderViews.DELETE_MACHINE })
               }
             >
               <Icon name="delete" />

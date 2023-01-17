@@ -13,8 +13,8 @@ describe("ControllerHeaderForms", () => {
     renderWithBrowserRouter(
       <ControllerHeaderForms
         controllers={[controllerFactory()]}
-        headerContent={{ view: ControllerHeaderViews.SET_ZONE_CONTROLLER }}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: ControllerHeaderViews.SET_ZONE_CONTROLLER }}
       />,
       { state }
     );
@@ -29,8 +29,8 @@ describe("ControllerHeaderForms", () => {
     renderWithBrowserRouter(
       <ControllerHeaderForms
         controllers={[controllerFactory()]}
-        headerContent={{ view: ControllerHeaderViews.ADD_CONTROLLER }}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: ControllerHeaderViews.ADD_CONTROLLER }}
       />,
       { state }
     );

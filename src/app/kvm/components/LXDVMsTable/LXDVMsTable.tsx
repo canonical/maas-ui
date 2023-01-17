@@ -9,7 +9,7 @@ import VMsTable from "./VMsTable";
 import type { GetHostColumn, GetResources } from "./VMsTable/VMsTable";
 
 import type { SetSearchFilter, SortDirection } from "app/base/types";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import { DEFAULTS } from "app/machines/views/MachineList/MachineListTable/constants";
 import { actions as machineActions } from "app/store/machine";
 import type { FetchGroupKey } from "app/store/machine/types";
@@ -26,7 +26,7 @@ type Props = {
   pods: Pod["name"][];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export const VMS_PER_PAGE = 10;
@@ -39,7 +39,7 @@ const LXDVMsTable = ({
   pods,
   searchFilter,
   setSearchFilter,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const [currentPage, setCurrentPage] = useState(1);
@@ -70,10 +70,10 @@ const LXDVMsTable = ({
   useEffect(() => {
     // Clear machine selection and close the action form on filters change
     if (searchFilter !== previousSearchFilter) {
-      setHeaderContent(null);
+      setSidePanelContent(null);
       dispatch(machineActions.setSelectedMachines(null));
     }
-  }, [searchFilter, previousSearchFilter, setHeaderContent, dispatch]);
+  }, [searchFilter, previousSearchFilter, setSidePanelContent, dispatch]);
 
   useEffect(
     () => () => {
@@ -90,8 +90,8 @@ const LXDVMsTable = ({
         onAddVMClick={onAddVMClick}
         searchFilter={searchFilter}
         setCurrentPage={setCurrentPage}
-        setHeaderContent={setHeaderContent}
         setSearchFilter={setSearchFilter}
+        setSidePanelContent={setSidePanelContent}
         vmCount={count}
       />
       <VMsTable

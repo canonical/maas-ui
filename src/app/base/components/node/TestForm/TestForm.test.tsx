@@ -83,7 +83,7 @@ describe("TestForm", () => {
           <CompatRouter>
             <TestForm
               cleanup={machineActions.cleanup}
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               modelName="machine"
               nodes={state.machine.items}
               onTest={onTest}
@@ -152,7 +152,7 @@ describe("TestForm", () => {
           <CompatRouter>
             <TestForm
               cleanup={machineActions.cleanup}
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               hardwareType={HardwareType.Network}
               modelName="machine"
               nodes={state.machine.items}
@@ -203,7 +203,7 @@ describe("TestForm", () => {
             <TestForm
               applyConfiguredNetworking={true}
               cleanup={machineActions.cleanup}
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               modelName="machine"
               nodes={state.machine.items}
               onTest={jest.fn()}

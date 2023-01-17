@@ -15,8 +15,8 @@ import urls from "app/base/urls";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
 import type {
-  MachineHeaderContent,
-  MachineSetHeaderContent,
+  MachineSidePanelContent,
+  MachineSetSidePanelContent,
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
 import machineSelectors from "app/store/machine/selectors";
@@ -30,17 +30,17 @@ import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
-  headerContent: MachineHeaderContent | null;
+  sidePanelContent: MachineSidePanelContent | null;
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setHeaderContent: MachineSetHeaderContent;
+  setSidePanelContent: MachineSetSidePanelContent;
 };
 
 export const MachineListHeader = ({
-  headerContent,
+  sidePanelContent,
   searchFilter,
   setSearchFilter,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element => {
   const machinesPathMatch = useMatch(urls.machines.index);
   const hasSelection = useHasSelection();
@@ -72,9 +72,9 @@ export const MachineListHeader = ({
   // Clear the header when there are no selected machines
   useEffect(() => {
     if (!machinesPathMatch || selectedToFilters(selectedMachines) === null) {
-      setHeaderContent(null);
+      setSidePanelContent(null);
     }
-  }, [machinesPathMatch, selectedMachines, setHeaderContent]);
+  }, [machinesPathMatch, selectedMachines, setSidePanelContent]);
 
   const getTitle = useCallback(
     (action: NodeActions) => {
@@ -100,7 +100,7 @@ export const MachineListHeader = ({
         <AddHardwareMenu
           disabled={hasSelection}
           key="add-hardware"
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
         />,
         <NodeActionMenu
           alwaysShowLifecycle
@@ -117,7 +117,7 @@ export const MachineListHeader = ({
               ([, actionName]) => actionName === action
             );
             if (view) {
-              setHeaderContent({ view });
+              setSidePanelContent({ view });
             }
             sendAnalytics(
               "Machine list action form",
@@ -127,21 +127,21 @@ export const MachineListHeader = ({
           }}
         />,
       ]}
-      headerContent={
-        headerContent && (
+      machineCount={allMachineCount}
+      sidePanelContent={
+        sidePanelContent && (
           <MachineHeaderForms
-            headerContent={headerContent}
             searchFilter={searchFilter}
             selectedCount={selectedCount}
             selectedCountLoading={selectedCountLoading}
             selectedMachines={selectedMachines}
-            setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
           />
         )
       }
-      machineCount={allMachineCount}
-      sidePanelTitle={getHeaderTitle("Machines", headerContent)}
+      sidePanelTitle={getHeaderTitle("Machines", sidePanelContent)}
       subtitle={
         <ModelListSubtitle
           available={availableMachineCount || allMachineCount}
