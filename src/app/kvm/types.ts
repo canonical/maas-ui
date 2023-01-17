@@ -1,7 +1,7 @@
 import type { KVMHeaderViews } from "./constants";
 
-import type { HeaderContent, SetSidePanelContent } from "app/base/types";
-import type { MachineHeaderContent } from "app/machines/types";
+import type { SidePanelContent, SetSidePanelContent } from "app/base/types";
+import type { MachineSidePanelContent } from "app/machines/types";
 import type {
   Pod,
   PodResource,
@@ -18,17 +18,19 @@ import type {
 
 type HeaderViews = typeof KVMHeaderViews;
 
-export type KVMHeaderContent =
-  | HeaderContent<HeaderViews["COMPOSE_VM"], { hostId?: Pod["id"] }>
-  | HeaderContent<
+export type KVMSidePanelContent =
+  | SidePanelContent<HeaderViews["COMPOSE_VM"], { hostId?: Pod["id"] }>
+  | SidePanelContent<
       HeaderViews["DELETE_KVM"],
       { clusterId?: VMCluster[VMClusterMeta.PK]; hostId?: Pod["id"] }
     >
-  | HeaderContent<HeaderViews["ADD_LXD_HOST"] | HeaderViews["ADD_VIRSH_HOST"]>
-  | HeaderContent<HeaderViews["REFRESH_KVM"], { hostIds?: Pod["id"][] }>
-  | MachineHeaderContent;
+  | SidePanelContent<
+      HeaderViews["ADD_LXD_HOST"] | HeaderViews["ADD_VIRSH_HOST"]
+    >
+  | SidePanelContent<HeaderViews["REFRESH_KVM"], { hostIds?: Pod["id"][] }>
+  | MachineSidePanelContent;
 
-export type KVMSetSidePanelContent = SetSidePanelContent<KVMHeaderContent>;
+export type KVMSetSidePanelContent = SetSidePanelContent<KVMSidePanelContent>;
 
 export type KVMResource = PodResource | VMClusterResource;
 

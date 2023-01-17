@@ -23,7 +23,7 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import { useGetURLId } from "app/base/hooks/urls";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
-import type { KVMHeaderContent } from "app/kvm/types";
+import type { KVMSidePanelContent } from "app/kvm/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as podActions } from "app/store/pod";
 import type { RootState } from "app/store/root/types";
@@ -55,7 +55,7 @@ const LXDClusterDetails = (): JSX.Element => {
 
   const loaded = clustersLoaded || fetchedVmCluster;
   const [sidePanelContent, setSidePanelContent] =
-    useState<KVMHeaderContent | null>(null);
+    useState<KVMSidePanelContent | null>(null);
 
   // Search filter is determined by the URL and used to initialise state.
   const currentFilters = FilterMachines.queryStringToFilters(location.search);

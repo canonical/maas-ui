@@ -16,7 +16,7 @@ import {
   ControllerHeaderViews,
 } from "app/controllers/constants";
 import type {
-  ControllerHeaderContent,
+  ControllerSidePanelContent,
   ControllerSetSidePanelContent,
 } from "app/controllers/types";
 import { getHeaderTitle } from "app/controllers/utils";
@@ -28,7 +28,7 @@ import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
   systemId: Controller["system_id"];
-  sidePanelContent: ControllerHeaderContent | null;
+  sidePanelContent: ControllerSidePanelContent | null;
   setSidePanelContent: ControllerSetSidePanelContent;
 };
 

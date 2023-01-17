@@ -76,7 +76,7 @@ describe("AuthenticationForm", () => {
         >
           <CompatRouter>
             <AuthenticationForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={jest.fn()}
               setStep={jest.fn()}
@@ -112,7 +112,7 @@ describe("AuthenticationForm", () => {
         >
           <CompatRouter>
             <AuthenticationForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={setNewPodValues}
               setStep={jest.fn()}
@@ -154,7 +154,7 @@ describe("AuthenticationForm", () => {
         >
           <CompatRouter>
             <AuthenticationForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={setNewPodValues}
               setStep={jest.fn()}
@@ -199,7 +199,7 @@ describe("AuthenticationForm", () => {
         >
           <CompatRouter>
             <AuthenticationForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={jest.fn()}
               setStep={setStep}
@@ -229,7 +229,7 @@ describe("AuthenticationForm", () => {
         >
           <CompatRouter>
             <AuthenticationForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={jest.fn()}
               setStep={setStep}
@@ -256,7 +256,7 @@ describe("AuthenticationForm", () => {
         >
           <CompatRouter>
             <AuthenticationForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={jest.fn()}
               setStep={setStep}
@@ -285,7 +285,7 @@ describe("AuthenticationForm", () => {
         >
           <CompatRouter>
             <AuthenticationForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={jest.fn()}
               setStep={setStep}
@@ -307,7 +307,7 @@ describe("AuthenticationForm", () => {
         >
           <CompatRouter>
             <AuthenticationForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={jest.fn()}
               setStep={jest.fn()}

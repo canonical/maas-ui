@@ -8,14 +8,14 @@ import ControllerActionFormWrapper from "./ControllerActionFormWrapper";
 import type { ControllerActionHeaderViews } from "app/controllers/constants";
 import { ControllerHeaderViews } from "app/controllers/constants";
 import type {
-  ControllerHeaderContent,
+  ControllerSidePanelContent,
   ControllerSetSidePanelContent,
 } from "app/controllers/types";
 import type { Controller } from "app/store/controller/types";
 
 type Props = {
   controllers: Controller[];
-  sidePanelContent: ControllerHeaderContent;
+  sidePanelContent: ControllerSidePanelContent;
   setSidePanelContent: ControllerSetSidePanelContent;
   viewingDetails?: boolean;
 };
@@ -26,14 +26,14 @@ const ControllerHeaderForms = ({
   setSidePanelContent,
   viewingDetails = false,
 }: Props): JSX.Element | null => {
-  const clearHeaderContent = useCallback(
+  const clearSidePanelContent = useCallback(
     () => setSidePanelContent(null),
     [setSidePanelContent]
   );
 
   switch (sidePanelContent.view) {
     case ControllerHeaderViews.ADD_CONTROLLER:
-      return <AddController clearHeaderContent={clearHeaderContent} />;
+      return <AddController clearSidePanelContent={clearSidePanelContent} />;
     default:
       // We need to explicitly cast sidePanelContent.view here - TypeScript doesn't
       // seem to be able to infer remaining object tuple values as with string
@@ -46,7 +46,7 @@ const ControllerHeaderForms = ({
       return (
         <ControllerActionFormWrapper
           action={action}
-          clearHeaderContent={clearHeaderContent}
+          clearSidePanelContent={clearSidePanelContent}
           controllers={controllers}
           viewingDetails={viewingDetails}
         />

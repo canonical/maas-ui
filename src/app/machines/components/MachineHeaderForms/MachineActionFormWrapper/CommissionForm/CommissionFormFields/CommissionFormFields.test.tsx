@@ -77,7 +77,7 @@ describe("CommissionForm", () => {
         >
           <CompatRouter>
             <CommissionForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               machines={[]}
               processingCount={0}
               viewingDetails={false}

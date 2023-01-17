@@ -11,7 +11,10 @@ import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
+import type {
+  KVMSidePanelContent,
+  KVMSetSidePanelContent,
+} from "app/kvm/types";
 import type { RootState } from "app/store/root/types";
 import vmClusterSelectors from "app/store/vmcluster/selectors";
 import type { VMCluster } from "app/store/vmcluster/types";
@@ -20,7 +23,7 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   clusterId: VMCluster["id"];
-  sidePanelContent: KVMHeaderContent | null;
+  sidePanelContent: KVMSidePanelContent | null;
   setSidePanelContent: KVMSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };

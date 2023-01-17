@@ -24,7 +24,7 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
-import type { MachineHeaderContent } from "app/machines/types";
+import type { MachineSidePanelContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import { MachineMeta } from "app/store/machine/types";
 import { useFetchMachine } from "app/store/machine/utils/hooks";
@@ -37,7 +37,7 @@ const MachineDetails = (): JSX.Element => {
   const { pathname } = useLocation();
   const { machine, loaded: detailsLoaded } = useFetchMachine(id);
   const [sidePanelContent, setSidePanelContent] =
-    useState<MachineHeaderContent | null>(null);
+    useState<MachineSidePanelContent | null>(null);
 
   useEffect(() => {
     window.scrollTo(0, 0);

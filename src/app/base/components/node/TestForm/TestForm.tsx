@@ -50,7 +50,7 @@ type Props<E = null> = NodeActionFormProps<E> & {
 export const TestForm = <E,>({
   applyConfiguredNetworking,
   cleanup,
-  clearHeaderContent,
+  clearSidePanelContent,
   actionStatus,
   errors,
   hardwareType,
@@ -131,7 +131,7 @@ export const TestForm = <E,>({
       }}
       loaded={scriptsLoaded}
       modelName={modelName}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `${capitaliseFirst(modelName)} ${
@@ -159,7 +159,7 @@ export const TestForm = <E,>({
           });
         }
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={nodes ? nodes.length : selectedCount ?? 0}
       validationSchema={TestFormSchema}

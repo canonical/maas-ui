@@ -12,7 +12,7 @@ import urls from "app/base/urls";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
 import type {
-  DeviceHeaderContent,
+  DeviceSidePanelContent,
   DeviceSetSidePanelContent,
 } from "app/devices/types";
 import { getHeaderTitle } from "app/devices/utils";
@@ -22,7 +22,7 @@ import { isDeviceDetails } from "app/store/device/utils";
 import type { RootState } from "app/store/root/types";
 
 type Props = {
-  sidePanelContent: DeviceHeaderContent | null;
+  sidePanelContent: DeviceSidePanelContent | null;
   setSidePanelContent: DeviceSetSidePanelContent;
   systemId: Device["system_id"];
 };

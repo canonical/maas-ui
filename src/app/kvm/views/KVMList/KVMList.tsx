@@ -12,7 +12,7 @@ import VirshTable from "./VirshTable";
 import MainContentSection from "app/base/components/MainContentSection";
 import { useWindowTitle } from "app/base/hooks";
 import urls from "app/base/urls";
-import type { KVMHeaderContent } from "app/kvm/types";
+import type { KVMSidePanelContent } from "app/kvm/types";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import { actions as poolActions } from "app/store/resourcepool";
@@ -34,7 +34,7 @@ const KVMList = (): JSX.Element => {
   const vmclusters = useSelector(vmclusterSelectors.all);
   const vmclustersLoading = useSelector(vmclusterSelectors.loading);
   const [sidePanelContent, setSidePanelContent] =
-    useState<KVMHeaderContent | null>(null);
+    useState<KVMSidePanelContent | null>(null);
   const hasLXDs = vmclusters.length + lxdKvms.length > 0;
   const hasVirsh = virshKvms.length > 0;
   const showingLXD = location.pathname.endsWith(urls.kvm.lxd.index);

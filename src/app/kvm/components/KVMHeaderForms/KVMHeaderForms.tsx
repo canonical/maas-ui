@@ -9,17 +9,20 @@ import DeleteForm from "./DeleteForm";
 import RefreshForm from "./RefreshForm";
 
 import { useScrollOnRender } from "app/base/hooks";
-import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
+import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
+import type {
+  KVMSidePanelContent,
+  KVMSetSidePanelContent,
+} from "app/kvm/types";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
-import type { MachineHeaderContent } from "app/machines/types";
+import type { MachineSidePanelContent } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { SelectedMachines } from "app/store/machine/types";
 import { useMachineSelectedCount } from "app/store/machine/utils/hooks";
 
 type Props = {
-  sidePanelContent: KVMHeaderContent | null;
+  sidePanelContent: KVMSidePanelContent | null;
   setSidePanelContent: KVMSetSidePanelContent;
   searchFilter?: string;
   setSearchFilter?: SetSearchFilter;
@@ -28,15 +31,15 @@ type Props = {
 const getFormComponent = ({
   sidePanelContent,
   setSidePanelContent,
-  clearHeaderContent,
+  clearSidePanelContent,
   selectedMachines,
   selectedCount,
   searchFilter,
   setSearchFilter,
 }: {
-  sidePanelContent: KVMHeaderContent;
+  sidePanelContent: KVMSidePanelContent;
   setSidePanelContent: KVMSetSidePanelContent;
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   selectedMachines: SelectedMachines | null;
   selectedCount: number;
   searchFilter?: string;
@@ -47,11 +50,11 @@ const getFormComponent = ({
   }
 
   if (sidePanelContent.view === KVMHeaderViews.ADD_LXD_HOST) {
-    return <AddLxd clearHeaderContent={clearHeaderContent} />;
+    return <AddLxd clearSidePanelContent={clearSidePanelContent} />;
   }
 
   if (sidePanelContent.view === KVMHeaderViews.ADD_VIRSH_HOST) {
-    return <AddVirsh clearHeaderContent={clearHeaderContent} />;
+    return <AddVirsh clearSidePanelContent={clearSidePanelContent} />;
   }
 
   // The following forms require that a host or cluster id be passed to it.
@@ -68,7 +71,10 @@ const getFormComponent = ({
     (hostId || hostId === 0)
   ) {
     return (
-      <ComposeForm clearHeaderContent={clearHeaderContent} hostId={hostId} />
+      <ComposeForm
+        clearSidePanelContent={clearSidePanelContent}
+        hostId={hostId}
+      />
     );
   }
   if (
@@ -77,7 +83,7 @@ const getFormComponent = ({
   ) {
     return (
       <DeleteForm
-        clearHeaderContent={clearHeaderContent}
+        clearSidePanelContent={clearSidePanelContent}
         clusterId={clusterId}
         hostId={hostId}
       />
@@ -92,7 +98,7 @@ const getFormComponent = ({
   ) {
     return (
       <RefreshForm
-        clearHeaderContent={clearHeaderContent}
+        clearSidePanelContent={clearSidePanelContent}
         hostIds={sidePanelContent.extras.hostIds}
       />
     );
@@ -101,7 +107,7 @@ const getFormComponent = ({
   // seem to be able to infer remaining object tuple values as with string
   // values.
   // https://github.com/canonical/maas-ui/issues/3040
-  const machineHeaderContent = sidePanelContent as MachineHeaderContent;
+  const machineSidePanelContent = sidePanelContent as MachineSidePanelContent;
   return (
     <MachineHeaderForms
       searchFilter={searchFilter}
@@ -109,7 +115,7 @@ const getFormComponent = ({
       selectedMachines={selectedMachines}
       setSearchFilter={setSearchFilter}
       setSidePanelContent={setSidePanelContent}
-      sidePanelContent={machineHeaderContent}
+      sidePanelContent={machineSidePanelContent}
       viewingDetails={false}
     />
   );
@@ -124,7 +130,7 @@ const KVMHeaderForms = ({
   const selectedMachines = useSelector(machineSelectors.selectedMachines);
   const { selectedCount } = useMachineSelectedCount();
   const onRenderRef = useScrollOnRender<HTMLDivElement>();
-  const clearHeaderContent = useCallback(
+  const clearSidePanelContent = useCallback(
     () => setSidePanelContent(null),
     [setSidePanelContent]
   );
@@ -137,7 +143,7 @@ const KVMHeaderForms = ({
       {getFormComponent({
         sidePanelContent,
         setSidePanelContent,
-        clearHeaderContent,
+        clearSidePanelContent,
         selectedMachines,
         selectedCount,
         searchFilter,

@@ -21,7 +21,7 @@ import NodeTestDetails from "app/base/components/node/NodeTestDetails";
 import { useScrollToTop } from "app/base/hooks";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
-import type { ControllerHeaderContent } from "app/controllers/types";
+import type { ControllerSidePanelContent } from "app/controllers/types";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { ControllerMeta } from "app/store/controller/types";
@@ -36,7 +36,7 @@ const ControllerDetails = (): JSX.Element => {
   );
   const controllersLoading = useSelector(controllerSelectors.loading);
   const [sidePanelContent, setSidePanelContent] =
-    useState<ControllerHeaderContent | null>(null);
+    useState<ControllerSidePanelContent | null>(null);
   useScrollToTop();
 
   useEffect(() => {

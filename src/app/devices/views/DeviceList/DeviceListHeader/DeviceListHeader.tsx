@@ -8,14 +8,14 @@ import type { SetSearchFilter } from "app/base/types";
 import DeviceHeaderForms from "app/devices/components/DeviceHeaderForms";
 import { DeviceHeaderViews } from "app/devices/constants";
 import type {
-  DeviceHeaderContent,
+  DeviceSidePanelContent,
   DeviceSetSidePanelContent,
 } from "app/devices/types";
 import { getHeaderSize, getHeaderTitle } from "app/devices/utils";
 import deviceSelectors from "app/store/device/selectors";
 
 type Props = {
-  sidePanelContent: DeviceHeaderContent | null;
+  sidePanelContent: DeviceSidePanelContent | null;
   setSidePanelContent: DeviceSetSidePanelContent;
   setSearchFilter: SetSearchFilter;
 };

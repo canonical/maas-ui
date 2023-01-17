@@ -17,7 +17,7 @@ import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
 import { useScrollOnRender } from "app/base/hooks";
-import type { ClearHeaderContent, SetSearchFilter } from "app/base/types";
+import type { ClearSidePanelContent, SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import type { MachineActionFormProps } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
@@ -32,7 +32,7 @@ import { NodeActions } from "app/store/types/node";
 type Props = Omit<MachineActionFormProps, "processingCount"> & {
   action: MachineActions;
   applyConfiguredNetworking?: boolean;
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   hardwareType?: HardwareType;
   selectedCountLoading?: boolean;
   setSearchFilter?: SetSearchFilter;
@@ -42,7 +42,7 @@ type Props = Omit<MachineActionFormProps, "processingCount"> & {
 export const MachineActionFormWrapper = ({
   action,
   applyConfiguredNetworking,
-  clearHeaderContent,
+  clearSidePanelContent,
   hardwareType,
   searchFilter,
   selectedCount,
@@ -61,7 +61,7 @@ export const MachineActionFormWrapper = ({
 
   const commonMachineFormProps = {
     searchFilter,
-    clearHeaderContent,
+    clearSidePanelContent,
     viewingDetails,
     selectedMachines,
     actionStatus,
@@ -71,7 +71,7 @@ export const MachineActionFormWrapper = ({
   };
   const commonNodeFormProps = {
     cleanup: machineActions.cleanup,
-    clearHeaderContent,
+    clearSidePanelContent,
     modelName: "machine",
     viewingDetails,
     searchFilter,

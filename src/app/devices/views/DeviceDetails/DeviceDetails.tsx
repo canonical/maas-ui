@@ -13,7 +13,7 @@ import MainContentSection from "app/base/components/MainContentSection";
 import ModelNotFound from "app/base/components/ModelNotFound";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
-import type { DeviceHeaderContent } from "app/devices/types";
+import type { DeviceSidePanelContent } from "app/devices/types";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
 import { DeviceMeta } from "app/store/device/types";
@@ -29,7 +29,7 @@ const DeviceDetails = (): JSX.Element => {
   );
   const devicesLoading = useSelector(deviceSelectors.loading);
   const [sidePanelContent, setSidePanelContent] =
-    useState<DeviceHeaderContent | null>(null);
+    useState<DeviceSidePanelContent | null>(null);
 
   useEffect(() => {
     if (isId(id)) {

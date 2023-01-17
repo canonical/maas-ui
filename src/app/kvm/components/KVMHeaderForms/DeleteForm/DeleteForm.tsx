@@ -12,7 +12,7 @@ import * as Yup from "yup";
 
 import ActionForm from "app/base/components/ActionForm";
 import FormikField from "app/base/components/FormikField";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import urls from "app/base/urls";
 import { actions as machineActions } from "app/store/machine";
 import { actions as messageActions } from "app/store/message";
@@ -30,7 +30,7 @@ type DeleteFormValues = {
 };
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   clusterId?: VMCluster[VMClusterMeta.PK] | null;
   hostId?: Pod[PodMeta.PK] | null;
 };
@@ -40,7 +40,7 @@ const DeleteFormSchema = Yup.object().shape({
 });
 
 const DeleteForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   clusterId,
   hostId,
 }: Props): JSX.Element | null => {
@@ -87,7 +87,7 @@ const DeleteForm = ({
         decompose: false,
       }}
       modelName={pod ? "KVM host" : "cluster"}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: "KVM details action form",
@@ -120,7 +120,7 @@ const DeleteForm = ({
           )
         );
         navigate({ pathname: urls.kvm.index });
-        clearHeaderContent();
+        clearSidePanelContent();
         dispatch(machineActions.invalidateQueries());
       }}
       processingCount={deletingCount}

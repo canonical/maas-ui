@@ -24,7 +24,7 @@ const SetPoolSchema = Yup.object().shape({
 });
 
 export const SetPoolForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   machines,
   processingCount,
@@ -67,7 +67,7 @@ export const SetPoolForm = ({
       initialValues={initialValues}
       loaded={resourcePoolsLoaded}
       modelName="machine"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
@@ -105,7 +105,7 @@ export const SetPoolForm = ({
         // displayed again.
         setInitialValues(values);
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={SetPoolSchema}

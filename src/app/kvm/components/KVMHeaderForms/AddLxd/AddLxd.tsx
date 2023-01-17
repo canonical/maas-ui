@@ -9,13 +9,13 @@ import SelectProjectForm from "./SelectProjectForm";
 import type { AddLxdStepValues, NewPodValues } from "./types";
 
 import Stepper from "app/base/components/Stepper";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
 };
 
 export const AddLxdSteps = {
@@ -24,7 +24,7 @@ export const AddLxdSteps = {
   SELECT_PROJECT: "selectProject",
 } as const;
 
-export const AddLxd = ({ clearHeaderContent }: Props): JSX.Element => {
+export const AddLxd = ({ clearSidePanelContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const resourcePools = useSelector(resourcePoolSelectors.all);
   const zones = useSelector(zoneSelectors.all);
@@ -72,7 +72,7 @@ export const AddLxd = ({ clearHeaderContent }: Props): JSX.Element => {
       ) : null}
       {step === AddLxdSteps.CREDENTIALS && (
         <CredentialsForm
-          clearHeaderContent={clearHeaderContent}
+          clearSidePanelContent={clearSidePanelContent}
           newPodValues={newPodValues}
           setNewPodValues={setNewPodValues}
           setStep={setStep}
@@ -81,7 +81,7 @@ export const AddLxd = ({ clearHeaderContent }: Props): JSX.Element => {
       )}
       {step === AddLxdSteps.AUTHENTICATION && (
         <AuthenticationForm
-          clearHeaderContent={clearHeaderContent}
+          clearSidePanelContent={clearSidePanelContent}
           newPodValues={newPodValues}
           setNewPodValues={setNewPodValues}
           setStep={setStep}
@@ -89,7 +89,7 @@ export const AddLxd = ({ clearHeaderContent }: Props): JSX.Element => {
       )}
       {step === AddLxdSteps.SELECT_PROJECT && (
         <SelectProjectForm
-          clearHeaderContent={clearHeaderContent}
+          clearSidePanelContent={clearSidePanelContent}
           newPodValues={newPodValues}
           setStep={setStep}
           setSubmissionErrors={setSubmissionErrors}

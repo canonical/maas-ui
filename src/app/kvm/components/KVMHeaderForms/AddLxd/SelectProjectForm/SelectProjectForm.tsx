@@ -15,7 +15,7 @@ import SelectProjectFormFields from "./SelectProjectFormFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage } from "app/base/hooks";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
@@ -23,14 +23,14 @@ import type { RootState } from "app/store/root/types";
 import { formatErrors, preparePayload } from "app/utils";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   newPodValues: NewPodValues;
   setStep: (step: AddLxdStepValues) => void;
   setSubmissionErrors: (submissionErrors: string | null) => void;
 };
 
 export const SelectProjectForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   newPodValues,
   setStep,
   setSubmissionErrors,
@@ -93,7 +93,7 @@ export const SelectProjectForm = ({
     saved,
     cleanup,
     `${savingPod} added successfully.`,
-    clearHeaderContent
+    clearSidePanelContent
   );
 
   return (
@@ -102,7 +102,7 @@ export const SelectProjectForm = ({
         existingProject: "",
         newProject: "",
       }}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Save LXD KVM",
         category: "Add KVM form",

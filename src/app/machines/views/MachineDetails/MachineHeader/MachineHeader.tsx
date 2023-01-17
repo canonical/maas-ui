@@ -16,7 +16,7 @@ import { useMachineActions, useSendAnalytics } from "app/base/hooks";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
 import type {
-  MachineHeaderContent,
+  MachineSidePanelContent,
   MachineSetSidePanelContent,
 } from "app/machines/types";
 import { getHeaderTitle } from "app/machines/utils";
@@ -31,7 +31,7 @@ import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
 type Props = {
-  sidePanelContent: MachineHeaderContent | null;
+  sidePanelContent: MachineSidePanelContent | null;
   setSidePanelContent: MachineSetSidePanelContent;
   systemId: Machine["system_id"];
 };

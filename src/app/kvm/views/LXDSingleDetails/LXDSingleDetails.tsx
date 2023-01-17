@@ -20,7 +20,7 @@ import { useGetURLId } from "app/base/hooks/urls";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import type { KVMHeaderContent } from "app/kvm/types";
+import type { KVMSidePanelContent } from "app/kvm/types";
 import { FilterMachines } from "app/store/machine/utils";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
@@ -45,7 +45,7 @@ const LXDSingleDetails = (): JSX.Element => {
     FilterMachines.filtersToString(currentFilters)
   );
   const [sidePanelContent, setSidePanelContent] =
-    useState<KVMHeaderContent | null>(null);
+    useState<KVMSidePanelContent | null>(null);
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 

@@ -9,7 +9,7 @@ import AddVirshFields from "./AddVirshFields";
 
 import FormikForm from "app/base/components/FormikForm";
 import { useAddMessage } from "app/base/hooks";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { actions as generalActions } from "app/store/general";
 import { powerTypes as powerTypesSelectors } from "app/store/general/selectors";
 import { PowerFieldScope } from "app/store/general/types";
@@ -29,7 +29,7 @@ import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
 };
 
 export type AddVirshValues = {
@@ -40,7 +40,7 @@ export type AddVirshValues = {
   zone: string | number;
 };
 
-export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
+export const AddVirsh = ({ clearSidePanelContent }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const podSaved = useSelector(podSelectors.saved);
   const podSaving = useSelector(podSelectors.saving);
@@ -66,7 +66,7 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
     podSaved,
     cleanup,
     `${savingPod} added successfully.`,
-    clearHeaderContent
+    clearSidePanelContent
   );
 
   const virshPowerType = powerTypes.find(
@@ -106,7 +106,7 @@ export const AddVirsh = ({ clearHeaderContent }: Props): JSX.Element => {
         type: PodType.VIRSH,
         zone: zones.length ? zones[0].id : "",
       }}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Save virsh KVM",
         category: "Add KVM form",

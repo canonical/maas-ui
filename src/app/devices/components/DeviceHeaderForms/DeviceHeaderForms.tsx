@@ -8,14 +8,14 @@ import DeviceActionFormWrapper from "./DeviceActionFormWrapper";
 import type { DeviceActionHeaderViews } from "app/devices/constants";
 import { DeviceHeaderViews } from "app/devices/constants";
 import type {
-  DeviceHeaderContent,
+  DeviceSidePanelContent,
   DeviceSetSidePanelContent,
 } from "app/devices/types";
 import type { Device } from "app/store/device/types";
 
 type Props = {
   devices: Device[];
-  sidePanelContent: DeviceHeaderContent;
+  sidePanelContent: DeviceSidePanelContent;
   setSidePanelContent: DeviceSetSidePanelContent;
   viewingDetails?: boolean;
 };
@@ -26,14 +26,14 @@ const DeviceHeaderForms = ({
   setSidePanelContent,
   viewingDetails = false,
 }: Props): JSX.Element | null => {
-  const clearHeaderContent = useCallback(
+  const clearSidePanelContent = useCallback(
     () => setSidePanelContent(null),
     [setSidePanelContent]
   );
 
   switch (sidePanelContent.view) {
     case DeviceHeaderViews.ADD_DEVICE:
-      return <AddDeviceForm clearHeaderContent={clearHeaderContent} />;
+      return <AddDeviceForm clearSidePanelContent={clearSidePanelContent} />;
     default:
       // We need to explicitly cast sidePanelContent.view here - TypeScript doesn't
       // seem to be able to infer remaining object tuple values as with string
@@ -46,7 +46,7 @@ const DeviceHeaderForms = ({
       return (
         <DeviceActionFormWrapper
           action={action}
-          clearHeaderContent={clearHeaderContent}
+          clearSidePanelContent={clearSidePanelContent}
           devices={devices}
           viewingDetails={viewingDetails}
         />

@@ -10,7 +10,10 @@ import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
 import type { SetSearchFilter } from "app/base/types";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
-import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
+import type {
+  KVMSidePanelContent,
+  KVMSetSidePanelContent,
+} from "app/kvm/types";
 import { getFormTitle, getHeaderSize } from "app/kvm/utils";
 
 type TitleBlock = {
@@ -21,7 +24,7 @@ type TitleBlock = {
 type Props = {
   buttons?: SectionHeaderProps["buttons"];
   className?: ClassName;
-  sidePanelContent: KVMHeaderContent | null;
+  sidePanelContent: KVMSidePanelContent | null;
   loading?: SectionHeaderProps["loading"];
   setSidePanelContent: KVMSetSidePanelContent;
   searchFilter?: string;

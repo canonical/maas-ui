@@ -1,17 +1,17 @@
 import { MachineHeaderViews } from "./constants";
-import type { MachineHeaderContent } from "./types";
+import type { MachineSidePanelContent } from "./types";
 
 import { getNodeActionTitle } from "app/store/utils";
 
 /**
  * Get title depending on header content.
  * @param defaultTitle - Title to show if no header content open.
- * @param headerContentName - The name of the header content to check.
+ * @param sidePanelContent - The name of the header content to check.
  * @returns Header title string.
  */
 export const getHeaderTitle = (
   defaultTitle: string,
-  sidePanelContent: MachineHeaderContent | null
+  sidePanelContent: MachineSidePanelContent | null
 ): string => {
   if (sidePanelContent) {
     const [, name] = sidePanelContent.view;

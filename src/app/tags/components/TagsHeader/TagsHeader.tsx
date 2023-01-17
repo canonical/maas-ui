@@ -4,11 +4,14 @@ import MachinesHeader from "app/base/components/node/MachinesHeader";
 import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import TagHeaderForms from "app/tags/components/TagsHeader/TagHeaderForms";
 import { TagHeaderViews } from "app/tags/constants";
-import type { TagHeaderContent, TagSetSidePanelContent } from "app/tags/types";
+import type {
+  TagSidePanelContent,
+  TagSetSidePanelContent,
+} from "app/tags/types";
 import { TagViewState } from "app/tags/types";
 
 export type Props = {
-  sidePanelContent: TagHeaderContent | null;
+  sidePanelContent: TagSidePanelContent | null;
   setSidePanelContent: TagSetSidePanelContent;
   tagViewState?: TagViewState | null;
 };
@@ -19,7 +22,7 @@ export enum Label {
 }
 
 export const getHeaderTitle = (
-  sidePanelContent: TagHeaderContent | null
+  sidePanelContent: TagSidePanelContent | null
 ): string => {
   if (sidePanelContent) {
     const [, name] = sidePanelContent.view;

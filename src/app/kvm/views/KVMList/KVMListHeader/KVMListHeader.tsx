@@ -10,13 +10,16 @@ import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMHeaderContent, KVMSetSidePanelContent } from "app/kvm/types";
+import type {
+  KVMSidePanelContent,
+  KVMSetSidePanelContent,
+} from "app/kvm/types";
 import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
 type Props = {
-  sidePanelContent: KVMHeaderContent | null;
+  sidePanelContent: KVMSidePanelContent | null;
   setSidePanelContent: KVMSetSidePanelContent;
 };
 

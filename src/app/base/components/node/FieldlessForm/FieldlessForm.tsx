@@ -21,7 +21,7 @@ export const FieldlessForm = <E,>({
   action,
   actions,
   cleanup,
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   searchFilter,
   selectedMachines,
@@ -43,7 +43,7 @@ export const FieldlessForm = <E,>({
       errors={errors}
       initialValues={{}}
       modelName={modelName}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `${capitaliseFirst(modelName)} ${
@@ -68,7 +68,7 @@ export const FieldlessForm = <E,>({
           }
         }
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={nodes ? nodes.length : selectedCount ?? 0}
       {...actionProps}

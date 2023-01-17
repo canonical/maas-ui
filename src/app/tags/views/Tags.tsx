@@ -10,7 +10,7 @@ import {
 
 import TagsHeader from "../components/TagsHeader";
 import { TagHeaderViews } from "../constants";
-import type { TagHeaderContent } from "../types";
+import type { TagSidePanelContent } from "../types";
 import { TagViewState } from "../types";
 
 import TagDetails from "./TagDetails";
@@ -24,7 +24,7 @@ import type { Tag, TagMeta } from "app/store/tag/types";
 import { getRelativeRoute } from "app/utils";
 
 const getViewState = (
-  sidePanelContent: TagHeaderContent | null,
+  sidePanelContent: TagSidePanelContent | null,
   pathname: string
 ) => {
   if (sidePanelContent?.view === TagHeaderViews.DeleteTag) {
@@ -51,7 +51,7 @@ const Tags = (): JSX.Element => {
   const detailsMatch = useMatch(urls.tags.tag.index(null));
   const isDetails = !!detailsMatch;
   const [sidePanelContent, setSidePanelContent] =
-    useState<TagHeaderContent | null>(null);
+    useState<TagSidePanelContent | null>(null);
   const tagViewState = getViewState(sidePanelContent, pathname);
   const onDelete = (id: Tag[TagMeta.PK], fromDetails?: boolean) =>
     setSidePanelContent({

@@ -1,11 +1,11 @@
 import type { ValueOf } from "@canonical/react-components";
 
-import type { HeaderContent, SetSidePanelContent } from "app/base/types";
+import type { SidePanelContent, SetSidePanelContent } from "app/base/types";
 import type { ControllerHeaderViews } from "app/controllers/constants";
 
-export type ControllerHeaderContent = HeaderContent<
+export type ControllerSidePanelContent = SidePanelContent<
   ValueOf<typeof ControllerHeaderViews>
 >;
 
 export type ControllerSetSidePanelContent =
-  SetSidePanelContent<ControllerHeaderContent>;
+  SetSidePanelContent<ControllerSidePanelContent>;

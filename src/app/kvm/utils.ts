@@ -1,11 +1,11 @@
 import { KVMHeaderViews } from "./constants";
 import type {
-  KVMHeaderContent,
+  KVMSidePanelContent,
   KVMStoragePoolResource,
   KVMStoragePoolResources,
 } from "./types";
 
-import type { MachineHeaderContent } from "app/machines/types";
+import type { MachineSidePanelContent } from "app/machines/types";
 import { getHeaderTitle as getMachineHeaderTitle } from "app/machines/utils";
 import type { Pod } from "app/store/pod/types";
 import { formatBytes } from "app/utils";
@@ -26,7 +26,7 @@ export const memoryWithUnit = (memory: number): string => {
  * @param sidePanelContent - The currently selected header content.
  * @returns Header title.
  */
-export const getFormTitle = (sidePanelContent: KVMHeaderContent): string => {
+export const getFormTitle = (sidePanelContent: KVMSidePanelContent): string => {
   switch (sidePanelContent.view) {
     case KVMHeaderViews.ADD_LXD_HOST:
       return "Add LXD host";
@@ -43,13 +43,14 @@ export const getFormTitle = (sidePanelContent: KVMHeaderContent): string => {
       // seem to be able to infer remaining object tuple values as with string
       // values.
       // https://github.com/canonical/maas-ui/issues/3040
-      const machineHeaderContent = sidePanelContent as MachineHeaderContent;
-      return getMachineHeaderTitle("", machineHeaderContent);
+      const machineSidePanelContent =
+        sidePanelContent as MachineSidePanelContent;
+      return getMachineHeaderTitle("", machineSidePanelContent);
   }
 };
 
 export const getHeaderSize = (
-  sidePanelContent: KVMHeaderContent
+  sidePanelContent: KVMSidePanelContent
 ): "wide" | undefined => {
   switch (sidePanelContent.view) {
     case KVMHeaderViews.COMPOSE_VM:

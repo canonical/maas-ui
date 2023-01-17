@@ -11,7 +11,7 @@ import ControllerListTable from "./ControllerListTable";
 import MainContentSection from "app/base/components/MainContentSection";
 import VaultNotification from "app/base/components/VaultNotification";
 import { useWindowTitle } from "app/base/hooks";
-import type { ControllerHeaderContent } from "app/controllers/types";
+import type { ControllerSidePanelContent } from "app/controllers/types";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { FilterControllers } from "app/store/controller/utils";
@@ -29,7 +29,7 @@ const ControllerList = (): JSX.Element => {
   );
 
   const [sidePanelContent, setSidePanelContent] =
-    useState<ControllerHeaderContent | null>(null);
+    useState<ControllerSidePanelContent | null>(null);
   const [searchFilter, setFilter] = useState(
     // Initialise the filter state from the URL.
     FilterControllers.filtersToString(currentFilters)

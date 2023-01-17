@@ -2,10 +2,13 @@ import AddTagForm from "../AddTagForm";
 import DeleteTagForm from "../DeleteTagForm";
 
 import { TagHeaderViews } from "app/tags/constants";
-import type { TagHeaderContent, TagSetSidePanelContent } from "app/tags/types";
+import type {
+  TagSidePanelContent,
+  TagSetSidePanelContent,
+} from "app/tags/types";
 
 type Props = {
-  sidePanelContent: TagHeaderContent;
+  sidePanelContent: TagSidePanelContent;
   setSidePanelContent: TagSetSidePanelContent;
 };
 

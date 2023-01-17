@@ -5,7 +5,7 @@ import { useLocation, useNavigate } from "react-router-dom-v5-compat";
 import MachineListHeader from "./MachineList/MachineListHeader";
 
 import MainContentSection from "app/base/components/MainContentSection";
-import type { MachineHeaderContent } from "app/machines/types";
+import type { MachineSidePanelContent } from "app/machines/types";
 import MachineList from "app/machines/views/MachineList";
 import { FilterMachines } from "app/store/machine/utils";
 
@@ -18,7 +18,7 @@ const Machines = (): JSX.Element => {
     FilterMachines.filtersToString(currentFilters)
   );
   const [sidePanelContent, setSidePanelContent] =
-    useState<MachineHeaderContent | null>(null);
+    useState<MachineSidePanelContent | null>(null);
 
   const setSearchFilter = useCallback(
     (searchText) => {
