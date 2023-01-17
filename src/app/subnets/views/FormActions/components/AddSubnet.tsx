@@ -29,7 +29,7 @@ const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
   return (
     <>
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             component={Input}
             disabled={isSaving}
@@ -37,11 +37,10 @@ const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
             label="CIDR"
             name="cidr"
             required
-            takeFocus
             type="text"
           />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             component={Input}
             disabled={isSaving}
@@ -52,7 +51,7 @@ const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
         </Col>
       </Row>
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FabricSelect
             defaultOption={null}
             disabled={isSaving}
@@ -60,7 +59,7 @@ const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
             required
           />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <VLANSelect
             defaultOption={null}
             disabled={isSaving}
@@ -73,7 +72,7 @@ const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
         </Col>
       </Row>
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             component={Input}
             disabled={isSaving}
@@ -83,7 +82,7 @@ const AddSubnetFields = ({ isSaving }: { isSaving: boolean }) => {
             type="text"
           />
         </Col>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             component={Input}
             disabled={isSaving}

@@ -104,6 +104,7 @@ const MachineHeader = ({
           />
         ) : null
       }
+      sidePanelTitle={getHeaderTitle(machine.hostname, headerContent)}
       subtitle={
         editingName ? null : (
           <div className="u-flex--wrap">
@@ -234,15 +235,11 @@ const MachineHeader = ({
         },
       ]}
       title={
-        headerContent ? (
-          getHeaderTitle(machine.hostname, headerContent)
-        ) : (
-          <MachineName
-            editingName={editingName}
-            id={systemId}
-            setEditingName={setEditingName}
-          />
-        )
+        <MachineName
+          editingName={editingName}
+          id={systemId}
+          setEditingName={setEditingName}
+        />
       }
       titleElement={editingName ? "div" : "h1"}
     />

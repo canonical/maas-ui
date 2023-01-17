@@ -11,7 +11,7 @@ export const ReleaseFormFields = (): JSX.Element => {
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <FormikField
           label="Erase disks before releasing"
           name="enableErase"

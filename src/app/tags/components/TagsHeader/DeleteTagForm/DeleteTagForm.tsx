@@ -87,7 +87,7 @@ export const DeleteTagForm = ({
       submitLabel="Delete"
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <h4 className="u-nudge-down--small">
             {`${tag.name} will be deleted${
               tag.machine_count > 0

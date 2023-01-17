@@ -24,8 +24,8 @@ export const AuthenticationFormFields = ({
     useFormikContext<AuthenticationFormValues>();
 
   return (
-    <Row className="p-divider">
-      <Col className="p-divider__block" size={6}>
+    <Row>
+      <Col size={12}>
         <Input
           checked={useCertificate}
           disabled={disabled}
@@ -47,7 +47,7 @@ export const AuthenticationFormFields = ({
           />
         )}
       </Col>
-      <Col className="p-divider__block" size={6}>
+      <Col size={12}>
         <Input
           checked={!useCertificate}
           disabled={disabled}

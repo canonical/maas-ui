@@ -8,25 +8,29 @@ type Props = {
 };
 
 export const MarkBrokenFormFields = ({ selectedCount }: Props): JSX.Element => (
-  <Row>
-    <Col size={4}>
-      <FormikField
-        label={`Add error description to ${selectedCount} ${pluralize(
-          "machine",
-          selectedCount
-        )}`}
-        name="comment"
-        type="text"
-      />
-    </Col>
-    <Col size={5}>
-      <p className="p-form__help">
-        The error description will be visible under the status of each machine
-        in the machine listing. It will be removed when the machine is marked as
-        fixed.
-      </p>
-    </Col>
-  </Row>
+  <>
+    <Row>
+      <Col size={12}>
+        <FormikField
+          label={`Add error description to ${selectedCount} ${pluralize(
+            "machine",
+            selectedCount
+          )}`}
+          name="comment"
+          type="text"
+        />
+      </Col>
+    </Row>
+    <Row>
+      <Col size={12}>
+        <p className="p-form__help u-no-margin--top">
+          The error description will be visible under the status of each machine
+          in the machine listing. It will be removed when the machine is marked
+          as fixed.
+        </p>
+      </Col>
+    </Row>
+  </>
 );
 
 export default MarkBrokenFormFields;

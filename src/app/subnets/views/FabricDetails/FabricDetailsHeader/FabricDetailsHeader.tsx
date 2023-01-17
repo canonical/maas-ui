@@ -39,6 +39,7 @@ const FabricDetailsHeader = ({ fabric }: Props): JSX.Element => {
           />
         ) : null
       }
+      sidePanelTitle="Delete fabric"
       title={fabric.name}
     />
   );

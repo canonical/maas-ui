@@ -62,25 +62,10 @@ describe("DeviceDetailsHeader", () => {
     );
   });
 
-  it("displays the device's FQDN once loaded", () => {
+  it("displays the device name if an action is selected", () => {
     state.device.items = [
       deviceDetailsFactory({ fqdn: "plot-device", system_id: "abc123" }),
     ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <DeviceDetailsHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
-        systemId="abc123"
-      />,
-      { store }
-    );
-    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
-      "plot-device"
-    );
-  });
-
-  it("displays action title if an action is selected", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeviceDetailsHeader
@@ -91,7 +76,7 @@ describe("DeviceDetailsHeader", () => {
       { store }
     );
     expect(screen.getByTestId("section-header-title")).toHaveTextContent(
-      "Delete"
+      "plot-device"
     );
   });
 

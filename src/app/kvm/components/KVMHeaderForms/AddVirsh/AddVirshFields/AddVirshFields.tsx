@@ -11,7 +11,7 @@ import { PowerFieldScope } from "app/store/general/types";
 export const AddVirshKvmFields = (): JSX.Element => {
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <FormikField label="Name" name="name" type="text" />
         <ZoneSelect name="zone" required valueKey="id" />
         <ResourcePoolSelect name="pool" required valueKey="id" />

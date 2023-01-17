@@ -61,6 +61,7 @@ const KVMListHeader = ({
           />
         ) : null
       }
+      sidePanelTitle={headerContent ? getFormTitle(headerContent) : "KVM"}
       subtitle={`${pluralize("KVM host", kvms.length, true)} available`}
       subtitleLoading={!podsLoaded}
       tabLinks={[
@@ -79,7 +80,7 @@ const KVMListHeader = ({
           to: urls.kvm.virsh.index,
         },
       ]}
-      title={headerContent ? getFormTitle(headerContent) : "KVM"}
+      title="KVM"
     />
   );
 };

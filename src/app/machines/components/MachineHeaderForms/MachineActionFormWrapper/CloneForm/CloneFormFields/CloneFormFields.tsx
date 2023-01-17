@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 
+import { Col, Row } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -53,56 +54,68 @@ export const CloneFormFields = ({
   }, [machineInState, selectedMachine, setSelectedMachine]);
 
   return (
-    <div className="clone-form-fields">
-      <p className="source-label">1. Select the source machine</p>
-      <SourceMachineSelect
-        onMachineClick={(machine) => {
-          if (machine) {
-            setFieldValue("source", machine.system_id);
-          } else {
-            setFieldValue("source", "");
-            setFieldValue("interfaces", false);
-            setFieldValue("storage", false);
-            setSelectedMachine(null);
-          }
-        }}
-        selectedMachine={selectedMachine}
-      />
-      <p className="clone-label">2. Select what to clone</p>
-      <div className="clone-tables">
-        <div className="clone-table-card">
-          <FormikField
-            disabled={!selectedMachine}
-            label="Clone network configuration"
-            name="interfaces"
-            type="checkbox"
-            wrapperClassName="u-sv2"
+    <div>
+      <Row>
+        <Col size={12}>
+          <p className="source-label">1. Select the source machine</p>
+          <SourceMachineSelect
+            onMachineClick={(machine) => {
+              if (machine) {
+                setFieldValue("source", machine.system_id);
+              } else {
+                setFieldValue("source", "");
+                setFieldValue("interfaces", false);
+                setFieldValue("storage", false);
+                setSelectedMachine(null);
+              }
+            }}
+            selectedMachine={selectedMachine}
           />
-          <div className="clone-table-container">
-            <CloneNetworkTable
-              loadingMachineDetails={loadingMachineDetails}
-              machine={selectedMachine}
-              selected={values.interfaces}
-            />
+        </Col>
+      </Row>
+      <Row>
+        <Col size={12}>
+          <p className="clone-label">2. Select what to clone</p>
+          <div className="clone-tables">
+            <div className="clone-table-card">
+              <FormikField
+                disabled={!selectedMachine}
+                label="Clone network configuration"
+                name="interfaces"
+                type="checkbox"
+                wrapperClassName="u-sv2"
+              />
+              <div className="clone-table-container">
+                <CloneNetworkTable
+                  loadingMachineDetails={loadingMachineDetails}
+                  machine={selectedMachine}
+                  selected={values.interfaces}
+                />
+              </div>
+            </div>
           </div>
-        </div>
-        <div className="clone-table-card">
-          <FormikField
-            disabled={!selectedMachine}
-            label="Clone storage configuration"
-            name="storage"
-            type="checkbox"
-            wrapperClassName="u-sv2"
-          />
-          <div className="clone-table-container">
-            <CloneStorageTable
-              loadingMachineDetails={loadingMachineDetails}
-              machine={selectedMachine}
-              selected={values.storage}
+        </Col>
+      </Row>
+      <Row>
+        <Col size={12}>
+          <div className="clone-table-card">
+            <FormikField
+              disabled={!selectedMachine}
+              label="Clone storage configuration"
+              name="storage"
+              type="checkbox"
+              wrapperClassName="u-sv2"
             />
+            <div className="clone-table-container">
+              <CloneStorageTable
+                loadingMachineDetails={loadingMachineDetails}
+                machine={selectedMachine}
+                selected={values.storage}
+              />
+            </div>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 };

@@ -37,7 +37,7 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size={5}>
+      <Col size={12}>
         <FormikField
           label="Machine name"
           name="hostname"
@@ -90,6 +90,7 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
         ))}
         <div className="u-align--right">
           <Button
+            className="u-no-margin--bottom"
             data-testid="add-extra-mac"
             hasIcon
             onClick={() => setExtraMACs([...extraMACs, ""])}
@@ -100,7 +101,7 @@ export const AddMachineFormFields = ({ saved }: Props): JSX.Element => {
           </Button>
         </div>
       </Col>
-      <Col emptyLarge={7} size={5}>
+      <Col size={12}>
         <PowerTypeFields />
       </Col>
     </Row>

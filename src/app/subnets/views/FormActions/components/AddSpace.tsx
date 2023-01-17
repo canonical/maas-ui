@@ -45,13 +45,12 @@ const AddSpace = ({
       submitLabel={`Add ${activeForm}`}
     >
       <Row>
-        <Col size={6}>
+        <Col size={12}>
           <FormikField
             component={Input}
             disabled={isSaving}
             label="Name (optional)"
             name="name"
-            takeFocus
             type="text"
           />
         </Col>

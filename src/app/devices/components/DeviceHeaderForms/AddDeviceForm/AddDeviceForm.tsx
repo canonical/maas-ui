@@ -176,7 +176,7 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
       validationSchema={AddDeviceSchema}
     >
       <Row>
-        <Col size={5}>
+        <Col size={12}>
           <FormikField
             label="Device name"
             name="hostname"

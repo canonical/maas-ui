@@ -6,14 +6,18 @@ import { PowerFieldScope } from "app/store/general/types";
 
 export const AddChassisFormFields = (): JSX.Element => {
   return (
-    <Row>
-      <Col size={5}>
-        <DomainSelect name="domain" required />
-      </Col>
-      <Col emptyLarge={7} size={5}>
-        <PowerTypeFields fieldScopes={[PowerFieldScope.BMC]} forChassis />
-      </Col>
-    </Row>
+    <>
+      <Row>
+        <Col size={12}>
+          <DomainSelect name="domain" required />
+        </Col>
+      </Row>
+      <Row>
+        <Col size={12}>
+          <PowerTypeFields fieldScopes={[PowerFieldScope.BMC]} forChassis />
+        </Col>
+      </Row>
+    </>
   );
 };
 

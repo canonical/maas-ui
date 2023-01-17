@@ -72,7 +72,7 @@ export const TagFormFields = ({
   return (
     <>
       <Row>
-        <Col emptyLarge={viewingMachineConfig ? undefined : 4} size={6}>
+        <Col size={12}>
           <TagField
             externalSelectedTags={selectedTags}
             generateDropdownEntry={(

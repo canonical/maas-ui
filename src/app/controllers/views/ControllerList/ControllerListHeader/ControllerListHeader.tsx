@@ -74,6 +74,7 @@ const ControllerListHeader = ({
           />
         )
       }
+      sidePanelTitle={getHeaderTitle("Controllers", headerContent)}
       subtitle={
         <ModelListSubtitle
           available={controllers.length}
@@ -83,7 +84,7 @@ const ControllerListHeader = ({
         />
       }
       subtitleLoading={!controllersLoaded}
-      title={getHeaderTitle("Controllers", headerContent)}
+      title="Controllers"
     />
   );
 };

@@ -81,7 +81,7 @@ export const DeployFormFields = (): JSX.Element => {
       )}
       <div className="u-sv2">
         <Row>
-          <Col size={3}>
+          <Col size={12}>
             <FormikField
               component={Select}
               disabled={noImages}
@@ -104,7 +104,7 @@ export const DeployFormFields = (): JSX.Element => {
               options={osOptions}
             />
           </Col>
-          <Col size={3}>
+          <Col size={12}>
             <FormikField
               component={Select}
               disabled={noImages}
@@ -120,7 +120,7 @@ export const DeployFormFields = (): JSX.Element => {
               options={releaseOptions}
             />
           </Col>
-          <Col size={3}>
+          <Col size={12}>
             {values.oSystem === "ubuntu" && (
               <FormikField
                 component={Select}
@@ -135,10 +135,10 @@ export const DeployFormFields = (): JSX.Element => {
           <hr className="u-sv2" />
         </div>
         <Row>
-          <Col size={3}>
+          <Col size={12}>
             <p>Customise options</p>
           </Col>
-          <Col size={9}>
+          <Col size={12}>
             <Input
               checked={deployVmHost}
               disabled={!canBeKVMHost || noImages}

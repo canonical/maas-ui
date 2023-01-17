@@ -30,7 +30,7 @@ export const TestFormFields = ({
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <FormikField
           label={`Allow SSH access and prevent ${modelName} powering off`}
           name="enableSSH"

@@ -11,7 +11,6 @@ import urls from "app/base/urls";
 import KVMDetailsHeader from "app/kvm/components/KVMDetailsHeader";
 import { KVMHeaderViews } from "app/kvm/constants";
 import type { KVMHeaderContent, KVMSetHeaderContent } from "app/kvm/types";
-import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
@@ -48,11 +47,7 @@ const LXDSingleDetailsHeader = ({
 
   let title: ReactNode = <Spinner text="Loading..." />;
   if (pod) {
-    if (headerContent) {
-      title = getFormTitle(headerContent);
-    } else {
-      title = pod.name;
-    }
+    title = pod.name;
   }
 
   return (

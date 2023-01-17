@@ -31,7 +31,7 @@ export const CommissionFormFields = ({
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <FormikField
           label="Allow SSH access and prevent machine powering off"
           name="enableSSH"
@@ -97,7 +97,7 @@ export const CommissionFormFields = ({
           />
         ))}
       </Col>
-      <Col size={6}>
+      <Col size={12}>
         <FormikField
           label="Retain storage configuration"
           name="skipStorage"

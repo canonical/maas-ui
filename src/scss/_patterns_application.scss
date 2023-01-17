@@ -1,0 +1,24 @@
+@mixin maas-application {
+  .l-main {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+  }
+  .l-aside {
+    background-color: $color-x-light;
+  }
+  .l-aside .formik-form-buttons {
+    padding: $spv--small $spv--small;
+    flex-direction: column;
+
+    .formik-form-buttons__container {
+      width: 100%;
+    }
+
+    .formik-form-buttons__help {
+      @extend %vf-grid-container-padding;
+      padding-right: unset;
+      padding-left: unset;
+      width: 100%;
+    }
+  }
+}
