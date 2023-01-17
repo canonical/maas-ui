@@ -6,6 +6,9 @@
   .l-aside {
     background-color: $color-x-light;
   }
+  .l-aside.is-collapsed {
+    visibility: hidden;
+  }
   .l-aside .formik-form-buttons {
     padding: $spv--small $spv--small;
     flex-direction: column;
