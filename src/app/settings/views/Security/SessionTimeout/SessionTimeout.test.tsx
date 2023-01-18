@@ -27,7 +27,7 @@ describe("SessionTimeout", () => {
     expect(screen.getByText(SessionTimeoutLabels.Loading)).toBeInTheDocument();
   });
 
-  it("displays the form when the 'Edit' button is clicked", async () => {
+  it("displays the form with correct values", async () => {
     renderWithBrowserRouter(<SessionTimeout />, { state });
 
     expect(
