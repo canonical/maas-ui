@@ -72,7 +72,7 @@ const SessionTimeout = (): JSX.Element => {
         initialValues={{
           session_length: formatDuration(secondsToDuration(sessionLength)),
         }}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           const sessionLengthInSeconds = humanReadableToSeconds(
             values.session_length
           );
@@ -82,7 +82,7 @@ const SessionTimeout = (): JSX.Element => {
                 session_length: sessionLengthInSeconds,
               })
             );
-          dispatch(configActions.cleanup());
+          resetForm({ values });
         }}
         resetOnSave
         saved={saved}
