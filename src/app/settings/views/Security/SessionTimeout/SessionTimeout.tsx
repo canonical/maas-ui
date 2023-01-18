@@ -57,6 +57,7 @@ const SessionTimeout = (): JSX.Element => {
   const sessionLength = useSelector(configSelectors.sessionLength) || undefined;
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   if (configLoading) {
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;
