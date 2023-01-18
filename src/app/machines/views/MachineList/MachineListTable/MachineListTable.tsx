@@ -90,6 +90,7 @@ type GenerateRowParams = {
   getToggleHandler: GetToggleHandler;
   showActions: Props["showActions"];
   showMAC: boolean;
+  showFullName: boolean;
 };
 
 type RowContent = {
@@ -312,6 +313,7 @@ const generateRows = ({
   getToggleHandler,
   showActions,
   showMAC,
+  showFullName,
 }: GenerateRowParams) => {
   const getMenuHandler: GetToggleHandler = (...args) =>
     showActions ? getToggleHandler(...args) : () => undefined;
@@ -348,6 +350,7 @@ const generateRows = ({
         <OwnerColumn
           data-testid="owner-column"
           onToggleMenu={getMenuHandler(MachineColumns.OWNER)}
+          showFullName={showFullName}
           systemId={row.system_id}
         />
       ),
@@ -544,7 +547,7 @@ export const MachineListTable = ({
     null
   );
   const [showMAC, setShowMAC] = useState(false);
-
+  const [showFullName, setShowFullName] = useState(false);
   useEffect(() => {
     dispatch(generalActions.fetchArchitectures());
     dispatch(generalActions.fetchDefaultMinHweKernel());
@@ -590,6 +593,7 @@ export const MachineListTable = ({
     getToggleHandler,
     showActions,
     showMAC,
+    showFullName,
   };
 
   const headers = [
@@ -678,10 +682,28 @@ export const MachineListTable = ({
           <TableHeader
             currentSort={currentSort}
             data-testid="owner-header"
-            onClick={() => updateSort(FetchGroupKey.Owner)}
+            onClick={() => {
+              setShowFullName(false);
+              updateSort(FetchGroupKey.Owner);
+            }}
             sortKey={FetchGroupKey.Owner}
           >
             {columnLabels[MachineColumns.OWNER]}
+          </TableHeader>
+          &nbsp;<strong>|</strong>&nbsp;
+          <TableHeader
+            currentSort={currentSort}
+            data-testid="owner-name-header"
+            onClick={() => {
+              sendAnalytics(
+                "Machine list",
+                "Column header",
+                "Show owner full name"
+              );
+              setShowFullName(true);
+            }}
+          >
+            Name
           </TableHeader>
           <TableHeader>Tags</TableHeader>
         </>

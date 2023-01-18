@@ -82,6 +82,19 @@ describe("users selectors", () => {
     expect(user.getById(state, 909)).toEqual(items[1]);
   });
 
+  it("can get a user by username", () => {
+    const items = [
+      userFactory({ username: "maas-user", id: 808 }),
+      userFactory({ username: "maas-user-1", id: 909 }),
+    ];
+    const state = rootStateFactory({
+      user: userStateFactory({
+        items,
+      }),
+    });
+    expect(user.getByUsername(state, "maas-user-1")).toEqual(items[1]);
+  });
+
   it("can search items", () => {
     const state = rootStateFactory({
       user: userStateFactory({

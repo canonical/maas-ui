@@ -14,8 +14,11 @@ import {
   machineActionsState as machineActionsStateFactory,
   machineState as machineStateFactory,
   rootState as rootStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
   tag as tagFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -48,6 +51,9 @@ describe("OwnerColumn", () => {
           }),
         ],
       }),
+      user: userStateFactory({
+        items: [userFactory()],
+      }),
     });
   });
 
@@ -68,18 +74,25 @@ describe("OwnerColumn", () => {
 
   it("displays owner", () => {
     state.machine.items[0].owner = "user1";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <OwnerColumn onToggleMenu={jest.fn()} systemId="abc123" />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <OwnerColumn onToggleMenu={jest.fn()} showFullName systemId="abc123" />,
+      { state }
     );
 
-    expect(wrapper.find('[data-testid="owner"]').text()).toEqual("user1");
+    expect(screen.getByTestId("owner")).toHaveTextContent("user1");
+  });
+
+  it("displays owner's full name", () => {
+    state.machine.items[0].owner = "user1";
+    state.user.items = [
+      userFactory({ username: "user1", last_name: "User Full Name" }),
+    ];
+    renderWithBrowserRouter(
+      <OwnerColumn onToggleMenu={jest.fn()} showFullName systemId="abc123" />,
+      { state }
+    );
+
+    expect(screen.getByTestId("owner")).toHaveTextContent("User Full Name");
   });
 
   it("displays tags", () => {
