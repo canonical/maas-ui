@@ -1,5 +1,11 @@
 import type { Duration } from "date-fns";
-import { add, differenceInSeconds, secondsToMinutes } from "date-fns";
+import {
+  add,
+  differenceInSeconds,
+  secondsToMinutes,
+  intervalToDuration,
+} from "date-fns";
+import humanInterval from "human-interval";
 
 import type { Minutes, Seconds, TimeSpan } from "app/base/types";
 
@@ -34,3 +40,18 @@ export const timeSpanToSeconds = (timeSpan: TimeSpan | null): Seconds =>
 
 export const timeSpanToMinutes = (timeSpan: TimeSpan | null): Minutes =>
   durationToMinutes(timeSpanToDuration(timeSpan));
+
+export const secondsToDuration = (seconds: number | undefined): Duration => {
+  const now = new Date();
+  return intervalToDuration({
+    start: now,
+    end: add(now, { seconds: seconds }),
+  });
+};
+
+export const humanReadableToSeconds = (
+  humanTime: string
+): number | undefined => {
+  const millis = humanInterval(humanTime);
+  return millis ? millis / 1000 : undefined;
+};

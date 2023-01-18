@@ -78,6 +78,10 @@ const routes = [
     path: urls.settings.security.secretStorage,
   },
   {
+    title: "Session timeout",
+    path: urls.settings.security.sessionTimeout,
+  },
+  {
     title: "IPMI settings",
     path: urls.settings.security.ipmiSettings,
   },

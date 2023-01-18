@@ -588,6 +588,22 @@ describe("config selectors", () => {
     });
   });
 
+  describe("sessionLength", () => {
+    it("returns MAAS config for sessionLength", () => {
+      const state = rootStateFactory({
+        config: configStateFactory({
+          items: [
+            configFactory({
+              name: ConfigNames.SESSION_LENGTH,
+              value: 42069,
+            }),
+          ],
+        }),
+      });
+      expect(config.sessionLength(state)).toBe(42069);
+    });
+  });
+
   describe("tlsCertExpirationNotificationEnabled", () => {
     it("returns MAAS config for TLS cert expiration notification enabled", () => {
       const state = rootStateFactory({

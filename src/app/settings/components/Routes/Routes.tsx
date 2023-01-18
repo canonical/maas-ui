@@ -29,6 +29,7 @@ import ScriptsUpload from "app/settings/views/Scripts/ScriptsUpload";
 import IpmiSettings from "app/settings/views/Security/IpmiSettings";
 import SecretStorage from "app/settings/views/Security/SecretStorage";
 import SecurityProtocols from "app/settings/views/Security/SecurityProtocols";
+import SessionTimeout from "app/settings/views/Security/SessionTimeout";
 import StorageForm from "app/settings/views/Storage/StorageForm";
 import UserAdd from "app/settings/views/Users/UserAdd";
 import UserEdit from "app/settings/views/Users/UserEdit";
@@ -73,6 +74,10 @@ const Routes = (): JSX.Element => {
       <Route
         element={<SecretStorage />}
         path={getRelativeRoute(urls.settings.security.secretStorage, base)}
+      />
+      <Route
+        element={<SessionTimeout />}
+        path={getRelativeRoute(urls.settings.security.sessionTimeout, base)}
       />
       <Route
         element={<IpmiSettings />}
