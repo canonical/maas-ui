@@ -196,7 +196,7 @@ export const PoolSelect = ({
       hasToggleIcon
       position="left"
       toggleClassName="kvm-pool-select__toggle"
-      toggleLabel={disk.location}
+      toggleLabel={disk.location || "Select pool"}
     >
       {generateDropdownContent(pod, disk, requests, selectPool)}
     </ContextualMenu>

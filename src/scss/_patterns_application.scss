@@ -4,6 +4,7 @@
     grid-template-rows: auto 1fr auto;
   }
   .l-aside {
+    z-index: $side-panel-z-index;
     // TODO: remove .l-aside visibility workaround once https://github.com/canonical/vanilla-framework/issues/4629 is fixed
     @include vf-transition(
       $property: #{transform,

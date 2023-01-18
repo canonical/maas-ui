@@ -2,11 +2,10 @@ import * as React from "react";
 
 import {
   Button,
+  Card,
+  Col,
+  Row,
   Select,
-  Table,
-  TableCell,
-  TableHeader,
-  TableRow,
   Tooltip,
 } from "@canonical/react-components";
 import { useFormikContext } from "formik";
@@ -16,8 +15,8 @@ import type { ComposeFormValues, InterfaceField } from "../ComposeForm";
 
 import SubnetSelect from "./SubnetSelect";
 
+import Definition from "app/base/components/Definition";
 import FormikField from "app/base/components/FormikField";
-import TableActions from "app/base/components/TableActions";
 import fabricSelectors from "app/store/fabric/selectors";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod, PodDetails } from "app/store/pod/types";
@@ -55,7 +54,7 @@ const generateNewInterface = (
  */
 export const getPxeIconClass = (pod?: PodDetails, vlan?: VLAN): string => {
   if (!vlan || !pod) {
-    return "p-icon--placeholder";
+    return "p-icon--minus";
   }
   return pod.boot_vlans?.includes(vlan.id)
     ? "p-icon--success"
@@ -142,111 +141,99 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
           </span>
         </Button>
       </div>
-      <Table className="kvm-compose-interfaces-table p-form--table" responsive>
-        <thead>
-          <TableRow>
-            <TableHeader>Name</TableHeader>
-            <TableHeader>IP address</TableHeader>
-            <TableHeader>Space</TableHeader>
-            <TableHeader>Subnet</TableHeader>
-            <TableHeader>Fabric</TableHeader>
-            <TableHeader>VLAN</TableHeader>
-            <TableHeader>PXE</TableHeader>
-            <TableHeader className="u-align--right">Actions</TableHeader>
-          </TableRow>
-        </thead>
-        {interfaces.length >= 1 ? (
-          <tbody>
-            {interfaces.map((iface, i) => {
-              const subnet = allPodSubnets.find(
-                (subnet) => subnet.id === parseInt(iface.subnet)
-              );
-              const vlan = vlans.find((vlan) => vlan.id === subnet?.vlan);
-              const fabric = fabrics.find(
-                (fabric) => fabric.id === vlan?.fabric
-              );
+      {interfaces.length >= 1 ? (
+        interfaces.map((iface, i) => {
+          const subnet = allPodSubnets.find(
+            (subnet) => subnet.id === parseInt(iface.subnet)
+          );
+          const vlan = vlans.find((vlan) => vlan.id === subnet?.vlan);
+          const fabric = fabrics.find((fabric) => fabric.id === vlan?.fabric);
 
-              return (
-                <TableRow key={iface.id}>
-                  <TableCell data-heading="Name">
-                    <FormikField name={`interfaces[${i}].name`} type="text" />
-                  </TableCell>
-                  <TableCell data-heading="IP address">
-                    <FormikField
-                      name={`interfaces[${i}].ipAddress`}
-                      placeholder="Leave empty to auto-assign"
-                      type="text"
-                    />
-                  </TableCell>
-                  <TableCell data-heading="Space">
-                    <FormikField
-                      component={Select}
-                      name={`interfaces[${i}].space`}
-                      onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                        handleChange(e);
-                        setFieldValue(`interfaces[${i}].subnet`, "");
-                      }}
-                      options={[
-                        {
-                          label: "Any",
-                          value: "",
-                        },
-                        ...spaces.map((space) => ({
-                          key: space.id,
-                          label: space.name,
-                          value: space.id,
-                        })),
-                      ]}
-                    />
-                  </TableCell>
-                  <TableCell data-heading="Subnet">
-                    <SubnetSelect
-                      hostId={hostId}
-                      iface={iface}
-                      index={i}
-                      selectSubnet={(subnetID?: number) => {
-                        setFieldValue(`interfaces[${i}].subnet`, subnetID);
-                      }}
-                    />
-                  </TableCell>
-                  <TableCell
-                    className="u-align-non-field"
-                    data-heading="Fabric"
-                  >
-                    {fabric?.name || ""}
-                  </TableCell>
-                  <TableCell className="u-align-non-field" data-heading="VLAN">
-                    {vlan?.name || ""}
-                  </TableCell>
-                  <TableCell className="u-align-non-field" data-heading="PXE">
+          return (
+            <Card key={iface.id}>
+              <FormikField
+                label="Name"
+                name={`interfaces[${i}].name`}
+                type="text"
+              />
+              <FormikField
+                label="IP address"
+                name={`interfaces[${i}].ipAddress`}
+                placeholder="Leave empty to auto-assign"
+                type="text"
+              />
+              <FormikField
+                component={Select}
+                label="Space"
+                name={`interfaces[${i}].space`}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  handleChange(e);
+                  setFieldValue(`interfaces[${i}].subnet`, "");
+                }}
+                options={[
+                  {
+                    label: "Any",
+                    value: "",
+                  },
+                  ...spaces.map((space) => ({
+                    key: space.id,
+                    label: space.name,
+                    value: space.id,
+                  })),
+                ]}
+              />
+              <SubnetSelect
+                hostId={hostId}
+                iface={iface}
+                index={i}
+                selectSubnet={(subnetID?: number) => {
+                  setFieldValue(`interfaces[${i}].subnet`, subnetID);
+                }}
+              />
+              <Row>
+                <Col size={4}>
+                  <Definition description={fabric?.name || ""} label="Fabric" />
+                </Col>
+                <Col size={4}>
+                  <Definition description={vlan?.name || ""} label="VLAN" />
+                </Col>
+                <Col size={4}>
+                  <Definition label="PXE">
                     <i className={getPxeIconClass(pod, vlan)}></i>
-                  </TableCell>
-                  <TableCell
-                    className="u-align--right u-no-padding--right u-align-non-field"
-                    data-heading="Actions"
-                  >
-                    <TableActions
-                      deleteDisabled={!!composingPods.length}
-                      onDelete={() => removeInterface(iface.id)}
-                    />
-                  </TableCell>
-                </TableRow>
-              );
-            })}
-          </tbody>
-        ) : (
-          <tbody>
-            <TableRow data-testid="undefined-interface">
-              <TableCell data-heading="Name">
-                <em>default</em>
-              </TableCell>
-              <TableCell colSpan={7} data-heading="IP address">
-                Created by hypervisor at compose time
-              </TableCell>
-            </TableRow>
-          </tbody>
-        )}
-      </Table>
+                  </Definition>
+                </Col>
+              </Row>
+              <div className="u-align--right">
+                <Button
+                  disabled={!!composingPods.length}
+                  onClick={() => removeInterface(iface.id)}
+                  type="button"
+                >
+                  Delete
+                </Button>
+              </div>
+            </Card>
+          );
+        })
+      ) : (
+        <>
+          <Card data-testid="undefined-interface">
+            <Row>
+              <Col size={6}>
+                <Definition label="Name">
+                  <em>default</em>
+                </Definition>
+              </Col>
+              <Col size={6}>
+                <Definition label="IP address">
+                  Created by hypervisor at compose time
+                </Definition>
+              </Col>
+            </Row>
+          </Card>
+        </>
+      )}
+
       <Tooltip
         data-testid="define-interfaces"
         message={getTooltipMessage(hasSubnets, hasPxeSubnets)}

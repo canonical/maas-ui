@@ -6,28 +6,19 @@ $padding: 2 * $sph--small;
 $pxe-col-compensation: $pxe-col-width - $sph--small;
 
 @mixin KVMSubnetSelect {
+  .kvm-subnet-select__dropdown {
+    z-index: $side-panel-z-index + 1;
+  }
   .kvm-subnet-select {
     display: block;
     width: 100%;
 
-    .kvm-subnet-select__dropdown {
-      max-width: none;
-      min-width: 0;
-      width: calc(
-        #{$ratio-multiplier} * (100% + #{$padding}) + #{$pxe-col-compensation}
-      ) !important;
-
-      @media only screen and (max-width: $breakpoint-small) {
-        width: auto;
-      }
-    }
-
     .kvm-subnet-select__toggle {
+      @extend %vf-input-elements;
       &.has-icon {
         align-items: center;
         display: flex;
         justify-content: space-between;
-        margin-bottom: 0;
         padding-left: $sph--small;
         width: 100%;
 
@@ -38,6 +29,7 @@ $pxe-col-compensation: $pxe-col-width - $sph--small;
 
         > :nth-child(2) {
           flex-shrink: 0;
+          margin-right: 0;
         }
       }
 
@@ -47,6 +39,7 @@ $pxe-col-compensation: $pxe-col-width - $sph--small;
     }
 
     .kvm-subnet-select__subnet {
+      z-index: $side-panel-z-index + 1;
       align-items: center;
       display: flex;
       width: 100%;
