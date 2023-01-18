@@ -223,7 +223,7 @@ export const getUrlParam: URLSearchParams["get"] = (param: string) =>
 export const getTestState = (): RootState => {
   const config = configFactory({
     name: ConfigNames.SESSION_LENGTH,
-    value: 1209600,
+    value: 1209600, // This is the default session length for MAAS in seconds, equivalent to 14 days
   });
   const fabric = fabricFactory({ name: "pxe-fabric" });
   const nonBootVlan = vlanFactory({ fabric: fabric.id });
