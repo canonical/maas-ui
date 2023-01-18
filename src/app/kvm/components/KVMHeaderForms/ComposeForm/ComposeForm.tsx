@@ -14,7 +14,7 @@ import InterfacesTable from "./InterfacesTable";
 import StorageTable from "./StorageTable";
 
 import ActionForm from "app/base/components/ActionForm";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { hostnameValidation, RANGE_REGEX } from "app/base/validation";
 import { useActivePod } from "app/kvm/hooks";
 import { actions as domainActions } from "app/store/domain";
@@ -177,11 +177,11 @@ export const getDefaultPoolLocation = (pod: Pod): string => {
 };
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   hostId: Pod["id"];
 };
 
-const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
+const ComposeForm = ({ clearSidePanelContent, hostId }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
@@ -453,7 +453,7 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
           zone: `${zones[0]?.id}` || "",
         }}
         modelName="machine"
-        onCancel={clearHeaderContent}
+        onCancel={clearSidePanelContent}
         onSaveAnalytics={{
           action: "Submit",
           category: "KVM details action form",
@@ -493,7 +493,7 @@ const ComposeForm = ({ clearHeaderContent, hostId }: Props): JSX.Element => {
               NotificationSeverity.INFORMATION
             )
           );
-          clearHeaderContent();
+          clearSidePanelContent();
         }}
         processingCount={composingPods.length}
         selectedCount={1}

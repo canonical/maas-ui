@@ -57,6 +57,7 @@ const SessionTimeout = (): JSX.Element => {
   const sessionLength = useSelector(configSelectors.sessionLength) || undefined;
   const saved = useSelector(configSelectors.saved);
   const saving = useSelector(configSelectors.saving);
+  const errors = useSelector(configSelectors.errors);
 
   if (configLoading) {
     return <Spinner aria-label={Labels.Loading} text={Labels.Loading} />;
@@ -69,6 +70,7 @@ const SessionTimeout = (): JSX.Element => {
         buttonsAlign="left"
         buttonsBordered={false}
         cleanup={configActions.cleanup}
+        errors={errors}
         initialValues={{
           session_length: formatDuration(secondsToDuration(sessionLength)),
         }}
@@ -77,7 +79,7 @@ const SessionTimeout = (): JSX.Element => {
           category: "Security settings",
           label: "Session timeout form",
         }}
-        onSubmit={(values) => {
+        onSubmit={(values, { resetForm }) => {
           const sessionLengthInSeconds = humanReadableToSeconds(
             values.session_length
           );
@@ -87,7 +89,7 @@ const SessionTimeout = (): JSX.Element => {
                 session_length: sessionLengthInSeconds,
               })
             );
-          dispatch(configActions.cleanup());
+          resetForm({ values });
         }}
         resetOnSave
         saved={saved}

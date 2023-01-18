@@ -10,7 +10,7 @@ import type { SetSearchFilter } from "app/base/types";
 import LXDVMsSummaryCard from "app/kvm/components/LXDVMsSummaryCard";
 import LXDVMsTable from "app/kvm/components/LXDVMsTable";
 import { KVMHeaderViews } from "app/kvm/constants";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -21,7 +21,7 @@ type Props = {
   hostId: Pod["id"];
   searchFilter: string;
   setSearchFilter: SetSearchFilter;
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 const LXDHostVMs = ({
@@ -29,7 +29,7 @@ const LXDHostVMs = ({
   hostId,
   searchFilter,
   setSearchFilter,
-  setHeaderContent,
+  setSidePanelContent,
   ...wrapperProps
 }: Props): JSX.Element => {
   const pod = useSelector((state: RootState) =>
@@ -48,7 +48,7 @@ const LXDHostVMs = ({
         <LXDHostToolbar
           clusterId={clusterId}
           hostId={hostId}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
           setViewByNuma={setViewByNuma}
           title={isInCluster ? `VMs on ${pod.name}` : "VMs on this host"}
           viewByNuma={viewByNuma}
@@ -72,15 +72,15 @@ const LXDHostVMs = ({
               };
             }}
             onAddVMClick={() =>
-              setHeaderContent({
+              setSidePanelContent({
                 view: KVMHeaderViews.COMPOSE_VM,
                 extras: { hostId },
               })
             }
             pods={[pod.name]}
             searchFilter={searchFilter}
-            setHeaderContent={setHeaderContent}
             setSearchFilter={setSearchFilter}
+            setSidePanelContent={setSidePanelContent}
           />
         </Strip>
       </div>

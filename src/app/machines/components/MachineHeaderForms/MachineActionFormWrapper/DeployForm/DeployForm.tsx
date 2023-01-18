@@ -42,7 +42,7 @@ export type DeployFormValues = {
 type Props = MachineActionFormProps;
 
 export const DeployForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   machines,
   processingCount,
@@ -113,7 +113,7 @@ export const DeployForm = ({
         enableHwSync: false,
       }}
       modelName="machine"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
@@ -165,7 +165,7 @@ export const DeployForm = ({
           });
         }
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={DeploySchema}

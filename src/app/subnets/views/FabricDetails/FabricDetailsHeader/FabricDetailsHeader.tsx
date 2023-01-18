@@ -31,7 +31,7 @@ const FabricDetailsHeader = ({ fabric }: Props): JSX.Element => {
             ]
           : null
       }
-      headerContent={
+      sidePanelContent={
         showDeleteForm ? (
           <FabricDeleteForm
             closeForm={() => setShowDeleteForm(false)}

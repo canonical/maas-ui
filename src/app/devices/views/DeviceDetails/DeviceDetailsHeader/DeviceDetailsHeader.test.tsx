@@ -30,8 +30,8 @@ describe("DeviceDetailsHeader", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeviceDetailsHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
         systemId="abc123"
       />,
       { store }
@@ -47,8 +47,8 @@ describe("DeviceDetailsHeader", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeviceDetailsHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
         systemId="abc123"
       />,
       { store }
@@ -69,8 +69,8 @@ describe("DeviceDetailsHeader", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeviceDetailsHeader
-        headerContent={{ view: DeviceHeaderViews.DELETE_DEVICE }}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: DeviceHeaderViews.DELETE_DEVICE }}
         systemId="abc123"
       />,
       { store }
@@ -87,8 +87,8 @@ describe("DeviceDetailsHeader", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <DeviceDetailsHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
         systemId="abc123"
       />,
       { store }

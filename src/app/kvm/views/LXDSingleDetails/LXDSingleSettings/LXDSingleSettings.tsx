@@ -9,7 +9,7 @@ import DangerZoneCard from "./DangerZoneCard";
 import { useWindowTitle } from "app/base/hooks";
 import KVMConfigurationCard from "app/kvm/components/KVMConfigurationCard";
 import LXDHostToolbar from "app/kvm/components/LXDHostToolbar";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { isPodDetails } from "app/store/pod/utils";
@@ -23,7 +23,7 @@ import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
   id: Pod["id"];
-  setHeaderContent: KVMSetHeaderContent;
+  setSidePanelContent: KVMSetSidePanelContent;
 };
 
 export enum Label {
@@ -32,7 +32,7 @@ export enum Label {
 
 const LXDSingleSettings = ({
   id,
-  setHeaderContent,
+  setSidePanelContent,
 }: Props): JSX.Element | null => {
   const dispatch = useDispatch();
   const pod = useSelector((state: RootState) =>
@@ -71,7 +71,7 @@ const LXDSingleSettings = ({
             </p>
           </>
         }
-        setHeaderContent={setHeaderContent}
+        setSidePanelContent={setSidePanelContent}
       />
     </Strip>
   );

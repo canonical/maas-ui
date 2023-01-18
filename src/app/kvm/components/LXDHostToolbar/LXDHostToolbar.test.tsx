@@ -59,7 +59,7 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               setViewByNuma={jest.fn()}
               viewByNuma={false}
             />
@@ -85,7 +85,7 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               setViewByNuma={jest.fn()}
               viewByNuma={false}
             />
@@ -116,7 +116,7 @@ describe("LXDHostToolbar", () => {
             <LXDHostToolbar
               clusterId={2}
               hostId={1}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               setViewByNuma={jest.fn()}
               viewByNuma={false}
             />
@@ -152,7 +152,7 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               setViewByNuma={jest.fn()}
               viewByNuma={false}
             />
@@ -176,7 +176,7 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               setViewByNuma={jest.fn()}
               viewByNuma={false}
             />
@@ -199,7 +199,7 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               setViewByNuma={jest.fn()}
               viewByNuma={false}
             />
@@ -239,7 +239,7 @@ describe("LXDHostToolbar", () => {
           <CompatRouter>
             <LXDHostToolbar
               hostId={1}
-              setHeaderContent={jest.fn()}
+              setSidePanelContent={jest.fn()}
               setViewByNuma={jest.fn()}
               viewByNuma={false}
             />

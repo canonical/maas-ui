@@ -33,7 +33,7 @@ describe("RefreshForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <RefreshForm clearHeaderContent={jest.fn()} hostIds={[1]} />
+            <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1]} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -61,7 +61,7 @@ describe("RefreshForm", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <RefreshForm clearHeaderContent={jest.fn()} hostIds={[1, 2]} />
+            <RefreshForm clearSidePanelContent={jest.fn()} hostIds={[1, 2]} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

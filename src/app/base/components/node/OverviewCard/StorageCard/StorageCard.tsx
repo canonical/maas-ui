@@ -4,17 +4,17 @@ import { Link } from "react-router-dom";
 import TestResults from "app/base/components/node/TestResults";
 import { HardwareType } from "app/base/enum";
 import urls from "app/base/urls";
-import type { MachineSetHeaderContent } from "app/machines/types";
+import type { MachineSetSidePanelContent } from "app/machines/types";
 import type { ControllerDetails } from "app/store/controller/types";
 import type { MachineDetails } from "app/store/machine/types";
 import { nodeIsMachine } from "app/store/utils";
 
 type Props = {
   node: ControllerDetails | MachineDetails;
-  setHeaderContent?: MachineSetHeaderContent;
+  setSidePanelContent?: MachineSetSidePanelContent;
 };
 
-const StorageCard = ({ node, setHeaderContent }: Props): JSX.Element => (
+const StorageCard = ({ node, setSidePanelContent }: Props): JSX.Element => (
   <>
     <div className="overview-card__storage">
       <strong className="p-muted-heading u-flex--between u-no-margin--bottom">
@@ -29,11 +29,11 @@ const StorageCard = ({ node, setHeaderContent }: Props): JSX.Element => (
         ) : null}
       </h4>
     </div>
-    {nodeIsMachine(node) && setHeaderContent ? (
+    {nodeIsMachine(node) && setSidePanelContent ? (
       <TestResults
         hardwareType={HardwareType.Storage}
         machine={node}
-        setHeaderContent={setHeaderContent}
+        setSidePanelContent={setSidePanelContent}
       />
     ) : (
       <div className="overview-card__storage-tests">

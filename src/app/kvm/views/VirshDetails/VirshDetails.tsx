@@ -13,7 +13,7 @@ import ModelNotFound from "app/base/components/ModelNotFound";
 import { useGetURLId } from "app/base/hooks/urls";
 import urls from "app/base/urls";
 import { useActivePod, useKVMDetailsRedirect } from "app/kvm/hooks";
-import type { KVMHeaderContent } from "app/kvm/types";
+import type { KVMSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import { PodMeta } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
@@ -31,9 +31,8 @@ const VirshDetails = (): JSX.Element => {
     podSelectors.getById(state, id)
   );
   const loading = useSelector(podSelectors.loading);
-  const [headerContent, setHeaderContent] = useState<KVMHeaderContent | null>(
-    null
-  );
+  const [sidePanelContent, setSidePanelContent] =
+    useState<KVMSidePanelContent | null>(null);
   useActivePod(id);
   const redirectURL = useKVMDetailsRedirect(id);
 
@@ -58,9 +57,9 @@ const VirshDetails = (): JSX.Element => {
       aria-label={Label.Title}
       header={
         <VirshDetailsHeader
-          headerContent={headerContent}
           id={id}
-          setHeaderContent={setHeaderContent}
+          setSidePanelContent={setSidePanelContent}
+          sidePanelContent={sidePanelContent}
         />
       }
     >

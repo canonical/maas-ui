@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DeleteForm from "app/base/components/node/DeleteForm";
 import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrapper";
 import SetZoneForm from "app/base/components/node/SetZoneForm";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import urls from "app/base/urls";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
@@ -14,14 +14,14 @@ import { kebabToCamelCase } from "app/utils";
 
 type Props = {
   action: DeviceActions;
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   devices: Device[];
   viewingDetails: boolean;
 };
 
 export const ActionFormWrapper = ({
   action,
-  clearHeaderContent,
+  clearSidePanelContent,
   devices,
   viewingDetails,
 }: Props): JSX.Element => {
@@ -41,7 +41,7 @@ export const ActionFormWrapper = ({
     action === NodeActions.DELETE ? deleting.length : settingZone.length;
   const commonNodeFormProps = {
     cleanup: deviceActions.cleanup,
-    clearHeaderContent,
+    clearSidePanelContent,
     errors,
     modelName: "device",
     nodes: devices,
@@ -52,7 +52,7 @@ export const ActionFormWrapper = ({
   return (
     <NodeActionFormWrapper
       action={action}
-      clearHeaderContent={clearHeaderContent}
+      clearSidePanelContent={clearSidePanelContent}
       nodeType="device"
       nodes={devices}
       onUpdateSelected={(deviceIDs) =>

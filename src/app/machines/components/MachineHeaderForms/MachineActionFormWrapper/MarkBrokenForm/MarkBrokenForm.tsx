@@ -23,7 +23,7 @@ type MarkBrokenFormValues = {
 type Props = MachineActionFormProps;
 
 export const MarkBrokenForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   machines,
   processingCount,
@@ -53,7 +53,7 @@ export const MarkBrokenForm = ({
         comment: "",
       }}
       modelName="machine"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
@@ -76,7 +76,7 @@ export const MarkBrokenForm = ({
           });
         }
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={MarkBrokenSchema}

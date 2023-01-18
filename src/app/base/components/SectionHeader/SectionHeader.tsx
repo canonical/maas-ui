@@ -12,7 +12,7 @@ import type { DataTestElement } from "app/base/types";
 export type Props<P = LinkProps> = {
   buttons?: JSX.Element[] | null;
   className?: ClassName;
-  headerContent?: ReactNode | null;
+  sidePanelContent?: ReactNode | null;
   sidePanelTitle?: string | null;
   headerSize?: "wide";
   loading?: boolean;
@@ -62,7 +62,7 @@ const generateSubtitle = (
 const SectionHeader = <P,>({
   buttons = [],
   className,
-  headerContent,
+  sidePanelContent,
   sidePanelTitle,
   headerSize,
   loading,
@@ -108,7 +108,7 @@ const SectionHeader = <P,>({
             loading
           )}
         </div>
-        {buttons?.length && !headerContent ? (
+        {buttons?.length && !sidePanelContent ? (
           <List
             className="section-header__buttons"
             data-testid="section-header-buttons"
@@ -121,7 +121,7 @@ const SectionHeader = <P,>({
         ) : null}
       </div>
       <AppSidePanel
-        content={headerContent}
+        content={sidePanelContent}
         size={headerSize}
         title={sidePanelTitle}
       />

@@ -30,7 +30,7 @@ const ReleaseSchema = Yup.object().shape({
 type Props = MachineActionFormProps;
 
 export const ReleaseForm = ({
-  clearHeaderContent,
+  clearSidePanelContent,
   errors,
   machines,
   processingCount,
@@ -67,7 +67,7 @@ export const ReleaseForm = ({
         secureErase: (enableErase && secureErase) || false,
       }}
       modelName="machine"
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Submit",
         category: `Machine ${viewingDetails ? "details" : "list"} action form`,
@@ -95,7 +95,7 @@ export const ReleaseForm = ({
           });
         }
       }}
-      onSuccess={clearHeaderContent}
+      onSuccess={clearSidePanelContent}
       processingCount={processingCount}
       selectedCount={machines ? machines.length : selectedCount ?? 0}
       validationSchema={ReleaseSchema}

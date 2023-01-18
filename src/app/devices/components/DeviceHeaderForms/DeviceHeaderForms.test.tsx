@@ -38,8 +38,8 @@ describe("DeviceHeaderForms", () => {
     renderWithBrowserRouter(
       <DeviceHeaderForms
         devices={[]}
-        headerContent={{ view: DeviceHeaderViews.ADD_DEVICE }}
-        setHeaderContent={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: DeviceHeaderViews.ADD_DEVICE }}
       />,
       { store }
     );

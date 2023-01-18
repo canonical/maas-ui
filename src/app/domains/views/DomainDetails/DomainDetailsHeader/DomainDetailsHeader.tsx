@@ -80,7 +80,8 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
   return (
     <SectionHeader
       buttons={buttons}
-      headerContent={
+      loading={!domain}
+      sidePanelContent={
         formOpen === null ? null : (
           <>
             {formOpen === "delete" && (
@@ -92,7 +93,6 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
           </>
         )
       }
-      loading={!domain}
       subtitle={`${pluralizeString("host", hostsCount, "")}${
         hostsCount > 1 ? "; " : ""
       }${pluralizeString(

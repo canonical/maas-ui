@@ -66,7 +66,7 @@ describe("SelectProjectForm", () => {
         >
           <CompatRouter>
             <SelectProjectForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setStep={jest.fn()}
               setSubmissionErrors={jest.fn()}
@@ -94,7 +94,7 @@ describe("SelectProjectForm", () => {
         >
           <CompatRouter>
             <SelectProjectForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setStep={jest.fn()}
               setSubmissionErrors={jest.fn()}
@@ -130,7 +130,7 @@ describe("SelectProjectForm", () => {
         >
           <CompatRouter>
             <SelectProjectForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setStep={jest.fn()}
               setSubmissionErrors={jest.fn()}
@@ -176,7 +176,7 @@ describe("SelectProjectForm", () => {
         >
           <CompatRouter>
             <SelectProjectForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setStep={jest.fn()}
               setSubmissionErrors={jest.fn()}
@@ -220,7 +220,7 @@ describe("SelectProjectForm", () => {
         >
           <CompatRouter>
             <SelectProjectForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setStep={setStep}
               setSubmissionErrors={setSubmissionErrors}

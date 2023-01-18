@@ -8,7 +8,7 @@ import { Link } from "react-router-dom-v5-compat";
 import Switch from "app/base/components/Switch";
 import { useSendAnalytics } from "app/base/hooks";
 import urls from "app/base/urls";
-import type { KVMSetHeaderContent } from "app/kvm/types";
+import type { KVMSetSidePanelContent } from "app/kvm/types";
 import podSelectors from "app/store/pod/selectors";
 import type { Pod } from "app/store/pod/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -19,7 +19,7 @@ import type { VMCluster } from "app/store/vmcluster/types";
 type Props = {
   clusterId?: VMCluster["id"];
   hostId: Pod["id"];
-  setHeaderContent?: KVMSetHeaderContent;
+  setSidePanelContent?: KVMSetSidePanelContent;
   setViewByNuma?: (viewByNuma: boolean) => void;
   showBasic?: boolean;
   title?: string;
@@ -29,7 +29,7 @@ type Props = {
 const LXDHostToolbar = ({
   clusterId,
   hostId,
-  setHeaderContent,
+  setSidePanelContent,
   setViewByNuma,
   showBasic,
   title,
@@ -95,7 +95,7 @@ const LXDHostToolbar = ({
         <p className="u-text--muted u-no-margin u-no-padding">LXD version:</p>
         <p className="u-no-margin u-no-padding">{pod.version}</p>
       </div>
-      {setHeaderContent && !showBasic ? (
+      {setSidePanelContent && !showBasic ? (
         <>
           <div className="lxd-host-toolbar__block u-nudge-down--x-small">
             <p className="u-text--muted u-no-margin u-no-padding">

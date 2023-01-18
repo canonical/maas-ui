@@ -73,7 +73,7 @@ describe("CredentialsForm", () => {
         >
           <CompatRouter>
             <CredentialsForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={setNewPodValues}
               setStep={jest.fn()}
@@ -128,7 +128,7 @@ describe("CredentialsForm", () => {
         >
           <CompatRouter>
             <CredentialsForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={newPodValues}
               setNewPodValues={setNewPodValues}
               setStep={jest.fn()}
@@ -189,7 +189,7 @@ describe("CredentialsForm", () => {
         >
           <CompatRouter>
             <CredentialsForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={{
                 certificate: "",
                 key: "",
@@ -226,7 +226,7 @@ describe("CredentialsForm", () => {
         >
           <CompatRouter>
             <CredentialsForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={{
                 certificate: "",
                 key: "",
@@ -261,7 +261,7 @@ describe("CredentialsForm", () => {
         >
           <CompatRouter>
             <CredentialsForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={{
                 certificate: "certificate",
                 key: "key",
@@ -298,7 +298,7 @@ describe("CredentialsForm", () => {
         >
           <CompatRouter>
             <CredentialsForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={{
                 certificate: "certificate",
                 key: "key",
@@ -341,7 +341,7 @@ describe("CredentialsForm", () => {
         >
           <CompatRouter>
             <CredentialsForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={{
                 certificate: "certificate",
                 key: "key",
@@ -377,7 +377,7 @@ describe("CredentialsForm", () => {
         >
           <CompatRouter>
             <CredentialsForm
-              clearHeaderContent={jest.fn()}
+              clearSidePanelContent={jest.fn()}
               newPodValues={{
                 certificate: "certificate",
                 key: "key",

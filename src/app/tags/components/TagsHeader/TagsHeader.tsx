@@ -4,12 +4,15 @@ import MachinesHeader from "app/base/components/node/MachinesHeader";
 import { useFetchMachineCount } from "app/store/machine/utils/hooks";
 import TagHeaderForms from "app/tags/components/TagsHeader/TagHeaderForms";
 import { TagHeaderViews } from "app/tags/constants";
-import type { TagHeaderContent, TagSetHeaderContent } from "app/tags/types";
+import type {
+  TagSidePanelContent,
+  TagSetSidePanelContent,
+} from "app/tags/types";
 import { TagViewState } from "app/tags/types";
 
 export type Props = {
-  headerContent: TagHeaderContent | null;
-  setHeaderContent: TagSetHeaderContent;
+  sidePanelContent: TagSidePanelContent | null;
+  setSidePanelContent: TagSetSidePanelContent;
   tagViewState?: TagViewState | null;
 };
 
@@ -19,10 +22,10 @@ export enum Label {
 }
 
 export const getHeaderTitle = (
-  headerContent: TagHeaderContent | null
+  sidePanelContent: TagSidePanelContent | null
 ): string => {
-  if (headerContent) {
-    const [, name] = headerContent.view;
+  if (sidePanelContent) {
+    const [, name] = sidePanelContent.view;
     switch (name) {
       case TagHeaderViews.AddTag[1]:
         return "Create new tag";
@@ -34,8 +37,8 @@ export const getHeaderTitle = (
 };
 
 export const TagsHeader = ({
-  headerContent,
-  setHeaderContent,
+  sidePanelContent,
+  setSidePanelContent,
   tagViewState,
 }: Props): JSX.Element => {
   const { machineCount } = useFetchMachineCount();
@@ -49,23 +52,23 @@ export const TagsHeader = ({
               <Button
                 appearance="positive"
                 onClick={() =>
-                  setHeaderContent({ view: TagHeaderViews.AddTag })
+                  setSidePanelContent({ view: TagHeaderViews.AddTag })
                 }
               >
                 {Label.CreateButton}
               </Button>,
             ]
       }
-      headerContent={
-        headerContent && (
+      machineCount={machineCount}
+      sidePanelContent={
+        sidePanelContent && (
           <TagHeaderForms
-            headerContent={headerContent}
-            setHeaderContent={setHeaderContent}
+            setSidePanelContent={setSidePanelContent}
+            sidePanelContent={sidePanelContent}
           />
         )
       }
-      machineCount={machineCount}
-      sidePanelTitle={getHeaderTitle(headerContent)}
+      sidePanelTitle={getHeaderTitle(sidePanelContent)}
       title="Machines"
     />
   );

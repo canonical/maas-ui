@@ -3,14 +3,14 @@ import { useEffect } from "react";
 
 import NodeActionWarning from "app/base/components/node/NodeActionWarning";
 import { useCycled, useScrollOnRender } from "app/base/hooks";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import type { Node, NodeActions } from "app/store/types/node";
 import { canOpenActionForm } from "app/store/utils";
 
 type Props = {
   action: NodeActions;
   children: ReactNode;
-  clearHeaderContent?: ClearHeaderContent;
+  clearSidePanelContent?: ClearSidePanelContent;
   nodes: Node[];
   nodeType: string;
   processingCount: number;
@@ -21,7 +21,7 @@ type Props = {
 export const NodeActionFormWrapper = ({
   action,
   children,
-  clearHeaderContent,
+  clearSidePanelContent,
   nodes,
   nodeType,
   onUpdateSelected,
@@ -46,9 +46,9 @@ export const NodeActionFormWrapper = ({
   useEffect(() => {
     if (nodes.length === 0) {
       // All the nodes were deselected so close the form.
-      clearHeaderContent?.();
+      clearSidePanelContent?.();
     }
-  }, [clearHeaderContent, nodes.length]);
+  }, [clearSidePanelContent, nodes.length]);
 
   return (
     <div ref={onRenderRef}>

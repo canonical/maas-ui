@@ -40,7 +40,10 @@ describe("KVMListHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+            <KVMListHeader
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -55,7 +58,10 @@ describe("KVMListHeader", () => {
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
-            <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+            <KVMListHeader
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -73,7 +79,10 @@ describe("KVMListHeader", () => {
           initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
         >
           <CompatRouter>
-            <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+            <KVMListHeader
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -91,7 +100,10 @@ describe("KVMListHeader", () => {
           initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
         >
           <CompatRouter>
-            <KVMListHeader headerContent={null} setHeaderContent={jest.fn()} />
+            <KVMListHeader
+              setSidePanelContent={jest.fn()}
+              sidePanelContent={null}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -102,7 +114,7 @@ describe("KVMListHeader", () => {
   });
 
   it("can open the add LXD form at the LXD URL", () => {
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -111,8 +123,8 @@ describe("KVMListHeader", () => {
         >
           <CompatRouter>
             <KVMListHeader
-              headerContent={null}
-              setHeaderContent={setHeaderContent}
+              setSidePanelContent={setSidePanelContent}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -122,13 +134,13 @@ describe("KVMListHeader", () => {
       "Add LXD host"
     );
     wrapper.find("button[data-testid='add-kvm']").simulate("click");
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.ADD_LXD_HOST,
     });
   });
 
   it("can open the add Virsh form at the Virsh URL", () => {
-    const setHeaderContent = jest.fn();
+    const setSidePanelContent = jest.fn();
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -137,8 +149,8 @@ describe("KVMListHeader", () => {
         >
           <CompatRouter>
             <KVMListHeader
-              headerContent={null}
-              setHeaderContent={setHeaderContent}
+              setSidePanelContent={setSidePanelContent}
+              sidePanelContent={null}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -148,7 +160,7 @@ describe("KVMListHeader", () => {
       "Add Virsh host"
     );
     wrapper.find("button[data-testid='add-kvm']").simulate("click");
-    expect(setHeaderContent).toHaveBeenCalledWith({
+    expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.ADD_VIRSH_HOST,
     });
   });

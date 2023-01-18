@@ -20,7 +20,7 @@ describe("NodeActionFormWrapper", () => {
     const wrapper = mount(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearHeaderContent={jest.fn()}
+        clearSidePanelContent={jest.fn()}
         nodeType="node"
         nodes={nodes}
         onUpdateSelected={jest.fn()}
@@ -45,7 +45,7 @@ describe("NodeActionFormWrapper", () => {
     const wrapper = mount(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearHeaderContent={jest.fn()}
+        clearSidePanelContent={jest.fn()}
         nodeType="node"
         nodes={nodes}
         onUpdateSelected={jest.fn()}
@@ -73,7 +73,7 @@ describe("NodeActionFormWrapper", () => {
     const wrapper = mount(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearHeaderContent={jest.fn()}
+        clearSidePanelContent={jest.fn()}
         nodeType="node"
         nodes={nodes}
         onUpdateSelected={jest.fn()}
@@ -99,7 +99,7 @@ describe("NodeActionFormWrapper", () => {
     const wrapper = mount(
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearHeaderContent={jest.fn()}
+        clearSidePanelContent={jest.fn()}
         nodeType="node"
         nodes={nodes}
         onUpdateSelected={onUpdateSelected}
@@ -116,11 +116,11 @@ describe("NodeActionFormWrapper", () => {
   });
 
   it("clears header content if no nodes are provided", () => {
-    const clearHeaderContent = jest.fn();
+    const clearSidePanelContent = jest.fn();
     const Proxy = ({ nodes }: { nodes: Node[] }) => (
       <NodeActionFormWrapper
         action={NodeActions.ABORT}
-        clearHeaderContent={clearHeaderContent}
+        clearSidePanelContent={clearSidePanelContent}
         nodeType="node"
         nodes={nodes}
         onUpdateSelected={jest.fn()}
@@ -133,12 +133,12 @@ describe("NodeActionFormWrapper", () => {
     // Mount with one node selected.
     const wrapper = mount(<Proxy nodes={[machineFactory()]} />);
 
-    expect(clearHeaderContent).not.toHaveBeenCalled();
+    expect(clearSidePanelContent).not.toHaveBeenCalled();
 
     // Update with no nodes selected - clear header content should be called.
     wrapper.setProps({ nodes: [] });
     wrapper.update();
 
-    expect(clearHeaderContent).toHaveBeenCalled();
+    expect(clearSidePanelContent).toHaveBeenCalled();
   });
 });

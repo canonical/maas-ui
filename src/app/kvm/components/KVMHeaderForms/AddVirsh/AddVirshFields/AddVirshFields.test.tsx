@@ -80,7 +80,7 @@ describe("AddVirshFields", () => {
           ]}
         >
           <CompatRouter>
-            <AddVirsh clearHeaderContent={jest.fn()} />
+            <AddVirsh clearSidePanelContent={jest.fn()} />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

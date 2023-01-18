@@ -6,7 +6,7 @@ import NodeActionFormWrapper from "app/base/components/node/NodeActionFormWrappe
 import SetZoneForm from "app/base/components/node/SetZoneForm";
 import TestForm from "app/base/components/node/TestForm";
 import type { HardwareType } from "app/base/enum";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import urls from "app/base/urls";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors, {
@@ -21,7 +21,7 @@ import { kebabToCamelCase } from "app/utils";
 type Props = {
   action: ControllerActions;
   applyConfiguredNetworking?: boolean;
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
   hardwareType?: HardwareType;
   controllers: Controller[];
   viewingDetails: boolean;
@@ -42,7 +42,7 @@ const getProcessingCount = (
 export const ControllerActionFormWrapper = ({
   action,
   applyConfiguredNetworking,
-  clearHeaderContent,
+  clearSidePanelContent,
   hardwareType,
   controllers,
   viewingDetails,
@@ -67,7 +67,7 @@ export const ControllerActionFormWrapper = ({
   );
   const commonNodeFormProps = {
     cleanup: controllerActions.cleanup,
-    clearHeaderContent,
+    clearSidePanelContent,
     errors,
     modelName: "controller",
     nodes: controllers,
@@ -143,7 +143,7 @@ export const ControllerActionFormWrapper = ({
   return (
     <NodeActionFormWrapper
       action={action}
-      clearHeaderContent={clearHeaderContent}
+      clearSidePanelContent={clearSidePanelContent}
       nodeType="controller"
       nodes={controllers}
       onUpdateSelected={(controllerIDs) =>

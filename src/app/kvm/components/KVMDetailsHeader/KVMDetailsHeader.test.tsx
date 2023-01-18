@@ -14,12 +14,12 @@ describe("KVMDetailsHeader", () => {
   it("renders header forms with extra title blocks if header content has been selected", () => {
     renderWithBrowserRouter(
       <KVMDetailsHeader
-        headerContent={{
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{
           view: KVMHeaderViews.COMPOSE_VM,
           extras: { hostId: 1 },
         }}
-        setHeaderContent={jest.fn()}
-        setSearchFilter={jest.fn()}
         tabLinks={[]}
         title="Title"
         titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}
@@ -39,9 +39,9 @@ describe("KVMDetailsHeader", () => {
   it("renders extra title blocks if no header content has been selected", () => {
     renderWithBrowserRouter(
       <KVMDetailsHeader
-        headerContent={null}
-        setHeaderContent={jest.fn()}
         setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
         tabLinks={[]}
         title="Title"
         titleBlocks={[{ title: "Title", subtitle: "Subtitle" }]}

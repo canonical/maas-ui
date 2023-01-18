@@ -12,7 +12,7 @@ import FormikField from "app/base/components/FormikField";
 import FormikForm from "app/base/components/FormikForm";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { useAddMessage } from "app/base/hooks";
-import type { ClearHeaderContent } from "app/base/types";
+import type { ClearSidePanelContent } from "app/base/types";
 import { hostnameValidation, MAC_ADDRESS_REGEX } from "app/base/validation";
 import { actions as deviceActions } from "app/store/device";
 import deviceSelectors from "app/store/device/selectors";
@@ -25,7 +25,7 @@ import { actions as zoneActions } from "app/store/zone";
 import zoneSelectors from "app/store/zone/selectors";
 
 type Props = {
-  clearHeaderContent: ClearHeaderContent;
+  clearSidePanelContent: ClearSidePanelContent;
 };
 
 const AddDeviceSchema = Yup.object().shape({
@@ -55,7 +55,9 @@ const AddDeviceSchema = Yup.object().shape({
   zone: Yup.string().required("Zone required"),
 });
 
-export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
+export const AddDeviceForm = ({
+  clearSidePanelContent,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const devicesSaved = useSelector(deviceSelectors.saved);
   const devicesSaving = useSelector(deviceSelectors.saving);
@@ -113,7 +115,7 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
         ],
         zone: (zones.length && zones[0].name) || "",
       }}
-      onCancel={clearHeaderContent}
+      onCancel={clearSidePanelContent}
       onSaveAnalytics={{
         action: "Add device",
         category: "Device list",
@@ -160,7 +162,7 @@ export const AddDeviceForm = ({ clearHeaderContent }: Props): JSX.Element => {
       }}
       onSuccess={() => {
         if (!secondarySubmit) {
-          clearHeaderContent();
+          clearSidePanelContent();
         }
         setSecondarySubmit(false);
       }}
