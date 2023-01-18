@@ -72,6 +72,11 @@ const SessionTimeout = (): JSX.Element => {
         initialValues={{
           session_length: formatDuration(secondsToDuration(sessionLength)),
         }}
+        onSaveAnalytics={{
+          action: "Saved",
+          category: "Security settings",
+          label: "Session timeout form",
+        }}
         onSubmit={(values) => {
           const sessionLengthInSeconds = humanReadableToSeconds(
             values.session_length
