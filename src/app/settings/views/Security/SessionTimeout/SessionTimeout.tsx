@@ -69,6 +69,7 @@ const SessionTimeout = (): JSX.Element => {
         buttonsAlign="left"
         buttonsBordered={false}
         cleanup={configActions.cleanup}
+        errors={errors}
         initialValues={{
           session_length: formatDuration(secondsToDuration(sessionLength)),
         }}
