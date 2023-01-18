@@ -11,7 +11,7 @@ import type {
   DeviceSidePanelContent,
   DeviceSetSidePanelContent,
 } from "app/devices/types";
-import { getHeaderSize, getHeaderTitle } from "app/devices/utils";
+import { getHeaderTitle } from "app/devices/utils";
 import deviceSelectors from "app/store/device/selectors";
 
 type Props = {
@@ -57,9 +57,6 @@ const DeviceListHeader = ({
           showCount
         />,
       ]}
-      headerSize={
-        sidePanelContent ? getHeaderSize(sidePanelContent) : undefined
-      }
       sidePanelContent={
         sidePanelContent && (
           <DeviceHeaderForms

@@ -113,56 +113,54 @@ describe("AddDeviceForm", () => {
       screen.getByRole("button", { name: "Add interface" })
     );
 
-    const rows = screen.getAllByTestId("interface-row");
+    const cards = screen.getAllByTestId("interface-card");
 
-    const getFieldFromRow = (index: number, name: string, type: string) => {
-      return within(
-        within(rows[index]).getByRole("gridcell", { name: name })
-      ).getByRole(type);
+    const getFieldFromCard = (index: number, name: string, type: string) => {
+      return within(cards[index]).getByRole(type, { name });
     };
 
     await userEvent.type(
-      getFieldFromRow(0, "* MAC address", "textbox"),
+      getFieldFromCard(0, "MAC address", "textbox"),
       "11:11:11:11:11:11"
     );
 
     await userEvent.selectOptions(
-      getFieldFromRow(0, "* IP assignment", "combobox"),
+      getFieldFromCard(0, "IP assignment", "combobox"),
       DeviceIpAssignment.STATIC
     );
 
     await userEvent.selectOptions(
-      getFieldFromRow(0, "Subnet", "combobox"),
+      getFieldFromCard(0, "Subnet", "combobox"),
       "0"
     );
 
     await userEvent.type(
-      getFieldFromRow(0, "IP address", "textbox"),
+      getFieldFromCard(0, "IP address", "textbox"),
       "192.168.1.1"
     );
 
     await userEvent.type(
-      getFieldFromRow(1, "* MAC address", "textbox"),
+      getFieldFromCard(1, "MAC address", "textbox"),
       "22:22:22:22:22:22"
     );
 
     await userEvent.selectOptions(
-      getFieldFromRow(1, "* IP assignment", "combobox"),
+      getFieldFromCard(1, "IP assignment", "combobox"),
       DeviceIpAssignment.EXTERNAL
     );
 
     await userEvent.type(
-      getFieldFromRow(1, "IP address", "textbox"),
+      getFieldFromCard(1, "IP address", "textbox"),
       "192.168.1.2"
     );
 
     await userEvent.type(
-      getFieldFromRow(2, "* MAC address", "textbox"),
+      getFieldFromCard(2, "MAC address", "textbox"),
       "33:33:33:33:33:33"
     );
 
     await userEvent.selectOptions(
-      getFieldFromRow(2, "* IP assignment", "combobox"),
+      getFieldFromCard(2, "IP assignment", "combobox"),
       DeviceIpAssignment.DYNAMIC
     );
 
