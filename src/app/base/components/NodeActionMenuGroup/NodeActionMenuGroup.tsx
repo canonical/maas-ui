@@ -228,26 +228,22 @@ export const NodeActionMenuGroup = ({
       {menus.map((menu) => (
         <>{menu}</>
       ))}
-      {singleNode && (
-        <span className="p-contextual-menu p-contextual-menu--center">
-          <Switch
-            checked={isNodeLocked}
-            disabled={
-              nodes &&
-              !(
-                canOpenActionForm(nodes[0], NodeActions.LOCK) ||
-                canOpenActionForm(nodes[0], NodeActions.UNLOCK)
-              )
-            }
-            label="Lock"
-            onChange={() => {
-              onActionClick(
-                isNodeLocked ? NodeActions.UNLOCK : NodeActions.LOCK
-              );
-            }}
-          />
-        </span>
-      )}
+      {singleNode &&
+        nodes &&
+        (canOpenActionForm(nodes[0], NodeActions.LOCK) ||
+          canOpenActionForm(nodes[0], NodeActions.UNLOCK)) && (
+          <span className="p-contextual-menu p-contextual-menu--center">
+            <Switch
+              checked={isNodeLocked}
+              label="Lock"
+              onChange={() => {
+                onActionClick(
+                  isNodeLocked ? NodeActions.UNLOCK : NodeActions.LOCK
+                );
+              }}
+            />
+          </span>
+        )}
       <span className="p-contextual-menu p-contextual-menu--center">
         <Button onClick={() => onActionClick(NodeActions.DELETE)}>
           <Icon name="delete" />
