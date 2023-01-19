@@ -1,0 +1,25 @@
+@mixin NodeActionMenuGroup {
+  .p-button-group {
+    display: inline-flex;
+    margin: 0 0 0 $spv--large;
+    flex-wrap: wrap;
+    border: 1px solid #d9d9d9;
+
+    .p-button {
+      .p-icon--delete {
+        margin-right: $spv--x-small;
+      }
+    }
+
+    .p-contextual-menu, .p-button, .p-switch {
+      margin: 0 0 0 0;
+      padding: 0 $spv--small 0 $spv--small;
+      border: 0;
+    }
+
+    .p-contextual-menu + .p-contextual-menu, .p-contextual-menu + .p-switch, .p-contextual-menu + .p-button, .p-switch + .p-button {
+      border-left: 1px solid #d9d9d9;
+      border-radius: 0;
+    }
+  }
+}

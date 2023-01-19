@@ -10,6 +10,7 @@ import AppSidePanel from "app/base/components/AppSidePanel";
 import type { DataTestElement } from "app/base/types";
 
 export type Props<P = LinkProps> = {
+  actionMenuGroup?: JSX.Element | null;
   buttons?: JSX.Element[] | null;
   className?: ClassName;
   sidePanelContent?: ReactNode | null;
@@ -60,6 +61,7 @@ const generateSubtitle = (
 };
 
 const SectionHeader = <P,>({
+  actionMenuGroup,
   buttons = [],
   className,
   sidePanelContent,
@@ -125,6 +127,7 @@ const SectionHeader = <P,>({
         size={headerSize}
         title={sidePanelTitle}
       />
+      {actionMenuGroup && <>{actionMenuGroup}</>}
       {tabLinks?.length ? (
         <div className="section-header__tabs" data-testid="section-header-tabs">
           <hr className="u-no-margin--bottom" />

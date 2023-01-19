@@ -6,7 +6,7 @@ import { Link } from "react-router-dom-v5-compat";
 
 import MachineName from "./MachineName";
 
-import NodeActionMenu from "app/base/components/NodeActionMenu";
+import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
 import PowerIcon from "app/base/components/PowerIcon";
 import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -68,30 +68,29 @@ const MachineHeader = ({
 
   return (
     <SectionHeader
-      buttons={[
-        <NodeActionMenu
-          alwaysShowLifecycle
-          excludeActions={[NodeActions.IMPORT_IMAGES]}
-          filterActions
-          hasSelection={true}
-          key="action-dropdown"
-          nodeDisplay="machine"
-          nodes={[machine]}
-          onActionClick={(action) => {
-            sendAnalytics(
-              "Machine details action form",
-              getNodeActionTitle(action),
-              "Open"
-            );
-            const view = Object.values(MachineHeaderViews).find(
-              ([, actionName]) => actionName === action
-            );
-            if (view) {
-              setSidePanelContent({ view });
-            }
-          }}
-        />,
-      ]}
+      // actionMenuGroup={
+      //   <NodeActionMenuGroup
+      //     alwaysShowLifecycle
+      //     excludeActions={[NodeActions.IMPORT_IMAGES]}
+      //     filterActions
+      //     hasSelection={true}
+      //     nodeDisplay="machine"
+      //     nodes={[machine]}
+      //     onActionClick={(action) => {
+      //       sendAnalytics(
+      //         "Machine details action form",
+      //         getNodeActionTitle(action),
+      //         "Open"
+      //       );
+      //       const view = Object.values(MachineHeaderViews).find(
+      //         ([, actionName]) => actionName === action
+      //       );
+      //       if (view) {
+      //         setSidePanelContent({ view });
+      //       }
+      //     }}
+      //   />
+      // }
       sidePanelContent={
         sidePanelContent ? (
           <MachineHeaderForms
@@ -144,6 +143,30 @@ const MachineHeader = ({
                 ]}
                 positionNode={powerMenuRef?.current}
                 title="Take action:"
+              />
+            </div>
+            <div>
+              <NodeActionMenuGroup
+                alwaysShowLifecycle
+                excludeActions={[NodeActions.IMPORT_IMAGES]}
+                hasSelection={true}
+                isNodeLocked={machine.locked}
+                nodeDisplay="machine"
+                nodes={[machine]}
+                onActionClick={(action) => {
+                  sendAnalytics(
+                    "Machine details action form",
+                    getNodeActionTitle(action),
+                    "Open"
+                  );
+                  const view = Object.values(MachineHeaderViews).find(
+                    ([, actionName]) => actionName === action
+                  );
+                  if (view) {
+                    setSidePanelContent({ view });
+                  }
+                }}
+                singleNode
               />
             </div>
           </div>

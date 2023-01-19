@@ -93,6 +93,7 @@
 @import "~app/base/components/node/NodeLogs/EventLogs/EventLogsTable";
 @import "~app/base/components/node/NodeTestsTable";
 @import "~app/base/components/node/OverviewCard";
+@import "~app/base/components/NodeActionMenuGroup";
 @import "~app/base/components/NodeName";
 @import "~app/base/components/NodeSummaryNetworkCard";
 @import "~app/base/components/NodeSummaryNetworkCard/NetworkCardTable";
@@ -126,6 +127,7 @@
 @include Meter;
 @include NetworkCardTable;
 @include NetworkTable;
+@include NodeActionMenuGroup;
 @include NodeDevices;
 @include NodeName;
 @include NodeSummaryNetworkCard;
