@@ -232,6 +232,13 @@ export const NodeActionMenuGroup = ({
         <span className="p-contextual-menu p-contextual-menu--center">
           <Switch
             checked={isNodeLocked}
+            disabled={
+              nodes &&
+              !(
+                canOpenActionForm(nodes[0], NodeActions.LOCK) ||
+                canOpenActionForm(nodes[0], NodeActions.UNLOCK)
+              )
+            }
             label="Lock"
             onChange={() => {
               onActionClick(
