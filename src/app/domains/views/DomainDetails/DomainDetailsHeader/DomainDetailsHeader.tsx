@@ -39,7 +39,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
     domainSelectors.getById(state, id)
   );
   const dispatch = useDispatch();
-  const [formOpen, setFormOpen] = useState<"delete" | "add-record" | null>(
+  const [formOpen, setFormOpen] = useState<"DeleteDomain" | "AddRecord" | null>(
     null
   );
 
@@ -59,7 +59,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
     <Button
       data-testid="add-record"
       key="add-record"
-      onClick={() => setFormOpen("add-record")}
+      onClick={() => setFormOpen("AddRecord")}
     >
       {Labels.AddRecord}
     </Button>,
@@ -70,7 +70,7 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
         appearance="negative"
         data-testid="delete-domain"
         key="delete-domain"
-        onClick={() => setFormOpen("delete")}
+        onClick={() => setFormOpen("DeleteDomain")}
       >
         {Labels.DeleteDomain}
       </Button>
@@ -84,15 +84,16 @@ const DomainDetailsHeader = ({ id }: Props): JSX.Element | null => {
       sidePanelContent={
         formOpen === null ? null : (
           <>
-            {formOpen === "delete" && (
+            {formOpen === "DeleteDomain" && (
               <DeleteDomainForm closeForm={closeForm} id={id} />
             )}
-            {formOpen === "add-record" && (
+            {formOpen === "AddRecord" && (
               <AddRecordForm closeForm={closeForm} id={id} />
             )}
           </>
         )
       }
+      sidePanelTitle={formOpen ? Labels[formOpen] : null}
       subtitle={`${pluralizeString("host", hostsCount, "")}${
         hostsCount > 1 ? "; " : ""
       }${pluralizeString(
