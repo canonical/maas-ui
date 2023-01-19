@@ -68,29 +68,6 @@ const MachineHeader = ({
 
   return (
     <SectionHeader
-      // actionMenuGroup={
-      //   <NodeActionMenuGroup
-      //     alwaysShowLifecycle
-      //     excludeActions={[NodeActions.IMPORT_IMAGES]}
-      //     filterActions
-      //     hasSelection={true}
-      //     nodeDisplay="machine"
-      //     nodes={[machine]}
-      //     onActionClick={(action) => {
-      //       sendAnalytics(
-      //         "Machine details action form",
-      //         getNodeActionTitle(action),
-      //         "Open"
-      //       );
-      //       const view = Object.values(MachineHeaderViews).find(
-      //         ([, actionName]) => actionName === action
-      //       );
-      //       if (view) {
-      //         setSidePanelContent({ view });
-      //       }
-      //     }}
-      //   />
-      // }
       sidePanelContent={
         sidePanelContent ? (
           <MachineHeaderForms
