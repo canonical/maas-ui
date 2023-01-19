@@ -12,13 +12,19 @@ import type { RootState } from "app/store/root/types";
 import tagSelectors from "app/store/tag/selectors";
 import { getTagsDisplay } from "app/store/tag/utils";
 import { NodeActions } from "app/store/types/node";
+import userSelectors from "app/store/user/selectors";
 
 type Props = {
   onToggleMenu?: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
   systemId: Machine[MachineMeta.PK];
+  showFullName?: boolean;
 };
 
-export const OwnerColumn = ({ onToggleMenu, systemId }: Props): JSX.Element => {
+export const OwnerColumn = ({
+  onToggleMenu,
+  systemId,
+  showFullName,
+}: Props): JSX.Element => {
   const [updating, setUpdating] = useState<Machine["status"] | null>(null);
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -27,7 +33,12 @@ export const OwnerColumn = ({ onToggleMenu, systemId }: Props): JSX.Element => {
     tagSelectors.getByIDs(state, machine?.tags || null)
   );
   const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
-  const ownerDisplay = machine?.owner || "-";
+  const user = useSelector((state: RootState) =>
+    userSelectors.getByUsername(state, machine?.owner || "")
+  );
+  const ownerDisplay = showFullName
+    ? user?.last_name || machine?.owner || "-"
+    : machine?.owner || "-";
   const tagsDisplay = getTagsDisplay(machineTags);
 
   const menuLinks = useMachineActions(

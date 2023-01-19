@@ -1,4 +1,5 @@
 import reduxToolkit from "@reduxjs/toolkit";
+import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -31,6 +32,8 @@ import {
   testStatus as testStatusFactory,
   zone as zoneFactory,
   zoneState as zoneStateFactory,
+  user as userFactory,
+  userState as userStateFactory,
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
@@ -419,6 +422,51 @@ describe("MachineListTable", () => {
         .at(0)
         .text()
     ).toEqual(firstMachine.pxe_mac);
+  });
+
+  it("can change machines to display full owners name instead of username", async () => {
+    const user = userFactory({
+      id: 1,
+      username: "admin",
+      last_name: "full name",
+    });
+    state.machine.items[0].owner = user.username;
+    state.user = userStateFactory({
+      items: [user],
+    });
+    renderWithBrowserRouter(
+      <MachineListTable
+        callId="123456"
+        currentPage={1}
+        filter=""
+        grouping={null}
+        hiddenGroups={[]}
+        machineCount={10}
+        machines={machines}
+        pageSize={20}
+        setCurrentPage={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection="none"
+        sortKey={null}
+      />,
+      { state }
+    );
+    const tableBody = screen.getAllByRole("rowgroup")[1];
+    const getFirstRow = () => within(tableBody).getAllByRole("row")[0];
+    const getFirstMachineOwner = () =>
+      within(
+        within(getFirstRow()).getByRole("gridcell", { name: "Owner" })
+      ).getByTestId("owner");
+    expect(getFirstMachineOwner()).toHaveTextContent(user.username);
+    await userEvent.click(
+      within(screen.getByRole("columnheader", { name: "Owner" })).getByRole(
+        "button",
+        { name: /Name/ }
+      )
+    );
+    expect(getFirstMachineOwner()).toHaveTextContent(user.last_name);
   });
 
   it("updates sort on header click", () => {
