@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import type { ButtonProps } from "@canonical/react-components";
 import {
   Button,
@@ -26,6 +28,7 @@ type Props = {
   disabledTooltipPosition?: "left" | "top-left";
   excludeActions?: NodeActions[];
   filterActions?: boolean;
+  getTitle?: (action: NodeActions) => ReactNode | null;
   hasSelection: boolean;
   isNodeLocked?: boolean;
   nodeDisplay?: string;
@@ -102,6 +105,7 @@ const generateActionMenus = (
   excludeActions: NodeActions[],
   onActionClick: (action: NodeActions) => void,
   filterActions?: boolean,
+  getTitle?: Props["getTitle"],
   nodes?: Node[],
   showCount?: boolean,
   singleNode?: boolean
@@ -145,7 +149,7 @@ const generateActionMenus = (
             children: (
               <div className="u-flex--between">
                 <span>
-                  {getNodeActionTitle(action)}
+                  {getTitle?.(action) ?? getNodeActionTitle(action)}
                   ...
                 </span>
                 {showCount && (
@@ -172,6 +176,7 @@ const generateActionMenus = (
     if (groupLinks.length > 0) {
       menus.push(
         <ContextualMenu
+          dropdownProps={{ "aria-label": `${group.title} submenu` }}
           hasToggleIcon
           links={groupLinks}
           position="center"
@@ -197,6 +202,7 @@ export const NodeActionMenuGroup = ({
   disabledTooltipPosition = "left",
   excludeActions = [],
   filterActions,
+  getTitle,
   hasSelection,
   isNodeLocked,
   nodeDisplay = "node",
@@ -210,6 +216,7 @@ export const NodeActionMenuGroup = ({
     excludeActions,
     onActionClick,
     filterActions,
+    getTitle,
     nodes,
     showCount,
     singleNode
@@ -238,7 +245,7 @@ export const NodeActionMenuGroup = ({
           <span className="p-action-button--wrapper">
             <Switch
               checked={isNodeLocked}
-              label="Lock"
+              label={Labels.Lock}
               onChange={() => {
                 onActionClick(
                   isNodeLocked ? NodeActions.UNLOCK : NodeActions.LOCK
@@ -250,7 +257,7 @@ export const NodeActionMenuGroup = ({
       <span className="p-action-button--wrapper">
         <Button onClick={() => onActionClick(NodeActions.DELETE)}>
           <Icon name="delete" />
-          Delete
+          {Labels.Delete}
         </Button>
       </span>
     </Tooltip>
