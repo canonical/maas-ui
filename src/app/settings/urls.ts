@@ -63,6 +63,7 @@ const urls = {
     secretStorage: "/settings/security/secret-storage",
     securityProtocols: "/settings/security/security-protocols",
     ipmiSettings: "/settings/security/ipmi-settings",
+    sessionTimeout: "/settings/security/session-timeout",
   },
   storage: "/settings/storage",
   users: {

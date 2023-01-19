@@ -1,4 +1,8 @@
-import { CheckboxInput, ContextualMenu } from "@canonical/react-components";
+import {
+  CheckboxInput,
+  ContextualMenu,
+  Icon,
+} from "@canonical/react-components";
 
 import type { MachineListControlsProps } from "../MachineListControls";
 
@@ -29,11 +33,14 @@ const HiddenColumnsSelect = ({
       className="filter-accordion"
       constrainPanelWidth
       dropdownProps={{ "aria-label": "columns menu" }}
-      hasToggleIcon
       position="left"
-      toggleClassName="filter-accordion__toggle"
-      /* TODO: add <Icon name="settings" /> after updating to latest react-components  */
-      toggleLabel="Columns"
+      toggleClassName="hidden-columns-toggle has-icon"
+      toggleLabel={
+        <>
+          <Icon name="settings" /> Columns
+        </>
+      }
+      toggleLabelFirst={true}
     >
       <div className="hidden-columns-select-wrapper u-no-padding--bottom">
         <CheckboxInput

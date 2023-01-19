@@ -4,8 +4,16 @@
     grid-template-rows: auto 1fr auto;
   }
   .l-aside {
+    // TODO: remove .l-aside visibility workaround once https://github.com/canonical/vanilla-framework/issues/4629 is fixed
+    @include vf-transition(
+      $property: #{transform,
+      box-shadow,
+      visibility},
+      $duration: snap
+    );
     background-color: $color-x-light;
   }
+  // TODO: remove .l-aside visibility workaround once https://github.com/canonical/vanilla-framework/issues/4629 is fixed
   .l-aside.is-collapsed {
     visibility: hidden;
   }

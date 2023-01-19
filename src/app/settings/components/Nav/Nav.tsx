@@ -32,6 +32,10 @@ export const Nav = (): JSX.Element => (
             label: "Secret storage",
           },
           {
+            path: settingsURLs.security.sessionTimeout,
+            label: "Session timeout",
+          },
+          {
             path: settingsURLs.security.ipmiSettings,
             label: "IPMI settings",
           },
