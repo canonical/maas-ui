@@ -149,6 +149,7 @@ const MachineHeader = ({
               <NodeActionMenuGroup
                 alwaysShowLifecycle
                 excludeActions={[NodeActions.IMPORT_IMAGES]}
+                filterActions
                 hasSelection={true}
                 isNodeLocked={machine.locked}
                 nodeDisplay="machine"
