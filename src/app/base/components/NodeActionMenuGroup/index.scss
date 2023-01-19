@@ -11,13 +11,13 @@
       }
     }
 
-    .p-contextual-menu, .p-button, .p-switch {
+    .p-button, .p-switch {
       margin: 0 0 0 0;
-      padding: 0 $spv--small 0 $spv--small;
+      padding: 0 $spv--large 0 $spv--large;
       border: 0;
     }
 
-    .p-contextual-menu + .p-contextual-menu, .p-contextual-menu + .p-switch, .p-contextual-menu + .p-button, .p-switch + .p-button {
+    .p-action-button--wrapper + .p-action-button--wrapper {
       border-left: 1px solid #d9d9d9;
       border-radius: 0;
     }

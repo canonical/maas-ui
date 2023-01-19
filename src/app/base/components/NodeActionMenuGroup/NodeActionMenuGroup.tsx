@@ -225,14 +225,17 @@ export const NodeActionMenuGroup = ({
       }
       position={disabledTooltipPosition}
     >
-      {menus.map((menu) => (
-        <>{menu}</>
+      {menus.map((menu, i) => (
+        <span className="p-action-button--wrapper" key={i}>
+          {menu}
+        </span>
+        // <>{menu}</>
       ))}
       {singleNode &&
         nodes &&
         (canOpenActionForm(nodes[0], NodeActions.LOCK) ||
           canOpenActionForm(nodes[0], NodeActions.UNLOCK)) && (
-          <span className="p-contextual-menu p-contextual-menu--center">
+          <span className="p-action-button--wrapper">
             <Switch
               checked={isNodeLocked}
               label="Lock"
@@ -244,7 +247,7 @@ export const NodeActionMenuGroup = ({
             />
           </span>
         )}
-      <span className="p-contextual-menu p-contextual-menu--center">
+      <span className="p-action-button--wrapper">
         <Button onClick={() => onActionClick(NodeActions.DELETE)}>
           <Icon name="delete" />
           Delete
