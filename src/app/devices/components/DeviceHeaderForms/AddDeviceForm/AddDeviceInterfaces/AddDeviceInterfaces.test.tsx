@@ -90,26 +90,26 @@ describe("AddDeviceInterfaces", () => {
       { store }
     );
 
-    const getRowCount = () => screen.getAllByTestId("interface-row").length;
+    const getCardCount = () => screen.getAllByTestId("interface-card").length;
     const getAddButton = () => screen.getByTestId("add-interface");
     const getRemoveButton = () =>
-      screen.getAllByTestId("table-actions-delete")[0];
+      screen.getAllByRole("button", { name: /delete/i })[0];
 
     // There is only one interface by default. Since at least one interface must
     // be defined, the remove button should be disabled.
-    expect(getRowCount()).toBe(1);
+    expect(getCardCount()).toBe(1);
     expect(getRemoveButton()).toBeDisabled();
 
     // Add an interface.
     await userEvent.click(getAddButton());
 
-    expect(getRowCount()).toBe(2);
+    expect(getCardCount()).toBe(2);
     expect(getRemoveButton()).not.toBeDisabled();
 
     // Remove an interface.
     await userEvent.click(getRemoveButton());
 
-    expect(getRowCount()).toBe(1);
+    expect(getCardCount()).toBe(1);
     expect(getRemoveButton()).toBeDisabled();
   });
 });

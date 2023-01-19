@@ -2,7 +2,7 @@ import { createSelector } from "@reduxjs/toolkit";
 
 import type { RootState } from "app/store/root/types";
 import { UserMeta } from "app/store/user/types";
-import type { User, UserState } from "app/store/user/types";
+import type { UserState, User } from "app/store/user/types";
 import { generateBaseSelectors } from "app/store/utils";
 
 const searchFunction = (user: User, term: string) =>
@@ -61,8 +61,27 @@ const markingIntroCompleteErrors = createSelector(
       ?.error || null
 );
 
+/**
+ * Get the user by username
+ * @param state - The redux state.
+ * @returns User.
+ */
+const getByUsername = createSelector(
+  [
+    defaultSelectors.all,
+    (_state: RootState, username: string | null | undefined) => username,
+  ],
+  (items, username) => {
+    if (username === null || username === undefined) {
+      return null;
+    }
+    return items.find((item) => item.username === username) || null;
+  }
+);
+
 const selectors = {
   ...defaultSelectors,
+  getByUsername,
   eventErrors,
   markingIntroComplete,
   markingIntroCompleteErrors,
