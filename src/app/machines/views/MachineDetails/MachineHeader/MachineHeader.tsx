@@ -12,7 +12,7 @@ import ScriptStatus from "app/base/components/ScriptStatus";
 import SectionHeader from "app/base/components/SectionHeader";
 import TableMenu from "app/base/components/TableMenu";
 import TooltipButton from "app/base/components/TooltipButton";
-import { useMachineActions, useSendAnalytics } from "app/base/hooks";
+import { useSendAnalytics } from "app/base/hooks";
 import MachineHeaderForms from "app/machines/components/MachineHeaderForms";
 import { MachineHeaderViews } from "app/machines/constants";
 import type {
@@ -52,10 +52,6 @@ const MachineHeader = ({
     machineSelectors.getStatuses(state, systemId)
   );
   const powerMenuRef = useRef<HTMLSpanElement>(null);
-  const powerMenuLinks = useMachineActions(systemId, [
-    NodeActions.OFF,
-    NodeActions.ON,
-  ]);
   const isDetails = isMachineDetails(machine);
   useFetchMachine(systemId);
 
@@ -108,9 +104,6 @@ const MachineHeader = ({
               <TableMenu
                 className="u-nudge-right--small"
                 links={[
-                  ...(Array.isArray(powerMenuLinks)
-                    ? powerMenuLinks
-                    : [powerMenuLinks]),
                   {
                     children: "Check power",
                     onClick: () => {
