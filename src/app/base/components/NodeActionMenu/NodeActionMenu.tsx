@@ -37,6 +37,7 @@ type Props = {
   showCount?: boolean;
   toggleAppearance?: ValueOf<typeof ButtonAppearance>;
   toggleClassName?: string | null;
+  toggleLabel?: string;
 };
 
 const actionGroups: ActionGroup[] = [
@@ -162,6 +163,7 @@ export const NodeActionMenu = ({
   showCount,
   toggleAppearance = "positive",
   toggleClassName,
+  toggleLabel = Label.TakeAction,
 }: Props): JSX.Element => {
   return (
     <Tooltip
@@ -188,7 +190,7 @@ export const NodeActionMenu = ({
         toggleAppearance={toggleAppearance}
         toggleClassName={toggleClassName}
         toggleDisabled={!hasSelection}
-        toggleLabel={Label.TakeAction}
+        toggleLabel={toggleLabel}
       />
     </Tooltip>
   );
