@@ -44,7 +44,7 @@ it("fetches machines on mount", async () => {
     group_collapsed: undefined,
     group_key: null,
     page_number: 1,
-    page_size: 15,
+    page_size: 5,
     sort_direction: null,
     sort_key: null,
   });
@@ -62,23 +62,21 @@ it("requests machines filtered by the free text input value", async () => {
 
   const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   await user.type(screen.getByRole("combobox"), "test-machine");
-  const expectedInitialAction = machineActions.fetch("mocked-nanoid-1", {
-    filter: { free_text: "" },
+  const expectedActionParams = {
     group_collapsed: undefined,
     group_key: null,
     page_number: 1,
-    page_size: 15,
+    page_size: 5,
     sort_direction: null,
     sort_key: null,
+  };
+  const expectedInitialAction = machineActions.fetch("mocked-nanoid-1", {
+    filter: { free_text: "" },
+    ...expectedActionParams,
   });
   const expectedAction = machineActions.fetch("mocked-nanoid-2", {
     filter: { free_text: "test-machine" },
-    group_collapsed: undefined,
-    group_key: null,
-    page_number: 1,
-    page_size: 15,
-    sort_direction: null,
-    sort_key: null,
+    ...expectedActionParams,
   });
   await waitFor(() => {
     jest.advanceTimersByTime(DEFAULT_DEBOUNCE_INTERVAL);

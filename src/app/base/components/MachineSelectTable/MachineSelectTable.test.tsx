@@ -51,6 +51,7 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={machines}
         onMachineClick={jest.fn()}
+        pageSize={machines.length}
         searchText=""
         setSearchText={jest.fn()}
       />,
@@ -64,6 +65,7 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={[machines[0]]}
         onMachineClick={jest.fn()}
+        pageSize={machines.length}
         searchText="fir"
         setSearchText={jest.fn()}
       />,
@@ -84,6 +86,7 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}
+        pageSize={machines.length}
         searchText=""
         setSearchText={jest.fn()}
       />,
@@ -99,6 +102,7 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={machines}
         onMachineClick={jest.fn()}
+        pageSize={machines.length}
         searchText=""
         setSearchText={jest.fn()}
       />,
@@ -117,6 +121,7 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}
+        pageSize={machines.length}
         searchText=""
         setSearchText={jest.fn()}
       />,
@@ -137,6 +142,7 @@ describe("MachineSelectTable", () => {
       <MachineSelectTable
         machines={machines}
         onMachineClick={onMachineClick}
+        pageSize={machines.length}
         searchText="id:("
         setSearchText={jest.fn()}
       />,
