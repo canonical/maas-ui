@@ -236,12 +236,14 @@
 @import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/CloneForm/CloneResults";
 @import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/MarkBrokenForm/MarkBrokenFormFields";
 @import "~app/machines/components/MachineHeaderForms/MachineActionFormWrapper/TagForm";
+@import "~app/machines/views/MachineDetails/MachineHeader";
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineList";
 @include CloneFormFields;
 @include CloneResults;
 @include MachineList;
+@include MachineHeader;
 @include MachineSummary;
 @include MarkBrokenFormFields;
 @include NumaCard;

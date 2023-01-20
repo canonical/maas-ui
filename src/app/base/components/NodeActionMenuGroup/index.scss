@@ -1,8 +1,8 @@
 @mixin NodeActionMenuGroup {
   .p-button-group {
     display: inline-flex;
-    margin: 0 0 0 $spv--large;
-    flex-wrap: wrap;
+    margin: 0;
+    flex-wrap: nowrap;
     border: 1px solid #d9d9d9;
 
     .p-button {

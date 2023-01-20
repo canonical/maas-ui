@@ -240,8 +240,11 @@ export const NodeActionMenuGroup = ({
       ))}
       {singleNode &&
         nodes &&
-        (canOpenActionForm(nodes[0], NodeActions.LOCK) ||
-          canOpenActionForm(nodes[0], NodeActions.UNLOCK)) && (
+        // Only check if the node can lock/unlock if filterActions is true, else render regardless
+        (filterActions
+          ? canOpenActionForm(nodes[0], NodeActions.LOCK) ||
+            canOpenActionForm(nodes[0], NodeActions.UNLOCK)
+          : true) && (
           <span className="p-action-button--wrapper">
             <Switch
               checked={isNodeLocked}

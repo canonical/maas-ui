@@ -6,6 +6,7 @@ import { Link } from "react-router-dom-v5-compat";
 
 import MachineName from "./MachineName";
 
+import NodeActionMenu from "app/base/components/NodeActionMenu";
 import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
 import PowerIcon from "app/base/components/PowerIcon";
 import ScriptStatus from "app/base/components/ScriptStatus";
@@ -102,7 +103,7 @@ const MachineHeader = ({
                   : `Power ${machine.power_state}`}
               </PowerIcon>
               <TableMenu
-                className="u-nudge-right--small"
+                className="u-nudge-right--small p-table-menu"
                 links={[
                   {
                     children: "Check power",
@@ -119,7 +120,7 @@ const MachineHeader = ({
               <NodeActionMenuGroup
                 alwaysShowLifecycle
                 excludeActions={[NodeActions.IMPORT_IMAGES]}
-                filterActions
+                // filterActions
                 hasSelection={true}
                 isNodeLocked={machine.locked}
                 nodeDisplay="machine"
@@ -138,6 +139,31 @@ const MachineHeader = ({
                   }
                 }}
                 singleNode
+              />
+              <NodeActionMenu
+                alwaysShowLifecycle
+                excludeActions={[NodeActions.IMPORT_IMAGES]}
+                filterActions
+                hasSelection={true}
+                key="action-dropdown"
+                nodeDisplay="machine"
+                nodes={[machine]}
+                onActionClick={(action) => {
+                  sendAnalytics(
+                    "Machine details action form",
+                    getNodeActionTitle(action),
+                    "Open"
+                  );
+                  const view = Object.values(MachineHeaderViews).find(
+                    ([, actionName]) => actionName === action
+                  );
+                  if (view) {
+                    setSidePanelContent({ view });
+                  }
+                }}
+                toggleAppearance=""
+                toggleClassName="p-action-menu"
+                toggleLabel="Menu"
               />
             </div>
           </div>
