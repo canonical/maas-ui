@@ -1,9 +1,8 @@
 @mixin NodeActionMenuGroup {
   .p-button-group {
     display: inline-flex;
-    margin: 0;
     flex-wrap: nowrap;
-    border: 1px solid #d9d9d9;
+    border: 1px solid #757575;
 
     .p-button {
       .p-icon--delete {
@@ -12,14 +11,16 @@
     }
 
     .p-button, .p-switch {
-      margin: 0 0 0 0;
-      padding: 0 $spv--large 0 $spv--large;
+      margin: $spv--x-small 0;
+      padding: $spv--x-small $spv--large;
       border: 0;
     }
 
     .p-action-button--wrapper + .p-action-button--wrapper {
-      border-left: 1px solid #d9d9d9;
-      border-radius: 0;
+      .p-button, .p-switch {
+        border-left: 1px solid #d9d9d9;
+        border-radius: 0;
+      }
     }
   }
 }

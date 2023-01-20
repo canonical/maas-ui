@@ -80,7 +80,7 @@ const MachineHeader = ({
       sidePanelTitle={getHeaderTitle(machine.hostname, sidePanelContent)}
       subtitle={
         editingName ? null : (
-          <div className="u-flex--wrap">
+          <div className="u-flex--wrap u-flex--align-center">
             <div className="u-nudge-left">
               {machine.locked ? (
                 <TooltipButton
@@ -90,7 +90,6 @@ const MachineHeader = ({
                   position="btm-left"
                 />
               ) : null}
-              {machine.status}
             </div>
             <div>
               <PowerIcon
@@ -162,7 +161,7 @@ const MachineHeader = ({
                   }
                 }}
                 toggleAppearance=""
-                toggleClassName="p-action-menu"
+                toggleClassName="p-action-menu u-no-margin--bottom"
                 toggleLabel="Menu"
               />
             </div>

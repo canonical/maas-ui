@@ -80,7 +80,7 @@ const SectionHeader = <P,>({
   return (
     <div className={classNames("section-header", className)} {...props}>
       <div className="section-header__main-row u-flex--between u-flex--wrap">
-        <div className="section-header__titles u-flex--align-baseline u-flex--grow u-flex--wrap">
+        <div className="section-header__titles u-flex--align-center u-flex--grow u-flex--wrap">
           {loading || !title ? (
             <h4
               aria-label="loading"
