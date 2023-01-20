@@ -1,0 +1,26 @@
+@mixin NodeActionMenuGroup {
+  .p-node-action-menu-group {
+    display: inline-flex;
+    flex-wrap: nowrap;
+    border: 1px solid $colors--light-theme--border-high-contrast;
+
+    .p-button {
+      .p-icon--delete {
+        margin-right: $spv--x-small;
+      }
+    }
+
+    .p-button, .p-switch {
+      margin: $spv--x-small 0;
+      padding: $spv--x-small $spv--large;
+      border: 0;
+    }
+
+    .p-action-button--wrapper + .p-action-button--wrapper {
+      .p-button, .p-switch {
+        border-left: 1px solid #d9d9d9;
+        border-radius: 0;
+      }
+    }
+  }
+}

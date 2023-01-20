@@ -1,0 +1,16 @@
+@mixin MachineHeader {
+
+  // These media queries are for when the screen is too small to display the action group without wrapping.
+  // Wrapping begins before $breakpoint-small, hence the direct reference to pixel width.
+  @media screen and (max-width: ($breakpoint-node-action-menu-group - 1)) {
+    .p-node-action-menu-group {
+      display: none;
+    }
+  }
+
+  @media screen and (min-width: $breakpoint-node-action-menu-group) {
+    .p-action-menu {
+      display: none;
+    }
+  }
+}

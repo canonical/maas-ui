@@ -10,6 +10,7 @@ import AppSidePanel from "app/base/components/AppSidePanel";
 import type { DataTestElement } from "app/base/types";
 
 export type Props<P = LinkProps> = {
+  actionMenuGroup?: JSX.Element | null;
   buttons?: JSX.Element[] | null;
   className?: ClassName;
   sidePanelContent?: ReactNode | null;
@@ -60,6 +61,7 @@ const generateSubtitle = (
 };
 
 const SectionHeader = <P,>({
+  actionMenuGroup,
   buttons = [],
   className,
   sidePanelContent,
@@ -78,7 +80,7 @@ const SectionHeader = <P,>({
   return (
     <div className={classNames("section-header", className)} {...props}>
       <div className="section-header__main-row u-flex--between u-flex--wrap">
-        <div className="section-header__titles u-flex--align-baseline u-flex--grow u-flex--wrap">
+        <div className="section-header__titles u-flex--align-center u-flex--grow u-flex--wrap">
           {loading || !title ? (
             <h4
               aria-label="loading"
@@ -125,6 +127,7 @@ const SectionHeader = <P,>({
         size={headerSize}
         title={sidePanelTitle}
       />
+      {actionMenuGroup ? <>{actionMenuGroup}</> : null}
       {tabLinks?.length ? (
         <div className="section-header__tabs" data-testid="section-header-tabs">
           <hr className="u-no-margin--bottom" />

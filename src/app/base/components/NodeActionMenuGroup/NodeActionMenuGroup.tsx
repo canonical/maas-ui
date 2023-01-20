@@ -1,24 +1,24 @@
 import type { ReactNode } from "react";
 
-import type {
-  ButtonAppearance,
-  ButtonProps,
-  ValueOf,
+import type { ButtonProps } from "@canonical/react-components";
+import {
+  Button,
+  Switch,
+  ContextualMenu,
+  Icon,
+  Tooltip,
 } from "@canonical/react-components";
-import { ContextualMenu, Tooltip } from "@canonical/react-components";
 
 import type { DataTestElement } from "app/base/types";
 import type { Node } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { canOpenActionForm, getNodeActionTitle } from "app/store/utils";
 
-export enum Label {
-  TakeAction = "Take action",
-}
-
 type ActionGroup = {
   actions: NodeActions[];
+  icon?: string;
   name: string;
+  title: string;
 };
 
 type ActionLink = DataTestElement<ButtonProps>;
@@ -30,15 +30,22 @@ type Props = {
   filterActions?: boolean;
   getTitle?: (action: NodeActions) => ReactNode | null;
   hasSelection: boolean;
-  menuPosition?: "left" | "right";
+  isNodeLocked?: boolean;
   nodeDisplay?: string;
   nodes?: Node[];
   onActionClick: (action: NodeActions) => void;
+  singleNode?: boolean;
   showCount?: boolean;
-  toggleAppearance?: ValueOf<typeof ButtonAppearance>;
-  toggleClassName?: string | null;
-  toggleLabel?: string;
 };
+
+export enum Labels {
+  Actions = "Actions",
+  PowerCycle = "Power cycle",
+  Troubleshoot = "Troubleshoot",
+  Categorise = "Categorise",
+  Lock = "Lock",
+  Delete = "Delete",
+}
 
 const actionGroups: ActionGroup[] = [
   {
@@ -51,10 +58,12 @@ const actionGroups: ActionGroup[] = [
       NodeActions.ABORT,
       NodeActions.CLONE,
     ],
+    title: Labels.Actions,
   },
   {
     name: "power",
     actions: [NodeActions.ON, NodeActions.OFF],
+    title: Labels.PowerCycle,
   },
   {
     name: "testing",
@@ -66,10 +75,7 @@ const actionGroups: ActionGroup[] = [
       NodeActions.MARK_BROKEN,
       NodeActions.OVERRIDE_FAILED_TESTING,
     ],
-  },
-  {
-    name: "lock",
-    actions: [NodeActions.LOCK, NodeActions.UNLOCK],
+    title: Labels.Troubleshoot,
   },
   {
     name: "misc",
@@ -78,24 +84,49 @@ const actionGroups: ActionGroup[] = [
       NodeActions.SET_ZONE,
       NodeActions.SET_POOL,
       NodeActions.IMPORT_IMAGES,
-      NodeActions.DELETE,
     ],
+    title: Labels.Categorise,
+  },
+  {
+    name: "lock",
+    actions: [NodeActions.LOCK, NodeActions.UNLOCK],
+    title: "Lock",
+  },
+  {
+    name: "delete",
+    actions: [NodeActions.DELETE],
+    icon: "delete",
+    title: "Delete",
   },
 ];
 
-const getTakeActionLinks = (
-  onActionClick: (action: NodeActions) => void,
-  excludeActions: NodeActions[],
+const generateActionMenus = (
   alwaysShowLifecycle: boolean,
-  showCount?: boolean,
+  excludeActions: NodeActions[],
+  onActionClick: (action: NodeActions) => void,
   filterActions?: boolean,
   getTitle?: Props["getTitle"],
-  nodes?: Node[]
+  nodes?: Node[],
+  showCount?: boolean,
+  singleNode?: boolean
 ) => {
-  return actionGroups.reduce<ActionLink[][]>((links, group) => {
+  return actionGroups.reduce<JSX.Element[]>((menus, group) => {
     const groupLinks = group.actions.reduce<ActionLink[]>(
       (groupLinks, action) => {
         if (excludeActions.includes(action)) {
+          return groupLinks;
+        }
+
+        if (action === NodeActions.DELETE) {
+          // Delete is displayed as a discrete button
+          return groupLinks;
+        }
+
+        if (
+          singleNode &&
+          (action === NodeActions.LOCK || action === NodeActions.UNLOCK)
+        ) {
+          // If the lock/unlock actions are to be displayed as a switch, don't show a menu
           return groupLinks;
         }
         // When nodes are not provided then counts should not be visible.
@@ -143,30 +174,57 @@ const getTakeActionLinks = (
     );
 
     if (groupLinks.length > 0) {
-      links.push(groupLinks);
+      menus.push(
+        <ContextualMenu
+          dropdownProps={{ "aria-label": `${group.title} submenu` }}
+          hasToggleIcon
+          links={groupLinks}
+          position="center"
+          toggleLabel={
+            !group.icon ? (
+              group.title
+            ) : (
+              <>
+                <Icon name={group.icon} />
+                {group.title}
+              </>
+            )
+          }
+        />
+      );
     }
-    return links;
+    return menus;
   }, []);
 };
 
-export const NodeActionMenu = ({
+export const NodeActionMenuGroup = ({
   alwaysShowLifecycle = false,
   disabledTooltipPosition = "left",
   excludeActions = [],
   filterActions,
   getTitle,
   hasSelection,
-  menuPosition = "right",
+  isNodeLocked,
   nodeDisplay = "node",
   nodes,
   onActionClick,
   showCount,
-  toggleAppearance = "positive",
-  toggleClassName,
-  toggleLabel = Label.TakeAction,
+  singleNode = false,
 }: Props): JSX.Element => {
+  const menus = generateActionMenus(
+    alwaysShowLifecycle,
+    excludeActions,
+    onActionClick,
+    filterActions,
+    getTitle,
+    nodes,
+    showCount,
+    singleNode
+  );
+
   return (
     <Tooltip
+      className="p-node-action-menu-group"
       message={
         !hasSelection
           ? `Select ${nodeDisplay}s below to perform an action.`
@@ -174,26 +232,39 @@ export const NodeActionMenu = ({
       }
       position={disabledTooltipPosition}
     >
-      <ContextualMenu
-        data-testid="take-action-dropdown"
-        hasToggleIcon
-        links={getTakeActionLinks(
-          onActionClick,
-          excludeActions,
-          alwaysShowLifecycle,
-          showCount,
-          filterActions,
-          getTitle,
-          nodes
+      {menus.map((menu, i) => (
+        <span className="p-action-button--wrapper" key={i}>
+          {menu}
+        </span>
+        // <>{menu}</>
+      ))}
+      {singleNode &&
+        nodes &&
+        // Only check if the node can lock/unlock if filterActions is true, else render regardless
+        (filterActions
+          ? canOpenActionForm(nodes[0], NodeActions.LOCK) ||
+            canOpenActionForm(nodes[0], NodeActions.UNLOCK)
+          : true) && (
+          <span className="p-action-button--wrapper">
+            <Switch
+              checked={isNodeLocked}
+              label={Labels.Lock}
+              onChange={() => {
+                onActionClick(
+                  isNodeLocked ? NodeActions.UNLOCK : NodeActions.LOCK
+                );
+              }}
+            />
+          </span>
         )}
-        position={menuPosition}
-        toggleAppearance={toggleAppearance}
-        toggleClassName={toggleClassName}
-        toggleDisabled={!hasSelection}
-        toggleLabel={toggleLabel}
-      />
+      <span className="p-action-button--wrapper">
+        <Button onClick={() => onActionClick(NodeActions.DELETE)}>
+          <Icon name="delete" />
+          {Labels.Delete}
+        </Button>
+      </span>
     </Tooltip>
   );
 };
 
-export default NodeActionMenu;
+export default NodeActionMenuGroup;

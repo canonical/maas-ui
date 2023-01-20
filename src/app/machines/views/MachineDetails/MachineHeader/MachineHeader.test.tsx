@@ -9,7 +9,6 @@ import MachineHeader from "./MachineHeader";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { RootState } from "app/store/root/types";
 import { PowerState } from "app/store/types/enum";
-import { NodeActions } from "app/store/types/node";
 import {
   generalState as generalStateFactory,
   machine as machineFactory,
@@ -181,70 +180,6 @@ describe("MachineHeader", () => {
   });
 
   describe("power menu", () => {
-    it("can dispatch the power on action", () => {
-      state.machine.items[0].actions = [NodeActions.ON];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineHeader
-                setSidePanelContent={jest.fn()}
-                sidePanelContent={null}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-
-      // Open the power menu dropdown
-      wrapper.find("TableMenu Button").simulate("click");
-      // Click the "Power on" link
-      wrapper
-        .find("TableMenu .p-contextual-menu__link")
-        .at(0)
-        .simulate("click");
-
-      expect(
-        store.getActions().some((action) => action.type === "machine/on")
-      ).toBe(true);
-    });
-
-    it("can dispatch the power off action", () => {
-      state.machine.items[0].actions = [NodeActions.OFF];
-      const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
-          >
-            <CompatRouter>
-              <MachineHeader
-                setSidePanelContent={jest.fn()}
-                sidePanelContent={null}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
-      );
-
-      // Open the power menu dropdown
-      wrapper.find("TableMenu Button").simulate("click");
-      // Click the "Power off" link
-      wrapper
-        .find("TableMenu .p-contextual-menu__link")
-        .at(0)
-        .simulate("click");
-
-      expect(
-        store.getActions().some((action) => action.type === "machine/off")
-      ).toBe(true);
-    });
-
     it("can dispatch the check power action", () => {
       state.machine.items[0].actions = [];
       const store = mockStore(state);
