@@ -102,9 +102,7 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
           dhcpEnabled: boolean,
           dhcpType: DHCPType.CONTROLLERS | DHCPType.RELAY
         ) => dhcpEnabled && dhcpType === DHCPType.CONTROLLERS,
-        then: Yup.string().required(
-          "Primary rack is required"
-        ),
+        then: Yup.string().required("Primary rack is required"),
       }),
       relayVLAN: Yup.string(),
       secondaryRack: Yup.string(),
