@@ -85,6 +85,7 @@ export const AddChassisForm = ({
               </Link>
             </p>
           }
+          buttonsHelpClassName="u-align--right"
           cleanup={machineActions.cleanup}
           errors={machineErrors}
           initialValues={{
