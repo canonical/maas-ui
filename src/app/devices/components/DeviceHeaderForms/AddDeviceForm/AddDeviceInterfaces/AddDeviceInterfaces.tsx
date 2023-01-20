@@ -92,15 +92,13 @@ export const AddDeviceInterfaces = (): JSX.Element => {
                 type="text"
               />
             ) : null}
-            <div className="u-align--right">
-              <Button
-                disabled={deleteDisabled}
-                onClick={() => removeInterface(iface.id)}
-                type="button"
-              >
-                Delete
-              </Button>
-            </div>
+            {!deleteDisabled ? (
+              <div className="u-align--right">
+                <Button onClick={() => removeInterface(iface.id)} type="button">
+                  Delete
+                </Button>
+              </div>
+            ) : null}
           </Card>
         );
       })}

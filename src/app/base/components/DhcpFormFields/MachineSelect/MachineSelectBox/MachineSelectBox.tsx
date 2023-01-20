@@ -9,7 +9,7 @@ import { useFetchMachines } from "app/store/machine/utils/hooks";
 
 const MachineSelectBox = ({
   onSelect,
-  pageSize = 15,
+  pageSize = 5,
   filters,
 }: {
   pageSize?: number;
@@ -49,6 +49,7 @@ const MachineSelectBox = ({
           onMachineClick={(machine) => {
             onSelect(machine);
           }}
+          pageSize={pageSize}
           searchText={searchText}
           setSearchText={setSearchText}
         />

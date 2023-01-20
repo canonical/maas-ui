@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
 
-import { Notification, Spinner, Strip } from "@canonical/react-components";
+import { Notification } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch } from "react-redux";
 
@@ -22,7 +22,6 @@ export enum Label {
 
 type Props = {
   className?: string;
-  loadingData?: boolean;
   loadingMachineDetails?: boolean;
   pageSize?: number;
   onMachineClick: (machine: Machine | null) => void;
@@ -31,8 +30,7 @@ type Props = {
 
 export const SourceMachineSelect = ({
   className,
-  loadingData = false,
-  pageSize = 15,
+  pageSize = 5,
   loadingMachineDetails = false,
   onMachineClick,
   selectedMachine = null,
@@ -58,13 +56,7 @@ export const SourceMachineSelect = ({
   }, [dispatch]);
 
   let content: ReactNode;
-  if (loadingData) {
-    content = (
-      <Strip shallow>
-        <Spinner aria-label={Label.Loading} text={Label.Loading} />
-      </Strip>
-    );
-  } else if (loadingMachineDetails || selectedMachine) {
+  if (loadingMachineDetails || selectedMachine) {
     content = <SourceMachineDetails machine={selectedMachine} />;
   } else if (!loading && machineCount === 0) {
     content = (
@@ -79,11 +71,12 @@ export const SourceMachineSelect = ({
     );
   } else {
     content = (
-      <div className="source-machine-select__table">
+      <>
         <MachineSelectTable
           machines={machines}
           machinesLoading={loading}
           onMachineClick={onMachineClick}
+          pageSize={pageSize}
           searchText={searchText}
           setSearchText={setSearchText}
         />
@@ -93,8 +86,9 @@ export const SourceMachineSelect = ({
           machineCount={machineCount}
           machinesLoading={loading}
           paginate={setCurrentPage}
+          truncateThreshold={6}
         />
-      </div>
+      </>
     );
   }
   return (
