@@ -97,7 +97,13 @@ const ConfigureDHCP = ({ closeForm, id }: Props): JSX.Element | null => {
         then: Yup.string().required("End IP address is required"),
       }),
       gatewayIP: Yup.string(),
-      primaryRack: Yup.string(),
+      primaryRack: Yup.string().when(["enableDHCP", "dhcpType"], {
+        is: (
+          dhcpEnabled: boolean,
+          dhcpType: DHCPType.CONTROLLERS | DHCPType.RELAY
+        ) => dhcpEnabled && dhcpType === DHCPType.CONTROLLERS,
+        then: Yup.string().required("Primary rack is required"),
+      }),
       relayVLAN: Yup.string(),
       secondaryRack: Yup.string(),
       startIP: Yup.string().when("subnet", {

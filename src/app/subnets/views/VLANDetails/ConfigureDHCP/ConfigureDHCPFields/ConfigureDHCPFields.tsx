@@ -94,6 +94,7 @@ const ConfigureDHCPFields = ({ vlan }: Props): JSX.Element => {
                             simpleSortByKey("label", { alphanumeric: true })
                           ),
                       ]}
+                      required
                       wrapperClassName="u-nudge-right--x-large"
                     />
                     {connectedControllers.length > 1 && (
