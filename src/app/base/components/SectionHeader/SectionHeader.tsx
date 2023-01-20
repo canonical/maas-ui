@@ -127,7 +127,7 @@ const SectionHeader = <P,>({
         size={headerSize}
         title={sidePanelTitle}
       />
-      {actionMenuGroup && <>{actionMenuGroup}</>}
+      {actionMenuGroup ? <>{actionMenuGroup}</> : null}
       {tabLinks?.length ? (
         <div className="section-header__tabs" data-testid="section-header-tabs">
           <hr className="u-no-margin--bottom" />

@@ -158,9 +158,15 @@ describe("NodeActionMenu", () => {
 
     await openMenu();
 
-    expect(within(getActionCount(NodeActions.COMMISSION)).getByText("3"));
-    expect(within(getActionCount(NodeActions.RELEASE)).getByText("2"));
-    expect(within(getActionCount(NodeActions.DEPLOY)).getByText("1"));
+    expect(
+      within(getActionCount(NodeActions.COMMISSION)).getByText("3")
+    ).toBeInTheDocument();
+    expect(
+      within(getActionCount(NodeActions.RELEASE)).getByText("2")
+    ).toBeInTheDocument();
+    expect(
+      within(getActionCount(NodeActions.DEPLOY)).getByText("1")
+    ).toBeInTheDocument();
   });
 
   it("fires onActionClick function on action button click", async () => {

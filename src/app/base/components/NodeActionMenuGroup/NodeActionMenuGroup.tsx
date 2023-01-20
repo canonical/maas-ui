@@ -224,7 +224,7 @@ export const NodeActionMenuGroup = ({
 
   return (
     <Tooltip
-      className="p-button-group"
+      className="p-node-action-menu-group"
       message={
         !hasSelection
           ? `Select ${nodeDisplay}s below to perform an action.`

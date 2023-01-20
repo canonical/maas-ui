@@ -202,13 +202,13 @@ describe("NodeActionMenuGroup", () => {
 
     expect(
       within(getActionCount(actionsMenu, NodeActions.COMMISSION)).getByText("3")
-    );
+    ).toBeInTheDocument();
     expect(
       within(getActionCount(actionsMenu, NodeActions.RELEASE)).getByText("2")
-    );
+    ).toBeInTheDocument();
     expect(
       within(getActionCount(actionsMenu, NodeActions.DEPLOY)).getByText("1")
-    );
+    ).toBeInTheDocument();
   });
 
   it("fires onActionClick function on action button click", async () => {

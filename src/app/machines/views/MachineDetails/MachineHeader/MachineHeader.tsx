@@ -102,7 +102,7 @@ const MachineHeader = ({
                   : `Power ${machine.power_state}`}
               </PowerIcon>
               <TableMenu
-                className="u-nudge-right--small p-table-menu"
+                className="u-nudge-right--small p-table-menu u-nudge-left--large"
                 links={[
                   {
                     children: "Check power",

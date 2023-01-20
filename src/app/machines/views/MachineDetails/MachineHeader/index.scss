@@ -1,17 +1,14 @@
 @mixin MachineHeader {
-  .p-table-menu {
-    margin-right: $spv--large;
-  }
 
   // These media queries are for when the screen is too small to display the action group without wrapping.
   // Wrapping begins before $breakpoint-small, hence the direct reference to pixel width.
-  @media screen and (max-width: 792px) {
-    .p-button-group {
+  @media screen and (max-width: ($breakpoint-node-action-menu-group - 1)) {
+    .p-node-action-menu-group {
       display: none;
     }
   }
 
-  @media screen and (min-width: 793px) {
+  @media screen and (min-width: $breakpoint-node-action-menu-group) {
     .p-action-menu {
       display: none;
     }
