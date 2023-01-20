@@ -16,6 +16,7 @@ export type Props<V> = {
   buttonsBordered?: boolean;
   buttonsClassName?: string;
   buttonsHelp?: ReactNode;
+  buttonsHelpClassName?: string;
   cancelDisabled?: boolean;
   cancelLabel?: string;
   inline?: boolean;
@@ -50,6 +51,7 @@ export const FormikFormButtons = <V,>({
   buttonsBordered = true,
   buttonsClassName,
   buttonsHelp,
+  buttonsHelpClassName,
   cancelDisabled,
   cancelLabel = "Cancel",
   inline,
@@ -116,7 +118,10 @@ export const FormikFormButtons = <V,>({
       >
         {buttonsHelp && (
           <div
-            className="formik-form-buttons__help"
+            className={classNames(
+              "formik-form-buttons__help",
+              buttonsHelpClassName
+            )}
             data-testid={TestIds.ButtonsHelp}
           >
             {buttonsHelp}

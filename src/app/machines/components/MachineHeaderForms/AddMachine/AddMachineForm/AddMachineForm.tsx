@@ -135,6 +135,7 @@ export const AddMachineForm = ({
               </Link>
             </p>
           }
+          buttonsHelpClassName="u-align--right"
           cleanup={machineActions.cleanup}
           errors={machineErrors}
           initialValues={{

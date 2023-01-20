@@ -73,7 +73,7 @@ const RecordFields = ({ editing }: Props): JSX.Element => {
 
   return (
     <Row>
-      <Col size={6}>
+      <Col size={12}>
         <FormikField
           label={Labels.Name}
           name="name"

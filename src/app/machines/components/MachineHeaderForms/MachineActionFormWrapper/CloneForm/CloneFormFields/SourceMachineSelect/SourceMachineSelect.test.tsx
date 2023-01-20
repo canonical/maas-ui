@@ -66,14 +66,6 @@ describe("SourceMachineSelect", () => {
     jest.restoreAllMocks();
   });
 
-  it("shows a spinner while data is loading", () => {
-    renderWithMockStore(
-      <SourceMachineSelect loadingData onMachineClick={jest.fn()} />,
-      { state }
-    );
-    expect(screen.getByLabelText(Label.Loading)).toBeInTheDocument();
-  });
-
   it("shows an error if no machines are available to select", () => {
     state.machine.lists["123456"] = machineStateList({
       loaded: true,

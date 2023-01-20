@@ -12,7 +12,7 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter, within } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -91,25 +91,34 @@ describe("AddDeviceInterfaces", () => {
     );
 
     const getCardCount = () => screen.getAllByTestId("interface-card").length;
-    const getAddButton = () => screen.getByTestId("add-interface");
-    const getRemoveButton = () =>
-      screen.getAllByRole("button", { name: /delete/i })[0];
 
     // There is only one interface by default. Since at least one interface must
-    // be defined, the remove button should be disabled.
+    // be defined, the remove button should be hidden.
     expect(getCardCount()).toBe(1);
-    expect(getRemoveButton()).toBeDisabled();
+    expect(
+      screen.queryByRole("button", { name: /delete/i })
+    ).not.toBeInTheDocument();
 
     // Add an interface.
-    await userEvent.click(getAddButton());
+    await userEvent.click(
+      screen.getByRole("button", { name: /Add interface/i })
+    );
 
     expect(getCardCount()).toBe(2);
-    expect(getRemoveButton()).not.toBeDisabled();
+    expect(screen.queryAllByRole("button", { name: /delete/i })).toHaveLength(
+      2
+    );
 
     // Remove an interface.
-    await userEvent.click(getRemoveButton());
+    await userEvent.click(
+      within(screen.getAllByTestId("interface-card")[0]).getByRole("button", {
+        name: /delete/i,
+      })
+    );
 
     expect(getCardCount()).toBe(1);
-    expect(getRemoveButton()).toBeDisabled();
+    expect(
+      screen.queryByRole("button", { name: /delete/i })
+    ).not.toBeInTheDocument();
   });
 });

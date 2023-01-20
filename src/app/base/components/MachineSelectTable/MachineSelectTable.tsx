@@ -23,6 +23,7 @@ export enum Label {
 }
 
 type Props = {
+  pageSize: number;
   machines: Machine[];
   onMachineClick: (machine: Machine | null) => void;
   searchText: string;
@@ -95,9 +96,8 @@ const generateRows = (
   }));
 };
 
-const getSkeletonRows = () =>
-  Array.from(Array(3)).map((_, i) => ({
-    className: "machine-select-table__row",
+const getSkeletonRows = (count = 3) =>
+  Array.from(Array(count)).map((_, i) => ({
     columns: [
       {
         content: (
@@ -124,6 +124,7 @@ const getSkeletonRows = () =>
 export const MachineSelectTable = ({
   machines,
   machinesLoading,
+  pageSize,
   onMachineClick,
   searchText,
   setSearchText,
@@ -146,7 +147,7 @@ export const MachineSelectTable = ({
     tags
   );
 
-  const skeletonRows = getSkeletonRows();
+  const skeletonRows = getSkeletonRows(pageSize);
 
   return (
     <>
