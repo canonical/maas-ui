@@ -16,6 +16,7 @@ export type BootResource = Model & {
   icon: "in-progress" | "queued" | "succeeded" | "waiting";
   lastUpdate: string;
   lastDeployed: string;
+  machineCount: number;
   name: string;
   numberOfNodes: number;
   rtype: BootResourceType;

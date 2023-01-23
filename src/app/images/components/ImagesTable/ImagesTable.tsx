@@ -172,7 +172,7 @@ const generateResourceRow = ({
         className: "last-deployed-col",
       },
       {
-        content: `${resource.numberOfNodes || "—"}`,
+        content: `${resource.machineCount || "—"}`,
         className: "machines-col",
       },
       {
@@ -203,7 +203,7 @@ const generateResourceRow = ({
       size: sizeStringToNumber(resource.size),
       status: resource.status,
       lastDeployed: parseUtcDatetime(resource.lastDeployed),
-      machineCount: resource.numberOfNodes,
+      machineCount: resource.machineCount,
     },
   };
 };
