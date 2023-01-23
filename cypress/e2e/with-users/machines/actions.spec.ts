@@ -65,9 +65,9 @@ context("Machine listing - actions", () => {
           name: new RegExp(`${action}...`),
         }).click();
       });
-      cy.findByTestId("section-header-title").contains(action).should("exist");
-      cy.get("[data-testid='section-header-content']").within(() => {
+      cy.findByRole("complementary", { name: action }).within(() => {
         cy.findAllByText(/Loading/).should("have.length", 0);
+        cy.findByRole("heading", { name: action });
         cy.findByRole("button", { name: /Cancel/i }).click();
       });
       // expect the action form to be closed
