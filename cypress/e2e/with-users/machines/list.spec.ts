@@ -68,7 +68,8 @@ context("Machine listing", () => {
   });
 
   it("can hide machine table columns", () => {
-    cy.findAllByRole("columnheader").should("have.length", 8);
+    const allHeadersCount = 11;
+    cy.findAllByRole("columnheader").should("have.length", allHeadersCount);
 
     cy.findAllByRole("button", { name: "Columns" }).click();
     cy.findByLabelText("columns menu").within(() =>
@@ -76,13 +77,13 @@ context("Machine listing", () => {
       cy.findByRole("checkbox", { name: "Status" }).click({ force: true })
     );
 
-    cy.findAllByRole("columnheader").should("have.length", 7);
+    cy.findAllByRole("columnheader").should("have.length", allHeadersCount - 1);
     cy.findByRole("header", { name: "Status" }).should("not.exist");
 
     cy.reload();
 
     // verify that the hidden column is still hidden after refresh
-    cy.findAllByRole("columnheader").should("have.length", 7);
+    cy.findAllByRole("columnheader").should("have.length", allHeadersCount - 1);
     cy.findByRole("header", { name: "Status" }).should("not.exist");
   });
 });

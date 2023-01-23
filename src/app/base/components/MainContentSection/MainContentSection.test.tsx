@@ -1,6 +1,6 @@
 import MainContentSection from "./MainContentSection";
 
-import { renderWithMockStore, screen, within } from "testing/utils";
+import { renderWithMockStore, screen } from "testing/utils";
 
 describe("MainContentSection", () => {
   it("renders sidebar", () => {
@@ -30,7 +30,7 @@ describe("MainContentSection", () => {
       </MainContentSection>
     );
     expect(
-      within(screen.getByRole("banner")).getByRole("heading", {
+      screen.getByRole("heading", {
         name: "Node title",
         level: 5,
       })
