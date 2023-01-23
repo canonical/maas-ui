@@ -71,6 +71,7 @@ type Props = {
   showActions?: boolean;
   sortDirection: ValueOf<typeof SortDirection>;
   sortKey: FetchGroupKey | null;
+  setPageSize: (pageSize: number) => void;
   setSortDirection: (sortDirection: ValueOf<typeof SortDirection>) => void;
   setSortKey: (sortKey: FetchGroupKey | null) => void;
 };
@@ -517,6 +518,7 @@ export const MachineListTable = ({
   showActions = true,
   sortDirection,
   sortKey,
+  setPageSize,
   setSortDirection,
   setSortKey,
   ...props
@@ -858,10 +860,11 @@ export const MachineListTable = ({
       />
       <MachineListPagination
         currentPage={currentPage}
-        itemsPerPage={pageSize}
         machineCount={machineCount}
         machinesLoading={machinesLoading}
+        pageSize={pageSize}
         paginate={setCurrentPage}
+        setPageSize={setPageSize}
       />
     </>
   );

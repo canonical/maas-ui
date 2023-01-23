@@ -149,6 +149,7 @@ const MachineList = ({
         pageSize={pageSize}
         setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
+        setPageSize={setPageSize}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection={sortDirection}
