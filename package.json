@@ -29,6 +29,7 @@
     "serve": "yarn start",
     "show-ready": "wait-on http-get://0.0.0.0:8401 && nodemon ./scripts/proxy-ready.js",
     "sitespeed": "docker run -v \"$(pwd)/sitespeed.io:/sitespeed.io\" --network=host sitespeedio/sitespeed.io:25.2.1 --config /sitespeed.io/config.json /sitespeed.io/scripts/machines.js --multi --spa",
+    "sitespeed-dev": "cd sitespeed.io && sitespeed.io --config ./config.json ./scripts/machines.js --multi --spa --browsertime.port=8400 --browsertime.videoParams.keepOriginalVideo --browsertime.iterations=1",
     "start": "concurrently \"yarn serve-proxy\" \"yarn serve-react\" \"yarn show-ready\"",
     "test-cypress": "start-server-and-test start '8401' serve-base 'tcp:8400' cypress-run",
     "test-ui": "TZ=UTC react-scripts test --testURL http://example.com/MAAS/r --watchAll=false",
