@@ -34,7 +34,8 @@ Only a small percentage of users interact with the MAAS client on mobile devices
 
 The high-level interactions between the React side of the frontend and the API are illustrated below.
 
-<!-- Add Images Here -->
+![code-structure](https://user-images.githubusercontent.com/47540149/214085014-a48a1645-afb0-434b-b5e9-07ae798c571a.png)
+
 
 ## React
 
@@ -68,7 +69,7 @@ If you need a vanilla component that does not already exist, first implement it 
 
 We use [Redux](https://redux.js.org/introduction/getting-started) as our state-management tool. To put it briefly, Redux is responsible for storing all the app-wide state (in the “store”) and provides a predictable methodology for changing that state. The normal flow is this: an action is dispatched, and as a consequence, some state is changed via a reducer function. Actions can be dispatched directly by the user from the UI, or elsewhere (e.g. a server).
 
-<!-- Add an image here -->
+![redux](https://user-images.githubusercontent.com/47540149/214085476-46535bee-cc9d-407e-a569-90014ab7f7b2.png)
 
 We also use some libraries/middleware to help with certain functions:
 
@@ -96,7 +97,7 @@ A common flow is this: an action is dispatched from a component to fetch some da
 
 The saga files can be found in [ui/src/app/base/sagas](https://github.com/canonical-web-and-design/maas-ui/tree/master/ui/src/app/base/sagas).
 
-<!-- Add Image here -->
+![redux-saga](https://user-images.githubusercontent.com/47540149/214086167-45b4b87a-b71d-400f-93d1-997d99681fd9.png)
 
 ### TypeScript
 
