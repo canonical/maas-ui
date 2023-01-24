@@ -1,13 +1,13 @@
 import type { MouseEventHandler } from "react";
 
-import { ContextualMenu } from "@canonical/react-components";
+import { ContextualMenu, useId } from "@canonical/react-components";
 import classNames from "classnames";
 import type { FormikErrors } from "formik";
 import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { ComposeFormValues, InterfaceField } from "../../ComposeForm";
-import { getPxeIconClass } from "../InterfacesTable";
+import { getPxeIconProps } from "../InterfacesTable";
 
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
@@ -77,7 +77,7 @@ const generateLinks = (
           <div>{fabric?.name || ""}</div>
           <div>{vlan?.name || ""}</div>
           <div>
-            <i className={getPxeIconClass(pod, vlan)}></i>
+            <i {...getPxeIconProps(pod, vlan)}></i>
           </div>
         </>
       ),
@@ -92,12 +92,11 @@ export const SubnetSelect = ({
   index,
   selectSubnet,
 }: Props): JSX.Element => {
+  const id = useId();
   const pod = useSelector((state: RootState) =>
     podSelectors.getById(state, hostId)
   ) as PodDetails;
-  const podSubnets = useSelector((state: RootState) =>
-    subnetSelectors.getByPod(state, pod)
-  );
+  const podSubnets = useSelector(subnetSelectors.all);
   const fabrics = useSelector(fabricSelectors.all);
   const spaces = useSelector(spaceSelectors.all);
   const vlans = useSelector(vlanSelectors.all);
@@ -146,7 +145,14 @@ export const SubnetSelect = ({
   }
 
   return (
-    <>
+    <div
+      className={classNames("p-form__group", {
+        "is-error": Boolean(subnetError),
+      })}
+    >
+      <label className="p-form__label" id={id}>
+        Subnet
+      </label>
       <ContextualMenu
         className="kvm-subnet-select"
         constrainPanelWidth
@@ -157,7 +163,8 @@ export const SubnetSelect = ({
         toggleClassName={classNames("kvm-subnet-select__toggle", {
           "is-error": Boolean(subnetError),
         })}
-        toggleLabel={selectedSubnet?.name || "Select"}
+        toggleLabel={selectedSubnet?.name || "Select subnet..."}
+        toggleProps={{ "aria-describedby": id }}
       />
       {subnetError && (
         <p className="p-form-validation__message" data-testid="no-pxe">
@@ -165,7 +172,7 @@ export const SubnetSelect = ({
           {subnetError}
         </p>
       )}
-    </>
+    </div>
   );
 };
 

@@ -1,11 +1,12 @@
-import React, { useState } from "react";
+import React from "react";
 
-import { Button, Col, Row, Textarea } from "@canonical/react-components";
+import { Col, Row, Textarea } from "@canonical/react-components";
 import { useFormikContext } from "formik";
 
 import type { FetchImagesValues } from "../FetchImagesForm";
 
 import FormikField from "app/base/components/FormikField";
+import ShowAdvanced from "app/base/components/ShowAdvanced";
 import { BootResourceSourceType } from "app/store/bootresource/types";
 
 export enum Labels {
@@ -23,9 +24,6 @@ const FetchImagesFormFields = (): JSX.Element => {
   const { handleChange, setFieldValue, values } =
     useFormikContext<FetchImagesValues>();
   const { keyring_data, keyring_filename, source_type } = values;
-  const [showAdvanced, setShowAdvanced] = useState(
-    !!(keyring_data || keyring_filename)
-  );
 
   return (
     <Row>
@@ -66,43 +64,28 @@ const FetchImagesFormFields = (): JSX.Element => {
               required
               type="text"
             />
-            {showAdvanced ? (
-              <>
-                <FormikField
-                  help="Path to the keyring to validate the mirror path."
-                  label={Labels.KeyringFilename}
-                  name="keyring_filename"
-                  placeholder="e.g. /usr/share/keyrings/ubuntu-clooudimage-keyring.gpg"
-                  type="text"
-                />
-                <FormikField
-                  component={Textarea}
-                  help="Contents on the keyring to validate the mirror path."
-                  label={Labels.KeyringData}
-                  name="keyring_data"
-                  placeholder="Contents of GPG key"
-                />
-                <Button
-                  appearance="link"
-                  data-testid="hide-advanced"
-                  onClick={() => {
-                    setShowAdvanced(false);
-                    setFieldValue("keyring_data", "");
-                    setFieldValue("keyring_filename", "");
-                  }}
-                >
-                  {Labels.HideAdvanced}
-                </Button>
-              </>
-            ) : (
-              <Button
-                appearance="link"
-                data-testid="show-advanced"
-                onClick={() => setShowAdvanced(true)}
-              >
-                {Labels.ShowAdvanced}
-              </Button>
-            )}
+            <ShowAdvanced
+              initialIsShown={!!(keyring_data || keyring_filename)}
+              onAfterHide={() => {
+                setFieldValue("keyring_data", "");
+                setFieldValue("keyring_filename", "");
+              }}
+            >
+              <FormikField
+                help="Path to the keyring to validate the mirror path."
+                label={Labels.KeyringFilename}
+                name="keyring_filename"
+                placeholder="e.g. /usr/share/keyrings/ubuntu-clooudimage-keyring.gpg"
+                type="text"
+              />
+              <FormikField
+                component={Textarea}
+                help="Contents on the keyring to validate the mirror path."
+                label={Labels.KeyringData}
+                name="keyring_data"
+                placeholder="Contents of GPG key"
+              />
+            </ShowAdvanced>
           </>
         )}
       </Col>

@@ -17,16 +17,8 @@
 
   .kvm-pool-select {
     display: block;
-    width: 100%;
-
     .kvm-pool-select__dropdown.p-contextual-menu__dropdown {
-      max-width: none;
-      min-width: 0;
-      width: calc(200% + #{2 * $sph--small}) !important;
-
-      @media only screen and (max-width: $breakpoint-large) {
-        width: auto;
-      }
+      z-index: $side-panel-z-index + 1;
     }
 
     .kvm-pool-select__header {
@@ -36,10 +28,10 @@
     }
 
     .kvm-pool-select__toggle.has-icon {
+      @extend %vf-input-elements;
       align-items: center;
       display: flex;
       justify-content: space-between;
-      margin-bottom: 0;
       padding-left: $sph--small;
       width: 100%;
 
@@ -50,6 +42,7 @@
 
       > :nth-child(2) {
         flex-shrink: 0;
+        margin-right: 0;
       }
     }
 

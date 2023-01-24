@@ -104,6 +104,7 @@
 @import "~app/base/components/SectionHeader";
 @import "~app/base/components/SelectButton";
 @import "~app/base/components/SSHKeyList";
+@import "~app/base/components/ShowAdvanced";
 @import "~app/base/components/Stepper";
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
@@ -140,6 +141,7 @@
 @include SectionHeader;
 @include SelectButton;
 @include SSHKeyList;
+@include ShowAdvanced;
 @include Stepper;
 @include TableMenu;
 @include TagSelector;
@@ -175,7 +177,6 @@
 @import "~app/base/components/DhcpFormFields/MachineSelect";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/InterfacesTable/SubnetSelect";
-@import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable";
 @import "~app/kvm/components/KVMHeaderForms/ComposeForm/StorageTable/PoolSelect";
 @import "~app/kvm/components/KVMResourcesCard";
 @import "~app/kvm/components/KVMStorageCards";
@@ -201,7 +202,6 @@
 @include CoreResources;
 @include CPUPopover;
 @include KVMComposeInterfacesTable;
-@include KVMComposeStorageTable;
 @include KVMDetailsHeader;
 @include KVMPoolSelect;
 @include KVMResourcesCard;

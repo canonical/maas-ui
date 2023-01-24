@@ -14,7 +14,7 @@ import type {
   KVMSidePanelContent,
   KVMSetSidePanelContent,
 } from "app/kvm/types";
-import { getFormTitle, getHeaderSize } from "app/kvm/utils";
+import { getFormTitle } from "app/kvm/utils";
 
 type TitleBlock = {
   title: ReactNode;
@@ -61,9 +61,6 @@ const KVMDetailsHeader = ({
     <SectionHeader
       buttons={buttons}
       className={classNames("kvm-details-header", className)}
-      headerSize={
-        sidePanelContent ? getHeaderSize(sidePanelContent) : undefined
-      }
       loading={loading}
       sidePanelContent={
         sidePanelContent ? (

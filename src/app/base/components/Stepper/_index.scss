@@ -1,10 +1,7 @@
 @mixin Stepper {
   .stepper {
     @extend .p-stepped-list;
-
-    @media only screen and (min-width: $breakpoint-small) {
-      flex-direction: row;
-    }
+    margin-bottom: $spv--medium;
 
     .stepper__item {
       @extend .p-stepped-list__item;
@@ -19,6 +16,7 @@
 
     .stepper__title {
       @extend .p-stepped-list__title;
+      margin-bottom: $spv--x-small;
 
       &::before {
         background-color: $color-light;

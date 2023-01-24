@@ -9,6 +9,7 @@ import type { ComposeFormDefaults, ComposeFormValues } from "../ComposeForm";
 import DomainSelect from "app/base/components/DomainSelect";
 import FormikField from "app/base/components/FormikField";
 import ResourcePoolSelect from "app/base/components/ResourcePoolSelect";
+import ShowAdvanced from "app/base/components/ShowAdvanced";
 import ZoneSelect from "app/base/components/ZoneSelect";
 import { PodType } from "app/store/pod/constants";
 import type { Pod } from "app/store/pod/types";
@@ -56,126 +57,127 @@ export const ComposeFormFields = ({
 
   return (
     <Row>
-      <Col size={5}>
+      <Col size={12}>
         <FormikField
           label="VM name"
           name="hostname"
           placeholder="Optional"
           type="text"
         />
-        <DomainSelect name="domain" required valueKey="id" />
-        <ZoneSelect name="zone" required valueKey="id" />
-        <ResourcePoolSelect name="pool" required valueKey="id" />
       </Col>
-      <Col emptyLarge={7} size={5}>
-        <FormikField
-          component={Select}
-          label="Architecture"
-          name="architecture"
-          options={[
-            { label: "Select architecture", value: "", disabled: true },
-            ...architectures.map((architecture) => ({
-              key: architecture,
-              label: architecture,
-              value: architecture,
-            })),
-          ]}
-        />
+
+      <p className="u-no-margin--bottom">Cores</p>
+      <Input
+        checked={!pinningCores}
+        id="not-pinning-cores"
+        label="Use any available core(s)"
+        onChange={() => {
+          setPinningCores(false);
+          setFieldValue("cores", defaults.cores);
+          setFieldValue("pinnedCores", "");
+        }}
+        type="radio"
+      />
+      {!pinningCores && (
         <FormikField
           caution={
-            memoryCaution
-              ? `The available memory (${available.memory}MiB) is less than the
-                recommended default (${defaults.memory}MiB).`
+            coresCaution
+              ? `The available cores (${available.cores}) is less than the
+                recommended default (${defaults.cores}).`
               : undefined
           }
-          help={memoryCaution ? undefined : `${available.memory}MiB available.`}
-          label="RAM (MiB)"
-          max={`${available.memory}`}
-          min="1024"
-          name="memory"
-          placeholder={`${defaults.memory} (default)`}
+          help={coresCaution ? undefined : `${availableCoresString} available.`}
+          max={`${available.cores}`}
+          min="1"
+          name="cores"
+          placeholder={`${defaults.cores} (default)`}
+          step="1"
           type="number"
           wrapperClassName="u-sv2"
         />
-        <Tooltip
-          data-testid="hugepages-tooltip"
-          message={getHugepagesTooltip(isLxd, hasFreeHugepages)}
-        >
-          <FormikField
-            disabled={!isLxd || !hasFreeHugepages}
-            label="Enable hugepages"
-            name="hugepagesBacked"
-            type="checkbox"
-          />
-        </Tooltip>
-        <p className="u-no-margin--bottom">Cores</p>
+      )}
+      <Tooltip
+        data-testid="core-pin-tooltip"
+        message={!isLxd ? "Core pinning is only supported on LXD KVMs" : null}
+      >
         <Input
-          checked={!pinningCores}
-          id="not-pinning-cores"
-          label="Use any available core(s)"
+          checked={pinningCores}
+          disabled={!isLxd}
+          id="pinning-cores"
+          label="Pin VM to specific core(s)"
           onChange={() => {
-            setPinningCores(false);
-            setFieldValue("cores", defaults.cores);
+            setPinningCores(true);
+            setFieldValue("cores", "");
             setFieldValue("pinnedCores", "");
           }}
           type="radio"
         />
-        {!pinningCores && (
+      </Tooltip>
+      {pinningCores && (
+        <FormikField
+          caution={
+            alreadyPinned.length
+              ? `The following cores have already been pinned: ${getRanges(
+                  alreadyPinned
+                )}`
+              : null
+          }
+          help={`${availableCoresString} available (unpinned indices: ${getRanges(
+            available.pinnedCores
+          )})`}
+          name="pinnedCores"
+          placeholder='Separate by comma or input a range, e.g. "1,2,4-12"'
+          type="text"
+          wrapperClassName="u-sv2"
+        />
+      )}
+      <FormikField
+        caution={
+          memoryCaution
+            ? `The available memory (${available.memory}MiB) is less than the
+                recommended default (${defaults.memory}MiB).`
+            : undefined
+        }
+        help={memoryCaution ? undefined : `${available.memory}MiB available.`}
+        label="RAM (MiB)"
+        max={`${available.memory}`}
+        min="1024"
+        name="memory"
+        placeholder={`${defaults.memory} (default)`}
+        type="number"
+        wrapperClassName="u-sv2"
+      />
+      <ShowAdvanced>
+        <Col size={12}>
+          <DomainSelect name="domain" required valueKey="id" />
+          <ZoneSelect name="zone" required valueKey="id" />
+          <ResourcePoolSelect name="pool" required valueKey="id" />
           <FormikField
-            caution={
-              coresCaution
-                ? `The available cores (${available.cores}) is less than the
-                recommended default (${defaults.cores}).`
-                : undefined
-            }
-            help={
-              coresCaution ? undefined : `${availableCoresString} available.`
-            }
-            max={`${available.cores}`}
-            min="1"
-            name="cores"
-            placeholder={`${defaults.cores} (default)`}
-            step="1"
-            type="number"
-            wrapperClassName="u-nudge-right--x-large u-sv2"
+            component={Select}
+            label="Architecture"
+            name="architecture"
+            options={[
+              { label: "Select architecture", value: "", disabled: true },
+              ...architectures.map((architecture) => ({
+                key: architecture,
+                label: architecture,
+                value: architecture,
+              })),
+            ]}
           />
-        )}
-        <Tooltip
-          data-testid="core-pin-tooltip"
-          message={!isLxd ? "Core pinning is only supported on LXD KVMs" : null}
-        >
-          <Input
-            checked={pinningCores}
-            disabled={!isLxd}
-            id="pinning-cores"
-            label="Pin VM to specific core(s)"
-            onChange={() => {
-              setPinningCores(true);
-              setFieldValue("cores", "");
-              setFieldValue("pinnedCores", "");
-            }}
-            type="radio"
-          />
-        </Tooltip>
-        {pinningCores && (
-          <FormikField
-            caution={
-              alreadyPinned.length
-                ? `The following cores have already been pinned: ${getRanges(
-                    alreadyPinned
-                  )}`
-                : null
-            }
-            help={`${availableCoresString} available (unpinned indices: ${getRanges(
-              available.pinnedCores
-            )})`}
-            name="pinnedCores"
-            placeholder='Separate by comma or input a range, e.g. "1,2,4-12"'
-            type="text"
-            wrapperClassName="u-nudge-right--x-large u-sv2"
-          />
-        )}
-      </Col>
+          <Tooltip
+            data-testid="hugepages-tooltip"
+            message={getHugepagesTooltip(isLxd, hasFreeHugepages)}
+          >
+            <FormikField
+              disabled={!isLxd || !hasFreeHugepages}
+              label="Enable hugepages"
+              name="hugepagesBacked"
+              type="checkbox"
+            />
+          </Tooltip>
+        </Col>
+      </ShowAdvanced>
     </Row>
   );
 };

@@ -28,3 +28,9 @@
     background-color: transparent;
   }
 }
+
+// 24-01-2023 Peter: tooltip message is hidden behind side panel
+// https://github.com/canonical/vanilla-framework/issues/4607
+.p-tooltip__message {
+  z-index: $side-panel-z-index + 1;
+}

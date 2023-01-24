@@ -24,18 +24,3 @@ export const getHeaderTitle = (
   }
   return defaultTitle;
 };
-
-export const getHeaderSize = (
-  sidePanelContent: DeviceSidePanelContent | null
-): "wide" | undefined => {
-  if (sidePanelContent) {
-    const [, name] = sidePanelContent.view;
-    switch (name) {
-      case DeviceHeaderViews.ADD_DEVICE[1]:
-        return "wide";
-      default:
-        return undefined;
-    }
-  }
-  return undefined;
-};

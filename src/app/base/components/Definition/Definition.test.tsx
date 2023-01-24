@@ -6,12 +6,16 @@ it("renders term and description correctly", () => {
   render(<Definition description="description text" label="Term" />);
   expect(screen.getByText("description text")).toBeInTheDocument();
   expect(screen.getByText("Term")).toBeInTheDocument();
+  expect(screen.getByText("description text")).toHaveAccessibleName("Term");
 });
 
 it("renders description provided as children correctly", () => {
   render(<Definition label="Term">description child text</Definition>);
   expect(screen.getByText("description child text")).toBeInTheDocument();
   expect(screen.getByText("Term")).toBeInTheDocument();
+  expect(screen.getByText("description child text")).toHaveAccessibleName(
+    "Term"
+  );
 });
 
 it("renders multiple children correctly", () => {
