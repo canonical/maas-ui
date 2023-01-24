@@ -1,6 +1,6 @@
 # MAAS UI
 
-- Content
+## Content
   - [Usability](#usability)
   - [Code structure](#code-structure)
   - [React](#react)
@@ -63,7 +63,7 @@ We use a set of components, such as FormikForm, FormikField for building forms w
 
 Many of the Vanilla components have React implementations which you can find in the [react-components](https://github.com/canonical-web-and-design/react-components/) project. There are [online docs](https://canonical-web-and-design.github.io/react-components/) for these components.
 
-If you need a vanilla component that does not already exist, first implement it in maas-ui and then propose it to the react-components repo.
+If you need a vanilla component that does not already exist, first implement it in MAAS-UI and then propose it to the react-components repo.
 
 ### Redux
 
@@ -117,7 +117,7 @@ As a general rule, we concentrate on user-centric testing and avoid testing impl
 
 **Note: This is an OUTDATED practice**
 
-It is very easy to write a component test that is too general or too specific with its component selectors. Both of these cases result in fragile tests. To this end maas-ui uses `data-testid` attributes to provide a convenient method of finding a component.
+It is very easy to write a component test that is too general or too specific with its component selectors. Both of these cases result in fragile tests. To this end MAAS-UI uses `data-testid` attributes to provide a convenient method of finding a component.
 
 The attribute can be applied to any component or element:
 
