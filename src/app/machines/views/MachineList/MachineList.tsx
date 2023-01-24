@@ -26,7 +26,7 @@ type Props = {
   setSearchFilter: SetSearchFilter;
 };
 
-const PAGE_SIZE = DEFAULTS.pageSize;
+const DEFAULT_PAGE_SIZE = DEFAULTS.pageSize;
 
 const MachineList = ({
   headerFormOpen,
@@ -80,6 +80,16 @@ const MachineList = ({
     "hiddenGroups",
     []
   );
+  const [storedPageSize] = useStorageState<number>(
+    localStorage,
+    "machineListPageSize",
+    DEFAULT_PAGE_SIZE
+  );
+  // fallback to default if the stored value is not valid
+  const pageSize =
+    storedPageSize && typeof storedPageSize === "number"
+      ? storedPageSize
+      : DEFAULT_PAGE_SIZE;
 
   const { callId, loading, machineCount, machines, machinesErrors } =
     useFetchMachines({
@@ -88,7 +98,7 @@ const MachineList = ({
       grouping,
       sortDirection,
       sortKey,
-      pagination: { currentPage, setCurrentPage, pageSize: PAGE_SIZE },
+      pagination: { currentPage, setCurrentPage, pageSize },
     });
 
   useEffect(
@@ -136,7 +146,7 @@ const MachineList = ({
         machineCount={machineCount}
         machines={machines}
         machinesLoading={loading}
-        pageSize={PAGE_SIZE}
+        pageSize={pageSize}
         setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
         setSortDirection={setSortDirection}
