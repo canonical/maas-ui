@@ -27,7 +27,7 @@
 
 ## Usability
 
-Our unofficial policy on responsive design in maas-ui is that everything should be clearly visible on all screen sizes, but it doesn't necessarily have to be the most visually appealing on small screens.
+Our unofficial policy on responsive design in MAAS-UI is that everything should be clearly visible on all screen sizes, but it doesn't necessarily have to be the most visually appealing on small screens.
 Only a small percentage of users interact with the MAAS client on mobile devices, but it's not uncommon for people to use it on one half of their monitor viewport.
 
 ## Code structure
