@@ -7,7 +7,7 @@ import { useFormikContext } from "formik";
 import { useSelector } from "react-redux";
 
 import type { ComposeFormValues, InterfaceField } from "../../ComposeForm";
-import { getPxeIconClass } from "../InterfacesTable";
+import { getPxeIconProps } from "../InterfacesTable";
 
 import fabricSelectors from "app/store/fabric/selectors";
 import type { Fabric } from "app/store/fabric/types";
@@ -77,7 +77,7 @@ const generateLinks = (
           <div>{fabric?.name || ""}</div>
           <div>{vlan?.name || ""}</div>
           <div>
-            <i className={getPxeIconClass(pod, vlan)}></i>
+            <i {...getPxeIconProps(pod, vlan)}></i>
           </div>
         </>
       ),
@@ -150,7 +150,7 @@ export const SubnetSelect = ({
         "is-error": Boolean(subnetError),
       })}
     >
-      <label className="p-form__label" htmlFor={id}>
+      <label className="p-form__label" id={id}>
         Subnet
       </label>
       <ContextualMenu
@@ -158,13 +158,13 @@ export const SubnetSelect = ({
         constrainPanelWidth
         dropdownClassName="kvm-subnet-select__dropdown"
         hasToggleIcon
-        id={id}
         links={links}
         position="left"
         toggleClassName={classNames("kvm-subnet-select__toggle", {
           "is-error": Boolean(subnetError),
         })}
         toggleLabel={selectedSubnet?.name || "Select"}
+        toggleProps={{ "aria-describedby": id }}
       />
       {subnetError && (
         <p className="p-form-validation__message" data-testid="no-pxe">

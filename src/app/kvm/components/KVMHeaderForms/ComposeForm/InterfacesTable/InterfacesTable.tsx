@@ -47,18 +47,21 @@ const generateNewInterface = (
 };
 
 /**
- * Get the icon class name for the interface's PXE column.
+ * Get the icon props for the interface's PXE.
  * @param pod - The pod whose boot VLANs are to be checked.
  * @param vlan - The VLAN of the interface's selected subnet.
- * @returns The class name of the PXE column icon.
+ * @returns The props of the PXE icon.
  */
-export const getPxeIconClass = (pod?: PodDetails, vlan?: VLAN): string => {
+export const getPxeIconProps = (
+  pod?: PodDetails,
+  vlan?: VLAN
+): { "aria-label": string; className: string } => {
   if (!vlan || !pod) {
-    return "p-icon--minus";
+    return { "aria-label": "-", className: "p-icon--minus" };
   }
   return pod.boot_vlans?.includes(vlan.id)
-    ? "p-icon--success"
-    : "p-icon--error";
+    ? { "aria-label": "success", className: "p-icon--success" }
+    : { "aria-label": "error", className: "p-icon--error" };
 };
 
 /**
@@ -128,18 +131,23 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
     <>
       <div className="u-flex--between">
         <h4>Interfaces</h4>
-        <Button
-          className="u-hide--medium u-hide--large"
-          disabled={!canDefineInterfaces}
-          hasIcon
-          onClick={addInterface}
-          type="button"
+        <Tooltip
+          data-testid="define-interfaces"
+          message={getTooltipMessage(hasSubnets, hasPxeSubnets)}
+          position="right"
         >
-          <i className="p-icon--plus"></i>
-          <span>
-            {interfaces.length === 0 ? "Define (optional)" : "Add interface"}
-          </span>
-        </Button>
+          <Button
+            disabled={!canDefineInterfaces}
+            hasIcon
+            onClick={addInterface}
+            type="button"
+          >
+            <i className="p-icon--plus"></i>
+            <span>
+              {interfaces.length === 0 ? "Define (optional)" : "Add interface"}
+            </span>
+          </Button>
+        </Tooltip>
       </div>
       {interfaces.length >= 1 ? (
         interfaces.map((iface, i) => {
@@ -199,12 +207,13 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
                 </Col>
                 <Col size={4}>
                   <Definition label="PXE">
-                    <i className={getPxeIconClass(pod, vlan)}></i>
+                    <i {...getPxeIconProps(pod, vlan)}></i>
                   </Definition>
                 </Col>
               </Row>
               <div className="u-align--right">
                 <Button
+                  data-testid="delete-interface"
                   disabled={!!composingPods.length}
                   onClick={() => removeInterface(iface.id)}
                   type="button"
@@ -233,25 +242,6 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
           </Card>
         </>
       )}
-
-      <Tooltip
-        data-testid="define-interfaces"
-        message={getTooltipMessage(hasSubnets, hasPxeSubnets)}
-        position="right"
-      >
-        <Button
-          className="u-hide--small"
-          disabled={!canDefineInterfaces}
-          hasIcon
-          onClick={addInterface}
-          type="button"
-        >
-          <i className="p-icon--plus"></i>
-          <span>
-            {interfaces.length === 0 ? "Define (optional)" : "Add interface"}
-          </span>
-        </Button>
-      </Tooltip>
     </>
   );
 };

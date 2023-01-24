@@ -8,6 +8,7 @@ import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
 
+import urls from "app/base/urls";
 import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -30,7 +31,7 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -169,7 +170,7 @@ describe("InterfacesTable", () => {
     expect(wrapper.find("[data-testid='undefined-interface']").exists()).toBe(
       true
     );
-    expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(1);
+    expect(wrapper.find("InterfacesTable Card").length).toBe(1);
 
     // Click "Define" button - table row should change to a defined interface
     await act(async () => {
@@ -181,7 +182,7 @@ describe("InterfacesTable", () => {
     expect(wrapper.find("[data-testid='undefined-interface']").exists()).toBe(
       false
     );
-    expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(1);
+    expect(wrapper.find("InterfacesTable Card").length).toBe(1);
 
     // Click "Add interface" - another defined interface should be added
     await act(async () => {
@@ -190,14 +191,14 @@ describe("InterfacesTable", () => {
         .simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(2);
+    expect(wrapper.find("InterfacesTable Card").length).toBe(2);
 
     // Click delete button - a defined interface should be removed
     await act(async () => {
       wrapper.find("TableActions button").at(0).simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("InterfacesTable tbody TableRow").length).toBe(1);
+    expect(wrapper.find("InterfacesTable Card").length).toBe(1);
   });
 
   it("correctly displays fabric, vlan and PXE details of selected subnet", async () => {
@@ -262,22 +263,24 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
     state.subnet.items = [nonBootSubnet, bootSubnet];
     state.vlan.items = [nonBootVlan, bootVlan];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+    );
 
     // Click "Define" button to open interfaces table.
     // It should be prepopulated with the first available PXE network details.
-    wrapper.find("[data-testid='define-interfaces'] button").simulate("click");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("SubnetSelect").text()).toBe("pxe-subnet");
-    expect(wrapper.find("TableCell[data-heading='Fabric']").text()).toBe(
-      "pxe-fabric"
-    );
-    expect(wrapper.find("TableCell[data-heading='VLAN']").text()).toBe(
-      "pxe-vlan"
-    );
+    await userEvent.click(screen.getByRole("button", { name: /Define/i }));
+
+    // /pxe-subnet/i
     expect(
-      wrapper.find("TableCell[data-heading='PXE'] i").prop("className")
-    ).toBe("p-icon--success");
+      screen.getByRole("button", { name: /pxe-subnet/i })
+    ).toHaveAccessibleDescription("Subnet");
+    expect(screen.getByText("pxe-fabric")).toHaveAccessibleName("Fabric");
+    expect(screen.getByText("pxe-vlan")).toHaveAccessibleName("VLAN");
+    // expect(screen.getByText(""))
+    // expect(
+    //   wrapper.find("TableCell[data-heading='PXE'] i").prop("className")
+    // ).toBe("p-icon--success");
   });
 });

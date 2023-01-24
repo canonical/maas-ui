@@ -63,7 +63,8 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
         <div className="u-flex--between">
           <h4>Storage configuration</h4>
           <Button
-            className="u-hide--medium u-hide--large"
+            data-testid="add-disk"
+            disabled={disabled}
             hasIcon
             onClick={addDisk}
             type="button"
@@ -125,28 +126,18 @@ export const StorageTable = ({ defaultDisk, hostId }: Props): JSX.Element => {
               {disks.length === 1 || !!composingPods.length ? null : (
                 <div className="u-align--right">
                   <Button
+                    data-testid="remove-disk"
                     disabled={!!composingPods.length}
                     onClick={() => removeDisk(disk.id)}
                     type="button"
                   >
-                    Delete
+                    Remove
                   </Button>
                 </div>
               )}
             </Card>
           );
         })}
-        <Button
-          className="u-hide--small"
-          data-testid="add-disk"
-          disabled={disabled}
-          hasIcon
-          onClick={addDisk}
-          type="button"
-        >
-          <i className="p-icon--plus"></i>
-          <span>Add disk</span>
-        </Button>
       </>
     );
   }

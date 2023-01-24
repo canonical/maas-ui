@@ -241,7 +241,7 @@ describe("SubnetSelect", () => {
     expect(wrapper.find("[data-testid='no-pxe']").exists()).toBe(false);
 
     // Remove second interface with PXE network - error should still not show.
-    wrapper.find("TableActions button").at(1).simulate("click");
+    wrapper.find("[data-testid='delete-interface']").at(1).simulate("click");
     await waitForComponentToPaint(wrapper);
     expect(wrapper.find("[data-testid='no-pxe']").exists()).toBe(false);
   });

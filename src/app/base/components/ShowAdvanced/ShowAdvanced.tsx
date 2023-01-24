@@ -9,16 +9,20 @@ export enum Labels {
 
 type Props = {
   children: React.ReactNode;
+  initialIsShown?: boolean;
   onAfterShow?: () => void;
   onAfterHide?: () => void;
 };
 
 const ShowAdvanced = ({
   children,
+  initialIsShown,
   onAfterShow,
   onAfterHide,
 }: Props): JSX.Element => {
-  const [isAdvancedShown, setIsAdvancedShown] = useState(false);
+  const [isAdvancedShown, setIsAdvancedShown] = useState(
+    initialIsShown || false
+  );
 
   return (
     <div className="show-advanced u-align--left">

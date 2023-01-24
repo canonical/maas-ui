@@ -114,20 +114,16 @@ describe("StorageTable", () => {
     const wrapper = generateWrapper(store, pod);
 
     // One disk should display by default and cannot be deleted
-    expect(wrapper.find("StorageTable tbody TableRow").length).toBe(1);
-    expect(
-      wrapper.find("[data-testid='remove-disk'] button").prop("disabled")
-    ).toBe(true);
+    expect(wrapper.find("StorageTable Card").length).toBe(1);
+    expect(wrapper.find("[data-testid='remove-disk'] button").length).toBe(0);
 
     // Click "Add disk" - another disk should be added, and remove button should enable
     await act(async () => {
       wrapper.find("[data-testid='add-disk'] button").simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("StorageTable tbody TableRow").length).toBe(2);
-    expect(
-      wrapper.find("[data-testid='remove-disk'] button").at(0).prop("disabled")
-    ).toBe(false);
+    expect(wrapper.find("StorageTable Card").length).toBe(2);
+    expect(wrapper.find("[data-testid='remove-disk'] button").length).toBe(2);
 
     // Click delete button - a disk should be removed
     await act(async () => {
@@ -137,10 +133,8 @@ describe("StorageTable", () => {
         .simulate("click");
     });
     wrapper.update();
-    expect(wrapper.find("StorageTable tbody TableRow").length).toBe(1);
-    expect(
-      wrapper.find("[data-testid='remove-disk'] button").prop("disabled")
-    ).toBe(true);
+    expect(wrapper.find("StorageTable Card").length).toBe(1);
+    expect(wrapper.find("[data-testid='remove-disk'] button").length).toBe(0);
   });
 
   it("displays a caution message if the boot disk size is less than 8GB", async () => {
@@ -238,7 +232,7 @@ describe("StorageTable", () => {
 
     // Add a disk
     await act(async () => {
-      wrapper.find("[data-testid='add-disk'] button").simulate("click");
+      wrapper.find("button[data-testid='add-disk']").simulate("click");
     });
     wrapper.update();
 
