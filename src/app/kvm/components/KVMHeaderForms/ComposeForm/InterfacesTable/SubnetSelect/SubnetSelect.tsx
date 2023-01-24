@@ -163,7 +163,7 @@ export const SubnetSelect = ({
         toggleClassName={classNames("kvm-subnet-select__toggle", {
           "is-error": Boolean(subnetError),
         })}
-        toggleLabel={selectedSubnet?.name || "Select"}
+        toggleLabel={selectedSubnet?.name || "Select subnet..."}
         toggleProps={{ "aria-describedby": id }}
       />
       {subnetError && (

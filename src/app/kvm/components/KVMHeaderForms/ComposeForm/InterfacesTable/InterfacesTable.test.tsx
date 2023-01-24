@@ -1,15 +1,6 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import type { MockStore } from "redux-mock-store";
-import configureStore from "redux-mock-store";
-
 import ComposeForm from "../ComposeForm";
 
 import urls from "app/base/urls";
-import type { Pod } from "app/store/pod/types";
 import type { RootState } from "app/store/root/types";
 import {
   domainState as domainStateFactory,
@@ -31,22 +22,12 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
-
-const mockStore = configureStore();
-
-const generateWrapper = (store: MockStore, pod: Pod) =>
-  mount(
-    <Provider store={store}>
-      <MemoryRouter
-        initialEntries={[{ pathname: `/kvm/${pod.id}`, key: "testKey" }]}
-      >
-        <CompatRouter>
-          <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />
-        </CompatRouter>
-      </MemoryRouter>
-    </Provider>
-  );
+import {
+  screen,
+  renderWithBrowserRouter,
+  userEvent,
+  within,
+} from "testing/utils";
 
 describe("InterfacesTable", () => {
   let initialState: RootState;
@@ -90,7 +71,7 @@ describe("InterfacesTable", () => {
     });
   });
 
-  it("disables add interface button with tooltip if KVM has no available subnets", () => {
+  it("disables add interface button with tooltip if KVM has no available subnets", async () => {
     const pod = podDetailsFactory({
       attached_vlans: [],
       boot_vlans: [],
@@ -98,18 +79,20 @@ describe("InterfacesTable", () => {
     });
     const state = { ...initialState };
     state.pod.items = [pod];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
 
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+    );
+
+    expect(screen.queryByRole("button", { name: /define/i })).toBeDisabled();
+    await userEvent.hover(screen.getByRole("button", { name: /define/i }));
     expect(
-      wrapper.find("[data-testid='define-interfaces'] button").prop("disabled")
-    ).toBe(true);
-    expect(
-      wrapper.find("[data-testid='define-interfaces']").prop("message")
-    ).toBe("There are no available networks seen by this KVM host.");
+      screen.getByText("There are no available networks seen by this KVM host.")
+    ).toBeInTheDocument();
   });
 
-  it("disables add interface button with tooltip if KVM host has no PXE-enabled networks", () => {
+  it("disables add interface button with tooltip if KVM host has no PXE-enabled networks", async () => {
     const fabric = fabricFactory();
     const vlan = vlanFactory({ fabric: fabric.id });
     const subnet = subnetFactory({ vlan: vlan.id });
@@ -123,15 +106,17 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
-
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+    );
+    expect(screen.getByRole("button", { name: /define/i })).toBeDisabled();
+    await userEvent.hover(screen.getByRole("button", { name: /define/i }));
     expect(
-      wrapper.find("[data-testid='define-interfaces'] button").prop("disabled")
-    ).toBe(true);
-    expect(
-      wrapper.find("[data-testid='define-interfaces']").prop("message")
-    ).toBe("There are no PXE-enabled networks seen by this KVM host.");
+      screen.getByText(
+        "There are no PXE-enabled networks seen by this KVM host."
+      )
+    ).toBeInTheDocument();
   });
 
   it("disables add interface button if pod is composing a machine", () => {
@@ -145,12 +130,12 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
     state.pod.statuses = { [pod.id]: podStatusFactory({ composing: true }) };
     state.subnet.items = [subnet];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
 
-    expect(
-      wrapper.find("[data-testid='define-interfaces'] button").prop("disabled")
-    ).toBe(true);
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+    );
+    expect(screen.queryByRole("button", { name: /define/i })).toBeDisabled();
   });
 
   it("can add and remove interfaces if KVM has PXE-enabled subnets", async () => {
@@ -163,42 +148,31 @@ describe("InterfacesTable", () => {
     const state = { ...initialState };
     state.pod.items = [pod];
     state.subnet.items = [subnet];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
 
-    // Undefined interface row displays by default
-    expect(wrapper.find("[data-testid='undefined-interface']").exists()).toBe(
-      true
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
     );
-    expect(wrapper.find("InterfacesTable Card").length).toBe(1);
+    // Undefined interface row displays by default
+    expect(screen.getByTestId("undefined-interface")).toBeInTheDocument();
+    expect(screen.queryByTestId("interface")).not.toBeInTheDocument();
 
     // Click "Define" button - table row should change to a defined interface
-    await act(async () => {
-      wrapper
-        .find("[data-testid='define-interfaces'] button")
-        .simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("[data-testid='undefined-interface']").exists()).toBe(
-      false
-    );
-    expect(wrapper.find("InterfacesTable Card").length).toBe(1);
+    await userEvent.click(screen.getByRole("button", { name: /Define/i }));
+    expect(screen.queryByTestId("undefined-interface")).not.toBeInTheDocument();
+    expect(screen.getByTestId("interface")).toBeInTheDocument();
 
     // Click "Add interface" - another defined interface should be added
-    await act(async () => {
-      wrapper
-        .find("[data-testid='define-interfaces'] button")
-        .simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("InterfacesTable Card").length).toBe(2);
+    await userEvent.click(
+      screen.getByRole("button", { name: /Add interface/i })
+    );
+    expect(screen.getAllByTestId("interface")).toHaveLength(2);
 
     // Click delete button - a defined interface should be removed
-    await act(async () => {
-      wrapper.find("TableActions button").at(0).simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("InterfacesTable Card").length).toBe(1);
+    await userEvent.click(
+      screen.getAllByRole("button", { name: /Delete/i })[0]
+    );
+    expect(screen.getAllByTestId("interface")).toHaveLength(1);
   });
 
   it("correctly displays fabric, vlan and PXE details of selected subnet", async () => {
@@ -215,36 +189,24 @@ describe("InterfacesTable", () => {
     state.pod.items = [pod];
     state.subnet.items = [subnet];
     state.vlan.items = [vlan];
-    const store = mockStore(state);
-    const wrapper = generateWrapper(store, pod);
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={pod.id} />,
+      { state, route: urls.kvm.lxd.single.index({ id: pod.id }) }
+    );
 
     // Click "Define" button to open interfaces table.
-    await act(async () => {
-      wrapper
-        .find("[data-testid='define-interfaces'] button")
-        .simulate("click");
-    });
-    wrapper.update();
+    await userEvent.click(screen.getByRole("button", { name: /Define/i }));
     // Open the menu:
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: subnet.name }));
     // Choose the subnet in state from the dropdown
     // Fabric and VLAN nams should display, PXE should be true
-    await act(async () => {
-      wrapper
-        .find("SubnetSelect ContextualMenu .kvm-subnet-select__subnet")
-        .last()
-        .simulate("click");
-    });
-    wrapper.update();
-    expect(wrapper.find("TableCell[data-heading='Fabric']").text()).toBe(
-      fabric.name
+    await userEvent.click(
+      within(screen.getByLabelText("submenu")).getByRole("button")
     );
-    expect(wrapper.find("TableCell[data-heading='VLAN']").text()).toBe(
-      vlan.name
-    );
-    expect(
-      wrapper.find("TableCell[data-heading='PXE'] i").prop("className")
-    ).toBe("p-icon--success");
+    expect(screen.getByText(fabric.name)).toHaveAccessibleName("Fabric");
+    expect(screen.getByText(vlan.name)).toHaveAccessibleName("VLAN");
+    expect(screen.getByText("PXE"));
+    expect(screen.getByLabelText("success"));
   });
 
   it("preselects the first PXE network if there is one available", async () => {
@@ -271,16 +233,12 @@ describe("InterfacesTable", () => {
     // Click "Define" button to open interfaces table.
     // It should be prepopulated with the first available PXE network details.
     await userEvent.click(screen.getByRole("button", { name: /Define/i }));
-
-    // /pxe-subnet/i
     expect(
       screen.getByRole("button", { name: /pxe-subnet/i })
     ).toHaveAccessibleDescription("Subnet");
     expect(screen.getByText("pxe-fabric")).toHaveAccessibleName("Fabric");
     expect(screen.getByText("pxe-vlan")).toHaveAccessibleName("VLAN");
-    // expect(screen.getByText(""))
-    // expect(
-    //   wrapper.find("TableCell[data-heading='PXE'] i").prop("className")
-    // ).toBe("p-icon--success");
+    expect(screen.getByText("PXE"));
+    expect(screen.getByLabelText("success"));
   });
 });

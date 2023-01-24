@@ -134,7 +134,7 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
         <Tooltip
           data-testid="define-interfaces"
           message={getTooltipMessage(hasSubnets, hasPxeSubnets)}
-          position="right"
+          position="top-left"
         >
           <Button
             disabled={!canDefineInterfaces}
@@ -158,7 +158,7 @@ export const InterfacesTable = ({ hostId }: Props): JSX.Element => {
           const fabric = fabrics.find((fabric) => fabric.id === vlan?.fabric);
 
           return (
-            <Card key={iface.id}>
+            <Card data-testid="interface" key={iface.id}>
               <FormikField
                 label="Name"
                 name={`interfaces[${i}].name`}
