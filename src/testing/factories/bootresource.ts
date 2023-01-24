@@ -32,6 +32,7 @@ export const bootResource = extend<Model, BootResource>(model, {
   status: "Waiting for rack controller(s) to sync",
   icon: "waiting",
   downloading: false,
+  machineCount: 0,
   numberOfNodes: 0,
   lastUpdate: "Tue, 08 Jun. 2021 02:12:47",
   lastDeployed: "Tue, 08 Jun. 2021 02:12:47",

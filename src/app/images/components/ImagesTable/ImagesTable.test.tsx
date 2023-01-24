@@ -242,7 +242,7 @@ describe("ImagesTable", () => {
         arch: "amd64",
         name: "ubuntu/focal",
         lastDeployed: "Fri, 18 Nov. 2022 09:55:21",
-        numberOfNodes: 768,
+        machineCount: 768,
       }),
     ];
     const image = {
@@ -296,7 +296,7 @@ describe("ImagesTable", () => {
         arch: "amd64",
         name: "ubuntu/focal",
         lastDeployed: "",
-        numberOfNodes: 768,
+        machineCount: 768,
       }),
     ];
     const image = {
@@ -352,7 +352,7 @@ describe("ImagesTable", () => {
         name: "ubuntu/focal",
         title: "20.04 LTS",
         lastDeployed: "Thu, 17 Nov. 2022 09:55:21",
-        numberOfNodes: 768,
+        machineCount: 768,
       }),
       resourceFactory({
         name: "ubuntu/bionic",
@@ -410,7 +410,7 @@ describe("ImagesTable", () => {
         name: "ubuntu/focal",
         title: "20.04 LTS",
         lastDeployed: "Thu, 17 Nov. 2022 09:55:21",
-        numberOfNodes: 768,
+        machineCount: 768,
       }),
       resourceFactory({
         name: "ubuntu/bionic",
