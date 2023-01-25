@@ -812,4 +812,40 @@ describe("MachineList", () => {
 
     expect(screen.queryByTestId("vault-notification")).not.toBeInTheDocument();
   });
+
+  it("uses the stored machineListPageSize", () => {
+    localStorage.setItem("machineListPageSize", "20");
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { store }
+    );
+    const expected = machineActions.fetch("123456", {
+      page_size: 20,
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches).toHaveLength(1);
+    expect(fetches.at(-1).payload.params.page_size).toBe(20);
+  });
+
+  it("falls back to default for invalid stored machineListPageSize", () => {
+    localStorage.setItem("machineListPageSize", '"invalid_value"');
+    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
+    const store = mockStore(state);
+    renderWithBrowserRouter(
+      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      { store }
+    );
+    const expected = machineActions.fetch("123456", {
+      page_size: DEFAULTS.pageSize,
+    });
+    const fetches = store
+      .getActions()
+      .filter((action) => action.type === expected.type);
+    expect(fetches).toHaveLength(1);
+    expect(fetches.at(-1).payload.params.page_size).toBe(DEFAULTS.pageSize);
+  });
 });
