@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import MachinesFilterOptions, { Label } from "./MachinesFilterOptions";
@@ -12,7 +11,7 @@ import {
   rootState as rootStateFactory,
   machineFilterGroup as machineFilterGroupFactory,
 } from "testing/factories";
-import { screen, waitFor, renderWithMockStore } from "testing/utils";
+import { userEvent, screen, waitFor, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

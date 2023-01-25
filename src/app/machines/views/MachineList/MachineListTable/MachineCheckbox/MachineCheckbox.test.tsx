@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import MachineCheckbox from "./MachineCheckbox";
@@ -11,7 +10,7 @@ import {
   machineState as machineStateFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+import { userEvent, screen, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

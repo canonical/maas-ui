@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, Router } from "react-router-dom";
@@ -16,7 +15,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { render, screen, within } from "testing/utils";
+import { userEvent, render, screen, within } from "testing/utils";
 
 jest.mock("../constants", () => ({
   __esModule: true,

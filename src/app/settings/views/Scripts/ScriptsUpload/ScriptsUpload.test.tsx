@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import type { FileWithPath } from "react-dropzone";
 import { Provider } from "react-redux";
@@ -18,6 +17,7 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import {
+  userEvent,
   screen,
   render,
   waitFor,

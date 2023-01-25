@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -9,7 +8,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen, within } from "testing/utils";
+import { userEvent, render, screen, within } from "testing/utils";
 
 const mockStore = configureStore();
 

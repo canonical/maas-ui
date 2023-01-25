@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -9,7 +8,7 @@ import ActionForm, { Labels } from "./ActionForm";
 import { TestIds } from "app/base/components/FormikFormButtons";
 import type { RootState } from "app/store/root/types";
 import { rootState as rootStateFactory } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { userEvent, render, screen } from "testing/utils";
 
 let state: RootState;
 const mockStore = configureStore();

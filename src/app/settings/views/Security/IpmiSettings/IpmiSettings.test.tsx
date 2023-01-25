@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import { Labels as FormFieldsLabels } from "./IpmiFormFields/IpmiFormFields";
@@ -10,7 +9,7 @@ import {
   rootState as rootStateFactory,
   configState as configStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 

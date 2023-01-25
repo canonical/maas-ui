@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -8,7 +7,7 @@ import AddFabric from "./AddFabric";
 
 import { actions as fabricActions } from "app/store/fabric";
 import { rootState as rootStateFactory } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "testing/utils";
 
 const renderTestCase = () => {
   const store = configureStore()(rootStateFactory());

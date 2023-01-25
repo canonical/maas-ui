@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -22,7 +21,7 @@ import {
 } from "testing/factories";
 import { tagStateListFactory } from "testing/factories/state";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { render, screen, waitFor, within } from "testing/utils";
+import { userEvent, render, screen, waitFor, within } from "testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;

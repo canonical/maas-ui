@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -8,7 +7,7 @@ import AddSpace from "./AddSpace";
 
 import { actions as spaceActions } from "app/store/space";
 import { rootState as rootStateFactory } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "testing/utils";
 
 test("correctly dispatches space cleanup and create actions on form submit", async () => {
   const store = configureStore()(rootStateFactory());

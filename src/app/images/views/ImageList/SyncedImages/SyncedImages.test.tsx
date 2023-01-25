@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import SyncedImages, { Labels as SyncedImagesLabels } from "./SyncedImages";
 
 import { BootResourceSourceType } from "app/store/bootresource/types";
@@ -10,7 +8,12 @@ import {
   bootResourceUbuntu as ubuntuFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, within, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 describe("SyncedImages", () => {
   it("can render the form in a card", async () => {

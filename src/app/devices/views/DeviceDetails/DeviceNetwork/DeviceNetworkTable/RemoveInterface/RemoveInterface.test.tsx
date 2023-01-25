@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import RemoveInterface from "./RemoveInterface";
@@ -15,7 +14,7 @@ import {
   deviceStatuses as deviceStatusesFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+import { userEvent, screen, renderWithMockStore } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 

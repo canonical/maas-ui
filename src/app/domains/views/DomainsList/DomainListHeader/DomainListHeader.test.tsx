@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import { Labels as DomainListHeaderFormLabels } from "../DomainListHeaderForm/DomainListHeaderForm";
 
 import DomainListHeader, {
@@ -12,7 +10,7 @@ import {
   domainState as domainStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("DomainListHeader", () => {
   let initialState: RootState;

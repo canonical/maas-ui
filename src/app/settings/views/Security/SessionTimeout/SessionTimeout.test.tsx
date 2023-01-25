@@ -1,5 +1,4 @@
 import { screen } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import SessionTimeout, {
@@ -9,7 +8,11 @@ import SessionTimeout, {
 import { actions as configActions } from "app/store/config";
 import type { RootState } from "app/store/root/types";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { renderWithBrowserRouter, getTestState } from "testing/utils";
+import {
+  userEvent,
+  renderWithBrowserRouter,
+  getTestState,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 

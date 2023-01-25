@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import VmResources, { Label } from "./VmResources";
@@ -18,6 +17,7 @@ import {
   podState as podStateFactory,
 } from "testing/factories";
 import {
+  userEvent,
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,

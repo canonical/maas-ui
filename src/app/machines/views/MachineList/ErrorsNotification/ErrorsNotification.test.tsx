@@ -1,8 +1,6 @@
-import userEvent from "@testing-library/user-event";
-
 import ErrorsNotification from "./ErrorsNotification";
 
-import { screen, render } from "testing/utils";
+import { userEvent, screen, render } from "testing/utils";
 
 it("can display and close an error message", async () => {
   render(<ErrorsNotification errors={{ title: "error message" }} />);

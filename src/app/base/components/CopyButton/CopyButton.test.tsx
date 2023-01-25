@@ -1,8 +1,6 @@
-import userEvent from "@testing-library/user-event";
-
 import CopyButton from "./CopyButton";
 
-import { render, screen } from "testing/utils";
+import { userEvent, render, screen } from "testing/utils";
 
 describe("CopyButton", () => {
   let execCommand: (

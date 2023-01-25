@@ -1,13 +1,11 @@
 import { useState } from "react";
 
-import userEvent from "@testing-library/user-event";
-
 import DebounceSearchBox, {
   DEFAULT_DEBOUNCE_INTERVAL,
   Labels,
 } from "./DebounceSearchBox";
 
-import { render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "testing/utils";
 
 describe("DebounceSearchBox", () => {
   beforeEach(() => {

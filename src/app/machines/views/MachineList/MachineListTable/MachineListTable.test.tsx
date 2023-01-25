@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -38,6 +37,7 @@ import {
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 import {
+  userEvent,
   screen,
   within,
   renderWithBrowserRouter,

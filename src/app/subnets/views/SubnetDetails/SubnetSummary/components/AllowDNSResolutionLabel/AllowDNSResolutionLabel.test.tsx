@@ -1,8 +1,6 @@
-import userEvent from "@testing-library/user-event";
-
 import AllowDNSResolutionLabel from "./AllowDNSResolutionLabel";
 
-import { render, screen } from "testing/utils";
+import { userEvent, render, screen } from "testing/utils";
 
 it("shows a tooltip when DNS is allowed", async () => {
   render(<AllowDNSResolutionLabel allowDNS />);

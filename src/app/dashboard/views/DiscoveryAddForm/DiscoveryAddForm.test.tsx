@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import DiscoveryAddForm, {
@@ -36,6 +35,7 @@ import {
 } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 import {
+  userEvent,
   screen,
   waitFor,
   within,
