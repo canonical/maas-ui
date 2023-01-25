@@ -25,8 +25,8 @@ const SessionTimeoutSchema = Yup.object().shape({
   session_length: Yup.string()
     .required("Timeout length is required")
     .matches(
-      /^((\d)+ ?(hour|day|week)(s)? ?(and)? ?)+$/,
-      "Unit must be `string` type with a value of weeks, days, and/or hours."
+      /^((\d)+ ?(hour|day|week|minute)(s)? ?(and)? ?)+$/,
+      "Unit must be `string` type with a value of weeks, days, hours, and/or minutes."
     )
     .test(
       "session-length-boundary-check",
@@ -97,7 +97,7 @@ const SessionTimeout = (): JSX.Element => {
         validationSchema={SessionTimeoutSchema}
       >
         <FormikField
-          help="Maximum session length is 14 days / 2 weeks. Format options are weeks, days, hours."
+          help="Maximum session length is 14 days / 2 weeks. Format options are weeks, days, hours, and/or minutes."
           label={Labels.Expiration}
           name="session_length"
           required={true}
