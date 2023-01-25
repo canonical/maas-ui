@@ -31,8 +31,6 @@ const customPageSize = async (context, commands, pageSize) => {
     `document.querySelectorAll('table[aria-label=\"Machines\"] tbody tr').length === ${pageSize}`,
     TIMEOUT
   );
-  await commands.scroll.toBottom();
-  await commands.screenshot.take("machine list loaded");
   return commands.measure.stop();
 };
 

@@ -1,8 +1,10 @@
 name: sitespeed.io
-on: [push]
+on:
+  pull_request:
+    types: [closed]
 jobs:
   run-sitespeed:
-    # if: github.event.pull_request.merged == true
+    if: github.event.pull_request.merged == true
     name: Run sitespeed.io
     runs-on: ubuntu-22.04
     env:
