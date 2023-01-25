@@ -1,8 +1,6 @@
-import userEvent from "@testing-library/user-event";
-
 import EditableSection, { Labels } from "./EditableSection";
 
-import { render, screen } from "testing/utils";
+import { userEvent, render, screen } from "testing/utils";
 
 it("can toggle showing content depending on editing state", async () => {
   render(

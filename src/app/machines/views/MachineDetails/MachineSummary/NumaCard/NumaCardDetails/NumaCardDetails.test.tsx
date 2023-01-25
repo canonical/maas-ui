@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import NumaCardDetails, {
   Labels as NumaCardDetailsLabels,
 } from "./NumaCardDetails";
@@ -12,7 +10,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("NumaCardDetails", () => {
   let state: RootState;

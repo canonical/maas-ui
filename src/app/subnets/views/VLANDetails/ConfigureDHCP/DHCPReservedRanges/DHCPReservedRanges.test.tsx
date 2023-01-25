@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -22,7 +21,7 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { render, screen, waitFor, within } from "testing/utils";
+import { userEvent, render, screen, waitFor, within } from "testing/utils";
 
 const mockStore = configureStore();
 let initialValues: ConfigureDHCPValues;

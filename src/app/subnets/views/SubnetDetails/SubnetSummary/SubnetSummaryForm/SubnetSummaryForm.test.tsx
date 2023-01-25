@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -16,7 +15,7 @@ import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
 } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "testing/utils";
 
 it("can dispatch an action to update the subnet", async () => {
   const fabrics = [

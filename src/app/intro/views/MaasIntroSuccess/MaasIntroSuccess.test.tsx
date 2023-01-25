@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
@@ -20,6 +19,7 @@ import {
   userState as userStateFactory,
 } from "testing/factories";
 import {
+  userEvent,
   screen,
   renderWithBrowserRouter,
   renderWithMockStore,

@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -13,7 +12,12 @@ import {
   bootResourceState as bootResourceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, render, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  render,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

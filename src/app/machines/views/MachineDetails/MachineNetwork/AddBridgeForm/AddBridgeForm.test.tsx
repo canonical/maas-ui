@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import AddBridgeForm from "./AddBridgeForm";
@@ -19,7 +18,12 @@ import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
 } from "testing/factories";
-import { screen, within, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 const route = urls.machines.index;

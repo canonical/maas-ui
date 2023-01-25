@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { MemoryRouter, Router } from "react-router-dom";
@@ -18,7 +17,7 @@ import {
   tag as tagFactory,
   tagState as tagStateFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { userEvent, render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;

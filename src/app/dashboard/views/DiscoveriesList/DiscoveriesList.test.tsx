@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import DiscoveriesList, {
@@ -30,6 +29,7 @@ import {
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
 import {
+  userEvent,
   screen,
   waitFor,
   within,

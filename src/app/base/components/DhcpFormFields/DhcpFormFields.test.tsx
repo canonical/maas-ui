@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -25,7 +24,7 @@ import {
   subnetState as subnetStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen, waitFor, within } from "testing/utils";
+import { userEvent, render, screen, waitFor, within } from "testing/utils";
 
 const mockStore = configureStore();
 const machines = [machineFactory()];

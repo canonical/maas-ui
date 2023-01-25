@@ -1,8 +1,6 @@
-import userEvent from "@testing-library/user-event";
-
 import OutsideClickHandler from "./OutsideClickHandler";
 
-import { screen, render } from "testing/utils";
+import { userEvent, screen, render } from "testing/utils";
 
 it("calls the onClick handler when clicking outside of the component", async () => {
   const onClick = jest.fn();

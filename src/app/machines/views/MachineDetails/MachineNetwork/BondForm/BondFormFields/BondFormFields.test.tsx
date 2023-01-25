@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
 import { LinkMonitoring } from "../types";
@@ -22,7 +21,7 @@ import {
   bondOptionsState as bondOptionsStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 const route = urls.machines.index;
 

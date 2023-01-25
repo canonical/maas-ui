@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import ControllerListTable from "./ControllerListTable";
 
 import urls from "app/base/urls";
@@ -14,7 +12,12 @@ import {
   rootState as rootStateFactory,
   vaultEnabledState as vaultEnabledStateFactory,
 } from "testing/factories";
-import { screen, within, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 describe("ControllerListTable", () => {
   let controller: Controller;

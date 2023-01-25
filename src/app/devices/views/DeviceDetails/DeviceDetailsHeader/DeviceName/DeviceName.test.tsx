@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import DeviceName from "./DeviceName";
@@ -14,7 +13,7 @@ import {
   powerTypesState as powerTypesStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 

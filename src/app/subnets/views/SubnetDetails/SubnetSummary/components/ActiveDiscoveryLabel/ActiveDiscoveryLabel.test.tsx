@@ -1,8 +1,6 @@
-import userEvent from "@testing-library/user-event";
-
 import ActiveDiscoveryLabel from "./ActiveDiscoveryLabel";
 
-import { render, screen } from "testing/utils";
+import { userEvent, render, screen } from "testing/utils";
 
 it("displays a tooltip", async () => {
   render(<ActiveDiscoveryLabel />);

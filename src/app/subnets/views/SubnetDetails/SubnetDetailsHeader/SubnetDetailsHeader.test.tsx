@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import { subnetActionLabels } from "../constants";
 
 import SubnetDetailsHeader from "./SubnetDetailsHeader";
@@ -8,7 +6,7 @@ import {
   subnet as subnetFactory,
   subnetDetails as subnetDetailsFactory,
 } from "testing/factories";
-import { render, screen } from "testing/utils";
+import { userEvent, render, screen } from "testing/utils";
 
 it("shows the subnet name as the section title", () => {
   const subnet = subnetFactory({ id: 1, name: "subnet-1" });

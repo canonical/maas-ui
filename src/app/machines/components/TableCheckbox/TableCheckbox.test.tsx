@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import TableCheckbox, { Checked } from "./TableCheckbox";
@@ -10,7 +9,7 @@ import {
   machineStateList as machineStateListFactory,
   machineState as machineStateFactory,
 } from "testing/factories";
-import { screen, waitFor, renderWithMockStore } from "testing/utils";
+import { userEvent, screen, waitFor, renderWithMockStore } from "testing/utils";
 
 let state: RootState;
 const callId = "123456";

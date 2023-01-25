@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import type { RouteProps } from "react-router-dom";
 import { MemoryRouter, Route } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -6,7 +5,7 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import type { NavItem } from "./SideNav";
 import { SideNav } from "./SideNav";
 
-import { screen, render } from "testing/utils";
+import { userEvent, screen, render } from "testing/utils";
 
 let items: NavItem[];
 

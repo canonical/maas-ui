@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -19,7 +18,7 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { fireEvent, render, screen, waitFor } from "testing/utils";
+import { userEvent, fireEvent, render, screen, waitFor } from "testing/utils";
 
 const mockStore = configureStore();
 let state: RootState;

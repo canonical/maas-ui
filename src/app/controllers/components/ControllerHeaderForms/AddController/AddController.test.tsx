@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import AddController from "./AddController";
 
 import { ConfigNames } from "app/store/config/types";
@@ -11,6 +9,7 @@ import {
   versionState as versionStateFactory,
 } from "testing/factories";
 import {
+  userEvent,
   screen,
   waitFor,
   within,

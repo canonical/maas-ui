@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -12,7 +11,7 @@ import {
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen, within, waitFor } from "testing/utils";
+import { userEvent, render, screen, within, waitFor } from "testing/utils";
 
 const getRootState = () =>
   rootStateFactory({

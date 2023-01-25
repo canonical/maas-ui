@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import userEvent from "@testing-library/user-event";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -20,7 +19,7 @@ import {
 } from "testing/factories";
 import { tagStateListFactory } from "testing/factories/state";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "testing/utils";
 
 const mockStore = configureStore();
 

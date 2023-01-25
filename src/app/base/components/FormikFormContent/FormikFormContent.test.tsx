@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Field, Formik } from "formik";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
@@ -17,7 +16,12 @@ import {
   configState as configStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  render,
+  screen,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 const mockUseNavigate = jest.fn();

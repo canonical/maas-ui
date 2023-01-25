@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { BrowserRouter, Router } from "react-router-dom";
@@ -22,6 +21,7 @@ import {
   userState as userStateFactory,
 } from "testing/factories";
 import {
+  userEvent,
   screen,
   render,
   waitFor,

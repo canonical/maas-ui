@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import MachinesFilterAccordion, { Label } from "./MachinesFilterAccordion";
 
 import { FilterGroupKey } from "app/store/machine/types";
@@ -9,7 +7,7 @@ import {
   rootState as rootStateFactory,
   machineFilterGroup as machineFilterGroupFactory,
 } from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+import { userEvent, screen, renderWithMockStore } from "testing/utils";
 
 describe("MachinesFilterAccordion", () => {
   let state: RootState;

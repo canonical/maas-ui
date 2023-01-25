@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import ControllerListHeader from "./ControllerListHeader";
 
 import { ControllerHeaderViews } from "app/controllers/constants";
@@ -9,7 +7,7 @@ import {
   controllerState as controllerStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 describe("ControllerListHeader", () => {
   let state: RootState;

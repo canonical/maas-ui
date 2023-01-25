@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 
 import { MaasIntroSchema } from "../MaasIntro";
@@ -15,7 +14,7 @@ import {
   user as userFactory,
   userState as userStateFactory,
 } from "testing/factories";
-import { screen, renderWithMockStore } from "testing/utils";
+import { userEvent, screen, renderWithMockStore } from "testing/utils";
 
 describe("NameCard", () => {
   let state: RootState;

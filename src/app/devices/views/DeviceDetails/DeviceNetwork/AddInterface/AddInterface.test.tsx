@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import configureStore from "redux-mock-store";
 
 import AddInterface from "./AddInterface";
@@ -19,7 +18,7 @@ import {
   subnetState as subnetStateFactory,
 } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 const createNewInterface = async () => {

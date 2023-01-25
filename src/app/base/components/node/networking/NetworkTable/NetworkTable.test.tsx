@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import NetworkTable, { Label } from "./NetworkTable";
 
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
@@ -23,7 +21,12 @@ import {
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { screen, within, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 describe("NetworkTable", () => {
   let state: RootState;

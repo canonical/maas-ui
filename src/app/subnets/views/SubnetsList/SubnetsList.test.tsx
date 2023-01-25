@@ -1,5 +1,3 @@
-import userEvent from "@testing-library/user-event";
-
 import SubnetsList from "./SubnetsList";
 
 import urls from "app/subnets/urls";
@@ -11,6 +9,7 @@ import {
   rootState as rootStateFactory,
 } from "testing/factories";
 import {
+  userEvent,
   screen,
   within,
   waitFor,

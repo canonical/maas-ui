@@ -1,8 +1,6 @@
-import userEvent from "@testing-library/user-event";
-
 import SubnetsControls from "./SubnetsControls";
 
-import { render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "testing/utils";
 
 it("renders select element correctly", () => {
   render(

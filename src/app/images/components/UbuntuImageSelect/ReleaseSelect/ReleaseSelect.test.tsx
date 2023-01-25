@@ -1,9 +1,7 @@
-import userEvent from "@testing-library/user-event";
-
 import ReleaseSelect from "./ReleaseSelect";
 
 import { bootResourceUbuntuRelease as bootResourceUbuntuReleaseFactory } from "testing/factories";
-import { screen, render } from "testing/utils";
+import { userEvent, screen, render } from "testing/utils";
 
 describe("ReleaseSelect", () => {
   it("separates ubuntu releases by LTS and non-LTS, sorted descending by title", () => {

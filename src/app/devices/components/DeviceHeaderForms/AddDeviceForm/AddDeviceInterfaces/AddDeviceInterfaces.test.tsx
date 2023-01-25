@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { Formik } from "formik";
 import configureStore from "redux-mock-store";
 
@@ -12,7 +11,12 @@ import {
   subnet as subnetFactory,
   subnetState as subnetStateFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter, within } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  renderWithBrowserRouter,
+  within,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 

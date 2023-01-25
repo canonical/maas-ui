@@ -1,5 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import userEvent from "@testing-library/user-event";
 import { mount } from "enzyme";
 import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
@@ -37,7 +36,12 @@ import {
   controllerState as controllerStateFactory,
   controller as controllerFactory,
 } from "testing/factories";
-import { screen, within, renderWithBrowserRouter } from "testing/utils";
+import {
+  userEvent,
+  screen,
+  within,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 

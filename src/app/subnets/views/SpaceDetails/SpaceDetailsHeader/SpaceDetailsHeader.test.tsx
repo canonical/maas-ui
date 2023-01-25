@@ -1,4 +1,3 @@
-import userEvent from "@testing-library/user-event";
 import { createMemoryHistory } from "history";
 import { Provider } from "react-redux";
 import { Router, Route } from "react-router";
@@ -14,7 +13,7 @@ import {
   spaceState as spaceStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { render, screen, waitFor } from "testing/utils";
+import { userEvent, render, screen, waitFor } from "testing/utils";
 
 const renderTestCase = (
   space = spaceFactory({
