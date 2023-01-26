@@ -13,6 +13,7 @@ import { MAAS_UI_ID } from "./constants";
 
 import Routes from "app/Routes";
 import Footer from "app/base/components/Footer";
+import GlobalSideNav from "app/base/components/GlobalSideNav";
 import Header from "app/base/components/Header";
 import Login from "app/base/components/Login";
 import MainContentSection from "app/base/components/MainContentSection";
@@ -125,6 +126,7 @@ export const App = (): JSX.Element => {
       <ThemePreviewContext.Provider value={{ theme, setTheme }}>
         <main className="l-main">
           <Header />
+          <GlobalSideNav />
           <div id="main-content">{content}</div>
           <hr />
           <Footer />

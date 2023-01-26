@@ -81,6 +81,7 @@
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
 @import "~app/base/components/FormikFormButtons";
+@import "~app/base/components/GlobalSideNav";
 @import "~app/base/components/Header";
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
@@ -120,6 +121,7 @@
 @include FilterAccordion;
 @include FormCard;
 @include FormikFormButtons;
+@include GlobalSideNav;
 @include HardwareCard;
 @include Header;
 @include LabelledList;
