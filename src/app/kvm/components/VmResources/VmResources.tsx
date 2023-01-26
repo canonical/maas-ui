@@ -42,6 +42,7 @@ const VmResources = ({ filters, podId }: Props): JSX.Element => {
     loading,
     machineCount,
     machines: vms,
+    groups,
   } = useFetchMachines({
     filters: {
       ...filters,
@@ -71,6 +72,7 @@ const VmResources = ({ filters, podId }: Props): JSX.Element => {
           <MachineListTable
             callId={callId}
             currentPage={currentPage}
+            groups={groups}
             hiddenColumns={[
               "owner",
               "pool",
