@@ -45,7 +45,7 @@ const TagMachines = (): JSX.Element => {
   if (tag) {
     filters.tags = [tag.name];
   }
-  const { callId, loading, machineCount, machines, machinesErrors } =
+  const { callId, loading, machineCount, machines, groups, machinesErrors } =
     useFetchMachines({
       filters,
       sortDirection,
@@ -78,6 +78,7 @@ const TagMachines = (): JSX.Element => {
         aria-label={Label.Machines}
         callId={callId}
         currentPage={currentPage}
+        groups={groups}
         machineCount={machineCount}
         machines={machines}
         machinesLoading={loading}

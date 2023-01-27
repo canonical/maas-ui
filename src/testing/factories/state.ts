@@ -267,6 +267,7 @@ export const machineStateList = define<MachineStateList>({
   loaded: false,
   loading: false,
   stale: false,
+  needsUpdate: false,
   num_pages: null,
 });
 
