@@ -22,6 +22,7 @@ import {
   useIsLimitedEditingAllowed,
   useFetchMachine,
   useFetchMachines,
+  useFetchMachinesWithGroupingUpdates,
   useFetchMachineCount,
   useFetchedCount,
 } from "./hooks";
@@ -503,6 +504,133 @@ describe("machine hook utils", () => {
       expect(
         store.getActions().find((action) => action.type === expected.type)
       ).toStrictEqual(expected);
+    });
+  });
+
+  describe("useFetchMachinesWithGroupingUpdates", () => {
+    beforeEach(() => {
+      jest
+        .spyOn(reduxToolkit, "nanoid")
+        .mockReturnValueOnce("mocked-nanoid-1")
+        .mockReturnValueOnce("mocked-nanoid-2")
+        .mockReturnValueOnce("mocked-nanoid-3");
+    });
+
+    afterEach(() => {
+      jest.restoreAllMocks();
+    });
+
+    const generateWrapper =
+      (store: MockStoreEnhanced<unknown>) =>
+      ({ children }: { children?: ReactNode }) =>
+        <Provider store={store}>{children}</Provider>;
+
+    it("can return the initial set of machines", () => {
+      const store = mockStore(state);
+      renderHook(() => useFetchMachinesWithGroupingUpdates(), {
+        wrapper: generateWrapper(store),
+      });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+    });
+
+    it("fetches again if the query has been marked as needsUpdate", async () => {
+      state.machine.lists = {
+        "mocked-nanoid-1": machineStateListFactory({
+          needsUpdate: true,
+        }),
+      };
+      const store = mockStore(state);
+      renderHook(() => useFetchMachinesWithGroupingUpdates(), {
+        wrapper: generateWrapper(store),
+      });
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+      const getDispatches = () =>
+        store.getActions().filter((action) => action.type === expected.type);
+      expect(getDispatches()).toHaveLength(3);
+    });
+
+    it("returns updated groups if the query has been marked as needsUpdate", async () => {
+      state.machine.lists = {
+        "mocked-nanoid-1": machineStateListFactory({
+          needsUpdate: true,
+          groups: [
+            machineStateListGroupFactory({
+              count: 3,
+              collapsed: true,
+              items: [],
+              name: "Deployed",
+            }),
+            machineStateListGroupFactory({
+              count: 1,
+              collapsed: false,
+              items: ["abcd"],
+              name: "New",
+            }),
+            machineStateListGroupFactory({
+              count: 1,
+              collapsed: false,
+              items: ["efgh"],
+              name: "Testing",
+            }),
+          ],
+        }),
+        "mocked-nanoid-2": machineStateListFactory({
+          groups: [
+            machineStateListGroupFactory({
+              collapsed: false,
+              count: 2,
+              items: ["abcd", "efgh"],
+              name: "Testing",
+            }),
+          ],
+        }),
+        "mocked-nanoid-3": machineStateListFactory({
+          groups: [
+            machineStateListGroupFactory({
+              collapsed: true,
+              count: 4,
+              items: [],
+              name: "Deployed",
+            }),
+          ],
+        }),
+      };
+      const store = mockStore(state);
+      const { result } = renderHook(
+        () => useFetchMachinesWithGroupingUpdates(),
+        {
+          wrapper: generateWrapper(store),
+        }
+      );
+      const expected = machineActions.fetch("mocked-nanoid-1");
+      expect(
+        store.getActions().find((action) => action.type === expected.type)
+      ).toStrictEqual(expected);
+      const getDispatches = () =>
+        store.getActions().filter((action) => action.type === expected.type);
+      expect(getDispatches()).toHaveLength(3);
+      expect(result.current.groups).toEqual([
+        {
+          collapsed: true,
+          count: 4,
+          items: [],
+          name: "Deployed",
+          value: null,
+        },
+        {
+          collapsed: false,
+          count: 2,
+          items: ["abcd", "efgh"],
+          name: "Testing",
+          value: null,
+        },
+      ]);
     });
   });
 

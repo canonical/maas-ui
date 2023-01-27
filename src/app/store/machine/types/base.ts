@@ -222,6 +222,7 @@ export type MachineStateList = {
   groups: MachineStateListGroup[] | null;
   loaded: boolean;
   loading: boolean;
+  needsUpdate: boolean;
   stale: boolean;
   num_pages: number | null;
 };

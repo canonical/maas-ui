@@ -349,6 +349,7 @@ const DEFAULT_LIST_STATE = {
   groups: null,
   loaded: false,
   loading: true,
+  needsUpdate: false,
   stale: false,
   num_pages: null,
 };
@@ -1957,6 +1958,24 @@ const machineSlice = createSlice({
     updateInterfaceError: statusHandlers.updateInterface.error,
     updateInterfaceStart: statusHandlers.updateInterface.start,
     updateInterfaceSuccess: statusHandlers.updateInterface.success,
+    updateNotify: (
+      state: MachineState,
+      action: PayloadAction<MachineState["items"][0]>
+    ) => {
+      generateCommonReducers<
+        MachineState,
+        MachineMeta.PK,
+        CreateParams,
+        UpdateParams
+      >(MachineMeta.MODEL, MachineMeta.PK, setErrors).updateNotify(
+        state,
+        action
+      );
+      // mark all machine list queries as in need of update
+      Object.keys(state.lists).forEach((callId: string) => {
+        state.lists[callId].needsUpdate = true;
+      });
+    },
     updateVmfsDatastore: {
       prepare: (params: UpdateVmfsDatastoreParams) => ({
         meta: {
@@ -1979,6 +1998,19 @@ const machineSlice = createSlice({
     updateVmfsDatastoreError: statusHandlers.updateVmfsDatastore.error,
     updateVmfsDatastoreStart: statusHandlers.updateVmfsDatastore.start,
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
+    markAsUpdated: {
+      prepare: (callId: string) => ({
+        payload: { callId },
+      }),
+      reducer: (
+        state: MachineState,
+        action: PayloadAction<{ callId: string }>
+      ) => {
+        if (state.lists?.[action.payload.callId]) {
+          state.lists[action.payload.callId].needsUpdate = false;
+        }
+      },
+    },
   },
 });
 

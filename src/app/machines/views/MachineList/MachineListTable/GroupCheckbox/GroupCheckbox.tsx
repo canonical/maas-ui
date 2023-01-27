@@ -8,23 +8,21 @@ import type {
   MachineStateListGroup,
   FetchGroupKey,
 } from "app/store/machine/types";
-import type { RootState } from "app/store/root/types";
 
 type Props = {
   callId?: string | null;
+  group: MachineStateListGroup | null;
   grouping: FetchGroupKey | null;
   groupName: MachineStateListGroup["name"];
 };
 
 const GroupCheckbox = ({
   callId,
+  group,
   grouping,
   groupName,
 }: Props): JSX.Element | null => {
   const selected = useSelector(machineSelectors.selectedMachines);
-  const group = useSelector((state: RootState) =>
-    machineSelectors.listGroup(state, callId, groupName)
-  );
   const allSelected = !!selected && "filter" in selected;
   if (!group) {
     return null;

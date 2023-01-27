@@ -9,7 +9,7 @@ import type {
 } from "@canonical/react-components/dist/components/MainTable/MainTable";
 import classNames from "classnames";
 import pluralize from "pluralize";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 
 import AllCheckbox from "./AllCheckbox";
 import CoresColumn from "./CoresColumn";
@@ -33,7 +33,6 @@ import { useSendAnalytics } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
 import { actions as generalActions } from "app/store/general";
-import machineSelectors from "app/store/machine/selectors";
 import type {
   Machine,
   MachineMeta,
@@ -42,7 +41,6 @@ import type {
 import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
-import type { RootState } from "app/store/root/types";
 import { actions as tagActions } from "app/store/tag";
 import { actions as userActions } from "app/store/user";
 import { actions as zoneActions } from "app/store/zone";
@@ -60,6 +58,7 @@ type Props = {
   currentPage: number;
   filter?: string;
   grouping?: FetchGroupKey | null;
+  groups: MachineStateListGroup[] | null;
   hiddenColumns?: string[];
   hiddenGroups?: (string | null)[];
   machineCount: number | null;
@@ -430,6 +429,7 @@ const generateGroupRows = ({
                     showActions ? (
                       <GroupCheckbox
                         callId={callId}
+                        group={group}
                         groupName={name}
                         grouping={grouping}
                       />
@@ -502,6 +502,7 @@ export const MachineListTable = ({
   callId,
   currentPage,
   filter = "",
+  groups,
   grouping,
   hiddenColumns = [],
   hiddenGroups = [],
@@ -520,9 +521,7 @@ export const MachineListTable = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const sendAnalytics = useSendAnalytics();
-  const groups = useSelector((state: RootState) =>
-    machineSelectors.listGroups(state, callId)
-  );
+
   const currentSort = {
     direction: sortDirection,
     key: sortKey,

@@ -18,7 +18,7 @@ import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
-import { useFetchMachines } from "app/store/machine/utils/hooks";
+import { useFetchMachinesWithGroupingUpdates } from "app/store/machine/utils/hooks";
 
 type Props = {
   headerFormOpen?: boolean;
@@ -76,8 +76,8 @@ const MachineList = ({
     []
   );
 
-  const { callId, loading, machineCount, machines, machinesErrors } =
-    useFetchMachines({
+  const { callId, loading, machineCount, machines, machinesErrors, groups } =
+    useFetchMachinesWithGroupingUpdates({
       collapsedGroups: hiddenGroups,
       filters: FilterMachines.parseFetchFilters(searchFilter),
       grouping,
@@ -124,6 +124,7 @@ const MachineList = ({
         currentPage={currentPage}
         filter={searchFilter}
         grouping={grouping}
+        groups={groups}
         hiddenGroups={hiddenGroups}
         machineCount={machineCount}
         machines={machines}
