@@ -10,7 +10,7 @@ import { MachineListTable, Label } from "./MachineListTable";
 
 import { SortDirection } from "app/base/types";
 import { MachineColumns, columnLabels } from "app/machines/constants";
-import type { Machine } from "app/store/machine/types";
+import type { Machine, MachineStateListGroup } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
@@ -42,6 +42,7 @@ const mockStore = configureStore();
 describe("MachineListTable", () => {
   let state: RootState;
   let machines: Machine[] = [];
+  let groups: MachineStateListGroup[] = [];
 
   beforeEach(() => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
@@ -173,6 +174,16 @@ describe("MachineListTable", () => {
         zone: modelRefFactory(),
       }),
     ];
+    groups = [
+      machineStateListGroupFactory({
+        items: [machines[0].system_id, machines[2].system_id],
+        name: "Deployed",
+      }),
+      machineStateListGroupFactory({
+        items: [machines[1].system_id],
+        name: "Releasing",
+      }),
+    ];
     state = rootStateFactory({
       general: generalStateFactory({
         machineActions: machineActionsStateFactory({
@@ -191,16 +202,7 @@ describe("MachineListTable", () => {
         lists: {
           "123456": machineStateListFactory({
             loading: true,
-            groups: [
-              machineStateListGroupFactory({
-                items: [machines[0].system_id, machines[2].system_id],
-                name: "Deployed",
-              }),
-              machineStateListGroupFactory({
-                items: [machines[1].system_id],
-                name: "Releasing",
-              }),
-            ],
+            groups,
           }),
         },
       }),
@@ -243,6 +245,7 @@ describe("MachineListTable", () => {
         currentPage={1}
         filter=""
         grouping={FetchGroupKey.Status}
+        groups={groups}
         hiddenGroups={[]}
         machineCount={10}
         machines={machines}
@@ -272,21 +275,24 @@ describe("MachineListTable", () => {
   });
 
   it("displays a message if there are no search results", () => {
+    groups = [];
     state.machine = machineStateFactory({
       items: [],
       lists: {
         "123456": machineStateListFactory({
           loading: false,
-          groups: [],
+          groups,
         }),
       },
     });
+
     renderWithBrowserRouter(
       <MachineListTable
         callId="123456"
         currentPage={1}
         filter="this does not match anything"
         grouping={FetchGroupKey.Status}
+        groups={groups}
         hiddenGroups={[]}
         machineCount={10}
         machines={machines}
@@ -316,6 +322,7 @@ describe("MachineListTable", () => {
               currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -353,6 +360,7 @@ describe("MachineListTable", () => {
               currentPage={1}
               filter=""
               grouping={null}
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -384,6 +392,7 @@ describe("MachineListTable", () => {
               currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -434,6 +443,7 @@ describe("MachineListTable", () => {
               callId="123456"
               currentPage={1}
               filter=""
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -472,6 +482,7 @@ describe("MachineListTable", () => {
               callId="123456"
               currentPage={1}
               filter=""
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -510,6 +521,7 @@ describe("MachineListTable", () => {
               callId="123456"
               currentPage={1}
               filter=""
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -548,6 +560,7 @@ describe("MachineListTable", () => {
               callId="123456"
               currentPage={1}
               filter=""
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -586,6 +599,7 @@ describe("MachineListTable", () => {
               callId="123456"
               currentPage={1}
               filter=""
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -624,6 +638,7 @@ describe("MachineListTable", () => {
               currentPage={1}
               filter=""
               grouping={FetchGroupKey.Status}
+              groups={groups}
               hiddenGroups={[]}
               machineCount={10}
               machines={machines}
@@ -658,6 +673,7 @@ describe("MachineListTable", () => {
             <MachineListTable
               callId="123456"
               currentPage={1}
+              groups={groups}
               machineCount={10}
               machines={machines}
               pageSize={20}
@@ -695,6 +711,7 @@ describe("MachineListTable", () => {
               <MachineListTable
                 callId="123456"
                 currentPage={1}
+                groups={groups}
                 hiddenColumns={["power", "zone"]}
                 machineCount={10}
                 machines={machines}
@@ -729,6 +746,7 @@ describe("MachineListTable", () => {
               <MachineListTable
                 callId="123456"
                 currentPage={1}
+                groups={groups}
                 hiddenColumns={["fqdn"]}
                 machineCount={10}
                 machines={machines}
@@ -760,6 +778,7 @@ describe("MachineListTable", () => {
               <MachineListTable
                 callId="123456"
                 currentPage={1}
+                groups={groups}
                 hiddenColumns={["fqdn"]}
                 machineCount={10}
                 machines={machines}
