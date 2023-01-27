@@ -13,6 +13,7 @@ import type { FetchParams } from "../types/actions";
 
 import {
   mapSortDirection,
+  mergeGroupUpdates,
   selectedToFilters,
   selectedToSeparateFilters,
 } from "./common";
@@ -38,6 +39,7 @@ import type {
   FetchFilters,
   Machine,
   MachineMeta,
+  MachineStateListGroup,
   SelectedMachines,
 } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -537,7 +539,10 @@ type UseFetchMachinesData = {
 export const useFetchMachines = (
   options?: UseFetchMachinesOptions | null,
   queryOptions?: UseFetchQueryOptions
-): UseFetchMachinesData => {
+): UseFetchMachinesData & {
+  groups: MachineStateListGroup[] | null;
+  cleanup: () => void;
+} => {
   const { isEnabled } = queryOptions || { isEnabled: true };
   const previousIsEnabled = usePrevious(isEnabled);
   const [callId, setCallId] = useState<string | null>(null);
@@ -555,6 +560,9 @@ export const useFetchMachines = (
   const machines = useSelector((state: RootState) =>
     machineSelectors.list(state, callId)
   );
+  const groups = useSelector((state: RootState) =>
+    machineSelectors.listGroups(state, callId)
+  );
   const machineCount = useSelector((state: RootState) =>
     machineSelectors.listCount(state, callId)
   );
@@ -567,6 +575,11 @@ export const useFetchMachines = (
   const loading = useSelector((state: RootState) =>
     machineSelectors.listLoading(state, callId)
   );
+  const cleanup = () => {
+    if (callId) {
+      dispatch(machineActions.cleanupRequest(callId));
+    }
+  };
   useCleanup(callId);
 
   // reset pagination when filters change
@@ -631,7 +644,108 @@ export const useFetchMachines = (
     }
   }, [callId, dispatch, options, previousCallId, isEnabled, previousIsEnabled]);
 
-  return { callId, loaded, loading, machineCount, machines, machinesErrors };
+  return {
+    callId,
+    cleanup,
+    loaded,
+    loading,
+    groups,
+    machineCount,
+    machines,
+    machinesErrors,
+  };
+};
+
+export const useFetchMachinesWithGroupingUpdates = (
+  options?: UseFetchMachinesOptions | null,
+  queryOptions?: UseFetchQueryOptions
+): UseFetchMachinesData & {
+  groups: MachineStateListGroup[] | null;
+} => {
+  const dispatch = useDispatch();
+  const previousOptions = usePrevious(options, false);
+
+  // main fetch call returning the initial machines and groups
+  const {
+    callId: initialCallId,
+    machines,
+    groups: initialGroups,
+    loading,
+    loaded,
+    machinesErrors,
+    machineCount,
+  } = useFetchMachines(options, queryOptions);
+  const needsUpdate = useSelector((state: RootState) =>
+    machineSelectors.listNeedsUpdate(state, initialCallId)
+  );
+  const initialListIds = useSelector((state: RootState) =>
+    machineSelectors.listIds(state.machine, initialCallId)
+  );
+  const shouldFetchUpdates = !!needsUpdate;
+  const optionsWithoutPagination = useMemo(
+    () => ({
+      ...options,
+      pagination: undefined,
+    }),
+    [options]
+  );
+
+  // fetch updates for machines in the initial list of ids
+  const {
+    cleanup: cleanupExpandedGroups,
+    groups: updatedExpandedGroups,
+    loaded: updatedGroupsLoaded,
+  } = useFetchMachines(
+    { ...optionsWithoutPagination, filters: { id: initialListIds } },
+    { isEnabled: shouldFetchUpdates }
+  );
+
+  // fetch machine updates for groups
+  const {
+    cleanup: cleanupCollapsedGroups,
+    groups: updatedCollapsedGroups,
+    loaded: updatedCollapsedGroupsLoaded,
+  } = useFetchMachines(
+    { ...optionsWithoutPagination },
+    {
+      isEnabled: shouldFetchUpdates,
+    }
+  );
+  useEffect(() => {
+    // if options changed, it means we're getting a fresh page of results
+    // and need to reset subsequent updates
+    if (!fastDeepEqual(options, previousOptions)) {
+      cleanupExpandedGroups();
+      cleanupCollapsedGroups();
+    }
+  }, [options, previousOptions, cleanupExpandedGroups, cleanupCollapsedGroups]);
+
+  const groups = mergeGroupUpdates({
+    initialGroups,
+    updatedCollapsedGroups,
+    updatedExpandedGroups,
+  });
+
+  useEffect(() => {
+    if (initialCallId && updatedGroupsLoaded && updatedCollapsedGroupsLoaded) {
+      dispatch(machineActions.markAsUpdated(initialCallId));
+    }
+  }, [
+    dispatch,
+    initialCallId,
+    updatedGroupsLoaded,
+    updatedCollapsedGroupsLoaded,
+  ]);
+
+  return {
+    callId: initialCallId,
+    loaded,
+    loading,
+    groups,
+    machines,
+    machineCount,
+    machinesErrors,
+  };
 };
 
 /**

@@ -10,6 +10,7 @@ import type {
   MachineStatus,
   MachineStatuses,
   MachineStateListGroup,
+  MachineStateList,
 } from "app/store/machine/types";
 import { MachineMeta } from "app/store/machine/types";
 import { isMachineDetails } from "app/store/machine/utils";
@@ -407,7 +408,7 @@ const filterOptionsLoading = createSelector(
 const getList = (
   machineState: MachineState,
   callId: string | null | undefined
-) =>
+): MachineStateList | null =>
   callId && callId in machineState.lists ? machineState.lists[callId] : null;
 
 /**
@@ -441,6 +442,17 @@ const countStale = createSelector(
     (_state: RootState, callId: string | null | undefined) => callId,
   ],
   (machineState, callId) => getCount(machineState, callId)?.stale ?? null
+);
+
+/**
+ * Get the stale value for a machine list request with a given callId
+ */
+const listNeedsUpdate = createSelector(
+  [
+    machineState,
+    (_state: RootState, callId: string | null | undefined) => callId,
+  ],
+  (machineState, callId) => getList(machineState, callId)?.needsUpdate ?? null
 );
 
 /**
@@ -485,7 +497,7 @@ const listGroups = createSelector(
     machineState,
     (_state: RootState, callId: string | null | undefined) => callId,
   ],
-  (machineState, callId) => getList(machineState, callId)?.groups || null
+  (machineState, callId) => getList(machineState, callId)?.groups || []
 );
 
 /**
@@ -540,6 +552,33 @@ const list = createSelector(
     return machines;
   }
 );
+
+/**
+ * Get machine system_ids in a list request.
+ * @param state - The redux state.
+ * @param callId - A list request id.
+ * @param selected - Whether to filter for selected machines.
+ * @returns A list of machines.
+ */
+const listIds = (
+  machineState: MachineState,
+  callId: string | null | undefined
+): Machine[MachineMeta.PK][] => {
+  const ids: Machine[MachineMeta.PK][] = [];
+  // Get the ids for all machines in a list or count re
+  const list = getList(machineState, callId);
+  if (list) {
+    // Get the ids for all machines in a list request matching the callId
+    list.groups?.forEach((group) => {
+      group.items.forEach((systemId) => {
+        if (!ids.includes(systemId)) {
+          ids.push(systemId);
+        }
+      });
+    });
+  }
+  return ids;
+};
 
 /**
  * Get the ids of machines in a list or details call that are not being used
@@ -625,6 +664,7 @@ const selectors = {
   filtersLoading,
   getByStatusCode,
   getActionState,
+  listIds,
   count,
   countLoaded,
   countLoading,
@@ -640,6 +680,7 @@ const selectors = {
   listGroups,
   listLoaded,
   listLoading,
+  listNeedsUpdate,
   listStale,
   locking: statusSelectors["locking"],
   markingBroken: statusSelectors["markingBroken"],

@@ -8,6 +8,7 @@ import type {
   MachineDetails,
   SelectedMachines,
   FilterGroupOptionType,
+  MachineStateListGroup,
 } from "app/store/machine/types";
 import { FetchSortDirection, FilterGroupKey } from "app/store/machine/types";
 import type { Tag, TagMeta } from "app/store/tag/types";
@@ -172,4 +173,43 @@ export const selectedToSeparateFilters = (
     groupFilters,
     itemFilters,
   };
+};
+
+export const mergeGroupUpdates = ({
+  initialGroups,
+  updatedCollapsedGroups,
+  updatedExpandedGroups,
+}: Record<string, MachineStateListGroup[] | null>):
+  | MachineStateListGroup[]
+  | null => {
+  let groups: MachineStateListGroup[] = [];
+  if (
+    initialGroups &&
+    updatedCollapsedGroups &&
+    updatedExpandedGroups &&
+    updatedCollapsedGroups.length > 0 &&
+    updatedExpandedGroups.length > 0
+  ) {
+    const initialCollapsedGroups = initialGroups.reduce((acc, curr) => {
+      if (curr.collapsed && curr.name) {
+        acc.push(curr.name);
+      }
+      return acc;
+    }, [] as string[]);
+    const filteredUpdatedCollapsedGroups = updatedCollapsedGroups?.filter(
+      (group) =>
+        !!group.collapsed &&
+        initialCollapsedGroups.includes(group.name as string)
+    );
+    const filteredUpdatedExpandedGroups = updatedExpandedGroups?.filter(
+      (group) => !group.collapsed
+    );
+    groups = [
+      ...(filteredUpdatedCollapsedGroups ?? []),
+      ...(filteredUpdatedExpandedGroups ?? []),
+    ];
+  } else {
+    return initialGroups;
+  }
+  return groups;
 };
