@@ -60,6 +60,16 @@
     @include maas-icon-cluster($color-mid-dark);
   }
 
+  .p-icon--cluster-light {
+    @extend %icon;
+    @include maas-icon-cluster($color-white);
+  }
+
+  .p-icon--connected-light {
+    @extend %icon;
+    @include vf-icon-connected($color-white);
+  }
+
   .p-icon--disconnected {
     @extend %icon;
     @include vf-icon-disconnect($color-negative);
@@ -68,6 +78,16 @@
   // TODO: Remove alias and replace with .p-icon--lock-locked-active
   .p-icon--locked {
     @extend .p-icon--lock-locked-active;
+  }
+
+  .p-icon--machines-light {
+    @extend %icon;
+    @include vf-icon-machines($color-white);
+  }
+
+  .p-icon--profile-light {
+    @extend %icon;
+    @include vf-icon-profile($color-white);
   }
 
   .p-icon--security {

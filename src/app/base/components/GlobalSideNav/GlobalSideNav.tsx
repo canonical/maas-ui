@@ -67,7 +67,7 @@ const navGroups: NavGroup[] = [
   },
   {
     groupTitle: "Hardware",
-    groupIcon: "",
+    groupIcon: "machines-light",
     navLinks: [
       {
         highlight: [urls.machines.index, urls.machines.machine.index(null)],
@@ -92,7 +92,7 @@ const navGroups: NavGroup[] = [
   },
   {
     groupTitle: "KVM",
-    groupIcon: "",
+    groupIcon: "cluster-light",
     navLinks: [
       {
         label: "LXD",
@@ -106,7 +106,7 @@ const navGroups: NavGroup[] = [
   },
   {
     groupTitle: "Networking",
-    groupIcon: "",
+    groupIcon: "connected-light",
     navLinks: [
       {
         highlight: [
