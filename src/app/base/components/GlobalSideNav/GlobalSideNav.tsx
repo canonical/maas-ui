@@ -2,12 +2,7 @@
 import { useEffect, useContext } from "react";
 
 // import type { NavLink } from "@canonical/react-components";
-import {
-  Icon,
-  // Icon,
-  // isNavigationButton,
-  // Theme,
-} from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
@@ -26,10 +21,11 @@ import ThemePreviewContext from "app/base/theme-preview-context";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
+import { actions as controllerActions } from "app/store/controller";
+import controllerSelectors from "app/store/controller/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
-// import { actions as controllerActions } from "app/store/controller";
-// import controllerSelectors from "app/store/controller/selectors";
-// import type { RootState } from "app/store/root/types";
+import type { RootState } from "app/store/root/types";
+import type { User } from "app/store/user/types";
 // import { actions as statusActions } from "app/store/status";
 
 type NavItem = {
@@ -138,6 +134,87 @@ const navGroups: NavGroup[] = [
   },
 ];
 
+const generateItems = ({
+  authUser,
+  groups,
+  path,
+  vaultIncomplete,
+}: {
+  authUser: User | null;
+  groups: NavGroup[];
+  path: string;
+  vaultIncomplete: boolean;
+}) => {
+  const items = [];
+
+  groups.forEach((group) => {
+    items.push(
+      <>
+        <div className="p-muted-heading">
+          {group.groupIcon ? <Icon light name={group.groupIcon} /> : null}
+          {group.groupTitle}
+        </div>
+        <ul className="l-navigation__items">
+          {group.navLinks.map((navLink) => (
+            <li
+              className={`l-navigation__item ${
+                isSelected(path, navLink) ? "is-selected" : null
+              }`}
+            >
+              {navLink.label === "Controllers" && vaultIncomplete ? (
+                // If Vault setup is incomplete (started but not finished), display a warning icon
+                <Icon
+                  aria-label="warning"
+                  className="p-navigation--item-icon"
+                  data-testid="warning-icon"
+                  name="security-warning-grey"
+                />
+              ) : null}
+              <Link className="l-navigation__link" to={navLink.url}>
+                {navLink.label}
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </>
+    );
+  });
+
+  items.push(
+    <ul className="l-navigation__items">
+      <hr />
+      <li
+        className={`l-navigation__item ${
+          isSelected(path, { label: "Settings", url: urls.settings.index })
+            ? "is-selected"
+            : null
+        }`}
+      >
+        <Icon light name="settings" />
+        <Link className="l-navigation__link" to={urls.settings.index}>
+          Settings
+        </Link>
+      </li>
+      <hr />
+      <li
+        className={`l-navigation__item ${
+          isSelected(path, { label: "", url: urls.preferences.index })
+            ? "is-selected"
+            : null
+        }`}
+      >
+        <Icon light name="profile-light" />
+        <Link className="l-navigation__link" to={urls.preferences.index}>
+          {authUser?.username}
+        </Link>
+      </li>
+      <hr />
+    </ul>
+  );
+
+  return items;
+};
+
 const isSelected = (path: string, link: NavItem) => {
   // Use the provided highlight(s) or just use the url.
   let highlights = link.highlight || link.url;
@@ -155,16 +232,30 @@ const isSelected = (path: string, link: NavItem) => {
 };
 
 const GlobalSideNav = (): JSX.Element => {
+  const dispatch = useDispatch();
   const location = useLocation();
   const maasTheme = useSelector(configSelectors.theme);
   const { theme, setTheme } = useContext(ThemePreviewContext);
   const authUser = useSelector(authSelectors.get);
   const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
+  const path = location.pathname;
 
   useEffect(() => {
     setTheme(maasTheme ? maasTheme : "default");
   }, [location, maasTheme, setTheme]);
+
+  useEffect(() => {
+    dispatch(controllerActions.fetch());
+  }, [dispatch]);
+
+  const { unconfiguredControllers, configuredControllers } = useSelector(
+    (state: RootState) =>
+      controllerSelectors.getVaultConfiguredControllers(state)
+  );
+
+  let vaultIncomplete =
+    unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
 
   return (
     <>
@@ -195,41 +286,12 @@ const GlobalSideNav = (): JSX.Element => {
             <div className="p-navigation__logo-title">Canonical MAAS</div>
           </div>
         </div>
-
-        {navGroups.map((group) => (
-          <>
-            <div className="p-muted-heading">
-              {group.groupIcon ? <Icon light name={group.groupIcon} /> : null}
-              {group.groupTitle}
-            </div>
-            <ul className="l-navigation__items">
-              {group.navLinks.map((navLink) => (
-                <li className="l-navigation__item">
-                  <Link className="l-navigation__link" to={navLink.url}>
-                    {navLink.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </>
-        ))}
-        <ul className="l-navigation__items">
-          <hr />
-          <li className="l-navigation__item is-selected">
-            <Icon light name="settings" />
-            <Link className="l-navigation__link" to={urls.settings.index}>
-              Settings
-            </Link>
-          </li>
-          <hr />
-          <li className="l-navigation__item">
-            <Icon light name="profile-light" />
-            <Link className="l-navigation__link" to={urls.preferences.index}>
-              {authUser?.username}
-            </Link>
-          </li>
-          <hr />
-        </ul>
+        {generateItems({
+          authUser,
+          groups: navGroups,
+          path,
+          vaultIncomplete,
+        })}
         <span id="maas-info">
           {maasName} MAAS v{version}
         </span>
