@@ -94,6 +94,27 @@ describe("ImagesTable", () => {
     ).toBeInTheDocument();
   });
 
+  it("renders the time of last update", () => {
+    const status = "Synced";
+    const lastUpdate = "Mon, 30 Jan. 2023 15:54:44";
+    const resource = resourceFactory({
+      arch: "amd64",
+      complete: true,
+      name: "ubuntu/focal",
+      title: "20.04 LTS",
+      status,
+      lastUpdate,
+    });
+    state.bootresource.resources = [resource];
+    renderWithMockStore(<ImagesTable images={[]} resources={[resource]} />, {
+      state,
+    });
+
+    const row = screen.getByRole("row", { name: resource.title });
+
+    expect(within(row).getByText(lastUpdate)).toBeInTheDocument();
+  });
+
   it("renders the correct data for a new image", () => {
     const image = {
       arch: "arch",
