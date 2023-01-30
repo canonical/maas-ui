@@ -2,34 +2,6 @@ import SubnetsControls from "./SubnetsControls";
 
 import { userEvent, render, screen, waitFor } from "testing/utils";
 
-it("renders select element correctly", () => {
-  render(
-    <SubnetsControls
-      groupBy="fabric"
-      handleSearch={jest.fn()}
-      setGroupBy={jest.fn()}
-    />
-  );
-  expect(screen.getByRole("combobox", { name: "Group by" })).toBeVisible();
-});
-
-it("displays additional information for group by on press", async () => {
-  render(
-    <SubnetsControls
-      groupBy="fabric"
-      handleSearch={jest.fn()}
-      setGroupBy={jest.fn()}
-    />
-  );
-  expect(
-    screen.queryByTestId("subnets-groupby-help-text")
-  ).not.toBeInTheDocument();
-  await userEvent.click(
-    screen.getByRole("button", { name: "more about group by" })
-  );
-  expect(screen.getByTestId("subnets-groupby-help-text")).toBeInTheDocument();
-});
-
 it("calls handleSearch with a correct value on user input", async () => {
   // As of v14 userEvent always returns a Promise and by default it waits for a
   // setTimeout delay during its execution. Since jest.useFakeTimers() replaces
@@ -38,13 +10,7 @@ it("calls handleSearch with a correct value on user input", async () => {
   jest.useFakeTimers();
   const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
   const handleSearch = jest.fn();
-  render(
-    <SubnetsControls
-      groupBy="fabric"
-      handleSearch={handleSearch}
-      setGroupBy={jest.fn()}
-    />
-  );
+  render(<SubnetsControls groupBy="fabric" handleSearch={handleSearch} />);
   await user.type(screen.getByRole("searchbox", { name: "Search" }), "test");
 
   await waitFor(() => expect(handleSearch).toHaveBeenCalledTimes(1));

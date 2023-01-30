@@ -43,15 +43,15 @@ const TagListControls = ({
           onSelect={setFilter}
           options={[
             {
-              title: Label.All,
+              label: Label.All,
               value: TagSearchFilter.All,
             },
             {
-              title: Label.Manual,
+              label: Label.Manual,
               value: TagSearchFilter.Manual,
             },
             {
-              title: Label.Auto,
+              label: Label.Auto,
               value: TagSearchFilter.Auto,
             },
           ]}
