@@ -171,7 +171,7 @@ const generateResourceRow = ({
         content: resource.lastDeployed ? (
           <DoubleRow
             primary={getTimeDistanceString(resource.lastDeployed)}
-            secondary={resource.lastDeployed}
+            secondary={formatUtcDatetime(resource.lastDeployed)}
           />
         ) : (
           "—"
