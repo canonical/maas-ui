@@ -28,6 +28,7 @@ describe("websocket sagas", () => {
     const action = {
       type: "resourcepoo/createWithMachines",
       payload: { params: { machineIDs: ["machine1"], pool } },
+      meta: {},
     };
     return expectSaga(createPoolWithMachines, socketClient, sendMessage, action)
       .provide([
