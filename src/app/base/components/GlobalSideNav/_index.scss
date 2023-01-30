@@ -1,3 +1,123 @@
 @mixin GlobalSideNav {
+  .l-navigation {
+    @include vf-animation('background-color');
+    width: 244px;
+    color: $colors--dark-theme--text-default;
+    display: flex;
+    flex-direction: column;
 
+    .p-navigation__banner {
+      height: 2.3rem;
+
+      .p-navigation__logo-tag {
+        left: $spv--large;
+      }
+
+      .p-navigation__logo-title {
+        margin-bottom: 0;
+        margin-left: $spv--large;
+        align-self: flex-end;
+      }
+    }
+
+    i {
+      margin-right: $spv--small
+    }
+
+    hr {
+      background: rgba(255, 255, 255, 0.15);
+      margin: $spv--small 0 $spv--small $spv--large;
+    }
+
+    .p-muted-heading {
+      color: $colors--dark-theme--text-default !important;
+      margin: $spv--x-small 0 $spv--x-small $spv--large;
+
+      i {
+        margin-right: $spv--large;
+      }
+    }
+
+    .l-navigation__items {
+      margin: 0;
+      padding-left: 0;
+
+      .l-navigation__item {
+        padding: $spv--small 0 $spv--small $spv--large;
+
+        .l-navigation__link {
+          color: $colors--dark-theme--text-default;
+          text-decoration: none;
+          padding-left: $spv--small;
+        }
+
+        :only-child.l-navigation__link {
+          margin-left: $spv--x-large;
+        }
+      }
+
+      .l-navigation__item:hover {
+        background-color: $colors--dark-theme--background-hover;
+        transition: 0.1s;
+        transition-timing-function: cubic-bezier(.215,.61,.355,1)
+      }
+
+      .l-navigation__item.is-selected {
+        border-left: $sph--x-small solid $color-x-light;
+        background-color: $colors--dark-theme--background-active;
+        padding-left: $spv--medium;
+      }
+    }
+
+    #maas-info {
+      margin-left: $spv--large;
+      color: $colors--dark-theme--text-muted;
+    }
+
+    
+  }
+
+  .l-navigation--default {
+    background-color: $colors--dark-theme--background-default;
+  }
+
+  .l-navigation--bark {
+    background-color: #585841 !important;
+  }
+
+  .l-navigation--sage {
+    background-color: #4e5f51 !important;
+  }
+
+  .l-navigation--olive {
+    background-color: #3d5f11 !important;
+  }
+
+  .l-navigation--viridian {
+    background-color: #025a3d !important;
+  }
+
+  .l-navigation--prussian_green {
+    background-color: #225d5c !important;
+  }
+
+  .l-navigation--blue {
+    background-color: #0060bf !important;
+  }
+
+  .l-navigation--purple {
+    background-color: #7764d8 !important;
+  }
+
+  .l-navigation--magenta {
+    background-color: #974097 !important;
+  }
+
+  .l-navigation--red {
+    background-color: #a71b33 !important;
+  }
+
+  .l-navigation--item-icon {
+    margin-right: $sph--small;
+  }
 }
