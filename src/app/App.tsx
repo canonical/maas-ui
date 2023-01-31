@@ -14,7 +14,6 @@ import { MAAS_UI_ID } from "./constants";
 import Routes from "app/Routes";
 import Footer from "app/base/components/Footer";
 import GlobalSideNav from "app/base/components/GlobalSideNav";
-// import Header from "app/base/components/Header";
 import Login from "app/base/components/Login";
 import MainContentSection from "app/base/components/MainContentSection";
 import SectionHeader from "app/base/components/SectionHeader";
