@@ -2,21 +2,21 @@
 import { useEffect, useContext } from "react";
 
 // import type { NavLink } from "@canonical/react-components";
-import { Icon } from "@canonical/react-components";
+import { Button, ContextualMenu, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
-  //   useNavigate,
+  useNavigate,
   useLocation,
   matchPath,
-  //   useMatch,
+  useMatch,
 } from "react-router-dom-v5-compat";
 
-// import {
-//   useCompletedIntro,
-//   useCompletedUserIntro,
-//   useGoogleAnalytics,
-// } from "app/base/hooks";
+import {
+  useCompletedIntro,
+  useCompletedUserIntro,
+  //   useGoogleAnalytics,
+} from "app/base/hooks";
 import ThemePreviewContext from "app/base/theme-preview-context";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -25,8 +25,8 @@ import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
+import { actions as statusActions } from "app/store/status";
 import type { User } from "app/store/user/types";
-// import { actions as statusActions } from "app/store/status";
 
 type NavItem = {
   adminOnly?: boolean;
@@ -47,10 +47,6 @@ const navGroups: NavGroup[] = [
       {
         label: "Images",
         url: urls.images.index,
-      },
-      {
-        label: "Storage",
-        url: urls.settings.storage,
       },
       {
         label: "Tags",
@@ -137,11 +133,15 @@ const navGroups: NavGroup[] = [
 const generateItems = ({
   authUser,
   groups,
+  isAdmin,
+  logout,
   path,
   vaultIncomplete,
 }: {
   authUser: User | null;
   groups: NavGroup[];
+  isAdmin: boolean;
+  logout: () => void;
   path: string;
   vaultIncomplete: boolean;
 }) => {
@@ -155,26 +155,30 @@ const generateItems = ({
           {group.groupTitle}
         </div>
         <ul className="l-navigation__items">
-          {group.navLinks.map((navLink) => (
-            <li
-              className={`l-navigation__item ${
-                isSelected(path, navLink) ? "is-selected" : null
-              }`}
-            >
-              {navLink.label === "Controllers" && vaultIncomplete ? (
-                // If Vault setup is incomplete (started but not finished), display a warning icon
-                <Icon
-                  aria-label="warning"
-                  className="p-navigation--item-icon"
-                  data-testid="warning-icon"
-                  name="security-warning-grey"
-                />
-              ) : null}
-              <Link className="l-navigation__link" to={navLink.url}>
-                {navLink.label}
-              </Link>
-            </li>
-          ))}
+          {group.navLinks.map((navLink) => {
+            if (!navLink.adminOnly || isAdmin) {
+              return (
+                <li
+                  className={`l-navigation__item ${
+                    isSelected(path, navLink) ? "is-selected" : null
+                  }`}
+                >
+                  {navLink.label === "Controllers" && vaultIncomplete ? (
+                    // If Vault setup is incomplete (started but not finished), display a warning icon
+                    <Icon
+                      aria-label="warning"
+                      className="p-navigation--item-icon"
+                      data-testid="warning-icon"
+                      name="security-warning-grey"
+                    />
+                  ) : null}
+                  <Link className="l-navigation__link" to={navLink.url}>
+                    {navLink.label}
+                  </Link>
+                </li>
+              );
+            } else return null;
+          })}
         </ul>
       </>
     );
@@ -183,19 +187,24 @@ const generateItems = ({
   items.push(
     <ul className="l-navigation__items">
       <hr />
-      <li
-        className={`l-navigation__item ${
-          isSelected(path, { label: "Settings", url: urls.settings.index })
-            ? "is-selected"
-            : null
-        }`}
-      >
-        <Icon light name="settings" />
-        <Link className="l-navigation__link" to={urls.settings.index}>
-          Settings
-        </Link>
-      </li>
-      <hr />
+      {isAdmin ? (
+        <>
+          <li
+            className={`l-navigation__item ${
+              isSelected(path, { label: "Settings", url: urls.settings.index })
+                ? "is-selected"
+                : null
+            }`}
+          >
+            <Icon light name="settings" />
+            <Link className="l-navigation__link" to={urls.settings.index}>
+              Settings
+            </Link>
+          </li>
+          <hr />
+        </>
+      ) : null}
+
       <li
         className={`l-navigation__item ${
           isSelected(path, { label: "", url: urls.preferences.index })
@@ -204,9 +213,17 @@ const generateItems = ({
         }`}
       >
         <Icon light name="profile-light" />
-        <Link className="l-navigation__link" to={urls.preferences.index}>
-          {authUser?.username}
-        </Link>
+        <ContextualMenu
+          className="l-navigation__link is-dark"
+          dropdownClassName="u-flex--end"
+          toggleAppearance="link"
+          toggleLabel={authUser?.username}
+        >
+          <Link to={urls.preferences.index}>Preferences</Link>
+          <Button appearance="link" onClick={() => logout()}>
+            Log out
+          </Button>
+        </ContextualMenu>
       </li>
       <hr />
     </ul>
@@ -233,13 +250,50 @@ const isSelected = (path: string, link: NavItem) => {
 
 const GlobalSideNav = (): JSX.Element => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const location = useLocation();
   const maasTheme = useSelector(configSelectors.theme);
+  const configLoaded = useSelector(configSelectors.loaded);
   const { theme, setTheme } = useContext(ThemePreviewContext);
   const authUser = useSelector(authSelectors.get);
+  const isAdmin = useSelector(authSelectors.isAdmin);
   const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
   const path = location.pathname;
+  const completedIntro = useCompletedIntro();
+  const completedUserIntro = useCompletedUserIntro();
+  const isAuthenticated = !!authUser;
+  const introMatch = useMatch({ path: urls.intro.index, end: false });
+  const isAtIntro = !!introMatch;
+  const showLinks = isAuthenticated && completedIntro && completedUserIntro;
+
+  const logout = () => {
+    localStorage.removeItem("maas-config");
+    dispatch(statusActions.logout());
+  };
+
+  // Redirect to the intro pages if not completed.
+  useEffect(() => {
+    // Check that we're not already at the intro to allow navigation through the
+    // intro pages. This is necessary beacuse this useEffect runs every time
+    // there is a navigation change as the `navigate` function is regenerated
+    // for every route change, see:
+    // https://github.com/remix-run/react-router/issues/7634
+    if (!isAtIntro && configLoaded) {
+      if (!completedIntro) {
+        navigate({ pathname: urls.intro.index }, { replace: true });
+      } else if (isAuthenticated && !completedUserIntro) {
+        navigate({ pathname: urls.intro.user }, { replace: true });
+      }
+    }
+  }, [
+    completedIntro,
+    completedUserIntro,
+    configLoaded,
+    isAtIntro,
+    isAuthenticated,
+    navigate,
+  ]);
 
   useEffect(() => {
     setTheme(maasTheme ? maasTheme : "default");
@@ -286,12 +340,16 @@ const GlobalSideNav = (): JSX.Element => {
             <div className="p-navigation__logo-title">Canonical MAAS</div>
           </div>
         </div>
-        {generateItems({
-          authUser,
-          groups: navGroups,
-          path,
-          vaultIncomplete,
-        })}
+        {showLinks
+          ? generateItems({
+              authUser,
+              groups: navGroups,
+              isAdmin,
+              logout,
+              path,
+              vaultIncomplete,
+            })
+          : null}
         <span id="maas-info">
           {maasName} MAAS v{version}
         </span>
