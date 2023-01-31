@@ -215,14 +215,20 @@ const generateItems = ({
         <Icon light name="profile-light" />
         <ContextualMenu
           className="l-navigation__link is-dark"
-          dropdownClassName="u-flex--end"
+          position="right"
           toggleAppearance="link"
           toggleLabel={authUser?.username}
         >
-          <Link to={urls.preferences.index}>Preferences</Link>
-          <Button appearance="link" onClick={() => logout()}>
-            Log out
-          </Button>
+          <ul>
+            <li>
+              <Link to={urls.preferences.index}>Preferences</Link>
+            </li>
+            <li>
+              <Button appearance="link" onClick={() => logout()}>
+                Log out
+              </Button>
+            </li>
+          </ul>
         </ContextualMenu>
       </li>
       <hr />
@@ -350,9 +356,11 @@ const GlobalSideNav = (): JSX.Element => {
               vaultIncomplete,
             })
           : null}
-        <span id="maas-info">
-          {maasName} MAAS v{version}
-        </span>
+        {showLinks ? (
+          <span id="maas-info">
+            {maasName} MAAS v{version}
+          </span>
+        ) : null}
       </nav>
     </>
   );

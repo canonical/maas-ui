@@ -55,6 +55,8 @@
             text-decoration: none;
             margin: 0;
             padding: 0;
+
+            background-color: transparent !important;
           }
         }
 
@@ -86,6 +88,29 @@
 
   .p-contextual-menu__dropdown {
     z-index: 103;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+
+      li {
+        padding-left: $spv--large;
+      }
+
+      li:hover {
+        background-color: $colors--dark-theme--background-hover;
+        transition: 0.1s;
+        transition-timing-function: cubic-bezier(.215,.61,.355,1)
+      }
+
+      a, .p-button--link {
+        margin: 0;
+        padding: 0;
+        color: $colors--dark-theme--text-default;
+        text-decoration: none;
+      }
+    }
   }
 
   .l-navigation--default {
