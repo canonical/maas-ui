@@ -1,4 +1,5 @@
 import MockDate from "mockdate";
+import timezoneMock from "timezone-mock";
 
 import ImagesTable, { Labels as ImagesTableLabels } from "./ImagesTable";
 
@@ -15,6 +16,7 @@ import { userEvent, screen, within, renderWithMockStore } from "testing/utils";
 
 beforeEach(() => {
   MockDate.set("Fri, 18 Nov. 2022 10:55:00");
+  timezoneMock.register("Etc/GMT-1");
 });
 
 afterEach(() => {
@@ -91,6 +93,27 @@ describe("ImagesTable", () => {
     ).toBeInTheDocument();
     expect(
       within(row).getByText(ImagesTableLabels.WillBeDeleted)
+    ).toBeInTheDocument();
+  });
+
+  it("renders the time of last update", () => {
+    const resource = resourceFactory({
+      arch: "amd64",
+      complete: true,
+      name: "ubuntu/focal",
+      title: "20.04 LTS",
+      status: "Synced",
+      lastUpdate: "Mon, 30 Jan. 2023 15:54:44",
+    });
+    state.bootresource.resources = [resource];
+    renderWithMockStore(<ImagesTable images={[]} resources={[resource]} />, {
+      state,
+    });
+
+    const row = screen.getByRole("row", { name: resource.title });
+
+    expect(
+      within(row).getByText("Mon, 30 Jan. 2023 16:54:44")
     ).toBeInTheDocument();
   });
 
@@ -236,11 +259,12 @@ describe("ImagesTable", () => {
   });
 
   it("displays a correct last deployed time and machine count", () => {
+    const lastDeployed = "Fri, 18 Nov. 2022 09:55:21";
     const resources = [
       resourceFactory({
         arch: "amd64",
         name: "ubuntu/focal",
-        lastDeployed: "Fri, 18 Nov. 2022 09:55:21",
+        lastDeployed,
         machineCount: 768,
       }),
     ];
@@ -279,7 +303,7 @@ describe("ImagesTable", () => {
     ).toBeInTheDocument();
     const row = screen.getByRole("row", { name: "18.04 LTS" });
     expect(
-      within(row).getByText(/Fri, 18 Nov. 2022 09:55:21/)
+      within(row).getByText(/Fri, 18 Nov. 2022 10:55:21/)
     ).toBeInTheDocument();
     expect(
       within(row).getByRole("gridcell", { name: /about 1 hour ago/ })

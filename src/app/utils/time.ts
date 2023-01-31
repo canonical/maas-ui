@@ -1,4 +1,4 @@
-import { formatDistance, parse } from "date-fns";
+import { format, formatDistance, parse } from "date-fns";
 
 const DATETIME_FORMAT = "E, dd LLL. yyyy HH:mm:ss";
 const UTC_DATETIME_FORMAT = `${DATETIME_FORMAT} x`;
@@ -14,3 +14,6 @@ export const getTimeDistanceString = (utcTimeString: string): string =>
   formatDistance(parseUtcDatetime(utcTimeString), new Date(), {
     addSuffix: true,
   });
+
+export const formatUtcDatetime = (utcTimeString: string): string =>
+  format(parseUtcDatetime(utcTimeString), DATETIME_FORMAT);
