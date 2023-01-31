@@ -13,7 +13,11 @@ import type { BootResource } from "app/store/bootresource/types";
 import { splitResourceName } from "app/store/bootresource/utils";
 import configSelectors from "app/store/config/selectors";
 import { sizeStringToNumber } from "app/utils/formatBytes";
-import { getTimeDistanceString, parseUtcDatetime } from "app/utils/time";
+import {
+  formatUtcDatetime,
+  getTimeDistanceString,
+  parseUtcDatetime,
+} from "app/utils/time";
 
 type Props = {
   handleClear?: (image: ImageValue) => void;
@@ -156,6 +160,9 @@ const generateResourceRow = ({
             data-testid="resource-status"
             icon={statusIcon}
             primary={statusText}
+            secondary={
+              resource.lastUpdate ? formatUtcDatetime(resource.lastUpdate) : "—"
+            }
           />
         ),
         className: "status-col",
@@ -164,7 +171,7 @@ const generateResourceRow = ({
         content: resource.lastDeployed ? (
           <DoubleRow
             primary={getTimeDistanceString(resource.lastDeployed)}
-            secondary={resource.lastDeployed}
+            secondary={formatUtcDatetime(resource.lastDeployed)}
           />
         ) : (
           "—"
