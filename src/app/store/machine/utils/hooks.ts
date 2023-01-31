@@ -42,6 +42,7 @@ import type {
   MachineStateListGroup,
   SelectedMachines,
 } from "app/store/machine/types";
+import type { actions as resourcePoolActions } from "app/store/resourcepool";
 import type { RootState } from "app/store/root/types";
 import { NetworkInterfaceTypes } from "app/store/types/enum";
 import type { Host } from "app/store/types/host";
@@ -172,7 +173,9 @@ export const useSelectedMachinesActionsDispatch = ({
   searchFilter?: string;
 }): MachineActionData & {
   dispatch: (
-    a: ValueOf<typeof machineActions>,
+    a:
+      | ValueOf<typeof machineActions>
+      | typeof resourcePoolActions.createWithMachines,
     args?: Record<string, unknown> & { filter?: never }
   ) => void;
 } => {

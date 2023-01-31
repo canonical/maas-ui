@@ -1,17 +1,30 @@
 import type { ResourcePool } from "./base";
 import type { ResourcePoolMeta } from "./enum";
 
-import type { Machine, MachineMeta } from "app/store/machine/types";
+import type {
+  FetchFilters,
+  Machine,
+  MachineMeta,
+} from "app/store/machine/types";
 
 export type CreateParams = {
   description: ResourcePool["description"];
   name: ResourcePool["name"];
 };
 
-export type CreateWithMachinesParams = {
-  machineIDs: Machine[MachineMeta.PK][];
+type CreateWithFilterParams = {
   pool: CreateParams;
+  filter: FetchFilters;
 };
+
+type CreateWithMachineIdsParams = {
+  pool: CreateParams;
+  machineIDs: Machine[MachineMeta.PK][];
+};
+
+export type CreateWithMachinesParams =
+  | CreateWithMachineIdsParams
+  | CreateWithFilterParams;
 
 export type UpdateParams = CreateParams & {
   [ResourcePoolMeta.PK]: ResourcePool[ResourcePoolMeta.PK];
