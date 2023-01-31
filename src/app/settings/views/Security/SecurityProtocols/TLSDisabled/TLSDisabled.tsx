@@ -21,7 +21,7 @@ const TLSDisabled = (): JSX.Element => {
         blocks={[
           {
             appearance: CodeSnippetBlockAppearance.LINUX_PROMPT,
-            code: "maas config-tls enable $key $cert --port YYYY",
+            code: "sudo maas config-tls enable $key $cert --port YYYY",
           },
         ]}
       />
