@@ -23,6 +23,7 @@ export type MachineMenuAction = Exclude<
   | NodeActions.SET_POOL
   | NodeActions.SET_ZONE
   | NodeActions.TAG
+  | NodeActions.UNTAG
 >;
 
 /**
