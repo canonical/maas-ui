@@ -125,9 +125,7 @@ export const App = (): JSX.Element => {
     <div className="l-application" id={MAAS_UI_ID}>
       <ThemePreviewContext.Provider value={{ theme, setTheme }}>
         <GlobalSideNav />
-        {/* <Header /> */}
         <main className="l-main">
-          {/* <Header /> */}
           <div id="main-content">{content}</div>
           <hr />
           <Footer />
