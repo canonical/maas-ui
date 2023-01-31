@@ -1,7 +1,5 @@
-// import type { ReactNode } from "react";
 import { useEffect, useContext } from "react";
 
-// import type { NavLink } from "@canonical/react-components";
 import { Button, ContextualMenu, Icon } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
 import {
