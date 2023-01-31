@@ -2000,14 +2000,17 @@ const machineSlice = createSlice({
     updateVmfsDatastoreSuccess: statusHandlers.updateVmfsDatastore.success,
     markAsUpdated: {
       prepare: (callId: string) => ({
-        payload: { callId },
+        meta: {
+          callId,
+        },
+        payload: null,
       }),
       reducer: (
         state: MachineState,
-        action: PayloadAction<{ callId: string }>
+        action: PayloadAction<null, string, GenericMeta>
       ) => {
-        if (state.lists?.[action.payload.callId]) {
-          state.lists[action.payload.callId].needsUpdate = false;
+        if (action.meta.callId && state.lists?.[action.meta.callId]) {
+          state.lists[action.meta.callId].needsUpdate = false;
         }
       },
     },
