@@ -190,7 +190,9 @@ const generateItems = ({
                       id={navLink.label}
                       to={navLink.url}
                     >
-                      {navLink.label}
+                      <span className="l-navigation__link-text">
+                        {navLink.label}
+                      </span>
                     </Link>
                   </li>
                 );
@@ -219,7 +221,6 @@ const generateItems = ({
                   : null
               }`}
             >
-              <Icon light name="settings" />
               <Link
                 aria-current={
                   isSelected(path, {
@@ -233,7 +234,8 @@ const generateItems = ({
                 id="Settings"
                 to={urls.settings.index}
               >
-                Settings
+                <Icon light name="settings" />
+                <span className="l-navigation__link-text">Settings</span>
               </Link>
             </li>
             <hr />
@@ -247,7 +249,6 @@ const generateItems = ({
               : null
           }`}
         >
-          <Icon light name="profile-light" />
           <ContextualMenu
             aria-current={
               isSelected(path, { label: "", url: urls.preferences.index })
@@ -259,7 +260,14 @@ const generateItems = ({
             id={authUser?.username}
             position="right"
             toggleAppearance="link"
-            toggleLabel={authUser?.username}
+            toggleLabel={
+              <>
+                <Icon light name="profile-light" />
+                <span className="l-navigation__link-text">
+                  {authUser?.username}
+                </span>
+              </>
+            }
           >
             <ul>
               <li>
