@@ -16,12 +16,13 @@ import type {
 } from "app/store/domain/types";
 import { isAddressRecord } from "app/store/domain/utils";
 import { actions as machineActions } from "app/store/machine";
-import type { Machine } from "app/store/machine/types";
+import type { FetchFilters, Machine } from "app/store/machine/types";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
 import type {
   CreateWithMachinesParams,
   ResourcePool,
 } from "app/store/resourcepool/types";
+import type { GenericMeta } from "app/store/utils/slice";
 
 export type NextActionCreator<R = unknown> = (
   result: WebSocketResponseResult<R>["result"]
@@ -59,6 +60,20 @@ export const generateMachinePoolActionCreators = (
       })
   );
 
+export const generateMachineFilterPoolActionCreators = (
+  filter: FetchFilters,
+  callId?: string
+): NextActionCreator<ResourcePool>[] => [
+  (result: ResourcePool) =>
+    machineActions.setPool(
+      {
+        filter,
+        pool_id: result.id,
+      },
+      callId
+    ),
+];
+
 /**
  * Handle creating a pool and then attaching machines to that pool.
  * @param socketClient - The websocket client instance.
@@ -68,13 +83,31 @@ export const generateMachinePoolActionCreators = (
 export function* createPoolWithMachines(
   socketClient: WebSocketClient,
   sendMessage: SendMessage<ResourcePool>,
-  { payload }: PayloadAction<{ params: CreateWithMachinesParams }>
+  {
+    payload,
+    meta,
+  }: PayloadAction<
+    {
+      params: CreateWithMachinesParams;
+    },
+    string,
+    GenericMeta
+  >
 ): SagaGenerator<void> {
-  const { machineIDs, pool } = payload.params;
-  const actionCreators = yield* call(
-    generateMachinePoolActionCreators,
-    machineIDs
-  );
+  const { pool } = payload.params;
+
+  const actionCreators =
+    "filter" in payload.params
+      ? yield* call(
+          generateMachineFilterPoolActionCreators,
+          payload.params.filter,
+          meta?.callId
+        )
+      : yield* call(
+          generateMachinePoolActionCreators,
+          payload.params.machineIDs
+        );
+
   // Send the initial action via the websocket.
   yield* call(
     sendMessage,
