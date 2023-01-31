@@ -54,13 +54,14 @@ export type ApplyStorageLayoutParams = {
 export type BaseMachineActionParams =
   | BaseNodeActionParams
   | {
+      system_id?: never;
       filter: FetchFilters;
-      system_id?: Machine[MachineMeta.PK];
       callId?: string;
     };
 
 export type CloneParams = BaseMachineActionParams & {
-  system_id: Machine[MachineMeta.PK];
+  system_id: Node["system_id"];
+  filter: FetchFilters;
   interfaces: boolean;
   storage: boolean;
 };
@@ -500,7 +501,7 @@ export type SetZoneParams = BaseMachineActionParams &
   Omit<NodeSetZoneParams, "system_id">;
 
 export type TagParams = BaseMachineActionParams & {
-  tags: Tag[TagMeta.PK][];
+  tags?: Tag[TagMeta.PK][];
 };
 
 export type TestParams = BaseMachineActionParams &

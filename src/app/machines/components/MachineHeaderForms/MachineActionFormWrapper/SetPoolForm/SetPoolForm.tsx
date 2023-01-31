@@ -76,12 +76,21 @@ export const SetPoolForm = ({
       onSubmit={(values) => {
         dispatch(machineActions.cleanup());
         if (values.poolSelection === "create") {
-          dispatch(
-            resourcePoolActions.createWithMachines({
-              machineIDs: machines?.map(({ system_id }) => system_id) || [],
-              pool: values,
-            })
-          );
+          if (selectedMachines) {
+            dispatchForSelectedMachines(
+              resourcePoolActions.createWithMachines,
+              {
+                pool: values,
+              }
+            );
+          } else {
+            dispatch(
+              resourcePoolActions.createWithMachines({
+                machineIDs: machines?.map(({ system_id }) => system_id) || [],
+                pool: values,
+              })
+            );
+          }
         } else {
           const pool = resourcePools.find((pool) => pool.name === values.name);
           if (pool) {

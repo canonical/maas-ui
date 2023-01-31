@@ -37,6 +37,7 @@ export const SetZoneForm = <E,>({
   clearHeaderContent,
   cleanup,
   errors,
+  actionStatus,
   nodes,
   modelName,
   onSubmit,
@@ -47,6 +48,7 @@ export const SetZoneForm = <E,>({
   return (
     <ActionForm<SetZoneFormValues, E>
       actionName={NodeActions.SET_ZONE}
+      actionStatus={actionStatus}
       cleanup={cleanup}
       errors={errors}
       initialValues={{
