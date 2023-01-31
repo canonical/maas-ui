@@ -1,7 +1,6 @@
 @mixin GlobalSideNav {
   .l-navigation {
     @include vf-animation('background-color');
-    width: 244px;
     color: $colors--dark-theme--text-default;
     display: flex;
     flex-direction: column;
