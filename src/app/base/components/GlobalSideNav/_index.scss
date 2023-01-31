@@ -1,96 +1,100 @@
 @mixin GlobalSideNav {
   .l-navigation {
-    @include vf-animation('background-color');
-    color: $colors--dark-theme--text-default;
-    display: flex;
-    flex-direction: column;
 
-    .l-navigation__logo-link{
+    .l-navigation__wrapper {
+      @include vf-animation('background-color');
       color: $colors--dark-theme--text-default;
-      text-decoration: none;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
-    }
 
-    .p-navigation__banner {
-      height: 2.3rem;
-
-      .p-navigation__logo-tag {
-        left: $spv--large;
+      .l-navigation__logo-link{
+        color: $colors--dark-theme--text-default;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
       }
 
-      .p-navigation__logo-title {
-        margin-bottom: 0;
-        margin-left: $spv--large;
+      .p-navigation__banner {
+        height: 2.3rem;
+
+        .p-navigation__logo-tag {
+          left: $spv--large;
+        }
+
+        .p-navigation__logo-title {
+          margin-bottom: 0;
+          margin-left: $spv--large;
+        }
       }
-    }
-
-    i {
-      margin-right: $spv--small
-    }
-
-    hr {
-      background: rgba(255, 255, 255, 0.15);
-      margin: $spv--small 0 $spv--small $spv--large;
-    }
-
-    .p-muted-heading {
-      color: $colors--dark-theme--text-default !important;
-      margin: $spv--x-small 0 $spv--x-small $spv--large;
 
       i {
-        margin-right: $spv--large;
+        margin-right: $spv--small
       }
-    }
 
-    .l-navigation__items {
-      margin: 0;
-      padding-left: 0;
+      hr {
+        background: rgba(255, 255, 255, 0.15);
+        margin: $spv--small 0 $spv--small $spv--large;
+      }
 
-      .l-navigation__item {
-        padding: $spv--small 0 $spv--small $spv--large;
+      .p-muted-heading {
+        color: $colors--dark-theme--text-default !important;
+        margin: $spv--x-small 0 $spv--x-small $spv--large;
 
-        .l-navigation__link {
-          color: $colors--dark-theme--text-default;
-          text-decoration: none;
-          padding-left: $spv--small;
+        i {
+          margin-right: $spv--large;
+        }
+      }
 
-          .p-button--link {
+      .l-navigation__items {
+        margin: 0;
+        padding-left: 0;
+
+        .l-navigation__item {
+          padding: $spv--small 0 $spv--small $spv--large;
+
+          .l-navigation__link {
             color: $colors--dark-theme--text-default;
             text-decoration: none;
-            margin: 0;
-            padding: 0;
+            padding-left: $spv--small;
 
-            background-color: transparent !important;
+            .p-button--link {
+              color: $colors--dark-theme--text-default;
+              text-decoration: none;
+              margin: 0;
+              padding: 0;
+
+              background-color: transparent !important;
+            }
+          }
+
+          :only-child.l-navigation__link {
+            margin-left: $spv--x-large;
           }
         }
 
-        :only-child.l-navigation__link {
-          margin-left: $spv--x-large;
+        .l-navigation__item:hover {
+          background-color: $colors--dark-theme--background-hover;
+          transition: 0.1s;
+          transition-timing-function: cubic-bezier(.215,.61,.355,1)
+        }
+
+        .l-navigation__item.is-selected {
+          border-left: $sph--x-small solid $color-x-light;
+          background-color: $colors--dark-theme--background-active;
+          padding-left: $spv--medium;
         }
       }
 
-      .l-navigation__item:hover {
-        background-color: $colors--dark-theme--background-hover;
-        transition: 0.1s;
-        transition-timing-function: cubic-bezier(.215,.61,.355,1)
+      #maas-info {
+        margin-left: $spv--large;
+        color: $colors--dark-theme--text-muted;
       }
 
-      .l-navigation__item.is-selected {
-        border-left: $sph--x-small solid $color-x-light;
-        background-color: $colors--dark-theme--background-active;
-        padding-left: $spv--medium;
-      }
+      
     }
-
-    #maas-info {
-      margin-left: $spv--large;
-      color: $colors--dark-theme--text-muted;
-    }
-
-    
   }
+    
 
   .p-contextual-menu__dropdown {
     z-index: 103;
