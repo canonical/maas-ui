@@ -49,6 +49,7 @@ const navGroups: NavGroup[] = [
         url: urls.images.index,
       },
       {
+        highlight: [urls.tags.index, urls.tags.tag.index(null)],
         label: "Tags",
         url: urls.tags.index,
       },
@@ -134,106 +135,148 @@ const generateItems = ({
   authUser,
   groups,
   isAdmin,
+  isAuthenticated,
   logout,
   path,
+  showLinks,
   vaultIncomplete,
 }: {
   authUser: User | null;
   groups: NavGroup[];
   isAdmin: boolean;
+  isAuthenticated: boolean;
   logout: () => void;
   path: string;
+  showLinks: boolean;
   vaultIncomplete: boolean;
 }) => {
   const items = [];
 
-  groups.forEach((group) => {
-    items.push(
-      <>
-        <div className="p-muted-heading">
-          {group.groupIcon ? <Icon light name={group.groupIcon} /> : null}
-          {group.groupTitle}
-        </div>
-        <ul className="l-navigation__items">
-          {group.navLinks.map((navLink) => {
-            if (!navLink.adminOnly || isAdmin) {
-              return (
-                <li
-                  className={`l-navigation__item ${
-                    isSelected(path, navLink) ? "is-selected" : null
-                  }`}
-                >
-                  {navLink.label === "Controllers" && vaultIncomplete ? (
-                    // If Vault setup is incomplete (started but not finished), display a warning icon
-                    <Icon
-                      aria-label="warning"
-                      className="p-navigation--item-icon"
-                      data-testid="warning-icon"
-                      name="security-warning-grey"
-                    />
-                  ) : null}
-                  <Link className="l-navigation__link" to={navLink.url}>
-                    {navLink.label}
-                  </Link>
-                </li>
-              );
-            } else return null;
-          })}
-        </ul>
-      </>
-    );
-  });
-
-  items.push(
-    <ul className="l-navigation__items">
-      <hr />
-      {isAdmin ? (
+  if (showLinks) {
+    groups.forEach((group) => {
+      items.push(
         <>
-          <li
-            className={`l-navigation__item ${
-              isSelected(path, { label: "Settings", url: urls.settings.index })
-                ? "is-selected"
-                : null
-            }`}
+          <div className="p-muted-heading" id={group.groupTitle}>
+            {group.groupIcon ? <Icon light name={group.groupIcon} /> : null}
+            {group.groupTitle}
+          </div>
+          <ul
+            aria-labelledby={group.groupTitle}
+            className="l-navigation__items"
           >
-            <Icon light name="settings" />
-            <Link className="l-navigation__link" to={urls.settings.index}>
-              Settings
-            </Link>
-          </li>
-          <hr />
-        </>
-      ) : null}
-
-      <li
-        className={`l-navigation__item ${
-          isSelected(path, { label: "", url: urls.preferences.index })
-            ? "is-selected"
-            : null
-        }`}
-      >
-        <Icon light name="profile-light" />
-        <ContextualMenu
-          className="l-navigation__link is-dark"
-          position="right"
-          toggleAppearance="link"
-          toggleLabel={authUser?.username}
-        >
-          <ul>
-            <li>
-              <Link to={urls.preferences.index}>Preferences</Link>
-            </li>
-            <li>
-              <Button appearance="link" onClick={() => logout()}>
-                Log out
-              </Button>
-            </li>
+            {group.navLinks.map((navLink) => {
+              if (!navLink.adminOnly || isAdmin) {
+                return (
+                  <li
+                    aria-labelledby={navLink.label}
+                    className={`l-navigation__item ${
+                      isSelected(path, navLink) ? "is-selected" : null
+                    }`}
+                  >
+                    {navLink.label === "Controllers" && vaultIncomplete ? (
+                      // If Vault setup is incomplete (started but not finished), display a warning icon
+                      <Icon
+                        aria-label="warning"
+                        className="p-navigation--item-icon"
+                        data-testid="warning-icon"
+                        name="security-warning-grey"
+                      />
+                    ) : null}
+                    <Link
+                      aria-current={
+                        isSelected(path, navLink) ? "page" : undefined
+                      }
+                      className="l-navigation__link"
+                      id={navLink.label}
+                      to={navLink.url}
+                    >
+                      {navLink.label}
+                    </Link>
+                  </li>
+                );
+              } else return null;
+            })}
           </ul>
-        </ContextualMenu>
-      </li>
-      <hr />
-    </ul>
-  );
+        </>
+      );
+    });
+  }
+
+  if (isAuthenticated) {
+    items.push(
+      <ul className="l-navigation__items">
+        <hr />
+        {isAdmin && showLinks ? (
+          <>
+            <li
+              aria-labelledby="Settings"
+              className={`l-navigation__item ${
+                isSelected(path, {
+                  label: "Settings",
+                  url: urls.settings.index,
+                })
+                  ? "is-selected"
+                  : null
+              }`}
+            >
+              <Icon light name="settings" />
+              <Link
+                aria-current={
+                  isSelected(path, {
+                    label: "Settings",
+                    url: urls.settings.index,
+                  })
+                    ? "page"
+                    : undefined
+                }
+                className="l-navigation__link"
+                id="Settings"
+                to={urls.settings.index}
+              >
+                Settings
+              </Link>
+            </li>
+            <hr />
+          </>
+        ) : null}
+
+        <li
+          className={`l-navigation__item ${
+            isSelected(path, { label: "", url: urls.preferences.index })
+              ? "is-selected"
+              : null
+          }`}
+        >
+          <Icon light name="profile-light" />
+          <ContextualMenu
+            aria-current={
+              isSelected(path, { label: "", url: urls.preferences.index })
+                ? "page"
+                : undefined
+            }
+            aria-labelledby={authUser?.username}
+            className="l-navigation__link is-dark"
+            id={authUser?.username}
+            position="right"
+            toggleAppearance="link"
+            toggleLabel={authUser?.username}
+          >
+            <ul>
+              <li>
+                <Link to={urls.preferences.index}>Preferences</Link>
+              </li>
+              <li>
+                <Button appearance="link" onClick={() => logout()}>
+                  Log out
+                </Button>
+              </li>
+            </ul>
+          </ContextualMenu>
+        </li>
+        <hr />
+      </ul>
+    );
+  }
 
   return items;
 };
@@ -314,8 +357,12 @@ const GlobalSideNav = (): JSX.Element => {
       controllerSelectors.getVaultConfiguredControllers(state)
   );
 
-  let vaultIncomplete =
+  const vaultIncomplete =
     unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
+
+  const homepageLink = isAdmin
+    ? { url: urls.dashboard.index, label: "Homepage" }
+    : { url: urls.machines.index, label: "Homepage" };
 
   return (
     <>
@@ -325,37 +372,44 @@ const GlobalSideNav = (): JSX.Element => {
         }`}
       >
         <div className="p-navigation__banner">
-          <div className="p-navigation__tagged-logo">
-            <div className="p-navigation__logo-tag">
-              <svg
-                className="p-navigation__logo-icon"
-                fill="#fff"
-                viewBox="0 0 165.5 174.3"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <ellipse cx="15.57" cy="111.46" rx="13.44" ry="13.3" />
-                <path d="M156.94 101.45H31.88a18.91 18.91 0 0 1 .27 19.55c-.09.16-.2.31-.29.46h125.08a6 6 0 0 0 6.06-5.96v-8.06a6 6 0 0 0-6-6Z" />
-                <ellipse cx="15.62" cy="63.98" rx="13.44" ry="13.3" />
-                <path d="M156.94 53.77H31.79a18.94 18.94 0 0 1 .42 19.75l-.16.24h124.89a6 6 0 0 0 6.06-5.94v-8.06a6 6 0 0 0-6-6Z" />
-                <ellipse cx="16.79" cy="16.5" rx="13.44" ry="13.3" />
-                <path d="M156.94 6.5H33.1a19.15 19.15 0 0 1 2.21 5.11A18.82 18.82 0 0 1 33.42 26l-.29.46h123.81a6 6 0 0 0 6.06-5.9V12.5a6 6 0 0 0-6-6Z" />
-                <ellipse cx="15.57" cy="158.94" rx="13.44" ry="13.3" />
-                <path d="M156.94 149H31.88a18.88 18.88 0 0 1 .27 19.5c-.09.16-.19.31-.29.46h125.08A6 6 0 0 0 163 163v-8.06a6 6 0 0 0-6-6Z" />
-              </svg>
+          <Link
+            aria-current={isSelected(path, homepageLink) ? "page" : undefined}
+            aria-label={homepageLink.label}
+            className="l-navigation__logo-link"
+            to={homepageLink.url}
+          >
+            <div className="p-navigation__tagged-logo">
+              <div className="p-navigation__logo-tag">
+                <svg
+                  className="p-navigation__logo-icon"
+                  fill="#fff"
+                  viewBox="0 0 165.5 174.3"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <ellipse cx="15.57" cy="111.46" rx="13.44" ry="13.3" />
+                  <path d="M156.94 101.45H31.88a18.91 18.91 0 0 1 .27 19.55c-.09.16-.2.31-.29.46h125.08a6 6 0 0 0 6.06-5.96v-8.06a6 6 0 0 0-6-6Z" />
+                  <ellipse cx="15.62" cy="63.98" rx="13.44" ry="13.3" />
+                  <path d="M156.94 53.77H31.79a18.94 18.94 0 0 1 .42 19.75l-.16.24h124.89a6 6 0 0 0 6.06-5.94v-8.06a6 6 0 0 0-6-6Z" />
+                  <ellipse cx="16.79" cy="16.5" rx="13.44" ry="13.3" />
+                  <path d="M156.94 6.5H33.1a19.15 19.15 0 0 1 2.21 5.11A18.82 18.82 0 0 1 33.42 26l-.29.46h123.81a6 6 0 0 0 6.06-5.9V12.5a6 6 0 0 0-6-6Z" />
+                  <ellipse cx="15.57" cy="158.94" rx="13.44" ry="13.3" />
+                  <path d="M156.94 149H31.88a18.88 18.88 0 0 1 .27 19.5c-.09.16-.19.31-.29.46h125.08A6 6 0 0 0 163 163v-8.06a6 6 0 0 0-6-6Z" />
+                </svg>
+              </div>
+              <div className="p-navigation__logo-title">Canonical MAAS</div>
             </div>
-            <div className="p-navigation__logo-title">Canonical MAAS</div>
-          </div>
+          </Link>
         </div>
-        {showLinks
-          ? generateItems({
-              authUser,
-              groups: navGroups,
-              isAdmin,
-              logout,
-              path,
-              vaultIncomplete,
-            })
-          : null}
+        {generateItems({
+          authUser,
+          groups: navGroups,
+          isAdmin,
+          isAuthenticated,
+          logout,
+          path,
+          showLinks,
+          vaultIncomplete,
+        })}
         {showLinks ? (
           <span id="maas-info">
             {maasName} MAAS v{version}

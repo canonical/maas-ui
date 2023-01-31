@@ -6,6 +6,14 @@
     display: flex;
     flex-direction: column;
 
+    .l-navigation__logo-link{
+      color: $colors--dark-theme--text-default;
+      text-decoration: none;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+
     .p-navigation__banner {
       height: 2.3rem;
 
@@ -16,7 +24,6 @@
       .p-navigation__logo-title {
         margin-bottom: 0;
         margin-left: $spv--large;
-        align-self: flex-end;
       }
     }
 
