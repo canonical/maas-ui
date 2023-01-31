@@ -15,7 +15,7 @@ import {
 import {
   useCompletedIntro,
   useCompletedUserIntro,
-  //   useGoogleAnalytics,
+  useGoogleAnalytics,
 } from "app/base/hooks";
 import ThemePreviewContext from "app/base/theme-preview-context";
 import urls from "app/base/urls";
@@ -323,6 +323,7 @@ const GlobalSideNav = (): JSX.Element => {
   const introMatch = useMatch({ path: urls.intro.index, end: false });
   const isAtIntro = !!introMatch;
   const showLinks = isAuthenticated && completedIntro && completedUserIntro;
+  useGoogleAnalytics();
 
   const logout = () => {
     localStorage.removeItem("maas-config");
