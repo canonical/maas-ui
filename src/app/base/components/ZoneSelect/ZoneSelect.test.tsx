@@ -1,18 +1,18 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
 import ZoneSelect from "./ZoneSelect";
 
+import type { RootState } from "app/store/root/types";
 import {
   rootState as rootStateFactory,
   zone as zoneFactory,
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { renderWithMockStore, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ZoneSelect", () => {
   it("renders a list of all zones in state", () => {
@@ -25,29 +25,29 @@ describe("ZoneSelect", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
-          <ZoneSelect name="zone" />
-        </Formik>
-      </Provider>
+
+    renderWithMockStore(
+      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+        <ZoneSelect name="zone" />
+      </Formik>,
+      { state }
     );
 
-    expect(wrapper.find("select[name='zone']")).toMatchSnapshot();
+    expect(
+      screen.getByRole("combobox", { name: new RegExp("zone", "i") })
+    ).toMatchSnapshot();
   });
 
   it("dispatches action to fetch zones on load", () => {
     const state = rootStateFactory();
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
-          <ZoneSelect name="zone" />
-        </Formik>
-      </Provider>
-    );
 
+    renderWithMockStore(
+      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+        <ZoneSelect name="zone" />
+      </Formik>,
+      { store }
+    );
     expect(
       store.getActions().some((action) => action.type === "zone/fetch")
     ).toBe(true);
@@ -60,14 +60,16 @@ describe("ZoneSelect", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
-          <ZoneSelect name="zone" />
-        </Formik>
-      </Provider>
+
+    renderWithMockStore(
+      <Formik initialValues={{ zone: "" }} onSubmit={jest.fn()}>
+        <ZoneSelect name="zone" />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("select[name='zone']").prop("disabled")).toBe(true);
+    expect(
+      screen.getByRole("combobox", { name: new RegExp("zone", "i") })
+    ).toBeDisabled();
   });
 });
