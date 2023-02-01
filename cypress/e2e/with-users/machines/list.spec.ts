@@ -49,7 +49,7 @@ context("Machine listing", () => {
     cy.findByRole("combobox", { name: "Group by" }).select("Group by status");
     cy.findByRole("searchbox").type(searchFilter);
     cy.findByText(/2 machines available/).should("exist");
-    cy.waitForTableToLoad({ name: "Machines" }).within(() =>
+    cy.findByRole("grid", { name: "Machines" }).within(() =>
       // eslint-disable-next-line cypress/no-force
       cy
         .findByRole("checkbox", { name: /Commissioning/i })

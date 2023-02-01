@@ -1,10 +1,14 @@
 import { generateMAASURL, generateName } from "../../utils";
 
 context("Settings - DHCP Snippets", () => {
+  const machineName = generateName("machine");
   beforeEach(() => {
     cy.login();
-    cy.addMachine();
+    cy.addMachine(machineName);
     cy.visit(generateMAASURL("/settings/dhcp/add"));
+  });
+  afterEach(() => {
+    cy.deleteMachine(machineName);
   });
 
   it("can add a Global DHCP snippet", () => {
