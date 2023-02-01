@@ -1,8 +1,8 @@
 @mixin GlobalSideNav {
   .l-navigation {
+    @include vf-animation('background-color');
 
     .l-navigation__wrapper {
-      @include vf-animation('background-color');
       color: $colors--dark-theme--text-default;
       display: flex;
       flex-direction: column;
