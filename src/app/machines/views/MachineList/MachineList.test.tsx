@@ -18,6 +18,7 @@ import { actions as machineActions } from "app/store/machine";
 import { FetchGroupKey, FilterGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
+  FetchNodeStatus,
   NodeStatus,
   NodeStatusCode,
   NodeType,
@@ -163,7 +164,7 @@ describe("MachineList", () => {
         pool: modelRefFactory(),
         pxe_mac: "66:77:88:99:00:11",
         spaces: [],
-        status: NodeStatus.RELEASING,
+        status: NodeStatus.FAILED_TESTING,
         status_code: NodeStatusCode.DEPLOYED,
         status_message: "",
         storage: 16,
@@ -209,10 +210,17 @@ describe("MachineList", () => {
               machineStateListGroupFactory({
                 items: [machines[0].system_id, machines[2].system_id],
                 name: "Deployed",
+                value: FetchNodeStatus.DEPLOYED,
               }),
               machineStateListGroupFactory({
                 items: [machines[1].system_id],
                 name: "Releasing",
+                value: FetchNodeStatus.RELEASING,
+              }),
+              machineStateListGroupFactory({
+                items: [machines[2].system_id],
+                name: "Failed testing",
+                value: FetchNodeStatus.FAILED_TESTING,
               }),
             ],
           }),
@@ -242,11 +250,11 @@ describe("MachineList", () => {
     // Click the button to toggle the group.
     await user.click(
       within(
-        screen.getByRole("row", { name: "Deployed machines group" })
+        screen.getByRole("row", { name: "Failed testing machines group" })
       ).getByRole("button", { name: Label.HideGroup })
     );
     const expected = machineActions.fetch("123456", {
-      group_collapsed: ["Deployed"],
+      group_collapsed: ["failed_testing"],
     });
     const fetches = store
       .getActions()
@@ -254,7 +262,7 @@ describe("MachineList", () => {
     expect(fetches).toHaveLength(2);
     expect(
       fetches[fetches.length - 1].payload.params.group_collapsed
-    ).toStrictEqual(["Deployed"]);
+    ).toStrictEqual(["failed_testing"]);
   });
 
   it("uses the default fallback value for invalid stored grouping values", () => {
@@ -398,14 +406,14 @@ describe("MachineList", () => {
       { store: store2 }
     );
     const expected2 = machineActions.fetch("123456", {
-      group_collapsed: ["Deployed"],
+      group_collapsed: ["deployed"],
     });
     const fetches2 = store2
       .getActions()
       .filter((action) => action.type === expected2.type);
     expect(
       fetches2[fetches.length - 1].payload.params.group_collapsed
-    ).toStrictEqual(["Deployed"]);
+    ).toStrictEqual(["deployed"]);
   });
 
   it("can display an error", () => {
