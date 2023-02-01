@@ -50,6 +50,40 @@ Cypress.Commands.add("addMachine", (hostname = generateName()) => {
   });
 });
 
+Cypress.Commands.add("deleteMachine", (hostname: string) => {
+  cy.visit(generateMAASURL("/machines"));
+  cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
+  cy.findByRole("searchbox").type(hostname);
+  cy.findByText(/1 machine available/).should("exist");
+  cy.findByRole("grid", { name: "Machines" }).within(() =>
+    // eslint-disable-next-line cypress/no-force
+    cy
+      .findByRole("checkbox", { name: new RegExp(hostname) })
+      .click({ force: true })
+  );
+  cy.findByTestId("section-header-buttons").within(() =>
+    cy.findByRole("button", { name: /Take action/i }).click()
+  );
+  cy.findByLabelText("submenu").within(() => {
+    cy.findAllByRole("button", { name: /Delete/i }).click();
+  });
+  cy.findByRole("button", { name: /Delete machine/ }).click();
+  cy.findByRole("complementary", { name: /Delete/i }).should("not.exist");
+  cy.findByText(/No machines match the search criteria/).should("exist");
+});
+
+Cypress.Commands.add("deletePool", (pool: string) => {
+  cy.visit(generateMAASURL("/pools"));
+  cy.findByRole("row", { name: new RegExp(`${pool}`) }).within(() => {
+    cy.findByRole("button", { name: /Delete/i }).click();
+    cy.findByTestId("action-confirm").click();
+  });
+  cy.get(`[data-testid='message']:contains(${pool} removed successfully.)`, {
+    timeout: LONG_TIMEOUT,
+  });
+  cy.findByRole("row", { name: new RegExp(`${pool}`) }).should("not.exist");
+});
+
 Cypress.Commands.add("addMachines", (hostnames: string[]) => {
   cy.visit(generateMAASURL("/machines"));
   cy.get("[data-testid='add-hardware-dropdown'] button").click();

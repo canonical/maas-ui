@@ -42,9 +42,10 @@ const openMachineActionForm = (action) => {
 };
 
 context("Machine listing - actions", () => {
+  const machineName = generateName("machine");
   before(() => {
     cy.login();
-    cy.addMachine();
+    cy.addMachine(machineName);
   });
   beforeEach(() => {
     cy.login();
@@ -92,5 +93,7 @@ context("Machine listing - actions", () => {
     cy.findByRole("grid", { name: /Machines/i })
       .within(() => cy.findByText(poolName))
       .should("exist");
+    cy.deleteMachine(machineName);
+    cy.deletePool(poolName);
   });
 });

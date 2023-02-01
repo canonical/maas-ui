@@ -11,6 +11,8 @@ declare global {
     interface Chainable {
       addMachine(hostname?: string): void;
       addMachines(hostname: string[]): void;
+      deleteMachine(hostname: string): void;
+      deletePool(pool: string): void;
       login(options?: {
         username?: string;
         password?: string;
