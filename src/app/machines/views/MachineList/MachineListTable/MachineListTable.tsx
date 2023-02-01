@@ -415,7 +415,7 @@ const generateGroupRows = ({
   let rows: MainTableRow[] = [];
 
   groups?.forEach((group) => {
-    const { collapsed, count, items: machineIDs, name } = group;
+    const { collapsed, count, items: machineIDs, name, value } = group;
     // When the table is set to ungrouped then there are no group headers.
     if (grouping) {
       rows.push({
@@ -454,11 +454,15 @@ const generateGroupRows = ({
                       if (collapsed) {
                         setHiddenGroups &&
                           setHiddenGroups(
-                            hiddenGroups.filter((group) => group !== name)
+                            hiddenGroups.filter(
+                              (hiddenGroup) => hiddenGroup !== value
+                            )
                           );
                       } else {
                         setHiddenGroups &&
-                          setHiddenGroups(hiddenGroups.concat([name]));
+                          setHiddenGroups(
+                            hiddenGroups.concat([value as string])
+                          );
                       }
                     }}
                   >
