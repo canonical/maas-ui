@@ -71,7 +71,6 @@ const NetworkCardTable = ({ interfaces, node }: Props): JSX.Element => {
             : null;
           const dhcpStatus = getDHCPStatus(vlan, vlans, fabrics);
 
-          console.log(iface.links);
 
           return (
             <TableRow key={iface.id}>
