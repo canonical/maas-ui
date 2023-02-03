@@ -71,7 +71,6 @@ const NetworkCardTable = ({ interfaces, node }: Props): JSX.Element => {
             : null;
           const dhcpStatus = getDHCPStatus(vlan, vlans, fabrics);
 
-
           return (
             <TableRow key={iface.id}>
               <TableCell className="name" data-heading="Name | MAC address">
