@@ -1,26 +1,25 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NodeSummaryNetworkCard from "./NodeSummaryNetworkCard";
 
 import type { RootState } from "app/store/root/types";
 import {
+  deviceState as deviceStateFactory,
   fabricState as fabricStateFactory,
   networkInterface as networkInterfaceFactory,
   rootState as rootStateFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, within } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("NodeSummaryNetworkCard", () => {
   let state: RootState;
 
   beforeEach(() => {
     state = rootStateFactory({
+      device: deviceStateFactory({ loaded: true }),
       fabric: fabricStateFactory({ loaded: true }),
       vlan: vlanStateFactory({ loaded: true }),
     });
@@ -28,14 +27,13 @@ describe("NodeSummaryNetworkCard", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NodeSummaryNetworkCard interfaces={[]} networkURL="url" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeSummaryNetworkCard
+        interfaces={[]}
+        networkURL="url"
+        node={state.device.items[0]}
+      />,
+      { store }
     );
     const actions = store.getActions();
 
@@ -44,20 +42,16 @@ describe("NodeSummaryNetworkCard", () => {
   });
 
   it("shows a spinner while network data is loading", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NodeSummaryNetworkCard interfaces={null} networkURL="url" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeSummaryNetworkCard
+        interfaces={null}
+        networkURL="url"
+        node={state.device.items[0]}
+      />,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='loading-network-data']").exists()).toBe(
-      true
-    );
+    expect(screen.getByTestId("loading-network-data")).toBeInTheDocument();
   });
 
   it("displays product, vendor and firmware information, if they exist", () => {
@@ -73,27 +67,25 @@ describe("NodeSummaryNetworkCard", () => {
         vendor: null,
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NodeSummaryNetworkCard interfaces={interfaces} networkURL="url" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeSummaryNetworkCard
+        interfaces={interfaces}
+        networkURL="url"
+        node={state.device.items[0]}
+      />,
+      { state }
     );
 
-    expect(wrapper.find("ul [data-testid='nic-vendor']").at(0).text()).toBe(
+    expect(screen.getAllByTestId("nic-vendor")[0]).toHaveTextContent(
       "Vendor 1"
     );
-    expect(wrapper.find("ul [data-testid='nic-product']").at(0).text()).toBe(
+    expect(screen.getAllByTestId("nic-product")[0]).toHaveTextContent(
       "Product 1"
     );
-    expect(
-      wrapper.find("ul [data-testid='nic-firmware-version']").at(0).text()
-    ).toBe("1.0.0");
-    expect(wrapper.find("ul [data-testid='nic-vendor']").at(1).text()).toBe(
+    expect(screen.getAllByTestId("nic-firmware-version")[0]).toHaveTextContent(
+      "1.0.0"
+    );
+    expect(screen.getAllByTestId("nic-vendor")[1]).toHaveTextContent(
       "Unknown network card"
     );
   });
@@ -127,37 +119,35 @@ describe("NodeSummaryNetworkCard", () => {
         vendor: "Vendor 2",
       }),
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NodeSummaryNetworkCard interfaces={interfaces} networkURL="url" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeSummaryNetworkCard
+        interfaces={interfaces}
+        networkURL="url"
+        node={state.device.items[0]}
+      />,
+      { state }
     );
 
-    expect(wrapper.find("Table").at(0).find("tbody TableRow").length).toBe(4);
-    expect(wrapper.find("Table").at(1).find("tbody TableRow").length).toBe(3);
-    expect(wrapper.find("Table").at(2).find("tbody TableRow").length).toBe(2);
-    expect(wrapper.find("Table").at(3).find("tbody TableRow").length).toBe(1);
+    const tables = screen.getAllByRole("grid");
+
+    expect(within(tables[0]).getAllByRole("row")).toHaveLength(5);
+    expect(within(tables[1]).getAllByRole("row")).toHaveLength(4);
+    expect(within(tables[2]).getAllByRole("row")).toHaveLength(3);
+    expect(within(tables[3]).getAllByRole("row")).toHaveLength(2);
   });
 
   it("can render children", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NodeSummaryNetworkCard interfaces={[]} networkURL="url">
-              <span data-testid="child">Hi</span>
-            </NodeSummaryNetworkCard>
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NodeSummaryNetworkCard
+        interfaces={[]}
+        networkURL="url"
+        node={state.device.items[0]}
+      >
+        <span data-testid="child">Hi</span>
+      </NodeSummaryNetworkCard>,
+      { state }
     );
 
-    expect(wrapper.find("[data-testid='child']").exists()).toBe(true);
+    expect(screen.getByTestId("child")).toBeInTheDocument();
   });
 });

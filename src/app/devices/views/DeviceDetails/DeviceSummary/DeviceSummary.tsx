@@ -42,6 +42,7 @@ const DeviceSummary = ({ systemId }: Props): JSX.Element => {
           <NodeSummaryNetworkCard
             interfaces={isDeviceDetails(device) ? device.interfaces : null}
             networkURL={urls.devices.device.network({ id: systemId })}
+            node={device}
           />
         </div>
       </div>
