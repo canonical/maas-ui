@@ -15,5 +15,9 @@ export const getTimeDistanceString = (utcTimeString: string): string =>
     addSuffix: true,
   });
 
+/**
+ * @param utcTimeString - time string in UTC_DATETIME_FORMAT
+ * @returns time string adjusted for local time zone in DATETIME_FORMAT
+ */
 export const formatUtcDatetime = (utcTimeString: string): string =>
   format(parseUtcDatetime(utcTimeString), DATETIME_FORMAT);

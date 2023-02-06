@@ -97,13 +97,14 @@ describe("ImagesTable", () => {
   });
 
   it("renders the time of last update", () => {
+    const lastUpdate = "Mon, 30 Jan. 2023 15:54:44";
     const resource = resourceFactory({
       arch: "amd64",
       complete: true,
       name: "ubuntu/focal",
       title: "20.04 LTS",
       status: "Synced",
-      lastUpdate: "Mon, 30 Jan. 2023 15:54:44",
+      lastUpdate,
     });
     state.bootresource.resources = [resource];
     renderWithMockStore(<ImagesTable images={[]} resources={[resource]} />, {
@@ -112,9 +113,7 @@ describe("ImagesTable", () => {
 
     const row = screen.getByRole("row", { name: resource.title });
 
-    expect(
-      within(row).getByText("Mon, 30 Jan. 2023 16:54:44")
-    ).toBeInTheDocument();
+    expect(within(row).getByText(lastUpdate)).toBeInTheDocument();
   });
 
   it("renders the correct data for a new image", () => {
@@ -302,9 +301,7 @@ describe("ImagesTable", () => {
       screen.getByRole("columnheader", { name: /Machines/i })
     ).toBeInTheDocument();
     const row = screen.getByRole("row", { name: "18.04 LTS" });
-    expect(
-      within(row).getByText(/Fri, 18 Nov. 2022 10:55:21/)
-    ).toBeInTheDocument();
+    expect(within(row).getByText(lastDeployed)).toBeInTheDocument();
     expect(
       within(row).getByRole("gridcell", { name: /about 1 hour ago/ })
     ).toBeInTheDocument();
