@@ -12,8 +12,8 @@ import ThemePreviewContext from "./base/theme-preview-context";
 import { MAAS_UI_ID } from "./constants";
 
 import Routes from "app/Routes";
+import AppSideNavigation from "app/base/components/AppSideNavigation";
 import Footer from "app/base/components/Footer";
-import GlobalSideNav from "app/base/components/GlobalSideNav";
 import Login from "app/base/components/Login";
 import MainContentSection from "app/base/components/MainContentSection";
 import SectionHeader from "app/base/components/SectionHeader";
@@ -123,7 +123,7 @@ export const App = (): JSX.Element => {
   return (
     <div className="l-application" id={MAAS_UI_ID}>
       <ThemePreviewContext.Provider value={{ theme, setTheme }}>
-        <GlobalSideNav />
+        <AppSideNavigation />
         <main className="l-main">
           <div id="main-content">{content}</div>
           <hr />

@@ -72,6 +72,7 @@
 // Import and include MAAS component styles
 // base
 @import "~app/base/components/ActionBar";
+@import "~app/base/components/AppSideNavigation";
 @import "~app/base/components/CertificateDownload";
 @import "~app/base/components/CertificateMetadata";
 @import "~app/base/components/ColumnToggle";
@@ -81,7 +82,6 @@
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
 @import "~app/base/components/FormikFormButtons";
-@import "~app/base/components/GlobalSideNav";
 @import "~app/base/components/Header";
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
@@ -110,6 +110,7 @@
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
 @include ActionBar;
+@include AppSideNavigation;
 @include CertificateDownload;
 @include CertificateMetadata;
 @include ColumnToggle;
@@ -121,7 +122,6 @@
 @include FilterAccordion;
 @include FormCard;
 @include FormikFormButtons;
-@include GlobalSideNav;
 @include HardwareCard;
 @include Header;
 @include LabelledList;

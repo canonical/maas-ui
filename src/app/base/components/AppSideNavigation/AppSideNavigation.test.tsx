@@ -4,7 +4,7 @@ import { BrowserRouter, Router } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import GlobalSideNav from "./GlobalSideNav";
+import AppSideNavigation from "./AppSideNavigation";
 
 import urls from "app/base/urls";
 import { ConfigNames } from "app/store/config/types";
@@ -71,14 +71,14 @@ describe("GlobalSideNav", () => {
   });
 
   it("renders", () => {
-    renderWithBrowserRouter(<GlobalSideNav />, { route: "/", state });
+    renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
   });
 
   it("can handle a logged out user", () => {
     state.user.auth.user = null;
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/",
       state,
     });
@@ -99,7 +99,7 @@ describe("GlobalSideNav", () => {
       <Provider store={store}>
         <BrowserRouter>
           <CompatRouter>
-            <GlobalSideNav />
+            <AppSideNavigation />
           </CompatRouter>
         </BrowserRouter>
       </Provider>
@@ -121,7 +121,7 @@ describe("GlobalSideNav", () => {
       completed_intro: false,
       username: "koala",
     });
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/",
       state,
     });
@@ -135,7 +135,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("can highlight active URL", () => {
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/settings",
       state,
     });
@@ -146,7 +146,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("highlights machines when active", () => {
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machines",
       state,
     });
@@ -157,7 +157,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("highlights pools when active", () => {
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/pools",
       state,
     });
@@ -168,7 +168,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("highlights tags when active", () => {
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/tags",
       state,
     });
@@ -179,7 +179,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("highlights tags viewing a tag", () => {
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/tag/1",
       state,
     });
@@ -190,7 +190,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("can highlight a url with a query param", () => {
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/networks?by=fabric",
       state,
     });
@@ -201,7 +201,7 @@ describe("GlobalSideNav", () => {
   });
 
   it("highlights sub-urls", () => {
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machine/abc123",
       state,
     });
@@ -215,7 +215,7 @@ describe("GlobalSideNav", () => {
       controllerFactory({ vault_configured: true }),
       controllerFactory({ vault_configured: false }),
     ];
-    renderWithBrowserRouter(<GlobalSideNav />, { route: "/", state });
+    renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
     const controllerLink = screen.getByRole("listitem", {
       name: "Controllers",
@@ -231,7 +231,7 @@ describe("GlobalSideNav", () => {
       controllerFactory({ vault_configured: true }),
       controllerFactory({ vault_configured: true }),
     ];
-    renderWithBrowserRouter(<GlobalSideNav />, { route: "/", state });
+    renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
     const controllerLink = screen.getByRole("listitem", {
       name: "Controllers",
@@ -246,7 +246,7 @@ describe("GlobalSideNav", () => {
       controllerFactory({ vault_configured: false }),
       controllerFactory({ vault_configured: false }),
     ];
-    renderWithBrowserRouter(<GlobalSideNav />, { route: "/", state });
+    renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
     const controllerLink = screen.getByRole("listitem", {
       name: "Controllers",
@@ -258,7 +258,7 @@ describe("GlobalSideNav", () => {
 
   it("links from the logo to the dashboard for admins", () => {
     state.user.auth.user = userFactory({ is_superuser: true });
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machine/abc123",
       state,
     });
@@ -276,7 +276,7 @@ describe("GlobalSideNav", () => {
 
   it("links from the logo to the machine list for non admins", () => {
     state.user.auth.user = userFactory({ is_superuser: false });
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machine/abc123",
       state,
     });
@@ -298,7 +298,7 @@ describe("GlobalSideNav", () => {
       configFactory({ name: ConfigNames.COMPLETED_INTRO, value: false }),
     ];
     state.user.auth.user = userFactory({ completed_intro: true });
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machines",
       state,
     });
@@ -311,7 +311,7 @@ describe("GlobalSideNav", () => {
       configFactory({ name: ConfigNames.COMPLETED_INTRO, value: true }),
     ];
     state.user.auth.user = userFactory({ completed_intro: false });
-    renderWithBrowserRouter(<GlobalSideNav />, {
+    renderWithBrowserRouter(<AppSideNavigation />, {
       route: "/machines",
       state,
     });
@@ -332,7 +332,7 @@ describe("GlobalSideNav", () => {
         <Router history={history}>
           <CompatRouter>
             <Routes>
-              <Route element={<GlobalSideNav />} path="*" />
+              <Route element={<AppSideNavigation />} path="*" />
             </Routes>
           </CompatRouter>
         </Router>
