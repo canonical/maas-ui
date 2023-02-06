@@ -262,11 +262,16 @@ describe("GlobalSideNav", () => {
       route: "/machine/abc123",
       state,
     });
-
-    expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
-      "href",
-      "/dashboard"
-    );
+    expect(
+      within(screen.getByRole("navigation")).getByRole("link", {
+        name: "Homepage",
+      })
+    ).toHaveAttribute("href", "/dashboard");
+    expect(
+      within(screen.getByRole("banner")).getByRole("link", {
+        name: "Homepage",
+      })
+    ).toHaveAttribute("href", "/dashboard");
   });
 
   it("links from the logo to the machine list for non admins", () => {
@@ -276,10 +281,16 @@ describe("GlobalSideNav", () => {
       state,
     });
 
-    expect(screen.getByRole("link", { name: "Homepage" })).toHaveAttribute(
-      "href",
-      "/machines"
-    );
+    expect(
+      within(screen.getByRole("navigation")).getByRole("link", {
+        name: "Homepage",
+      })
+    ).toHaveAttribute("href", "/machines");
+    expect(
+      within(screen.getByRole("banner")).getByRole("link", {
+        name: "Homepage",
+      })
+    ).toHaveAttribute("href", "/machines");
   });
 
   it("redirects to the intro page if intro not completed", () => {

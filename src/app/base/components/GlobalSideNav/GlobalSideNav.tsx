@@ -1,14 +1,18 @@
-import { useEffect, useContext } from "react";
+import { useEffect, useContext, useState } from "react";
 
 import { Button, ContextualMenu, Icon } from "@canonical/react-components";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import {
   Link,
   useNavigate,
   useLocation,
-  matchPath,
   useMatch,
 } from "react-router-dom-v5-compat";
+
+import NavigationBanner from "./NavigationBanner";
+import type { NavGroup } from "./types";
+import { isSelected } from "./utils";
 
 import {
   useCompletedIntro,
@@ -25,19 +29,6 @@ import { version as versionSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 import type { User } from "app/store/user/types";
-
-type NavItem = {
-  adminOnly?: boolean;
-  highlight?: string | string[];
-  label: string;
-  url: string;
-};
-
-type NavGroup = {
-  navLinks: NavItem[];
-  groupTitle?: string;
-  groupIcon?: string;
-};
 
 const navGroups: NavGroup[] = [
   {
@@ -287,22 +278,6 @@ const generateItems = ({
   return items;
 };
 
-const isSelected = (path: string, link: NavItem) => {
-  // Use the provided highlight(s) or just use the url.
-  let highlights = link.highlight || link.url;
-  // If the provided highlights aren't an array then make them one so that we
-  // can loop over them.
-  if (!Array.isArray(highlights)) {
-    highlights = [highlights];
-  }
-  // Check if one of the highlight urls matches the current path.
-  return highlights.some((highlight) =>
-    // Check the full path, for both legacy/new clients as sometimes the lists
-    // are in one client and the details in the other.
-    matchPath({ path: highlight, end: false }, path)
-  );
-};
-
 const GlobalSideNav = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -311,9 +286,9 @@ const GlobalSideNav = (): JSX.Element => {
   const configLoaded = useSelector(configSelectors.loaded);
   const { theme, setTheme } = useContext(ThemePreviewContext);
   const authUser = useSelector(authSelectors.get);
-  const isAdmin = useSelector(authSelectors.isAdmin);
   const version = useSelector(versionSelectors.get);
   const maasName = useSelector(configSelectors.maasName);
+  const isAdmin = useSelector(authSelectors.isAdmin);
   const path = location.pathname;
   const completedIntro = useCompletedIntro();
   const completedUserIntro = useCompletedUserIntro();
@@ -367,47 +342,43 @@ const GlobalSideNav = (): JSX.Element => {
   const vaultIncomplete =
     unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
 
-  const homepageLink = isAdmin
-    ? { url: urls.dashboard.index, label: "Homepage" }
-    : { url: urls.machines.index, label: "Homepage" };
+  const [isCollapsed, setIsCollapsed] = useState(true);
+  const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
 
   return (
     <>
+      <header className="l-navigation-bar">
+        <div
+          className={classNames(
+            "p-panel is-dark",
+            `l-navigation--${themeColor}`
+          )}
+        >
+          <div className="p-panel__header">
+            <div className="l-navigation__wrapper">
+              <NavigationBanner />
+            </div>
+            <div className="p-panel__controls">
+              <span
+                className="p-panel__toggle js-menu-toggle"
+                onClick={() => setIsCollapsed(!isCollapsed)}
+              >
+                Menu
+              </span>
+            </div>
+          </div>
+        </div>
+      </header>
       <nav
-        className={`l-navigation l-navigation--${
-          theme ? theme : maasTheme ? maasTheme : "default"
-        }`}
+        className={classNames(
+          `l-navigation is-pinned l-navigation--${themeColor}`,
+          {
+            "is-collapsed": isCollapsed,
+          }
+        )}
       >
         <div className="l-navigation__wrapper">
-          <div className="p-navigation__banner">
-            <Link
-              aria-current={isSelected(path, homepageLink) ? "page" : undefined}
-              aria-label={homepageLink.label}
-              className="l-navigation__logo-link"
-              to={homepageLink.url}
-            >
-              <div className="p-navigation__tagged-logo">
-                <div className="p-navigation__logo-tag">
-                  <svg
-                    className="p-navigation__logo-icon"
-                    fill="#fff"
-                    viewBox="0 0 165.5 174.3"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <ellipse cx="15.57" cy="111.46" rx="13.44" ry="13.3" />
-                    <path d="M156.94 101.45H31.88a18.91 18.91 0 0 1 .27 19.55c-.09.16-.2.31-.29.46h125.08a6 6 0 0 0 6.06-5.96v-8.06a6 6 0 0 0-6-6Z" />
-                    <ellipse cx="15.62" cy="63.98" rx="13.44" ry="13.3" />
-                    <path d="M156.94 53.77H31.79a18.94 18.94 0 0 1 .42 19.75l-.16.24h124.89a6 6 0 0 0 6.06-5.94v-8.06a6 6 0 0 0-6-6Z" />
-                    <ellipse cx="16.79" cy="16.5" rx="13.44" ry="13.3" />
-                    <path d="M156.94 6.5H33.1a19.15 19.15 0 0 1 2.21 5.11A18.82 18.82 0 0 1 33.42 26l-.29.46h123.81a6 6 0 0 0 6.06-5.9V12.5a6 6 0 0 0-6-6Z" />
-                    <ellipse cx="15.57" cy="158.94" rx="13.44" ry="13.3" />
-                    <path d="M156.94 149H31.88a18.88 18.88 0 0 1 .27 19.5c-.09.16-.19.31-.29.46h125.08A6 6 0 0 0 163 163v-8.06a6 6 0 0 0-6-6Z" />
-                  </svg>
-                </div>
-                <div className="p-navigation__logo-title">Canonical MAAS</div>
-              </div>
-            </Link>
-          </div>
+          <NavigationBanner />
 
           {generateItems({
             authUser,

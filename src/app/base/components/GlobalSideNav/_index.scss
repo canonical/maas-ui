@@ -1,13 +1,17 @@
 @mixin GlobalSideNav {
-  .l-navigation {
-    @include vf-animation('background-color');
+  .l-navigation .p-navigation__logo-title {
+    margin-left: $spv--large;
+  }
+  .l-navigation,
+  .l-navigation-bar {
+    @include vf-animation("background-color");
 
     .l-navigation__wrapper {
       color: $colors--dark-theme--text-default;
       display: flex;
       flex-direction: column;
 
-      .l-navigation__logo-link{
+      .l-navigation__logo-link {
         color: $colors--dark-theme--text-default;
         text-decoration: none;
         display: flex;
@@ -17,6 +21,7 @@
 
       .p-navigation__banner {
         height: 2.3rem;
+        padding-left: 1.5rem;
 
         .p-navigation__logo-tag {
           left: $spv--large;
@@ -25,12 +30,11 @@
 
         .p-navigation__logo-title {
           margin-bottom: 0;
-          margin-left: $spv--large;
         }
       }
 
       i {
-        margin-right: $spv--small
+        margin-right: $spv--small;
       }
 
       hr {
@@ -89,7 +93,7 @@
         .l-navigation__item:hover {
           background-color: $colors--dark-theme--background-hover;
           transition: 0.1s;
-          transition-timing-function: cubic-bezier(.215,.61,.355,1)
+          transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
         }
 
         .l-navigation__item.is-selected {
@@ -106,11 +110,8 @@
         margin-left: $spv--large;
         color: $colors--dark-theme--text-muted;
       }
-
-      
     }
   }
-    
 
   .p-contextual-menu__dropdown {
     z-index: 103;
@@ -127,10 +128,11 @@
       li:hover {
         background-color: $colors--dark-theme--background-hover;
         transition: 0.1s;
-        transition-timing-function: cubic-bezier(.215,.61,.355,1)
+        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
       }
 
-      a, .p-button--link {
+      a,
+      .p-button--link {
         margin: 0;
         padding: 0;
         color: $colors--dark-theme--text-default;
