@@ -6,6 +6,7 @@ import WebSocketClient from "../../../websocket-client";
 import {
   createPoolWithMachines,
   deleteDomainRecord,
+  generateMachineFilterPoolActionCreators,
   generateMachinePoolActionCreators,
   generateNextDeleteRecordAction,
   generateNextUpdateRecordAction,
@@ -28,10 +29,37 @@ describe("websocket sagas", () => {
     const action = {
       type: "resourcepoo/createWithMachines",
       payload: { params: { machineIDs: ["machine1"], pool } },
+      meta: {},
     };
     return expectSaga(createPoolWithMachines, socketClient, sendMessage, action)
       .provide([
         [matchers.call.fn(generateMachinePoolActionCreators), actionCreators],
+      ])
+      .call(
+        sendMessage,
+        socketClient,
+        resourcePoolActions.create(pool),
+        actionCreators
+      )
+      .run();
+  });
+
+  it("can send a message to create a pool then attach machines using filter", () => {
+    const socketClient = new WebSocketClient();
+    const sendMessage = jest.fn();
+    const actionCreators = [jest.fn()];
+    const pool = { name: "pool1", description: "a pool" };
+    const action = {
+      type: "resourcepoo/createWithMachines",
+      payload: { params: { filter: { id: ["abcd123"] }, pool } },
+      meta: {},
+    };
+    return expectSaga(createPoolWithMachines, socketClient, sendMessage, action)
+      .provide([
+        [
+          matchers.call.fn(generateMachineFilterPoolActionCreators),
+          actionCreators,
+        ],
       ])
       .call(
         sendMessage,

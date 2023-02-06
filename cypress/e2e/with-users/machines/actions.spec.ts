@@ -1,4 +1,4 @@
-import { generateMAASURL } from "../../utils";
+import { generateMAASURL, generateName } from "../../utils";
 
 const MACHINE_ACTIONS = [
   "Commission",
@@ -30,10 +30,22 @@ const selectFirstMachine = () =>
       .within(() => cy.findByRole("checkbox").click({ force: true }));
   });
 
+const openMachineActionForm = (action) => {
+  cy.findByTestId("section-header-buttons").within(() => {
+    cy.findByRole("button", { name: /Take action/i }).click();
+  });
+  cy.findByLabelText("submenu").within(() => {
+    cy.findAllByRole("button", {
+      name: new RegExp(`${action}...`),
+    }).click();
+  });
+};
+
 context("Machine listing - actions", () => {
+  const machineName = generateName("machine");
   before(() => {
     cy.login();
-    cy.addMachine();
+    cy.addMachine(machineName);
   });
   beforeEach(() => {
     cy.login();
@@ -57,23 +69,31 @@ context("Machine listing - actions", () => {
   MACHINE_ACTIONS.forEach((action) =>
     it(`loads machine ${action} form`, () => {
       selectFirstMachine();
-      cy.findByTestId("section-header-buttons").within(() => {
-        cy.findByRole("button", { name: /Take action/i }).click();
-      });
-      cy.findByLabelText("submenu").within(() => {
-        cy.findAllByRole("button", {
-          name: new RegExp(`${action}...`),
-        }).click();
-      });
+      openMachineActionForm(action);
       cy.findByRole("complementary", { name: action }).within(() => {
         cy.findAllByText(/Loading/).should("have.length", 0);
         cy.findByRole("heading", { name: action });
         cy.findByRole("button", { name: /Cancel/i }).click();
       });
       // expect the action form to be closed
-      cy.findByTestId("section-header-title")
-        .contains(action)
-        .should("not.exist");
+      cy.findByRole("complementary", { name: action }).should("not.exist");
     })
   );
+
+  it("can create and set the zone of a machine", () => {
+    const poolName = generateName("pool");
+    selectFirstMachine();
+    openMachineActionForm("Set pool");
+    cy.findByRole("complementary", { name: /Set pool/i }).should("exist");
+    // eslint-disable-next-line cypress/no-force
+    cy.findByLabelText(/Create pool/i).click({ force: true });
+    cy.findByLabelText(/Name/i).type(poolName);
+    cy.findByRole("button", { name: /Set pool for machine/i }).click();
+    cy.findByRole("complementary", { name: /Set pool/i }).should("not.exist");
+    cy.findByRole("grid", { name: /Machines/i })
+      .within(() => cy.findByText(poolName))
+      .should("exist");
+    cy.deleteMachine(machineName);
+    cy.deletePool(poolName);
+  });
 });
