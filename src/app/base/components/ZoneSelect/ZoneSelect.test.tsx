@@ -33,9 +33,7 @@ describe("ZoneSelect", () => {
       { state }
     );
 
-    expect(
-      screen.getByRole("combobox", { name: new RegExp("zone", "i") })
-    ).toMatchSnapshot();
+    expect(screen.getByRole("combobox", { name: /zone/i })).toBeInTheDocument();
   });
 
   it("dispatches action to fetch zones on load", () => {
