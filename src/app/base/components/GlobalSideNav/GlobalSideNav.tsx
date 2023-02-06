@@ -395,6 +395,12 @@ const GlobalSideNav = (): JSX.Element => {
               {maasName} MAAS v{version}
             </span>
           ) : null}
+          <span
+            className="l-navigation__toggle p-panel__toggle js-menu-toggle"
+            onClick={() => setIsCollapsed(!isCollapsed)}
+          >
+            <Icon light name="close" />
+          </span>
         </div>
       </nav>
     </>
