@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import packageInfo from "../../package.json";
 
+import Header from "./base/components/Header";
 import ThemePreviewContext from "./base/theme-preview-context";
 import { MAAS_UI_ID } from "./constants";
 
@@ -123,8 +124,12 @@ export const App = (): JSX.Element => {
   return (
     <div className="l-application" id={MAAS_UI_ID}>
       <ThemePreviewContext.Provider value={{ theme, setTheme }}>
-        <AppSideNavigation />
+        {connected && authLoaded && authenticated ? (
+          <AppSideNavigation />
+        ) : null}
+
         <main className="l-main">
+          {!connected || !authLoaded || !authenticated ? <Header /> : null}
           <div id="main-content">{content}</div>
           <hr />
           <Footer />
