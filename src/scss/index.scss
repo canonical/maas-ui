@@ -72,6 +72,7 @@
 // Import and include MAAS component styles
 // base
 @import "~app/base/components/ActionBar";
+@import "~app/base/components/AppSideNavigation";
 @import "~app/base/components/CertificateDownload";
 @import "~app/base/components/CertificateMetadata";
 @import "~app/base/components/ColumnToggle";
@@ -109,6 +110,7 @@
 @import "~app/base/components/TableMenu";
 @import "~app/base/components/TagSelector";
 @include ActionBar;
+@include AppSideNavigation;
 @include CertificateDownload;
 @include CertificateMetadata;
 @include ColumnToggle;
