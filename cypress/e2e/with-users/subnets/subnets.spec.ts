@@ -45,9 +45,11 @@ context("Subnets", () => {
   it("updates the URL to default grouping if no group paramater has been set", () => {
     cy.visit(generateMAASURL("/networks"));
 
-    cy.findByRole("combobox", { name: "Group by" }).within(() => {
-      cy.findByRole("option", { selected: true }).contains("Group by fabric");
-    });
+    cy.findByRole("tab", { name: /fabric/i }).should(
+      "have.attr",
+      "aria-selected",
+      "true"
+    );
 
     cy.url().should("include", generateMAASURL("/networks?by=fabric"));
   });
@@ -57,12 +59,18 @@ context("Subnets", () => {
       cy.findAllByRole("columnheader").first().should("have.text", "Fabric");
     });
 
-    cy.findByRole("combobox", { name: "Group by" }).within(() => {
-      cy.findByRole("option", { selected: true }).contains("Group by fabric");
-      cy.findByRole("option", { selected: false }).contains("Group by space");
-    });
+    cy.findByRole("tab", { name: /fabric/i }).should(
+      "have.attr",
+      "aria-selected",
+      "true"
+    );
+    cy.findByRole("tab", { name: /space/i }).should(
+      "have.attr",
+      "aria-selected",
+      "false"
+    );
 
-    cy.findByRole("combobox", { name: "Group by" }).select("Group by space");
+    cy.findByRole("tab", { name: /space/i }).click();
 
     cy.findByRole("table", { name: "Subnets by Space" }).within(() => {
       cy.findAllByRole("columnheader").first().should("have.text", "Space");

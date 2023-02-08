@@ -22,30 +22,20 @@ const MainContentSection = ({
 }: Props): JSX.Element => {
   const { SIDEBAR, TOTAL } = COL_SIZES;
   return (
-    <div className="section" {...props} id="main-content-section">
+    <div {...props} id="main-content-section">
       <div>
         {header ? (
-          <div className="section__header-wrapper">
-            <Row>
-              <Col size={12}>{header}</Col>
-            </Row>
-          </div>
+          <Row>
+            <Col size={12}>{header}</Col>
+          </Row>
         ) : null}
-        <Strip
-          element="section"
-          includeCol={false}
-          rowClassName="section__content-wrapper"
-          shallow
-        >
+        <Strip element="section" includeCol={false} shallow>
           {sidebar && (
             <Col className="section__sidebar" element="aside" size={SIDEBAR}>
               {sidebar}
             </Col>
           )}
-          <Col
-            className="section__content"
-            size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}
-          >
+          <Col size={(sidebar ? TOTAL - SIDEBAR : TOTAL) as ColSize}>
             {!isNotificationListHidden && <NotificationList />}
             {children}
           </Col>

@@ -1,0 +1,195 @@
+@mixin AppSideNavigation {
+  .l-navigation .p-navigation__logo-title {
+    margin-left: $spv--large;
+  }
+  .l-navigation,
+  .l-navigation-bar {
+    @include vf-animation("background-color");
+
+    .l-navigation__wrapper {
+      color: $colors--dark-theme--text-default;
+      display: flex;
+      flex-direction: column;
+
+      .l-navigation__toggle {
+        align-self: flex-end;
+
+        @media only screen and (min-width: $breakpoint-small) {
+          display: none;
+        }
+      }
+
+      .l-navigation__logo-link {
+        color: $colors--dark-theme--text-default;
+        text-decoration: none;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+      }
+
+      .p-navigation__banner {
+        height: 2.3rem;
+        padding-left: 1.5rem;
+
+        .p-navigation__logo-tag {
+          left: $spv--large;
+          height: 2.3rem !important;
+        }
+
+        .p-navigation__logo-title {
+          margin-bottom: 0;
+        }
+      }
+
+      i {
+        margin-right: $spv--small;
+      }
+
+      hr {
+        background: rgba(255, 255, 255, 0.15);
+        margin: $spv--small 0 $spv--small $spv--large;
+      }
+
+      .p-muted-heading {
+        color: $colors--dark-theme--text-default !important;
+        margin: $spv--x-small 0 $spv--x-small $spv--large;
+
+        i {
+          margin-right: $spv--large;
+        }
+      }
+
+      .l-navigation__items {
+        margin: 0;
+        padding-left: 0;
+
+        .l-navigation__item {
+          padding: 0;
+
+          .l-navigation__link {
+            color: $colors--dark-theme--text-default;
+            margin: 0 !important;
+            padding: $spv--small 0 $spv--small $spv--large;
+            text-decoration: none;
+            display: inline-block;
+            width: 100%;
+            height: 100%;
+
+            .l-navigation__link-text {
+              padding-left: $spv--small;
+            }
+
+            :only-child.l-navigation__link-text {
+              margin-left: $spv--x-large;
+            }
+
+            .p-button--link {
+              color: $colors--dark-theme--text-default;
+              text-decoration: none;
+              text-align: left;
+              display: inline-block;
+              width: 100%;
+              height: 100%;
+              margin: 0;
+              padding: 0;
+
+              background-color: transparent !important;
+            }
+          }
+        }
+
+        .l-navigation__item:hover {
+          background-color: $colors--dark-theme--background-hover;
+          transition: 0.1s;
+          transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+        }
+
+        .l-navigation__item.is-selected {
+          border-left: $sph--x-small solid $color-x-light;
+          background-color: $colors--dark-theme--background-active;
+
+          .l-navigation__link {
+            padding-left: $spv--medium;
+          }
+        }
+      }
+
+      #maas-info {
+        margin-left: $spv--large;
+        color: $colors--dark-theme--text-muted;
+      }
+    }
+  }
+
+  .p-contextual-menu__dropdown {
+    z-index: 103;
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style-type: none;
+
+      li {
+        padding: $spv--small 0 $spv--small $spv--large;
+      }
+
+      li:hover {
+        background-color: $colors--dark-theme--background-hover;
+        transition: 0.1s;
+        transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
+      }
+
+      a,
+      .p-button--link {
+        margin: 0;
+        padding: 0;
+        color: $colors--dark-theme--text-default;
+        text-decoration: none;
+      }
+    }
+  }
+
+  .l-navigation--default {
+    background-color: $colors--dark-theme--background-default;
+  }
+
+  .l-navigation--bark {
+    background-color: #585841 !important;
+  }
+
+  .l-navigation--sage {
+    background-color: #4e5f51 !important;
+  }
+
+  .l-navigation--olive {
+    background-color: #3d5f11 !important;
+  }
+
+  .l-navigation--viridian {
+    background-color: #025a3d !important;
+  }
+
+  .l-navigation--prussian_green {
+    background-color: #225d5c !important;
+  }
+
+  .l-navigation--blue {
+    background-color: #0060bf !important;
+  }
+
+  .l-navigation--purple {
+    background-color: #7764d8 !important;
+  }
+
+  .l-navigation--magenta {
+    background-color: #974097 !important;
+  }
+
+  .l-navigation--red {
+    background-color: #a71b33 !important;
+  }
+
+  .l-navigation--item-icon {
+    margin-right: $sph--small;
+  }
+}

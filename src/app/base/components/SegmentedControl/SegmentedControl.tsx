@@ -3,18 +3,20 @@ import type { HTMLAttributes } from "react";
 import classNames from "classnames";
 
 type Segment<V> = {
-  title: string;
+  label: string;
   value: V;
 };
 
 type Props<V> = {
   onSelect: (selected: V) => void;
+  buttonClassName?: string;
   options: Segment<V>[];
   selected: V;
 } & Omit<HTMLAttributes<HTMLDivElement>, "onSelect">;
 
 const SegmentedControl = <V,>({
   className,
+  buttonClassName,
   onSelect,
   options,
   selected,
@@ -26,13 +28,16 @@ const SegmentedControl = <V,>({
         {options.map((button) => (
           <button
             aria-selected={button.value === selected}
-            className="p-segmented-control__button"
-            key={button.title}
+            className={classNames(
+              "p-segmented-control__button",
+              buttonClassName
+            )}
+            key={button.label}
             onClick={() => onSelect(button.value)}
             role="tab"
             type="button"
           >
-            {button.title}
+            {button.label}
           </button>
         ))}
       </div>

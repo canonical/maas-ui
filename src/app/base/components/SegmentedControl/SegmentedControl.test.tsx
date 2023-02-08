@@ -4,15 +4,15 @@ import { render, screen } from "testing/utils";
 
 const options = [
   {
-    title: "Red",
+    label: "Red",
     value: "#FF0000",
   },
   {
-    title: "Green",
+    label: "Green",
     value: "#00FF00",
   },
   {
-    title: "Blue",
+    label: "Blue",
     value: "#0000FF",
   },
 ];
