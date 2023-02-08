@@ -107,7 +107,11 @@ const generateRows = (
             />
           </div>
         ) : (
-          <ScriptDetails id={script.id} />
+          <ScriptDetails
+            id={script.id}
+            isCollapsible
+            onCollapse={hideExpanded}
+          />
         )),
       key: script.id,
       sortData: {
