@@ -105,7 +105,6 @@ describe("GlobalSideNav", () => {
       </Provider>
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "koala" }));
     await userEvent.click(screen.getByRole("button", { name: "Log out" }));
 
     const expectedAction = statusActions.logout();
@@ -116,7 +115,7 @@ describe("GlobalSideNav", () => {
     });
   });
 
-  it("hides nav links if not completed intro", async () => {
+  it("hides nav links if not completed intro", () => {
     state.user.auth.user = userFactory({
       completed_intro: false,
       username: "koala",
@@ -130,7 +129,7 @@ describe("GlobalSideNav", () => {
     expect(within(mainNav).getAllByRole("link")[0]).toHaveAccessibleName(
       "Homepage"
     );
-    await userEvent.click(screen.getByRole("button", { name: "koala" }));
+
     expect(screen.getByRole("button", { name: "Log out" })).toBeInTheDocument();
   });
 
@@ -217,13 +216,11 @@ describe("GlobalSideNav", () => {
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
-    const controllerLink = screen.getByRole("listitem", {
-      name: "Controllers",
+    const controllerLink = screen.getByRole("link", {
+      name: /Controllers/i,
     });
     const warningIcon = within(controllerLink).getByTestId("warning-icon");
-    expect(warningIcon).toHaveClass(
-      "p-navigation--item-icon p-icon--security-warning-grey"
-    );
+    expect(warningIcon).toHaveClass("p-icon--security-warning-grey");
   });
 
   it("does not display a warning icon next to controllers if vault is fully configured", () => {
@@ -233,7 +230,7 @@ describe("GlobalSideNav", () => {
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
-    const controllerLink = screen.getByRole("listitem", {
+    const controllerLink = screen.getByRole("link", {
       name: "Controllers",
     });
     expect(
@@ -248,7 +245,7 @@ describe("GlobalSideNav", () => {
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
-    const controllerLink = screen.getByRole("listitem", {
+    const controllerLink = screen.getByRole("link", {
       name: "Controllers",
     });
     expect(
