@@ -11,10 +11,10 @@ context("KVM listing", () => {
   });
 
   it("highlights the correct navigation link", () => {
-    cy.get(".p-navigation__item.is-selected a").should(
+    cy.get(".l-navigation__item.is-selected a").should(
       "have.attr",
       "href",
-      generateMAASURL("/kvm")
+      generateMAASURL("/kvm/lxd")
     );
   });
 });
