@@ -47,8 +47,14 @@ export const AppSideNavItems = ({
                   if (!navLink.adminOnly || isAdmin) {
                     return (
                       <AppSideNavItem
-                        hasWarningIcon={
-                          navLink.label === "Controllers" && vaultIncomplete
+                        icon={
+                          navLink.label === "Controllers" && vaultIncomplete ? (
+                            <Icon
+                              aria-label="warning"
+                              data-testid="warning-icon"
+                              name="security-warning-grey"
+                            />
+                          ) : undefined
                         }
                         key={navLink.label}
                         navLink={navLink}

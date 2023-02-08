@@ -225,16 +225,6 @@ const AppSideNavigation = (): JSX.Element => {
             showLinks={showLinks}
             vaultIncomplete={vaultIncomplete}
           />
-          {/* {generateItems({
-            authUser,
-            groups: navGroups,
-            isAdmin,
-            isAuthenticated,
-            logout,
-            path,
-            showLinks,
-            vaultIncomplete,
-          })} */}
           {showLinks ? (
             <span id="maas-info">
               {maasName} MAAS v{version}

@@ -1,3 +1,5 @@
+import type { ReactNode } from "react";
+
 import { Icon } from "@canonical/react-components";
 import { Link } from "react-router-dom-v5-compat";
 
@@ -8,17 +10,11 @@ import { useId } from "app/base/hooks/base";
 
 type Props = {
   navLink: NavItem;
-  icon?: string;
-  hasWarningIcon?: boolean;
+  icon?: string | ReactNode;
   path: string;
 };
 
-export const AppSideNavItem = ({
-  navLink,
-  icon,
-  hasWarningIcon,
-  path,
-}: Props): JSX.Element => {
+export const AppSideNavItem = ({ navLink, icon, path }: Props): JSX.Element => {
   const id = useId();
   return (
     <li
@@ -33,14 +29,13 @@ export const AppSideNavItem = ({
         id={`${navLink.label}-${id}`}
         to={navLink.url}
       >
-        {hasWarningIcon ? (
-          <Icon
-            aria-label="warning"
-            data-testid="warning-icon"
-            name="security-warning-grey"
-          />
+        {icon ? (
+          typeof icon === "string" ? (
+            <Icon light name={icon} />
+          ) : (
+            <>{icon}</>
+          )
         ) : null}
-        {icon ? <Icon light name={icon} /> : null}
         <span className="l-navigation__link-text">{navLink.label}</span>
       </Link>
     </li>
