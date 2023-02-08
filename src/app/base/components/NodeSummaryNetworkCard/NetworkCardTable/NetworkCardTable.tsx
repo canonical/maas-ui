@@ -70,6 +70,15 @@ const NetworkCardTable = ({ interfaces, node }: Props): JSX.Element => {
             ? fabrics.find((fabric) => fabric.id === vlan.fabric)
             : null;
           const dhcpStatus = getDHCPStatus(vlan, vlans, fabrics);
+          const subnet = getInterfaceSubnet(
+            node,
+            subnets,
+            fabrics,
+            vlans,
+            isAllNetworkingDisabled,
+            iface,
+            iface.links ? iface.links[0] : null
+          );
 
           return (
             <TableRow key={iface.id}>
@@ -89,17 +98,7 @@ const NetworkCardTable = ({ interfaces, node }: Props): JSX.Element => {
                   iface.links ? iface.links[0] : null
                 )}
                 <br />
-                <small className="u-text--muted">
-                  {getInterfaceSubnet(
-                    node,
-                    subnets,
-                    fabrics,
-                    vlans,
-                    isAllNetworkingDisabled,
-                    iface,
-                    iface.links ? iface.links[0] : null
-                  )}
-                </small>
+                <small className="u-text--muted">{subnet?.cidr}</small>
               </TableCell>
               <TableCell className="speed" data-heading="Link speed">
                 {formatSpeedUnits(iface.link_speed)}
