@@ -18,7 +18,7 @@ import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
-type Props = SectionHeaderProps & {
+type Props = Required<Pick<SectionHeaderProps, "title">> & {
   sidePanelContent: KVMSidePanelContent | null;
   setSidePanelContent: KVMSetSidePanelContent;
 };
@@ -26,7 +26,7 @@ type Props = SectionHeaderProps & {
 const KVMListHeader = ({
   sidePanelContent,
   setSidePanelContent,
-  ...props
+  title,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
@@ -67,7 +67,7 @@ const KVMListHeader = ({
       sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : "KVM"}
       subtitle={`${pluralize("KVM host", kvms.length, true)} available`}
       subtitleLoading={!podsLoaded}
-      title={"title" in props && !!props.title ? props.title : "KVM"}
+      title={title}
     />
   );
 };
