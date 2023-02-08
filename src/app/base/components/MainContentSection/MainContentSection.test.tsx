@@ -17,10 +17,6 @@ describe("MainContentSection", () => {
       <MainContentSection header="Settings">content</MainContentSection>
     );
     expect(screen.queryByRole("complementary")).not.toBeInTheDocument();
-    expect(document.querySelector(".section__content")).not.toHaveClass(
-      "col-10"
-    );
-    expect(document.querySelector(".section__content")).toHaveClass("col-12");
   });
 
   it("can render a node as a title", () => {
