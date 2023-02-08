@@ -61,7 +61,7 @@ const routes: { title: string; path: string }[] = [
     path: urls.images.index,
   },
   {
-    title: "KVM",
+    title: "LXD",
     path: urls.kvm.index,
   },
   {

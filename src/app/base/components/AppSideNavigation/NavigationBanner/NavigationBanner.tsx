@@ -6,7 +6,11 @@ import { isSelected } from "../utils";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
 
-const NavigationBanner = (): JSX.Element => {
+const NavigationBanner = ({
+  children,
+}: {
+  children?: React.ReactNode;
+}): JSX.Element => {
   const isAdmin = useSelector(authSelectors.isAdmin);
   const location = useLocation();
 
@@ -44,6 +48,7 @@ const NavigationBanner = (): JSX.Element => {
           <div className="p-navigation__logo-title">Canonical MAAS</div>
         </div>
       </Link>
+      {children}
     </div>
   );
 };

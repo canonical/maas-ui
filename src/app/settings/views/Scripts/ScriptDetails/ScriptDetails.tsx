@@ -1,6 +1,13 @@
 import { useContext, useEffect, useRef } from "react";
 
-import { Code, Col, Row, Spinner } from "@canonical/react-components";
+import {
+  Button,
+  Code,
+  Col,
+  Icon,
+  Row,
+  Spinner,
+} from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -11,9 +18,15 @@ import type { Script } from "app/store/script/types";
 
 type Props = {
   id: Script["id"];
+  isCollapsible?: boolean;
+  onCollapse?: () => void;
 };
 
-const ScriptDetails = ({ id }: Props): JSX.Element => {
+const ScriptDetails = ({
+  id,
+  isCollapsible,
+  onCollapse,
+}: Props): JSX.Element => {
   const dispatch = useDispatch();
   const loading = useSelector(scriptSelectors.loading);
   const scriptKey = useRef(nanoid());
@@ -43,11 +56,28 @@ const ScriptDetails = ({ id }: Props): JSX.Element => {
   }
 
   return (
-    <Row>
-      <Col size={10}>
-        <Code className="u-no-margin--bottom">{script}</Code>
-      </Col>
-    </Row>
+    <>
+      <Row>
+        <Col size={10}>
+          <Code className="u-no-margin--bottom">{script}</Code>
+        </Col>
+      </Row>
+      {isCollapsible && (
+        <Row>
+          <Col className="u-flex--end" emptyLarge={8} size={4}>
+            <Button
+              appearance="link"
+              className="u-flex--between u-flex--align-center script-details--collapse-button"
+              dense
+              onClick={onCollapse}
+            >
+              <span className="u-nudge-left--small">Close snippet</span>
+              <Icon className="" name="chevron-up" />
+            </Button>
+          </Col>
+        </Row>
+      )}
+    </>
   );
 };
 
