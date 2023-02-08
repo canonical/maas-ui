@@ -217,13 +217,11 @@ describe("GlobalSideNav", () => {
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
-    const controllerLink = screen.getByRole("listitem", {
-      name: "Controllers",
+    const controllerLink = screen.getByRole("link", {
+      name: /Controllers/i,
     });
     const warningIcon = within(controllerLink).getByTestId("warning-icon");
-    expect(warningIcon).toHaveClass(
-      "p-navigation--item-icon p-icon--security-warning-grey"
-    );
+    expect(warningIcon).toHaveClass("p-icon--security-warning-grey");
   });
 
   it("does not display a warning icon next to controllers if vault is fully configured", () => {
@@ -233,7 +231,7 @@ describe("GlobalSideNav", () => {
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
-    const controllerLink = screen.getByRole("listitem", {
+    const controllerLink = screen.getByRole("link", {
       name: "Controllers",
     });
     expect(
@@ -248,7 +246,7 @@ describe("GlobalSideNav", () => {
     ];
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
-    const controllerLink = screen.getByRole("listitem", {
+    const controllerLink = screen.getByRole("link", {
       name: "Controllers",
     });
     expect(
