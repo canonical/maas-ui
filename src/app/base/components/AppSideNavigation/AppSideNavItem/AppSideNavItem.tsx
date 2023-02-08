@@ -26,7 +26,6 @@ export const AppSideNavItem = ({
       className={`l-navigation__item${
         isSelected(path, navLink) ? " is-selected" : ""
       }`}
-      key={navLink.label}
     >
       <Link
         aria-current={isSelected(path, navLink) ? "page" : undefined}

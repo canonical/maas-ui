@@ -36,7 +36,7 @@ export const AppSideNavItems = ({
     <>
       {showLinks
         ? groups.map((group) => (
-            <span key={group.groupTitle}>
+            <span key={`${group.groupTitle}-${id}`}>
               <div className="p-muted-heading" id={`${group.groupTitle}-${id}`}>
                 {group.groupIcon ? <Icon light name={group.groupIcon} /> : null}
                 {group.groupTitle}
@@ -65,7 +65,7 @@ export const AppSideNavItems = ({
         : null}
       {isAuthenticated ? (
         <ul className="l-navigation__items">
-          <hr key="break" />
+          <hr />
           {isAdmin && showLinks ? (
             <>
               <AppSideNavItem
@@ -83,7 +83,6 @@ export const AppSideNavItems = ({
                 ? "is-selected"
                 : null
             }`}
-            key="user"
           >
             <ContextualMenu
               aria-current={
@@ -104,10 +103,10 @@ export const AppSideNavItems = ({
               }
             >
               <ul>
-                <li key="prefs">
+                <li>
                   <Link to={urls.preferences.index}>Preferences</Link>
                 </li>
-                <li key="logout">
+                <li>
                   <Button appearance="link" onClick={() => logout()}>
                     Log out
                   </Button>
