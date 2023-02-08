@@ -1,6 +1,6 @@
 import { useEffect, useContext, useState } from "react";
 
-import { Icon } from "@canonical/react-components";
+import { Button, Icon } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
@@ -194,18 +194,22 @@ const AppSideNavigation = (): JSX.Element => {
             <div className="l-navigation__wrapper">
               <NavigationBanner />
             </div>
-            <div className="p-panel__controls">
-              <span
-                className="p-panel__toggle js-menu-toggle"
-                onClick={() => setIsCollapsed(!isCollapsed)}
+            <div className="p-panel__controls u-nudge-down--small u-no-margin--top u-hide--large">
+              <Button
+                appearance="base"
+                className="has-icon is-dark"
+                onClick={() => {
+                  setIsCollapsed(false);
+                }}
               >
                 Menu
-              </span>
+              </Button>
             </div>
           </div>
         </div>
       </header>
       <nav
+        aria-label="main navigation"
         className={classNames(
           `l-navigation is-pinned l-navigation--${themeColor}`,
           {
@@ -214,7 +218,23 @@ const AppSideNavigation = (): JSX.Element => {
         )}
       >
         <div className="l-navigation__wrapper">
-          <NavigationBanner />
+          <NavigationBanner>
+            <div className="u-nudge-down--small u-hide--large">
+              <Button
+                appearance="base"
+                aria-label="Close"
+                className="has-icon is-dark u-no-margin"
+                onClick={(e) => {
+                  setIsCollapsed(true);
+                  // Make sure the button does not have focus
+                  // .l-navigation remains open with :focus-within
+                  e.currentTarget.blur();
+                }}
+              >
+                <Icon light name="close" />
+              </Button>
+            </div>
+          </NavigationBanner>
           <AppSideNavItems
             authUser={authUser}
             groups={navGroups}
@@ -230,12 +250,6 @@ const AppSideNavigation = (): JSX.Element => {
               {maasName} MAAS v{version}
             </span>
           ) : null}
-          <span
-            className="l-navigation__toggle p-panel__toggle js-menu-toggle"
-            onClick={() => setIsCollapsed(!isCollapsed)}
-          >
-            <Icon light name="close" />
-          </span>
         </div>
       </nav>
     </>
