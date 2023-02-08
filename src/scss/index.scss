@@ -271,6 +271,7 @@
 @import "~app/settings/views/Repositories/RepositoryFormFields";
 @import "~app/settings/views/Scripts/ScriptsList";
 @import "~app/settings/views/Scripts/ScriptsUpload";
+@import "~app/settings/views/Scripts/ScriptDetails";
 @import "~app/settings/views/Users/UsersList";
 @include SettingsTable;
 @include DhcpList;
@@ -283,6 +284,7 @@
 @include UsersList;
 @include GeneralForm;
 @include ThemedRadioButton;
+@include ScriptDetails;
 
 // subnets
 @import "~app/subnets/components/ReservedRanges";
