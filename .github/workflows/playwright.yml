@@ -9,7 +9,7 @@ jobs:
     timeout-minutes: 15
     runs-on: ubuntu-latest
     env:
-      MAAS_URL: localhost:5240
+      BASE_URL: localhost:5240
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -22,11 +22,11 @@ jobs:
       - name: Setup MAAS
         uses: canonical/setup-maas@main
         with:
-          maas-url: ${{env.MAAS_URL}}/MAAS
+          maas-url: ${{env.BASE_URL}}/MAAS
       - name: Create MAAS admin
         run: sudo maas createadmin --username=admin --password=test --email=fake@example.org
       - name: Wait for MAAS UI to be ready
-        run: yarn run wait-on http-get://${{env.MAAS_URL}}/MAAS/r
+        run: yarn run wait-on http-get://${{env.BASE_URL}}/MAAS/r
       - name: Run Playwright tests
         run: yarn playwright test
       - uses: actions/upload-artifact@v3

@@ -3,12 +3,12 @@ import { test, expect } from "@playwright/test";
 let machineListRequests: (string | Buffer)[] = [];
 let machineCountRequests: (string | Buffer)[] = [];
 
-test.beforeEach(async ({ page, context }) => {
+test.beforeEach(async ({ page, context, baseURL }) => {
   machineListRequests = [];
   machineCountRequests = [];
   await context.addCookies([
-    { name: "skipsetupintro", value: "true", url: "http://0.0.0.0:5240/" },
-    { name: "skipintro", value: "true", url: "http://0.0.0.0:5240/" },
+    { name: "skipsetupintro", value: "true", url: baseURL },
+    { name: "skipintro", value: "true", url: baseURL },
   ]);
   await page.goto("/MAAS/r/machines");
   await page.getByLabel("Username").click();
