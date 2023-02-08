@@ -49,7 +49,7 @@ context("Login page", () => {
     cy.location("pathname").should("eq", generateMAASURL("/intro"));
 
     // Log out.
-    cy.get(".p-navigation__link:contains(Log out)").click();
+    cy.get(".l-navigation__link:contains(Log out)").click();
 
     // Set cookie to skip setup intro.
     cy.setCookie("skipsetupintro", "true");

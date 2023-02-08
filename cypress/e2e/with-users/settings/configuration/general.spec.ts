@@ -18,8 +18,7 @@ context("Settings - General - Theme", () => {
 
   it("displays a live preview of a MAAS theme colour", () => {
     cy.findByRole("radio", { name: "Red" }).click();
-
-    cy.findByRole("banner").should("have.class", "p-navigation--red");
+    cy.get(".l-navigation").should("have.class", "l-navigation--red");
   });
 
   it("persists the theme choice after saving and refreshing the page", () => {
@@ -30,7 +29,7 @@ context("Settings - General - Theme", () => {
 
     cy.reload(true);
 
-    cy.findByRole("banner").should("have.class", "p-navigation--red");
+    cy.get(".l-navigation").should("have.class", "l-navigation--red");
   });
 
   it("persists the theme choice after saving and navigating away from page", () => {
@@ -41,28 +40,28 @@ context("Settings - General - Theme", () => {
 
     cy.findByRole("link", { name: "Deploy" }).click();
 
-    cy.findByRole("banner").should("have.class", "p-navigation--red");
+    cy.get(".l-navigation").should("have.class", "l-navigation--red");
   });
 
   it("reverts the theme choice if not saved and page is refreshed", () => {
     cy.findByRole("radio", { name: "Red" }).click();
     cy.reload(true);
 
-    cy.findByRole("banner").should("have.class", "p-navigation--default");
+    cy.get(".l-navigation").should("have.class", "l-navigation--default");
   });
 
   it("reverts the theme choice if the user clicks cancel", () => {
     cy.findByRole("radio", { name: "Red" }).click();
     cy.findByRole("button", { name: "Cancel" }).click();
 
-    cy.findByRole("banner").should("have.class", "p-navigation--default");
+    cy.get(".l-navigation").should("have.class", "l-navigation--default");
   });
 
   it("reverts the theme choice if the user navigates to another page", () => {
     cy.findByRole("radio", { name: "Red" }).click();
     cy.findByRole("link", { name: "Deploy" }).click();
 
-    cy.findByRole("banner").should("have.class", "p-navigation--default");
+    cy.get(".l-navigation").should("have.class", "l-navigation--default");
   });
 });
 

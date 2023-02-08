@@ -12,12 +12,12 @@ context("Subnets", () => {
   });
 
   it("highlights the correct navigation link", () => {
-    cy.get(".p-navigation__item.is-selected a").should(
+    cy.get(".l-navigation__item.is-selected a").should(
       "have.attr",
       "href",
       generateMAASURL("/networks")
     );
-    cy.findByRole("navigation", { name: "primary" }).within(() => {
+    cy.get(".l-navigation").within(() => {
       cy.findByRole("link", { current: "page" }).should(
         "have.attr",
         "href",
