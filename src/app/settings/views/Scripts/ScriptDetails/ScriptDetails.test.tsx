@@ -91,4 +91,34 @@ describe("ScriptDetails", () => {
 
     expect(screen.getByText("test script contents")).toBeInTheDocument();
   });
+
+  it("displays a collapse button if 'isCollapsible' prop is provided", () => {
+    jest.spyOn(fileContextStore, "get").mockReturnValue("some random text");
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <FileContext.Provider value={fileContextStore}>
+          <ScriptDetails id={1} isCollapsible />
+        </FileContext.Provider>
+      </MemoryRouter>,
+      { state }
+    );
+
+    expect(
+      screen.getByRole("button", { name: /hide details/i })
+    ).toBeInTheDocument();
+  });
+
+  it("doesn't display a collapse button if 'isCollapsible' prop is not provided", () => {
+    jest.spyOn(fileContextStore, "get").mockReturnValue("some random text");
+    renderWithMockStore(
+      <MemoryRouter initialEntries={[{ pathname: "/" }]}>
+        <FileContext.Provider value={fileContextStore}>
+          <ScriptDetails id={1} />
+        </FileContext.Provider>
+      </MemoryRouter>,
+      { state }
+    );
+
+    expect(screen.queryByRole("button", { name: /hide details/i })).toBeNull();
+  });
 });
