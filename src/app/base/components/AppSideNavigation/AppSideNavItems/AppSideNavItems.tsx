@@ -1,9 +1,7 @@
-import { Button, ContextualMenu, Icon } from "@canonical/react-components";
-import { Link } from "react-router-dom-v5-compat";
+import { Button, Icon } from "@canonical/react-components";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { NavGroup } from "../types";
-import { isSelected } from "../utils";
 
 import { useId } from "app/base/hooks/base";
 import urls from "app/base/urls";
@@ -76,43 +74,24 @@ export const AppSideNavItems = ({
               <hr />
             </>
           ) : null}
+          <AppSideNavItem
+            icon="profile-light"
+            navLink={{
+              label: `${authUser?.username}`,
+              url: urls.preferences.index,
+            }}
+            path={path}
+          />
+          <hr />
 
-          <li
-            className={`l-navigation__item ${
-              isSelected(path, { label: "", url: urls.preferences.index })
-                ? "is-selected"
-                : null
-            }`}
-          >
-            <ContextualMenu
-              aria-current={
-                isSelected(path, { label: "", url: urls.preferences.index })
-                  ? "page"
-                  : undefined
-              }
-              className="l-navigation__link is-dark"
-              position="right"
-              toggleAppearance="link"
-              toggleLabel={
-                <>
-                  <Icon light name="profile-light" />
-                  <span className="l-navigation__link-text">
-                    {authUser?.username}
-                  </span>
-                </>
-              }
+          <li className="l-navigation__item">
+            <Button
+              appearance="link"
+              className="l-navigation__link"
+              onClick={() => logout()}
             >
-              <ul>
-                <li>
-                  <Link to={urls.preferences.index}>Preferences</Link>
-                </li>
-                <li>
-                  <Button appearance="link" onClick={() => logout()}>
-                    Log out
-                  </Button>
-                </li>
-              </ul>
-            </ContextualMenu>
+              <span className="l-navigation__link-text">Log out</span>
+            </Button>
           </li>
           <hr />
         </ul>

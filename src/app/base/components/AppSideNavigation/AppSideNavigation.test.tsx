@@ -105,7 +105,6 @@ describe("GlobalSideNav", () => {
       </Provider>
     );
 
-    await userEvent.click(screen.getByRole("button", { name: "koala" }));
     await userEvent.click(screen.getByRole("button", { name: "Log out" }));
 
     const expectedAction = statusActions.logout();
@@ -116,7 +115,7 @@ describe("GlobalSideNav", () => {
     });
   });
 
-  it("hides nav links if not completed intro", async () => {
+  it("hides nav links if not completed intro", () => {
     state.user.auth.user = userFactory({
       completed_intro: false,
       username: "koala",
@@ -130,7 +129,7 @@ describe("GlobalSideNav", () => {
     expect(within(mainNav).getAllByRole("link")[0]).toHaveAccessibleName(
       "Homepage"
     );
-    await userEvent.click(screen.getByRole("button", { name: "koala" }));
+
     expect(screen.getByRole("button", { name: "Log out" })).toBeInTheDocument();
   });
 
