@@ -39,7 +39,7 @@ const KVMList = (): JSX.Element => {
   const hasVirsh = virshKvms.length > 0;
   const showingLXD = location.pathname.endsWith(urls.kvm.lxd.index);
   const showingVirsh = location.pathname.endsWith(urls.kvm.virsh.index);
-  useWindowTitle("KVM");
+  useWindowTitle(showingLXD ? "LXD" : "Virsh");
 
   useEffect(() => {
     dispatch(podActions.fetch());
@@ -95,6 +95,7 @@ const KVMList = (): JSX.Element => {
         <KVMListHeader
           setSidePanelContent={setSidePanelContent}
           sidePanelContent={sidePanelContent}
+          title={showingLXD ? "LXD" : "Virsh"}
         />
       }
     >

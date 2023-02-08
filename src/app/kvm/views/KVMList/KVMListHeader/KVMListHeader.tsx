@@ -4,8 +4,8 @@ import { Button } from "@canonical/react-components";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
-import { Link } from "react-router-dom-v5-compat";
 
+import type { SectionHeaderProps } from "app/base/components/SectionHeader";
 import SectionHeader from "app/base/components/SectionHeader";
 import urls from "app/base/urls";
 import KVMHeaderForms from "app/kvm/components/KVMHeaderForms";
@@ -18,7 +18,7 @@ import { getFormTitle } from "app/kvm/utils";
 import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 
-type Props = {
+type Props = SectionHeaderProps & {
   sidePanelContent: KVMSidePanelContent | null;
   setSidePanelContent: KVMSetSidePanelContent;
 };
@@ -26,13 +26,13 @@ type Props = {
 const KVMListHeader = ({
   sidePanelContent,
   setSidePanelContent,
+  ...props
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const location = useLocation();
   const kvms = useSelector(podSelectors.kvms);
   const podsLoaded = useSelector(podSelectors.loaded);
   const lxdTabActive = location.pathname.endsWith(urls.kvm.lxd.index);
-  const virshTabActive = location.pathname.endsWith(urls.kvm.virsh.index);
 
   useEffect(() => {
     dispatch(podActions.fetch());
@@ -67,23 +67,7 @@ const KVMListHeader = ({
       sidePanelTitle={sidePanelContent ? getFormTitle(sidePanelContent) : "KVM"}
       subtitle={`${pluralize("KVM host", kvms.length, true)} available`}
       subtitleLoading={!podsLoaded}
-      tabLinks={[
-        {
-          active: lxdTabActive,
-          component: Link,
-          "data-testid": "lxd-tab",
-          label: "LXD",
-          to: urls.kvm.lxd.index,
-        },
-        {
-          active: virshTabActive,
-          component: Link,
-          "data-testid": "virsh-tab",
-          label: "Virsh",
-          to: urls.kvm.virsh.index,
-        },
-      ]}
-      title="KVM"
+      title={"title" in props && !!props.title ? props.title : "KVM"}
     />
   );
 };
