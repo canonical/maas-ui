@@ -67,7 +67,6 @@ const ScriptDetails = ({
           <Col className="u-flex--end" emptyLarge={8} size={4}>
             <Button
               appearance="link"
-              aria-label="Hide details"
               className="u-flex--between u-flex--align-center script-details--collapse-button"
               dense
               onClick={onCollapse}
