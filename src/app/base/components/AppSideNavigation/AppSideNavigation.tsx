@@ -1,18 +1,13 @@
 import { useEffect, useContext, useState } from "react";
 
-import { Button, ContextualMenu, Icon } from "@canonical/react-components";
+import { Icon } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  Link,
-  useNavigate,
-  useLocation,
-  useMatch,
-} from "react-router-dom-v5-compat";
+import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
 
+import AppSideNavItems from "./AppSideNavItems";
 import NavigationBanner from "./NavigationBanner";
 import type { NavGroup } from "./types";
-import { isSelected } from "./utils";
 
 import {
   useCompletedIntro,
@@ -28,7 +23,6 @@ import controllerSelectors from "app/store/controller/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
-import type { User } from "app/store/user/types";
 
 const navGroups: NavGroup[] = [
   {
@@ -120,165 +114,7 @@ const navGroups: NavGroup[] = [
   },
 ];
 
-const generateItems = ({
-  authUser,
-  groups,
-  isAdmin,
-  isAuthenticated,
-  logout,
-  path,
-  showLinks,
-  vaultIncomplete,
-}: {
-  authUser: User | null;
-  groups: NavGroup[];
-  isAdmin: boolean;
-  isAuthenticated: boolean;
-  logout: () => void;
-  path: string;
-  showLinks: boolean;
-  vaultIncomplete: boolean;
-}) => {
-  const items = [];
-
-  if (showLinks) {
-    groups.forEach((group) => {
-      items.push(
-        <>
-          <div className="p-muted-heading" id={group.groupTitle}>
-            {group.groupIcon ? <Icon light name={group.groupIcon} /> : null}
-            {group.groupTitle}
-          </div>
-          <ul
-            aria-labelledby={group.groupTitle}
-            className="l-navigation__items"
-          >
-            {group.navLinks.map((navLink) => {
-              if (!navLink.adminOnly || isAdmin) {
-                return (
-                  <li
-                    aria-labelledby={navLink.label}
-                    className={`l-navigation__item ${
-                      isSelected(path, navLink) ? "is-selected" : null
-                    }`}
-                  >
-                    {navLink.label === "Controllers" && vaultIncomplete ? (
-                      // If Vault setup is incomplete (started but not finished), display a warning icon
-                      <Icon
-                        aria-label="warning"
-                        className="p-navigation--item-icon"
-                        data-testid="warning-icon"
-                        name="security-warning-grey"
-                      />
-                    ) : null}
-                    <Link
-                      aria-current={
-                        isSelected(path, navLink) ? "page" : undefined
-                      }
-                      className="l-navigation__link"
-                      id={navLink.label}
-                      to={navLink.url}
-                    >
-                      <span className="l-navigation__link-text">
-                        {navLink.label}
-                      </span>
-                    </Link>
-                  </li>
-                );
-              } else return null;
-            })}
-          </ul>
-        </>
-      );
-    });
-  }
-
-  if (isAuthenticated) {
-    items.push(
-      <ul className="l-navigation__items">
-        <hr />
-        {isAdmin && showLinks ? (
-          <>
-            <li
-              aria-labelledby="Settings"
-              className={`l-navigation__item ${
-                isSelected(path, {
-                  label: "Settings",
-                  url: urls.settings.index,
-                })
-                  ? "is-selected"
-                  : null
-              }`}
-            >
-              <Link
-                aria-current={
-                  isSelected(path, {
-                    label: "Settings",
-                    url: urls.settings.index,
-                  })
-                    ? "page"
-                    : undefined
-                }
-                className="l-navigation__link"
-                id="Settings"
-                to={urls.settings.index}
-              >
-                <Icon light name="settings" />
-                <span className="l-navigation__link-text">Settings</span>
-              </Link>
-            </li>
-            <hr />
-          </>
-        ) : null}
-
-        <li
-          className={`l-navigation__item ${
-            isSelected(path, { label: "", url: urls.preferences.index })
-              ? "is-selected"
-              : null
-          }`}
-        >
-          <ContextualMenu
-            aria-current={
-              isSelected(path, { label: "", url: urls.preferences.index })
-                ? "page"
-                : undefined
-            }
-            aria-labelledby={authUser?.username}
-            className="l-navigation__link is-dark"
-            id={authUser?.username}
-            position="right"
-            toggleAppearance="link"
-            toggleLabel={
-              <>
-                <Icon light name="profile-light" />
-                <span className="l-navigation__link-text">
-                  {authUser?.username}
-                </span>
-              </>
-            }
-          >
-            <ul>
-              <li>
-                <Link to={urls.preferences.index}>Preferences</Link>
-              </li>
-              <li>
-                <Button appearance="link" onClick={() => logout()}>
-                  Log out
-                </Button>
-              </li>
-            </ul>
-          </ContextualMenu>
-        </li>
-        <hr />
-      </ul>
-    );
-  }
-
-  return items;
-};
-
-const GlobalSideNav = (): JSX.Element => {
+const AppSideNavigation = (): JSX.Element => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
@@ -379,17 +215,16 @@ const GlobalSideNav = (): JSX.Element => {
       >
         <div className="l-navigation__wrapper">
           <NavigationBanner />
-
-          {generateItems({
-            authUser,
-            groups: navGroups,
-            isAdmin,
-            isAuthenticated,
-            logout,
-            path,
-            showLinks,
-            vaultIncomplete,
-          })}
+          <AppSideNavItems
+            authUser={authUser}
+            groups={navGroups}
+            isAdmin={isAdmin}
+            isAuthenticated={isAuthenticated}
+            logout={logout}
+            path={path}
+            showLinks={showLinks}
+            vaultIncomplete={vaultIncomplete}
+          />
           {showLinks ? (
             <span id="maas-info">
               {maasName} MAAS v{version}
@@ -407,4 +242,4 @@ const GlobalSideNav = (): JSX.Element => {
   );
 };
 
-export default GlobalSideNav;
+export default AppSideNavigation;
