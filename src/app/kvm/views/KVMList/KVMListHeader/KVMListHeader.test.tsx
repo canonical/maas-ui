@@ -43,6 +43,7 @@ describe("KVMListHeader", () => {
             <KVMListHeader
               setSidePanelContent={jest.fn()}
               sidePanelContent={null}
+              title="some text"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -61,6 +62,7 @@ describe("KVMListHeader", () => {
             <KVMListHeader
               setSidePanelContent={jest.fn()}
               sidePanelContent={null}
+              title="some text"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -83,6 +85,7 @@ describe("KVMListHeader", () => {
             <KVMListHeader
               setSidePanelContent={setSidePanelContent}
               sidePanelContent={null}
+              title="LXD"
             />
           </CompatRouter>
         </MemoryRouter>
@@ -109,6 +112,7 @@ describe("KVMListHeader", () => {
             <KVMListHeader
               setSidePanelContent={setSidePanelContent}
               sidePanelContent={null}
+              title="Virsh"
             />
           </CompatRouter>
         </MemoryRouter>
