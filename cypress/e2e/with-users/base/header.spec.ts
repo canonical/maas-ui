@@ -105,4 +105,20 @@ context("Header - admin", () => {
       Cypress.env("username")
     );
   });
+
+  it("opens and closes the menu on mobile", () => {
+    cy.viewport("iphone-8");
+    const getMainNavigation = () =>
+      cy.findByRole("navigation", {
+        name: /main navigation/i,
+      });
+    getMainNavigation().should("not.be.visible");
+    cy.findByRole("banner").within(() =>
+      cy.findByRole("button", { name: "Menu" }).click()
+    );
+    getMainNavigation()
+      .should("be.visible")
+      .within(() => cy.findByRole("button", { name: /Close/i }).click());
+    getMainNavigation().should("not.be.visible");
+  });
 });

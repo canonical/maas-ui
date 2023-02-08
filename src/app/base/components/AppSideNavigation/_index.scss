@@ -4,7 +4,7 @@
   }
   .l-navigation,
   .l-navigation-bar {
-    @include vf-animation("background-color");
+    transition-property: transform, box-shadow, background-color;
 
     .l-navigation__wrapper {
       color: $colors--dark-theme--text-default;
@@ -48,6 +48,7 @@
       hr {
         background: rgba(255, 255, 255, 0.15);
         margin: $spv--small 0 $spv--small $spv--large;
+        width: auto;
       }
 
       .p-muted-heading {
