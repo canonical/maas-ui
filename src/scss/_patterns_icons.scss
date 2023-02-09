@@ -97,7 +97,7 @@
 
   .p-icon--security-tick {
     @extend %icon;
-    @include maas-icon-security-tick($color-mid-dark)
+    @include maas-icon-security-tick($color-mid-dark);
   }
 
   .p-icon--security-warning {
@@ -112,7 +112,17 @@
 
   .p-icon--warning-grey {
     @extend %icon;
-    @include vf-icon-warning-grey($color-white)
+    @include vf-icon-warning-grey($color-white);
+  }
+
+  .p-icon--units-light {
+    @extend %icon;
+    @include vf-icon-units($color-white);
+  }
+
+  .p-icon--tag-light {
+    @extend %icon;
+    @include vf-icon-tag($color-white);
   }
 
   // TODO: Remove alias and replace with .p-icon--status-waiting
