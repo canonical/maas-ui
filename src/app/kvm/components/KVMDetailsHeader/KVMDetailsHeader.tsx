@@ -61,6 +61,7 @@ const KVMDetailsHeader = ({
     <SectionHeader
       buttons={buttons}
       className={classNames("kvm-details-header", className)}
+      headerSize="wide"
       loading={loading}
       sidePanelContent={
         sidePanelContent ? (
