@@ -43,5 +43,18 @@
         width: 100%;
       }
     }
+
+    @media only screen and (max-width: $breakpoint-large) {
+      .formik-form-buttons__container {
+        display: flex;
+        flex-direction: column-reverse;
+        gap: $spv--medium;
+        padding: $spv--medium 0;
+
+        .formik-form-buttons__button {
+          margin-right: 0;
+        }
+      }
+    }
   }
 }
