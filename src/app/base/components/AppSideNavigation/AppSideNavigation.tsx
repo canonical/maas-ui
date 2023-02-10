@@ -1,4 +1,4 @@
-import { useEffect, useContext, useState, useCallback } from "react";
+import { useEffect, useContext, useState } from "react";
 
 import { Button, Icon, Tooltip } from "@canonical/react-components";
 import classNames from "classnames";
@@ -14,6 +14,7 @@ import {
   useCompletedUserIntro,
   useGoogleAnalytics,
 } from "app/base/hooks";
+import { useGlobalKeyShortcut } from "app/base/hooks/base";
 import ThemePreviewContext from "app/base/theme-preview-context";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -187,18 +188,15 @@ const AppSideNavigation = (): JSX.Element => {
     unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
 
   const [isCollapsed, setIsCollapsed] = useState(true);
-  const [isPinned, setIsPinned] = useState(false);
+  useGlobalKeyShortcut("[", () => {
+    setIsCollapsed(!isCollapsed);
+  });
   const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
 
   return (
     <>
       <header className="l-navigation-bar">
-        <div
-          className={classNames(
-            "p-panel is-dark",
-            `l-navigation--${themeColor}`
-          )}
-        >
+        <div className={classNames("p-panel is-dark", `is-maas-${themeColor}`)}>
           <div className="p-panel__header">
             <NavigationBanner />
             <div className="p-panel__controls u-nudge-down--small u-no-margin--top u-hide--large">
@@ -217,9 +215,9 @@ const AppSideNavigation = (): JSX.Element => {
       </header>
       <nav
         aria-label="main navigation"
-        className={classNames(`l-navigation l-navigation--${themeColor}`, {
+        className={classNames(`l-navigation is-maas-${themeColor}`, {
           "is-collapsed": isCollapsed,
-          "is-pinned": isPinned,
+          "is-pinned": !isCollapsed,
         })}
       >
         <div className="l-navigation__drawer">
@@ -227,22 +225,26 @@ const AppSideNavigation = (): JSX.Element => {
             <div className="p-panel__header is-sticky">
               <NavigationBanner>
                 <div className="l-navigation__controls">
-                  <Button
-                    appearance="base"
-                    aria-label={`${
-                      isPinned ? "collapse" : "expand"
-                    } main navigation`}
-                    className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
-                    onClick={(e) => {
-                      setIsCollapsed(!isCollapsed);
-                      setIsPinned(!isPinned);
-                      // Make sure the button does not have focus
-                      // .l-navigation remains open with :focus-within
-                      e.currentTarget.blur();
-                    }}
+                  <Tooltip
+                    message={<>{!isCollapsed ? "collapse" : "expand"} ( [ )</>}
+                    position="right"
                   >
-                    <Icon light name="sidebar-toggle" />
-                  </Button>
+                    <Button
+                      appearance="base"
+                      aria-label={`${
+                        !isCollapsed ? "collapse" : "expand"
+                      } main navigation`}
+                      className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle u-hide--large"
+                      onClick={(e) => {
+                        setIsCollapsed(!isCollapsed);
+                        // Make sure the button does not have focus
+                        // .l-navigation remains open with :focus-within
+                        e.currentTarget.blur();
+                      }}
+                    >
+                      <Icon light name="sidebar-toggle" />
+                    </Button>
+                  </Tooltip>
                 </div>
               </NavigationBanner>
             </div>
@@ -271,21 +273,29 @@ const AppSideNavigation = (): JSX.Element => {
           </div>
         </div>
       </nav>
-      <div className="l-navigation-expand">
-        <Button
-          appearance="base"
-          aria-label={`${isPinned ? "collapse" : "expand"} main navigation`}
-          className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
-          onClick={(e) => {
-            setIsCollapsed(!isCollapsed);
-            setIsPinned(!isPinned);
-            // Make sure the button does not have focus
-            // .l-navigation remains open with :focus-within
-            e.currentTarget.blur();
-          }}
+      <div className={`l-navigation-expand is-maas-${themeColor}`}>
+        <Tooltip
+          message={<>{!isCollapsed ? "collapse" : "expand"} ( [ )</>}
+          position="right"
         >
-          <Icon light name="sidebar-toggle" />
-        </Button>
+          <div>
+            <Button
+              appearance="base"
+              aria-label={`${
+                !isCollapsed ? "collapse" : "expand"
+              } main navigation`}
+              className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
+              onClick={(e) => {
+                setIsCollapsed(!isCollapsed);
+                // Make sure the button does not have focus
+                // .l-navigation remains open with :focus-within
+                e.currentTarget.blur();
+              }}
+            >
+              <Icon light name="sidebar-toggle" />
+            </Button>
+          </div>
+        </Tooltip>
       </div>
     </>
   );

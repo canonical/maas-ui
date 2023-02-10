@@ -52,6 +52,14 @@
     }
   }
 
+  .l-navigation:not(.is-pinned) {
+    .p-side-navigation__collapse-toggle {
+      i {
+        transform: rotate(180deg);
+      }
+    }
+  }
+
   .l-navigation {
     @include vf-transition(
       $property: #{width,
@@ -87,7 +95,7 @@
         )
         translateY(0.8rem);
       button {
-        background-color: #343434;
+        background-color: rgba(255, 255, 255, 0.05);
       }
       @media only screen and (max-width: ($breakpoint-small)) {
         position: static;
@@ -119,7 +127,6 @@
     left: 0;
     z-index: 9999;
     opacity: 1;
-    background-color: #343434;
     transform: translateX(
         #{$application-layout--side-nav-width-collapsed - 1.5rem}
       )
@@ -154,26 +161,8 @@
     }
   }
 
-  $nav-theme-colors: (
-    "default": $colors--dark-theme--background-default,
-    "bark": #585841,
-    "sage": #4e5f51,
-    "olive": #3d5f11,
-    "viridian": #025a3d,
-    "prussian_green": #225d5c,
-    "blue": #0060bf,
-    "purple": #7764d8,
-    "magenta": #974097,
-    "red": #a71b33,
-  );
-
-  @each $name, $color in $nav-theme-colors {
-    .l-navigation--#{$name} {
-      background-color: $color !important;
-      .p-panel.is-dark .p-panel__header {
-        background-color: $color !important;
-      }
-    }
+  .p-panel.is-dark .p-panel__header {
+    background-color: inherit;
   }
   .l-navigation--item-icon {
     margin-right: $sph--small;

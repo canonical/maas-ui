@@ -1,3 +1,4 @@
+import type { KeyboardEvent, KeyboardEventHandler } from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { NotificationSeverity } from "@canonical/react-components";
@@ -5,6 +6,8 @@ import type { NotificationProps } from "@canonical/react-components";
 import { nanoid } from "@reduxjs/toolkit";
 import { useDispatch, useSelector } from "react-redux";
 import { useLocation } from "react-router-dom";
+
+import type { KeyboardShortcut } from "../constants";
 
 import configSelectors from "app/store/config/selectors";
 import { actions as messageActions } from "app/store/message";
@@ -202,17 +205,16 @@ export const usePreviousPersistent = <T extends unknown>(
 };
 
 /**
- * Handle the escape key pressed.
+ * Handle key pressed event.
  */
 export const useOnKeyPressed = (
   key: string,
-  onAfterPressed: () => void
+  onAfterPressed: KeyboardEventHandler
 ): void => {
   const keyDown = useCallback(
-    (evt: KeyboardEvent) => {
-      console.log(key);
-      if (evt.key === key) {
-        onAfterPressed();
+    (event) => {
+      if (event.key === key) {
+        onAfterPressed(event);
       }
     },
     [onAfterPressed, key]
@@ -223,4 +225,19 @@ export const useOnKeyPressed = (
       document.removeEventListener("keydown", keyDown);
     };
   }, [keyDown]);
+};
+
+/**
+ * Add a new global key shortcut handler.
+ */
+export const useGlobalKeyShortcut = (
+  key: KeyboardShortcut,
+  onAfterPressed: KeyboardEventHandler
+): void => {
+  useOnKeyPressed(key, (event: KeyboardEvent) => {
+    // ignore keyboard events from input elements
+    if ((event.target as Element).nodeName !== "INPUT") {
+      onAfterPressed(event);
+    }
+  });
 };
