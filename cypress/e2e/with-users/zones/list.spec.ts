@@ -13,7 +13,7 @@ context("Zones", () => {
   });
 
   it("highlights the correct navigation link", () => {
-    cy.get(".l-navigation__item.is-selected a").should(
+    cy.findByRole("link", { current: "page" }).should(
       "have.attr",
       "href",
       generateMAASURL("/zones")

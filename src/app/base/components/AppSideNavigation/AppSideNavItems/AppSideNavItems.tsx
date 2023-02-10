@@ -1,7 +1,9 @@
 import { Button, Icon } from "@canonical/react-components";
+import classNames from "classnames";
 
 import AppSideNavItem from "../AppSideNavItem";
 import type { NavGroup } from "../types";
+import { isSelected } from "../utils";
 
 import { useId } from "app/base/hooks/base";
 import urls from "app/base/urls";
@@ -29,19 +31,47 @@ export const AppSideNavItems = ({
   vaultIncomplete,
 }: Props): JSX.Element => {
   const id = useId();
-
+  const getHasActiveChild = (group: NavGroup) => {
+    for (const navLink of group.navLinks) {
+      if (isSelected(path, navLink)) {
+        return true;
+      }
+    }
+    return false;
+  };
   return (
     <>
-      {showLinks
-        ? groups.map((group) => (
-            <span key={`${group.groupTitle}-${id}`}>
-              <div className="p-muted-heading" id={`${group.groupTitle}-${id}`}>
-                {group.groupIcon ? <Icon light name={group.groupIcon} /> : null}
-                {group.groupTitle}
-              </div>
+      {showLinks ? (
+        <ul className="p-side-navigation__list">
+          {groups.map((group) => (
+            <>
+              <li
+                className={classNames("p-side-navigation__item", {
+                  "has-active-child": getHasActiveChild(group),
+                })}
+              >
+                <span
+                  className="p-side-navigation__text"
+                  key={`${group.groupTitle}-${id}`}
+                >
+                  {group.groupIcon ? (
+                    <Icon
+                      className="p-side-navigation__icon"
+                      light
+                      name={group.groupIcon}
+                    />
+                  ) : null}
+                  <div
+                    className="p-side-navigation__label p-heading--small"
+                    id={`${group.groupTitle}-${id}`}
+                  >
+                    {group.groupTitle}
+                  </div>
+                </span>
+              </li>
               <ul
                 aria-labelledby={`${group.groupTitle}-${id}`}
-                className="l-navigation__items"
+                className="p-side-navigation__list"
               >
                 {group.navLinks.map((navLink) => {
                   if (!navLink.adminOnly || isAdmin) {
@@ -64,43 +94,43 @@ export const AppSideNavItems = ({
                   } else return null;
                 })}
               </ul>
-            </span>
-          ))
-        : null}
-      {isAuthenticated ? (
-        <ul className="l-navigation__items">
-          <hr />
-          {isAdmin && showLinks ? (
-            <>
-              <AppSideNavItem
-                icon="settings"
-                navLink={{ label: "Settings", url: urls.settings.index }}
-                path={path}
-              />
-              <hr />
             </>
-          ) : null}
-          <AppSideNavItem
-            icon="profile-light"
-            navLink={{
-              label: `${authUser?.username}`,
-              url: urls.preferences.index,
-            }}
-            path={path}
-          />
-          <hr />
-
-          <li className="l-navigation__item">
-            <Button
-              appearance="link"
-              className="l-navigation__link"
-              onClick={() => logout()}
-            >
-              <span className="l-navigation__link-text">Log out</span>
-            </Button>
-          </li>
-          <hr />
+          ))}
         </ul>
+      ) : null}
+      {isAuthenticated ? (
+        <>
+          <ul className="p-side-navigation__list">
+            {isAdmin && showLinks ? (
+              <>
+                <AppSideNavItem
+                  icon="settings"
+                  navLink={{ label: "Settings", url: urls.settings.index }}
+                  path={path}
+                />
+              </>
+            ) : null}
+          </ul>
+          <ul className="p-side-navigation__list">
+            <AppSideNavItem
+              icon="profile-light"
+              navLink={{
+                label: `${authUser?.username}`,
+                url: urls.preferences.index,
+              }}
+              path={path}
+            />
+            <li className="p-side-navigation__item">
+              <Button
+                appearance="link"
+                className="p-side-navigation__button p-side-navigation__link"
+                onClick={() => logout()}
+              >
+                <span className="p-side-navigation__label">Log out</span>
+              </Button>
+            </li>
+          </ul>
+        </>
       ) : null}
     </>
   );

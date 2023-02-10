@@ -18,19 +18,19 @@ const NavigationBanner = ({
     ? { url: urls.dashboard.index, label: "Homepage" }
     : { url: urls.machines.index, label: "Homepage" };
   return (
-    <div className="p-navigation__banner">
+    <>
       <Link
         aria-current={
           isSelected(location.pathname, homepageLink) ? "page" : undefined
         }
         aria-label={homepageLink.label}
-        className="l-navigation__logo-link"
+        className="p-panel__logo"
         to={homepageLink.url}
       >
         <div className="p-navigation__tagged-logo">
           <div className="p-navigation__logo-tag">
             <svg
-              className="p-navigation__logo-icon"
+              className="p-panel__logo-icon p-navigation__logo-icon"
               fill="#fff"
               viewBox="0 0 165.5 174.3"
               xmlns="http://www.w3.org/2000/svg"
@@ -45,11 +45,13 @@ const NavigationBanner = ({
               <path d="M156.94 149H31.88a18.88 18.88 0 0 1 .27 19.5c-.09.16-.19.31-.29.46h125.08A6 6 0 0 0 163 163v-8.06a6 6 0 0 0-6-6Z" />
             </svg>
           </div>
-          <div className="p-navigation__logo-title">Canonical MAAS</div>
+          <div className="p-panel__logo-name is-fading-when-collapsed ">
+            MAAS
+          </div>
         </div>
       </Link>
       {children}
-    </div>
+    </>
   );
 };
 
