@@ -26,28 +26,6 @@ import { actions as statusActions } from "app/store/status";
 
 const navGroups: NavGroup[] = [
   {
-    navLinks: [
-      {
-        label: "Images",
-        url: urls.images.index,
-      },
-      {
-        highlight: [urls.tags.index, urls.tags.tag.index(null)],
-        label: "Tags",
-        url: urls.tags.index,
-      },
-      {
-        highlight: [urls.zones.index, urls.zones.details(null)],
-        label: "AZs",
-        url: urls.zones.index,
-      },
-      {
-        label: "Pools",
-        url: urls.pools.index,
-      },
-    ],
-  },
-  {
     groupTitle: "Hardware",
     groupIcon: "machines-light",
     navLinks: [
@@ -83,6 +61,36 @@ const navGroups: NavGroup[] = [
       {
         label: "Virsh",
         url: urls.kvm.virsh.index,
+      },
+    ],
+  },
+  {
+    groupTitle: "Organisation",
+    groupIcon: "tag-light",
+    navLinks: [
+      {
+        highlight: [urls.tags.index, urls.tags.tag.index(null)],
+        label: "Tags",
+        url: urls.tags.index,
+      },
+      {
+        highlight: [urls.zones.index, urls.zones.details(null)],
+        label: "AZs",
+        url: urls.zones.index,
+      },
+      {
+        label: "Pools",
+        url: urls.pools.index,
+      },
+    ],
+  },
+  {
+    groupTitle: "Configuration",
+    groupIcon: "units-light",
+    navLinks: [
+      {
+        label: "Images",
+        url: urls.images.index,
       },
     ],
   },
