@@ -66,8 +66,7 @@
     }
   }
 
-  .l-navigation:not(.is-pinned).l-navigation:hover,
-  .l-navigation:not(.is-pinned).l-navigation:hover {
+  .l-navigation:not(.is-pinned) {
     .p-side-navigation__collapse-toggle {
       i {
         transform: rotate(180deg);

@@ -1,6 +1,6 @@
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useCallback } from "react";
 
-import { Button, Icon } from "@canonical/react-components";
+import { Button, Icon, Tooltip } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
@@ -255,22 +255,10 @@ const AppSideNavigation = (): JSX.Element => {
               <div className="p-panel__controls u-hide--large">
                 <Button
                   appearance="base"
-                  aria-label="Close"
-                  className="has-icon is-dark u-no-margin u-hide--medium"
-                  onClick={(e) => {
-                    setIsCollapsed(!isCollapsed);
-                    setIsPinned(!isPinned);
-                    // Make sure the button does not have focus
-                    // .l-navigation remains open with :focus-within
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <Icon light name="close" />
-                </Button>
-                <Button
-                  appearance="base"
-                  aria-label="Close"
-                  className="has-icon is-dark u-no-margin u-hide--small p-side-navigation__collapse-toggle"
+                  aria-label={`${
+                    isPinned ? "expand" : "collapse"
+                  } main navigation`}
+                  className="has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
                   onClick={(e) => {
                     setIsCollapsed(!isCollapsed);
                     setIsPinned(!isPinned);

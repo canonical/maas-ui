@@ -1,3 +1,7 @@
+/* eslint-disable react/no-multi-comp */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import { useMemo } from "react";
+
 import { Button, Icon } from "@canonical/react-components";
 import classNames from "classnames";
 
@@ -20,6 +24,79 @@ type Props = {
   vaultIncomplete: boolean;
 };
 
+const AppSideNavItemGroup = ({
+  group,
+  isAdmin,
+  vaultIncomplete,
+  path,
+}: { group: NavGroup } & Pick<
+  Props,
+  "isAdmin" | "vaultIncomplete" | "path"
+>) => {
+  const id = useId();
+  const hasActiveChild = useMemo(() => {
+    for (const navLink of group.navLinks) {
+      if (isSelected(path, navLink)) {
+        return true;
+      }
+    }
+    return false;
+  }, [group, path]);
+  return (
+    <>
+      <li
+        className={classNames("p-side-navigation__item", {
+          "has-active-child": hasActiveChild,
+        })}
+      >
+        <span
+          className="p-side-navigation__text"
+          key={`${group.groupTitle}-${id}`}
+        >
+          {group.groupIcon ? (
+            <Icon
+              className="p-side-navigation__icon"
+              light
+              name={group.groupIcon}
+            />
+          ) : null}
+          <div
+            className="p-side-navigation__label p-heading--small"
+            id={`${group.groupTitle}-${id}`}
+          >
+            {group.groupTitle}
+          </div>
+        </span>
+        <ul
+          aria-labelledby={`${group.groupTitle}-${id}`}
+          className="p-side-navigation__list"
+        >
+          {group.navLinks.map((navLink) => {
+            if (!navLink.adminOnly || isAdmin) {
+              return (
+                <AppSideNavItem
+                  icon={
+                    navLink.label === "Controllers" && vaultIncomplete ? (
+                      <Icon
+                        aria-label="warning"
+                        data-testid="warning-icon"
+                        name="security-warning-grey"
+                      />
+                    ) : undefined
+                  }
+                  key={navLink.label}
+                  navLink={navLink}
+                  path={path}
+                />
+              );
+            } else return null;
+          })}
+        </ul>
+      </li>
+    </>
+  );
+};
+
 export const AppSideNavItems = ({
   authUser,
   groups,
@@ -30,72 +107,18 @@ export const AppSideNavItems = ({
   showLinks,
   vaultIncomplete,
 }: Props): JSX.Element => {
-  const id = useId();
-  const getHasActiveChild = (group: NavGroup) => {
-    for (const navLink of group.navLinks) {
-      if (isSelected(path, navLink)) {
-        return true;
-      }
-    }
-    return false;
-  };
   return (
     <>
       {showLinks ? (
         <ul className="p-side-navigation__list">
-          {groups.map((group) => (
-            <>
-              <li
-                className={classNames("p-side-navigation__item", {
-                  "has-active-child": getHasActiveChild(group),
-                })}
-              >
-                <span
-                  className="p-side-navigation__text"
-                  key={`${group.groupTitle}-${id}`}
-                >
-                  {group.groupIcon ? (
-                    <Icon
-                      className="p-side-navigation__icon"
-                      light
-                      name={group.groupIcon}
-                    />
-                  ) : null}
-                  <div
-                    className="p-side-navigation__label p-heading--small"
-                    id={`${group.groupTitle}-${id}`}
-                  >
-                    {group.groupTitle}
-                  </div>
-                </span>
-                <ul
-                  aria-labelledby={`${group.groupTitle}-${id}`}
-                  className="p-side-navigation__list"
-                >
-                  {group.navLinks.map((navLink) => {
-                    if (!navLink.adminOnly || isAdmin) {
-                      return (
-                        <AppSideNavItem
-                          icon={
-                            navLink.label === "Controllers" &&
-                            vaultIncomplete ? (
-                              <Icon
-                                aria-label="warning"
-                                data-testid="warning-icon"
-                                name="security-warning-grey"
-                              />
-                            ) : undefined
-                          }
-                          key={navLink.label}
-                          navLink={navLink}
-                          path={path}
-                        />
-                      );
-                    } else return null;
-                  })}
-                </ul>
-              </li>
-            </>
+          {groups.map((group, i) => (
+            <AppSideNavItemGroup
+              group={group}
+              isAdmin={isAdmin}
+              key={`${i}-${group.groupTitle}`}
+              path={path}
+              vaultIncomplete={vaultIncomplete}
+            />
           ))}
         </ul>
       ) : null}

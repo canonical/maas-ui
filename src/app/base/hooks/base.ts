@@ -200,3 +200,27 @@ export const usePreviousPersistent = <T extends unknown>(
 
   return ref.current.prev;
 };
+
+/**
+ * Handle the escape key pressed.
+ */
+export const useOnKeyPressed = (
+  key: string,
+  onAfterPressed: () => void
+): void => {
+  const keyDown = useCallback(
+    (evt: KeyboardEvent) => {
+      console.log(key);
+      if (evt.key === key) {
+        onAfterPressed();
+      }
+    },
+    [onAfterPressed, key]
+  );
+  useEffect(() => {
+    document.addEventListener("keydown", keyDown);
+    return () => {
+      document.removeEventListener("keydown", keyDown);
+    };
+  }, [keyDown]);
+};
