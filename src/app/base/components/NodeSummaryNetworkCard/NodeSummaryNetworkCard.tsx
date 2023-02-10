@@ -7,8 +7,10 @@ import { Link } from "react-router-dom-v5-compat";
 
 import NetworkCardTable from "./NetworkCardTable";
 
+import type { Device } from "app/store/device/types";
 import { actions as fabricActions } from "app/store/fabric";
 import fabricSelectors from "app/store/fabric/selectors";
+import type { MachineDetails } from "app/store/machine/types";
 import type { NetworkInterface } from "app/store/types/node";
 import { actions as vlanActions } from "app/store/vlan";
 import vlanSelectors from "app/store/vlan/selectors";
@@ -24,6 +26,7 @@ type Props = {
   children?: ReactNode;
   interfaces: NetworkInterface[] | null;
   networkURL: string;
+  node: MachineDetails | Device;
 };
 
 /**
@@ -99,6 +102,7 @@ const NodeSummaryNetworkCard = ({
   children,
   interfaces,
   networkURL,
+  node,
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const fabricsLoaded = useSelector(fabricSelectors.loaded);
@@ -141,7 +145,7 @@ const NodeSummaryNetworkCard = ({
                 </li>
               )}
             </ul>
-            <NetworkCardTable interfaces={group.interfaces} />
+            <NetworkCardTable interfaces={group.interfaces} node={node} />
           </Fragment>
         ))}
         {children}

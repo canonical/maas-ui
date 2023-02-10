@@ -60,6 +60,7 @@ const MachineSummary = ({ setSidePanelContent }: Props): JSX.Element => {
         <NodeSummaryNetworkCard
           interfaces={isMachineDetails(machine) ? machine.interfaces : null}
           networkURL={networkURL}
+          node={machine}
         >
           <p>
             Information about tagged traffic can be seen in the{" "}
