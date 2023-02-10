@@ -22,6 +22,11 @@
 @include vf-p-icon-success-grey;
 @include vf-p-icon-task-outstanding;
 @include vf-p-icon-unit-running;
+@include vf-p-icon-machines;
+@include vf-p-icon-profile;
+@include vf-p-icon-units;
+@include vf-p-icon-tag;
+@include vf-p-icon-connected;
 
 // Import MAAS overrides of Vanilla patterns
 @import "./vanilla-overrides";

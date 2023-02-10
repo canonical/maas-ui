@@ -27,7 +27,7 @@ import { actions as statusActions } from "app/store/status";
 const navGroups: NavGroup[] = [
   {
     groupTitle: "Hardware",
-    groupIcon: "machines-light",
+    groupIcon: "machines",
     navLinks: [
       {
         highlight: [urls.machines.index, urls.machines.machine.index(null)],
@@ -66,7 +66,7 @@ const navGroups: NavGroup[] = [
   },
   {
     groupTitle: "Organisation",
-    groupIcon: "tag-light",
+    groupIcon: "tag",
     navLinks: [
       {
         highlight: [urls.tags.index, urls.tags.tag.index(null)],
@@ -86,7 +86,7 @@ const navGroups: NavGroup[] = [
   },
   {
     groupTitle: "Configuration",
-    groupIcon: "units-light",
+    groupIcon: "units",
     navLinks: [
       {
         label: "Images",
@@ -96,7 +96,7 @@ const navGroups: NavGroup[] = [
   },
   {
     groupTitle: "Networking",
-    groupIcon: "connected-light",
+    groupIcon: "connected",
     navLinks: [
       {
         highlight: [
