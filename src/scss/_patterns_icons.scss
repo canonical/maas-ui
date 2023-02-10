@@ -65,11 +65,6 @@
     @include maas-icon-cluster($color-white);
   }
 
-  .p-icon--connected-light {
-    @extend %icon;
-    @include vf-icon-connected($color-white);
-  }
-
   .p-icon--disconnected {
     @extend %icon;
     @include vf-icon-disconnect($color-negative);
@@ -78,16 +73,6 @@
   // TODO: Remove alias and replace with .p-icon--lock-locked-active
   .p-icon--locked {
     @extend .p-icon--lock-locked-active;
-  }
-
-  .p-icon--machines-light {
-    @extend %icon;
-    @include vf-icon-machines($color-white);
-  }
-
-  .p-icon--profile-light {
-    @extend %icon;
-    @include vf-icon-profile($color-white);
   }
 
   .p-icon--security {
@@ -113,16 +98,6 @@
   .p-icon--warning-grey {
     @extend %icon;
     @include vf-icon-warning-grey($color-white);
-  }
-
-  .p-icon--units-light {
-    @extend %icon;
-    @include vf-icon-units($color-white);
-  }
-
-  .p-icon--tag-light {
-    @extend %icon;
-    @include vf-icon-tag($color-white);
   }
 
   // TODO: Remove alias and replace with .p-icon--status-waiting
