@@ -187,6 +187,7 @@ const AppSideNavigation = (): JSX.Element => {
     unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
 
   const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isPinned, setIsPinned] = useState(false);
   const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
 
   return (
@@ -218,46 +219,71 @@ const AppSideNavigation = (): JSX.Element => {
       </header>
       <nav
         aria-label="main navigation"
-        className={classNames(
-          `l-navigation is-pinned l-navigation--${themeColor}`,
-          {
-            "is-collapsed": isCollapsed,
-          }
-        )}
+        className={classNames(`l-navigation l-navigation--${themeColor}`, {
+          "is-collapsed": isCollapsed,
+          "is-pinned": isPinned,
+        })}
       >
-        <div className="l-navigation__wrapper">
-          <NavigationBanner>
-            <div className="u-nudge-down--small u-hide--large">
-              <Button
-                appearance="base"
-                aria-label="Close"
-                className="has-icon is-dark u-no-margin"
-                onClick={(e) => {
-                  setIsCollapsed(true);
-                  // Make sure the button does not have focus
-                  // .l-navigation remains open with :focus-within
-                  e.currentTarget.blur();
-                }}
-              >
-                <Icon light name="close" />
-              </Button>
+        <div className="l-navigation__drawer">
+          <div className="p-panel is-dark">
+            <div className="p-panel__header is-sticky">
+              <NavigationBanner></NavigationBanner>
             </div>
-          </NavigationBanner>
-          <AppSideNavItems
-            authUser={authUser}
-            groups={navGroups}
-            isAdmin={isAdmin}
-            isAuthenticated={isAuthenticated}
-            logout={logout}
-            path={path}
-            showLinks={showLinks}
-            vaultIncomplete={vaultIncomplete}
-          />
-          {showLinks ? (
-            <span id="maas-info">
-              {maasName} MAAS v{version}
-            </span>
-          ) : null}
+            <div className="p-panel__content">
+              <div className="p-side-navigation--icons is-dark">
+                <AppSideNavItems
+                  authUser={authUser}
+                  groups={navGroups}
+                  isAdmin={isAdmin}
+                  isAuthenticated={isAuthenticated}
+                  logout={logout}
+                  path={path}
+                  showLinks={showLinks}
+                  vaultIncomplete={vaultIncomplete}
+                />
+                {showLinks ? (
+                  <span
+                    className="p-side-navigation__footer is-fading-when-collapsed"
+                    id="maas-info"
+                  >
+                    {maasName} MAAS v{version}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+            <div className="p-panel__footer">
+              <div className="p-panel__controls u-hide--large">
+                <Button
+                  appearance="base"
+                  aria-label="Close"
+                  className="has-icon is-dark u-no-margin u-hide--medium"
+                  onClick={(e) => {
+                    setIsCollapsed(!isCollapsed);
+                    setIsPinned(!isPinned);
+                    // Make sure the button does not have focus
+                    // .l-navigation remains open with :focus-within
+                    e.currentTarget.blur();
+                  }}
+                >
+                  <Icon light name="close" />
+                </Button>
+                <Button
+                  appearance="base"
+                  aria-label="Close"
+                  className="has-icon is-dark u-no-margin u-hide--small p-side-navigation__collapse-toggle"
+                  onClick={(e) => {
+                    setIsCollapsed(!isCollapsed);
+                    setIsPinned(!isPinned);
+                    // Make sure the button does not have focus
+                    // .l-navigation remains open with :focus-within
+                    e.currentTarget.blur();
+                  }}
+                >
+                  <Icon light name="sidebar-toggle" />
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
     </>
