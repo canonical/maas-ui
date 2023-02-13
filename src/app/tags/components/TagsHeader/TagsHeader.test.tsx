@@ -44,9 +44,7 @@ it("can display the add tag form", () => {
   expect(
     screen.getByRole("complementary", { name: "Create new tag" })
   ).toBeInTheDocument();
-  expect(screen.getByTestId("section-header-title").textContent).toBe(
-    "Machines"
-  );
+  expect(screen.getByTestId("section-header-title").textContent).toBe("Tags");
 });
 
 it("can display the delete tag form", () => {
@@ -80,9 +78,7 @@ it("can display the delete tag form", () => {
   expect(
     screen.getByRole("heading", { name: "Delete tag" })
   ).toBeInTheDocument();
-  expect(screen.getByTestId("section-header-title").textContent).toBe(
-    "Machines"
-  );
+  expect(screen.getByTestId("section-header-title").textContent).toBe("Tags");
 });
 
 it("displays the default title", () => {
@@ -97,9 +93,7 @@ it("displays the default title", () => {
     </Provider>
   );
   expect(
-    screen.getByRole("heading", { level: 1, name: "Machines" })
+    screen.getByRole("heading", { level: 1, name: "Tags" })
   ).toBeInTheDocument();
-  expect(screen.getByTestId("section-header-title").textContent).toBe(
-    "Machines"
-  );
+  expect(screen.getByTestId("section-header-title").textContent).toBe("Tags");
 });
