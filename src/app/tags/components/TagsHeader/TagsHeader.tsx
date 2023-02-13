@@ -33,7 +33,7 @@ export const getHeaderTitle = (
         return "Delete tag";
     }
   }
-  return "Machines";
+  return "Tags";
 };
 
 export const TagsHeader = ({
@@ -69,7 +69,7 @@ export const TagsHeader = ({
         )
       }
       sidePanelTitle={getHeaderTitle(sidePanelContent)}
-      title="Machines"
+      title="Tags"
     />
   );
 };

@@ -1,4 +1,8 @@
+import { useEffect } from "react";
+
 import { Button } from "@canonical/react-components";
+import pluralize from "pluralize";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, Route, Routes } from "react-router-dom-v5-compat";
 
 import PoolList from "./PoolList";
@@ -10,11 +14,21 @@ import NotFound from "app/base/views/NotFound";
 import PoolAdd from "app/pools/views/PoolAdd";
 import PoolEdit from "app/pools/views/PoolEdit";
 import { useFetchMachineCount } from "app/store/machine/utils/hooks";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { getRelativeRoute } from "app/utils";
 
 const Pools = (): JSX.Element => {
   const base = urls.pools.index;
+  const dispatch = useDispatch();
   const { machineCount } = useFetchMachineCount();
+
+  useEffect(() => {
+    dispatch(resourcePoolActions.fetch());
+  }, [dispatch]);
+
+  const resourcePools = useSelector(resourcePoolSelectors.all);
+
   return (
     <MainContentSection
       header={
@@ -25,6 +39,13 @@ const Pools = (): JSX.Element => {
             </Button>,
           ]}
           machineCount={machineCount}
+          title={
+            <>
+              <Link to={urls.machines.index}>{machineCount} machines </Link>
+              in {resourcePools.length}{" "}
+              {pluralize("pool", resourcePools.length)}
+            </>
+          }
         />
       }
     >

@@ -1,12 +1,12 @@
 import { useCallback, useEffect } from "react";
 
-import { useSelector } from "react-redux";
-import { useMatch } from "react-router-dom-v5-compat";
+import pluralize from "pluralize";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useMatch } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
 
 import AddHardwareMenu from "./AddHardwareMenu";
 
-import ModelListSubtitle from "app/base/components/ModelListSubtitle";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import MachinesHeader from "app/base/components/node/MachinesHeader";
 import { useSendAnalytics } from "app/base/hooks";
@@ -26,6 +26,8 @@ import {
   useHasSelection,
   useMachineSelectedCount,
 } from "app/store/machine/utils/hooks";
+import { actions as resourcePoolActions } from "app/store/resourcepool";
+import resourcePoolSelectors from "app/store/resourcepool/selectors";
 import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
@@ -42,6 +44,7 @@ export const MachineListHeader = ({
   setSearchFilter,
   setSidePanelContent,
 }: Props): JSX.Element => {
+  const dispatch = useDispatch();
   const machinesPathMatch = useMatch(urls.machines.index);
   const hasSelection = useHasSelection();
   const [tagsSeen, setTagsSeen] = useStorageState(
@@ -50,19 +53,8 @@ export const MachineListHeader = ({
     false
   );
   const filter = FilterMachines.parseFetchFilters(searchFilter);
-  const hasActiveFilter = FilterMachines.isNonEmptyFilter(searchFilter);
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();
-  // Get the count of all machines that match the current filter
-  const { machineCount: activeFilterMachineCount } = useFetchMachineCount(
-    filter,
-    {
-      isEnabled: hasActiveFilter,
-    }
-  );
-  const availableMachineCount = hasActiveFilter
-    ? activeFilterMachineCount
-    : allMachineCount;
   // Get the count of selected machines that match the current filter
   const { selectedCount, selectedCountLoading } =
     useMachineSelectedCount(filter);
@@ -75,6 +67,12 @@ export const MachineListHeader = ({
       setSidePanelContent(null);
     }
   }, [machinesPathMatch, selectedMachines, setSidePanelContent]);
+
+  useEffect(() => {
+    dispatch(resourcePoolActions.fetch());
+  }, [dispatch]);
+
+  const resourcePools = useSelector(resourcePoolSelectors.all);
 
   const getTitle = useCallback(
     (action: NodeActions) => {
@@ -142,15 +140,15 @@ export const MachineListHeader = ({
         )
       }
       sidePanelTitle={getHeaderTitle("Machines", sidePanelContent)}
-      subtitle={
-        <ModelListSubtitle
-          available={availableMachineCount || allMachineCount}
-          modelName="machine"
-          selected={selectedCount}
-        />
-      }
       subtitleLoading={selectedCountLoading}
-      title={"Machines"}
+      title={
+        <>
+          {allMachineCount} machines in{" "}
+          <Link to={urls.pools.index}>
+            {resourcePools.length} {pluralize("pool", resourcePools.length)}
+          </Link>
+        </>
+      }
     />
   );
 };
