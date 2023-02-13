@@ -7,7 +7,7 @@ context("Pools list", () => {
   });
 
   it("renders a heading", () => {
-    cy.contains(/Resource pool/i);
+    cy.contains(/machines in 1 pool/i);
     cy.findByLabelText(/Pool list/i);
   });
 });
