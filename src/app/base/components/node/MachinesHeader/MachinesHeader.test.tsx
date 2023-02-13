@@ -14,11 +14,7 @@ import {
   machineStateCount as machineStateCountFactory,
   machineStateCounts as machineStateCountsFactory,
   machineStatus as machineStatusFactory,
-  resourcePool as resourcePoolFactory,
-  resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
-  tag as tagFactory,
-  tagState as tagStateFactory,
 } from "testing/factories";
 
 const mockStore = configureStore();
@@ -47,18 +43,6 @@ describe("MachinesHeader", () => {
           def456: machineStatusFactory({}),
         },
       }),
-      resourcepool: resourcePoolStateFactory({
-        errors: {},
-        loaded: false,
-        items: [
-          resourcePoolFactory({ id: 0, name: "default" }),
-          resourcePoolFactory({ id: 1, name: "other" }),
-        ],
-      }),
-      tag: tagStateFactory({
-        loaded: true,
-        items: [tagFactory(), tagFactory()],
-      }),
     });
   });
 
@@ -66,10 +50,8 @@ describe("MachinesHeader", () => {
     jest.restoreAllMocks();
   });
 
-  it("displays machine, resource pool and tag counts if loaded", () => {
+  it("renders", () => {
     state.machine.loaded = true;
-    state.resourcepool.loaded = true;
-    state.tag.loaded = true;
     const store = mockStore(state);
     const wrapper = mount(
       <Provider store={store}>
@@ -82,9 +64,8 @@ describe("MachinesHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    const tabs = wrapper.find('[data-testid="section-header-tabs"]');
-    expect(tabs.find("Link").at(0).text()).toBe("2 Machines");
-    expect(tabs.find("Link").at(1).text()).toBe("2 Resource pools");
-    expect(tabs.find("Link").at(2).text()).toBe("2 Tags");
+    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
+      "Machines"
+    );
   });
 });

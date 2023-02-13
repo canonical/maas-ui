@@ -72,7 +72,7 @@ export const MachineListHeader = ({
     dispatch(resourcePoolActions.fetch());
   }, [dispatch]);
 
-  const resourcePools = useSelector(resourcePoolSelectors.all);
+  const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
 
   const getTitle = useCallback(
     (action: NodeActions) => {
@@ -145,7 +145,7 @@ export const MachineListHeader = ({
         <>
           {allMachineCount} machines in{" "}
           <Link to={urls.pools.index}>
-            {resourcePools.length} {pluralize("pool", resourcePools.length)}
+            {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
           </Link>
         </>
       }

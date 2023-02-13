@@ -27,7 +27,7 @@ const Pools = (): JSX.Element => {
     dispatch(resourcePoolActions.fetch());
   }, [dispatch]);
 
-  const resourcePools = useSelector(resourcePoolSelectors.all);
+  const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
 
   return (
     <MainContentSection
@@ -42,8 +42,7 @@ const Pools = (): JSX.Element => {
           title={
             <>
               <Link to={urls.machines.index}>{machineCount} machines </Link>
-              in {resourcePools.length}{" "}
-              {pluralize("pool", resourcePools.length)}
+              in {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
             </>
           }
         />
