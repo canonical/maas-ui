@@ -1,5 +1,22 @@
 import { generateMAASURL } from "../../utils";
 
+const expectCollapsedNavigation = () => {
+  cy.findByRole("navigation", { name: /main navigation/i })
+    .invoke("width")
+    .should("equal", 64);
+  cy.findByRole("navigation", { name: /main navigation/i }).within(() =>
+    cy.findByRole("link", { name: /machines/i }).should("not.exist")
+  );
+};
+const expectExpandedNavigation = () => {
+  cy.findByRole("navigation", { name: /main navigation/i })
+    .invoke("width")
+    .should("equal", 240);
+  cy.findByRole("navigation", { name: /main navigation/i }).within(() =>
+    cy.findByRole("link", { name: /machines/i }).should("exist")
+  );
+};
+
 context("Header - non-admin", () => {
   beforeEach(() => {
     cy.loginNonAdmin();
@@ -20,6 +37,26 @@ context("Header - admin", () => {
     // the hardware menu.
     cy.viewport("macbook-13");
     cy.visit(generateMAASURL("/"));
+  });
+
+  it("expands and collapses the side navigation using a keyboard shortcut", () => {
+    cy.viewport("ipad-mini");
+    cy.waitForPageToLoad();
+    expectCollapsedNavigation();
+    cy.get("body").type("[");
+    expectExpandedNavigation();
+    cy.get("body").type("[");
+    expectCollapsedNavigation();
+  });
+
+  it("expands and collapses the side navigation on click of a button", () => {
+    cy.viewport("ipad-mini");
+    cy.waitForPageToLoad();
+    expectCollapsedNavigation();
+    cy.findByRole("button", { name: /expand main navigation/ }).click();
+    expectExpandedNavigation();
+    cy.findByRole("button", { name: /collapse main navigation/ }).click();
+    expectCollapsedNavigation();
   });
 
   it("navigates to dashboard when clicking on the logo", () => {

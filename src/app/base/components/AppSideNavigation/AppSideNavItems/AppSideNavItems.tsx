@@ -1,5 +1,4 @@
 /* eslint-disable react/no-multi-comp */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useMemo } from "react";
 
 import { Button, Icon } from "@canonical/react-components";

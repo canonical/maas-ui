@@ -52,14 +52,6 @@
     }
   }
 
-  .l-navigation:not(.is-pinned) {
-    .p-side-navigation__collapse-toggle {
-      i {
-        transform: rotate(180deg);
-      }
-    }
-  }
-
   .l-navigation {
     @include vf-transition(
       $property: #{width,
@@ -77,38 +69,12 @@
       );
       background: inherit;
     }
-    .l-navigation__controls {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 9999;
-      opacity: 0;
-      visibility: hidden;
-      @include vf-transition(
-        $property: #{transform,
-        opacity,
-        visibility},
-        $duration: slow
-      );
-      transform: translateX(
-          #{$application-layout--side-nav-width-expanded - 3.5rem}
-        )
-        translateY(0.8rem);
-      button {
-        background-color: rgba(255, 255, 255, 0.05);
-      }
-      @media only screen and (max-width: ($breakpoint-small)) {
-        position: static;
-        opacity: 1;
-        visibility: visible;
-        margin-left: auto;
-        transform: none;
-        padding-top: 0.65rem;
-      }
-    }
     &.is-collapsed {
-      .l-navigation__controls i {
-        transform: rotate(180deg);
+      .p-side-navigation__collapse-toggle,
+      .l-navigation__controls {
+        i {
+          transform: rotate(180deg);
+        }
       }
     }
     &:hover,
@@ -119,18 +85,32 @@
         visibility: visible;
       }
     }
+
+    .l-navigation__controls {
+      margin-left: auto;
+      padding-top: 0.65rem;
+      button {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      @media only screen and (min-width: ($breakpoint-small + 1)) {
+        opacity: 1;
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding-top: 0;
+        transform: translateX(
+            #{$application-layout--side-nav-width-expanded - 3.5rem}
+          )
+          translateY(0.8rem);
+      }
+    }
   }
 
+  .l-navigation .l-navigation__controls,
   .l-navigation-expand {
-    position: absolute;
-    top: 0;
-    left: 0;
-    z-index: 9999;
-    opacity: 1;
-    transform: translateX(
-        #{$application-layout--side-nav-width-collapsed - 1.5rem}
-      )
-      translateY(2.8rem);
+    z-index: $side-navigation-z-index + 1;
     @include vf-transition(
       $property: #{opacity,
       visibility,
@@ -138,6 +118,17 @@
       background},
       $duration: fast
     );
+  }
+
+  .l-navigation-expand {
+    position: absolute;
+    top: 0;
+    left: 0;
+    opacity: 1;
+    transform: translateX(
+        #{$application-layout--side-nav-width-collapsed - 1.5rem}
+      )
+      translateY(2.65rem);
     i {
       transform: rotate(180deg);
     }
