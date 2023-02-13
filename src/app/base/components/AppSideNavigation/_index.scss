@@ -32,15 +32,6 @@
     .p-navigation__tagged-logo {
       min-width: auto;
     }
-    .p-panel__controls {
-      padding-top: 0.65rem;
-    }
-    .p-panel__footer {
-      position: absolute;
-      bottom: 0;
-      right: 1rem;
-      bottom: 3rem;
-    }
     .p-navigation__tagged-logo .p-navigation__logo-tag {
       height: 2.3rem;
       left: 1rem;
@@ -53,24 +44,11 @@
       text-align: left;
       justify-content: flex-start;
     }
-    .p-side-navigation__collapse-toggle {
-      i {
-        @include vf-transition($property: #{transform}, $duration: fast);
-      }
-    }
     .p-side-navigation--icons
       .p-side-navigation__item
       .p-side-navigation__item
       .p-side-navigation__link {
       padding-left: 4rem;
-    }
-  }
-
-  .l-navigation:not(.is-pinned) {
-    .p-side-navigation__collapse-toggle {
-      i {
-        transform: rotate(180deg);
-      }
     }
   }
 
@@ -90,6 +68,64 @@
         $duration: fast
       );
       background: inherit;
+    }
+    .l-navigation__controls {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      background-color: #343434;
+      opacity: 0;
+      @include vf-transition($property: opacity, $duration: slow);
+      i {
+        @include vf-transition($property: #{transform}, $duration: fast);
+      }
+      transform: translateX(
+          #{$application-layout--side-nav-width-expanded - 3.5rem}
+        )
+        translateY(0.8rem);
+    }
+    .l-navigation:hover,
+    .l-navigation:focus-within,
+    .l-navigation.is-pinned {
+      .l-navigation__controls {
+        opacity: 1;
+      }
+    }
+  }
+
+  .l-navigation-expand {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 9999;
+    opacity: 1;
+    background-color: #343434;
+    transform: translateX(
+        #{$application-layout--side-nav-width-collapsed - 1.5rem}
+      )
+      translateY(2.8rem);
+    @include vf-transition(
+      $property: #{opacity,
+      visibility,
+      transform,
+      background},
+      $duration: fast
+    );
+    i {
+      transform: rotate(180deg);
+    }
+  }
+  .l-navigation:hover,
+  .l-navigation:focus-within,
+  .l-navigation.is-pinned {
+    & + .l-navigation-expand {
+      visibility: hidden;
+      opacity: 0;
+      transform: translateX(
+          #{$application-layout--side-nav-width-expanded - 1.5rem}
+        )
+        translateY(0.8rem);
     }
   }
 

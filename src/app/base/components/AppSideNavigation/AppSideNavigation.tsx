@@ -200,9 +200,7 @@ const AppSideNavigation = (): JSX.Element => {
           )}
         >
           <div className="p-panel__header">
-            <div className="l-navigation__wrapper">
-              <NavigationBanner />
-            </div>
+            <NavigationBanner />
             <div className="p-panel__controls u-nudge-down--small u-no-margin--top u-hide--large">
               <Button
                 appearance="base"
@@ -227,7 +225,26 @@ const AppSideNavigation = (): JSX.Element => {
         <div className="l-navigation__drawer">
           <div className="p-panel is-dark">
             <div className="p-panel__header is-sticky">
-              <NavigationBanner></NavigationBanner>
+              <NavigationBanner>
+                <div className="l-navigation__controls  is-fading-when-collapsed">
+                  <Button
+                    appearance="base"
+                    aria-label={`${
+                      isPinned ? "expand" : "collapse"
+                    } main navigation`}
+                    className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
+                    onClick={(e) => {
+                      setIsCollapsed(!isCollapsed);
+                      setIsPinned(!isPinned);
+                      // Make sure the button does not have focus
+                      // .l-navigation remains open with :focus-within
+                      e.currentTarget.blur();
+                    }}
+                  >
+                    <Icon light name="sidebar-toggle" />
+                  </Button>
+                </div>
+              </NavigationBanner>
             </div>
             <div className="p-panel__content">
               <div className="p-side-navigation--icons is-dark">
@@ -251,29 +268,25 @@ const AppSideNavigation = (): JSX.Element => {
                 ) : null}
               </div>
             </div>
-            <div className="p-panel__footer">
-              <div className="p-panel__controls u-hide--large">
-                <Button
-                  appearance="base"
-                  aria-label={`${
-                    isPinned ? "expand" : "collapse"
-                  } main navigation`}
-                  className="has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
-                  onClick={(e) => {
-                    setIsCollapsed(!isCollapsed);
-                    setIsPinned(!isPinned);
-                    // Make sure the button does not have focus
-                    // .l-navigation remains open with :focus-within
-                    e.currentTarget.blur();
-                  }}
-                >
-                  <Icon light name="sidebar-toggle" />
-                </Button>
-              </div>
-            </div>
           </div>
         </div>
       </nav>
+      <div className="l-navigation-expand">
+        <Button
+          appearance="base"
+          aria-label={`${isPinned ? "expand" : "collapse"} main navigation`}
+          className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
+          onClick={(e) => {
+            setIsCollapsed(!isCollapsed);
+            setIsPinned(!isPinned);
+            // Make sure the button does not have focus
+            // .l-navigation remains open with :focus-within
+            e.currentTarget.blur();
+          }}
+        >
+          <Icon light name="sidebar-toggle" />
+        </Button>
+      </div>
     </>
   );
 };
