@@ -5,8 +5,8 @@
       text-decoration: none;
       display: flex;
       flex-direction: column;
-      justify-content: flex-end;
       @media only screen and (max-width: ($breakpoint-small)) {
+        margin-top: 1.25rem;
         margin-bottom: 0;
       }
     }
@@ -74,22 +74,41 @@
       top: 0;
       left: 0;
       z-index: 9999;
-      background-color: #343434;
       opacity: 0;
-      @include vf-transition($property: opacity, $duration: slow);
-      i {
-        @include vf-transition($property: #{transform}, $duration: fast);
-      }
+      visibility: hidden;
+      @include vf-transition(
+        $property: #{transform,
+        opacity,
+        visibility},
+        $duration: slow
+      );
       transform: translateX(
           #{$application-layout--side-nav-width-expanded - 3.5rem}
         )
         translateY(0.8rem);
+      button {
+        background-color: #343434;
+      }
+      @media only screen and (max-width: ($breakpoint-small)) {
+        position: static;
+        opacity: 1;
+        visibility: visible;
+        margin-left: auto;
+        transform: none;
+        padding-top: 0.65rem;
+      }
     }
-    .l-navigation:hover,
-    .l-navigation:focus-within,
-    .l-navigation.is-pinned {
+    &.is-collapsed {
+      .l-navigation__controls i {
+        transform: rotate(180deg);
+      }
+    }
+    &:hover,
+    &:focus-within,
+    &.is-pinned {
       .l-navigation__controls {
         opacity: 1;
+        visibility: visible;
       }
     }
   }
@@ -114,6 +133,12 @@
     );
     i {
       transform: rotate(180deg);
+    }
+    @media only screen and (min-width: ($breakpoint-large)) {
+      display: none;
+    }
+    @media only screen and (max-width: ($breakpoint-small)) {
+      display: none;
     }
   }
   .l-navigation:hover,

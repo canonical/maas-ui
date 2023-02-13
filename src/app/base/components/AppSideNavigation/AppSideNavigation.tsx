@@ -226,11 +226,11 @@ const AppSideNavigation = (): JSX.Element => {
           <div className="p-panel is-dark">
             <div className="p-panel__header is-sticky">
               <NavigationBanner>
-                <div className="l-navigation__controls  is-fading-when-collapsed">
+                <div className="l-navigation__controls">
                   <Button
                     appearance="base"
                     aria-label={`${
-                      isPinned ? "expand" : "collapse"
+                      isPinned ? "collapse" : "expand"
                     } main navigation`}
                     className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
                     onClick={(e) => {
@@ -274,7 +274,7 @@ const AppSideNavigation = (): JSX.Element => {
       <div className="l-navigation-expand">
         <Button
           appearance="base"
-          aria-label={`${isPinned ? "expand" : "collapse"} main navigation`}
+          aria-label={`${isPinned ? "collapse" : "expand"} main navigation`}
           className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
           onClick={(e) => {
             setIsCollapsed(!isCollapsed);
