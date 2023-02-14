@@ -23,7 +23,6 @@ import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
-import { version as versionSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 
@@ -35,8 +34,6 @@ const AppSideNavigation = (): JSX.Element => {
   const configLoaded = useSelector(configSelectors.loaded);
   const { theme, setTheme } = useContext(ThemePreviewContext);
   const authUser = useSelector(authSelectors.get);
-  const version = useSelector(versionSelectors.get);
-  const maasName = useSelector(configSelectors.maasName);
   const isAdmin = useSelector(authSelectors.isAdmin);
   const path = location.pathname;
   const completedIntro = useCompletedIntro();
@@ -148,14 +145,6 @@ const AppSideNavigation = (): JSX.Element => {
                   showLinks={showLinks}
                   vaultIncomplete={vaultIncomplete}
                 />
-                {showLinks ? (
-                  <span
-                    className="p-side-navigation__footer is-fading-when-collapsed"
-                    id="maas-info"
-                  >
-                    {maasName} MAAS v{version}
-                  </span>
-                ) : null}
               </div>
             </div>
           </div>
