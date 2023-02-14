@@ -24,10 +24,19 @@
     .p-panel__content {
       padding-top: 0;
     }
-    .p-side-navigation--icons .p-side-navigation__footer {
-      @extend .p-side-navigation__text;
-      padding-left: 1.5rem;
-      transition-duration: 0ms;
+    .p-side-navigation--icons {
+      & > .p-side-navigation__list:last-of-type::after {
+        content: "";
+      }
+      .p-side-navigation__list::after {
+        left: 1rem;
+        opacity: 1;
+      }
+      .p-side-navigation__footer {
+        @extend .p-side-navigation__text;
+        padding-left: 1.5rem;
+        transition-duration: 0ms;
+      }
     }
     .p-navigation__tagged-logo {
       min-width: auto;
@@ -51,7 +60,6 @@
       padding-left: 4rem;
     }
   }
-
   .l-navigation {
     @include vf-transition(
       $property: #{width,

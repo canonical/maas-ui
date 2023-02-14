@@ -143,15 +143,18 @@ export const AppSideNavItems = ({
               }}
               path={path}
             />
-            <li className="p-side-navigation__item">
-              <Button
-                appearance="link"
-                className="p-side-navigation__button p-side-navigation__link"
-                onClick={() => logout()}
-              >
-                <span className="p-side-navigation__label">Log out</span>
-              </Button>
-            </li>
+
+            <ul className="p-side-navigation__list">
+              <li className="p-side-navigation__item">
+                <Button
+                  appearance="link"
+                  className="p-side-navigation__button p-side-navigation__link"
+                  onClick={() => logout()}
+                >
+                  <span className="p-side-navigation__label">Log out</span>
+                </Button>
+              </li>
+            </ul>
           </ul>
         </>
       ) : null}
