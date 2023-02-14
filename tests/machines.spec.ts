@@ -33,9 +33,8 @@ test("machines list loads", async ({ page }) => {
     ws.on("close", () => console.log("WebSocket closed"));
   });
   await expect(page).toHaveTitle(/Machines/);
-  await expect(page.getByTestId("section-header-title")).toHaveText("Machines");
-  await expect(page.getByTestId("subtitle-string")).toHaveText(
-    /machines available/
+  await expect(page.getByTestId("section-header-title")).toHaveText(
+    /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i
   );
   await expect(page.getByRole("grid", { name: /Loading/i })).not.toBeVisible();
   // expect a single machine.list and machine.count request
@@ -47,7 +46,7 @@ test("machines list loads", async ({ page }) => {
   await expect(
     page.getByText(/No machines match the search criteria/)
   ).toBeVisible();
-  // expect additional single machine.list and machine.count requests
+  // expect an additional single machine.list request
   await expect(machineListRequests.length).toBe(2);
-  await expect(machineCountRequests.length).toBe(2);
+  await expect(machineCountRequests.length).toBe(1);
 });
