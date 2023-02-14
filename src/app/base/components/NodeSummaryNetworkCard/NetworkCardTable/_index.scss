@@ -12,9 +12,13 @@
 
     .name {
       width: 40%;
+
+      @media only screen and (min-width: $breakpoint-x-large) {
+        width: 80%;
+      }
     }
 
-    .mac {
+    .ip {
       width: 9.5rem;
     }
 

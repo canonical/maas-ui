@@ -1,103 +1,72 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
 import NetworkCardTable from "./NetworkCardTable";
 
 import type { RootState } from "app/store/root/types";
 import {
+  deviceState as deviceStateFactory,
   fabric as fabricFactory,
   machineInterface as machineInterfaceFactory,
   rootState as rootStateFactory,
   vlan as vlanFactory,
 } from "testing/factories";
-
-const mockStore = configureStore();
-
+import { screen, renderWithBrowserRouter } from "testing/utils";
 describe("NetworkCardInterface", () => {
   let state: RootState;
   beforeEach(() => {
-    state = rootStateFactory();
+    state = rootStateFactory({
+      device: deviceStateFactory(),
+    });
   });
 
   it("can render the interface's fabric name", () => {
     state.fabric.items = [fabricFactory({ id: 1, name: "fabric-name" })];
     state.vlan.items = [vlanFactory({ fabric: 1, id: 2 })];
-    const store = mockStore(state);
     const iface = machineInterfaceFactory({ vlan_id: 2 });
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/summary", key: "testKey" },
-          ]}
-        >
-          <NetworkCardTable interfaces={[iface]} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
+      { state }
     );
 
-    expect(wrapper.find("TableCell.fabric").text()).toBe("fabric-name");
+    expect(
+      screen.getByRole("gridcell", { name: /fabric-name/ })
+    ).toBeInTheDocument();
   });
 
   it("formats link speed in Gbps if above 1000 Mbps", () => {
-    const store = mockStore(state);
     const iface = machineInterfaceFactory({ link_speed: 10000 });
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/summary", key: "testKey" },
-          ]}
-        >
-          <NetworkCardTable interfaces={[iface]} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
+      { route: "/machines/abc123/summary", state }
     );
-
-    expect(wrapper.find("TableCell.speed").text()).toBe("10 Gbps");
+    expect(
+      screen.getByRole("gridcell", { name: "10 Gbps" })
+    ).toBeInTheDocument();
   });
 
   describe("DHCP status", () => {
     it("can show external DHCP", () => {
       state.vlan.items = [vlanFactory({ external_dhcp: "192.168.1.1", id: 1 })];
-      const store = mockStore(state);
       const iface = machineInterfaceFactory({ vlan_id: 1 });
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[
-              { pathname: "/machine/abc123/summary", key: "testKey" },
-            ]}
-          >
-            <NetworkCardTable interfaces={[iface]} />
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
+        { state }
       );
 
-      expect(wrapper.find("TableCell.dhcp").text()).toBe(
-        "External (192.168.1.1)"
-      );
+      expect(
+        screen.getByRole("gridcell", { name: "External (192.168.1.1)" })
+      ).toBeInTheDocument();
     });
 
     it("can show MAAS-provided DHCP", () => {
       state.vlan.items = [vlanFactory({ dhcp_on: true, id: 1 })];
-      const store = mockStore(state);
       const iface = machineInterfaceFactory({ vlan_id: 1 });
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[
-              { pathname: "/machine/abc123/summary", key: "testKey" },
-            ]}
-          >
-            <NetworkCardTable interfaces={[iface]} />
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
+        { state }
       );
 
-      expect(wrapper.find("TableCell.dhcp").text()).toBe("MAAS-provided");
+      expect(
+        screen.getByRole("gridcell", { name: "MAAS-provided" })
+      ).toBeInTheDocument();
     });
 
     it("can show DHCP relay information with a tooltip", () => {
@@ -106,61 +75,41 @@ describe("NetworkCardInterface", () => {
         vlanFactory({ id: 2, name: "flan-vlan", relay_vlan: 3 }),
         vlanFactory({ fabric: 1, id: 3, vid: 99, name: "" }),
       ];
-      const store = mockStore(state);
       const iface = machineInterfaceFactory({ vlan_id: 2 });
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[
-              { pathname: "/machine/abc123/summary", key: "testKey" },
-            ]}
-          >
-            <NetworkCardTable interfaces={[iface]} />
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
+        { state }
       );
 
-      expect(wrapper.find("TableCell.dhcp").text()).toBe("Relayed");
-      expect(wrapper.find("TableCell.dhcp Tooltip").prop("message")).toBe(
-        "Relayed via fabrice.99"
-      );
+      expect(
+        screen.getByRole("gridcell", { name: "Relayed" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("tooltip", { name: "Relayed via fabrice.99" })
+      ).toBeInTheDocument();
     });
 
     it("can show if interface has no DHCP", () => {
       state.vlan.items = [vlanFactory({ id: 1 })];
-      const store = mockStore(state);
       const iface = machineInterfaceFactory({ vlan_id: 1 });
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter
-            initialEntries={[
-              { pathname: "/machine/abc123/summary", key: "testKey" },
-            ]}
-          >
-            <NetworkCardTable interfaces={[iface]} />
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
+        { state }
       );
 
-      expect(wrapper.find("TableCell.dhcp").text()).toBe("No DHCP");
+      expect(
+        screen.getByRole("gridcell", { name: "No DHCP" })
+      ).toBeInTheDocument();
     });
   });
 
   it("can show if the interface is SR-IOV enabled", () => {
-    const store = mockStore(state);
     const iface = machineInterfaceFactory({ sriov_max_vf: 256 });
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machine/abc123/summary", key: "testKey" },
-          ]}
-        >
-          <NetworkCardTable interfaces={[iface]} />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NetworkCardTable interfaces={[iface]} node={state.device.items[0]} />,
+      { state }
     );
 
-    expect(wrapper.find("TableCell.sriov").text()).toBe("Yes");
+    expect(screen.getByRole("gridcell", { name: "Yes" })).toBeInTheDocument();
   });
 });

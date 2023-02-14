@@ -81,7 +81,7 @@ export const AppSideNavItems = ({
             </>
           ) : null}
           <AppSideNavItem
-            icon="profile-light"
+            icon="profile"
             navLink={{
               label: `${authUser?.username}`,
               url: urls.preferences.index,
