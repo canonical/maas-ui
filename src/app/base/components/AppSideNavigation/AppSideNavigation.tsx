@@ -1,19 +1,22 @@
+/* eslint-disable react/no-multi-comp */
 import { useEffect, useContext, useState } from "react";
 
-import { Button, Icon } from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
 
+import AppSideNavCollapseToggle from "./AppSideNavCollapseToggle";
 import AppSideNavItems from "./AppSideNavItems";
 import NavigationBanner from "./NavigationBanner";
-import type { NavGroup } from "./types";
+import { navGroups } from "./constants";
 
 import {
   useCompletedIntro,
   useCompletedUserIntro,
   useGoogleAnalytics,
 } from "app/base/hooks";
+import { useGlobalKeyShortcut } from "app/base/hooks/base";
 import ThemePreviewContext from "app/base/theme-preview-context";
 import urls from "app/base/urls";
 import authSelectors from "app/store/auth/selectors";
@@ -23,104 +26,6 @@ import controllerSelectors from "app/store/controller/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
-
-const navGroups: NavGroup[] = [
-  {
-    groupTitle: "Hardware",
-    groupIcon: "machines",
-    navLinks: [
-      {
-        highlight: [urls.machines.index, urls.machines.machine.index(null)],
-        label: "Machines",
-        url: urls.machines.index,
-      },
-      {
-        highlight: [urls.devices.index, urls.devices.device.index(null)],
-        label: "Devices",
-        url: urls.devices.index,
-      },
-      {
-        adminOnly: true,
-        highlight: [
-          urls.controllers.index,
-          urls.controllers.controller.index(null),
-        ],
-        label: "Controllers",
-        url: urls.controllers.index,
-      },
-    ],
-  },
-  {
-    groupTitle: "KVM",
-    groupIcon: "cluster-light",
-    navLinks: [
-      {
-        label: "LXD",
-        url: urls.kvm.lxd.index,
-      },
-      {
-        label: "Virsh",
-        url: urls.kvm.virsh.index,
-      },
-    ],
-  },
-  {
-    groupTitle: "Organisation",
-    groupIcon: "tag",
-    navLinks: [
-      {
-        highlight: [urls.tags.index, urls.tags.tag.index(null)],
-        label: "Tags",
-        url: urls.tags.index,
-      },
-      {
-        highlight: [urls.zones.index, urls.zones.details(null)],
-        label: "AZs",
-        url: urls.zones.index,
-      },
-      {
-        label: "Pools",
-        url: urls.pools.index,
-      },
-    ],
-  },
-  {
-    groupTitle: "Configuration",
-    groupIcon: "units",
-    navLinks: [
-      {
-        label: "Images",
-        url: urls.images.index,
-      },
-    ],
-  },
-  {
-    groupTitle: "Networking",
-    groupIcon: "connected",
-    navLinks: [
-      {
-        highlight: [
-          urls.subnets.index,
-          urls.subnets.subnet.index(null),
-          urls.subnets.space.index(null),
-          urls.subnets.fabric.index(null),
-          urls.subnets.vlan.index(null),
-        ],
-        label: "Subnets",
-        url: urls.subnets.index,
-      },
-      {
-        highlight: [urls.domains.index, urls.domains.details(null)],
-        label: "DNS",
-        url: urls.domains.index,
-      },
-      {
-        label: "Network discovery",
-        url: urls.dashboard.index,
-      },
-    ],
-  },
-];
 
 const AppSideNavigation = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -187,27 +92,23 @@ const AppSideNavigation = (): JSX.Element => {
     unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
 
   const [isCollapsed, setIsCollapsed] = useState(true);
+  useGlobalKeyShortcut("[", () => {
+    setIsCollapsed(!isCollapsed);
+  });
   const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
 
   return (
     <>
       <header className="l-navigation-bar">
-        <div
-          className={classNames(
-            "p-panel is-dark",
-            `l-navigation--${themeColor}`
-          )}
-        >
+        <div className={classNames("p-panel is-dark", `is-maas-${themeColor}`)}>
           <div className="p-panel__header">
-            <div className="l-navigation__wrapper">
-              <NavigationBanner />
-            </div>
+            <NavigationBanner />
             <div className="p-panel__controls u-nudge-down--small u-no-margin--top u-hide--large">
               <Button
                 appearance="base"
                 className="has-icon is-dark"
                 onClick={() => {
-                  setIsCollapsed(false);
+                  setIsCollapsed(!isCollapsed);
                 }}
               >
                 Menu
@@ -218,48 +119,55 @@ const AppSideNavigation = (): JSX.Element => {
       </header>
       <nav
         aria-label="main navigation"
-        className={classNames(
-          `l-navigation is-pinned l-navigation--${themeColor}`,
-          {
-            "is-collapsed": isCollapsed,
-          }
-        )}
+        className={classNames(`l-navigation is-maas-${themeColor}`, {
+          "is-collapsed": isCollapsed,
+          "is-pinned": !isCollapsed,
+        })}
       >
-        <div className="l-navigation__wrapper">
-          <NavigationBanner>
-            <div className="u-nudge-down--small u-hide--large">
-              <Button
-                appearance="base"
-                aria-label="Close"
-                className="has-icon is-dark u-no-margin"
-                onClick={(e) => {
-                  setIsCollapsed(true);
-                  // Make sure the button does not have focus
-                  // .l-navigation remains open with :focus-within
-                  e.currentTarget.blur();
-                }}
-              >
-                <Icon light name="close" />
-              </Button>
+        <div className="l-navigation__drawer">
+          <div className="p-panel is-dark">
+            <div className={`p-panel__header is-sticky is-maas-${themeColor}`}>
+              <NavigationBanner>
+                <div className="l-navigation__controls">
+                  <AppSideNavCollapseToggle
+                    isCollapsed={isCollapsed}
+                    setIsCollapsed={setIsCollapsed}
+                  />
+                </div>
+              </NavigationBanner>
             </div>
-          </NavigationBanner>
-          <AppSideNavItems
-            authUser={authUser}
-            groups={navGroups}
-            isAdmin={isAdmin}
-            isAuthenticated={isAuthenticated}
-            logout={logout}
-            path={path}
-            showLinks={showLinks}
-            vaultIncomplete={vaultIncomplete}
-          />
-          {showLinks ? (
-            <span id="maas-info">
-              {maasName} MAAS v{version}
-            </span>
-          ) : null}
+            <div className="p-panel__content">
+              <div className="p-side-navigation--icons is-dark">
+                <AppSideNavItems
+                  authUser={authUser}
+                  groups={navGroups}
+                  isAdmin={isAdmin}
+                  isAuthenticated={isAuthenticated}
+                  logout={logout}
+                  path={path}
+                  showLinks={showLinks}
+                  vaultIncomplete={vaultIncomplete}
+                />
+                {showLinks ? (
+                  <span
+                    className="p-side-navigation__footer is-fading-when-collapsed"
+                    id="maas-info"
+                  >
+                    {maasName} MAAS v{version}
+                  </span>
+                ) : null}
+              </div>
+            </div>
+          </div>
         </div>
       </nav>
+      <div className="l-navigation-expand">
+        <AppSideNavCollapseToggle
+          className={`is-maas-${themeColor}`}
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+        />
+      </div>
     </>
   );
 };

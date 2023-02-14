@@ -19,24 +19,24 @@ export const AppSideNavItem = ({ navLink, icon, path }: Props): JSX.Element => {
   return (
     <li
       aria-labelledby={`${navLink.label}-${id}`}
-      className={`l-navigation__item${
+      className={`p-side-navigation__item${
         isSelected(path, navLink) ? " is-selected" : ""
       }`}
     >
       <Link
         aria-current={isSelected(path, navLink) ? "page" : undefined}
-        className="l-navigation__link"
+        className="p-side-navigation__link"
         id={`${navLink.label}-${id}`}
         to={navLink.url}
       >
         {icon ? (
           typeof icon === "string" ? (
-            <Icon light name={icon} />
+            <Icon className="p-side-navigation__icon" light name={icon} />
           ) : (
             <>{icon}</>
           )
         ) : null}
-        <span className="l-navigation__link-text">{navLink.label}</span>
+        <span className="p-side-navigation__label">{navLink.label}</span>
       </Link>
     </li>
   );

@@ -33,5 +33,5 @@
 // https://github.com/canonical/vanilla-framework/issues/4607
 .p-contextual-menu__dropdown,
 .p-tooltip__message {
-  z-index: $side-panel-z-index + 1;
+  z-index: $side-navigation-z-index + 1;
 }
