@@ -12,7 +12,11 @@ const AppSideNavCollapseToggle = ({
 }): JSX.Element => {
   return (
     <Tooltip
-      message={<>{!isCollapsed ? "collapse" : "expand"} ( [ )</>}
+      message={
+        <>
+          {!isCollapsed ? "collapse" : "expand"}( <code>[</code> )
+        </>
+      }
       position="right"
     >
       <Button
