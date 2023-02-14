@@ -26,6 +26,7 @@ const AppSideNavCollapseToggle = ({
           setIsCollapsed(!isCollapsed);
           // Make sure the button does not have focus
           // .l-navigation remains open with :focus-within
+          e.stopPropagation();
           e.currentTarget.blur();
         }}
       >

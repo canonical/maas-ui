@@ -108,7 +108,7 @@ const AppSideNavigation = (): JSX.Element => {
                 appearance="base"
                 className="has-icon is-dark"
                 onClick={() => {
-                  setIsCollapsed(false);
+                  setIsCollapsed(!isCollapsed);
                 }}
               >
                 Menu
@@ -126,7 +126,7 @@ const AppSideNavigation = (): JSX.Element => {
       >
         <div className="l-navigation__drawer">
           <div className="p-panel is-dark">
-            <div className="p-panel__header is-sticky">
+            <div className={`p-panel__header is-sticky is-maas-${themeColor}`}>
               <NavigationBanner>
                 <div className="l-navigation__controls">
                   <AppSideNavCollapseToggle
