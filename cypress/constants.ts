@@ -6,7 +6,7 @@ export const pages: Page[] = [
   { heading: "Controllers", url: "/controllers" },
   { heading: "Subnets", url: "/networks" },
   { heading: "Machines", url: "/machines" },
-  { heading: "KVM", url: "/kvm/lxd" },
+  { heading: "LXD", url: "/kvm/lxd" },
   { heading: "Images", url: "/images" },
   { heading: "DNS", url: "/domains" },
   { heading: "Availability zones", url: "/zones" },
