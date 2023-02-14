@@ -308,9 +308,3 @@
 // tags
 @import "~app/tags/components/TagsHeader/DeleteTagForm/DeleteTagFormWarnings/_index.scss";
 @include DeleteTagFormWarnings;
-
-#maas-ui {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}
