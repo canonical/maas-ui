@@ -37,7 +37,7 @@ const ThemedRadioButton = ({
     <label className={classNames(className, "general-form__radio--themed")}>
       <input
         checked={value === color}
-        className={`general-form__radio radio--theme-${color}`}
+        className={`general-form__radio is-maas-${color}`}
         name={name}
         type="radio"
         {...inputProps}
