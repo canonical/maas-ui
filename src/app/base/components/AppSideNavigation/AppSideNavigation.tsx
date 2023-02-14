@@ -1,13 +1,15 @@
+/* eslint-disable react/no-multi-comp */
 import { useEffect, useContext, useState } from "react";
 
-import { Button, Icon, Tooltip } from "@canonical/react-components";
+import { Button } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
 
+import AppSideNavCollapseToggle from "./AppSideNavCollapseToggle";
 import AppSideNavItems from "./AppSideNavItems";
 import NavigationBanner from "./NavigationBanner";
-import type { NavGroup } from "./types";
+import { navGroups } from "./constants";
 
 import {
   useCompletedIntro,
@@ -24,104 +26,6 @@ import controllerSelectors from "app/store/controller/selectors";
 import { version as versionSelectors } from "app/store/general/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
-
-const navGroups: NavGroup[] = [
-  {
-    groupTitle: "Hardware",
-    groupIcon: "machines",
-    navLinks: [
-      {
-        highlight: [urls.machines.index, urls.machines.machine.index(null)],
-        label: "Machines",
-        url: urls.machines.index,
-      },
-      {
-        highlight: [urls.devices.index, urls.devices.device.index(null)],
-        label: "Devices",
-        url: urls.devices.index,
-      },
-      {
-        adminOnly: true,
-        highlight: [
-          urls.controllers.index,
-          urls.controllers.controller.index(null),
-        ],
-        label: "Controllers",
-        url: urls.controllers.index,
-      },
-    ],
-  },
-  {
-    groupTitle: "KVM",
-    groupIcon: "cluster-light",
-    navLinks: [
-      {
-        label: "LXD",
-        url: urls.kvm.lxd.index,
-      },
-      {
-        label: "Virsh",
-        url: urls.kvm.virsh.index,
-      },
-    ],
-  },
-  {
-    groupTitle: "Organisation",
-    groupIcon: "tag",
-    navLinks: [
-      {
-        highlight: [urls.tags.index, urls.tags.tag.index(null)],
-        label: "Tags",
-        url: urls.tags.index,
-      },
-      {
-        highlight: [urls.zones.index, urls.zones.details(null)],
-        label: "AZs",
-        url: urls.zones.index,
-      },
-      {
-        label: "Pools",
-        url: urls.pools.index,
-      },
-    ],
-  },
-  {
-    groupTitle: "Configuration",
-    groupIcon: "units",
-    navLinks: [
-      {
-        label: "Images",
-        url: urls.images.index,
-      },
-    ],
-  },
-  {
-    groupTitle: "Networking",
-    groupIcon: "connected",
-    navLinks: [
-      {
-        highlight: [
-          urls.subnets.index,
-          urls.subnets.subnet.index(null),
-          urls.subnets.space.index(null),
-          urls.subnets.fabric.index(null),
-          urls.subnets.vlan.index(null),
-        ],
-        label: "Subnets",
-        url: urls.subnets.index,
-      },
-      {
-        highlight: [urls.domains.index, urls.domains.details(null)],
-        label: "DNS",
-        url: urls.domains.index,
-      },
-      {
-        label: "Network discovery",
-        url: urls.dashboard.index,
-      },
-    ],
-  },
-];
 
 const AppSideNavigation = (): JSX.Element => {
   const dispatch = useDispatch();
@@ -225,26 +129,10 @@ const AppSideNavigation = (): JSX.Element => {
             <div className="p-panel__header is-sticky">
               <NavigationBanner>
                 <div className="l-navigation__controls">
-                  <Tooltip
-                    message={<>{!isCollapsed ? "collapse" : "expand"} ( [ )</>}
-                    position="right"
-                  >
-                    <Button
-                      appearance="base"
-                      aria-label={`${
-                        !isCollapsed ? "collapse" : "expand"
-                      } main navigation`}
-                      className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle u-hide--large"
-                      onClick={(e) => {
-                        setIsCollapsed(!isCollapsed);
-                        // Make sure the button does not have focus
-                        // .l-navigation remains open with :focus-within
-                        e.currentTarget.blur();
-                      }}
-                    >
-                      <Icon light name="sidebar-toggle" />
-                    </Button>
-                  </Tooltip>
+                  <AppSideNavCollapseToggle
+                    isCollapsed={isCollapsed}
+                    setIsCollapsed={setIsCollapsed}
+                  />
                 </div>
               </NavigationBanner>
             </div>
@@ -273,29 +161,12 @@ const AppSideNavigation = (): JSX.Element => {
           </div>
         </div>
       </nav>
-      <div className={`l-navigation-expand is-maas-${themeColor}`}>
-        <Tooltip
-          message={<>{!isCollapsed ? "collapse" : "expand"} ( [ )</>}
-          position="right"
-        >
-          <div>
-            <Button
-              appearance="base"
-              aria-label={`${
-                !isCollapsed ? "collapse" : "expand"
-              } main navigation`}
-              className="is-dense has-icon is-dark u-no-margin p-side-navigation__collapse-toggle"
-              onClick={(e) => {
-                setIsCollapsed(!isCollapsed);
-                // Make sure the button does not have focus
-                // .l-navigation remains open with :focus-within
-                e.currentTarget.blur();
-              }}
-            >
-              <Icon light name="sidebar-toggle" />
-            </Button>
-          </div>
-        </Tooltip>
+      <div className="l-navigation-expand">
+        <AppSideNavCollapseToggle
+          className={`is-maas-${themeColor}`}
+          isCollapsed={isCollapsed}
+          setIsCollapsed={setIsCollapsed}
+        />
       </div>
     </>
   );
