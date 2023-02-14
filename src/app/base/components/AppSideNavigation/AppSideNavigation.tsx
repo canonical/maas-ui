@@ -144,7 +144,7 @@ const AppSideNavigation = (): JSX.Element => {
       </header>
       <nav
         aria-label="main navigation"
-        className={classNames(`l-navigation is-maas-${themeColor}`, {
+        className={classNames(`l-navigation is-maas is-maas-${themeColor}`, {
           "is-collapsed": isCollapsed,
           "is-pinned": !isCollapsed,
         })}
@@ -178,13 +178,6 @@ const AppSideNavigation = (): JSX.Element => {
           </div>
         </div>
       </nav>
-      <div className="l-navigation-expand">
-        <AppSideNavCollapseToggle
-          className={`is-maas-${themeColor}`}
-          isCollapsed={isCollapsed}
-          setIsCollapsed={setIsCollapsed}
-        />
-      </div>
     </>
   );
 };
