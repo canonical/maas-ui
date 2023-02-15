@@ -90,7 +90,7 @@
     "@types/path-parse": "1.0.19",
     "@types/pluralize": "0.0.29",
     "@types/react": "17.0.53",
-    "@types/react-dom": "17.0.18",
+    "@types/react-dom": "18.0.11",
     "@types/react-portal": "4.0.4",
     "@types/react-redux": "7.1.25",
     "@types/react-router": "5.1.20",
