@@ -16,6 +16,7 @@ import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
 import GroupCheckbox from "./GroupCheckbox";
+import MachineListDisplayCount from "./MachineListDisplayCount";
 import MachineListPagination from "./MachineListPagination";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
@@ -846,27 +847,15 @@ export const MachineListTable = ({
     [hiddenColumns, showActions]
   );
 
-  const getMachinesDisplayed = () => {
-    if (!machineCount) {
-      return null;
-    }
-
-    const totalPages = Math.ceil(machineCount / pageSize);
-
-    if (currentPage === totalPages) {
-      return pageSize - (totalPages * pageSize - machineCount);
-    } else {
-      return pageSize;
-    }
-  };
-
   return (
     <>
       {machineCount ? (
         <div className="u-flex--between u-flex--align-center">
-          <strong>
-            Showing {getMachinesDisplayed()} out of {machineCount} machines
-          </strong>
+          <MachineListDisplayCount
+            currentPage={currentPage}
+            machineCount={machineCount}
+            pageSize={pageSize}
+          />
           <MachineListPagination
             currentPage={currentPage}
             itemsPerPage={pageSize}
