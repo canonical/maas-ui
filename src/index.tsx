@@ -37,7 +37,7 @@ if (rootNode) {
 // log the maas-ui version to the console
 console.info(
   `${packageInfo.name} ${packageInfo.version} ${
-    process.env.REACT_APP_GIT_SHA ?? ""
+    import.meta.env.REACT_APP_GIT_SHA ?? ""
   }`
 );
 

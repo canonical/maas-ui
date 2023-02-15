@@ -6,7 +6,6 @@ import type {
 import type { AnyAction } from "redux";
 import type { EventChannel } from "redux-saga";
 import { eventChannel } from "redux-saga";
-import type { SagaGenerator } from "typed-redux-saga/macro";
 import {
   select,
   all,
@@ -20,7 +19,8 @@ import {
   takeEvery,
   takeLatest,
   race,
-} from "typed-redux-saga/macro";
+} from "typed-redux-saga";
+import type { SagaGenerator } from "typed-redux-saga/macro";
 
 import { WebSocketMessageType } from "../../../websocket-client";
 import type {

@@ -10,7 +10,7 @@ import {
 } from "testing/factories";
 import { screen, renderWithMockStore } from "testing/utils";
 
-const originalEnv = process.env;
+const originalEnv = import.meta.env;
 
 beforeEach(() => {
   jest.resetModules();
@@ -18,12 +18,12 @@ beforeEach(() => {
 });
 
 afterEach(() => {
-  process.env = originalEnv;
+  import.meta.env = originalEnv;
   MockDate.reset();
 });
 
 it("displays the feedback link when analytics enabled and not in development environment", () => {
-  process.env = { ...originalEnv, NODE_ENV: "production" };
+  import.meta.env = { ...originalEnv, NODE_ENV: "production" };
   const state = rootStateFactory({
     config: configStateFactory({
       items: [
@@ -39,7 +39,7 @@ it("displays the feedback link when analytics enabled and not in development env
 });
 
 it("hides the feedback link when analytics disabled", () => {
-  process.env = { ...originalEnv, NODE_ENV: "production" };
+  import.meta.env = { ...originalEnv, NODE_ENV: "production" };
   const state = rootStateFactory({
     config: configStateFactory({
       items: [
@@ -55,7 +55,7 @@ it("hides the feedback link when analytics disabled", () => {
 });
 
 it("hides the feedback link in development environment", () => {
-  process.env = { ...originalEnv, NODE_ENV: "development" };
+  import.meta.env = { ...originalEnv, NODE_ENV: "development" };
   const state = rootStateFactory({
     config: configStateFactory({
       items: [

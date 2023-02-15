@@ -95,7 +95,7 @@ const FormikFormContent = <V extends object, E = null>({
   ...buttonsProps
 }: Props<V, E>): JSX.Element => {
   const formikContext = useFormikContext<V>();
-  if (process.env.NODE_ENV === "development") {
+  if (import.meta.env.NODE_ENV === "development") {
     withFormikDevtools(formikContext);
   }
   const dispatch = useDispatch();

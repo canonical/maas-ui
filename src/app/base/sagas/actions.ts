@@ -1,6 +1,6 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
 import type { SagaGenerator } from "typed-redux-saga";
-import { call } from "typed-redux-saga/macro";
+import { call } from "typed-redux-saga";
 
 import type {
   WebSocketAction,

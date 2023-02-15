@@ -114,9 +114,9 @@ export const App = (): JSX.Element => {
     );
   }
 
-  if (analyticsEnabled && process.env.REACT_APP_SENTRY_DSN) {
+  if (analyticsEnabled && import.meta.env.REACT_APP_SENTRY_DSN) {
     Sentry.init({
-      dsn: process.env.REACT_APP_SENTRY_DSN,
+      dsn: import.meta.env.REACT_APP_SENTRY_DSN,
       release: packageInfo.version,
     });
   }

@@ -1,4 +1,4 @@
-import { all } from "typed-redux-saga/macro";
+import { all } from "typed-redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 
 import {

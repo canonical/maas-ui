@@ -121,7 +121,9 @@ export class WebSocketClient {
     }
     const { hostname, port } = window.location;
     const protocol = window.location.protocol === "https:" ? "wss:" : "ws:";
-    return `${protocol}//${hostname}:${port}${process.env.REACT_APP_BASENAME}/ws?csrftoken=${csrftoken}`;
+    return `${protocol}//${hostname}:${port}${
+      import.meta.env.REACT_APP_BASENAME
+    }/ws?csrftoken=${csrftoken}`;
   }
 
   /**
@@ -151,7 +153,7 @@ export class WebSocketClient {
    */
   connect(): ReconnectingWebSocket {
     this.socket = new ReconnectingWebSocket(this.buildURL(), undefined, {
-      debug: process.env.REACT_APP_WEBSOCKET_DEBUG === "true",
+      debug: import.meta.env.REACT_APP_WEBSOCKET_DEBUG === "true",
     });
     return this.socket;
   }

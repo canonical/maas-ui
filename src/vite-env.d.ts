@@ -1,0 +1,1 @@
+/// <referencetypes="vite/client" />

@@ -13,7 +13,7 @@ export const Footer = (): JSX.Element => {
             <li className="p-inline-list__item">
               <a
                 className="p-footer__link"
-                href={`${process.env.REACT_APP_BASENAME}/docs/`}
+                href={`${import.meta.env.REACT_APP_BASENAME}/docs/`}
               >
                 Local documentation
               </a>

@@ -1,5 +1,5 @@
 import type { PayloadAction } from "@reduxjs/toolkit";
-import { call, put, takeEvery, takeLatest } from "typed-redux-saga/macro";
+import { call, put, takeEvery, takeLatest } from "typed-redux-saga";
 import type { SagaGenerator } from "typed-redux-saga/macro";
 
 import type { LicenseKeys } from "app/store/licensekeys/types";
