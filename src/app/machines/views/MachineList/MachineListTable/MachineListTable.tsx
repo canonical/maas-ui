@@ -846,8 +846,36 @@ export const MachineListTable = ({
     [hiddenColumns, showActions]
   );
 
+  const getMachinesDisplayed = () => {
+    if (!machineCount) {
+      return null;
+    }
+
+    const totalPages = Math.ceil(machineCount / pageSize);
+
+    if (currentPage === totalPages) {
+      return pageSize - (totalPages * pageSize - machineCount);
+    } else {
+      return pageSize;
+    }
+  };
+
   return (
     <>
+      {machineCount ? (
+        <div className="u-flex--between u-flex--align-center">
+          <strong>
+            Showing {getMachinesDisplayed()} out of {machineCount} machines
+          </strong>
+          <MachineListPagination
+            currentPage={currentPage}
+            itemsPerPage={pageSize}
+            machineCount={machineCount}
+            machinesLoading={machinesLoading}
+            paginate={setCurrentPage}
+          />
+        </div>
+      ) : null}
       <MainTable
         aria-label={machinesLoading ? Label.Loading : Label.Machines}
         className={classNames("p-table-expanding--light", "machine-list", {
@@ -858,13 +886,6 @@ export const MachineListTable = ({
         headers={filterColumns(headers, hiddenColumns, showActions)}
         rows={machinesLoading ? skeletonRows : rows}
         {...props}
-      />
-      <MachineListPagination
-        currentPage={currentPage}
-        itemsPerPage={pageSize}
-        machineCount={machineCount}
-        machinesLoading={machinesLoading}
-        paginate={setCurrentPage}
       />
     </>
   );
