@@ -1,5 +1,5 @@
 /* eslint-disable react/no-multi-comp */
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useMemo } from "react";
 
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
@@ -87,6 +87,7 @@ const AppSideNavigation = (): JSX.Element => {
   }, [dispatch]);
 
   const virshKvms = useSelector(podSelectors.virsh);
+  const kvmsLoaded = useSelector(podSelectors.loaded);
   const hasVirsh = virshKvms.length > 0;
 
   const { unconfiguredControllers, configuredControllers } = useSelector(
@@ -102,6 +103,24 @@ const AppSideNavigation = (): JSX.Element => {
     setIsCollapsed(!isCollapsed);
   });
   const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
+
+  const filteredGroups = useMemo(() => {
+    if (hasVirsh === false && kvmsLoaded) {
+      const kvmGroupIndex = navGroups.findIndex(
+        (group) => group.groupTitle === "KVM"
+      );
+
+      const virshItemIndex = navGroups[kvmGroupIndex].navLinks.findIndex(
+        (navLink) => navLink.label === "Virsh"
+      );
+
+      if (virshItemIndex > -1) {
+        navGroups[kvmGroupIndex].navLinks.splice(virshItemIndex, 1);
+      }
+    }
+
+    return navGroups;
+  }, [hasVirsh]);
 
   return (
     <>
@@ -146,8 +165,7 @@ const AppSideNavigation = (): JSX.Element => {
               <div className="p-side-navigation--icons is-dark">
                 <AppSideNavItems
                   authUser={authUser}
-                  groups={navGroups}
-                  hasVirsh={hasVirsh}
+                  groups={filteredGroups}
                   isAdmin={isAdmin}
                   isAuthenticated={isAuthenticated}
                   logout={logout}

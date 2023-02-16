@@ -15,7 +15,6 @@ import type { User } from "app/store/user/types";
 type Props = {
   authUser: User | null;
   groups: NavGroup[];
-  hasVirsh: boolean;
   isAdmin: boolean;
   isAuthenticated: boolean;
   logout: () => void;
@@ -29,10 +28,9 @@ const AppSideNavItemGroup = ({
   isAdmin,
   vaultIncomplete,
   path,
-  hasVirsh,
 }: { group: NavGroup } & Pick<
   Props,
-  "isAdmin" | "vaultIncomplete" | "path" | "hasVirsh"
+  "isAdmin" | "vaultIncomplete" | "path"
 >) => {
   const id = useId();
   const hasActiveChild = useMemo(() => {
@@ -43,6 +41,7 @@ const AppSideNavItemGroup = ({
     }
     return false;
   }, [group, path]);
+
   return (
     <>
       <li
@@ -74,9 +73,6 @@ const AppSideNavItemGroup = ({
         >
           {group.navLinks.map((navLink) => {
             if (!navLink.adminOnly || isAdmin) {
-              if (navLink.label === "Virsh" && !hasVirsh) {
-                return null;
-              }
               return (
                 <AppSideNavItem
                   icon={
@@ -104,7 +100,6 @@ const AppSideNavItemGroup = ({
 export const AppSideNavItems = ({
   authUser,
   groups,
-  hasVirsh,
   isAdmin,
   isAuthenticated,
   logout,
@@ -119,7 +114,6 @@ export const AppSideNavItems = ({
           {groups.map((group, i) => (
             <AppSideNavItemGroup
               group={group}
-              hasVirsh={hasVirsh}
               isAdmin={isAdmin}
               key={`${i}-${group.groupTitle}`}
               path={path}
