@@ -10,6 +10,7 @@ import type {
   Machine,
   MachineMeta,
   MachineStateListGroup,
+  SelectedMachines,
 } from "app/store/machine/types";
 
 type Props = {
@@ -77,6 +78,7 @@ const MachineCheckbox = ({
   label,
   groupValue,
   systemId,
+  machines,
 }: Props): JSX.Element => {
   const selected = useSelector(machineSelectors.selectedMachines);
   const allSelected = !!selected && "filter" in selected;
@@ -100,7 +102,18 @@ const MachineCheckbox = ({
       inputLabel={label}
       isChecked={isChecked ? Checked.Checked : Checked.Unchecked}
       isDisabled={allSelected || groupSelected}
-      onGenerateSelected={(checked) => {
+      onGenerateSelected={(checked, event) => {
+        window.getSelection()?.removeAllRanges();
+        // @ts-ignore shiftKey is usually defined when using click events
+        if (event?.nativeEvent.shiftKey && !groupValue) {
+          return rangeSelectMachines({
+            systemId,
+            checked,
+            machines: machines ?? [],
+            selected,
+          });
+        }
+
         let newSelected =
           !selected || "filter" in selected
             ? { items: [] }
