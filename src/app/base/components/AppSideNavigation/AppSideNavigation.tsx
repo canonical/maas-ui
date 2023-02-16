@@ -1,5 +1,5 @@
 /* eslint-disable react/no-multi-comp */
-import { useEffect, useContext, useState } from "react";
+import { useEffect, useContext, useState, useMemo } from "react";
 
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
@@ -23,6 +23,8 @@ import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
+import { actions as podActions } from "app/store/pod";
+import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 
@@ -80,6 +82,14 @@ const AppSideNavigation = (): JSX.Element => {
     dispatch(controllerActions.fetch());
   }, [dispatch]);
 
+  useEffect(() => {
+    dispatch(podActions.fetch());
+  }, [dispatch]);
+
+  const virshKvms = useSelector(podSelectors.virsh);
+  const kvmsLoaded = useSelector(podSelectors.loaded);
+  const hideVirsh = kvmsLoaded && virshKvms.length < 1;
+
   const { unconfiguredControllers, configuredControllers } = useSelector(
     (state: RootState) =>
       controllerSelectors.getVaultConfiguredControllers(state)
@@ -93,6 +103,24 @@ const AppSideNavigation = (): JSX.Element => {
     setIsCollapsed(!isCollapsed);
   });
   const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
+
+  const filteredGroups = useMemo(() => {
+    if (hideVirsh) {
+      const kvmGroupIndex = navGroups.findIndex(
+        (group) => group.groupTitle === "KVM"
+      );
+
+      const virshItemIndex = navGroups[kvmGroupIndex].navLinks.findIndex(
+        (navLink) => navLink.label === "Virsh"
+      );
+
+      if (virshItemIndex > -1) {
+        navGroups[kvmGroupIndex].navLinks.splice(virshItemIndex, 1);
+      }
+    }
+
+    return navGroups;
+  }, [hideVirsh]);
 
   return (
     <>
@@ -137,7 +165,7 @@ const AppSideNavigation = (): JSX.Element => {
               <div className="p-side-navigation--icons is-dark">
                 <AppSideNavItems
                   authUser={authUser}
-                  groups={navGroups}
+                  groups={filteredGroups}
                   isAdmin={isAdmin}
                   isAuthenticated={isAuthenticated}
                   logout={logout}
