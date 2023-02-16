@@ -88,7 +88,7 @@ const AppSideNavigation = (): JSX.Element => {
 
   const virshKvms = useSelector(podSelectors.virsh);
   const kvmsLoaded = useSelector(podSelectors.loaded);
-  const hasVirsh = virshKvms.length > 0;
+  const hideVirsh = kvmsLoaded && virshKvms.length < 1;
 
   const { unconfiguredControllers, configuredControllers } = useSelector(
     (state: RootState) =>
@@ -105,7 +105,7 @@ const AppSideNavigation = (): JSX.Element => {
   const themeColor = theme ? theme : maasTheme ? maasTheme : "default";
 
   const filteredGroups = useMemo(() => {
-    if (hasVirsh === false && kvmsLoaded) {
+    if (hideVirsh) {
       const kvmGroupIndex = navGroups.findIndex(
         (group) => group.groupTitle === "KVM"
       );
@@ -120,7 +120,7 @@ const AppSideNavigation = (): JSX.Element => {
     }
 
     return navGroups;
-  }, [hasVirsh]);
+  }, [hideVirsh]);
 
   return (
     <>
