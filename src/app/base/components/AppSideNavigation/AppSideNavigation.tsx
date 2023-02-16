@@ -23,6 +23,7 @@ import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
+import { actions as podActions } from "app/store/pod";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
@@ -79,6 +80,10 @@ const AppSideNavigation = (): JSX.Element => {
 
   useEffect(() => {
     dispatch(controllerActions.fetch());
+  }, [dispatch]);
+
+  useEffect(() => {
+    dispatch(podActions.fetch());
   }, [dispatch]);
 
   const virshKvms = useSelector(podSelectors.virsh);
