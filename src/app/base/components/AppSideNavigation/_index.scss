@@ -51,6 +51,9 @@
         padding-top: 0;
         transform: translateX(1rem) translateY(2.6rem);
       }
+      @media only screen and (min-width: ($breakpoint-xx-large)) {
+        display: none;
+      }
     }
     .l-navigation--item-icon {
       margin-right: $sph--small;

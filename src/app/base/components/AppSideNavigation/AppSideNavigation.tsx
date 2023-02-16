@@ -128,7 +128,7 @@ const AppSideNavigation = (): JSX.Element => {
         <div className={classNames("p-panel is-dark", `is-maas-${themeColor}`)}>
           <div className="p-panel__header">
             <NavigationBanner />
-            <div className="p-panel__controls u-nudge-down--small u-no-margin--top u-hide--large">
+            <div className="p-panel__controls u-nudge-down--small u-no-margin--top">
               <Button
                 appearance="base"
                 className="has-icon is-dark"

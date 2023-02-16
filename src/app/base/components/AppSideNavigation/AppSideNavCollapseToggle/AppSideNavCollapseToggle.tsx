@@ -23,7 +23,7 @@ const AppSideNavCollapseToggle = ({
         appearance="base"
         aria-label={`${!isCollapsed ? "collapse" : "expand"} main navigation`}
         className={classNames(
-          "is-dense has-icon is-dark u-no-margin l-navigation-collapse-toggle u-hide--large",
+          "is-dense has-icon is-dark u-no-margin l-navigation-collapse-toggle",
           className
         )}
         onClick={(e) => {
