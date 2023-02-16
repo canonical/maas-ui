@@ -37,7 +37,7 @@ const rangeSelectMachines = ({
   newSelected.items = newSelected.items ?? [];
 
   if (!checked && newSelected.items.includes(systemId)) {
-    // could just be an innocent 'deselect'
+    // filter out unchecked item
     newSelected.items = newSelected.items.filter(
       (selectedId) => selectedId !== systemId
     );
@@ -105,10 +105,8 @@ const MachineCheckbox = ({
       inputLabel={label}
       isChecked={isChecked ? Checked.Checked : Checked.Unchecked}
       isDisabled={allSelected || groupSelected}
-      onGenerateSelected={(checked, event) => {
-        window.getSelection()?.removeAllRanges();
-        // @ts-ignore shiftKey is usually defined when using click events
-        if (event?.nativeEvent.shiftKey && !groupValue) {
+      onGenerateSelected={(checked, isRange) => {
+        if (isRange && !groupValue) {
           return rangeSelectMachines({
             systemId,
             checked,
