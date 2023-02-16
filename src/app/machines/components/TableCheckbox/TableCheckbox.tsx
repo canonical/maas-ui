@@ -25,7 +25,7 @@ type Props = PropsWithSpread<
     isDisabled?: boolean;
     onGenerateSelected: (
       checked: boolean,
-      event?: React.ChangeEvent<HTMLInputElement>
+      isRange: boolean
     ) => SelectedMachines | null;
   },
   InputProps
@@ -53,9 +53,13 @@ const TableCheckbox = ({
       label={inputLabel}
       labelClassName="u-no-margin--bottom u-no-padding--top"
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+        // prevent default text range selection when 'shift' key is pressed
+        window.getSelection()?.removeAllRanges();
+        // @ts-ignore shiftKey is usually defined when using click events
+        const isRange = !!event.nativeEvent.shiftKey;
         dispatch(
           machineActions.setSelectedMachines(
-            onGenerateSelected(event.target.checked, event)
+            onGenerateSelected(event.target.checked, isRange)
           )
         );
       }}
