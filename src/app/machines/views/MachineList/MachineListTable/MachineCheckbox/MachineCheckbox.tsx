@@ -20,6 +20,58 @@ type Props = {
   machines?: Machine[];
 };
 
+const rangeSelectMachines = ({
+  systemId,
+  checked,
+  machines,
+  selected,
+}: {
+  systemId: string;
+  checked: boolean;
+  machines: Machine[];
+  selected: SelectedMachines | null;
+}) => {
+  let newSelected =
+    !selected || "filter" in selected ? { items: [] } : cloneDeep(selected);
+  newSelected.items = newSelected.items ?? [];
+
+  if (!checked && newSelected.items.includes(systemId)) {
+    // could just be an innocent 'deselect'
+    newSelected.items = newSelected.items.filter(
+      (selectedId) => selectedId !== systemId
+    );
+    return newSelected;
+  }
+
+  const previousChecked = newSelected.items.at(-1);
+  if (!previousChecked) {
+    // if there's no previous selected item, select the clicked item
+    newSelected.items.push(systemId);
+    return newSelected;
+  }
+  const currentIndex = machines.findIndex(
+    (machine) => machine.system_id === systemId
+  );
+  const previousIndex = machines.findIndex(
+    (machine) => machine.system_id === previousChecked
+  );
+
+  const startIndex = Math.min(currentIndex, previousIndex);
+  const endIndex = Math.max(currentIndex, previousIndex);
+
+  if (startIndex > -1 && endIndex > -1 && checked) {
+    for (let i = startIndex; i <= endIndex; i++) {
+      if (newSelected.items.includes(machines[i].system_id)) {
+        continue;
+      } else {
+        newSelected.items.push(machines[i].system_id);
+      }
+    }
+  }
+
+  return newSelected;
+};
+
 const MachineCheckbox = ({
   callId,
   label,
