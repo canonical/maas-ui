@@ -57,10 +57,13 @@ const rangeSelectMachines = ({
     (machine) => machine.system_id === previousChecked
   );
 
+  // Get the start and end points of the selected range
   const startIndex = Math.min(currentIndex, previousIndex);
   const endIndex = Math.max(currentIndex, previousIndex);
 
+  // Check if the resulting indexes make a valid range for selection
   if (startIndex > -1 && endIndex > -1 && checked) {
+    // loop through the machine list, add the ids that have not been added already
     for (let i = startIndex; i <= endIndex; i++) {
       if (newSelected.items.includes(machines[i].system_id)) {
         continue;
