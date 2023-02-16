@@ -23,6 +23,7 @@ import authSelectors from "app/store/auth/selectors";
 import configSelectors from "app/store/config/selectors";
 import { actions as controllerActions } from "app/store/controller";
 import controllerSelectors from "app/store/controller/selectors";
+import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
 import { actions as statusActions } from "app/store/status";
 
@@ -79,6 +80,9 @@ const AppSideNavigation = (): JSX.Element => {
   useEffect(() => {
     dispatch(controllerActions.fetch());
   }, [dispatch]);
+
+  const virshKvms = useSelector(podSelectors.virsh);
+  const hasVirsh = virshKvms.length > 0;
 
   const { unconfiguredControllers, configuredControllers } = useSelector(
     (state: RootState) =>
@@ -138,6 +142,7 @@ const AppSideNavigation = (): JSX.Element => {
                 <AppSideNavItems
                   authUser={authUser}
                   groups={navGroups}
+                  hasVirsh={hasVirsh}
                   isAdmin={isAdmin}
                   isAuthenticated={isAuthenticated}
                   logout={logout}
