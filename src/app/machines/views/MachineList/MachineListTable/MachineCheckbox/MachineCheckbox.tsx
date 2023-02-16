@@ -17,6 +17,7 @@ type Props = {
   label: ReactNode;
   groupValue?: MachineStateListGroup["value"];
   systemId: Machine[MachineMeta.PK];
+  machines?: Machine[];
 };
 
 const MachineCheckbox = ({
