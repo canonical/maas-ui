@@ -23,7 +23,10 @@ type Props = PropsWithSpread<
     inputLabel?: ReactNode;
     isChecked: Checked;
     isDisabled?: boolean;
-    onGenerateSelected: (checked: boolean) => SelectedMachines | null;
+    onGenerateSelected: (
+      checked: boolean,
+      event?: React.ChangeEvent<HTMLInputElement>
+    ) => SelectedMachines | null;
   },
   InputProps
 >;
@@ -52,7 +55,7 @@ const TableCheckbox = ({
       onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
         dispatch(
           machineActions.setSelectedMachines(
-            onGenerateSelected(event.target.checked)
+            onGenerateSelected(event.target.checked, event)
           )
         );
       }}
