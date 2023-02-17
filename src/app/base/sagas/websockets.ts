@@ -646,6 +646,7 @@ export function* setupWebSocket({
       }
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
     yield* put({
       type: "status/websocketError",
