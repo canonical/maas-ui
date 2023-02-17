@@ -52,10 +52,13 @@ const TableCheckbox = ({
       disabled={machineCount === 0 || isDisabled}
       label={inputLabel}
       labelClassName="u-no-margin--bottom u-no-padding--top"
-      onChange={(event: React.ChangeEvent<HTMLInputElement>) => {
+      onChange={(
+        event: React.ChangeEvent<HTMLInputElement> & {
+          nativeEvent: React.PointerEvent;
+        }
+      ) => {
         // prevent default text range selection when 'shift' key is pressed
         window.getSelection()?.removeAllRanges();
-        // @ts-ignore shiftKey is usually defined when using click events
         const isRange = !!event.nativeEvent.shiftKey;
         dispatch(
           machineActions.setSelectedMachines(
