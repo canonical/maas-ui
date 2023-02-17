@@ -17,7 +17,7 @@ const expectExpandedNavigation = () => {
   );
 };
 
-context("Header - non-admin", () => {
+context("Navigation - non-admin", () => {
   beforeEach(() => {
     cy.loginNonAdmin();
     cy.visit(generateMAASURL("/"));
@@ -30,7 +30,7 @@ context("Header - non-admin", () => {
   });
 });
 
-context("Header - admin", () => {
+context("Navigation - admin", () => {
   beforeEach(() => {
     cy.login();
     // Need the window to be wide enough so that menu items aren't hidden under
