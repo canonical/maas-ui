@@ -1,5 +1,75 @@
 @mixin AppSideNavigation {
-  .p-panel {
+  .l-navigation.is-maas {
+    @include vf-transition(
+      $property: #{width,
+      box-shadow,
+      background},
+      $duration: fast
+    );
+    &:hover,
+    &:focus-within,
+    &.is-pinned {
+      .l-navigation__controls {
+        opacity: 1;
+        visibility: visible;
+        button {
+          background-color: rgba(255, 255, 255, 0.05);
+        }
+        @media only screen and (min-width: ($breakpoint-small + 1)) {
+          transform: translateX(
+              #{$application-layout--side-nav-width-expanded - 3rem}
+            )
+            translateY(0.8rem);
+        }
+      }
+    }
+    &.is-collapsed {
+      .l-navigation-collapse-toggle,
+      .l-navigation__controls {
+        i {
+          transform: rotate(180deg);
+        }
+      }
+    }
+    .l-navigation__controls {
+      margin-left: auto;
+      padding-top: 0.65rem;
+      z-index: $side-navigation-z-index + 1;
+      @include vf-transition(
+        $property: #{opacity,
+        visibility,
+        transform,
+        background},
+        $duration: fast
+      );
+      @media only screen and (min-width: ($breakpoint-small + 1)) {
+        opacity: 1;
+        visibility: visible;
+        position: absolute;
+        top: 0;
+        left: 0;
+        padding-top: 0;
+        transform: translateX(1rem) translateY(2.6rem);
+      }
+      @media only screen and (min-width: ($breakpoint-xx-large)) {
+        display: none;
+      }
+    }
+    .l-navigation--item-icon {
+      margin-right: $sph--small;
+    }
+  }
+  .p-panel.is-dark {
+    background: inherit;
+    .p-panel__header {
+      background-color: inherit;
+      @include vf-transition(
+        $property: #{width,
+        box-shadow,
+        background},
+        $duration: fast
+      );
+    }
     .p-panel__logo {
       color: $colors--dark-theme--text-default;
       text-decoration: none;
@@ -59,111 +129,5 @@
       .p-side-navigation__link {
       padding-left: 4rem;
     }
-  }
-  .l-navigation {
-    @include vf-transition(
-      $property: #{width,
-      box-shadow,
-      background},
-      $duration: fast
-    );
-    .p-panel.is-dark,
-    .p-panel.is-dark .p-panel__header.is-sticky {
-      @include vf-transition(
-        $property: #{width,
-        box-shadow,
-        background},
-        $duration: fast
-      );
-      background: inherit;
-    }
-    &.is-collapsed {
-      .l-navigation-collapse-toggle,
-      .l-navigation__controls {
-        i {
-          transform: rotate(180deg);
-        }
-      }
-    }
-    &:hover,
-    &:focus-within,
-    &.is-pinned {
-      .l-navigation__controls {
-        opacity: 1;
-        visibility: visible;
-      }
-    }
-
-    .l-navigation__controls {
-      margin-left: auto;
-      padding-top: 0.65rem;
-      button {
-        background-color: rgba(255, 255, 255, 0.05);
-      }
-
-      @media only screen and (min-width: ($breakpoint-small + 1)) {
-        opacity: 1;
-        visibility: visible;
-        position: absolute;
-        top: 0;
-        left: 0;
-        padding-top: 0;
-        transform: translateX(
-            #{$application-layout--side-nav-width-expanded - 3.5rem}
-          )
-          translateY(0.8rem);
-      }
-    }
-  }
-
-  .l-navigation .l-navigation__controls,
-  .l-navigation-expand {
-    z-index: $side-navigation-z-index + 1;
-    @include vf-transition(
-      $property: #{opacity,
-      visibility,
-      transform,
-      background},
-      $duration: fast
-    );
-  }
-
-  .l-navigation-expand {
-    position: absolute;
-    top: 0;
-    left: 0;
-    opacity: 1;
-    transform: translateX(
-        #{$application-layout--side-nav-width-collapsed - 1.5rem}
-      )
-      translateY(2.65rem);
-    i {
-      transform: rotate(180deg);
-    }
-    @media only screen and (min-width: ($breakpoint-large)) {
-      display: none;
-    }
-    @media only screen and (max-width: ($breakpoint-small)) {
-      display: none;
-    }
-  }
-  .l-navigation:hover,
-  .l-navigation:focus-within,
-  .l-navigation.is-pinned {
-    & + .l-navigation-expand {
-      visibility: hidden;
-      opacity: 0;
-      transform: translateX(
-          #{$application-layout--side-nav-width-expanded - 1.5rem}
-        )
-        translateY(0.8rem);
-    }
-  }
-
-  .p-panel.is-dark .p-panel__header {
-    background-color: inherit;
-  }
-  .l-navigation--item-icon {
-    margin-right: $sph--small;
   }
 }

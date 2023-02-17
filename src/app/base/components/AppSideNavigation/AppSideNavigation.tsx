@@ -1,10 +1,10 @@
-/* eslint-disable react/no-multi-comp */
-import { useEffect, useContext, useState, useMemo } from "react";
+import { useEffect, useContext, useMemo } from "react";
 
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
+import { useStorageState } from "react-storage-hooks";
 
 import AppSideNavCollapseToggle from "./AppSideNavCollapseToggle";
 import AppSideNavItems from "./AppSideNavItems";
@@ -97,8 +97,11 @@ const AppSideNavigation = (): JSX.Element => {
 
   const vaultIncomplete =
     unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
-
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useStorageState<boolean>(
+    localStorage,
+    "appSideNavIsCollapsed",
+    true
+  );
   useGlobalKeyShortcut("[", () => {
     setIsCollapsed(!isCollapsed);
   });
@@ -128,7 +131,7 @@ const AppSideNavigation = (): JSX.Element => {
         <div className={classNames("p-panel is-dark", `is-maas-${themeColor}`)}>
           <div className="p-panel__header">
             <NavigationBanner />
-            <div className="p-panel__controls u-nudge-down--small u-no-margin--top u-hide--large">
+            <div className="p-panel__controls u-nudge-down--small u-no-margin--top">
               <Button
                 appearance="base"
                 className="has-icon is-dark"
@@ -144,7 +147,7 @@ const AppSideNavigation = (): JSX.Element => {
       </header>
       <nav
         aria-label="main navigation"
-        className={classNames(`l-navigation is-maas-${themeColor}`, {
+        className={classNames(`l-navigation is-maas is-maas-${themeColor}`, {
           "is-collapsed": isCollapsed,
           "is-pinned": !isCollapsed,
         })}
@@ -178,13 +181,6 @@ const AppSideNavigation = (): JSX.Element => {
           </div>
         </div>
       </nav>
-      <div className="l-navigation-expand">
-        <AppSideNavCollapseToggle
-          className={`is-maas-${themeColor}`}
-          isCollapsed={isCollapsed}
-          setIsCollapsed={setIsCollapsed}
-        />
-      </div>
     </>
   );
 };
