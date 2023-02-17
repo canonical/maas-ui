@@ -1,10 +1,10 @@
-/* eslint-disable react/no-multi-comp */
-import { useEffect, useContext, useState, useMemo } from "react";
+import { useEffect, useContext, useMemo } from "react";
 
 import { Button } from "@canonical/react-components";
 import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation, useMatch } from "react-router-dom-v5-compat";
+import { useStorageState } from "react-storage-hooks";
 
 import AppSideNavCollapseToggle from "./AppSideNavCollapseToggle";
 import AppSideNavItems from "./AppSideNavItems";
@@ -97,8 +97,11 @@ const AppSideNavigation = (): JSX.Element => {
 
   const vaultIncomplete =
     unconfiguredControllers.length >= 1 && configuredControllers.length >= 1;
-
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useStorageState<boolean>(
+    localStorage,
+    "appSideNavIsCollapsed",
+    true
+  );
   useGlobalKeyShortcut("[", () => {
     setIsCollapsed(!isCollapsed);
   });

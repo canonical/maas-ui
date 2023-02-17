@@ -81,7 +81,7 @@ describe("GlobalSideNav", () => {
     });
   });
 
-  it("renders", () => {
+  it("displays navigation", () => {
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
@@ -367,5 +367,28 @@ describe("GlobalSideNav", () => {
     expect(
       screen.queryByRole("link", { name: "Virsh" })
     ).not.toBeInTheDocument();
+  });
+
+  it("is collapsed by default", () => {
+    renderWithBrowserRouter(<AppSideNavigation />, {
+      route: "/",
+      state,
+    });
+
+    expect(screen.getByRole("navigation")).toHaveClass("is-collapsed");
+  });
+
+  it("persists collapsed state", () => {
+    state.user.auth.user = null;
+    const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
+      route: "/",
+      state,
+    });
+
+    const primaryNavigation = screen.getByRole("navigation");
+    screen.getByRole("button", { name: "expand main navigation" }).click();
+    expect(primaryNavigation).toHaveClass("is-pinned");
+    rerender(<AppSideNavigation />);
+    expect(primaryNavigation).toHaveClass("is-pinned");
   });
 });
