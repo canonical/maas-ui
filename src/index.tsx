@@ -35,6 +35,7 @@ if (rootNode) {
 }
 
 // log the maas-ui version to the console
+// eslint-disable-next-line no-console
 console.info(
   `${packageInfo.name} ${packageInfo.version} ${
     process.env.REACT_APP_GIT_SHA ?? ""

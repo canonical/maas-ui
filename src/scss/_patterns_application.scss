@@ -18,6 +18,13 @@
   .l-aside.is-collapsed {
     visibility: hidden;
   }
+  .l-navigation-bar.is-pinned {
+    width: 100%;
+    display: block;
+    visibility: visible;
+    grid-area: navbar;
+    height: 3.5rem;
+  }
   .l-aside .formik-form-buttons {
     padding: $spv--small $spv--small;
     flex-direction: column;
