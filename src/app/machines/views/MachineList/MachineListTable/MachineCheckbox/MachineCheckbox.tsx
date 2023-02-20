@@ -7,6 +7,8 @@ import TableCheckbox from "app/machines/components/TableCheckbox";
 import { Checked } from "app/machines/components/TableCheckbox/TableCheckbox";
 import machineSelectors from "app/store/machine/selectors";
 import type {
+  FetchGroupKey,
+  FilterGroupOptionType,
   Machine,
   MachineMeta,
   MachineStateListGroup,
@@ -21,28 +23,22 @@ type Props = {
   machines?: Machine[];
 };
 
-const rangeSelectMachines = ({
+export const getSelectedMachinesRange = ({
   systemId,
-  checked,
   machines,
   selected,
 }: {
   systemId: string;
-  checked: boolean;
   machines: Machine[];
   selected: SelectedMachines | null;
-}) => {
+}): {
+  items?: string[] | undefined;
+  groups?: (FilterGroupOptionType | null)[] | undefined;
+  grouping?: FetchGroupKey | null | undefined;
+} => {
   let newSelected =
     !selected || "filter" in selected ? { items: [] } : cloneDeep(selected);
   newSelected.items = newSelected.items ?? [];
-
-  if (!checked && newSelected.items.includes(systemId)) {
-    // filter out unchecked item
-    newSelected.items = newSelected.items.filter(
-      (selectedId) => selectedId !== systemId
-    );
-    return newSelected;
-  }
 
   const previousChecked = newSelected.items.at(-1);
   if (!previousChecked) {
@@ -62,7 +58,7 @@ const rangeSelectMachines = ({
   const endIndex = Math.max(currentIndex, previousIndex);
 
   // Check if the resulting indexes make a valid range for selection
-  if (startIndex > -1 && endIndex > -1 && checked) {
+  if (startIndex > -1 && endIndex > -1) {
     // loop through the machine list, add the ids that have not been added already
     for (let i = startIndex; i <= endIndex; i++) {
       if (newSelected.items.includes(machines[i].system_id)) {
@@ -106,10 +102,10 @@ const MachineCheckbox = ({
       isChecked={isChecked ? Checked.Checked : Checked.Unchecked}
       isDisabled={allSelected || groupSelected}
       onGenerateSelected={(checked, isRange) => {
-        if (isRange && !groupValue) {
-          return rangeSelectMachines({
+        if (checked && isRange && !groupValue) {
+          return getSelectedMachinesRange({
             systemId,
-            checked,
+            // checked,
             machines: machines ?? [],
             selected,
           });
