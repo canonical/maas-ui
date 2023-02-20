@@ -41,6 +41,7 @@ const AppSideNavItemGroup = ({
     }
     return false;
   }, [group, path]);
+
   return (
     <>
       <li

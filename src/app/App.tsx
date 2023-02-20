@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import packageInfo from "../../package.json";
 
-import Header from "./base/components/Header";
+import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import ThemePreviewContext from "./base/theme-preview-context";
 import { MAAS_UI_ID } from "./constants";
 
@@ -126,10 +126,17 @@ export const App = (): JSX.Element => {
       <ThemePreviewContext.Provider value={{ theme, setTheme }}>
         {connected && authLoaded && authenticated ? (
           <AppSideNavigation />
-        ) : null}
+        ) : (
+          <header className="l-navigation-bar is-pinned">
+            <div className="p-panel is-dark is-maas-default">
+              <div className="p-panel__header">
+                <NavigationBanner />
+              </div>
+            </div>
+          </header>
+        )}
 
         <main className="l-main">
-          {!connected || !authLoaded || !authenticated ? <Header /> : null}
           <div id="main-content">{content}</div>
           <hr />
           <Footer />
