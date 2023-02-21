@@ -74,6 +74,7 @@ module.exports = {
             },
           },
         ],
+        "no-console": "warn",
         "react/forbid-component-props": [
           "error",
           {

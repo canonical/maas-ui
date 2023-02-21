@@ -40,3 +40,7 @@ export const COLOURS = {
   POSITIVE_MID: "#4DAB4D",
   POSITIVE: "#0E8420",
 } as const;
+
+// global keyboard shortcuts
+export const KEYBOARD_SHORTCUTS = ["["] as const;
+export type KeyboardShortcut = (typeof KEYBOARD_SHORTCUTS)[number];

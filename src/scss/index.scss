@@ -87,7 +87,6 @@
 @import "~app/base/components/FilterAccordion";
 @import "~app/base/components/FormCard";
 @import "~app/base/components/FormikFormButtons";
-@import "~app/base/components/Header";
 @import "~app/base/components/LabelledList";
 @import "~app/base/components/Login";
 @import "~app/base/components/MachineSelectTable";
@@ -127,7 +126,6 @@
 @include FormCard;
 @include FormikFormButtons;
 @include HardwareCard;
-@include Header;
 @include LabelledList;
 @include Login;
 @include MachineSelectTable;
@@ -308,9 +306,3 @@
 // tags
 @import "~app/tags/components/TagsHeader/DeleteTagForm/DeleteTagFormWarnings/_index.scss";
 @include DeleteTagFormWarnings;
-
-#maas-ui {
-  min-height: 100vh;
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-}

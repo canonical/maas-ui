@@ -16,6 +16,7 @@ import CoresColumn from "./CoresColumn";
 import DisksColumn from "./DisksColumn";
 import FabricColumn from "./FabricColumn";
 import GroupCheckbox from "./GroupCheckbox";
+import MachineListDisplayCount from "./MachineListDisplayCount";
 import MachineListPagination from "./MachineListPagination";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
@@ -849,6 +850,22 @@ export const MachineListTable = ({
 
   return (
     <>
+      {machineCount ? (
+        <div className="u-flex--between u-flex--align-center">
+          <MachineListDisplayCount
+            currentPage={currentPage}
+            machineCount={machineCount}
+            pageSize={pageSize}
+          />
+          <MachineListPagination
+            currentPage={currentPage}
+            itemsPerPage={pageSize}
+            machineCount={machineCount}
+            machinesLoading={machinesLoading}
+            paginate={setCurrentPage}
+          />
+        </div>
+      ) : null}
       <MainTable
         aria-label={machinesLoading ? Label.Loading : Label.Machines}
         className={classNames("p-table-expanding--light", "machine-list", {
@@ -859,13 +876,6 @@ export const MachineListTable = ({
         headers={filterColumns(headers, hiddenColumns, showActions)}
         rows={machinesLoading ? skeletonRows : rows}
         {...props}
-      />
-      <MachineListPagination
-        currentPage={currentPage}
-        itemsPerPage={pageSize}
-        machineCount={machineCount}
-        machinesLoading={machinesLoading}
-        paginate={setCurrentPage}
       />
     </>
   );

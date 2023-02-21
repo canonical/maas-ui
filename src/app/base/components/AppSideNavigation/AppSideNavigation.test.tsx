@@ -16,6 +16,8 @@ import {
   configState as configStateFactory,
   controller as controllerFactory,
   controllerState as controllerStateFactory,
+  pod as podFactory,
+  podState as podStateFactory,
   rootState as rootStateFactory,
   user as userFactory,
   userState as userStateFactory,
@@ -56,6 +58,15 @@ describe("GlobalSideNav", () => {
       }),
       controller: controllerStateFactory({
         items: [controllerFactory()],
+        loaded: true,
+      }),
+      pod: podStateFactory({
+        loaded: true,
+        items: [
+          podFactory({
+            type: "virsh",
+          }),
+        ],
       }),
       user: userStateFactory({
         auth: authStateFactory({
@@ -70,7 +81,7 @@ describe("GlobalSideNav", () => {
     });
   });
 
-  it("renders", () => {
+  it("displays navigation", () => {
     renderWithBrowserRouter(<AppSideNavigation />, { route: "/", state });
 
     expect(screen.getByRole("navigation")).toBeInTheDocument();
@@ -339,5 +350,45 @@ describe("GlobalSideNav", () => {
     await waitFor(() =>
       expect(history.location.pathname).toBe(urls.intro.images)
     );
+  });
+
+  it("hides the 'Virsh' link if the user does not have any Virsh KVM hosts", () => {
+    const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
+      route: "/machines",
+      state,
+    });
+
+    expect(screen.getByRole("link", { name: "Virsh" })).toBeInTheDocument();
+
+    state.pod.items = [];
+
+    rerender(<AppSideNavigation />);
+
+    expect(
+      screen.queryByRole("link", { name: "Virsh" })
+    ).not.toBeInTheDocument();
+  });
+
+  it("is collapsed by default", () => {
+    renderWithBrowserRouter(<AppSideNavigation />, {
+      route: "/",
+      state,
+    });
+
+    expect(screen.getByRole("navigation")).toHaveClass("is-collapsed");
+  });
+
+  it("persists collapsed state", () => {
+    state.user.auth.user = null;
+    const { rerender } = renderWithBrowserRouter(<AppSideNavigation />, {
+      route: "/",
+      state,
+    });
+
+    const primaryNavigation = screen.getByRole("navigation");
+    screen.getByRole("button", { name: "expand main navigation" }).click();
+    expect(primaryNavigation).toHaveClass("is-pinned");
+    rerender(<AppSideNavigation />);
+    expect(primaryNavigation).toHaveClass("is-pinned");
   });
 });

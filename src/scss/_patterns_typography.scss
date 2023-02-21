@@ -5,6 +5,11 @@
     margin-bottom: $sp-unit * 0.25;
     text-transform: uppercase;
   }
+  .is-dark {
+    .p-heading--small {
+      color: $color-light;
+    }
+  }
 
   .p-text--paragraph {
     @extend %paragraph;
