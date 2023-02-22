@@ -105,7 +105,6 @@ const MachineCheckbox = ({
         if (checked && isRange && !groupValue) {
           return getSelectedMachinesRange({
             systemId,
-            // checked,
             machines: machines ?? [],
             selected,
           });
