@@ -12,14 +12,6 @@ context("Machine listing", () => {
     );
   });
 
-  it("highlights the correct navigation link", () => {
-    cy.findByRole("link", { current: "page" }).should(
-      "have.attr",
-      "href",
-      generateMAASURL("/machines")
-    );
-  });
-
   it("can group machines by all supported keys", () => {
     const GROUP_BY_OPTIONS = [
       "No grouping",

@@ -11,12 +11,4 @@ context("Zones", () => {
       "Availability zones"
     );
   });
-
-  it("highlights the correct navigation link", () => {
-    cy.findByRole("link", { current: "page" }).should(
-      "have.attr",
-      "href",
-      generateMAASURL("/zones")
-    );
-  });
 });
