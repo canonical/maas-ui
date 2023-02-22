@@ -859,16 +859,18 @@ export const MachineListTable = ({
             machineCount={machineCount}
             pageSize={pageSize}
           />
-          <MachineListPagination
-            currentPage={currentPage}
-            itemsPerPage={pageSize}
-            machineCount={machineCount}
-            machinesLoading={machinesLoading}
-            paginate={setCurrentPage}
-          />
-          {setPageSize ? (
-            <PageSizeSelect pageSize={pageSize} setPageSize={setPageSize} />
-          ) : null}
+          <span className="u-flex--end">
+            <MachineListPagination
+              currentPage={currentPage}
+              itemsPerPage={pageSize}
+              machineCount={machineCount}
+              machinesLoading={machinesLoading}
+              paginate={setCurrentPage}
+            />
+            {setPageSize ? (
+              <PageSizeSelect pageSize={pageSize} setPageSize={setPageSize} />
+            ) : null}
+          </span>
         </div>
       ) : null}
       <MainTable
