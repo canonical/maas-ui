@@ -853,7 +853,7 @@ export const MachineListTable = ({
   return (
     <>
       {machineCount ? (
-        <div className="u-flex--between u-flex--align-center">
+        <div className="u-flex--between u-flex--align-center u-flex--wrap">
           <MachineListDisplayCount
             currentPage={currentPage}
             machineCount={machineCount}
