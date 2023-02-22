@@ -31,6 +31,7 @@ const PageSizeSelect = ({ pageSize, setPageSize }: Props): JSX.Element => {
   return (
     <Select
       aria-label={Labels.ItemsPerPage}
+      className="u-no-margin"
       defaultValue={pageSize}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
         setPageSize(parseInt(e.target.value));
