@@ -7,6 +7,10 @@
       border: 0;
     }
 
+    .p-pagination__link--next {
+      margin-right: $spv--large * 2;
+    }
+
     .p-pagination__input {
       margin: 0 $spv--small;
       appearance: none;
