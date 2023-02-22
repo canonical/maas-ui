@@ -1,0 +1,24 @@
+@mixin MachineListPagination {
+
+  .p-pagination--items {
+
+    .p-button {
+      margin: 0;
+      border: 0;
+    }
+
+    .p-pagination__input {
+      margin: 0 $spv--small;
+      appearance: none;
+      width: 1.625rem;
+      min-width: 0;
+    }
+
+    // required to get rid of buttons/arrows while keeping number-only input
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      appearance: none;
+    }
+  }
+
+}
