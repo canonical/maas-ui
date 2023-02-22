@@ -44,7 +44,9 @@ test("machines list loads", async ({ page }) => {
   await page.getByLabel("Search").type("doesnotexist");
   await expect(page.getByRole("grid", { name: /Loading/i })).not.toBeVisible();
   await expect(
-    page.getByText(/No machines match the search criteria/)
+    page.getByRole("status", {
+      name: /No machines match the search criteria/i,
+    })
   ).toBeVisible();
   // expect an additional single machine.list request
   await expect(machineListRequests.length).toBe(2);

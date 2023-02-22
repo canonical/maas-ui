@@ -872,7 +872,11 @@ export const MachineListTable = ({
           "machine-list--grouped": grouping,
           "machine-list--loading": machinesLoading,
         })}
-        emptyStateMsg={!machinesLoading && filter ? Label.NoResults : null}
+        emptyStateMsg={
+          !machinesLoading && filter ? (
+            <div role="status">{Label.NoResults}</div>
+          ) : null
+        }
         headers={filterColumns(headers, hiddenColumns, showActions)}
         rows={machinesLoading ? skeletonRows : rows}
         {...props}
