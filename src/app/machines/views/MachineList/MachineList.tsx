@@ -80,7 +80,7 @@ const MachineList = ({
     "hiddenGroups",
     []
   );
-  const [storedPageSize] = useStorageState<number>(
+  const [storedPageSize, setStoredPageSize] = useStorageState<number>(
     localStorage,
     "machineListPageSize",
     DEFAULT_PAGE_SIZE
@@ -150,6 +150,7 @@ const MachineList = ({
         pageSize={pageSize}
         setCurrentPage={setCurrentPage}
         setHiddenGroups={setHiddenGroups}
+        setPageSize={setStoredPageSize}
         setSortDirection={setSortDirection}
         setSortKey={setSortKey}
         sortDirection={sortDirection}
