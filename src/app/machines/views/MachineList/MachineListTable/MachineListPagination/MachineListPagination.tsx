@@ -52,7 +52,7 @@ const MachineListPagination = ({
           }
           type="number"
         />{" "}
-        <strong> of {totalPages}</strong>
+        <strong className="u-no-wrap"> of {totalPages}</strong>
         <Button
           className="p-pagination__link--next"
           disabled={props.currentPage === totalPages}
