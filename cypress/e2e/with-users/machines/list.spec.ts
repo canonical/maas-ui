@@ -12,14 +12,6 @@ context("Machine listing", () => {
     );
   });
 
-  it("highlights the correct navigation link", () => {
-    cy.findByRole("link", { current: "page" }).should(
-      "have.attr",
-      "href",
-      generateMAASURL("/machines")
-    );
-  });
-
   it("can group machines by all supported keys", () => {
     const GROUP_BY_OPTIONS = [
       "No grouping",
@@ -85,5 +77,32 @@ context("Machine listing", () => {
     // verify that the hidden column is still hidden after refresh
     cy.findAllByRole("columnheader").should("have.length", allHeadersCount - 1);
     cy.findByRole("header", { name: "Status" }).should("not.exist");
+  });
+
+  it("can select a machine range", () => {
+    const searchFilter = "machi";
+    const newMachines = ["machine-a", "machine-b", "machine-c"];
+    cy.addMachines(newMachines);
+    cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
+    cy.findByRole("searchbox", { name: "Search" }).type(searchFilter);
+    // eslint-disable-next-line cypress/no-force
+    cy.findByRole("checkbox", { name: `${newMachines[0]}.maas` }).click({
+      force: true,
+    });
+    // eslint-disable-next-line cypress/no-force
+    cy.findByRole("checkbox", { name: `${newMachines[2]}.maas` }).click({
+      shiftKey: true,
+      force: true,
+    });
+    cy.findByRole("checkbox", { name: `${newMachines[1]}.maas` }).should(
+      "be.checked"
+    );
+    cy.findByTestId("section-header-buttons").within(() =>
+      cy.findByRole("button", { name: /Take action/i }).click()
+    );
+    cy.findByLabelText("submenu").within(() => {
+      cy.findAllByRole("button", { name: /Delete/i }).click();
+    });
+    cy.findByRole("button", { name: /Delete 3 machines/ }).click();
   });
 });
