@@ -35,6 +35,7 @@ const MachineListPagination = ({
     <nav aria-label={Label.Pagination} className="p-pagination">
       <span className="u-flex--align-baseline p-pagination--items">
         <Button
+          aria-label="Previous page"
           className="p-pagination__link--previous"
           disabled={props.currentPage === 1}
           onClick={() => props.paginate(props.currentPage - 1)}
@@ -54,6 +55,7 @@ const MachineListPagination = ({
         />{" "}
         <strong className="u-no-wrap"> of {totalPages}</strong>
         <Button
+          aria-label="Next page"
           className="p-pagination__link--next"
           disabled={props.currentPage === totalPages}
           onClick={() => props.paginate(props.currentPage + 1)}

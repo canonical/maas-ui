@@ -712,7 +712,7 @@ describe("MachineList", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find(".p-pagination__link--next").simulate("click");
+    wrapper.find("Button.p-pagination__link--next").simulate("click");
     const expected = machineActions.fetch("123456", {
       page_number: 2,
     });
