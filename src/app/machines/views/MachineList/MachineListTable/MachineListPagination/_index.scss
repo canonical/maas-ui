@@ -14,8 +14,9 @@
     .p-pagination__input {
       margin: 0 $spv--small;
       appearance: none;
-      width: 1.625rem;
+      width: 3rem;
       min-width: 0;
+      text-align: center;
     }
 
     // required to get rid of buttons/arrows while keeping number-only input
