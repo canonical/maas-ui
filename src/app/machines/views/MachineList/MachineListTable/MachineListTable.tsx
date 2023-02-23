@@ -327,6 +327,7 @@ const generateRows = ({
           callId={callId}
           data-testid="fqdn-column"
           groupValue={groupValue}
+          machines={machines}
           showActions={showActions}
           showMAC={showMAC}
           systemId={row.system_id}

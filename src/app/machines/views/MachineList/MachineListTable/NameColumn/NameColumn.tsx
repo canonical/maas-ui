@@ -24,6 +24,7 @@ type Props = {
   showActions?: boolean;
   showMAC?: boolean;
   systemId: Machine[MachineMeta.PK];
+  machines?: Machine[];
 };
 
 const generateFQDN = (machine: Machine, machineURL: string) => {
@@ -126,6 +127,7 @@ export const NameColumn = ({
   showActions,
   showMAC,
   systemId,
+  machines,
 }: Props): JSX.Element | null => {
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
@@ -148,6 +150,7 @@ export const NameColumn = ({
             callId={callId}
             groupValue={groupValue}
             label={primaryRow}
+            machines={machines ?? []}
             systemId={systemId}
           />
         ) : (

@@ -47,21 +47,21 @@ context("Settings - General - Theme", () => {
     cy.findByRole("radio", { name: "Red" }).click();
     cy.reload(true);
 
-    cy.get(".l-navigation").should("have.class", "l-navigation--default");
+    cy.get(".l-navigation").should("have.class", "is-maas-default");
   });
 
   it("reverts the theme choice if the user clicks cancel", () => {
     cy.findByRole("radio", { name: "Red" }).click();
     cy.findByRole("button", { name: "Cancel" }).click();
 
-    cy.get(".l-navigation").should("have.class", "l-navigation--default");
+    cy.get(".l-navigation").should("have.class", "is-maas-default");
   });
 
   it("reverts the theme choice if the user navigates to another page", () => {
     cy.findByRole("radio", { name: "Red" }).click();
     cy.findByRole("link", { name: "Deploy" }).click();
 
-    cy.get(".l-navigation").should("have.class", "l-navigation--default");
+    cy.get(".l-navigation").should("have.class", "is-maas-default");
   });
 });
 

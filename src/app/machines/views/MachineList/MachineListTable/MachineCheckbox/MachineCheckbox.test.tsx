@@ -1,6 +1,6 @@
 import configureStore from "redux-mock-store";
 
-import MachineCheckbox from "./MachineCheckbox";
+import MachineCheckbox, { getSelectedMachinesRange } from "./MachineCheckbox";
 
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
@@ -9,6 +9,7 @@ import {
   machineStateList as machineStateListFactory,
   machineState as machineStateFactory,
   machineStateListGroup as machineStateListGroupFactory,
+  machine as machineFactory,
 } from "testing/factories";
 import { userEvent, screen, renderWithMockStore } from "testing/utils";
 
@@ -163,4 +164,41 @@ it("can dispatch an action to unselect a machine", async () => {
   expect(
     store.getActions().find((action) => action.type === expected.type)
   ).toStrictEqual(expected);
+});
+
+describe("getSelectedMachinesRange tests", () => {
+  const systemIds = [
+    "system_id_1",
+    "system_id_2",
+    "system_id_3",
+    "system_id_4",
+  ];
+  const machines = systemIds.map((id) => machineFactory({ system_id: id }));
+
+  it("getSelectedMachinesRange selects a range of machines", () => {
+    const selectedMachines = { groups: [""], items: [systemIds[0]] };
+    const systemId = systemIds.at(-1)!;
+
+    const newSelected = getSelectedMachinesRange({
+      systemId,
+      machines,
+      selected: selectedMachines,
+    });
+
+    expect(newSelected.items?.sort()).toStrictEqual(systemIds.sort());
+  });
+
+  it("Selects only one machine if there's no previously selected machine", () => {
+    const systemId = systemIds[0];
+    const selectedMachines = { groups: [""], items: [] };
+
+    const newSelected = getSelectedMachinesRange({
+      systemId,
+      machines,
+      selected: selectedMachines,
+    });
+    const { items } = newSelected;
+    expect(items?.length).toBe(1);
+    expect(items![0]).toBe(systemId);
+  });
 });
