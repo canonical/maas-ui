@@ -20,6 +20,7 @@ export const hasMetadata = (binaryStr: string): boolean => {
       }
     });
   } catch {
+    // eslint-disable-next-line no-console
     console.error("Unable to parse script for metadata.");
     hasMeta = false;
   }
