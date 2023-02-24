@@ -22,12 +22,10 @@ export const MachineListDisplayCount = ({
   };
 
   return (
-    <>
-      <strong>
-        Showing {getCurrentPageDisplayedMachineCount()} out of {machineCount}{" "}
-        machines
-      </strong>
-    </>
+    <strong className="machine-list--display-count">
+      Showing {getCurrentPageDisplayedMachineCount()} out of {machineCount}{" "}
+      machines
+    </strong>
   );
 };
 

@@ -60,6 +60,12 @@
     align-items: center !important;
   }
 
+  .u-flex--align-end {
+    @extend %display-flex;
+    align-items: flex-end !important;
+  }
+
+
   .u-flex--between {
     @extend %display-flex;
     justify-content: space-between !important;

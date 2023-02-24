@@ -20,6 +20,7 @@ import MachineListDisplayCount from "./MachineListDisplayCount";
 import MachineListPagination from "./MachineListPagination";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
+import PageSizeSelect from "./PageSizeSelect";
 import PoolColumn from "./PoolColumn";
 import PowerColumn from "./PowerColumn";
 import RamColumn from "./RamColumn";
@@ -68,6 +69,7 @@ type Props = {
   pageSize: number;
   setCurrentPage: (currentPage: number) => void;
   setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
+  setPageSize?: (pageSize: number) => void;
   showActions?: boolean;
   sortDirection: ValueOf<typeof SortDirection>;
   sortKey: FetchGroupKey | null;
@@ -521,6 +523,7 @@ export const MachineListTable = ({
   pageSize,
   setCurrentPage,
   setHiddenGroups,
+  setPageSize,
   showActions = true,
   sortDirection,
   sortKey,
@@ -851,19 +854,26 @@ export const MachineListTable = ({
   return (
     <>
       {machineCount ? (
-        <div className="u-flex--between u-flex--align-center">
+        <div className="u-flex--between u-flex--align-end u-flex--wrap">
+          <hr />
           <MachineListDisplayCount
             currentPage={currentPage}
             machineCount={machineCount}
             pageSize={pageSize}
           />
-          <MachineListPagination
-            currentPage={currentPage}
-            itemsPerPage={pageSize}
-            machineCount={machineCount}
-            machinesLoading={machinesLoading}
-            paginate={setCurrentPage}
-          />
+          <span className="u-flex--end">
+            <MachineListPagination
+              currentPage={currentPage}
+              itemsPerPage={pageSize}
+              machineCount={machineCount}
+              machinesLoading={machinesLoading}
+              paginate={setCurrentPage}
+            />
+            {setPageSize ? (
+              <PageSizeSelect pageSize={pageSize} setPageSize={setPageSize} />
+            ) : null}
+          </span>
+          <hr />
         </div>
       ) : null}
       <MainTable
