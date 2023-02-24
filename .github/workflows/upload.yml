@@ -10,9 +10,6 @@ jobs:
     env:
       PACKAGE_NAME: maas-ui-${{ github.sha }}.tar.gz
       REACT_APP_GIT_SHA: ${{ github.sha }}
-    strategy:
-      matrix:
-        node-version: [16.x]
     steps:
       - uses: actions/checkout@v3
       - name: Get branch name
@@ -23,17 +20,13 @@ jobs:
         with:
           path: "**/node_modules"
           key: ${{ runner.os }}-modules-${{ hashFiles('**/yarn.lock') }}
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Install
+      - name: Install dotrun
+        uses: canonical/install-dotrun@main
+      - name: Install dependencies
         if: steps.yarn-cache.outputs.cache-hit != 'true'
-        run: CYPRESS_INSTALL_BINARY=0 yarn install
-      - name: Build
-        run: REACT_APP_GIT_SHA=${{env.REACT_APP_GIT_SHA}} yarn build
-        env:
-          CI: false
+        run: dotrun --env CYPRESS_INSTALL_BINARY=0 install
+      - name: Build assets
+        run: dotrun --env CI=false --env REACT_APP_GIT_SHA=${{env.REACT_APP_GIT_SHA}} build
       - name: Compress
         run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./ && ls -hs ../${{env.PACKAGE_NAME}}
       - name: Install upload-assets snap
