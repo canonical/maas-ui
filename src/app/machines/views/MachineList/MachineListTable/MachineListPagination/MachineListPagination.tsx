@@ -62,6 +62,7 @@ const MachineListPagination = ({
         </Button>
         <strong>Page </strong>{" "}
         <Input
+          aria-label="page number"
           className="p-pagination__input"
           defaultValue={props.currentPage}
           onChange={(e) => {
