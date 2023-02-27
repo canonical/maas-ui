@@ -120,8 +120,9 @@ const GeneralForm = (): JSX.Element => {
             Use MAAS name and unicode emoji(s) to describe your MAAS instance.{" "}
             <br />
             <br />
-            Examples: <br />⛔ maas-prod <br />
-            my-maas ⚠️ no-deploys
+            Examples: <br />
+            US-west-2🇺🇸MAAS-prod <br />
+            my-maas❗no-deploys
           </>
         }
         label="MAAS name"
