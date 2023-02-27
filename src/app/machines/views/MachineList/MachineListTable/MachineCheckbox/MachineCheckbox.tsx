@@ -7,9 +7,12 @@ import TableCheckbox from "app/machines/components/TableCheckbox";
 import { Checked } from "app/machines/components/TableCheckbox/TableCheckbox";
 import machineSelectors from "app/store/machine/selectors";
 import type {
+  FetchGroupKey,
+  FilterGroupOptionType,
   Machine,
   MachineMeta,
   MachineStateListGroup,
+  SelectedMachines,
 } from "app/store/machine/types";
 
 type Props = {
@@ -17,6 +20,56 @@ type Props = {
   label: ReactNode;
   groupValue?: MachineStateListGroup["value"];
   systemId: Machine[MachineMeta.PK];
+  machines?: Machine[];
+};
+
+export const getSelectedMachinesRange = ({
+  systemId,
+  machines,
+  selected,
+}: {
+  systemId: string;
+  machines: Machine[];
+  selected: SelectedMachines | null;
+}): {
+  items?: string[] | undefined;
+  groups?: (FilterGroupOptionType | null)[] | undefined;
+  grouping?: FetchGroupKey | null | undefined;
+} => {
+  let newSelected =
+    !selected || "filter" in selected ? { items: [] } : cloneDeep(selected);
+  newSelected.items = newSelected.items ?? [];
+
+  const previousChecked = newSelected.items.at(-1);
+  if (!previousChecked) {
+    // if there's no previous selected item, select the clicked item
+    newSelected.items.push(systemId);
+    return newSelected;
+  }
+  const currentIndex = machines.findIndex(
+    (machine) => machine.system_id === systemId
+  );
+  const previousIndex = machines.findIndex(
+    (machine) => machine.system_id === previousChecked
+  );
+
+  // Get the start and end points of the selected range
+  const startIndex = Math.min(currentIndex, previousIndex);
+  const endIndex = Math.max(currentIndex, previousIndex);
+
+  // Check if the resulting indexes make a valid range for selection
+  if (startIndex > -1 && endIndex > -1) {
+    // loop through the machine list, add the ids that have not been added already
+    for (let i = startIndex; i <= endIndex; i++) {
+      if (newSelected.items.includes(machines[i].system_id)) {
+        continue;
+      } else {
+        newSelected.items.push(machines[i].system_id);
+      }
+    }
+  }
+
+  return newSelected;
 };
 
 const MachineCheckbox = ({
@@ -24,6 +77,7 @@ const MachineCheckbox = ({
   label,
   groupValue,
   systemId,
+  machines,
 }: Props): JSX.Element => {
   const selected = useSelector(machineSelectors.selectedMachines);
   const allSelected = !!selected && "filter" in selected;
@@ -47,7 +101,15 @@ const MachineCheckbox = ({
       inputLabel={label}
       isChecked={isChecked ? Checked.Checked : Checked.Unchecked}
       isDisabled={allSelected || groupSelected}
-      onGenerateSelected={(checked) => {
+      onGenerateSelected={(checked, isRange) => {
+        if (checked && isRange && !groupValue) {
+          return getSelectedMachinesRange({
+            systemId,
+            machines: machines ?? [],
+            selected,
+          });
+        }
+
         let newSelected =
           !selected || "filter" in selected
             ? { items: [] }

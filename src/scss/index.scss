@@ -243,9 +243,13 @@
 @import "~app/machines/views/MachineDetails/MachineSummary";
 @import "~app/machines/views/MachineDetails/MachineSummary/NumaCard";
 @import "~app/machines/views/MachineList";
+@import "~app/machines/views/MachineList/MachineListTable/MachineListDisplayCount";
+@import "~app/machines/views/MachineList/MachineListTable/MachineListPagination";
 @include CloneFormFields;
 @include CloneResults;
 @include MachineList;
+@include MachineListDisplayCount;
+@include MachineListPagination;
 @include MachineHeader;
 @include MachineSummary;
 @include MarkBrokenFormFields;
