@@ -870,7 +870,11 @@ export const MachineListTable = ({
               paginate={setCurrentPage}
             />
             {setPageSize ? (
-              <PageSizeSelect pageSize={pageSize} setPageSize={setPageSize} />
+              <PageSizeSelect
+                pageSize={pageSize}
+                paginate={setCurrentPage}
+                setPageSize={setPageSize}
+              />
             ) : null}
           </span>
           <hr />
