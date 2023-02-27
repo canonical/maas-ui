@@ -121,8 +121,8 @@ const GeneralForm = (): JSX.Element => {
             <br />
             <br />
             Examples: <br />
-            US-west-2🇺🇸MAAS-prod <br />
-            my-maas❗no-deploys
+            US-west-2 🇺🇸 MAAS-prod <br />
+            my-maas ❗ no-deploys
           </>
         }
         label="MAAS name"
