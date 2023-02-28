@@ -1,7 +1,9 @@
 import { Select } from "@canonical/react-components";
+import type { PaginationProps } from "@canonical/react-components";
 
 type Props = {
   pageSize: number;
+  paginate: PaginationProps["paginate"];
   setPageSize: (pageSize: number) => void;
 };
 
@@ -27,13 +29,18 @@ const groupOptions = [
   },
 ];
 
-const PageSizeSelect = ({ pageSize, setPageSize }: Props): JSX.Element => {
+const PageSizeSelect = ({
+  pageSize,
+  paginate,
+  setPageSize,
+}: Props): JSX.Element => {
   return (
     <Select
       aria-label={Labels.ItemsPerPage}
       className="u-no-margin"
       defaultValue={pageSize}
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+        paginate(1);
         setPageSize(parseInt(e.target.value));
       }}
       options={groupOptions}
