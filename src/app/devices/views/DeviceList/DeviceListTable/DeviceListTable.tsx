@@ -5,6 +5,7 @@ import OwnerColumn from "./OwnerColumn";
 
 import DoubleRow from "app/base/components/DoubleRow";
 import GroupCheckbox from "app/base/components/GroupCheckbox";
+import MacAddressDisplay from "app/base/components/MacAddressDisplay";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import TableHeader from "app/base/components/TableHeader";
 import { useTableSort } from "app/base/hooks";
@@ -84,7 +85,11 @@ const generateRows = (
                 />
               }
               primaryTitle={fqdn}
-              secondary={<span data-testid="mac-display">{macDisplay}</span>}
+              secondary={
+                <MacAddressDisplay data-testid="mac-display">
+                  {macDisplay}
+                </MacAddressDisplay>
+              }
               secondaryClassName="u-nudge--secondary-row"
               secondaryTitle={[primary_mac, ...extra_macs].join(", ")}
             />
