@@ -8,6 +8,7 @@ import { Link } from "react-router-dom-v5-compat";
 import MachineCheckbox from "../MachineCheckbox";
 
 import DoubleRow from "app/base/components/DoubleRow";
+import MacAddressDisplay from "app/base/components/MacAddressDisplay";
 import NonBreakingSpace from "app/base/components/NonBreakingSpace";
 import urls from "app/base/urls";
 import machineSelectors from "app/store/machine/selectors";
@@ -112,7 +113,7 @@ const generateMAC = (machine: Machine, machineURL: string) => {
   return (
     <>
       <Link title={machine.fqdn} to={machineURL}>
-        {machine.pxe_mac}
+        <MacAddressDisplay>{machine.pxe_mac}</MacAddressDisplay>
       </Link>
       {machine.extra_macs && machine.extra_macs.length > 0 ? (
         <Link to={machineURL}> (+{machine.extra_macs.length})</Link>

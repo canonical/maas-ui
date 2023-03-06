@@ -65,7 +65,6 @@
     align-items: flex-end !important;
   }
 
-
   .u-flex--between {
     @extend %display-flex;
     justify-content: space-between !important;
@@ -203,6 +202,10 @@
 
   .u-upper-case--first:first-letter {
     text-transform: capitalize !important;
+  }
+
+  .u-text--monospace {
+    font-family: unquote($font-monospace) !important;
   }
 
   .u-no-line-height {
