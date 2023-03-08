@@ -682,7 +682,7 @@ export const useFetchMachinesWithGroupingUpdates = (
     machineSelectors.listNeedsUpdate(state, initialCallId)
   );
   const initialListIds = useSelector((state: RootState) =>
-    machineSelectors.listIds(state.machine, initialCallId)
+    machineSelectors.listIds(state, initialCallId)
   );
   const shouldFetchUpdates = !!needsUpdate;
   const optionsWithoutPagination = useMemo(
