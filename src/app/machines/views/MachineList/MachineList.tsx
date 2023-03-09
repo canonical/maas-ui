@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 import type { ValueOf } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -60,21 +60,27 @@ const MachineList = ({
     "machineListHiddenColumns",
     []
   );
-  const handleSetGrouping = (group: FetchGroupKey | null) => {
-    setStoredGrouping(group);
-    // clear selected machines on grouping change
-    // we cannot reliably preserve the selected state for individual machines
-    // as we are only fetching information about a group from the back-end
-    dispatch(machineActions.setSelectedMachines(null));
-  };
-  const handleSetSearchFilter = (filter: string) => {
-    setSearchFilter(filter);
-    // clear selected machines on filters change
-    // we cannot reliably preserve the selected state for groups of machines
-    // as we are only fetching information about a group from the back-end
-    // and the contents of a group may change when different filters are applied
-    dispatch(machineActions.setSelectedMachines(null));
-  };
+  const handleSetGrouping = useCallback(
+    (group: FetchGroupKey | null) => {
+      setStoredGrouping(group);
+      // clear selected machines on grouping change
+      // we cannot reliably preserve the selected state for individual machines
+      // as we are only fetching information about a group from the back-end
+      dispatch(machineActions.setSelectedMachines(null));
+    },
+    [setStoredGrouping, dispatch]
+  );
+  const handleSetSearchFilter = useCallback(
+    (filter: string) => {
+      setSearchFilter(filter);
+      // clear selected machines on filters change
+      // we cannot reliably preserve the selected state for groups of machines
+      // as we are only fetching information about a group from the back-end
+      // and the contents of a group may change when different filters are applied
+      dispatch(machineActions.setSelectedMachines(null));
+    },
+    [dispatch, setSearchFilter]
+  );
   const [hiddenGroups, setHiddenGroups] = useStorageState<(string | null)[]>(
     localStorage,
     "hiddenGroups",

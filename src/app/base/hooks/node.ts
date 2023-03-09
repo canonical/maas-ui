@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 
 import type { ButtonProps, MenuLink } from "@canonical/react-components";
 import { useDispatch, useSelector } from "react-redux";
@@ -44,44 +44,54 @@ export const useMachineActions = (
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const actionLinks: MenuLink = [];
-  if (machine) {
-    actions.forEach((action) => {
-      if (machine.actions.includes(action)) {
-        let actionLabel = action.toString();
-        generalMachineActions.forEach((machineAction) => {
-          if (machineAction.name === action) {
-            actionLabel = machineAction.title;
-          }
-        });
-
-        actionLinks.push({
-          children: actionLabel,
-          onClick: () => {
-            const actionMethod = kebabToCamelCase(action);
-            // Find the method for the function.
-            const [, actionFunction] =
-              Object.entries(machineActions).find(
-                ([key]) => key === actionMethod
-              ) || [];
-            if (actionFunction) {
-              dispatch(actionFunction({ system_id: systemId }));
+  return useMemo(() => {
+    const actionLinks: MenuLink = [];
+    if (machine) {
+      actions.forEach((action) => {
+        if (machine.actions.includes(action)) {
+          let actionLabel = action.toString();
+          generalMachineActions.forEach((machineAction) => {
+            if (machineAction.name === action) {
+              actionLabel = machineAction.title;
             }
-            onClick && onClick();
+          });
+
+          actionLinks.push({
+            children: actionLabel,
+            onClick: () => {
+              const actionMethod = kebabToCamelCase(action);
+              // Find the method for the function.
+              const [, actionFunction] =
+                Object.entries(machineActions).find(
+                  ([key]) => key === actionMethod
+                ) || [];
+              if (actionFunction) {
+                dispatch(actionFunction({ system_id: systemId }));
+              }
+              onClick && onClick();
+            },
+          });
+        }
+      });
+      if (actionLinks.length === 0 && noneMessage) {
+        return [
+          {
+            children: noneMessage,
+            disabled: true,
           },
-        });
+        ];
       }
-    });
-    if (actionLinks.length === 0 && noneMessage) {
-      return [
-        {
-          children: noneMessage,
-          disabled: true,
-        },
-      ];
     }
-  }
-  return actionLinks;
+    return actionLinks;
+  }, [
+    systemId,
+    actions,
+    noneMessage,
+    machine,
+    onClick,
+    generalMachineActions,
+    dispatch,
+  ]);
 };
 
 /**
