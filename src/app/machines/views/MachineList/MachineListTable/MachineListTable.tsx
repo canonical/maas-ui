@@ -79,13 +79,10 @@ type Props = {
 
 type TableColumn = MainTableCell & { key: string };
 
-type GetToggleHandler = (
-  eventLabel: string
-) => (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+type GetToggleHandler = (eventLabel: string) => (open: boolean) => void;
 
 type GenerateRowParams = {
   callId?: string | null;
-  activeRow: Machine[MachineMeta.PK] | null;
   groupValue: MachineStateListGroup["value"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
@@ -144,7 +141,7 @@ const generateRow = ({
   content: RowContent;
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   showActions: GenerateRowParams["showActions"];
-  classes: string;
+  classes?: string;
 }) => {
   const columns = [
     {
@@ -308,7 +305,6 @@ const generateSkeletonRows = (
 };
 const generateRows = ({
   callId,
-  activeRow,
   groupValue,
   hiddenColumns,
   machines,
@@ -321,8 +317,6 @@ const generateRows = ({
     showActions ? getToggleHandler(...args) : () => undefined;
 
   return machines.map((row) => {
-    const isActive = activeRow === row.system_id;
-
     const content = {
       [MachineColumns.FQDN]: (
         <NameColumn
@@ -392,9 +386,6 @@ const generateRows = ({
       content,
       hiddenColumns,
       showActions,
-      classes: classNames({
-        "machine-list__machine--active": isActive,
-      }),
     });
   });
 };
@@ -551,9 +542,6 @@ export const MachineListTable = ({
       setSortDirection(SortDirection.DESCENDING);
     }
   };
-  const [activeRow, setActiveRow] = useState<Machine[MachineMeta.PK] | null>(
-    null
-  );
   const [showMAC, setShowMAC] = useState(false);
   const [showFullName, setShowFullName] = useState(false);
   useEffect(() => {
@@ -571,33 +559,28 @@ export const MachineListTable = ({
   }, [dispatch]);
 
   const toggleHandler = useCallback(
-    (columnName: string, systemId: Machine[MachineMeta.PK], open: boolean) => {
-      if (open && !activeRow) {
+    (columnName: string, open: boolean) => {
+      if (open) {
         sendAnalytics(
           "Machine list",
           "Inline actions open",
           `${columnName} column`
         );
-        setActiveRow(systemId);
-      } else if (!open || (open && activeRow)) {
+      } else if (!open) {
         sendAnalytics(
           "Machine list",
           "Inline actions close",
           `${columnName} column`
         );
-        setActiveRow(null);
       }
     },
-    [activeRow, sendAnalytics]
+    [sendAnalytics]
   );
-  const getToggleHandler =
-    (columnName: string) =>
-    (systemId: Machine[MachineMeta.PK], open: boolean) =>
-      toggleHandler(columnName, systemId, open);
+  const getToggleHandler = (columnName: string) => (open: boolean) =>
+    toggleHandler(columnName, open);
 
   const rowProps = {
     callId,
-    activeRow,
     getToggleHandler,
     showActions,
     showMAC,
