@@ -18,12 +18,11 @@ import type { RootState } from "app/store/root/types";
  * @returns The toggle callback.
  */
 export const useToggleMenu = (
-  onToggleMenu: ((systemId: string, open: boolean) => void) | null,
-  systemId: string
+  onToggleMenu: ((open: boolean) => void) | null
 ): ((open: boolean) => void) => {
   return useCallback(
-    (open) => onToggleMenu && onToggleMenu(systemId, open),
-    [onToggleMenu, systemId]
+    (open) => onToggleMenu && onToggleMenu(open),
+    [onToggleMenu]
   );
 };
 

@@ -34,12 +34,9 @@ import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
+import type { GetMachineMenuToggleHandler } from "app/machines/types";
 import { actions as generalActions } from "app/store/general";
-import type {
-  Machine,
-  MachineMeta,
-  MachineStateListGroup,
-} from "app/store/machine/types";
+import type { Machine, MachineStateListGroup } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -79,14 +76,12 @@ type Props = {
 
 type TableColumn = MainTableCell & { key: string };
 
-type GetToggleHandler = (eventLabel: string) => (open: boolean) => void;
-
 type GenerateRowParams = {
   callId?: string | null;
   groupValue: MachineStateListGroup["value"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
-  getToggleHandler: GetToggleHandler;
+  getToggleHandler: GetMachineMenuToggleHandler;
   showActions: Props["showActions"];
   showMAC: boolean;
   showFullName: boolean;
@@ -313,7 +308,7 @@ const generateRows = ({
   showMAC,
   showFullName,
 }: GenerateRowParams) => {
-  const getMenuHandler: GetToggleHandler = (...args) =>
+  const getMenuHandler: GetMachineMenuToggleHandler = (...args) =>
     showActions ? getToggleHandler(...args) : () => undefined;
 
   return machines.map((row) => {

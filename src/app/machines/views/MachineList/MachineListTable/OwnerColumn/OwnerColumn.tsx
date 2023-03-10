@@ -7,6 +7,7 @@ import DoubleRow from "app/base/components/DoubleRow";
 import { useMachineActions } from "app/base/hooks";
 import type { MachineMenuAction } from "app/base/hooks/node";
 import { useToggleMenu } from "app/machines/hooks";
+import type { MachineMenuToggleHandler } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
@@ -16,7 +17,7 @@ import { NodeActions } from "app/store/types/node";
 import userSelectors from "app/store/user/selectors";
 
 type Props = {
-  onToggleMenu?: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+  onToggleMenu?: MachineMenuToggleHandler;
   systemId: Machine[MachineMeta.PK];
   showFullName?: boolean;
 };
@@ -35,7 +36,7 @@ export const OwnerColumn = ({
   const machineTags = useSelector((state: RootState) =>
     tagSelectors.getByIDs(state, machine?.tags || null)
   );
-  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null);
   const user = useSelector((state: RootState) =>
     userSelectors.getByUsername(state, machine?.owner || "")
   );

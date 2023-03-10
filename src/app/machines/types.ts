@@ -40,3 +40,8 @@ export type MachineActionFormProps = Omit<
   "processingCount"
 > &
   MachineActionVariableProps;
+
+export type MachineMenuToggleHandler = (open: boolean) => void;
+export type GetMachineMenuToggleHandler = (
+  eventLabel: string
+) => MachineMenuToggleHandler;

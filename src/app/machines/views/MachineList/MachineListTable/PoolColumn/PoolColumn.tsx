@@ -7,6 +7,7 @@ import { Link } from "react-router-dom-v5-compat";
 import DoubleRow from "app/base/components/DoubleRow";
 import urls from "app/base/urls";
 import { useToggleMenu } from "app/machines/hooks";
+import type { MachineMenuToggleHandler } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine, MachineMeta } from "app/store/machine/types";
@@ -19,7 +20,7 @@ import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 
 type Props = {
-  onToggleMenu?: (systemId: Machine[MachineMeta.PK], open: boolean) => void;
+  onToggleMenu?: MachineMenuToggleHandler;
   systemId: Machine[MachineMeta.PK];
 };
 
@@ -35,7 +36,7 @@ export const PoolColumn = ({
     machineSelectors.getById(state, systemId)
   );
   const resourcePools = useSelector(resourcePoolSelectors.all);
-  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null);
 
   let poolLinks;
   const machinePools = resourcePools.filter(

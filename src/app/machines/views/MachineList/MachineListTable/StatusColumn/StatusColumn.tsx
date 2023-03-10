@@ -10,6 +10,7 @@ import TooltipButton from "app/base/components/TooltipButton";
 import { useMachineActions } from "app/base/hooks";
 import type { MachineMenuAction } from "app/base/hooks/node";
 import { useToggleMenu } from "app/machines/hooks";
+import type { MachineMenuToggleHandler } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isTransientStatus, useFormattedOS } from "app/store/machine/utils";
@@ -60,7 +61,7 @@ const getStatusIcon = (machine: Machine | null) => {
 };
 
 type Props = {
-  onToggleMenu?: (systemId: string, open: boolean) => void;
+  onToggleMenu?: MachineMenuToggleHandler;
   systemId: string;
 };
 
@@ -114,7 +115,7 @@ export const StatusColumn = ({
     machineSelectors.getById(state, systemId)
   );
   const formattedOS = useFormattedOS(machine, true);
-  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null);
   const actionLinks = useMachineActions(systemId, actions);
   const statusText = getStatusText(machine, formattedOS);
   const seeLogs = React.useMemo(
