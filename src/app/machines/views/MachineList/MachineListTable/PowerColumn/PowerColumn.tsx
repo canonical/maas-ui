@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import DoubleRow from "app/base/components/DoubleRow";
 import PowerIcon from "app/base/components/PowerIcon";
 import { useToggleMenu } from "app/machines/hooks";
+import type { MachineMenuToggleHandler } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
@@ -15,7 +16,7 @@ import { NodeActions } from "app/store/types/node";
 import { breakLines } from "app/utils";
 
 type Props = {
-  onToggleMenu?: (systemId: Machine["system_id"], open: boolean) => void;
+  onToggleMenu?: MachineMenuToggleHandler;
   systemId: Machine["system_id"];
 };
 
@@ -28,7 +29,7 @@ export const PowerColumn = ({
   const machine = useSelector((state: RootState) =>
     machineSelectors.getById(state, systemId)
   );
-  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
+  const toggleMenu = useToggleMenu(onToggleMenu || null);
   const powerState = machine?.power_state || PowerState.UNKNOWN;
 
   useEffect(() => {
