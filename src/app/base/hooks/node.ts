@@ -61,10 +61,7 @@ export const useMachineActions = (
             onClick: () => {
               const actionMethod = kebabToCamelCase(action);
               // Find the method for the function.
-              const [, actionFunction] =
-                Object.entries(machineActions).find(
-                  ([key]) => key === actionMethod
-                ) || [];
+              const actionFunction = machineActions[actionMethod];
               if (actionFunction) {
                 dispatch(actionFunction({ system_id: systemId }));
               }
