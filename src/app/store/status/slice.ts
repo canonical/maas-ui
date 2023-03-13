@@ -17,6 +17,7 @@ const statusSlice = createSlice({
     connecting: false,
     noUsers: false,
     error: null,
+    sessionExpired: false,
   } as StatusState,
   reducers: {
     checkAuthenticated: {
@@ -125,8 +126,14 @@ const statusSlice = createSlice({
         // No state changes need to be handled for this action.
       },
     },
-    websocketDisconnected: (state: StatusState) => {
+    websocketDisconnected: (
+      state: StatusState,
+      action: PayloadAction<StatusState["sessionExpired"]>
+    ) => {
       state.connected = false;
+      if (action.payload === true) {
+        state.authenticated = false;
+      }
     },
     websocketError: (
       state: StatusState,

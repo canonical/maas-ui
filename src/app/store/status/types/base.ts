@@ -10,4 +10,5 @@ export type StatusState = {
   externalAuthURL: string | null;
   externalLoginURL: string | null;
   noUsers: boolean;
+  sessionExpired: boolean;
 };

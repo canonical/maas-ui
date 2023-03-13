@@ -510,6 +510,7 @@ export const statusState = define<StatusState>({
   externalAuthURL: "http://example.com/auth",
   externalLoginURL: "http://example.com/login",
   noUsers: false,
+  sessionExpired: false,
 });
 
 export const domainState = define<DomainState>({
