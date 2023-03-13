@@ -374,7 +374,7 @@ export function* handleMessage(
         type: "status/websocketDisconnected",
         payload:
           "code" in websocketEvent &&
-          websocketEvent.code === 100 &&
+          websocketEvent.code === 1000 &&
           websocketEvent.reason === "Session expired"
             ? true
             : false,
