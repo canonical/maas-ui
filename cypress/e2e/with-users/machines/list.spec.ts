@@ -1,4 +1,4 @@
-import { generateMAASURL } from "../../utils";
+import { generateId, generateMAASURL, generateName } from "../../utils";
 
 context("Machine listing", () => {
   beforeEach(() => {
@@ -7,9 +7,9 @@ context("Machine listing", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains(
-      /machines in 1 pool/
-    );
+    cy.findByRole("heading", {
+      name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
+    }).should("exist");
   });
 
   it("can group machines by all supported keys", () => {
@@ -38,8 +38,10 @@ context("Machine listing", () => {
   });
 
   it("displays machine counts with active filters", () => {
-    const searchFilter = "status:(=commissioning) hostname:(machine-)";
-    cy.addMachines(["machine-1", "machine-2"]);
+    const name = generateName();
+    const searchFilter = `status:(=commissioning) hostname:(${name})`;
+    const machines = [`${name}-1`, `${name}-2`];
+    cy.addMachines(machines);
     cy.findByRole("combobox", { name: "Group by" }).select("Group by status");
     cy.findByRole("searchbox").type(searchFilter);
     cy.findByText(/Showing 2 out of 2 machines/).should("exist");
@@ -80,11 +82,12 @@ context("Machine listing", () => {
   });
 
   it("can select a machine range", () => {
-    const searchFilter = "machi";
-    const newMachines = ["machine-a", "machine-b", "machine-c"];
+    const name = generateName();
+    const newMachines = [`${name}-a`, `${name}-b`, `${name}-c`];
     cy.addMachines(newMachines);
     cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
-    cy.findByRole("searchbox", { name: "Search" }).type(searchFilter);
+    cy.findByRole("searchbox", { name: "Search" }).type(name);
+    cy.findByText(/Showing 3 out of 3 machines/).should("exist");
     // eslint-disable-next-line cypress/no-force
     cy.findByRole("checkbox", { name: `${newMachines[0]}.maas` }).click({
       force: true,
@@ -104,5 +107,6 @@ context("Machine listing", () => {
       cy.findAllByRole("button", { name: /Delete/i }).click();
     });
     cy.findByRole("button", { name: /Delete 3 machines/ }).click();
+    cy.findByText(/No machines match the search criteria./).should("exist");
   });
 });

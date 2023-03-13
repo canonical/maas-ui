@@ -54,7 +54,7 @@ Cypress.Commands.add("deleteMachine", (hostname: string) => {
   cy.visit(generateMAASURL("/machines"));
   cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
   cy.findByRole("searchbox").type(hostname);
-  cy.findByText(/1 machine available/).should("exist");
+  cy.findByText(/Showing 1 out of 1 machines/).should("exist");
   cy.findByRole("grid", { name: "Machines" }).within(() =>
     // eslint-disable-next-line cypress/no-force
     cy
@@ -154,4 +154,14 @@ Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
   cy.findByRole("grid", { name: /Loading/i }).should("exist");
   cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
   return cy.findByRole("grid", { name }).should("exist");
+});
+
+Cypress.Commands.add("getMainNavigation", () => {
+  return cy.findByRole("navigation", { name: /main navigation/i });
+});
+
+Cypress.Commands.add("expandMainNavigation", () => {
+  return cy
+    .window()
+    .then((win) => win.localStorage.setItem("appSideNavIsCollapsed", "false"));
 });
