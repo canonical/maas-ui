@@ -21,7 +21,7 @@ const docsUrls = {
   kvmIntroduction: "https://maas.io/docs/about-vm-hosting",
   networkDiscovery:
     "https://maas.io/docs/about-networking#heading--about-network-discovery",
-  rackController: "https://maas.io/docs/how-to-configure-your-controllers",
+  rackController: "https://maas.io/docs/how-to-configure-controllers",
   sshKeys: "https://maas.io/docs/how-to-manage-user-accounts#heading--ssh-keys",
   tagsAutomatic:
     "https://maas.io/docs/how-to-tag-machines#heading--automatic-tags",
