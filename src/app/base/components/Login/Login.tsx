@@ -29,7 +29,7 @@ export type LoginValues = {
 };
 
 export enum Labels {
-  APILoginForm = "API login form",
+  APILoginForm = "Login",
   ExternalLoginButton = "Go to login page",
   NoUsers = "No admin user has been created yet",
   Password = "Password",

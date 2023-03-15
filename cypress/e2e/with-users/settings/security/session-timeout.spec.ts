@@ -12,9 +12,10 @@ context("Settings - Security - Session timeout", () => {
       "13 days"
     );
     cy.findByRole("button", { name: "Save" }).click();
-
-    cy.findByRole("textbox", { name: "Username" }).should("exist");
-    cy.findByRole("textbox", { name: "Password" }).should("exist");
-    cy.findByRole("button", { name: "Login" }).should("exist");
+    cy.findByRole("form", { name: "Login" })
+      .should("exist")
+      .within(() => {
+        cy.findByText(/Session expired/);
+      });
   });
 });
