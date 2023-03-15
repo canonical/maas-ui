@@ -371,6 +371,8 @@ export function* handleMessage(
       }
     } else if (websocketEvent.type === "close") {
       const { code, reason } = websocketEvent as CloseEvent;
+      // TODO: dispatch "status/websocketError" for abnormal close codes
+      // https://warthogs.atlassian.net/browse/MAASENG-1484
       yield* put({
         type: "status/websocketDisconnect",
         payload: { code, reason },

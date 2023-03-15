@@ -122,9 +122,7 @@ const statusSlice = createSlice({
       state: StatusState,
       action: PayloadAction<{ code: number; reason: string }>
     ) => {
-      // debugger;
       state.connected = false;
-      state.error = action.payload.reason;
       if (
         action.payload.code === 1000 &&
         action.payload.reason === "Session expired"
