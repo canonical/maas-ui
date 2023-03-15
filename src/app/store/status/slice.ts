@@ -118,22 +118,24 @@ const statusSlice = createSlice({
       state.authenticationError = null;
       state.error = null;
     },
-    websocketDisconnect: {
-      prepare: () => ({
-        payload: null,
-      }),
-      reducer: () => {
-        // No state changes need to be handled for this action.
-      },
-    },
-    websocketDisconnected: (
+    websocketDisconnect: (
       state: StatusState,
-      action: PayloadAction<StatusState["sessionExpired"]>
+      action: PayloadAction<{ code: number; reason: string }>
     ) => {
+      // debugger;
       state.connected = false;
-      if (action.payload === true) {
+      state.error = action.payload.reason;
+      if (
+        action.payload.code === 1000 &&
+        action.payload.reason === "Session expired"
+      ) {
         state.authenticated = false;
+        state.authenticationError = action.payload.reason;
       }
+    },
+    websocketDisconnected: (state: StatusState) => {
+      // debugger;
+      state.connected = false;
     },
     websocketError: (
       state: StatusState,

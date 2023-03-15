@@ -84,6 +84,7 @@ export const App = (): JSX.Element => {
   } else if (!authenticated && !connectionError) {
     content = <Login />;
   } else if (connectionError || !connected) {
+    // debugger;
     content = (
       <MainContentSection header={<SectionHeader title="Failed to connect" />}>
         <Notification severity="negative" title="Error:">

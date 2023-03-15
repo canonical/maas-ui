@@ -370,14 +370,10 @@ export function* handleMessage(
         });
       }
     } else if (websocketEvent.type === "close") {
+      const { code, reason } = websocketEvent as CloseEvent;
       yield* put({
-        type: "status/websocketDisconnected",
-        payload:
-          "code" in websocketEvent &&
-          websocketEvent.code === 1000 &&
-          websocketEvent.reason === "Session expired"
-            ? true
-            : false,
+        type: "status/websocketDisconnect",
+        payload: { code, reason },
       });
     } else if (websocketEvent.type === "open") {
       yield* put({ type: "status/websocketConnected" });
