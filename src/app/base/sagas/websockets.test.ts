@@ -452,8 +452,17 @@ describe("websocket sagas", () => {
   it("can handle a WebSocket close message", () => {
     const saga = handleMessage(socketChannel, socketClient);
     expect(saga.next().value).toEqual(take(socketChannel));
-    expect(saga.next({ type: "close" }).value).toEqual(
-      put({ type: "status/websocketDisconnected" })
+    expect(
+      saga.next({
+        type: "close",
+        code: 1000,
+        reason: "Session expired",
+      }).value
+    ).toEqual(
+      put({
+        type: "status/websocketDisconnect",
+        payload: { code: 1000, reason: "Session expired" },
+      })
     );
   });
 

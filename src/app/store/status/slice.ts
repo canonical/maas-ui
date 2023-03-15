@@ -17,7 +17,6 @@ const statusSlice = createSlice({
     connecting: false,
     noUsers: false,
     error: null,
-    sessionExpired: false,
   } as StatusState,
   reducers: {
     checkAuthenticated: {
