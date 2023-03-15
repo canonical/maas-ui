@@ -10,18 +10,18 @@ const docsUrls = {
   cloudInit:
     "https://maas.io/docs/how-to-customise-machines#heading--cloud-init",
   configurationJourney:
-    "https://maas.io/docs/how-to-install-maas#heading--configure-maas",
+    "https://maas.io/docs/how-to-do-a-fresh-install-of-maas#heading--configure-maas",
   customisingDeployedMachines:
     "https://maas.io/docs/about-customising-machines#heading--about-customising-deployed-machines",
-  dhcp: "https://maas.io/docs/how-to-enable-dhcp#heading--how-to-manage-maas-dhcp",
+  dhcp: "https://maas.io/docs/how-to-enable-dhcp",
   images: "https://maas.io/docs/about-images",
-  ipmi: "https://maas.io/docs/power-management-reference#heading--ipmi",
+  ipmi: "https://maas.io/docs/power-drivers-reference#heading--ipmi",
   ipRanges:
     "https://maas.io/docs/how-to-enable-dhcp#heading--how-to-manage-ip-ranges",
   kvmIntroduction: "https://maas.io/docs/about-vm-hosting",
   networkDiscovery:
     "https://maas.io/docs/about-networking#heading--about-network-discovery",
-  rackController: "https://maas.io/docs/how-to-adjust-your-controllers",
+  rackController: "https://maas.io/docs/how-to-configure-controllers",
   sshKeys: "https://maas.io/docs/how-to-manage-user-accounts#heading--ssh-keys",
   tagsAutomatic:
     "https://maas.io/docs/how-to-tag-machines#heading--automatic-tags",
