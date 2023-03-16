@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -43,7 +43,7 @@ describe("NameColumn", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <NameColumn
           handleRowCheckbox={jest.fn()}
@@ -54,7 +54,8 @@ describe("NameColumn", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("RowCheckbox").prop("disabled")).toBe(true);
+    const checkbox = screen.getByRole("checkbox") as HTMLInputElement;
+    expect(checkbox.disabled).toBe(true);
   });
 
   it("can not show a checkbox", () => {
@@ -69,7 +70,7 @@ describe("NameColumn", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <NameColumn
           handleRowCheckbox={jest.fn()}
@@ -80,7 +81,7 @@ describe("NameColumn", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("RowCheckbox").exists()).toBe(false);
-    expect(wrapper.find("span[data-testid='name']").exists()).toBe(true);
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
+    expect(screen.getByTestId("name")).toBeInTheDocument();
   });
 });
