@@ -1,4 +1,4 @@
-import { generateId, generateMAASURL, generateName } from "../../utils";
+import { generateMAASURL, generateName } from "../../utils";
 
 context("Machine listing", () => {
   beforeEach(() => {
