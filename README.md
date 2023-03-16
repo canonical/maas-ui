@@ -28,7 +28,6 @@ This repository contains the sourcecode for the [MAAS](https://maas.io) web app,
 Community contributions are most welcome, and there are a number of ways to participate:
 
 - [Submit bugs and feature requests](https://maas.io/docs/how-to-review-and-report-bugs)
-  - Please note that we recently moved our bug tracking from GitHub to Launchpad. This enables us to track all issues and bugs for MAAS in a single place.
 - [Assist with code review](https://github.com/canonical/maas-ui/pulls)
 - [Submit bugs for the MAAS website](https://github.com/canonical/maas.io)
 - [Contribute to MAAS documentation](https://maas.io/docs/writing-guide)
