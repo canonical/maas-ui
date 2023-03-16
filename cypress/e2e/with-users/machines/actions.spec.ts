@@ -82,7 +82,13 @@ context("Machine listing - actions", () => {
 
   it("can create and set the zone of a machine", () => {
     const poolName = generateName("pool");
-    selectFirstMachine();
+    const machineName = generateName("machine");
+    cy.addMachine(machineName);
+    cy.findByRole("searchbox", { name: "Search" }).type(machineName);
+    // eslint-disable-next-line cypress/no-force
+    cy.findByRole("checkbox", { name: `${machineName}.maas` }).click({
+      force: true,
+    });
     openMachineActionForm("Set pool");
     cy.findByRole("complementary", { name: /Set pool/i }).should("exist");
     // eslint-disable-next-line cypress/no-force

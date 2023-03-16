@@ -8,6 +8,7 @@ context("Settings - DHCP Snippets", () => {
     cy.visit(generateMAASURL("/settings/dhcp/add"));
   });
   afterEach(() => {
+    cy.login();
     cy.deleteMachine(machineName);
   });
 

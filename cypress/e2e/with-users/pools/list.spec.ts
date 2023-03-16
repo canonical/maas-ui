@@ -7,7 +7,9 @@ context("Pools list", () => {
   });
 
   it("renders a heading", () => {
-    cy.contains(/machines in 1 pool/i);
+    cy.findByRole("heading", {
+      name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
+    }).should("exist");
     cy.findByLabelText(/Pool list/i);
   });
 });
