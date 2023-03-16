@@ -370,7 +370,13 @@ export function* handleMessage(
         });
       }
     } else if (websocketEvent.type === "close") {
-      yield* put({ type: "status/websocketDisconnected" });
+      const { code, reason } = websocketEvent as CloseEvent;
+      // TODO: dispatch "status/websocketError" for abnormal close codes
+      // https://warthogs.atlassian.net/browse/MAASENG-1484
+      yield* put({
+        type: "status/websocketDisconnect",
+        payload: { code, reason },
+      });
     } else if (websocketEvent.type === "open") {
       yield* put({ type: "status/websocketConnected" });
       resetLoaded();

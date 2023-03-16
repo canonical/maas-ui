@@ -29,7 +29,7 @@ export type LoginValues = {
 };
 
 export enum Labels {
-  APILoginForm = "API login form",
+  APILoginForm = "Login",
   ExternalLoginButton = "Go to login page",
   NoUsers = "No admin user has been created yet",
   Password = "Password",
@@ -101,7 +101,6 @@ export const Login = (): JSX.Element => {
               ) : (
                 <FormikForm<LoginValues>
                   aria-label={Labels.APILoginForm}
-                  errors={error}
                   initialValues={{
                     password: "",
                     username: "",

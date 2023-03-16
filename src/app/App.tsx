@@ -38,6 +38,7 @@ export const App = (): JSX.Element => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
+  const authenticationError = useSelector(status.authenticationError);
   const authLoading = useSelector(authSelectors.loading);
   const authLoaded = useSelector(authSelectors.loaded);
   const connected = useSelector(status.connected);
@@ -82,7 +83,31 @@ export const App = (): JSX.Element => {
   if (authLoading || connecting || authenticating || configLoading) {
     content = <MainContentSection header={<SectionHeader loading />} />;
   } else if (!authenticated && !connectionError) {
-    content = <Login />;
+    content = (
+      <MainContentSection>
+        {authenticationError ? (
+          authenticationError === "Session expired" ? (
+            <Notification severity="information">
+              Your session has expired. Plese log in again to continue using
+              MAAS.
+            </Notification>
+          ) : (
+            <Notification severity="negative" title="Error">
+              {typeof authenticationError === "string" ? (
+                <>{authenticationError}</>
+              ) : (
+                <>
+                  {Object.values(authenticationError).map((value) => (
+                    <>{value}</>
+                  ))}
+                </>
+              )}
+            </Notification>
+          )
+        ) : null}
+        <Login />
+      </MainContentSection>
+    );
   } else if (connectionError || !connected) {
     content = (
       <MainContentSection header={<SectionHeader title="Failed to connect" />}>
