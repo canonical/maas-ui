@@ -27,7 +27,8 @@ This repository contains the sourcecode for the [MAAS](https://maas.io) web app,
 
 Community contributions are most welcome, and there are a number of ways to participate:
 
-- [Submit bugs and feature requests](https://github.com/canonical/maas-ui/issues)
+- [Submit bugs and feature requests](https://bugs.launchpad.net/maas)
+  - Please note that we recently moved our bug tracking from GitHub to Launchpad. This enables us to track all issues and bugs for MAAS in a single place. If you think that the issue is related to the UI, please add a `ui` tag
 - [Assist with code review](https://github.com/canonical/maas-ui/pulls)
 - [Submit bugs for the MAAS website](https://github.com/canonical/maas.io)
 - [Contribute to MAAS documentation](https://maas.io/docs/writing-guide)
@@ -39,8 +40,8 @@ Please see [HACKING](/docs/HACKING.md) for details on setting up a MAAS UI devel
 ## Feedback
 
 - Ask a question about MAAS on [Discourse](https://discourse.maas.io/).
-- File a [MAAS UI issue](https://github.com/canonical/maas-ui/issues/new/choose).
 - File a [MAAS issue](https://bugs.launchpad.net/maas/+filebug).
+  - If you think that the issue is related to the UI, please add a `ui` tag
 
 ## Related Projects
 
