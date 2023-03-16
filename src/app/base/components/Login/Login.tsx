@@ -101,7 +101,6 @@ export const Login = (): JSX.Element => {
               ) : (
                 <FormikForm<LoginValues>
                   aria-label={Labels.APILoginForm}
-                  errors={error !== "Session expired" ? error : null}
                   initialValues={{
                     password: "",
                     username: "",
