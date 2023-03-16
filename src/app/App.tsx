@@ -93,7 +93,15 @@ export const App = (): JSX.Element => {
             </Notification>
           ) : (
             <Notification severity="negative" title="Error">
-              {authenticationError}
+              {typeof authenticationError === "string" ? (
+                <>{authenticationError}</>
+              ) : (
+                <>
+                  {Object.values(authenticationError).map((value) => (
+                    <>{value}</>
+                  ))}
+                </>
+              )}
             </Notification>
           )
         ) : null}
