@@ -131,7 +131,6 @@ const statusSlice = createSlice({
       }
     },
     websocketDisconnected: (state: StatusState) => {
-      // debugger;
       state.connected = false;
     },
     websocketError: (
