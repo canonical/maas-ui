@@ -7,6 +7,6 @@ context("KVM listing", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains("KVM");
+    cy.get("[data-testid='section-header-title']").contains("LXD");
   });
 });

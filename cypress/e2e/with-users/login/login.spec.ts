@@ -3,6 +3,7 @@ import { generateMAASURL } from "../../utils";
 context("Login page", () => {
   beforeEach(() => {
     cy.visit(generateMAASURL("/"));
+    cy.expandMainNavigation();
   });
 
   it("is disabled by default", () => {
@@ -49,8 +50,9 @@ context("Login page", () => {
     cy.location("pathname").should("eq", generateMAASURL("/intro"));
 
     // Log out.
-    cy.get(".l-navigation__link:contains(Log out)").click();
-
+    cy.getMainNavigation().within(() =>
+      cy.findByRole("button", { name: /Log out/i }).click()
+    );
     // Set cookie to skip setup intro.
     cy.setCookie("skipsetupintro", "true");
 

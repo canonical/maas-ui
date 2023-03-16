@@ -17,10 +17,6 @@ const expectExpandedNavigation = () => {
   );
 };
 
-const withinSideNavigtion = (fn: () => void) => {
-  cy.findByRole("navigation", { name: /main navigation/i }).within(fn);
-};
-
 context("Navigation - non-admin", () => {
   beforeEach(() => {
     cy.loginNonAdmin();
@@ -28,7 +24,7 @@ context("Navigation - non-admin", () => {
   });
 
   it("navigates to machines when clicking on the logo", () => {
-    withinSideNavigtion(() =>
+    cy.getMainNavigation().within(() =>
       cy.findByRole("link", { name: "Homepage" }).click()
     );
     cy.location("pathname").should("eq", generateMAASURL("/machines"));
@@ -92,9 +88,7 @@ context("Navigation - admin", () => {
     cy.viewport("macbook-13");
     cy.visit(generateMAASURL("/"));
     // set side navigation to expanded
-    cy.window().then((win) =>
-      win.localStorage.setItem("appSideNavIsCollapsed", "false")
-    );
+    cy.expandMainNavigation();
   });
 
   const expected = [
@@ -102,7 +96,6 @@ context("Navigation - admin", () => {
     { destinationUrl: "/devices", linkLabel: "Devices" },
     { destinationUrl: "/controllers", linkLabel: "Controllers" },
     { destinationUrl: "/kvm/lxd", linkLabel: "LXD" },
-    { destinationUrl: "/kvm/virsh", linkLabel: "Virsh" },
     { destinationUrl: "/images", linkLabel: "Images" },
     { destinationUrl: "/domains", linkLabel: "DNS" },
     { destinationUrl: "/networks", linkLabel: "Subnets" },
@@ -119,7 +112,7 @@ context("Navigation - admin", () => {
 
   it("navigates to /dashboard when clicking on the logo", () => {
     cy.waitForPageToLoad();
-    withinSideNavigtion(() =>
+    cy.getMainNavigation().within(() =>
       cy.findByRole("link", { name: "Homepage" }).click()
     );
     cy.location("pathname").should("eq", generateMAASURL("/dashboard"));
@@ -128,7 +121,7 @@ context("Navigation - admin", () => {
   expected.forEach(({ destinationUrl, linkLabel }) => {
     it(`navigates to ${destinationUrl} and highlights ${linkLabel} link`, () => {
       cy.waitForPageToLoad();
-      withinSideNavigtion(() =>
+      cy.getMainNavigation().within(() =>
         cy.findByRole("link", { name: linkLabel }).click()
       );
       cy.location("pathname").should("eq", generateMAASURL(destinationUrl));
