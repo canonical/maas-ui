@@ -22,6 +22,16 @@ context("Login page", () => {
     cy.get(".p-form-validation__message").should("exist");
   });
 
+  it("displays an error message if submitted invalid login credentials", () => {
+    cy.findByRole("textbox", { name: /Username/ }).type("invalid-username");
+    cy.findByLabelText(/Password/)
+      .type("invalid-password")
+      .type("{enter}");
+    cy.findByRole("alert", {
+      name: /Please enter a correct username and password/i,
+    }).should("exist");
+  });
+
   it("enables the form if both fields have values", () => {
     cy.findByRole("button", { name: "Login" }).should("be.disabled");
     cy.get("input[name='username']").type("username");
