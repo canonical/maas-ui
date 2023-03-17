@@ -11,6 +11,7 @@ import packageInfo from "../../package.json";
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
 import ThemePreviewContext from "./base/theme-preview-context";
 import { MAAS_UI_ID } from "./constants";
+import { formatErrors } from "./utils";
 
 import Routes from "app/Routes";
 import AppSideNavigation from "app/base/components/AppSideNavigation";
@@ -79,59 +80,50 @@ export const App = (): JSX.Element => {
     }
   }, [dispatch, connected]);
 
+  const isLoading =
+    authLoading || connecting || authenticating || configLoading;
+  const hasWebsocketError = !!connectionError || !connected;
+  const hasAuthError = !authenticated && !connectionError;
+  const hasVaultError =
+    configErrors === VaultErrors.REQUEST_FAILED ||
+    configErrors === VaultErrors.CONNECTION_FAILED;
+  const isLoaded = connected && authLoaded && authenticated;
+
   let content: ReactNode = null;
-  if (authLoading || connecting || authenticating || configLoading) {
+  if (isLoading) {
     content = <MainContentSection header={<SectionHeader loading />} />;
-  } else if (!authenticated && !connectionError) {
+  } else if (hasAuthError) {
     content = (
       <MainContentSection>
         {authenticationError ? (
           authenticationError === "Session expired" ? (
-            <Notification severity="information">
+            <Notification role="alert" severity="information">
               Your session has expired. Plese log in again to continue using
               MAAS.
             </Notification>
           ) : (
-            <Notification severity="negative" title="Error">
-              {typeof authenticationError === "string" ? (
-                <>{authenticationError}</>
-              ) : (
-                <>
-                  {Object.values(authenticationError).map((value) => (
-                    <>{value}</>
-                  ))}
-                </>
-              )}
+            <Notification role="alert" severity="negative" title="Error:">
+              {formatErrors(authenticationError, "__all__")}
             </Notification>
           )
         ) : null}
         <Login />
       </MainContentSection>
     );
-  } else if (connectionError || !connected) {
+  } else if (hasWebsocketError || hasVaultError) {
     content = (
       <MainContentSection header={<SectionHeader title="Failed to connect" />}>
         <Notification severity="negative" title="Error:">
           The server connection failed
-          {connectionError ? ` with the error "${connectionError}"` : ""}.
+          {hasVaultError || connectionError
+            ? ` with the error "${
+                hasVaultError ? configErrors : connectionError
+              }"`
+            : ""}
         </Notification>
       </MainContentSection>
     );
-  } else if (
-    configErrors === VaultErrors.REQUEST_FAILED ||
-    configErrors === VaultErrors.CONNECTION_FAILED
-  ) {
-    content = (
-      <MainContentSection
-        header={<SectionHeader title="Failed to connect" />}
-        isNotificationListHidden={true}
-      >
-        <Notification severity="negative" title="Error:">
-          The server connection failed with the error "{configErrors}".
-        </Notification>
-      </MainContentSection>
-    );
-  } else if (connected && authLoaded && authenticated) {
+  } else if (isLoaded) {
     content = (
       <FileContext.Provider value={fileContextStore}>
         <Routes />

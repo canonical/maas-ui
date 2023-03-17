@@ -5,7 +5,6 @@ import {
   Card,
   Code,
   Col,
-  Notification,
   Row,
   Strip,
 } from "@canonical/react-components";
@@ -49,7 +48,6 @@ export const Login = (): JSX.Element => {
   const externalAuthURL = useSelector(statusSelectors.externalAuthURL);
   const externalLoginURL = useSelector(statusSelectors.externalLoginURL);
   const noUsers = useSelector(statusSelectors.noUsers);
-  const error = useSelector(statusSelectors.authenticationError);
 
   useWindowTitle("Login");
 
@@ -63,11 +61,6 @@ export const Login = (): JSX.Element => {
     <Strip>
       <Row>
         <Col emptyLarge={4} size={6}>
-          {externalAuthURL && error && (
-            <Notification severity="negative" title="Error:">
-              {error}
-            </Notification>
-          )}
           {noUsers && !externalAuthURL ? (
             <Card title={Labels.NoUsers}>
               <p>Use the following command to create one:</p>
