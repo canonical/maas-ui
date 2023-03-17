@@ -1,4 +1,3 @@
-import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 
 import NodeActionFormWrapper from "./NodeActionFormWrapper";
@@ -7,6 +6,7 @@ import type { Node } from "app/store/types/node";
 import { NodeActions } from "app/store/types/node";
 import { machine as machineFactory } from "testing/factories";
 import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
+import { render, screen, waitFor } from "testing/utils";
 
 describe("NodeActionFormWrapper", () => {
   afterEach(() => {
