@@ -11,9 +11,13 @@
     }
 
     .p-button, .p-switch {
-      margin: $spv--x-small 0;
-      padding: $spv--x-small $spv--large;
+      margin: calc(0.4rem - 1px) 0;
+      padding: 0 $spv--large;
       border: 0;
+    }
+
+    .p-contextual-menu__toggle {
+      margin-bottom: 0 !important;
     }
 
     .p-action-button--wrapper + .p-action-button--wrapper {
