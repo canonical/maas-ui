@@ -243,7 +243,13 @@ describe("MachineList", () => {
       .mockReturnValueOnce("78910");
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { store }
     );
     const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
@@ -270,7 +276,13 @@ describe("MachineList", () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { store }
     );
     expect(screen.getByLabelText(/Group by/)).toHaveValue(DEFAULTS.grouping);
@@ -311,7 +323,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -341,7 +359,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -364,7 +388,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -379,7 +409,13 @@ describe("MachineList", () => {
   it("can store hidden groups in local storage", async () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { store }
     );
     const expected = machineActions.fetch("123456", {
@@ -402,7 +438,13 @@ describe("MachineList", () => {
     // hidden group state.
     const store2 = mockStore(state);
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { store: store2 }
     );
     const expected2 = machineActions.fetch("123456", {
@@ -425,7 +467,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -445,7 +493,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -468,7 +522,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -489,7 +549,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -510,7 +576,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -536,8 +608,11 @@ describe("MachineList", () => {
         >
           <CompatRouter>
             <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
               searchFilter="this does not match anything"
-              setSearchFilter={jest.fn()}
+              setHiddenGroups={jest.fn()}
             />
           </CompatRouter>
         </MemoryRouter>
@@ -556,7 +631,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -583,7 +664,13 @@ describe("MachineList", () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { store }
     );
     const user = userEvent.setup({
@@ -626,7 +713,13 @@ describe("MachineList", () => {
     ];
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { store }
     );
     const user = userEvent.setup({
@@ -660,8 +753,11 @@ describe("MachineList", () => {
     const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
         searchFilter="free text workload-service:prod"
-        setSearchFilter={jest.fn()}
+        setHiddenGroups={jest.fn()}
       />,
       { store }
     );
@@ -707,7 +803,13 @@ describe("MachineList", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachineList searchFilter="" setSearchFilter={jest.fn()} />
+            <MachineList
+              grouping={null}
+              hiddenColumns={[]}
+              hiddenGroups={[]}
+              searchFilter=""
+              setHiddenGroups={jest.fn()}
+            />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
@@ -739,7 +841,13 @@ describe("MachineList", () => {
     state.controller.items = controllers;
 
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { state }
     );
 
@@ -764,7 +872,13 @@ describe("MachineList", () => {
     state.controller.items = controllers;
 
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { state }
     );
 
@@ -789,7 +903,13 @@ describe("MachineList", () => {
     state.controller.items = controllers;
 
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { state }
     );
 
@@ -818,7 +938,13 @@ describe("MachineList", () => {
     });
 
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { state }
     );
 
@@ -830,7 +956,13 @@ describe("MachineList", () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { store }
     );
     const expected = machineActions.fetch("123456", {
@@ -848,7 +980,13 @@ describe("MachineList", () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     const store = mockStore(state);
     renderWithBrowserRouter(
-      <MachineList searchFilter="" setSearchFilter={jest.fn()} />,
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
       { store }
     );
     const expected = machineActions.fetch("123456", {

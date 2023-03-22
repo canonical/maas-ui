@@ -43,6 +43,7 @@ describe("MachineListControls", () => {
             setGrouping={jest.fn()}
             setHiddenColumns={jest.fn()}
             setHiddenGroups={jest.fn()}
+            setSidePanelContent={jest.fn()}
           />
         </MemoryRouter>
       </Provider>

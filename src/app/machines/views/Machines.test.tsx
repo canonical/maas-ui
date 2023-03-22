@@ -5,7 +5,7 @@ import { MemoryRouter, Route, useLocation } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import MachineList from "./MachineList";
+import MachineListHeader from "./MachineList/MachineListHeader";
 import Machines from "./Machines";
 
 import type { RootState } from "app/store/root/types";
@@ -105,7 +105,7 @@ describe("Machines", () => {
       </Provider>
     );
     act(() => {
-      wrapper.find(MachineList).props().setSearchFilter("status:new");
+      wrapper.find(MachineListHeader).props().setSearchFilter("status:new");
     });
     expect(search).toBe("?status=new");
   });
