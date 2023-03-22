@@ -18,8 +18,6 @@ import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
-jest.useFakeTimers("modern");
-
 describe("MachineListControls", () => {
   let initialState: RootState;
 
@@ -178,7 +176,9 @@ describe("MachineListControls", () => {
 
     await userEvent.click(clearSelection);
 
-    // const actions = store.getActions();
-    // console.log(actions);
+    const actions = store.getActions();
+    expect(actions).toEqual(
+      expect.arrayContaining([machineActions.setSelectedMachines(null)])
+    );
   });
 });
