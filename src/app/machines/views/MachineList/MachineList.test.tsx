@@ -7,13 +7,9 @@ import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
-import { Label as AllCheckboxLabel } from "./MachineListTable/AllCheckbox/AllCheckbox";
-import { Label } from "./MachineListTable/MachineListTable";
 import { DEFAULTS } from "./MachineListTable/constants";
 
-import { Label as MachinesFilterLabels } from "app/machines/views/MachineList/MachineListControls/MachinesFilterAccordion/MachinesFilterAccordion";
 import { actions as machineActions } from "app/store/machine";
-import { FetchGroupKey, FilterGroupKey } from "app/store/machine/types";
 import type { RootState } from "app/store/root/types";
 import {
   FetchNodeStatus,
@@ -37,12 +33,7 @@ import {
   controllerState as controllerStateFactory,
   controller as controllerFactory,
 } from "testing/factories";
-import {
-  userEvent,
-  screen,
-  within,
-  renderWithBrowserRouter,
-} from "testing/utils";
+import { screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -235,41 +226,6 @@ describe("MachineList", () => {
     localStorage.clear();
     jest.restoreAllMocks();
   });
-
-  // it("can hide groups", async () => {
-  //   jest
-  //     .spyOn(reduxToolkit, "nanoid")
-  //     .mockReturnValueOnce("123456")
-  //     .mockReturnValueOnce("78910");
-  //   const store = mockStore(state);
-  //   renderWithBrowserRouter(
-  //     <MachineList
-  //       grouping={FetchGroupKey.Status}
-  //       hiddenColumns={[]}
-  //       hiddenGroups={[]}
-  //       searchFilter=""
-  //       setHiddenGroups={jest.fn()}
-  //     />,
-  //     { store }
-  //   );
-  //   const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-  //   // Click the button to toggle the group.
-  //   await user.click(
-  //     within(
-  //       screen.getByRole("row", { name: "Failed testing machines group" })
-  //     ).getByRole("button", { name: Label.HideGroup })
-  //   );
-  //   const expected = machineActions.fetch("123456", {
-  //     group_collapsed: ["failed_testing"],
-  //   });
-  //   const fetches = store
-  //     .getActions()
-  //     .filter((action) => action.type === expected.type);
-  //   expect(fetches).toHaveLength(2);
-  //   expect(
-  //     fetches[fetches.length - 1].payload.params.group_collapsed
-  //   ).toStrictEqual(["failed_testing"]);
-  // });
 
   it("can display an error", () => {
     state.machine.errors = "Uh oh!";

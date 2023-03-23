@@ -53,134 +53,154 @@ const mockStore = configureStore<RootState>();
 
 describe("Machines", () => {
   let state: RootState;
+  const machines = [
+    machineFactory({
+      actions: [],
+      architecture: "amd64/generic",
+      cpu_count: 4,
+      cpu_test_status: testStatusFactory({
+        status: TestStatusStatus.RUNNING,
+      }),
+      distro_series: "bionic",
+      domain: modelRefFactory({
+        name: "example",
+      }),
+      extra_macs: [],
+      fqdn: "koala.example",
+      hostname: "koala",
+      ip_addresses: [],
+      memory: 8,
+      memory_test_status: testStatusFactory({
+        status: TestStatusStatus.PASSED,
+      }),
+      network_test_status: testStatusFactory({
+        status: TestStatusStatus.PASSED,
+      }),
+      osystem: "ubuntu",
+      owner: "admin",
+      physical_disk_count: 1,
+      pool: modelRefFactory(),
+      pxe_mac: "00:11:22:33:44:55",
+      spaces: [],
+      status: NodeStatus.DEPLOYED,
+      status_code: NodeStatusCode.DEPLOYED,
+      status_message: "",
+      storage: 8,
+      storage_test_status: testStatusFactory({
+        status: TestStatusStatus.PASSED,
+      }),
+      testing_status: testStatusFactory({
+        status: TestStatusStatus.PASSED,
+      }),
+      system_id: "abc123",
+      zone: modelRefFactory(),
+    }),
+    machineFactory({
+      actions: [],
+      architecture: "amd64/generic",
+      cpu_count: 2,
+      cpu_test_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      distro_series: "xenial",
+      domain: modelRefFactory({
+        name: "example",
+      }),
+      extra_macs: [],
+      fqdn: "other.example",
+      hostname: "other",
+      ip_addresses: [],
+      memory: 6,
+      memory_test_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      network_test_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      osystem: "ubuntu",
+      owner: "user",
+      physical_disk_count: 2,
+      pool: modelRefFactory(),
+      pxe_mac: "66:77:88:99:00:11",
+      spaces: [],
+      status: NodeStatus.RELEASING,
+      status_code: NodeStatusCode.RELEASING,
+      status_message: "",
+      storage: 16,
+      storage_test_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      testing_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      system_id: "def456",
+      zone: modelRefFactory(),
+    }),
+    machineFactory({
+      actions: [],
+      architecture: "amd64/generic",
+      cpu_count: 2,
+      cpu_test_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      distro_series: "xenial",
+      domain: modelRefFactory({
+        name: "example",
+      }),
+      extra_macs: [],
+      fqdn: "other.example",
+      hostname: "other",
+      ip_addresses: [],
+      memory: 6,
+      memory_test_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      network_test_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      osystem: "ubuntu",
+      owner: "user",
+      physical_disk_count: 2,
+      pool: modelRefFactory(),
+      pxe_mac: "66:77:88:99:00:11",
+      spaces: [],
+      status: NodeStatus.FAILED_TESTING,
+      status_code: NodeStatusCode.DEPLOYED,
+      status_message: "",
+      storage: 16,
+      storage_test_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      testing_status: testStatusFactory({
+        status: TestStatusStatus.FAILED,
+      }),
+      system_id: "ghi789",
+      zone: modelRefFactory(),
+    }),
+  ];
+  const machineList = machineStateListFactory({
+    loaded: true,
+    groups: [
+      machineStateListGroupFactory({
+        items: [machines[0].system_id, machines[2].system_id],
+        name: "Deployed",
+        value: FetchNodeStatus.DEPLOYED,
+      }),
+      machineStateListGroupFactory({
+        items: [machines[1].system_id],
+        name: "Releasing",
+        value: FetchNodeStatus.RELEASING,
+      }),
+      machineStateListGroupFactory({
+        items: [machines[2].system_id],
+        name: "Failed testing",
+        value: FetchNodeStatus.FAILED_TESTING,
+      }),
+    ],
+  });
 
   beforeEach(() => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-    const machines = [
-      machineFactory({
-        actions: [],
-        architecture: "amd64/generic",
-        cpu_count: 4,
-        cpu_test_status: testStatusFactory({
-          status: TestStatusStatus.RUNNING,
-        }),
-        distro_series: "bionic",
-        domain: modelRefFactory({
-          name: "example",
-        }),
-        extra_macs: [],
-        fqdn: "koala.example",
-        hostname: "koala",
-        ip_addresses: [],
-        memory: 8,
-        memory_test_status: testStatusFactory({
-          status: TestStatusStatus.PASSED,
-        }),
-        network_test_status: testStatusFactory({
-          status: TestStatusStatus.PASSED,
-        }),
-        osystem: "ubuntu",
-        owner: "admin",
-        physical_disk_count: 1,
-        pool: modelRefFactory(),
-        pxe_mac: "00:11:22:33:44:55",
-        spaces: [],
-        status: NodeStatus.DEPLOYED,
-        status_code: NodeStatusCode.DEPLOYED,
-        status_message: "",
-        storage: 8,
-        storage_test_status: testStatusFactory({
-          status: TestStatusStatus.PASSED,
-        }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.PASSED,
-        }),
-        system_id: "abc123",
-        zone: modelRefFactory(),
-      }),
-      machineFactory({
-        actions: [],
-        architecture: "amd64/generic",
-        cpu_count: 2,
-        cpu_test_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        distro_series: "xenial",
-        domain: modelRefFactory({
-          name: "example",
-        }),
-        extra_macs: [],
-        fqdn: "other.example",
-        hostname: "other",
-        ip_addresses: [],
-        memory: 6,
-        memory_test_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        network_test_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        osystem: "ubuntu",
-        owner: "user",
-        physical_disk_count: 2,
-        pool: modelRefFactory(),
-        pxe_mac: "66:77:88:99:00:11",
-        spaces: [],
-        status: NodeStatus.RELEASING,
-        status_code: NodeStatusCode.RELEASING,
-        status_message: "",
-        storage: 16,
-        storage_test_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        system_id: "def456",
-        zone: modelRefFactory(),
-      }),
-      machineFactory({
-        actions: [],
-        architecture: "amd64/generic",
-        cpu_count: 2,
-        cpu_test_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        distro_series: "xenial",
-        domain: modelRefFactory({
-          name: "example",
-        }),
-        extra_macs: [],
-        fqdn: "other.example",
-        hostname: "other",
-        ip_addresses: [],
-        memory: 6,
-        memory_test_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        network_test_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        osystem: "ubuntu",
-        owner: "user",
-        physical_disk_count: 2,
-        pool: modelRefFactory(),
-        pxe_mac: "66:77:88:99:00:11",
-        spaces: [],
-        status: NodeStatus.FAILED_TESTING,
-        status_code: NodeStatusCode.DEPLOYED,
-        status_message: "",
-        storage: 16,
-        storage_test_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        testing_status: testStatusFactory({
-          status: TestStatusStatus.FAILED,
-        }),
-        system_id: "ghi789",
-        zone: modelRefFactory(),
-      }),
-    ];
     state = rootStateFactory({
       general: generalStateFactory({
         machineActions: {
@@ -213,26 +233,7 @@ describe("Machines", () => {
       machine: machineStateFactory({
         items: machines,
         lists: {
-          "123456": machineStateListFactory({
-            loaded: true,
-            groups: [
-              machineStateListGroupFactory({
-                items: [machines[0].system_id, machines[2].system_id],
-                name: "Deployed",
-                value: FetchNodeStatus.DEPLOYED,
-              }),
-              machineStateListGroupFactory({
-                items: [machines[1].system_id],
-                name: "Releasing",
-                value: FetchNodeStatus.RELEASING,
-              }),
-              machineStateListGroupFactory({
-                items: [machines[2].system_id],
-                name: "Failed testing",
-                value: FetchNodeStatus.FAILED_TESTING,
-              }),
-            ],
-          }),
+          "78910": machineList,
         },
         filters: [machineFilterGroupFactory()],
         filtersLoaded: true,
@@ -433,6 +434,14 @@ describe("Machines", () => {
   });
 
   it("can store hidden groups in local storage", async () => {
+    jest
+      .spyOn(reduxToolkit, "nanoid")
+      .mockReturnValueOnce("mocked-nanoid-1")
+      .mockReturnValueOnce("mocked-nanoid-2");
+    state.machine.lists = {
+      "mocked-nanoid-1": machineList,
+      "mocked-nanoid-2": machineList,
+    };
     const store = mockStore(state);
     renderWithBrowserRouter(<Machines />, { route: "/machines", store });
     const expected = machineActions.fetch("123456", {
