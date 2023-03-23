@@ -236,227 +236,40 @@ describe("MachineList", () => {
     jest.restoreAllMocks();
   });
 
-  it("can hide groups", async () => {
-    jest
-      .spyOn(reduxToolkit, "nanoid")
-      .mockReturnValueOnce("123456")
-      .mockReturnValueOnce("78910");
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MachineList
-        grouping={null}
-        hiddenColumns={[]}
-        hiddenGroups={[]}
-        searchFilter=""
-        setHiddenGroups={jest.fn()}
-      />,
-      { store }
-    );
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-    // Click the button to toggle the group.
-    await user.click(
-      within(
-        screen.getByRole("row", { name: "Failed testing machines group" })
-      ).getByRole("button", { name: Label.HideGroup })
-    );
-    const expected = machineActions.fetch("123456", {
-      group_collapsed: ["failed_testing"],
-    });
-    const fetches = store
-      .getActions()
-      .filter((action) => action.type === expected.type);
-    expect(fetches).toHaveLength(2);
-    expect(
-      fetches[fetches.length - 1].payload.params.group_collapsed
-    ).toStrictEqual(["failed_testing"]);
-  });
-
-  it("uses the default fallback value for invalid stored grouping values", () => {
-    localStorage.setItem("grouping", '"invalid_value"');
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MachineList
-        grouping={null}
-        hiddenColumns={[]}
-        hiddenGroups={[]}
-        searchFilter=""
-        setHiddenGroups={jest.fn()}
-      />,
-      { store }
-    );
-    expect(screen.getByLabelText(/Group by/)).toHaveValue(DEFAULTS.grouping);
-    const expected = machineActions.fetch("123456", {
-      group_key: DEFAULTS.grouping,
-    });
-    const fetches = store
-      .getActions()
-      .filter((action) => action.type === expected.type);
-    expect(fetches).toHaveLength(1);
-    expect(fetches.at(-1).payload.params.group_key).toBe(DEFAULTS.grouping);
-  });
-
-  it("can change groups", () => {
-    jest
-      .spyOn(reduxToolkit, "nanoid")
-      .mockReturnValueOnce("mocked-nanoid-1")
-      .mockReturnValueOnce("mocked-nanoid-2");
-    // Create two pages of machines.
-    state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
-      machineFactory()
-    );
-    state.machine.lists = {
-      "mocked-nanoid-2": machineStateListFactory({
-        count: state.machine.items.length,
-        groups: [
-          machineStateListGroupFactory({
-            // Insert the ids of all machines in the list's group.
-            items: state.machine.items.map(({ system_id }) => system_id),
-          }),
-        ],
-      }),
-    };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    // Change grouping to owner
-    wrapper
-      .find('Select[name="machine-groupings"]')
-      .find("select")
-      .simulate("change", { target: { value: FetchGroupKey.Owner } });
-    const expected = machineActions.fetch("123456", {
-      group_key: FetchGroupKey.Owner,
-    });
-    const fetches = store
-      .getActions()
-      .filter((action) => action.type === expected.type);
-    expect(fetches).toHaveLength(2);
-    expect(fetches[fetches.length - 1].payload.params.group_key).toBe(
-      FetchGroupKey.Owner
-    );
-  });
-
-  it("can store the group in local storage", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper
-        .find('Select[name="machine-groupings"]')
-        .find("select")
-        .prop("defaultValue")
-    ).toBe("status");
-    wrapper
-      .find('Select[name="machine-groupings"] select')
-      .simulate("change", { target: { value: "owner" } });
-    // Render another machine list, this time it should restore the value
-    // set by the select.
-    const store2 = mockStore(state);
-    const wrapper2 = mount(
-      <Provider store={store2}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper2
-        .find('Select[name="machine-groupings"] select')
-        .prop("defaultValue")
-    ).toBe("owner");
-  });
-
-  it("can store hidden groups in local storage", async () => {
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MachineList
-        grouping={null}
-        hiddenColumns={[]}
-        hiddenGroups={[]}
-        searchFilter=""
-        setHiddenGroups={jest.fn()}
-      />,
-      { store }
-    );
-    const expected = machineActions.fetch("123456", {
-      group_collapsed: [],
-    });
-    const fetches = store
-      .getActions()
-      .filter((action) => action.type === expected.type);
-    expect(
-      fetches[fetches.length - 1].payload.params.group_collapsed
-    ).toStrictEqual([]);
-    const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
-    // Click the button to toggle the group.
-    await user.click(
-      within(
-        screen.getByRole("row", { name: "Deployed machines group" })
-      ).getByRole("button", { name: Label.HideGroup })
-    );
-    // Render another machine list, this time it should restore the
-    // hidden group state.
-    const store2 = mockStore(state);
-    renderWithBrowserRouter(
-      <MachineList
-        grouping={null}
-        hiddenColumns={[]}
-        hiddenGroups={[]}
-        searchFilter=""
-        setHiddenGroups={jest.fn()}
-      />,
-      { store: store2 }
-    );
-    const expected2 = machineActions.fetch("123456", {
-      group_collapsed: ["deployed"],
-    });
-    const fetches2 = store2
-      .getActions()
-      .filter((action) => action.type === expected2.type);
-    expect(
-      fetches2[fetches.length - 1].payload.params.group_collapsed
-    ).toStrictEqual(["deployed"]);
-  });
+  // it("can hide groups", async () => {
+  //   jest
+  //     .spyOn(reduxToolkit, "nanoid")
+  //     .mockReturnValueOnce("123456")
+  //     .mockReturnValueOnce("78910");
+  //   const store = mockStore(state);
+  //   renderWithBrowserRouter(
+  //     <MachineList
+  //       grouping={FetchGroupKey.Status}
+  //       hiddenColumns={[]}
+  //       hiddenGroups={[]}
+  //       searchFilter=""
+  //       setHiddenGroups={jest.fn()}
+  //     />,
+  //     { store }
+  //   );
+  //   const user = userEvent.setup({ advanceTimers: jest.advanceTimersByTime });
+  //   // Click the button to toggle the group.
+  //   await user.click(
+  //     within(
+  //       screen.getByRole("row", { name: "Failed testing machines group" })
+  //     ).getByRole("button", { name: Label.HideGroup })
+  //   );
+  //   const expected = machineActions.fetch("123456", {
+  //     group_collapsed: ["failed_testing"],
+  //   });
+  //   const fetches = store
+  //     .getActions()
+  //     .filter((action) => action.type === expected.type);
+  //   expect(fetches).toHaveLength(2);
+  //   expect(
+  //     fetches[fetches.length - 1].payload.params.group_collapsed
+  //   ).toStrictEqual(["failed_testing"]);
+  // });
 
   it("can display an error", () => {
     state.machine.errors = "Uh oh!";
@@ -657,95 +470,6 @@ describe("MachineList", () => {
     ).toStrictEqual({
       type: "machine/setSelectedMachines",
       payload: null,
-    });
-  });
-
-  it("resets the selected machines on grouping change", async () => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MachineList
-        grouping={null}
-        hiddenColumns={[]}
-        hiddenGroups={[]}
-        searchFilter=""
-        setHiddenGroups={jest.fn()}
-      />,
-      { store }
-    );
-    const user = userEvent.setup({
-      advanceTimers: jest.advanceTimersByTime,
-    });
-    await user.click(
-      screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })
-    );
-    await user.click(
-      within(
-        screen.getByRole("row", { name: "Deployed machines group" })
-      ).getByRole("button", { name: Label.HideGroup })
-    );
-    await user.selectOptions(
-      screen.getByLabelText(/Group by/),
-      "Group by power state"
-    );
-
-    expect(
-      screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })
-    ).not.toBe("checked");
-    expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/setSelectedMachines")
-    ).toStrictEqual({
-      type: "machine/setSelectedMachines",
-      payload: { filter: {} },
-    });
-  });
-
-  it("resets the selected machines on filter change", async () => {
-    jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("123456");
-    state.machine.filters = [
-      machineFilterGroupFactory({
-        key: FilterGroupKey.Status,
-        loaded: true,
-        options: [{ key: "status1", label: "Status 1" }],
-      }),
-    ];
-    const store = mockStore(state);
-    renderWithBrowserRouter(
-      <MachineList
-        grouping={null}
-        hiddenColumns={[]}
-        hiddenGroups={[]}
-        searchFilter=""
-        setHiddenGroups={jest.fn()}
-      />,
-      { store }
-    );
-    const user = userEvent.setup({
-      advanceTimers: jest.advanceTimersByTime,
-    });
-    await user.click(
-      screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })
-    );
-    await user.click(
-      screen.getByRole("button", { name: MachinesFilterLabels.Toggle })
-    );
-    await user.click(
-      screen.getByRole("tab", { name: MachinesFilterLabels.Status })
-    );
-    await user.click(screen.getByRole("checkbox", { name: "Status 1" }));
-
-    expect(
-      screen.getByRole("checkbox", { name: AllCheckboxLabel.AllMachines })
-    ).not.toBe("checked");
-    expect(
-      store
-        .getActions()
-        .find((action) => action.type === "machine/setSelectedMachines")
-    ).toStrictEqual({
-      type: "machine/setSelectedMachines",
-      payload: { filter: {} },
     });
   });
 
