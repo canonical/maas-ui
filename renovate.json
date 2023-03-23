@@ -13,6 +13,10 @@
         "^prettier"
       ],
       "schedule": ["at any time"]
+    },
+    {
+      "matchPackagePatterns": ["^@sentry"],
+      "enabled": false
     }
   ]
 }
