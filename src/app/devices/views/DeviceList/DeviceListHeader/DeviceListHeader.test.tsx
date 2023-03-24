@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -33,7 +33,7 @@ describe("DeviceListHeader", () => {
   it("displays a spinner in the header subtitle if devices have not loaded", () => {
     state.device.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <DeviceListHeader
@@ -44,15 +44,13 @@ describe("DeviceListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper.find("[data-testid='section-header-subtitle'] Spinner").exists()
-    ).toBe(true);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("displays a devices count if devices have loaded", () => {
     state.device.loaded = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <DeviceListHeader
@@ -63,7 +61,7 @@ describe("DeviceListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
+    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
       "2 devices available"
     );
   });
@@ -71,7 +69,7 @@ describe("DeviceListHeader", () => {
   it("disables the add device button if any devices are selected", () => {
     state.device.selected = ["abc123"];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <DeviceListHeader
@@ -82,15 +80,13 @@ describe("DeviceListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(
-      wrapper.find('button[data-testid="add-device-button"]').prop("disabled")
-    ).toBe(true);
+    expect(screen.getByTestId("add-device-button")).toBeDisabled();
   });
 
   it("can open the add device form", () => {
     const setSidePanelContent = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <DeviceListHeader
@@ -101,7 +97,7 @@ describe("DeviceListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Button[data-testid='add-device-button']").simulate("click");
+    screen.getByTestId("add-device-button").click();
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: DeviceHeaderViews.ADD_DEVICE,
     });

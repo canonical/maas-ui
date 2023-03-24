@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -29,12 +29,12 @@ describe("VMsColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />
       </Provider>
     );
-    expect(wrapper.find("[data-testid='machines-count']").text()).toBe("10");
+    expect(screen.getByTestId("machines-count")).toHaveTextContent("10");
   });
 
   it("shows the pod version for LXD pods", () => {
@@ -46,11 +46,11 @@ describe("VMsColumn", () => {
     });
 
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <VMsColumn version={pod.version} vms={pod.resources.vm_count.tracked} />
       </Provider>
     );
-    expect(wrapper.find("[data-testid='version']").text()).toBe("1.2.3");
+    expect(screen.getByTestId("version")).toHaveTextContent("1.2.3");
   });
 });
