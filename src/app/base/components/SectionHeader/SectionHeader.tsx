@@ -114,7 +114,7 @@ const SectionHeader = <P,>({
         )}
         {buttons?.length && !sidePanelContent ? (
           <List
-            className="section-header__buttons u-flex--between u-flex--wrap"
+            className="section-header__buttons u-flex--between"
             data-testid="section-header-buttons"
             inline
             items={buttons.map((button, i) => ({
