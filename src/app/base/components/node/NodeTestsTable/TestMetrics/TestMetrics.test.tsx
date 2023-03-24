@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import TestMetrics from "./TestMetrics";
 
@@ -12,10 +12,8 @@ describe("TestMetrics", () => {
     const scriptResult = scriptResultFactory({
       results: [scriptResultResultFactory()],
     });
-    const wrapper = mount(
-      <TestMetrics close={jest.fn()} scriptResult={scriptResult} />
-    );
-
-    expect(wrapper.find("[data-testid='metrics-table']").exists()).toBe(true);
+    const closeFunc = jest.fn();
+    render(<TestMetrics close={closeFunc} scriptResult={scriptResult} />);
+    expect(screen.getByTestId("metrics-table")).toBeInTheDocument();
   });
 });

@@ -1,4 +1,5 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
 import NodeDevicesWarning from "./NodeDevicesWarning";
 
@@ -13,12 +14,13 @@ import {
 
 describe("node is machine", () => {
   it(`prompts user to commission machine if no devices found and machine can be
-    commissioned`, () => {
+    commissioned`, async () => {
     const setSidePanelContent = jest.fn();
     const machine = machineDetailsFactory({
       actions: [NodeActions.COMMISSION],
     });
-    const wrapper = mount(
+
+    render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
         node={machine}
@@ -27,11 +29,11 @@ describe("node is machine", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
-      "Try commissioning this machine to load PCI and USB device information."
-    );
+    expect(
+      screen.getByText(/Try commissioning this machine/i)
+    ).toBeInTheDocument();
 
-    wrapper.find("[data-testid='commission-machine'] button").simulate("click");
+    await userEvent.click(screen.getByTestId("commission-machine"));
 
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: MachineHeaderViews.COMMISSION_MACHINE,
@@ -40,7 +42,8 @@ describe("node is machine", () => {
 
   it("shows a message if the machine has no node devices and is locked", () => {
     const machine = machineDetailsFactory({ locked: true });
-    const wrapper = mount(
+
+    render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
         node={machine}
@@ -49,16 +52,15 @@ describe("node is machine", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
-      "The machine is locked. Unlock and release this machine before commissioning to load PCI and USB device information."
-    );
+    expect(screen.getByText(/The machine is locked/i)).toBeInTheDocument();
   });
 
   it("shows a message if the machine has no node devices and is in failed testing state", () => {
     const machine = machineDetailsFactory({
       status_code: NodeStatusCode.FAILED_TESTING,
     });
-    const wrapper = mount(
+
+    render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
         node={machine}
@@ -67,16 +69,15 @@ describe("node is machine", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
-      "Override failed testing before commissioning to load PCI and USB device information."
-    );
+    expect(screen.getByText(/Override failed testing/i)).toBeInTheDocument();
   });
 
   it("shows a message if the machine has no node devices and is deployed", () => {
     const machine = machineDetailsFactory({
       status_code: NodeStatusCode.DEPLOYED,
     });
-    const wrapper = mount(
+
+    render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
         node={machine}
@@ -85,9 +86,7 @@ describe("node is machine", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
-      "Release this machine before commissioning to load PCI and USB device information."
-    );
+    expect(screen.getByText(/Release this machine/i)).toBeInTheDocument();
   });
 
   it("shows a message if the machine has no node devices and is commissioning", () => {
@@ -95,7 +94,8 @@ describe("node is machine", () => {
       locked: false,
       status_code: NodeStatusCode.COMMISSIONING,
     });
-    const wrapper = mount(
+
+    render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
         node={machine}
@@ -104,9 +104,9 @@ describe("node is machine", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
-      "Commissioning is currently in progress..."
-    );
+    expect(
+      screen.getByText(/Commissioning is currently in progress/i)
+    ).toBeInTheDocument();
   });
 
   it("shows a generic message if the machine has no node devices and cannot be commissioned", () => {
@@ -115,7 +115,8 @@ describe("node is machine", () => {
       locked: false,
       status_code: NodeStatusCode.NEW,
     });
-    const wrapper = mount(
+
+    render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.PCIE}
         node={machine}
@@ -124,14 +125,15 @@ describe("node is machine", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices-warning']").text()).toBe(
-      "Commissioning cannot be run at this time."
-    );
+    expect(
+      screen.getByText(/Commissioning cannot be run at this time/i)
+    ).toBeInTheDocument();
   });
 
   it("shows a message if the machine has PCI devices but no USB devices", () => {
     const machine = machineDetailsFactory();
-    const wrapper = mount(
+
+    render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.USB}
         node={machine}
@@ -142,14 +144,15 @@ describe("node is machine", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-usb-warning']").exists()).toBe(true);
+    expect(screen.getByTestId("no-usb-warning")).toBeInTheDocument();
   });
 });
 
 describe("node is controller", () => {
   it("only shows the header without additional commissioning information", () => {
     const controller = controllerDetailsFactory();
-    const wrapper = mount(
+
+    render(
       <NodeDevicesWarning
         bus={NodeDeviceBus.USB}
         node={controller}
@@ -158,8 +161,6 @@ describe("node is controller", () => {
       />
     );
 
-    expect(wrapper.find("[data-testid='no-devices-warning']").exists()).toBe(
-      false
-    );
+    expect(screen.queryByTestId("no-devices-warning")).toBeNull();
   });
 });

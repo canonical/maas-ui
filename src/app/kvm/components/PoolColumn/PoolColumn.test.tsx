@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -53,7 +53,7 @@ describe("PoolColumn", () => {
   it("can display the pod's resource pool and zone", () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <PoolColumn
           poolId={state.pod.items[0].pool}
@@ -61,7 +61,7 @@ describe("PoolColumn", () => {
         />
       </Provider>
     );
-    expect(wrapper.find("[data-testid='pool']").text()).toBe("swimming-pool");
-    expect(wrapper.find("[data-testid='zone']").text()).toBe("alone-zone");
+    expect(screen.getByTestId("pool")).toHaveTextContent("swimming-pool");
+    expect(screen.getByTestId("zone")).toHaveTextContent("alone-zone");
   });
 });

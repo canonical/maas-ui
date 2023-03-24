@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -22,13 +22,13 @@ describe("OwnerColumn", () => {
       tag: tagStateFactory({ loaded: false }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <OwnerColumn systemId={device.system_id} />
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("shows tag names once loaded", () => {
@@ -44,12 +44,12 @@ describe("OwnerColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <OwnerColumn systemId={device.system_id} />
       </Provider>
     );
 
-    expect(wrapper.find("[title='tag1, tag2']").exists()).toBe(true);
+    expect(screen.getByTitle("tag1, tag2")).toBeInTheDocument();
   });
 });
