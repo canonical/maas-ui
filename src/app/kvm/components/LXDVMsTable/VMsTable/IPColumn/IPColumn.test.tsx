@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
@@ -33,7 +33,7 @@ describe("IPColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
@@ -43,7 +43,9 @@ describe("IPColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    const spinner = screen.getByText(/loading/i);
+
+    expect(spinner).toBeInTheDocument();
   });
 
   it("can show a list of the machine's ipv4s", () => {
@@ -58,7 +60,7 @@ describe("IPColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
@@ -68,11 +70,11 @@ describe("IPColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='ip']").length).toBe(2);
-    expect(wrapper.find("[data-testid='ip']").at(0).text()).toBe("192.168.1.1");
-    expect(wrapper.find("[data-testid='ip']").at(1).text()).toBe(
-      "192.168.1.2:8000"
-    );
+    const ips = screen.getAllByTestId("ip");
+
+    expect(ips.length).toBe(2);
+    expect(ips[0]).toHaveTextContent("192.168.1.1");
+    expect(ips[1]).toHaveTextContent("192.168.1.2:8000");
   });
 
   it("can show a list of the machine's ipv6s", () => {
@@ -87,7 +89,7 @@ describe("IPColumn", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
@@ -97,9 +99,9 @@ describe("IPColumn", () => {
       </Provider>
     );
 
-    expect(wrapper.find("[data-testid='ip']").length).toBe(1);
-    expect(wrapper.find("[data-testid='ip']").text()).toBe(
-      "2001:db8::ff00:42:8329"
-    );
+    const ips = screen.getAllByTestId("ip");
+
+    expect(ips.length).toBe(1);
+    expect(ips[0]).toHaveTextContent("2001:db8::ff00:42:8329");
   });
 });

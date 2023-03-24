@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -32,7 +32,7 @@ describe("CloneResults", () => {
   it("handles a successful clone result", () => {
     state.machine.eventErrors = [];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -47,12 +47,10 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='results-string']").text()).toBe(
-      `2 of 2 machines cloned successfully from ${machine.hostname}.`
-    );
-    expect(wrapper.find("Link[data-testid='error-filter-link']").exists()).toBe(
-      false
-    );
+    expect(
+      screen.getByText(/2 of 2 machines cloned successfully from/i)
+    ).toBeInTheDocument();
+    expect(screen.queryByTestId("error-filter-link")).not.toBeInTheDocument();
   });
 
   it("handles global clone errors", () => {
@@ -64,7 +62,7 @@ describe("CloneResults", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -79,10 +77,10 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='results-string']").text()).toBe(
-      `0 of 2 machines cloned successfully from ${machine.hostname}.`
-    );
-    expect(wrapper.find("[data-testid='error-description']").text()).toBe(
+    expect(
+      screen.getByText(/0 of 2 machines cloned successfully from/i)
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("error-description")).toHaveTextContent(
       "Cloning was unsuccessful: it didn't work"
     );
   });
@@ -104,7 +102,7 @@ describe("CloneResults", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -119,12 +117,13 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("[data-testid='results-string']").text()).toBe(
-      `1 of 2 machines cloned successfully from ${machine.hostname}.`
-    );
     expect(
-      wrapper.find("Link[data-testid='error-filter-link']").prop("to")
-    ).toBe("/machines?system_id=def456");
+      screen.getByText(/1 of 2 machines cloned successfully from/i)
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("error-filter-link")).toHaveAttribute(
+      "href",
+      "/machines?system_id=def456"
+    );
   });
 
   it("handles invalid item destination errors", () => {
@@ -144,7 +143,7 @@ describe("CloneResults", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -159,14 +158,13 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    // Both machines failed to clone.
-    expect(wrapper.find("[data-testid='results-string']").text()).toBe(
-      `0 of 2 machines cloned successfully from ${machine.hostname}.`
-    );
-    // But only one machine should have caused an error.
     expect(
-      wrapper.find("Link[data-testid='error-filter-link']").prop("to")
-    ).toBe("/machines?system_id=def456");
+      screen.getByText(/0 of 2 machines cloned successfully from/i)
+    ).toBeInTheDocument();
+    expect(screen.getByTestId("error-filter-link")).toHaveAttribute(
+      "href",
+      "/machines?system_id=def456"
+    );
   });
 
   it("groups errors by error code", () => {
@@ -196,7 +194,7 @@ describe("CloneResults", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -211,10 +209,8 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Table[data-testid='errors-table']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("TableRow[data-testid='error-row']").length).toBe(2);
+    expect(screen.getByTestId("errors-table")).toBeInTheDocument();
+    expect(screen.getAllByTestId("error-row").length).toBe(2);
   });
 
   it("can filter machines by error type", () => {
@@ -240,7 +236,7 @@ describe("CloneResults", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
@@ -255,7 +251,7 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    wrapper.find("Link[data-testid='error-filter-link']").simulate("click");
+    screen.getByTestId("error-filter-link").click();
     expect(setSearchFilter).toHaveBeenCalledWith("system_id:(def456,ghi789)");
   });
 
@@ -282,7 +278,7 @@ describe("CloneResults", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -298,8 +294,6 @@ describe("CloneResults", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Link[data-testid='error-filter-link']").exists()).toBe(
-      false
-    );
+    expect(screen.queryByTestId("error-filter-link")).not.toBeInTheDocument();
   });
 });

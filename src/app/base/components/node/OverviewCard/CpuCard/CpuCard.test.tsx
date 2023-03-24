@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -33,9 +33,8 @@ beforeEach(() => {
 it("renders the cpu subtext", () => {
   const machine = machineDetailsFactory({ cpu_speed: 2000 });
   state.machine.items = [machine];
-
   const store = mockStore(state);
-  const wrapper = mount(
+  render(
     <Provider store={store}>
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -46,8 +45,7 @@ it("renders the cpu subtext", () => {
       </MemoryRouter>
     </Provider>
   );
-
-  expect(wrapper.find("[data-testid='cpu-subtext']").text()).toEqual(
+  expect(screen.getByTestId("cpu-subtext")).toHaveTextContent(
     `${machine.cpu_count} core, 2 GHz`
   );
 });
@@ -55,9 +53,8 @@ it("renders the cpu subtext", () => {
 it("renders the cpu subtext for slower CPUs", () => {
   const machine = machineDetailsFactory({ cpu_speed: 200 });
   state.machine.items = [machine];
-
   const store = mockStore(state);
-  const wrapper = mount(
+  render(
     <Provider store={store}>
       <MemoryRouter
         initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -68,8 +65,7 @@ it("renders the cpu subtext for slower CPUs", () => {
       </MemoryRouter>
     </Provider>
   );
-
-  expect(wrapper.find("[data-testid='cpu-subtext']").text()).toEqual(
+  expect(screen.getByTestId("cpu-subtext")).toHaveTextContent(
     `${machine.cpu_count} core, 200 MHz`
   );
 });
@@ -77,9 +73,8 @@ it("renders the cpu subtext for slower CPUs", () => {
 it("does not render test info if node is a controller", () => {
   const controller = controllerDetailsFactory();
   state.controller.items = [controller];
-
   const store = mockStore(state);
-  const wrapper = mount(
+  render(
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
@@ -88,16 +83,14 @@ it("does not render test info if node is a controller", () => {
       </MemoryRouter>
     </Provider>
   );
-
-  expect(wrapper.find("[data-testid='tests']").exists()).toBe(false);
+  expect(screen.queryByTestId("tests")).not.toBeInTheDocument();
 });
 
 it("renders test info if node is a machine", () => {
   const machine = machineDetailsFactory();
   state.machine.items = [machine];
-
   const store = mockStore(state);
-  const wrapper = mount(
+  render(
     <Provider store={store}>
       <MemoryRouter>
         <CompatRouter>
@@ -106,8 +99,7 @@ it("renders test info if node is a machine", () => {
       </MemoryRouter>
     </Provider>
   );
-
-  expect(wrapper.find("[data-testid='tests']").exists()).toBe(true);
+  expect(screen.getByTestId("tests")).toBeInTheDocument();
 });
 
 describe("node is a machine", () => {
@@ -117,9 +109,8 @@ describe("node is a machine", () => {
       passed: 2,
     });
     state.machine.items = [machine];
-
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -130,10 +121,7 @@ describe("node is a machine", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("2");
+    expect(screen.getByRole("link", { name: "2" })).toBeInTheDocument();
   });
 
   it("renders a link with a count of pending and running tests", () => {
@@ -143,9 +131,8 @@ describe("node is a machine", () => {
       pending: 2,
     });
     state.machine.items = [machine];
-
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -156,10 +143,7 @@ describe("node is a machine", () => {
         </MemoryRouter>
       </Provider>
     );
-
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("3");
+    expect(screen.getByRole("link", { name: "3" })).toBeInTheDocument();
   });
 
   it("renders a link with a count of failed tests", () => {
@@ -168,9 +152,8 @@ describe("node is a machine", () => {
       failed: 5,
     });
     state.machine.items = [machine];
-
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -182,9 +165,7 @@ describe("node is a machine", () => {
       </Provider>
     );
 
-    expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Link").text()
-    ).toEqual("5");
+    expect(screen.getByRole("link", { name: "5" })).toBeInTheDocument();
   });
 
   it("renders a results link", () => {
@@ -193,9 +174,8 @@ describe("node is a machine", () => {
       failed: 5,
     });
     state.machine.items = [machine];
-
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -208,17 +188,16 @@ describe("node is a machine", () => {
     );
 
     expect(
-      wrapper.find("[data-testid='tests']").childAt(1).find("Link").text()
-    ).toContain("View results");
+      screen.getByRole("link", { name: /View results/ })
+    ).toBeInTheDocument();
   });
 
   it("renders a test cpu link if no tests run", () => {
     const machine = machineDetailsFactory();
     machine.cpu_test_status = testStatusFactory();
     state.machine.items = [machine];
-
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machine/abc123", key: "testKey" }]}
@@ -231,7 +210,7 @@ describe("node is a machine", () => {
     );
 
     expect(
-      wrapper.find("[data-testid='tests']").childAt(0).find("Button").text()
-    ).toContain("Test CPU");
+      screen.getByRole("button", { name: /Test CPU/ })
+    ).toBeInTheDocument();
   });
 });
