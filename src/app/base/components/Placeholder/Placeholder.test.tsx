@@ -1,4 +1,4 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import Placeholder from "./Placeholder";
 
@@ -12,14 +12,12 @@ describe("Placeholder", () => {
   });
 
   it("renders", () => {
-    const wrapper = shallow(<Placeholder>Placeholder text</Placeholder>);
-    expect(wrapper).toMatchSnapshot();
+    render(<Placeholder>Placeholder text</Placeholder>);
+    expect(screen.getByTestId("placeholder")).toBeInTheDocument();
   });
 
   it("does not return placeholder styling if loading is false", () => {
-    const wrapper = shallow(
-      <Placeholder loading={false}>Placeholder text</Placeholder>
-    );
-    expect(wrapper.find("[data-testid='placeholder']").exists()).toBe(false);
+    render(<Placeholder loading={false}>Placeholder text</Placeholder>);
+    expect(screen.queryByTestId("placeholder")).not.toBeInTheDocument();
   });
 });

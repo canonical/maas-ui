@@ -1,11 +1,11 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import Switch from "./Switch";
 
 describe("Switch", () => {
   it("renders", () => {
-    const wrapper = shallow(<Switch />);
+    render(<Switch />);
 
-    expect(wrapper).toMatchSnapshot();
+    expect(screen.getByRole("checkbox")).toBeInTheDocument();
   });
 });
