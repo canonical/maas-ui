@@ -14,6 +14,7 @@ export const AddHardwareMenu = ({
 }: Props): JSX.Element => {
   return (
     <ContextualMenu
+      className="p-add-hardware-dropdown"
       data-testid="add-hardware-dropdown"
       hasToggleIcon
       links={[
