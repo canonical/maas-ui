@@ -96,6 +96,12 @@ export const MachineListHeader = ({
   return (
     <MachinesHeader
       buttons={[
+        <h1 className="section-header__title p-heading--4">
+          {allMachineCount} machines in{" "}
+          <Link to={urls.pools.index}>
+            {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
+          </Link>
+        </h1>,
         <MachineListControls
           filter={searchFilter}
           grouping={grouping}
@@ -128,14 +134,14 @@ export const MachineListHeader = ({
       }
       sidePanelTitle={getHeaderTitle("Machines", sidePanelContent)}
       subtitleLoading={selectedCountLoading}
-      title={
-        <>
-          {allMachineCount} machines in{" "}
-          <Link to={urls.pools.index}>
-            {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
-          </Link>
-        </>
-      }
+      // title={
+      //   <>
+      //     {allMachineCount} machines in{" "}
+      //     <Link to={urls.pools.index}>
+      //       {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
+      //     </Link>
+      //   </>
+      // }
     />
   );
 };

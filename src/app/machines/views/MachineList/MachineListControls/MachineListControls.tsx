@@ -9,6 +9,7 @@ import HiddenColumnsSelect from "./HiddenColumnsSelect";
 import MachinesFilterAccordion from "./MachinesFilterAccordion";
 
 import DebounceSearchBox from "app/base/components/DebounceSearchBox";
+import NodeActionMenu from "app/base/components/NodeActionMenu";
 import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
 import { useSendAnalytics } from "app/base/hooks";
 import { MachineHeaderViews } from "app/machines/constants";
@@ -77,7 +78,7 @@ const MachineListControls = ({
     <Row className="machine-list-controls">
       {!hasSelection ? (
         <>
-          <Col size={3}>
+          <Col size={2}>
             <MachinesFilterAccordion
               searchText={searchText}
               setSearchText={(searchText) => {
@@ -85,7 +86,7 @@ const MachineListControls = ({
               }}
             />
           </Col>
-          <Col size={4}>
+          <Col size={5}>
             <DebounceSearchBox
               onDebounced={(debouncedText) => setFilter(debouncedText)}
               searchText={searchText}
@@ -130,6 +131,33 @@ const MachineListControls = ({
                   "Open"
                 );
               }}
+            />
+            <NodeActionMenu
+              alwaysShowLifecycle
+              excludeActions={[NodeActions.IMPORT_IMAGES]}
+              getTitle={getTitle}
+              hasSelection={hasSelection}
+              key="machine-list-action-menu"
+              nodeDisplay="machine"
+              onActionClick={(action) => {
+                if (action === NodeActions.TAG && !tagsSeen) {
+                  setTagsSeen(true);
+                }
+                const view = Object.values(MachineHeaderViews).find(
+                  ([, actionName]) => actionName === action
+                );
+                if (view) {
+                  setSidePanelContent({ view });
+                }
+                sendAnalytics(
+                  "Machine list action form",
+                  getNodeActionTitle(action),
+                  "Open"
+                );
+              }}
+              toggleAppearance=""
+              toggleClassName="p-action-menu u-no-margin--bottom"
+              toggleLabel="Menu"
             />
           </Col>
           <Col className="u-flex--center" size={2}>

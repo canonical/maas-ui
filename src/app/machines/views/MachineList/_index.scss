@@ -153,6 +153,18 @@
         .p-button--link {
           align-self: center;
         }
+
+        @media screen and (max-width: ($breakpoint-node-action-menu-group - 1)) {
+          .p-node-action-menu-group {
+            display: none;
+          }
+        }
+      
+        @media screen and (min-width: $breakpoint-node-action-menu-group) {
+          .p-action-menu {
+            display: none;
+          }
+        }
       }
 
       .p-contextual-menu__toggle {
