@@ -156,7 +156,7 @@ const MachineListControls = ({
                 );
               }}
               toggleAppearance=""
-              toggleClassName="p-action-menu u-no-margin--bottom"
+              toggleClassName="p-action-menu filter-accordion__toggle u-no-margin--bottom"
               toggleLabel="Menu"
             />
           </Col>

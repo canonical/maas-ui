@@ -30,6 +30,7 @@ export const AddHardwareMenu = ({
         },
       ]}
       position="right"
+      toggleClassName="filter-accordion__toggle"
       toggleDisabled={disabled}
       toggleLabel="Add hardware"
     />
