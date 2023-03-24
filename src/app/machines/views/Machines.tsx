@@ -76,6 +76,7 @@ const Machines = (): JSX.Element => {
       header={
         <MachineListHeader
           grouping={grouping}
+          hiddenColumns={hiddenColumns}
           searchFilter={searchFilter}
           setGrouping={handleSetGrouping}
           setHiddenColumns={setHiddenColumns}

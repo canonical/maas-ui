@@ -1,28 +1,5 @@
 import { generateMAASURL, generateName } from "../../utils";
 
-const MACHINE_ACTIONS = [
-  "Commission",
-  "Allocate",
-  "Deploy",
-  "Release",
-  "Abort",
-  "Clone from",
-  "Power on",
-  "Power off",
-  "Test",
-  "Enter rescue mode",
-  "Exit rescue mode",
-  "Mark fixed",
-  "Mark broken",
-  "Override failed testing",
-  "Lock",
-  "Unlock",
-  "Tag",
-  "Set zone",
-  "Set pool",
-  "Delete",
-];
-
 type ActionGroup = {
   label: string;
   actions: string[];

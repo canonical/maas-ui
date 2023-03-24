@@ -51,10 +51,7 @@ context("Machine listing", () => {
         .findByRole("checkbox", { name: /Commissioning/i })
         .click({ force: true })
     );
-    cy.findByRole("button", { name: /Take action/i }).click();
-    cy.findByLabelText("submenu").within(() => {
-      cy.findAllByRole("button", { name: /Delete/i }).click();
-    });
+    cy.findByRole("button", { name: /Delete/i }).click();
     cy.findByRole("button", { name: /Delete 2 machines/ }).should("exist");
     cy.findByRole("button", { name: /Delete 2 machines/ }).click();
     cy.findByRole("searchbox").should("have.value", searchFilter);
@@ -101,11 +98,8 @@ context("Machine listing", () => {
       "be.checked"
     );
     cy.findByTestId("section-header-buttons").within(() =>
-      cy.findByRole("button", { name: /Take action/i }).click()
+      cy.findByRole("button", { name: /Delete/i }).click()
     );
-    cy.findByLabelText("submenu").within(() => {
-      cy.findAllByRole("button", { name: /Delete/i }).click();
-    });
     cy.findByRole("button", { name: /Delete 3 machines/ }).click();
     cy.findByText(/No machines match the search criteria./).should("exist");
   });

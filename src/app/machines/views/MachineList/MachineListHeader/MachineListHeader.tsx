@@ -3,7 +3,6 @@ import { useCallback, useEffect } from "react";
 import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useMatch } from "react-router-dom-v5-compat";
-import { useStorageState } from "react-storage-hooks";
 
 import MachineListControls from "../MachineListControls";
 
@@ -32,6 +31,7 @@ import resourcePoolSelectors from "app/store/resourcepool/selectors";
 
 type Props = {
   grouping: FetchGroupKey | null;
+  hiddenColumns?: string[];
   setGrouping: (group: FetchGroupKey | null) => void;
   setHiddenGroups: (groups: string[]) => void;
   setHiddenColumns: React.Dispatch<React.SetStateAction<string[]>>;
@@ -43,8 +43,10 @@ type Props = {
 
 export const MachineListHeader = ({
   grouping,
+  hiddenColumns = [],
   setGrouping,
   setHiddenGroups,
+  setHiddenColumns,
   sidePanelContent,
   searchFilter,
   setSearchFilter,
@@ -73,13 +75,6 @@ export const MachineListHeader = ({
   }, [dispatch]);
 
   const resourcePoolsCount = useSelector(resourcePoolSelectors.count);
-
-  // fallback to "None" if the stored grouping is not valid
-  const [hiddenColumns, setHiddenColumns] = useStorageState<string[]>(
-    localStorage,
-    "machineListHiddenColumns",
-    []
-  );
 
   const handleSetSearchFilter = useCallback(
     (filter: string) => {
