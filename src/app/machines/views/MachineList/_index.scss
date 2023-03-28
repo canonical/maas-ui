@@ -134,13 +134,9 @@
 
   .section-header__main-row {
 
-    .section-header__title {
-      margin-bottom: 0;
-    }
-
     .section-header__buttons {
       display: flex;
-      align-items: center;
+      align-items: flex-start;
       flex-wrap: wrap;
 
       @media screen and (max-width: ($breakpoint-node-action-menu-group - 1)) {
