@@ -1,11 +1,6 @@
 import { generateMAASURL, generateName } from "../../utils";
 
-type ActionGroup = {
-  label: string;
-  actions: string[];
-};
-
-const MACHINE_ACTIONS_GROUPS: ActionGroup[] = [
+const MACHINE_ACTIONS_GROUPS = [
   {
     label: "Actions",
     actions: [
@@ -40,7 +35,7 @@ const MACHINE_ACTIONS_GROUPS: ActionGroup[] = [
     label: "Lock",
     actions: ["Lock", "Unlock"],
   },
-];
+] as const;
 
 const selectFirstMachine = () =>
   cy.findByRole("grid", { name: /Machines/i }).within(() => {

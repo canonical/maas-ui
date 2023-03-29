@@ -153,7 +153,7 @@ describe("MachineListControls", () => {
     ).not.toBeInTheDocument();
   });
 
-  it("dispatches an action to clear selected machines when the 'Clear seleciton' button is clicked", async () => {
+  it("dispatches an action to clear selected machines when the 'Clear selection' button is clicked", async () => {
     initialState.machine.selectedMachines = { items: ["abc123"] };
     const store = mockStore(initialState);
     renderWithBrowserRouter(
