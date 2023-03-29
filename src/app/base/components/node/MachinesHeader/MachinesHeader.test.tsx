@@ -59,7 +59,7 @@ describe("MachinesHeader", () => {
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachinesHeader machineCount={2} />
+            <MachinesHeader machineCount={2} title="Machines" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>

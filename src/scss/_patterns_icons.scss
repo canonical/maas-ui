@@ -59,6 +59,11 @@
   $color-warning: #f99b11;
   $color-white: #ffffff;
 
+  .p-icon--close-link {
+    @extend %icon;
+    @include vf-icon-close($color-link);
+  }
+
   .p-icon--cluster {
     @extend %icon;
     @include maas-icon-cluster($color-mid-dark);
