@@ -27,9 +27,9 @@ context("Login page", () => {
     cy.findByLabelText(/Password/)
       .type("invalid-password")
       .type("{enter}");
-    cy.findByRole("alert", {
-      name: /Please enter a correct username and password/i,
-    }).should("exist");
+    cy.findByRole("alert")
+      .should("be.visible")
+      .should("include.text", "Please enter a correct username and password");
   });
 
   it("enables the form if both fields have values", () => {

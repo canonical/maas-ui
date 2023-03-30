@@ -1,6 +1,8 @@
 import { generateMAASURL, generateName } from "../../utils";
 
-context("Settings - DHCP Snippets", () => {
+// TODO: enable DHCP tests once we can have reliable way of testing for DHCP
+// https://warthogs.atlassian.net/browse/MAASENG-1527
+context.skip("Settings - DHCP Snippets", () => {
   const machineName = generateName("machine");
   beforeEach(() => {
     cy.login();
