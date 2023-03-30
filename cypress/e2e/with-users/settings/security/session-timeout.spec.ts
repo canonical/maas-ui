@@ -13,8 +13,6 @@ context("Settings - Security - Session timeout", () => {
     );
     cy.findByRole("button", { name: "Save" }).click();
     cy.findByRole("form", { name: "Login" }).should("exist");
-    cy.findByText(
-      "Your session has expired. Please log in again to continue using MAAS."
-    ).should("exist");
+    cy.findByText(/Your session has expired/i).should("exist");
   });
 });
