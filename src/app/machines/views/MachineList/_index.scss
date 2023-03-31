@@ -133,35 +133,22 @@
   }
 
   .section-header__main-row {
-
     .section-header__buttons {
       display: flex;
       align-items: flex-start;
       flex-wrap: wrap;
+      grid-gap: 0.5rem;
 
       @media screen and (max-width: ($breakpoint-node-action-menu-group - 1)) {
-        .p-node-action-menu-group, .p-add-hardware-dropdown {
+        .p-node-action-menu-group,
+        .p-add-hardware-dropdown {
           display: none;
         }
       }
-    
+
       @media screen and (min-width: $breakpoint-node-action-menu-group) {
         .p-action-menu {
           display: none;
-        }
-      }
-
-      .machine-list-controls {
-        grid-gap: 0.5rem;
-        align-items: center;
-        flex-wrap: wrap;
-
-        .p-search-box, .p-form-validation__input, .p-button--link {
-          margin-bottom: 0;
-        }
-
-        .p-button--link {
-          align-self: center;
         }
       }
 
