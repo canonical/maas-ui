@@ -4,45 +4,33 @@ import type { Props as MachineListPaginationProps } from "./MachineListPaginatio
 import { fireEvent, render, screen, userEvent } from "testing/utils";
 
 describe("MachineListPagination - display", () => {
-  it("displays pagination if there are machines", () => {
-    render(
-      <MachineListPagination
-        currentPage={1}
-        itemsPerPage={20}
-        machineCount={100}
-        machinesLoading={false}
-        paginate={jest.fn()}
-      />
-    );
-    expect(
-      screen.getByRole("navigation", { name: Label.Pagination })
-    ).toBeInTheDocument();
-  });
-
-  it("does not display pagination if there are no machines", () => {
-    render(
-      <MachineListPagination
-        currentPage={1}
-        itemsPerPage={20}
-        machineCount={0}
-        machinesLoading={false}
-        paginate={jest.fn()}
-      />
-    );
-    expect(
-      screen.queryByRole("navigation", { name: Label.Pagination })
-    ).not.toBeInTheDocument();
-  });
-
-  it("displays pagination while refetching machines", () => {
-    // Set up shared props to make it clear what's changing on rerenders.
-    const props = {
+  let props: MachineListPaginationProps;
+  beforeEach(() => {
+    props = {
       currentPage: 1,
       itemsPerPage: 20,
       machineCount: 100,
       machinesLoading: false,
       paginate: jest.fn(),
     };
+  });
+
+  it("displays pagination if there are machines", () => {
+    render(<MachineListPagination {...props} />);
+    expect(
+      screen.getByRole("navigation", { name: Label.Pagination })
+    ).toBeInTheDocument();
+  });
+
+  it("does not display pagination if there are no machines", () => {
+    props.machineCount = 0;
+    render(<MachineListPagination {...props} />);
+    expect(
+      screen.queryByRole("navigation", { name: Label.Pagination })
+    ).not.toBeInTheDocument();
+  });
+
+  it("displays pagination while refetching machines", () => {
     const { rerender } = render(<MachineListPagination {...props} />);
     expect(
       screen.getByRole("navigation", { name: Label.Pagination })
@@ -54,29 +42,18 @@ describe("MachineListPagination - display", () => {
   });
 
   it("hides pagination if there are no refetched machines", () => {
-    // Set up shared props to make it clear what's changing on rerenders.
-    const props = {
-      currentPage: 1,
-      itemsPerPage: 20,
-      machineCount: 100,
-      machinesLoading: false,
-      paginate: jest.fn(),
-    };
     const { rerender } = render(<MachineListPagination {...props} />);
     expect(
       screen.getByRole("navigation", { name: Label.Pagination })
     ).toBeInTheDocument();
-    rerender(<MachineListPagination {...props} machinesLoading={true} />);
+    props.machinesLoading = true;
+    rerender(<MachineListPagination {...props} />);
     expect(
       screen.getByRole("navigation", { name: Label.Pagination })
     ).toBeInTheDocument();
-    rerender(
-      <MachineListPagination
-        {...props}
-        machineCount={0}
-        machinesLoading={false}
-      />
-    );
+    props.machinesLoading = false;
+    props.machineCount = 0;
+    rerender(<MachineListPagination {...props} />);
     expect(
       screen.queryByRole("navigation", { name: Label.Pagination })
     ).not.toBeInTheDocument();
