@@ -42,8 +42,6 @@ const MachineListPagination = ({
     ? Math.ceil(machineCount / props.itemsPerPage)
     : 1;
 
-  // TODO: add top margin to hr beneath pagination and shit
-
   return count > 0 ? (
     <nav aria-label={Label.Pagination} className="p-pagination">
       <span className="u-flex--align-baseline p-pagination--items">
