@@ -1,8 +1,7 @@
 import { useCallback, useEffect } from "react";
 
-import pluralize from "pluralize";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useMatch } from "react-router-dom-v5-compat";
+import { useMatch } from "react-router-dom-v5-compat";
 
 import MachineListControls from "../MachineListControls";
 
@@ -116,16 +115,6 @@ export const MachineListHeader = ({
       }
       sidePanelTitle={getHeaderTitle("Machines", sidePanelContent)}
       subtitleLoading={selectedCountLoading}
-      title={
-        sidePanelContent ? (
-          <>
-            {allMachineCount} machines in{" "}
-            <Link to={urls.pools.index}>
-              {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
-            </Link>
-          </>
-        ) : null
-      }
     />
   );
 };

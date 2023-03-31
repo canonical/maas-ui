@@ -10,7 +10,8 @@
       }
     }
 
-    .p-button, .p-switch {
+    .p-button,
+    .p-switch {
       margin-bottom: 0;
       padding: $input-vertical-padding $spv--large;
       border: 0;
@@ -21,7 +22,8 @@
     }
 
     .p-action-button--wrapper + .p-action-button--wrapper {
-      .p-button, .p-switch {
+      .p-button,
+      .p-switch {
         border-left: 1px solid #d9d9d9;
         border-radius: 0;
       }

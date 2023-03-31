@@ -14,6 +14,8 @@
       @extend %vf-input-elements;
       padding-left: $spv--small;
       text-align: left;
+      padding-right: 2rem;
+      min-width: auto;
 
       i.p-contextual-menu__indicator {
         position: absolute;

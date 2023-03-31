@@ -94,110 +94,116 @@ const MachineListControls = ({
           {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
         </Link>
       </h1>
-      {!hasSelection ? (
-        <>
-          <div>
-            <MachinesFilterAccordion
-              searchText={searchText}
-              setSearchText={(searchText) => {
-                setFilter(searchText);
-              }}
-            />
-          </div>
-          <div className="u-flex--grow">
-            <DebounceSearchBox
-              onDebounced={(debouncedText) => setFilter(debouncedText)}
-              searchText={searchText}
-              setSearchText={setSearchText}
-            />
-          </div>
-          <div>
-            <div className="u-flex--align-baseline">
-              <div className="u-flex--grow">
-                <GroupSelect
-                  grouping={grouping}
-                  setGrouping={setGrouping}
-                  setHiddenGroups={setHiddenGroups}
+      <div className="machine-list-controls-inputs">
+        {!hasSelection ? (
+          <>
+            <div className="machine-list-controls__item">
+              <MachinesFilterAccordion
+                searchText={searchText}
+                setSearchText={(searchText) => {
+                  setFilter(searchText);
+                }}
+              />
+            </div>
+            <div className="machine-list-controls__item u-flex--grow">
+              <DebounceSearchBox
+                onDebounced={(debouncedText) => setFilter(debouncedText)}
+                searchText={searchText}
+                setSearchText={setSearchText}
+              />
+            </div>
+            <div className="machine-list-controls__item u-hide--small u-hide--medium u-flex--align-baseline">
+              <GroupSelect
+                grouping={grouping}
+                setGrouping={setGrouping}
+                setHiddenGroups={setHiddenGroups}
+              />
+            </div>
+          </>
+        ) : (
+          <>
+            <div className="machine-list-controls__item">
+              <div className="u-hide--medium u-hide--small">
+                <NodeActionMenuGroup
+                  alwaysShowLifecycle
+                  excludeActions={[NodeActions.IMPORT_IMAGES]}
+                  getTitle={getTitle}
+                  hasSelection={hasSelection}
+                  nodeDisplay="machine"
+                  onActionClick={(action) => {
+                    if (action === NodeActions.TAG && !tagsSeen) {
+                      setTagsSeen(true);
+                    }
+                    const view = Object.values(MachineHeaderViews).find(
+                      ([, actionName]) => actionName === action
+                    );
+                    if (view) {
+                      setSidePanelContent({ view });
+                    }
+                    sendAnalytics(
+                      "Machine list action form",
+                      getNodeActionTitle(action),
+                      "Open"
+                    );
+                  }}
+                />
+              </div>
+              <div className="u-hide--large">
+                <NodeActionMenu
+                  alwaysShowLifecycle
+                  className="is-maas-select"
+                  excludeActions={[NodeActions.IMPORT_IMAGES]}
+                  getTitle={getTitle}
+                  hasSelection={hasSelection}
+                  nodeDisplay="machine"
+                  onActionClick={(action) => {
+                    if (action === NodeActions.TAG && !tagsSeen) {
+                      setTagsSeen(true);
+                    }
+                    const view = Object.values(MachineHeaderViews).find(
+                      ([, actionName]) => actionName === action
+                    );
+                    if (view) {
+                      setSidePanelContent({ view });
+                    }
+                    sendAnalytics(
+                      "Machine list action form",
+                      getNodeActionTitle(action),
+                      "Open"
+                    );
+                  }}
+                  toggleAppearance=""
+                  toggleClassName="p-action-menu"
+                  toggleLabel="Menu"
                 />
               </div>
             </div>
-          </div>
-        </>
-      ) : (
-        <>
-          <div>
-            <NodeActionMenuGroup
-              alwaysShowLifecycle
-              excludeActions={[NodeActions.IMPORT_IMAGES]}
-              getTitle={getTitle}
-              hasSelection={hasSelection}
-              nodeDisplay="machine"
-              onActionClick={(action) => {
-                if (action === NodeActions.TAG && !tagsSeen) {
-                  setTagsSeen(true);
+            <div className="machine-list-controls__item">
+              <Button
+                appearance="link"
+                onClick={() =>
+                  dispatch(machineActions.setSelectedMachines(null))
                 }
-                const view = Object.values(MachineHeaderViews).find(
-                  ([, actionName]) => actionName === action
-                );
-                if (view) {
-                  setSidePanelContent({ view });
-                }
-                sendAnalytics(
-                  "Machine list action form",
-                  getNodeActionTitle(action),
-                  "Open"
-                );
-              }}
-            />
-            <NodeActionMenu
-              alwaysShowLifecycle
-              excludeActions={[NodeActions.IMPORT_IMAGES]}
-              getTitle={getTitle}
-              hasSelection={hasSelection}
-              nodeDisplay="machine"
-              onActionClick={(action) => {
-                if (action === NodeActions.TAG && !tagsSeen) {
-                  setTagsSeen(true);
-                }
-                const view = Object.values(MachineHeaderViews).find(
-                  ([, actionName]) => actionName === action
-                );
-                if (view) {
-                  setSidePanelContent({ view });
-                }
-                sendAnalytics(
-                  "Machine list action form",
-                  getNodeActionTitle(action),
-                  "Open"
-                );
-              }}
-              toggleAppearance=""
-              toggleClassName="p-action-menu filter-accordion__toggle u-no-margin--bottom"
-              toggleLabel="Menu"
+              >
+                Clear selection <Icon name="close-link" />
+              </Button>
+            </div>
+          </>
+        )}
+        {!hasSelection ? (
+          <div className="machine-list-controls__item u-hide--small u-hide--medium">
+            <AddHardwareMenu
+              key="add-hardware"
+              setSidePanelContent={setSidePanelContent}
             />
           </div>
-          <div className="u-flex--center">
-            <Button
-              appearance="link"
-              onClick={() => dispatch(machineActions.setSelectedMachines(null))}
-            >
-              Clear selection <Icon name="close-link" />
-            </Button>
-          </div>
-        </>
-      )}
-
-      <AddHardwareMenu
-        disabled={hasSelection}
-        key="add-hardware"
-        setSidePanelContent={setSidePanelContent}
-      />
-
-      <div>
-        <HiddenColumnsSelect
-          hiddenColumns={hiddenColumns}
-          setHiddenColumns={setHiddenColumns}
-        />
+        ) : null}
+        <div className="machine-list-controls__item">
+          <HiddenColumnsSelect
+            hiddenColumns={hiddenColumns}
+            setHiddenColumns={setHiddenColumns}
+          />
+        </div>
       </div>
     </div>
   );
