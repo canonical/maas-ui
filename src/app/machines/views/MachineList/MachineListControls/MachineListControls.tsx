@@ -1,8 +1,12 @@
 import { useCallback, useEffect, useState } from "react";
 
-import { Button, Col, Icon, Row } from "@canonical/react-components";
+import { Button, Icon } from "@canonical/react-components";
+import pluralize from "pluralize";
 import { useDispatch } from "react-redux";
+import { Link } from "react-router-dom-v5-compat";
 import { useStorageState } from "react-storage-hooks";
+
+import AddHardwareMenu from "../MachineListHeader/AddHardwareMenu";
 
 import GroupSelect from "./GroupSelect";
 import HiddenColumnsSelect from "./HiddenColumnsSelect";
@@ -12,6 +16,7 @@ import DebounceSearchBox from "app/base/components/DebounceSearchBox";
 import NodeActionMenu from "app/base/components/NodeActionMenu";
 import NodeActionMenuGroup from "app/base/components/NodeActionMenuGroup";
 import { useSendAnalytics } from "app/base/hooks";
+import urls from "app/base/urls";
 import { MachineHeaderViews } from "app/machines/constants";
 import type { MachineSetSidePanelContent } from "app/machines/types";
 import { actions as machineActions } from "app/store/machine";
@@ -21,6 +26,8 @@ import { NodeActions } from "app/store/types/node";
 import { getNodeActionTitle } from "app/store/utils";
 
 export type MachineListControlsProps = {
+  machineCount: number;
+  resourcePoolsCount: number;
   filter: string;
   grouping: FetchGroupKey | null;
   setFilter: (filter: string) => void;
@@ -32,6 +39,8 @@ export type MachineListControlsProps = {
 };
 
 const MachineListControls = ({
+  machineCount,
+  resourcePoolsCount,
   filter,
   grouping,
   setFilter,
@@ -75,25 +84,34 @@ const MachineListControls = ({
   );
 
   return (
-    <Row className="machine-list-controls">
+    <div className="machine-list-controls">
+      <h1
+        className="section-header__title p-heading--4"
+        data-testid="section-header-title"
+      >
+        {machineCount} machines in{" "}
+        <Link to={urls.pools.index}>
+          {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
+        </Link>
+      </h1>
       {!hasSelection ? (
         <>
-          <Col size={2}>
+          <div>
             <MachinesFilterAccordion
               searchText={searchText}
               setSearchText={(searchText) => {
                 setFilter(searchText);
               }}
             />
-          </Col>
-          <Col size={5}>
+          </div>
+          <div className="u-flex--grow">
             <DebounceSearchBox
               onDebounced={(debouncedText) => setFilter(debouncedText)}
               searchText={searchText}
               setSearchText={setSearchText}
             />
-          </Col>
-          <Col size={3}>
+          </div>
+          <div>
             <div className="u-flex--align-baseline">
               <div className="u-flex--grow">
                 <GroupSelect
@@ -103,11 +121,11 @@ const MachineListControls = ({
                 />
               </div>
             </div>
-          </Col>
+          </div>
         </>
       ) : (
         <>
-          <Col size={8}>
+          <div>
             <NodeActionMenuGroup
               alwaysShowLifecycle
               excludeActions={[NodeActions.IMPORT_IMAGES]}
@@ -157,25 +175,31 @@ const MachineListControls = ({
               toggleClassName="p-action-menu filter-accordion__toggle u-no-margin--bottom"
               toggleLabel="Menu"
             />
-          </Col>
-          <Col className="u-flex--center" size={2}>
+          </div>
+          <div className="u-flex--center">
             <Button
               appearance="link"
               onClick={() => dispatch(machineActions.setSelectedMachines(null))}
             >
               Clear selection <Icon name="close-link" />
             </Button>
-          </Col>
+          </div>
         </>
       )}
 
-      <Col size={2}>
+      <AddHardwareMenu
+        disabled={hasSelection}
+        key="add-hardware"
+        setSidePanelContent={setSidePanelContent}
+      />
+
+      <div>
         <HiddenColumnsSelect
           hiddenColumns={hiddenColumns}
           setHiddenColumns={setHiddenColumns}
         />
-      </Col>
-    </Row>
+      </div>
+    </div>
   );
 };
 

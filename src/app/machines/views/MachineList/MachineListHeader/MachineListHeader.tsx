@@ -6,8 +6,6 @@ import { Link, useMatch } from "react-router-dom-v5-compat";
 
 import MachineListControls from "../MachineListControls";
 
-import AddHardwareMenu from "./AddHardwareMenu";
-
 import MachinesHeader from "app/base/components/node/MachinesHeader";
 import type { SetSearchFilter } from "app/base/types";
 import urls from "app/base/urls";
@@ -23,7 +21,6 @@ import type { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines, selectedToFilters } from "app/store/machine/utils";
 import {
   useFetchMachineCount,
-  useHasSelection,
   useMachineSelectedCount,
 } from "app/store/machine/utils/hooks";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -54,7 +51,6 @@ export const MachineListHeader = ({
 }: Props): JSX.Element => {
   const dispatch = useDispatch();
   const machinesPathMatch = useMatch(urls.machines.index);
-  const hasSelection = useHasSelection();
   const filter = FilterMachines.parseFetchFilters(searchFilter);
   // Get the count of all machines
   const { machineCount: allMachineCount } = useFetchMachineCount();
@@ -90,33 +86,21 @@ export const MachineListHeader = ({
 
   return (
     <MachinesHeader
-      buttons={[
-        <h1
-          className="section-header__title p-heading--4"
-          data-testid="section-header-title"
-        >
-          {allMachineCount} machines in{" "}
-          <Link to={urls.pools.index}>
-            {resourcePoolsCount} {pluralize("pool", resourcePoolsCount)}
-          </Link>
-        </h1>,
+      machineCount={allMachineCount}
+      renderButtons={() => (
         <MachineListControls
           filter={searchFilter}
           grouping={grouping}
           hiddenColumns={hiddenColumns}
+          machineCount={allMachineCount}
+          resourcePoolsCount={resourcePoolsCount}
           setFilter={handleSetSearchFilter}
           setGrouping={setGrouping}
           setHiddenColumns={setHiddenColumns}
           setHiddenGroups={setHiddenGroups}
           setSidePanelContent={setSidePanelContent}
-        />,
-        <AddHardwareMenu
-          disabled={hasSelection}
-          key="add-hardware"
-          setSidePanelContent={setSidePanelContent}
-        />,
-      ]}
-      machineCount={allMachineCount}
+        />
+      )}
       sidePanelContent={
         sidePanelContent && (
           <MachineHeaderForms
