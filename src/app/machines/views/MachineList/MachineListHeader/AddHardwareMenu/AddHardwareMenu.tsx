@@ -14,7 +14,7 @@ export const AddHardwareMenu = ({
 }: Props): JSX.Element => {
   return (
     <ContextualMenu
-      className="p-add-hardware-dropdown"
+      className="is-maas-select"
       data-testid="add-hardware-dropdown"
       hasToggleIcon
       links={[
@@ -30,7 +30,6 @@ export const AddHardwareMenu = ({
         },
       ]}
       position="right"
-      toggleClassName="filter-accordion__toggle"
       toggleDisabled={disabled}
       toggleLabel="Add hardware"
     />
