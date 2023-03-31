@@ -855,7 +855,7 @@ export const MachineListTable = ({
               />
             ) : null}
           </span>
-          <hr />
+          <hr className="machine-list__divider" />
         </div>
       ) : null}
       <MainTable

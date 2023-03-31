@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect } from "react";
+import { useState } from "react";
 
 import type {
   PaginationProps,
@@ -16,7 +16,7 @@ export enum Label {
 
 export const DEFAULT_DEBOUNCE_INTERVAL = 500;
 
-type Props = PropsWithSpread<
+export type Props = PropsWithSpread<
   {
     currentPage: PaginationProps["currentPage"];
     itemsPerPage: PaginationProps["itemsPerPage"];
@@ -32,22 +32,17 @@ const MachineListPagination = ({
   machinesLoading,
   ...props
 }: Props): JSX.Element | null => {
-  const intervalRef = useRef<NodeJS.Timeout | null>(null);
-  const [pageNumber, setPageNumber] = useState(props.currentPage);
-
-  // Clear the timeout when the component is unmounted.
-  useEffect(() => {
-    return () => {
-      if (intervalRef.current) {
-        clearTimeout(intervalRef.current);
-      }
-    };
-  }, []);
+  const [pageNumber, setPageNumber] = useState<number | undefined>(
+    props.currentPage
+  );
+  const [error, setError] = useState("");
 
   const count = useFetchedCount(machineCount, machinesLoading);
   const totalPages = machineCount
     ? Math.ceil(machineCount / props.itemsPerPage)
     : 1;
+
+  // TODO: add top margin to hr beneath pagination and shit
 
   return count > 0 ? (
     <nav aria-label={Label.Pagination} className="p-pagination">
@@ -64,20 +59,31 @@ const MachineListPagination = ({
         <Input
           aria-label="page number"
           className="p-pagination__input"
+          error={error}
           onChange={(e) => {
-            setPageNumber(e.target.valueAsNumber);
-            if (intervalRef.current) {
-              clearTimeout(intervalRef.current);
-            }
-            intervalRef.current = setTimeout(() => {
+            if (e.target.value) {
+              setPageNumber(e.target.valueAsNumber);
               if (
-                e.target.valueAsNumber > 0 &&
-                e.target.valueAsNumber <= totalPages
+                e.target.valueAsNumber > totalPages ||
+                e.target.valueAsNumber < 1
               ) {
-                props.paginate(e.target.valueAsNumber);
+                setError(
+                  `"${e.target.valueAsNumber}" is not a valid page number.`
+                );
+              } else {
+                setError("");
               }
-            }, DEFAULT_DEBOUNCE_INTERVAL);
+            } else {
+              setPageNumber(undefined);
+              setError("Enter a page number.");
+            }
           }}
+          onKeyDown={(e) => {
+            if (e.key === "Enter" && !error) {
+              props.paginate(e.currentTarget.valueAsNumber);
+            }
+          }}
+          required
           type="number"
           value={pageNumber}
         />{" "}
