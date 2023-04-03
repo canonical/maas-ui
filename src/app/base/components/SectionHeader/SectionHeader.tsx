@@ -13,6 +13,7 @@ export type Props<P = LinkProps> = {
   actionMenuGroup?: JSX.Element | null;
   buttons?: JSX.Element[] | null;
   className?: ClassName;
+  renderButtons?: () => ReactNode;
   sidePanelContent?: ReactNode | null;
   sidePanelTitle?: string | null;
   headerSize?: "wide";
@@ -63,6 +64,7 @@ const generateSubtitle = (
 const SectionHeader = <P,>({
   actionMenuGroup,
   buttons = [],
+  renderButtons,
   className,
   sidePanelContent,
   sidePanelTitle,
@@ -124,6 +126,9 @@ const SectionHeader = <P,>({
           />
         ) : null}
       </div>
+      {renderButtons && typeof renderButtons === "function"
+        ? renderButtons()
+        : null}
       <AppSidePanel
         content={sidePanelContent}
         size={headerSize}

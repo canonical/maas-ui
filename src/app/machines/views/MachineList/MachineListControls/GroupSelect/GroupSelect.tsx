@@ -63,6 +63,7 @@ const GroupSelect = ({
   return (
     <Select
       aria-label="Group by"
+      className="u-no-padding--right"
       defaultValue={grouping ?? ""}
       name="machine-groupings"
       onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {

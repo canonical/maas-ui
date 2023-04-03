@@ -1,11 +1,6 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import MachineListControls from "./MachineListControls";
-import MachinesFilterAccordion from "./MachinesFilterAccordion";
 
 import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
@@ -14,7 +9,12 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+import {
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+  waitFor,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -41,33 +41,29 @@ describe("MachineListControls", () => {
     localStorage.clear();
   });
 
-  it("changes the filter when the filter accordion changes", () => {
-    const store = mockStore(initialState);
+  it("changes the filter when the filter accordion changes", async () => {
     const setFilter = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[
-            { pathname: "/machines", search: "?q=test+search", key: "testKey" },
-          ]}
-        >
-          <MachineListControls
-            filter=""
-            grouping={null}
-            hiddenColumns={[]}
-            setFilter={setFilter}
-            setGrouping={jest.fn()}
-            setHiddenColumns={jest.fn()}
-            setHiddenGroups={jest.fn()}
-            setSidePanelContent={jest.fn()}
-          />
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineListControls
+        filter=""
+        grouping={null}
+        hiddenColumns={[]}
+        machineCount={1}
+        resourcePoolsCount={1}
+        setFilter={setFilter}
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSidePanelContent={jest.fn()}
+      />,
+      { route: "/machines?q=test+search", state: initialState }
     );
-    act(() => {
-      wrapper.find(MachinesFilterAccordion).props().setSearchText("status:new");
-    });
-    expect(setFilter).toHaveBeenCalledWith("status:new");
+    await userEvent.clear(screen.getByRole("searchbox", { name: "Search" }));
+    await userEvent.type(
+      screen.getByRole("searchbox", { name: "Search" }),
+      "status:new"
+    );
+    await waitFor(() => expect(setFilter).toHaveBeenCalledWith("status:new"));
   });
 
   it("shows search bar, filter accordion, and grouping select when no machines are selected", () => {
@@ -76,6 +72,8 @@ describe("MachineListControls", () => {
         filter=""
         grouping={null}
         hiddenColumns={[]}
+        machineCount={1}
+        resourcePoolsCount={1}
         setFilter={jest.fn()}
         setGrouping={jest.fn()}
         setHiddenColumns={jest.fn()}
@@ -120,6 +118,8 @@ describe("MachineListControls", () => {
         filter=""
         grouping={null}
         hiddenColumns={[]}
+        machineCount={1}
+        resourcePoolsCount={1}
         setFilter={jest.fn()}
         setGrouping={jest.fn()}
         setHiddenColumns={jest.fn()}
@@ -161,6 +161,8 @@ describe("MachineListControls", () => {
         filter=""
         grouping={null}
         hiddenColumns={[]}
+        machineCount={1}
+        resourcePoolsCount={1}
         setFilter={jest.fn()}
         setGrouping={jest.fn()}
         setHiddenColumns={jest.fn()}

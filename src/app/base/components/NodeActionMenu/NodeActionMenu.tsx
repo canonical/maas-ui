@@ -25,6 +25,7 @@ type ActionLink = DataTestElement<ButtonProps>;
 
 type Props = {
   alwaysShowLifecycle?: boolean;
+  className?: string;
   disabledTooltipPosition?: "left" | "top-left";
   excludeActions?: NodeActions[];
   filterActions?: boolean;
@@ -151,6 +152,7 @@ const getTakeActionLinks = (
 
 export const NodeActionMenu = ({
   alwaysShowLifecycle = false,
+  className,
   disabledTooltipPosition = "left",
   excludeActions = [],
   filterActions,
@@ -175,6 +177,7 @@ export const NodeActionMenu = ({
       position={disabledTooltipPosition}
     >
       <ContextualMenu
+        className={className}
         data-testid="take-action-dropdown"
         hasToggleIcon
         links={getTakeActionLinks(

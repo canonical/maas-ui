@@ -1,4 +1,3 @@
-import { ContextualMenu } from "@canonical/react-components";
 import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -186,35 +185,39 @@ describe("MachineListHeader", () => {
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 
-  it("disables the add hardware menu when machines are selected", () => {
+  it("hides the add hardware menu when machines are selected", () => {
     state.machine.selectedMachines = { items: ["abc123"] };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              grouping={null}
-              searchFilter=""
-              setGrouping={jest.fn()}
-              setHiddenColumns={jest.fn()}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state, route: urls.machines.index }
     );
     expect(
-      wrapper
-        .find('[data-testid="add-hardware-dropdown"]')
-        .find(ContextualMenu)
-        .props().toggleDisabled
-    ).toBe(true);
+      screen.queryByTestId("add-hardware-dropdown")
+    ).not.toBeInTheDocument();
+    state.machine.selectedMachines.items = [];
+    renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state, route: urls.machines.index }
+    );
+    expect(screen.getByTestId("add-hardware-dropdown")).toBeInTheDocument();
   });
 
   it("closes action form when all machines are deselected", async () => {
