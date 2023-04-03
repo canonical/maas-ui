@@ -1,9 +1,9 @@
 import MachineListPagination, { Label } from "./MachineListPagination";
 import type { Props as MachineListPaginationProps } from "./MachineListPagination";
 
-import { fireEvent, render, screen, userEvent } from "testing/utils";
+import { fireEvent, render, screen, userEvent, waitFor } from "testing/utils";
 
-describe("MachineListPagination - display", () => {
+describe("MachineListPagination", () => {
   let props: MachineListPaginationProps;
   beforeEach(() => {
     props = {
@@ -58,19 +58,6 @@ describe("MachineListPagination - display", () => {
       screen.queryByRole("navigation", { name: Label.Pagination })
     ).not.toBeInTheDocument();
   });
-});
-
-describe("MachineListPagination - interaction", () => {
-  let props: MachineListPaginationProps;
-  beforeEach(() => {
-    props = {
-      currentPage: 1,
-      itemsPerPage: 20,
-      machineCount: 100,
-      machinesLoading: false,
-      paginate: jest.fn(),
-    };
-  });
 
   it("calls a function to go to the next page when the 'Next page' button is clicked", async () => {
     render(<MachineListPagination {...props} />);
@@ -88,7 +75,7 @@ describe("MachineListPagination - interaction", () => {
     expect(props.paginate).toHaveBeenCalledWith(1);
   });
 
-  it("takes an input for page number and calls a function to paginate when Enter is pressed", async () => {
+  it("takes an input for page number and calls a function to paginate if the number is valid", async () => {
     render(<MachineListPagination {...props} />);
 
     const pageInput = screen.getByRole("spinbutton", { name: "page number" });
@@ -98,7 +85,9 @@ describe("MachineListPagination - interaction", () => {
     await userEvent.click(pageInput);
     await userEvent.keyboard("{Enter}");
 
-    expect(props.paginate).toHaveBeenCalledWith(4);
+    await waitFor(() => {
+      expect(props.paginate).toHaveBeenCalledWith(4);
+    });
   });
 
   it("displays an error if no value is present in the page number input", async () => {
@@ -117,8 +106,32 @@ describe("MachineListPagination - interaction", () => {
 
     // Using userEvent to clear this first doesn't work, so we have to use fireEvent instead.
     fireEvent.change(pageInput, { target: { value: "69" } });
+    await waitFor(() => {
+      expect(
+        screen.getByText(/"69" is not a valid page number/i)
+      ).toBeInTheDocument();
+    });
+  });
+
+  it("reverts the value to the current page number and hides error messages if the input is blurred", async () => {
+    render(<MachineListPagination {...props} />);
+
+    const pageInput = screen.getByRole("spinbutton", { name: "page number" });
+
+    fireEvent.change(pageInput, { target: { value: "69" } });
+
+    await waitFor(() => {
+      expect(
+        screen.getByText(/"69" is not a valid page number/i)
+      ).toBeInTheDocument();
+    });
+
+    fireEvent.blur(pageInput);
+
     expect(
-      screen.getByText(/"69" is not a valid page number/i)
-    ).toBeInTheDocument();
+      screen.queryByText(/"69" is not a valid page number/i)
+    ).not.toBeInTheDocument();
+
+    expect(pageInput).toHaveValue(1);
   });
 });
