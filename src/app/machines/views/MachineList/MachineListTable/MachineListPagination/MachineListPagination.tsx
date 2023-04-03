@@ -42,7 +42,6 @@ const MachineListPagination = ({
   useEffect(() => {
     return () => {
       if (intervalRef.current) {
-        // eslint-disable-next-line react-hooks/exhaustive-deps
         clearTimeout(intervalRef.current);
       }
     };

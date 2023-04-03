@@ -23,7 +23,8 @@
 
     .p-form-validation__message {
       position: absolute;
-      margin-top: 0;
+      margin-top: $spv--small;
+      margin-left: $spv--small;
     }
 
     // required to get rid of buttons/arrows while keeping number-only input
