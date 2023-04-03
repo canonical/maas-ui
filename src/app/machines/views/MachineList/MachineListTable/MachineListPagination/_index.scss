@@ -21,6 +21,12 @@
       text-align: center;
     }
 
+    .p-form-validation__message {
+      position: absolute;
+      margin-top: $spv--small;
+      margin-left: $spv--small;
+    }
+
     // required to get rid of buttons/arrows while keeping number-only input
     input::-webkit-outer-spin-button,
     input::-webkit-inner-spin-button {

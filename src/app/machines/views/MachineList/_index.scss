@@ -111,6 +111,10 @@
     justify-content: flex-end;
   }
 
+  .machine-list__divider {
+    margin-top: $spv--x-large;
+  }
+
   .p-tooltip__message .p-list::after {
     white-space: normal;
   }

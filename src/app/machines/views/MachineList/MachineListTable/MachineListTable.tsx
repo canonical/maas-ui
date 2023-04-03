@@ -832,7 +832,7 @@ export const MachineListTable = ({
   return (
     <>
       {machineCount ? (
-        <div className="u-flex--between u-flex--align-end u-flex--wrap">
+        <div className="u-flex--between u-flex--align-baseline u-flex--wrap">
           <hr />
           <MachineListDisplayCount
             currentPage={currentPage}
@@ -855,7 +855,7 @@ export const MachineListTable = ({
               />
             ) : null}
           </span>
-          <hr />
+          <hr className="machine-list__divider" />
         </div>
       ) : null}
       <MainTable
