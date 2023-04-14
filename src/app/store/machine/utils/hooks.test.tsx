@@ -558,6 +558,7 @@ describe("machine hook utils", () => {
     it("returns updated groups if the query has been marked as needsUpdate", async () => {
       state.machine.lists = {
         "mocked-nanoid-1": machineStateListFactory({
+          loaded: true,
           needsUpdate: true,
           groups: [
             machineStateListGroupFactory({
@@ -581,6 +582,7 @@ describe("machine hook utils", () => {
           ],
         }),
         "mocked-nanoid-2": machineStateListFactory({
+          loaded: true,
           groups: [
             machineStateListGroupFactory({
               collapsed: false,
@@ -591,6 +593,7 @@ describe("machine hook utils", () => {
           ],
         }),
         "mocked-nanoid-3": machineStateListFactory({
+          loaded: true,
           groups: [
             machineStateListGroupFactory({
               collapsed: true,
