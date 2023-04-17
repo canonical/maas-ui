@@ -45,9 +45,7 @@ const selectFirstMachine = () =>
   });
 
 const openMachineActionForm = (groupLabel: string, action: string) => {
-  cy.findByTestId("section-header-buttons").within(() => {
-    cy.findByRole("button", { name: groupLabel }).click();
-  });
+  cy.findByRole("button", { name: groupLabel }).click();
   cy.findByLabelText("submenu").within(() => {
     cy.findAllByRole("button", {
       name: new RegExp(`${action}...`),
@@ -72,9 +70,7 @@ context("Machine listing - actions", () => {
   it("displays the correct actions in the action menu", () => {
     selectFirstMachine();
     MACHINE_ACTIONS_GROUPS.forEach((actionGroup) => {
-      cy.findByTestId("section-header-buttons").within(() => {
-        cy.findByRole("button", { name: actionGroup.label }).click();
-      });
+      cy.findByRole("button", { name: actionGroup.label }).click();
       cy.findByLabelText("submenu").within(() => {
         cy.findAllByRole("button").should(
           "have.length",
@@ -83,10 +79,8 @@ context("Machine listing - actions", () => {
         cy.findAllByRole("button").should("be.enabled");
       });
     });
-    cy.findByTestId("section-header-buttons").within(() => {
-      cy.findByRole("button", { name: /Delete/i }).should("exist");
-      cy.findByRole("button", { name: /Delete/i }).should("be.enabled");
-    });
+    cy.findByRole("button", { name: /Delete/i }).should("exist");
+    cy.findByRole("button", { name: /Delete/i }).should("be.enabled");
   });
 
   MACHINE_ACTIONS_GROUPS.forEach((actionGroup) =>
@@ -107,10 +101,7 @@ context("Machine listing - actions", () => {
 
   it("loads machine Delete form", () => {
     selectFirstMachine();
-    cy.findByTestId("section-header-buttons").within(() => {
-      cy.findByRole("button", { name: /Delete/i }).click();
-    });
-
+    cy.findByRole("button", { name: /Delete/i }).click();
     cy.findByRole("complementary", { name: /Delete/i }).within(() => {
       cy.findAllByText(/Loading/).should("have.length", 0);
       cy.findByRole("heading", { name: /Delete/i });
