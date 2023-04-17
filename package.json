@@ -102,7 +102,7 @@
     "@wojtekmaj/enzyme-adapter-react-17": "0.8.0",
     "address": "1.2.2",
     "colors": "1.4.0",
-    "concurrently": "7.6.0",
+    "concurrently": "8.0.1",
     "cooky-cutter": "1.5.4",
     "cypress": "12.7.0",
     "cypress-axe": "1.4.0",
