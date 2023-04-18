@@ -61,9 +61,7 @@ Cypress.Commands.add("deleteMachine", (hostname: string) => {
       .findByRole("checkbox", { name: new RegExp(hostname) })
       .click({ force: true })
   );
-  cy.findByTestId("section-header-buttons").within(() =>
-    cy.findByRole("button", { name: /Delete/i }).click()
-  );
+  cy.findByRole("button", { name: /Delete/i }).click();
   cy.findByRole("button", { name: /Delete machine/ }).click();
   cy.findByRole("complementary", { name: /Delete/i }).should("not.exist");
   cy.findByText(/No machines match the search criteria/).should("exist");

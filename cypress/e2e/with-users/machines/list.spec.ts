@@ -97,9 +97,7 @@ context("Machine listing", () => {
     cy.findByRole("checkbox", { name: `${newMachines[1]}.maas` }).should(
       "be.checked"
     );
-    cy.findByTestId("section-header-buttons").within(() =>
-      cy.findByRole("button", { name: /Delete/i }).click()
-    );
+    cy.findByRole("button", { name: /Delete/i }).click();
     cy.findByRole("button", { name: /Delete 3 machines/ }).click();
     cy.findByText(/No machines match the search criteria./).should("exist");
   });
