@@ -36,7 +36,10 @@ jobs:
           CI: false
       - name: Compress
         run: cd build && tar -czf ../${{env.PACKAGE_NAME}} ./ && ls -hs ../${{env.PACKAGE_NAME}}
-
+      - uses: actions/upload-artifact@v3
+        with:
+          name: ${{env.PACKAGE_NAME}}
+          path: ${{env.PACKAGE_NAME}}
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
