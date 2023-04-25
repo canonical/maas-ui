@@ -19,7 +19,7 @@
 
 MAAS is an open-source tool that lets you build a data centre from bare-metal servers. You can discover, commission, deploy, and dynamically reconfigure a large network of individual units.
 
-![MAAS UI screenshot](https://user-images.githubusercontent.com/7452681/213994885-8a8cc3a9-ca6e-4b84-afe1-b918605429eb.png)
+![screenshot of MAAS UI displaying 1000 machines](https://user-images.githubusercontent.com/7452681/234197707-a25b2231-1ca4-4d80-9e42-53d99c4e2cf1.png)
 
 This repository contains the sourcecode for the [MAAS](https://maas.io) web app, maas-ui.
 
