@@ -1,7 +1,24 @@
 @mixin maas-application {
   .l-main {
-    display: grid;
-    grid-template-rows: auto 1fr auto;
+    // display: grid;
+    // grid-template-rows: auto 1fr auto;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    @media (min-width: $breakpoint-small) {
+      flex-direction: row;
+    }
+    .l-main__nav {
+      flex-shrink: 0;
+
+      @media (min-width: $breakpoint-small) {
+        height: calc(100vh - 2.5rem);
+      }
+    }
+    .l-main__content {
+      width: 100%;
+      overflow-y: auto;
+    }
   }
   .l-aside {
     z-index: $side-panel-z-index;

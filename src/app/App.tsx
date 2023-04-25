@@ -4,11 +4,14 @@ import { useEffect, useState } from "react";
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
+import { matchPath, useLocation } from "react-router-dom-v5-compat";
 
 import packageInfo from "../../package.json";
 
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
+import SecondaryNavigation from "./base/components/SecondaryNavigation/SecondaryNavigation";
 import ThemePreviewContext from "./base/theme-preview-context";
 import { MAAS_UI_ID } from "./constants";
 import { formatErrors } from "./utils";
@@ -50,6 +53,8 @@ export const App = (): JSX.Element => {
   const configErrors = useSelector(configSelectors.errors);
   const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
   const previousAuthenticated = usePrevious(authenticated, false);
+  const { pathname } = useLocation();
+  const isSideNavVisible = matchPath("settings/*", pathname);
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -154,9 +159,18 @@ export const App = (): JSX.Element => {
         )}
 
         <main className="l-main">
-          <div id="main-content">{content}</div>
-          <hr />
-          <Footer />
+          <div
+            className={classNames("l-main__nav", {
+              "is-open": isSideNavVisible,
+            })}
+          >
+            <SecondaryNavigation isOpen={!!isSideNavVisible} />
+          </div>
+          <div className="l-main__content" id="main-content">
+            {content}
+            <hr />
+            <Footer />
+          </div>
         </main>
         <aside className="l-status">
           <StatusBar />
