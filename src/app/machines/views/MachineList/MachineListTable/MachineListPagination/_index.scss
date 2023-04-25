@@ -1,7 +1,5 @@
 @mixin MachineListPagination {
-
   .p-pagination--items {
-
     padding-bottom: $spv--small;
 
     .p-button {
@@ -33,9 +31,8 @@
       appearance: none;
     }
 
-    input[type=number] {
+    input[type="number"] {
       appearance: textfield;
     }
   }
-
 }
