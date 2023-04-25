@@ -53,9 +53,9 @@ export const resourceWithOverCommit = (
   const total = totalAllocated + resource.free;
   const overCommitted = total * overCommit;
   return {
-    allocated_other: resource.allocated_other,
-    allocated_tracked: resource.allocated_tracked,
-    free: overCommitted - totalAllocated,
+    allocated_other: Number(resource.allocated_other.toFixed(2)),
+    allocated_tracked: Number(resource.allocated_tracked.toFixed(2)),
+    free: Number((overCommitted - totalAllocated).toFixed(2)),
   };
 };
 
