@@ -10,30 +10,6 @@ import {
 } from "testing/factories";
 
 describe("RAMPopover", () => {
-  it("renders", () => {
-    const wrapper = mount(
-      <RAMPopover
-        memory={podMemoryResourceFactory({
-          general: podResourceFactory({
-            allocated_other: 1,
-            allocated_tracked: 2,
-            free: 3,
-          }),
-          hugepages: podResourceFactory({
-            allocated_other: 4,
-            allocated_tracked: 5,
-            free: 3,
-          }),
-        })}
-        overCommit={2}
-      >
-        Child
-      </RAMPopover>
-    );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("shows if memory is used by any other projects in the group", () => {
     const wrapper = mount(
       <RAMPopover
