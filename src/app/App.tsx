@@ -159,13 +159,15 @@ export const App = (): JSX.Element => {
         )}
 
         <main className="l-main">
-          <div
-            className={classNames("l-main__nav", {
-              "is-open": isSideNavVisible,
-            })}
-          >
-            <SecondaryNavigation isOpen={!!isSideNavVisible} />
-          </div>
+          {isSideNavVisible ? (
+            <div
+              className={classNames("l-main__nav", {
+                "is-open": isSideNavVisible,
+              })}
+            >
+              <SecondaryNavigation isOpen={!!isSideNavVisible} />
+            </div>
+          ) : null}
           <div className="l-main__content" id="main-content">
             {content}
             <hr />
