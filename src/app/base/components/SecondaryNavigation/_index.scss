@@ -5,7 +5,7 @@
     transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
     width: 0;
     visibility: hidden;
-    overflow-y: scroll;
+    overflow-y: auto;
 
     &.is-open {
       visibility: visible;
