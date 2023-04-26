@@ -44,7 +44,7 @@ export const Details = (): JSX.Element => {
         </Notification>
       )}
       <Row>
-        <Col size={4}>
+        <Col size={6}>
           <UserForm
             buttonsAlign="left"
             buttonsBordered={false}

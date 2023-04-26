@@ -14,6 +14,8 @@ import NavigationBanner from "./base/components/AppSideNavigation/NavigationBann
 import SecondaryNavigation from "./base/components/SecondaryNavigation/SecondaryNavigation";
 import ThemePreviewContext from "./base/theme-preview-context";
 import { MAAS_UI_ID } from "./constants";
+import { preferencesNavItems } from "./preferences/constants";
+import { settingsNavItems } from "./settings/constants";
 import { formatErrors } from "./utils";
 
 import Routes from "app/Routes";
@@ -54,7 +56,9 @@ export const App = (): JSX.Element => {
   const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
   const previousAuthenticated = usePrevious(authenticated, false);
   const { pathname } = useLocation();
-  const isSideNavVisible = matchPath("settings/*", pathname);
+  const isSettingsPage = matchPath("settings/*", pathname);
+  const isPreferencesPage = matchPath("account/prefs/*", pathname);
+  const isSideNavVisible = isSettingsPage || isPreferencesPage;
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -165,7 +169,23 @@ export const App = (): JSX.Element => {
                 "is-open": isSideNavVisible,
               })}
             >
-              <SecondaryNavigation isOpen={!!isSideNavVisible} />
+              <SecondaryNavigation
+                isOpen={!!isSideNavVisible}
+                items={
+                  isSettingsPage
+                    ? settingsNavItems
+                    : isPreferencesPage
+                    ? preferencesNavItems
+                    : []
+                }
+                title={
+                  isSettingsPage
+                    ? "Settings"
+                    : isPreferencesPage
+                    ? "My preferences"
+                    : ""
+                }
+              />
             </div>
           ) : null}
           <div className="l-main__content" id="main-content">
