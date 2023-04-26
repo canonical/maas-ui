@@ -184,6 +184,10 @@
     margin-top: -$sp-x-small !important;
   }
 
+  .u-padding-top--medium {
+    padding-top: $spv--medium !important;
+  }
+
   .u-position--relative {
     position: relative !important;
   }
@@ -250,6 +254,12 @@
   @each $name, $color in $nav-theme-colors {
     .is-maas-#{$name} {
       background-color: $color !important;
+    }
+  }
+
+  @each $name, $color in $nav-theme-colors {
+    .is-maas-#{$name}--accent {
+      background-color: lighten($color, 5%) !important;
     }
   }
 }
