@@ -24,7 +24,7 @@ const KVMResourceMeter = ({
   const total = allocated + free + other;
   const { value: formattedTotal, unit: formattedUnit } = unit
     ? formatBytes(total, unit, { binary: binaryUnit, decimals: 1 })
-    : { value: Number(total.toFixed(2)), unit: "" };
+    : { value: Number(total.toFixed(1)), unit: "" };
   const formatResource = (resource: number) =>
     unit
       ? formatBytes(resource, unit, {
@@ -32,7 +32,7 @@ const KVMResourceMeter = ({
           convertTo: formattedUnit,
           decimals: 1,
         }).value
-      : Number(resource.toFixed(2));
+      : Number(resource.toFixed(1));
   const formattedAllocated = formatResource(allocated);
   const formattedFree = formatResource(free);
   const formattedOther = formatResource(other);
