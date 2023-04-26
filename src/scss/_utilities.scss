@@ -256,4 +256,10 @@
       background-color: $color !important;
     }
   }
+
+  @each $name, $color in $nav-theme-colors {
+    .is-maas-#{$name}--accent {
+      background-color: lighten($color, 5%) !important;
+    }
+  }
 }
