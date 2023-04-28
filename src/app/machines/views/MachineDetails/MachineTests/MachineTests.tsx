@@ -57,20 +57,26 @@ const MachineTests = (): JSX.Element => {
   useWindowTitle(`${machine?.fqdn || "Machine"} tests`);
   const isDetails = isMachineDetails(machine);
 
+  // load script results on mount
+  useEffect(() => {
+    if (isId(id)) {
+      dispatch(scriptResultActions.getByNodeId(id));
+    }
+  }, [dispatch, id]);
+
   useEffect(() => {
     if (
       isId(id) &&
       !loading &&
-      (!scriptResults?.length ||
-        // Refetch the script results when the testing status changes to
-        // pending, otherwise the new script results won't be associated with
-        // the machine.
-        (machine?.testing_status.status === TestStatusStatus.PENDING &&
-          previousTestingStatus !== machine?.testing_status.status))
+      // Refetch the script results when the testing status changes to
+      // pending, otherwise the new script results won't be associated with
+      // the machine.
+      machine?.testing_status.status === TestStatusStatus.PENDING &&
+      previousTestingStatus !== machine?.testing_status.status
     ) {
       dispatch(scriptResultActions.getByNodeId(id));
     }
-  }, [dispatch, previousTestingStatus, scriptResults, loading, machine, id]);
+  }, [dispatch, previousTestingStatus, loading, machine, id]);
 
   if (isId(id) && isDetails && scriptResults?.length) {
     return (
