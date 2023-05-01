@@ -14,6 +14,7 @@ jobs:
         uses: canonical/setup-maas@main
         with:
           maas-url: ${{env.MAAS_URL}}/MAAS
+          channel: "3.4/edge"
       - name: Install Cypress
         uses: cypress-io/github-action@v4
         with:

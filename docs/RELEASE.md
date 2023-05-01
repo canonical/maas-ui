@@ -37,14 +37,14 @@ branch. This might look something like the following:
 on:
   push:
     branches:
-      - 3.2
+      - 3.5
   pull_request:
     branches:
-      - 3.2
+      - 3.5
 ```
 
 Update the workflows to set the snap channel for the `maas` and
-`maas-test-db` snaps (e.g. `--channel=3.2/edge`).
+`maas-test-db` snaps (e.g. `--channel=3.5/edge`).
 
 Propose this against the appropriate version branch and merge once approved.
 
