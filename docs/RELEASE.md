@@ -20,7 +20,7 @@ Please try to adhere to semantic versioning when creating a release. Although re
 
 #### Create the branch
 
-Create a new branch from main using the MAAS version as the name (e.g. `git checkout -b 3.2 main`).
+Create a new branch from main using the MAAS version as the name (e.g. `git checkout -b 3.5 main`).
 
 Push the branch to the repo at `canonical/maas-ui`.
 
@@ -37,14 +37,14 @@ branch. This might look something like the following:
 on:
   push:
     branches:
-      - 3.2
+      - 3.5
   pull_request:
     branches:
-      - 3.2
+      - 3.5
 ```
 
 Update the workflows to set the snap channel for the `maas` and
-`maas-test-db` snaps (e.g. `--channel=3.2/edge`).
+`maas-test-db` snaps (e.g. `--channel=3.5/edge`).
 
 Propose this against the appropriate version branch and merge once approved.
 
