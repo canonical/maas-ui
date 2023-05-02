@@ -682,7 +682,7 @@ export const useFetchMachinesWithGroupingUpdates = (
     machineSelectors.listNeedsUpdate(state, initialCallId)
   );
   const initialListIds = useSelector((state: RootState) =>
-    machineSelectors.listIds(state.machine, initialCallId)
+    machineSelectors.listIds(state, initialCallId)
   );
   const shouldFetchUpdates = !!needsUpdate;
   const optionsWithoutPagination = useMemo(
@@ -693,6 +693,10 @@ export const useFetchMachinesWithGroupingUpdates = (
     [options]
   );
 
+  const [updatedGroups, setUpdatedGroups] = useState<
+    MachineStateListGroup[] | null
+  >(null);
+  const groups = updatedGroups || initialGroups;
   // fetch updates for machines in the initial list of ids
   const {
     cleanup: cleanupExpandedGroups,
@@ -720,14 +724,28 @@ export const useFetchMachinesWithGroupingUpdates = (
     if (!fastDeepEqual(options, previousOptions)) {
       cleanupExpandedGroups();
       cleanupCollapsedGroups();
+      setUpdatedGroups(null);
     }
   }, [options, previousOptions, cleanupExpandedGroups, cleanupCollapsedGroups]);
 
-  const groups = mergeGroupUpdates({
+  useEffect(() => {
+    // return updated merged groups only once both calls have returned
+    if (updatedGroupsLoaded && updatedCollapsedGroupsLoaded) {
+      setUpdatedGroups(
+        mergeGroupUpdates({
+          initialGroups,
+          updatedCollapsedGroups,
+          updatedExpandedGroups,
+        })
+      );
+    }
+  }, [
     initialGroups,
+    updatedGroupsLoaded,
+    updatedCollapsedGroupsLoaded,
     updatedCollapsedGroups,
     updatedExpandedGroups,
-  });
+  ]);
 
   useEffect(() => {
     if (initialCallId && updatedGroupsLoaded && updatedCollapsedGroupsLoaded) {

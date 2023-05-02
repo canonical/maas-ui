@@ -4,13 +4,19 @@ import { useEffect, useState } from "react";
 import { Notification } from "@canonical/react-components";
 import { usePrevious } from "@canonical/react-components/dist/hooks";
 import * as Sentry from "@sentry/browser";
+import classNames from "classnames";
 import { useDispatch, useSelector } from "react-redux";
+import { matchPath, useLocation } from "react-router-dom-v5-compat";
 
 import packageInfo from "../../package.json";
 
 import NavigationBanner from "./base/components/AppSideNavigation/NavigationBanner";
+import SecondaryNavigation from "./base/components/SecondaryNavigation/SecondaryNavigation";
 import ThemePreviewContext from "./base/theme-preview-context";
 import { MAAS_UI_ID } from "./constants";
+import { preferencesNavItems } from "./preferences/constants";
+import { settingsNavItems } from "./settings/constants";
+import { formatErrors } from "./utils";
 
 import Routes from "app/Routes";
 import AppSideNavigation from "app/base/components/AppSideNavigation";
@@ -38,6 +44,7 @@ export const App = (): JSX.Element => {
   const analyticsEnabled = useSelector(configSelectors.analyticsEnabled);
   const authenticated = useSelector(status.authenticated);
   const authenticating = useSelector(status.authenticating);
+  const authenticationError = useSelector(status.authenticationError);
   const authLoading = useSelector(authSelectors.loading);
   const authLoaded = useSelector(authSelectors.loaded);
   const connected = useSelector(status.connected);
@@ -48,6 +55,10 @@ export const App = (): JSX.Element => {
   const configErrors = useSelector(configSelectors.errors);
   const [theme, setTheme] = useState(maasTheme ? maasTheme : "default");
   const previousAuthenticated = usePrevious(authenticated, false);
+  const { pathname } = useLocation();
+  const isSettingsPage = matchPath("settings/*", pathname);
+  const isPreferencesPage = matchPath("account/prefs/*", pathname);
+  const isSideNavVisible = isSettingsPage || isPreferencesPage;
 
   useEffect(() => {
     dispatch(statusActions.checkAuthenticated());
@@ -78,35 +89,50 @@ export const App = (): JSX.Element => {
     }
   }, [dispatch, connected]);
 
+  const isLoading =
+    authLoading || connecting || authenticating || configLoading;
+  const hasWebsocketError = !!connectionError || !connected;
+  const hasAuthError = !authenticated && !connectionError;
+  const hasVaultError =
+    configErrors === VaultErrors.REQUEST_FAILED ||
+    configErrors === VaultErrors.CONNECTION_FAILED;
+  const isLoaded = connected && authLoaded && authenticated;
+
   let content: ReactNode = null;
-  if (authLoading || connecting || authenticating || configLoading) {
+  if (isLoading) {
     content = <MainContentSection header={<SectionHeader loading />} />;
-  } else if (!authenticated && !connectionError) {
-    content = <Login />;
-  } else if (connectionError || !connected) {
+  } else if (hasAuthError) {
+    content = (
+      <MainContentSection>
+        {authenticationError ? (
+          authenticationError === "Session expired" ? (
+            <Notification role="alert" severity="information">
+              Your session has expired. Plese log in again to continue using
+              MAAS.
+            </Notification>
+          ) : (
+            <Notification role="alert" severity="negative" title="Error:">
+              {formatErrors(authenticationError, "__all__")}
+            </Notification>
+          )
+        ) : null}
+        <Login />
+      </MainContentSection>
+    );
+  } else if (hasWebsocketError || hasVaultError) {
     content = (
       <MainContentSection header={<SectionHeader title="Failed to connect" />}>
         <Notification severity="negative" title="Error:">
           The server connection failed
-          {connectionError ? ` with the error "${connectionError}"` : ""}.
+          {hasVaultError || connectionError
+            ? ` with the error "${
+                hasVaultError ? configErrors : connectionError
+              }"`
+            : ""}
         </Notification>
       </MainContentSection>
     );
-  } else if (
-    configErrors === VaultErrors.REQUEST_FAILED ||
-    configErrors === VaultErrors.CONNECTION_FAILED
-  ) {
-    content = (
-      <MainContentSection
-        header={<SectionHeader title="Failed to connect" />}
-        isNotificationListHidden={true}
-      >
-        <Notification severity="negative" title="Error:">
-          The server connection failed with the error "{configErrors}".
-        </Notification>
-      </MainContentSection>
-    );
-  } else if (connected && authLoaded && authenticated) {
+  } else if (isLoaded) {
     content = (
       <FileContext.Provider value={fileContextStore}>
         <Routes />
@@ -137,9 +163,36 @@ export const App = (): JSX.Element => {
         )}
 
         <main className="l-main">
-          <div id="main-content">{content}</div>
-          <hr />
-          <Footer />
+          {isSideNavVisible ? (
+            <div
+              className={classNames("l-main__nav", {
+                "is-open": isSideNavVisible,
+              })}
+            >
+              <SecondaryNavigation
+                isOpen={!!isSideNavVisible}
+                items={
+                  isSettingsPage
+                    ? settingsNavItems
+                    : isPreferencesPage
+                    ? preferencesNavItems
+                    : []
+                }
+                title={
+                  isSettingsPage
+                    ? "Settings"
+                    : isPreferencesPage
+                    ? "My preferences"
+                    : ""
+                }
+              />
+            </div>
+          ) : null}
+          <div className="l-main__content" id="main-content">
+            {content}
+            <hr />
+            <Footer />
+          </div>
         </main>
         <aside className="l-status">
           <StatusBar />

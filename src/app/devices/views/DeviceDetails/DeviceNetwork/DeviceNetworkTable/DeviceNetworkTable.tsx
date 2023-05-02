@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 import RemoveInterface from "./RemoveInterface";
 
+import MacAddressDisplay from "app/base/components/MacAddressDisplay";
 import type {
   Expanded,
   SetExpanded,
@@ -104,7 +105,7 @@ const generateRow = (
     }),
     columns: [
       {
-        content: nic.mac_address,
+        content: <MacAddressDisplay>{nic.mac_address}</MacAddressDisplay>,
       },
       {
         content: <SubnetColumn link={link} nic={nic} node={device} />,

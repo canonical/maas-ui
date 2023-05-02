@@ -1,10 +1,10 @@
-import { shallow } from "enzyme";
+import { render, screen } from "@testing-library/react";
 
 import TableDeleteConfirm from "./TableDeleteConfirm";
 
 describe("TableDeleteConfirm", () => {
   it("renders", () => {
-    const wrapper = shallow(
+    render(
       <TableDeleteConfirm
         deleted={false}
         deleting={false}
@@ -14,6 +14,8 @@ describe("TableDeleteConfirm", () => {
         onConfirm={jest.fn()}
       />
     );
-    expect(wrapper).toMatchSnapshot();
+    expect(
+      screen.getByText(/Are you sure you want to delete/i)
+    ).toBeInTheDocument();
   });
 });

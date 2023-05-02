@@ -7,6 +7,7 @@ import {
 } from "@canonical/react-components";
 import { useSelector } from "react-redux";
 
+import MacAddressDisplay from "app/base/components/MacAddressDisplay";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
 import type { Device } from "app/store/device/types";
@@ -86,7 +87,7 @@ const NetworkCardTable = ({ interfaces, node }: Props): JSX.Element => {
                 {iface.name}
                 <br />
                 <Tooltip message={iface.mac_address}>
-                  <small className="u-text--muted">{iface.mac_address}</small>
+                  <MacAddressDisplay>{iface.mac_address}</MacAddressDisplay>
                 </Tooltip>
               </TableCell>
               <TableCell className="ip" data-heading="IP address | Subnet">

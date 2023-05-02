@@ -19,7 +19,7 @@
 
 MAAS is an open-source tool that lets you build a data centre from bare-metal servers. You can discover, commission, deploy, and dynamically reconfigure a large network of individual units.
 
-![MAAS UI screenshot](https://user-images.githubusercontent.com/7452681/213994885-8a8cc3a9-ca6e-4b84-afe1-b918605429eb.png)
+![screenshot of MAAS UI displaying 1000 machines](https://user-images.githubusercontent.com/7452681/234197707-a25b2231-1ca4-4d80-9e42-53d99c4e2cf1.png)
 
 This repository contains the sourcecode for the [MAAS](https://maas.io) web app, maas-ui.
 
@@ -27,7 +27,7 @@ This repository contains the sourcecode for the [MAAS](https://maas.io) web app,
 
 Community contributions are most welcome, and there are a number of ways to participate:
 
-- [Submit bugs and feature requests](https://github.com/canonical/maas-ui/issues)
+- [Submit bugs and feature requests](https://maas.io/docs/how-to-review-and-report-bugs)
 - [Assist with code review](https://github.com/canonical/maas-ui/pulls)
 - [Submit bugs for the MAAS website](https://github.com/canonical/maas.io)
 - [Contribute to MAAS documentation](https://maas.io/docs/writing-guide)
@@ -39,8 +39,8 @@ Please see [HACKING](/docs/HACKING.md) for details on setting up a MAAS UI devel
 ## Feedback
 
 - Ask a question about MAAS on [Discourse](https://discourse.maas.io/).
-- File a [MAAS UI issue](https://github.com/canonical/maas-ui/issues/new/choose).
 - File a [MAAS issue](https://bugs.launchpad.net/maas/+filebug).
+  - If you think that the issue is related to the UI, please add a `ui` tag
 
 ## Related Projects
 

@@ -1,4 +1,4 @@
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -36,7 +36,7 @@ describe("KVMListHeader", () => {
   it("displays a loader if pods have not loaded", () => {
     state.pod.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
@@ -49,13 +49,13 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/loading/i)).toBeInTheDocument();
   });
 
   it("displays a pod count if pods have loaded", () => {
     state.pod.loaded = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
           <CompatRouter>
@@ -68,7 +68,7 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="section-header-subtitle"]').text()).toBe(
+    expect(screen.getByTestId("section-header-subtitle")).toHaveTextContent(
       "2 KVM hosts available"
     );
   });
@@ -76,7 +76,7 @@ describe("KVMListHeader", () => {
   it("can open the add LXD form at the LXD URL", () => {
     const setSidePanelContent = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: urls.kvm.lxd.index, key: "testKey" }]}
@@ -91,10 +91,8 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("button[data-testid='add-kvm']").text()).toBe(
-      "Add LXD host"
-    );
-    wrapper.find("button[data-testid='add-kvm']").simulate("click");
+    expect(screen.getByTestId("add-kvm")).toHaveTextContent("Add LXD host");
+    screen.getByTestId("add-kvm").click();
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.ADD_LXD_HOST,
     });
@@ -103,7 +101,7 @@ describe("KVMListHeader", () => {
   it("can open the add Virsh form at the Virsh URL", () => {
     const setSidePanelContent = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: urls.kvm.virsh.index, key: "testKey" }]}
@@ -118,10 +116,8 @@ describe("KVMListHeader", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("button[data-testid='add-kvm']").text()).toBe(
-      "Add Virsh host"
-    );
-    wrapper.find("button[data-testid='add-kvm']").simulate("click");
+    expect(screen.getByTestId("add-kvm")).toHaveTextContent("Add Virsh host");
+    screen.getByTestId("add-kvm").click();
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.ADD_VIRSH_HOST,
     });

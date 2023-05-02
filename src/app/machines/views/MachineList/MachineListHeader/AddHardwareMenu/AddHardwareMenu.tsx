@@ -14,6 +14,7 @@ export const AddHardwareMenu = ({
 }: Props): JSX.Element => {
   return (
     <ContextualMenu
+      className="is-maas-select"
       data-testid="add-hardware-dropdown"
       hasToggleIcon
       links={[

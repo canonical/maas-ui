@@ -10,14 +10,6 @@ context("Device listing", () => {
     cy.get("[data-testid='section-header-title']").contains("Devices");
   });
 
-  it("highlights the correct navigation link", () => {
-    cy.findByRole("link", { current: "page" }).should(
-      "have.attr",
-      "href",
-      generateMAASURL("/devices")
-    );
-  });
-
   it("can add a tag to the device", () => {
     // can add a device
     cy.findByRole("button", { name: /Add device/ }).click();

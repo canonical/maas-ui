@@ -1,3 +1,4 @@
+/* eslint-disable react/no-multi-comp */
 import * as React from "react";
 
 import { Spinner, Tooltip } from "@canonical/react-components";
@@ -7,7 +8,9 @@ import { Link } from "react-router-dom-v5-compat";
 import DoubleRow from "app/base/components/DoubleRow";
 import TooltipButton from "app/base/components/TooltipButton";
 import { useMachineActions } from "app/base/hooks";
+import type { MachineMenuAction } from "app/base/hooks/node";
 import { useToggleMenu } from "app/machines/hooks";
+import type { MachineMenuToggleHandler } from "app/machines/types";
 import machineSelectors from "app/store/machine/selectors";
 import type { Machine } from "app/store/machine/types";
 import { isTransientStatus, useFormattedOS } from "app/store/machine/utils";
@@ -35,7 +38,10 @@ const getProgressText = (machine: Machine) => {
   return "";
 };
 
-const getStatusIcon = (machine: Machine) => {
+const getStatusIcon = (machine: Machine | null) => {
+  if (!machine) {
+    return "";
+  }
   if (isTransientStatus(machine.status_code)) {
     return <Spinner data-testid="status-icon" />;
   } else if (
@@ -55,9 +61,51 @@ const getStatusIcon = (machine: Machine) => {
 };
 
 type Props = {
-  onToggleMenu?: (systemId: string, open: boolean) => void;
+  onToggleMenu?: MachineMenuToggleHandler;
   systemId: string;
 };
+
+const Progress = ({ machine }: { machine: Machine | null }) => {
+  const progressText = machine ? getProgressText(machine) : "";
+  return machine ? (
+    <>
+      <span data-testid="progress-text" title={progressText}>
+        {progressText}
+      </span>
+      <span data-testid="error-text">
+        {machine.error_description &&
+        machine.status_code === NodeStatusCode.BROKEN ? (
+          <Tooltip
+            message={breakLines(machine.error_description)}
+            position="btm-left"
+            positionElementClassName="p-double-row__tooltip-inner"
+            tooltipClassName="p-tooltip--fixed-width"
+          >
+            {machine.error_description}
+          </Tooltip>
+        ) : (
+          ""
+        )}
+      </span>
+    </>
+  ) : null;
+};
+
+const actions: MachineMenuAction[] = [
+  NodeActions.ABORT,
+  NodeActions.ACQUIRE,
+  NodeActions.COMMISSION,
+  NodeActions.DEPLOY,
+  NodeActions.EXIT_RESCUE_MODE,
+  NodeActions.LOCK,
+  NodeActions.MARK_BROKEN,
+  NodeActions.MARK_FIXED,
+  NodeActions.OVERRIDE_FAILED_TESTING,
+  NodeActions.RELEASE,
+  NodeActions.RESCUE_MODE,
+  NodeActions.TEST,
+  NodeActions.UNLOCK,
+];
 
 export const StatusColumn = ({
   onToggleMenu,
@@ -67,72 +115,48 @@ export const StatusColumn = ({
     machineSelectors.getById(state, systemId)
   );
   const formattedOS = useFormattedOS(machine, true);
-  const toggleMenu = useToggleMenu(onToggleMenu || null, systemId);
-  const actionLinks = useMachineActions(systemId, [
-    NodeActions.ABORT,
-    NodeActions.ACQUIRE,
-    NodeActions.COMMISSION,
-    NodeActions.DEPLOY,
-    NodeActions.EXIT_RESCUE_MODE,
-    NodeActions.LOCK,
-    NodeActions.MARK_BROKEN,
-    NodeActions.MARK_FIXED,
-    NodeActions.OVERRIDE_FAILED_TESTING,
-    NodeActions.RELEASE,
-    NodeActions.RESCUE_MODE,
-    NodeActions.TEST,
-    NodeActions.UNLOCK,
-  ]);
-
+  const toggleMenu = useToggleMenu(onToggleMenu || null);
+  const actionLinks = useMachineActions(systemId, actions);
   const statusText = getStatusText(machine, formattedOS);
-  const menuLinks = [
-    actionLinks,
-    [
-      {
-        children: "See logs",
-        element: Link,
-        to: `/machine/${systemId}/logs`,
-      },
-    ],
-  ];
+  const seeLogs = React.useMemo(
+    () => ({
+      children: "See logs",
+      element: Link,
+      to: `/machine/${systemId}/logs`,
+    }),
+    [systemId]
+  );
+  const menuLinks = React.useMemo(
+    () => [actionLinks, [seeLogs]],
+    [actionLinks, seeLogs]
+  );
+  const primary = React.useMemo(
+    () => (
+      <span data-testid="status-text" title={statusText}>
+        {statusText}
+      </span>
+    ),
+    [statusText]
+  );
+  const secondary = React.useMemo(
+    () => <Progress machine={machine} />,
+    [machine]
+  );
+  const icon = React.useMemo(
+    () => (machine ? getStatusIcon(machine) : null),
+    [machine]
+  );
 
   if (machine) {
-    const progressText = getProgressText(machine);
-
     return (
       <DoubleRow
-        icon={getStatusIcon(machine)}
+        icon={icon}
         iconSpace={true}
         menuLinks={onToggleMenu ? menuLinks : null}
         menuTitle="Take action:"
         onToggleMenu={toggleMenu}
-        primary={
-          <span data-testid="status-text" title={statusText}>
-            {statusText}
-          </span>
-        }
-        secondary={
-          <>
-            <span data-testid="progress-text" title={progressText}>
-              {progressText}
-            </span>
-            <span data-testid="error-text">
-              {machine.error_description &&
-              machine.status_code === NodeStatusCode.BROKEN ? (
-                <Tooltip
-                  message={breakLines(machine.error_description)}
-                  position="btm-left"
-                  positionElementClassName="p-double-row__tooltip-inner"
-                  tooltipClassName="p-tooltip--fixed-width"
-                >
-                  {machine.error_description}
-                </Tooltip>
-              ) : (
-                ""
-              )}
-            </span>
-          </>
-        }
+        primary={primary}
+        secondary={secondary}
       />
     );
   }

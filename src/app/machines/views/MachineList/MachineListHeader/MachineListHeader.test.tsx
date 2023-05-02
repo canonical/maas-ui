@@ -1,4 +1,3 @@
-import { ContextualMenu } from "@canonical/react-components";
 import reduxToolkit from "@reduxjs/toolkit";
 import { mount } from "enzyme";
 import { Provider } from "react-redux";
@@ -25,9 +24,14 @@ import {
   resourcePoolState as resourcePoolStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { screen, waitFor, renderWithBrowserRouter } from "testing/utils";
+import {
+  screen,
+  waitFor,
+  renderWithBrowserRouter,
+  userEvent,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("MachineListHeader", () => {
   let state: RootState;
@@ -85,7 +89,11 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
+              grouping={null}
               searchFilter=""
+              setGrouping={jest.fn()}
+              setHiddenColumns={jest.fn()}
+              setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSidePanelContent={jest.fn()}
               sidePanelContent={null}
@@ -110,7 +118,11 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
+              grouping={null}
               searchFilter=""
+              setGrouping={jest.fn()}
+              setHiddenColumns={jest.fn()}
+              setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSidePanelContent={jest.fn()}
               sidePanelContent={null}
@@ -134,7 +146,11 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
+        grouping={null}
         searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
         sidePanelContent={null}
@@ -155,7 +171,11 @@ describe("MachineListHeader", () => {
     });
     renderWithBrowserRouter(
       <MachineListHeader
+        grouping={null}
         searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={jest.fn()}
         sidePanelContent={null}
@@ -165,31 +185,39 @@ describe("MachineListHeader", () => {
     expect(screen.queryByText("Loading...")).not.toBeInTheDocument();
   });
 
-  it("disables the add hardware menu when machines are selected", () => {
+  it("hides the add hardware menu when machines are selected", () => {
     state.machine.selectedMachines = { items: ["abc123"] };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state, route: urls.machines.index }
     );
     expect(
-      wrapper
-        .find('[data-testid="add-hardware-dropdown"]')
-        .find(ContextualMenu)
-        .props().toggleDisabled
-    ).toBe(true);
+      screen.queryByTestId("add-hardware-dropdown")
+    ).not.toBeInTheDocument();
+    state.machine.selectedMachines.items = [];
+    renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state, route: urls.machines.index }
+    );
+    expect(screen.getByTestId("add-hardware-dropdown")).toBeInTheDocument();
   });
 
   it("closes action form when all machines are deselected", async () => {
@@ -202,7 +230,11 @@ describe("MachineListHeader", () => {
     const setSidePanelContent = jest.fn();
     renderWithBrowserRouter(
       <MachineListHeader
+        grouping={null}
         searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={setSidePanelContent}
         sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
@@ -214,7 +246,11 @@ describe("MachineListHeader", () => {
     state.machine.selectedMachines.items = [];
     renderWithBrowserRouter(
       <MachineListHeader
+        grouping={null}
         searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
         setSearchFilter={jest.fn()}
         setSidePanelContent={setSidePanelContent}
         sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
@@ -232,7 +268,11 @@ describe("MachineListHeader", () => {
         >
           <CompatRouter>
             <MachineListHeader
+              grouping={null}
               searchFilter=""
+              setGrouping={jest.fn()}
+              setHiddenColumns={jest.fn()}
+              setHiddenGroups={jest.fn()}
               setSearchFilter={jest.fn()}
               setSidePanelContent={jest.fn()}
               sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
@@ -249,7 +289,7 @@ describe("MachineListHeader", () => {
     ).toBe("Deploy");
   });
 
-  it("displays a new label for the tag action", () => {
+  it("displays a new label for the tag action", async () => {
     // Set a selected machine so the take action menu becomes enabled.
     state.machine.selectedMachines = { items: ["abc123"] };
     // A machine needs the tag action for it to appear in the menu.
@@ -257,37 +297,29 @@ describe("MachineListHeader", () => {
       machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { route: "/machines", store }
     );
     // Open the take action menu.
-    wrapper
-      .find(
-        '[data-testid="take-action-dropdown"] button.p-contextual-menu__toggle'
-      )
-      .simulate("click");
-    expect(
-      wrapper
-        .find("button[data-testid='action-link-tag']")
-        .text()
-        .includes("(NEW)")
-    ).toBe(true);
+    await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
+
+    let tagAction = screen.getByTestId("action-link-tag");
+
+    // The new label should appear before being clicked.
+    expect(tagAction).toHaveTextContent(/NEW/);
   });
 
-  it("hides the tag action's new label after it has been clicked", () => {
+  it("hides the tag action's new label after it has been clicked", async () => {
     jest.spyOn(reduxToolkit, "nanoid").mockReturnValue("mocked-nanoid");
     // Set a selected machine so the take action menu becomes enabled.
     state.machine.selectedMachines = { items: ["abc123"] };
@@ -308,47 +340,46 @@ describe("MachineListHeader", () => {
       }),
     };
     const store = mockStore(state);
-    const Header = () => (
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              searchFilter=""
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { rerender } = renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { route: "/machines", store }
     );
-    let wrapper = mount(<Header />);
     // Open the take action menu.
-    wrapper
-      .find(
-        '[data-testid="take-action-dropdown"] button.p-contextual-menu__toggle'
-      )
-      .simulate("click");
-    const tagAction = wrapper.find("button[data-testid='action-link-tag']");
+    await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
+
+    let tagAction = screen.getByTestId("action-link-tag");
+
     // The new label should appear before being clicked.
-    expect(tagAction.text().includes("(NEW)")).toBe(true);
-    tagAction.simulate("click");
+    expect(tagAction).toHaveTextContent(/NEW/);
+
+    await userEvent.click(tagAction);
+
     // Render the header again
-    wrapper = mount(<Header />);
+    rerender(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />
+    );
     // Open the take action menu.
-    wrapper
-      .find(
-        '[data-testid="take-action-dropdown"] button.p-contextual-menu__toggle'
-      )
-      .simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
     // The new label should now be hidden.
-    expect(
-      wrapper
-        .find("button[data-testid='action-link-tag']")
-        .text()
-        .includes("(NEW)")
-    ).toBe(false);
+    tagAction = screen.getByTestId("action-link-tag");
+    expect(tagAction).not.toHaveTextContent(/NEW/);
   });
 });

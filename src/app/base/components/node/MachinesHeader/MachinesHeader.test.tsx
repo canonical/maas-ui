@@ -1,5 +1,5 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
+import { render, screen } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -53,18 +53,18 @@ describe("MachinesHeader", () => {
   it("renders", () => {
     state.machine.loaded = true;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[{ pathname: "/machines", key: "testKey" }]}
         >
           <CompatRouter>
-            <MachinesHeader machineCount={2} />
+            <MachinesHeader machineCount={2} title="Machines" />
           </CompatRouter>
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "Machines"
     );
   });

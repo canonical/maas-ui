@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
@@ -15,6 +14,7 @@ import {
   tagState as tagStateFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -39,7 +39,7 @@ describe("VirshSettings", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    mount(
+    render(
       <MemoryRouter>
         <Provider store={store}>
           <CompatRouter>
@@ -66,7 +66,7 @@ describe("VirshSettings", () => {
   it("displays a spinner if data has not loaded", () => {
     state.resourcepool.loaded = false;
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter>
           <CompatRouter>
@@ -75,6 +75,6 @@ describe("VirshSettings", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("Spinner").length).toBe(1);
+    expect(screen.getByText(/Loading/)).toBeInTheDocument();
   });
 });

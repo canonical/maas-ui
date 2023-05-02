@@ -1,4 +1,5 @@
 import DoubleRow from "app/base/components/DoubleRow";
+import MacAddressDisplay from "app/base/components/MacAddressDisplay";
 import RowCheckbox from "app/base/components/RowCheckbox";
 import type { Selected } from "app/base/components/node/networking/types";
 import { useIsAllNetworkingDisabled } from "app/base/hooks";
@@ -56,7 +57,7 @@ const NameColumn = ({
         )
       }
       primaryClassName={checkboxSpace ? "u-nudge--primary-row" : null}
-      secondary={nic.mac_address}
+      secondary={<MacAddressDisplay>{nic.mac_address}</MacAddressDisplay>}
       secondaryClassName={
         checkboxSpace || showCheckbox ? "u-nudge--secondary-row" : null
       }

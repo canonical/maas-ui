@@ -22,7 +22,7 @@ export const MachinesHeader = ({
   return (
     <SectionHeader
       {...props}
-      title={"title" in props && !!props.title ? props.title : "Machines"}
+      title={"title" in props && !!props.title ? props.title : ""}
     />
   );
 };

@@ -1,0 +1,28 @@
+name: MAAS Docs link checker
+on:
+  schedule:
+    - cron: "0 14 * * 1-5" # At 14:00 every day-of-week from Monday through Friday.
+jobs:
+  docs:
+    name: maas.io/docs links
+    runs-on: ubuntu-22.04
+    steps:
+      - uses: actions/checkout@main
+      - name: Get branch name
+        uses: nelonoel/branch-name@v1.0.1
+      - name: Run Cypress docs tests
+        uses: cypress-io/github-action@v4
+        with:
+          browser: chrome
+          config: baseUrl=http://maas.io/docs
+          spec: "cypress/e2e/docs-links/**/*.spec.ts"
+      - name: Create issue on failure
+        if: failure()
+        uses: JasonEtco/create-an-issue@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        with:
+          filename: .github/ISSUE_TEMPLATE/maas-io-docs-failed.md
+          update_existing: true

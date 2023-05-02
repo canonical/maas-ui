@@ -7,14 +7,6 @@ context("User preferences", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains("My preferences");
-  });
-
-  it("highlights the correct navigation link", () => {
-    cy.findByRole("link", { current: "page" }).should(
-      "have.attr",
-      "href",
-      generateMAASURL("/account/prefs")
-    );
+    cy.get(".p-side-navigation__title").contains("My preferences");
   });
 });

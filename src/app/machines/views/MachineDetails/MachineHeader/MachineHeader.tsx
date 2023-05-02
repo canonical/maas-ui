@@ -115,7 +115,7 @@ const MachineHeader = ({
                 title="Take action:"
               />
             </div>
-            <div>
+            <div className="u-hide--medium u-hide--small">
               <NodeActionMenuGroup
                 alwaysShowLifecycle
                 excludeActions={[NodeActions.IMPORT_IMAGES]}
@@ -139,8 +139,11 @@ const MachineHeader = ({
                 }}
                 singleNode
               />
+            </div>
+            <div className="u-hide--large">
               <NodeActionMenu
                 alwaysShowLifecycle
+                className="u-hide--large"
                 excludeActions={[NodeActions.IMPORT_IMAGES]}
                 filterActions
                 hasSelection={true}

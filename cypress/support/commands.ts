@@ -54,19 +54,14 @@ Cypress.Commands.add("deleteMachine", (hostname: string) => {
   cy.visit(generateMAASURL("/machines"));
   cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
   cy.findByRole("searchbox").type(hostname);
-  cy.findByText(/1 machine available/).should("exist");
+  cy.findByText(/Showing 1 out of 1 machines/).should("exist");
   cy.findByRole("grid", { name: "Machines" }).within(() =>
     // eslint-disable-next-line cypress/no-force
     cy
       .findByRole("checkbox", { name: new RegExp(hostname) })
       .click({ force: true })
   );
-  cy.findByTestId("section-header-buttons").within(() =>
-    cy.findByRole("button", { name: /Take action/i }).click()
-  );
-  cy.findByLabelText("submenu").within(() => {
-    cy.findAllByRole("button", { name: /Delete/i }).click();
-  });
+  cy.findByRole("button", { name: /Delete/i }).click();
   cy.findByRole("button", { name: /Delete machine/ }).click();
   cy.findByRole("complementary", { name: /Delete/i }).should("not.exist");
   cy.findByText(/No machines match the search criteria/).should("exist");
@@ -154,4 +149,14 @@ Cypress.Commands.add("waitForTableToLoad", ({ name } = { name: undefined }) => {
   cy.findByRole("grid", { name: /Loading/i }).should("exist");
   cy.findByRole("grid", { name: /Loading/i }).should("not.exist");
   return cy.findByRole("grid", { name }).should("exist");
+});
+
+Cypress.Commands.add("getMainNavigation", () => {
+  return cy.findByRole("navigation", { name: /main navigation/i });
+});
+
+Cypress.Commands.add("expandMainNavigation", () => {
+  return cy
+    .window()
+    .then((win) => win.localStorage.setItem("appSideNavIsCollapsed", "false"));
 });

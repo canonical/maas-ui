@@ -22,6 +22,12 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import {
+  renderWithBrowserRouter,
+  userEvent,
+  screen,
+  within,
+} from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -65,22 +71,6 @@ describe("StatusColumn", () => {
         loading: false,
       }),
     });
-  });
-
-  it("renders", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("StatusColumn")).toMatchSnapshot();
   });
 
   describe("status text", () => {
@@ -284,7 +274,7 @@ describe("StatusColumn", () => {
     });
   });
 
-  it("can show a menu with all possible options", () => {
+  it("can show a menu with all possible options", async () => {
     machine.actions = [
       NodeActions.ABORT,
       NodeActions.ACQUIRE,
@@ -300,21 +290,21 @@ describe("StatusColumn", () => {
       NodeActions.TEST,
       NodeActions.UNLOCK,
     ];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <StatusColumn onToggleMenu={jest.fn()} systemId="abc123" />,
+      { state, route: "/machines" }
     );
-    // Open the menu so the elements get rendered.
-    wrapper.find("Button.p-contextual-menu__toggle").simulate("click");
-    expect(wrapper.find(".p-contextual-menu__dropdown")).toMatchSnapshot();
+    await userEvent.click(screen.getByRole("button", { name: /take action/i }));
+    expect(
+      within(screen.getByLabelText("submenu")).getAllByRole("button")
+    ).toHaveLength(machine.actions.length);
+    machine.actions.forEach((action) => {
+      expect(
+        within(screen.getByLabelText("submenu")).getByRole("button", {
+          name: action,
+        })
+      ).toBeInTheDocument();
+    });
   });
 
   it("does not render table menu if onToggleMenu not provided", () => {

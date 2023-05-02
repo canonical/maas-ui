@@ -8,23 +8,6 @@ import {
 } from "testing/factories";
 
 describe("CPUPopover", () => {
-  it("renders", () => {
-    const wrapper = mount(
-      <CPUPopover
-        cores={podResourceFactory({
-          allocated_other: 1,
-          allocated_tracked: 2,
-          free: 3,
-        })}
-        overCommit={2}
-      >
-        Child
-      </CPUPopover>
-    );
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("shows if cores are used by any other projects in the group", () => {
     const wrapper = mount(
       <CPUPopover

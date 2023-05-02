@@ -20,6 +20,7 @@ import MachineListDisplayCount from "./MachineListDisplayCount";
 import MachineListPagination from "./MachineListPagination";
 import NameColumn from "./NameColumn";
 import OwnerColumn from "./OwnerColumn";
+import PageSizeSelect from "./PageSizeSelect";
 import PoolColumn from "./PoolColumn";
 import PowerColumn from "./PowerColumn";
 import RamColumn from "./RamColumn";
@@ -33,12 +34,9 @@ import TableHeader from "app/base/components/TableHeader";
 import { useSendAnalytics } from "app/base/hooks";
 import { SortDirection } from "app/base/types";
 import { columnLabels, columns, MachineColumns } from "app/machines/constants";
+import type { GetMachineMenuToggleHandler } from "app/machines/types";
 import { actions as generalActions } from "app/store/general";
-import type {
-  Machine,
-  MachineMeta,
-  MachineStateListGroup,
-} from "app/store/machine/types";
+import type { Machine, MachineStateListGroup } from "app/store/machine/types";
 import { FetchGroupKey } from "app/store/machine/types";
 import { FilterMachines } from "app/store/machine/utils";
 import { actions as resourcePoolActions } from "app/store/resourcepool";
@@ -68,6 +66,7 @@ type Props = {
   pageSize: number;
   setCurrentPage: (currentPage: number) => void;
   setHiddenGroups?: (hiddenGroups: (string | null)[]) => void;
+  setPageSize?: (pageSize: number) => void;
   showActions?: boolean;
   sortDirection: ValueOf<typeof SortDirection>;
   sortKey: FetchGroupKey | null;
@@ -77,17 +76,12 @@ type Props = {
 
 type TableColumn = MainTableCell & { key: string };
 
-type GetToggleHandler = (
-  eventLabel: string
-) => (systemId: Machine[MachineMeta.PK], open: boolean) => void;
-
 type GenerateRowParams = {
   callId?: string | null;
-  activeRow: Machine[MachineMeta.PK] | null;
   groupValue: MachineStateListGroup["value"];
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   machines: Machine[];
-  getToggleHandler: GetToggleHandler;
+  getToggleHandler: GetMachineMenuToggleHandler;
   showActions: Props["showActions"];
   showMAC: boolean;
   showFullName: boolean;
@@ -142,7 +136,7 @@ const generateRow = ({
   content: RowContent;
   hiddenColumns: NonNullable<Props["hiddenColumns"]>;
   showActions: GenerateRowParams["showActions"];
-  classes: string;
+  classes?: string;
 }) => {
   const columns = [
     {
@@ -306,7 +300,6 @@ const generateSkeletonRows = (
 };
 const generateRows = ({
   callId,
-  activeRow,
   groupValue,
   hiddenColumns,
   machines,
@@ -315,18 +308,17 @@ const generateRows = ({
   showMAC,
   showFullName,
 }: GenerateRowParams) => {
-  const getMenuHandler: GetToggleHandler = (...args) =>
+  const getMenuHandler: GetMachineMenuToggleHandler = (...args) =>
     showActions ? getToggleHandler(...args) : () => undefined;
 
   return machines.map((row) => {
-    const isActive = activeRow === row.system_id;
-
     const content = {
       [MachineColumns.FQDN]: (
         <NameColumn
           callId={callId}
           data-testid="fqdn-column"
           groupValue={groupValue}
+          machines={machines}
           showActions={showActions}
           showMAC={showMAC}
           systemId={row.system_id}
@@ -389,9 +381,6 @@ const generateRows = ({
       content,
       hiddenColumns,
       showActions,
-      classes: classNames({
-        "machine-list__machine--active": isActive,
-      }),
     });
   });
 };
@@ -520,6 +509,7 @@ export const MachineListTable = ({
   pageSize,
   setCurrentPage,
   setHiddenGroups,
+  setPageSize,
   showActions = true,
   sortDirection,
   sortKey,
@@ -547,9 +537,6 @@ export const MachineListTable = ({
       setSortDirection(SortDirection.DESCENDING);
     }
   };
-  const [activeRow, setActiveRow] = useState<Machine[MachineMeta.PK] | null>(
-    null
-  );
   const [showMAC, setShowMAC] = useState(false);
   const [showFullName, setShowFullName] = useState(false);
   useEffect(() => {
@@ -567,33 +554,28 @@ export const MachineListTable = ({
   }, [dispatch]);
 
   const toggleHandler = useCallback(
-    (columnName: string, systemId: Machine[MachineMeta.PK], open: boolean) => {
-      if (open && !activeRow) {
+    (columnName: string, open: boolean) => {
+      if (open) {
         sendAnalytics(
           "Machine list",
           "Inline actions open",
           `${columnName} column`
         );
-        setActiveRow(systemId);
-      } else if (!open || (open && activeRow)) {
+      } else if (!open) {
         sendAnalytics(
           "Machine list",
           "Inline actions close",
           `${columnName} column`
         );
-        setActiveRow(null);
       }
     },
-    [activeRow, sendAnalytics]
+    [sendAnalytics]
   );
-  const getToggleHandler =
-    (columnName: string) =>
-    (systemId: Machine[MachineMeta.PK], open: boolean) =>
-      toggleHandler(columnName, systemId, open);
+  const getToggleHandler = (columnName: string) => (open: boolean) =>
+    toggleHandler(columnName, open);
 
   const rowProps = {
     callId,
-    activeRow,
     getToggleHandler,
     showActions,
     showMAC,
@@ -850,19 +832,30 @@ export const MachineListTable = ({
   return (
     <>
       {machineCount ? (
-        <div className="u-flex--between u-flex--align-center">
+        <div className="u-flex--between u-flex--align-baseline u-flex--wrap">
+          <hr />
           <MachineListDisplayCount
             currentPage={currentPage}
             machineCount={machineCount}
             pageSize={pageSize}
           />
-          <MachineListPagination
-            currentPage={currentPage}
-            itemsPerPage={pageSize}
-            machineCount={machineCount}
-            machinesLoading={machinesLoading}
-            paginate={setCurrentPage}
-          />
+          <span className="u-flex--end">
+            <MachineListPagination
+              currentPage={currentPage}
+              itemsPerPage={pageSize}
+              machineCount={machineCount}
+              machinesLoading={machinesLoading}
+              paginate={setCurrentPage}
+            />
+            {setPageSize ? (
+              <PageSizeSelect
+                pageSize={pageSize}
+                paginate={setCurrentPage}
+                setPageSize={setPageSize}
+              />
+            ) : null}
+          </span>
+          <hr />
         </div>
       ) : null}
       <MainTable

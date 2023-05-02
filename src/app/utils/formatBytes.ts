@@ -77,6 +77,7 @@ export const sizeStringToNumber = (sizeString: string = ""): number | null => {
       }).value;
     }
   } catch (error) {
+    // eslint-disable-next-line no-console
     console.error(error);
   }
 

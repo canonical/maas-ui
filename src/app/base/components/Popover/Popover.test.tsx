@@ -1,21 +1,23 @@
-import { mount } from "enzyme";
-
 import Popover from "./Popover";
 
-describe("Popover", () => {
-  const body = document.querySelector("body");
-  const app = document.createElement("div");
-  if (body && app) {
-    app.setAttribute("id", "app");
-    body.appendChild(app);
-  }
+import { render, screen, userEvent } from "testing/utils";
 
-  it("renders popover content when focused", () => {
-    const wrapper = mount(
-      <Popover content={<span data-testid="test">Test</span>}>Child</Popover>
-    );
-    expect(wrapper.find("[data-testid='test']").exists()).toBe(false);
-    wrapper.find("Popover").simulate("focus");
-    expect(wrapper.find("[data-testid='test']").exists()).toBe(true);
-  });
+it("renders popover content when focused", async () => {
+  render(<Popover content={<span>popover content</span>}>child text</Popover>);
+  expect(screen.queryByText("popover content")).not.toBeInTheDocument();
+  await userEvent.click(screen.getByText("child text"));
+  expect(screen.getByText("popover content")).toBeInTheDocument();
+});
+
+it("keeps popover content open on unhover if initiated by click", async () => {
+  render(<Popover content={<span>popover content</span>}>trigger</Popover>);
+  const button = screen.getByRole("button", { name: "trigger" });
+  await userEvent.hover(button);
+  expect(screen.getByText("popover content")).toBeInTheDocument();
+  await userEvent.unhover(button);
+  expect(screen.queryByText("popover content")).not.toBeInTheDocument();
+  await userEvent.click(button);
+  expect(screen.getByText("popover content")).toBeInTheDocument();
+  await userEvent.unhover(button);
+  expect(screen.getByText("popover content")).toBeInTheDocument();
 });

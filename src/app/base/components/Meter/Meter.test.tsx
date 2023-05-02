@@ -1,4 +1,4 @@
-import Meter, { DEFAULT_SEPARATOR_COLOR, TestIds } from "./Meter";
+import Meter, { defaultSeparatorColor, testIds } from "./Meter";
 
 import { render, screen } from "testing/utils";
 
@@ -31,19 +31,19 @@ describe("Meter", () => {
   it("can be made small", () => {
     render(<Meter data={[]} small />);
 
-    expect(screen.getByTestId(TestIds.Container)).toHaveClass("p-meter--small");
+    expect(screen.getByTestId(testIds.container)).toHaveClass("p-meter--small");
   });
 
   it("can be given a label", () => {
     render(<Meter data={[{ value: 1 }, { value: 3 }]} label="Meter label" />);
 
-    expect(screen.getByTestId(TestIds.Label).textContent).toBe("Meter label");
+    expect(screen.getByTestId(testIds.label).textContent).toBe("Meter label");
   });
 
   it("can be given a custom empty colour", () => {
     render(<Meter data={[]} emptyColor="#ABC" />);
 
-    expect(screen.getByTestId(TestIds.Bar)).toHaveStyle({
+    expect(screen.getByTestId(testIds.bar)).toHaveStyle({
       backgroundColor: "#ABC",
     });
   });
@@ -58,7 +58,7 @@ describe("Meter", () => {
         ]}
       />
     );
-    const segments = screen.getAllByTestId(TestIds.Filled);
+    const segments = screen.getAllByTestId(testIds.filled);
 
     expect(segments[0]).toHaveStyle({ backgroundColor: "#AAA" });
     expect(segments[1]).toHaveStyle({ backgroundColor: "#BBB" });
@@ -70,7 +70,7 @@ describe("Meter", () => {
       <Meter data={[{ color: "#ABC", value: 100 }]} max={10} overColor="#DEF" />
     );
 
-    expect(screen.getByTestId(TestIds.MeterOverflow)).toHaveStyle({
+    expect(screen.getByTestId(testIds.meteroverflow)).toHaveStyle({
       backgroundColor: "#DEF",
     });
   });
@@ -86,7 +86,7 @@ describe("Meter", () => {
         ]}
       />
     );
-    const segments = screen.getAllByTestId(TestIds.Filled);
+    const segments = screen.getAllByTestId(testIds.filled);
 
     expect(segments[0]).toHaveStyle({ width: "10%" });
     expect(segments[1]).toHaveStyle({ width: "20%" });
@@ -105,7 +105,7 @@ describe("Meter", () => {
         ]}
       />
     );
-    const segments = screen.getAllByTestId(TestIds.Filled);
+    const segments = screen.getAllByTestId(testIds.filled);
 
     expect(segments[0]).toHaveStyle({ left: "0%" });
     expect(segments[1]).toHaveStyle({ left: "10%" });
@@ -116,7 +116,7 @@ describe("Meter", () => {
   it("can be made segmented", () => {
     render(<Meter data={[{ value: 2 }]} max={10} segmented />);
 
-    expect(screen.getByTestId(TestIds.Segments)).toBeInTheDocument();
+    expect(screen.getByTestId(testIds.segments)).toBeInTheDocument();
   });
 
   it("can set the segment separator color", () => {
@@ -129,7 +129,7 @@ describe("Meter", () => {
       />
     );
 
-    expect(screen.getByTestId(TestIds.Segments)).toHaveStyle({
+    expect(screen.getByTestId(testIds.segments)).toHaveStyle({
       background: "rgb(171, 193, 35);",
     });
   });
@@ -141,8 +141,8 @@ describe("Meter", () => {
     });
     render(<Meter data={[{ value: 10 }]} max={100} segmented />);
 
-    expect(screen.getByTestId(TestIds.Segments)).toHaveStyle({
-      background: `repeating-linear-gradient(to right, transparent 0, transparent 1px, ${DEFAULT_SEPARATOR_COLOR} 1px, ${DEFAULT_SEPARATOR_COLOR} 2px );`,
+    expect(screen.getByTestId(testIds.segments)).toHaveStyle({
+      background: `repeating-linear-gradient(to right, transparent 0, transparent 1px, ${defaultSeparatorColor} 1px, ${defaultSeparatorColor} 2px );`,
     });
   });
 });

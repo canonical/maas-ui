@@ -42,7 +42,7 @@ export const timeSpanToMinutes = (timeSpan: TimeSpan | null): Minutes =>
   durationToMinutes(timeSpanToDuration(timeSpan));
 
 export const secondsToDuration = (seconds: number | undefined): Duration => {
-  const now = new Date();
+  const now = new Date().getUTCDate();
   return intervalToDuration({
     start: now,
     end: add(now, { seconds: seconds }),

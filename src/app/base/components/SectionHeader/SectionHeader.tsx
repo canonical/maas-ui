@@ -13,6 +13,7 @@ export type Props<P = LinkProps> = {
   actionMenuGroup?: JSX.Element | null;
   buttons?: JSX.Element[] | null;
   className?: ClassName;
+  renderButtons?: () => ReactNode;
   sidePanelContent?: ReactNode | null;
   sidePanelTitle?: string | null;
   headerSize?: "wide";
@@ -63,6 +64,7 @@ const generateSubtitle = (
 const SectionHeader = <P,>({
   actionMenuGroup,
   buttons = [],
+  renderButtons,
   className,
   sidePanelContent,
   sidePanelTitle,
@@ -79,9 +81,9 @@ const SectionHeader = <P,>({
 }: Props<P>): JSX.Element | null => {
   return (
     <div className={classNames("section-header", className)} {...props}>
-      <div className="section-header__main-row u-flex--between u-flex--wrap">
-        <div className="section-header__titles u-flex--align-center u-flex--grow u-flex--wrap">
-          {loading || !title ? (
+      <div className="section-header__main-row">
+        {loading ? (
+          <div className="section-header__titles u-flex--align-center u-flex--grow u-flex--wrap">
             <h4
               aria-label="loading"
               className="section-header__title"
@@ -89,7 +91,9 @@ const SectionHeader = <P,>({
             >
               <Spinner aria-hidden="true" text="Loading..." />
             </h4>
-          ) : (
+          </div>
+        ) : title ? (
+          <div className="section-header__titles u-flex--align-center u-flex--grow u-flex--wrap">
             <TitleElement
               className={classNames(
                 "section-header__title u-flex--no-shrink",
@@ -102,17 +106,17 @@ const SectionHeader = <P,>({
             >
               {title}
             </TitleElement>
-          )}
-          {generateSubtitle(
-            subtitle,
-            subtitleClassName,
-            subtitleLoading,
-            loading
-          )}
-        </div>
+          </div>
+        ) : null}
+        {generateSubtitle(
+          subtitle,
+          subtitleClassName,
+          subtitleLoading,
+          loading
+        )}
         {buttons?.length && !sidePanelContent ? (
           <List
-            className="section-header__buttons"
+            className="section-header__buttons u-flex--between"
             data-testid="section-header-buttons"
             inline
             items={buttons.map((button, i) => ({
@@ -122,6 +126,9 @@ const SectionHeader = <P,>({
           />
         ) : null}
       </div>
+      {renderButtons && typeof renderButtons === "function"
+        ? renderButtons()
+        : null}
       <AppSidePanel
         content={sidePanelContent}
         size={headerSize}

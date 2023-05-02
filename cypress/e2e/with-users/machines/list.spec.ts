@@ -1,4 +1,4 @@
-import { generateMAASURL } from "../../utils";
+import { generateMAASURL, generateName } from "../../utils";
 
 context("Machine listing", () => {
   beforeEach(() => {
@@ -7,17 +7,9 @@ context("Machine listing", () => {
   });
 
   it("renders the correct heading", () => {
-    cy.get("[data-testid='section-header-title']").contains(
-      /machines in 1 pool/
-    );
-  });
-
-  it("highlights the correct navigation link", () => {
-    cy.findByRole("link", { current: "page" }).should(
-      "have.attr",
-      "href",
-      generateMAASURL("/machines")
-    );
+    cy.findByRole("heading", {
+      name: /[0-9]+ machine[s]? in [0-9]+ pool[s]?/i,
+    }).should("exist");
   });
 
   it("can group machines by all supported keys", () => {
@@ -46,8 +38,10 @@ context("Machine listing", () => {
   });
 
   it("displays machine counts with active filters", () => {
-    const searchFilter = "status:(=commissioning) hostname:(machine-)";
-    cy.addMachines(["machine-1", "machine-2"]);
+    const name = generateName();
+    const searchFilter = `status:(=commissioning) hostname:(${name})`;
+    const machines = [`${name}-1`, `${name}-2`];
+    cy.addMachines(machines);
     cy.findByRole("combobox", { name: "Group by" }).select("Group by status");
     cy.findByRole("searchbox").type(searchFilter);
     cy.findByText(/Showing 2 out of 2 machines/).should("exist");
@@ -57,10 +51,7 @@ context("Machine listing", () => {
         .findByRole("checkbox", { name: /Commissioning/i })
         .click({ force: true })
     );
-    cy.findByRole("button", { name: /Take action/i }).click();
-    cy.findByLabelText("submenu").within(() => {
-      cy.findAllByRole("button", { name: /Delete/i }).click();
-    });
+    cy.findByRole("button", { name: /Delete/i }).click();
     cy.findByRole("button", { name: /Delete 2 machines/ }).should("exist");
     cy.findByRole("button", { name: /Delete 2 machines/ }).click();
     cy.findByRole("searchbox").should("have.value", searchFilter);
@@ -85,5 +76,29 @@ context("Machine listing", () => {
     // verify that the hidden column is still hidden after refresh
     cy.findAllByRole("columnheader").should("have.length", allHeadersCount - 1);
     cy.findByRole("header", { name: "Status" }).should("not.exist");
+  });
+
+  it("can select a machine range", () => {
+    const name = generateName();
+    const newMachines = [`${name}-a`, `${name}-b`, `${name}-c`];
+    cy.addMachines(newMachines);
+    cy.findByRole("combobox", { name: "Group by" }).select("No grouping");
+    cy.findByRole("searchbox", { name: "Search" }).type(name);
+    cy.findByText(/Showing 3 out of 3 machines/).should("exist");
+    // eslint-disable-next-line cypress/no-force
+    cy.findByRole("checkbox", { name: `${newMachines[0]}.maas` }).click({
+      force: true,
+    });
+    // eslint-disable-next-line cypress/no-force
+    cy.findByRole("checkbox", { name: `${newMachines[2]}.maas` }).click({
+      shiftKey: true,
+      force: true,
+    });
+    cy.findByRole("checkbox", { name: `${newMachines[1]}.maas` }).should(
+      "be.checked"
+    );
+    cy.findByRole("button", { name: /Delete/i }).click();
+    cy.findByRole("button", { name: /Delete 3 machines/ }).click();
+    cy.findByText(/No machines match the search criteria./).should("exist");
   });
 });
