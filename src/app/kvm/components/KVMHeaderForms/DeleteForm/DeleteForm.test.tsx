@@ -1,12 +1,7 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeleteForm from "./DeleteForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import { PodType } from "app/store/pod/constants";
 import podSelectors from "app/store/pod/selectors";
 import type { RootState } from "app/store/root/types";
@@ -22,12 +17,7 @@ import {
   vmClusterState as vmClusterStateFactory,
   vmClusterStatuses as vmClusterStatusesFactory,
 } from "testing/factories";
-import {
-  userEvent,
-  screen,
-  renderWithBrowserRouter,
-  waitForComponentToPaint,
-} from "testing/utils";
+import { userEvent, screen, renderWithBrowserRouter } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -36,7 +26,7 @@ describe("DeleteForm", () => {
     jest.restoreAllMocks();
   });
 
-  it("can show the processing status when deleting the given pod", async () => {
+  it("can show the processing status when deleting the given pod", () => {
     const pod = podFactory({ id: 1 });
     const state = rootStateFactory({
       pod: podStateFactory({
@@ -47,19 +37,12 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm", store }
     );
-    wrapper.find("Formik").simulate("submit");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
-    expect(wrapper.find('[data-testid="saving-label"]').text()).toBe(
+
+    expect(screen.getByTestId("saving-label")).toHaveTextContent(
       "Removing KVM host..."
     );
   });
@@ -75,19 +58,11 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />,
+      { route: "/kvm", store }
     );
-    wrapper.find("Formik").simulate("submit");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("FormikForm").prop("saving")).toBe(true);
-    expect(wrapper.find('[data-testid="saving-label"]').text()).toBe(
+    expect(screen.getByTestId("saving-label")).toHaveTextContent(
       "Removing cluster..."
     );
   });
@@ -103,17 +78,16 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm", store }
     );
 
-    expect(wrapper.find("FormikField[name='decompose']").exists()).toBe(true);
+    expect(
+      screen.getByRole("checkbox", {
+        name: "Selecting this option will delete all VMs in pod2 along with their storage.",
+      })
+    ).toBeInTheDocument();
   });
 
   it("shows a decompose checkbox if deleting a cluster", async () => {
@@ -127,17 +101,16 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />,
+      { route: "/kvm", store }
     );
 
-    expect(wrapper.find("FormikField[name='decompose']").exists()).toBe(true);
+    expect(
+      screen.getByRole("checkbox", {
+        name: "Selecting this option will delete all VMs in clusterA along with their storage.",
+      })
+    ).toBeInTheDocument();
   });
 
   it("does not show a decompose checkbox if deleting a non-LXD pod", async () => {
@@ -151,17 +124,12 @@ describe("DeleteForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm", store }
     );
 
-    expect(wrapper.find("FormikField[name='decompose']").exists()).toBe(false);
+    expect(screen.queryByRole("checkbox")).not.toBeInTheDocument();
   });
 
   it("correctly dispatches actions to delete given KVM", async () => {
@@ -255,27 +223,25 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     const Proxy = () => (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
     );
-    const wrapper = mount(<Proxy />);
+    const { rerender } = renderWithBrowserRouter(<Proxy />, {
+      route: "/kvm",
+      store,
+    });
 
     // Cluster is being deleted - form shouldn't be saved yet.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(screen.getByTestId("saving-label")).toHaveTextContent(
+      "Removing cluster..."
+    );
 
     // Mock the change from deleting the cluster to no longer deleting the
     // cluster, then rerender the component.
     jest.spyOn(vmClusterSelectors, "status").mockReturnValue(false);
-    wrapper.setProps({});
-    wrapper.update();
+    rerender(<DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />);
 
     // Form should have saved successfully.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(true);
+    expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
   });
 
   it("sets the form to saved when a pod has been deleted", () => {
@@ -290,27 +256,25 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     const Proxy = () => (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
     );
-    const wrapper = mount(<Proxy />);
+    const { rerender } = renderWithBrowserRouter(<Proxy />, {
+      route: "/kvm",
+      store,
+    });
 
     // Pod is being deleted - form shouldn't be saved yet.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(screen.getByTestId("saving-label")).toHaveTextContent(
+      "Removing KVM host..."
+    );
 
     // Mock the change from deleting the pod to no longer deleting the pod, then
     // rerender the component.
     jest.spyOn(podSelectors, "deleting").mockReturnValue([]);
-    wrapper.setProps({ clearSidePanelContent: jest.fn() });
-    wrapper.update();
+    rerender(<DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />);
 
     // Form should have saved successfully.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(true);
+    expect(screen.queryByTestId("saving-label")).not.toBeInTheDocument();
   });
 
   it("clusters do not get marked as deleted if there is an error", () => {
@@ -325,18 +289,17 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     const Proxy = () => (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+      <DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />
     );
-    const wrapper = mount(<Proxy />);
+    const { rerender } = renderWithBrowserRouter(<Proxy />, {
+      route: "/kvm",
+      store,
+    });
 
     // Cluster is being deleted - form shouldn't be saved yet.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(screen.getByTestId("saving-label")).toHaveTextContent(
+      "Removing cluster..."
+    );
 
     // Mock the change from deleting the cluster to no longer deleting the
     // cluster including an error, then rerender the component.
@@ -347,11 +310,13 @@ describe("DeleteForm", () => {
         event: "delete",
       }),
     ]);
-    wrapper.setProps({});
-    wrapper.update();
+    rerender(<DeleteForm clearSidePanelContent={jest.fn()} clusterId={1} />);
 
     // Form should not have saved successfully.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(screen.getByTestId("notification-title")).toHaveTextContent(
+      "Error:"
+    );
+    expect(screen.getByText("Uh oh")).toBeInTheDocument();
   });
 
   it("pods do not get marked as deleted if there is an error", () => {
@@ -366,27 +331,28 @@ describe("DeleteForm", () => {
     });
     const store = mockStore(state);
     const Proxy = () => (
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm", key: "testKey" }]}>
-          <CompatRouter>
-            <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+      <DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />
     );
-    const wrapper = mount(<Proxy />);
+    const { rerender } = renderWithBrowserRouter(<Proxy />, {
+      route: "/kvm",
+      store,
+    });
 
     // Pod is being deleted - form shouldn't be saved yet.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(screen.getByTestId("saving-label")).toHaveTextContent(
+      "Removing KVM host..."
+    );
 
     // Mock the change from deleting the pod to no longer deleting the pod
     // including an error, then rerender the component.
     jest.spyOn(podSelectors, "deleting").mockReturnValue([]);
     jest.spyOn(podSelectors, "errors").mockReturnValue("Uh oh");
-    wrapper.setProps({ clearSidePanelContent: jest.fn() });
-    wrapper.update();
+    rerender(<DeleteForm clearSidePanelContent={jest.fn()} hostId={1} />);
 
     // Form should not have saved successfully.
-    expect(wrapper.find(FormikForm).prop("saved")).toBe(false);
+    expect(screen.getByTestId("notification-title")).toHaveTextContent(
+      "Error:"
+    );
+    expect(screen.getByText("Uh oh")).toBeInTheDocument();
   });
 });
