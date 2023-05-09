@@ -7,7 +7,11 @@ type Props = { disk: Disk };
 
 const DiskBootStatus = ({ disk }: Props): JSX.Element => {
   if (disk.type === DiskTypes.PHYSICAL) {
-    return disk.is_boot ? <Icon name="tick" /> : <Icon name="close" />;
+    return disk.is_boot ? (
+      <Icon aria-label="Boot disk" name="tick" />
+    ) : (
+      <Icon aria-label="Non-boot disk" name="close" />
+    );
   }
   return <span>—</span>;
 };
