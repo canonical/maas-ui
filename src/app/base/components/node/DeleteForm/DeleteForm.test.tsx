@@ -3,13 +3,11 @@ import configureStore from "redux-mock-store";
 import DeleteForm from "./DeleteForm";
 
 import type { RootState } from "app/store/root/types";
-import { machine as machineFactory } from "testing/factories";
 import {
-  getTestState,
-  renderWithBrowserRouter,
-  screen,
-  userEvent,
-} from "testing/utils";
+  machine as machineFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -17,7 +15,7 @@ describe("DeleteForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = getTestState();
+    state = rootStateFactory();
   });
 
   it("correctly runs function to delete given nodes", async () => {

@@ -6,11 +6,12 @@ import { actions as machineActions } from "app/store/machine";
 import type { RootState } from "app/store/root/types";
 import { NodeActions } from "app/store/types/node";
 import {
-  screen,
-  renderWithBrowserRouter,
-  userEvent,
-  getTestState,
-} from "testing/utils";
+  machine as machineFactory,
+  machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+  rootState as rootStateFactory,
+} from "testing/factories";
+import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: jest.fn(),
@@ -22,7 +23,20 @@ describe("FieldlessForm", () => {
   let state: RootState;
 
   beforeEach(() => {
-    state = getTestState();
+    state = rootStateFactory({
+      machine: machineStateFactory({
+        loaded: true,
+        items: [
+          machineFactory({
+            system_id: "abc123",
+          }),
+        ],
+        selected: [],
+        statuses: {
+          abc123: machineStatusFactory(),
+        },
+      }),
+    });
   });
 
   afterEach(() => {
