@@ -23,6 +23,9 @@ import {
   fabric as fabricFactory,
   fabricState as fabricStateFactory,
   generalState as generalStateFactory,
+  machineState as machineStateFactory,
+  machineStatus as machineStatusFactory,
+  machine as machineFactory,
   podDetails as podDetailsFactory,
   podState as podStateFactory,
   podStatus as podStatusFactory,
@@ -252,6 +255,18 @@ export const getTestState = (): RootState => {
         data: [powerTypeFactory()],
         loaded: true,
       }),
+    }),
+    machine: machineStateFactory({
+      loaded: true,
+      items: [
+        machineFactory({
+          system_id: "abc123",
+        }),
+      ],
+      selected: [],
+      statuses: {
+        abc123: machineStatusFactory(),
+      },
     }),
     pod: podStateFactory({
       items: [pod],
