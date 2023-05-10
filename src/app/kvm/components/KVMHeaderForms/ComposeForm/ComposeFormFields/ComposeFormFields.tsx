@@ -80,6 +80,7 @@ export const ComposeFormFields = ({
       />
       {!pinningCores && (
         <FormikField
+          aria-label="Cores"
           caution={
             coresCaution
               ? `The available cores (${available.cores}) is less than the
@@ -115,6 +116,7 @@ export const ComposeFormFields = ({
       </Tooltip>
       {pinningCores && (
         <FormikField
+          aria-label="Pinned cores"
           caution={
             alreadyPinned.length
               ? `The following cores have already been pinned: ${getRanges(
