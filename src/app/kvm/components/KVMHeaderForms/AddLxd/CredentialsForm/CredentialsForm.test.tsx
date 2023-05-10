@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import { AddLxdSteps } from "../AddLxd";
@@ -9,7 +5,6 @@ import type { NewPodValues } from "../types";
 
 import CredentialsForm from "./CredentialsForm";
 
-import FormikForm from "app/base/components/FormikForm";
 import { actions as generalActions } from "app/store/general";
 import { actions as podActions } from "app/store/pod";
 import { PodType } from "app/store/pod/constants";
@@ -26,9 +21,9 @@ import {
   zone as zoneFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { screen, userEvent, renderWithBrowserRouter } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("CredentialsForm", () => {
   let state: RootState;
@@ -55,53 +50,39 @@ describe("CredentialsForm", () => {
     newPodValues = {
       certificate: "",
       key: "",
-      name: "",
+      name: "my-favourite-kvm",
       password: "",
-      pool: "",
-      power_address: "",
-      zone: "",
+      pool: "1",
+      power_address: "192.168.1.1",
+      zone: "2",
     };
   });
 
-  it("dispatches an action to generate certificate if not providing certificate and key", () => {
+  it("dispatches an action to generate certificate if not providing certificate and key", async () => {
     const setNewPodValues = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CredentialsForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={setNewPodValues}
-              setStep={jest.fn()}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CredentialsForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={setNewPodValues}
+        setStep={jest.fn()}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
-    // Radio should be set to generate certificate by default.
-    submitFormikForm(wrapper, {
-      certificate: "",
-      key: "",
-      name: "my-favourite-kvm",
-      pool: "0",
-      power_address: "192.168.1.1",
-      zone: "0",
-    });
-    wrapper.update();
+
+    // Submit form
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     expect(setNewPodValues).toHaveBeenCalledWith({
       certificate: "",
       key: "",
       name: "my-favourite-kvm",
       password: "",
-      pool: "0",
+      pool: "1",
       power_address: "192.168.1.1",
-      zone: "0",
+      zone: "2",
     });
 
     const expectedAction = generalActions.generateCertificate({
@@ -118,46 +99,47 @@ describe("CredentialsForm", () => {
     ).toBeUndefined();
   });
 
-  it("dispatches an action to fetch projects if providing certificate and key", () => {
+  it("dispatches an action to fetch projects if providing certificate and key", async () => {
     const setNewPodValues = jest.fn();
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CredentialsForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={newPodValues}
-              setNewPodValues={setNewPodValues}
-              setStep={jest.fn()}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    newPodValues.certificate = "certificate";
+    newPodValues.key = "key";
+    newPodValues.zone = "4";
+    newPodValues.pool = "3";
+    renderWithBrowserRouter(
+      <CredentialsForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={newPodValues}
+        setNewPodValues={setNewPodValues}
+        setStep={jest.fn()}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
     // Change radio to provide certificate instead of generating one.
-    wrapper.find("input[id='provide-certificate']").simulate("change");
-    submitFormikForm(wrapper, {
-      certificate: "certificate",
-      key: "key",
-      name: "my-favourite-kvm",
-      pool: "0",
-      power_address: "192.168.1.1",
-      zone: "0",
-    });
-    wrapper.update();
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Provide certificate and private key" })
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Upload certificate" }),
+      "certificate"
+    );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Upload private key" }),
+      "key"
+    );
+
+    await userEvent.click(screen.getByRole("button", { name: "Next" }));
 
     expect(setNewPodValues).toHaveBeenCalledWith({
       certificate: "certificate",
       key: "key",
       name: "my-favourite-kvm",
       password: "",
-      pool: "0",
+      pool: "3",
       power_address: "192.168.1.1",
-      zone: "0",
+      zone: "4",
     });
     const expectedAction = podActions.getProjects({
       certificate: "certificate",
@@ -182,30 +164,23 @@ describe("CredentialsForm", () => {
       CN: "my-favourite-kvm@host",
     });
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CredentialsForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={{
-                certificate: "",
-                key: "",
-                name: "my-favourite-kvm",
-                password: "",
-                pool: "0",
-                power_address: "192.168.1.1",
-                zone: "0",
-              }}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CredentialsForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={{
+          certificate: "",
+          key: "",
+          name: "my-favourite-kvm",
+          password: "",
+          pool: "0",
+          power_address: "192.168.1.1",
+          zone: "0",
+        }}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.AUTHENTICATION);
@@ -219,30 +194,23 @@ describe("CredentialsForm", () => {
     });
     state.pod.errors = "Failed to connect to LXD.";
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CredentialsForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={{
-                certificate: "",
-                key: "",
-                name: "my-favourite-kvm",
-                password: "",
-                pool: "0",
-                power_address: "192.168.1.1",
-                zone: "0",
-              }}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CredentialsForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={{
+          certificate: "",
+          key: "",
+          name: "my-favourite-kvm",
+          password: "",
+          pool: "0",
+          power_address: "192.168.1.1",
+          zone: "0",
+        }}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
 
     expect(setStep).not.toHaveBeenCalled();
@@ -254,30 +222,23 @@ describe("CredentialsForm", () => {
       "192.168.1.1": [podProjectFactory()],
     };
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CredentialsForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={{
-                certificate: "certificate",
-                key: "key",
-                name: "my-favourite-kvm",
-                password: "",
-                pool: "0",
-                power_address: "192.168.1.1",
-                zone: "0",
-              }}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CredentialsForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={{
+          certificate: "certificate",
+          key: "key",
+          name: "my-favourite-kvm",
+          password: "",
+          pool: "0",
+          power_address: "192.168.1.1",
+          zone: "0",
+        }}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
 
     expect(setStep).toHaveBeenCalledWith(AddLxdSteps.SELECT_PROJECT);
@@ -291,36 +252,30 @@ describe("CredentialsForm", () => {
     };
     state.pod.errors = "Failed to fetch projects.";
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CredentialsForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={{
-                certificate: "certificate",
-                key: "key",
-                name: "my-favourite-kvm",
-                password: "",
-                pool: "0",
-                power_address: "192.168.1.1",
-                zone: "0",
-              }}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CredentialsForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={{
+          certificate: "certificate",
+          key: "key",
+          name: "my-favourite-kvm",
+          password: "",
+          pool: "0",
+          power_address: "192.168.1.1",
+          zone: "0",
+        }}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
 
     expect(setStep).not.toHaveBeenCalled();
-    expect(wrapper.find(FormikForm).prop("errors")).toBe(
-      "Failed to fetch projects."
+    expect(screen.getByTestId("notification-title")).toHaveTextContent(
+      "Error:"
     );
+    expect(screen.getByText("Failed to fetch projects.")).toBeInTheDocument();
   });
 
   it("displays errors if generating a cert failed", () => {
@@ -334,33 +289,29 @@ describe("CredentialsForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CredentialsForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={{
-                certificate: "certificate",
-                key: "key",
-                name: "my-favourite-kvm",
-                password: "",
-                pool: "0",
-                power_address: "192.168.1.1",
-                zone: "0",
-              }}
-              setNewPodValues={jest.fn()}
-              setStep={setStep}
-              setSubmissionErrors={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <CredentialsForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={{
+          certificate: "certificate",
+          key: "key",
+          name: "my-favourite-kvm",
+          password: "",
+          pool: "0",
+          power_address: "192.168.1.1",
+          zone: "0",
+        }}
+        setNewPodValues={jest.fn()}
+        setStep={setStep}
+        setSubmissionErrors={jest.fn()}
+      />,
+      { route: "/kvm/add", store }
     );
     expect(setStep).not.toHaveBeenCalled();
-    expect(wrapper.find(FormikForm).prop("errors")).toBe("name too long");
+    expect(screen.getByTestId("notification-title")).toHaveTextContent(
+      "Error:"
+    );
+    expect(screen.getByText("name too long")).toBeInTheDocument();
   });
 
   it("clears the submission errors when unmounting", () => {
@@ -370,32 +321,25 @@ describe("CredentialsForm", () => {
     };
     state.pod.errors = "Failed to fetch projects.";
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/add", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <CredentialsForm
-              clearSidePanelContent={jest.fn()}
-              newPodValues={{
-                certificate: "certificate",
-                key: "key",
-                name: "my-favourite-kvm",
-                password: "",
-                pool: "0",
-                power_address: "192.168.1.1",
-                zone: "0",
-              }}
-              setNewPodValues={jest.fn()}
-              setStep={jest.fn()}
-              setSubmissionErrors={setSubmissionErrors}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { unmount } = renderWithBrowserRouter(
+      <CredentialsForm
+        clearSidePanelContent={jest.fn()}
+        newPodValues={{
+          certificate: "certificate",
+          key: "key",
+          name: "my-favourite-kvm",
+          password: "",
+          pool: "0",
+          power_address: "192.168.1.1",
+          zone: "0",
+        }}
+        setNewPodValues={jest.fn()}
+        setStep={jest.fn()}
+        setSubmissionErrors={setSubmissionErrors}
+      />,
+      { route: "/kvm/add", store }
     );
-    wrapper.unmount();
+    unmount();
     expect(
       store
         .getActions()
