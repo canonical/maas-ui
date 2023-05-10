@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import FieldlessForm from "./FieldlessForm";
@@ -15,13 +11,13 @@ import {
   machineStatus as machineStatusFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { screen, renderWithBrowserRouter, userEvent } from "testing/utils";
 
 jest.mock("@canonical/react-components/dist/hooks", () => ({
   usePrevious: jest.fn(),
 }));
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("FieldlessForm", () => {
   let state: RootState;
@@ -51,58 +47,46 @@ describe("FieldlessForm", () => {
     jest.restoreAllMocks();
   });
 
-  it("can unset the selected action", () => {
+  it("can unset the selected action", async () => {
     const store = mockStore(state);
     const clearSidePanelContent = jest.fn();
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.ON}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={clearSidePanelContent}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.ON}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={clearSidePanelContent}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
-    wrapper.find('[data-testid="cancel-action"] button').simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: "Cancel" }));
 
     expect(clearSidePanelContent).toHaveBeenCalled();
   });
 
-  it("can dispatch abort action on given machines", () => {
+  it("can dispatch abort action on given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.ABORT}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.ABORT}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Abort actions for machine" })
+    );
     expect(
       store.getActions().filter(({ type }) => type === "machine/abort")
     ).toStrictEqual([
@@ -123,30 +107,25 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch acquire action on given machines", () => {
+  it("can dispatch acquire action on given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.ACQUIRE}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.ACQUIRE}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Allocate machine" })
+    );
     expect(
       store.getActions().filter(({ type }) => type === "machine/acquire")
     ).toStrictEqual([
@@ -167,30 +146,25 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch exit rescue mode action on given machines", () => {
+  it("can dispatch exit rescue mode action on given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.EXIT_RESCUE_MODE}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.EXIT_RESCUE_MODE}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Exit rescue mode for machine" })
+    );
     expect(
       store.getActions().filter(({ type }) => type === "machine/exitRescueMode")
     ).toStrictEqual([
@@ -211,30 +185,23 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch lock action on given machines", () => {
+  it("can dispatch lock action on given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.LOCK}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.LOCK}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper);
+    await userEvent.click(screen.getByRole("button", { name: "Lock machine" }));
     expect(
       store.getActions().filter(({ type }) => type === "machine/lock")
     ).toStrictEqual([
@@ -255,30 +222,25 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch mark fixed action on given machines", () => {
+  it("can dispatch mark fixed action on given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.MARK_FIXED}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.MARK_FIXED}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Mark machine fixed" })
+    );
     expect(
       store.getActions().filter(({ type }) => type === "machine/markFixed")
     ).toStrictEqual([
@@ -299,30 +261,25 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch power off action on given machines", () => {
+  it("can dispatch power off action on given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.OFF}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.OFF}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machine", store }
     );
 
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Power off machine" })
+    );
     expect(
       store.getActions().filter(({ type }) => type === "machine/off")
     ).toStrictEqual([
@@ -343,30 +300,25 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch power on action on given machines", () => {
+  it("can dispatch power on action on given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.ON}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.ON}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Power on machine" })
+    );
     expect(
       store.getActions().filter(({ type }) => type === "machine/on")
     ).toStrictEqual([
@@ -387,30 +339,25 @@ describe("FieldlessForm", () => {
     ]);
   });
 
-  it("can dispatch unlock action on given machines", () => {
+  it("can dispatch unlock action on given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <FieldlessForm
-              action={NodeActions.UNLOCK}
-              actions={machineActions}
-              cleanup={machineActions.cleanup}
-              clearSidePanelContent={jest.fn()}
-              modelName="machine"
-              nodes={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <FieldlessForm
+        action={NodeActions.UNLOCK}
+        actions={machineActions}
+        cleanup={machineActions.cleanup}
+        clearSidePanelContent={jest.fn()}
+        modelName="machine"
+        nodes={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    submitFormikForm(wrapper);
+    await userEvent.click(
+      screen.getByRole("button", { name: "Unlock machine" })
+    );
     expect(
       store.getActions().filter(({ type }) => type === "machine/unlock")
     ).toStrictEqual([
