@@ -1,7 +1,3 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import NetworkTableConfirmation from "./NetworkTableConfirmation";
@@ -18,8 +14,9 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("NetworkTableConfirmation", () => {
   let nic: NetworkInterface;
@@ -44,69 +41,66 @@ describe("NetworkTableConfirmation", () => {
 
   it("does not display a confirmation if it is not expanded", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NetworkTableConfirmation
-              expanded={null}
-              nic={nic}
-              setExpanded={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NetworkTableConfirmation
+        expanded={null}
+        nic={nic}
+        setExpanded={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("ActionConfirm").exists()).toBe(false);
+    expect(
+      screen.queryByText("Are you sure you want to remove this interface?")
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Cancel" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole("button", { name: "Remove" })
+    ).not.toBeInTheDocument();
   });
 
   describe("delete confirmation", () => {
     it("can display a delete confirmation for an interface", () => {
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.REMOVE,
-                }}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.REMOVE,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      const confirmation = wrapper.find("ActionConfirm");
-      expect(confirmation.prop("eventName")).toBe("deleteInterface");
-      expect(confirmation.prop("message")).toBe(
-        "Are you sure you want to remove this interface?"
-      );
-      expect(confirmation.prop("statusKey")).toBe("deletingInterface");
+      expect(
+        screen.getByText("Are you sure you want to remove this interface?")
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Cancel" })
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Remove" })
+      ).toBeInTheDocument();
     });
 
-    it("can confirm deleting an interface", () => {
+    it("can confirm deleting an interface", async () => {
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.REMOVE,
-                }}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.REMOVE,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      wrapper.find("ActionConfirm ActionButton").simulate("click");
+
+      await userEvent.click(screen.getByRole("button", { name: "Remove" }));
       expect(
         store
           .getActions()
@@ -142,32 +136,24 @@ describe("NetworkTableConfirmation", () => {
         }),
       ];
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.REMOVE,
-                }}
-                link={link}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.REMOVE,
+          }}
+          link={link}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      const confirmation = wrapper.find("ActionConfirm");
-      expect(confirmation.prop("eventName")).toBe("unlinkSubnet");
-      expect(confirmation.prop("message")).toBe(
-        "Are you sure you want to remove this Alias?"
-      );
-      expect(confirmation.prop("statusKey")).toBe("unlinkingSubnet");
+      expect(
+        screen.getByText("Are you sure you want to remove this Alias?")
+      ).toBeInTheDocument();
     });
 
-    it("can confirm deleting an alias", () => {
+    it("can confirm deleting an alias", async () => {
       const link = networkLinkFactory();
       state.machine.items = [
         machineDetailsFactory({
@@ -183,24 +169,19 @@ describe("NetworkTableConfirmation", () => {
         }),
       ];
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.REMOVE,
-                }}
-                link={link}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.REMOVE,
+          }}
+          link={link}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      wrapper.find("ActionConfirm ActionButton").simulate("click");
+      await userEvent.click(screen.getByRole("button", { name: "Remove" }));
       expect(
         store
           .getActions()
@@ -225,98 +206,87 @@ describe("NetworkTableConfirmation", () => {
   describe("connect/disconnect confirmations", () => {
     it("can display a mark connected confirmation", () => {
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.MARK_CONNECTED,
-                }}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.MARK_CONNECTED,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      const confirmation = wrapper.find("ActionConfirm");
-      expect(confirmation.prop("eventName")).toBe("updateInterface");
-      expect(confirmation.prop("confirmLabel")).toBe("Mark as connected");
-      expect(confirmation.prop("statusKey")).toBe("updatingInterface");
-      expect(confirmation.prop("submitAppearance")).toBe("positive");
+      expect(
+        screen.getByText(/Are you sure you want to mark it as connected\?/i)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Mark as connected" })
+      ).toHaveClass("p-button--positive");
     });
 
     it("can display a mark disconnected confirmation", () => {
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.MARK_DISCONNECTED,
-                }}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.MARK_DISCONNECTED,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      const confirmation = wrapper.find("ActionConfirm");
-      expect(confirmation.prop("eventName")).toBe("updateInterface");
-      expect(confirmation.prop("confirmLabel")).toBe("Mark as disconnected");
-      expect(confirmation.prop("statusKey")).toBe("updatingInterface");
-      expect(confirmation.prop("submitAppearance")).toBe("negative");
+
+      expect(
+        screen.getByText(/Are you sure you want to mark it as disconnected\?/i)
+      ).toBeInTheDocument();
+      expect(
+        screen.getByRole("button", { name: "Mark as disconnected" })
+      ).toHaveClass("p-button--negative");
     });
 
     it("can display a disconnected warning", () => {
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.DISCONNECTED_WARNING,
-                }}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.DISCONNECTED_WARNING,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      const confirmation = wrapper.find("ActionConfirm");
-      expect(confirmation.prop("eventName")).toBe("updateInterface");
-      expect(confirmation.prop("confirmLabel")).toBe("Mark as connected");
-      expect(confirmation.prop("statusKey")).toBe("updatingInterface");
-      expect(confirmation.prop("submitAppearance")).toBe("positive");
+
+      expect(
+        screen.getByText(/If this is no longer true, mark cable as connected./i)
+      ).toHaveTextContent(
+        /This interface is disconnected, it cannot be configured unless a cable is connected.If this is no longer true, mark cable as connected./i
+      );
+      expect(
+        screen.getByRole("button", { name: "Mark as connected" })
+      ).toHaveClass("p-button--positive");
     });
 
-    it("can confirm marking connected", () => {
+    it("can confirm marking connected", async () => {
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.MARK_CONNECTED,
-                }}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.MARK_CONNECTED,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      wrapper.find("ActionConfirm ActionButton").simulate("click");
+      await userEvent.click(
+        screen.getByRole("button", { name: "Mark as connected" })
+      );
       expect(
         store
           .getActions()
@@ -337,25 +307,22 @@ describe("NetworkTableConfirmation", () => {
       });
     });
 
-    it("can confirm marking disconnected", () => {
+    it("can confirm marking disconnected", async () => {
       const store = mockStore(state);
-      const wrapper = mount(
-        <Provider store={store}>
-          <MemoryRouter>
-            <CompatRouter>
-              <NetworkTableConfirmation
-                expanded={{
-                  content: ExpandedState.MARK_DISCONNECTED,
-                }}
-                nic={nic}
-                setExpanded={jest.fn()}
-                systemId="abc123"
-              />
-            </CompatRouter>
-          </MemoryRouter>
-        </Provider>
+      renderWithBrowserRouter(
+        <NetworkTableConfirmation
+          expanded={{
+            content: ExpandedState.MARK_DISCONNECTED,
+          }}
+          nic={nic}
+          setExpanded={jest.fn()}
+          systemId="abc123"
+        />,
+        { store }
       );
-      wrapper.find("ActionConfirm ActionButton").simulate("click");
+      await userEvent.click(
+        screen.getByRole("button", { name: "Mark as disconnected" })
+      );
       expect(
         store
           .getActions()
@@ -379,49 +346,39 @@ describe("NetworkTableConfirmation", () => {
 
   it("can display an add alias form", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NetworkTableConfirmation
-              expanded={{
-                content: ExpandedState.ADD_ALIAS,
-              }}
-              nic={nic}
-              setExpanded={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NetworkTableConfirmation
+        expanded={{
+          content: ExpandedState.ADD_ALIAS,
+        }}
+        nic={nic}
+        setExpanded={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("AddAliasOrVlan").exists()).toBe(true);
-    expect(wrapper.find("AddAliasOrVlan").prop("interfaceType")).toBe(
-      NetworkInterfaceTypes.ALIAS
-    );
+    expect(screen.getByRole("textbox", { name: "Type" })).toHaveValue("Alias");
+    expect(
+      screen.getByRole("button", { name: "Save interface" })
+    ).toBeInTheDocument();
   });
 
   it("can display an add VLAN form", () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter>
-          <CompatRouter>
-            <NetworkTableConfirmation
-              expanded={{
-                content: ExpandedState.ADD_VLAN,
-              }}
-              nic={nic}
-              setExpanded={jest.fn()}
-              systemId="abc123"
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <NetworkTableConfirmation
+        expanded={{
+          content: ExpandedState.ADD_VLAN,
+        }}
+        nic={nic}
+        setExpanded={jest.fn()}
+        systemId="abc123"
+      />,
+      { store }
     );
-    expect(wrapper.find("AddAliasOrVlan").exists()).toBe(true);
-    expect(wrapper.find("AddAliasOrVlan").prop("interfaceType")).toBe(
-      NetworkInterfaceTypes.VLAN
-    );
+    expect(screen.getByRole("textbox", { name: "Type" })).toHaveValue("VLAN");
+    expect(
+      screen.getByRole("button", { name: "Save interface" })
+    ).toBeInTheDocument();
   });
 });
