@@ -1,8 +1,4 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import ComposeForm from "../ComposeForm";
@@ -34,9 +30,15 @@ import {
   zoneGenericActions as zoneGenericActionsFactory,
   zoneState as zoneStateFactory,
 } from "testing/factories";
-import { waitForComponentToPaint } from "testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  renderWithMockStore,
+  userEvent,
+  fireEvent,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("ComposeFormFields", () => {
   let initialState: RootState;
@@ -56,7 +58,7 @@ describe("ComposeFormFields", () => {
         }),
       }),
       pod: podStateFactory({
-        items: [podDetailsFactory({ id: 1 })],
+        items: [podDetailsFactory({ id: 1, type: "lxd" })],
         loaded: true,
         statuses: { 1: podStatusFactory() },
       }),
@@ -90,21 +92,17 @@ describe("ComposeFormFields", () => {
     });
     pod.cpu_over_commit_ratio = 3;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
     // Allocated = 1 + 2 = 3
     // Total = (1 + 2 + 3) * 3 = 18
     // Available = 18 - 3 = 15
-    expect(
-      wrapper.find("FormikField[name='cores'] .p-form-help-text").text()
-    ).toEqual("15 cores available.");
+
+    expect(screen.getByText("15 cores available.")).toHaveClass(
+      "p-form-help-text"
+    );
   });
 
   it("correctly displays the available memory", () => {
@@ -127,22 +125,18 @@ describe("ComposeFormFields", () => {
     });
     pod.memory_over_commit_ratio = 2;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
     // Allocated = (1000 + 2000) + (4000 + 5000) = 12000
     // Hugepages do not take overcommit into account, so
     // Total = ((1000 + 2000 + 3000) * 2) + (4000 + 5000 + 6000) = 12000 + 15000 = 27000
     // Available = 27000 - 12000 = 15000
-    expect(
-      wrapper.find("FormikField[name='memory'] .p-form-help-text").text()
-    ).toEqual("15000MiB available.");
+
+    expect(screen.getByText("15000MiB available.")).toHaveClass(
+      "p-form-help-text"
+    );
   });
 
   it("shows warnings if available cores/memory is less than the default", () => {
@@ -181,247 +175,237 @@ describe("ComposeFormFields", () => {
       }),
     ];
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
     expect(
-      wrapper
-        .find("FormikField[name='cores'] .p-form-validation__message")
-        .exists()
-    ).toBe(true);
+      screen.getByText(
+        /The available cores \(1\) is less than the recommended default \(2\)/i
+      )
+    ).toHaveClass("p-form-validation__message");
     expect(
-      wrapper
-        .find("FormikField[name='memory'] .p-form-validation__message")
-        .exists()
-    ).toBe(true);
+      screen.getByText(
+        /The available memory \(0MiB\) is less than the recommended default \(2MiB\)/i
+      )
+    ).toHaveClass("p-form-validation__message");
   });
 
   it("does not allow hugepage backing non-LXD pods", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <ComposeFormFields
-            architectures={[]}
-            available={{
-              cores: 2,
-              hugepages: 0,
-              memory: 1024,
-              pinnedCores: [0, 1],
-            }}
-            defaults={{
-              cores: 2,
-              disk: {
-                location: "storage-pool",
-                size: 8,
-                tags: [],
-              },
-              memory: 1024,
-            }}
-            podType={PodType.VIRSH}
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <ComposeFormFields
+          architectures={[]}
+          available={{
+            cores: 2,
+            hugepages: 0,
+            memory: 1024,
+            pinnedCores: [0, 1],
+          }}
+          defaults={{
+            cores: 2,
+            disk: {
+              location: "storage-pool",
+              size: 8,
+              tags: [],
+            },
+            memory: 1024,
+          }}
+          podType={PodType.VIRSH}
+        />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("input[name='hugepagesBacked']").prop("disabled")).toBe(
-      true
-    );
+    expect(screen.getByLabelText("Enable hugepages")).toBeDisabled();
+
     expect(
-      wrapper.find("Tooltip[data-testid='hugepages-tooltip']").prop("message")
-    ).toBe("Hugepages are only supported on LXD KVMs.");
+      screen.getByRole("tooltip", {
+        name: "Hugepages are only supported on LXD KVMs.",
+      })
+    ).toBeInTheDocument();
   });
 
   it("disables hugepage backing checkbox if no hugepages are free", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <ComposeFormFields
-            architectures={[]}
-            available={{
-              cores: 2,
-              hugepages: 0,
-              memory: 1024,
-              pinnedCores: [0, 1],
-            }}
-            defaults={{
-              cores: 2,
-              disk: {
-                location: "storage-pool",
-                size: 8,
-                tags: [],
-              },
-              memory: 1024,
-            }}
-            podType={PodType.LXD}
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <ComposeFormFields
+          architectures={[]}
+          available={{
+            cores: 2,
+            hugepages: 0,
+            memory: 1024,
+            pinnedCores: [0, 1],
+          }}
+          defaults={{
+            cores: 2,
+            disk: {
+              location: "storage-pool",
+              size: 8,
+              tags: [],
+            },
+            memory: 1024,
+          }}
+          podType={PodType.LXD}
+        />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("input[name='hugepagesBacked']").prop("disabled")).toBe(
-      true
-    );
+    expect(screen.getByLabelText("Enable hugepages")).toBeDisabled();
+
     expect(
-      wrapper.find("Tooltip[data-testid='hugepages-tooltip']").prop("message")
-    ).toBe("There are no free hugepages on this system.");
+      screen.getByRole("tooltip", {
+        name: "There are no free hugepages on this system.",
+      })
+    ).toBeInTheDocument();
   });
 
   it("shows the input for any available cores by default", () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <ComposeFormFields
-            architectures={[]}
-            available={{
-              cores: 1,
-              hugepages: 0,
-              memory: 1024,
-              pinnedCores: [0],
-            }}
-            defaults={{
-              cores: 1,
-              disk: {
-                location: "storage-pool",
-                size: 8,
-                tags: [],
-              },
-              memory: 1024,
-            }}
-            podType={PodType.LXD}
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <ComposeFormFields
+          architectures={[]}
+          available={{
+            cores: 1,
+            hugepages: 0,
+            memory: 1024,
+            pinnedCores: [0],
+          }}
+          defaults={{
+            cores: 1,
+            disk: {
+              location: "storage-pool",
+              size: 8,
+              tags: [],
+            },
+            memory: 1024,
+          }}
+          podType={PodType.LXD}
+        />
+      </Formik>,
+      { store }
     );
-    expect(wrapper.find("FormikField[name='cores']").exists()).toBe(true);
-    expect(wrapper.find("FormikField[name='pinnedCores']").exists()).toBe(
-      false
-    );
+
+    expect(
+      screen.getByRole("spinbutton", { name: "Cores" })
+    ).toBeInTheDocument();
+
+    expect(
+      screen.queryByRole("textbox", { name: "Pinned cores" })
+    ).not.toBeInTheDocument();
   });
 
   it("can switch to pinning specific cores to the VM if using a LXD KVM", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <ComposeFormFields
-            architectures={[]}
-            available={{
-              cores: 2,
-              hugepages: 0,
-              memory: 1024,
-              pinnedCores: [0, 1],
-            }}
-            defaults={{
-              cores: 2,
-              disk: {
-                location: "storage-pool",
-                size: 8,
-                tags: [],
-              },
-              memory: 1024,
-            }}
-            podType={PodType.LXD}
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <ComposeFormFields
+          architectures={[]}
+          available={{
+            cores: 2,
+            hugepages: 0,
+            memory: 1024,
+            pinnedCores: [0, 1],
+          }}
+          defaults={{
+            cores: 2,
+            disk: {
+              location: "storage-pool",
+              size: 8,
+              tags: [],
+            },
+            memory: 1024,
+          }}
+          podType={PodType.LXD}
+        />
+      </Formik>,
+      { store }
     );
 
-    wrapper.find("input[id='pinning-cores']").simulate("change", {
-      target: {
-        name: "pinning-cores",
-        checked: true,
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-
-    expect(wrapper.find("FormikField[name='cores']").exists()).toBe(false);
-    expect(wrapper.find("FormikField[name='pinnedCores']").exists()).toBe(true);
-    expect(wrapper.find("FormikField[name='pinnedCores']").prop("help")).toBe(
-      "2 cores available (unpinned indices: 0-1)"
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     );
+
+    expect(
+      screen.queryByRole("spinbutton", { name: "Cores" })
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("textbox", { name: "Pinned cores" })
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText("2 cores available (unpinned indices: 0-1)")
+    ).toHaveClass("p-form-help-text");
   });
 
   it("does not allow pinning cores for non-LXD pods", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <Formik initialValues={{}} onSubmit={jest.fn()}>
-          <ComposeFormFields
-            architectures={[]}
-            available={{
-              cores: 2,
-              hugepages: 0,
-              memory: 1024,
-              pinnedCores: [0, 1],
-            }}
-            defaults={{
-              cores: 2,
-              disk: {
-                location: "storage-pool",
-                size: 8,
-                tags: [],
-              },
-              memory: 1024,
-            }}
-            podType={PodType.VIRSH}
-          />
-        </Formik>
-      </Provider>
+    renderWithMockStore(
+      <Formik initialValues={{}} onSubmit={jest.fn()}>
+        <ComposeFormFields
+          architectures={[]}
+          available={{
+            cores: 2,
+            hugepages: 0,
+            memory: 1024,
+            pinnedCores: [0, 1],
+          }}
+          defaults={{
+            cores: 2,
+            disk: {
+              location: "storage-pool",
+              size: 8,
+              tags: [],
+            },
+            memory: 1024,
+          }}
+          podType={PodType.VIRSH}
+        />
+      </Formik>,
+      { store }
     );
 
-    expect(wrapper.find("input[id='pinning-cores']").prop("disabled")).toBe(
-      true
-    );
     expect(
-      wrapper.find("Tooltip[data-testid='core-pin-tooltip']").prop("message")
-    ).toBe("Core pinning is only supported on LXD KVMs");
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+    ).toBeDisabled();
+    expect(
+      screen.getByRole("tooltip", {
+        name: "Core pinning is only supported on LXD KVMs",
+      })
+    ).toBeInTheDocument();
   });
 
   it("can detect duplicate core indices", async () => {
     const state = { ...initialState };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
 
     // Switch to pinning cores
-    wrapper.find("input[id='pinning-cores']").simulate("change", {
-      target: {
-        name: "pinning-cores",
-        checked: true,
-      },
-    });
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
+    );
+
     // Enter duplicate core indices
-    wrapper.find("input[name='pinnedCores']").simulate("change", {
-      target: {
-        name: "pinnedCores",
-        value: "0, 0",
-      },
-    });
-    wrapper.find("input[name='pinnedCores']").simulate("blur");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
-      "Duplicate core indices detected."
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Pinned cores" }),
+      "0, 0"
+    );
+
+    fireEvent.blur(screen.getByRole("textbox", { name: "Pinned cores" }));
+
+    expect(screen.getByText("Duplicate core indices detected.")).toHaveClass(
+      "p-form-validation__message"
     );
   });
 
@@ -432,27 +416,19 @@ describe("ComposeFormFields", () => {
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
 
     // Switch to pinning cores
-    wrapper.find("input[id='pinning-cores']").simulate("change", {
-      target: {
-        name: "pinning-cores",
-        checked: true,
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
-      "There are no cores available to pin."
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     );
+
+    expect(
+      screen.getByText("There are no cores available to pin.")
+    ).toHaveClass("p-form-validation__message");
   });
 
   it("shows an error if trying to pin more cores than are available", async () => {
@@ -462,35 +438,27 @@ describe("ComposeFormFields", () => {
     });
     state.pod.items[0].cpu_over_commit_ratio = 1;
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
 
     // Switch to pinning cores
-    wrapper.find("input[id='pinning-cores']").simulate("change", {
-      target: {
-        name: "pinning-cores",
-        checked: true,
-      },
-    });
-    // Enter more than the available number of cores
-    wrapper.find("input[name='pinnedCores']").simulate("change", {
-      target: {
-        name: "pinnedCores",
-        value: "0, 1",
-      },
-    });
-    wrapper.find("input[name='pinnedCores']").simulate("blur");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Input[name='pinnedCores']").prop("error")).toBe(
-      "Number of cores requested (2) is more than available (1)."
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     );
+    // Enter more than the available number of cores
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Pinned cores" }),
+      "0, 1"
+    );
+    fireEvent.blur(screen.getByRole("textbox", { name: "Pinned cores" }));
+
+    expect(
+      screen.getByText(
+        "Number of cores requested (2) is more than available (1)."
+      )
+    ).toHaveClass("p-form-validation__message");
   });
 
   it("shows a warning if some of the selected pinned cores are already pinned", async () => {
@@ -512,46 +480,37 @@ describe("ComposeFormFields", () => {
       ],
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/kvm/1", key: "testKey" }]}>
-          <CompatRouter>
-            <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <ComposeForm clearSidePanelContent={jest.fn()} hostId={1} />,
+      { route: "/kvm/1", store }
     );
 
     // Switch to pinning cores
-    wrapper.find("input[id='pinning-cores']").simulate("change", {
-      target: {
-        name: "pinning-cores",
-        checked: true,
-      },
-    });
-    // Enter a core index that is not available
-    wrapper.find("input[name='pinnedCores']").simulate("change", {
-      target: {
-        name: "pinnedCores",
-        value: "1-3",
-      },
-    });
-    wrapper.find("input[name='pinnedCores']").simulate("blur");
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Input[name='pinnedCores']").prop("caution")).toBe(
-      "The following cores have already been pinned: 1,3"
+    await userEvent.click(
+      screen.getByRole("radio", { name: "Pin VM to specific core(s)" })
     );
+    // Enter a core index that is not available
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Pinned cores" }),
+      "1-3"
+    );
+    fireEvent.blur(screen.getByRole("textbox", { name: "Pinned cores" }));
+
+    expect(
+      screen.getByText("The following cores have already been pinned: 1,3")
+    ).toHaveClass("p-form-validation__message");
 
     // Enter a core index that is available
-    wrapper.find("input[name='pinnedCores']").simulate("change", {
-      target: {
-        name: "pinnedCores",
-        value: "2",
-      },
-    });
-    await waitForComponentToPaint(wrapper);
-    expect(wrapper.find("Input[name='pinnedCores']").prop("caution")).toBe(
-      null
+    await userEvent.clear(
+      screen.getByRole("textbox", { name: "Pinned cores" })
     );
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Pinned cores" }),
+      "2"
+    );
+
+    expect(
+      screen.queryByText("The following cores have already been pinned: 1,3")
+    ).not.toBeInTheDocument();
   });
 });
