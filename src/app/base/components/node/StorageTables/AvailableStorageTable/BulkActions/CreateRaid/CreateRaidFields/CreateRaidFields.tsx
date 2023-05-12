@@ -205,6 +205,7 @@ export const CreateRaidFields = ({
                         <td data-testid="spare-storage-device">
                           <Input
                             checked={isSpareDevice}
+                            data-testid={id}
                             disabled={!isSpareDevice && numSpare >= maxSpares}
                             id={id}
                             label=" "
