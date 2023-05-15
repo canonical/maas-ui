@@ -1,5 +1,3 @@
-import configureStore from "redux-mock-store";
-
 import NetworkTableActions from "./NetworkTableActions";
 
 import { ExpandedState } from "app/base/components/NodeNetworkTab/NodeNetworkTab";
@@ -18,8 +16,6 @@ import {
   vlan as vlanFactory,
 } from "testing/factories";
 import { renderWithMockStore, screen, userEvent } from "testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 const openMenu = async () => {
   await userEvent.click(screen.getByRole("button", { name: "Take action:" }));
@@ -44,14 +40,13 @@ describe("NetworkTableActions", () => {
   });
 
   it("can display the menu", () => {
-    const store = mockStore(state);
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     expect(
       screen.getByRole("button", { name: "Take action:" })
@@ -62,14 +57,14 @@ describe("NetworkTableActions", () => {
     state.machine.items[0].permissions = [];
     state.machine.items[0].status = NodeStatus.NEW;
     nic.type = NetworkInterfaceTypes.VLAN;
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     expect(screen.getByRole("button", { name: "Take action:" })).toBeDisabled();
   });
@@ -77,14 +72,14 @@ describe("NetworkTableActions", () => {
   it("can display an item to mark an interface as connected", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = false;
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -97,14 +92,14 @@ describe("NetworkTableActions", () => {
   it("can display an item to mark an interface as disconnected", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = true;
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -119,7 +114,7 @@ describe("NetworkTableActions", () => {
     nic.link_connected = false;
     const link = networkLinkFactory();
     nic.links = [networkLinkFactory(), link];
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         link={link}
@@ -127,7 +122,7 @@ describe("NetworkTableActions", () => {
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -141,7 +136,7 @@ describe("NetworkTableActions", () => {
     nic.link_connected = true;
     const link = networkLinkFactory();
     nic.links = [networkLinkFactory(), link];
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         link={link}
@@ -149,7 +144,7 @@ describe("NetworkTableActions", () => {
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -160,14 +155,14 @@ describe("NetworkTableActions", () => {
 
   it("can display an item to remove the interface", async () => {
     nic.type = NetworkInterfaceTypes.BOND;
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -179,14 +174,14 @@ describe("NetworkTableActions", () => {
   it("can display an item to edit the interface", async () => {
     nic.type = NetworkInterfaceTypes.BOND;
     const setExpanded = jest.fn();
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={setExpanded}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -205,14 +200,14 @@ describe("NetworkTableActions", () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.link_connected = false;
     const setExpanded = jest.fn();
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={setExpanded}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -230,14 +225,14 @@ describe("NetworkTableActions", () => {
   it("can display an action to add an alias", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.links = [networkLinkFactory()];
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -256,14 +251,14 @@ describe("NetworkTableActions", () => {
   it("can display a disabled action to add an alias", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     nic.links = [networkLinkFactory({ mode: NetworkLinkMode.LINK_UP })];
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -286,14 +281,14 @@ describe("NetworkTableActions", () => {
     const vlan = vlanFactory({ fabric: fabric.id });
     state.vlan.items = [vlan];
     nic.vlan_id = vlan.id;
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -310,14 +305,14 @@ describe("NetworkTableActions", () => {
   it("can display a disabled action to add a VLAN", async () => {
     nic.type = NetworkInterfaceTypes.PHYSICAL;
     state.vlan.items = [];
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
@@ -334,14 +329,14 @@ describe("NetworkTableActions", () => {
   it("can not display an action to add an alias or vlan", async () => {
     state.machine.items[0].permissions = [];
     state.machine.items[0].status = NodeStatus.NEW;
-    const store = mockStore(state);
+
     renderWithMockStore(
       <NetworkTableActions
         nic={nic}
         setExpanded={jest.fn()}
         systemId="abc123"
       />,
-      { store }
+      { state }
     );
     // Open the menu:
     await openMenu();
