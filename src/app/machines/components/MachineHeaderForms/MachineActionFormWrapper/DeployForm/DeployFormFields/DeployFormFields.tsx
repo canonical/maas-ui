@@ -186,6 +186,7 @@ export const DeployFormFields = (): JSX.Element => {
               </>
             )}
             <FormikField
+              aria-label="Cloud-init user-data"
               disabled={noImages}
               label={
                 <>
