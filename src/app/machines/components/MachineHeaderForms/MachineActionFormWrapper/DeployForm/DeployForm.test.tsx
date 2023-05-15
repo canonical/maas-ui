@@ -1,8 +1,3 @@
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import DeployForm from "./DeployForm";
@@ -10,7 +5,6 @@ import DeployForm from "./DeployForm";
 import * as hooks from "app/base/hooks/analytics";
 import { ConfigNames } from "app/store/config/types";
 import { actions as machineActions } from "app/store/machine";
-import { PodType } from "app/store/pod/constants";
 import type { RootState } from "app/store/root/types";
 import {
   config as configFactory,
@@ -23,9 +17,9 @@ import {
   osInfoState as osInfoStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { submitFormikForm } from "testing/utils";
+import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("DeployForm", () => {
   let state: RootState;
@@ -105,21 +99,14 @@ describe("DeployForm", () => {
 
   it("fetches the necessary data on load", () => {
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
     const expectedActions = [
       "general/fetchDefaultMinHweKernel",
@@ -142,56 +129,41 @@ describe("DeployForm", () => {
       }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    expect(wrapper.find("[data-testid='loading-deploy-data']").exists()).toBe(
-      true
-    );
-    expect(wrapper.find("form").exists()).toBe(false);
+    expect(screen.getByTestId("loading-deploy-data")).toBeInTheDocument();
+    expect(screen.queryByRole("form")).not.toBeInTheDocument();
   });
 
-  it("correctly dispatches actions to deploy given machines", () => {
+  it("correctly dispatches actions to deploy given machines", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={state.machine.items}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={state.machine.items}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        oSystem: "ubuntu",
-        release: "bionic",
-        kernel: "",
-        vmHostType: "",
-      })
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
     );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start deployment for 2 machines" })
+    );
+
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
@@ -210,34 +182,38 @@ describe("DeployForm", () => {
     ]);
   });
 
-  it("can deploy with user-data", () => {
+  it("can deploy with user-data", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        includeUserData: true,
-        kernel: "",
-        oSystem: "ubuntu",
-        release: "bionic",
-        userData: "test script",
-        vmHostType: "",
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: /Cloud-init user-data…/i,
       })
     );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Upload script" }),
+      "test script"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start deployment for machine" })
+    );
+
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
     ).toStrictEqual([
@@ -251,35 +227,27 @@ describe("DeployForm", () => {
     ]);
   });
 
-  it("ignores enable_hw_sync if checkbox is not checked", () => {
+  it("ignores enable_hw_sync if checkbox is not checked", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        includeUserData: false,
-        kernel: "",
-        oSystem: "ubuntu",
-        release: "bionic",
-        userData: "",
-        vmHostType: "",
-        enableHwSync: false,
-      })
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
     );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start deployment for machine" })
+    );
+
     expect(
       store.getActions().find((action) => action.type === "machine/deploy")
     ).toStrictEqual(
@@ -292,34 +260,29 @@ describe("DeployForm", () => {
     );
   });
 
-  it("adds enable_hw_sync if checkbox is checked", () => {
+  it("adds enable_hw_sync if checkbox is checked", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        includeUserData: false,
-        kernel: "",
-        oSystem: "ubuntu",
-        release: "bionic",
-        userData: "",
-        vmHostType: "",
-        enableHwSync: true,
-      })
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /Periodically sync hardware/i })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start deployment for machine" })
     );
     expect(
       store.getActions().find((action) => action.type === "machine/deploy")
@@ -334,33 +297,24 @@ describe("DeployForm", () => {
     );
   });
 
-  it("ignores user-data if the cloud-init option is not checked", () => {
+  it("ignores user-data if the cloud-init option is not checked", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        includeUserData: false,
-        kernel: "",
-        oSystem: "ubuntu",
-        release: "bionic",
-        userData: "",
-        vmHostType: "",
-      })
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
+    );
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start deployment for machine" })
     );
     expect(
       store.getActions().filter((action) => action.type === "machine/deploy")
@@ -374,38 +328,40 @@ describe("DeployForm", () => {
     ]);
   });
 
-  it("sends an analytics event with cloud-init user data set", () => {
+  it("sends an analytics event with cloud-init user data set", async () => {
     const mockSendAnalytics = jest.fn();
     const mockUseSendAnalytics = jest
       .spyOn(hooks, "useSendAnalytics")
       .mockImplementation(() => mockSendAnalytics);
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() =>
-      submitFormikForm(wrapper, {
-        includeUserData: true,
-        kernel: "",
-        oSystem: "ubuntu",
-        release: "bionic",
-        userData: "test script",
-        vmHostType: "",
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", {
+        name: /Cloud-init user-data…/i,
       })
+    );
+
+    await userEvent.type(
+      screen.getByRole("textbox", { name: "Upload script" }),
+      "test script"
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start deployment for machine" })
     );
 
     expect(mockSendAnalytics).toHaveBeenCalled();
@@ -417,32 +373,31 @@ describe("DeployForm", () => {
     mockUseSendAnalytics.mockRestore();
   });
 
-  it("can register a LXD KVM host", () => {
+  it("can register a LXD KVM host", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        kernel: "",
-        oSystem: "ubuntu",
-        release: "bionic",
-        vmHostType: PodType.LXD,
-      })
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
     );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/i })
+    );
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start deployment for machine" })
+    );
+
     const action = store
       .getActions()
       .find((action) => action.type === "machine/deploy");
@@ -450,31 +405,31 @@ describe("DeployForm", () => {
     expect(action?.payload?.params?.extra?.install_kvm).toBeUndefined();
   });
 
-  it("can register a libvirt KVM host", () => {
+  it("can register a libvirt KVM host", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <DeployForm
-              clearSidePanelContent={jest.fn()}
-              machines={[state.machine.items[0]]}
-              processingCount={0}
-              viewingDetails={false}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <DeployForm
+        clearSidePanelContent={jest.fn()}
+        machines={[state.machine.items[0]]}
+        processingCount={0}
+        viewingDetails={false}
+      />,
+      { route: "/machines", store }
     );
-    act(() =>
-      submitFormikForm(wrapper, {
-        kernel: "",
-        oSystem: "ubuntu",
-        release: "bionic",
-        vmHostType: PodType.VIRSH,
-      })
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Kernel" }),
+      screen.getByRole("option", { name: "No minimum kernel" })
+    );
+
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /Register as MAAS KVM host/i })
+    );
+
+    await userEvent.click(screen.getByRole("radio", { name: /libvirt/i }));
+
+    await userEvent.click(
+      screen.getByRole("button", { name: "Start deployment for machine" })
     );
     const action = store
       .getActions()
