@@ -1,9 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
-import configureStore from "redux-mock-store";
 
 import MachineListHeader from "./MachineListHeader";
 
@@ -29,9 +24,8 @@ import {
   waitFor,
   renderWithBrowserRouter,
   userEvent,
+  within,
 } from "testing/utils";
-
-const mockStore = configureStore<RootState>();
 
 describe("MachineListHeader", () => {
   let state: RootState;
@@ -81,28 +75,20 @@ describe("MachineListHeader", () => {
     state.machine.counts["mocked-nanoid-2"] = machineStateCountFactory({
       loading: true,
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              grouping={null}
-              searchFilter=""
-              setGrouping={jest.fn()}
-              setHiddenColumns={jest.fn()}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state, route: urls.machines.index }
     );
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText("Loading...")).toBeInTheDocument();
   });
 
   it("displays a machine count if machines have loaded", () => {
@@ -110,28 +96,20 @@ describe("MachineListHeader", () => {
       count: 2,
       loaded: true,
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              grouping={null}
-              searchFilter=""
-              setGrouping={jest.fn()}
-              setHiddenColumns={jest.fn()}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={null}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={null}
+      />,
+      { state, route: urls.machines.index }
     );
-    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "2 machines in 1 pool"
     );
   });
@@ -254,39 +232,36 @@ describe("MachineListHeader", () => {
         setSearchFilter={jest.fn()}
         setSidePanelContent={setSidePanelContent}
         sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-      />
+      />,
+      { state, route: urls.machines.index }
     );
     await waitFor(() => expect(setSidePanelContent).toHaveBeenCalledWith(null));
   });
 
   it("displays the action title if an action is selected", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineListHeader
-              grouping={null}
-              searchFilter=""
-              setGrouping={jest.fn()}
-              setHiddenColumns={jest.fn()}
-              setHiddenGroups={jest.fn()}
-              setSearchFilter={jest.fn()}
-              setSidePanelContent={jest.fn()}
-              sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineListHeader
+        grouping={null}
+        searchFilter=""
+        setGrouping={jest.fn()}
+        setHiddenColumns={jest.fn()}
+        setHiddenGroups={jest.fn()}
+        setSearchFilter={jest.fn()}
+        setSidePanelContent={jest.fn()}
+        sidePanelContent={{ view: MachineHeaderViews.DEPLOY_MACHINE }}
+      />,
+      { state, route: urls.machines.index }
     );
-    expect(wrapper.find('[data-testid="section-header-title"]').text()).toBe(
+
+    expect(screen.getByTestId("section-header-title")).toHaveTextContent(
       "0 machines in 1 pool"
     );
     expect(
-      wrapper.find('[data-testid="section-header-content"] h3').text()
-    ).toBe("Deploy");
+      within(screen.getByTestId("section-header-content")).getByRole(
+        "heading",
+        { level: 3 }
+      )
+    ).toHaveTextContent("Deploy");
   });
 
   it("displays a new label for the tag action", async () => {
@@ -296,7 +271,6 @@ describe("MachineListHeader", () => {
     state.machine.items = [
       machineFactory({ system_id: "abc123", actions: [NodeActions.TAG] }),
     ];
-    const store = mockStore(state);
     renderWithBrowserRouter(
       <MachineListHeader
         grouping={null}
@@ -308,7 +282,7 @@ describe("MachineListHeader", () => {
         setSidePanelContent={jest.fn()}
         sidePanelContent={null}
       />,
-      { route: "/machines", store }
+      { state, route: urls.machines.index }
     );
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
@@ -339,7 +313,6 @@ describe("MachineListHeader", () => {
         ],
       }),
     };
-    const store = mockStore(state);
     const { rerender } = renderWithBrowserRouter(
       <MachineListHeader
         grouping={null}
@@ -351,7 +324,7 @@ describe("MachineListHeader", () => {
         setSidePanelContent={jest.fn()}
         sidePanelContent={null}
       />,
-      { route: "/machines", store }
+      { state, route: urls.machines.index }
     );
     // Open the take action menu.
     await userEvent.click(screen.getByRole("button", { name: "Categorise" }));
