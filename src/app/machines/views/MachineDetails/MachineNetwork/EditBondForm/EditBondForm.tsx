@@ -140,7 +140,6 @@ const EditBondForm = ({
   ) {
     return <Spinner />;
   }
-  console.log(link);
   const subnet = getInterfaceSubnet(
     machine,
     subnets,
@@ -199,9 +198,6 @@ const EditBondForm = ({
       }}
       onSubmit={(values) => {
         // Clear the errors from the previous submission.
-        // console.log("click");
-        console.table(values);
-        console.log(InterfaceSchema.validateSync(values));
         dispatch(cleanup());
         const payload = prepareBondPayload(
           values,
@@ -224,7 +220,7 @@ const EditBondForm = ({
       saving={saving}
       submitDisabled={!hasEnoughNics}
       submitLabel="Save interface"
-      // validationSchema={InterfaceSchema}
+      validationSchema={InterfaceSchema}
     >
       <InterfaceFormTable
         interfaces={rows}

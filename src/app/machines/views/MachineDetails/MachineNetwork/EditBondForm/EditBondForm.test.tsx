@@ -1,9 +1,4 @@
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
-
-import { LinkMonitoring } from "../BondForm/types";
 
 import EditBondForm from "./EditBondForm";
 
@@ -25,20 +20,15 @@ import {
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
   subnet as subnetFactory,
-  networkLink as networkLinkFactory,
   rootState as rootStateFactory,
   subnetState as subnetStateFactory,
   vlan as vlanFactory,
   vlanState as vlanStateFactory,
 } from "testing/factories";
-import { mockFormikFormSaved } from "testing/mockFormikFormSaved";
 import {
   renderWithBrowserRouter,
   screen,
-  submitFormikForm,
   userEvent,
-  waitFor,
-  waitForComponentToPaint,
   within,
 } from "testing/utils";
 
@@ -357,13 +347,13 @@ describe("EditBondForm", () => {
       />,
       { route: "/machines", state }
     );
-    // expect(wrapper.find("Spinner").exists()).toBe(true);
     expect(screen.getByText("Loading")).toBeInTheDocument();
   });
 
   it("can dispatch an action to update a bond", async () => {
     const bond = machineInterfaceFactory({
       id: 3,
+      name: "bond1",
       type: NetworkInterfaceTypes.BOND,
       vlan_id: 1,
       params: {
@@ -406,7 +396,6 @@ describe("EditBondForm", () => {
       }),
     ];
     const link = { id: 1, subnet_id: 1, mode: NetworkLinkMode.AUTO };
-    // console.log(link);
     const store = mockStore(state);
     renderWithBrowserRouter(
       <EditBondForm
@@ -420,57 +409,6 @@ describe("EditBondForm", () => {
       { route: "/machines", store }
     );
 
-    // submitFormikForm(wrapper, {
-    //   bond_downdelay: 10,
-    //   bond_lacp_rate: "fast",
-    //   bond_mode: BondMode.ACTIVE_BACKUP,
-    //   bond_miimon: 20,
-    //   bond_updelay: 30,
-    //   fabric: 1,
-    //   ip_address: "1.2.3.4",
-    //   linkMonitoring: LinkMonitoring.MII,
-    //   mac_address: "28:21:c6:b9:1b:22",
-    //   mode: NetworkLinkMode.LINK_UP,
-    //   name: "bond1",
-    //   subnet: 1,
-    //   tags: ["a", "tag"],
-    //   vlan: 1,
-    // });
-    // await waitForComponentToPaint(wrapper);
-    // await userEvent.clear(screen.getByRole("textbox", { name: "MAC address" }));
-    // await userEvent.type(
-    //   screen.getByRole("textbox", { name: "MAC address" }),
-    //   "28:21:c6:b9:1b:22"
-    // );
-    // await userEvent.selectOptions(
-    //   screen.getByRole("combobox", { name: "Bond mode" }),
-    //   screen.getByRole("option", { name: "active-backup" })
-    // );
-    // await userEvent.selectOptions(
-    //   screen.getByRole("combobox", { name: "Link monitoring" }),
-    //   screen.getByRole("option", { name: "No link monitoring" })
-    // );
-    // await userEvent.clear(
-    //   screen.getByRole("textbox", { name: "Monitoring frequency (ms)" })
-    // );
-    // await userEvent.clear(
-    //   screen.getByRole("textbox", { name: "Updelay (ms)" })
-    // );
-    // await userEvent.clear(
-    //   screen.getByRole("textbox", { name: "Downdelay (ms)" })
-    // );
-    // await userEvent.type(
-    //   screen.getByRole("textbox", { name: "Monitoring frequency (ms)" }),
-    //   "20"
-    // );
-    // await userEvent.type(
-    //   screen.getByRole("textbox", { name: "Updelay (ms)" }),
-    //   "30"
-    // );
-    // await userEvent.type(
-    //   screen.getByRole("textbox", { name: "Downdelay (ms)" }),
-    //   "10"
-    // );
     await userEvent.selectOptions(
       screen.getByRole("combobox", { name: "Subnet" }),
       screen.getByRole("option", { name: /test-subnet-1/ })
@@ -483,39 +421,37 @@ describe("EditBondForm", () => {
       screen.getByRole("button", { name: "Save interface" })
     );
 
-    // expect(screen.queryByText(/error/i)).not.toBeInTheDocument();
-    // screen.debug(undefined, 30000);
-
-    // expect(
-    //   store
-    //     .getActions()
-    //     .find((action) => action.type === "machine/updateInterface")
-    // ).toStrictEqual({
-    //   type: "machine/updateInterface",
-    //   meta: {
-    //     model: "machine",
-    //     method: "update_interface",
-    //   },
-    //   payload: {
-    //     params: {
-    //       bond_downdelay: 10,
-    //       bond_lacp_rate: "fast",
-    //       bond_mode: BondMode.ACTIVE_BACKUP,
-    //       bond_miimon: 20,
-    //       bond_updelay: 30,
-    //       fabric: 1,
-    //       interface_id: bond.id,
-    //       ip_address: "1.2.3.4",
-    //       mac_address: "28:21:c6:b9:1b:22",
-    //       mode: NetworkLinkMode.LINK_UP,
-    //       name: "bond1",
-    //       parents: [9, 10],
-    //       subnet: 1,
-    //       system_id: "abc123",
-    //       tags: ["a", "tag"],
-    //       vlan: 1,
-    //     },
-    //   },
-    // });
+    expect(
+      store
+        .getActions()
+        .find((action) => action.type === "machine/updateInterface")
+    ).toStrictEqual({
+      type: "machine/updateInterface",
+      meta: {
+        model: "machine",
+        method: "update_interface",
+      },
+      payload: {
+        params: {
+          bond_downdelay: 0,
+          bond_lacp_rate: "fast",
+          bond_mode: BondMode.ACTIVE_BACKUP,
+          bond_miimon: 0,
+          bond_updelay: 0,
+          bond_xmit_hash_policy: BondXmitHashPolicy.LAYER2,
+          fabric: 1,
+          interface_id: bond.id,
+          link_id: 1,
+          mac_address: "00:00:00:00:00:26",
+          mode: NetworkLinkMode.LINK_UP,
+          name: "bond1",
+          parents: [9, 10],
+          subnet: "1",
+          system_id: "abc123",
+          tags: [],
+          vlan: 1,
+        },
+      },
+    });
   });
 });
