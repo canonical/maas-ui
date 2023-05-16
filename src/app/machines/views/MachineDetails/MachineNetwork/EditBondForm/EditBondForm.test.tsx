@@ -24,6 +24,7 @@ import {
   machineState as machineStateFactory,
   machineStatus as machineStatusFactory,
   machineStatuses as machineStatusesFactory,
+  subnet as subnetFactory,
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
   subnetState as subnetStateFactory,
@@ -69,6 +70,7 @@ describe("EditBondForm", () => {
         }),
       }),
       subnet: subnetStateFactory({
+        items: [subnetFactory({ id: 1, name: "test-subnet-1", vlan: 1 })],
         loaded: true,
       }),
       vlan: vlanStateFactory({
@@ -469,7 +471,10 @@ describe("EditBondForm", () => {
     //   screen.getByRole("textbox", { name: "Downdelay (ms)" }),
     //   "10"
     // );
-
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: "Subnet" }),
+      screen.getByRole("option", { name: /test-subnet-1/ })
+    );
     expect(
       screen.getByRole("button", { name: "Save interface" })
     ).toBeEnabled();
