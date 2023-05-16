@@ -1,14 +1,11 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import VMsTable, { Label } from "./VMsTable";
 
 import { SortDirection } from "app/base/types";
 import { FetchGroupKey } from "app/store/machine/types";
+import type { RootState } from "app/store/root/types";
 import {
   pod as podFactory,
   podState as podStateFactory,
@@ -20,9 +17,15 @@ import {
   machineStateList as machineStateListFactory,
   machineStateListGroup as machineStateListGroupFactory,
 } from "testing/factories";
-import { screen, within, renderWithMockStore } from "testing/utils";
+import {
+  screen,
+  within,
+  renderWithMockStore,
+  userEvent,
+  renderWithBrowserRouter,
+} from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("VMsTable", () => {
   let getResources: jest.Mock;
@@ -60,7 +63,7 @@ describe("VMsTable", () => {
     ).toBeInTheDocument();
   });
 
-  it("can change sort order", () => {
+  it("can change sort order", async () => {
     const setSortKey = jest.fn();
     const setSortDirection = jest.fn();
     const vms = [
@@ -83,35 +86,27 @@ describe("VMsTable", () => {
         },
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[]}
-              searchFilter=""
-              setSortDirection={setSortDirection}
-              setSortKey={setSortKey}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Status}
-              vms={vms}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <VMsTable
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[]}
+        searchFilter=""
+        setSortDirection={setSortDirection}
+        setSortKey={setSortKey}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Status}
+        vms={vms}
+      />,
+      { state, route: "/kvm/1/project" }
     );
     // Sorted ascending by hostname
-    wrapper.find("[data-testid='name-header']").simulate("click");
+    await userEvent.click(screen.getByRole("button", { name: /VM name/i }));
     expect(setSortKey).toHaveBeenCalledWith(FetchGroupKey.Hostname);
     expect(setSortDirection).toHaveBeenCalledWith(SortDirection.DESCENDING);
   });
 
-  it("can dispatch an action to select all VMs", () => {
+  it("can dispatch an action to select all VMs", async () => {
     const pod = podFactory({ id: 1, name: "pod-1" });
     const vms = [
       machineFactory({
@@ -129,31 +124,25 @@ describe("VMsTable", () => {
       pod: podStateFactory({ items: [pod], loaded: true }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[pod.name]}
-              searchFilter=""
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={vms}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <VMsTable
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[pod.name]}
+        searchFilter=""
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={vms}
+      />,
+      { store, route: "/kvm/1/project" }
     );
 
-    wrapper.find("AllCheckbox input").simulate("change", {
-      target: { checked: "checked" },
-    });
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /All machines/i })
+    );
+
     expect(
       store
         .getActions()
@@ -164,7 +153,7 @@ describe("VMsTable", () => {
     });
   });
 
-  it("can dispatch an action to unselect all VMs", () => {
+  it("can dispatch an action to unselect all VMs", async () => {
     const pod = podFactory({ id: 1, name: "pod-1" });
     const vms = [
       machineFactory({
@@ -182,31 +171,29 @@ describe("VMsTable", () => {
       pod: podStateFactory({ items: [pod], loaded: true }),
     });
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[pod.name]}
-              searchFilter=""
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={vms}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <VMsTable
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[pod.name]}
+        searchFilter=""
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={vms}
+      />,
+      { store, route: "/kvm/1/project" }
     );
 
-    wrapper.find("AllCheckbox input").simulate("change", {
-      target: { checked: "" },
-    });
+    // click twice to select cnd deselect
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /All machines/i })
+    );
+    await userEvent.click(
+      screen.getByRole("checkbox", { name: /All machines/i })
+    );
+
     expect(
       store
         .getActions()
@@ -223,31 +210,24 @@ describe("VMsTable", () => {
         items: [],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[]}
-              searchFilter="system_id:(=ghi789)"
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={[]}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <VMsTable
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[]}
+        searchFilter="system_id:(=ghi789)"
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={[]}
+      />,
+      { state, route: "/kvm/1/project" }
     );
 
-    expect(wrapper.find("[data-testid='no-vms']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='no-vms']").text()).toBe(
+    expect(screen.getByTestId("no-vms")).toBeInTheDocument();
+    expect(screen.getByTestId("no-vms")).toHaveTextContent(
       "No VMs in this KVM host match the search criteria."
     );
   });
@@ -258,92 +238,75 @@ describe("VMsTable", () => {
         items: [],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              displayForCluster
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[]}
-              searchFilter="system_id:(=ghi789)"
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={[]}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <VMsTable
+        displayForCluster
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[]}
+        searchFilter="system_id:(=ghi789)"
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={[]}
+      />,
+      { state, route: "/kvm/1/project" }
     );
 
-    expect(wrapper.find("[data-testid='no-vms']").exists()).toBe(true);
-    expect(wrapper.find("[data-testid='no-vms']").text()).toBe(
+    expect(screen.getByTestId("no-vms")).toBeInTheDocument();
+    expect(screen.getByTestId("no-vms")).toHaveTextContent(
       "No VMs in this cluster match the search criteria."
     );
   });
 
   it("renders a column for the host if function provided to render it", () => {
     const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getHostColumn={jest.fn()}
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[]}
-              searchFilter=""
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={[]}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <VMsTable
+        getHostColumn={jest.fn()}
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[]}
+        searchFilter=""
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={[]}
+      />,
+      { state, route: "/kvm/1/project" }
     );
 
-    expect(wrapper.find("[data-testid='host-column']").exists()).toBe(true);
+    expect(
+      screen.getByRole("columnheader", { name: /KVM host/i })
+    ).toBeInTheDocument();
   });
 
   it("does not render a column for the host if no function provided to render it", () => {
     const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getHostColumn={undefined}
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[]}
-              searchFilter=""
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={[]}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <VMsTable
+        getHostColumn={undefined}
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[]}
+        searchFilter=""
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={[]}
+      />,
+      { state, route: "/kvm/1/project" }
     );
 
-    expect(wrapper.find("[data-testid='host-column']").exists()).toBe(false);
+    expect(
+      screen.queryByRole("columnheader", { name: /KVM host/i })
+    ).not.toBeInTheDocument();
   });
 
   it("displays tag names", () => {
@@ -359,58 +322,49 @@ describe("VMsTable", () => {
         ],
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[]}
-              searchFilter=""
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={vms}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper.find("DoubleRow[data-testid='pool-col']").at(0).prop("secondary")
-    ).toBe("tag1, tag2");
-  });
-  it("renders a column for the host if function provided to render it", () => {
-    const state = rootStateFactory();
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <VMsTable
-              getHostColumn={jest.fn()}
-              getResources={getResources}
-              machinesLoading={false}
-              pods={[]}
-              searchFilter=""
-              setSortDirection={jest.fn()}
-              setSortKey={jest.fn()}
-              sortDirection={SortDirection.DESCENDING}
-              sortKey={FetchGroupKey.Hostname}
-              vms={[]}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+
+    renderWithBrowserRouter(
+      <VMsTable
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[]}
+        searchFilter=""
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={vms}
+      />,
+      { state, route: "/kvm/1/project" }
     );
 
-    expect(wrapper.find("[data-testid='host-column']").exists()).toBe(true);
+    const poolCell = screen.getByRole("gridcell", { name: /Pool/i });
+    expect(within(poolCell).getByTestId("secondary")).toHaveTextContent(
+      "tag1, tag2"
+    );
+  });
+
+  it("renders a column for the host if function provided to render it", () => {
+    const state = rootStateFactory();
+
+    renderWithBrowserRouter(
+      <VMsTable
+        getHostColumn={jest.fn()}
+        getResources={getResources}
+        machinesLoading={false}
+        pods={[]}
+        searchFilter=""
+        setSortDirection={jest.fn()}
+        setSortKey={jest.fn()}
+        sortDirection={SortDirection.DESCENDING}
+        sortKey={FetchGroupKey.Hostname}
+        vms={[]}
+      />,
+      { state, route: "/kvm/1/project" }
+    );
+
+    expect(
+      screen.getByRole("columnheader", { name: /KVM host/i })
+    ).toBeInTheDocument();
   });
 });
