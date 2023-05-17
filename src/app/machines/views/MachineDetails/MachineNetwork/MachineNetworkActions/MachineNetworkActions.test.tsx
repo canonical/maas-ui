@@ -42,7 +42,7 @@ describe("MachineNetworkActions", () => {
         />,
         { state, route: "/machine/abc123" }
       );
-      // expect(wrapper.find("Button").last().prop("disabled")).toBe(true);
+
       expect(
         screen.getByRole("button", { name: /Validate network configuration/i })
       ).toBeDisabled();
