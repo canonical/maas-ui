@@ -1,7 +1,7 @@
 /* eslint-disable react/no-multi-comp */
 import type { ValueOf } from "@canonical/react-components";
 import type { RenderOptions, RenderResult } from "@testing-library/react";
-import { render } from "@testing-library/react";
+import { render, screen } from "@testing-library/react";
 import type { ReactWrapper } from "enzyme";
 import { shallow } from "enzyme";
 import type { FormikHelpers } from "formik";
@@ -124,6 +124,32 @@ export const submitFormikForm = (
       onSubmit(values, formikHelpers);
     });
   }
+};
+
+/**
+ * A matcher function to find elements by text that is broken up by multiple child elements
+ * @param {string | RegExp} text The text content that you are looking for
+ * @returns {HTMLElement} An element matching the text provided
+ */
+export const getByTextContent = (text: string | RegExp): HTMLElement => {
+  return screen.getByText((_, element) => {
+    const hasText = (element: Element | null) => {
+      if (element) {
+        if (text instanceof RegExp && element.textContent) {
+          return text.test(element.textContent);
+        } else {
+          return element.textContent === text;
+        }
+      } else {
+        return false;
+      }
+    };
+    const elementHasText = hasText(element);
+    const childrenDontHaveText = Array.from(element?.children || []).every(
+      (child) => !hasText(child)
+    );
+    return elementHasText && childrenDontHaveText;
+  });
 };
 
 type WrapperProps = {
