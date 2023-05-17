@@ -1,9 +1,4 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
 import MachineList from "./MachineList";
@@ -33,7 +28,7 @@ import {
   controllerState as controllerStateFactory,
   controller as controllerFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter } from "testing/utils";
+import { screen, renderWithBrowserRouter, fireEvent } from "testing/utils";
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -229,192 +224,137 @@ describe("MachineList", () => {
 
   it("can display an error", () => {
     state.machine.errors = "Uh oh!";
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
+      { route: "/machines", state }
     );
-    expect(wrapper.find("Notification").exists()).toBe(true);
-    // eslint-disable-next-line testing-library/no-node-access
-    expect(wrapper.find("Notification").props().children).toBe("Uh oh!");
+    expect(screen.getByText("Uh oh!")).toBeInTheDocument();
   });
 
   it("can display and close an error from machine list", () => {
     state.machine.errors = null;
     state.machine.lists["123456"].errors = { tag: "No such constraint." };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
+      { route: "/machines", state }
     );
-    expect(wrapper.find("Notification").exists()).toBe(true);
-    // eslint-disable-next-line testing-library/no-node-access
-    expect(wrapper.find("Notification").props().children).toBe(
-      "tag: No such constraint."
-    );
-    wrapper.find("Notification button").simulate("click");
-    expect(wrapper.find("Notification").exists()).toBe(false);
+    expect(screen.getByText("tag: No such constraint.")).toBeInTheDocument();
+
+    // Using fireEvent instead of userEvent here,
+    // since using the latter seems to break every other test in this file
+
+    // eslint-disable-next-line testing-library/prefer-user-event
+    fireEvent.click(screen.getByRole("button", { name: "Close notification" }));
+    expect(
+      screen.queryByText("tag: No such contraint.")
+    ).not.toBeInTheDocument();
   });
 
   it("can display a list of errors", () => {
     state.machine.errors = ["Uh oh!", "It broke"];
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
+      { route: "/machines", state }
     );
-    expect(wrapper.find("Notification").exists()).toBe(true);
-    // eslint-disable-next-line testing-library/no-node-access
-    expect(wrapper.find("Notification").props().children).toBe(
-      "Uh oh! It broke"
-    );
+    expect(screen.getByText("Uh oh! It broke")).toBeInTheDocument();
   });
 
   it("can display a collection of errors", () => {
     state.machine.errors = { machine: "Uh oh!", network: "It broke" };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
+      { route: "/machines", state }
     );
-    expect(wrapper.find("Notification").exists()).toBe(true);
-    // eslint-disable-next-line testing-library/no-node-access
-    expect(wrapper.find("Notification").props().children).toBe(
-      "machine: Uh oh! network: It broke"
-    );
+    expect(
+      screen.getByText("machine: Uh oh! network: It broke")
+    ).toBeInTheDocument();
   });
 
   it("dispatches action to clean up machine state when dismissing errors", () => {
     state.machine.errors = "Everything is broken.";
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
+      { route: "/machines", store }
     );
-    wrapper.find("Notification button").simulate("click");
+
+    // Using fireEvent instead of userEvent here,
+    // since using the latter seems to break every other test in this file
+
+    // eslint-disable-next-line testing-library/prefer-user-event
+    fireEvent.click(screen.getByRole("button", { name: "Close notification" }));
+
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
     ).toBe(true);
   });
 
-  it("displays a message if there are no search results", () => {
+  it("displays a message if there are no search results", async () => {
     state.machine.lists = {
       "123456": machineStateListFactory({
         count: 0,
         groups: [],
       }),
     };
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter="this does not match anything"
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter="no matches here mate"
+        setHiddenGroups={jest.fn()}
+      />,
+      { route: "/machines", state }
     );
-    expect(wrapper.find("table caption").text()).toBe(
-      "No machines match the search criteria."
-    );
+    expect(
+      screen.getByText("No machines match the search criteria.")
+    ).toBeInTheDocument();
   });
 
   it("cleans up when unmounting", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { unmount } = renderWithBrowserRouter(
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
+      { route: "/machines", store }
     );
 
-    act(() => {
-      wrapper.unmount();
-    });
+    unmount();
 
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
@@ -456,7 +396,7 @@ describe("MachineList", () => {
     );
   });
 
-  it("can change pages", () => {
+  it("can change pages", async () => {
     jest
       .spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
@@ -477,24 +417,21 @@ describe("MachineList", () => {
       }),
     };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <MachineList
-              grouping={null}
-              hiddenColumns={[]}
-              hiddenGroups={[]}
-              searchFilter=""
-              setHiddenGroups={jest.fn()}
-            />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(
+      <MachineList
+        grouping={null}
+        hiddenColumns={[]}
+        hiddenGroups={[]}
+        searchFilter=""
+        setHiddenGroups={jest.fn()}
+      />,
+      { route: "/machines", store }
     );
-    wrapper.find("Button.p-pagination__link--next").simulate("click");
+    // Using fireEvent instead of userEvent here,
+    // since using the latter seems to break every other test in this file
+
+    // eslint-disable-next-line testing-library/prefer-user-event
+    fireEvent.click(screen.getByRole("button", { name: "Next page" }));
     const expected = machineActions.fetch("123456", {
       page_number: 2,
     });
