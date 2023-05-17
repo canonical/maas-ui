@@ -14,7 +14,12 @@ import {
   networkLink as networkLinkFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
-import { renderWithBrowserRouter, screen, userEvent } from "testing/utils";
+import {
+  getByTextContent,
+  renderWithBrowserRouter,
+  screen,
+  userEvent,
+} from "testing/utils";
 
 const mockStore = configureStore<RootState>();
 
@@ -262,10 +267,10 @@ describe("NetworkTableConfirmation", () => {
       );
 
       expect(
-        screen.getByText(/If this is no longer true, mark cable as connected./i)
-      ).toHaveTextContent(
-        /This interface is disconnected, it cannot be configured unless a cable is connected.If this is no longer true, mark cable as connected./i
-      );
+        getByTextContent(
+          /This interface is disconnected, it cannot be configured unless a cable is connected.If this is no longer true, mark cable as connected./i
+        )
+      ).toBeInTheDocument();
       expect(
         screen.getByRole("button", { name: "Mark as connected" })
       ).toHaveClass("p-button--positive");
