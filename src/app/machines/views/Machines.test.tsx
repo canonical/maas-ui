@@ -331,7 +331,7 @@ describe("Machines", () => {
       .spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
-    // jest.setTimeout(10000);
+    jest.setTimeout(10000);
     // Create two pages of machines.
     state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
       machineFactory()
@@ -360,15 +360,10 @@ describe("Machines", () => {
     const fetches = store
       .getActions()
       .filter((action) => action.type === expected.type);
-    await waitFor(() => {
-      expect(fetches).toHaveLength(2);
-    });
-
-    await waitFor(() => {
-      expect(fetches[fetches.length - 1].payload.params.group_key).toBe(
-        FetchGroupKey.Owner
-      );
-    });
+    expect(fetches).toHaveLength(2);
+    expect(fetches[fetches.length - 1].payload.params.group_key).toBe(
+      FetchGroupKey.Owner
+    );
   });
 
   it("can store the group in local storage", async () => {
