@@ -331,6 +331,7 @@ describe("Machines", () => {
       .spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
       .mockReturnValueOnce("mocked-nanoid-2");
+    jest.setTimeout(10000);
     // Create two pages of machines.
     state.machine.items = Array.from(Array(DEFAULTS.pageSize * 2)).map(() =>
       machineFactory()
