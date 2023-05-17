@@ -1,39 +1,35 @@
-import { mount } from "enzyme";
-
+/* eslint-disable testing-library/no-container */
 import NodeTestDetailsLogs from "./NodeTestDetailsLogs";
 
 import { scriptResultData as scriptResultDataFactory } from "testing/factories";
+import { render, screen, userEvent } from "testing/utils";
 
 describe("NodeTestDetailsLogs", () => {
   it("displays combined content by default", () => {
     const log = scriptResultDataFactory();
 
-    const wrapper = mount(<NodeTestDetailsLogs log={log} />);
+    const { container } = render(<NodeTestDetailsLogs log={log} />);
 
-    expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
+    expect(container.querySelector("code")).toHaveTextContent(
       "combined content"
     );
   });
 
-  it("displays other content on click", () => {
+  it("displays other content on click", async () => {
     const log = scriptResultDataFactory();
 
-    const wrapper = mount(<NodeTestDetailsLogs log={log} />);
-    wrapper.find("a[data-testid='tab-link-yaml']").simulate("click");
+    const { container } = render(<NodeTestDetailsLogs log={log} />);
+    await userEvent.click(screen.getByTestId("tab-link-yaml"));
 
-    expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
-      "yaml result"
-    );
+    expect(container.querySelector("code")).toHaveTextContent("yaml result");
   });
 
-  it("displays 'no data' for empty content", () => {
+  it("displays 'no data' for empty content", async () => {
     const log = scriptResultDataFactory();
 
-    const wrapper = mount(<NodeTestDetailsLogs log={log} />);
-    wrapper.find("a[data-testid='tab-link-stderr']").simulate("click");
+    const { container } = render(<NodeTestDetailsLogs log={log} />);
+    await userEvent.click(screen.getByTestId("tab-link-stderr"));
 
-    expect(wrapper.find("[data-testid='log-content'] code").text()).toEqual(
-      "No data"
-    );
+    expect(container.querySelector("code")).toHaveTextContent("No data");
   });
 });

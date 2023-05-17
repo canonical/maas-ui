@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import { MemoryRouter } from "react-router-dom";
 import { CompatRouter, Route, Routes } from "react-router-dom-v5-compat";
@@ -12,6 +11,7 @@ import {
   machineState as machineStateFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -27,7 +27,7 @@ describe("MachinePCIDevices", () => {
       }),
     });
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[

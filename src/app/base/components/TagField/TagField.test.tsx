@@ -1,12 +1,14 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
 
 import TagField from "./TagField";
 
-describe("FormikField", () => {
-  it("sorts the tags by name", () => {
-    const wrapper = mount(
-      <Formik initialValues={{ tags: null }} onSubmit={jest.fn()}>
+import { render, screen, userEvent } from "testing/utils";
+
+describe("TagField", () => {
+  it("sorts the tags by name", async () => {
+    const initialValues = { tags: null };
+    render(
+      <Formik initialValues={initialValues} onSubmit={jest.fn()}>
         <TagField
           name="wombatTags"
           tags={[
@@ -20,13 +22,10 @@ describe("FormikField", () => {
         />
       </Formik>
     );
-    expect(wrapper.find("FormikField").prop("tags")).toStrictEqual([
-      {
-        name: "koala",
-      },
-      {
-        name: "wallaby",
-      },
-    ]);
+    await userEvent.click(screen.getByRole("textbox", { name: "Tags" }));
+    expect(screen.getAllByRole("option")).toHaveLength(2);
+    expect(screen.getByRole("option", { name: "koala" })).toBeInTheDocument();
+
+    expect(screen.getByRole("option", { name: "wallaby" })).toBeInTheDocument();
   });
 });

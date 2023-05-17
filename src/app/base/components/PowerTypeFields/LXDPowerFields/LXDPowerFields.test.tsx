@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
@@ -10,6 +9,7 @@ import {
   powerField as powerFieldFactory,
   rootState as rootStateFactory,
 } from "testing/factories";
+import { render, screen } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -21,9 +21,9 @@ describe("LXDPowerFields", () => {
   });
 
   it("can be given a custom power parameters name", () => {
-    const field = powerFieldFactory({ name: "field" });
+    const field = powerFieldFactory({ name: "field", label: "custom field" });
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <LXDPowerFields
@@ -33,14 +33,15 @@ describe("LXDPowerFields", () => {
         </Formik>
       </Provider>
     );
-    expect(
-      wrapper.find("input[name='custom-power-parameters.field']").exists()
-    ).toBe(true);
+    expect(screen.getByLabelText("custom field")).toHaveAttribute(
+      "name",
+      "custom-power-parameters.field"
+    );
   });
 
   it("renders certificate fields if the user can edit them", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <LXDPowerFields canEditCertificate fields={[]} />
@@ -48,12 +49,14 @@ describe("LXDPowerFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("CertificateFields").exists()).toBe(true);
+    expect(
+      screen.getByLabelText(/Generate new certificate/i)
+    ).toBeInTheDocument();
   });
 
   it("does not render certificate fields if the user cannot edit them", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <Formik initialValues={{}} onSubmit={jest.fn()}>
           <LXDPowerFields canEditCertificate={false} fields={[]} />
@@ -61,6 +64,8 @@ describe("LXDPowerFields", () => {
       </Provider>
     );
 
-    expect(wrapper.find("CertificateFields").exists()).toBe(false);
+    expect(
+      screen.queryByLabelText(/Generate new certificate/i)
+    ).not.toBeInTheDocument();
   });
 });
