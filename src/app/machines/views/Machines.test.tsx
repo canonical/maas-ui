@@ -1,12 +1,9 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { act } from "react-dom/test-utils";
 import { Provider } from "react-redux";
 import { MemoryRouter, Route, useLocation } from "react-router-dom";
 import { CompatRouter } from "react-router-dom-v5-compat";
 import configureStore from "redux-mock-store";
 
-import MachineListHeader from "./MachineList/MachineListHeader";
 import {
   Label,
   Label as MachineListLabel,
@@ -45,11 +42,11 @@ import {
   userEvent,
   within,
   screen,
+  render,
+  waitFor,
 } from "testing/utils";
 
 const mockStore = configureStore<RootState>();
-
-// jest.useFakeTimers();
 
 describe("Machines", () => {
   let state: RootState;
@@ -253,7 +250,7 @@ describe("Machines", () => {
 
   it("can set the search from the URL", () => {
     const store = mockStore(state);
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -266,12 +263,12 @@ describe("Machines", () => {
         </MemoryRouter>
       </Provider>
     );
-    expect(wrapper.find("MachineList").prop("searchFilter")).toBe(
+    expect(screen.getByRole("searchbox", { name: "Search" })).toHaveValue(
       "test search"
     );
   });
 
-  it("changes the URL when the search text changes", () => {
+  it("changes the URL when the search text changes", async () => {
     let search: string | null = null;
     const store = mockStore(state);
     const FetchRoute = () => {
@@ -279,7 +276,7 @@ describe("Machines", () => {
       search = location.search;
       return null;
     };
-    const wrapper = mount(
+    render(
       <Provider store={store}>
         <MemoryRouter
           initialEntries={[
@@ -293,10 +290,14 @@ describe("Machines", () => {
         </MemoryRouter>
       </Provider>
     );
-    act(() => {
-      wrapper.find(MachineListHeader).props().setSearchFilter("status:new");
+    await userEvent.clear(screen.getByRole("searchbox", { name: "Search" }));
+    await userEvent.type(
+      screen.getByRole("searchbox", { name: "Search" }),
+      "status:new"
+    );
+    await waitFor(() => {
+      expect(search).toBe("?status=new");
     });
-    expect(search).toBe("?status=new");
   });
 
   it("can hide groups", async () => {
@@ -325,7 +326,7 @@ describe("Machines", () => {
     ).toStrictEqual(["failed_testing"]);
   });
 
-  it("can change groups", () => {
+  it("can change groups", async () => {
     jest
       .spyOn(reduxToolkit, "nanoid")
       .mockReturnValueOnce("mocked-nanoid-1")
@@ -346,22 +347,12 @@ describe("Machines", () => {
       }),
     };
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Machines />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    renderWithBrowserRouter(<Machines />, { route: "/machines", store });
+
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /Group by/i }),
+      screen.getByRole("option", { name: "Group by owner" })
     );
-    // Change grouping to owner
-    wrapper
-      .find('Select[name="machine-groupings"]')
-      .find("select")
-      .simulate("change", { target: { value: FetchGroupKey.Owner } });
     const expected = machineActions.fetch("123456", {
       group_key: FetchGroupKey.Owner,
     });
@@ -374,47 +365,26 @@ describe("Machines", () => {
     );
   });
 
-  it("can store the group in local storage", () => {
+  it("can store the group in local storage", async () => {
     const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Machines />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
+    const { unmount } = renderWithBrowserRouter(<Machines />, {
+      route: "/machines",
+      store,
+    });
+    await userEvent.selectOptions(
+      screen.getByRole("combobox", { name: /Group by/i }),
+      screen.getByRole("option", { name: "Group by owner" })
     );
-    expect(
-      wrapper
-        .find('Select[name="machine-groupings"]')
-        .find("select")
-        .prop("defaultValue")
-    ).toBe("status");
-    wrapper
-      .find('Select[name="machine-groupings"] select')
-      .simulate("change", { target: { value: "owner" } });
+    unmount();
     // Render another machine list, this time it should restore the value
     // set by the select.
     const store2 = mockStore(state);
-    const wrapper2 = mount(
-      <Provider store={store2}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/machines", key: "testKey" }]}
-        >
-          <CompatRouter>
-            <Machines />
-          </CompatRouter>
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(
-      wrapper2
-        .find('Select[name="machine-groupings"] select')
-        .prop("defaultValue")
-    ).toBe("owner");
+    renderWithBrowserRouter(<Machines />, {
+      route: "/machines",
+      store: store2,
+    });
+
+    expect(localStorage.getItem("grouping")).toBe('"owner"');
   });
 
   it("uses the default fallback value for invalid stored grouping values", () => {
