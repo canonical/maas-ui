@@ -28,7 +28,15 @@ import {
   controllerState as controllerStateFactory,
   controller as controllerFactory,
 } from "testing/factories";
-import { screen, renderWithBrowserRouter, fireEvent } from "testing/utils";
+import {
+  screen,
+  renderWithBrowserRouter,
+  userEvent as coreUserEvent,
+} from "testing/utils";
+
+const userEvent = coreUserEvent.setup({
+  advanceTimers: jest.advanceTimersByTime,
+});
 
 const mockStore = configureStore<RootState, {}>();
 
@@ -237,7 +245,7 @@ describe("MachineList", () => {
     expect(screen.getByText("Uh oh!")).toBeInTheDocument();
   });
 
-  it("can display and close an error from machine list", () => {
+  it("can display and close an error from machine list", async () => {
     state.machine.errors = null;
     state.machine.lists["123456"].errors = { tag: "No such constraint." };
     renderWithBrowserRouter(
@@ -252,11 +260,9 @@ describe("MachineList", () => {
     );
     expect(screen.getByText("tag: No such constraint.")).toBeInTheDocument();
 
-    // Using fireEvent instead of userEvent here,
-    // since using the latter seems to break every other test in this file
-
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.click(screen.getByRole("button", { name: "Close notification" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Close notification" })
+    );
     expect(
       screen.queryByText("tag: No such contraint.")
     ).not.toBeInTheDocument();
@@ -294,7 +300,7 @@ describe("MachineList", () => {
     ).toBeInTheDocument();
   });
 
-  it("dispatches action to clean up machine state when dismissing errors", () => {
+  it("dispatches action to clean up machine state when dismissing errors", async () => {
     state.machine.errors = "Everything is broken.";
     const store = mockStore(state);
     renderWithBrowserRouter(
@@ -308,11 +314,9 @@ describe("MachineList", () => {
       { route: "/machines", store }
     );
 
-    // Using fireEvent instead of userEvent here,
-    // since using the latter seems to break every other test in this file
-
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.click(screen.getByRole("button", { name: "Close notification" }));
+    await userEvent.click(
+      screen.getByRole("button", { name: "Close notification" })
+    );
 
     expect(
       store.getActions().some((action) => action.type === "machine/cleanup")
@@ -427,11 +431,7 @@ describe("MachineList", () => {
       />,
       { route: "/machines", store }
     );
-    // Using fireEvent instead of userEvent here,
-    // since using the latter seems to break every other test in this file
-
-    // eslint-disable-next-line testing-library/prefer-user-event
-    fireEvent.click(screen.getByRole("button", { name: "Next page" }));
+    await userEvent.click(screen.getByRole("button", { name: "Next page" }));
     const expected = machineActions.fetch("123456", {
       page_number: 2,
     });
