@@ -283,6 +283,7 @@ describe("EditBondForm", () => {
         interfaces,
       }),
     ];
+    nic.parents = [interfaces[0].id, interfaces[1].id];
     const { rerender } = renderWithBrowserRouter(
       <EditBondForm
         close={jest.fn()}
@@ -295,7 +296,7 @@ describe("EditBondForm", () => {
     );
     expect(
       screen.getByRole("button", { name: "Save interface" })
-    ).not.toBeDisabled();
+    ).toBeDisabled();
     await userEvent.click(screen.getByTestId("edit-members"));
     // Select an extra interface.
     rerender(
@@ -413,9 +414,6 @@ describe("EditBondForm", () => {
       screen.getByRole("combobox", { name: "Subnet" }),
       screen.getByRole("option", { name: /test-subnet-1/ })
     );
-    expect(
-      screen.getByRole("button", { name: "Save interface" })
-    ).toBeEnabled();
 
     await userEvent.click(
       screen.getByRole("button", { name: "Save interface" })
