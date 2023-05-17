@@ -32,6 +32,6 @@ describe("DangerZoneCard", () => {
         setSidePanelContent={setSidePanelContent}
       />
     );
-    expect(screen.getByTestId("message")).toBeInTheDocument();
+    expect(screen.getByTestId("message")).toHaveTextContent("Delete KVM");
   });
 });
