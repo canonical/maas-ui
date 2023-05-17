@@ -1,19 +1,16 @@
-import { shallow } from "enzyme";
-
 import AddHardwareMenu from "./AddHardwareMenu";
 
-describe("AddHardwareMenu", () => {
-  it("can render", () => {
-    const wrapper = shallow(
-      <AddHardwareMenu setSidePanelContent={jest.fn()} />
-    );
-    expect(wrapper.find("AddHardwareMenu")).toMatchSnapshot();
-  });
+import { screen, render } from "testing/utils";
 
+describe("AddHardwareMenu", () => {
+  it("can be enabled", () => {
+    render(<AddHardwareMenu setSidePanelContent={jest.fn()} />);
+    expect(screen.getByRole("button", { name: /Add hardware/i })).toBeEnabled();
+  });
   it("can be disabled", () => {
-    const wrapper = shallow(
-      <AddHardwareMenu disabled setSidePanelContent={jest.fn()} />
-    );
-    expect(wrapper.find("ContextualMenu").prop("toggleDisabled")).toBe(true);
+    render(<AddHardwareMenu disabled setSidePanelContent={jest.fn()} />);
+    expect(
+      screen.getByRole("button", { name: /Add hardware/i })
+    ).toBeDisabled();
   });
 });

@@ -1,22 +1,24 @@
-import { shallow, mount } from "enzyme";
+/* eslint-disable testing-library/no-node-access */
+/* eslint-disable testing-library/no-container */
 
 import TableHeader from "./TableHeader";
 
 import { SortDirection } from "app/base/types";
+import { render, screen } from "testing/utils";
 
 describe("TableHeader ", () => {
   it("renders a div if no onClick prop is present", () => {
-    const wrapper = shallow(<TableHeader>Text</TableHeader>);
-    expect(wrapper.find("Button").exists()).toBe(false);
-    expect(wrapper.find("div").exists()).toBe(true);
+    const { container } = render(<TableHeader>Text</TableHeader>);
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
+    expect(container.querySelector("div")).toBeInTheDocument();
   });
 
   it("renders a Button if onClick prop is present", () => {
     const mockFn = jest.fn();
-    const wrapper = shallow(<TableHeader onClick={mockFn}>Text</TableHeader>);
-    expect(wrapper.find("Button").exists()).toBe(true);
+    render(<TableHeader onClick={mockFn}>Text</TableHeader>);
+    expect(screen.getByRole("button")).toBeInTheDocument();
 
-    wrapper.find("Button").simulate("click");
+    screen.getByRole("button").click();
     expect(mockFn).toHaveBeenCalled();
   });
 
@@ -25,7 +27,7 @@ describe("TableHeader ", () => {
       key: "key",
       direction: SortDirection.DESCENDING,
     };
-    const wrapper = mount(
+    const { container } = render(
       <TableHeader
         currentSort={currentSort}
         onClick={jest.fn()}
@@ -34,7 +36,9 @@ describe("TableHeader ", () => {
         Text
       </TableHeader>
     );
-    expect(wrapper.find(".p-icon--chevron-down").exists()).toBe(true);
+    expect(
+      container.querySelector(".p-icon--chevron-down")
+    ).toBeInTheDocument();
   });
 
   it(`renders a flipped contextual icon if currentSort.key matches sortKey
@@ -43,7 +47,7 @@ describe("TableHeader ", () => {
       key: "key",
       direction: SortDirection.ASCENDING,
     };
-    const wrapper = mount(
+    const { container } = render(
       <TableHeader
         currentSort={currentSort}
         onClick={jest.fn()}
@@ -52,6 +56,6 @@ describe("TableHeader ", () => {
         Text
       </TableHeader>
     );
-    expect(wrapper.find(".p-icon--chevron-up").exists()).toBe(true);
+    expect(container.querySelector(".p-icon--chevron-up")).toBeInTheDocument();
   });
 });

@@ -1,20 +1,15 @@
-import { shallow } from "enzyme";
-
+/* eslint-disable testing-library/no-container */
 import SwitchField from "./SwitchField";
 
+import { render } from "testing/utils";
+
 describe("SwitchField", () => {
-  it("renders", () => {
-    const wrapper = shallow(<SwitchField />);
-
-    expect(wrapper).toMatchSnapshot();
-  });
-
   it("can add additional classes", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <SwitchField className="extra-class" type="text" />
     );
-    const className = wrapper.find("Switch").prop("className") || "";
-    expect(className.includes("p-form-validation__input")).toBe(true);
-    expect(className.includes("extra-class")).toBe(true);
+    const switchField = container.querySelector(".p-switch");
+    expect(switchField).toHaveClass("p-form-validation__input");
+    expect(switchField).toHaveClass("extra-class");
   });
 });

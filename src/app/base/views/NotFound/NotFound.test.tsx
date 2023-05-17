@@ -1,43 +1,22 @@
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
-import configureStore from "redux-mock-store";
-
+/* eslint-disable testing-library/no-container */
 import NotFound from "./NotFound";
 
-import type { RootState } from "app/store/root/types";
-import { rootState as rootStateFactory } from "testing/factories";
-
-const mockStore = configureStore();
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
 describe("NotFound ", () => {
-  let state: RootState;
-
-  beforeEach(() => {
-    state = rootStateFactory();
-  });
-
   it("can render", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/404", key: "testKey" }]}>
-          <NotFound />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("NotFound")).toMatchSnapshot();
+    const { container } = renderWithBrowserRouter(<NotFound />, {
+      route: "/404",
+    });
+    expect(screen.getByText(/Page not found/i)).toBeInTheDocument();
+
+    expect(container.querySelector("section")).not.toBeInTheDocument();
   });
 
   it("can render in a section", () => {
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter initialEntries={[{ pathname: "/404", key: "testKey" }]}>
-          <NotFound includeSection />
-        </MemoryRouter>
-      </Provider>
-    );
-    expect(wrapper.find("MainContentSection").exists()).toBe(true);
+    const { container } = renderWithBrowserRouter(<NotFound includeSection />, {
+      route: "/404",
+    });
+    expect(container.querySelector("section")).toBeInTheDocument();
   });
 });

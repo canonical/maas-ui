@@ -1,4 +1,3 @@
-import { mount } from "enzyme";
 import { Provider } from "react-redux";
 import configureStore from "redux-mock-store";
 
@@ -13,6 +12,7 @@ import {
   vmClusterState as vmClusterStateFactory,
   vmHost as vmHostFactory,
 } from "testing/factories";
+import { render } from "testing/utils";
 
 const mockStore = configureStore();
 
@@ -32,7 +32,7 @@ describe("LXDClusterSettings", () => {
       }),
     });
     const store = mockStore(state);
-    mount(
+    render(
       <Provider store={store}>
         <LXDClusterSettings clusterId={1} setSidePanelContent={jest.fn()} />
       </Provider>

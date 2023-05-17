@@ -1,11 +1,12 @@
-import { mount } from "enzyme";
 import { Formik } from "formik";
 
 import ReleaseFormFields from "./ReleaseFormFields";
 
+import { render, screen } from "testing/utils";
+
 describe("ReleaseFormFields", () => {
   it("enables checkboxes for quick/secure erase if erasing is enabled", () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           enableErase: true,
@@ -18,16 +19,12 @@ describe("ReleaseFormFields", () => {
       </Formik>
     );
 
-    expect(wrapper.find("input[name='quickErase']").prop("disabled")).toBe(
-      false
-    );
-    expect(wrapper.find("input[name='secureErase']").prop("disabled")).toBe(
-      false
-    );
+    expect(screen.getByLabelText(/Quick Erase/i)).toBeEnabled();
+    expect(screen.getByLabelText(/Secure Erase/i)).toBeEnabled();
   });
 
   it("disables checkboxes for quick/secure erase if erasing is disabled", () => {
-    const wrapper = mount(
+    render(
       <Formik
         initialValues={{
           enableErase: false,
@@ -40,11 +37,7 @@ describe("ReleaseFormFields", () => {
       </Formik>
     );
 
-    expect(wrapper.find("input[name='quickErase']").prop("disabled")).toBe(
-      true
-    );
-    expect(wrapper.find("input[name='secureErase']").prop("disabled")).toBe(
-      true
-    );
+    expect(screen.getByLabelText(/Quick Erase/i)).toBeDisabled();
+    expect(screen.getByLabelText(/Secure Erase/i)).toBeDisabled();
   });
 });

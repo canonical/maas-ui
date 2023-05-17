@@ -1,21 +1,20 @@
-import { mount } from "enzyme";
-
 import DangerZoneCard from "./DangerZoneCard";
 
 import { KVMHeaderViews } from "app/kvm/constants";
+import { render, screen, userEvent } from "testing/utils";
 
 describe("DangerZoneCard", () => {
-  it("can open the delete KVM form", () => {
+  it("can open the delete KVM form", async () => {
     const setSidePanelContent = jest.fn();
-    const wrapper = mount(
+    render(
       <DangerZoneCard
         hostId={1}
         message="Delete KVM"
         setSidePanelContent={setSidePanelContent}
       />
     );
+    await userEvent.click(screen.getByTestId("remove-kvm"));
 
-    wrapper.find("button[data-testid='remove-kvm']").simulate("click");
     expect(setSidePanelContent).toHaveBeenCalledWith({
       view: KVMHeaderViews.DELETE_KVM,
       extras: {
@@ -26,13 +25,13 @@ describe("DangerZoneCard", () => {
 
   it("can display message", () => {
     const setSidePanelContent = jest.fn();
-    const wrapper = mount(
+    render(
       <DangerZoneCard
         hostId={1}
         message={<span data-testid="message">Delete KVM</span>}
         setSidePanelContent={setSidePanelContent}
       />
     );
-    expect(wrapper.find("[data-testid='message']").exists()).toBe(true);
+    expect(screen.getByTestId("message")).toHaveTextContent("Delete KVM");
   });
 });
