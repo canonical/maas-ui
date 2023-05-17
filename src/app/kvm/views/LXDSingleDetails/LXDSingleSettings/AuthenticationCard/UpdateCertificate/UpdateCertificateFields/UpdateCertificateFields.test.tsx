@@ -2,9 +2,9 @@ import { Formik } from "formik";
 
 import UpdateCertificateFields from "./UpdateCertificateFields";
 
+import { Labels } from "app/base/components/CertificateFields/CertificateFields";
 import { generatedCertificate as generatedCertificateFactory } from "testing/factories";
 import { render, screen, waitFor } from "testing/utils";
-
 describe("UpdateCertificateFields", () => {
   it("shows authentication fields if no certificate provided", async () => {
     render(
@@ -20,7 +20,7 @@ describe("UpdateCertificateFields", () => {
       </Formik>
     );
     await waitFor(() =>
-      expect(screen.getByTestId("generate-certificate")).toBeInTheDocument()
+      expect(screen.getByLabelText(Labels.Generate)).toBeInTheDocument()
     );
     expect(screen.queryByTestId("certificate-data")).not.toBeInTheDocument();
   });
@@ -40,8 +40,6 @@ describe("UpdateCertificateFields", () => {
       </Formik>
     );
     expect(screen.getByTestId("certificate-data")).toBeInTheDocument();
-    expect(
-      screen.queryByTestId("generate-certificate")
-    ).not.toBeInTheDocument();
+    expect(screen.queryByLabelText(Labels.Generate)).not.toBeInTheDocument();
   });
 });

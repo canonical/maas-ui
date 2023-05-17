@@ -27,7 +27,6 @@ export const CertificateFields = ({
       <p>Certificate</p>
       <Input
         checked={shouldGenerateCert}
-        data-testid="generate-certificate"
         id="generate-certificate"
         label={Labels.Generate}
         onChange={() => onShouldGenerateCert(true)}
