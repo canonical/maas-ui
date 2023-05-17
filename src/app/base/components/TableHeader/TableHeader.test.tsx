@@ -9,7 +9,7 @@ import { render, screen } from "testing/utils";
 describe("TableHeader ", () => {
   it("renders a div if no onClick prop is present", () => {
     const { container } = render(<TableHeader>Text</TableHeader>);
-    expect(screen.queryByRole("button")).toBeNull();
+    expect(screen.queryByRole("button")).not.toBeInTheDocument();
     expect(container.querySelector("div")).toBeInTheDocument();
   });
 
