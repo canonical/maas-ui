@@ -70,10 +70,12 @@ exports[`PowerColumn renders 1`] = `
             >
               <span>
                 <Icon
+                  aria-label="on"
                   className=""
                   name="power-on"
                 >
                   <i
+                    aria-label="on"
                     className="p-icon--power-on"
                   />
                 </Icon>
