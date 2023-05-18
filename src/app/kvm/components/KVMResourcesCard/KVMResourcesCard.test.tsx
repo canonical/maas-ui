@@ -1,20 +1,19 @@
 import reduxToolkit from "@reduxjs/toolkit";
-import { mount } from "enzyme";
-import { Provider } from "react-redux";
-import { MemoryRouter } from "react-router-dom";
 import configureStore from "redux-mock-store";
 
 import KVMResourcesCard from "./KVMResourcesCard";
 
 import { actions as machineActions } from "app/store/machine";
 import { PodType } from "app/store/pod/constants";
+import type { RootState } from "app/store/root/types";
 import {
   podState as podStateFactory,
   rootState as rootStateFactory,
   pod as podFactory,
 } from "testing/factories";
+import { renderWithBrowserRouter, screen } from "testing/utils";
 
-const mockStore = configureStore();
+const mockStore = configureStore<RootState>();
 
 describe("KVMResourcesCard", () => {
   beforeEach(() => {
@@ -33,15 +32,10 @@ describe("KVMResourcesCard", () => {
       }),
     });
     const store = mockStore(state);
-    mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <KVMResourcesCard id={1} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<KVMResourcesCard id={1} />, {
+      store,
+      route: "/kvm/1/project",
+    });
 
     const expectedAction = machineActions.fetch("mocked-nanoid");
     expect(
@@ -56,17 +50,11 @@ describe("KVMResourcesCard", () => {
         loaded: false,
       }),
     });
-    const store = mockStore(state);
-    const wrapper = mount(
-      <Provider store={store}>
-        <MemoryRouter
-          initialEntries={[{ pathname: "/kvm/1/project", key: "testKey" }]}
-        >
-          <KVMResourcesCard id={1} />
-        </MemoryRouter>
-      </Provider>
-    );
+    renderWithBrowserRouter(<KVMResourcesCard id={1} />, {
+      state,
+      route: "/kvm/1/project",
+    });
 
-    expect(wrapper.find("Spinner").exists()).toBe(true);
+    expect(screen.getByText(/Loading/i)).toBeInTheDocument();
   });
 });

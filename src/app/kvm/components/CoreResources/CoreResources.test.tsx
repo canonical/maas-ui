@@ -1,36 +1,36 @@
-import { shallow } from "enzyme";
-
+/* eslint-disable testing-library/no-container */
 import CoreResources from "./CoreResources";
 
-describe("CoreResources", () => {
-  it("renders", () => {
-    const wrapper = shallow(<CoreResources allocated={1} free={2} other={3} />);
+import { render, screen } from "testing/utils";
 
-    expect(wrapper).toMatchSnapshot();
+describe("CoreResources", () => {
+  it("renders correctly", () => {
+    render(<CoreResources allocated={1} free={2} other={3} />);
+
+    expect(
+      screen.getByRole("heading", { name: /CPU cores/i })
+    ).toBeInTheDocument();
   });
 
   it("can be made to have a dynamic layout", () => {
-    const wrapper = shallow(
+    const { container } = render(
       <CoreResources allocated={1} dynamicLayout free={2} />
     );
 
-    expect(
-      wrapper
-        .find(".core-resources")
-        .prop("className")
-        ?.includes("core-resources--dynamic-layout")
-    ).toBe(true);
+    expect(container.querySelector(".core-resources")).toHaveClass(
+      "core-resources--dynamic-layout"
+    );
   });
 
   it("renders the pinned core section if cores are provided as arrays", () => {
-    const wrapper = shallow(<CoreResources allocated={[1]} free={[2]} />);
+    render(<CoreResources allocated={[1]} free={[2]} />);
 
-    expect(wrapper.find("[data-testid='pinned-section']").exists()).toBe(true);
+    expect(screen.getByText(/Pinned cores/)).toBeInTheDocument();
   });
 
   it("does not render the pinned core section if cores are provided as numbers", () => {
-    const wrapper = shallow(<CoreResources allocated={1} free={2} />);
+    render(<CoreResources allocated={1} free={2} />);
 
-    expect(wrapper.find("[data-testid='pinned-section']").exists()).toBe(false);
+    expect(screen.queryByText(/Pinned cores/)).not.toBeInTheDocument();
   });
 });
